@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<wicket:extend>
+    <div class="box box-primary">
+        <form role="form" wicket:id="form">
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label wicket:for="referenceField">Reference</label>
+                    <input wicket:id="referenceField" type="text" class="form-control"/>
+                    <span wicket:id="referenceFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label wicket:for="nameField">Name</label>
+                    <input wicket:id="nameField" type="text" class="form-control"/>
+                    <span wicket:id="nameFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label wicket:for="descriptionField">Description</label>
+                    <input wicket:id="descriptionField" type="text" class="form-control"/>
+                    <span wicket:id="descriptionFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label wicket:for="relatedProductField">Related Product</label>
+                    <select wicket:id="relatedProductField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="relatedProductFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="normalPriceField">Normal Price</label>
+                    <input wicket:id="normalPriceField" type="text" class="form-control"/>
+                    <span wicket:id="normalPriceFeedback" class="help-block"/>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="discountPriceField">Discount Price</label>
+                    <input wicket:id="discountPriceField" type="text" class="form-control"/>
+                    <span wicket:id="discountPriceFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="categoryField">Category</label>
+                    <select wicket:id="categoryField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="categoryFeedback" class="help-block"/>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="brandField">Brand</label>
+                    <select wicket:id="brandField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="brandFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="mainImageHighResField">Main Image High Res</label>
+                    <input wicket:id="mainImageHighResField" type="file"/>
+                    <span wicket:id="mainImageHighResFeedback" class="help-block"/>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="mainImageField">Main Image</label>
+                    <input wicket:id="mainImageField" type="file"/>
+                    <span wicket:id="mainImageFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="sizeField">Size</label>
+                    <select wicket:id="sizeField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="sizeFeedback" class="help-block"/>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="colorField">Color</label>
+                    <select wicket:id="colorField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="colorFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="quantityField">Quantity</label>
+                    <input wicket:id="quantityField" type="text" class="form-control"/>
+                    <span wicket:id="quantityFeedback" class="help-block"/>
+                </div>
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label>Variant Image</label>
+                    <div wicket:id="variantImageField"/>
+                    <span wicket:id="variantImageFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="box-footer">
+                <button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+                <a wicket:id="closeButton" class="btn btn-default pull-right">Close</a>
+            </div>
+        </form>
+    </div>
+</wicket:extend>
+</body>
+</html>

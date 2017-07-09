@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<wicket:extend>
+    <form role="form" wicket:id="form">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Accounting Rule Create</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="ruleNameField">Rule Name</label>
+                    <input wicket:id="ruleNameField" type="text" class="form-control"/>
+                    <span wicket:id="ruleNameFeedback" class="help-block"/>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="officeField">Office</label>
+                    <select wicket:id="officeField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="officeFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label wicket:for="descriptionField">Description</label>
+                    <textarea wicket:id="descriptionField" class="form-control"></textarea>
+                    <span wicket:id="descriptionFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="debitAccountField">Fixed Debit Account</label>
+                    <select wicket:id="debitAccountField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="debitAccountFeedback" class="help-block"/>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="debitTagField">Debit Account Tag</label>
+                    <select wicket:id="debitTagField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="debitTagFeedback" class="help-block"/>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="multipleDebitField"> Allow Multiple Debit Entries ?
+                        </label>
+                    </span>
+                    <span wicket:id="multipleDebitFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="creditAccountField">Credit Debit Account</label>
+                    <select wicket:id="creditAccountField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="creditAccountFeedback" class="help-block"/>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="creditTagField">Credit Account Tag</label>
+                    <select wicket:id="creditTagField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="creditTagFeedback" class="help-block"/>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="multipleCreditField"> Allow Multiple Credit Entries ?
+                        </label>
+                    </span>
+                    <span wicket:id="multipleCreditFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="box-footer">
+                <button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+                <a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
+            </div>
+        </div>
+    </form>
+</wicket:extend>
+</body>
+</html>

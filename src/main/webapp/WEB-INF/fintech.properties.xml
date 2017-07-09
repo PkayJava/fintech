@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+    <entry key="wicket">DEPLOYMENT</entry>
+
+    <entry key="maintenance">false</entry>
+
+    <!-- Container || Local -->
+    <entry key="app.jdbc.type">LOCAL</entry>
+    <entry key="app.jdbc.jndi">jdbc/fintech</entry>
+
+    <entry key="app.jdbc.driver">com.mysql.jdbc.Driver</entry>
+    <entry key="app.jdbc.username">root</entry>
+    <entry key="app.jdbc.password">password</entry>
+    <entry key="app.jdbc.url"><![CDATA[jdbc:mysql://172.16.1.6:3306/mifostenant_default?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&serverTimezone=UTC]]></entry>
+
+    <!-- Role -->
+    <entry key="role.administrator">administrator</entry>
+    <entry key="role.administrator.description">administrative role, users belonging to this role are Gods</entry>
+    <entry key="role.system">system</entry>
+    <entry key="role.system.description">system role to give users maintain system</entry>
+    <entry key="role.service">service</entry>
+    <entry key="role.service.description">service role to give users access resource vai api call</entry>
+
+    <!-- administrator -->
+    <entry key="user.admin">admin</entry>
+    <entry key="user.admin.role">role.administrator</entry>
+    <entry key="user.admin.password">admin</entry>
+    <!-- system -->
+    <entry key="user.system">system</entry>
+    <entry key="user.system.role">role.system</entry>
+    <entry key="user.system.password">system</entry>
+    <!-- administrator -->
+    <entry key="user.service">service</entry>
+    <entry key="user.service.role">role.service</entry>
+    <entry key="user.service.password">service</entry>
+
+    <entry key="pattern.datetime">yyyy-MM-dd'T'HH:mm:ssZZ</entry>
+    <entry key="pattern.date">yyyy-MM-dd</entry>
+    <entry key="pattern.time">HH:mm:ss</entry>
+    <entry key="pattern.folder">/yyyy/MM/dd/HH/mm/ss</entry>
+
+    <entry key="executor.pool_size">10</entry>
+    <entry key="executor.queue_capacity">500</entry>
+
+    <entry key="resource.repo">/opt/sandbox/fintech</entry>
+
+    <entry key="encryption.password"><![CDATA[7808654h4zzx05DheFMZ]]></entry>
+    <entry key="encryption.output">base64</entry>
+
+</properties>
