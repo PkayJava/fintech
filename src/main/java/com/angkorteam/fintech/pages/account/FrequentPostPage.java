@@ -224,13 +224,16 @@ public class FrequentPostPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", AccountingPage.class);
         this.form.add(this.closeLink);
 
-        this.officeValue = null;
         this.officeProvider = new OptionSingleChoiceProvider("m_office", "id", "name");
         this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.form.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
         this.form.add(this.officeFeedback);
+        if (ruleObject.get("office_id") != null) {
+            this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", new OptionMapper(), ruleObject.get("office_id"));
+            this.officeProvider.applyWhere("id", "id = " + ruleObject.get("office_id"));
+        }
 
         this.currencyProvider = new OptionSingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
         this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
