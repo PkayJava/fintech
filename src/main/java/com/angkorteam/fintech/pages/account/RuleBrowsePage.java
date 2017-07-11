@@ -61,6 +61,7 @@ public class RuleBrowsePage extends Page {
         this.provider.selectField("id", Long.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
+        columns.add(new ActionColumn<>(Model.of(""), this::postItem, this::postClick));
         columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "rule_name", "rule_name", this::ruleNameColumn));
         columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Office"), "office_name", "office_name", this::officeColumn));
         columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Debit Tags"), "debit_tags", "debit_tags", this::debitTagsColumn));
@@ -78,8 +79,19 @@ public class RuleBrowsePage extends Page {
 
         this.createLink = new BookmarkablePageLink<>("createLink", RuleCreatePage.class);
         add(this.createLink);
+    }
 
-        // #/fineract-provider/api/v1/glaccounts/12
+    private void postClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+        Long id = (Long) stringObjectMap.get("id");
+        PageParameters parameters = new PageParameters();
+        parameters.add("ruleId", id);
+        setResponsePage(FrequentPostPage.class, parameters);
+    }
+
+    private List<ActionItem> postItem(String s, Map<String, Object> stringObjectMap) {
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("post", Model.of("Post"), ItemCss.INFO));
+        return actions;
     }
 
     private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {

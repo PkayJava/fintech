@@ -42,7 +42,7 @@ import java.util.*;
 /**
  * Created by socheatkhauv on 6/30/17.
  */
-public class JournalCreatePage extends Page {
+public class JournalPostPage extends Page {
 
     private Form<Void> debitForm;
     private AjaxButton debitButton;

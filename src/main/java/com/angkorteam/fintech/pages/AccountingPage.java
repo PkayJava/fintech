@@ -1,10 +1,7 @@
 package com.angkorteam.fintech.pages;
 
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.pages.account.AccountBrowsePage;
-import com.angkorteam.fintech.pages.account.JournalCreatePage;
-import com.angkorteam.fintech.pages.account.RuleBrowsePage;
-import com.angkorteam.fintech.pages.account.SearchJournalPage;
+import com.angkorteam.fintech.pages.account.*;
 import com.angkorteam.framework.BackgroundColor;
 import com.angkorteam.framework.Emoji;
 import com.angkorteam.framework.models.InfoBox;
@@ -20,13 +17,13 @@ public class AccountingPage extends Page {
     protected void onInitialize() {
         super.onInitialize();
 
-        InfoBoxPanel frequentPostingPage = new InfoBoxPanel("frequentPostingPage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Frequent Postings").setDescription("These are predefined postings").setIcon(Emoji.ion_alert)));
+        InfoBoxPanel frequentPostingPage = new InfoBoxPanel("frequentPostingPage", Model.of(new InfoBox().setPage(RuleSelectPage.class).setTitle("Frequent Postings").setDescription("These are predefined postings").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(frequentPostingPage);
 
         InfoBoxPanel chartOfAccountPage = new InfoBoxPanel("chartOfAccountPage", Model.of(new InfoBox().setPage(AccountBrowsePage.class).setTitle("Chart of Accounts").setDescription("List of the accounts used by the organization").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(chartOfAccountPage);
 
-        InfoBoxPanel addJournalEntryPage = new InfoBoxPanel("addJournalEntryPage", Model.of(new InfoBox().setPage(JournalCreatePage.class).setTitle("Add Journal Entries").setDescription("Manual journal entry transactions recorded in a journal").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
+        InfoBoxPanel addJournalEntryPage = new InfoBoxPanel("addJournalEntryPage", Model.of(new InfoBox().setPage(JournalPostPage.class).setTitle("Add Journal Entries").setDescription("Manual journal entry transactions recorded in a journal").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(addJournalEntryPage);
 
         InfoBoxPanel closingEntryPage = new InfoBoxPanel("closingEntryPage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Closing Entries").setDescription("Journal entries made at the end of an accounting period").setIcon(Emoji.ion_alert)));
