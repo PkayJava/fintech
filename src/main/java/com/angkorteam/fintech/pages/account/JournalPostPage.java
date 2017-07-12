@@ -1,7 +1,7 @@
 package com.angkorteam.fintech.pages.account;
 
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.dto.request.GLAccountBuilder;
+import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.fintech.dto.request.GLEntryBuilder;
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.pages.AccountingPage;
@@ -143,7 +143,7 @@ public class JournalPostPage extends Page {
         this.debitForm.add(this.debitButton);
 
         this.debitAccountNameProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name");
-        this.debitAccountNameProvider.applyWhere("usage", "account_usage = " + GLAccountBuilder.Usage.Detail.getLiteral());
+        this.debitAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.debitAccountNameField = new Select2SingleChoice<>("debitAccountNameField", 0, new PropertyModel<>(this, "debitAccountNameValue"), this.debitAccountNameProvider);
         this.debitAccountNameField.setRequired(true);
         this.debitForm.add(this.debitAccountNameField);
@@ -165,7 +165,7 @@ public class JournalPostPage extends Page {
         this.creditForm.add(this.creditButton);
 
         this.creditAccountNameProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name");
-        this.creditAccountNameProvider.applyWhere("usage", "account_usage = " + GLAccountBuilder.Usage.Detail.getLiteral());
+        this.creditAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.creditAccountNameField = new Select2SingleChoice<>("creditAccountNameField", 0, new PropertyModel<>(this, "creditAccountNameValue"), this.creditAccountNameProvider);
         this.creditAccountNameField.setRequired(true);
         this.creditForm.add(this.creditAccountNameField);

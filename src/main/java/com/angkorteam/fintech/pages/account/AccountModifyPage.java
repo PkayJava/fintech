@@ -1,6 +1,8 @@
 package com.angkorteam.fintech.pages.account;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.AccountType;
+import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.fintech.dto.request.GLAccountBuilder;
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.provider.AccountTypeProvider;
@@ -94,7 +96,7 @@ public class AccountModifyPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", AccountBrowsePage.class);
         this.form.add(this.closeLink);
 
-        for (GLAccountBuilder.Account a : GLAccountBuilder.Account.values()) {
+        for (AccountType a : AccountType.values()) {
             if (a.getLiteral().equals(String.valueOf(account.get("classification_enum")))) {
                 this.accountTypeValue = new Option(a.getLiteral(), a.name());
                 break;
@@ -112,15 +114,15 @@ public class AccountModifyPage extends Page {
                     tagProvider.removeWhere("code");
                 } else {
                     String tag = "";
-                    if (GLAccountBuilder.Account.Asset.getLiteral().equals(accountTypeValue.getId())) {
+                    if (AccountType.Asset.getLiteral().equals(accountTypeValue.getId())) {
                         tag = "AssetAccountTags";
-                    } else if (GLAccountBuilder.Account.Equity.getLiteral().equals(accountTypeValue.getId())) {
+                    } else if (AccountType.Equity.getLiteral().equals(accountTypeValue.getId())) {
                         tag = "EquityAccountTags";
-                    } else if (GLAccountBuilder.Account.Expense.getLiteral().equals(accountTypeValue.getId())) {
+                    } else if (AccountType.Expense.getLiteral().equals(accountTypeValue.getId())) {
                         tag = "ExpenseAccountTags";
-                    } else if (GLAccountBuilder.Account.Income.getLiteral().equals(accountTypeValue.getId())) {
+                    } else if (AccountType.Income.getLiteral().equals(accountTypeValue.getId())) {
                         tag = "IncomeAccountTags";
-                    } else if (GLAccountBuilder.Account.Liability.getLiteral().equals(accountTypeValue.getId())) {
+                    } else if (AccountType.Liability.getLiteral().equals(accountTypeValue.getId())) {
                         tag = "LiabilityAccountTags";
                     }
                     tagValue = null;
@@ -156,7 +158,7 @@ public class AccountModifyPage extends Page {
         this.parentProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name");
         this.parentProvider.applyWhere("classification_enum", "classification_enum = " + accountTypeValue.getId());
         this.parentProvider.applyWhere("check", "id != " + this.accountId);
-        this.parentProvider.applyWhere("account_usage", "account_usage = " + GLAccountBuilder.Usage.Header.getLiteral());
+        this.parentProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Header.getLiteral());
         this.parentField = new Select2SingleChoice<>("parentField", 0, new PropertyModel<>(this, "parentValue"), this.parentProvider);
         this.form.add(this.parentField);
         this.parentFeedback = new TextFeedbackPanel("parentFeedback", this.parentField);
@@ -176,7 +178,7 @@ public class AccountModifyPage extends Page {
         this.accountNameFeedback = new TextFeedbackPanel("accountNameFeedback", this.accountNameField);
         this.form.add(this.accountNameFeedback);
 
-        for (GLAccountBuilder.Usage a : GLAccountBuilder.Usage.values()) {
+        for (AccountUsage a : AccountUsage.values()) {
             if (a.getLiteral().equals(account.get("account_usage"))) {
                 this.accountUsageValue = new Option(a.getLiteral(), a.name());
                 break;
@@ -191,15 +193,15 @@ public class AccountModifyPage extends Page {
         this.tagValue = jdbcTemplate.queryForObject("select id, code_value text from m_code_value where id = ?", new OptionMapper(), account.get("tag_id"));
         this.tagProvider = new OptionSingleChoiceProvider("m_code_value", "id", "code_value");
         String tag = "";
-        if (GLAccountBuilder.Account.Asset.getLiteral().equals(accountTypeValue.getId())) {
+        if (AccountType.Asset.getLiteral().equals(accountTypeValue.getId())) {
             tag = "AssetAccountTags";
-        } else if (GLAccountBuilder.Account.Equity.getLiteral().equals(accountTypeValue.getId())) {
+        } else if (AccountType.Equity.getLiteral().equals(accountTypeValue.getId())) {
             tag = "EquityAccountTags";
-        } else if (GLAccountBuilder.Account.Expense.getLiteral().equals(accountTypeValue.getId())) {
+        } else if (AccountType.Expense.getLiteral().equals(accountTypeValue.getId())) {
             tag = "ExpenseAccountTags";
-        } else if (GLAccountBuilder.Account.Income.getLiteral().equals(accountTypeValue.getId())) {
+        } else if (AccountType.Income.getLiteral().equals(accountTypeValue.getId())) {
             tag = "IncomeAccountTags";
-        } else if (GLAccountBuilder.Account.Liability.getLiteral().equals(accountTypeValue.getId())) {
+        } else if (AccountType.Liability.getLiteral().equals(accountTypeValue.getId())) {
             tag = "LiabilityAccountTags";
         }
         this.tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + tag + "')");
@@ -238,10 +240,10 @@ public class AccountModifyPage extends Page {
             builder.withTagId(this.tagValue.getId());
         }
         if (this.accountTypeValue != null) {
-            builder.withType(GLAccountBuilder.Account.valueOf(this.accountTypeValue.getText()));
+            builder.withType(AccountType.valueOf(this.accountTypeValue.getText()));
         }
         if (this.accountUsageValue != null) {
-            builder.withUsage(GLAccountBuilder.Usage.valueOf(this.accountUsageValue.getText()));
+            builder.withUsage(AccountUsage.valueOf(this.accountUsageValue.getText()));
         }
 
         JsonNode node = null;

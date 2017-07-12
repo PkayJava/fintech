@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.provider;
 
-import com.angkorteam.fintech.dto.request.GLAccountBuilder;
+import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
@@ -27,7 +27,7 @@ public class AccountUsageProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (GLAccountBuilder.Usage a : GLAccountBuilder.Usage.values()) {
+        for (AccountUsage a : AccountUsage.values()) {
             options.add(new Option(a.getLiteral(), a.name()));
         }
         return options;

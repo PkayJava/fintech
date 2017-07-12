@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.provider;
 
-import com.angkorteam.fintech.dto.request.DataTableBuilder;
+import com.angkorteam.fintech.dto.TableType;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
@@ -27,7 +27,7 @@ public class AppTableOptionProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (DataTableBuilder.Type type : DataTableBuilder.Type.values()) {
+        for (TableType type : TableType.values()) {
             options.add(new Option(type.name(), type.name()));
         }
         return options;

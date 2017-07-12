@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.dto.request;
 
+import com.angkorteam.fintech.dto.TableType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
@@ -49,7 +50,7 @@ public class DataTableBuilder implements Serializable {
         return this;
     }
 
-    public DataTableBuilder withAppTableName(Type apptableName) {
+    public DataTableBuilder withAppTableName(TableType apptableName) {
         this.apptableName = apptableName.getLiteral();
         this.hasApptableName = true;
         return this;
@@ -125,25 +126,6 @@ public class DataTableBuilder implements Serializable {
         columns.add(column);
         this.hasColumns = true;
         return this;
-    }
-
-    public enum Type {
-        Client("m_client"),
-        Group("m_group"),
-        SavingsAccount("m_savings_account"),
-        Loan("m_loan"),
-        Center("m_center"),
-        Office("m_office");
-
-        private String literal;
-
-        Type(String literal) {
-            this.literal = literal;
-        }
-
-        public String getLiteral() {
-            return literal;
-        }
     }
 
 }

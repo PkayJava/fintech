@@ -1,6 +1,8 @@
 package com.angkorteam.fintech.pages.account;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.AccountType;
+import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.fintech.dto.request.GLAccountBuilder;
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.provider.AccountTypeProvider;
@@ -92,15 +94,15 @@ public class AccountCreatePage extends Page {
                     tagProvider.removeWhere("code");
                 } else {
                     String tag = "";
-                    if (GLAccountBuilder.Account.Asset.getLiteral().equals(accountTypeValue.getId())) {
+                    if (AccountType.Asset.getLiteral().equals(accountTypeValue.getId())) {
                         tag = "AssetAccountTags";
-                    } else if (GLAccountBuilder.Account.Equity.getLiteral().equals(accountTypeValue.getId())) {
+                    } else if (AccountType.Equity.getLiteral().equals(accountTypeValue.getId())) {
                         tag = "EquityAccountTags";
-                    } else if (GLAccountBuilder.Account.Expense.getLiteral().equals(accountTypeValue.getId())) {
+                    } else if (AccountType.Expense.getLiteral().equals(accountTypeValue.getId())) {
                         tag = "ExpenseAccountTags";
-                    } else if (GLAccountBuilder.Account.Income.getLiteral().equals(accountTypeValue.getId())) {
+                    } else if (AccountType.Income.getLiteral().equals(accountTypeValue.getId())) {
                         tag = "IncomeAccountTags";
-                    } else if (GLAccountBuilder.Account.Liability.getLiteral().equals(accountTypeValue.getId())) {
+                    } else if (AccountType.Liability.getLiteral().equals(accountTypeValue.getId())) {
                         tag = "LiabilityAccountTags";
                     }
                     tagValue = null;
@@ -133,7 +135,7 @@ public class AccountCreatePage extends Page {
         this.form.add(this.accountTypeFeedback);
 
         this.parentProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name");
-        this.parentProvider.applyWhere("account_usage", "account_usage = " + GLAccountBuilder.Usage.Header.getLiteral());
+        this.parentProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Header.getLiteral());
         this.parentProvider.setDisabled(true);
         this.parentField = new Select2SingleChoice<>("parentField", 0, new PropertyModel<>(this, "parentValue"), this.parentProvider);
         this.form.add(this.parentField);
@@ -193,10 +195,10 @@ public class AccountCreatePage extends Page {
             builder.withTagId(this.tagValue.getId());
         }
         if (this.accountTypeValue != null) {
-            builder.withType(GLAccountBuilder.Account.valueOf(this.accountTypeValue.getText()));
+            builder.withType(AccountType.valueOf(this.accountTypeValue.getText()));
         }
         if (this.accountUsageValue != null) {
-            builder.withUsage(GLAccountBuilder.Usage.valueOf(this.accountUsageValue.getText()));
+            builder.withUsage(AccountUsage.valueOf(this.accountUsageValue.getText()));
         }
 
         JsonNode node = null;

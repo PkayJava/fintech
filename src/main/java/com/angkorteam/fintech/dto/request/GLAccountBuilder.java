@@ -1,5 +1,7 @@
 package com.angkorteam.fintech.dto.request;
 
+import com.angkorteam.fintech.dto.AccountType;
+import com.angkorteam.fintech.dto.AccountUsage;
 import com.mashape.unirest.http.JsonNode;
 
 import java.io.Serializable;
@@ -21,10 +23,10 @@ public class GLAccountBuilder implements Serializable {
     private boolean manualEntriesAllowed;
     private boolean hasManualEntriesAllowed;
 
-    private Account type;
+    private AccountType type;
     private boolean hasType;
 
-    private Usage usage;
+    private AccountUsage usage;
     private boolean hasUsage;
 
     private String description;
@@ -54,13 +56,13 @@ public class GLAccountBuilder implements Serializable {
         return this;
     }
 
-    public GLAccountBuilder withUsage(Usage usage) {
+    public GLAccountBuilder withUsage(AccountUsage usage) {
         this.usage = usage;
         this.hasUsage = true;
         return this;
     }
 
-    public GLAccountBuilder withType(Account type) {
+    public GLAccountBuilder withType(AccountType type) {
         this.type = type;
         this.hasType = true;
         return this;
@@ -120,41 +122,6 @@ public class GLAccountBuilder implements Serializable {
             object.getObject().put("description", this.description);
         }
         return object;
-    }
-
-    public enum Account {
-        Asset("1"),
-        Liability("2"),
-        Equity("3"),
-        Income("4"),
-        Expense("5");
-
-        private String literal;
-
-        Account(String literal) {
-            this.literal = literal;
-        }
-
-        public String getLiteral() {
-            return literal;
-        }
-    }
-
-    public enum Usage {
-
-        Detail("1"),
-        Header("2");
-
-        private String literal;
-
-        Usage(String literal) {
-            this.literal = literal;
-        }
-
-        public String getLiteral() {
-            return literal;
-        }
-
     }
 
 }

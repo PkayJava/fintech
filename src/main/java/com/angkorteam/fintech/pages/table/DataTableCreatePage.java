@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages.table;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.TableType;
 import com.angkorteam.fintech.dto.request.DataTableBuilder;
 import com.angkorteam.fintech.helper.DataTableHelper;
 import com.angkorteam.fintech.provider.AppTableOptionProvider;
@@ -194,7 +195,7 @@ public class DataTableCreatePage extends Page {
 
     private void createButtonSubmit(Button button) {
         DataTableBuilder builder = new DataTableBuilder();
-        builder.withAppTableName(DataTableBuilder.Type.valueOf(this.appTableValue.getId()));
+        builder.withAppTableName(TableType.valueOf(this.appTableValue.getId()));
         builder.withDataTableName(this.dataTableValue);
         builder.withMultiRow(this.multiRowValue);
         for (Map<String, Object> column : columnValue) {

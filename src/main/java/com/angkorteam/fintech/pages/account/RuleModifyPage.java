@@ -1,8 +1,8 @@
 package com.angkorteam.fintech.pages.account;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.fintech.dto.request.AccountRuleBuilder;
-import com.angkorteam.fintech.dto.request.GLAccountBuilder;
 import com.angkorteam.fintech.helper.AccountingRuleHelper;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcTemplate;
@@ -119,7 +119,7 @@ public class RuleModifyPage extends Page {
 
         this.debitAccountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", new OptionMapper(), ruleObject.get("debit_account_id"));
         this.debitAccountProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name");
-        this.debitAccountProvider.applyWhere("account_usage", "account_usage = " + GLAccountBuilder.Usage.Detail.getLiteral());
+        this.debitAccountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.debitAccountField = new Select2SingleChoice<>("debitAccountField", 0, new PropertyModel<>(this, "debitAccountValue"), this.debitAccountProvider);
         this.form.add(this.debitAccountField);
         this.debitAccountFeedback = new TextFeedbackPanel("debitAccountFeedback", this.debitAccountField);
@@ -142,7 +142,7 @@ public class RuleModifyPage extends Page {
 
         this.creditAccountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", new OptionMapper(), ruleObject.get("credit_account_id"));
         this.creditAccountProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name");
-        this.creditAccountProvider.applyWhere("account_usage", "account_usage = " + GLAccountBuilder.Usage.Detail.getLiteral());
+        this.creditAccountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.creditAccountField = new Select2SingleChoice<>("creditAccountField", 0, new PropertyModel<>(this, "creditAccountValue"), this.creditAccountProvider);
         this.form.add(this.creditAccountField);
         this.creditAccountFeedback = new TextFeedbackPanel("creditAccountFeedback", this.creditAccountField);
