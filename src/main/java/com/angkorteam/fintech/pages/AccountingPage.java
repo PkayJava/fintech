@@ -26,7 +26,7 @@ public class AccountingPage extends Page {
         InfoBoxPanel addJournalEntryPage = new InfoBoxPanel("addJournalEntryPage", Model.of(new InfoBox().setPage(JournalPostPage.class).setTitle("Add Journal Entries").setDescription("Manual journal entry transactions recorded in a journal").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(addJournalEntryPage);
 
-        InfoBoxPanel closingEntryPage = new InfoBoxPanel("closingEntryPage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Closing Entries").setDescription("Journal entries made at the end of an accounting period").setIcon(Emoji.ion_alert)));
+        InfoBoxPanel closingEntryPage = new InfoBoxPanel("closingEntryPage", Model.of(new InfoBox().setPage(ClosureBrowsePage.class).setTitle("Closing Entries").setDescription("Journal entries made at the end of an accounting period").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(closingEntryPage);
 
         InfoBoxPanel searchJournalEntryPage = new InfoBoxPanel("searchJournalEntryPage", Model.of(new InfoBox().setPage(SearchJournalPage.class).setTitle("Search Journal Entries").setDescription("Advance search option for journal entries").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));

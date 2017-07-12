@@ -71,8 +71,6 @@ public class AccountBrowsePage extends Page {
 
         this.createLink = new BookmarkablePageLink<>("createLink", AccountCreatePage.class);
         add(this.createLink);
-
-        // #/fineract-provider/api/v1/glaccounts/12
     }
 
     private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
