@@ -35,10 +35,10 @@ public class AccountingPage extends Page {
         InfoBoxPanel accountingRulePage = new InfoBoxPanel("accountingRulePage", Model.of(new InfoBox().setPage(RuleBrowsePage.class).setTitle("Accounting Rules").setDescription("Lists all accounting rules").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(accountingRulePage);
 
-        InfoBoxPanel accountLinkedPage = new InfoBoxPanel("accountLinkedPage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Accounts Linked to Financial Activities").setDescription("List of Financial Activity and GL Account Mappings").setIcon(Emoji.ion_alert)));
+        InfoBoxPanel accountLinkedPage = new InfoBoxPanel("accountLinkedPage", Model.of(new InfoBox().setPage(FinancialActivityBrowsePage.class).setTitle("Accounts Linked to Financial Activities").setDescription("List of Financial Activity and GL Account Mappings").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(accountLinkedPage);
 
-        InfoBoxPanel accrualsPage = new InfoBoxPanel("accrualsPage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Accruals").setDescription("Accrues income, expenses, and liabilities as on the provided date").setIcon(Emoji.ion_alert)));
+        InfoBoxPanel accrualsPage = new InfoBoxPanel("accrualsPage", Model.of(new InfoBox().setPage(AccrualAccountingPage.class).setTitle("Accruals").setDescription("Accrues income, expenses, and liabilities as on the provided date").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(accrualsPage);
 
         InfoBoxPanel migrateOpeningPage = new InfoBoxPanel("migrateOpeningPage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Migrate Opening Balances (Office-wise)").setDescription("Set or update office-level opening balances for GL Accounts").setIcon(Emoji.ion_alert)));

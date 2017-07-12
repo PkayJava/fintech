@@ -41,7 +41,11 @@ public class AccountClosureBuilder implements Serializable {
             object.getObject().put("dateFormat", this.dateFormat);
         }
         if (this.hasClosingDate) {
-            object.getObject().put("closingDate", DateFormatUtils.format(this.closingDate, this.dateFormat));
+            if (this.closingDate != null) {
+                object.getObject().put("closingDate", DateFormatUtils.format(this.closingDate, this.dateFormat));
+            } else {
+                object.getObject().put("closingDate", (String) null);
+            }
         }
         return object;
     }

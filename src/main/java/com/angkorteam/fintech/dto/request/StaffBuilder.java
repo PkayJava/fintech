@@ -149,6 +149,8 @@ public class StaffBuilder implements Serializable {
         if (this.hasJoiningDate) {
             if (this.joiningDate != null) {
                 object.getObject().put("joiningDate", DateFormatUtils.format(this.joiningDate, this.dateFormat));
+            } else {
+                object.getObject().put("joiningDate", (String) null);
             }
         }
         if (this.hasStaffId) {

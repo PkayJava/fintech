@@ -64,21 +64,21 @@ public class HolidayBuilder implements Serializable {
             if (this.fromDate != null) {
                 object.getObject().put("fromDate", DateFormatUtils.format(this.fromDate, this.dateFormat));
             } else {
-                object.getObject().put("fromDate", "");
+                object.getObject().put("fromDate", (String) null);
             }
         }
         if (this.hasToDate) {
             if (this.toDate != null) {
                 object.getObject().put("toDate", DateFormatUtils.format(this.toDate, this.dateFormat));
             } else {
-                object.getObject().put("toDate", "");
+                object.getObject().put("toDate", (String) null);
             }
         }
         if (this.hasRepaymentsRescheduledTo) {
             if (this.repaymentsRescheduledTo != null) {
                 object.getObject().put("repaymentsRescheduledTo", DateFormatUtils.format(this.repaymentsRescheduledTo, this.dateFormat));
             } else {
-                object.getObject().put("repaymentsRescheduledTo", "");
+                object.getObject().put("repaymentsRescheduledTo", (String) null);
             }
         }
         if (this.hasOffices) {

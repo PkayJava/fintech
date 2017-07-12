@@ -95,6 +95,8 @@ public class OfficeBuilder implements Serializable {
         if (this.hasOpeningDate) {
             if (this.openingDate != null) {
                 object.getObject().put("openingDate", DateFormatUtils.format(this.openingDate, this.dateFormat));
+            } else {
+                object.getObject().put("openingDate", (String) null);
             }
         }
         return object;
