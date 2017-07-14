@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.provider;
 
+import com.angkorteam.fintech.dto.ColumnType;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
@@ -26,14 +27,9 @@ public class ColumnTypeOptionProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        options.add(new Option("String", "String"));
-        options.add(new Option("Number", "Number"));
-        options.add(new Option("Decimal", "Decimal"));
-        options.add(new Option("Boolean", "Boolean"));
-        options.add(new Option("Date", "Date"));
-        options.add(new Option("DateTime", "Date & Time"));
-        options.add(new Option("Text", "Text"));
-        options.add(new Option("DropDown", "Drop Down"));
+        for (ColumnType columnType : ColumnType.values()) {
+            options.add(new Option(columnType.name(), columnType.getDescription()));
+        }
         return options;
     }
 

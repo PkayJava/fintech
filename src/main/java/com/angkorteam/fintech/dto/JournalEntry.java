@@ -1,18 +1,18 @@
 package com.angkorteam.fintech.dto;
 
 /**
- * Created by socheatkhauv on 7/12/17.
+ * Created by socheatkhauv on 7/13/17.
  */
-public enum AccountUsage {
+public enum JournalEntry {
 
-    Detail("1","Detail"),
-    Header("2","Header");
+    Manual("1", "Manual Entries"),
+    System("2", "System Entries");
 
     private String literal;
 
     private String description;
 
-    AccountUsage(String literal, String description) {
+    JournalEntry(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }

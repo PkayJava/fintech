@@ -87,7 +87,7 @@ public class FinancialActivityModifyPage extends Page {
                 } else {
                     AccountType classification_enum = null;
                     for (FinancialActivityType a : FinancialActivityType.values()) {
-                        if (financialActivityValue.getId().equals(a.getLiteral())) {
+                        if (financialActivityValue.getId().equals(a.name())) {
                             classification_enum = a.getAccountType();
                             break;
                         }
@@ -126,7 +126,7 @@ public class FinancialActivityModifyPage extends Page {
         } else {
             AccountType classification_enum = null;
             for (FinancialActivityType a : FinancialActivityType.values()) {
-                if (financialActivityValue.getId().equals(a.getLiteral())) {
+                if (financialActivityValue.getId().equals(a.name())) {
                     classification_enum = a.getAccountType();
                     break;
                 }
@@ -140,7 +140,7 @@ public class FinancialActivityModifyPage extends Page {
         FinancialActivityBuilder builder = new FinancialActivityBuilder();
         builder.withId(this.financialActivityId);
         if (this.financialActivityValue != null) {
-            builder.withFinancialActivityBuilder(this.financialActivityValue.getId());
+            builder.withFinancialActivityBuilder(FinancialActivityType.valueOf(this.financialActivityValue.getId()).getLiteral());
         }
         if (this.accountValue != null) {
             builder.withGlAccountId(this.accountValue.getId());

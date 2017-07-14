@@ -28,7 +28,7 @@ public class AppTableOptionProvider extends SingleChoiceProvider<Option> {
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
         for (TableType type : TableType.values()) {
-            options.add(new Option(type.name(), type.name()));
+            options.add(new Option(type.name(), type.getDescription()));
         }
         return options;
     }

@@ -28,7 +28,7 @@ public class FinancialActivityProvider extends SingleChoiceProvider<Option> {
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
         for (FinancialActivityType a : FinancialActivityType.values()) {
-            options.add(new Option(a.getLiteral(), a.getDescription()));
+            options.add(new Option(a.name(), a.getDescription()));
         }
         return options;
     }

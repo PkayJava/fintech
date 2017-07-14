@@ -69,13 +69,9 @@ public class FundBrowsePage extends Page {
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String name = (String) model.get(jdbcColumn);
-        if (Strings.isNullOrEmpty(name)) {
-            return new TextCell(Model.of(name));
-        } else {
-            PageParameters parameters = new PageParameters();
-            parameters.add("fundId", model.get("id"));
-            return new LinkCell(FundModifyPage.class, parameters, Model.of(name));
-        }
+        PageParameters parameters = new PageParameters();
+        parameters.add("fundId", model.get("id"));
+        return new LinkCell(FundModifyPage.class, parameters, Model.of(name));
     }
 
 }

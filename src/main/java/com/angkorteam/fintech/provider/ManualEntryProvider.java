@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.provider;
 
+import com.angkorteam.fintech.dto.JournalEntry;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
@@ -26,8 +27,9 @@ public class ManualEntryProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        options.add(new Option("1", "Manual Entries"));
-        options.add(new Option("2", "System Entries"));
+        for (JournalEntry journalEntry : JournalEntry.values()) {
+            options.add(new Option(journalEntry.name(), journalEntry.getDescription()));
+        }
         return options;
     }
 

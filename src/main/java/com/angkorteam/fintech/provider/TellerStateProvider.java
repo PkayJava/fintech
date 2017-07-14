@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.provider;
 
-import com.angkorteam.fintech.dto.RepaymentOption;
+import com.angkorteam.fintech.dto.TellerState;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
@@ -9,9 +9,9 @@ import org.apache.wicket.model.IModel;
 import java.util.List;
 
 /**
- * Created by socheatkhauv on 6/26/17.
+ * Created by socheatkhauv on 7/13/17.
  */
-public class RepaymentOptionProvider extends SingleChoiceProvider<Option> {
+public class TellerStateProvider extends SingleChoiceProvider<Option> {
 
     @Override
     public Option toChoice(String id) {
@@ -27,8 +27,8 @@ public class RepaymentOptionProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (RepaymentOption repayment : RepaymentOption.values()) {
-            options.add(new Option(repayment.name(), repayment.getDescription()));
+        for (TellerState tellerState : TellerState.values()) {
+            options.add(new Option(tellerState.name(), tellerState.getDescription()));
         }
         return options;
     }

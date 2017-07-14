@@ -93,21 +93,10 @@ public class AccountCreatePage extends Page {
                     parentValue = null;
                     tagProvider.removeWhere("code");
                 } else {
-                    String tag = "";
-                    if (AccountType.Asset.getLiteral().equals(accountTypeValue.getId())) {
-                        tag = "AssetAccountTags";
-                    } else if (AccountType.Equity.getLiteral().equals(accountTypeValue.getId())) {
-                        tag = "EquityAccountTags";
-                    } else if (AccountType.Expense.getLiteral().equals(accountTypeValue.getId())) {
-                        tag = "ExpenseAccountTags";
-                    } else if (AccountType.Income.getLiteral().equals(accountTypeValue.getId())) {
-                        tag = "IncomeAccountTags";
-                    } else if (AccountType.Liability.getLiteral().equals(accountTypeValue.getId())) {
-                        tag = "LiabilityAccountTags";
-                    }
+                    AccountType temp = AccountType.valueOf(accountTypeValue.getId());
                     tagValue = null;
                     parentValue = null;
-                    tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + tag + "')");
+                    tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + temp.getTag() + "')");
                     tagProvider.setDisabled(false);
                     parentProvider.setDisabled(false);
                     parentProvider.applyWhere("classification_enum", "classification_enum = " + accountTypeValue.getId());
@@ -195,10 +184,10 @@ public class AccountCreatePage extends Page {
             builder.withTagId(this.tagValue.getId());
         }
         if (this.accountTypeValue != null) {
-            builder.withType(AccountType.valueOf(this.accountTypeValue.getText()));
+            builder.withType(AccountType.valueOf(this.accountTypeValue.getId()));
         }
         if (this.accountUsageValue != null) {
-            builder.withUsage(AccountUsage.valueOf(this.accountUsageValue.getText()));
+            builder.withUsage(AccountUsage.valueOf(this.accountUsageValue.getId()));
         }
 
         JsonNode node = null;

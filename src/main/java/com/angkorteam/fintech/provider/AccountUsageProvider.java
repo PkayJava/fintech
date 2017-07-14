@@ -28,7 +28,7 @@ public class AccountUsageProvider extends SingleChoiceProvider<Option> {
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
         for (AccountUsage a : AccountUsage.values()) {
-            options.add(new Option(a.getLiteral(), a.name()));
+            options.add(new Option(a.name(), a.getDescription()));
         }
         return options;
     }

@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages.account;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.JournalEntry;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.ManualEntryProvider;
 import com.angkorteam.fintech.table.LinkCell;
@@ -225,10 +226,10 @@ public class SearchJournalPage extends Page {
             this.entryProvider.removeWhere("account");
         }
         if (this.manualValue != null) {
-            if ("1".equals(this.manualValue.getId())) {
-                this.entryProvider.applyWhere("manual", "acc_gl_journal_entry.manual_entry = 1");
-            } else if ("2".equals(this.manualValue.getId())) {
-                this.entryProvider.applyWhere("manual", "acc_gl_journal_entry.manual_entry = 0");
+            if (JournalEntry.Manual.name().equals(this.manualValue.getId())) {
+                this.entryProvider.applyWhere("manual", "acc_gl_journal_entry.manual_entry = " + JournalEntry.Manual.getLiteral());
+            } else if (JournalEntry.System.name().equals(this.manualValue.getId())) {
+                this.entryProvider.applyWhere("manual", "acc_gl_journal_entry.manual_entry = " + JournalEntry.System.getLiteral());
             }
         } else {
             this.entryProvider.removeWhere("manual");

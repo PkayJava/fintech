@@ -1,18 +1,17 @@
 package com.angkorteam.fintech.dto;
 
 /**
- * Created by socheatkhauv on 7/12/17.
+ * Created by socheatkhauv on 7/13/17.
  */
-public enum AccountUsage {
+public enum TellerState {
 
-    Detail("1","Detail"),
-    Header("2","Header");
+    Active("300", "Active"), Inactive("400", "Inactive");
 
     private String literal;
 
     private String description;
 
-    AccountUsage(String literal, String description) {
+    TellerState(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
@@ -24,4 +23,5 @@ public enum AccountUsage {
     public String getDescription() {
         return description;
     }
+
 }

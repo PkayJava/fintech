@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages.table;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.ColumnType;
 import com.angkorteam.fintech.dto.TableType;
 import com.angkorteam.fintech.dto.request.DataTableBuilder;
 import com.angkorteam.fintech.helper.DataTableHelper;
@@ -241,7 +242,7 @@ public class DataTableCreatePage extends Page {
         column.put("uuid", UUID.randomUUID().toString());
         column.put("name", this.nameValue);
         if (this.typeValue != null) {
-            column.put("type", this.typeValue.getId());
+            column.put("type", ColumnType.valueOf(this.typeValue.getId()).getLiteral());
         }
         column.put("mandatory", this.mandatoryValue);
         column.put("length", this.lengthValue);

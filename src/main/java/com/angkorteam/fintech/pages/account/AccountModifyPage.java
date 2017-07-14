@@ -98,7 +98,7 @@ public class AccountModifyPage extends Page {
 
         for (AccountType a : AccountType.values()) {
             if (a.getLiteral().equals(String.valueOf(account.get("classification_enum")))) {
-                this.accountTypeValue = new Option(a.getLiteral(), a.name());
+                this.accountTypeValue = new Option(a.name(), a.getDescription());
                 break;
             }
         }
@@ -113,21 +113,10 @@ public class AccountModifyPage extends Page {
                     parentValue = null;
                     tagProvider.removeWhere("code");
                 } else {
-                    String tag = "";
-                    if (AccountType.Asset.getLiteral().equals(accountTypeValue.getId())) {
-                        tag = "AssetAccountTags";
-                    } else if (AccountType.Equity.getLiteral().equals(accountTypeValue.getId())) {
-                        tag = "EquityAccountTags";
-                    } else if (AccountType.Expense.getLiteral().equals(accountTypeValue.getId())) {
-                        tag = "ExpenseAccountTags";
-                    } else if (AccountType.Income.getLiteral().equals(accountTypeValue.getId())) {
-                        tag = "IncomeAccountTags";
-                    } else if (AccountType.Liability.getLiteral().equals(accountTypeValue.getId())) {
-                        tag = "LiabilityAccountTags";
-                    }
+                    AccountType temp = AccountType.valueOf(accountTypeValue.getId());
                     tagValue = null;
                     parentValue = null;
-                    tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + tag + "')");
+                    tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + temp.getTag() + "')");
                     tagProvider.setDisabled(false);
                     parentProvider.setDisabled(false);
                     parentProvider.applyWhere("classification_enum", "classification_enum = " + accountTypeValue.getId());
@@ -180,7 +169,7 @@ public class AccountModifyPage extends Page {
 
         for (AccountUsage a : AccountUsage.values()) {
             if (a.getLiteral().equals(account.get("account_usage"))) {
-                this.accountUsageValue = new Option(a.getLiteral(), a.name());
+                this.accountUsageValue = new Option(a.name(), a.getDescription());
                 break;
             }
         }
@@ -192,19 +181,8 @@ public class AccountModifyPage extends Page {
 
         this.tagValue = jdbcTemplate.queryForObject("select id, code_value text from m_code_value where id = ?", new OptionMapper(), account.get("tag_id"));
         this.tagProvider = new OptionSingleChoiceProvider("m_code_value", "id", "code_value");
-        String tag = "";
-        if (AccountType.Asset.getLiteral().equals(accountTypeValue.getId())) {
-            tag = "AssetAccountTags";
-        } else if (AccountType.Equity.getLiteral().equals(accountTypeValue.getId())) {
-            tag = "EquityAccountTags";
-        } else if (AccountType.Expense.getLiteral().equals(accountTypeValue.getId())) {
-            tag = "ExpenseAccountTags";
-        } else if (AccountType.Income.getLiteral().equals(accountTypeValue.getId())) {
-            tag = "IncomeAccountTags";
-        } else if (AccountType.Liability.getLiteral().equals(accountTypeValue.getId())) {
-            tag = "LiabilityAccountTags";
-        }
-        this.tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + tag + "')");
+        AccountType temp = AccountType.valueOf(accountTypeValue.getId());
+        this.tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + temp.getTag() + "')");
         this.tagField = new Select2SingleChoice<>("tagField", 0, new PropertyModel<>(this, "tagValue"), this.tagProvider);
         this.tagField.setRequired(true);
         this.form.add(this.tagField);

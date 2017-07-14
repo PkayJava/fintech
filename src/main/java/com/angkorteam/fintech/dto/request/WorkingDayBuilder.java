@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.dto.request;
 
+import com.angkorteam.fintech.dto.RepaymentOption;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 import org.apache.commons.lang3.StringUtils;
@@ -16,7 +17,7 @@ public class WorkingDayBuilder implements Serializable {
     private String locale = "en";
     private boolean hasLocale = true;
 
-    private int repaymentRescheduleType;
+    private RepaymentOption repaymentRescheduleType;
     private boolean hasRepaymentRescheduleType;
 
     private boolean monday;
@@ -49,7 +50,7 @@ public class WorkingDayBuilder implements Serializable {
         return this;
     }
 
-    public WorkingDayBuilder withRepaymentRescheduleType(int repaymentRescheduleType) {
+    public WorkingDayBuilder withRepaymentRescheduleType(RepaymentOption repaymentRescheduleType) {
         this.repaymentRescheduleType = repaymentRescheduleType;
         this.hasRepaymentRescheduleType = true;
         return this;
@@ -136,7 +137,11 @@ public class WorkingDayBuilder implements Serializable {
             object.getObject().put("locale", this.locale);
         }
         if (this.hasRepaymentRescheduleType) {
-            object.getObject().put("repaymentRescheduleType", this.repaymentRescheduleType);
+            if (this.repaymentRescheduleType != null) {
+                object.getObject().put("repaymentRescheduleType", this.repaymentRescheduleType.getLiteral());
+            } else {
+                object.getObject().put("repaymentRescheduleType", (String) null);
+            }
         }
         if (this.hasExtendTermForDailyRepayments) {
             object.getObject().put("extendTermForDailyRepayments", this.extendTermForDailyRepayments);

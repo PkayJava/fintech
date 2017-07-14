@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.RepaymentOption;
 import com.angkorteam.fintech.dto.request.WorkingDayBuilder;
 import com.angkorteam.fintech.helper.WorkingDayHelper;
 import com.angkorteam.fintech.provider.RepaymentOptionProvider;
@@ -159,7 +160,7 @@ public class WorkingDayPage extends Page {
         WorkingDayBuilder builder = new WorkingDayBuilder();
         builder.withExtendTermForDailyRepayments(this.repaymentExtendTermValue);
         if (this.repaymentOptionValue != null) {
-            builder.withRepaymentRescheduleType(Integer.valueOf(this.repaymentOptionValue.getId()));
+            builder.withRepaymentRescheduleType(RepaymentOption.valueOf(this.repaymentOptionValue.getId()));
         }
         builder.withMonday(this.mondayValue);
         builder.withTuesday(this.tuesdayValue);

@@ -6,6 +6,7 @@ import com.angkorteam.fintech.pages.holiday.HolidayBrowsePage;
 import com.angkorteam.fintech.pages.office.OfficeBrowsePage;
 import com.angkorteam.fintech.pages.payment.PaymentTypeBrowsePage;
 import com.angkorteam.fintech.pages.staff.StaffBrowsePage;
+import com.angkorteam.fintech.pages.teller.TellerBrowsePage;
 import com.angkorteam.framework.BackgroundColor;
 import com.angkorteam.framework.Emoji;
 import com.angkorteam.framework.panels.InfoBoxPanel;
@@ -54,7 +55,7 @@ public class OrganizationPage extends Page {
         InfoBoxPanel bulkLoanReassignmentPage = new InfoBoxPanel("bulkLoanReassignmentPage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Bulk Loan Reassignment").setDescription("Easy way to reassign all the loan from one LO to another LO").setIcon(Emoji.ion_alert)));
         add(bulkLoanReassignmentPage);
 
-        InfoBoxPanel tellerCashierManagementPage = new InfoBoxPanel("tellerCashierManagementPage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Teller / Cashier Management").setDescription("Manage Tellers / Cashiers and Cash Allocation and Settlement").setIcon(Emoji.ion_alert)));
+        InfoBoxPanel tellerCashierManagementPage = new InfoBoxPanel("tellerCashierManagementPage", Model.of(new InfoBox().setPage(TellerBrowsePage.class).setTitle("Teller / Cashier Management").setDescription("Manage Tellers / Cashiers and Cash Allocation and Settlement").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(tellerCashierManagementPage);
 
         InfoBoxPanel workingDayPage = new InfoBoxPanel("workingDayPage", Model.of(new InfoBox().setPage(WorkingDayPage.class).setTitle("Working Days").setDescription("Define working days and configure behavior of payments due on holidays").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
