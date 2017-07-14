@@ -1,18 +1,19 @@
 package com.angkorteam.fintech.pages.teller;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.helper.GroupHelper;
+import com.angkorteam.fintech.helper.TellerHelper;
 import com.angkorteam.fintech.pages.fund.FundModifyPage;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.share.provider.JdbcProvider;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
 import com.google.common.collect.Lists;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -55,6 +56,7 @@ public class TellerBrowsePage extends Page {
         columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("State"), "state", "state", this::stateColumn));
         columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Valid From"), "valid_from", "valid_from", this::validFromColumn));
         columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Valid To"), "valid_to", "valid_to", this::validToColumn));
+        columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
         add(filterForm);
@@ -67,9 +69,17 @@ public class TellerBrowsePage extends Page {
         add(this.createLink);
     }
 
-    private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long id = (Long) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(id)));
+    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+        Long id = (Long) stringObjectMap.get("id");
+        try {
+            TellerHelper.deleteTeller(String.valueOf(id));
+        } catch (UnirestException e) {
+        }
+        ajaxRequestTarget.add(this.dataTable);
+    }
+
+    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     private ItemPanel stateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
