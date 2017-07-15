@@ -5,10 +5,9 @@ import com.angkorteam.fintech.dto.AccountType;
 import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.fintech.dto.FinancialActivityType;
 import com.angkorteam.fintech.dto.request.FinancialActivityBuilder;
-import com.angkorteam.fintech.dto.request.GLAccountBuilder;
 import com.angkorteam.fintech.helper.FinancialActivityHelper;
-import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.provider.FinancialActivityProvider;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -17,13 +16,9 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
-
-import java.util.List;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -63,36 +58,7 @@ public class FinancialActivityCreatePage extends Page {
         this.form.add(this.financialActivityField);
         this.financialActivityFeedback = new TextFeedbackPanel("financialActivityFeedback", this.financialActivityField);
         this.form.add(this.financialActivityFeedback);
-        this.financialActivityField.add(new OnChangeAjaxBehavior() {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                if (financialActivityValue == null) {
-                    accountValue = null;
-                    accountProvider.setDisabled(true);
-                } else {
-                    AccountType classification_enum = null;
-                    for (FinancialActivityType a : FinancialActivityType.values()) {
-                        if (financialActivityValue.getId().equals(a.name())) {
-                            classification_enum = a.getAccountType();
-                            break;
-                        }
-                    }
-                    accountValue = null;
-                    accountProvider.setDisabled(false);
-                    accountProvider.applyWhere("classification_enum", "classification_enum = " + classification_enum.getLiteral());
-                }
-                target.add(form);
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, RuntimeException e) {
-                if (e != null) {
-                    throw e;
-                }
-                target.add(form);
-                target.appendJavaScript(Select2SingleChoice.REMOVE_POPUP_UP_SCRIPT);
-            }
-        });
+        this.financialActivityField.add(new OnChangeAjaxBehavior(this::financialActivityFieldUpdate, this::financialActivityFieldError));
 
         this.accountProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name");
         this.accountProvider.applyWhere("usage", AccountUsage.Detail.getLiteral());
@@ -101,6 +67,33 @@ public class FinancialActivityCreatePage extends Page {
         this.form.add(this.accountField);
         this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
         this.form.add(this.accountFeedback);
+    }
+
+    private void financialActivityFieldUpdate(AjaxRequestTarget target) {
+        if (this.financialActivityValue == null) {
+            this.accountValue = null;
+            this.accountProvider.setDisabled(true);
+        } else {
+            AccountType classification_enum = null;
+            for (FinancialActivityType a : FinancialActivityType.values()) {
+                if (this.financialActivityValue.getId().equals(a.name())) {
+                    classification_enum = a.getAccountType();
+                    break;
+                }
+            }
+            this.accountValue = null;
+            this.accountProvider.setDisabled(false);
+            this.accountProvider.applyWhere("classification_enum", "classification_enum = " + classification_enum.getLiteral());
+        }
+        target.add(this.form);
+    }
+
+    private void financialActivityFieldError(AjaxRequestTarget target, RuntimeException e) {
+        if (e != null) {
+            throw e;
+        }
+        target.add(this.form);
+        target.appendJavaScript(Select2SingleChoice.REMOVE_POPUP_UP_SCRIPT);
     }
 
     private void saveButtonSubmit(Button button) {

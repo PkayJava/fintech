@@ -7,6 +7,7 @@ import com.angkorteam.fintech.dto.request.GLAccountBuilder;
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.provider.AccountTypeProvider;
 import com.angkorteam.fintech.provider.AccountUsageProvider;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -16,7 +17,6 @@ import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
@@ -85,40 +85,7 @@ public class AccountCreatePage extends Page {
         this.accountTypeProvider = new AccountTypeProvider();
         this.accountTypeField = new Select2SingleChoice<>("accountTypeField", 0, new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
         this.accountTypeField.setRequired(true);
-        this.accountTypeField.add(new OnChangeAjaxBehavior() {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                if (accountTypeValue == null) {
-                    tagValue = null;
-                    parentValue = null;
-                    tagProvider.removeWhere("code");
-                } else {
-                    AccountType temp = AccountType.valueOf(accountTypeValue.getId());
-                    tagValue = null;
-                    parentValue = null;
-                    tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + temp.getTag() + "')");
-                    tagProvider.setDisabled(false);
-                    parentProvider.setDisabled(false);
-                    parentProvider.applyWhere("classification_enum", "classification_enum = " + accountTypeValue.getId());
-                }
-                target.add(form);
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, RuntimeException e) {
-                if (e != null) {
-                    throw e;
-                }
-                tagValue = null;
-                parentValue = null;
-                tagProvider.removeWhere("code");
-                tagProvider.setDisabled(true);
-                parentProvider.removeWhere("classification_enum");
-                parentProvider.setDisabled(true);
-                target.add(form);
-                target.appendJavaScript(Select2SingleChoice.REMOVE_POPUP_UP_SCRIPT);
-            }
-        });
+        this.accountTypeField.add(new OnChangeAjaxBehavior(this::accountTypeFieldUpdate, this::accountTypeFieldError));
         this.form.add(this.accountTypeField);
         this.accountTypeFeedback = new TextFeedbackPanel("accountTypeFeedback", this.accountTypeField);
         this.form.add(this.accountTypeFeedback);
@@ -169,6 +136,37 @@ public class AccountCreatePage extends Page {
         this.form.add(this.descriptionField);
         this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
         this.form.add(this.descriptionFeedback);
+    }
+
+    private void accountTypeFieldUpdate(AjaxRequestTarget target) {
+        if (this.accountTypeValue == null) {
+            this.tagValue = null;
+            this.parentValue = null;
+            this.tagProvider.removeWhere("code");
+        } else {
+            AccountType temp = AccountType.valueOf(this.accountTypeValue.getId());
+            this.tagValue = null;
+            this.parentValue = null;
+            this.tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + temp.getTag() + "')");
+            this.tagProvider.setDisabled(false);
+            this.parentProvider.setDisabled(false);
+            this.parentProvider.applyWhere("classification_enum", "classification_enum = " + this.accountTypeValue.getId());
+        }
+        target.add(this.form);
+    }
+
+    private void accountTypeFieldError(AjaxRequestTarget target, RuntimeException error) {
+        if (error != null) {
+            throw error;
+        }
+        this.tagValue = null;
+        this.parentValue = null;
+        this.tagProvider.removeWhere("code");
+        this.tagProvider.setDisabled(true);
+        this.parentProvider.removeWhere("classification_enum");
+        this.parentProvider.setDisabled(true);
+        target.add(this.form);
+        target.appendJavaScript(Select2SingleChoice.REMOVE_POPUP_UP_SCRIPT);
     }
 
     private void saveButtonSubmit(Button button) {

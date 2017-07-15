@@ -8,6 +8,7 @@ import com.angkorteam.fintech.widget.HookFieldWidget;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
@@ -28,7 +29,6 @@ import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -112,23 +112,7 @@ public class HookCreatePage extends Page {
         this.groupingProvider = jdbcTemplate.query("select max(grouping) id, max(grouping) text from m_permission GROUP BY grouping", new OptionMapper());
         this.groupingField = new DropDownChoice<>("groupingField", new PropertyModel<>(this, "groupingValue"), new PropertyModel<>(this, "groupingProvider"), new OptionChoiceRenderer());
         this.groupingField.setRequired(true);
-        this.groupingField.add(new OnChangeAjaxBehavior() {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                if (groupingValue != null) {
-                    JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-                    entityNameProvider = jdbcTemplate.query("select max(entity_name) id, max(entity_name) text from m_permission WHERE  grouping = ? GROUP BY entity_name", new OptionMapper(), groupingValue.getId());
-                } else {
-                    if (entityNameProvider != null) {
-                        entityNameProvider.clear();
-                    }
-                    if (actionNameProvider != null) {
-                        actionNameProvider.clear();
-                    }
-                }
-                target.add(eventForm);
-            }
-        });
+        this.groupingField.add(new OnChangeAjaxBehavior(this::groupingFieldUpdate));
         this.eventForm.add(this.groupingField);
         this.groupingFeedback = new TextFeedbackPanel("groupingFeedback", this.groupingField);
         this.eventForm.add(this.groupingFeedback);
@@ -136,20 +120,7 @@ public class HookCreatePage extends Page {
         this.entityNameProvider = Lists.newArrayList();
         this.entityNameField = new DropDownChoice<>("entityNameField", new PropertyModel<>(this, "entityNameValue"), new PropertyModel<>(this, "entityNameProvider"), new OptionChoiceRenderer());
         this.entityNameField.setRequired(true);
-        this.entityNameField.add(new OnChangeAjaxBehavior() {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                if (entityNameValue != null) {
-                    JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-                    actionNameProvider = jdbcTemplate.query("select max(action_name) id, max(action_name) text from m_permission WHERE  entity_name = ? GROUP BY action_name", new OptionMapper(), entityNameValue.getId());
-                } else {
-                    if (actionNameProvider != null) {
-                        actionNameProvider.clear();
-                    }
-                }
-                target.add(eventForm);
-            }
-        });
+        this.entityNameField.add(new OnChangeAjaxBehavior(this::entityNameFieldUpdate));
         this.eventForm.add(this.entityNameField);
         this.entityNameFeedback = new TextFeedbackPanel("entityNameFeedback", this.entityNameField);
         this.eventForm.add(this.entityNameFeedback);
@@ -202,6 +173,33 @@ public class HookCreatePage extends Page {
             HookFieldWidget field = new HookFieldWidget(id, (String) temp.get("field_name"), this.configValue);
             this.configField.add(field);
         }
+    }
+
+    private void entityNameFieldUpdate(AjaxRequestTarget target) {
+        if (this.entityNameValue != null) {
+            JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+            this.actionNameProvider = jdbcTemplate.query("select max(action_name) id, max(action_name) text from m_permission WHERE  entity_name = ? GROUP BY action_name", new OptionMapper(), this.entityNameValue.getId());
+        } else {
+            if (this.actionNameProvider != null) {
+                this.actionNameProvider.clear();
+            }
+        }
+        target.add(this.eventForm);
+    }
+
+    private void groupingFieldUpdate(AjaxRequestTarget target) {
+        if (this.groupingValue != null) {
+            JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+            this.entityNameProvider = jdbcTemplate.query("select max(entity_name) id, max(entity_name) text from m_permission WHERE  grouping = ? GROUP BY entity_name", new OptionMapper(), this.groupingValue.getId());
+        } else {
+            if (this.entityNameProvider != null) {
+                this.entityNameProvider.clear();
+            }
+            if (this.actionNameProvider != null) {
+                this.actionNameProvider.clear();
+            }
+        }
+        target.add(this.eventForm);
     }
 
     private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
