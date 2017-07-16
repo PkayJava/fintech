@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.provider;
 
+import com.angkorteam.fintech.dto.EntityStatus;
 import com.angkorteam.fintech.dto.EntityType;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
@@ -12,6 +13,8 @@ import java.util.List;
  * Created by socheatkhauv on 7/15/17.
  */
 public class EntityStatusProvider extends SingleChoiceProvider<Option> {
+
+    private EntityType type;
 
     @Override
     public Option toChoice(String id) {
@@ -27,8 +30,10 @@ public class EntityStatusProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (EntityType type : EntityType.values()) {
-            options.add(new Option(type.name(), type.getDescription()));
+        if (this.type != null) {
+            for (EntityStatus status : this.type.getStatus()) {
+                options.add(new Option(status.name(), status.getDescription()));
+            }
         }
         return options;
     }
@@ -57,4 +62,13 @@ public class EntityStatusProvider extends SingleChoiceProvider<Option> {
         }
         return null;
     }
+
+    public EntityType getType() {
+        return type;
+    }
+
+    public void setType(EntityType type) {
+        this.type = type;
+    }
+
 }

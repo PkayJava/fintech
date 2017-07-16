@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.pages.entity.CheckerBrowsePage;
 import com.angkorteam.fintech.pages.fund.FundBrowsePage;
 import com.angkorteam.fintech.pages.holiday.HolidayBrowsePage;
 import com.angkorteam.fintech.pages.office.OfficeBrowsePage;
@@ -43,7 +44,7 @@ public class OrganizationPage extends Page {
         InfoBoxPanel loanProvisioningCriteriaPage = new InfoBoxPanel("loanProvisioningCriteriaPage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Loan Provisioning Criteria").setDescription("Define Loan Provisioning Criteria for Organization").setIcon(Emoji.ion_alert)));
         add(loanProvisioningCriteriaPage);
 
-        InfoBoxPanel entryDataTableCheckPage = new InfoBoxPanel("entryDataTableCheckPage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Entity Data Table Checks").setDescription("Define Loan Provisioning Criteria for Organization").setIcon(Emoji.ion_alert)));
+        InfoBoxPanel entryDataTableCheckPage = new InfoBoxPanel("entryDataTableCheckPage", Model.of(new InfoBox().setPage(CheckerBrowsePage.class).setTitle("Entity Data Table Checks").setDescription("Define Loan Provisioning Criteria for Organization").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(entryDataTableCheckPage);
 
         InfoBoxPanel currencyConfigurationPage = new InfoBoxPanel("currencyConfigurationPage", Model.of(new InfoBox().setPage(CurrencyConfigurationPage.class).setTitle("Currency Configuration").setDescription("Currencies available across organization for different products").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));

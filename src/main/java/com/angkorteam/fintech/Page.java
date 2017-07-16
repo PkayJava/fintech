@@ -79,6 +79,9 @@ public class Page extends DashboardPage {
     }
 
     protected void reportError(JsonNode node, AjaxRequestTarget target) {
+        if (node == null) {
+            return;
+        }
         if (node.getObject().has("errors")) {
             JSONArray array = (JSONArray) node.getObject().get("errors");
             for (Object object : array) {

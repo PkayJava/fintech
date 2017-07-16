@@ -32,7 +32,7 @@ public class EntityCheckBuilder implements Serializable {
         }
         if (this.hasStatus) {
             if (this.status != null) {
-                object.getObject().put("status", this.status.getLiteral());
+                object.getObject().put("status", Integer.valueOf(this.status.getLiteral()));
             } else {
                 object.getObject().put("status", (String) null);
             }
@@ -51,7 +51,7 @@ public class EntityCheckBuilder implements Serializable {
 
     public EntityCheckBuilder withStatus(EntityStatus status) {
         this.status = status;
-        this.hasEntity = true;
+        this.hasStatus = true;
         return this;
     }
 
