@@ -82,7 +82,7 @@ public class WorkingDayPage extends Page {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", OrganizationPage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", OrganizationDashboardPage.class);
         this.form.add(this.closeLink);
 
         String recurrence = (String) object.get("recurrence");
@@ -180,6 +180,6 @@ public class WorkingDayPage extends Page {
         if (reportError(node)) {
             return;
         }
-        setResponsePage(OrganizationPage.class);
+        setResponsePage(OrganizationDashboardPage.class);
     }
 }

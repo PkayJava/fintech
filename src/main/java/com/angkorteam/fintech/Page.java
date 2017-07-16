@@ -2,8 +2,8 @@ package com.angkorteam.fintech;
 
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.pages.IndexPage;
-import com.angkorteam.fintech.pages.OrganizationPage;
-import com.angkorteam.fintech.pages.SystemPage;
+import com.angkorteam.fintech.pages.OrganizationDashboardPage;
+import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.framework.Emoji;
 import com.angkorteam.framework.models.*;
 import com.angkorteam.framework.wicket.DashboardPage;
@@ -154,8 +154,8 @@ public class Page extends DashboardPage {
 
         NavBarMenu adminMenu = new NavBarMenu().buildTypeIcon(Emoji.fa_dashboard, "Admin", null,
                 new NavBarMenuItem().buildTypeIcon(IndexPage.class, null, Emoji.fa_dashboard, "Users"),
-                new NavBarMenuItem().buildTypeIcon(OrganizationPage.class, null, Emoji.fa_dashboard, "Organization"),
-                new NavBarMenuItem().buildTypeIcon(SystemPage.class, null, Emoji.fa_dashboard, "System"),
+                new NavBarMenuItem().buildTypeIcon(OrganizationDashboardPage.class, null, Emoji.fa_dashboard, "Organization"),
+                new NavBarMenuItem().buildTypeIcon(SystemDashboardPage.class, null, Emoji.fa_dashboard, "System"),
                 new NavBarMenuItem().buildTypeIcon(IndexPage.class, null, Emoji.fa_dashboard, "Products"),
                 new NavBarMenuItem().buildTypeIcon(IndexPage.class, null, Emoji.fa_dashboard, "Templates"));
 

@@ -17,7 +17,7 @@ import org.apache.wicket.model.Model;
 /**
  * Created by socheatkhauv on 6/22/17.
  */
-public class OrganizationPage extends Page {
+public class OrganizationDashboardPage extends Page {
 
     @Override
     protected void onInitialize() {

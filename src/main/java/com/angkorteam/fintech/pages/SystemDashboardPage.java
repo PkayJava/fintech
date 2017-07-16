@@ -14,7 +14,7 @@ import org.apache.wicket.model.Model;
 /**
  * Created by socheatkhauv on 6/26/17.
  */
-public class SystemPage extends Page {
+public class SystemDashboardPage extends Page {
 
     @Override
     protected void onInitialize() {

@@ -54,7 +54,7 @@ public class PasswordPreferencesPage extends Page {
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
         filterForm.add(this.dataTable);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", OrganizationPage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", OrganizationDashboardPage.class);
         add(this.closeLink);
     }
 

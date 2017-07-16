@@ -77,7 +77,7 @@ public class GlobalConfigurationPage extends Page {
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
         filterForm.add(this.dataTable);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", SystemPage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", SystemDashboardPage.class);
         add(this.closeLink);
 
         this.form = new Form<>("form");
