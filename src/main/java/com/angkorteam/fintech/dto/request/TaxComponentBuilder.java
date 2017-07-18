@@ -11,6 +11,9 @@ import java.util.Date;
  */
 public class TaxComponentBuilder implements Serializable {
 
+    private String id;
+    private boolean hasId;
+
     private String creditAccountType;
     private boolean hasCreditAccountType;
 
@@ -59,7 +62,16 @@ public class TaxComponentBuilder implements Serializable {
                 object.getObject().put("startDate", (String) null);
             }
         }
+        if (this.hasId) {
+            object.getObject().put("id", this.id);
+        }
         return object;
+    }
+
+    public TaxComponentBuilder withId(String id) {
+        this.id = id;
+        this.hasId = true;
+        return this;
     }
 
     public TaxComponentBuilder withStartDate(Date startDate) {

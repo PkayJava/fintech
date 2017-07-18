@@ -12,4 +12,9 @@ public class TaxComponentHelper {
         return Helper.performServerPost("/fineract-provider/api/v1/taxes/component", taxComponent);
     }
 
+    public static JsonNode updateTaxComponent(JsonNode taxComponent) throws UnirestException {
+        String id = (String) taxComponent.getObject().remove("id");
+        return Helper.performServerPut("/fineract-provider/api/v1/taxes/component/" + id, taxComponent);
+    }
+
 }
