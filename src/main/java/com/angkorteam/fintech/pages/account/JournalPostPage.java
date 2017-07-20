@@ -134,6 +134,15 @@ public class JournalPostPage extends Page {
         this.creditValue = Lists.newArrayList();
         this.debitValue = Lists.newArrayList();
 
+        initDebitForm();
+
+        initCreditForm();
+
+        initForm();
+
+    }
+
+    private void initDebitForm() {
         this.debitForm = new Form<>("debitForm");
         add(this.debitForm);
 
@@ -155,7 +164,9 @@ public class JournalPostPage extends Page {
         this.debitForm.add(this.debitAmountField);
         this.debitAmountFeedback = new TextFeedbackPanel("debitAmountFeedback", this.debitAmountField);
         this.debitForm.add(this.debitAmountFeedback);
+    }
 
+    private void initCreditForm() {
         this.creditForm = new Form<>("creditForm");
         add(this.creditForm);
 
@@ -177,7 +188,9 @@ public class JournalPostPage extends Page {
         this.creditForm.add(this.creditAmountField);
         this.creditAmountFeedback = new TextFeedbackPanel("creditAmountFeedback", this.creditAmountField);
         this.creditForm.add(this.creditAmountFeedback);
+    }
 
+    private void initForm() {
         this.form = new Form<>("form");
         add(this.form);
 

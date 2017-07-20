@@ -87,12 +87,13 @@ public class TaxGroupBuilder implements Serializable {
         return this;
     }
 
-    public TaxGroupBuilder withTaxComponents(String id, String taxComponentId, Date startDate, Date endDate) {
+    public TaxGroupBuilder withTaxComponent(String id, String taxComponentId, Date startDate, Date endDate) {
         Map<String, Object> taxComponent = Maps.newHashMap();
         taxComponent.put("id", id);
         taxComponent.put("taxComponentId", taxComponentId);
         taxComponent.put("startDate", startDate);
         taxComponent.put("endDate", endDate);
+        this.taxComponents.add(taxComponent);
         this.hasTaxComponents = true;
         return this;
     }

@@ -52,7 +52,7 @@ public class TaxGroupBrowsePage extends Page {
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
         filterForm.add(this.dataTable);
 
-        this.createLink = new BookmarkablePageLink<>("createLink", TaxComponentCreatePage.class);
+        this.createLink = new BookmarkablePageLink<>("createLink", TaxGroupCreatePage.class);
         add(this.createLink);
     }
 
