@@ -99,7 +99,7 @@ public class FinancialActivityCreatePage extends Page {
     private void saveButtonSubmit(Button button) {
         FinancialActivityBuilder builder = new FinancialActivityBuilder();
         if (this.financialActivityValue != null) {
-            builder.withFinancialActivityBuilder(FinancialActivityType.valueOf(this.financialActivityValue.getId()).getLiteral());
+            builder.withFinancialActivity(FinancialActivityType.valueOf(this.financialActivityValue.getId()).getLiteral());
         }
         if (this.accountValue != null) {
             builder.withGlAccountId(this.accountValue.getId());

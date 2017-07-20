@@ -24,7 +24,7 @@ public class FinancialActivityBuilder implements Serializable {
             object.getObject().put("id", this.id);
         }
         if (this.hasFinancialActivityId) {
-            object.getObject().put("financialActivityId", this.financialActivityId);
+            object.getObject().put("financialActivityId", Integer.valueOf(this.financialActivityId));
         }
         if (this.hasGlAccountId) {
             object.getObject().put("glAccountId", this.glAccountId);
@@ -38,7 +38,7 @@ public class FinancialActivityBuilder implements Serializable {
         return this;
     }
 
-    public FinancialActivityBuilder withFinancialActivityBuilder(String financialActivityId) {
+    public FinancialActivityBuilder withFinancialActivity(String financialActivityId) {
         this.hasFinancialActivityId = true;
         this.financialActivityId = financialActivityId;
         return this;

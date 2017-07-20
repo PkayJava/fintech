@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.pages.tax.TaxComponentBrowsePage;
+import com.angkorteam.fintech.pages.tax.TaxGroupBrowsePage;
 import com.angkorteam.framework.BackgroundColor;
 import com.angkorteam.framework.Emoji;
 import com.angkorteam.framework.models.InfoBox;
@@ -20,7 +21,7 @@ public class TaxDashboardPage extends Page {
         InfoBoxPanel manageTaxComponentsPage = new InfoBoxPanel("manageTaxComponentsPage", Model.of(new InfoBox().setPage(TaxComponentBrowsePage.class).setTitle("Manage Tax Components").setDescription("Define Tax components").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(manageTaxComponentsPage);
 
-        InfoBoxPanel manageTaxGroupsPage = new InfoBoxPanel("manageTaxGroupsPage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Manage Tax Groups").setDescription("Define Tax Groups").setIcon(Emoji.ion_alert)));
+        InfoBoxPanel manageTaxGroupsPage = new InfoBoxPanel("manageTaxGroupsPage", Model.of(new InfoBox().setPage(TaxGroupBrowsePage.class).setTitle("Manage Tax Groups").setDescription("Define Tax Groups").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(manageTaxGroupsPage);
 
     }

@@ -88,12 +88,12 @@ public class FinancialActivityBrowsePage extends Page {
         Integer type = (Integer) model.get(jdbcColumn);
         if (FinancialActivityType.AssetTransfer.getLiteral().equals(String.valueOf(type))) {
             return new TextCell(Model.of(type + "." + FinancialActivityType.AssetTransfer.getDescription()));
-//        } else if (FinancialActivityType.CashAtTellersCashiers.getLiteral().equals(String.valueOf(type))) {
-//            return new TextCell(Model.of(type + "." + FinancialActivityType.CashAtTellersCashiers.getDescription()));
+        } else if (FinancialActivityType.CashAtTellersCashiers.getLiteral().equals(String.valueOf(type))) {
+            return new TextCell(Model.of(type + "." + FinancialActivityType.CashAtTellersCashiers.getDescription()));
         } else if (FinancialActivityType.FundSource.getLiteral().equals(String.valueOf(type))) {
             return new TextCell(Model.of(type + "." + FinancialActivityType.FundSource.getDescription()));
-//        } else if (FinancialActivityType.MainCashAccountOrCashAtVault.getLiteral().equals(String.valueOf(type))) {
-//            return new TextCell(Model.of(type + "." + FinancialActivityType.MainCashAccountOrCashAtVault.getDescription()));
+        } else if (FinancialActivityType.MainCashAccountOrCashAtVault.getLiteral().equals(String.valueOf(type))) {
+            return new TextCell(Model.of(type + "." + FinancialActivityType.MainCashAccountOrCashAtVault.getDescription()));
         } else if (FinancialActivityType.OpeningBalancesTransferContra.getLiteral().equals(String.valueOf(type))) {
             return new TextCell(Model.of(type + "." + FinancialActivityType.OpeningBalancesTransferContra.getDescription()));
         } else if (FinancialActivityType.PayableDividends.getLiteral().equals(String.valueOf(type))) {

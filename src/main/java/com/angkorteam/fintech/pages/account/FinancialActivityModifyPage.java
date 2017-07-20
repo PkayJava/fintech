@@ -73,7 +73,13 @@ public class FinancialActivityModifyPage extends Page {
         this.financialActivityFeedback = new TextFeedbackPanel("financialActivityFeedback", this.financialActivityField);
         this.form.add(this.financialActivityFeedback);
         if (financialActivityObject.get("financial_activity_type") != null) {
-            this.financialActivityValue = this.financialActivityProvider.toChoice(String.valueOf(financialActivityObject.get("financial_activity_type")));
+            String type = String.valueOf(financialActivityObject.get("financial_activity_type"));
+            for (FinancialActivityType p : FinancialActivityType.values()) {
+                if (p.getLiteral().equals(type)) {
+                    this.financialActivityValue = new Option(p.name(), p.getDescription());
+                    break;
+                }
+            }
         }
         this.financialActivityField.add(new OnChangeAjaxBehavior(this::financialActivityFieldUpdate, this::financialActivityFieldError));
 
@@ -135,7 +141,7 @@ public class FinancialActivityModifyPage extends Page {
         FinancialActivityBuilder builder = new FinancialActivityBuilder();
         builder.withId(this.financialActivityId);
         if (this.financialActivityValue != null) {
-            builder.withFinancialActivityBuilder(FinancialActivityType.valueOf(this.financialActivityValue.getId()).getLiteral());
+            builder.withFinancialActivity(FinancialActivityType.valueOf(this.financialActivityValue.getId()).getLiteral());
         }
         if (this.accountValue != null) {
             builder.withGlAccountId(this.accountValue.getId());
