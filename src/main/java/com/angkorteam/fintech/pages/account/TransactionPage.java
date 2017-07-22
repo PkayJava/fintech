@@ -146,17 +146,12 @@ public class TransactionPage extends Page {
         add(this.commentPopup);
 
         this.commentPopup.setContent(new ReversePopup(this.commentPopup.getContentId(), this.commentPopup, this, this.transactionId));
-        this.commentPopup.setOnCloseButtonClicked(this::commentPopupOnCloseButtonClicked);
         this.commentPopup.setOnClose(this::commentPopupOnClose);
 
     }
 
     private void commentPopupOnClose(AjaxRequestTarget target) {
         setResponsePage(SearchJournalPage.class);
-    }
-
-    private Boolean commentPopupOnCloseButtonClicked(ModalWindow modalWindow, AjaxRequestTarget target) {
-        return false;
     }
 
     private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
