@@ -224,7 +224,7 @@ public class HookCreatePage extends Page {
     private void createButtonSubmit(Button button) {
         HookBuilder builder = new HookBuilder();
         builder.withName(this.nameValue);
-        builder.withTemplate(this.templateValue);
+        builder.withTemplateId(this.templateValue);
         builder.withActive(this.activeValue);
         for (Map.Entry<String, String> config : this.configValue.entrySet()) {
             builder.withConfig(config.getKey(), config.getValue());

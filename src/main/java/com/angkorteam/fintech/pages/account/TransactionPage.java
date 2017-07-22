@@ -61,7 +61,6 @@ public class TransactionPage extends Page {
     private DataTable<Map<String, Object>, String> entryTable;
     private JdbcProvider entryProvider;
 
-    private boolean reverseClick;
     private ModalWindow commentPopup;
 
     @Override
@@ -153,13 +152,11 @@ public class TransactionPage extends Page {
     }
 
     private void commentPopupOnClose(AjaxRequestTarget target) {
-        if (this.reverseClick) {
-            setResponsePage(SearchJournalPage.class);
-        }
+        setResponsePage(SearchJournalPage.class);
     }
 
     private Boolean commentPopupOnCloseButtonClicked(ModalWindow modalWindow, AjaxRequestTarget target) {
-        return true;
+        return false;
     }
 
     private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

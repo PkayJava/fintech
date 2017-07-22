@@ -60,7 +60,7 @@ public class TaxGroupBrowsePage extends Page {
         String name = (String) model.get(jdbcColumn);
         PageParameters parameters = new PageParameters();
         parameters.add("taxId", model.get("id"));
-        return new LinkCell(TaxComponentModifyPage.class, parameters, Model.of(name));
+        return new LinkCell(TaxGroupModifyPage.class, parameters, Model.of(name));
     }
 
 }

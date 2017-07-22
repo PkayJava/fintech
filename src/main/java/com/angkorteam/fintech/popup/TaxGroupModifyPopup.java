@@ -10,10 +10,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.PropertyModel;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 public class TaxGroupModifyPopup extends Panel {
 
     private ModalWindow window;
@@ -21,10 +17,8 @@ public class TaxGroupModifyPopup extends Panel {
     private Form<Void> form;
     private AjaxButton saveButton;
 
-    private String startDateValue;
     private Label startDateField;
 
-    private Date endDateValue;
     private DateTextField endDateField;
     private TextFeedbackPanel endDateFeedback;
 
@@ -48,7 +42,10 @@ public class TaxGroupModifyPopup extends Panel {
         this.saveButton.setOnError(this::saveButtonError);
         this.form.add(this.saveButton);
 
-        this.endDateField = new DateTextField("endDateField", new PropertyModel<>(this, "endDateValue"));
+        this.startDateField = new Label("startDateField", new PropertyModel<>(this.model, "itemStartDateValue"));
+        this.form.add(this.startDateField);
+
+        this.endDateField = new DateTextField("endDateField", new PropertyModel<>(this.model, "itemEndDateValue"));
         this.endDateField.setRequired(true);
         this.form.add(this.endDateField);
         this.endDateFeedback = new TextFeedbackPanel("endDateFeedback", this.endDateField);
@@ -56,20 +53,6 @@ public class TaxGroupModifyPopup extends Panel {
     }
 
     private void saveButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
-        PropertyModel<Boolean> taxClick = new PropertyModel<>(this.model, "taxClick");
-        taxClick.setObject(true);
-        PropertyModel<String> itemIdProperty = new PropertyModel<>(this.model, "itemId");
-        String itemId = itemIdProperty.getObject();
-
-        PropertyModel<List<Map<String, Object>>> taxComponentProperty = new PropertyModel<>(this.model, "taxComponentValue");
-        List<Map<String, Object>> taxComponentValue = taxComponentProperty.getObject();
-        for (Map<String, Object> item : taxComponentValue) {
-            if (itemId.equals(String.valueOf(item.get("id")))) {
-                item.put("endDate", this.endDateValue);
-                break;
-            }
-        }
-
         this.window.close(target);
     }
 

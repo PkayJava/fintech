@@ -58,10 +58,6 @@ public class TaxGroupCreatePage extends Page {
     private DateTextField startDateField;
     private TextFeedbackPanel startDateFeedback;
 
-//    private Date endDateValue;
-//    private DateTextField endDateField;
-//    private TextFeedbackPanel endDateFeedback;
-
     private Form<Void> form;
     private Button saveButton;
     private BookmarkablePageLink<Void> closeLink;

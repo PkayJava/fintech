@@ -72,12 +72,13 @@ public class TaxGroupModifyPage extends Page {
     private TextField<String> nameField;
     private TextFeedbackPanel nameFeedback;
 
-    private List<Map<String, Object>> taxComponentValue;
+    private List<Map<String, Object>> taxComponentValue = Lists.newArrayList();
     private DataTable<Map<String, Object>, String> taxComponentTable;
     private ListDataProvider taxComponentProvider;
 
-    private String itemId;
-    private boolean taxClick;
+    private Long itemId;
+    private String itemStartDateValue;
+    private Date itemEndDateValue;
     private ModalWindow taxPopup;
 
     @Override
@@ -136,7 +137,7 @@ public class TaxGroupModifyPage extends Page {
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        List<Map<String, Object>> groups = jdbcTemplate.queryForList("SELECT id, concat(id,'') as uuid, tax_component_id tax, start_date startDate, end_date endDate from m_tax_group_mappings where tag_group_id = ?", this.taxId);
+        List<Map<String, Object>> groups = jdbcTemplate.queryForList("SELECT m_tax_group_mappings.id, concat(m_tax_group_mappings.id, '') AS uuid, m_tax_component.id taxComponentId, m_tax_component.name tax, m_tax_group_mappings.start_date startDate, m_tax_group_mappings.end_date endDate FROM m_tax_group_mappings INNER join m_tax_component on m_tax_group_mappings.tax_component_id = m_tax_component.id WHERE tax_group_id = ?", this.taxId);
         this.taxComponentValue.addAll(groups);
 
         this.saveButton = new Button("saveButton");
@@ -146,6 +147,7 @@ public class TaxGroupModifyPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", TaxGroupBrowsePage.class);
         this.form.add(this.closeLink);
 
+        this.nameValue = (String) taxObject.get("name");
         this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
         this.nameField.setRequired(true);
         this.form.add(this.nameField);
@@ -157,7 +159,6 @@ public class TaxGroupModifyPage extends Page {
         taxComponentColumn.add(new TextColumn(Model.of("Start Date"), "startDate", "startDate", this::taxComponentStartDateColumn));
         taxComponentColumn.add(new TextColumn(Model.of("End Date"), "endDate", "endDate", this::taxComponentEndDateColumn));
         taxComponentColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::taxComponentActionItem, this::taxComponentActionClick));
-        this.taxComponentValue = Lists.newArrayList();
         this.taxComponentProvider = new ListDataProvider(this.taxComponentValue);
         this.taxComponentTable = new DataTable<>("taxComponentTable", taxComponentColumn, this.taxComponentProvider, 20);
         this.form.add(this.taxComponentTable);
@@ -175,10 +176,18 @@ public class TaxGroupModifyPage extends Page {
     }
 
     private void taxPopupOnClose(AjaxRequestTarget target) {
+        for (Map<String, Object> item : this.taxComponentValue) {
+            if (this.itemId.equals(item.get("id"))) {
+                item.put("endDate", this.itemEndDateValue);
+                this.itemEndDateValue = null;
+                break;
+            }
+        }
+        target.add(this.taxComponentTable);
     }
 
     private Boolean taxPopupOnCloseButton(ModalWindow modalWindow, AjaxRequestTarget target) {
-        return true;
+        return false;
     }
 
     private ItemPanel taxComponentTaxColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -219,9 +228,8 @@ public class TaxGroupModifyPage extends Page {
             }
             target.add(this.taxComponentTable);
         } else if ("modify".equals(s)) {
-            Integer id = (Integer) stringObjectMap.get("id");
-            this.itemId = String.valueOf(id);
-
+            this.itemId = (Long) stringObjectMap.get("id");
+            this.itemStartDateValue = DateFormatUtils.format((Date) stringObjectMap.get("startDate"), "yyyy-MM-dd");
             this.taxPopup.show(target);
         }
     }
