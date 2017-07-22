@@ -137,7 +137,7 @@ public class TaxGroupModifyPage extends Page {
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        List<Map<String, Object>> groups = jdbcTemplate.queryForList("SELECT if(m_tax_group_mappings.end_date is null, 'Y', 'N') allow, m_tax_group_mappings.id, concat(m_tax_group_mappings.id, '') AS uuid, m_tax_component.id taxComponentId, m_tax_component.name tax, m_tax_group_mappings.start_date startDate, m_tax_group_mappings.end_date endDate FROM m_tax_group_mappings INNER join m_tax_component on m_tax_group_mappings.tax_component_id = m_tax_component.id WHERE tax_group_id = ?", this.taxId);
+        List<Map<String, Object>> groups = jdbcTemplate.queryForList("SELECT if(m_tax_group_mappings.end_date is null, 'Y', 'N') allow, m_tax_group_mappings.id, concat(m_tax_group_mappings.id, '') AS uuid, concat(m_tax_component.id, '') taxComponentId, m_tax_component.name tax, m_tax_group_mappings.start_date startDate, m_tax_group_mappings.end_date endDate FROM m_tax_group_mappings INNER join m_tax_component on m_tax_group_mappings.tax_component_id = m_tax_component.id WHERE tax_group_id = ?", this.taxId);
         this.taxComponentValue.addAll(groups);
 
         this.saveButton = new Button("saveButton");
@@ -247,8 +247,8 @@ public class TaxGroupModifyPage extends Page {
         builder.withName(this.nameValue);
         for (Map<String, Object> tax : this.taxComponentValue) {
             Long id = (Long) tax.get("id");
-            Long taxComponentId = (Long) tax.get("taxComponentId");
-            builder.withTaxComponent(id == null ? null : String.valueOf(id), taxComponentId == null ? null : String.valueOf(taxComponentId), (Date) tax.get("startDate"), (Date) tax.get("endDate"));
+            String taxComponentId = (String) tax.get("taxComponentId");
+            builder.withTaxComponent(id == null ? null : String.valueOf(id), taxComponentId, (Date) tax.get("startDate"), (Date) tax.get("endDate"));
         }
 
         JsonNode node = null;
