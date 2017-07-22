@@ -9,6 +9,7 @@ import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.share.provider.JdbcProvider;
 import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
@@ -18,7 +19,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
@@ -143,28 +143,23 @@ public class TransactionPage extends Page {
         this.entryTable.addTopToolbar(new HeadersToolbar<>(this.entryTable, this.entryProvider));
         this.entryTable.addBottomToolbar(new NoRecordsToolbar(this.entryTable));
 
-
         this.commentPopup = new ModalWindow("commentPopup");
         add(this.commentPopup);
 
         this.commentPopup.setContent(new ReversePopup(this.commentPopup.getContentId(), this.commentPopup, this, this.transactionId));
+        this.commentPopup.setOnCloseButtonClicked(this::commentPopupOnCloseButtonClicked);
+        this.commentPopup.setOnClose(this::commentPopupOnClose);
 
-        this.commentPopup.setCloseButtonCallback(new ModalWindow.CloseButtonCallback() {
-            @Override
-            public boolean onCloseButtonClicked(AjaxRequestTarget target) {
-                return true;
-            }
-        });
+    }
 
-        this.commentPopup.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
-            @Override
-            public void onClose(AjaxRequestTarget target) {
-                if (reverseClick) {
-                    setResponsePage(SearchJournalPage.class);
-                }
-            }
-        });
+    private void commentPopupOnClose(AjaxRequestTarget target) {
+        if (this.reverseClick) {
+            setResponsePage(SearchJournalPage.class);
+        }
+    }
 
+    private Boolean commentPopupOnCloseButtonClicked(ModalWindow modalWindow, AjaxRequestTarget target) {
+        return true;
     }
 
     private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

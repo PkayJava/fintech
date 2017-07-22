@@ -2,12 +2,15 @@ package com.angkorteam.fintech.pages.tax;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.request.TaxGroupBuilder;
-import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.helper.TaxGroupHelper;
-import com.angkorteam.fintech.pages.AccountingPage;
+import com.angkorteam.fintech.pages.account.SearchJournalPage;
+import com.angkorteam.fintech.popup.TaxGroupModifyPopup;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.share.provider.ListDataProvider;
+import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
@@ -35,6 +38,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import java.util.Date;
 import java.util.List;
@@ -44,7 +48,9 @@ import java.util.UUID;
 /**
  * Created by socheatkhauv on 7/16/17.
  */
-public class TaxGroupCreatePage extends Page {
+public class TaxGroupModifyPage extends Page {
+
+    private String taxId;
 
     private Form<Void> taxForm;
     private AjaxButton addButton;
@@ -58,10 +64,6 @@ public class TaxGroupCreatePage extends Page {
     private DateTextField startDateField;
     private TextFeedbackPanel startDateFeedback;
 
-//    private Date endDateValue;
-//    private DateTextField endDateField;
-//    private TextFeedbackPanel endDateFeedback;
-
     private Form<Void> form;
     private Button saveButton;
     private BookmarkablePageLink<Void> closeLink;
@@ -74,13 +76,24 @@ public class TaxGroupCreatePage extends Page {
     private DataTable<Map<String, Object>, String> taxComponentTable;
     private ListDataProvider taxComponentProvider;
 
+    private String itemId;
+    private boolean taxClick;
+    private ModalWindow taxPopup;
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
 
+        PageParameters parameters = getPageParameters();
+        this.taxId = parameters.get("taxId").toString("");
+
+        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+
+        Map<String, Object> taxObject = jdbcTemplate.queryForMap("select * from m_tax_group where id = ?", this.taxId);
+
         initTaxForm();
 
-        initForm();
+        initForm(taxObject);
     }
 
     private void initTaxForm() {
@@ -117,9 +130,14 @@ public class TaxGroupCreatePage extends Page {
         target.add(this.taxForm);
     }
 
-    private void initForm() {
+    private void initForm(Map<String, Object> taxObject) {
         this.form = new Form<>("form");
         add(this.form);
+
+        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+
+        List<Map<String, Object>> groups = jdbcTemplate.queryForList("SELECT id, concat(id,'') as uuid, tax_component_id tax, start_date startDate, end_date endDate from m_tax_group_mappings where tag_group_id = ?", this.taxId);
+        this.taxComponentValue.addAll(groups);
 
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
@@ -137,6 +155,7 @@ public class TaxGroupCreatePage extends Page {
         List<IColumn<Map<String, Object>, String>> taxComponentColumn = Lists.newArrayList();
         taxComponentColumn.add(new TextColumn(Model.of("Tax Component"), "tax", "tax", this::taxComponentTaxColumn));
         taxComponentColumn.add(new TextColumn(Model.of("Start Date"), "startDate", "startDate", this::taxComponentStartDateColumn));
+        taxComponentColumn.add(new TextColumn(Model.of("End Date"), "endDate", "endDate", this::taxComponentEndDateColumn));
         taxComponentColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::taxComponentActionItem, this::taxComponentActionClick));
         this.taxComponentValue = Lists.newArrayList();
         this.taxComponentProvider = new ListDataProvider(this.taxComponentValue);
@@ -144,6 +163,22 @@ public class TaxGroupCreatePage extends Page {
         this.form.add(this.taxComponentTable);
         this.taxComponentTable.addTopToolbar(new HeadersToolbar<>(this.taxComponentTable, this.taxComponentProvider));
         this.taxComponentTable.addBottomToolbar(new NoRecordsToolbar(this.taxComponentTable));
+
+        this.taxPopup = new ModalWindow("taxPopup");
+        add(this.taxPopup);
+
+        this.taxPopup.setContent(new TaxGroupModifyPopup(this.taxPopup.getContentId(), this.taxPopup, this));
+
+        this.taxPopup.setOnCloseButtonClicked(this::taxPopupOnCloseButton);
+
+        this.taxPopup.setOnClose(this::taxPopupOnClose);
+    }
+
+    private void taxPopupOnClose(AjaxRequestTarget target) {
+    }
+
+    private Boolean taxPopupOnCloseButton(ModalWindow modalWindow, AjaxRequestTarget target) {
+        return true;
     }
 
     private ItemPanel taxComponentTaxColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -160,23 +195,47 @@ public class TaxGroupCreatePage extends Page {
         }
     }
 
-    private void taxComponentActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-        int index = -1;
-        for (int i = 0; i < this.taxComponentValue.size(); i++) {
-            Map<String, Object> column = this.taxComponentValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
-                index = i;
-                break;
+    private ItemPanel taxComponentEndDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Date endDate = (Date) model.get(jdbcColumn);
+        if (endDate == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(DateFormatUtils.format(endDate, "yyyy-MM-dd")));
+        }
+    }
+
+    private void taxComponentActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget target) {
+        if ("delete".equals(s)) {
+            int index = -1;
+            for (int i = 0; i < this.taxComponentValue.size(); i++) {
+                Map<String, Object> column = this.taxComponentValue.get(i);
+                if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                    index = i;
+                    break;
+                }
             }
+            if (index >= 0) {
+                this.taxComponentValue.remove(index);
+            }
+            target.add(this.taxComponentTable);
+        } else if ("modify".equals(s)) {
+            Integer id = (Integer) stringObjectMap.get("id");
+            this.itemId = String.valueOf(id);
+
+            this.taxPopup.show(target);
         }
-        if (index >= 0) {
-            this.taxComponentValue.remove(index);
-        }
-        ajaxRequestTarget.add(this.taxComponentTable);
     }
 
     private List<ActionItem> taxComponentActionItem(String s, Map<String, Object> stringObjectMap) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        List<ActionItem> actions = Lists.newArrayList();
+        if (stringObjectMap.get("id") != null) {
+            if (stringObjectMap.get("endDate") == null) {
+                actions.add(new ActionItem("modify", Model.of("Modify"), ItemCss.INFO));
+            }
+        } else {
+            actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        }
+        return actions;
     }
 
     private void saveButtonSubmit(Button button) {
@@ -198,4 +257,5 @@ public class TaxGroupCreatePage extends Page {
         }
         setResponsePage(TaxGroupBrowsePage.class);
     }
+
 }

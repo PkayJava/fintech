@@ -2,11 +2,11 @@ package com.angkorteam.fintech.popup;
 
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.PropertyModel;
@@ -60,12 +60,12 @@ public class ReversePopup extends Panel {
             GLAccountHelper.reverseEntry(this.transactionId, this.reasonValue);
             PropertyModel<Boolean> reverseClick = new PropertyModel<>(this.model, "reverseClick");
             reverseClick.setObject(true);
-            window.close(target);
+            this.window.close(target);
         } catch (UnirestException e) {
         }
     }
 
     private void reverseButtonError(AjaxButton ajaxButton, AjaxRequestTarget target) {
-        target.add(form);
+        target.add(this.form);
     }
 }
