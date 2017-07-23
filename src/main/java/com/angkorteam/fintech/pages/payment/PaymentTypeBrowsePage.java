@@ -67,7 +67,7 @@ public class PaymentTypeBrowsePage extends Page {
     private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
         Integer id = (Integer) stringObjectMap.get("id");
         try {
-            PaymentTypeHelper.deletePaymentType(String.valueOf(id));
+            PaymentTypeHelper.delete(String.valueOf(id));
         } catch (UnirestException e) {
         }
         ajaxRequestTarget.add(this.dataTable);

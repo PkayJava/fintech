@@ -105,7 +105,7 @@ public class PaymentTypeModifyPage extends Page {
 
         JsonNode node = null;
         try {
-            node = PaymentTypeHelper.updatePaymentType(builder.build());
+            node = PaymentTypeHelper.update(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

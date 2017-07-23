@@ -28,11 +28,11 @@ public class OfficeHelper {
 //        }.getType());
 //    }
 
-    public static JsonNode createOffice(JsonNode office) throws UnirestException {
+    public static JsonNode create(JsonNode office) throws UnirestException {
         return Helper.performServerPost(OFFICE_URL, office);
     }
 
-    public static JsonNode updateOffice(JsonNode office) throws UnirestException {
+    public static JsonNode update(JsonNode office) throws UnirestException {
         String id = (String) office.getObject().remove("id");
         return Helper.performServerPut(OFFICE_URL + "/" + id, office);
     }

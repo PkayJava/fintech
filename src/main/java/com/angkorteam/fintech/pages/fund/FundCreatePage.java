@@ -63,7 +63,7 @@ public class FundCreatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = FundHelper.createFund(builder.build());
+            node = FundHelper.create(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

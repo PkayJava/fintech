@@ -222,7 +222,7 @@ public class DataTableCreatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = DataTableHelper.createDatatable(builder.build());
+            node = DataTableHelper.create(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

@@ -2,30 +2,22 @@ package com.angkorteam.fintech.pages.tax;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.AccountType;
-import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.fintech.dto.request.TaxComponentBuilder;
 import com.angkorteam.fintech.helper.TaxComponentHelper;
-import com.angkorteam.fintech.provider.AccountTypeProvider;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcTemplate;
-import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
@@ -129,7 +121,7 @@ public class TaxComponentModifyPage extends Page {
         builder.withStartDate(this.startDateValue);
         JsonNode node = null;
         try {
-            node = TaxComponentHelper.updateTaxComponent(builder.build());
+            node = TaxComponentHelper.update(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

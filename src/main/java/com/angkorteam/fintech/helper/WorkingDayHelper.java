@@ -8,11 +8,10 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class WorkingDayHelper {
 
-    private static final String WORKINGDAYS_URL = "/fineract-provider/api/v1/workingdays";
+    private static final String WORKING_DAYS_URL = "/fineract-provider/api/v1/workingdays";
 
-    public static JsonNode updateWorkingDay(JsonNode workingDay) throws UnirestException {
-        final String UPDATE_WORKINGDAYS_URL = WORKINGDAYS_URL;
-        return Helper.performServerPut(UPDATE_WORKINGDAYS_URL, workingDay);
+    public static JsonNode update(JsonNode workingDay) throws UnirestException {
+        return Helper.performServerPut(WORKING_DAYS_URL, workingDay);
     }
 
 }

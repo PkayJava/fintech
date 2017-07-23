@@ -97,7 +97,7 @@ public class GroupCreatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = GroupHelper.createGroup(builder.build());
+            node = GroupHelper.create(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

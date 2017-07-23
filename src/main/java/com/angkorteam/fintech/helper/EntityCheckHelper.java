@@ -9,11 +9,11 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 public class EntityCheckHelper {
 
 
-    public static JsonNode createChecker(JsonNode entityChecker) throws UnirestException {
+    public static JsonNode create(JsonNode entityChecker) throws UnirestException {
         return Helper.performServerPost("/fineract-provider/api/v1/entityDatatableChecks", entityChecker);
     }
 
-    public static JsonNode deleteChecker(String id) throws UnirestException {
+    public static JsonNode delete(String id) throws UnirestException {
         return Helper.performServerDelete("/fineract-provider/api/v1/entityDatatableChecks/" + id);
     }
 

@@ -2,7 +2,6 @@ package com.angkorteam.fintech.pages.account;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.helper.AccountingClosureHelper;
-import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.share.provider.JdbcProvider;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -70,7 +69,7 @@ public class ClosureBrowsePage extends Page {
         Long id = (Long) stringObjectMap.get("id");
         JsonNode node = null;
         try {
-            node = AccountingClosureHelper.deleteClosure(String.valueOf(id));
+            node = AccountingClosureHelper.delete(String.valueOf(id));
         } catch (UnirestException e) {
         }
         reportError(node, ajaxRequestTarget);

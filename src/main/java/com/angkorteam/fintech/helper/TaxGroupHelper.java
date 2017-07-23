@@ -8,11 +8,11 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class TaxGroupHelper {
 
-    public static JsonNode createTaxGroup(JsonNode taxGroup) throws UnirestException {
+    public static JsonNode create(JsonNode taxGroup) throws UnirestException {
         return Helper.performServerPost("/fineract-provider/api/v1/taxes/group", taxGroup);
     }
 
-    public static JsonNode updateTaxGroup(JsonNode taxGroup) throws UnirestException {
+    public static JsonNode update(JsonNode taxGroup) throws UnirestException {
         String id = (String) taxGroup.getObject().remove("id");
         return Helper.performServerPut("/fineract-provider/api/v1/taxes/group/" + id, taxGroup);
     }

@@ -20,17 +20,17 @@ public class GroupHelper {
 //        this.responseSpec = responseSpec;
 //    }
 
-    public static JsonNode createGroup(JsonNode group) throws UnirestException {
+    public static JsonNode create(JsonNode group) throws UnirestException {
         return Helper.performServerPost(CREATE_GROUP_URL, group);
     }
 
-    //    public static Integer createGroup(final RequestSpecification requestSpec, final ResponseSpecification responseSpec,
+    //    public static Integer create(final RequestSpecification requestSpec, final ResponseSpecification responseSpec,
 //                                      final String activationDate) {
 //        System.out.println("---------------------------------CREATING A GROUP---------------------------------------------");
 //        return Utils.performServerPost(requestSpec, responseSpec, CREATE_GROUP_URL, getTestGroupAsJSON(true, activationDate), "groupId");
 //    }
 //
-//    public static Integer createGroup(final RequestSpecification requestSpec, final ResponseSpecification responseSpec) {
+//    public static Integer create(final RequestSpecification requestSpec, final ResponseSpecification responseSpec) {
 //        System.out.println("---------------------------------CREATING A GROUP---------------------------------------------");
 //        return Utils.performServerPost(requestSpec, responseSpec, CREATE_GROUP_URL, getTestGroupAsJSON(false, ""), "groupId");
 //    }

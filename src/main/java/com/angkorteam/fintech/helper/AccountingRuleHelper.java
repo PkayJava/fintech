@@ -8,16 +8,16 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class AccountingRuleHelper {
 
-    public static JsonNode createRule(JsonNode rule) throws UnirestException {
-        return Helper.performServerPost("/fineract-provider/api/v1/accountingrules", rule);
+    public static JsonNode create(JsonNode object) throws UnirestException {
+        return Helper.performServerPost("/fineract-provider/api/v1/accountingrules", object);
     }
 
-    public static JsonNode updateRule(JsonNode rule) throws UnirestException {
-        String id = (String) rule.getObject().remove("id");
-        return Helper.performServerPut("/fineract-provider/api/v1/accountingrules/" + id, rule);
+    public static JsonNode update(JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPut("/fineract-provider/api/v1/accountingrules/" + id, object);
     }
 
-    public static JsonNode deleteRule(String ruleId) throws UnirestException {
+    public static JsonNode delete(String ruleId) throws UnirestException {
         return Helper.performServerDelete("/fineract-provider/api/v1/accountingrules/" + ruleId);
     }
 

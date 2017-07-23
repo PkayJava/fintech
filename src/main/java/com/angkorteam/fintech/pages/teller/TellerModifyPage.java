@@ -146,7 +146,7 @@ public class TellerModifyPage extends Page {
 
         JsonNode node = null;
         try {
-            node = TellerHelper.updateTeller(builder.build());
+            node = TellerHelper.update(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

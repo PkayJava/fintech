@@ -224,7 +224,7 @@ public class AccountModifyPage extends Page {
 
         JsonNode node = null;
         try {
-            node = GLAccountHelper.updateGLAccount(builder.build());
+            node = GLAccountHelper.update(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

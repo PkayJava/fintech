@@ -99,7 +99,7 @@ public class RuleBrowsePage extends Page {
         if ("delete".equals(s)) {
             JsonNode node = null;
             try {
-                node = AccountingRuleHelper.deleteRule(String.valueOf(id));
+                node = AccountingRuleHelper.delete(String.valueOf(id));
             } catch (UnirestException e) {
             }
             reportError(node, ajaxRequestTarget);

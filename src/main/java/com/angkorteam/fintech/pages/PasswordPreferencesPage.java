@@ -61,7 +61,7 @@ public class PasswordPreferencesPage extends Page {
     private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
         Integer id = (Integer) stringObjectMap.get("id");
         try {
-            PasswordPreferencesHelper.updatePasswordPreferences(String.valueOf(id));
+            PasswordPreferencesHelper.update(String.valueOf(id));
         } catch (UnirestException e) {
         }
         ajaxRequestTarget.add(this.dataTable);

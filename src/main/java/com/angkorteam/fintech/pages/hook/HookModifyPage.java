@@ -258,7 +258,7 @@ public class HookModifyPage extends Page {
 
         JsonNode node = null;
         try {
-            node = HookHelper.updateHook(builder.build());
+            node = HookHelper.update(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

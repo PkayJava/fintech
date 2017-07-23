@@ -3,7 +3,6 @@ package com.angkorteam.fintech.pages.tax;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.request.TaxGroupBuilder;
 import com.angkorteam.fintech.helper.TaxGroupHelper;
-import com.angkorteam.fintech.pages.account.SearchJournalPage;
 import com.angkorteam.fintech.popup.TaxGroupModifyPopup;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.SpringBean;
@@ -169,7 +168,6 @@ public class TaxGroupModifyPage extends Page {
         add(this.taxPopup);
 
         this.taxPopup.setContent(new TaxGroupModifyPopup(this.taxPopup.getContentId(), this.taxPopup, this));
-
         this.taxPopup.setOnClose(this::taxPopupOnClose);
     }
 
@@ -253,7 +251,7 @@ public class TaxGroupModifyPage extends Page {
 
         JsonNode node = null;
         try {
-            node = TaxGroupHelper.updateTaxGroup(builder.build());
+            node = TaxGroupHelper.update(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

@@ -14,32 +14,32 @@ public class GLAccountHelper {
 
     private final static String CREATE_ENTRY_URL = "/fineract-provider/api/v1/journalentries";
 
-    public static JsonNode createGLAccount(JsonNode glAccount) throws UnirestException {
+    public static JsonNode create(JsonNode glAccount) throws UnirestException {
         return Helper.performServerPost(CREATE_GL_ACCOUNT_URL, glAccount);
     }
 
-    public static JsonNode disableGLAccount(String id) throws UnirestException {
+    public static JsonNode disable(String id) throws UnirestException {
         JsonNode node = new com.angkorteam.fintech.dto.JsonNode();
         node.getObject().put("disabled", true);
         return Helper.performServerPut("/fineract-provider/api/v1/glaccounts/" + id, node);
     }
 
-    public static JsonNode enableGLAccount(String id) throws UnirestException {
+    public static JsonNode enable(String id) throws UnirestException {
         JsonNode node = new com.angkorteam.fintech.dto.JsonNode();
         node.getObject().put("disabled", false);
         return Helper.performServerPut("/fineract-provider/api/v1/glaccounts/" + id, node);
     }
 
-    public static JsonNode deleteGLAccount(String id) throws UnirestException {
+    public static JsonNode delete(String id) throws UnirestException {
         return Helper.performServerDelete("/fineract-provider/api/v1/glaccounts/" + id);
     }
 
-    public static JsonNode updateGLAccount(JsonNode glAccount) throws UnirestException {
+    public static JsonNode update(JsonNode glAccount) throws UnirestException {
         String id = (String) glAccount.getObject().remove("id");
         return Helper.performServerPut(UPDATE_GL_ACCOUNT_URL + "/" + id, glAccount);
     }
 
-    public static JsonNode createEntry(JsonNode entry) throws UnirestException {
+    public static JsonNode postEntry(JsonNode entry) throws UnirestException {
         return Helper.performServerPost(CREATE_ENTRY_URL, entry);
     }
 

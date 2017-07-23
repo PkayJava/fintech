@@ -425,7 +425,7 @@ public class FrequentPostPage extends Page {
 
         JsonNode node = null;
         try {
-            node = GLAccountHelper.createEntry(builder.build());
+            node = GLAccountHelper.postEntry(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

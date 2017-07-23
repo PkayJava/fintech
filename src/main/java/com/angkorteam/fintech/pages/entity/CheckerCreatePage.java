@@ -156,7 +156,7 @@ public class CheckerCreatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = EntityCheckHelper.createChecker(builder.build());
+            node = EntityCheckHelper.create(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

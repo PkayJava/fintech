@@ -118,7 +118,7 @@ public class StaffCreatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = StaffHelper.createStaff(builder.build());
+            node = StaffHelper.create(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

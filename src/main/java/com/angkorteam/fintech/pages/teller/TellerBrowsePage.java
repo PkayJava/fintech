@@ -1,9 +1,7 @@
 package com.angkorteam.fintech.pages.teller;
 
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.helper.GroupHelper;
 import com.angkorteam.fintech.helper.TellerHelper;
-import com.angkorteam.fintech.pages.fund.FundModifyPage;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.share.provider.JdbcProvider;
@@ -72,7 +70,7 @@ public class TellerBrowsePage extends Page {
     private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
         Long id = (Long) stringObjectMap.get("id");
         try {
-            TellerHelper.deleteTeller(String.valueOf(id));
+            TellerHelper.delete(String.valueOf(id));
         } catch (UnirestException e) {
         }
         ajaxRequestTarget.add(this.dataTable);

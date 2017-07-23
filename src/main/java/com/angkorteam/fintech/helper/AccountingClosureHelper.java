@@ -8,11 +8,11 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class AccountingClosureHelper {
 
-    public static JsonNode createClosure(JsonNode closure) throws UnirestException {
-        return Helper.performServerPost("/fineract-provider/api/v1/glclosures", closure);
+    public static JsonNode create(JsonNode object) throws UnirestException {
+        return Helper.performServerPost("/fineract-provider/api/v1/glclosures", object);
     }
 
-    public static JsonNode deleteClosure(String id) throws UnirestException {
+    public static JsonNode delete(String id) throws UnirestException {
         return Helper.performServerDelete("/fineract-provider/api/v1/glclosures/" + id);
     }
 

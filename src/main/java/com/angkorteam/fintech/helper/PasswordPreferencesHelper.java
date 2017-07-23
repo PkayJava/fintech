@@ -11,11 +11,10 @@ public class PasswordPreferencesHelper {
 
     private static final String PASSWORD_PREFERENCES_URL = "/fineract-provider/api/v1/passwordpreferences";
 
-    public static JsonNode updatePasswordPreferences(String validationPolicyId) throws UnirestException {
-        final String UPDATE_PASSWORD_PREFERENCES_URL = PASSWORD_PREFERENCES_URL;
+    public static JsonNode update(String validationPolicyId) throws UnirestException {
         JsonNode node = new com.angkorteam.fintech.dto.JsonNode(new JSONObject());
         node.getObject().put("validationPolicyId", validationPolicyId);
-        return Helper.performServerPut(UPDATE_PASSWORD_PREFERENCES_URL, node);
+        return Helper.performServerPut(PASSWORD_PREFERENCES_URL, node);
     }
 
 }

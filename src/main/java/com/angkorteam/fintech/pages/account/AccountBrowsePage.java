@@ -78,7 +78,7 @@ public class AccountBrowsePage extends Page {
         if ("delete".equals(s)) {
             JsonNode node = null;
             try {
-                node = GLAccountHelper.deleteGLAccount(String.valueOf(id));
+                node = GLAccountHelper.delete(String.valueOf(id));
             } catch (UnirestException e) {
             }
             reportError(node, ajaxRequestTarget);
@@ -86,7 +86,7 @@ public class AccountBrowsePage extends Page {
         } else if ("enable".equals(s)) {
             JsonNode node = null;
             try {
-                node = GLAccountHelper.enableGLAccount(String.valueOf(id));
+                node = GLAccountHelper.enable(String.valueOf(id));
             } catch (UnirestException e) {
             }
             reportError(node, ajaxRequestTarget);
@@ -94,7 +94,7 @@ public class AccountBrowsePage extends Page {
         } else if ("disable".equals(s)) {
             JsonNode node = null;
             try {
-                node = GLAccountHelper.disableGLAccount(String.valueOf(id));
+                node = GLAccountHelper.disable(String.valueOf(id));
             } catch (UnirestException e) {
             }
             reportError(node, ajaxRequestTarget);

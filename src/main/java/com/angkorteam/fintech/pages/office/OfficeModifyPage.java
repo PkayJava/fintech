@@ -114,7 +114,7 @@ public class OfficeModifyPage extends Page {
 
         JsonNode node = null;
         try {
-            node = OfficeHelper.updateOffice(builder.build());
+            node = OfficeHelper.update(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

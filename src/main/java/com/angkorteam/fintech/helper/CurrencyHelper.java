@@ -14,7 +14,7 @@ public class CurrencyHelper {
 
     private static final String CURRENCY_URL = "/fineract-provider/api/v1/currencies";
 
-    public static JsonNode updateCurrency(final List<String> currencies) throws UnirestException {
+    public static JsonNode update(final List<String> currencies) throws UnirestException {
         JSONArray array = new JSONArray(currencies);
         JsonNode body = new com.angkorteam.fintech.dto.JsonNode(new JSONObject());
         body.getObject().put("currencies", array);

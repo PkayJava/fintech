@@ -1,7 +1,7 @@
 package com.angkorteam.fintech.pages.role;
 
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.helper.RolesHelper;
+import com.angkorteam.fintech.helper.RoleHelper;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.share.provider.JdbcProvider;
@@ -115,7 +115,7 @@ public class RolePermissionPage extends Page {
 
             JsonNode node = null;
             try {
-                node = RolesHelper.assignPermission(this.roleId, permissions);
+                node = RoleHelper.assignPermission(this.roleId, permissions);
             } catch (UnirestException e) {
                 error(e.getMessage());
                 return;
@@ -153,7 +153,7 @@ public class RolePermissionPage extends Page {
 
         JsonNode node = null;
         try {
-            node = RolesHelper.assignPermission(this.roleId, permissions);
+            node = RoleHelper.assignPermission(this.roleId, permissions);
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

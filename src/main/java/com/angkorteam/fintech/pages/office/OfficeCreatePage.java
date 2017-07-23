@@ -95,7 +95,7 @@ public class OfficeCreatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = OfficeHelper.createOffice(builder.build());
+            node = OfficeHelper.create(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

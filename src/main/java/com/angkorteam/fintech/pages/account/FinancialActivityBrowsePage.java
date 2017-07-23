@@ -69,7 +69,7 @@ public class FinancialActivityBrowsePage extends Page {
         } else if ("delete".equals(s)) {
             JsonNode node = null;
             try {
-                FinancialActivityHelper.deleteFinancialActivity(String.valueOf(id));
+                FinancialActivityHelper.delete(String.valueOf(id));
             } catch (UnirestException e) {
             }
             reportError(node, ajaxRequestTarget);

@@ -4,7 +4,6 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.EntityStatus;
 import com.angkorteam.fintech.dto.EntityType;
 import com.angkorteam.fintech.helper.EntityCheckHelper;
-import com.angkorteam.fintech.pages.account.FinancialActivityCreatePage;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.BadgeType;
@@ -84,7 +83,7 @@ public class CheckerBrowsePage extends Page {
         Integer id = (Integer) stringObjectMap.get("id");
         JsonNode node = null;
         try {
-            EntityCheckHelper.deleteChecker(String.valueOf(id));
+            EntityCheckHelper.delete(String.valueOf(id));
         } catch (UnirestException e) {
         }
         reportError(node, ajaxRequestTarget);

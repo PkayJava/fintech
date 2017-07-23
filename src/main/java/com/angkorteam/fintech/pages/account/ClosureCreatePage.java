@@ -82,7 +82,7 @@ public class ClosureCreatePage extends Page {
         builder.withComments(this.commentValue);
         JsonNode node = null;
         try {
-            node = AccountingClosureHelper.createClosure(builder.build());
+            node = AccountingClosureHelper.create(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

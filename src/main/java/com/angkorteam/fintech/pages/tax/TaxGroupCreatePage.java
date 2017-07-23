@@ -2,9 +2,7 @@ package com.angkorteam.fintech.pages.tax;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.request.TaxGroupBuilder;
-import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.helper.TaxGroupHelper;
-import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
@@ -184,7 +182,7 @@ public class TaxGroupCreatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = TaxGroupHelper.createTaxGroup(builder.build());
+            node = TaxGroupHelper.create(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

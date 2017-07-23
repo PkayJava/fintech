@@ -86,7 +86,7 @@ public class PaymentTypeCreatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = PaymentTypeHelper.createPaymentType(builder.build());
+            node = PaymentTypeHelper.create(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

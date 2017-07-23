@@ -172,7 +172,7 @@ public class WorkingDayPage extends Page {
 
         JsonNode node = null;
         try {
-            node = WorkingDayHelper.updateWorkingDay(builder.build());
+            node = WorkingDayHelper.update(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

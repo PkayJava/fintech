@@ -121,7 +121,7 @@ public class TellerCreatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = TellerHelper.createTeller(builder.build());
+            node = TellerHelper.create(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

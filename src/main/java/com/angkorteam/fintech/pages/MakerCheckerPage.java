@@ -1,7 +1,7 @@
 package com.angkorteam.fintech.pages;
 
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.helper.RolesHelper;
+import com.angkorteam.fintech.helper.RoleHelper;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.BadgeType;
@@ -117,7 +117,7 @@ public class MakerCheckerPage extends Page {
 
         JsonNode node = null;
         try {
-            node = RolesHelper.makerCheckerPermission(permissions);
+            node = RoleHelper.makerCheckerPermission(permissions);
         } catch (UnirestException e) {
             error(e.getMessage());
             return;
@@ -160,7 +160,7 @@ public class MakerCheckerPage extends Page {
 
         JsonNode node = null;
         try {
-            node = RolesHelper.makerCheckerPermission(permissions);
+            node = RoleHelper.makerCheckerPermission(permissions);
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

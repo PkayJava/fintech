@@ -21,18 +21,18 @@ public class CodeHelper {
     public static final String CODE_VALUE_POSITION_ATTRIBUTE_NAME = "position";
     public static final String CODE_VALUE_URL = "/fineract-provider/api/v1/codes/[codeId]/codevalues";
 
-    public static JsonNode createCode(final String name) throws UnirestException {
+    public static JsonNode create(final String name) throws UnirestException {
         JsonNode node = new com.angkorteam.fintech.dto.JsonNode();
         node.getObject().put("name", name);
         return Helper.performServerPost(CODE_URL, node);
     }
 
-    public static JsonNode createCodeValue(JsonNode codeValue) throws UnirestException {
+    public static JsonNode createValue(JsonNode codeValue) throws UnirestException {
         String codeId = (String) codeValue.getObject().remove("codeId");
         return Helper.performServerPost(CODE_URL + "/" + codeId + "/codevalues", codeValue);
     }
 
-    public static JsonNode updateCodeValue(JsonNode codeValue) throws UnirestException {
+    public static JsonNode updateValue(JsonNode codeValue) throws UnirestException {
         String codeId = (String) codeValue.getObject().remove("codeId");
         String id = (String) codeValue.getObject().remove("id");
         return Helper.performServerPut(CODE_URL + "/" + codeId + "/codevalues/" + id, codeValue);

@@ -85,7 +85,7 @@ public class CodeBrowsePage extends Page {
     private void addButtonSubmit(Button button) {
         JsonNode node = null;
         try {
-            node = CodeHelper.createCode(this.nameValue);
+            node = CodeHelper.create(this.nameValue);
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

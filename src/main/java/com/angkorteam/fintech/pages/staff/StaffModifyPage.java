@@ -140,7 +140,7 @@ public class StaffModifyPage extends Page {
 
         JsonNode node = null;
         try {
-            node = StaffHelper.updateStaff(builder.build());
+            node = StaffHelper.update(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

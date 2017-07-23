@@ -2,7 +2,7 @@ package com.angkorteam.fintech.pages.role;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.request.RoleBuilder;
-import com.angkorteam.fintech.helper.RolesHelper;
+import com.angkorteam.fintech.helper.RoleHelper;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
@@ -63,7 +63,7 @@ public class RoleCreatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = RolesHelper.createRole(builder.build());
+            node = RoleHelper.create(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

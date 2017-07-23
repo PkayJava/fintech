@@ -109,7 +109,7 @@ public class HolidayCreatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = HolidayHelper.createHoliday(builder.build());
+            node = HolidayHelper.create(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

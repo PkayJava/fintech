@@ -130,7 +130,7 @@ public class TaxComponentCreatePage extends Page {
         builder.withStartDate(this.startDateValue);
         JsonNode node = null;
         try {
-            node = TaxComponentHelper.createTaxComponent(builder.build());
+            node = TaxComponentHelper.create(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

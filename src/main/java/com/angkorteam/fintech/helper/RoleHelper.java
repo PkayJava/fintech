@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Created by socheatkhauv on 6/26/17.
  */
-public class RolesHelper {
+public class RoleHelper {
 
     private static final String CREATE_ROLE_URL = "/fineract-provider/api/v1/roles";
     private static final String MAKER_CHECKER_URL = "/fineract-provider/api/v1/permissions";
@@ -16,19 +16,19 @@ public class RolesHelper {
     private static final String DISABLE_ROLE_COMMAND = "disable";
     private static final String ENABLE_ROLE_COMMAND = "enable";
 
-    public static JsonNode createRole(final JsonNode role) throws UnirestException {
+    public static JsonNode create(final JsonNode role) throws UnirestException {
         return Helper.performServerPost(CREATE_ROLE_URL, role);
     }
 
-    public static JsonNode disableRole(final String id) throws UnirestException {
+    public static JsonNode disable(final String id) throws UnirestException {
         return Helper.performServerPost(createRoleOperationURL(DISABLE_ROLE_COMMAND, id));
     }
 
-    public static JsonNode enableRole(final String id) throws UnirestException {
+    public static JsonNode enable(final String id) throws UnirestException {
         return Helper.performServerPost(createRoleOperationURL(ENABLE_ROLE_COMMAND, id));
     }
 
-    public static JsonNode deleteRole(final String id) throws UnirestException {
+    public static JsonNode delete(final String id) throws UnirestException {
         return Helper.performServerDelete(createRoleOperationURL(ENABLE_ROLE_COMMAND, id));
     }
 

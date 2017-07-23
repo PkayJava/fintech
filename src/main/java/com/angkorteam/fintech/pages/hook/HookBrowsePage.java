@@ -89,7 +89,7 @@ public class HookBrowsePage extends Page {
     private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
         Long id = (Long) stringObjectMap.get("id");
         try {
-            HookHelper.deleteHook(String.valueOf(id));
+            HookHelper.delete(String.valueOf(id));
         } catch (UnirestException e) {
         }
         ajaxRequestTarget.add(this.dataTable);

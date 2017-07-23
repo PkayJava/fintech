@@ -235,7 +235,7 @@ public class HookCreatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = HookHelper.createHook(builder.build());
+            node = HookHelper.create(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

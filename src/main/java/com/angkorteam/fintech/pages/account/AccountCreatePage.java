@@ -190,7 +190,7 @@ public class AccountCreatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = GLAccountHelper.createGLAccount(builder.build());
+            node = GLAccountHelper.create(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

@@ -136,7 +136,7 @@ public class ValueBrowsePage extends Page {
 
         JsonNode node = null;
         try {
-            node = CodeHelper.createCodeValue(builder.build());
+            node = CodeHelper.createValue(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;
@@ -159,13 +159,13 @@ public class ValueBrowsePage extends Page {
                 builder.withId(String.valueOf(id));
                 builder.withCodeId(this.codeId);
                 builder.withActive(false);
-                CodeHelper.updateCodeValue(builder.build());
+                CodeHelper.updateValue(builder.build());
             } else if ("enable".equals(s)) {
                 CodeValueBuilder builder = new CodeValueBuilder();
                 builder.withId(String.valueOf(id));
                 builder.withCodeId(this.codeId);
                 builder.withActive(true);
-                CodeHelper.updateCodeValue(builder.build());
+                CodeHelper.updateValue(builder.build());
             }
         } catch (UnirestException e) {
         }

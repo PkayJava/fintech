@@ -91,7 +91,7 @@ public class CurrencyConfigurationPage extends Page {
         List<String> codes = jdbcTemplate.queryForList("select code from m_organisation_currency where code not in (?)", String.class, stringObjectMap.get("code"));
         JsonNode node = null;
         try {
-            node = CurrencyHelper.updateCurrency(codes);
+            node = CurrencyHelper.update(codes);
         } catch (UnirestException e) {
             error(e.getMessage());
             return;
@@ -116,7 +116,7 @@ public class CurrencyConfigurationPage extends Page {
 
         JsonNode node = null;
         try {
-            node = CurrencyHelper.updateCurrency(codes);
+            node = CurrencyHelper.update(codes);
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

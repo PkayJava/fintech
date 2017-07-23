@@ -148,7 +148,7 @@ public class FinancialActivityModifyPage extends Page {
         }
         JsonNode node = null;
         try {
-            node = FinancialActivityHelper.updateFinancialActivity(builder.build());
+            node = FinancialActivityHelper.update(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

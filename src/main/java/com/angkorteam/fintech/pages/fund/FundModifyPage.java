@@ -80,7 +80,7 @@ public class FundModifyPage extends Page {
 
         JsonNode node = null;
         try {
-            node = FundHelper.updateFund(builder.build());
+            node = FundHelper.update(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

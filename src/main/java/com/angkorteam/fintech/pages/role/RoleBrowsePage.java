@@ -1,7 +1,7 @@
 package com.angkorteam.fintech.pages.role;
 
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.helper.RolesHelper;
+import com.angkorteam.fintech.helper.RoleHelper;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
@@ -66,13 +66,13 @@ public class RoleBrowsePage extends Page {
         try {
             Long id = (Long) stringObjectMap.get("id");
             if ("enable".equals(s)) {
-                RolesHelper.enableRole(String.valueOf(id));
+                RoleHelper.enable(String.valueOf(id));
                 ajaxRequestTarget.add(this.dataTable);
             } else if ("disable".equals(s)) {
-                RolesHelper.disableRole(String.valueOf(id));
+                RoleHelper.disable(String.valueOf(id));
                 ajaxRequestTarget.add(this.dataTable);
             } else if ("delete".equals(s)) {
-                RolesHelper.deleteRole(String.valueOf(id));
+                RoleHelper.delete(String.valueOf(id));
                 ajaxRequestTarget.add(this.dataTable);
             }
         } catch (UnirestException e) {

@@ -194,7 +194,7 @@ public class RuleModifyPage extends Page {
 
         JsonNode node = null;
         try {
-            node = AccountingRuleHelper.updateRule(builder.build());
+            node = AccountingRuleHelper.update(builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;
