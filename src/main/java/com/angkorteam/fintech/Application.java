@@ -1,6 +1,7 @@
 package com.angkorteam.fintech;
 
 import com.angkorteam.fintech.pages.account.RuleCreatePage;
+import com.angkorteam.fintech.pages.rate.FloatingRateBrowsePage;
 import com.angkorteam.fintech.pages.rate.FloatingRateCreatePage;
 import com.angkorteam.framework.ResourceScope;
 import org.apache.commons.configuration.XMLPropertiesConfiguration;
@@ -29,7 +30,7 @@ public class Application extends WebApplication {
     @Override
     public Class<? extends Page> getHomePage() {
 //        return StarterPage.class;
-        return FloatingRateCreatePage.class;
+        return FloatingRateBrowsePage.class;
     }
 
     @Override

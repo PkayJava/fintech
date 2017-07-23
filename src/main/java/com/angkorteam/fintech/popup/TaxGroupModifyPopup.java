@@ -53,6 +53,7 @@ public class TaxGroupModifyPopup extends Panel {
     }
 
     private void saveButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
+        this.window.setElementId(ajaxButton.getId());
         this.window.close(target);
     }
 

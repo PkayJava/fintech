@@ -166,12 +166,11 @@ public class TaxGroupModifyPage extends Page {
 
         this.taxPopup = new ModalWindow("taxPopup");
         add(this.taxPopup);
-
         this.taxPopup.setContent(new TaxGroupModifyPopup(this.taxPopup.getContentId(), this.taxPopup, this));
         this.taxPopup.setOnClose(this::taxPopupOnClose);
     }
 
-    private void taxPopupOnClose(AjaxRequestTarget target) {
+    private void taxPopupOnClose(String elementId, AjaxRequestTarget target) {
         for (Map<String, Object> item : this.taxComponentValue) {
             if (this.itemId.equals(item.get("id"))) {
                 item.put("endDate", this.itemEndDateValue);

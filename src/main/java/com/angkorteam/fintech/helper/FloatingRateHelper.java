@@ -9,4 +9,9 @@ public class FloatingRateHelper {
         return Helper.performServerPost("/fineract-provider/api/v1/floatingrates", object);
     }
 
+    public static JsonNode update(JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPut("/fineract-provider/api/v1/floatingrates/" + id, object);
+    }
+
 }

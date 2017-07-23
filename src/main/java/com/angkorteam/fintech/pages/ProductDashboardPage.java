@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.pages.rate.FloatingRateBrowsePage;
 import com.angkorteam.framework.BackgroundColor;
 import com.angkorteam.framework.Emoji;
 import com.angkorteam.framework.models.InfoBox;
@@ -40,7 +41,7 @@ public class ProductDashboardPage extends Page {
         InfoBoxPanel manageTaxConfigurationsPage = new InfoBoxPanel("manageTaxConfigurationsPage", Model.of(new InfoBox().setPage(TaxDashboardPage.class).setTitle("Manage Tax Configurations").setDescription("Define Tax components and Tax groups").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(manageTaxConfigurationsPage);
 
-        InfoBoxPanel floatingRatesPage = new InfoBoxPanel("floatingRatesPage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Floating Rates").setDescription("Define floating rates for loan products").setIcon(Emoji.ion_alert)));
+        InfoBoxPanel floatingRatesPage = new InfoBoxPanel("floatingRatesPage", Model.of(new InfoBox().setPage(FloatingRateBrowsePage.class).setTitle("Floating Rates").setDescription("Define floating rates for loan products").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(floatingRatesPage);
 
     }

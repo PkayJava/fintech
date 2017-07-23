@@ -56,6 +56,7 @@ public class ReversePopup extends Panel {
     }
 
     private void reverseButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
+        this.window.setElementId(ajaxButton.getId());
         try {
             GLAccountHelper.reverseEntry(this.transactionId, this.reasonValue);
             this.window.close(target);

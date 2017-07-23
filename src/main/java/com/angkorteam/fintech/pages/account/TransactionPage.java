@@ -150,7 +150,7 @@ public class TransactionPage extends Page {
 
     }
 
-    private void commentPopupOnClose(AjaxRequestTarget target) {
+    private void commentPopupOnClose(String elementId, AjaxRequestTarget target) {
         setResponsePage(SearchJournalPage.class);
     }
 

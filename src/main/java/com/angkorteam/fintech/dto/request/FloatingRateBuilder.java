@@ -12,6 +12,9 @@ import java.util.Map;
 
 public class FloatingRateBuilder implements Serializable {
 
+    private String id;
+    private boolean hasId;
+
     private String name;
     private boolean hasName;
 
@@ -28,6 +31,9 @@ public class FloatingRateBuilder implements Serializable {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
         if (this.hasName) {
             object.getObject().put("name", this.name);
+        }
+        if (this.hasId) {
+            object.getObject().put("id", this.id);
         }
         if (this.hasActive) {
             object.getObject().put("isActive", this.active);
@@ -46,7 +52,7 @@ public class FloatingRateBuilder implements Serializable {
         return object;
     }
 
-    public FloatingRateBuilder withRatePeriod(Date fromDate, Integer interestRate, boolean differentialToBaseLendingRate) {
+    public FloatingRateBuilder withRatePeriod(Date fromDate, Double interestRate, boolean differentialToBaseLendingRate) {
         Map<String, Object> rate = Maps.newHashMap();
         rate.put("fromDate", fromDate);
         rate.put("interestRate", interestRate);
@@ -67,6 +73,12 @@ public class FloatingRateBuilder implements Serializable {
     public FloatingRateBuilder withName(String name) {
         this.name = name;
         this.hasName = true;
+        return this;
+    }
+
+    public FloatingRateBuilder withId(String id) {
+        this.id = id;
+        this.hasId = true;
         return this;
     }
 
