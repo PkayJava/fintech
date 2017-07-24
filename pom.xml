@@ -51,7 +51,7 @@
         <wtp.version>none</wtp.version>
         <frmk.version>1.6.7</frmk.version>
         <guava.version>22.0</guava.version>
-        <spring.version>4.3.9.RELEASE</spring.version>
+        <spring.version>4.3.10.RELEASE</spring.version>
         <mysql.version>5.1.42</mysql.version>
         <dbcp2.version>2.1.1</dbcp2.version>
         <configuration.version>1.10</configuration.version>
@@ -76,7 +76,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.5</version>
+            <version>3.6</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
