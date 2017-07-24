@@ -61,6 +61,9 @@ public class ShareChargeCreatePage extends Page {
     protected void onInitialize() {
         super.onInitialize();
 
+        this.form = new Form<>("form");
+        this.add(this.form);
+
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);

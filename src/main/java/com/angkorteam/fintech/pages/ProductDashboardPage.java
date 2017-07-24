@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.pages.charge.ChargeBrowsePage;
 import com.angkorteam.fintech.pages.rate.FloatingRateBrowsePage;
 import com.angkorteam.framework.BackgroundColor;
 import com.angkorteam.framework.Emoji;
@@ -35,7 +36,7 @@ public class ProductDashboardPage extends Page {
         InfoBoxPanel recurringDepositProductsPage = new InfoBoxPanel("recurringDepositProductsPage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Recurring Deposit Products").setDescription("Add, modify or inactivate a Recurring Deposit product").setIcon(Emoji.ion_alert)));
         add(recurringDepositProductsPage);
 
-        InfoBoxPanel chargesProductPage = new InfoBoxPanel("chargesProductPage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Charges").setDescription("Define charges/penalties for loan products, savings and deposit products").setIcon(Emoji.ion_alert)));
+        InfoBoxPanel chargesProductPage = new InfoBoxPanel("chargesProductPage", Model.of(new InfoBox().setPage(ChargeBrowsePage.class).setTitle("Charges").setDescription("Define charges/penalties for loan products, savings and deposit products").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(chargesProductPage);
 
         InfoBoxPanel manageTaxConfigurationsPage = new InfoBoxPanel("manageTaxConfigurationsPage", Model.of(new InfoBox().setPage(TaxDashboardPage.class).setTitle("Manage Tax Configurations").setDescription("Define Tax components and Tax groups").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
