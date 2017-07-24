@@ -1,17 +1,15 @@
 package com.angkorteam.fintech.dto;
 
-public enum ChargeTime {
+public enum ChargePayment {
 
-    Loan("1", "Loan"),
-    SavingDeposit("2", "Savings and Deposit"),
-    Client("3", "Client"),
-    Share("4", "Shares");
+    RegularMode("0", "Regular Mode"),
+    AccountTransferMode("1", "Account Transfer Mode");
 
     private String literal;
 
     private String description;
 
-    ChargeTime(String literal, String description) {
+    ChargePayment(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
