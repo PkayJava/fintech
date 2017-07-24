@@ -1,8 +1,17 @@
 package com.angkorteam.fintech.pages.charge;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.ChargeType;
-import com.angkorteam.fintech.pages.fund.FundCreatePage;
 import com.angkorteam.fintech.pages.fund.FundModifyPage;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
@@ -14,24 +23,17 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import java.util.List;
-import java.util.Map;
 
 public class ChargeBrowsePage extends Page {
-
 
     private DataTable<Map<String, Object>, String> dataTable;
 
     private JdbcProvider provider;
 
-    private BookmarkablePageLink<Void> createLink;
+    private BookmarkablePageLink<Void> createLoanChargeLink;
+    private BookmarkablePageLink<Void> createClientChargeLink;
+    private BookmarkablePageLink<Void> createSavingDepositChargeLink;
+    private BookmarkablePageLink<Void> createShareChargeLink;
 
     @Override
     protected void onInitialize() {
@@ -55,8 +57,17 @@ public class ChargeBrowsePage extends Page {
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
         filterForm.add(this.dataTable);
 
-        this.createLink = new BookmarkablePageLink<>("createLink", FundCreatePage.class);
-        add(this.createLink);
+        this.createLoanChargeLink = new BookmarkablePageLink<>("createLoanChargeLink", LoanChargeCreatePage.class);
+        add(this.createLoanChargeLink);
+
+        this.createSavingDepositChargeLink = new BookmarkablePageLink<>("createSavingDepositChargeLink", SavingDepositChargeCreatePage.class);
+        add(this.createSavingDepositChargeLink);
+
+        this.createClientChargeLink = new BookmarkablePageLink<>("createClientChargeLink", ClientChargeCreatePage.class);
+        add(this.createClientChargeLink);
+
+        this.createShareChargeLink = new BookmarkablePageLink<>("createShareChargeLink", ShareChargeCreatePage.class);
+        add(this.createShareChargeLink);
     }
 
     private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

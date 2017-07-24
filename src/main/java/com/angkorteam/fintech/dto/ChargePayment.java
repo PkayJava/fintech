@@ -2,8 +2,7 @@ package com.angkorteam.fintech.dto;
 
 public enum ChargePayment {
 
-    RegularMode("0", "Regular Mode"),
-    AccountTransferMode("1", "Account Transfer Mode");
+    RegularMode("0", "Regular Mode"), AccountTransferMode("1", "Account Transfer Mode");
 
     private String literal;
 
@@ -13,4 +12,13 @@ public enum ChargePayment {
         this.literal = literal;
         this.description = description;
     }
+
+    public String getLiteral() {
+        return literal;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
 }

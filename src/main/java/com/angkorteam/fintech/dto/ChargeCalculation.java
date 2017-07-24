@@ -2,11 +2,7 @@ package com.angkorteam.fintech.dto;
 
 public enum ChargeCalculation {
 
-    Flat("1", "Flat"),
-    ApprovedAmount("2", "% Approved Amount"),
-    LoanAmountInterest("3", "% Loan Amount + Interest"),
-    Interest("4", "% Interest"),
-    DisbursementAmount("5", "% Disbursement Amount");
+    Flat("1", "Flat"), ApprovedAmount("2", "% Approved Amount"), LoanAmountInterest("3", "% Loan Amount + Interest"), Interest("4", "% Interest"), DisbursementAmount("5", "% Disbursement Amount");
 
     private String literal;
 
@@ -16,4 +12,13 @@ public enum ChargeCalculation {
         this.literal = literal;
         this.description = description;
     }
+
+    public String getLiteral() {
+        return literal;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
 }
