@@ -75,7 +75,6 @@ public class ValueBrowsePage extends Page {
         this.provider.boardField("order_position", "order_position", Integer.class);
         this.provider.boardField("is_active", "active", Boolean.class);
 
-
         this.provider.setSort("code_value", SortOrder.ASCENDING);
 
         this.provider.selectField("id", Integer.class);
