@@ -53,7 +53,7 @@ public class SystemDashboardPage extends Page {
         InfoBoxPanel manageEntityPage = new InfoBoxPanel("manageEntityPage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Entity To Entity Mapping").setDescription("Define or modify entity to entity mappings").setIcon(Emoji.ion_alert)));
         add(manageEntityPage);
 
-        InfoBoxPanel externalServicePage = new InfoBoxPanel("externalServicePage", Model.of(new InfoBox().setPage(IndexPage.class).setTitle("External Services").setDescription("External Services Configuration").setIcon(Emoji.ion_alert)));
+        InfoBoxPanel externalServicePage = new InfoBoxPanel("externalServicePage", Model.of(new InfoBox().setPage(ServiceDashboardPage.class).setTitle("External Services").setDescription("External Services Configuration").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(externalServicePage);
 
     }

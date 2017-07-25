@@ -9,6 +9,7 @@ public class ExternalServiceBuilder implements Serializable {
 
     private ServiceType type;
 
+    // S3
     private String s3AccessKey;
     private boolean hasS3AccessKey;
 
@@ -18,32 +19,53 @@ public class ExternalServiceBuilder implements Serializable {
     private String s3SecretKey;
     private boolean hasS3SecretKey;
 
+    // SMT & SMTP
+    private String host;
+    private boolean hasHost;
+
+    private Integer port;
+    private boolean hasPort;
+
+    // SMTP
     private String username;
     private boolean hasUsername;
 
     private String password;
     private boolean hasPassword;
 
-    private String host;
-    private boolean hasHost;
+    private boolean useTls;
+    private boolean hasUseTls;
 
-    private String port;
-    private boolean hasPort;
+    // SMS
+    private String endpoint;
+    private boolean hasEndpoint;
 
-    private boolean useTLS;
-    private boolean hasUseTLS;
+    private String tenantAppKey;
+    private boolean hasTenantAppKey;
 
     public ExternalServiceBuilder(ServiceType type) {
         this.type = type;
     }
 
-    public ExternalServiceBuilder withUseTLS(boolean useTLS) {
-        this.useTLS = useTLS;
-        this.hasUseTLS = true;
+    public ExternalServiceBuilder withTenantAppKey(String tenantAppKey) {
+        this.tenantAppKey = tenantAppKey;
+        this.hasTenantAppKey = true;
         return this;
     }
 
-    public ExternalServiceBuilder withPort(String port) {
+    public ExternalServiceBuilder withEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+        this.hasEndpoint = true;
+        return this;
+    }
+
+    public ExternalServiceBuilder withUseTls(boolean useTls) {
+        this.useTls = useTls;
+        this.hasUseTls = true;
+        return this;
+    }
+
+    public ExternalServiceBuilder withPort(Integer port) {
         this.port = port;
         this.hasPort = true;
         return this;
@@ -79,8 +101,15 @@ public class ExternalServiceBuilder implements Serializable {
         return this;
     }
 
+    public ExternalServiceBuilder withS3SecretKey(String s3SecretKey) {
+        this.s3SecretKey = s3SecretKey;
+        this.hasS3SecretKey = true;
+        return this;
+    }
+
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
+        object.getObject().put("type", this.type.name());
         if (this.hasS3AccessKey) {
             object.getObject().put("s3_access_key", this.s3AccessKey);
         }
@@ -97,13 +126,24 @@ public class ExternalServiceBuilder implements Serializable {
             object.getObject().put("password", this.password);
         }
         if (this.hasHost) {
-            object.getObject().put("host", this.host);
+            if (this.type == ServiceType.SMTP) {
+                object.getObject().put("host", this.host);
+            } else if (this.type == ServiceType.SMS) {
+                object.getObject().put("host_name", this.host);
+            }
         }
         if (this.hasPort) {
-            object.getObject().put("port", this.port);
+            if (this.type == ServiceType.SMTP) {
+                object.getObject().put("port", this.port);
+            } else if (this.type == ServiceType.SMS) {
+                object.getObject().put("port_number", this.port);
+            }
         }
-        if (this.hasUseTLS) {
-            object.getObject().put("useTLS", this.useTLS);
+        if (this.hasTenantAppKey) {
+            object.getObject().put("tenant_app_key", this.tenantAppKey);
+        }
+        if (this.hasUseTls) {
+            object.getObject().put("useTLS", this.useTls);
         }
         return object;
     }

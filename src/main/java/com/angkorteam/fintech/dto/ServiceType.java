@@ -2,7 +2,7 @@ package com.angkorteam.fintech.dto;
 
 public enum ServiceType {
 
-    S3("S3", "Amazon S3"), SMTP("SMTP", "Email Service");
+    S3("1", "Amazon S3"), SMTP("2", "SMTP"), SMS("3", "SMS");
 
     private String literal;
 
