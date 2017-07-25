@@ -1,10 +1,5 @@
 package com.angkorteam.fintech.pages.charge;
 
-import com.angkorteam.fintech.dto.request.ChargeBuilder;
-import com.angkorteam.fintech.helper.ChargeHelper;
-import com.angkorteam.fintech.helper.GLAccountHelper;
-import com.angkorteam.fintech.pages.account.AccountBrowsePage;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
@@ -17,6 +12,8 @@ import com.angkorteam.fintech.dto.ChargeFrequency;
 import com.angkorteam.fintech.dto.ChargePayment;
 import com.angkorteam.fintech.dto.ChargeTime;
 import com.angkorteam.fintech.dto.ChargeType;
+import com.angkorteam.fintech.dto.request.ChargeBuilder;
+import com.angkorteam.fintech.helper.ChargeHelper;
 import com.angkorteam.fintech.provider.ChargeCalculationProvider;
 import com.angkorteam.fintech.provider.ChargeFrequencyProvider;
 import com.angkorteam.fintech.provider.ChargePaymentProvider;
@@ -258,7 +255,7 @@ public class LoanChargeCreatePage extends Page {
 	builder.withChargeAppliesTo(ChargeType.Loan);
 	builder.withName(this.nameValue);
 	builder.withCurrencyCode(this.currencyValue.getId());
-	builder.withChargeTimeType(ChargeTime.valueOf(this.chargeTimeValue.getId()));
+	builder.withChargeTimeType(chargeTime);
 	builder.withChargeCalculationType(ChargeCalculation.valueOf(this.chargeCalculationValue.getId()));
 	builder.withChargePaymentMode(ChargePayment.valueOf(this.chargePaymentValue.getId()));
 	if (chargeTime == ChargeTime.OverdueFees) {

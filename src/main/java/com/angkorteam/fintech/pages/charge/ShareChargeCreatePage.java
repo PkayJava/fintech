@@ -9,6 +9,9 @@ import org.apache.wicket.model.PropertyModel;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.ChargeCalculation;
 import com.angkorteam.fintech.dto.ChargeTime;
+import com.angkorteam.fintech.dto.ChargeType;
+import com.angkorteam.fintech.dto.request.ChargeBuilder;
+import com.angkorteam.fintech.helper.ChargeHelper;
 import com.angkorteam.fintech.provider.ChargeCalculationProvider;
 import com.angkorteam.fintech.provider.ChargeTimeProvider;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -18,6 +21,8 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class ShareChargeCreatePage extends Page {
 
@@ -116,19 +121,10 @@ public class ShareChargeCreatePage extends Page {
 
         this.taxGroupProvider = new OptionSingleChoiceProvider("m_taxGroup", "id", "name");
         this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
-        this.taxGroupField.setRequired(true);
         this.form.add(this.taxGroupField);
         this.taxGroupFeedback = new TextFeedbackPanel("taxGroupFeedback", this.taxGroupField);
         this.form.add(this.taxGroupFeedback);
 
-    }
-
-    private void chargePaymentFieldUpdate(AjaxRequestTarget target) {
-        target.add(this.form);
-    }
-
-    private void chargePaymentFieldError(AjaxRequestTarget target, RuntimeException error) {
-        target.add(this.form);
     }
 
     private void chargeCalculationFieldUpdate(AjaxRequestTarget target) {
@@ -140,8 +136,6 @@ public class ShareChargeCreatePage extends Page {
     }
 
     private void chargeTimeFieldUpdate(AjaxRequestTarget target) {
-        ChargeTime chargeTime = ChargeTime.valueOf(this.chargeTimeValue.getId());
-
         target.add(this.form);
     }
 
@@ -150,7 +144,31 @@ public class ShareChargeCreatePage extends Page {
     }
 
     private void saveButtonSubmit(Button button) {
+        ChargeTime chargeTime = ChargeTime.valueOf(this.chargeTimeValue.getId());
 
+        ChargeBuilder builder = new ChargeBuilder();
+        builder.withChargeAppliesTo(ChargeType.Share);
+        builder.withName(this.nameValue);
+        builder.withCurrencyCode(this.currencyValue.getId());
+        builder.withChargeTimeType(chargeTime);
+        builder.withChargeCalculationType(ChargeCalculation.valueOf(this.chargeCalculationValue.getId()));
+        builder.withAmount(this.amountValue);
+        builder.withActive(this.activeValue);
+        if (this.taxGroupValue != null) {
+            builder.withTaxGroupId(this.taxGroupValue.getId());
+        }
+
+        JsonNode node = null;
+        try {
+            node = ChargeHelper.create(builder.build());
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+        setResponsePage(ChargeBrowsePage.class);
     }
 
 }

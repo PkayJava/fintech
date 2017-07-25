@@ -52,6 +52,9 @@ public class ChargeBuilder implements Serializable {
 
     private String locale = "en";
     private boolean hasLocale = true;
+    
+    private String incomeAccountId;
+    private boolean hasIncomeAccountId;
 
     private String monthDayFormat = "dd MMMM";
     private boolean hasMonthDayFormat;
@@ -61,6 +64,9 @@ public class ChargeBuilder implements Serializable {
 
     public JsonNode build() {
 	JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
+        if (this.hasIncomeAccountId) {
+            object.getObject().put("incomeAccountId", this.incomeAccountId);
+        }
 	if (this.hasChargeAppliesTo) {
 	    object.getObject().put("chargeAppliesTo", this.chargeAppliesTo.getLiteral());
 	}
@@ -126,6 +132,12 @@ public class ChargeBuilder implements Serializable {
 	    }
 	}
 	return object;
+    }
+    
+    public ChargeBuilder withIncomeAccountId(String incomeAccountId) {
+        this.incomeAccountId = incomeAccountId;
+        this.hasIncomeAccountId = true;
+        return this;
     }
 
     public ChargeBuilder withChargeAppliesTo(ChargeType chargeAppliesTo) {

@@ -224,7 +224,7 @@ public class SavingDepositChargeCreatePage extends Page {
 	builder.withChargeAppliesTo(ChargeType.SavingDeposit);
 	builder.withName(this.nameValue);
 	builder.withCurrencyCode(this.currencyValue.getId());
-	builder.withChargeTimeType(ChargeTime.valueOf(this.chargeTimeValue.getId()));
+	builder.withChargeTimeType(chargeTime);
 	builder.withChargeCalculationType(ChargeCalculation.valueOf(this.chargeCalculationValue.getId()));
 	if (chargeTime == ChargeTime.AnnualFee) {
 	    builder.withFeeOnMonthDay(this.dueDateValue);
