@@ -67,7 +67,7 @@ public class Page extends DashboardPage {
                     if (message == null || "".equals(message)) {
                         error(defaultUserMessage + " due to this reason " + userMessageGlobalisationCode);
                     } else {
-                        error(defaultUserMessage + " due to this reason " + message);
+                        error(defaultUserMessage + " due to this reason '" + message + "'");
                     }
                 } else {
                     error(defaultUserMessage);
