@@ -52,7 +52,7 @@ public class ChargeBuilder implements Serializable {
 
     private String locale = "en";
     private boolean hasLocale = true;
-    
+
     private String incomeAccountId;
     private boolean hasIncomeAccountId;
 
@@ -62,78 +62,89 @@ public class ChargeBuilder implements Serializable {
     private Date feeOnMonthDay;
     private boolean hasFeeOnMonthDay;
 
+    private String id;
+    private boolean hasId;
+
     public JsonNode build() {
-	JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
+        JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
+        if (this.hasId) {
+            object.getObject().put("id", this.id);
+        }
         if (this.hasIncomeAccountId) {
             object.getObject().put("incomeAccountId", this.incomeAccountId);
         }
-	if (this.hasChargeAppliesTo) {
-	    object.getObject().put("chargeAppliesTo", this.chargeAppliesTo.getLiteral());
-	}
+        if (this.hasChargeAppliesTo) {
+            object.getObject().put("chargeAppliesTo", this.chargeAppliesTo.getLiteral());
+        }
 
-	if (this.hasChargeTimeType) {
-	    object.getObject().put("chargeTimeType", this.chargeTimeType.getLiteral());
-	}
+        if (this.hasChargeTimeType) {
+            object.getObject().put("chargeTimeType", this.chargeTimeType.getLiteral());
+        }
 
-	if (this.hasName) {
-	    object.getObject().put("name", this.name);
-	}
+        if (this.hasName) {
+            object.getObject().put("name", this.name);
+        }
 
-	if (this.hasCurrencyCode) {
-	    object.getObject().put("currencyCode", this.currencyCode);
-	}
+        if (this.hasCurrencyCode) {
+            object.getObject().put("currencyCode", this.currencyCode);
+        }
 
-	if (this.hasChargeCalculationType) {
-	    object.getObject().put("chargeCalculationType", this.chargeCalculationType.getLiteral());
-	}
+        if (this.hasChargeCalculationType) {
+            object.getObject().put("chargeCalculationType", this.chargeCalculationType.getLiteral());
+        }
 
-	if (this.hasChargePaymentMode) {
-	    object.getObject().put("chargePaymentMode", this.chargePaymentMode.getLiteral());
-	}
+        if (this.hasChargePaymentMode) {
+            object.getObject().put("chargePaymentMode", this.chargePaymentMode.getLiteral());
+        }
 
-	if (this.hasTaxGroupId) {
-	    object.getObject().put("taxGroupId", this.taxGroupId);
-	}
+        if (this.hasTaxGroupId) {
+            object.getObject().put("taxGroupId", this.taxGroupId);
+        }
 
-	if (this.hasPenalty) {
-	    object.getObject().put("penalty", this.penalty);
-	}
+        if (this.hasPenalty) {
+            object.getObject().put("penalty", this.penalty);
+        }
 
-	if (this.hasActive) {
-	    object.getObject().put("active", this.active);
-	}
+        if (this.hasActive) {
+            object.getObject().put("active", this.active);
+        }
 
-	if (this.hasAmount) {
-	    object.getObject().put("amount", this.amount);
-	}
+        if (this.hasAmount) {
+            object.getObject().put("amount", this.amount);
+        }
 
-	if (this.hasFeeInterval) {
-	    object.getObject().put("feeInterval", this.feeInterval);
-	}
+        if (this.hasFeeInterval) {
+            object.getObject().put("feeInterval", this.feeInterval);
+        }
 
-	if (this.hasFeeFrequency) {
-	    object.getObject().put("feeFrequency", this.feeFrequency.getLiteral());
-	}
+        if (this.hasFeeFrequency) {
+            object.getObject().put("feeFrequency", this.feeFrequency.getLiteral());
+        }
 
-	if (this.hasLocale) {
-	    object.getObject().put("locale", this.locale);
-	}
+        if (this.hasLocale) {
+            object.getObject().put("locale", this.locale);
+        }
 
-	if (this.hasMonthDayFormat) {
-	    object.getObject().put("monthDayFormat", this.monthDayFormat);
-	}
+        if (this.hasMonthDayFormat) {
+            object.getObject().put("monthDayFormat", this.monthDayFormat);
+        }
 
-	if (this.hasFeeOnMonthDay) {
-	    if (this.feeOnMonthDay == null) {
-		object.getObject().put("feeOnMonthDay", (String) null);
-	    } else {
-		object.getObject().put("feeOnMonthDay",
-			DateFormatUtils.format(this.feeOnMonthDay, this.monthDayFormat));
-	    }
-	}
-	return object;
+        if (this.hasFeeOnMonthDay) {
+            if (this.feeOnMonthDay == null) {
+                object.getObject().put("feeOnMonthDay", (String) null);
+            } else {
+                object.getObject().put("feeOnMonthDay", DateFormatUtils.format(this.feeOnMonthDay, this.monthDayFormat));
+            }
+        }
+        return object;
     }
-    
+
+    public ChargeBuilder withId(String id) {
+        this.id = id;
+        this.hasId = true;
+        return this;
+    }
+
     public ChargeBuilder withIncomeAccountId(String incomeAccountId) {
         this.incomeAccountId = incomeAccountId;
         this.hasIncomeAccountId = true;
@@ -141,93 +152,93 @@ public class ChargeBuilder implements Serializable {
     }
 
     public ChargeBuilder withChargeAppliesTo(ChargeType chargeAppliesTo) {
-	this.chargeAppliesTo = chargeAppliesTo;
-	this.hasChargeAppliesTo = true;
-	return this;
+        this.chargeAppliesTo = chargeAppliesTo;
+        this.hasChargeAppliesTo = true;
+        return this;
     }
 
     public ChargeBuilder withChargeTimeType(ChargeTime chargeTimeType) {
-	this.chargeTimeType = chargeTimeType;
-	this.hasChargeTimeType = true;
-	return this;
+        this.chargeTimeType = chargeTimeType;
+        this.hasChargeTimeType = true;
+        return this;
     }
 
     public ChargeBuilder withName(String name) {
-	this.name = name;
-	this.hasName = true;
-	return this;
+        this.name = name;
+        this.hasName = true;
+        return this;
     }
 
     public ChargeBuilder withCurrencyCode(String currencyCode) {
-	this.currencyCode = currencyCode;
-	this.hasCurrencyCode = true;
-	return this;
+        this.currencyCode = currencyCode;
+        this.hasCurrencyCode = true;
+        return this;
     }
 
     public ChargeBuilder withChargeCalculationType(ChargeCalculation chargeCalculationType) {
-	this.chargeCalculationType = chargeCalculationType;
-	this.hasChargeCalculationType = true;
-	return this;
+        this.chargeCalculationType = chargeCalculationType;
+        this.hasChargeCalculationType = true;
+        return this;
     }
 
     public ChargeBuilder withChargePaymentMode(ChargePayment chargePaymentMode) {
-	this.chargePaymentMode = chargePaymentMode;
-	this.hasChargePaymentMode = true;
-	return this;
+        this.chargePaymentMode = chargePaymentMode;
+        this.hasChargePaymentMode = true;
+        return this;
     }
 
     public ChargeBuilder withTaxGroupId(String taxGroupId) {
-	this.taxGroupId = taxGroupId;
-	this.hasTaxGroupId = true;
-	return this;
+        this.taxGroupId = taxGroupId;
+        this.hasTaxGroupId = true;
+        return this;
     }
 
     public ChargeBuilder withPenalty(boolean penalty) {
-	this.penalty = penalty;
-	this.hasPenalty = true;
-	return this;
+        this.penalty = penalty;
+        this.hasPenalty = true;
+        return this;
     }
 
     public ChargeBuilder withActive(boolean active) {
-	this.active = active;
-	this.hasActive = true;
-	return this;
+        this.active = active;
+        this.hasActive = true;
+        return this;
     }
 
     public ChargeBuilder withAmount(double amount) {
-	this.amount = amount;
-	this.hasAmount = true;
-	return this;
+        this.amount = amount;
+        this.hasAmount = true;
+        return this;
     }
 
     public ChargeBuilder withFeeInterval(int feeInterval) {
-	this.feeInterval = feeInterval;
-	this.hasFeeInterval = true;
-	return this;
+        this.feeInterval = feeInterval;
+        this.hasFeeInterval = true;
+        return this;
     }
 
     public ChargeBuilder withFeeFrequency(ChargeFrequency feeFrequency) {
-	this.feeFrequency = feeFrequency;
-	this.hasFeeFrequency = true;
-	return this;
+        this.feeFrequency = feeFrequency;
+        this.hasFeeFrequency = true;
+        return this;
     }
 
     public ChargeBuilder withLocale(String locale) {
-	this.locale = locale;
-	this.hasLocale = true;
-	return this;
+        this.locale = locale;
+        this.hasLocale = true;
+        return this;
     }
 
     public ChargeBuilder withMonthDayFormat(String monthDayFormat) {
-	this.monthDayFormat = monthDayFormat;
-	this.hasMonthDayFormat = true;
-	return this;
+        this.monthDayFormat = monthDayFormat;
+        this.hasMonthDayFormat = true;
+        return this;
     }
 
     public ChargeBuilder withFeeOnMonthDay(Date feeOnMonthDay) {
-	this.feeOnMonthDay = feeOnMonthDay;
-	this.hasFeeOnMonthDay = true;
-	return this;
+        this.feeOnMonthDay = feeOnMonthDay;
+        this.hasFeeOnMonthDay = true;
+        return this;
     }
 
 }

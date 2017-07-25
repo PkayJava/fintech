@@ -40,6 +40,7 @@ public class ChargeBrowsePage extends Page {
     protected void onInitialize() {
         super.onInitialize();
         this.provider = new JdbcProvider("m_charge");
+        this.provider.applyWhere("is_deleted", "is_deleted = 0");
         this.provider.boardField("id", "id", Long.class);
         this.provider.boardField("name", "name", String.class);
         this.provider.boardField("case charge_applies_to_enum when " + ChargeType.Client.getLiteral() + " then '" + ChargeType.Client.getDescription() + "' when " + ChargeType.Loan.getLiteral() + " then '" + ChargeType.Loan.getDescription() + "' when " + ChargeType.SavingDeposit.getLiteral() + " then '" + ChargeType.SavingDeposit.getDescription() + "' when " + ChargeType.Share.getLiteral() + " then '" + ChargeType.Share.getDescription() + "' else 'N/A' end", "charge_apply", String.class);
@@ -101,7 +102,7 @@ public class ChargeBrowsePage extends Page {
         String name = (String) model.get(jdbcColumn);
         String charge = (String) model.get("charge_apply");
         PageParameters parameters = new PageParameters();
-        parameters.add("charge", model.get("id"));
+        parameters.add("chargeId", model.get("id"));
         if (ChargeType.Loan.getDescription().equals(charge)) {
             return new LinkCell(LoanChargeModifyPage.class, parameters, Model.of(name));
         } else if (ChargeType.Client.getDescription().equals(charge)) {
