@@ -2,7 +2,7 @@ package com.angkorteam.adminlte;
 
 import com.angkorteam.fintech.dto.TellerState;
 
-public enum Teller { 
+public enum Teller {
 
     TA001_Office01("Alberto Giubilini", Office.Office01, TellerState.Active),
     TI002_Office01("Allen Buchanan", Office.Office01, TellerState.Inactive),
@@ -61,7 +61,7 @@ public enum Teller {
 
     private TellerState status;
 
-    private Teller(String name, Office office, TellerState status) {
+    Teller(String name, Office office, TellerState status) {
         this.name = name;
         this.office = office;
         this.status = status;

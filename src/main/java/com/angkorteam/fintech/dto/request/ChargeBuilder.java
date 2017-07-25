@@ -57,7 +57,7 @@ public class ChargeBuilder implements Serializable {
     private boolean hasIncomeAccountId;
 
     private String monthDayFormat = "dd MMMM";
-    private boolean hasMonthDayFormat;
+    private boolean hasMonthDayFormat = true;
 
     private Date feeOnMonthDay;
     private boolean hasFeeOnMonthDay;

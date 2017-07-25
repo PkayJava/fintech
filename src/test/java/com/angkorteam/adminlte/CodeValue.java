@@ -47,29 +47,29 @@ public enum CodeValue {
     Code0043(Code.COUNTRY, "Country01", "Country 02"),
     Code0044(Code.ADDRESS_TYPE, "AddressType01", "Address Type 01"),
     Code0045(Code.ADDRESS_TYPE, "AddressType01", "Address Type 02");
-    
+
     private Code code;
 
     private String value;
 
     private String description;
 
-    private CodeValue(Code code, String value, String description) {
-	this.code = code;
-	this.value = value;
-	this.description = description;
+    CodeValue(Code code, String value, String description) {
+        this.code = code;
+        this.value = value;
+        this.description = description;
     }
 
     public Code getCode() {
-	return code;
+        return code;
     }
 
     public String getValue() {
-	return value;
+        return value;
     }
 
     public String getDescription() {
-	return description;
+        return description;
     }
 
 }

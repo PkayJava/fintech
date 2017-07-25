@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.pages.charge;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -56,7 +57,7 @@ public class ShareChargeModifyPage extends Page {
     private Select2SingleChoice<Option> chargeCalculationField;
     private TextFeedbackPanel chargeCalculationFeedback;
 
-    private double amountValue;
+    private Double amountValue;
     private TextField<Double> amountField;
     private TextFeedbackPanel amountFeedback;
 
@@ -136,7 +137,11 @@ public class ShareChargeModifyPage extends Page {
         this.chargeCalculationFeedback = new TextFeedbackPanel("chargeCalculationFeedback", this.chargeCalculationField);
         this.form.add(this.chargeCalculationFeedback);
 
-        this.amountValue = (Double) chargeObject.get("amount");
+        if (chargeObject.get("amount") instanceof BigDecimal) {
+            this.amountValue = ((BigDecimal) chargeObject.get("amount")).doubleValue();
+        } else if (chargeObject.get("amount") instanceof Double) {
+            this.amountValue = (Double) chargeObject.get("amount");
+        }
         this.amountField = new TextField<>("amountField", new PropertyModel<>(this, "amountValue"));
         this.amountField.setRequired(true);
         this.form.add(this.amountField);
@@ -151,7 +156,7 @@ public class ShareChargeModifyPage extends Page {
         this.form.add(this.activeFeedback);
 
         this.taxGroupValue = jdbcTemplate.queryForObject("select id, name text from m_tax_group where id = ?", new OptionMapper(), chargeObject.get("tax_group_id"));
-        this.taxGroupProvider = new OptionSingleChoiceProvider("m_taxGroup", "id", "name");
+        this.taxGroupProvider = new OptionSingleChoiceProvider("m_tax_group", "id", "name");
         this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
         this.form.add(this.taxGroupField);
         this.taxGroupFeedback = new TextFeedbackPanel("taxGroupFeedback", this.taxGroupField);

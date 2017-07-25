@@ -49,7 +49,7 @@ public class ShareChargeCreatePage extends Page {
     private Select2SingleChoice<Option> chargeCalculationField;
     private TextFeedbackPanel chargeCalculationFeedback;
 
-    private double amountValue;
+    private Double amountValue;
     private TextField<Double> amountField;
     private TextFeedbackPanel amountFeedback;
 
@@ -82,7 +82,8 @@ public class ShareChargeCreatePage extends Page {
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
         this.form.add(this.nameFeedback);
 
-        this.currencyProvider = new OptionSingleChoiceProvider("m_currency", "id", "name");
+        this.currencyProvider = new OptionSingleChoiceProvider("m_organisation_currency", "code", "name",
+                "concat(name,' [', code,']')");
         this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
         this.currencyField.setRequired(true);
         this.form.add(this.currencyField);
@@ -119,7 +120,7 @@ public class ShareChargeCreatePage extends Page {
         this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
         this.form.add(this.activeFeedback);
 
-        this.taxGroupProvider = new OptionSingleChoiceProvider("m_taxGroup", "id", "name");
+        this.taxGroupProvider = new OptionSingleChoiceProvider("m_tax_group", "id", "name");
         this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
         this.form.add(this.taxGroupField);
         this.taxGroupFeedback = new TextFeedbackPanel("taxGroupFeedback", this.taxGroupField);

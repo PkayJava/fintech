@@ -58,7 +58,7 @@ public class ClientChargeCreatePage extends Page {
     private Select2SingleChoice<Option> chargePaymentField;
     private TextFeedbackPanel chargePaymentFeedback;
 
-    private double amountValue;
+    private Double amountValue;
     private TextField<Double> amountField;
     private TextFeedbackPanel amountFeedback;
 
@@ -157,7 +157,7 @@ public class ClientChargeCreatePage extends Page {
         this.penaltyFeedback = new TextFeedbackPanel("penaltyFeedback", this.penaltyField);
         this.form.add(this.penaltyFeedback);
 
-        this.taxGroupProvider = new OptionSingleChoiceProvider("m_taxGroup", "id", "name");
+        this.taxGroupProvider = new OptionSingleChoiceProvider("m_tax_group", "id", "name");
         this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
         this.taxGroupField.add(new OnChangeAjaxBehavior());
         this.form.add(this.taxGroupField);

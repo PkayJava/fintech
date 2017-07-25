@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.MissingResourceException;
 
 /**
  * Created by socheatkhauv on 6/17/17.
@@ -55,7 +56,22 @@ public class Page extends DashboardPage {
             JSONArray array = (JSONArray) node.getObject().get("errors");
             for (Object object : array) {
                 JSONObject o = (JSONObject) object;
-                error((String) o.get("defaultUserMessage"));
+                String defaultUserMessage = (String) o.get("defaultUserMessage");
+                String userMessageGlobalisationCode = (String) o.get("userMessageGlobalisationCode");
+                if (userMessageGlobalisationCode != null && !"".equals(userMessageGlobalisationCode)) {
+                    String message = null;
+                    try {
+                        message = getString(userMessageGlobalisationCode);
+                    } catch (MissingResourceException e) {
+                    }
+                    if (message == null || "".equals(message)) {
+                        error(defaultUserMessage + " due to this reason " + userMessageGlobalisationCode);
+                    } else {
+                        error(defaultUserMessage + " due to this reason " + message);
+                    }
+                } else {
+                    error(defaultUserMessage);
+                }
             }
             return true;
         } else {

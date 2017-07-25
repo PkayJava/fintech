@@ -2,11 +2,16 @@ package com.angkorteam.adminlte;
 
 public enum Currency {
 
-    USD("USD"), KHR("KHR"), MYR("MYR"), SGD("SGD"), THB("THB");
+    USD("USD"),
+    VND("VND"),
+    KHR("KHR"),
+    MYR("MYR"),
+    SGD("SGD"),
+    THB("THB");
 
     private String literal;
 
-    private Currency(String literal) {
+    Currency(String literal) {
         this.literal = literal;
     }
 

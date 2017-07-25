@@ -1,7 +1,9 @@
 package com.angkorteam.fintech.pages.charge;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
+import com.angkorteam.fintech.dto.*;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
@@ -10,10 +12,6 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.dto.ChargeCalculation;
-import com.angkorteam.fintech.dto.ChargeFrequency;
-import com.angkorteam.fintech.dto.ChargePayment;
-import com.angkorteam.fintech.dto.ChargeTime;
 import com.angkorteam.fintech.dto.request.ChargeBuilder;
 import com.angkorteam.fintech.helper.ChargeHelper;
 import com.angkorteam.fintech.provider.ChargeCalculationProvider;
@@ -174,7 +172,11 @@ public class LoanChargeModifyPage extends Page {
         this.chargePaymentFeedback = new TextFeedbackPanel("chargePaymentFeedback", this.chargePaymentField);
         this.form.add(this.chargePaymentFeedback);
 
-        this.amountValue = (Double) chargeObject.get("amount");
+        if (chargeObject.get("amount") instanceof BigDecimal) {
+            this.amountValue = ((BigDecimal) chargeObject.get("amount")).doubleValue();
+        } else if (chargeObject.get("amount") instanceof Double) {
+            this.amountValue = (Double) chargeObject.get("amount");
+        }
         this.amountField = new TextField<>("amountField", new PropertyModel<>(this, "amountValue"));
         this.amountField.setRequired(true);
         this.amountField.add(new OnChangeAjaxBehavior());
@@ -226,6 +228,22 @@ public class LoanChargeModifyPage extends Page {
         this.form.add(this.frequencyIntervalField);
         this.frequencyIntervalFeedback = new TextFeedbackPanel("frequencyIntervalFeedback", this.frequencyIntervalField);
         this.form.add(this.frequencyIntervalFeedback);
+
+        if (this.chargeTimeValue != null) {
+            ChargeTime chargeTime = ChargeTime.valueOf(this.chargeTimeValue.getId());
+
+            if (chargeTime == ChargeTime.OverdueFees) {
+                this.chargeFrequencyProvider.setValues(ChargeFrequency.Day, ChargeFrequency.Week, ChargeFrequency.Month, ChargeFrequency.Year);
+            } else {
+                this.chargeFrequencyProvider.setValues();
+            }
+
+            if (chargeTime == ChargeTime.TrancheDisbursement) {
+                this.chargeCalculationProvider.setValues(ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount, ChargeCalculation.DisbursementAmount);
+            } else {
+                this.chargeCalculationProvider.setValues(ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount, ChargeCalculation.LoanAmountInterest, ChargeCalculation.Interest);
+            }
+        }
     }
 
     private void chargePaymentFieldUpdate(AjaxRequestTarget target) {

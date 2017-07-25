@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.pages.charge;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -177,7 +178,11 @@ public class SavingDepositChargeModifyPage extends Page {
         this.repeatEveryFeedback = new TextFeedbackPanel("repeatEveryFeedback", this.repeatEveryField);
         this.form.add(this.repeatEveryFeedback);
 
-        this.amountValue = (Double) chargeObject.get("amount");
+        if (chargeObject.get("amount") instanceof BigDecimal) {
+            this.amountValue = ((BigDecimal) chargeObject.get("amount")).doubleValue();
+        } else if (chargeObject.get("amount") instanceof Double) {
+            this.amountValue = (Double) chargeObject.get("amount");
+        }
         this.amountField = new TextField<>("amountField", new PropertyModel<>(this, "amountValue"));
         this.amountField.setRequired(true);
         this.amountField.add(new OnChangeAjaxBehavior());
@@ -227,6 +232,8 @@ public class SavingDepositChargeModifyPage extends Page {
     }
 
     private void chargeTimeFieldUpdate(AjaxRequestTarget target) {
+        this.dueDateValue = null;
+        this.repeatEveryValue = null;
         this.dueDateField.setRequired(false);
         this.repeatEveryField.setRequired(false);
         ChargeTime chargeTime = ChargeTime.valueOf(this.chargeTimeValue.getId());
