@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.helper;
 
+import com.angkorteam.fintech.IMifos;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -8,13 +9,13 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class TaxGroupHelper {
 
-    public static JsonNode create(JsonNode taxGroup) throws UnirestException {
-        return Helper.performServerPost("/fineract-provider/api/v1/taxes/group", taxGroup);
+    public static JsonNode create(IMifos session, JsonNode object) throws UnirestException {
+        return Helper.performServerPost(session, "/api/v1/taxes/group", object);
     }
 
-    public static JsonNode update(JsonNode taxGroup) throws UnirestException {
-        String id = (String) taxGroup.getObject().remove("id");
-        return Helper.performServerPut("/fineract-provider/api/v1/taxes/group/" + id, taxGroup);
+    public static JsonNode update(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPut(session, "/api/v1/taxes/group/" + id, object);
     }
 
 }

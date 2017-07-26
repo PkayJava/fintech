@@ -1,17 +1,18 @@
 package com.angkorteam.fintech.provider;
 
-import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.apache.wicket.extensions.markup.html.repeater.util.SortableTreeProvider;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.wicket.extensions.markup.html.repeater.util.SortableTreeProvider;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.spring.JdbcTemplate;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * Created by socheatkhauv on 6/25/17.
@@ -34,7 +35,8 @@ public class AccountHierarchyProvider extends SortableTreeProvider<Map<String, O
             return true;
         } else {
             JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-            int count = jdbcTemplate.queryForObject("select count(*) from acc_gl_account where parent_id = ?", int.class, node.get("id"));
+            int count = jdbcTemplate.queryForObject("select count(*) from acc_gl_account where parent_id = ?",
+                    int.class, node.get("id"));
             return count > 0;
         }
     }
@@ -53,35 +55,40 @@ public class AccountHierarchyProvider extends SortableTreeProvider<Map<String, O
                 }
                 return roots.iterator();
             } else if ("Asset".equals(node.get("name"))) {
-                List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from acc_gl_account where parent_id is null and classification_enum = 1");
+                List<Map<String, Object>> children = jdbcTemplate.queryForList(
+                        "select * from acc_gl_account where parent_id is null and classification_enum = 1");
                 if (children == null) {
                     return new java.util.ArrayList<Map<String, Object>>().listIterator();
                 } else {
                     return children.iterator();
                 }
             } else if ("Liability".equals(node.get("name"))) {
-                List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from acc_gl_account where parent_id is null and classification_enum = 2");
+                List<Map<String, Object>> children = jdbcTemplate.queryForList(
+                        "select * from acc_gl_account where parent_id is null and classification_enum = 2");
                 if (children == null) {
                     return new java.util.ArrayList<Map<String, Object>>().listIterator();
                 } else {
                     return children.iterator();
                 }
             } else if ("Equity".equals(node.get("name"))) {
-                List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from acc_gl_account where parent_id is null and classification_enum = 3");
+                List<Map<String, Object>> children = jdbcTemplate.queryForList(
+                        "select * from acc_gl_account where parent_id is null and classification_enum = 3");
                 if (children == null) {
                     return new java.util.ArrayList<Map<String, Object>>().listIterator();
                 } else {
                     return children.iterator();
                 }
             } else if ("Income".equals(node.get("name"))) {
-                List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from acc_gl_account where parent_id is null and classification_enum = 4");
+                List<Map<String, Object>> children = jdbcTemplate.queryForList(
+                        "select * from acc_gl_account where parent_id is null and classification_enum = 4");
                 if (children == null) {
                     return new java.util.ArrayList<Map<String, Object>>().listIterator();
                 } else {
                     return children.iterator();
                 }
             } else if ("Expense".equals(node.get("name"))) {
-                List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from acc_gl_account where parent_id is null and classification_enum = 5");
+                List<Map<String, Object>> children = jdbcTemplate.queryForList(
+                        "select * from acc_gl_account where parent_id is null and classification_enum = 5");
                 if (children == null) {
                     return new java.util.ArrayList<Map<String, Object>>().listIterator();
                 } else {
@@ -92,7 +99,8 @@ public class AccountHierarchyProvider extends SortableTreeProvider<Map<String, O
             }
         } else {
             JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-            List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from acc_gl_account where parent_id = ?", node.get("id"));
+            List<Map<String, Object>> children = jdbcTemplate
+                    .queryForList("select * from acc_gl_account where parent_id = ?", node.get("id"));
             if (children == null) {
                 return new java.util.ArrayList<Map<String, Object>>().listIterator();
             } else {

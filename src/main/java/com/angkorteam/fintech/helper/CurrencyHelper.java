@@ -1,24 +1,24 @@
 package com.angkorteam.fintech.helper;
 
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.List;
+import com.angkorteam.fintech.IMifos;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/26/17.
  */
 public class CurrencyHelper {
 
-    private static final String CURRENCY_URL = "/fineract-provider/api/v1/currencies";
-
-    public static JsonNode update(final List<String> currencies) throws UnirestException {
+    public static JsonNode update(IMifos session, List<String> currencies) throws UnirestException {
         JSONArray array = new JSONArray(currencies);
         JsonNode body = new com.angkorteam.fintech.dto.JsonNode(new JSONObject());
         body.getObject().put("currencies", array);
-        return Helper.performServerPut(CURRENCY_URL, body);
+        return Helper.performServerPut(session, "/api/v1/currencies", body);
     }
 
 }

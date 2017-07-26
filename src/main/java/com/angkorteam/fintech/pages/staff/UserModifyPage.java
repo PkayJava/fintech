@@ -13,6 +13,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.request.AppUserBuilder;
 import com.angkorteam.fintech.helper.AppUserHelper;
 import com.angkorteam.framework.SpringBean;
@@ -208,7 +209,7 @@ public class UserModifyPage extends Page {
 
 	JsonNode node = null;
 	try {
-	    node = AppUserHelper.update(builder.build());
+	    node = AppUserHelper.update((Session) getSession(), builder.build());
 	} catch (UnirestException e) {
 	    error(e.getMessage());
 	    return;
@@ -237,7 +238,7 @@ public class UserModifyPage extends Page {
 
 	JsonNode node = null;
 	try {
-	    node = AppUserHelper.update(builder.build());
+	    node = AppUserHelper.update((Session) getSession(), builder.build());
 	} catch (UnirestException e) {
 	    error(e.getMessage());
 	    return;

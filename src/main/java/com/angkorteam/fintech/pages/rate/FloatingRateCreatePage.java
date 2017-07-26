@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages.rate;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.request.FloatingRateBuilder;
 import com.angkorteam.fintech.helper.FloatingRateHelper;
 import com.angkorteam.fintech.pages.staff.StaffBrowsePage;
@@ -79,153 +80,156 @@ public class FloatingRateCreatePage extends Page {
 
     @Override
     protected void onInitialize() {
-        super.onInitialize();
+	super.onInitialize();
 
-        this.rateForm = new Form<>("rateForm");
-        add(this.rateForm);
+	this.rateForm = new Form<>("rateForm");
+	add(this.rateForm);
 
-        this.addButton = new AjaxButton("addButton");
-        this.addButton.setOnSubmit(this::addButtonSubmit);
-        this.rateForm.add(this.addButton);
+	this.addButton = new AjaxButton("addButton");
+	this.addButton.setOnSubmit(this::addButtonSubmit);
+	this.rateForm.add(this.addButton);
 
-        this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this, "fromDateValue"));
-        this.fromDateField.setRequired(true);
-        this.rateForm.add(this.fromDateField);
-        this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
-        this.rateForm.add(this.fromDateFeedback);
+	this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this, "fromDateValue"));
+	this.fromDateField.setRequired(true);
+	this.rateForm.add(this.fromDateField);
+	this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
+	this.rateForm.add(this.fromDateFeedback);
 
-        this.interestRateField = new TextField<>("interestRateField", new PropertyModel<>(this, "interestRateValue"));
-        this.interestRateField.setRequired(true);
-        this.rateForm.add(this.interestRateField);
-        this.interestRateFeedback = new TextFeedbackPanel("interestRateFeedback", this.interestRateField);
-        this.rateForm.add(this.interestRateFeedback);
+	this.interestRateField = new TextField<>("interestRateField", new PropertyModel<>(this, "interestRateValue"));
+	this.interestRateField.setRequired(true);
+	this.rateForm.add(this.interestRateField);
+	this.interestRateFeedback = new TextFeedbackPanel("interestRateFeedback", this.interestRateField);
+	this.rateForm.add(this.interestRateFeedback);
 
-        this.differentialField = new CheckBox("differentialField", new PropertyModel<>(this, "differentialValue"));
-        this.differentialField.setRequired(true);
-        this.rateForm.add(this.differentialField);
-        this.differentialFeedback = new TextFeedbackPanel("differentialFeedback", this.differentialField);
-        this.rateForm.add(this.differentialFeedback);
+	this.differentialField = new CheckBox("differentialField", new PropertyModel<>(this, "differentialValue"));
+	this.differentialField.setRequired(true);
+	this.rateForm.add(this.differentialField);
+	this.differentialFeedback = new TextFeedbackPanel("differentialFeedback", this.differentialField);
+	this.rateForm.add(this.differentialFeedback);
 
-        this.form = new Form<>("form");
-        add(this.form);
+	this.form = new Form<>("form");
+	add(this.form);
 
-        this.saveButton = new Button("saveButton");
-        this.saveButton.setOnSubmit(this::saveButtonSubmit);
-        this.form.add(this.saveButton);
+	this.saveButton = new Button("saveButton");
+	this.saveButton.setOnSubmit(this::saveButtonSubmit);
+	this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", StaffBrowsePage.class);
-        this.form.add(this.closeLink);
+	this.closeLink = new BookmarkablePageLink<>("closeLink", StaffBrowsePage.class);
+	this.form.add(this.closeLink);
 
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setRequired(true);
-        this.form.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.form.add(this.nameFeedback);
+	this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+	this.nameField.setRequired(true);
+	this.form.add(this.nameField);
+	this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+	this.form.add(this.nameFeedback);
 
-        this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
-        this.activeField.setRequired(true);
-        this.form.add(this.activeField);
-        this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
-        this.form.add(this.activeFeedback);
+	this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
+	this.activeField.setRequired(true);
+	this.form.add(this.activeField);
+	this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
+	this.form.add(this.activeFeedback);
 
-        this.baseLendingField = new CheckBox("baseLendingField", new PropertyModel<>(this, "baseLendingValue"));
-        this.baseLendingField.setRequired(true);
-        this.form.add(this.baseLendingField);
-        this.baseLendingFeedback = new TextFeedbackPanel("baseLendingFeedback", this.baseLendingField);
-        this.form.add(this.baseLendingFeedback);
+	this.baseLendingField = new CheckBox("baseLendingField", new PropertyModel<>(this, "baseLendingValue"));
+	this.baseLendingField.setRequired(true);
+	this.form.add(this.baseLendingField);
+	this.baseLendingFeedback = new TextFeedbackPanel("baseLendingFeedback", this.baseLendingField);
+	this.form.add(this.baseLendingFeedback);
 
-        List<IColumn<Map<String, Object>, String>> rateColumn = Lists.newArrayList();
-        rateColumn.add(new TextColumn(Model.of("From Date"), "fromDate", "fromDate", this::rateFromDateColumn));
-        rateColumn.add(new TextColumn(Model.of("Interest Rate"), "interestRate", "interestRate", this::rateInterestRateColumn));
-        rateColumn.add(new TextColumn(Model.of("Is Differential"), "differential", "differential", this::rateDifferentialColumn));
-        rateColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::rateActionItem, this::rateActionClick));
-        this.rateProvider = new ListDataProvider(this.rateValue);
-        this.rateTable = new DataTable<>("rateTable", rateColumn, this.rateProvider, 20);
-        this.form.add(this.rateTable);
-        this.rateTable.addTopToolbar(new HeadersToolbar<>(this.rateTable, this.rateProvider));
-        this.rateTable.addBottomToolbar(new NoRecordsToolbar(this.rateTable));
+	List<IColumn<Map<String, Object>, String>> rateColumn = Lists.newArrayList();
+	rateColumn.add(new TextColumn(Model.of("From Date"), "fromDate", "fromDate", this::rateFromDateColumn));
+	rateColumn.add(new TextColumn(Model.of("Interest Rate"), "interestRate", "interestRate",
+		this::rateInterestRateColumn));
+	rateColumn.add(new TextColumn(Model.of("Is Differential"), "differential", "differential",
+		this::rateDifferentialColumn));
+	rateColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::rateActionItem, this::rateActionClick));
+	this.rateProvider = new ListDataProvider(this.rateValue);
+	this.rateTable = new DataTable<>("rateTable", rateColumn, this.rateProvider, 20);
+	this.form.add(this.rateTable);
+	this.rateTable.addTopToolbar(new HeadersToolbar<>(this.rateTable, this.rateProvider));
+	this.rateTable.addBottomToolbar(new NoRecordsToolbar(this.rateTable));
     }
 
     private void rateActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget target) {
-        if ("delete".equals(s)) {
-            int index = -1;
-            for (int i = 0; i < this.rateValue.size(); i++) {
-                Map<String, Object> column = this.rateValue.get(i);
-                if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
-                    index = i;
-                    break;
-                }
-            }
-            if (index >= 0) {
-                this.rateValue.remove(index);
-            }
-            target.add(this.rateTable);
-        }
+	if ("delete".equals(s)) {
+	    int index = -1;
+	    for (int i = 0; i < this.rateValue.size(); i++) {
+		Map<String, Object> column = this.rateValue.get(i);
+		if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+		    index = i;
+		    break;
+		}
+	    }
+	    if (index >= 0) {
+		this.rateValue.remove(index);
+	    }
+	    target.add(this.rateTable);
+	}
     }
 
     private List<ActionItem> rateActionItem(String s, Map<String, Object> stringObjectMap) {
-        List<ActionItem> actions = Lists.newArrayList();
-        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
-        return actions;
+	List<ActionItem> actions = Lists.newArrayList();
+	actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+	return actions;
     }
 
     private ItemPanel rateInterestRateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double interestRate = (Double) model.get(jdbcColumn);
-        return new TextCell(Model.of(interestRate == null ? "" : String.valueOf(interestRate)));
+	Double interestRate = (Double) model.get(jdbcColumn);
+	return new TextCell(Model.of(interestRate == null ? "" : String.valueOf(interestRate)));
     }
 
     private ItemPanel rateFromDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date fromDate = (Date) model.get(jdbcColumn);
-        if (fromDate == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(DateFormatUtils.format(fromDate, "yyyy-MM-dd")));
-        }
+	Date fromDate = (Date) model.get(jdbcColumn);
+	if (fromDate == null) {
+	    return new TextCell(Model.of(""));
+	} else {
+	    return new TextCell(Model.of(DateFormatUtils.format(fromDate, "yyyy-MM-dd")));
+	}
     }
 
     private ItemPanel rateDifferentialColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean differential = (Boolean) model.get(jdbcColumn);
-        if (differential != null && differential) {
-            return new BadgeCell(BadgeType.Success, Model.of("Yes"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("No"));
-        }
+	Boolean differential = (Boolean) model.get(jdbcColumn);
+	if (differential != null && differential) {
+	    return new BadgeCell(BadgeType.Success, Model.of("Yes"));
+	} else {
+	    return new BadgeCell(BadgeType.Danger, Model.of("No"));
+	}
     }
 
     private void addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
-        Map<String, Object> rate = Maps.newHashMap();
-        rate.put("uuid", UUID.randomUUID().toString());
-        rate.put("fromDate", this.fromDateValue);
-        rate.put("interestRate", this.interestRateValue);
-        rate.put("differential", this.differentialValue);
-        this.rateValue.add(rate);
-        this.fromDateValue = null;
-        this.interestRateValue = null;
-        this.differentialValue = null;
-        target.add(this.form);
-        target.add(this.rateForm);
+	Map<String, Object> rate = Maps.newHashMap();
+	rate.put("uuid", UUID.randomUUID().toString());
+	rate.put("fromDate", this.fromDateValue);
+	rate.put("interestRate", this.interestRateValue);
+	rate.put("differential", this.differentialValue);
+	this.rateValue.add(rate);
+	this.fromDateValue = null;
+	this.interestRateValue = null;
+	this.differentialValue = null;
+	target.add(this.form);
+	target.add(this.rateForm);
     }
 
     private void saveButtonSubmit(Button button) {
-        FloatingRateBuilder builder = new FloatingRateBuilder();
-        builder.withActive(this.activeValue);
-        builder.withBaseLendingRate(this.baseLendingValue);
-        builder.withName(this.nameValue);
-        for (Map<String, Object> rate : this.rateValue) {
-            builder.withRatePeriod((Date) rate.get("fromDate"), (Double) rate.get("interestRate"), (Boolean) rate.get("differential"));
-        }
+	FloatingRateBuilder builder = new FloatingRateBuilder();
+	builder.withActive(this.activeValue);
+	builder.withBaseLendingRate(this.baseLendingValue);
+	builder.withName(this.nameValue);
+	for (Map<String, Object> rate : this.rateValue) {
+	    builder.withRatePeriod((Date) rate.get("fromDate"), (Double) rate.get("interestRate"),
+		    (Boolean) rate.get("differential"));
+	}
 
-        JsonNode node = null;
-        try {
-            node = FloatingRateHelper.create(builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
-        if (reportError(node)) {
-            return;
-        }
-        setResponsePage(FloatingRateCreatePage.class);
+	JsonNode node = null;
+	try {
+	    node = FloatingRateHelper.create((Session) getSession(), builder.build());
+	} catch (UnirestException e) {
+	    error(e.getMessage());
+	    return;
+	}
+	if (reportError(node)) {
+	    return;
+	}
+	setResponsePage(FloatingRateCreatePage.class);
     }
 
 }

@@ -1,6 +1,18 @@
 package com.angkorteam.fintech.pages;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.helper.CurrencyHelper;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.SpringBean;
@@ -8,7 +20,13 @@ import com.angkorteam.framework.share.provider.JdbcProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -18,16 +36,6 @@ import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -58,9 +66,12 @@ public class CurrencyConfigurationPage extends Page {
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
         columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("ID"), "id", "id", this::idColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Code"), "code", "code", this::codeColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Symbol"), "symbol", "symbol", this::symbolColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Code"), "code", "code",
+                this::codeColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name",
+                this::nameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Symbol"), "symbol", "symbol",
+                this::symbolColumn));
         columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
@@ -77,9 +88,11 @@ public class CurrencyConfigurationPage extends Page {
         this.addButton.setOnSubmit(this::addButtonSubmit);
         this.form.add(this.addButton);
 
-        this.currencyProvider = new OptionSingleChoiceProvider("m_currency", "code", "name", "concat(name,' [', code,']')");
+        this.currencyProvider = new OptionSingleChoiceProvider("m_currency", "code", "name",
+                "concat(name,' [', code,']')");
         this.currencyProvider.applyWhere("code", "code not in (select code from m_organisation_currency)");
-        this.currencyField = new Select2SingleChoice<>("currencyField", new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
+        this.currencyField = new Select2SingleChoice<>("currencyField", new PropertyModel<>(this, "currencyValue"),
+                this.currencyProvider);
         this.currencyField.setRequired(true);
         this.form.add(this.currencyField);
         this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
@@ -88,10 +101,11 @@ public class CurrencyConfigurationPage extends Page {
 
     private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        List<String> codes = jdbcTemplate.queryForList("select code from m_organisation_currency where code not in (?)", String.class, stringObjectMap.get("code"));
+        List<String> codes = jdbcTemplate.queryForList("select code from m_organisation_currency where code not in (?)",
+                String.class, stringObjectMap.get("code"));
         JsonNode node = null;
         try {
-            node = CurrencyHelper.update(codes);
+            node = CurrencyHelper.update((Session) getSession(), codes);
         } catch (UnirestException e) {
             error(e.getMessage());
             return;
@@ -116,7 +130,7 @@ public class CurrencyConfigurationPage extends Page {
 
         JsonNode node = null;
         try {
-            node = CurrencyHelper.update(codes);
+            node = CurrencyHelper.update((Session) getSession(), codes);
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

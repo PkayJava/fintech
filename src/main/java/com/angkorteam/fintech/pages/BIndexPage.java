@@ -1,15 +1,8 @@
 package com.angkorteam.fintech.pages;
 
-import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.framework.models.*;
-import com.angkorteam.framework.wicket.DashboardPage;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.*;
-import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
-import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -25,8 +18,26 @@ import org.apache.wicket.validation.validator.RangeValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.Map;
+import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.framework.models.NavBarMenu;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.models.PageFooter;
+import com.angkorteam.framework.models.PageHeader;
+import com.angkorteam.framework.models.PageLogo;
+import com.angkorteam.framework.models.SideMenu;
+import com.angkorteam.framework.models.UserInfo;
+import com.angkorteam.framework.wicket.DashboardPage;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMultipleChoiceProvider;
+import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
+import com.google.common.collect.Lists;
 
 /**
  * Created by socheatkhauv on 6/11/17.
@@ -104,7 +115,8 @@ public class BIndexPage extends DashboardPage {
 
         this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "name"));
         this.nameField.setRequired(true);
-//        this.nameField.add(new UniqueRecordValidator<>("ecommerce_product", "name"));
+        // this.nameField.add(new UniqueRecordValidator<>("ecommerce_product",
+        // "name"));
         this.form.add(this.nameField);
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
         this.form.add(this.nameFeedback);
@@ -120,15 +132,18 @@ public class BIndexPage extends DashboardPage {
         this.normalPriceFeedback = new TextFeedbackPanel("normalPriceFeedback", this.normalPriceField);
         this.form.add(this.normalPriceFeedback);
 
-        OptionSingleChoiceProvider categoryOption = new OptionSingleChoiceProvider("ecommerce_category", "ecommerce_category_id", "name", "path");
+        OptionSingleChoiceProvider categoryOption = new OptionSingleChoiceProvider("ecommerce_category",
+                "ecommerce_category_id", "name", "path");
         categoryOption.applyWhere("enabled", "enabled = true");
-        this.categoryField = new Select2SingleChoice<>("categoryField", new PropertyModel<>(this, "category"), categoryOption);
+        this.categoryField = new Select2SingleChoice<>("categoryField", new PropertyModel<>(this, "category"),
+                categoryOption);
         this.categoryField.setRequired(true);
         this.form.add(this.categoryField);
         this.categoryFeedback = new TextFeedbackPanel("categoryFeedback", this.categoryField);
         this.form.add(this.categoryFeedback);
 
-        OptionSingleChoiceProvider brandOption = new OptionSingleChoiceProvider("ecommerce_brand", "ecommerce_brand_id", "name");
+        OptionSingleChoiceProvider brandOption = new OptionSingleChoiceProvider("ecommerce_brand", "ecommerce_brand_id",
+                "name");
         brandOption.applyWhere("enabled", "enabled = true");
         this.brandField = new Select2SingleChoice<>("brandField", new PropertyModel<>(this, "brand"), brandOption);
         this.form.add(this.brandField);
@@ -142,7 +157,8 @@ public class BIndexPage extends DashboardPage {
 
         this.reference = StringUtils.upperCase(RandomStringUtils.randomAlphabetic(6));
         this.referenceField = new TextField<>("referenceField", new PropertyModel<>(this, "reference"));
-//        this.referenceField.add(new UniqueRecordValidator<>("ecommerce_product", "reference"));
+        // this.referenceField.add(new
+        // UniqueRecordValidator<>("ecommerce_product", "reference"));
         this.referenceField.setRequired(true);
         this.form.add(this.referenceField);
         this.referenceFeedback = new TextFeedbackPanel("referenceFeedback", this.referenceField);
@@ -154,7 +170,8 @@ public class BIndexPage extends DashboardPage {
         this.mainImageFeedback = new TextFeedbackPanel("mainImageFeedback", this.mainImageField);
         this.form.add(this.mainImageFeedback);
 
-        OptionSingleChoiceProvider colorOption = new OptionSingleChoiceProvider("ecommerce_color", "ecommerce_color_id", "CONCAT(value, ' -> ', reference)");
+        OptionSingleChoiceProvider colorOption = new OptionSingleChoiceProvider("ecommerce_color", "ecommerce_color_id",
+                "CONCAT(value, ' -> ', reference)");
         colorOption.applyWhere("enabled", "enabled = true");
         this.colorField = new Select2SingleChoice<>("colorField", new PropertyModel<>(this, "color"), colorOption);
         this.colorField.setRequired(true);
@@ -162,7 +179,8 @@ public class BIndexPage extends DashboardPage {
         this.colorFeedback = new TextFeedbackPanel("colorFeedback", this.colorField);
         this.form.add(this.colorFeedback);
 
-        OptionSingleChoiceProvider sizeOption = new OptionSingleChoiceProvider("ecommerce_size", "ecommerce_size_id", "CONCAT(value, ' -> ', reference)");
+        OptionSingleChoiceProvider sizeOption = new OptionSingleChoiceProvider("ecommerce_size", "ecommerce_size_id",
+                "CONCAT(value, ' -> ', reference)");
         sizeOption.applyWhere("enabled", "enabled = true");
         this.sizeField = new Select2SingleChoice<>("sizeField", new PropertyModel<>(this, "size"), sizeOption);
         this.sizeField.setRequired(true);
@@ -170,15 +188,18 @@ public class BIndexPage extends DashboardPage {
         this.sizeFeedback = new TextFeedbackPanel("sizeFeedback", this.sizeField);
         this.form.add(this.sizeFeedback);
 
-        this.mainImageHighResField = new FileUploadField("mainImageHighResField", new PropertyModel<>(this, "mainImageHighRes"));
+        this.mainImageHighResField = new FileUploadField("mainImageHighResField",
+                new PropertyModel<>(this, "mainImageHighRes"));
         this.mainImageHighResField.setRequired(true);
         this.form.add(this.mainImageHighResField);
         this.mainImageHighResFeedback = new TextFeedbackPanel("mainImageHighResFeedback", this.mainImageHighResField);
         this.form.add(this.mainImageHighResFeedback);
 
-        OptionMultipleChoiceProvider relatedOption = new OptionMultipleChoiceProvider("ecommerce_product", "ecommerce_product_id", "name");
-        relatedOption.applyWhere("enabled","enabled = true");
-        this.relatedProductField = new Select2MultipleChoice<>("relatedProductField", new PropertyModel<>(this, "relatedProduct"), relatedOption);
+        OptionMultipleChoiceProvider relatedOption = new OptionMultipleChoiceProvider("ecommerce_product",
+                "ecommerce_product_id", "name");
+        relatedOption.applyWhere("enabled", "enabled = true");
+        this.relatedProductField = new Select2MultipleChoice<>("relatedProductField",
+                new PropertyModel<>(this, "relatedProduct"), relatedOption);
         this.form.add(this.relatedProductField);
         this.relatedProductFeedback = new TextFeedbackPanel("relatedProductFeedback", this.relatedProductField);
         this.form.add(this.relatedProductFeedback);
@@ -190,17 +211,19 @@ public class BIndexPage extends DashboardPage {
         this.quantityFeedback = new TextFeedbackPanel("quantityFeedback", this.quantityField);
         this.form.add(this.quantityFeedback);
 
-        this.variantImageField = new MultiFileUploadField("variantImageField", new PropertyModel<>(this, "variantImage"));
+        this.variantImageField = new MultiFileUploadField("variantImageField",
+                new PropertyModel<>(this, "variantImage"));
         this.variantImageField.setRequired(true);
         this.form.add(this.variantImageField);
         this.variantImageFeedback = new TextFeedbackPanel("variantImageFeedback", this.variantImageField);
         this.form.add(this.variantImageFeedback);
 
         this.saveButton = new Button("saveButton");
-//        this.saveButton.setOnSubmit(this::saveButtonOnSubmit);
+        // this.saveButton.setOnSubmit(this::saveButtonOnSubmit);
         this.form.add(this.saveButton);
 
-//        this.closeButton = new BookmarkablePageLink<>("closeButton", ProductBrowsePage.class);
+        // this.closeButton = new BookmarkablePageLink<>("closeButton",
+        // ProductBrowsePage.class);
         this.form.add(this.closeButton);
 
     }
@@ -220,7 +243,8 @@ public class BIndexPage extends DashboardPage {
     public IModel<List<SideMenu>> buildSideMenu() {
         List<SideMenu> sideMenus = Lists.newArrayList();
         sideMenus.add(new SideMenu().buildTypeHeader("MAIN NAVIGATION"));
-//        sideMenus.add(new SideMenu().buildTypeMenu(NewspaperPage.class, null, "Quotation"));
+        // sideMenus.add(new SideMenu().buildTypeMenu(NewspaperPage.class, null,
+        // "Quotation"));
         return Model.ofList(sideMenus);
     }
 

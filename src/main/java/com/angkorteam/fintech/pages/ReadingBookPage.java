@@ -1,5 +1,12 @@
 package com.angkorteam.fintech.pages;
 
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.provider.LaminationProvider;
 import com.angkorteam.fintech.provider.UvProvider;
@@ -9,12 +16,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 
 /**
  * Created by socheatkhauv on 6/18/17.
@@ -175,13 +176,15 @@ public class ReadingBookPage extends Page {
         this.form.add(this.uvFeedback);
 
         LaminationProvider laminationProvider = new LaminationProvider();
-        this.laminationField = new Select2SingleChoice<>("laminationField", new PropertyModel<>(this, "laminationValue"), laminationProvider);
+        this.laminationField = new Select2SingleChoice<>("laminationField",
+                new PropertyModel<>(this, "laminationValue"), laminationProvider);
         this.laminationField.setRequired(true);
         this.form.add(this.laminationField);
         this.laminationFeedback = new TextFeedbackPanel("laminationFeedback", this.laminationField);
         this.form.add(this.laminationFeedback);
 
-        this.waterBaseVanishField = new CheckBox("waterBaseVanishField", new PropertyModel<>(this, "waterBaseVanishValue"));
+        this.waterBaseVanishField = new CheckBox("waterBaseVanishField",
+                new PropertyModel<>(this, "waterBaseVanishValue"));
         this.waterBaseVanishField.setRequired(true);
         this.form.add(this.waterBaseVanishField);
         this.waterBaseVanishFeedback = new TextFeedbackPanel("waterBaseVanishFeedback", this.waterBaseVanishField);
@@ -231,10 +234,12 @@ public class ReadingBookPage extends Page {
         this.packingFeedback = new TextFeedbackPanel("packingFeedback", this.packingField);
         this.form.add(this.packingFeedback);
 
-        this.perforatingNumberField = new TextField<String>("perforatingNumberField", new PropertyModel<>(this, "perforatingNumberValue"));
+        this.perforatingNumberField = new TextField<String>("perforatingNumberField",
+                new PropertyModel<>(this, "perforatingNumberValue"));
         this.perforatingNumberField.setRequired(true);
         this.form.add(this.perforatingNumberField);
-        this.perforatingNumberFeedback = new TextFeedbackPanel("perforatingNumberFeedback", this.perforatingNumberField);
+        this.perforatingNumberFeedback = new TextFeedbackPanel("perforatingNumberFeedback",
+                this.perforatingNumberField);
         this.form.add(this.perforatingNumberFeedback);
 
     }
@@ -245,7 +250,8 @@ public class ReadingBookPage extends Page {
 
     @Override
     public IModel<PageHeader> buildPageHeader() {
-        return Model.of(new PageHeader().setTitle("Reading Book").setDescription("Reading book, Note book, Pass book Quotation"));
+        return Model.of(new PageHeader().setTitle("Reading Book")
+                .setDescription("Reading book, Note book, Pass book Quotation"));
     }
 
 }

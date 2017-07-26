@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages.staff;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.request.StaffBuilder;
 import com.angkorteam.fintech.helper.StaffHelper;
 import com.angkorteam.framework.SpringBean;
@@ -62,93 +63,95 @@ public class StaffModifyPage extends Page {
 
     @Override
     protected void onInitialize() {
-        super.onInitialize();
+	super.onInitialize();
 
-        PageParameters parameters = getPageParameters();
+	PageParameters parameters = getPageParameters();
 
-        this.staffId = parameters.get("staffId").toString("");
+	this.staffId = parameters.get("staffId").toString("");
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+	JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        Map<String, Object> object = jdbcTemplate.queryForMap("select * from m_staff where id = ?", this.staffId);
+	Map<String, Object> object = jdbcTemplate.queryForMap("select * from m_staff where id = ?", this.staffId);
 
-        this.form = new Form<>("form");
-        add(this.form);
+	this.form = new Form<>("form");
+	add(this.form);
 
-        this.saveButton = new Button("saveButton");
-        this.saveButton.setOnSubmit(this::saveButtonSubmit);
-        this.form.add(this.saveButton);
+	this.saveButton = new Button("saveButton");
+	this.saveButton.setOnSubmit(this::saveButtonSubmit);
+	this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", StaffBrowsePage.class);
-        this.form.add(this.closeLink);
+	this.closeLink = new BookmarkablePageLink<>("closeLink", StaffBrowsePage.class);
+	this.form.add(this.closeLink);
 
-        this.firstNameValue = (String) object.get("firstname");
-        this.firstNameField = new TextField<>("firstNameField", new PropertyModel<>(this, "firstNameValue"));
-        this.firstNameField.setRequired(true);
-        this.form.add(this.firstNameField);
-        this.firstNameFeedback = new TextFeedbackPanel("firstNameFeedback", this.firstNameField);
-        this.form.add(this.firstNameFeedback);
+	this.firstNameValue = (String) object.get("firstname");
+	this.firstNameField = new TextField<>("firstNameField", new PropertyModel<>(this, "firstNameValue"));
+	this.firstNameField.setRequired(true);
+	this.form.add(this.firstNameField);
+	this.firstNameFeedback = new TextFeedbackPanel("firstNameFeedback", this.firstNameField);
+	this.form.add(this.firstNameFeedback);
 
-        this.lastNameValue = (String) object.get("lastname");
-        this.lastNameField = new TextField<>("lastNameField", new PropertyModel<>(this, "lastNameValue"));
-        this.lastNameField.setRequired(true);
-        this.form.add(this.lastNameField);
-        this.lastNameFeedback = new TextFeedbackPanel("lastNameFeedback", this.lastNameField);
-        this.form.add(this.lastNameFeedback);
+	this.lastNameValue = (String) object.get("lastname");
+	this.lastNameField = new TextField<>("lastNameField", new PropertyModel<>(this, "lastNameValue"));
+	this.lastNameField.setRequired(true);
+	this.form.add(this.lastNameField);
+	this.lastNameFeedback = new TextFeedbackPanel("lastNameFeedback", this.lastNameField);
+	this.form.add(this.lastNameFeedback);
 
-        this.joinedDateValue = (Date) object.get("joining_date");
-        this.joinedDateField = new DateTextField("joinedDateField", new PropertyModel<>(this, "joinedDateValue"));
-        this.joinedDateField.setRequired(true);
-        this.form.add(this.joinedDateField);
-        this.joinedDateFeedback = new TextFeedbackPanel("joinedDateFeedback", this.joinedDateField);
-        this.form.add(this.joinedDateFeedback);
+	this.joinedDateValue = (Date) object.get("joining_date");
+	this.joinedDateField = new DateTextField("joinedDateField", new PropertyModel<>(this, "joinedDateValue"));
+	this.joinedDateField.setRequired(true);
+	this.form.add(this.joinedDateField);
+	this.joinedDateFeedback = new TextFeedbackPanel("joinedDateFeedback", this.joinedDateField);
+	this.form.add(this.joinedDateFeedback);
 
-        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", new OptionMapper(), object.get("office_id"));
-        this.officeProvider = new OptionSingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
-        this.officeField.setRequired(true);
-        this.form.add(this.officeField);
-        this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
-        this.form.add(this.officeFeedback);
+	this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?",
+		new OptionMapper(), object.get("office_id"));
+	this.officeProvider = new OptionSingleChoiceProvider("m_office", "id", "name");
+	this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
+		this.officeProvider);
+	this.officeField.setRequired(true);
+	this.form.add(this.officeField);
+	this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
+	this.form.add(this.officeFeedback);
 
-        this.mobileNoValue = (String) object.get("mobile_no");
-        this.mobileNoField = new TextField<>("mobileNoField", new PropertyModel<>(this, "mobileNoValue"));
-        this.mobileNoField.setRequired(true);
-        this.form.add(this.mobileNoField);
-        this.mobileNoFeedback = new TextFeedbackPanel("mobileNoFeedback", this.mobileNoField);
-        this.form.add(this.mobileNoFeedback);
+	this.mobileNoValue = (String) object.get("mobile_no");
+	this.mobileNoField = new TextField<>("mobileNoField", new PropertyModel<>(this, "mobileNoValue"));
+	this.mobileNoField.setRequired(true);
+	this.form.add(this.mobileNoField);
+	this.mobileNoFeedback = new TextFeedbackPanel("mobileNoFeedback", this.mobileNoField);
+	this.form.add(this.mobileNoFeedback);
 
-        this.loanOfficerValue = (Boolean) object.get("is_loan_officer");
-        this.loanOfficerField = new CheckBox("loanOfficerField", new PropertyModel<>(this, "loanOfficerValue"));
-        this.loanOfficerField.setRequired(true);
-        this.form.add(this.loanOfficerField);
-        this.loanOfficerFeedback = new TextFeedbackPanel("loanOfficerFeedback", this.loanOfficerField);
-        this.form.add(this.loanOfficerFeedback);
+	this.loanOfficerValue = (Boolean) object.get("is_loan_officer");
+	this.loanOfficerField = new CheckBox("loanOfficerField", new PropertyModel<>(this, "loanOfficerValue"));
+	this.loanOfficerField.setRequired(true);
+	this.form.add(this.loanOfficerField);
+	this.loanOfficerFeedback = new TextFeedbackPanel("loanOfficerFeedback", this.loanOfficerField);
+	this.form.add(this.loanOfficerFeedback);
     }
 
     private void saveButtonSubmit(Button button) {
-        StaffBuilder builder = new StaffBuilder();
-        builder.withId(this.staffId);
-        builder.withFirstName(this.firstNameValue);
-        if (this.officeValue != null) {
-            builder.withOfficeId(this.officeValue.getId());
-        }
-        builder.withLastName(this.lastNameValue);
-        builder.withMobileNo(this.mobileNoValue);
-        builder.withLoanOfficer(this.loanOfficerValue);
-        builder.withJoiningDate(this.joinedDateValue);
+	StaffBuilder builder = new StaffBuilder();
+	builder.withId(this.staffId);
+	builder.withFirstName(this.firstNameValue);
+	if (this.officeValue != null) {
+	    builder.withOfficeId(this.officeValue.getId());
+	}
+	builder.withLastName(this.lastNameValue);
+	builder.withMobileNo(this.mobileNoValue);
+	builder.withLoanOfficer(this.loanOfficerValue);
+	builder.withJoiningDate(this.joinedDateValue);
 
-        JsonNode node = null;
-        try {
-            node = StaffHelper.update(builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
-        if (reportError(node)) {
-            return;
-        }
-        setResponsePage(StaffBrowsePage.class);
+	JsonNode node = null;
+	try {
+	    node = StaffHelper.update((Session) getSession(), builder.build());
+	} catch (UnirestException e) {
+	    error(e.getMessage());
+	    return;
+	}
+	if (reportError(node)) {
+	    return;
+	}
+	setResponsePage(StaffBrowsePage.class);
     }
 
 }

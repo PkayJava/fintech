@@ -11,6 +11,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.request.AppUserBuilder;
 import com.angkorteam.fintech.helper.AppUserHelper;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -207,7 +208,7 @@ public class UserCreatePage extends Page {
 
 	JsonNode node = null;
 	try {
-	    node = AppUserHelper.create(builder.build());
+	    node = AppUserHelper.create((Session) getSession(), builder.build());
 	} catch (UnirestException e) {
 	    error(e.getMessage());
 	    return;

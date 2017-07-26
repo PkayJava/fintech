@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages.account;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.AccountType;
 import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.fintech.dto.FinancialActivityType;
@@ -41,80 +42,86 @@ public class FinancialActivityCreatePage extends Page {
 
     @Override
     protected void onInitialize() {
-        super.onInitialize();
+	super.onInitialize();
 
-        this.form = new Form<>("form");
-        add(this.form);
+	this.form = new Form<>("form");
+	add(this.form);
 
-        this.saveButton = new Button("saveButton");
-        this.saveButton.setOnSubmit(this::saveButtonSubmit);
-        this.form.add(this.saveButton);
+	this.saveButton = new Button("saveButton");
+	this.saveButton.setOnSubmit(this::saveButtonSubmit);
+	this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", FinancialActivityBrowsePage.class);
-        this.form.add(this.closeLink);
+	this.closeLink = new BookmarkablePageLink<>("closeLink", FinancialActivityBrowsePage.class);
+	this.form.add(this.closeLink);
 
-        this.financialActivityProvider = new FinancialActivityProvider();
-        this.financialActivityField = new Select2SingleChoice<>("financialActivityField", 0, new PropertyModel<>(this, "financialActivityValue"), this.financialActivityProvider);
-        this.form.add(this.financialActivityField);
-        this.financialActivityFeedback = new TextFeedbackPanel("financialActivityFeedback", this.financialActivityField);
-        this.form.add(this.financialActivityFeedback);
-        this.financialActivityField.add(new OnChangeAjaxBehavior(this::financialActivityFieldUpdate, this::financialActivityFieldError));
+	this.financialActivityProvider = new FinancialActivityProvider();
+	this.financialActivityField = new Select2SingleChoice<>("financialActivityField", 0,
+		new PropertyModel<>(this, "financialActivityValue"), this.financialActivityProvider);
+	this.form.add(this.financialActivityField);
+	this.financialActivityFeedback = new TextFeedbackPanel("financialActivityFeedback",
+		this.financialActivityField);
+	this.form.add(this.financialActivityFeedback);
+	this.financialActivityField
+		.add(new OnChangeAjaxBehavior(this::financialActivityFieldUpdate, this::financialActivityFieldError));
 
-        this.accountProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name");
-        this.accountProvider.applyWhere("usage", AccountUsage.Detail.getLiteral());
-        this.accountProvider.setDisabled(true);
-        this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this, "accountValue"), this.accountProvider);
-        this.form.add(this.accountField);
-        this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
-        this.form.add(this.accountFeedback);
+	this.accountProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name");
+	this.accountProvider.applyWhere("usage", AccountUsage.Detail.getLiteral());
+	this.accountProvider.setDisabled(true);
+	this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this, "accountValue"),
+		this.accountProvider);
+	this.form.add(this.accountField);
+	this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
+	this.form.add(this.accountFeedback);
     }
 
     private void financialActivityFieldUpdate(AjaxRequestTarget target) {
-        if (this.financialActivityValue == null) {
-            this.accountValue = null;
-            this.accountProvider.setDisabled(true);
-        } else {
-            AccountType classification_enum = null;
-            for (FinancialActivityType a : FinancialActivityType.values()) {
-                if (this.financialActivityValue.getId().equals(a.name())) {
-                    classification_enum = a.getAccountType();
-                    break;
-                }
-            }
-            this.accountValue = null;
-            this.accountProvider.setDisabled(false);
-            this.accountProvider.applyWhere("classification_enum", "classification_enum = " + classification_enum.getLiteral());
-        }
-        target.add(this.form);
+	if (this.financialActivityValue == null) {
+	    this.accountValue = null;
+	    this.accountProvider.setDisabled(true);
+	} else {
+	    AccountType classification_enum = null;
+	    for (FinancialActivityType a : FinancialActivityType.values()) {
+		if (this.financialActivityValue.getId().equals(a.name())) {
+		    classification_enum = a.getAccountType();
+		    break;
+		}
+	    }
+	    this.accountValue = null;
+	    this.accountProvider.setDisabled(false);
+	    this.accountProvider.applyWhere("classification_enum",
+		    "classification_enum = " + classification_enum.getLiteral());
+	}
+	target.add(this.form);
     }
 
     private void financialActivityFieldError(AjaxRequestTarget target, RuntimeException e) {
-        if (e != null) {
-            throw e;
-        }
-        target.add(this.form);
-        target.appendJavaScript(Select2SingleChoice.REMOVE_POPUP_UP_SCRIPT);
+	if (e != null) {
+	    throw e;
+	}
+	target.add(this.form);
+	target.appendJavaScript(Select2SingleChoice.REMOVE_POPUP_UP_SCRIPT);
     }
 
     private void saveButtonSubmit(Button button) {
-        FinancialActivityBuilder builder = new FinancialActivityBuilder();
-        if (this.financialActivityValue != null) {
-            builder.withFinancialActivity(FinancialActivityType.valueOf(this.financialActivityValue.getId()).getLiteral());
-        }
-        if (this.accountValue != null) {
-            builder.withGlAccountId(this.accountValue.getId());
-        }
-        JsonNode node = null;
-        try {
-            node = FinancialActivityHelper.create(builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
-        if (reportError(node)) {
-            return;
-        }
-        setResponsePage(FinancialActivityBrowsePage.class);
+	FinancialActivityBuilder builder = new FinancialActivityBuilder();
+	if (this.financialActivityValue != null) {
+	    builder.withFinancialActivity(
+		    FinancialActivityType.valueOf(this.financialActivityValue.getId()).getLiteral());
+	}
+	if (this.accountValue != null) {
+	    builder.withGlAccountId(this.accountValue.getId());
+	}
+	JsonNode node = null;
+	try {
+	    node = FinancialActivityHelper.create((Session) getSession(), builder.build());
+	} catch (UnirestException e) {
+	    error(e.getMessage());
+	    return;
+	}
+	if (reportError(node)) {
+	    return;
+	}
+	setResponsePage(FinancialActivityBrowsePage.class);
     }
 
 }

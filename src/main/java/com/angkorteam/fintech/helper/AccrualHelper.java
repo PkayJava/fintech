@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.helper;
 
+import com.angkorteam.fintech.IMifos;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -8,8 +9,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class AccrualHelper {
 
-    public static JsonNode submit(JsonNode accrual) throws UnirestException {
-        return Helper.performServerPost("/fineract-provider/api/v1/runaccruals", accrual);
+    public static JsonNode submit(IMifos session, JsonNode object) throws UnirestException {
+        return Helper.performServerPost(session, "/api/v1/runaccruals", object);
     }
 
 }

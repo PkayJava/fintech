@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages.role;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.helper.RoleHelper;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.LinkCell;
@@ -37,88 +38,91 @@ public class RoleBrowsePage extends Page {
 
     @Override
     protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("m_role");
-        this.provider.boardField("id", "id", Long.class);
-        this.provider.boardField("description", "description", String.class);
-        this.provider.boardField("is_disabled", "disabled", Boolean.class);
-        this.provider.boardField("name", "name", String.class);
+	super.onInitialize();
+	this.provider = new JdbcProvider("m_role");
+	this.provider.boardField("id", "id", Long.class);
+	this.provider.boardField("description", "description", String.class);
+	this.provider.boardField("is_disabled", "disabled", Boolean.class);
+	this.provider.boardField("name", "name", String.class);
 
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("ID"), "id", "id", this::idColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Description"), "description", "description", this::descriptionColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Is Disabled ?"), "disabled", "disabled", this::disabledColumn));
-        columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
+	List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
+	columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("ID"), "id", "id", this::idColumn));
+	columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name",
+		this::nameColumn));
+	columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Description"), "description",
+		"description", this::descriptionColumn));
+	columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Is Disabled ?"), "disabled",
+		"disabled", this::disabledColumn));
+	columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
+	FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
+	add(filterForm);
 
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+	this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
+	this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
+	filterForm.add(this.dataTable);
 
-        this.createLink = new BookmarkablePageLink<>("createLink", RoleCreatePage.class);
-        add(this.createLink);
+	this.createLink = new BookmarkablePageLink<>("createLink", RoleCreatePage.class);
+	add(this.createLink);
     }
 
     private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-        try {
-            Long id = (Long) stringObjectMap.get("id");
-            if ("enable".equals(s)) {
-                RoleHelper.enable(String.valueOf(id));
-                ajaxRequestTarget.add(this.dataTable);
-            } else if ("disable".equals(s)) {
-                RoleHelper.disable(String.valueOf(id));
-                ajaxRequestTarget.add(this.dataTable);
-            } else if ("delete".equals(s)) {
-                RoleHelper.delete(String.valueOf(id));
-                ajaxRequestTarget.add(this.dataTable);
-            }
-        } catch (UnirestException e) {
-        }
+	try {
+	    Long id = (Long) stringObjectMap.get("id");
+	    if ("enable".equals(s)) {
+		RoleHelper.enable((Session) getSession(), String.valueOf(id));
+		ajaxRequestTarget.add(this.dataTable);
+	    } else if ("disable".equals(s)) {
+		RoleHelper.disable((Session) getSession(), String.valueOf(id));
+		ajaxRequestTarget.add(this.dataTable);
+	    } else if ("delete".equals(s)) {
+		RoleHelper.delete((Session) getSession(), String.valueOf(id));
+		ajaxRequestTarget.add(this.dataTable);
+	    }
+	} catch (UnirestException e) {
+	}
     }
 
     private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
-        List<ActionItem> actions = Lists.newArrayList();
-        Boolean disabled = (Boolean) stringObjectMap.get("disabled");
-        if (disabled == null || disabled) {
-            actions.add(new ActionItem("enable", Model.of("Enable"), ItemCss.PRIMARY));
-        } else {
-            actions.add(new ActionItem("disable", Model.of("Disable"), ItemCss.PRIMARY));
-        }
-        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.WARNING));
-        return actions;
+	List<ActionItem> actions = Lists.newArrayList();
+	Boolean disabled = (Boolean) stringObjectMap.get("disabled");
+	if (disabled == null || disabled) {
+	    actions.add(new ActionItem("enable", Model.of("Enable"), ItemCss.PRIMARY));
+	} else {
+	    actions.add(new ActionItem("disable", Model.of("Disable"), ItemCss.PRIMARY));
+	}
+	actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.WARNING));
+	return actions;
     }
 
     private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long id = (Long) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(id)));
+	Long id = (Long) model.get(jdbcColumn);
+	return new TextCell(Model.of(String.valueOf(id)));
     }
 
     private ItemPanel descriptionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String externalId = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(externalId));
+	String externalId = (String) model.get(jdbcColumn);
+	return new TextCell(Model.of(externalId));
     }
 
     private ItemPanel disabledColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean disabled = (Boolean) model.get(jdbcColumn);
-        if (disabled == null || disabled) {
-            return new BadgeCell(BadgeType.Danger, Model.of("Yes"));
-        } else {
-            return new BadgeCell(BadgeType.Success, Model.of("No"));
-        }
+	Boolean disabled = (Boolean) model.get(jdbcColumn);
+	if (disabled == null || disabled) {
+	    return new BadgeCell(BadgeType.Danger, Model.of("Yes"));
+	} else {
+	    return new BadgeCell(BadgeType.Success, Model.of("No"));
+	}
     }
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        if (Strings.isNullOrEmpty(name)) {
-            return new TextCell(Model.of(name));
-        } else {
-            PageParameters parameters = new PageParameters();
-            parameters.add("roleId", model.get("id"));
-            return new LinkCell(RolePermissionPage.class, parameters, Model.of(name));
-        }
+	String name = (String) model.get(jdbcColumn);
+	if (Strings.isNullOrEmpty(name)) {
+	    return new TextCell(Model.of(name));
+	} else {
+	    PageParameters parameters = new PageParameters();
+	    parameters.add("roleId", model.get("id"));
+	    return new LinkCell(RolePermissionPage.class, parameters, Model.of(name));
+	}
     }
 
 }

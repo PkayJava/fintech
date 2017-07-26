@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.helper;
 
+import com.angkorteam.fintech.IMifos;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -8,32 +9,12 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class OfficeHelper {
 
-    private static final String OFFICE_URL = "/fineract-provider/api/v1/offices";
-
-//    private final RequestSpecification requestSpec;
-//    private final ResponseSpecification responseSpec;
-
-//    public OfficeHelper(final RequestSpecification requestSpec,
-//                        final ResponseSpecification responseSpec) {
-//        this.requestSpec = requestSpec;
-//        this.responseSpec = responseSpec;
-//    }
-
-//    public OfficeDomain retrieveOfficeByID(int id) {
-//        Object get = Utils.performServerGet(
-//                requestSpec, responseSpec, OFFICE_URL + "/" + id + "?"
-//                        + Utils.TENANT_IDENTIFIER, "");
-//        final String json = new Gson().toJson(get);
-//        return new Gson().fromJson(json, new TypeToken<OfficeDomain>() {
-//        }.getType());
-//    }
-
-    public static JsonNode create(JsonNode office) throws UnirestException {
-        return Helper.performServerPost(OFFICE_URL, office);
+    public static JsonNode create(IMifos session, JsonNode object) throws UnirestException {
+        return Helper.performServerPost(session, "/api/v1/offices", object);
     }
 
-    public static JsonNode update(JsonNode office) throws UnirestException {
-        String id = (String) office.getObject().remove("id");
-        return Helper.performServerPut(OFFICE_URL + "/" + id, office);
+    public static JsonNode update(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPut(session, "/api/v1/offices/" + id, object);
     }
 }

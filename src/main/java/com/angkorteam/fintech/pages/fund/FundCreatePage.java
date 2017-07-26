@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages.fund;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.request.FundBuilder;
 import com.angkorteam.fintech.helper.FundHelper;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -31,46 +32,46 @@ public class FundCreatePage extends Page {
 
     @Override
     protected void onInitialize() {
-        super.onInitialize();
+	super.onInitialize();
 
-        this.form = new Form<>("form");
-        add(this.form);
+	this.form = new Form<>("form");
+	add(this.form);
 
-        this.saveButton = new Button("saveButton");
-        this.saveButton.setOnSubmit(this::saveButtonSubmit);
-        this.form.add(this.saveButton);
+	this.saveButton = new Button("saveButton");
+	this.saveButton.setOnSubmit(this::saveButtonSubmit);
+	this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", FundBrowsePage.class);
-        this.form.add(this.closeLink);
+	this.closeLink = new BookmarkablePageLink<>("closeLink", FundBrowsePage.class);
+	this.form.add(this.closeLink);
 
-        this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
-        this.externalIdField.setRequired(true);
-        this.form.add(this.externalIdField);
-        this.externalIdFeedback = new TextFeedbackPanel("externalIdFeedback", this.externalIdField);
-        this.form.add(this.externalIdFeedback);
+	this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
+	this.externalIdField.setRequired(true);
+	this.form.add(this.externalIdField);
+	this.externalIdFeedback = new TextFeedbackPanel("externalIdFeedback", this.externalIdField);
+	this.form.add(this.externalIdFeedback);
 
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setRequired(true);
-        this.form.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.form.add(this.nameFeedback);
+	this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+	this.nameField.setRequired(true);
+	this.form.add(this.nameField);
+	this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+	this.form.add(this.nameFeedback);
     }
 
     private void saveButtonSubmit(Button button) {
-        FundBuilder builder = new FundBuilder();
-        builder.withName(this.nameValue);
-        builder.withExternalId(this.externalIdValue);
+	FundBuilder builder = new FundBuilder();
+	builder.withName(this.nameValue);
+	builder.withExternalId(this.externalIdValue);
 
-        JsonNode node = null;
-        try {
-            node = FundHelper.create(builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
-        if (reportError(node)) {
-            return;
-        }
-        setResponsePage(FundBrowsePage.class);
+	JsonNode node = null;
+	try {
+	    node = FundHelper.create((Session) getSession(), builder.build());
+	} catch (UnirestException e) {
+	    error(e.getMessage());
+	    return;
+	}
+	if (reportError(node)) {
+	    return;
+	}
+	setResponsePage(FundBrowsePage.class);
     }
 }

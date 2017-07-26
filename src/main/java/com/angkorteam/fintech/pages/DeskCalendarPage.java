@@ -1,5 +1,12 @@
 package com.angkorteam.fintech.pages;
 
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.provider.LaminationProvider;
 import com.angkorteam.fintech.provider.UvProvider;
@@ -9,12 +16,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 
 /**
  * Created by socheatkhauv on 6/18/17.
@@ -111,7 +112,8 @@ public class DeskCalendarPage extends Page {
 
         //
 
-        this.numberOfSheetField = new TextField<>("numberOfSheetField", new PropertyModel<>(this, "numberOfSheetValue"));
+        this.numberOfSheetField = new TextField<>("numberOfSheetField",
+                new PropertyModel<>(this, "numberOfSheetValue"));
         this.numberOfSheetField.setRequired(true);
         this.form.add(this.numberOfSheetField);
         this.numberOfSheetFeedback = new TextFeedbackPanel("numberOfSheetFeedback", this.numberOfSheetField);
@@ -164,26 +166,30 @@ public class DeskCalendarPage extends Page {
         this.form.add(this.standColorFeedback);
 
         LaminationProvider laminationProvider = new LaminationProvider();
-        this.standLaminationField = new Select2SingleChoice<>("standLaminationField", new PropertyModel<>(this, "standLaminationValue"), laminationProvider);
+        this.standLaminationField = new Select2SingleChoice<>("standLaminationField",
+                new PropertyModel<>(this, "standLaminationValue"), laminationProvider);
         this.standLaminationField.setRequired(true);
         this.form.add(this.standLaminationField);
         this.standLaminationFeedback = new TextFeedbackPanel("standLaminationFeedback", this.standLaminationField);
         this.form.add(this.standLaminationFeedback);
 
         UvProvider uvProvider = new UvProvider();
-        this.standUvField = new Select2SingleChoice<>("standUvField", new PropertyModel<>(this, "standUvValue"), uvProvider);
+        this.standUvField = new Select2SingleChoice<>("standUvField", new PropertyModel<>(this, "standUvValue"),
+                uvProvider);
         this.standUvField.setRequired(true);
         this.form.add(this.standUvField);
         this.standUvFeedback = new TextFeedbackPanel("standUvFeedback", this.standUvField);
         this.form.add(this.standUvFeedback);
 
-        this.standHotStampingField = new CheckBox("standHotStampingField", new PropertyModel<>(this, "standHotStampingValue"));
+        this.standHotStampingField = new CheckBox("standHotStampingField",
+                new PropertyModel<>(this, "standHotStampingValue"));
         this.standHotStampingField.setRequired(true);
         this.form.add(this.standHotStampingField);
         this.standHotStampingFeedback = new TextFeedbackPanel("standHotStampingFeedback", this.standHotStampingField);
         this.form.add(this.standHotStampingFeedback);
 
-        this.standEmbossingField = new CheckBox("standEmbossingField", new PropertyModel<>(this, "standEmbossingValue"));
+        this.standEmbossingField = new CheckBox("standEmbossingField",
+                new PropertyModel<>(this, "standEmbossingValue"));
         this.standEmbossingField.setRequired(true);
         this.form.add(this.standEmbossingField);
         this.standEmbossingFeedback = new TextFeedbackPanel("standEmbossingFeedback", this.standEmbossingField);
@@ -195,7 +201,8 @@ public class DeskCalendarPage extends Page {
         this.standPunchingFeedback = new TextFeedbackPanel("standPunchingFeedback", this.standPunchingField);
         this.form.add(this.standPunchingFeedback);
 
-        this.standDoubleORingField = new CheckBox("standDoubleORingField", new PropertyModel<>(this, "standDoubleORingValue"));
+        this.standDoubleORingField = new CheckBox("standDoubleORingField",
+                new PropertyModel<>(this, "standDoubleORingValue"));
         this.standDoubleORingField.setRequired(true);
         this.form.add(this.standDoubleORingField);
         this.standDoubleORingFeedback = new TextFeedbackPanel("standDoubleORingFeedback", this.standDoubleORingField);
@@ -223,6 +230,5 @@ public class DeskCalendarPage extends Page {
     public IModel<PageHeader> buildPageHeader() {
         return Model.of(new PageHeader().setTitle("Desk Calendar").setDescription("Desk Calendar Quotation"));
     }
-
 
 }

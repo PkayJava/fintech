@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages.service;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.ServiceType;
 import com.angkorteam.fintech.dto.request.ExternalServiceBuilder;
 import com.angkorteam.fintech.helper.ServiceHelper;
@@ -45,71 +46,73 @@ public class SMSConfigurationPage extends Page {
 
     @Override
     protected void onInitialize() {
-        super.onInitialize();
+	super.onInitialize();
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        List<Map<String, Object>> temps = jdbcTemplate.queryForList("select name, value from c_external_service_properties where external_service_id = ?", ServiceType.SMS.getLiteral());
-        Map<String, Object> params = Maps.newHashMap();
-        for (Map<String, Object> temp : temps) {
-            params.put((String) temp.get("name"), temp.get("value"));
-        }
+	JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+	List<Map<String, Object>> temps = jdbcTemplate.queryForList(
+		"select name, value from c_external_service_properties where external_service_id = ?",
+		ServiceType.SMS.getLiteral());
+	Map<String, Object> params = Maps.newHashMap();
+	for (Map<String, Object> temp : temps) {
+	    params.put((String) temp.get("name"), temp.get("value"));
+	}
 
-        this.form = new Form<>("form");
-        this.add(this.form);
+	this.form = new Form<>("form");
+	this.add(this.form);
 
-        this.saveButton = new Button("saveButton");
-        this.saveButton.setOnSubmit(this::saveButtonSubmit);
-        this.form.add(this.saveButton);
+	this.saveButton = new Button("saveButton");
+	this.saveButton.setOnSubmit(this::saveButtonSubmit);
+	this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", ServiceDashboardPage.class);
-        this.form.add(this.closeLink);
+	this.closeLink = new BookmarkablePageLink<>("closeLink", ServiceDashboardPage.class);
+	this.form.add(this.closeLink);
 
-        this.endpointValue = (String) params.get("end_point");
-        this.endpointField = new TextField<>("endpointField", new PropertyModel<>(this, "endpointValue"));
-        this.endpointField.setRequired(true);
-        this.form.add(this.endpointField);
-        this.endpointFeedback = new TextFeedbackPanel("endpointFeedback", this.endpointField);
-        this.form.add(this.endpointFeedback);
+	this.endpointValue = (String) params.get("end_point");
+	this.endpointField = new TextField<>("endpointField", new PropertyModel<>(this, "endpointValue"));
+	this.endpointField.setRequired(true);
+	this.form.add(this.endpointField);
+	this.endpointFeedback = new TextFeedbackPanel("endpointFeedback", this.endpointField);
+	this.form.add(this.endpointFeedback);
 
-        this.tenantAppKeyValue = (String) params.get("tenant_app_key");
-        this.tenantAppKeyField = new TextField<>("tenantAppKeyField", new PropertyModel<>(this, "tenantAppKeyValue"));
-        this.tenantAppKeyField.setRequired(true);
-        this.form.add(this.tenantAppKeyField);
-        this.tenantAppKeyFeedback = new TextFeedbackPanel("tenantAppKeyFeedback", this.tenantAppKeyField);
-        this.form.add(this.tenantAppKeyFeedback);
+	this.tenantAppKeyValue = (String) params.get("tenant_app_key");
+	this.tenantAppKeyField = new TextField<>("tenantAppKeyField", new PropertyModel<>(this, "tenantAppKeyValue"));
+	this.tenantAppKeyField.setRequired(true);
+	this.form.add(this.tenantAppKeyField);
+	this.tenantAppKeyFeedback = new TextFeedbackPanel("tenantAppKeyFeedback", this.tenantAppKeyField);
+	this.form.add(this.tenantAppKeyFeedback);
 
-        this.hostValue = (String) params.get("host_name");
-        this.hostField = new TextField<>("hostField", new PropertyModel<>(this, "hostValue"));
-        this.hostField.setRequired(true);
-        this.form.add(this.hostField);
-        this.hostFeedback = new TextFeedbackPanel("hostFeedback", this.hostField);
-        this.form.add(this.hostFeedback);
+	this.hostValue = (String) params.get("host_name");
+	this.hostField = new TextField<>("hostField", new PropertyModel<>(this, "hostValue"));
+	this.hostField.setRequired(true);
+	this.form.add(this.hostField);
+	this.hostFeedback = new TextFeedbackPanel("hostFeedback", this.hostField);
+	this.form.add(this.hostFeedback);
 
-        this.portValue = Integer.valueOf((String) params.get("port_number"));
-        this.portField = new TextField<>("portField", new PropertyModel<>(this, "portValue"));
-        this.portField.setRequired(true);
-        this.form.add(this.portField);
-        this.portFeedback = new TextFeedbackPanel("portFeedback", this.portField);
-        this.form.add(this.portFeedback);
+	this.portValue = Integer.valueOf((String) params.get("port_number"));
+	this.portField = new TextField<>("portField", new PropertyModel<>(this, "portValue"));
+	this.portField.setRequired(true);
+	this.form.add(this.portField);
+	this.portFeedback = new TextFeedbackPanel("portFeedback", this.portField);
+	this.form.add(this.portFeedback);
     }
 
     private void saveButtonSubmit(Button button) {
-        ExternalServiceBuilder builder = new ExternalServiceBuilder(ServiceType.SMS);
-        builder.withHost(this.hostValue);
-        builder.withPort(this.portValue);
-        builder.withEndpoint(this.endpointValue);
-        builder.withTenantAppKey(this.tenantAppKeyValue);
+	ExternalServiceBuilder builder = new ExternalServiceBuilder(ServiceType.SMS);
+	builder.withHost(this.hostValue);
+	builder.withPort(this.portValue);
+	builder.withEndpoint(this.endpointValue);
+	builder.withTenantAppKey(this.tenantAppKeyValue);
 
-        JsonNode node = null;
-        try {
-            node = ServiceHelper.update(builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
-        if (reportError(node)) {
-            return;
-        }
-        setResponsePage(ServiceDashboardPage.class);
+	JsonNode node = null;
+	try {
+	    node = ServiceHelper.update((Session) getSession(), builder.build());
+	} catch (UnirestException e) {
+	    error(e.getMessage());
+	    return;
+	}
+	if (reportError(node)) {
+	    return;
+	}
+	setResponsePage(ServiceDashboardPage.class);
     }
 }

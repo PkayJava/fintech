@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.helper;
 
+import com.angkorteam.fintech.IMifos;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -8,17 +9,13 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class FundHelper {
 
-    private static final String FUNDS_URL = "/fineract-provider/api/v1/funds";
-    private static final String CREATE_FUNDS_URL = FUNDS_URL;
-
-    public static JsonNode create(JsonNode fund) throws UnirestException {
-        return Helper.performServerPost(CREATE_FUNDS_URL, fund);
+    public static JsonNode create(IMifos session, JsonNode object) throws UnirestException {
+        return Helper.performServerPost(session, "/api/v1/funds", object);
     }
 
-    public static JsonNode update(JsonNode fund) throws UnirestException {
-        String fundID = (String) fund.getObject().remove("id");
-        final String URL = FUNDS_URL + "/" + fundID;
-        return Helper.performServerPut(URL, fund);
+    public static JsonNode update(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPut(session, "/api/v1/funds/" + id, object);
     }
 
 }

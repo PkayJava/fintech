@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages.payment;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.request.PaymentTypeBuilder;
 import com.angkorteam.fintech.helper.PaymentTypeHelper;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -40,61 +41,61 @@ public class PaymentTypeCreatePage extends Page {
 
     @Override
     protected void onInitialize() {
-        super.onInitialize();
+	super.onInitialize();
 
-        this.form = new Form<>("form");
-        add(this.form);
+	this.form = new Form<>("form");
+	add(this.form);
 
-        this.saveButton = new Button("saveButton");
-        this.saveButton.setOnSubmit(this::saveButtonSubmit);
-        this.form.add(this.saveButton);
+	this.saveButton = new Button("saveButton");
+	this.saveButton.setOnSubmit(this::saveButtonSubmit);
+	this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", PaymentTypeBrowsePage.class);
-        this.form.add(this.closeLink);
+	this.closeLink = new BookmarkablePageLink<>("closeLink", PaymentTypeBrowsePage.class);
+	this.form.add(this.closeLink);
 
-        this.descriptionField = new TextField<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
-        this.descriptionField.setRequired(true);
-        this.form.add(this.descriptionField);
-        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-        this.form.add(this.descriptionFeedback);
+	this.descriptionField = new TextField<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
+	this.descriptionField.setRequired(true);
+	this.form.add(this.descriptionField);
+	this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
+	this.form.add(this.descriptionFeedback);
 
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setRequired(true);
-        this.form.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.form.add(this.nameFeedback);
+	this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+	this.nameField.setRequired(true);
+	this.form.add(this.nameField);
+	this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+	this.form.add(this.nameFeedback);
 
-        this.cashField = new CheckBox("cashField", new PropertyModel<>(this, "cashValue"));
-        this.cashField.setRequired(true);
-        this.form.add(this.cashField);
-        this.cashFeedback = new TextFeedbackPanel("cashFeedback", this.cashField);
-        this.form.add(this.cashFeedback);
+	this.cashField = new CheckBox("cashField", new PropertyModel<>(this, "cashValue"));
+	this.cashField.setRequired(true);
+	this.form.add(this.cashField);
+	this.cashFeedback = new TextFeedbackPanel("cashFeedback", this.cashField);
+	this.form.add(this.cashFeedback);
 
-        this.positionField = new TextField<>("positionField", new PropertyModel<>(this, "positionValue"));
-        this.positionField.setRequired(true);
-        this.form.add(this.positionField);
-        this.positionFeedback = new TextFeedbackPanel("positionFeedback", this.positionField);
-        this.form.add(this.positionFeedback);
+	this.positionField = new TextField<>("positionField", new PropertyModel<>(this, "positionValue"));
+	this.positionField.setRequired(true);
+	this.form.add(this.positionField);
+	this.positionFeedback = new TextFeedbackPanel("positionFeedback", this.positionField);
+	this.form.add(this.positionFeedback);
     }
 
     private void saveButtonSubmit(Button button) {
-        PaymentTypeBuilder builder = new PaymentTypeBuilder();
-        builder.withName(this.nameValue);
-        builder.withPosition(this.positionValue);
-        builder.withCashPayment(this.cashValue);
-        builder.withDescription(this.descriptionValue);
+	PaymentTypeBuilder builder = new PaymentTypeBuilder();
+	builder.withName(this.nameValue);
+	builder.withPosition(this.positionValue);
+	builder.withCashPayment(this.cashValue);
+	builder.withDescription(this.descriptionValue);
 
-        JsonNode node = null;
-        try {
-            node = PaymentTypeHelper.create(builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
-        if (reportError(node)) {
-            return;
-        }
-        setResponsePage(PaymentTypeBrowsePage.class);
+	JsonNode node = null;
+	try {
+	    node = PaymentTypeHelper.create((Session) getSession(), builder.build());
+	} catch (UnirestException e) {
+	    error(e.getMessage());
+	    return;
+	}
+	if (reportError(node)) {
+	    return;
+	}
+	setResponsePage(PaymentTypeBrowsePage.class);
     }
 
 }

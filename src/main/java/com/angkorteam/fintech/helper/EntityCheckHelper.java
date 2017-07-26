@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.helper;
 
+import com.angkorteam.fintech.IMifos;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -8,13 +9,12 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class EntityCheckHelper {
 
-
-    public static JsonNode create(JsonNode entityChecker) throws UnirestException {
-        return Helper.performServerPost("/fineract-provider/api/v1/entityDatatableChecks", entityChecker);
+    public static JsonNode create(IMifos session, JsonNode object) throws UnirestException {
+        return Helper.performServerPost(session, "/api/v1/entityDatatableChecks", object);
     }
 
-    public static JsonNode delete(String id) throws UnirestException {
-        return Helper.performServerDelete("/fineract-provider/api/v1/entityDatatableChecks/" + id);
+    public static JsonNode delete(IMifos session, String id) throws UnirestException {
+        return Helper.performServerDelete(session, "/api/v1/entityDatatableChecks/" + id);
     }
 
 }

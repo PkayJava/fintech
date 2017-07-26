@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.helper;
 
+import com.angkorteam.fintech.IMifos;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -8,15 +9,11 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class HolidayHelper {
 
-    private static final String HOLIDAYS_URL = "/fineract-provider/api/v1/holidays";
-    private static final String CREATE_HOLIDAY_URL = HOLIDAYS_URL;
-
-    public static JsonNode create(JsonNode holiday) throws UnirestException {
-        return Helper.performServerPost(CREATE_HOLIDAY_URL, holiday);
+    public static JsonNode create(IMifos session, JsonNode object) throws UnirestException {
+        return Helper.performServerPost(session, "/api/v1/holidays", object);
     }
 
-    public static JsonNode activate(final String id) throws UnirestException {
-        final String ACTIVATE_HOLIDAY_URL = HOLIDAYS_URL + "/" + id + "?command=activate";
-        return Helper.performServerPost(ACTIVATE_HOLIDAY_URL);
+    public static JsonNode activate(IMifos session, String id) throws UnirestException {
+        return Helper.performServerPost(session, "/api/v1/holidays/" + id + "?command=activate");
     }
 }

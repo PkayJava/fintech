@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages.group;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.helper.GroupHelper;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
@@ -39,99 +40,105 @@ public class GroupBrowsePage extends Page {
 
     @Override
     protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("m_group g");
-        this.provider.addJoin("LEFT JOIN m_group parent ON g.parent_id = parent.id LEFT JOIN m_office office ON g.office_id = office.id");
-        this.provider.boardField("g.id", "id", Long.class);
-        this.provider.boardField("g.external_id", "external_id", String.class);
-        this.provider.boardField("parent.id", "parent_id", Long.class);
-        this.provider.boardField("g.display_name", "name", String.class);
-        this.provider.boardField("parent.display_name", "parent_name", String.class);
-        this.provider.boardField("office.name", "office", String.class);
-        this.provider.boardField("g.submittedon_date", "submittedon_date", Calendar.Date);
+	super.onInitialize();
+	this.provider = new JdbcProvider("m_group g");
+	this.provider.addJoin(
+		"LEFT JOIN m_group parent ON g.parent_id = parent.id LEFT JOIN m_office office ON g.office_id = office.id");
+	this.provider.boardField("g.id", "id", Long.class);
+	this.provider.boardField("g.external_id", "external_id", String.class);
+	this.provider.boardField("parent.id", "parent_id", Long.class);
+	this.provider.boardField("g.display_name", "name", String.class);
+	this.provider.boardField("parent.display_name", "parent_name", String.class);
+	this.provider.boardField("office.name", "office", String.class);
+	this.provider.boardField("g.submittedon_date", "submittedon_date", Calendar.Date);
 
-        this.provider.selectField("parent_id", Long.class);
+	this.provider.selectField("parent_id", Long.class);
 
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("ID"), "id", "id", this::idColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("External ID"), "external_id", "external_id", this::externalIdColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Parent Name"), "parent_name", "parent_name", this::parentNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Office"), "office", "office", this::officeColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Submitted On Date"), "submittedon_date", "submittedon_date", this::submittedOnDateColumn));
-        columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
+	List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
+	columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("ID"), "id", "id", this::idColumn));
+	columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("External ID"), "external_id",
+		"external_id", this::externalIdColumn));
+	columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name",
+		this::nameColumn));
+	columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Parent Name"), "parent_name",
+		"parent_name", this::parentNameColumn));
+	columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Office"), "office", "office",
+		this::officeColumn));
+	columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Submitted On Date"),
+		"submittedon_date", "submittedon_date", this::submittedOnDateColumn));
+	columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
+	FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
+	add(filterForm);
 
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+	this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
+	this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
+	filterForm.add(this.dataTable);
 
-        this.hierarchyLink = new BookmarkablePageLink<>("hierarchyLink", GroupHierarchyPage.class);
-        add(this.hierarchyLink);
+	this.hierarchyLink = new BookmarkablePageLink<>("hierarchyLink", GroupHierarchyPage.class);
+	add(this.hierarchyLink);
 
-        this.createLink = new BookmarkablePageLink<>("createLink", GroupCreatePage.class);
-        add(this.createLink);
+	this.createLink = new BookmarkablePageLink<>("createLink", GroupCreatePage.class);
+	add(this.createLink);
     }
 
     private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-        Long id = (Long) stringObjectMap.get("id");
-        try {
-            GroupHelper.deleteGroup(String.valueOf(id));
-        } catch (UnirestException e) {
-        }
-        ajaxRequestTarget.add(this.dataTable);
+	Long id = (Long) stringObjectMap.get("id");
+	try {
+	    GroupHelper.delete((Session) getSession(), String.valueOf(id));
+	} catch (UnirestException e) {
+	}
+	ajaxRequestTarget.add(this.dataTable);
     }
 
     private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+	return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long id = (Long) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(id)));
+	Long id = (Long) model.get(jdbcColumn);
+	return new TextCell(Model.of(String.valueOf(id)));
     }
 
     private ItemPanel externalIdColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String externalId = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(externalId));
+	String externalId = (String) model.get(jdbcColumn);
+	return new TextCell(Model.of(externalId));
     }
 
     private ItemPanel parentNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String parentName = (String) model.get(jdbcColumn);
-        if (Strings.isNullOrEmpty(parentName)) {
-            return new TextCell(Model.of(parentName));
-        } else {
-            PageParameters parameters = new PageParameters();
-            parameters.add("groupId", model.get("parent_id"));
-            return new LinkCell(GroupModifyPage.class, parameters, Model.of(parentName));
-        }
+	String parentName = (String) model.get(jdbcColumn);
+	if (Strings.isNullOrEmpty(parentName)) {
+	    return new TextCell(Model.of(parentName));
+	} else {
+	    PageParameters parameters = new PageParameters();
+	    parameters.add("groupId", model.get("parent_id"));
+	    return new LinkCell(GroupModifyPage.class, parameters, Model.of(parentName));
+	}
     }
 
     private ItemPanel officeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String office = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(office));
+	String office = (String) model.get(jdbcColumn);
+	return new TextCell(Model.of(office));
     }
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        if (Strings.isNullOrEmpty(name)) {
-            return new TextCell(Model.of(name));
-        } else {
-            PageParameters parameters = new PageParameters();
-            parameters.add("groupId", model.get("id"));
-            return new LinkCell(GroupModifyPage.class, parameters, Model.of(name));
-        }
+	String name = (String) model.get(jdbcColumn);
+	if (Strings.isNullOrEmpty(name)) {
+	    return new TextCell(Model.of(name));
+	} else {
+	    PageParameters parameters = new PageParameters();
+	    parameters.add("groupId", model.get("id"));
+	    return new LinkCell(GroupModifyPage.class, parameters, Model.of(name));
+	}
     }
 
     private ItemPanel submittedOnDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date submittedOnDate = (Date) model.get(jdbcColumn);
-        if (submittedOnDate == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(submittedOnDate)));
-        }
+	Date submittedOnDate = (Date) model.get(jdbcColumn);
+	if (submittedOnDate == null) {
+	    return new TextCell(Model.of(""));
+	} else {
+	    return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(submittedOnDate)));
+	}
     }
 
 }

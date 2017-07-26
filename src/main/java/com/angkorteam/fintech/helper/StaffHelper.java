@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.helper;
 
+import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.dto.request.StaffBuilder;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -9,27 +10,27 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class StaffHelper {
 
-    private static final String TRANSFER_STAFF_URL = "/fineract-provider/api/v1/groups";
+    private static final String TRANSFER_STAFF_URL = "/api/v1/groups";
 
-    private static final String CREATE_STAFF_URL = "/fineract-provider/api/v1/staff";
+    private static final String CREATE_STAFF_URL = "/api/v1/staff";
 
-    public static JsonNode create(JsonNode staff) throws UnirestException {
-        final String url = CREATE_STAFF_URL;
-        return Helper.performServerPost(url, staff);
+    public static JsonNode create(IMifos session, JsonNode object) throws UnirestException {
+        return Helper.performServerPost(session, CREATE_STAFF_URL, object);
     }
 
-    public static JsonNode update(JsonNode staff) throws UnirestException {
-        String id = (String) staff.getObject().remove("id");
+    public static JsonNode update(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
         final String url = CREATE_STAFF_URL + "/" + id;
-        return Helper.performServerPut(url, staff);
+        return Helper.performServerPut(session, url, object);
     }
 
-    public static JsonNode transferToGroup(final String groupId, final String staffIdToTransfer, final String note) throws UnirestException {
+    public static JsonNode transferToGroup(IMifos session, final String groupId, final String staffIdToTransfer,
+            final String note) throws UnirestException {
         final String url = TRANSFER_STAFF_URL + "/" + groupId + "?command=transferStaff";
         StaffBuilder builder = new StaffBuilder();
         builder.withStaffId(staffIdToTransfer);
         builder.withNote(note);
-        return Helper.performServerPost(url, builder.build());
+        return Helper.performServerPost(session, url, builder.build());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.helper;
 
+import com.angkorteam.fintech.IMifos;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -8,10 +9,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class WorkingDayHelper {
 
-    private static final String WORKING_DAYS_URL = "/fineract-provider/api/v1/workingdays";
-
-    public static JsonNode update(JsonNode workingDay) throws UnirestException {
-        return Helper.performServerPut(WORKING_DAYS_URL, workingDay);
+    public static JsonNode update(IMifos session, JsonNode object) throws UnirestException {
+        return Helper.performServerPut(session, "/api/v1/workingdays", object);
     }
 
 }

@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.dto.RepaymentOption;
 import com.angkorteam.fintech.dto.request.CodeValueBuilder;
 import com.angkorteam.fintech.dto.request.FundBuilder;
@@ -43,31 +44,33 @@ public class Data {
 
     public static void main(String[] args) throws UnirestException, ParseException {
         DataSource dataSource = null;
+        IMifos session = null;
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        setupOffice(jdbcTemplate);
-        setupWorkingDay(jdbcTemplate);
-        setupCurrency(jdbcTemplate);
-        setupFund(jdbcTemplate);
-        setupTeller(jdbcTemplate);
-        setupPaymentType(jdbcTemplate);
-        setupHoliday(jdbcTemplate);
-        setupEmployee(jdbcTemplate);
-        setupSystemParameters(jdbcTemplate);
+        setupOffice(session, jdbcTemplate);
+        setupWorkingDay(session, jdbcTemplate);
+        setupCurrency(session, jdbcTemplate);
+        setupFund(session, jdbcTemplate);
+        setupTeller(session, jdbcTemplate);
+        setupPaymentType(session, jdbcTemplate);
+        setupHoliday(session, jdbcTemplate);
+        setupEmployee(session, jdbcTemplate);
+        setupSystemParameters(session, jdbcTemplate);
     }
 
-    protected static void setupSystemParameters(JdbcTemplate jdbcTemplate) throws UnirestException {
+    protected static void setupSystemParameters(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
         for (CodeValue value : CodeValue.values()) {
             CodeValueBuilder builder = new CodeValueBuilder();
             builder.withCodeId(value.getCode().getId());
             builder.withDescription(value.getDescription());
             builder.withName(value.getValue());
             builder.withActive(true);
-            CodeHelper.createValue(builder.build());
+            CodeHelper.createValue(session, builder.build());
         }
 
     }
 
-    protected static void setupEmployee(JdbcTemplate jdbcTemplate) throws ParseException, UnirestException {
+    protected static void setupEmployee(IMifos session, JdbcTemplate jdbcTemplate)
+            throws ParseException, UnirestException {
         for (Employee employee : Employee.values()) {
             StaffBuilder builder = new StaffBuilder();
             builder.withExternalId(UUID.randomUUID().toString());
@@ -77,11 +80,12 @@ public class Data {
             int index = employee.getName().indexOf(" ");
             builder.withFirstName(employee.getName().substring(0, index));
             builder.withLastName(employee.getName().substring(index + 1, employee.getName().length()));
-            StaffHelper.create(builder.build());
+            StaffHelper.create(session, builder.build());
         }
     }
 
-    protected static void setupHoliday(JdbcTemplate jdbcTemplate) throws ParseException, UnirestException {
+    protected static void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate)
+            throws ParseException, UnirestException {
         List<Integer> years = new ArrayList<>();
         years.add(2017);
         years.add(2018);
@@ -137,22 +141,24 @@ public class Data {
                 builder.withFromDate(fromDate);
                 builder.withToDate(toDate);
                 builder.withRepaymentsRescheduledTo(DATE_FORMAT_1.parse(temp.format(DATE_TIME_FORMATTER)));
-                HolidayHelper.create(builder.build());
+                HolidayHelper.create(session, builder.build());
             }
         }
     }
 
-    protected static void setupOffice(JdbcTemplate jdbcTemplate) throws ParseException, UnirestException {
+    protected static void setupOffice(IMifos session, JdbcTemplate jdbcTemplate)
+            throws ParseException, UnirestException {
         for (Office office : Office.values()) {
             OfficeBuilder builder = new OfficeBuilder();
             builder.withExternalId(UUID.randomUUID().toString());
             builder.withOpeningDate(DATE_FORMAT.parse("2017-01-01"));
             builder.withName(office.getName());
-            OfficeHelper.create(builder.build());
+            OfficeHelper.create(session, builder.build());
         }
     }
 
-    protected static void setupTeller(JdbcTemplate jdbcTemplate) throws UnirestException, ParseException {
+    protected static void setupTeller(IMifos session, JdbcTemplate jdbcTemplate)
+            throws UnirestException, ParseException {
         for (Teller teller : Teller.values()) {
             TellerBuilder builder = new TellerBuilder();
             builder.withDescription(teller.getName());
@@ -162,39 +168,39 @@ public class Data {
                     teller.getOffice().getName());
             builder.withOfficeId(officeId);
             builder.withStartDate(DATE_FORMAT.parse("2019-12-31"));
-            TellerHelper.create(builder.build());
+            TellerHelper.create(session, builder.build());
         }
     }
 
-    protected static void setupFund(JdbcTemplate jdbcTemplate) throws UnirestException {
+    protected static void setupFund(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
         for (Fund fund : Fund.values()) {
             FundBuilder builder = new FundBuilder();
             builder.withExternalId(UUID.randomUUID().toString());
             builder.withName(fund.getName());
-            FundHelper.create(builder.build());
+            FundHelper.create(session, builder.build());
         }
     }
 
-    protected static void setupCurrency(JdbcTemplate jdbcTemplate) throws UnirestException {
+    protected static void setupCurrency(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
         List<String> codes = new ArrayList<>();
         for (Currency currency : Currency.values()) {
             codes.add(currency.getLiteral());
         }
-        CurrencyHelper.update(codes);
+        CurrencyHelper.update(session, codes);
     }
 
-    protected static void setupPaymentType(JdbcTemplate jdbcTemplate) throws UnirestException {
+    protected static void setupPaymentType(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
         for (PaymentType paymentType : PaymentType.values()) {
             PaymentTypeBuilder builder = new PaymentTypeBuilder();
             builder.withDescription(paymentType.getName());
             builder.withName(paymentType.getName());
             builder.withCashPayment(paymentType.isCash());
             builder.withPosition(paymentType.getPosition());
-            PaymentTypeHelper.create(builder.build());
+            PaymentTypeHelper.create(session, builder.build());
         }
     }
 
-    protected static void setupWorkingDay(JdbcTemplate jdbcTemplate) throws UnirestException {
+    protected static void setupWorkingDay(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
         WorkingDayBuilder builder = new WorkingDayBuilder();
         builder.withMonday(true);
         builder.withTuesday(true);
@@ -205,7 +211,7 @@ public class Data {
         builder.withSunday(false);
         builder.withExtendTermForDailyRepayments(false);
         builder.withRepaymentRescheduleType(RepaymentOption.MoveToPreviousWorkingDay);
-        WorkingDayHelper.update(builder.build());
+        WorkingDayHelper.update(session, builder.build());
     }
 
 }

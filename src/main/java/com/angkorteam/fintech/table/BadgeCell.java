@@ -1,11 +1,12 @@
 package com.angkorteam.fintech.table;
 
-import com.angkorteam.framework.BadgeType;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
+
+import com.angkorteam.framework.BadgeType;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 
 /**
  * Created by socheatkhauv on 6/17/17.

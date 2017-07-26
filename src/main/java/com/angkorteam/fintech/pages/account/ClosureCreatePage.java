@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages.account;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.request.AccountClosureBuilder;
 import com.angkorteam.fintech.helper.AccountingClosureHelper;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -42,55 +43,56 @@ public class ClosureCreatePage extends Page {
 
     @Override
     protected void onInitialize() {
-        super.onInitialize();
+	super.onInitialize();
 
-        this.form = new Form<>("form");
-        add(this.form);
+	this.form = new Form<>("form");
+	add(this.form);
 
-        this.saveButton = new Button("saveButton");
-        this.saveButton.setOnSubmit(this::saveButtonSubmit);
-        this.form.add(this.saveButton);
+	this.saveButton = new Button("saveButton");
+	this.saveButton.setOnSubmit(this::saveButtonSubmit);
+	this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", ClosureBrowsePage.class);
-        this.form.add(this.closeLink);
+	this.closeLink = new BookmarkablePageLink<>("closeLink", ClosureBrowsePage.class);
+	this.form.add(this.closeLink);
 
-        this.officeProvider = new OptionSingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
-        this.form.add(this.officeField);
-        this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
-        this.form.add(this.officeFeedback);
+	this.officeProvider = new OptionSingleChoiceProvider("m_office", "id", "name");
+	this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
+		this.officeProvider);
+	this.form.add(this.officeField);
+	this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
+	this.form.add(this.officeFeedback);
 
-        this.closingDateField = new DateTextField("closingDateField", new PropertyModel<>(this, "closingDateValue"));
-        this.closingDateField.setRequired(true);
-        this.form.add(this.closingDateField);
-        this.closingDateFeedback = new TextFeedbackPanel("closingDateFeedback", this.closingDateField);
-        this.form.add(this.closingDateFeedback);
+	this.closingDateField = new DateTextField("closingDateField", new PropertyModel<>(this, "closingDateValue"));
+	this.closingDateField.setRequired(true);
+	this.form.add(this.closingDateField);
+	this.closingDateFeedback = new TextFeedbackPanel("closingDateFeedback", this.closingDateField);
+	this.form.add(this.closingDateFeedback);
 
-        this.commentField = new TextArea<>("commentField", new PropertyModel<>(this, "commentValue"));
-        this.commentField.setRequired(true);
-        this.form.add(this.commentField);
-        this.commentFeedback = new TextFeedbackPanel("commentFeedback", this.commentField);
-        this.form.add(this.commentFeedback);
+	this.commentField = new TextArea<>("commentField", new PropertyModel<>(this, "commentValue"));
+	this.commentField.setRequired(true);
+	this.form.add(this.commentField);
+	this.commentFeedback = new TextFeedbackPanel("commentFeedback", this.commentField);
+	this.form.add(this.commentFeedback);
     }
 
     private void saveButtonSubmit(Button button) {
-        AccountClosureBuilder builder = new AccountClosureBuilder();
-        if (this.officeValue != null) {
-            builder.withOfficeId(this.officeValue.getId());
-        }
-        builder.withClosingDate(this.closingDateValue);
-        builder.withComments(this.commentValue);
-        JsonNode node = null;
-        try {
-            node = AccountingClosureHelper.create(builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
-        if (reportError(node)) {
-            return;
-        }
-        setResponsePage(ClosureBrowsePage.class);
+	AccountClosureBuilder builder = new AccountClosureBuilder();
+	if (this.officeValue != null) {
+	    builder.withOfficeId(this.officeValue.getId());
+	}
+	builder.withClosingDate(this.closingDateValue);
+	builder.withComments(this.commentValue);
+	JsonNode node = null;
+	try {
+	    node = AccountingClosureHelper.create((Session) getSession(), builder.build());
+	} catch (UnirestException e) {
+	    error(e.getMessage());
+	    return;
+	}
+	if (reportError(node)) {
+	    return;
+	}
+	setResponsePage(ClosureBrowsePage.class);
 
     }
 

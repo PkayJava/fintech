@@ -1,13 +1,8 @@
 package com.angkorteam.fintech;
 
-import com.angkorteam.fintech.pages.*;
-import com.angkorteam.fintech.pages.staff.UserBrowsePage;
-import com.angkorteam.framework.Emoji;
-import com.angkorteam.framework.models.*;
-import com.angkorteam.framework.wicket.DashboardPage;
-import com.angkorteam.framework.wicket.markup.html.panel.FeedbackPanel;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
+import java.util.List;
+import java.util.MissingResourceException;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.model.IModel;
@@ -16,8 +11,25 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.List;
-import java.util.MissingResourceException;
+import com.angkorteam.fintech.pages.AccountingPage;
+import com.angkorteam.fintech.pages.IndexPage;
+import com.angkorteam.fintech.pages.OrganizationDashboardPage;
+import com.angkorteam.fintech.pages.ProductDashboardPage;
+import com.angkorteam.fintech.pages.SystemDashboardPage;
+import com.angkorteam.fintech.pages.staff.UserBrowsePage;
+import com.angkorteam.framework.Emoji;
+import com.angkorteam.framework.models.NavBarMenu;
+import com.angkorteam.framework.models.NavBarMenuItem;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.models.PageFooter;
+import com.angkorteam.framework.models.PageHeader;
+import com.angkorteam.framework.models.PageLogo;
+import com.angkorteam.framework.models.SideMenu;
+import com.angkorteam.framework.models.UserInfo;
+import com.angkorteam.framework.wicket.DashboardPage;
+import com.angkorteam.framework.wicket.markup.html.panel.FeedbackPanel;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 6/17/17.
@@ -125,7 +137,8 @@ public class Page extends DashboardPage {
         sideMenus.add(new SideMenu().buildTypeMenu(IndexPage.class, null, Emoji.fa_dashboard, "Navigation"));
         sideMenus.add(new SideMenu().buildTypeMenu(IndexPage.class, null, Emoji.fa_dashboard, "Checker Inbox & Tasks"));
         sideMenus.add(new SideMenu().buildTypeMenu(IndexPage.class, null, Emoji.fa_dashboard, "Collection Sheet"));
-        sideMenus.add(new SideMenu().buildTypeMenu(IndexPage.class, null, Emoji.fa_dashboard, "Individual Collection Sheet"));
+        sideMenus.add(
+                new SideMenu().buildTypeMenu(IndexPage.class, null, Emoji.fa_dashboard, "Individual Collection Sheet"));
         sideMenus.add(new SideMenu().buildTypeMenu(IndexPage.class, null, Emoji.fa_dashboard, "Frequent Posting"));
         sideMenus.add(new SideMenu().buildTypeMenu(IndexPage.class, null, Emoji.fa_dashboard, "Add Journal Entries"));
         sideMenus.add(new SideMenu().buildTypeMenu(IndexPage.class, null, Emoji.fa_dashboard, "Closing Entries"));
@@ -155,7 +168,8 @@ public class Page extends DashboardPage {
                 new NavBarMenuItem().buildTypeIcon(IndexPage.class, null, Emoji.fa_dashboard, "Groups"),
                 new NavBarMenuItem().buildTypeIcon(IndexPage.class, null, Emoji.fa_dashboard, "Centers"));
 
-        NavBarMenu accountingMenu = new NavBarMenu().buildTypeIcon(AccountingPage.class, null, Emoji.fa_dashboard, "Accounting", null);
+        NavBarMenu accountingMenu = new NavBarMenu().buildTypeIcon(AccountingPage.class, null, Emoji.fa_dashboard,
+                "Accounting", null);
 
         NavBarMenu reportsMenu = new NavBarMenu().buildTypeIcon(Emoji.fa_dashboard, "Reports", null,
                 new NavBarMenuItem().buildTypeIcon(IndexPage.class, null, Emoji.fa_dashboard, "All"),
@@ -168,7 +182,8 @@ public class Page extends DashboardPage {
 
         NavBarMenu adminMenu = new NavBarMenu().buildTypeIcon(Emoji.fa_dashboard, "Admin", null,
                 new NavBarMenuItem().buildTypeIcon(UserBrowsePage.class, null, Emoji.fa_dashboard, "Users"),
-                new NavBarMenuItem().buildTypeIcon(OrganizationDashboardPage.class, null, Emoji.fa_dashboard, "Organization"),
+                new NavBarMenuItem().buildTypeIcon(OrganizationDashboardPage.class, null, Emoji.fa_dashboard,
+                        "Organization"),
                 new NavBarMenuItem().buildTypeIcon(SystemDashboardPage.class, null, Emoji.fa_dashboard, "System"),
                 new NavBarMenuItem().buildTypeIcon(ProductDashboardPage.class, null, Emoji.fa_dashboard, "Products"),
                 new NavBarMenuItem().buildTypeIcon(IndexPage.class, null, Emoji.fa_dashboard, "Templates"));
@@ -176,7 +191,6 @@ public class Page extends DashboardPage {
         List<NavBarMenu> menus = Lists.newArrayList(clientsMenu, accountingMenu, reportsMenu, adminMenu);
         return Model.ofList(menus);
     }
-
 
     @Override
     public IModel<UserInfo> buildUserInfo() {

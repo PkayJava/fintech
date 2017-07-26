@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.helper;
 
+import com.angkorteam.fintech.IMifos;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -8,22 +9,17 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class PaymentTypeHelper {
 
-    private static final String CREATE_PAYMENTTYPE_URL = "/fineract-provider/api/v1/paymenttypes";
-    private static final String PAYMENTTYPE_URL = "/fineract-provider/api/v1/paymenttypes";
-
-    public static JsonNode create(JsonNode paymentType) throws UnirestException {
-        return Helper.performServerPost(CREATE_PAYMENTTYPE_URL, paymentType);
+    public static JsonNode create(IMifos session, JsonNode object) throws UnirestException {
+        return Helper.performServerPost(session, "/api/v1/paymenttypes", object);
     }
 
-    public static JsonNode update(JsonNode paymentType) throws UnirestException {
-        String id = (String) paymentType.getObject().remove("id");
-        final String UPDATE_PAYMENTTYPE_URL = PAYMENTTYPE_URL + "/" + id;
-        return Helper.performServerPut(UPDATE_PAYMENTTYPE_URL, paymentType);
+    public static JsonNode update(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPut(session, "/api/v1/paymenttypes/" + id, object);
     }
 
-    public static JsonNode delete(String id) throws UnirestException {
-        final String DELETE_PAYMENTTYPE_URL = PAYMENTTYPE_URL + "/" + id;
-        return Helper.performServerDelete(DELETE_PAYMENTTYPE_URL);
+    public static JsonNode delete(IMifos session, String id) throws UnirestException {
+        return Helper.performServerDelete(session, "/api/v1/paymenttypes/" + id);
     }
 
 }

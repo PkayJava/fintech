@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.helper;
 
+import com.angkorteam.fintech.IMifos;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -8,18 +9,18 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class GlobalConfigurationHelper {
 
-    public static JsonNode updateValueForGlobalConfiguration(final String id, final String value) throws UnirestException {
-        final String GLOBAL_CONFIG_UPDATE_URL = "/fineract-provider/api/v1/configurations/" + id;
+    public static JsonNode updateValueForGlobalConfiguration(IMifos session, String id, String value)
+            throws UnirestException {
         JsonNode node = new com.angkorteam.fintech.dto.JsonNode();
         node.getObject().put("value", value);
-        return Helper.performServerPut(GLOBAL_CONFIG_UPDATE_URL, node);
+        return Helper.performServerPut(session, "/api/v1/configurations/" + id, node);
     }
 
-    public static JsonNode updateEnabledFlagForGlobalConfiguration(final String id, final boolean enabled) throws UnirestException {
-        final String GLOBAL_CONFIG_UPDATE_URL = "/fineract-provider/api/v1/configurations/" + id;
+    public static JsonNode updateEnabledFlagForGlobalConfiguration(IMifos session, String id, boolean enabled)
+            throws UnirestException {
         JsonNode node = new com.angkorteam.fintech.dto.JsonNode();
         node.getObject().put("enabled", enabled);
-        return Helper.performServerPut(GLOBAL_CONFIG_UPDATE_URL, node);
+        return Helper.performServerPut(session, "/api/v1/configurations/" + id, node);
     }
 
 }
