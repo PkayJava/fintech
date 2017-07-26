@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.fund;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.FundBuilder;
 import com.angkorteam.fintech.helper.FundHelper;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -9,6 +10,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
@@ -16,6 +18,7 @@ import org.apache.wicket.model.PropertyModel;
 /**
  * Created by socheatkhauv on 6/26/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FundCreatePage extends Page {
 
     private String externalIdValue;

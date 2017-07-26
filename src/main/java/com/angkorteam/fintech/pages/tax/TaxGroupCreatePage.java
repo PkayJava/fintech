@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.tax;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.TaxGroupBuilder;
 import com.angkorteam.fintech.helper.TaxGroupHelper;
 import com.angkorteam.fintech.table.TextCell;
@@ -19,7 +20,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
@@ -28,6 +29,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -43,12 +45,13 @@ import java.util.UUID;
 /**
  * Created by socheatkhauv on 7/16/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class TaxGroupCreatePage extends Page {
 
     private Form<Void> taxForm;
     private AjaxButton addButton;
 
-    private OptionSingleChoiceProvider taxProvider;
+    private SingleChoiceProvider taxProvider;
     private Option taxValue;
     private Select2SingleChoice<Option> taxField;
     private TextFeedbackPanel taxFeedback;
@@ -86,7 +89,7 @@ public class TaxGroupCreatePage extends Page {
 	this.addButton.setOnSubmit(this::addButtonSubmit);
 	this.taxForm.add(this.addButton);
 
-	this.taxProvider = new OptionSingleChoiceProvider("m_tax_component", "id", "name");
+	this.taxProvider = new SingleChoiceProvider("m_tax_component", "id", "name");
 	this.taxField = new Select2SingleChoice<>("taxField", 0, new PropertyModel<>(this, "taxValue"),
 		this.taxProvider);
 	this.taxForm.add(this.taxField);

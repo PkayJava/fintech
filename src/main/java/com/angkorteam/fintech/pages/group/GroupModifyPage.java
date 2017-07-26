@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.group;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.GroupBuilder;
 import com.angkorteam.fintech.helper.GroupHelper;
 import com.angkorteam.framework.SpringBean;
@@ -10,11 +11,12 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
@@ -25,6 +27,7 @@ import java.util.Map;
 /**
  * Created by socheatkhauv on 6/26/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class GroupModifyPage extends Page {
 
     private String groupId;
@@ -37,12 +40,12 @@ public class GroupModifyPage extends Page {
     private TextField<String> nameField;
     private TextFeedbackPanel nameFeedback;
 
-    private OptionSingleChoiceProvider parentProvider;
+    private SingleChoiceProvider parentProvider;
     private Option parentValue;
     private Select2SingleChoice<Option> parentField;
     private TextFeedbackPanel parentFeedback;
 
-    private OptionSingleChoiceProvider officeProvider;
+    private SingleChoiceProvider officeProvider;
     private Option officeValue;
     private Select2SingleChoice<Option> officeField;
     private TextFeedbackPanel officeFeedback;
@@ -88,7 +91,7 @@ public class GroupModifyPage extends Page {
 
 	this.parentValue = jdbcTemplate.queryForObject("select id, display_name as text from m_group where id = ?",
 		new OptionMapper(), object.get("parent_id"));
-	this.parentProvider = new OptionSingleChoiceProvider("m_group", "id", "display_name");
+	this.parentProvider = new SingleChoiceProvider("m_group", "id", "display_name");
 	this.parentField = new Select2SingleChoice<>("parentField", 0, new PropertyModel<>(this, "parentValue"),
 		this.parentProvider);
 	this.parentField.setRequired(true);
@@ -98,7 +101,7 @@ public class GroupModifyPage extends Page {
 
 	this.officeValue = jdbcTemplate.queryForObject("select id, name as text from m_office where id = ?",
 		new OptionMapper(), object.get("office_id"));
-	this.officeProvider = new OptionSingleChoiceProvider("m_office", "id", "name");
+	this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
 	this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
 		this.officeProvider);
 	this.officeField.setRequired(true);

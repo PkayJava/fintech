@@ -37,10 +37,6 @@ public class MifosDataSourceManager implements DisposableBean, InitializingBean 
         this.mifosUrl = mifosUrl;
     }
 
-    public DataSource getDelegate() {
-        return delegate;
-    }
-
     public void setDelegate(DataSource delegate) {
         this.delegate = delegate;
     }
@@ -48,10 +44,10 @@ public class MifosDataSourceManager implements DisposableBean, InitializingBean 
     public DataSource getDataSource(String identifier) {
         if (!this.dataSources.containsKey(identifier)) {
             JdbcTemplate jdbcTemplate = new JdbcTemplate(this.delegate);
-            Map<String, Object> ternantObject = jdbcTemplate.queryForMap("select * from tenants where identifier = ?",
+            Map<String, Object> tenantObject = jdbcTemplate.queryForMap("select * from tenants where identifier = ?",
                     identifier);
             Map<String, Object> connectionObject = jdbcTemplate
-                    .queryForMap("select * from tenant_server_connections where id = ?", ternantObject.get("id"));
+                    .queryForMap("select * from tenant_server_connections where id = ?", tenantObject.get("id"));
             BasicDataSource dataSource = new BasicDataSource();
             dataSource.setDriverClassName("com.mysql.jdbc.Driver");
             dataSource.setUsername((String) connectionObject.get("schema_username"));

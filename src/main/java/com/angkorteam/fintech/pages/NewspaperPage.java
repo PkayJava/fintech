@@ -1,5 +1,7 @@
 package com.angkorteam.fintech.pages;
 
+import com.angkorteam.fintech.dto.Function;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -17,6 +19,7 @@ import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 /**
  * Created by socheatkhauv on 6/17/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class NewspaperPage extends Page {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexPage.class);

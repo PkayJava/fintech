@@ -1,9 +1,10 @@
 package com.angkorteam.fintech.pages.fund;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.framework.share.provider.JdbcProvider;
+import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
@@ -12,6 +13,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -25,6 +27,7 @@ import java.util.Map;
 /**
  * Created by socheatkhauv on 6/26/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FundBrowsePage extends Page {
 
     private DataTable<Map<String, Object>, String> dataTable;

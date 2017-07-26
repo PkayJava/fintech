@@ -1,19 +1,21 @@
 package com.angkorteam.fintech.pages.holiday;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.framework.share.provider.JdbcProvider;
+import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -28,6 +30,7 @@ import java.util.Map;
 /**
  * Created by socheatkhauv on 6/26/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class HolidayBrowsePage extends Page {
 
     private FilterForm<Map<String, String>> filterForm;
@@ -37,7 +40,7 @@ public class HolidayBrowsePage extends Page {
 
     private BookmarkablePageLink<Void> createLink;
 
-    private OptionSingleChoiceProvider officeProvider;
+    private SingleChoiceProvider officeProvider;
     private Option officeValue;
     private Select2SingleChoice<Option> officeField;
     private TextFeedbackPanel officeFeedback;
@@ -83,7 +86,7 @@ public class HolidayBrowsePage extends Page {
         this.searchButton.setOnSubmit(this::searchButtonSubmit);
         this.form.add(this.searchButton);
 
-        this.officeProvider = new OptionSingleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
         this.officeProvider.applyWhere("id","id IN (select office_id from m_holiday_office)");
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.form.add(this.officeField);

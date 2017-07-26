@@ -1,6 +1,8 @@
 package com.angkorteam.fintech.pages.charge;
 
+import com.angkorteam.fintech.dto.*;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -8,11 +10,6 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.ChargeCalculation;
-import com.angkorteam.fintech.dto.ChargeFrequency;
-import com.angkorteam.fintech.dto.ChargePayment;
-import com.angkorteam.fintech.dto.ChargeTime;
-import com.angkorteam.fintech.dto.ChargeType;
 import com.angkorteam.fintech.dto.request.ChargeBuilder;
 import com.angkorteam.fintech.helper.ChargeHelper;
 import com.angkorteam.fintech.provider.ChargeCalculationProvider;
@@ -23,12 +20,13 @@ import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanChargeCreatePage extends Page {
 
     private Form<Void> form;
@@ -39,7 +37,7 @@ public class LoanChargeCreatePage extends Page {
     private TextField<String> nameField;
     private TextFeedbackPanel nameFeedback;
 
-    private OptionSingleChoiceProvider currencyProvider;
+    private SingleChoiceProvider currencyProvider;
     private Option currencyValue;
     private Select2SingleChoice<Option> currencyField;
     private TextFeedbackPanel currencyFeedback;
@@ -80,7 +78,7 @@ public class LoanChargeCreatePage extends Page {
     private CheckBox penaltyField;
     private TextFeedbackPanel penaltyFeedback;
 
-    private OptionSingleChoiceProvider taxGroupProvider;
+    private SingleChoiceProvider taxGroupProvider;
     private Option taxGroupValue;
     private Select2SingleChoice<Option> taxGroupField;
     private TextFeedbackPanel taxGroupFeedback;
@@ -106,7 +104,7 @@ public class LoanChargeCreatePage extends Page {
 	this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
 	this.form.add(this.nameFeedback);
 
-	this.currencyProvider = new OptionSingleChoiceProvider("m_organisation_currency", "code", "name",
+	this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name",
 		"concat(name,' [', code,']')");
 	this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"),
 		this.currencyProvider);
@@ -169,7 +167,7 @@ public class LoanChargeCreatePage extends Page {
 	this.penaltyFeedback = new TextFeedbackPanel("penaltyFeedback", this.penaltyField);
 	this.form.add(this.penaltyFeedback);
 
-	this.taxGroupProvider = new OptionSingleChoiceProvider("m_tax_group", "id", "name");
+	this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
 	this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"),
 		this.taxGroupProvider);
 	this.taxGroupField.add(new OnChangeAjaxBehavior());

@@ -1,5 +1,6 @@
 package com.angkorteam.adminlte;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,6 +13,11 @@ import java.util.UUID;
 
 import javax.sql.DataSource;
 
+import com.angkorteam.fintech.helper.*;
+import com.mashape.unirest.http.JsonNode;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.XMLPropertiesConfiguration;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import com.angkorteam.fintech.IMifos;
@@ -24,15 +30,6 @@ import com.angkorteam.fintech.dto.request.PaymentTypeBuilder;
 import com.angkorteam.fintech.dto.request.StaffBuilder;
 import com.angkorteam.fintech.dto.request.TellerBuilder;
 import com.angkorteam.fintech.dto.request.WorkingDayBuilder;
-import com.angkorteam.fintech.helper.CodeHelper;
-import com.angkorteam.fintech.helper.CurrencyHelper;
-import com.angkorteam.fintech.helper.FundHelper;
-import com.angkorteam.fintech.helper.HolidayHelper;
-import com.angkorteam.fintech.helper.OfficeHelper;
-import com.angkorteam.fintech.helper.PaymentTypeHelper;
-import com.angkorteam.fintech.helper.StaffHelper;
-import com.angkorteam.fintech.helper.TellerHelper;
-import com.angkorteam.fintech.helper.WorkingDayHelper;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -42,9 +39,31 @@ public class Data {
     private static final DateFormat DATE_FORMAT_1 = new SimpleDateFormat("dd MMM yyyy");
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd MMM yyyy");
 
-    public static void main(String[] args) throws UnirestException, ParseException {
-        DataSource dataSource = null;
-        IMifos session = null;
+    public static void main(String[] args) throws UnirestException, ParseException, ConfigurationException {
+
+        File fintech = new File(java.lang.System.getProperty("user.home"), ".xml/fintech.properties.xml");
+        XMLPropertiesConfiguration configuration = new XMLPropertiesConfiguration(fintech);
+
+        String mifosUrl = configuration.getString("mifos.url");
+
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName(configuration.getString("app.jdbc.driver"));
+        dataSource.setUsername(configuration.getString("app.jdbc.username"));
+        dataSource.setPassword(configuration.getString("app.jdbc.password"));
+        dataSource.setUrl(configuration.getString("app.jdbc.url"));
+
+        final JsonNode object = LoginHelper.authenticate(mifosUrl, "default", "mifos", "password");
+        IMifos session = new IMifos() {
+            @Override
+            public String getIdentifier() {
+                return "default";
+            }
+
+            @Override
+            public String getToken() {
+                return (String) object.getObject().get("base64EncodedAuthenticationKey");
+            }
+        };
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         setupOffice(session, jdbcTemplate);
         setupWorkingDay(session, jdbcTemplate);

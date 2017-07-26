@@ -2,24 +2,26 @@ package com.angkorteam.fintech.pages.hook;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.HookHelper;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.BadgeType;
-import com.angkorteam.framework.share.provider.JdbcProvider;
+import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import org.apache.wicket.model.IModel;
@@ -33,13 +35,14 @@ import java.util.Map;
 /**
  * Created by socheatkhauv on 6/27/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class HookBrowsePage extends Page {
 
     private DataTable<Map<String, Object>, String> dataTable;
 
     private JdbcProvider provider;
 
-    private OptionSingleChoiceProvider templateProvider;
+    private SingleChoiceProvider templateProvider;
     private Option templateValue;
     private Select2SingleChoice<Option> templateField;
     private TextFeedbackPanel templateFeedback;
@@ -82,7 +85,7 @@ public class HookBrowsePage extends Page {
 	this.createButton.setOnSubmit(this::createButtonSubmit);
 	this.form.add(this.createButton);
 
-	this.templateProvider = new OptionSingleChoiceProvider("m_hook_templates", "id", "name");
+	this.templateProvider = new SingleChoiceProvider("m_hook_templates", "id", "name");
 	this.templateField = new Select2SingleChoice<>("templateField", new PropertyModel<>(this, "templateValue"),
 		this.templateProvider);
 	this.templateField.setRequired(true);

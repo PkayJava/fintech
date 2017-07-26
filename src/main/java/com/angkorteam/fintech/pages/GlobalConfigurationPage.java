@@ -3,7 +3,9 @@ package com.angkorteam.fintech.pages;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.dto.Function;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import org.apache.wicket.markup.html.form.TextField;
@@ -18,7 +20,7 @@ import com.angkorteam.fintech.helper.GlobalConfigurationHelper;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.BadgeType;
-import com.angkorteam.framework.share.provider.JdbcProvider;
+import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
@@ -31,7 +33,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
@@ -41,6 +43,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 /**
  * Created by socheatkhauv on 6/26/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class GlobalConfigurationPage extends Page {
 
     private DataTable<Map<String, Object>, String> dataTable;
@@ -49,7 +52,7 @@ public class GlobalConfigurationPage extends Page {
 
     private BookmarkablePageLink<Void> closeLink;
 
-    private OptionSingleChoiceProvider nameProvider;
+    private SingleChoiceProvider nameProvider;
     private Option nameValue;
     private Select2SingleChoice<Option> nameField;
     private TextFeedbackPanel nameFeedback;
@@ -98,7 +101,7 @@ public class GlobalConfigurationPage extends Page {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.nameProvider = new OptionSingleChoiceProvider("c_configuration", "id", "name");
+        this.nameProvider = new SingleChoiceProvider("c_configuration", "id", "name");
         this.nameField = new Select2SingleChoice<>("nameField", new PropertyModel<>(this, "nameValue"),
                 this.nameProvider);
         this.nameField.setRequired(true);

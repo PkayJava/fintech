@@ -7,7 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
+import com.angkorteam.fintech.dto.Function;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -30,12 +32,13 @@ import com.angkorteam.framework.wicket.markup.html.form.DayMonthTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingDepositChargeModifyPage extends Page {
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/M");
@@ -50,7 +53,7 @@ public class SavingDepositChargeModifyPage extends Page {
     private TextField<String> nameField;
     private TextFeedbackPanel nameFeedback;
 
-    private OptionSingleChoiceProvider currencyProvider;
+    private SingleChoiceProvider currencyProvider;
     private Option currencyValue;
     private Select2SingleChoice<Option> currencyField;
     private TextFeedbackPanel currencyFeedback;
@@ -85,7 +88,7 @@ public class SavingDepositChargeModifyPage extends Page {
     private CheckBox penaltyField;
     private TextFeedbackPanel penaltyFeedback;
 
-    private OptionSingleChoiceProvider taxGroupProvider;
+    private SingleChoiceProvider taxGroupProvider;
     private Option taxGroupValue;
     private Select2SingleChoice<Option> taxGroupField;
     private TextFeedbackPanel taxGroupFeedback;
@@ -122,7 +125,7 @@ public class SavingDepositChargeModifyPage extends Page {
 	this.currencyValue = jdbcTemplate.queryForObject(
 		"select code id, concat(name,' [', code,']') text from m_organisation_currency where code = ?",
 		new OptionMapper(), chargeObject.get("currency_code"));
-	this.currencyProvider = new OptionSingleChoiceProvider("m_organisation_currency", "code", "name",
+	this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name",
 		"concat(name,' [', code,']')");
 	this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"),
 		this.currencyProvider);
@@ -221,7 +224,7 @@ public class SavingDepositChargeModifyPage extends Page {
 
 	this.taxGroupValue = jdbcTemplate.queryForObject("select id, name text from m_tax_group where id = ?",
 		new OptionMapper(), chargeObject.get("tax_group_id"));
-	this.taxGroupProvider = new OptionSingleChoiceProvider("m_tax_group", "id", "name");
+	this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
 	this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"),
 		this.taxGroupProvider);
 	this.taxGroupField.add(new OnChangeAjaxBehavior());

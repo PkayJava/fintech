@@ -2,16 +2,18 @@ package com.angkorteam.fintech.pages.group;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.GroupBuilder;
 import com.angkorteam.fintech.helper.GroupHelper;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
@@ -19,6 +21,7 @@ import org.apache.wicket.model.PropertyModel;
 /**
  * Created by socheatkhauv on 6/26/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class GroupCreatePage extends Page {
 
     private String externalIdValue;
@@ -29,12 +32,12 @@ public class GroupCreatePage extends Page {
     private TextField<String> nameField;
     private TextFeedbackPanel nameFeedback;
 
-    private OptionSingleChoiceProvider parentProvider;
+    private SingleChoiceProvider parentProvider;
     private Option parentValue;
     private Select2SingleChoice<Option> parentField;
     private TextFeedbackPanel parentFeedback;
 
-    private OptionSingleChoiceProvider officeProvider;
+    private SingleChoiceProvider officeProvider;
     private Option officeValue;
     private Select2SingleChoice<Option> officeField;
     private TextFeedbackPanel officeFeedback;
@@ -69,7 +72,7 @@ public class GroupCreatePage extends Page {
 	this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
 	this.form.add(this.nameFeedback);
 
-	this.parentProvider = new OptionSingleChoiceProvider("m_group", "id", "display_name");
+	this.parentProvider = new SingleChoiceProvider("m_group", "id", "display_name");
 	this.parentField = new Select2SingleChoice<>("parentField", 0, new PropertyModel<>(this, "parentValue"),
 		this.parentProvider);
 	this.parentField.setRequired(true);
@@ -77,7 +80,7 @@ public class GroupCreatePage extends Page {
 	this.parentFeedback = new TextFeedbackPanel("parentFeedback", this.parentField);
 	this.form.add(this.parentFeedback);
 
-	this.officeProvider = new OptionSingleChoiceProvider("m_office", "id", "name");
+	this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
 	this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
 		this.officeProvider);
 	this.officeField.setRequired(true);

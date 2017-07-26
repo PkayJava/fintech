@@ -1,10 +1,12 @@
 package com.angkorteam.fintech.pages.account;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.provider.AccountHierarchyProvider;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.tree.NestedTree;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -15,6 +17,7 @@ import java.util.Map;
 /**
  * Created by socheatkhauv on 6/27/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class AccountHierarchyPage extends Page {
 
     private NestedTree<Map<String, Object>> tree;

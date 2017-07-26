@@ -2,17 +2,19 @@ package com.angkorteam.fintech.pages.office;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.OfficeBuilder;
 import com.angkorteam.fintech.helper.OfficeHelper;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
@@ -22,6 +24,7 @@ import java.util.Date;
 /**
  * Created by socheatkhauv on 6/25/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class OfficeCreatePage extends Page {
 
     private String externalIdValue;
@@ -32,7 +35,7 @@ public class OfficeCreatePage extends Page {
     private TextField<String> nameField;
     private TextFeedbackPanel nameFeedback;
 
-    private OptionSingleChoiceProvider parentProvider;
+    private SingleChoiceProvider parentProvider;
     private Option parentValue;
     private Select2SingleChoice<Option> parentField;
     private TextFeedbackPanel parentFeedback;
@@ -77,7 +80,7 @@ public class OfficeCreatePage extends Page {
 	this.openingDateFeedback = new TextFeedbackPanel("openingDateFeedback", this.openingDateField);
 	this.form.add(this.openingDateFeedback);
 
-	this.parentProvider = new OptionSingleChoiceProvider("m_office", "id", "name");
+	this.parentProvider = new SingleChoiceProvider("m_office", "id", "name");
 	this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"),
 		this.parentProvider);
 	this.parentField.setRequired(true);

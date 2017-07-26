@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.dto.Function;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.TextField;
@@ -16,10 +18,11 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanCreatePage extends Page {
 
     private Form<Void> form;
@@ -37,7 +40,7 @@ public class LoanCreatePage extends Page {
     private TextField<String> descriptionField;
     private TextFeedbackPanel descriptionFeedback;
 
-    private OptionSingleChoiceProvider fundProvider;
+    private SingleChoiceProvider fundProvider;
     private Option fundValue;
     private Select2SingleChoice<Option> fundField;
     private TextFeedbackPanel fundFeedback;
@@ -55,7 +58,7 @@ public class LoanCreatePage extends Page {
     private TextFeedbackPanel includeInCustomerLoanCounterFeedback;
 
     // Currency
-    private OptionSingleChoiceProvider currencyProvider;
+    private SingleChoiceProvider currencyProvider;
     private Option currencyValue;
     private Select2SingleChoice<Option> currencyField;
     private TextFeedbackPanel currencyFeedback;
@@ -178,7 +181,7 @@ public class LoanCreatePage extends Page {
 	this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
 	this.form.add(this.descriptionFeedback);
 
-	this.fundProvider = new OptionSingleChoiceProvider("m_fund", "id", "name");
+	this.fundProvider = new SingleChoiceProvider("m_fund", "id", "name");
 	this.fundField = new Select2SingleChoice<>("fundField", 0, new PropertyModel<>(this, "fundValue"),
 		this.fundProvider);
 	this.fundField.setRequired(true);
@@ -208,7 +211,7 @@ public class LoanCreatePage extends Page {
     }
 
     protected void initCurrency() {
-	this.currencyProvider = new OptionSingleChoiceProvider("m_organisation_currency", "code", "name",
+	this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name",
 		"concat(name,' [', code,']')");
 	this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"),
 		this.currencyProvider);

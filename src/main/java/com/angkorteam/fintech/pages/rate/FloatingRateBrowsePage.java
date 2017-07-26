@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages.rate;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.office.OfficeCreatePage;
 import com.angkorteam.fintech.pages.office.OfficeHierarchyPage;
 import com.angkorteam.fintech.pages.office.OfficeModifyPage;
@@ -8,13 +9,14 @@ import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.BadgeType;
-import com.angkorteam.framework.share.provider.JdbcProvider;
+import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -29,6 +31,7 @@ import java.util.Map;
 /**
  * Created by socheatkhauv on 6/22/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FloatingRateBrowsePage extends Page {
 
     private DataTable<Map<String, Object>, String> dataTable;

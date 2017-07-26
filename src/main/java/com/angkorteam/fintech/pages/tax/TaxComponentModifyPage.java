@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.tax;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.AccountType;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.TaxComponentBuilder;
 import com.angkorteam.fintech.helper.TaxComponentHelper;
 import com.angkorteam.framework.SpringBean;
@@ -13,6 +14,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -25,6 +27,7 @@ import java.util.Map;
 /**
  * Created by socheatkhauv on 7/16/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class TaxComponentModifyPage extends Page {
 
     private String tagId;

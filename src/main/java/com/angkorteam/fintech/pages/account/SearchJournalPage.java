@@ -1,12 +1,13 @@
 package com.angkorteam.fintech.pages.account;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.JournalEntry;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.ManualEntryProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.framework.share.provider.JdbcProvider;
+import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.*;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
@@ -14,11 +15,12 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -36,6 +38,7 @@ import java.util.Map;
 /**
  * Created by socheatkhauv on 7/2/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SearchJournalPage extends Page {
 
     private static final DecimalFormat FORMAT = new DecimalFormat("#,###.000");
@@ -44,12 +47,12 @@ public class SearchJournalPage extends Page {
     private Button searchButton;
     private BookmarkablePageLink<Void> closeLink;
 
-    private OptionSingleChoiceProvider accountNameProvider;
+    private SingleChoiceProvider accountNameProvider;
     private Option accountNameValue;
     private Select2SingleChoice<Option> accountNameField;
     private TextFeedbackPanel accountNameFeedback;
 
-    private OptionSingleChoiceProvider officeProvider;
+    private SingleChoiceProvider officeProvider;
     private Option officeValue;
     private Select2SingleChoice<Option> officeField;
     private TextFeedbackPanel officeFeedback;
@@ -88,7 +91,7 @@ public class SearchJournalPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", AccountingPage.class);
         this.form.add(this.closeLink);
 
-        this.officeProvider = new OptionSingleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
         this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.form.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
@@ -104,7 +107,7 @@ public class SearchJournalPage extends Page {
         this.toDateFeedback = new TextFeedbackPanel("toDateFeedback", this.toDateField);
         this.form.add(this.toDateFeedback);
 
-        this.accountNameProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name", "concat(name,' [', gl_code, ']')");
+        this.accountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name", "concat(name,' [', gl_code, ']')");
         this.accountNameField = new Select2SingleChoice<>("accountNameField", 0, new PropertyModel<>(this, "accountNameValue"), this.accountNameProvider);
         this.form.add(this.accountNameField);
         this.accountNameFeedback = new TextFeedbackPanel("accountNameFeedback", this.accountNameField);

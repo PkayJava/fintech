@@ -2,23 +2,27 @@ package com.angkorteam.fintech.pages.role;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.RoleHelper;
+import com.angkorteam.fintech.provider.MultipleChoiceProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.share.provider.JdbcProvider;
+import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.*;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
@@ -33,6 +37,7 @@ import java.util.Map;
 /**
  * Created by socheatkhauv on 6/26/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class RolePermissionPage extends Page {
 
     private String roleId;
@@ -41,7 +46,7 @@ public class RolePermissionPage extends Page {
 
     private JdbcProvider provider;
 
-    private OptionMultipleChoiceProvider permissionProvider;
+    private MultipleChoiceProvider permissionProvider;
     private List<Option> permissionValue;
     private Select2MultipleChoice<Option> permissionField;
     private TextFeedbackPanel permissionFeedback;
@@ -93,7 +98,7 @@ public class RolePermissionPage extends Page {
 	this.addButton.setOnSubmit(this::addButtonSubmit);
 	this.form.add(this.addButton);
 
-	this.permissionProvider = new OptionMultipleChoiceProvider("m_permission", "code", "code",
+	this.permissionProvider = new MultipleChoiceProvider("m_permission", "code", "code",
 		"concat(code,' ', '[', grouping,']',  ' ', '[', IF(entity_name is NULL , 'N/A', entity_name), ']',' ', '[' , IF(action_name is NULL , 'N/A', action_name),']')");
 	this.permissionProvider.applyWhere("id",
 		"id not IN (SELECT permission_id from m_role_permission where  role_id = " + this.roleId + ")");

@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.account;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.AccrualBuilder;
 import com.angkorteam.fintech.helper.AccrualHelper;
 import com.angkorteam.fintech.pages.AccountingPage;
@@ -11,6 +12,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
 
@@ -19,6 +21,7 @@ import java.util.Date;
 /**
  * Created by socheatkhauv on 6/27/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class AccrualAccountingPage extends Page {
 
     private Form<Void> form;

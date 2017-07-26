@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.hook;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.HookBuilder;
 import com.angkorteam.fintech.helper.HookHelper;
 import com.angkorteam.fintech.table.TextCell;
@@ -30,6 +31,7 @@ import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -48,6 +50,7 @@ import java.util.UUID;
 /**
  * Created by socheatkhauv on 6/27/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class HookCreatePage extends Page {
 
     private List<Option> groupingProvider;

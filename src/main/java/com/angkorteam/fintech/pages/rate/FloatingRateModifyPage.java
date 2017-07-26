@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.rate;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.FloatingRateBuilder;
 import com.angkorteam.fintech.helper.FloatingRateHelper;
 import com.angkorteam.fintech.pages.staff.StaffBrowsePage;
@@ -33,6 +34,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
@@ -48,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FloatingRateModifyPage extends Page {
 
     private String rateId;

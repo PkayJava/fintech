@@ -4,6 +4,7 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.EntityStatus;
 import com.angkorteam.fintech.dto.EntityType;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.EntityCheckBuilder;
 import com.angkorteam.fintech.helper.EntityCheckHelper;
 import com.angkorteam.fintech.provider.EntityStatusProvider;
@@ -12,18 +13,20 @@ import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
 
 /**
  * Created by socheatkhauv on 7/15/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class CheckerCreatePage extends Page {
 
     private Form<Void> form;
@@ -40,7 +43,7 @@ public class CheckerCreatePage extends Page {
     private Select2SingleChoice<Option> statusField;
     private TextFeedbackPanel statusFeedback;
 
-    private OptionSingleChoiceProvider datatableProvider;
+    private SingleChoiceProvider datatableProvider;
     private Option datatableValue;
     private Select2SingleChoice<Option> datatableField;
     private TextFeedbackPanel datatableFeedback;
@@ -77,7 +80,7 @@ public class CheckerCreatePage extends Page {
 	this.form.add(this.statusFeedback);
 	this.statusField.add(new OnChangeAjaxBehavior(this::statusFieldUpdate, this::statusFieldError));
 
-	this.datatableProvider = new OptionSingleChoiceProvider("x_registered_table", "application_table_name",
+	this.datatableProvider = new SingleChoiceProvider("x_registered_table", "application_table_name",
 		"registered_table_name");
 	this.datatableProvider.setDisabled(true);
 	this.datatableField = new Select2SingleChoice<>("datatableField", 0,

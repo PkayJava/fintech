@@ -3,7 +3,9 @@ package com.angkorteam.fintech.pages;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.dto.Function;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
@@ -18,7 +20,7 @@ import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.share.provider.JdbcProvider;
+import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -32,7 +34,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMultipleChoiceProvider;
+import com.angkorteam.fintech.provider.MultipleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
@@ -43,13 +45,14 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 /**
  * Created by socheatkhauv on 6/26/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class MakerCheckerPage extends Page {
 
     private DataTable<Map<String, Object>, String> dataTable;
 
     private JdbcProvider provider;
 
-    private OptionMultipleChoiceProvider permissionProvider;
+    private MultipleChoiceProvider permissionProvider;
     private List<Option> permissionValue;
     private Select2MultipleChoice<Option> permissionField;
     private TextFeedbackPanel permissionFeedback;
@@ -99,7 +102,7 @@ public class MakerCheckerPage extends Page {
         this.addButton.setOnSubmit(this::addButtonSubmit);
         this.form.add(this.addButton);
 
-        this.permissionProvider = new OptionMultipleChoiceProvider("m_permission", "code", "code",
+        this.permissionProvider = new MultipleChoiceProvider("m_permission", "code", "code",
                 "concat(code,' ', '[', grouping,']',  ' ', '[', IF(entity_name is NULL , 'N/A', entity_name), ']',' ', '[' , IF(action_name is NULL , 'N/A', action_name),']')");
         this.permissionProvider.applyWhere("maker", "can_maker_checker = 0");
         this.permissionField = new Select2MultipleChoice<>("permissionField",

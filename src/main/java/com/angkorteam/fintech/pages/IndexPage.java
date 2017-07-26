@@ -1,5 +1,7 @@
 package com.angkorteam.fintech.pages;
 
+import com.angkorteam.fintech.dto.Function;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -18,6 +20,7 @@ import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 /**
  * Created by socheatkhauv on 6/11/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class IndexPage extends Page {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexPage.class);

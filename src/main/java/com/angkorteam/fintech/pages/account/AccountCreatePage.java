@@ -4,6 +4,7 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.AccountType;
 import com.angkorteam.fintech.dto.AccountUsage;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.GLAccountBuilder;
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.provider.AccountTypeProvider;
@@ -12,12 +13,13 @@ import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
@@ -27,6 +29,7 @@ import org.apache.wicket.model.PropertyModel;
 /**
  * Created by socheatkhauv on 6/27/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class AccountCreatePage extends Page {
 
     private Form<Void> form;
@@ -38,7 +41,7 @@ public class AccountCreatePage extends Page {
     private Select2SingleChoice<Option> accountTypeField;
     private TextFeedbackPanel accountTypeFeedback;
 
-    private OptionSingleChoiceProvider parentProvider;
+    private SingleChoiceProvider parentProvider;
     private Option parentValue;
     private Select2SingleChoice<Option> parentField;
     private TextFeedbackPanel parentFeedback;
@@ -56,7 +59,7 @@ public class AccountCreatePage extends Page {
     private Select2SingleChoice<Option> accountUsageField;
     private TextFeedbackPanel accountUsageFeedback;
 
-    private OptionSingleChoiceProvider tagProvider;
+    private SingleChoiceProvider tagProvider;
     private Option tagValue;
     private Select2SingleChoice<Option> tagField;
     private TextFeedbackPanel tagFeedback;
@@ -92,7 +95,7 @@ public class AccountCreatePage extends Page {
 	this.accountTypeFeedback = new TextFeedbackPanel("accountTypeFeedback", this.accountTypeField);
 	this.form.add(this.accountTypeFeedback);
 
-	this.parentProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name");
+	this.parentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
 	this.parentProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Header.getLiteral());
 	this.parentProvider.setDisabled(true);
 	this.parentField = new Select2SingleChoice<>("parentField", 0, new PropertyModel<>(this, "parentValue"),
@@ -121,7 +124,7 @@ public class AccountCreatePage extends Page {
 	this.accountUsageFeedback = new TextFeedbackPanel("accountUsageFeedback", this.accountUsageField);
 	this.form.add(this.accountUsageFeedback);
 
-	this.tagProvider = new OptionSingleChoiceProvider("m_code_value", "id", "code_value");
+	this.tagProvider = new SingleChoiceProvider("m_code_value", "id", "code_value");
 	this.tagProvider.setDisabled(true);
 	this.tagField = new Select2SingleChoice<>("tagField", 0, new PropertyModel<>(this, "tagValue"),
 		this.tagProvider);

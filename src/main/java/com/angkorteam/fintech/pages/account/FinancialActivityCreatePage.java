@@ -5,6 +5,7 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.AccountType;
 import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.fintech.dto.FinancialActivityType;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.FinancialActivityBuilder;
 import com.angkorteam.fintech.helper.FinancialActivityHelper;
 import com.angkorteam.fintech.provider.FinancialActivityProvider;
@@ -12,18 +13,20 @@ import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
 
 /**
  * Created by socheatkhauv on 6/27/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FinancialActivityCreatePage extends Page {
 
     private Form<Void> form;
@@ -35,7 +38,7 @@ public class FinancialActivityCreatePage extends Page {
     private Select2SingleChoice<Option> financialActivityField;
     private TextFeedbackPanel financialActivityFeedback;
 
-    private OptionSingleChoiceProvider accountProvider;
+    private SingleChoiceProvider accountProvider;
     private Option accountValue;
     private Select2SingleChoice<Option> accountField;
     private TextFeedbackPanel accountFeedback;
@@ -64,7 +67,7 @@ public class FinancialActivityCreatePage extends Page {
 	this.financialActivityField
 		.add(new OnChangeAjaxBehavior(this::financialActivityFieldUpdate, this::financialActivityFieldError));
 
-	this.accountProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name");
+	this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
 	this.accountProvider.applyWhere("usage", AccountUsage.Detail.getLiteral());
 	this.accountProvider.setDisabled(true);
 	this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this, "accountValue"),

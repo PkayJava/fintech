@@ -1,5 +1,6 @@
 package com.angkorteam.fintech;
 
+import com.angkorteam.fintech.pages.staff.UserBrowsePage;
 import org.apache.commons.configuration.XMLPropertiesConfiguration;
 import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
@@ -28,8 +29,7 @@ public class Application extends AuthenticatedWebApplication {
 
     @Override
     public Class<? extends Page> getHomePage() {
-        // return StarterPage.class;
-        return LoanCreatePage.class;
+        return UserBrowsePage.class;
     }
 
     @Override

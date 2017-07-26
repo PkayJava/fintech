@@ -1,5 +1,7 @@
 package com.angkorteam.fintech.pages;
 
+import com.angkorteam.fintech.dto.Function;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.Model;
 
 import com.angkorteam.fintech.Page;
@@ -15,6 +17,7 @@ import com.angkorteam.framework.panels.InfoBoxPanel;
 /**
  * Created by socheatkhauv on 6/26/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SystemDashboardPage extends Page {
 
     @Override

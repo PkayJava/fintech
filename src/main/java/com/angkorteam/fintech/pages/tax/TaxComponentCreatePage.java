@@ -4,6 +4,7 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.AccountType;
 import com.angkorteam.fintech.dto.AccountUsage;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.TaxComponentBuilder;
 import com.angkorteam.fintech.helper.TaxComponentHelper;
 import com.angkorteam.fintech.provider.AccountTypeProvider;
@@ -12,12 +13,13 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
@@ -27,6 +29,7 @@ import java.util.Date;
 /**
  * Created by socheatkhauv on 7/16/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class TaxComponentCreatePage extends Page {
 
     private Form<Void> form;
@@ -46,7 +49,7 @@ public class TaxComponentCreatePage extends Page {
     private Select2SingleChoice<Option> accountTypeField;
     private TextFeedbackPanel accountTypeFeedback;
 
-    private OptionSingleChoiceProvider accountProvider;
+    private SingleChoiceProvider accountProvider;
     private Option accountValue;
     private Select2SingleChoice<Option> accountField;
     private TextFeedbackPanel accountFeedback;
@@ -90,7 +93,7 @@ public class TaxComponentCreatePage extends Page {
 	this.accountTypeFeedback = new TextFeedbackPanel("accountTypeFeedback", this.accountTypeField);
 	this.form.add(this.accountTypeFeedback);
 
-	this.accountProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name");
+	this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
 	this.accountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
 	this.accountProvider.setDisabled(true);
 	this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this, "accountValue"),

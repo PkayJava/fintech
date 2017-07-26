@@ -3,9 +3,10 @@ package com.angkorteam.fintech.pages.account;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.FinancialActivityType;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.FinancialActivityHelper;
 import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.framework.share.provider.JdbcProvider;
+import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
@@ -13,6 +14,7 @@ import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -26,6 +28,7 @@ import java.util.Map;
 /**
  * Created by socheatkhauv on 7/12/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FinancialActivityBrowsePage extends Page {
 
     private DataTable<Map<String, Object>, String> dataTable;

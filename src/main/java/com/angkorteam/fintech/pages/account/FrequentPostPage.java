@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.account;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.AccountUsage;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.GLEntryBuilder;
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.pages.AccountingPage;
@@ -24,7 +25,7 @@ import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.base.Strings;
@@ -34,6 +35,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
@@ -51,6 +53,7 @@ import java.util.UUID;
 /**
  * Created by socheatkhauv on 7/11/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FrequentPostPage extends Page {
 
     private String ruleId;
@@ -58,7 +61,7 @@ public class FrequentPostPage extends Page {
     private Form<Void> debitForm;
     private AjaxButton debitButton;
 
-    private OptionSingleChoiceProvider debitAccountNameProvider;
+    private SingleChoiceProvider debitAccountNameProvider;
     private Option debitAccountNameValue;
     private Select2SingleChoice<Option> debitAccountNameField;
     private TextFeedbackPanel debitAccountNameFeedback;
@@ -70,7 +73,7 @@ public class FrequentPostPage extends Page {
     private Form<Void> creditForm;
     private AjaxButton creditButton;
 
-    private OptionSingleChoiceProvider creditAccountNameProvider;
+    private SingleChoiceProvider creditAccountNameProvider;
     private Option creditAccountNameValue;
     private Select2SingleChoice<Option> creditAccountNameField;
     private TextFeedbackPanel creditAccountNameFeedback;
@@ -83,12 +86,12 @@ public class FrequentPostPage extends Page {
     private Button saveButton;
     private BookmarkablePageLink<Void> closeLink;
 
-    private OptionSingleChoiceProvider officeProvider;
+    private SingleChoiceProvider officeProvider;
     private Option officeValue;
     private Select2SingleChoice<Option> officeField;
     private TextFeedbackPanel officeFeedback;
 
-    private OptionSingleChoiceProvider currencyProvider;
+    private SingleChoiceProvider currencyProvider;
     private Option currencyValue;
     private Select2SingleChoice<Option> currencyField;
     private TextFeedbackPanel currencyFeedback;
@@ -101,7 +104,7 @@ public class FrequentPostPage extends Page {
     private DateTextField transactionDateField;
     private TextFeedbackPanel transactionDateFeedback;
 
-    private OptionSingleChoiceProvider paymentTypeProvider;
+    private SingleChoiceProvider paymentTypeProvider;
     private Option paymentTypeValue;
     private Select2SingleChoice<Option> paymentTypeField;
     private TextFeedbackPanel paymentTypeFeedback;
@@ -161,7 +164,7 @@ public class FrequentPostPage extends Page {
 	this.debitButton.setOnError(this::debitButtonError);
 	this.debitForm.add(this.debitButton);
 
-	this.debitAccountNameProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name");
+	this.debitAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
 	this.debitAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
 	this.debitAccountNameField = new Select2SingleChoice<>("debitAccountNameField", 0,
 		new PropertyModel<>(this, "debitAccountNameValue"), this.debitAccountNameProvider);
@@ -197,7 +200,7 @@ public class FrequentPostPage extends Page {
 	this.creditForm.add(this.creditButton);
 
 	this.creditAccountNameValue = null;
-	this.creditAccountNameProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name");
+	this.creditAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
 	this.creditAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
 	this.creditAccountNameField = new Select2SingleChoice<>("creditAccountNameField", 0,
 		new PropertyModel<>(this, "creditAccountNameValue"), this.creditAccountNameProvider);
@@ -235,7 +238,7 @@ public class FrequentPostPage extends Page {
 	this.closeLink = new BookmarkablePageLink<>("closeLink", AccountingPage.class);
 	this.form.add(this.closeLink);
 
-	this.officeProvider = new OptionSingleChoiceProvider("m_office", "id", "name");
+	this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
 	this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
 		this.officeProvider);
 	this.officeField.setRequired(true);
@@ -248,7 +251,7 @@ public class FrequentPostPage extends Page {
 	    this.officeProvider.applyWhere("id", "id = " + ruleObject.get("office_id"));
 	}
 
-	this.currencyProvider = new OptionSingleChoiceProvider("m_organisation_currency", "code", "name",
+	this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name",
 		"concat(name,' [', code,']')");
 	this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"),
 		this.currencyProvider);
@@ -294,7 +297,7 @@ public class FrequentPostPage extends Page {
 	this.transactionDateFeedback = new TextFeedbackPanel("transactionDateFeedback", this.transactionDateField);
 	this.form.add(this.transactionDateFeedback);
 
-	this.paymentTypeProvider = new OptionSingleChoiceProvider("m_payment_type", "id", "value");
+	this.paymentTypeProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
 	this.paymentTypeField = new Select2SingleChoice<>("paymentTypeField", 0,
 		new PropertyModel<>(this, "paymentTypeValue"), this.paymentTypeProvider);
 	this.form.add(this.paymentTypeField);

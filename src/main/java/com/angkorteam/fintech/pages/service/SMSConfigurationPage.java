@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.service;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.ServiceType;
 import com.angkorteam.fintech.dto.request.ExternalServiceBuilder;
 import com.angkorteam.fintech.helper.ServiceHelper;
@@ -15,6 +16,7 @@ import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
@@ -22,6 +24,7 @@ import org.apache.wicket.model.PropertyModel;
 import java.util.List;
 import java.util.Map;
 
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SMSConfigurationPage extends Page {
 
     private Form<Void> form;

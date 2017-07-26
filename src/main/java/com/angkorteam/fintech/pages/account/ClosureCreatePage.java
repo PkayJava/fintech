@@ -2,17 +2,19 @@ package com.angkorteam.fintech.pages.account;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.AccountClosureBuilder;
 import com.angkorteam.fintech.helper.AccountingClosureHelper;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
@@ -22,13 +24,14 @@ import java.util.Date;
 /**
  * Created by socheatkhauv on 6/27/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ClosureCreatePage extends Page {
 
     private Form<Void> form;
     private Button saveButton;
     private BookmarkablePageLink<Void> closeLink;
 
-    private OptionSingleChoiceProvider officeProvider;
+    private SingleChoiceProvider officeProvider;
     private Option officeValue;
     private Select2SingleChoice<Option> officeField;
     private TextFeedbackPanel officeFeedback;
@@ -55,7 +58,7 @@ public class ClosureCreatePage extends Page {
 	this.closeLink = new BookmarkablePageLink<>("closeLink", ClosureBrowsePage.class);
 	this.form.add(this.closeLink);
 
-	this.officeProvider = new OptionSingleChoiceProvider("m_office", "id", "name");
+	this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
 	this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
 		this.officeProvider);
 	this.form.add(this.officeField);

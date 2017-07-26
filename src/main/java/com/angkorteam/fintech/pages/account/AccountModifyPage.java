@@ -4,6 +4,7 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.AccountType;
 import com.angkorteam.fintech.dto.AccountUsage;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.GLAccountBuilder;
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.provider.AccountTypeProvider;
@@ -15,12 +16,13 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
@@ -33,6 +35,7 @@ import java.util.Map;
 /**
  * Created by socheatkhauv on 6/27/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class AccountModifyPage extends Page {
 
     private String accountId;
@@ -42,7 +45,7 @@ public class AccountModifyPage extends Page {
     private Select2SingleChoice<Option> accountTypeField;
     private TextFeedbackPanel accountTypeFeedback;
 
-    private OptionSingleChoiceProvider parentProvider;
+    private SingleChoiceProvider parentProvider;
     private Option parentValue;
     private Select2SingleChoice<Option> parentField;
     private TextFeedbackPanel parentFeedback;
@@ -60,7 +63,7 @@ public class AccountModifyPage extends Page {
     private Select2SingleChoice<Option> accountUsageField;
     private TextFeedbackPanel accountUsageFeedback;
 
-    private OptionSingleChoiceProvider tagProvider;
+    private SingleChoiceProvider tagProvider;
     private Option tagValue;
     private Select2SingleChoice<Option> tagField;
     private TextFeedbackPanel tagFeedback;
@@ -116,7 +119,7 @@ public class AccountModifyPage extends Page {
 
 	this.parentValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?",
 		new OptionMapper(), account.get("parent_id"));
-	this.parentProvider = new OptionSingleChoiceProvider("acc_gl_account", "id", "name");
+	this.parentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
 	this.parentProvider.applyWhere("classification_enum", "classification_enum = " + accountTypeValue.getId());
 	this.parentProvider.applyWhere("check", "id != " + this.accountId);
 	this.parentProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Header.getLiteral());
@@ -155,7 +158,7 @@ public class AccountModifyPage extends Page {
 
 	this.tagValue = jdbcTemplate.queryForObject("select id, code_value text from m_code_value where id = ?",
 		new OptionMapper(), account.get("tag_id"));
-	this.tagProvider = new OptionSingleChoiceProvider("m_code_value", "id", "code_value");
+	this.tagProvider = new SingleChoiceProvider("m_code_value", "id", "code_value");
 	AccountType temp = AccountType.valueOf(accountTypeValue.getId());
 	this.tagProvider.applyWhere("code",
 		"code_id in (select id from m_code where code_name = '" + temp.getTag() + "')");

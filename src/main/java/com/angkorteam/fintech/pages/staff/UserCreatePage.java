@@ -2,7 +2,9 @@ package com.angkorteam.fintech.pages.staff;
 
 import java.util.List;
 
+import com.angkorteam.fintech.dto.Function;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
@@ -18,14 +20,15 @@ import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMultipleChoiceProvider;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.MultipleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class UserCreatePage extends Page {
 
     private String firstNameValue;
@@ -52,17 +55,17 @@ public class UserCreatePage extends Page {
     private PasswordTextField repeatPasswordField;
     private TextFeedbackPanel repeatPasswordFeedback;
 
-    private OptionSingleChoiceProvider officeProvider;
+    private SingleChoiceProvider officeProvider;
     private Option officeValue;
     private Select2SingleChoice<Option> officeField;
     private TextFeedbackPanel officeFeedback;
 
-    private OptionSingleChoiceProvider staffProvider;
+    private SingleChoiceProvider staffProvider;
     private Option staffValue;
     private Select2SingleChoice<Option> staffField;
     private TextFeedbackPanel staffFeedback;
 
-    private OptionMultipleChoiceProvider permissionProvider;
+    private MultipleChoiceProvider permissionProvider;
     private List<Option> permissionValue;
     private Select2MultipleChoice<Option> permissionField;
     private TextFeedbackPanel permissionFeedback;
@@ -127,7 +130,7 @@ public class UserCreatePage extends Page {
 	this.lastNameFeedback = new TextFeedbackPanel("lastNameFeedback", this.lastNameField);
 	this.form.add(this.lastNameFeedback);
 
-	this.officeProvider = new OptionSingleChoiceProvider("m_office", "id", "name");
+	this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
 	this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
 		this.officeProvider);
 	this.officeField.add(new OnChangeAjaxBehavior(this::officeFieldUpdate));
@@ -136,7 +139,7 @@ public class UserCreatePage extends Page {
 	this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
 	this.form.add(this.officeFeedback);
 
-	this.permissionProvider = new OptionMultipleChoiceProvider("m_role", "id", "name");
+	this.permissionProvider = new MultipleChoiceProvider("m_role", "id", "name");
 	this.permissionField = new Select2MultipleChoice<>("permissionField", 0,
 		new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
 	this.permissionField.add(new OnChangeAjaxBehavior());
@@ -145,7 +148,7 @@ public class UserCreatePage extends Page {
 	this.permissionFeedback = new TextFeedbackPanel("permissionFeedback", this.permissionField);
 	this.form.add(this.permissionFeedback);
 
-	this.staffProvider = new OptionSingleChoiceProvider("m_staff", "id", "display_name");
+	this.staffProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
 	this.staffProvider.setDisabled(true);
 	this.staffField = new Select2SingleChoice<>("staffField", 0, new PropertyModel<>(this, "staffValue"),
 		this.staffProvider);

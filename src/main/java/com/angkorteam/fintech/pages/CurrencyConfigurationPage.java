@@ -3,7 +3,9 @@ package com.angkorteam.fintech.pages;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.dto.Function;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
@@ -16,7 +18,7 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.helper.CurrencyHelper;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.share.provider.JdbcProvider;
+import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -30,7 +32,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
@@ -40,13 +42,14 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 /**
  * Created by socheatkhauv on 6/26/17.
  */
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class CurrencyConfigurationPage extends Page {
 
     private DataTable<Map<String, Object>, String> dataTable;
 
     private JdbcProvider provider;
 
-    private OptionSingleChoiceProvider currencyProvider;
+    private SingleChoiceProvider currencyProvider;
     private Option currencyValue;
     private Select2SingleChoice<Option> currencyField;
     private TextFeedbackPanel currencyFeedback;
@@ -88,7 +91,7 @@ public class CurrencyConfigurationPage extends Page {
         this.addButton.setOnSubmit(this::addButtonSubmit);
         this.form.add(this.addButton);
 
-        this.currencyProvider = new OptionSingleChoiceProvider("m_currency", "code", "name",
+        this.currencyProvider = new SingleChoiceProvider("m_currency", "code", "name",
                 "concat(name,' [', code,']')");
         this.currencyProvider.applyWhere("code", "code not in (select code from m_organisation_currency)");
         this.currencyField = new Select2SingleChoice<>("currencyField", new PropertyModel<>(this, "currencyValue"),
