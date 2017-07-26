@@ -1,13 +1,12 @@
 package com.angkorteam.fintech.widget;
 
-import java.util.Map;
-
+import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
+import java.util.Map;
 
 /**
  * Created by socheatkhauv on 6/27/17.

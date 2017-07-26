@@ -51,74 +51,74 @@ public class PaymentTypeModifyPage extends Page {
 
     @Override
     protected void onInitialize() {
-	super.onInitialize();
+        super.onInitialize();
 
-	PageParameters parameters = getPageParameters();
-	this.paymentTypeId = parameters.get("paymentTypeId").toString("");
+        PageParameters parameters = getPageParameters();
+        this.paymentTypeId = parameters.get("paymentTypeId").toString("");
 
-	JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-	Map<String, Object> object = jdbcTemplate.queryForMap("select * from m_payment_type where id = ?",
-		this.paymentTypeId);
+        Map<String, Object> object = jdbcTemplate.queryForMap("select * from m_payment_type where id = ?",
+                this.paymentTypeId);
 
-	this.form = new Form<>("form");
-	add(this.form);
+        this.form = new Form<>("form");
+        add(this.form);
 
-	this.saveButton = new Button("saveButton");
-	this.saveButton.setOnSubmit(this::saveButtonSubmit);
-	this.form.add(this.saveButton);
+        this.saveButton = new Button("saveButton");
+        this.saveButton.setOnSubmit(this::saveButtonSubmit);
+        this.form.add(this.saveButton);
 
-	this.closeLink = new BookmarkablePageLink<>("closeLink", PaymentTypeBrowsePage.class);
-	this.form.add(this.closeLink);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", PaymentTypeBrowsePage.class);
+        this.form.add(this.closeLink);
 
-	this.descriptionValue = (String) object.get("description");
-	this.descriptionField = new TextField<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
-	this.descriptionField.setRequired(true);
-	this.form.add(this.descriptionField);
-	this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-	this.form.add(this.descriptionFeedback);
+        this.descriptionValue = (String) object.get("description");
+        this.descriptionField = new TextField<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
+        this.descriptionField.setRequired(true);
+        this.form.add(this.descriptionField);
+        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
+        this.form.add(this.descriptionFeedback);
 
-	this.nameValue = (String) object.get("value");
-	this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-	this.nameField.setRequired(true);
-	this.form.add(this.nameField);
-	this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-	this.form.add(this.nameFeedback);
+        this.nameValue = (String) object.get("value");
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setRequired(true);
+        this.form.add(this.nameField);
+        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+        this.form.add(this.nameFeedback);
 
-	this.cashValue = (Boolean) object.get("is_cash_payment");
-	this.cashField = new CheckBox("cashField", new PropertyModel<>(this, "cashValue"));
-	this.cashField.setRequired(true);
-	this.form.add(this.cashField);
-	this.cashFeedback = new TextFeedbackPanel("cashFeedback", this.cashField);
-	this.form.add(this.cashFeedback);
+        this.cashValue = (Boolean) object.get("is_cash_payment");
+        this.cashField = new CheckBox("cashField", new PropertyModel<>(this, "cashValue"));
+        this.cashField.setRequired(true);
+        this.form.add(this.cashField);
+        this.cashFeedback = new TextFeedbackPanel("cashFeedback", this.cashField);
+        this.form.add(this.cashFeedback);
 
-	this.positionValue = (Integer) object.get("order_position");
-	this.positionField = new TextField<>("positionField", new PropertyModel<>(this, "positionValue"));
-	this.positionField.setRequired(true);
-	this.form.add(this.positionField);
-	this.positionFeedback = new TextFeedbackPanel("positionFeedback", this.positionField);
-	this.form.add(this.positionFeedback);
+        this.positionValue = (Integer) object.get("order_position");
+        this.positionField = new TextField<>("positionField", new PropertyModel<>(this, "positionValue"));
+        this.positionField.setRequired(true);
+        this.form.add(this.positionField);
+        this.positionFeedback = new TextFeedbackPanel("positionFeedback", this.positionField);
+        this.form.add(this.positionFeedback);
     }
 
     private void saveButtonSubmit(Button button) {
-	PaymentTypeBuilder builder = new PaymentTypeBuilder();
-	builder.withId(this.paymentTypeId);
-	builder.withName(this.nameValue);
-	builder.withPosition(this.positionValue);
-	builder.withCashPayment(this.cashValue);
-	builder.withDescription(this.descriptionValue);
+        PaymentTypeBuilder builder = new PaymentTypeBuilder();
+        builder.withId(this.paymentTypeId);
+        builder.withName(this.nameValue);
+        builder.withPosition(this.positionValue);
+        builder.withCashPayment(this.cashValue);
+        builder.withDescription(this.descriptionValue);
 
-	JsonNode node = null;
-	try {
-	    node = PaymentTypeHelper.update((Session) getSession(), builder.build());
-	} catch (UnirestException e) {
-	    error(e.getMessage());
-	    return;
-	}
-	if (reportError(node)) {
-	    return;
-	}
-	setResponsePage(PaymentTypeBrowsePage.class);
+        JsonNode node = null;
+        try {
+            node = PaymentTypeHelper.update((Session) getSession(), builder.build());
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+        setResponsePage(PaymentTypeBrowsePage.class);
     }
 
 }

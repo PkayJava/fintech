@@ -5,11 +5,11 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.StaffBuilder;
 import com.angkorteam.fintech.helper.StaffHelper;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
@@ -59,79 +59,79 @@ public class StaffCreatePage extends Page {
 
     @Override
     protected void onInitialize() {
-	super.onInitialize();
+        super.onInitialize();
 
-	this.form = new Form<>("form");
-	add(this.form);
+        this.form = new Form<>("form");
+        add(this.form);
 
-	this.saveButton = new Button("saveButton");
-	this.saveButton.setOnSubmit(this::saveButtonSubmit);
-	this.form.add(this.saveButton);
+        this.saveButton = new Button("saveButton");
+        this.saveButton.setOnSubmit(this::saveButtonSubmit);
+        this.form.add(this.saveButton);
 
-	this.closeLink = new BookmarkablePageLink<>("closeLink", StaffBrowsePage.class);
-	this.form.add(this.closeLink);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", StaffBrowsePage.class);
+        this.form.add(this.closeLink);
 
-	this.firstNameField = new TextField<>("firstNameField", new PropertyModel<>(this, "firstNameValue"));
-	this.firstNameField.setRequired(true);
-	this.form.add(this.firstNameField);
-	this.firstNameFeedback = new TextFeedbackPanel("firstNameFeedback", this.firstNameField);
-	this.form.add(this.firstNameFeedback);
+        this.firstNameField = new TextField<>("firstNameField", new PropertyModel<>(this, "firstNameValue"));
+        this.firstNameField.setRequired(true);
+        this.form.add(this.firstNameField);
+        this.firstNameFeedback = new TextFeedbackPanel("firstNameFeedback", this.firstNameField);
+        this.form.add(this.firstNameFeedback);
 
-	this.lastNameField = new TextField<>("lastNameField", new PropertyModel<>(this, "lastNameValue"));
-	this.lastNameField.setRequired(true);
-	this.form.add(this.lastNameField);
-	this.lastNameFeedback = new TextFeedbackPanel("lastNameFeedback", this.lastNameField);
-	this.form.add(this.lastNameFeedback);
+        this.lastNameField = new TextField<>("lastNameField", new PropertyModel<>(this, "lastNameValue"));
+        this.lastNameField.setRequired(true);
+        this.form.add(this.lastNameField);
+        this.lastNameFeedback = new TextFeedbackPanel("lastNameFeedback", this.lastNameField);
+        this.form.add(this.lastNameFeedback);
 
-	this.joinedDateField = new DateTextField("joinedDateField", new PropertyModel<>(this, "joinedDateValue"));
-	this.joinedDateField.setRequired(true);
-	this.form.add(this.joinedDateField);
-	this.joinedDateFeedback = new TextFeedbackPanel("joinedDateFeedback", this.joinedDateField);
-	this.form.add(this.joinedDateFeedback);
+        this.joinedDateField = new DateTextField("joinedDateField", new PropertyModel<>(this, "joinedDateValue"));
+        this.joinedDateField.setRequired(true);
+        this.form.add(this.joinedDateField);
+        this.joinedDateFeedback = new TextFeedbackPanel("joinedDateFeedback", this.joinedDateField);
+        this.form.add(this.joinedDateFeedback);
 
-	this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-	this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
-		this.officeProvider);
-	this.officeField.setRequired(true);
-	this.form.add(this.officeField);
-	this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
-	this.form.add(this.officeFeedback);
+        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
+                this.officeProvider);
+        this.officeField.setRequired(true);
+        this.form.add(this.officeField);
+        this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
+        this.form.add(this.officeFeedback);
 
-	this.mobileNoField = new TextField<>("mobileNoField", new PropertyModel<>(this, "mobileNoValue"));
-	this.mobileNoField.setRequired(true);
-	this.form.add(this.mobileNoField);
-	this.mobileNoFeedback = new TextFeedbackPanel("mobileNoFeedback", this.mobileNoField);
-	this.form.add(this.mobileNoFeedback);
+        this.mobileNoField = new TextField<>("mobileNoField", new PropertyModel<>(this, "mobileNoValue"));
+        this.mobileNoField.setRequired(true);
+        this.form.add(this.mobileNoField);
+        this.mobileNoFeedback = new TextFeedbackPanel("mobileNoFeedback", this.mobileNoField);
+        this.form.add(this.mobileNoFeedback);
 
-	this.loanOfficerField = new CheckBox("loanOfficerField", new PropertyModel<>(this, "loanOfficerValue"));
-	this.loanOfficerField.setRequired(true);
-	this.form.add(this.loanOfficerField);
-	this.loanOfficerFeedback = new TextFeedbackPanel("loanOfficerFeedback", this.loanOfficerField);
-	this.form.add(this.loanOfficerFeedback);
+        this.loanOfficerField = new CheckBox("loanOfficerField", new PropertyModel<>(this, "loanOfficerValue"));
+        this.loanOfficerField.setRequired(true);
+        this.form.add(this.loanOfficerField);
+        this.loanOfficerFeedback = new TextFeedbackPanel("loanOfficerFeedback", this.loanOfficerField);
+        this.form.add(this.loanOfficerFeedback);
     }
 
     private void saveButtonSubmit(Button button) {
-	StaffBuilder builder = new StaffBuilder();
-	builder.withFirstName(this.firstNameValue);
-	if (this.officeValue != null) {
-	    builder.withOfficeId(this.officeValue.getId());
-	}
-	builder.withLastName(this.lastNameValue);
-	builder.withMobileNo(this.mobileNoValue);
-	builder.withLoanOfficer(this.loanOfficerValue);
-	builder.withJoiningDate(this.joinedDateValue);
+        StaffBuilder builder = new StaffBuilder();
+        builder.withFirstName(this.firstNameValue);
+        if (this.officeValue != null) {
+            builder.withOfficeId(this.officeValue.getId());
+        }
+        builder.withLastName(this.lastNameValue);
+        builder.withMobileNo(this.mobileNoValue);
+        builder.withLoanOfficer(this.loanOfficerValue);
+        builder.withJoiningDate(this.joinedDateValue);
 
-	JsonNode node = null;
-	try {
-	    node = StaffHelper.create((Session) getSession(), builder.build());
-	} catch (UnirestException e) {
-	    error(e.getMessage());
-	    return;
-	}
-	if (reportError(node)) {
-	    return;
-	}
-	setResponsePage(StaffBrowsePage.class);
+        JsonNode node = null;
+        try {
+            node = StaffHelper.create((Session) getSession(), builder.build());
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+        setResponsePage(StaffBrowsePage.class);
     }
 
 }

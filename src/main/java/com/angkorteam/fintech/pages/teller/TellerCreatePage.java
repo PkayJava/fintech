@@ -6,12 +6,12 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.TellerState;
 import com.angkorteam.fintech.dto.request.TellerBuilder;
 import com.angkorteam.fintech.helper.TellerHelper;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.provider.TellerStateProvider;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.mashape.unirest.http.JsonNode;
@@ -62,80 +62,80 @@ public class TellerCreatePage extends Page {
 
     @Override
     protected void onInitialize() {
-	super.onInitialize();
+        super.onInitialize();
 
-	this.form = new Form<>("form");
-	add(this.form);
+        this.form = new Form<>("form");
+        add(this.form);
 
-	this.saveButton = new Button("saveButton");
-	this.saveButton.setOnSubmit(this::saveButtonSubmit);
-	this.form.add(this.saveButton);
+        this.saveButton = new Button("saveButton");
+        this.saveButton.setOnSubmit(this::saveButtonSubmit);
+        this.form.add(this.saveButton);
 
-	this.closeLink = new BookmarkablePageLink<>("closeLink", TellerBrowsePage.class);
-	this.form.add(this.closeLink);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", TellerBrowsePage.class);
+        this.form.add(this.closeLink);
 
-	this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-	this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
-		this.officeProvider);
-	this.officeField.setRequired(true);
-	this.form.add(this.officeField);
-	this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
-	this.form.add(this.officeFeedback);
+        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
+                this.officeProvider);
+        this.officeField.setRequired(true);
+        this.form.add(this.officeField);
+        this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
+        this.form.add(this.officeFeedback);
 
-	this.statusProvider = new TellerStateProvider();
-	this.statusField = new Select2SingleChoice<>("statusField", 0, new PropertyModel<>(this, "statusValue"),
-		this.statusProvider);
-	this.form.add(this.statusField);
-	this.statusFeedback = new TextFeedbackPanel("statusFeedback", this.statusField);
-	this.form.add(this.statusFeedback);
+        this.statusProvider = new TellerStateProvider();
+        this.statusField = new Select2SingleChoice<>("statusField", 0, new PropertyModel<>(this, "statusValue"),
+                this.statusProvider);
+        this.form.add(this.statusField);
+        this.statusFeedback = new TextFeedbackPanel("statusFeedback", this.statusField);
+        this.form.add(this.statusFeedback);
 
-	this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-	this.nameField.setRequired(true);
-	this.form.add(this.nameField);
-	this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-	this.form.add(this.nameFeedback);
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setRequired(true);
+        this.form.add(this.nameField);
+        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+        this.form.add(this.nameFeedback);
 
-	this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
-	this.startDateField.setRequired(true);
-	this.form.add(this.startDateField);
-	this.startDateFeedback = new TextFeedbackPanel("startDateFeedback", this.startDateField);
-	this.form.add(this.startDateFeedback);
+        this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
+        this.startDateField.setRequired(true);
+        this.form.add(this.startDateField);
+        this.startDateFeedback = new TextFeedbackPanel("startDateFeedback", this.startDateField);
+        this.form.add(this.startDateFeedback);
 
-	this.endDateField = new DateTextField("endDateField", new PropertyModel<>(this, "endDateValue"));
-	this.endDateField.setRequired(true);
-	this.form.add(this.endDateField);
-	this.endDateFeedback = new TextFeedbackPanel("endDateFeedback", this.endDateField);
-	this.form.add(this.endDateFeedback);
+        this.endDateField = new DateTextField("endDateField", new PropertyModel<>(this, "endDateValue"));
+        this.endDateField.setRequired(true);
+        this.form.add(this.endDateField);
+        this.endDateFeedback = new TextFeedbackPanel("endDateFeedback", this.endDateField);
+        this.form.add(this.endDateFeedback);
 
-	this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
-	this.descriptionField.setRequired(true);
-	this.form.add(this.descriptionField);
-	this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-	this.form.add(this.descriptionFeedback);
+        this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
+        this.descriptionField.setRequired(true);
+        this.form.add(this.descriptionField);
+        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
+        this.form.add(this.descriptionFeedback);
     }
 
     private void saveButtonSubmit(Button button) {
-	TellerBuilder builder = new TellerBuilder();
-	builder.withDescription(this.descriptionValue);
-	builder.withName(this.nameValue);
-	builder.withEndDate(this.endDateValue);
-	builder.withStartDate(this.startDateValue);
-	builder.withStatus(TellerState.valueOf(this.statusValue.getId()));
-	if (this.officeValue != null) {
-	    builder.withOfficeId(this.officeValue.getId());
-	}
+        TellerBuilder builder = new TellerBuilder();
+        builder.withDescription(this.descriptionValue);
+        builder.withName(this.nameValue);
+        builder.withEndDate(this.endDateValue);
+        builder.withStartDate(this.startDateValue);
+        builder.withStatus(TellerState.valueOf(this.statusValue.getId()));
+        if (this.officeValue != null) {
+            builder.withOfficeId(this.officeValue.getId());
+        }
 
-	JsonNode node = null;
-	try {
-	    node = TellerHelper.create((Session) getSession(), builder.build());
-	} catch (UnirestException e) {
-	    error(e.getMessage());
-	    return;
-	}
-	if (reportError(node)) {
-	    return;
-	}
-	setResponsePage(TellerBrowsePage.class);
+        JsonNode node = null;
+        try {
+            node = TellerHelper.create((Session) getSession(), builder.build());
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+        setResponsePage(TellerBrowsePage.class);
 
     }
 

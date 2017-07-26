@@ -1,10 +1,20 @@
 package com.angkorteam.fintech.pages;
 
-import java.util.List;
-import java.util.Map;
-
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.provider.MultipleChoiceProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.framework.models.*;
+import com.angkorteam.framework.wicket.DashboardPage;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -21,25 +31,8 @@ import org.apache.wicket.validation.validator.RangeValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.framework.models.NavBarMenu;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.models.PageFooter;
-import com.angkorteam.framework.models.PageHeader;
-import com.angkorteam.framework.models.PageLogo;
-import com.angkorteam.framework.models.SideMenu;
-import com.angkorteam.framework.models.UserInfo;
-import com.angkorteam.framework.wicket.DashboardPage;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.fintech.provider.MultipleChoiceProvider;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
-import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by socheatkhauv on 6/11/17.

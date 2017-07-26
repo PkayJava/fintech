@@ -5,8 +5,8 @@ package com.angkorteam.fintech.dto;
  */
 public enum AccountUsage {
 
-    Detail("1","Detail"),
-    Header("2","Header");
+    Detail("1", "Detail"),
+    Header("2", "Header");
 
     private String literal;
 

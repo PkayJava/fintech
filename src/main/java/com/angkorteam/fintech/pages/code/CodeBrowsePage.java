@@ -4,10 +4,10 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.CodeHelper;
+import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.framework.BadgeType;
-import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
@@ -52,70 +52,70 @@ public class CodeBrowsePage extends Page {
 
     @Override
     protected void onInitialize() {
-	super.onInitialize();
-	this.provider = new JdbcProvider("m_code");
-	this.provider.boardField("id", "id", Long.class);
-	this.provider.boardField("code_name", "code_name", String.class);
-	this.provider.boardField("is_system_defined", "system", Boolean.class);
-	this.provider.setSort("code_name", SortOrder.ASCENDING);
+        super.onInitialize();
+        this.provider = new JdbcProvider("m_code");
+        this.provider.boardField("id", "id", Long.class);
+        this.provider.boardField("code_name", "code_name", String.class);
+        this.provider.boardField("is_system_defined", "system", Boolean.class);
+        this.provider.setSort("code_name", SortOrder.ASCENDING);
 
-	this.provider.selectField("id", Long.class);
+        this.provider.selectField("id", Long.class);
 
-	List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-	columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Code Name"), "code_name",
-		"code_name", this::codeNameColumn));
-	columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Is System ?"), "system", "system",
-		this::systemColumn));
+        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Code Name"), "code_name",
+                "code_name", this::codeNameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Is System ?"), "system", "system",
+                this::systemColumn));
 
-	FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-	add(filterForm);
+        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
+        add(filterForm);
 
-	this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-	this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-	filterForm.add(this.dataTable);
+        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
+        filterForm.add(this.dataTable);
 
-	this.form = new Form<>("form");
-	add(this.form);
+        this.form = new Form<>("form");
+        add(this.form);
 
-	this.addButton = new Button("addButton");
-	this.addButton.setOnSubmit(this::addButtonSubmit);
-	this.form.add(this.addButton);
+        this.addButton = new Button("addButton");
+        this.addButton.setOnSubmit(this::addButtonSubmit);
+        this.form.add(this.addButton);
 
-	this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-	this.nameField.setRequired(true);
-	this.form.add(this.nameField);
-	this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-	this.form.add(this.nameFeedback);
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setRequired(true);
+        this.form.add(this.nameField);
+        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+        this.form.add(this.nameFeedback);
     }
 
     private void addButtonSubmit(Button button) {
-	JsonNode node = null;
-	try {
-	    node = CodeHelper.create((Session) getSession(), this.nameValue);
-	} catch (UnirestException e) {
-	    error(e.getMessage());
-	    return;
-	}
-	if (reportError(node)) {
-	    return;
-	}
-	setResponsePage(CodeBrowsePage.class);
+        JsonNode node = null;
+        try {
+            node = CodeHelper.create((Session) getSession(), this.nameValue);
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+        setResponsePage(CodeBrowsePage.class);
     }
 
     private ItemPanel codeNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-	String codeName = (String) model.get(jdbcColumn);
-	PageParameters parameters = new PageParameters();
-	parameters.add("codeId", model.get("id"));
-	return new LinkCell(ValueBrowsePage.class, parameters, Model.of(codeName));
+        String codeName = (String) model.get(jdbcColumn);
+        PageParameters parameters = new PageParameters();
+        parameters.add("codeId", model.get("id"));
+        return new LinkCell(ValueBrowsePage.class, parameters, Model.of(codeName));
     }
 
     private ItemPanel systemColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-	Boolean system = (Boolean) model.get(jdbcColumn);
-	if (system != null && system) {
-	    return new BadgeCell(BadgeType.Success, Model.of("Yes"));
-	} else {
-	    return new BadgeCell(BadgeType.Danger, Model.of("No"));
-	}
+        Boolean system = (Boolean) model.get(jdbcColumn);
+        if (system != null && system) {
+            return new BadgeCell(BadgeType.Success, Model.of("Yes"));
+        } else {
+            return new BadgeCell(BadgeType.Danger, Model.of("No"));
+        }
     }
 
 }

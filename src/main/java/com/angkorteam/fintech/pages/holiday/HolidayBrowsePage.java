@@ -2,15 +2,15 @@ package com.angkorteam.fintech.pages.holiday;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.provider.JdbcProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
@@ -87,7 +87,7 @@ public class HolidayBrowsePage extends Page {
         this.form.add(this.searchButton);
 
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeProvider.applyWhere("id","id IN (select office_id from m_holiday_office)");
+        this.officeProvider.applyWhere("id", "id IN (select office_id from m_holiday_office)");
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.form.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);

@@ -2,9 +2,8 @@ package com.angkorteam.fintech.pages.tax;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.table.LinkCell;
-import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.provider.JdbcProvider;
+import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
@@ -20,7 +19,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 

@@ -1,9 +1,24 @@
 package com.angkorteam.fintech.pages.staff;
 
-import java.util.List;
-import java.util.Map;
-
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.request.AppUserBuilder;
+import com.angkorteam.fintech.helper.AppUserHelper;
+import com.angkorteam.fintech.provider.MultipleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
@@ -14,24 +29,8 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.request.AppUserBuilder;
-import com.angkorteam.fintech.helper.AppUserHelper;
-import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
-import com.angkorteam.fintech.provider.MultipleChoiceProvider;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.List;
+import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class UserModifyPage extends Page {
@@ -229,14 +228,20 @@ public class UserModifyPage extends Page {
         builder.withPasswordNeverExpires(this.overridePasswordExpiryPolicyValue);
         if (this.officeValue != null) {
             builder.withOfficeId(this.officeValue.getId());
+        } else {
+            builder.withOfficeId(null);
         }
         if (this.permissionValue != null) {
             for (Option role : this.permissionValue) {
                 builder.withRole(role.getId());
             }
+        } else {
+            builder.withRole(null);
         }
         if (this.staffValue != null) {
             builder.withStaffId(this.staffValue.getId());
+        } else {
+            builder.withStaffId(null);
         }
 
         JsonNode node = null;

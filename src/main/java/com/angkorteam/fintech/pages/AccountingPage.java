@@ -1,22 +1,14 @@
 package com.angkorteam.fintech.pages;
 
-import com.angkorteam.fintech.dto.Function;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.model.Model;
-
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.pages.account.AccountBrowsePage;
-import com.angkorteam.fintech.pages.account.AccrualAccountingPage;
-import com.angkorteam.fintech.pages.account.ClosureBrowsePage;
-import com.angkorteam.fintech.pages.account.FinancialActivityBrowsePage;
-import com.angkorteam.fintech.pages.account.JournalPostPage;
-import com.angkorteam.fintech.pages.account.RuleBrowsePage;
-import com.angkorteam.fintech.pages.account.RuleSelectPage;
-import com.angkorteam.fintech.pages.account.SearchJournalPage;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.pages.account.*;
 import com.angkorteam.framework.BackgroundColor;
 import com.angkorteam.framework.Emoji;
 import com.angkorteam.framework.models.InfoBox;
 import com.angkorteam.framework.panels.InfoBoxPanel;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.model.Model;
 
 /**
  * Created by socheatkhauv on 6/27/17.

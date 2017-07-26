@@ -34,41 +34,41 @@ public class AccrualAccountingPage extends Page {
 
     @Override
     protected void onInitialize() {
-	super.onInitialize();
+        super.onInitialize();
 
-	this.form = new Form<>("form");
-	add(this.form);
+        this.form = new Form<>("form");
+        add(this.form);
 
-	this.saveButton = new Button("saveButton");
-	this.saveButton.setOnSubmit(this::saveButtonSubmit);
-	this.form.add(this.saveButton);
+        this.saveButton = new Button("saveButton");
+        this.saveButton.setOnSubmit(this::saveButtonSubmit);
+        this.form.add(this.saveButton);
 
-	this.closeLink = new BookmarkablePageLink<>("closeLink", ClosureBrowsePage.class);
-	this.form.add(this.closeLink);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", ClosureBrowsePage.class);
+        this.form.add(this.closeLink);
 
-	this.tillDateValue = new Date();
-	this.tillDateField = new DateTextField("tillDateField", new PropertyModel<>(this, "tillDateValue"));
-	this.tillDateField.setRequired(true);
-	this.form.add(this.tillDateField);
-	this.tillDateFeedback = new TextFeedbackPanel("tillDateFeedback", this.tillDateField);
-	this.form.add(this.tillDateFeedback);
+        this.tillDateValue = new Date();
+        this.tillDateField = new DateTextField("tillDateField", new PropertyModel<>(this, "tillDateValue"));
+        this.tillDateField.setRequired(true);
+        this.form.add(this.tillDateField);
+        this.tillDateFeedback = new TextFeedbackPanel("tillDateFeedback", this.tillDateField);
+        this.form.add(this.tillDateFeedback);
 
     }
 
     private void saveButtonSubmit(Button button) {
-	AccrualBuilder builder = new AccrualBuilder();
-	builder.withTillDate(this.tillDateValue);
-	JsonNode node = null;
-	try {
-	    node = AccrualHelper.submit((Session) getSession(), builder.build());
-	} catch (UnirestException e) {
-	    error(e.getMessage());
-	    return;
-	}
-	if (reportError(node)) {
-	    return;
-	}
-	setResponsePage(AccountingPage.class);
+        AccrualBuilder builder = new AccrualBuilder();
+        builder.withTillDate(this.tillDateValue);
+        JsonNode node = null;
+        try {
+            node = AccrualHelper.submit((Session) getSession(), builder.build());
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+        setResponsePage(AccountingPage.class);
 
     }
 

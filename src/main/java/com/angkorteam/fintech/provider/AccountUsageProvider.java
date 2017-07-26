@@ -1,13 +1,12 @@
 package com.angkorteam.fintech.provider;
 
-import java.util.List;
-
-import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
-import org.apache.wicket.model.IModel;
-
 import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
+import org.apache.wicket.model.IModel;
+
+import java.util.List;
 
 /**
  * Created by socheatkhauv on 7/2/17.

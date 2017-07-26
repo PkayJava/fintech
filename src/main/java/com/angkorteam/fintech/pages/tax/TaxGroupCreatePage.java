@@ -5,6 +5,7 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.TaxGroupBuilder;
 import com.angkorteam.fintech.helper.TaxGroupHelper;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
@@ -20,7 +21,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
@@ -74,132 +74,132 @@ public class TaxGroupCreatePage extends Page {
 
     @Override
     protected void onInitialize() {
-	super.onInitialize();
+        super.onInitialize();
 
-	initTaxForm();
+        initTaxForm();
 
-	initForm();
+        initForm();
     }
 
     private void initTaxForm() {
-	this.taxForm = new Form<>("taxForm");
-	add(this.taxForm);
+        this.taxForm = new Form<>("taxForm");
+        add(this.taxForm);
 
-	this.addButton = new AjaxButton("addButton");
-	this.addButton.setOnSubmit(this::addButtonSubmit);
-	this.taxForm.add(this.addButton);
+        this.addButton = new AjaxButton("addButton");
+        this.addButton.setOnSubmit(this::addButtonSubmit);
+        this.taxForm.add(this.addButton);
 
-	this.taxProvider = new SingleChoiceProvider("m_tax_component", "id", "name");
-	this.taxField = new Select2SingleChoice<>("taxField", 0, new PropertyModel<>(this, "taxValue"),
-		this.taxProvider);
-	this.taxForm.add(this.taxField);
-	this.taxFeedback = new TextFeedbackPanel("taxFeedback", this.taxField);
-	this.taxForm.add(this.taxFeedback);
+        this.taxProvider = new SingleChoiceProvider("m_tax_component", "id", "name");
+        this.taxField = new Select2SingleChoice<>("taxField", 0, new PropertyModel<>(this, "taxValue"),
+                this.taxProvider);
+        this.taxForm.add(this.taxField);
+        this.taxFeedback = new TextFeedbackPanel("taxFeedback", this.taxField);
+        this.taxForm.add(this.taxFeedback);
 
-	this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
-	this.startDateField.setRequired(true);
-	this.taxForm.add(this.startDateField);
-	this.startDateFeedback = new TextFeedbackPanel("startDateFeedback", this.startDateField);
-	this.taxForm.add(this.startDateFeedback);
+        this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
+        this.startDateField.setRequired(true);
+        this.taxForm.add(this.startDateField);
+        this.startDateFeedback = new TextFeedbackPanel("startDateFeedback", this.startDateField);
+        this.taxForm.add(this.startDateFeedback);
     }
 
     private void addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
-	Map<String, Object> tax = Maps.newHashMap();
-	tax.put("uuid", UUID.randomUUID().toString());
-	tax.put("taxComponentId", this.taxValue.getId());
-	tax.put("tax", this.taxValue.getText());
-	tax.put("startDate", this.startDateValue);
-	this.taxComponentValue.add(tax);
-	this.taxValue = null;
-	this.startDateValue = null;
-	target.add(this.form);
-	target.add(this.taxForm);
+        Map<String, Object> tax = Maps.newHashMap();
+        tax.put("uuid", UUID.randomUUID().toString());
+        tax.put("taxComponentId", this.taxValue.getId());
+        tax.put("tax", this.taxValue.getText());
+        tax.put("startDate", this.startDateValue);
+        this.taxComponentValue.add(tax);
+        this.taxValue = null;
+        this.startDateValue = null;
+        target.add(this.form);
+        target.add(this.taxForm);
     }
 
     private void initForm() {
-	this.form = new Form<>("form");
-	add(this.form);
+        this.form = new Form<>("form");
+        add(this.form);
 
-	this.saveButton = new Button("saveButton");
-	this.saveButton.setOnSubmit(this::saveButtonSubmit);
-	this.form.add(this.saveButton);
+        this.saveButton = new Button("saveButton");
+        this.saveButton.setOnSubmit(this::saveButtonSubmit);
+        this.form.add(this.saveButton);
 
-	this.closeLink = new BookmarkablePageLink<>("closeLink", TaxGroupBrowsePage.class);
-	this.form.add(this.closeLink);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", TaxGroupBrowsePage.class);
+        this.form.add(this.closeLink);
 
-	this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-	this.nameField.setRequired(true);
-	this.form.add(this.nameField);
-	this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-	this.form.add(this.nameFeedback);
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setRequired(true);
+        this.form.add(this.nameField);
+        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+        this.form.add(this.nameFeedback);
 
-	List<IColumn<Map<String, Object>, String>> taxComponentColumn = Lists.newArrayList();
-	taxComponentColumn.add(new TextColumn(Model.of("Tax Component"), "tax", "tax", this::taxComponentTaxColumn));
-	taxComponentColumn.add(
-		new TextColumn(Model.of("Start Date"), "startDate", "startDate", this::taxComponentStartDateColumn));
-	taxComponentColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::taxComponentActionItem,
-		this::taxComponentActionClick));
-	this.taxComponentValue = Lists.newArrayList();
-	this.taxComponentProvider = new ListDataProvider(this.taxComponentValue);
-	this.taxComponentTable = new DataTable<>("taxComponentTable", taxComponentColumn, this.taxComponentProvider,
-		20);
-	this.form.add(this.taxComponentTable);
-	this.taxComponentTable.addTopToolbar(new HeadersToolbar<>(this.taxComponentTable, this.taxComponentProvider));
-	this.taxComponentTable.addBottomToolbar(new NoRecordsToolbar(this.taxComponentTable));
+        List<IColumn<Map<String, Object>, String>> taxComponentColumn = Lists.newArrayList();
+        taxComponentColumn.add(new TextColumn(Model.of("Tax Component"), "tax", "tax", this::taxComponentTaxColumn));
+        taxComponentColumn.add(
+                new TextColumn(Model.of("Start Date"), "startDate", "startDate", this::taxComponentStartDateColumn));
+        taxComponentColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::taxComponentActionItem,
+                this::taxComponentActionClick));
+        this.taxComponentValue = Lists.newArrayList();
+        this.taxComponentProvider = new ListDataProvider(this.taxComponentValue);
+        this.taxComponentTable = new DataTable<>("taxComponentTable", taxComponentColumn, this.taxComponentProvider,
+                20);
+        this.form.add(this.taxComponentTable);
+        this.taxComponentTable.addTopToolbar(new HeadersToolbar<>(this.taxComponentTable, this.taxComponentProvider));
+        this.taxComponentTable.addBottomToolbar(new NoRecordsToolbar(this.taxComponentTable));
     }
 
     private ItemPanel taxComponentTaxColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-	String tax = (String) model.get(jdbcColumn);
-	return new TextCell(Model.of(tax));
+        String tax = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(tax));
     }
 
     private ItemPanel taxComponentStartDateColumn(String jdbcColumn, IModel<String> display,
-	    Map<String, Object> model) {
-	Date startDate = (Date) model.get(jdbcColumn);
-	if (startDate == null) {
-	    return new TextCell(Model.of(""));
-	} else {
-	    return new TextCell(Model.of(DateFormatUtils.format(startDate, "yyyy-MM-dd")));
-	}
+                                                  Map<String, Object> model) {
+        Date startDate = (Date) model.get(jdbcColumn);
+        if (startDate == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(DateFormatUtils.format(startDate, "yyyy-MM-dd")));
+        }
     }
 
     private void taxComponentActionClick(String s, Map<String, Object> stringObjectMap,
-	    AjaxRequestTarget ajaxRequestTarget) {
-	int index = -1;
-	for (int i = 0; i < this.taxComponentValue.size(); i++) {
-	    Map<String, Object> column = this.taxComponentValue.get(i);
-	    if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
-		index = i;
-		break;
-	    }
-	}
-	if (index >= 0) {
-	    this.taxComponentValue.remove(index);
-	}
-	ajaxRequestTarget.add(this.taxComponentTable);
+                                         AjaxRequestTarget ajaxRequestTarget) {
+        int index = -1;
+        for (int i = 0; i < this.taxComponentValue.size(); i++) {
+            Map<String, Object> column = this.taxComponentValue.get(i);
+            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                index = i;
+                break;
+            }
+        }
+        if (index >= 0) {
+            this.taxComponentValue.remove(index);
+        }
+        ajaxRequestTarget.add(this.taxComponentTable);
     }
 
     private List<ActionItem> taxComponentActionItem(String s, Map<String, Object> stringObjectMap) {
-	return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     private void saveButtonSubmit(Button button) {
-	TaxGroupBuilder builder = new TaxGroupBuilder();
-	builder.withName(this.nameValue);
-	for (Map<String, Object> tax : this.taxComponentValue) {
-	    builder.withTaxComponent(null, (String) tax.get("taxComponentId"), (Date) tax.get("startDate"), null);
-	}
+        TaxGroupBuilder builder = new TaxGroupBuilder();
+        builder.withName(this.nameValue);
+        for (Map<String, Object> tax : this.taxComponentValue) {
+            builder.withTaxComponent(null, (String) tax.get("taxComponentId"), (Date) tax.get("startDate"), null);
+        }
 
-	JsonNode node = null;
-	try {
-	    node = TaxGroupHelper.create((Session) getSession(), builder.build());
-	} catch (UnirestException e) {
-	    error(e.getMessage());
-	    return;
-	}
-	if (reportError(node)) {
-	    return;
-	}
-	setResponsePage(TaxGroupBrowsePage.class);
+        JsonNode node = null;
+        try {
+            node = TaxGroupHelper.create((Session) getSession(), builder.build());
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+        setResponsePage(TaxGroupBrowsePage.class);
     }
 }

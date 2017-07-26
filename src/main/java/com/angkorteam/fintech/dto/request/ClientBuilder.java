@@ -1,14 +1,14 @@
 package com.angkorteam.fintech.dto.request;
 
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
+import org.apache.commons.lang3.time.DateFormatUtils;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import org.apache.commons.lang3.time.DateFormatUtils;
 
 public class ClientBuilder implements Serializable {
 

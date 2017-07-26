@@ -25,7 +25,7 @@ public class StaffHelper {
     }
 
     public static JsonNode transferToGroup(IMifos session, final String groupId, final String staffIdToTransfer,
-            final String note) throws UnirestException {
+                                           final String note) throws UnirestException {
         final String url = TRANSFER_STAFF_URL + "/" + groupId + "?command=transferStaff";
         StaffBuilder builder = new StaffBuilder();
         builder.withStaffId(staffIdToTransfer);

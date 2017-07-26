@@ -1,11 +1,10 @@
 package com.angkorteam.fintech.dto.request;
 
-import java.io.Serializable;
-import java.util.Date;
-
+import com.mashape.unirest.http.JsonNode;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import com.mashape.unirest.http.JsonNode;
+import java.io.Serializable;
+import java.util.Date;
 
 public class AccountTransferBuilder implements Serializable {
 

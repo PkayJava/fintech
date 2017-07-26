@@ -1,14 +1,12 @@
 package com.angkorteam.fintech.pages;
 
 import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.provider.MifosSingleChoiceProvider;
 import com.angkorteam.framework.ReferenceUtilities;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.PasswordTextField;

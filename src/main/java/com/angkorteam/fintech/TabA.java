@@ -1,12 +1,11 @@
 package com.angkorteam.fintech;
 
+import com.angkorteam.framework.models.UserInfo;
+import com.angkorteam.framework.panels.UserInfoPanel;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-
-import com.angkorteam.framework.models.UserInfo;
-import com.angkorteam.framework.panels.UserInfoPanel;
 
 /**
  * Created by socheatkhauv on 6/17/17.

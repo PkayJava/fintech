@@ -1,16 +1,11 @@
 package com.angkorteam.fintech.dto.request;
 
-import java.io.Serializable;
-import java.util.Date;
-
+import com.angkorteam.fintech.dto.*;
+import com.mashape.unirest.http.JsonNode;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import com.angkorteam.fintech.dto.ChargeCalculation;
-import com.angkorteam.fintech.dto.ChargeFrequency;
-import com.angkorteam.fintech.dto.ChargePayment;
-import com.angkorteam.fintech.dto.ChargeTime;
-import com.angkorteam.fintech.dto.ChargeType;
-import com.mashape.unirest.http.JsonNode;
+import java.io.Serializable;
+import java.util.Date;
 
 public class ChargeBuilder implements Serializable {
 

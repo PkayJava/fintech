@@ -1,9 +1,9 @@
 package com.angkorteam.fintech.dto.request;
 
-import java.io.Serializable;
-
 import com.angkorteam.fintech.dto.ServiceType;
 import com.mashape.unirest.http.JsonNode;
+
+import java.io.Serializable;
 
 public class ExternalServiceBuilder implements Serializable {
 

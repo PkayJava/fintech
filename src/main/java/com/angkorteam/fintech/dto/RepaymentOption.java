@@ -1,7 +1,5 @@
 package com.angkorteam.fintech.dto;
 
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-
 /**
  * Created by socheatkhauv on 7/13/17.
  */

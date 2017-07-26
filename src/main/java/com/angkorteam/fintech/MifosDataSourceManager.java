@@ -1,15 +1,13 @@
 package com.angkorteam.fintech;
 
-import java.util.Map;
-
-import javax.sql.DataSource;
-
+import com.angkorteam.framework.spring.JdbcTemplate;
+import com.google.common.collect.Maps;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.google.common.collect.Maps;
+import javax.sql.DataSource;
+import java.util.Map;
 
 public class MifosDataSourceManager implements DisposableBean, InitializingBean {
 
