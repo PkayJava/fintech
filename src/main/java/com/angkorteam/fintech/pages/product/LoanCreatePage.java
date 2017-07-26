@@ -22,7 +22,7 @@ import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 
-@AuthorizeInstantiation(Function.ALL_FUNCTION)
+// @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanCreatePage extends Page {
 
     private Form<Void> form;
@@ -150,155 +150,155 @@ public class LoanCreatePage extends Page {
 
     @Override
     protected void onInitialize() {
-	super.onInitialize();
+        super.onInitialize();
 
-	this.form = new Form<>("form");
-	add(this.form);
+        this.form = new Form<>("form");
+        add(this.form);
 
-	initDetail();
+        initDetail();
 
-	initCurrency();
+        initCurrency();
 
-	initTerms();
+        initTerms();
     }
 
     protected void initDetail() {
-	this.productNameField = new TextField<>("productNameField", new PropertyModel<>(this, "productNameValue"));
-	this.productNameField.setRequired(true);
-	this.form.add(this.productNameField);
-	this.productNameFeedback = new TextFeedbackPanel("productNameFeedback", this.productNameField);
-	this.form.add(this.productNameFeedback);
+        this.productNameField = new TextField<>("productNameField", new PropertyModel<>(this, "productNameValue"));
+        this.productNameField.setRequired(true);
+        this.form.add(this.productNameField);
+        this.productNameFeedback = new TextFeedbackPanel("productNameFeedback", this.productNameField);
+        this.form.add(this.productNameFeedback);
 
-	this.shortNameField = new TextField<>("shortNameField", new PropertyModel<>(this, "shortNameValue"));
-	this.shortNameField.setRequired(true);
-	this.form.add(this.shortNameField);
-	this.shortNameFeedback = new TextFeedbackPanel("shortNameFeedback", this.shortNameField);
-	this.form.add(this.shortNameFeedback);
+        this.shortNameField = new TextField<>("shortNameField", new PropertyModel<>(this, "shortNameValue"));
+        this.shortNameField.setRequired(true);
+        this.form.add(this.shortNameField);
+        this.shortNameFeedback = new TextFeedbackPanel("shortNameFeedback", this.shortNameField);
+        this.form.add(this.shortNameFeedback);
 
-	this.descriptionField = new TextField<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
-	this.descriptionField.setRequired(true);
-	this.form.add(this.descriptionField);
-	this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-	this.form.add(this.descriptionFeedback);
+        this.descriptionField = new TextField<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
+        this.descriptionField.setRequired(true);
+        this.form.add(this.descriptionField);
+        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
+        this.form.add(this.descriptionFeedback);
 
-	this.fundProvider = new SingleChoiceProvider("m_fund", "id", "name");
-	this.fundField = new Select2SingleChoice<>("fundField", 0, new PropertyModel<>(this, "fundValue"),
-		this.fundProvider);
-	this.fundField.setRequired(true);
-	this.form.add(this.fundField);
-	this.fundFeedback = new TextFeedbackPanel("fundFeedback", this.fundField);
-	this.form.add(this.fundFeedback);
+        this.fundProvider = new SingleChoiceProvider("m_fund", "id", "name");
+        this.fundField = new Select2SingleChoice<>("fundField", 0, new PropertyModel<>(this, "fundValue"),
+                this.fundProvider);
+        this.fundField.setRequired(true);
+        this.form.add(this.fundField);
+        this.fundFeedback = new TextFeedbackPanel("fundFeedback", this.fundField);
+        this.form.add(this.fundFeedback);
 
-	this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
-	this.startDateField.setRequired(true);
-	this.form.add(this.startDateField);
-	this.startDateFeedback = new TextFeedbackPanel("startDateFeedback", this.startDateField);
-	this.form.add(this.startDateFeedback);
+        this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
+        this.startDateField.setRequired(true);
+        this.form.add(this.startDateField);
+        this.startDateFeedback = new TextFeedbackPanel("startDateFeedback", this.startDateField);
+        this.form.add(this.startDateFeedback);
 
-	this.closeDateField = new DateTextField("closeDateField", new PropertyModel<>(this, "closeDateValue"));
-	this.closeDateField.setRequired(true);
-	this.form.add(this.closeDateField);
-	this.closeDateFeedback = new TextFeedbackPanel("closeDateFeedback", this.closeDateField);
-	this.form.add(this.closeDateFeedback);
+        this.closeDateField = new DateTextField("closeDateField", new PropertyModel<>(this, "closeDateValue"));
+        this.closeDateField.setRequired(true);
+        this.form.add(this.closeDateField);
+        this.closeDateFeedback = new TextFeedbackPanel("closeDateFeedback", this.closeDateField);
+        this.form.add(this.closeDateFeedback);
 
-	this.includeInCustomerLoanCounterField = new CheckBox("includeInCustomerLoanCounterField",
-		new PropertyModel<>(this, "includeInCustomerLoanCounterValue"));
-	this.includeInCustomerLoanCounterField.setRequired(true);
-	this.form.add(this.includeInCustomerLoanCounterField);
-	this.includeInCustomerLoanCounterFeedback = new TextFeedbackPanel("includeInCustomerLoanCounterFeedback",
-		this.includeInCustomerLoanCounterField);
-	this.form.add(this.includeInCustomerLoanCounterFeedback);
+        this.includeInCustomerLoanCounterField = new CheckBox("includeInCustomerLoanCounterField",
+                new PropertyModel<>(this, "includeInCustomerLoanCounterValue"));
+        this.includeInCustomerLoanCounterField.setRequired(true);
+        this.form.add(this.includeInCustomerLoanCounterField);
+        this.includeInCustomerLoanCounterFeedback = new TextFeedbackPanel("includeInCustomerLoanCounterFeedback",
+                this.includeInCustomerLoanCounterField);
+        this.form.add(this.includeInCustomerLoanCounterFeedback);
     }
 
     protected void initCurrency() {
-	this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name",
-		"concat(name,' [', code,']')");
-	this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"),
-		this.currencyProvider);
-	this.currencyField.add(new OnChangeAjaxBehavior());
-	this.currencyField.setRequired(true);
-	this.form.add(this.currencyField);
-	this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
-	this.form.add(this.currencyFeedback);
+        this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name",
+                "concat(name,' [', code,']')");
+        this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"),
+                this.currencyProvider);
+        this.currencyField.add(new OnChangeAjaxBehavior());
+        this.currencyField.setRequired(true);
+        this.form.add(this.currencyField);
+        this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
+        this.form.add(this.currencyFeedback);
 
-	this.decimalPlaceField = new TextField<>("decimalPlaceField", new PropertyModel<>(this, "decimalPlaceValue"));
-	this.decimalPlaceField.setRequired(true);
-	this.form.add(this.decimalPlaceField);
-	this.decimalPlaceFeedback = new TextFeedbackPanel("decimalPlaceFeedback", this.decimalPlaceField);
-	this.form.add(this.decimalPlaceFeedback);
+        this.decimalPlaceField = new TextField<>("decimalPlaceField", new PropertyModel<>(this, "decimalPlaceValue"));
+        this.decimalPlaceField.setRequired(true);
+        this.form.add(this.decimalPlaceField);
+        this.decimalPlaceFeedback = new TextFeedbackPanel("decimalPlaceFeedback", this.decimalPlaceField);
+        this.form.add(this.decimalPlaceFeedback);
 
-	this.currencyInMultipleOfField = new TextField<>("currencyInMultipleOfField",
-		new PropertyModel<>(this, "currencyInMultipleOfValue"));
-	this.currencyInMultipleOfField.setRequired(true);
-	this.form.add(this.currencyInMultipleOfField);
-	this.currencyInMultipleOfFeedback = new TextFeedbackPanel("currencyInMultipleOfFeedback",
-		this.currencyInMultipleOfField);
-	this.form.add(this.currencyInMultipleOfFeedback);
+        this.currencyInMultipleOfField = new TextField<>("currencyInMultipleOfField",
+                new PropertyModel<>(this, "currencyInMultipleOfValue"));
+        this.currencyInMultipleOfField.setRequired(true);
+        this.form.add(this.currencyInMultipleOfField);
+        this.currencyInMultipleOfFeedback = new TextFeedbackPanel("currencyInMultipleOfFeedback",
+                this.currencyInMultipleOfField);
+        this.form.add(this.currencyInMultipleOfFeedback);
 
-	this.installmentInMultipleOfField = new TextField<>("installmentInMultipleOfField",
-		new PropertyModel<>(this, "installmentInMultipleOfValue"));
-	this.installmentInMultipleOfField.setRequired(true);
-	this.form.add(this.installmentInMultipleOfField);
-	this.installmentInMultipleOfFeedback = new TextFeedbackPanel("installmentInMultipleOfFeedback",
-		this.installmentInMultipleOfField);
-	this.form.add(this.installmentInMultipleOfFeedback);
+        this.installmentInMultipleOfField = new TextField<>("installmentInMultipleOfField",
+                new PropertyModel<>(this, "installmentInMultipleOfValue"));
+        this.installmentInMultipleOfField.setRequired(true);
+        this.form.add(this.installmentInMultipleOfField);
+        this.installmentInMultipleOfFeedback = new TextFeedbackPanel("installmentInMultipleOfFeedback",
+                this.installmentInMultipleOfField);
+        this.form.add(this.installmentInMultipleOfFeedback);
 
     }
 
     protected void initTerms() {
 
-	this.termVaryBasedOnLoanCycleField = new CheckBox("termVaryBasedOnLoanCycleField",
-		new PropertyModel<>(this, "termVaryBasedOnLoanCycleValue"));
-	this.termVaryBasedOnLoanCycleField.setRequired(true);
-	this.form.add(this.termVaryBasedOnLoanCycleField);
-	this.termVaryBasedOnLoanCycleFeedback = new TextFeedbackPanel("termVaryBasedOnLoanCycleFeedback",
-		this.termVaryBasedOnLoanCycleField);
-	this.form.add(this.termVaryBasedOnLoanCycleFeedback);
+        this.termVaryBasedOnLoanCycleField = new CheckBox("termVaryBasedOnLoanCycleField",
+                new PropertyModel<>(this, "termVaryBasedOnLoanCycleValue"));
+        this.termVaryBasedOnLoanCycleField.setRequired(true);
+        this.form.add(this.termVaryBasedOnLoanCycleField);
+        this.termVaryBasedOnLoanCycleFeedback = new TextFeedbackPanel("termVaryBasedOnLoanCycleFeedback",
+                this.termVaryBasedOnLoanCycleField);
+        this.form.add(this.termVaryBasedOnLoanCycleFeedback);
 
-	this.principalMinimumField = new TextField<>("principalMinimumField",
-		new PropertyModel<>(this, "principalMinimumValue"));
-	this.principalMinimumField.setRequired(true);
-	this.form.add(this.principalMinimumField);
-	this.principalMinimumFeedback = new TextFeedbackPanel("principalMinimumFeedback", this.principalMinimumField);
-	this.form.add(this.principalMinimumFeedback);
+        this.principalMinimumField = new TextField<>("principalMinimumField",
+                new PropertyModel<>(this, "principalMinimumValue"));
+        this.principalMinimumField.setRequired(true);
+        this.form.add(this.principalMinimumField);
+        this.principalMinimumFeedback = new TextFeedbackPanel("principalMinimumFeedback", this.principalMinimumField);
+        this.form.add(this.principalMinimumFeedback);
 
-	this.principalDefaultField = new TextField<>("principalDefaultField",
-		new PropertyModel<>(this, "principalDefaultValue"));
-	this.principalDefaultField.setRequired(true);
-	this.form.add(this.principalDefaultField);
-	this.principalDefaultFeedback = new TextFeedbackPanel("principalDefaultFeedback", this.principalDefaultField);
-	this.form.add(this.principalDefaultFeedback);
+        this.principalDefaultField = new TextField<>("principalDefaultField",
+                new PropertyModel<>(this, "principalDefaultValue"));
+        this.principalDefaultField.setRequired(true);
+        this.form.add(this.principalDefaultField);
+        this.principalDefaultFeedback = new TextFeedbackPanel("principalDefaultFeedback", this.principalDefaultField);
+        this.form.add(this.principalDefaultFeedback);
 
-	this.principalMaximumField = new TextField<>("principalMaximumField",
-		new PropertyModel<>(this, "principalMaximumValue"));
-	this.principalMaximumField.setRequired(true);
-	this.form.add(this.principalMaximumField);
-	this.principalMaximumFeedback = new TextFeedbackPanel("principalMaximumFeedback", this.principalMaximumField);
-	this.form.add(this.principalMaximumFeedback);
+        this.principalMaximumField = new TextField<>("principalMaximumField",
+                new PropertyModel<>(this, "principalMaximumValue"));
+        this.principalMaximumField.setRequired(true);
+        this.form.add(this.principalMaximumField);
+        this.principalMaximumFeedback = new TextFeedbackPanel("principalMaximumFeedback", this.principalMaximumField);
+        this.form.add(this.principalMaximumFeedback);
 
-	this.numberOfRepaymentMinimumField = new TextField<>("numberOfRepaymentMinimumField",
-		new PropertyModel<>(this, "numberOfRepaymentMinimumValue"));
-	this.numberOfRepaymentMinimumField.setRequired(true);
-	this.form.add(this.numberOfRepaymentMinimumField);
-	this.numberOfRepaymentMinimumFeedback = new TextFeedbackPanel("numberOfRepaymentMinimumFeedback",
-		this.numberOfRepaymentMinimumField);
-	this.form.add(this.numberOfRepaymentMinimumFeedback);
+        this.numberOfRepaymentMinimumField = new TextField<>("numberOfRepaymentMinimumField",
+                new PropertyModel<>(this, "numberOfRepaymentMinimumValue"));
+        this.numberOfRepaymentMinimumField.setRequired(true);
+        this.form.add(this.numberOfRepaymentMinimumField);
+        this.numberOfRepaymentMinimumFeedback = new TextFeedbackPanel("numberOfRepaymentMinimumFeedback",
+                this.numberOfRepaymentMinimumField);
+        this.form.add(this.numberOfRepaymentMinimumFeedback);
 
-	this.numberOfRepaymentDefaultField = new TextField<>("numberOfRepaymentDefaultField",
-		new PropertyModel<>(this, "numberOfRepaymentDefaultValue"));
-	this.numberOfRepaymentDefaultField.setRequired(true);
-	this.form.add(this.numberOfRepaymentDefaultField);
-	this.numberOfRepaymentDefaultFeedback = new TextFeedbackPanel("numberOfRepaymentDefaultFeedback",
-		this.numberOfRepaymentDefaultField);
-	this.form.add(this.numberOfRepaymentDefaultFeedback);
+        this.numberOfRepaymentDefaultField = new TextField<>("numberOfRepaymentDefaultField",
+                new PropertyModel<>(this, "numberOfRepaymentDefaultValue"));
+        this.numberOfRepaymentDefaultField.setRequired(true);
+        this.form.add(this.numberOfRepaymentDefaultField);
+        this.numberOfRepaymentDefaultFeedback = new TextFeedbackPanel("numberOfRepaymentDefaultFeedback",
+                this.numberOfRepaymentDefaultField);
+        this.form.add(this.numberOfRepaymentDefaultFeedback);
 
-	this.numberOfRepaymentMaximumField = new TextField<>("numberOfRepaymentMaximumField",
-		new PropertyModel<>(this, "numberOfRepaymentMaximumValue"));
-	this.numberOfRepaymentMaximumField.setRequired(true);
-	this.form.add(this.numberOfRepaymentMaximumField);
-	this.numberOfRepaymentMaximumFeedback = new TextFeedbackPanel("numberOfRepaymentMaximumFeedback",
-		this.numberOfRepaymentMaximumField);
-	this.form.add(this.numberOfRepaymentMaximumFeedback);
+        this.numberOfRepaymentMaximumField = new TextField<>("numberOfRepaymentMaximumField",
+                new PropertyModel<>(this, "numberOfRepaymentMaximumValue"));
+        this.numberOfRepaymentMaximumField.setRequired(true);
+        this.form.add(this.numberOfRepaymentMaximumField);
+        this.numberOfRepaymentMaximumFeedback = new TextFeedbackPanel("numberOfRepaymentMaximumFeedback",
+                this.numberOfRepaymentMaximumField);
+        this.form.add(this.numberOfRepaymentMaximumFeedback);
 
     }
 

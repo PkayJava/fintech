@@ -29,7 +29,7 @@ public class Application extends AuthenticatedWebApplication {
 
     @Override
     public Class<? extends Page> getHomePage() {
-        return UserBrowsePage.class;
+        return LoanCreatePage.class;
     }
 
     @Override
