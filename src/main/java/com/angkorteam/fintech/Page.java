@@ -3,6 +3,7 @@ package com.angkorteam.fintech;
 import java.util.List;
 import java.util.MissingResourceException;
 
+import com.angkorteam.fintech.pages.*;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.model.IModel;
@@ -11,11 +12,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.angkorteam.fintech.pages.AccountingPage;
-import com.angkorteam.fintech.pages.IndexPage;
-import com.angkorteam.fintech.pages.OrganizationDashboardPage;
-import com.angkorteam.fintech.pages.ProductDashboardPage;
-import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.pages.staff.UserBrowsePage;
 import com.angkorteam.framework.Emoji;
 import com.angkorteam.framework.models.NavBarMenu;
@@ -188,7 +184,10 @@ public class Page extends DashboardPage {
                 new NavBarMenuItem().buildTypeIcon(ProductDashboardPage.class, null, Emoji.fa_dashboard, "Products"),
                 new NavBarMenuItem().buildTypeIcon(IndexPage.class, null, Emoji.fa_dashboard, "Templates"));
 
-        List<NavBarMenu> menus = Lists.newArrayList(clientsMenu, accountingMenu, reportsMenu, adminMenu);
+        NavBarMenu profileMenu = new NavBarMenu().buildTypeIcon(Emoji.fa_dashboard, "Profile", null,
+                new NavBarMenuItem().buildTypeIcon(LogoutPage.class, null, Emoji.fa_sign_out, "Logout"));
+
+        List<NavBarMenu> menus = Lists.newArrayList(clientsMenu, accountingMenu, reportsMenu, adminMenu, profileMenu);
         return Model.ofList(menus);
     }
 
