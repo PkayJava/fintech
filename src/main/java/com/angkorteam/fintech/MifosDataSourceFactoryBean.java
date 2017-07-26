@@ -20,7 +20,7 @@ public class MifosDataSourceFactoryBean implements FactoryBean<DataSource>, Init
 
     private MifosDataSourceManager manager;
 
-    private HttpServletRequestDataSource dataSource;
+    private DataSource dataSource;
 
     @Autowired
     private HttpSession session;
@@ -52,23 +52,22 @@ public class MifosDataSourceFactoryBean implements FactoryBean<DataSource>, Init
         String identifier = (String) this.session.getAttribute("mifos_identifier");
         if (identifier != null && !"".equals(identifier)) {
             this.dataSource = new HttpServletRequestDataSource(this.manager.getDataSource(identifier));
+        } else {
+            this.dataSource = new MockDataSource();
         }
     }
 
     @Override
     public void destroy() throws Exception {
-        if (this.dataSource != null) {
-            Connection connection = this.dataSource.getConnection();
-            if (connection != null) {
-                try {
-                    connection.commit();
-                } catch (SQLException e) {
-                    LOGGER.info("could not commit transaction due to this reason {}", e.getMessage());
-                }
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    LOGGER.info("could not close connection due to this reason {}", e.getMessage());
+        if (this.dataSource != null && this.dataSource instanceof HttpServletRequestDataSource) {
+            try (Connection connection = this.dataSource.getConnection()) {
+                if (connection != null) {
+                    try {
+                        connection.commit();
+                    } catch (SQLException e) {
+                        LOGGER.info("could not commit transaction due to this reason {}", e.getMessage());
+                        connection.rollback();
+                    }
                 }
             }
         }
