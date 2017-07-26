@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<wicket:extend>
+    <form role="form" wicket:id="form">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">User Modify</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>First Name</label>
+                    <span wicket:id="firstNameField" disabled="disabled" class="form-control"/>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Last Name</label>
+                    <span wicket:id="lastNameField" disabled="disabled" class="form-control"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label>Email</label>
+                    <span wicket:id="emailField" disabled="disabled" class="form-control"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label>Login</label>
+                    <span wicket:id="loginField" disabled="disabled" class="form-control"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="overridePasswordExpiryPolicyField"> Override password expiry policy ?
+                        </label>
+                    </span>
+                    <span wicket:id="overridePasswordExpiryPolicyFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label wicket:for="officeField">Office</label>
+                    <select wicket:id="officeField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="officeFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label wicket:for="staffField">Staff</label>
+                    <select wicket:id="staffField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="staffFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label wicket:for="permissionField">Permission</label>
+                    <select wicket:id="permissionField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="permissionFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="box-footer">
+                <button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+                <a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
+            </div>
+        </div>
+    </form>
+    <form role="form" wicket:id="passwordForm">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">User Create</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label wicket:for="passwordField">Password</label>
+                    <input wicket:id="passwordField" type="password" class="form-control"/>
+                    <span wicket:id="passwordFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label wicket:for="repeatPasswordField">Repeat Password</label>
+                    <input wicket:id="repeatPasswordField" type="password" class="form-control"/>
+                    <span wicket:id="repeatPasswordFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="box-footer">
+                <button wicket:id="updateButton" type="submit" class="btn btn-info">Update</button>
+                <a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
+            </div>
+        </div>
+    </form>
+</wicket:extend>
+</body>
+</html>
