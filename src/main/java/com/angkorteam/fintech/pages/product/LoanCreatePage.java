@@ -1,23 +1,41 @@
 package com.angkorteam.fintech.pages.product;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.popup.LoanCyclePopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
+import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.TextColumn;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.PropertyModel;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import com.google.common.collect.Lists;
 
 // @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanCreatePage extends Page {
@@ -76,6 +94,8 @@ public class LoanCreatePage extends Page {
     private Boolean termVaryBasedOnLoanCycleValue;
     private CheckBox termVaryBasedOnLoanCycleField;
     private TextFeedbackPanel termVaryBasedOnLoanCycleFeedback;
+
+    private WebMarkupContainer principalByLoanCycleContainer;
 
     private Double principalMinimumValue;
     private TextField<Double> principalMinimumField;
@@ -145,9 +165,18 @@ public class LoanCreatePage extends Page {
     private TextField<Double> floatingInterestRateMaximumField;
     private TextFeedbackPanel floatingInterestRateMaximumFeedback;
 
+    private List<Map<String, Object>> loanCycleValue;
+    private ModalWindow loanCyclePopup;
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
+        this.loanCyclePopup = new ModalWindow("loanCyclePopup");
+        add(this.loanCyclePopup);
+
+        this.loanCyclePopup
+                .setContent(new LoanCyclePopup(this.loanCyclePopup.getContentId(), this.loanCyclePopup, this));
+        this.loanCyclePopup.setOnClose(this::loanCyclePopupOnClose);
 
         this.form = new Form<>("form");
         add(this.form);
@@ -157,6 +186,13 @@ public class LoanCreatePage extends Page {
         initCurrency();
 
         initTerms();
+
+        initDefault();
+    }
+
+    protected void initDefault() {
+        this.principalByLoanCycleContainer
+                .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
     }
 
     protected void initDetail() {
@@ -239,7 +275,7 @@ public class LoanCreatePage extends Page {
         this.installmentInMultipleOfFeedback = new TextFeedbackPanel("installmentInMultipleOfFeedback",
                 this.installmentInMultipleOfField);
         this.form.add(this.installmentInMultipleOfFeedback);
-
+        // loanCycleValue
     }
 
     protected void initTerms() {
@@ -247,6 +283,7 @@ public class LoanCreatePage extends Page {
         this.termVaryBasedOnLoanCycleField = new CheckBox("termVaryBasedOnLoanCycleField",
                 new PropertyModel<>(this, "termVaryBasedOnLoanCycleValue"));
         this.termVaryBasedOnLoanCycleField.setRequired(true);
+        this.termVaryBasedOnLoanCycleField.add(new OnChangeAjaxBehavior(this::termVaryBasedOnLoanCycleFieldUpdate));
         this.form.add(this.termVaryBasedOnLoanCycleField);
         this.termVaryBasedOnLoanCycleFeedback = new TextFeedbackPanel("termVaryBasedOnLoanCycleFeedback",
                 this.termVaryBasedOnLoanCycleField);
@@ -273,6 +310,29 @@ public class LoanCreatePage extends Page {
         this.principalMaximumFeedback = new TextFeedbackPanel("principalMaximumFeedback", this.principalMaximumField);
         this.form.add(this.principalMaximumFeedback);
 
+        this.principalByLoanCycleContainer = new WebMarkupContainer("principalByLoanCycleContainer");
+        this.form.add(this.principalByLoanCycleContainer);
+
+        List<IColumn<Map<String, Object>, String>> principalByLoanCycleColumn = Lists.newArrayList();
+        principalByLoanCycleColumn
+                .add(new TextColumn(Model.of("Name"), "name", "name", this::principalByLoanCycleNameColumn));
+        principalByLoanCycleColumn
+                .add(new TextColumn(Model.of("Amount"), "amount", "amount", this::principalByLoanCycleAmountColumn));
+        principalByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"),
+                this::principalByLoanCycleActionItem, this::principalByLoanCycleActionClick));
+        this.principalByLoanCycleValue = Lists.newArrayList();
+        this.principalByLoanCycleProvider = new ListDataProvider(this.principalByLoanCycleValue);
+        this.principalByLoanCycleTable = new DataTable<>("principalByLoanCycleTable", principalByLoanCycleColumn,
+                this.principalByLoanCycleProvider, 20);
+        this.principalByLoanCycleContainer.add(this.principalByLoanCycleTable);
+        this.principalByLoanCycleTable
+                .addTopToolbar(new HeadersToolbar<>(this.principalByLoanCycleTable, this.principalByLoanCycleProvider));
+        this.principalByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.principalByLoanCycleTable));
+
+        AjaxLink<Void> addLink = new AjaxLink<>("addLink");
+        addLink.setOnClick(this::principalByLoanCycleAddLinkClick);
+        this.principalByLoanCycleContainer.add(addLink);
+
         this.numberOfRepaymentMinimumField = new TextField<>("numberOfRepaymentMinimumField",
                 new PropertyModel<>(this, "numberOfRepaymentMinimumValue"));
         this.numberOfRepaymentMinimumField.setRequired(true);
@@ -296,6 +356,56 @@ public class LoanCreatePage extends Page {
         this.numberOfRepaymentMaximumFeedback = new TextFeedbackPanel("numberOfRepaymentMaximumFeedback",
                 this.numberOfRepaymentMaximumField);
         this.form.add(this.numberOfRepaymentMaximumFeedback);
+
+    }
+
+    private void principalByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.loanCyclePopup.show(target);
+    }
+
+    private ItemPanel principalByLoanCycleNameColumn(String jdbcColumn, IModel<String> display,
+            Map<String, Object> model) {
+        String name = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(name));
+    }
+
+    private ItemPanel principalByLoanCycleAmountColumn(String jdbcColumn, IModel<String> display,
+            Map<String, Object> model) {
+        Double amount = (Double) model.get(jdbcColumn);
+        if (amount == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(amount)));
+        }
+    }
+
+    private void principalByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap,
+            AjaxRequestTarget ajaxRequestTarget) {
+        int index = -1;
+        for (int i = 0; i < this.principalByLoanCycleValue.size(); i++) {
+            Map<String, Object> column = this.principalByLoanCycleValue.get(i);
+            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                index = i;
+                break;
+            }
+        }
+        if (index >= 0) {
+            this.principalByLoanCycleValue.remove(index);
+        }
+        ajaxRequestTarget.add(this.principalByLoanCycleTable);
+    }
+
+    private List<ActionItem> principalByLoanCycleActionItem(String s, Map<String, Object> stringObjectMap) {
+        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+    }
+
+    protected void termVaryBasedOnLoanCycleFieldUpdate(AjaxRequestTarget target) {
+        this.principalByLoanCycleContainer
+                .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
+        target.add(this.form);
+    }
+
+    private void loanCyclePopupOnClose(String elementId, AjaxRequestTarget target) {
 
     }
 
