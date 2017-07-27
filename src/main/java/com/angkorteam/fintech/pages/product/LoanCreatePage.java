@@ -95,8 +95,6 @@ public class LoanCreatePage extends Page {
     private CheckBox termVaryBasedOnLoanCycleField;
     private TextFeedbackPanel termVaryBasedOnLoanCycleFeedback;
 
-    private WebMarkupContainer principalByLoanCycleContainer;
-
     private Double principalMinimumValue;
     private TextField<Double> principalMinimumField;
     private TextFeedbackPanel principalMinimumFeedback;
@@ -108,6 +106,12 @@ public class LoanCreatePage extends Page {
     private Double principalMaximumValue;
     private TextField<Double> principalMaximumField;
     private TextFeedbackPanel principalMaximumFeedback;
+
+    private WebMarkupContainer principalByLoanCycleContainer;
+
+    private List<Map<String, Object>> principalByLoanCycleValue;
+    private DataTable<Map<String, Object>, String> principalByLoanCycleTable;
+    private ListDataProvider principalByLoanCycleProvider;
 
     private Double numberOfRepaymentMinimumValue;
     private TextField<Double> numberOfRepaymentMinimumField;
@@ -121,13 +125,11 @@ public class LoanCreatePage extends Page {
     private TextField<Double> numberOfRepaymentMaximumField;
     private TextFeedbackPanel numberOfRepaymentMaximumFeedback;
 
-    private List<Map<String, Object>> principalByLoanCycleValue;
-    private DataTable<Map<String, Object>, String> principalByLoanCycleTable;
-    private ListDataProvider principalByLoanCycleProvider;
+    private WebMarkupContainer numberOfRepaymentByLoanCycleContainer;
 
-    private List<Map<String, Object>> numberOfRepaymentsByLoanCycleValue;
-    private DataTable<Map<String, Object>, String> numberOfRepaymentsByLoanCycleTable;
-    private ListDataProvider numberOfRepaymentsByLoanCycleProvider;
+    private List<Map<String, Object>> numberOfRepaymentByLoanCycleValue;
+    private DataTable<Map<String, Object>, String> numberOfRepaymentByLoanCycleTable;
+    private ListDataProvider numberOfRepaymentByLoanCycleProvider;
 
     private List<Map<String, Object>> nominalInterestRateByLoanCycleValue;
     private DataTable<Map<String, Object>, String> nominalInterestRateByLoanCycleTable;
@@ -310,28 +312,30 @@ public class LoanCreatePage extends Page {
         this.principalMaximumFeedback = new TextFeedbackPanel("principalMaximumFeedback", this.principalMaximumField);
         this.form.add(this.principalMaximumFeedback);
 
-        this.principalByLoanCycleContainer = new WebMarkupContainer("principalByLoanCycleContainer");
-        this.form.add(this.principalByLoanCycleContainer);
+        {
+            this.principalByLoanCycleContainer = new WebMarkupContainer("principalByLoanCycleContainer");
+            this.form.add(this.principalByLoanCycleContainer);
 
-        List<IColumn<Map<String, Object>, String>> principalByLoanCycleColumn = Lists.newArrayList();
-        principalByLoanCycleColumn
-                .add(new TextColumn(Model.of("Name"), "name", "name", this::principalByLoanCycleNameColumn));
-        principalByLoanCycleColumn
-                .add(new TextColumn(Model.of("Amount"), "amount", "amount", this::principalByLoanCycleAmountColumn));
-        principalByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"),
-                this::principalByLoanCycleActionItem, this::principalByLoanCycleActionClick));
-        this.principalByLoanCycleValue = Lists.newArrayList();
-        this.principalByLoanCycleProvider = new ListDataProvider(this.principalByLoanCycleValue);
-        this.principalByLoanCycleTable = new DataTable<>("principalByLoanCycleTable", principalByLoanCycleColumn,
-                this.principalByLoanCycleProvider, 20);
-        this.principalByLoanCycleContainer.add(this.principalByLoanCycleTable);
-        this.principalByLoanCycleTable
-                .addTopToolbar(new HeadersToolbar<>(this.principalByLoanCycleTable, this.principalByLoanCycleProvider));
-        this.principalByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.principalByLoanCycleTable));
+            List<IColumn<Map<String, Object>, String>> principalByLoanCycleColumn = Lists.newArrayList();
+            principalByLoanCycleColumn
+                    .add(new TextColumn(Model.of("Name"), "name", "name", this::principalByLoanCycleNameColumn));
+            principalByLoanCycleColumn.add(
+                    new TextColumn(Model.of("Amount"), "amount", "amount", this::principalByLoanCycleAmountColumn));
+            principalByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"),
+                    this::principalByLoanCycleActionItem, this::principalByLoanCycleActionClick));
+            this.principalByLoanCycleValue = Lists.newArrayList();
+            this.principalByLoanCycleProvider = new ListDataProvider(this.principalByLoanCycleValue);
+            this.principalByLoanCycleTable = new DataTable<>("principalByLoanCycleTable", principalByLoanCycleColumn,
+                    this.principalByLoanCycleProvider, 20);
+            this.principalByLoanCycleContainer.add(this.principalByLoanCycleTable);
+            this.principalByLoanCycleTable.addTopToolbar(
+                    new HeadersToolbar<>(this.principalByLoanCycleTable, this.principalByLoanCycleProvider));
+            this.principalByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.principalByLoanCycleTable));
 
-        AjaxLink<Void> addLink = new AjaxLink<>("addLink");
-        addLink.setOnClick(this::principalByLoanCycleAddLinkClick);
-        this.principalByLoanCycleContainer.add(addLink);
+            AjaxLink<Void> addLink = new AjaxLink<>("addLink");
+            addLink.setOnClick(this::principalByLoanCycleAddLinkClick);
+            this.principalByLoanCycleContainer.add(addLink);
+        }
 
         this.numberOfRepaymentMinimumField = new TextField<>("numberOfRepaymentMinimumField",
                 new PropertyModel<>(this, "numberOfRepaymentMinimumValue"));
@@ -357,6 +361,73 @@ public class LoanCreatePage extends Page {
                 this.numberOfRepaymentMaximumField);
         this.form.add(this.numberOfRepaymentMaximumFeedback);
 
+        {
+            this.numberOfRepaymentByLoanCycleContainer = new WebMarkupContainer(
+                    "numberOfRepaymentByLoanCycleContainer");
+            this.form.add(this.numberOfRepaymentByLoanCycleContainer);
+
+            List<IColumn<Map<String, Object>, String>> numberOfRepaymentByLoanCycleColumn = Lists.newArrayList();
+            numberOfRepaymentByLoanCycleColumn.add(
+                    new TextColumn(Model.of("Name"), "name", "name", this::numberOfRepaymentByLoanCycleNameColumn));
+            numberOfRepaymentByLoanCycleColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount",
+                    this::numberOfRepaymentByLoanCycleAmountColumn));
+            numberOfRepaymentByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"),
+                    this::numberOfRepaymentByLoanCycleActionItem, this::numberOfRepaymentByLoanCycleActionClick));
+            this.numberOfRepaymentByLoanCycleValue = Lists.newArrayList();
+            this.numberOfRepaymentByLoanCycleProvider = new ListDataProvider(this.numberOfRepaymentByLoanCycleValue);
+            this.numberOfRepaymentByLoanCycleTable = new DataTable<>("numberOfRepaymentByLoanCycleTable",
+                    numberOfRepaymentByLoanCycleColumn, this.numberOfRepaymentByLoanCycleProvider, 20);
+            this.numberOfRepaymentByLoanCycleContainer.add(this.numberOfRepaymentByLoanCycleTable);
+            this.numberOfRepaymentByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(
+                    this.numberOfRepaymentByLoanCycleTable, this.numberOfRepaymentByLoanCycleProvider));
+            this.numberOfRepaymentByLoanCycleTable
+                    .addBottomToolbar(new NoRecordsToolbar(this.numberOfRepaymentByLoanCycleTable));
+
+            AjaxLink<Void> addLink = new AjaxLink<>("addLink");
+            addLink.setOnClick(this::numberOfRepaymentByLoanCycleAddLinkClick);
+            this.numberOfRepaymentByLoanCycleContainer.add(addLink);
+        }
+
+    }
+
+    private void numberOfRepaymentByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.loanCyclePopup.show(target);
+    }
+
+    private ItemPanel numberOfRepaymentByLoanCycleNameColumn(String jdbcColumn, IModel<String> display,
+            Map<String, Object> model) {
+        String name = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(name));
+    }
+
+    private ItemPanel numberOfRepaymentByLoanCycleAmountColumn(String jdbcColumn, IModel<String> display,
+            Map<String, Object> model) {
+        Double amount = (Double) model.get(jdbcColumn);
+        if (amount == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(amount)));
+        }
+    }
+
+    private void numberOfRepaymentByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap,
+            AjaxRequestTarget ajaxRequestTarget) {
+        int index = -1;
+        for (int i = 0; i < this.numberOfRepaymentByLoanCycleValue.size(); i++) {
+            Map<String, Object> column = this.numberOfRepaymentByLoanCycleValue.get(i);
+            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                index = i;
+                break;
+            }
+        }
+        if (index >= 0) {
+            this.numberOfRepaymentByLoanCycleValue.remove(index);
+        }
+        ajaxRequestTarget.add(this.numberOfRepaymentByLoanCycleTable);
+    }
+
+    private List<ActionItem> numberOfRepaymentByLoanCycleActionItem(String s, Map<String, Object> stringObjectMap) {
+        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     private void principalByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
