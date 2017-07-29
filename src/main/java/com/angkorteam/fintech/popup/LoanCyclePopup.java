@@ -21,23 +21,18 @@ public class LoanCyclePopup extends Panel {
     private AjaxButton okayButton;
 
     private WhenProvider whenProvider;
-    private Option whenValue;
     private Select2SingleChoice<Option> whenField;
     private TextFeedbackPanel whenFeedback;
 
-    private Integer loanCycleValue;
     private TextField<Integer> loanCycleField;
     private TextFeedbackPanel loanCycleFeedback;
 
-    private Double minimumValue;
     private TextField<Double> minimumField;
     private TextFeedbackPanel minimumFeedback;
 
-    private Double defaultValue;
     private TextField<Double> defaultField;
     private TextFeedbackPanel defaultFeedback;
 
-    private Double maximumValue;
     private TextField<Double> maximumField;
     private TextFeedbackPanel maximumFeedback;
 
@@ -62,32 +57,32 @@ public class LoanCyclePopup extends Panel {
         this.form.add(this.okayButton);
 
         this.whenProvider = new WhenProvider();
-        this.whenField = new Select2SingleChoice<>("whenField", 0, new PropertyModel<>(this, "whenValue"),
+        this.whenField = new Select2SingleChoice<>("whenField", 0, new PropertyModel<>(this.model, "itemWhenValue"),
                 this.whenProvider);
         this.whenField.setRequired(true);
         this.form.add(this.whenField);
         this.whenFeedback = new TextFeedbackPanel("whenFeedback", this.whenField);
         this.form.add(this.whenFeedback);
 
-        this.loanCycleField = new TextField<>("loanCycleField", new PropertyModel<>(this, "loanCycleValue"));
+        this.loanCycleField = new TextField<>("loanCycleField", new PropertyModel<>(this.model, "itemLoanCycleValue"));
         this.loanCycleField.setRequired(true);
         this.form.add(this.loanCycleField);
         this.loanCycleFeedback = new TextFeedbackPanel("loanCycleFeedback", this.loanCycleField);
         this.form.add(this.loanCycleFeedback);
 
-        this.minimumField = new TextField<>("minimumField", new PropertyModel<>(this, "minimumValue"));
+        this.minimumField = new TextField<>("minimumField", new PropertyModel<>(this.model, "itemMinimumValue"));
         this.minimumField.setRequired(true);
         this.form.add(this.minimumField);
         this.minimumFeedback = new TextFeedbackPanel("minimumFeedback", this.minimumField);
         this.form.add(this.minimumFeedback);
 
-        this.defaultField = new TextField<>("defaultField", new PropertyModel<>(this, "defaultValue"));
+        this.defaultField = new TextField<>("defaultField", new PropertyModel<>(this.model, "itemDefaultValue"));
         this.defaultField.setRequired(true);
         this.form.add(this.defaultField);
         this.defaultFeedback = new TextFeedbackPanel("defaultFeedback", this.defaultField);
         this.form.add(this.defaultFeedback);
 
-        this.maximumField = new TextField<>("maximumField", new PropertyModel<>(this, "maximumValue"));
+        this.maximumField = new TextField<>("maximumField", new PropertyModel<>(this.model, "itemMaximumValue"));
         this.maximumField.setRequired(true);
         this.form.add(this.maximumField);
         this.maximumFeedback = new TextFeedbackPanel("maximumFeedback", this.maximumField);

@@ -170,6 +170,44 @@
                     </div>
                 </div>
                 <div class="clearfix"></div>
+                
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="linkedToFloatingInterestRatesField"> Is Linked to Floating Interest Rates?
+                        </label>
+                    </span>
+                    <span wicket:id="linkedToFloatingInterestRatesFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                
+                <!-- Row -->
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="nominalInterestRateMinimumField">Nominal interest rate minimum</label>
+                    <input wicket:id="nominalInterestRateMinimumField" type="text" class="form-control"/>
+                    <span wicket:id="nominalInterestRateMinimumFeedback" class="help-block"/>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="nominalInterestRateDefaultField">Nominal interest rate default</label>
+                    <input wicket:id="nominalInterestRateDefaultField" type="text" class="form-control"/>
+                    <span wicket:id="nominalInterestRateDefaultFeedback" class="help-block"/>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="nominalInterestRateMaximumField">Number of repayment Maximum</label>
+                    <input wicket:id="nominalInterestRateMaximumField" type="text" class="form-control"/>
+                    <span wicket:id="nominalInterestRateMaximumFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+
+    private Double Value;
+    private TextField<Double> nominalInterestRateMaximumField;
+    private TextFeedbackPanel nominalInterestRateMaximumFeedback;
+
+    private String nominalInterestRatePerValue;
+    private DropDownChoice<String> nominalInterestRatePerField;
+    private TextFeedbackPanel nominalInterestRatePerFeedback;
             </div>
         </div>
     </form>
