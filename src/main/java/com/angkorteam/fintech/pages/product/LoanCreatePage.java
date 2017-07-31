@@ -1,22 +1,8 @@
 package com.angkorteam.fintech.pages.product;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.popup.LoanCyclePopup;
+import com.angkorteam.fintech.provider.NominalInterestRateTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -38,6 +24,19 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 // @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanCreatePage extends Page {
@@ -153,9 +152,10 @@ public class LoanCreatePage extends Page {
     private TextField<Double> nominalInterestRateMaximumField;
     private TextFeedbackPanel nominalInterestRateMaximumFeedback;
 
-    private String nominalInterestRatePerValue;
-    private DropDownChoice<String> nominalInterestRatePerField;
-    private TextFeedbackPanel nominalInterestRatePerFeedback;
+    private NominalInterestRateTypeProvider nominalInterestRateTypeProvider;
+    private Option nominalInterestRateTypeValue;
+    private Select2SingleChoice<Option> nominalInterestRateTypeField;
+    private TextFeedbackPanel nominalInterestRateTypeFeedback;
 
     private Double floatingInterestRateMinimumValue;
     private TextField<Double> floatingInterestRateMinimumField;
@@ -419,6 +419,41 @@ public class LoanCreatePage extends Page {
         this.linkedToFloatingInterestRatesFeedback = new TextFeedbackPanel("linkedToFloatingInterestRatesFeedback",
                 this.linkedToFloatingInterestRatesField);
         this.form.add(this.linkedToFloatingInterestRatesFeedback);
+
+        this.nominalInterestRateMinimumField = new TextField<>("nominalInterestRateMinimumField",
+                new PropertyModel<>(this, "nominalInterestRateMinimumValue"));
+        this.nominalInterestRateMinimumField.setRequired(true);
+        this.form.add(this.nominalInterestRateMinimumField);
+        this.nominalInterestRateMinimumFeedback = new TextFeedbackPanel("nominalInterestRateMinimumFeedback",
+                this.nominalInterestRateMinimumField);
+        this.form.add(this.nominalInterestRateMinimumFeedback);
+
+        this.nominalInterestRateDefaultField = new TextField<>("nominalInterestRateDefaultField",
+                new PropertyModel<>(this, "nominalInterestRateDefaultValue"));
+        this.nominalInterestRateDefaultField.setRequired(true);
+        this.form.add(this.nominalInterestRateDefaultField);
+        this.nominalInterestRateDefaultFeedback = new TextFeedbackPanel("nominalInterestRateDefaultFeedback",
+                this.nominalInterestRateDefaultField);
+        this.form.add(this.nominalInterestRateDefaultFeedback);
+
+        this.nominalInterestRateMaximumField = new TextField<>("nominalInterestRateMaximumField",
+                new PropertyModel<>(this, "nominalInterestRateMaximumValue"));
+        this.nominalInterestRateMaximumField.setRequired(true);
+        this.form.add(this.nominalInterestRateMaximumField);
+        this.nominalInterestRateMaximumFeedback = new TextFeedbackPanel("nominalInterestRateMaximumFeedback",
+                this.nominalInterestRateMaximumField);
+        this.form.add(this.nominalInterestRateMaximumFeedback);
+
+        this.nominalInterestRateTypeProvider = new NominalInterestRateTypeProvider();
+        this.nominalInterestRateTypeField = new Select2SingleChoice<>("nominalInterestRateTypeField", 0,
+                new PropertyModel<>(this, "nominalInterestRateTypeValue"), this.nominalInterestRateTypeProvider);
+        this.nominalInterestRateTypeField.setRequired(true);
+        this.form.add(this.nominalInterestRateTypeField);
+        this.nominalInterestRateTypeFeedback = new TextFeedbackPanel("nominalInterestRateTypeFeedback", this.nominalInterestRateTypeField);
+        this.form.add(this.nominalInterestRateTypeFeedback);
+
+        // floatingInterestRateDifferential
+        // floatingCalculationAllowed
     }
 
     private void numberOfRepaymentByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
@@ -427,13 +462,13 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel numberOfRepaymentByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display,
-            Map<String, Object> model) {
+                                                             Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(Model.of(value));
     }
 
     private ItemPanel numberOfRepaymentByLoanCycleMinimumColumn(String jdbcColumn, IModel<String> display,
-            Map<String, Object> model) {
+                                                                Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -443,7 +478,7 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel numberOfRepaymentByLoanCycleDefaultColumn(String jdbcColumn, IModel<String> display,
-            Map<String, Object> model) {
+                                                                Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -453,7 +488,7 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel numberOfRepaymentByLoanCycleMaximumColumn(String jdbcColumn, IModel<String> display,
-            Map<String, Object> model) {
+                                                                Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -463,7 +498,7 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel numberOfRepaymentByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display,
-            Map<String, Object> model) {
+                                                              Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -473,7 +508,7 @@ public class LoanCreatePage extends Page {
     }
 
     private void numberOfRepaymentByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap,
-            AjaxRequestTarget ajaxRequestTarget) {
+                                                         AjaxRequestTarget ajaxRequestTarget) {
         int index = -1;
         for (int i = 0; i < this.numberOfRepaymentByLoanCycleValue.size(); i++) {
             Map<String, Object> column = this.numberOfRepaymentByLoanCycleValue.get(i);
@@ -498,13 +533,13 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel principalByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display,
-            Map<String, Object> model) {
+                                                     Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(Model.of(String.valueOf(value)));
     }
 
     private ItemPanel principalByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display,
-            Map<String, Object> model) {
+                                                      Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -514,7 +549,7 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel principalByLoanCycleMinimumColumn(String jdbcColumn, IModel<String> display,
-            Map<String, Object> model) {
+                                                        Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -524,7 +559,7 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel principalByLoanCycleDefaultColumn(String jdbcColumn, IModel<String> display,
-            Map<String, Object> model) {
+                                                        Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -534,7 +569,7 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel principalByLoanCycleMaximumColumn(String jdbcColumn, IModel<String> display,
-            Map<String, Object> model) {
+                                                        Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -544,7 +579,7 @@ public class LoanCreatePage extends Page {
     }
 
     private void principalByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap,
-            AjaxRequestTarget ajaxRequestTarget) {
+                                                 AjaxRequestTarget ajaxRequestTarget) {
         int index = -1;
         for (int i = 0; i < this.principalByLoanCycleValue.size(); i++) {
             Map<String, Object> column = this.principalByLoanCycleValue.get(i);
@@ -564,7 +599,7 @@ public class LoanCreatePage extends Page {
     }
 
     protected void linkedToFloatingInterestRatesFieldUpdate(AjaxRequestTarget target) {
-        
+
     }
 
     protected void termVaryBasedOnLoanCycleFieldUpdate(AjaxRequestTarget target) {
