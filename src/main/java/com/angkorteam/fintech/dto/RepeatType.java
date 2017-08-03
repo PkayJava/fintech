@@ -1,14 +1,14 @@
 package com.angkorteam.fintech.dto;
 
-public enum NominalInterestRateScheduleType {
+public enum RepeatType {
 
-    Month("Month", "Per month"), Year("Year", "Per year");
+    Day("Day", "Day"), Week("Week", "Weeks"), Month("Month", "Months");
 
     private String literal;
 
     private String description;
 
-    NominalInterestRateScheduleType(String literal, String description) {
+    RepeatType(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
@@ -20,5 +20,6 @@ public enum NominalInterestRateScheduleType {
     public String getDescription() {
         return description;
     }
+
 
 }
