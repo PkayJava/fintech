@@ -1,8 +1,23 @@
 package com.angkorteam.fintech.pages.product;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.popup.LoanCyclePopup;
 import com.angkorteam.fintech.provider.NominalInterestRateTypeProvider;
+import com.angkorteam.fintech.provider.RepaidTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -24,19 +39,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 // @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanCreatePage extends Page {
@@ -143,6 +145,8 @@ public class LoanCreatePage extends Page {
     private CheckBox linkedToFloatingInterestRatesField;
     private TextFeedbackPanel linkedToFloatingInterestRatesFeedback;
 
+    private WebMarkupContainer nominalInterestRateContainer;
+
     // Row 5 : Nominal interest rate
     private Double nominalInterestRateMinimumValue;
     private TextField<Double> nominalInterestRateMinimumField;
@@ -161,26 +165,53 @@ public class LoanCreatePage extends Page {
     private Select2SingleChoice<Option> nominalInterestRateTypeField;
     private TextFeedbackPanel nominalInterestRateTypeFeedback;
 
+    private WebMarkupContainer floatInterestRateContainer;
+
+    // Row 3 (Optional) : Nominal interest rate by loan cycle
+    private WebMarkupContainer nominalInterestRateByLoanCycleContainer;
+
     // Row 6
     private List<Map<String, Object>> nominalInterestRateByLoanCycleValue;
     private DataTable<Map<String, Object>, String> nominalInterestRateByLoanCycleTable;
     private ListDataProvider nominalInterestRateByLoanCycleProvider;
 
+    private Integer repaidEveryValue;
+    private TextField<Integer> repaidEveryField;
+    private TextFeedbackPanel repaidEveryFeedback;
+
+    private RepaidTypeProvider repaidTypeProvider;
+    private Option repaidTypeValue;
+    private Select2SingleChoice<Option> repaidTypeField;
+    private TextFeedbackPanel repaidTypeFeedback;
+
     private Double minimumDayBetweenDisbursalAndFirstRepaymentDateValue;
     private TextField<Double> minimumDayBetweenDisbursalAndFirstRepaymentDateField;
     private TextFeedbackPanel minimumDayBetweenDisbursalAndFirstRepaymentDateFeedback;
 
-    private Double floatingInterestRateMinimumValue;
-    private TextField<Double> floatingInterestRateMinimumField;
-    private TextFeedbackPanel floatingInterestRateMinimumFeedback;
+    private SingleChoiceProvider floatingInterestRateProvider;
+    private Option floatingInterestRateValue;
+    private Select2SingleChoice<Option> floatingInterestRateField;
+    private TextFeedbackPanel floatingInterestRateFeedback;
 
-    private Double floatingInterestRateDefaultValue;
-    private TextField<Double> floatingInterestRateDefaultField;
-    private TextFeedbackPanel floatingInterestRateDefaultFeedback;
+    private Double floatingInterestMinimumValue;
+    private TextField<Double> floatingInterestMinimumField;
+    private TextFeedbackPanel floatingInterestMinimumFeedback;
 
-    private Double floatingInterestRateMaximumValue;
-    private TextField<Double> floatingInterestRateMaximumField;
-    private TextFeedbackPanel floatingInterestRateMaximumFeedback;
+    private Double floatingInterestDefaultValue;
+    private TextField<Double> floatingInterestDefaultField;
+    private TextFeedbackPanel floatingInterestDefaultFeedback;
+
+    private Double floatingInterestMaximumValue;
+    private TextField<Double> floatingInterestMaximumField;
+    private TextFeedbackPanel floatingInterestMaximumFeedback;
+
+    private Double floatingInterestDifferentialValue;
+    private TextField<Double> floatingInterestDifferentialField;
+    private TextFeedbackPanel floatingInterestDifferentialFeedback;
+
+    private Boolean floatingInterestAllowedValue;
+    private CheckBox floatingInterestAllowedField;
+    private TextFeedbackPanel floatingInterestAllowedFeedback;
 
     private Option itemWhenValue;
     private Integer itemLoanCycleValue;
@@ -216,6 +247,8 @@ public class LoanCreatePage extends Page {
         this.principalByLoanCycleContainer
                 .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
         this.numberOfRepaymentByLoanCycleContainer
+                .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
+        this.nominalInterestRateByLoanCycleContainer
                 .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
     }
 
@@ -433,81 +466,227 @@ public class LoanCreatePage extends Page {
                 this.linkedToFloatingInterestRatesField);
         this.form.add(this.linkedToFloatingInterestRatesFeedback);
 
-        this.nominalInterestRateMinimumField = new TextField<>("nominalInterestRateMinimumField",
-                new PropertyModel<>(this, "nominalInterestRateMinimumValue"));
-        this.nominalInterestRateMinimumField.setRequired(true);
-        this.form.add(this.nominalInterestRateMinimumField);
-        this.nominalInterestRateMinimumFeedback = new TextFeedbackPanel("nominalInterestRateMinimumFeedback",
-                this.nominalInterestRateMinimumField);
-        this.form.add(this.nominalInterestRateMinimumFeedback);
+        this.nominalInterestRateContainer = new WebMarkupContainer("nominalInterestRateContainer");
+        this.form.add(this.nominalInterestRateContainer);
+        {
+            this.nominalInterestRateMinimumField = new TextField<>("nominalInterestRateMinimumField",
+                    new PropertyModel<>(this, "nominalInterestRateMinimumValue"));
+            this.nominalInterestRateMinimumField.setRequired(true);
+            this.nominalInterestRateContainer.add(this.nominalInterestRateMinimumField);
+            this.nominalInterestRateMinimumFeedback = new TextFeedbackPanel("nominalInterestRateMinimumFeedback",
+                    this.nominalInterestRateMinimumField);
+            this.nominalInterestRateContainer.add(this.nominalInterestRateMinimumFeedback);
 
-        this.nominalInterestRateDefaultField = new TextField<>("nominalInterestRateDefaultField",
-                new PropertyModel<>(this, "nominalInterestRateDefaultValue"));
-        this.nominalInterestRateDefaultField.setRequired(true);
-        this.form.add(this.nominalInterestRateDefaultField);
-        this.nominalInterestRateDefaultFeedback = new TextFeedbackPanel("nominalInterestRateDefaultFeedback",
-                this.nominalInterestRateDefaultField);
-        this.form.add(this.nominalInterestRateDefaultFeedback);
+            this.nominalInterestRateDefaultField = new TextField<>("nominalInterestRateDefaultField",
+                    new PropertyModel<>(this, "nominalInterestRateDefaultValue"));
+            this.nominalInterestRateDefaultField.setRequired(true);
+            this.nominalInterestRateContainer.add(this.nominalInterestRateDefaultField);
+            this.nominalInterestRateDefaultFeedback = new TextFeedbackPanel("nominalInterestRateDefaultFeedback",
+                    this.nominalInterestRateDefaultField);
+            this.nominalInterestRateContainer.add(this.nominalInterestRateDefaultFeedback);
 
-        this.nominalInterestRateMaximumField = new TextField<>("nominalInterestRateMaximumField",
-                new PropertyModel<>(this, "nominalInterestRateMaximumValue"));
-        this.nominalInterestRateMaximumField.setRequired(true);
-        this.form.add(this.nominalInterestRateMaximumField);
-        this.nominalInterestRateMaximumFeedback = new TextFeedbackPanel("nominalInterestRateMaximumFeedback",
-                this.nominalInterestRateMaximumField);
-        this.form.add(this.nominalInterestRateMaximumFeedback);
+            this.nominalInterestRateMaximumField = new TextField<>("nominalInterestRateMaximumField",
+                    new PropertyModel<>(this, "nominalInterestRateMaximumValue"));
+            this.nominalInterestRateMaximumField.setRequired(true);
+            this.nominalInterestRateContainer.add(this.nominalInterestRateMaximumField);
+            this.nominalInterestRateMaximumFeedback = new TextFeedbackPanel("nominalInterestRateMaximumFeedback",
+                    this.nominalInterestRateMaximumField);
+            this.nominalInterestRateContainer.add(this.nominalInterestRateMaximumFeedback);
 
-        this.nominalInterestRateTypeProvider = new NominalInterestRateTypeProvider();
-        this.nominalInterestRateTypeField = new Select2SingleChoice<>("nominalInterestRateTypeField", 0,
-                new PropertyModel<>(this, "nominalInterestRateTypeValue"), this.nominalInterestRateTypeProvider);
-        this.nominalInterestRateTypeField.setRequired(true);
-        this.form.add(this.nominalInterestRateTypeField);
-        this.nominalInterestRateTypeFeedback = new TextFeedbackPanel("nominalInterestRateTypeFeedback", this.nominalInterestRateTypeField);
-        this.form.add(this.nominalInterestRateTypeFeedback);
+            this.nominalInterestRateTypeProvider = new NominalInterestRateTypeProvider();
+            this.nominalInterestRateTypeField = new Select2SingleChoice<>("nominalInterestRateTypeField", 0,
+                    new PropertyModel<>(this, "nominalInterestRateTypeValue"), this.nominalInterestRateTypeProvider);
+            this.nominalInterestRateTypeField.setRequired(true);
+            this.nominalInterestRateContainer.add(this.nominalInterestRateTypeField);
+            this.nominalInterestRateTypeFeedback = new TextFeedbackPanel("nominalInterestRateTypeFeedback",
+                    this.nominalInterestRateTypeField);
+            this.nominalInterestRateContainer.add(this.nominalInterestRateTypeFeedback);
+        }
 
-//        {
-//            this.nominalInterestRateByLoanCycleContainer = new WebMarkupContainer(
-//                    "nominalInterestRateByLoanCycleContainer");
-//            this.form.add(this.nominalInterestRateByLoanCycleContainer);
-//
-//            List<IColumn<Map<String, Object>, String>> nominalInterestRateByLoanCycleColumn = Lists.newArrayList();
-//            nominalInterestRateByLoanCycleColumn.add(
-//                    new TextColumn(Model.of("When"), "when", "when", this::nominalInterestRateByLoanCycleWhenColumn));
-//            nominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle",
-//                    this::nominalInterestRateByLoanCycleCycleColumn));
-//            nominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum",
-//                    this::nominalInterestRateByLoanCycleMinimumColumn));
-//            nominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Default"), "default", "default",
-//                    this::nominalInterestRateByLoanCycleDefaultColumn));
-//            nominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum",
-//                    this::nominalInterestRateByLoanCycleMaximumColumn));
-//            nominalInterestRateByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"),
-//                    this::nominalInterestRateByLoanCycleActionItem, this::nominalInterestRateByLoanCycleActionClick));
-//            this.nominalInterestRateByLoanCycleValue = Lists.newArrayList();
-//            this.nominalInterestRateByLoanCycleProvider = new ListDataProvider(this.nominalInterestRateByLoanCycleValue);
-//            this.nominalInterestRateByLoanCycleTable = new DataTable<>("nominalInterestRateByLoanCycleTable",
-//                    nominalInterestRateByLoanCycleColumn, this.nominalInterestRateByLoanCycleProvider, 20);
-//            this.nominalInterestRateByLoanCycleContainer.add(this.nominalInterestRateByLoanCycleTable);
-//            this.nominalInterestRateByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(
-//                    this.nominalInterestRateByLoanCycleTable, this.nominalInterestRateByLoanCycleProvider));
-//            this.nominalInterestRateByLoanCycleTable
-//                    .addBottomToolbar(new NoRecordsToolbar(this.nominalInterestRateByLoanCycleTable));
-//
-//            AjaxLink<Void> addLink = new AjaxLink<>("addLink");
-//            addLink.setOnClick(this::nominalInterestRateByLoanCycleAddLinkClick);
-//            this.nominalInterestRateByLoanCycleContainer.add(addLink);
-//        }
+        this.floatInterestRateContainer = new WebMarkupContainer("floatInterestRateContainer");
+        this.form.add(this.floatInterestRateContainer);
+        {
+            this.floatingInterestRateProvider = new SingleChoiceProvider("m_office", "id", "name");
+            this.floatingInterestRateField = new Select2SingleChoice<>("floatingInterestRateField", 0,
+                    new PropertyModel<>(this, "floatingInterestRateValue"), this.floatingInterestRateProvider);
+            this.floatingInterestRateField.setRequired(true);
+            this.floatInterestRateContainer.add(this.floatingInterestRateField);
+            this.floatingInterestRateFeedback = new TextFeedbackPanel("floatingInterestRateFeedback",
+                    this.floatingInterestRateField);
+            this.floatInterestRateContainer.add(this.floatingInterestRateFeedback);
 
-        this.minimumDayBetweenDisbursalAndFirstRepaymentDateField = new TextField<>("minimumDayBetweenDisbursalAndFirstRepaymentDateField",
+            this.floatingInterestMinimumField = new TextField<>("floatingInterestMinimumField",
+                    new PropertyModel<>(this, "floatingInterestMinimumValue"));
+            this.floatingInterestMinimumField.setRequired(true);
+            this.floatInterestRateContainer.add(this.floatingInterestMinimumField);
+            this.floatingInterestMinimumFeedback = new TextFeedbackPanel("floatingInterestMinimumFeedback",
+                    this.floatingInterestMinimumField);
+            this.floatInterestRateContainer.add(this.floatingInterestMinimumFeedback);
+
+            this.floatingInterestDefaultField = new TextField<>("floatingInterestDefaultField",
+                    new PropertyModel<>(this, "floatingInterestDefaultValue"));
+            this.floatingInterestDefaultField.setRequired(true);
+            this.floatInterestRateContainer.add(this.floatingInterestDefaultField);
+            this.floatingInterestDefaultFeedback = new TextFeedbackPanel("floatingInterestDefaultFeedback",
+                    this.floatingInterestDefaultField);
+            this.floatInterestRateContainer.add(this.floatingInterestDefaultFeedback);
+
+            this.floatingInterestMaximumField = new TextField<>("floatingInterestMaximumField",
+                    new PropertyModel<>(this, "floatingInterestMaximumValue"));
+            this.floatingInterestMaximumField.setRequired(true);
+            this.floatInterestRateContainer.add(this.floatingInterestMaximumField);
+            this.floatingInterestMaximumFeedback = new TextFeedbackPanel("floatingInterestMaximumFeedback",
+                    this.floatingInterestMaximumField);
+            this.floatInterestRateContainer.add(this.floatingInterestMaximumFeedback);
+
+            this.floatingInterestDifferentialField = new TextField<>("floatingInterestDifferentialField",
+                    new PropertyModel<>(this, "floatingInterestDifferentialValue"));
+            this.floatingInterestDifferentialField.setRequired(true);
+            this.floatInterestRateContainer.add(this.floatingInterestDifferentialField);
+            this.floatingInterestDifferentialFeedback = new TextFeedbackPanel("floatingInterestDifferentialFeedback",
+                    this.floatingInterestDifferentialField);
+            this.floatInterestRateContainer.add(this.floatingInterestDifferentialFeedback);
+
+            this.floatingInterestAllowedField = new CheckBox("floatingInterestAllowedField",
+                    new PropertyModel<>(this, "floatingInterestAllowedValue"));
+            this.floatingInterestAllowedField.setRequired(true);
+            this.floatInterestRateContainer.add(this.floatingInterestAllowedField);
+            this.floatingInterestAllowedFeedback = new TextFeedbackPanel("floatingInterestAllowedFeedback",
+                    this.floatingInterestAllowedField);
+            this.floatInterestRateContainer.add(this.floatingInterestAllowedFeedback);
+        }
+
+        {
+            this.nominalInterestRateByLoanCycleContainer = new WebMarkupContainer(
+                    "nominalInterestRateByLoanCycleContainer");
+            this.form.add(this.nominalInterestRateByLoanCycleContainer);
+
+            List<IColumn<Map<String, Object>, String>> nominalInterestRateByLoanCycleColumn = Lists.newArrayList();
+            nominalInterestRateByLoanCycleColumn.add(
+                    new TextColumn(Model.of("When"), "when", "when", this::nominalInterestRateByLoanCycleWhenColumn));
+            nominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle",
+                    this::nominalInterestRateByLoanCycleCycleColumn));
+            nominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum",
+                    this::nominalInterestRateByLoanCycleMinimumColumn));
+            nominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Default"), "default", "default",
+                    this::nominalInterestRateByLoanCycleDefaultColumn));
+            nominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum",
+                    this::nominalInterestRateByLoanCycleMaximumColumn));
+            nominalInterestRateByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"),
+                    this::nominalInterestRateByLoanCycleActionItem, this::nominalInterestRateByLoanCycleActionClick));
+            this.nominalInterestRateByLoanCycleValue = Lists.newArrayList();
+            this.nominalInterestRateByLoanCycleProvider = new ListDataProvider(
+                    this.nominalInterestRateByLoanCycleValue);
+            this.nominalInterestRateByLoanCycleTable = new DataTable<>("nominalInterestRateByLoanCycleTable",
+                    nominalInterestRateByLoanCycleColumn, this.nominalInterestRateByLoanCycleProvider, 20);
+            this.nominalInterestRateByLoanCycleContainer.add(this.nominalInterestRateByLoanCycleTable);
+            this.nominalInterestRateByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(
+                    this.nominalInterestRateByLoanCycleTable, this.nominalInterestRateByLoanCycleProvider));
+            this.nominalInterestRateByLoanCycleTable
+                    .addBottomToolbar(new NoRecordsToolbar(this.nominalInterestRateByLoanCycleTable));
+
+            AjaxLink<Void> addLink = new AjaxLink<>("addLink");
+            addLink.setOnClick(this::nominalInterestRateByLoanCycleAddLinkClick);
+            this.nominalInterestRateByLoanCycleContainer.add(addLink);
+        }
+
+        this.repaidEveryField = new TextField<>("repaidEveryField", new PropertyModel<>(this, "repaidEveryValue"));
+        this.repaidEveryField.setRequired(true);
+        this.form.add(this.repaidEveryField);
+        this.repaidEveryFeedback = new TextFeedbackPanel("repaidEveryFeedback", this.repaidEveryField);
+        this.form.add(this.repaidEveryFeedback);
+
+        this.repaidTypeProvider = new RepaidTypeProvider();
+        this.repaidTypeField = new Select2SingleChoice<>("repaidTypeField", 0,
+                new PropertyModel<>(this, "repaidTypeValue"), this.repaidTypeProvider);
+        this.repaidTypeField.setRequired(true);
+        this.form.add(this.repaidTypeField);
+        this.repaidTypeFeedback = new TextFeedbackPanel("repaidTypeFeedback", this.repaidTypeField);
+        this.form.add(this.repaidTypeFeedback);
+
+        this.minimumDayBetweenDisbursalAndFirstRepaymentDateField = new TextField<>(
+                "minimumDayBetweenDisbursalAndFirstRepaymentDateField",
                 new PropertyModel<>(this, "minimumDayBetweenDisbursalAndFirstRepaymentDateValue"));
         this.minimumDayBetweenDisbursalAndFirstRepaymentDateField.setRequired(true);
         this.form.add(this.minimumDayBetweenDisbursalAndFirstRepaymentDateField);
-        this.minimumDayBetweenDisbursalAndFirstRepaymentDateFeedback = new TextFeedbackPanel("minimumDayBetweenDisbursalAndFirstRepaymentDateFeedback",
+        this.minimumDayBetweenDisbursalAndFirstRepaymentDateFeedback = new TextFeedbackPanel(
+                "minimumDayBetweenDisbursalAndFirstRepaymentDateFeedback",
                 this.minimumDayBetweenDisbursalAndFirstRepaymentDateField);
         this.form.add(this.minimumDayBetweenDisbursalAndFirstRepaymentDateFeedback);
 
         // floatingInterestRateDifferential
         // floatingCalculationAllowed
+    }
+
+    private void nominalInterestRateByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.loanCycleValue = this.nominalInterestRateByLoanCycleValue;
+        this.loanCyclePopup.show(target);
+    }
+
+    private ItemPanel nominalInterestRateByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display,
+            Map<String, Object> model) {
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(value));
+    }
+
+    private ItemPanel nominalInterestRateByLoanCycleMinimumColumn(String jdbcColumn, IModel<String> display,
+            Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel nominalInterestRateByLoanCycleDefaultColumn(String jdbcColumn, IModel<String> display,
+            Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel nominalInterestRateByLoanCycleMaximumColumn(String jdbcColumn, IModel<String> display,
+            Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel nominalInterestRateByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display,
+            Map<String, Object> model) {
+        Integer value = (Integer) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private void nominalInterestRateByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap,
+            AjaxRequestTarget ajaxRequestTarget) {
+        int index = -1;
+        for (int i = 0; i < this.nominalInterestRateByLoanCycleValue.size(); i++) {
+            Map<String, Object> column = this.nominalInterestRateByLoanCycleValue.get(i);
+            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                index = i;
+                break;
+            }
+        }
+        if (index >= 0) {
+            this.nominalInterestRateByLoanCycleValue.remove(index);
+        }
+        ajaxRequestTarget.add(this.nominalInterestRateByLoanCycleTable);
+    }
+
+    private List<ActionItem> nominalInterestRateByLoanCycleActionItem(String s, Map<String, Object> stringObjectMap) {
+        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     private void numberOfRepaymentByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
@@ -516,13 +695,13 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel numberOfRepaymentByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display,
-                                                             Map<String, Object> model) {
+            Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(Model.of(value));
     }
 
     private ItemPanel numberOfRepaymentByLoanCycleMinimumColumn(String jdbcColumn, IModel<String> display,
-                                                                Map<String, Object> model) {
+            Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -532,7 +711,7 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel numberOfRepaymentByLoanCycleDefaultColumn(String jdbcColumn, IModel<String> display,
-                                                                Map<String, Object> model) {
+            Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -542,7 +721,7 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel numberOfRepaymentByLoanCycleMaximumColumn(String jdbcColumn, IModel<String> display,
-                                                                Map<String, Object> model) {
+            Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -552,7 +731,7 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel numberOfRepaymentByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display,
-                                                              Map<String, Object> model) {
+            Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -562,7 +741,7 @@ public class LoanCreatePage extends Page {
     }
 
     private void numberOfRepaymentByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap,
-                                                         AjaxRequestTarget ajaxRequestTarget) {
+            AjaxRequestTarget ajaxRequestTarget) {
         int index = -1;
         for (int i = 0; i < this.numberOfRepaymentByLoanCycleValue.size(); i++) {
             Map<String, Object> column = this.numberOfRepaymentByLoanCycleValue.get(i);
@@ -587,13 +766,13 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel principalByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display,
-                                                     Map<String, Object> model) {
+            Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(Model.of(String.valueOf(value)));
     }
 
     private ItemPanel principalByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display,
-                                                      Map<String, Object> model) {
+            Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -603,7 +782,7 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel principalByLoanCycleMinimumColumn(String jdbcColumn, IModel<String> display,
-                                                        Map<String, Object> model) {
+            Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -613,7 +792,7 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel principalByLoanCycleDefaultColumn(String jdbcColumn, IModel<String> display,
-                                                        Map<String, Object> model) {
+            Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -623,7 +802,7 @@ public class LoanCreatePage extends Page {
     }
 
     private ItemPanel principalByLoanCycleMaximumColumn(String jdbcColumn, IModel<String> display,
-                                                        Map<String, Object> model) {
+            Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
@@ -633,7 +812,7 @@ public class LoanCreatePage extends Page {
     }
 
     private void principalByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap,
-                                                 AjaxRequestTarget ajaxRequestTarget) {
+            AjaxRequestTarget ajaxRequestTarget) {
         int index = -1;
         for (int i = 0; i < this.principalByLoanCycleValue.size(); i++) {
             Map<String, Object> column = this.principalByLoanCycleValue.get(i);
@@ -653,13 +832,18 @@ public class LoanCreatePage extends Page {
     }
 
     protected void linkedToFloatingInterestRatesFieldUpdate(AjaxRequestTarget target) {
-
+        this.nominalInterestRateContainer.setVisible(
+                this.linkedToFloatingInterestRatesValue == null ? true : !this.linkedToFloatingInterestRatesValue);
+        this.floatInterestRateContainer.setVisible(!this.nominalInterestRateContainer.isVisible());
+        target.add(this.form);
     }
 
     protected void termVaryBasedOnLoanCycleFieldUpdate(AjaxRequestTarget target) {
         this.principalByLoanCycleContainer
                 .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
         this.numberOfRepaymentByLoanCycleContainer
+                .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
+        this.nominalInterestRateByLoanCycleContainer
                 .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
         target.add(this.form);
     }

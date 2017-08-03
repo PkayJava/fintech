@@ -183,6 +183,7 @@
                 </div>
                 <div class="clearfix"></div>
                 
+                <div wicket:id="nominalInterestRateContainer">
                 <!-- Row -->
                 <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
                     <label wicket:for="nominalInterestRateMinimumField">Nominal interest rate minimum</label>
@@ -205,6 +206,40 @@
                     <span wicket:id="nominalInterestRateTypeFeedback" class="help-block"/>
                 </div>
                 <div class="clearfix"></div>
+                </div>
+                
+                <div wicket:id="floatInterestRateContainer">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="floatingInterestRateField">Floating interest rate</label>
+                    <select wicket:id="floatingInterestRateField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="floatingInterestRateFeedback" class="help-block"/>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="floatingInterestDifferentialField">Floating interest differential rate</label>
+                    <input wicket:id="floatingInterestDifferentialField" type="text" class="form-control"/>
+                    <span wicket:id="floatingInterestDifferentialFeedback" class="help-block"/>
+                </div>
+                
+                <div class="clearfix"></div>
+                <!-- Row -->
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="floatingInterestMinimumField">Floating interest minimum</label>
+                    <input wicket:id="floatingInterestMinimumField" type="text" class="form-control"/>
+                    <span wicket:id="floatingInterestMinimumFeedback" class="help-block"/>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="floatingInterestDefaultField">Floating interest default</label>
+                    <input wicket:id="floatingInterestDefaultField" type="text" class="form-control"/>
+                    <span wicket:id="floatingInterestDefaultFeedback" class="help-block"/>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="floatingInterestMaximumField">Floating interest maximum</label>
+                    <input wicket:id="floatingInterestMaximumField" type="text" class="form-control"/>
+                    <span wicket:id="floatingInterestMaximumFeedback" class="help-block"/>
+                </div>
+                <div class="clearfix"></div>
+                </div>
 
                 <!-- Row -->
                 <div wicket:id="nominalInterestRateByLoanCycleContainer" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -224,14 +259,14 @@
 
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="nominalInterestRateMaximumField">Repaid every</label>
-                    <input wicket:id="nominalInterestRateMaximumField" type="text" class="form-control"/>
-                    <span wicket:id="nominalInterestRateMaximumFeedback" class="help-block"/>
+                    <label wicket:for="repaidEveryField">Repaid every</label>
+                    <input wicket:id="repaidEveryField" type="text" class="form-control"/>
+                    <span wicket:id="repaidEveryFeedback" class="help-block"/>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="nominalInterestRateTypeField">Repaid Type</label>
-                    <select wicket:id="nominalInterestRateTypeField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="nominalInterestRateTypeFeedback" class="help-block"/>
+                    <label wicket:for="repaidTypeField">Repaid Type</label>
+                    <select wicket:id="repaidTypeField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="repaidTypeFeedback" class="help-block"/>
                 </div>
                 <div class="clearfix"></div>
 
@@ -242,8 +277,12 @@
                     <span wicket:id="minimumDayBetweenDisbursalAndFirstRepaymentDateFeedback" class="help-block"/>
                 </div>
                 <div class="clearfix"></div>
-
-
+            </div>
+            <div class="box-header with-border">
+                <h3 class="box-title">Settings</h3>
+            </div>
+            <div class="box-body">
+            
             </div>
         </div>
     </form>
