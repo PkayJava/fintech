@@ -16,6 +16,9 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.popup.LoanCyclePopup;
+import com.angkorteam.fintech.provider.AmortizationProvider;
+import com.angkorteam.fintech.provider.InterestCalculationPeriodProvider;
+import com.angkorteam.fintech.provider.InterestMethodProvider;
 import com.angkorteam.fintech.provider.NominalInterestRateTypeProvider;
 import com.angkorteam.fintech.provider.RepaidTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -220,6 +223,28 @@ public class LoanCreatePage extends Page {
     private Double itemMaximumValue;
     private List<Map<String, Object>> loanCycleValue;
     private ModalWindow loanCyclePopup;
+    
+    // Settings
+    private AmortizationProvider amortizationProvider;
+    private Option amortizationValue;
+    private Select2SingleChoice<Option> amortizationField;
+    private TextFeedbackPanel amortizationFeedback;
+    
+    private InterestMethodProvider interestMethodProvider;
+    private Option interestMethodValue;
+    private Select2SingleChoice<Option> interestMethodField;
+    private TextFeedbackPanel interestMethodFeedback;
+    
+    private InterestCalculationPeriodProvider interestCalculationPeriodProvider;
+    private Option interestCalculationPeriodValue;
+    private Select2SingleChoice<Option> interestCalculationPeriodField;
+    private TextFeedbackPanel interestCalculationPeriodFeedback;
+    
+    private WebMarkupContainer calculateInterestForExactDaysInPartialPeriodContainer;
+
+    private Boolean calculateInterestForExactDaysInPartialPeriodValue;
+    private CheckBox calculateInterestForExactDaysInPartialPeriodField;
+    private TextFeedbackPanel calculateInterestForExactDaysInPartialPeriodFeedback;
 
     @Override
     protected void onInitialize() {
@@ -241,6 +266,176 @@ public class LoanCreatePage extends Page {
         initTerms();
 
         initDefault();
+        
+        initSetting();
+    }
+    
+    protected void initSetting(){
+        
+        this.amortizationProvider = new AmortizationProvider();
+        this.amortizationField = new Select2SingleChoice<>("amortizationField", 0, new PropertyModel<>(this, "amortizationValue"),
+                this.amortizationProvider);
+        this.amortizationField.setRequired(true);
+        this.form.add(this.amortizationField);
+        this.amortizationFeedback = new TextFeedbackPanel("amortizationFeedback", this.amortizationField);
+        this.form.add(this.amortizationFeedback);
+        
+        this.interestMethodProvider = new InterestMethodProvider();
+        this.interestMethodField = new Select2SingleChoice<>("interestMethodField", 0, new PropertyModel<>(this, "interestMethodValue"),
+                this.interestMethodProvider);
+        this.interestMethodField.setRequired(true);
+        this.form.add(this.interestMethodField);
+        this.interestMethodFeedback = new TextFeedbackPanel("interestMethodFeedback", this.interestMethodField);
+        this.form.add(this.interestMethodFeedback);
+        
+        this.interestCalculationPeriodProvider = new InterestCalculationPeriodProvider();
+        this.interestCalculationPeriodField = new Select2SingleChoice<>("interestCalculationPeriodField", 0, new PropertyModel<>(this, "interestCalculationPeriodValue"),
+                this.interestCalculationPeriodProvider);
+        this.interestCalculationPeriodField.setRequired(true);
+        this.form.add(this.interestCalculationPeriodField);
+        this.interestCalculationPeriodFeedback = new TextFeedbackPanel("interestCalculationPeriodFeedback", this.interestCalculationPeriodField);
+        this.form.add(this.interestCalculationPeriodFeedback);
+        
+        this.calculateInterestForExactDaysInPartialPeriodContainer = new WebMarkupContainer("calculateInterestForExactDaysInPartialPeriodContainer");
+        this.form.add(this.calculateInterestForExactDaysInPartialPeriodContainer);
+        
+//        <div class="box-body">
+
+//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+//                <wicket:container wicket:id="calculateInterestForExactDaysInPartialPeriodContainer">
+//            <label>&nbsp;</label>
+//            <span style="display: block">
+//                <label>
+//                    <input type="checkbox" wicket:id="calculateInterestForExactDaysInPartialPeriodField"> Calculate interest for exact days in partial period ?
+//                </label>
+//            </span>
+//            <span wicket:id="calculateInterestForExactDaysInPartialPeriodFeedback" class="help-block"></span>
+//            </wicket:container>
+//        </div>
+//        <div class="clearfix"></div>
+//
+//        <!-- Row -->
+//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+//        </div>
+//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+//            <label wicket:for="repaymentStrategyField">Repayment strategy</label>
+//            <select wicket:id="repaymentStrategyField" class="form-control select2" style="width: 100%;"></select>
+//            <span wicket:id="repaymentStrategyFeedback" class="help-block"></span>
+//        </div>
+//        <div class="clearfix"></div>
+//
+//        <!-- Row -->
+//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+//            <label wicket:for="moratoriumPrincipalField">Moratorium principal</label>
+//            <input wicket:id="moratoriumPrincipalField" type="text" class="form-control"/>
+//            <span wicket:id="moratoriumPrincipalFeedback" class="help-block"></span>
+//        </div>
+//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+//            <label wicket:for="moratoriumInterestField">Moratorium interest</label>
+//            <input wicket:id="moratoriumInterestField" type="text" class="form-control"/>
+//            <span wicket:id="moratoriumInterestFeedback" class="help-block"></span>
+//        </div>
+//        <div class="clearfix"></div>
+//
+//        <!-- Row -->
+//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+//            <label wicket:for="interestFreePeriodField">Interest free period</label>
+//            <input wicket:id="interestFreePeriodField" type="text" class="form-control"/>
+//            <span wicket:id="interestFreePeriodFeedback" class="help-block"></span>
+//        </div>
+//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+//            <label wicket:for="arrearsToleranceField">Arrears tolerance</label>
+//            <input wicket:id="arrearsToleranceField" type="text" class="form-control"/>
+//            <span wicket:id="arrearsToleranceFeedback" class="help-block"></span>
+//        </div>
+//        <div class="clearfix"></div>
+//
+//        <!-- Row -->
+//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+//            <label wicket:for="dayInYearField">Day in year</label>
+//            <select wicket:id="dayInYearField" class="form-control select2" style="width: 100%;"></select>
+//            <span wicket:id="dayInYearFeedback" class="help-block"></span>
+//        </div>
+//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+//            <label wicket:for="dayInMonthField">Day in month</label>
+//            <select wicket:id="dayInMonthField" class="form-control select2" style="width: 100%;"></select>
+//            <span wicket:id="dayInMonthFeedback" class="help-block"></span>
+//        </div>
+//        <div class="clearfix"></div>
+//
+//        <!-- Row -->
+//        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+//            <label>&nbsp;</label>
+//            <span style="display: block">
+//                <label>
+//                    <input type="checkbox" wicket:id="allowFixingOfTheInstallmentAmountField"> Allow fixing of the installment amount ?
+//                </label>
+//            </span>
+//            <span wicket:id="allowFixingOfTheInstallmentAmountFeedback" class="help-block"></span>
+//        </div>
+//        <div class="clearfix"></div>
+//
+//        <!-- Row -->
+//        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+//            <label wicket:for="numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField">Number of days a loan may be overdue before moving into arrears</label>
+//            <input wicket:id="numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField" type="text" class="form-control"/>
+//            <span wicket:id="numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback" class="help-block"></span>
+//        </div>
+//        <div class="clearfix"></div>
+//
+//        <!-- Row -->
+//        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+//            <label wicket:for="maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField">Maximum number of days a loan may be overdue before becoming a NPA</label>
+//            <input wicket:id="maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField" type="text" class="form-control"/>
+//            <span wicket:id="maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback" class="help-block"></span>
+//        </div>
+//        <div class="clearfix"></div>
+//        
+//        <!-- Row -->
+//        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+//            <label>&nbsp;</label>
+//            <span style="display: block">
+//                <label>
+//                    <input type="checkbox" wicket:id="accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField"> Account moves out of NPA only after all arrears have been cleared?
+//                </label>
+//            </span>
+//            <span wicket:id="accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback" class="help-block"></span>
+//        </div>
+//        <div class="clearfix"></div>
+//
+//        <!-- Row -->
+//        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+//            <label wicket:for="principalThresholdForLastInstalmentField">Principal Threshold (%) for Last Instalment</label>
+//            <input wicket:id="principalThresholdForLastInstalmentField" type="text" class="form-control"/>
+//            <span wicket:id="principalThresholdForLastInstalmentFeedback" class="help-block"></span>
+//        </div>
+//        <div class="clearfix"></div>
+//        
+//        <!-- Row -->
+//        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+//            <label>&nbsp;</label>
+//            <span style="display: block">
+//                <label>
+//                    <input type="checkbox" wicket:id="variableInstallmentsAllowedField"> Is Variable Installments Allowed?
+//                </label>
+//            </span>
+//            <span wicket:id="variableInstallmentsAllowedFeedback" class="help-block"></span>
+//        </div>
+//        <div class="clearfix"></div>
+//        
+//        <!-- Row -->
+//        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+//            <label>&nbsp;</label>
+//            <span style="display: block">
+//                <label>
+//                    <input type="checkbox" wicket:id="allowedToBeUsedForProvidingTopupLoansField"> Is allowed to be used for providing Topup Loans?
+//                </label>
+//            </span>
+//            <span wicket:id="allowedToBeUsedForProvidingTopupLoansFeedback" class="help-block"></span>
+//        </div>
+//        <div class="clearfix"></div>
+//
+//    </div>
     }
 
     protected void initDefault() {
@@ -613,9 +808,6 @@ public class LoanCreatePage extends Page {
                 "minimumDayBetweenDisbursalAndFirstRepaymentDateFeedback",
                 this.minimumDayBetweenDisbursalAndFirstRepaymentDateField);
         this.form.add(this.minimumDayBetweenDisbursalAndFirstRepaymentDateFeedback);
-
-        // floatingInterestRateDifferential
-        // floatingCalculationAllowed
     }
 
     private void nominalInterestRateByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
