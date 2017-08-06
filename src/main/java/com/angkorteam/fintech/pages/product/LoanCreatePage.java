@@ -15,12 +15,24 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.Frequency;
+import com.angkorteam.fintech.dto.InterestCalculationPeriod;
+import com.angkorteam.fintech.dto.InterestRecalculationCompound;
 import com.angkorteam.fintech.popup.LoanCyclePopup;
+import com.angkorteam.fintech.provider.AdvancePaymentsAdjustmentTypeProvider;
 import com.angkorteam.fintech.provider.AmortizationProvider;
+import com.angkorteam.fintech.provider.ClosureInterestCalculationRuleProvider;
+import com.angkorteam.fintech.provider.DayInMonthProvider;
+import com.angkorteam.fintech.provider.DayInYearProvider;
+import com.angkorteam.fintech.provider.FrequencyDayProvider;
+import com.angkorteam.fintech.provider.FrequencyProvider;
+import com.angkorteam.fintech.provider.FrequencyTypeProvider;
 import com.angkorteam.fintech.provider.InterestCalculationPeriodProvider;
 import com.angkorteam.fintech.provider.InterestMethodProvider;
+import com.angkorteam.fintech.provider.InterestRecalculationCompoundProvider;
 import com.angkorteam.fintech.provider.NominalInterestRateTypeProvider;
 import com.angkorteam.fintech.provider.RepaidTypeProvider;
+import com.angkorteam.fintech.provider.RepaymentStrategyProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -223,28 +235,160 @@ public class LoanCreatePage extends Page {
     private Double itemMaximumValue;
     private List<Map<String, Object>> loanCycleValue;
     private ModalWindow loanCyclePopup;
-    
+
     // Settings
     private AmortizationProvider amortizationProvider;
     private Option amortizationValue;
     private Select2SingleChoice<Option> amortizationField;
     private TextFeedbackPanel amortizationFeedback;
-    
+
     private InterestMethodProvider interestMethodProvider;
     private Option interestMethodValue;
     private Select2SingleChoice<Option> interestMethodField;
     private TextFeedbackPanel interestMethodFeedback;
-    
+
     private InterestCalculationPeriodProvider interestCalculationPeriodProvider;
     private Option interestCalculationPeriodValue;
     private Select2SingleChoice<Option> interestCalculationPeriodField;
     private TextFeedbackPanel interestCalculationPeriodFeedback;
-    
+
     private WebMarkupContainer calculateInterestForExactDaysInPartialPeriodContainer;
 
     private Boolean calculateInterestForExactDaysInPartialPeriodValue;
     private CheckBox calculateInterestForExactDaysInPartialPeriodField;
     private TextFeedbackPanel calculateInterestForExactDaysInPartialPeriodFeedback;
+
+    private RepaymentStrategyProvider repaymentStrategyProvider;
+    private Option repaymentStrategyValue;
+    private Select2SingleChoice<Option> repaymentStrategyField;
+    private TextFeedbackPanel repaymentStrategyFeedback;
+
+    private Double moratoriumPrincipalValue;
+    private TextField<Double> moratoriumPrincipalField;
+    private TextFeedbackPanel moratoriumPrincipalFeedback;
+
+    private Double moratoriumInterestValue;
+    private TextField<Double> moratoriumInterestField;
+    private TextFeedbackPanel moratoriumInterestFeedback;
+
+    private Double interestFreePeriodValue;
+    private TextField<Double> interestFreePeriodField;
+    private TextFeedbackPanel interestFreePeriodFeedback;
+
+    private Double arrearsToleranceValue;
+    private TextField<Double> arrearsToleranceField;
+    private TextFeedbackPanel arrearsToleranceFeedback;
+
+    private DayInYearProvider dayInYearProvider;
+    private Option dayInYearValue;
+    private Select2SingleChoice<Option> dayInYearField;
+    private TextFeedbackPanel dayInYearFeedback;
+
+    private DayInMonthProvider dayInMonthProvider;
+    private Option dayInMonthValue;
+    private Select2SingleChoice<Option> dayInMonthField;
+    private TextFeedbackPanel dayInMonthFeedback;
+
+    private Boolean allowFixingOfTheInstallmentAmountValue;
+    private CheckBox allowFixingOfTheInstallmentAmountField;
+    private TextFeedbackPanel allowFixingOfTheInstallmentAmountFeedback;
+
+    private Double numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue;
+    private TextField<Double> numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField;
+    private TextFeedbackPanel numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback;
+
+    private Double maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue;
+    private TextField<Double> maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField;
+    private TextFeedbackPanel maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback;
+
+    private Boolean accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue;
+    private CheckBox accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField;
+    private TextFeedbackPanel accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback;
+
+    private Double principalThresholdForLastInstalmentValue;
+    private TextField<Double> principalThresholdForLastInstalmentField;
+    private TextFeedbackPanel principalThresholdForLastInstalmentFeedback;
+
+    private Boolean variableInstallmentsAllowedValue;
+    private CheckBox variableInstallmentsAllowedField;
+    private TextFeedbackPanel variableInstallmentsAllowedFeedback;
+
+    private Boolean allowedToBeUsedForProvidingTopupLoansValue;
+    private CheckBox allowedToBeUsedForProvidingTopupLoansField;
+    private TextFeedbackPanel allowedToBeUsedForProvidingTopupLoansFeedback;
+
+    // Interest Recalculation
+
+    private Boolean recalculateInterestValue;
+    private CheckBox recalculateInterestField;
+    private TextFeedbackPanel recalculateInterestFeedback;
+
+    private WebMarkupContainer recalculateInterestContainer;
+
+    private ClosureInterestCalculationRuleProvider preClosureInterestCalculationRuleProvider;
+    private Option preClosureInterestCalculationRuleValue;
+    private Select2SingleChoice<Option> preClosureInterestCalculationRuleField;
+    private TextFeedbackPanel preClosureInterestCalculationRuleFeedback;
+
+    private AdvancePaymentsAdjustmentTypeProvider advancePaymentsAdjustmentTypeProvider;
+    private Option advancePaymentsAdjustmentTypeValue;
+    private Select2SingleChoice<Option> advancePaymentsAdjustmentTypeField;
+    private TextFeedbackPanel advancePaymentsAdjustmentTypeFeedback;
+
+    private InterestRecalculationCompoundProvider interestRecalculationCompoundingOnProvider;
+    private Option interestRecalculationCompoundingOnValue;
+    private Select2SingleChoice<Option> interestRecalculationCompoundingOnField;
+    private TextFeedbackPanel interestRecalculationCompoundingOnFeedback;
+
+    private WebMarkupContainer compoundingContainer;
+
+    private FrequencyProvider compoundingProvider;
+    private Option compoundingValue;
+    private Select2SingleChoice<Option> compoundingField;
+    private TextFeedbackPanel compoundingFeedback;
+
+    private WebMarkupContainer compoundingTypeContainer;
+    private FrequencyTypeProvider compoundingTypeProvider;
+    private Option compoundingTypeValue;
+    private Select2SingleChoice<Option> compoundingTypeField;
+    private TextFeedbackPanel compoundingTypeFeedback;
+
+    private WebMarkupContainer compoundingDayContainer;
+    private FrequencyDayProvider compoundingDayProvider;
+    private Option compoundingDayValue;
+    private Select2SingleChoice<Option> compoundingDayField;
+    private TextFeedbackPanel compoundingDayFeedback;
+
+    private WebMarkupContainer compoundingIntervalContainer;
+    private Double compoundingIntervalValue;
+    private TextField<Double> compoundingIntervalField;
+    private TextFeedbackPanel compoundingIntervalFeedback;
+
+    private FrequencyProvider recalculateProvider;
+    private Option recalculateValue;
+    private Select2SingleChoice<Option> recalculateField;
+    private TextFeedbackPanel recalculateFeedback;
+
+    private WebMarkupContainer recalculateTypeContainer;
+    private FrequencyTypeProvider recalculateTypeProvider;
+    private Option recalculateTypeValue;
+    private Select2SingleChoice<Option> recalculateTypeField;
+    private TextFeedbackPanel recalculateTypeFeedback;
+
+    private WebMarkupContainer recalculateDayContainer;
+    private FrequencyDayProvider recalculateDayProvider;
+    private Option recalculateDayValue;
+    private Select2SingleChoice<Option> recalculateDayField;
+    private TextFeedbackPanel recalculateDayFeedback;
+
+    private WebMarkupContainer recalculateIntervalContainer;
+    private Double recalculateIntervalValue;
+    private TextField<Double> recalculateIntervalField;
+    private TextFeedbackPanel recalculateIntervalFeedback;
+
+    private Boolean arrearsRecognizationBasedOnOriginalScheduleValue;
+    private CheckBox arrearsRecognizationBasedOnOriginalScheduleField;
+    private TextFeedbackPanel arrearsRecognizationBasedOnOriginalScheduleFeedback;
 
     @Override
     protected void onInitialize() {
@@ -265,177 +409,375 @@ public class LoanCreatePage extends Page {
 
         initTerms();
 
-        initDefault();
-        
         initSetting();
+
+        initInterestRecalculation();
+
+        initDefault();
     }
-    
-    protected void initSetting(){
-        
+
+    protected void recalculateInterestFieldUpdate(AjaxRequestTarget target) {
+        this.recalculateInterestContainer
+                .setVisible(this.recalculateInterestValue != null && this.recalculateInterestValue);
+        target.add(this.form);
+    }
+
+    protected void initInterestRecalculation() {
+        this.recalculateInterestField = new CheckBox("recalculateInterestField",
+                new PropertyModel<>(this, "recalculateInterestValue"));
+        this.recalculateInterestField.setRequired(true);
+        this.recalculateInterestField.add(new OnChangeAjaxBehavior(this::recalculateInterestFieldUpdate));
+        this.form.add(this.recalculateInterestField);
+        this.recalculateInterestFeedback = new TextFeedbackPanel("recalculateInterestFeedback",
+                this.recalculateInterestField);
+        this.form.add(this.recalculateInterestFeedback);
+
+        this.recalculateInterestContainer = new WebMarkupContainer("recalculateInterestContainer");
+        this.form.add(this.recalculateInterestContainer);
+
+        this.preClosureInterestCalculationRuleProvider = new ClosureInterestCalculationRuleProvider();
+        this.preClosureInterestCalculationRuleField = new Select2SingleChoice<>(
+                "preClosureInterestCalculationRuleField", 0,
+                new PropertyModel<>(this, "preClosureInterestCalculationRuleValue"),
+                this.preClosureInterestCalculationRuleProvider);
+        this.preClosureInterestCalculationRuleField.setRequired(true);
+        this.recalculateInterestContainer.add(this.preClosureInterestCalculationRuleField);
+        this.preClosureInterestCalculationRuleFeedback = new TextFeedbackPanel(
+                "preClosureInterestCalculationRuleFeedback", this.preClosureInterestCalculationRuleField);
+        this.recalculateInterestContainer.add(this.preClosureInterestCalculationRuleFeedback);
+
+        this.advancePaymentsAdjustmentTypeProvider = new AdvancePaymentsAdjustmentTypeProvider();
+        this.advancePaymentsAdjustmentTypeField = new Select2SingleChoice<>("advancePaymentsAdjustmentTypeField", 0,
+                new PropertyModel<>(this, "advancePaymentsAdjustmentTypeValue"),
+                this.advancePaymentsAdjustmentTypeProvider);
+        this.advancePaymentsAdjustmentTypeField.setRequired(true);
+        this.recalculateInterestContainer.add(this.advancePaymentsAdjustmentTypeField);
+        this.advancePaymentsAdjustmentTypeFeedback = new TextFeedbackPanel("advancePaymentsAdjustmentTypeFeedback",
+                this.advancePaymentsAdjustmentTypeField);
+        this.recalculateInterestContainer.add(this.advancePaymentsAdjustmentTypeFeedback);
+
+        this.interestRecalculationCompoundingOnProvider = new InterestRecalculationCompoundProvider();
+        this.interestRecalculationCompoundingOnField = new Select2SingleChoice<>(
+                "interestRecalculationCompoundingOnField", 0,
+                new PropertyModel<>(this, "interestRecalculationCompoundingOnValue"),
+                this.interestRecalculationCompoundingOnProvider);
+        this.interestRecalculationCompoundingOnField.setRequired(true);
+        this.interestRecalculationCompoundingOnField.add(new OnChangeAjaxBehavior(this::compoundingFieldUpdate));
+        this.recalculateInterestContainer.add(this.interestRecalculationCompoundingOnField);
+        this.interestRecalculationCompoundingOnFeedback = new TextFeedbackPanel(
+                "interestRecalculationCompoundingOnFeedback", this.interestRecalculationCompoundingOnField);
+        this.recalculateInterestContainer.add(this.interestRecalculationCompoundingOnFeedback);
+
+        this.compoundingContainer = new WebMarkupContainer("compoundingContainer");
+        this.recalculateInterestContainer.add(this.compoundingContainer);
+
+        this.compoundingProvider = new FrequencyProvider();
+        this.compoundingField = new Select2SingleChoice<>("compoundingField", 0,
+                new PropertyModel<>(this, "compoundingValue"), this.compoundingProvider);
+        this.compoundingField.setRequired(true);
+        this.compoundingContainer.add(this.compoundingField);
+        this.compoundingField.add(new OnChangeAjaxBehavior(this::compoundingFieldUpdate));
+        this.compoundingFeedback = new TextFeedbackPanel("compoundingFeedback", this.compoundingField);
+        this.compoundingContainer.add(this.compoundingFeedback);
+
+        this.compoundingTypeContainer = new WebMarkupContainer("compoundingTypeContainer");
+        this.compoundingContainer.add(this.compoundingTypeContainer);
+
+        this.compoundingTypeProvider = new FrequencyTypeProvider();
+        this.compoundingTypeField = new Select2SingleChoice<>("compoundingTypeField", 0,
+                new PropertyModel<>(this, "compoundingTypeValue"), this.compoundingTypeProvider);
+        this.compoundingTypeField.setRequired(true);
+        this.compoundingTypeContainer.add(this.compoundingTypeField);
+        this.compoundingTypeFeedback = new TextFeedbackPanel("compoundingTypeFeedback", this.compoundingTypeField);
+        this.compoundingTypeContainer.add(this.compoundingTypeFeedback);
+
+        this.compoundingDayContainer = new WebMarkupContainer("compoundingDayContainer");
+        this.compoundingContainer.add(this.compoundingDayContainer);
+
+        this.compoundingDayProvider = new FrequencyDayProvider();
+        this.compoundingDayField = new Select2SingleChoice<>("compoundingDayField", 0,
+                new PropertyModel<>(this, "compoundingDayValue"), this.compoundingDayProvider);
+        this.compoundingDayField.setRequired(true);
+        this.compoundingDayContainer.add(this.compoundingDayField);
+        this.compoundingDayFeedback = new TextFeedbackPanel("compoundingDayFeedback", this.compoundingDayField);
+        this.compoundingDayContainer.add(this.compoundingDayFeedback);
+
+        this.compoundingIntervalContainer = new WebMarkupContainer("compoundingIntervalContainer");
+        this.recalculateInterestContainer.add(this.compoundingIntervalContainer);
+
+        this.compoundingIntervalField = new TextField<>("compoundingIntervalField",
+                new PropertyModel<>(this, "compoundingIntervalValue"));
+        this.compoundingIntervalField.setRequired(true);
+        this.compoundingIntervalContainer.add(this.compoundingIntervalField);
+        this.compoundingIntervalFeedback = new TextFeedbackPanel("compoundingIntervalFeedback",
+                this.compoundingIntervalField);
+        this.compoundingIntervalContainer.add(this.compoundingIntervalFeedback);
+
+        this.recalculateProvider = new FrequencyProvider();
+        this.recalculateField = new Select2SingleChoice<>("recalculateField", 0,
+                new PropertyModel<>(this, "recalculateValue"), this.recalculateProvider);
+        this.recalculateField.setRequired(true);
+        this.recalculateField.add(new OnChangeAjaxBehavior(this::recalculateFieldUpdate));
+        this.recalculateInterestContainer.add(this.recalculateField);
+        this.recalculateFeedback = new TextFeedbackPanel("recalculateFeedback", this.recalculateField);
+        this.recalculateInterestContainer.add(this.recalculateFeedback);
+
+        this.recalculateTypeContainer = new WebMarkupContainer("recalculateTypeContainer");
+        this.recalculateInterestContainer.add(this.recalculateTypeContainer);
+
+        this.recalculateTypeProvider = new FrequencyTypeProvider();
+        this.recalculateTypeField = new Select2SingleChoice<>("recalculateTypeField", 0,
+                new PropertyModel<>(this, "recalculateTypeValue"), this.recalculateTypeProvider);
+        this.recalculateTypeField.setRequired(true);
+        this.recalculateTypeContainer.add(this.recalculateTypeField);
+        this.recalculateTypeFeedback = new TextFeedbackPanel("recalculateTypeFeedback", this.recalculateTypeField);
+        this.recalculateTypeContainer.add(this.recalculateTypeFeedback);
+
+        this.recalculateDayContainer = new WebMarkupContainer("recalculateDayContainer");
+        this.recalculateInterestContainer.add(this.recalculateDayContainer);
+
+        this.recalculateDayProvider = new FrequencyDayProvider();
+        this.recalculateDayField = new Select2SingleChoice<>("recalculateDayField", 0,
+                new PropertyModel<>(this, "recalculateDayValue"), this.recalculateDayProvider);
+        this.recalculateDayField.setRequired(true);
+        this.recalculateDayContainer.add(this.recalculateDayField);
+        this.recalculateDayFeedback = new TextFeedbackPanel("recalculateDayFeedback", this.recalculateDayField);
+        this.recalculateDayContainer.add(this.recalculateDayFeedback);
+
+        this.recalculateIntervalContainer = new WebMarkupContainer("recalculateIntervalContainer");
+        this.recalculateInterestContainer.add(this.recalculateIntervalContainer);
+
+        this.recalculateIntervalField = new TextField<>("recalculateIntervalField",
+                new PropertyModel<>(this, "recalculateIntervalValue"));
+        this.recalculateIntervalField.setRequired(true);
+        this.recalculateIntervalContainer.add(this.recalculateIntervalField);
+        this.recalculateIntervalFeedback = new TextFeedbackPanel("recalculateIntervalFeedback",
+                this.recalculateIntervalField);
+        this.recalculateIntervalContainer.add(this.recalculateIntervalFeedback);
+
+        this.arrearsRecognizationBasedOnOriginalScheduleField = new CheckBox(
+                "arrearsRecognizationBasedOnOriginalScheduleField",
+                new PropertyModel<>(this, "arrearsRecognizationBasedOnOriginalScheduleValue"));
+        this.arrearsRecognizationBasedOnOriginalScheduleField.setRequired(true);
+        this.recalculateInterestContainer.add(this.arrearsRecognizationBasedOnOriginalScheduleField);
+        this.arrearsRecognizationBasedOnOriginalScheduleFeedback = new TextFeedbackPanel(
+                "arrearsRecognizationBasedOnOriginalScheduleFeedback",
+                this.arrearsRecognizationBasedOnOriginalScheduleField);
+        this.recalculateInterestContainer.add(this.arrearsRecognizationBasedOnOriginalScheduleFeedback);
+
+    }
+
+    protected void recalculateFieldUpdate(AjaxRequestTarget target) {
+        this.recalculateTypeContainer.setVisible(false);
+        this.recalculateDayContainer.setVisible(false);
+        this.recalculateIntervalContainer.setVisible(false);
+
+        if (this.recalculateValue != null) {
+            Frequency frequency = Frequency.valueOf(this.recalculateValue.getId());
+            if (frequency == Frequency.Daily || frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
+                this.recalculateIntervalContainer.setVisible(true);
+            }
+            if (frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
+                this.recalculateDayContainer.setVisible(true);
+            }
+            if (frequency == Frequency.Monthly) {
+                this.recalculateTypeContainer.setVisible(true);
+            }
+        }
+
+        target.add(this.form);
+    }
+
+    protected void compoundingFieldUpdate(AjaxRequestTarget target) {
+
+        this.compoundingTypeContainer.setVisible(false);
+        this.compoundingDayContainer.setVisible(false);
+        this.compoundingIntervalContainer.setVisible(false);
+
+        if (this.interestRecalculationCompoundingOnValue != null && InterestRecalculationCompound
+                .valueOf(this.interestRecalculationCompoundingOnValue.getId()) != InterestRecalculationCompound.None) {
+            this.compoundingContainer.setVisible(true);
+
+            if (this.compoundingValue != null) {
+                Frequency frequency = Frequency.valueOf(this.compoundingValue.getId());
+                if (frequency == Frequency.Daily || frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
+                    this.compoundingIntervalContainer.setVisible(true);
+                }
+                if (frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
+                    this.compoundingDayContainer.setVisible(true);
+                }
+                if (frequency == Frequency.Monthly) {
+                    this.compoundingTypeContainer.setVisible(true);
+                }
+            }
+        } else {
+            this.compoundingContainer.setVisible(false);
+        }
+        target.add(this.form);
+    }
+
+    protected void initSetting() {
+
         this.amortizationProvider = new AmortizationProvider();
-        this.amortizationField = new Select2SingleChoice<>("amortizationField", 0, new PropertyModel<>(this, "amortizationValue"),
-                this.amortizationProvider);
+        this.amortizationField = new Select2SingleChoice<>("amortizationField", 0,
+                new PropertyModel<>(this, "amortizationValue"), this.amortizationProvider);
         this.amortizationField.setRequired(true);
         this.form.add(this.amortizationField);
         this.amortizationFeedback = new TextFeedbackPanel("amortizationFeedback", this.amortizationField);
         this.form.add(this.amortizationFeedback);
-        
+
         this.interestMethodProvider = new InterestMethodProvider();
-        this.interestMethodField = new Select2SingleChoice<>("interestMethodField", 0, new PropertyModel<>(this, "interestMethodValue"),
-                this.interestMethodProvider);
+        this.interestMethodField = new Select2SingleChoice<>("interestMethodField", 0,
+                new PropertyModel<>(this, "interestMethodValue"), this.interestMethodProvider);
         this.interestMethodField.setRequired(true);
         this.form.add(this.interestMethodField);
         this.interestMethodFeedback = new TextFeedbackPanel("interestMethodFeedback", this.interestMethodField);
         this.form.add(this.interestMethodFeedback);
-        
-        this.interestCalculationPeriodProvider = new InterestCalculationPeriodProvider();
-        this.interestCalculationPeriodField = new Select2SingleChoice<>("interestCalculationPeriodField", 0, new PropertyModel<>(this, "interestCalculationPeriodValue"),
-                this.interestCalculationPeriodProvider);
-        this.interestCalculationPeriodField.setRequired(true);
-        this.form.add(this.interestCalculationPeriodField);
-        this.interestCalculationPeriodFeedback = new TextFeedbackPanel("interestCalculationPeriodFeedback", this.interestCalculationPeriodField);
-        this.form.add(this.interestCalculationPeriodFeedback);
-        
-        this.calculateInterestForExactDaysInPartialPeriodContainer = new WebMarkupContainer("calculateInterestForExactDaysInPartialPeriodContainer");
-        this.form.add(this.calculateInterestForExactDaysInPartialPeriodContainer);
-        
-//        <div class="box-body">
 
-//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-//                <wicket:container wicket:id="calculateInterestForExactDaysInPartialPeriodContainer">
-//            <label>&nbsp;</label>
-//            <span style="display: block">
-//                <label>
-//                    <input type="checkbox" wicket:id="calculateInterestForExactDaysInPartialPeriodField"> Calculate interest for exact days in partial period ?
-//                </label>
-//            </span>
-//            <span wicket:id="calculateInterestForExactDaysInPartialPeriodFeedback" class="help-block"></span>
-//            </wicket:container>
-//        </div>
-//        <div class="clearfix"></div>
-//
-//        <!-- Row -->
-//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-//        </div>
-//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-//            <label wicket:for="repaymentStrategyField">Repayment strategy</label>
-//            <select wicket:id="repaymentStrategyField" class="form-control select2" style="width: 100%;"></select>
-//            <span wicket:id="repaymentStrategyFeedback" class="help-block"></span>
-//        </div>
-//        <div class="clearfix"></div>
-//
-//        <!-- Row -->
-//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-//            <label wicket:for="moratoriumPrincipalField">Moratorium principal</label>
-//            <input wicket:id="moratoriumPrincipalField" type="text" class="form-control"/>
-//            <span wicket:id="moratoriumPrincipalFeedback" class="help-block"></span>
-//        </div>
-//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-//            <label wicket:for="moratoriumInterestField">Moratorium interest</label>
-//            <input wicket:id="moratoriumInterestField" type="text" class="form-control"/>
-//            <span wicket:id="moratoriumInterestFeedback" class="help-block"></span>
-//        </div>
-//        <div class="clearfix"></div>
-//
-//        <!-- Row -->
-//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-//            <label wicket:for="interestFreePeriodField">Interest free period</label>
-//            <input wicket:id="interestFreePeriodField" type="text" class="form-control"/>
-//            <span wicket:id="interestFreePeriodFeedback" class="help-block"></span>
-//        </div>
-//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-//            <label wicket:for="arrearsToleranceField">Arrears tolerance</label>
-//            <input wicket:id="arrearsToleranceField" type="text" class="form-control"/>
-//            <span wicket:id="arrearsToleranceFeedback" class="help-block"></span>
-//        </div>
-//        <div class="clearfix"></div>
-//
-//        <!-- Row -->
-//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-//            <label wicket:for="dayInYearField">Day in year</label>
-//            <select wicket:id="dayInYearField" class="form-control select2" style="width: 100%;"></select>
-//            <span wicket:id="dayInYearFeedback" class="help-block"></span>
-//        </div>
-//        <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-//            <label wicket:for="dayInMonthField">Day in month</label>
-//            <select wicket:id="dayInMonthField" class="form-control select2" style="width: 100%;"></select>
-//            <span wicket:id="dayInMonthFeedback" class="help-block"></span>
-//        </div>
-//        <div class="clearfix"></div>
-//
-//        <!-- Row -->
-//        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-//            <label>&nbsp;</label>
-//            <span style="display: block">
-//                <label>
-//                    <input type="checkbox" wicket:id="allowFixingOfTheInstallmentAmountField"> Allow fixing of the installment amount ?
-//                </label>
-//            </span>
-//            <span wicket:id="allowFixingOfTheInstallmentAmountFeedback" class="help-block"></span>
-//        </div>
-//        <div class="clearfix"></div>
-//
-//        <!-- Row -->
-//        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-//            <label wicket:for="numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField">Number of days a loan may be overdue before moving into arrears</label>
-//            <input wicket:id="numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField" type="text" class="form-control"/>
-//            <span wicket:id="numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback" class="help-block"></span>
-//        </div>
-//        <div class="clearfix"></div>
-//
-//        <!-- Row -->
-//        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-//            <label wicket:for="maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField">Maximum number of days a loan may be overdue before becoming a NPA</label>
-//            <input wicket:id="maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField" type="text" class="form-control"/>
-//            <span wicket:id="maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback" class="help-block"></span>
-//        </div>
-//        <div class="clearfix"></div>
-//        
-//        <!-- Row -->
-//        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-//            <label>&nbsp;</label>
-//            <span style="display: block">
-//                <label>
-//                    <input type="checkbox" wicket:id="accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField"> Account moves out of NPA only after all arrears have been cleared?
-//                </label>
-//            </span>
-//            <span wicket:id="accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback" class="help-block"></span>
-//        </div>
-//        <div class="clearfix"></div>
-//
-//        <!-- Row -->
-//        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-//            <label wicket:for="principalThresholdForLastInstalmentField">Principal Threshold (%) for Last Instalment</label>
-//            <input wicket:id="principalThresholdForLastInstalmentField" type="text" class="form-control"/>
-//            <span wicket:id="principalThresholdForLastInstalmentFeedback" class="help-block"></span>
-//        </div>
-//        <div class="clearfix"></div>
-//        
-//        <!-- Row -->
-//        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-//            <label>&nbsp;</label>
-//            <span style="display: block">
-//                <label>
-//                    <input type="checkbox" wicket:id="variableInstallmentsAllowedField"> Is Variable Installments Allowed?
-//                </label>
-//            </span>
-//            <span wicket:id="variableInstallmentsAllowedFeedback" class="help-block"></span>
-//        </div>
-//        <div class="clearfix"></div>
-//        
-//        <!-- Row -->
-//        <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-//            <label>&nbsp;</label>
-//            <span style="display: block">
-//                <label>
-//                    <input type="checkbox" wicket:id="allowedToBeUsedForProvidingTopupLoansField"> Is allowed to be used for providing Topup Loans?
-//                </label>
-//            </span>
-//            <span wicket:id="allowedToBeUsedForProvidingTopupLoansFeedback" class="help-block"></span>
-//        </div>
-//        <div class="clearfix"></div>
-//
-//    </div>
+        this.interestCalculationPeriodProvider = new InterestCalculationPeriodProvider();
+        this.interestCalculationPeriodField = new Select2SingleChoice<>("interestCalculationPeriodField", 0,
+                new PropertyModel<>(this, "interestCalculationPeriodValue"), this.interestCalculationPeriodProvider);
+        this.interestCalculationPeriodField.setRequired(true);
+        this.interestCalculationPeriodField.add(new OnChangeAjaxBehavior(this::interestCalculationPeriodFieldUpdate));
+        this.form.add(this.interestCalculationPeriodField);
+        this.interestCalculationPeriodFeedback = new TextFeedbackPanel("interestCalculationPeriodFeedback",
+                this.interestCalculationPeriodField);
+        this.form.add(this.interestCalculationPeriodFeedback);
+
+        this.calculateInterestForExactDaysInPartialPeriodContainer = new WebMarkupContainer(
+                "calculateInterestForExactDaysInPartialPeriodContainer");
+        this.form.add(this.calculateInterestForExactDaysInPartialPeriodContainer);
+
+        this.calculateInterestForExactDaysInPartialPeriodField = new CheckBox(
+                "calculateInterestForExactDaysInPartialPeriodField",
+                new PropertyModel<>(this, "calculateInterestForExactDaysInPartialPeriodValue"));
+        this.calculateInterestForExactDaysInPartialPeriodField.setRequired(true);
+        this.calculateInterestForExactDaysInPartialPeriodContainer
+                .add(this.calculateInterestForExactDaysInPartialPeriodField);
+        this.calculateInterestForExactDaysInPartialPeriodFeedback = new TextFeedbackPanel(
+                "calculateInterestForExactDaysInPartialPeriodFeedback",
+                this.calculateInterestForExactDaysInPartialPeriodField);
+        this.calculateInterestForExactDaysInPartialPeriodContainer
+                .add(this.calculateInterestForExactDaysInPartialPeriodFeedback);
+
+        this.repaymentStrategyProvider = new RepaymentStrategyProvider();
+        this.repaymentStrategyField = new Select2SingleChoice<>("repaymentStrategyField", 0,
+                new PropertyModel<>(this, "repaymentStrategyValue"), this.repaymentStrategyProvider);
+        this.repaymentStrategyField.setRequired(true);
+        this.form.add(this.repaymentStrategyField);
+        this.repaymentStrategyFeedback = new TextFeedbackPanel("repaymentStrategyFeedback",
+                this.repaymentStrategyField);
+        this.form.add(this.repaymentStrategyFeedback);
+
+        this.moratoriumPrincipalField = new TextField<>("moratoriumPrincipalField",
+                new PropertyModel<>(this, "moratoriumPrincipalValue"));
+        this.moratoriumPrincipalField.setRequired(true);
+        this.form.add(this.moratoriumPrincipalField);
+        this.moratoriumPrincipalFeedback = new TextFeedbackPanel("moratoriumPrincipalFeedback",
+                this.moratoriumPrincipalField);
+        this.form.add(this.moratoriumPrincipalFeedback);
+
+        this.moratoriumInterestField = new TextField<>("moratoriumInterestField",
+                new PropertyModel<>(this, "moratoriumInterestValue"));
+        this.moratoriumInterestField.setRequired(true);
+        this.form.add(this.moratoriumInterestField);
+        this.moratoriumInterestFeedback = new TextFeedbackPanel("moratoriumInterestFeedback",
+                this.moratoriumInterestField);
+        this.form.add(this.moratoriumInterestFeedback);
+
+        this.interestFreePeriodField = new TextField<>("interestFreePeriodField",
+                new PropertyModel<>(this, "interestFreePeriodValue"));
+        this.interestFreePeriodField.setRequired(true);
+        this.form.add(this.interestFreePeriodField);
+        this.interestFreePeriodFeedback = new TextFeedbackPanel("interestFreePeriodFeedback",
+                this.interestFreePeriodField);
+        this.form.add(this.interestFreePeriodFeedback);
+
+        this.arrearsToleranceField = new TextField<>("arrearsToleranceField",
+                new PropertyModel<>(this, "arrearsToleranceValue"));
+        this.arrearsToleranceField.setRequired(true);
+        this.form.add(this.arrearsToleranceField);
+        this.arrearsToleranceFeedback = new TextFeedbackPanel("arrearsToleranceFeedback", this.arrearsToleranceField);
+        this.form.add(this.arrearsToleranceFeedback);
+
+        this.dayInYearProvider = new DayInYearProvider();
+        this.dayInYearField = new Select2SingleChoice<>("dayInYearField", 0,
+                new PropertyModel<>(this, "dayInYearValue"), this.dayInYearProvider);
+        this.dayInYearField.setRequired(true);
+        this.form.add(this.dayInYearField);
+        this.dayInYearFeedback = new TextFeedbackPanel("dayInYearFeedback", this.dayInYearField);
+        this.form.add(this.dayInYearFeedback);
+
+        this.dayInMonthProvider = new DayInMonthProvider();
+        this.dayInMonthField = new Select2SingleChoice<>("dayInMonthField", 0,
+                new PropertyModel<>(this, "dayInMonthValue"), this.dayInMonthProvider);
+        this.dayInMonthField.setRequired(true);
+        this.form.add(this.dayInMonthField);
+        this.dayInMonthFeedback = new TextFeedbackPanel("dayInMonthFeedback", this.dayInMonthField);
+        this.form.add(this.dayInMonthFeedback);
+
+        this.allowFixingOfTheInstallmentAmountField = new CheckBox("allowFixingOfTheInstallmentAmountField",
+                new PropertyModel<>(this, "allowFixingOfTheInstallmentAmountValue"));
+        this.allowFixingOfTheInstallmentAmountField.setRequired(true);
+        this.form.add(this.allowFixingOfTheInstallmentAmountField);
+        this.allowFixingOfTheInstallmentAmountFeedback = new TextFeedbackPanel(
+                "allowFixingOfTheInstallmentAmountFeedback", this.allowFixingOfTheInstallmentAmountField);
+        this.form.add(this.allowFixingOfTheInstallmentAmountFeedback);
+
+        this.numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField = new TextField<>(
+                "numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField",
+                new PropertyModel<>(this, "numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue"));
+        this.numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField.setRequired(true);
+        this.form.add(this.numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField);
+        this.numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback = new TextFeedbackPanel(
+                "numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback",
+                this.numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField);
+        this.form.add(this.numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback);
+
+        this.maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField = new TextField<>(
+                "maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField",
+                new PropertyModel<>(this, "maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue"));
+        this.maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField.setRequired(true);
+        this.form.add(this.maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField);
+        this.maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback = new TextFeedbackPanel(
+                "maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback",
+                this.maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField);
+        this.form.add(this.maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback);
+
+        this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField = new CheckBox(
+                "accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField",
+                new PropertyModel<>(this, "accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue"));
+        this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField.setRequired(true);
+        this.form.add(this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField);
+        this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback = new TextFeedbackPanel(
+                "accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback",
+                this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField);
+        this.form.add(this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback);
+
+        this.principalThresholdForLastInstalmentField = new TextField<>("principalThresholdForLastInstalmentField",
+                new PropertyModel<>(this, "principalThresholdForLastInstalmentValue"));
+        this.principalThresholdForLastInstalmentField.setRequired(true);
+        this.form.add(this.principalThresholdForLastInstalmentField);
+        this.principalThresholdForLastInstalmentFeedback = new TextFeedbackPanel(
+                "principalThresholdForLastInstalmentFeedback", this.principalThresholdForLastInstalmentField);
+        this.form.add(this.principalThresholdForLastInstalmentFeedback);
+
+        this.variableInstallmentsAllowedField = new CheckBox("variableInstallmentsAllowedField",
+                new PropertyModel<>(this, "variableInstallmentsAllowedValue"));
+        this.variableInstallmentsAllowedField.setRequired(true);
+        this.form.add(this.variableInstallmentsAllowedField);
+        this.variableInstallmentsAllowedFeedback = new TextFeedbackPanel("variableInstallmentsAllowedFeedback",
+                this.variableInstallmentsAllowedField);
+        this.form.add(this.variableInstallmentsAllowedFeedback);
+
+        this.allowedToBeUsedForProvidingTopupLoansField = new CheckBox("allowedToBeUsedForProvidingTopupLoansField",
+                new PropertyModel<>(this, "allowedToBeUsedForProvidingTopupLoansValue"));
+        this.allowedToBeUsedForProvidingTopupLoansField.setRequired(true);
+        this.form.add(this.allowedToBeUsedForProvidingTopupLoansField);
+        this.allowedToBeUsedForProvidingTopupLoansFeedback = new TextFeedbackPanel(
+                "allowedToBeUsedForProvidingTopupLoansFeedback", this.allowedToBeUsedForProvidingTopupLoansField);
+        this.form.add(this.allowedToBeUsedForProvidingTopupLoansFeedback);
+
     }
 
     protected void initDefault() {
@@ -445,6 +787,11 @@ public class LoanCreatePage extends Page {
                 .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
         this.nominalInterestRateByLoanCycleContainer
                 .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
+        this.calculateInterestForExactDaysInPartialPeriodContainer
+                .setVisible(this.interestCalculationPeriodValue != null && InterestCalculationPeriod.valueOf(
+                        this.interestCalculationPeriodValue.getId()) == InterestCalculationPeriod.SameAsPayment);
+        this.recalculateInterestContainer
+                .setVisible(this.recalculateInterestValue != null && this.recalculateInterestValue);
     }
 
     protected void initDetail() {
@@ -527,7 +874,6 @@ public class LoanCreatePage extends Page {
         this.installmentInMultipleOfFeedback = new TextFeedbackPanel("installmentInMultipleOfFeedback",
                 this.installmentInMultipleOfField);
         this.form.add(this.installmentInMultipleOfFeedback);
-        // loanCycleValue
     }
 
     protected void initTerms() {
@@ -1027,6 +1373,13 @@ public class LoanCreatePage extends Page {
         this.nominalInterestRateContainer.setVisible(
                 this.linkedToFloatingInterestRatesValue == null ? true : !this.linkedToFloatingInterestRatesValue);
         this.floatInterestRateContainer.setVisible(!this.nominalInterestRateContainer.isVisible());
+        target.add(this.form);
+    }
+
+    protected void interestCalculationPeriodFieldUpdate(AjaxRequestTarget target) {
+        this.calculateInterestForExactDaysInPartialPeriodContainer
+                .setVisible(this.interestCalculationPeriodValue != null && InterestCalculationPeriod.valueOf(
+                        this.interestCalculationPeriodValue.getId()) == InterestCalculationPeriod.SameAsPayment);
         target.add(this.form);
     }
 

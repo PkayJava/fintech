@@ -303,7 +303,7 @@
                     <span wicket:id="interestCalculationPeriodFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                	<wicket:container wicket:id="calculateInterestForExactDaysInPartialPeriodContainer">
+                	    <wicket:container wicket:id="calculateInterestForExactDaysInPartialPeriodContainer">
                     <label>&nbsp;</label>
                     <span style="display: block">
                         <label>
@@ -317,11 +317,11 @@
 
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <label wicket:for="repaymentStrategyField">Repayment strategy</label>
                     <select wicket:id="repaymentStrategyField" class="form-control select2" style="width: 100%;"></select>
                     <span wicket:id="repaymentStrategyFeedback" class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 </div>
                 <div class="clearfix"></div>
 
@@ -377,15 +377,12 @@
                 <div class="clearfix"></div>
 
                 <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <label wicket:for="numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField">Number of days a loan may be overdue before moving into arrears</label>
                     <input wicket:id="numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField" type="text" class="form-control"/>
                     <span wicket:id="numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback" class="help-block"></span>
                 </div>
-                <div class="clearfix"></div>
-
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <label wicket:for="maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField">Maximum number of days a loan may be overdue before becoming a NPA</label>
                     <input wicket:id="maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField" type="text" class="form-control"/>
                     <span wicket:id="maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback" class="help-block"></span>
@@ -393,7 +390,7 @@
                 <div class="clearfix"></div>
                 
                 <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <label>&nbsp;</label>
                     <span style="display: block">
                         <label>
@@ -402,10 +399,7 @@
                     </span>
                     <span wicket:id="accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback" class="help-block"></span>
                 </div>
-                <div class="clearfix"></div>
-
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <label wicket:for="principalThresholdForLastInstalmentField">Principal Threshold (%) for Last Instalment</label>
                     <input wicket:id="principalThresholdForLastInstalmentField" type="text" class="form-control"/>
                     <span wicket:id="principalThresholdForLastInstalmentFeedback" class="help-block"></span>
@@ -413,7 +407,7 @@
                 <div class="clearfix"></div>
                 
                 <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <label>&nbsp;</label>
                     <span style="display: block">
                         <label>
@@ -422,10 +416,7 @@
                     </span>
                     <span wicket:id="variableInstallmentsAllowedFeedback" class="help-block"></span>
                 </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <label>&nbsp;</label>
                     <span style="display: block">
                         <label>
@@ -442,7 +433,131 @@
                 <h3 class="box-title">Interest Recalculation</h3>
             </div>
             <div class="box-body">
-            
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="recalculateInterestField"> Is Recalculate Interest?
+                        </label>
+                    </span>
+                    <span wicket:id="recalculateInterestFeedback" class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+                
+                <wicket:container wicket:id="recalculateInterestContainer">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="preClosureInterestCalculationRuleField">Pre-closure interest calculation rule</label>
+                    <select wicket:id="preClosureInterestCalculationRuleField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="preClosureInterestCalculationRuleFeedback" class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="advancePaymentsAdjustmentTypeField">Advance payments adjustment type</label>
+                    <select wicket:id="advancePaymentsAdjustmentTypeField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="advancePaymentsAdjustmentTypeFeedback" class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+                
+                <!-- Row -->
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="interestRecalculationCompoundingOnField">Interest recalculation compounding on</label>
+                    <select wicket:id="interestRecalculationCompoundingOnField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="interestRecalculationCompoundingOnFeedback" class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                </div>
+                <div class="clearfix"></div>
+                
+                <!-- Row -->
+                <wicket:container wicket:id="compoundingContainer">
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="compoundingField">Frequency for compounding</label>
+                    <select wicket:id="compoundingField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="compoundingFeedback" class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <wicket:container wicket:id="compoundingTypeContainer">
+                    <label wicket:for="compoundingTypeField">Frequency type for compounding</label>
+                    <select wicket:id="compoundingTypeField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="compoundingTypeFeedback" class="help-block"></span>
+                </wicket:container>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <wicket:container wicket:id="compoundingDayContainer">
+                    <label wicket:for="compoundingDayField">Frequency day for compounding</label>
+                    <select wicket:id="compoundingDayField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="compoundingDayFeedback" class="help-block"></span>
+                </wicket:container>
+                </div>
+                <div class="clearfix"></div>
+                </wicket:container>
+                
+                <!-- Row -->
+                <wicket:container wicket:id="compoundingIntervalContainer">
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="compoundingIntervalField">Frequency Interval for compounding</label>
+                    <input wicket:id="compoundingIntervalField" type="text" class="form-control"/>
+                    <span wicket:id="compoundingIntervalFeedback" class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                </div>
+                <div class="clearfix"></div>
+                </wicket:container>
+                
+                <!-- Row -->
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="recalculateField">Frequency for recalculate Outstanding Principal</label>
+                    <select wicket:id="recalculateField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="recalculateFeedback" class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <wicket:container wicket:id="recalculateTypeContainer">
+                    <label wicket:for="recalculateTypeField">Frequency type for recalculate</label>
+                    <select wicket:id="recalculateTypeField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="recalculateTypeFeedback" class="help-block"></span>
+                </wicket:container>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <wicket:container wicket:id="recalculateDayContainer">
+                    <label wicket:for="recalculateDayField">Frequency day for recalculate</label>
+                    <select wicket:id="recalculateDayField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="recalculateDayFeedback" class="help-block"></span>
+                </wicket:container>
+                </div>
+                <div class="clearfix"></div>
+                
+                <!-- Row -->
+                <wicket:container wicket:id="recalculateIntervalContainer">
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label wicket:for="recalculateIntervalField">Frequency Interval for recalculate</label>
+                    <input wicket:id="recalculateIntervalField" type="text" class="form-control"/>
+                    <span wicket:id="recalculateIntervalFeedback" class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                </div>
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                </div>
+                <div class="clearfix"></div>
+                </wicket:container>
+                
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="arrearsRecognizationBasedOnOriginalScheduleField"> Is Arrears recognization based on original schedule?
+                        </label>
+                    </span>
+                    <span wicket:id="arrearsRecognizationBasedOnOriginalScheduleFeedback" class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+                
+                </wicket:container>
             </div>
             
             <div class="box-header with-border">
