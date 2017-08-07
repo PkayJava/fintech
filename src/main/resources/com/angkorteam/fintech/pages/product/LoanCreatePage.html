@@ -599,6 +599,7 @@
                     <span wicket:id="minimumGuaranteeFromGuarantorFeedback" class="help-block"></span>
                 </div>
                 <div class="clearfix"></div>
+                
                 </wicket:container>
             </div>
             
@@ -606,14 +607,139 @@
                 <h3 class="box-title">Loan Tranche Details</h3>
             </div>
             <div class="box-body">
-            
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="enableMultipleDisbursalField"> Is Enable Multiple Disbursals?
+                        </label>
+                    </span>
+                    <span wicket:id="enableMultipleDisbursalFeedback" class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+                
+                <wicket:container wicket:id="enableMultipleDisbursalContainer">
+                
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="maximumTrancheCountField">Maximum Tranche count</label>
+                    <input wicket:id="maximumTrancheCountField" class="form-control" type="text"/>
+                    <span wicket:id="maximumTrancheCountFeedback" class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="maximumAllowedOutstandingBalanceField">Maximum allowed outstanding balance</label>
+                    <input wicket:id="maximumAllowedOutstandingBalanceField" class="form-control" type="text"/>
+                    <span wicket:id="maximumAllowedOutstandingBalanceFeedback" class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+                
+                </wicket:container>
             </div>
             
             <div class="box-header with-border">
                 <h3 class="box-title">Configurable Terms and Settings</h3>
             </div>
             <div class="box-body">
-            
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="allowOverridingSelectTermsAndSettingsInLoanAccountField"> Is Allow overriding select terms and settings in loan accounts?
+                        </label>
+                    </span>
+                    <span wicket:id="allowOverridingSelectTermsAndSettingsInLoanAccountFeedback" class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+                
+                <wicket:container wicket:id="allowOverridingSelectTermsAndSettingsInLoanAccountContainer">
+                
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="configurableAmortizationField"> Is Amortization?
+                        </label>
+                    </span>
+                    <span wicket:id="configurableAmortizationFeedback" class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="configurableInterestMethodField"> Is Interest method?
+                        </label>
+                    </span>
+                    <span wicket:id="configurableInterestMethodFeedback" class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+                
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="configurableRepaymentStrategyField"> Is Repayment strategy?
+                        </label>
+                    </span>
+                    <span wicket:id="configurableRepaymentStrategyFeedback" class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="configurableInterestCalculationPeriodField"> Is Interest calculation period?
+                        </label>
+                    </span>
+                    <span wicket:id="configurableInterestCalculationPeriodFeedback" class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+                
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="configurableArrearsToleranceField"> Is Arrears tolerance?
+                        </label>
+                    </span>
+                    <span wicket:id="configurableArrearsToleranceFeedback" class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="configurableRepaidEveryField"> Is Repaid every?
+                        </label>
+                    </span>
+                    <span wicket:id="configurableRepaidEveryFeedback" class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+                
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="configurableMoratoriumField"> Is Moratorium?
+                        </label>
+                    </span>
+                    <span wicket:id="configurableMoratoriumFeedback" class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="configurableOverdueBeforeMovingField"> Is Number of days a loan may be overdue before moving into arrears?
+                        </label>
+                    </span>
+                    <span wicket:id="configurableOverdueBeforeMovingFeedback" class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+                
+                </wicket:container>
             </div>
             
             <div class="box-header with-border">
@@ -634,7 +760,14 @@
                 <h3 class="box-title">Accounting</h3>
             </div>
             <div class="box-header with-border">
-                <h3 class="box-title">None / Cash / Accrual (Periodic) / Accrual (Up Front)</h3>
+                <h3 class="box-title">
+                    <span wicket:id="accountingField">
+                        <label><input wicket:id="accountingNone" type="radio"> None</label>&nbsp;&nbsp;&nbsp;
+                        <label><input wicket:id="accountingCash" type="radio"> Cash</label>&nbsp;&nbsp;&nbsp;
+                        <label><input wicket:id="accountingPeriodic" type="radio"> Accrual (periodic)</label>&nbsp;&nbsp;&nbsp;
+                        <label><input wicket:id="accountingUpfront" type="radio"> Accrual (upfront)</label>&nbsp;&nbsp;&nbsp;
+                    </span>
+                </h3>
             </div>
             <div class="box-body">           
             </div>

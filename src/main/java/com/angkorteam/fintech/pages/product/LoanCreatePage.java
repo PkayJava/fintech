@@ -9,6 +9,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -36,6 +38,7 @@ import com.angkorteam.fintech.provider.RepaymentStrategyProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.share.provider.ListDataProvider;
+import com.angkorteam.framework.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -410,6 +413,67 @@ public class LoanCreatePage extends Page {
     private TextField<Double> minimumGuaranteeFromGuarantorField;
     private TextFeedbackPanel minimumGuaranteeFromGuarantorFeedback;
 
+    // Loan Tranche Details
+
+    private Boolean enableMultipleDisbursalValue;
+    private CheckBox enableMultipleDisbursalField;
+    private TextFeedbackPanel enableMultipleDisbursalFeedback;
+
+    private WebMarkupContainer enableMultipleDisbursalContainer;
+
+    private Double maximumTrancheCountValue;
+    private TextField<Double> maximumTrancheCountField;
+    private TextFeedbackPanel maximumTrancheCountFeedback;
+
+    private Double maximumAllowedOutstandingBalanceValue;
+    private TextField<Double> maximumAllowedOutstandingBalanceField;
+    private TextFeedbackPanel maximumAllowedOutstandingBalanceFeedback;
+
+    // Configurable Terms and Settings
+
+    private Boolean allowOverridingSelectTermsAndSettingsInLoanAccountValue;
+    private CheckBox allowOverridingSelectTermsAndSettingsInLoanAccountField;
+    private TextFeedbackPanel allowOverridingSelectTermsAndSettingsInLoanAccountFeedback;
+
+    private WebMarkupContainer allowOverridingSelectTermsAndSettingsInLoanAccountContainer;
+
+    private Boolean configurableAmortizationValue;
+    private CheckBox configurableAmortizationField;
+    private TextFeedbackPanel configurableAmortizationFeedback;
+
+    private Boolean configurableInterestMethodValue;
+    private CheckBox configurableInterestMethodField;
+    private TextFeedbackPanel configurableInterestMethodFeedback;
+
+    private Boolean configurableRepaymentStrategyValue;
+    private CheckBox configurableRepaymentStrategyField;
+    private TextFeedbackPanel configurableRepaymentStrategyFeedback;
+
+    private Boolean configurableInterestCalculationPeriodValue;
+    private CheckBox configurableInterestCalculationPeriodField;
+    private TextFeedbackPanel configurableInterestCalculationPeriodFeedback;
+
+    private Boolean configurableArrearsToleranceValue;
+    private CheckBox configurableArrearsToleranceField;
+    private TextFeedbackPanel configurableArrearsToleranceFeedback;
+
+    private Boolean configurableRepaidEveryValue;
+    private CheckBox configurableRepaidEveryField;
+    private TextFeedbackPanel configurableRepaidEveryFeedback;
+
+    private Boolean configurableMoratoriumValue;
+    private CheckBox configurableMoratoriumField;
+    private TextFeedbackPanel configurableMoratoriumFeedback;
+
+    private Boolean configurableOverdueBeforeMovingValue;
+    private CheckBox configurableOverdueBeforeMovingField;
+    private TextFeedbackPanel configurableOverdueBeforeMovingFeedback;
+
+    // Accounting
+
+    private String accountingValue;
+    private RadioGroup<String> accountingField;
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
@@ -435,7 +499,156 @@ public class LoanCreatePage extends Page {
 
         initGuaranteeRequirements();
 
+        initLoanTrancheDetails();
+
+        initConfigurableTermsAndSettings();
+
+        initAccounting();
+
         initDefault();
+    }
+
+    protected void initAccounting() {
+        this.accountingField = new RadioGroup<>("accountingField", new PropertyModel<>(this, "accountingValue"));
+        this.accountingField.add(new AjaxFormChoiceComponentUpdatingBehavior(this::accountingFieldUpdate));
+        this.accountingField.add(new Radio<>("accountingNone", new Model<>("None")));
+        this.accountingField.add(new Radio<>("accountingCash", new Model<>("Cash")));
+        this.accountingField.add(new Radio<>("accountingPeriodic", new Model<>("Periodic")));
+        this.accountingField.add(new Radio<>("accountingUpfront", new Model<>("Upfront")));
+        this.form.add(this.accountingField);
+    }
+
+    protected void accountingFieldUpdate(AjaxRequestTarget target) {
+        System.out.println(this.accountingValue);
+    }
+
+    protected void initConfigurableTermsAndSettings() {
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountField = new CheckBox(
+                "allowOverridingSelectTermsAndSettingsInLoanAccountField",
+                new PropertyModel<>(this, "allowOverridingSelectTermsAndSettingsInLoanAccountValue"));
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountField.setRequired(true);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountField
+                .add(new OnChangeAjaxBehavior(this::allowOverridingSelectTermsAndSettingsInLoanAccountFieldUpdate));
+        this.form.add(this.allowOverridingSelectTermsAndSettingsInLoanAccountField);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountFeedback = new TextFeedbackPanel(
+                "allowOverridingSelectTermsAndSettingsInLoanAccountFeedback",
+                this.allowOverridingSelectTermsAndSettingsInLoanAccountField);
+        this.form.add(this.allowOverridingSelectTermsAndSettingsInLoanAccountFeedback);
+
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer = new WebMarkupContainer(
+                "allowOverridingSelectTermsAndSettingsInLoanAccountContainer");
+        this.form.add(this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer);
+
+        this.configurableAmortizationField = new CheckBox("configurableAmortizationField",
+                new PropertyModel<>(this, "configurableAmortizationValue"));
+        this.configurableAmortizationField.setRequired(true);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableAmortizationField);
+        this.configurableAmortizationFeedback = new TextFeedbackPanel("configurableAmortizationFeedback",
+                this.configurableAmortizationField);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableAmortizationFeedback);
+
+        this.configurableInterestMethodField = new CheckBox("configurableInterestMethodField",
+                new PropertyModel<>(this, "configurableInterestMethodValue"));
+        this.configurableInterestMethodField.setRequired(true);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableInterestMethodField);
+        this.configurableInterestMethodFeedback = new TextFeedbackPanel("configurableInterestMethodFeedback",
+                this.configurableInterestMethodField);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableInterestMethodFeedback);
+
+        this.configurableRepaymentStrategyField = new CheckBox("configurableRepaymentStrategyField",
+                new PropertyModel<>(this, "configurableRepaymentStrategyValue"));
+        this.configurableRepaymentStrategyField.setRequired(true);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableRepaymentStrategyField);
+        this.configurableRepaymentStrategyFeedback = new TextFeedbackPanel("configurableRepaymentStrategyFeedback",
+                this.configurableRepaymentStrategyField);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer
+                .add(this.configurableRepaymentStrategyFeedback);
+
+        this.configurableInterestCalculationPeriodField = new CheckBox("configurableInterestCalculationPeriodField",
+                new PropertyModel<>(this, "configurableInterestCalculationPeriodValue"));
+        this.configurableInterestCalculationPeriodField.setRequired(true);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer
+                .add(this.configurableInterestCalculationPeriodField);
+        this.configurableInterestCalculationPeriodFeedback = new TextFeedbackPanel(
+                "configurableInterestCalculationPeriodFeedback", this.configurableInterestCalculationPeriodField);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer
+                .add(this.configurableInterestCalculationPeriodFeedback);
+
+        this.configurableArrearsToleranceField = new CheckBox("configurableArrearsToleranceField",
+                new PropertyModel<>(this, "configurableArrearsToleranceValue"));
+        this.configurableArrearsToleranceField.setRequired(true);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableArrearsToleranceField);
+        this.configurableArrearsToleranceFeedback = new TextFeedbackPanel("configurableArrearsToleranceFeedback",
+                this.configurableArrearsToleranceField);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableArrearsToleranceFeedback);
+
+        this.configurableRepaidEveryField = new CheckBox("configurableRepaidEveryField",
+                new PropertyModel<>(this, "configurableRepaidEveryValue"));
+        this.configurableRepaidEveryField.setRequired(true);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableRepaidEveryField);
+        this.configurableRepaidEveryFeedback = new TextFeedbackPanel("configurableRepaidEveryFeedback",
+                this.configurableRepaidEveryField);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableRepaidEveryFeedback);
+
+        this.configurableMoratoriumField = new CheckBox("configurableMoratoriumField",
+                new PropertyModel<>(this, "configurableMoratoriumValue"));
+        this.configurableMoratoriumField.setRequired(true);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableMoratoriumField);
+        this.configurableMoratoriumFeedback = new TextFeedbackPanel("configurableMoratoriumFeedback",
+                this.configurableMoratoriumField);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableMoratoriumFeedback);
+
+        this.configurableOverdueBeforeMovingField = new CheckBox("configurableOverdueBeforeMovingField",
+                new PropertyModel<>(this, "configurableOverdueBeforeMovingValue"));
+        this.configurableOverdueBeforeMovingField.setRequired(true);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableOverdueBeforeMovingField);
+        this.configurableOverdueBeforeMovingFeedback = new TextFeedbackPanel("configurableOverdueBeforeMovingFeedback",
+                this.configurableOverdueBeforeMovingField);
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer
+                .add(this.configurableOverdueBeforeMovingFeedback);
+    }
+
+    protected void allowOverridingSelectTermsAndSettingsInLoanAccountFieldUpdate(AjaxRequestTarget target) {
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer
+                .setVisible(this.allowOverridingSelectTermsAndSettingsInLoanAccountValue != null
+                        && this.allowOverridingSelectTermsAndSettingsInLoanAccountValue);
+        target.add(this.form);
+    }
+
+    protected void initLoanTrancheDetails() {
+        this.enableMultipleDisbursalField = new CheckBox("enableMultipleDisbursalField",
+                new PropertyModel<>(this, "enableMultipleDisbursalValue"));
+        this.enableMultipleDisbursalField.setRequired(true);
+        this.enableMultipleDisbursalField.add(new OnChangeAjaxBehavior(this::enableMultipleDisbursalFieldUpdate));
+        this.form.add(this.enableMultipleDisbursalField);
+        this.enableMultipleDisbursalFeedback = new TextFeedbackPanel("enableMultipleDisbursalFeedback",
+                this.enableMultipleDisbursalField);
+        this.form.add(this.enableMultipleDisbursalFeedback);
+
+        this.enableMultipleDisbursalContainer = new WebMarkupContainer("enableMultipleDisbursalContainer");
+        this.form.add(this.enableMultipleDisbursalContainer);
+
+        this.maximumTrancheCountField = new TextField<>("maximumTrancheCountField",
+                new PropertyModel<>(this, "maximumTrancheCountValue"));
+        this.maximumTrancheCountField.setRequired(true);
+        this.enableMultipleDisbursalContainer.add(this.maximumTrancheCountField);
+        this.maximumTrancheCountFeedback = new TextFeedbackPanel("maximumTrancheCountFeedback",
+                this.maximumTrancheCountField);
+        this.enableMultipleDisbursalContainer.add(this.maximumTrancheCountFeedback);
+
+        this.maximumAllowedOutstandingBalanceField = new TextField<>("maximumAllowedOutstandingBalanceField",
+                new PropertyModel<>(this, "maximumAllowedOutstandingBalanceValue"));
+        this.maximumAllowedOutstandingBalanceField.setRequired(true);
+        this.enableMultipleDisbursalContainer.add(this.maximumAllowedOutstandingBalanceField);
+        this.maximumAllowedOutstandingBalanceFeedback = new TextFeedbackPanel(
+                "maximumAllowedOutstandingBalanceFeedback", this.maximumAllowedOutstandingBalanceField);
+        this.enableMultipleDisbursalContainer.add(this.maximumAllowedOutstandingBalanceFeedback);
+    }
+
+    protected void enableMultipleDisbursalFieldUpdate(AjaxRequestTarget target) {
+        this.enableMultipleDisbursalContainer
+                .setVisible(this.enableMultipleDisbursalValue != null && this.enableMultipleDisbursalValue);
+        target.add(this.form);
     }
 
     protected void initGuaranteeRequirements() {
@@ -864,6 +1077,13 @@ public class LoanCreatePage extends Page {
 
         this.placeGuaranteeFundsOnHoldContainer
                 .setVisible(this.placeGuaranteeFundsOnHoldValue != null && this.placeGuaranteeFundsOnHoldValue);
+
+        this.enableMultipleDisbursalContainer
+                .setVisible(this.enableMultipleDisbursalValue != null && this.enableMultipleDisbursalValue);
+
+        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer
+                .setVisible(this.allowOverridingSelectTermsAndSettingsInLoanAccountValue != null
+                        && this.allowOverridingSelectTermsAndSettingsInLoanAccountValue);
     }
 
     protected void initDetail() {
