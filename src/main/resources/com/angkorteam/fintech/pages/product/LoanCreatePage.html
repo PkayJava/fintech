@@ -564,7 +564,42 @@
                 <h3 class="box-title">Guarantee Requirements</h3>
             </div>
             <div class="box-body">
-            
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="placeGuaranteeFundsOnHoldField"> Is Place Guarantee Funds On-Hold?
+                        </label>
+                    </span>
+                    <span wicket:id="placeGuaranteeFundsOnHoldFeedback" class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+                
+                <wicket:container wicket:id="placeGuaranteeFundsOnHoldContainer">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="mandatoryGuaranteeField">Mandatory Guarantee: (%)</label>
+                    <input wicket:id="mandatoryGuaranteeField" class="form-control" type="text"/>
+                    <span wicket:id="mandatoryGuaranteeFeedback" class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                </div>
+                <div class="clearfix"></div>
+                
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="minimumGuaranteeField">Minimum Guarantee from Own Funds: (%)</label>
+                    <input wicket:id="minimumGuaranteeField" class="form-control" type="text"/>
+                    <span wicket:id="minimumGuaranteeFeedback" class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="minimumGuaranteeFromGuarantorField">Minimum Guarantee from Guarantor Funds: (%)</label>
+                    <input wicket:id="minimumGuaranteeFromGuarantorField" class="form-control" type="text"/>
+                    <span wicket:id="minimumGuaranteeFromGuarantorFeedback" class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+                </wicket:container>
             </div>
             
             <div class="box-header with-border">

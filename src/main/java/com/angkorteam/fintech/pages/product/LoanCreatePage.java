@@ -390,6 +390,26 @@ public class LoanCreatePage extends Page {
     private CheckBox arrearsRecognizationBasedOnOriginalScheduleField;
     private TextFeedbackPanel arrearsRecognizationBasedOnOriginalScheduleFeedback;
 
+    // Guarantee Requirements
+
+    private Boolean placeGuaranteeFundsOnHoldValue;
+    private CheckBox placeGuaranteeFundsOnHoldField;
+    private TextFeedbackPanel placeGuaranteeFundsOnHoldFeedback;
+
+    private WebMarkupContainer placeGuaranteeFundsOnHoldContainer;
+
+    private Double mandatoryGuaranteeValue;
+    private TextField<Double> mandatoryGuaranteeField;
+    private TextFeedbackPanel mandatoryGuaranteeFeedback;
+
+    private Double minimumGuaranteeValue;
+    private TextField<Double> minimumGuaranteeField;
+    private TextFeedbackPanel minimumGuaranteeFeedback;
+
+    private Double minimumGuaranteeFromGuarantorValue;
+    private TextField<Double> minimumGuaranteeFromGuarantorField;
+    private TextFeedbackPanel minimumGuaranteeFromGuarantorFeedback;
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
@@ -413,7 +433,54 @@ public class LoanCreatePage extends Page {
 
         initInterestRecalculation();
 
+        initGuaranteeRequirements();
+
         initDefault();
+    }
+
+    protected void initGuaranteeRequirements() {
+
+        this.placeGuaranteeFundsOnHoldField = new CheckBox("placeGuaranteeFundsOnHoldField",
+                new PropertyModel<>(this, "placeGuaranteeFundsOnHoldValue"));
+        this.placeGuaranteeFundsOnHoldField.setRequired(true);
+        this.placeGuaranteeFundsOnHoldField.add(new OnChangeAjaxBehavior(this::placeGuaranteeFundsOnHoldFieldUpdate));
+        this.form.add(this.placeGuaranteeFundsOnHoldField);
+        this.placeGuaranteeFundsOnHoldFeedback = new TextFeedbackPanel("placeGuaranteeFundsOnHoldFeedback",
+                this.placeGuaranteeFundsOnHoldField);
+        this.form.add(this.placeGuaranteeFundsOnHoldFeedback);
+
+        this.placeGuaranteeFundsOnHoldContainer = new WebMarkupContainer("placeGuaranteeFundsOnHoldContainer");
+        this.form.add(this.placeGuaranteeFundsOnHoldContainer);
+
+        this.mandatoryGuaranteeField = new TextField<>("mandatoryGuaranteeField",
+                new PropertyModel<>(this, "mandatoryGuaranteeValue"));
+        this.mandatoryGuaranteeField.setRequired(true);
+        this.placeGuaranteeFundsOnHoldContainer.add(this.mandatoryGuaranteeField);
+        this.mandatoryGuaranteeFeedback = new TextFeedbackPanel("mandatoryGuaranteeFeedback",
+                this.mandatoryGuaranteeField);
+        this.placeGuaranteeFundsOnHoldContainer.add(this.mandatoryGuaranteeFeedback);
+
+        this.minimumGuaranteeField = new TextField<>("minimumGuaranteeField",
+                new PropertyModel<>(this, "minimumGuaranteeValue"));
+        this.minimumGuaranteeField.setRequired(true);
+        this.placeGuaranteeFundsOnHoldContainer.add(this.minimumGuaranteeField);
+        this.minimumGuaranteeFeedback = new TextFeedbackPanel("minimumGuaranteeFeedback", this.minimumGuaranteeField);
+        this.placeGuaranteeFundsOnHoldContainer.add(this.minimumGuaranteeFeedback);
+
+        this.minimumGuaranteeFromGuarantorField = new TextField<>("minimumGuaranteeFromGuarantorField",
+                new PropertyModel<>(this, "minimumGuaranteeFromGuarantorValue"));
+        this.minimumGuaranteeFromGuarantorField.setRequired(true);
+        this.placeGuaranteeFundsOnHoldContainer.add(this.minimumGuaranteeFromGuarantorField);
+        this.minimumGuaranteeFromGuarantorFeedback = new TextFeedbackPanel("minimumGuaranteeFromGuarantorFeedback",
+                this.minimumGuaranteeFromGuarantorField);
+        this.placeGuaranteeFundsOnHoldContainer.add(this.minimumGuaranteeFromGuarantorFeedback);
+
+    }
+
+    protected void placeGuaranteeFundsOnHoldFieldUpdate(AjaxRequestTarget target) {
+        this.placeGuaranteeFundsOnHoldContainer
+                .setVisible(this.placeGuaranteeFundsOnHoldValue != null && this.placeGuaranteeFundsOnHoldValue);
+        target.add(this.form);
     }
 
     protected void recalculateInterestFieldUpdate(AjaxRequestTarget target) {
@@ -787,11 +854,16 @@ public class LoanCreatePage extends Page {
                 .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
         this.nominalInterestRateByLoanCycleContainer
                 .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
+
         this.calculateInterestForExactDaysInPartialPeriodContainer
                 .setVisible(this.interestCalculationPeriodValue != null && InterestCalculationPeriod.valueOf(
                         this.interestCalculationPeriodValue.getId()) == InterestCalculationPeriod.SameAsPayment);
+
         this.recalculateInterestContainer
                 .setVisible(this.recalculateInterestValue != null && this.recalculateInterestValue);
+
+        this.placeGuaranteeFundsOnHoldContainer
+                .setVisible(this.placeGuaranteeFundsOnHoldValue != null && this.placeGuaranteeFundsOnHoldValue);
     }
 
     protected void initDetail() {
