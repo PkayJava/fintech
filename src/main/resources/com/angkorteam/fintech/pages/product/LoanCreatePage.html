@@ -759,17 +759,378 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Accounting</h3>
             </div>
-            <div class="box-header with-border">
-                <h3 class="box-title">
-                    <span wicket:id="accountingField">
-                        <label><input wicket:id="accountingNone" type="radio"> None</label>&nbsp;&nbsp;&nbsp;
-                        <label><input wicket:id="accountingCash" type="radio"> Cash</label>&nbsp;&nbsp;&nbsp;
-                        <label><input wicket:id="accountingPeriodic" type="radio"> Accrual (periodic)</label>&nbsp;&nbsp;&nbsp;
-                        <label><input wicket:id="accountingUpfront" type="radio"> Accrual (upfront)</label>&nbsp;&nbsp;&nbsp;
-                    </span>
-                </h3>
+            <div class="box-body">
+                <span wicket:id="accountingField">
+                    <label><input wicket:id="accountingNone" type="radio"> None</label>&nbsp;&nbsp;&nbsp;
+                    <label><input wicket:id="accountingCash" type="radio"> Cash</label>&nbsp;&nbsp;&nbsp;
+                    <label><input wicket:id="accountingPeriodic" type="radio"> Accrual (periodic)</label>&nbsp;&nbsp;&nbsp;
+                    <label><input wicket:id="accountingUpfront" type="radio"> Accrual (upfront)</label>&nbsp;&nbsp;&nbsp;
+                </span>
             </div>
-            <div class="box-body">           
+            <wicket:container wicket:id="cashContainer">
+            <div class="box-header with-border">
+                <h3 class="box-title">Assets</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Fund source</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Loan portfolio</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Transfer in suspense</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="box-header with-border">
+                <h3 class="box-title">Income</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Income from Interest</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Income from fees</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Income from penalties</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Income from Recovery Repayments</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="box-header with-border">
+                <h3 class="box-title">Expenses</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Losses written off</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="box-header with-border">
+                <h3 class="box-title">Liabilities</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Over payment liability</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            </wicket:container>
+            <wicket:container wicket:id="periodicContainer">
+            <div class="box-header with-border">
+                <h3 class="box-title">Assets</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Fund source</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Loan portfolio</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Interest Receivable</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Fees Receivable</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+                
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Penalties Receivable</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">                
+                </div>
+                <div class="clearfix"></div>
+
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Transfer in suspense</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">                
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="box-header with-border">
+                <h3 class="box-title">Income</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Income from Interest</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Income from fees</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Income from penalties</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Income from Recovery Repayments</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="box-header with-border">
+                <h3 class="box-title">Expenses</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Losses written off</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="box-header with-border">
+                <h3 class="box-title">Liabilities</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Over payment liability</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            </wicket:container>
+            <wicket:container wicket:id="upfrontContainer">
+            <div class="box-header with-border">
+                <h3 class="box-title">Assets</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Fund source</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Loan portfolio</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Interest Receivable</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Fees Receivable</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+                
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Penalties Receivable</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">                
+                </div>
+                <div class="clearfix"></div>
+
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Transfer in suspense</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">                
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="box-header with-border">
+                <h3 class="box-title">Income</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Income from Interest</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Income from fees</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Income from penalties</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Income from Recovery Repayments</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="box-header with-border">
+                <h3 class="box-title">Expenses</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Losses written off</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="box-header with-border">
+                <h3 class="box-title">Liabilities</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label>Over payment liability</label>
+                    <select class="form-control select2" style="width: 100%;"></select>
+                    <span class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            </wicket:container>
+            <wicket:container wicket:id="advancedAccountingRuleContainer">
+            <div class="box-header with-border">
+                <h3 class="box-title">Advanced Accounting Rule</h3>
+            </div>
+            <div class="box-body">
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Configure Fund Sources for Payment Channels</h3>
+                        </div>
+                        <div class="box-body">
+                            <table wicket:id="fundSourceTable"></table>
+                        </div>
+                        <div class="box-footer">
+                            <a wicket:id="fundSourceAddLink" class="btn btn-default">Add</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Map Fees to Income Accounts</h3>
+                        </div>
+                        <div class="box-body">
+                            <table wicket:id="feeIncomeTable"></table>
+                        </div>
+                        <div class="box-footer">
+                            <a wicket:id="feeIncomeAddLink" class="btn btn-default">Add</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Map Penalties to Specific Income Accounts</h3>
+                        </div>
+                        <div class="box-body">
+                            <table wicket:id="penaltyIncomeTable"></table>
+                        </div>
+                        <div class="box-footer">
+                            <a wicket:id="penaltyIncomeAddLink" class="btn btn-default">Add</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            </wicket:container>
+            <div class="box-footer">
+                <button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+                <a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
             </div>
         </div>
     </form>

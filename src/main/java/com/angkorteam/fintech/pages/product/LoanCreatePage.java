@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -20,6 +21,7 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Frequency;
 import com.angkorteam.fintech.dto.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.InterestRecalculationCompound;
+import com.angkorteam.fintech.pages.office.OfficeBrowsePage;
 import com.angkorteam.fintech.popup.LoanCyclePopup;
 import com.angkorteam.fintech.provider.AdvancePaymentsAdjustmentTypeProvider;
 import com.angkorteam.fintech.provider.AmortizationProvider;
@@ -41,6 +43,7 @@ import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
+import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
@@ -50,6 +53,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -62,6 +66,8 @@ import com.google.common.collect.Maps;
 public class LoanCreatePage extends Page {
 
     private Form<Void> form;
+    private Button saveButton;
+    private BookmarkablePageLink<Void> closeLink;
 
     // Loan Product Detail
     private String productNameValue;
@@ -133,8 +139,7 @@ public class LoanCreatePage extends Page {
 
     // Row 2 (Optional) : Principal by loan cycle
     private WebMarkupContainer principalByLoanCycleContainer;
-
-    private List<Map<String, Object>> principalByLoanCycleValue;
+    private List<Map<String, Object>> principalByLoanCycleValue = Lists.newArrayList();
     private DataTable<Map<String, Object>, String> principalByLoanCycleTable;
     private ListDataProvider principalByLoanCycleProvider;
 
@@ -153,8 +158,7 @@ public class LoanCreatePage extends Page {
 
     // Row 3 (Optional) : Number of Repayments by loan cycle
     private WebMarkupContainer numberOfRepaymentByLoanCycleContainer;
-
-    private List<Map<String, Object>> numberOfRepaymentByLoanCycleValue;
+    private List<Map<String, Object>> numberOfRepaymentByLoanCycleValue = Lists.newArrayList();
     private DataTable<Map<String, Object>, String> numberOfRepaymentByLoanCycleTable;
     private ListDataProvider numberOfRepaymentByLoanCycleProvider;
 
@@ -189,7 +193,7 @@ public class LoanCreatePage extends Page {
     private WebMarkupContainer nominalInterestRateByLoanCycleContainer;
 
     // Row 6
-    private List<Map<String, Object>> nominalInterestRateByLoanCycleValue;
+    private List<Map<String, Object>> nominalInterestRateByLoanCycleValue = Lists.newArrayList();
     private DataTable<Map<String, Object>, String> nominalInterestRateByLoanCycleTable;
     private ListDataProvider nominalInterestRateByLoanCycleProvider;
 
@@ -474,6 +478,27 @@ public class LoanCreatePage extends Page {
     private String accountingValue;
     private RadioGroup<String> accountingField;
 
+    private WebMarkupContainer cashContainer;
+    private WebMarkupContainer periodicContainer;
+    private WebMarkupContainer upfrontContainer;
+
+    private WebMarkupContainer advancedAccountingRuleContainer;
+
+    private WebMarkupContainer fundSourceContainer;
+    private List<Map<String, Object>> fundSourceValue = Lists.newArrayList();
+    private DataTable<Map<String, Object>, String> fundSourceTable;
+    private ListDataProvider fundSourceProvider;
+
+    private WebMarkupContainer feeIncomeContainer;
+    private List<Map<String, Object>> feeIncomeValue = Lists.newArrayList();
+    private DataTable<Map<String, Object>, String> feeIncomeTable;
+    private ListDataProvider feeIncomeProvider;
+
+    private WebMarkupContainer penaltyIncomeContainer;
+    private List<Map<String, Object>> penaltyIncomeValue = Lists.newArrayList();
+    private DataTable<Map<String, Object>, String> penaltyIncomeTable;
+    private ListDataProvider penaltyIncomeProvider;
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
@@ -486,6 +511,13 @@ public class LoanCreatePage extends Page {
 
         this.form = new Form<>("form");
         add(this.form);
+
+        this.saveButton = new Button("saveButton");
+        this.saveButton.setOnSubmit(this::saveButtonSubmit);
+        this.form.add(this.saveButton);
+
+        this.closeLink = new BookmarkablePageLink<>("closeLink", LoanCreatePage.class);
+        this.form.add(this.closeLink);
 
         initDetail();
 
@@ -508,6 +540,10 @@ public class LoanCreatePage extends Page {
         initDefault();
     }
 
+    protected void saveButtonSubmit(Button button) {
+
+    }
+
     protected void initAccounting() {
         this.accountingField = new RadioGroup<>("accountingField", new PropertyModel<>(this, "accountingValue"));
         this.accountingField.add(new AjaxFormChoiceComponentUpdatingBehavior(this::accountingFieldUpdate));
@@ -516,10 +552,306 @@ public class LoanCreatePage extends Page {
         this.accountingField.add(new Radio<>("accountingPeriodic", new Model<>("Periodic")));
         this.accountingField.add(new Radio<>("accountingUpfront", new Model<>("Upfront")));
         this.form.add(this.accountingField);
+
+        this.cashContainer = new WebMarkupContainer("cashContainer");
+        this.form.add(this.cashContainer);
+
+        this.periodicContainer = new WebMarkupContainer("periodicContainer");
+        this.form.add(this.periodicContainer);
+
+        this.upfrontContainer = new WebMarkupContainer("upfrontContainer");
+        this.form.add(this.upfrontContainer);
+
+        this.advancedAccountingRuleContainer = new WebMarkupContainer("advancedAccountingRuleContainer");
+        this.form.add(this.advancedAccountingRuleContainer);
+
+        {
+            List<IColumn<Map<String, Object>, String>> fundSourceColumn = Lists.newArrayList();
+            fundSourceColumn.add(new TextColumn(Model.of("When"), "when", "when", this::fundSourceWhenColumn));
+            fundSourceColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle", this::fundSourceCycleColumn));
+            fundSourceColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum", this::fundSourceMinimumColumn));
+            fundSourceColumn
+                    .add(new TextColumn(Model.of("Default"), "default", "default", this::fundSourceDefaultColumn));
+            fundSourceColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum", this::fundSourceMaximumColumn));
+            fundSourceColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::fundSourceActionItem,
+                    this::fundSourceActionClick));
+            this.fundSourceProvider = new ListDataProvider(this.fundSourceValue);
+            this.fundSourceTable = new DataTable<>("fundSourceTable", fundSourceColumn, this.fundSourceProvider, 20);
+            this.advancedAccountingRuleContainer.add(this.fundSourceTable);
+            this.fundSourceTable.addTopToolbar(new HeadersToolbar<>(this.fundSourceTable, this.fundSourceProvider));
+            this.fundSourceTable.addBottomToolbar(new NoRecordsToolbar(this.fundSourceTable));
+
+            AjaxLink<Void> fundSourceAddLink = new AjaxLink<>("fundSourceAddLink");
+            fundSourceAddLink.setOnClick(this::fundSourceAddLinkClick);
+            this.advancedAccountingRuleContainer.add(fundSourceAddLink);
+        }
+
+        {
+
+            List<IColumn<Map<String, Object>, String>> feeIncomeColumn = Lists.newArrayList();
+            feeIncomeColumn.add(new TextColumn(Model.of("When"), "when", "when", this::feeIncomeWhenColumn));
+            feeIncomeColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle", this::feeIncomeCycleColumn));
+            feeIncomeColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum", this::feeIncomeMinimumColumn));
+            feeIncomeColumn
+                    .add(new TextColumn(Model.of("Default"), "default", "default", this::feeIncomeDefaultColumn));
+            feeIncomeColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum", this::feeIncomeMaximumColumn));
+            feeIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::feeIncomeActionItem,
+                    this::feeIncomeActionClick));
+            this.feeIncomeProvider = new ListDataProvider(this.feeIncomeValue);
+            this.feeIncomeTable = new DataTable<>("feeIncomeTable", feeIncomeColumn, this.feeIncomeProvider, 20);
+            this.advancedAccountingRuleContainer.add(this.feeIncomeTable);
+            this.feeIncomeTable.addTopToolbar(new HeadersToolbar<>(this.feeIncomeTable, this.feeIncomeProvider));
+            this.feeIncomeTable.addBottomToolbar(new NoRecordsToolbar(this.feeIncomeTable));
+
+            AjaxLink<Void> feeIncomeAddLink = new AjaxLink<>("feeIncomeAddLink");
+            feeIncomeAddLink.setOnClick(this::feeIncomeAddLinkClick);
+            this.advancedAccountingRuleContainer.add(feeIncomeAddLink);
+        }
+
+        {
+            List<IColumn<Map<String, Object>, String>> penaltyIncomeColumn = Lists.newArrayList();
+            penaltyIncomeColumn.add(new TextColumn(Model.of("When"), "when", "when", this::penaltyIncomeWhenColumn));
+            penaltyIncomeColumn
+                    .add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle", this::penaltyIncomeCycleColumn));
+            penaltyIncomeColumn
+                    .add(new TextColumn(Model.of("Min"), "minimum", "minimum", this::penaltyIncomeMinimumColumn));
+            penaltyIncomeColumn
+                    .add(new TextColumn(Model.of("Default"), "default", "default", this::penaltyIncomeDefaultColumn));
+            penaltyIncomeColumn
+                    .add(new TextColumn(Model.of("Max"), "maximum", "maximum", this::penaltyIncomeMaximumColumn));
+            penaltyIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::penaltyIncomeActionItem,
+                    this::penaltyIncomeActionClick));
+            this.penaltyIncomeProvider = new ListDataProvider(this.penaltyIncomeValue);
+            this.penaltyIncomeTable = new DataTable<>("penaltyIncomeTable", penaltyIncomeColumn,
+                    this.penaltyIncomeProvider, 20);
+            this.advancedAccountingRuleContainer.add(this.penaltyIncomeTable);
+            this.penaltyIncomeTable
+                    .addTopToolbar(new HeadersToolbar<>(this.penaltyIncomeTable, this.penaltyIncomeProvider));
+            this.penaltyIncomeTable.addBottomToolbar(new NoRecordsToolbar(this.penaltyIncomeTable));
+
+            AjaxLink<Void> penaltyIncomeAddLink = new AjaxLink<>("penaltyIncomeAddLink");
+            penaltyIncomeAddLink.setOnClick(this::penaltyIncomeAddLinkClick);
+            this.advancedAccountingRuleContainer.add(penaltyIncomeAddLink);
+        }
+    }
+
+    private void feeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.loanCycleValue = this.feeIncomeValue;
+        this.loanCyclePopup.show(target);
+    }
+
+    private ItemPanel feeIncomeWhenColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(String.valueOf(value)));
+    }
+
+    private ItemPanel feeIncomeCycleColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Integer value = (Integer) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel feeIncomeMinimumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel feeIncomeDefaultColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel feeIncomeMaximumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private void feeIncomeActionClick(String s, Map<String, Object> stringObjectMap,
+            AjaxRequestTarget ajaxRequestTarget) {
+        int index = -1;
+        for (int i = 0; i < this.feeIncomeValue.size(); i++) {
+            Map<String, Object> column = this.feeIncomeValue.get(i);
+            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                index = i;
+                break;
+            }
+        }
+        if (index >= 0) {
+            this.feeIncomeValue.remove(index);
+        }
+        ajaxRequestTarget.add(this.feeIncomeTable);
+    }
+
+    private List<ActionItem> feeIncomeActionItem(String s, Map<String, Object> stringObjectMap) {
+        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+    }
+
+    private void penaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.loanCycleValue = this.penaltyIncomeValue;
+        this.loanCyclePopup.show(target);
+    }
+
+    private ItemPanel penaltyIncomeWhenColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(String.valueOf(value)));
+    }
+
+    private ItemPanel penaltyIncomeCycleColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Integer value = (Integer) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel penaltyIncomeMinimumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel penaltyIncomeDefaultColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel penaltyIncomeMaximumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private void penaltyIncomeActionClick(String s, Map<String, Object> stringObjectMap,
+            AjaxRequestTarget ajaxRequestTarget) {
+        int index = -1;
+        for (int i = 0; i < this.penaltyIncomeValue.size(); i++) {
+            Map<String, Object> column = this.penaltyIncomeValue.get(i);
+            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                index = i;
+                break;
+            }
+        }
+        if (index >= 0) {
+            this.penaltyIncomeValue.remove(index);
+        }
+        ajaxRequestTarget.add(this.penaltyIncomeTable);
+    }
+
+    private List<ActionItem> penaltyIncomeActionItem(String s, Map<String, Object> stringObjectMap) {
+        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+    }
+
+    private void fundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.loanCycleValue = this.fundSourceValue;
+        this.loanCyclePopup.show(target);
+    }
+
+    private ItemPanel fundSourceWhenColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(String.valueOf(value)));
+    }
+
+    private ItemPanel fundSourceCycleColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Integer value = (Integer) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel fundSourceMinimumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel fundSourceDefaultColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel fundSourceMaximumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private void fundSourceActionClick(String s, Map<String, Object> stringObjectMap,
+            AjaxRequestTarget ajaxRequestTarget) {
+        int index = -1;
+        for (int i = 0; i < this.fundSourceValue.size(); i++) {
+            Map<String, Object> column = this.fundSourceValue.get(i);
+            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                index = i;
+                break;
+            }
+        }
+        if (index >= 0) {
+            this.fundSourceValue.remove(index);
+        }
+        ajaxRequestTarget.add(this.fundSourceTable);
+    }
+
+    private List<ActionItem> fundSourceActionItem(String s, Map<String, Object> stringObjectMap) {
+        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     protected void accountingFieldUpdate(AjaxRequestTarget target) {
-        System.out.println(this.accountingValue);
+        this.cashContainer.setVisible(false);
+        this.periodicContainer.setVisible(false);
+        this.upfrontContainer.setVisible(false);
+        this.advancedAccountingRuleContainer.setVisible(false);
+        if ("None".equals(this.accountingValue) || this.accountingValue == null) {
+            this.advancedAccountingRuleContainer.setVisible(false);
+        } else {
+            this.advancedAccountingRuleContainer.setVisible(true);
+        }
+        if ("Cash".equals(this.accountingValue)) {
+            this.cashContainer.setVisible(true);
+        } else if ("Periodic".equals(this.accountingValue)) {
+            this.periodicContainer.setVisible(true);
+        } else if ("Upfront".equals(this.accountingValue)) {
+            this.upfrontContainer.setVisible(true);
+        }
+
+        target.add(this.form);
     }
 
     protected void initConfigurableTermsAndSettings() {
@@ -1084,6 +1416,23 @@ public class LoanCreatePage extends Page {
         this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer
                 .setVisible(this.allowOverridingSelectTermsAndSettingsInLoanAccountValue != null
                         && this.allowOverridingSelectTermsAndSettingsInLoanAccountValue);
+
+        this.cashContainer.setVisible(false);
+        this.periodicContainer.setVisible(false);
+        this.upfrontContainer.setVisible(false);
+        this.advancedAccountingRuleContainer.setVisible(false);
+        if ("None".equals(this.accountingValue) || this.accountingValue == null) {
+            this.advancedAccountingRuleContainer.setVisible(false);
+        } else {
+            this.advancedAccountingRuleContainer.setVisible(true);
+        }
+        if ("Cash".equals(this.accountingValue)) {
+            this.cashContainer.setVisible(true);
+        } else if ("Periodic".equals(this.accountingValue)) {
+            this.periodicContainer.setVisible(true);
+        } else if ("Upfront".equals(this.accountingValue)) {
+            this.upfrontContainer.setVisible(true);
+        }
     }
 
     protected void initDetail() {
@@ -1217,7 +1566,6 @@ public class LoanCreatePage extends Page {
                     new TextColumn(Model.of("Max"), "maximum", "maximum", this::principalByLoanCycleMaximumColumn));
             principalByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"),
                     this::principalByLoanCycleActionItem, this::principalByLoanCycleActionClick));
-            this.principalByLoanCycleValue = Lists.newArrayList();
             this.principalByLoanCycleProvider = new ListDataProvider(this.principalByLoanCycleValue);
             this.principalByLoanCycleTable = new DataTable<>("principalByLoanCycleTable", principalByLoanCycleColumn,
                     this.principalByLoanCycleProvider, 20);
@@ -1273,7 +1621,6 @@ public class LoanCreatePage extends Page {
                     this::numberOfRepaymentByLoanCycleMaximumColumn));
             numberOfRepaymentByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"),
                     this::numberOfRepaymentByLoanCycleActionItem, this::numberOfRepaymentByLoanCycleActionClick));
-            this.numberOfRepaymentByLoanCycleValue = Lists.newArrayList();
             this.numberOfRepaymentByLoanCycleProvider = new ListDataProvider(this.numberOfRepaymentByLoanCycleValue);
             this.numberOfRepaymentByLoanCycleTable = new DataTable<>("numberOfRepaymentByLoanCycleTable",
                     numberOfRepaymentByLoanCycleColumn, this.numberOfRepaymentByLoanCycleProvider, 20);
@@ -1407,7 +1754,6 @@ public class LoanCreatePage extends Page {
                     this::nominalInterestRateByLoanCycleMaximumColumn));
             nominalInterestRateByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"),
                     this::nominalInterestRateByLoanCycleActionItem, this::nominalInterestRateByLoanCycleActionClick));
-            this.nominalInterestRateByLoanCycleValue = Lists.newArrayList();
             this.nominalInterestRateByLoanCycleProvider = new ListDataProvider(
                     this.nominalInterestRateByLoanCycleValue);
             this.nominalInterestRateByLoanCycleTable = new DataTable<>("nominalInterestRateByLoanCycleTable",
