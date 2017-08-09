@@ -741,19 +741,41 @@
                 
                 </wicket:container>
             </div>
-            
+
             <div class="box-header with-border">
                 <h3 class="box-title">Charges</h3>
             </div>
             <div class="box-body">
-            
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-body">
+                            <table wicket:id="chargesTable"></table>
+                        </div>
+                        <div class="box-footer">
+                            <a wicket:id="chargesAddLink" class="btn btn-default">Add</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
             </div>
-            
+
             <div class="box-header with-border">
                 <h3 class="box-title">Overdue Charges</h3>
             </div>
             <div class="box-body">
-            
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-body">
+                            <table wicket:id="overdueChargesTable"></table>
+                        </div>
+                        <div class="box-footer">
+                            <a wicket:id="overdueChargesAddLink" class="btn btn-default">Add</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
             </div>
             
             <div class="box-header with-border">

@@ -21,7 +21,6 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Frequency;
 import com.angkorteam.fintech.dto.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.InterestRecalculationCompound;
-import com.angkorteam.fintech.pages.office.OfficeBrowsePage;
 import com.angkorteam.fintech.popup.LoanCyclePopup;
 import com.angkorteam.fintech.provider.AdvancePaymentsAdjustmentTypeProvider;
 import com.angkorteam.fintech.provider.AmortizationProvider;
@@ -43,7 +42,6 @@ import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
-import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
@@ -499,6 +497,18 @@ public class LoanCreatePage extends Page {
     private DataTable<Map<String, Object>, String> penaltyIncomeTable;
     private ListDataProvider penaltyIncomeProvider;
 
+    // Charges
+
+    private List<Map<String, Object>> chargesValue = Lists.newArrayList();
+    private DataTable<Map<String, Object>, String> chargesTable;
+    private ListDataProvider chargesProvider;
+
+    // Overdue Charges
+
+    private List<Map<String, Object>> overdueChargesValue = Lists.newArrayList();
+    private DataTable<Map<String, Object>, String> overdueChargesTable;
+    private ListDataProvider overdueChargesProvider;
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
@@ -537,11 +547,196 @@ public class LoanCreatePage extends Page {
 
         initAccounting();
 
+        initCharges();
+
+        initOverdueCharges();
+
         initDefault();
     }
 
     protected void saveButtonSubmit(Button button) {
 
+    }
+
+    protected void initOverdueCharges() {
+        List<IColumn<Map<String, Object>, String>> overdueChargesColumn = Lists.newArrayList();
+        overdueChargesColumn.add(new TextColumn(Model.of("When"), "when", "when", this::overdueChargesWhenColumn));
+        overdueChargesColumn
+                .add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle", this::overdueChargesCycleColumn));
+        overdueChargesColumn
+                .add(new TextColumn(Model.of("Min"), "minimum", "minimum", this::overdueChargesMinimumColumn));
+        overdueChargesColumn
+                .add(new TextColumn(Model.of("Default"), "default", "default", this::overdueChargesDefaultColumn));
+        overdueChargesColumn
+                .add(new TextColumn(Model.of("Max"), "maximum", "maximum", this::overdueChargesMaximumColumn));
+        overdueChargesColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::overdueChargesActionItem,
+                this::overdueChargesActionClick));
+        this.overdueChargesProvider = new ListDataProvider(this.overdueChargesValue);
+        this.overdueChargesTable = new DataTable<>("overdueChargesTable", overdueChargesColumn,
+                this.overdueChargesProvider, 20);
+        this.form.add(this.overdueChargesTable);
+        this.overdueChargesTable
+                .addTopToolbar(new HeadersToolbar<>(this.overdueChargesTable, this.overdueChargesProvider));
+        this.overdueChargesTable.addBottomToolbar(new NoRecordsToolbar(this.overdueChargesTable));
+
+        AjaxLink<Void> overdueChargesAddLink = new AjaxLink<>("overdueChargesAddLink");
+        overdueChargesAddLink.setOnClick(this::overdueChargesAddLinkClick);
+        this.form.add(overdueChargesAddLink);
+    }
+
+    private void overdueChargesAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.loanCycleValue = this.overdueChargesValue;
+        this.loanCyclePopup.show(target);
+    }
+
+    private ItemPanel overdueChargesWhenColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(String.valueOf(value)));
+    }
+
+    private ItemPanel overdueChargesCycleColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Integer value = (Integer) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel overdueChargesMinimumColumn(String jdbcColumn, IModel<String> display,
+            Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel overdueChargesDefaultColumn(String jdbcColumn, IModel<String> display,
+            Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel overdueChargesMaximumColumn(String jdbcColumn, IModel<String> display,
+            Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private void overdueChargesActionClick(String s, Map<String, Object> stringObjectMap,
+            AjaxRequestTarget ajaxRequestTarget) {
+        int index = -1;
+        for (int i = 0; i < this.overdueChargesValue.size(); i++) {
+            Map<String, Object> column = this.overdueChargesValue.get(i);
+            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                index = i;
+                break;
+            }
+        }
+        if (index >= 0) {
+            this.overdueChargesValue.remove(index);
+        }
+        ajaxRequestTarget.add(this.overdueChargesTable);
+    }
+
+    private List<ActionItem> overdueChargesActionItem(String s, Map<String, Object> stringObjectMap) {
+        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+    }
+
+    protected void initCharges() {
+        List<IColumn<Map<String, Object>, String>> chargesColumn = Lists.newArrayList();
+        chargesColumn.add(new TextColumn(Model.of("When"), "when", "when", this::chargesWhenColumn));
+        chargesColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle", this::chargesCycleColumn));
+        chargesColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum", this::chargesMinimumColumn));
+        chargesColumn.add(new TextColumn(Model.of("Default"), "default", "default", this::chargesDefaultColumn));
+        chargesColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum", this::chargesMaximumColumn));
+        chargesColumn
+                .add(new ActionFilterColumn<>(Model.of("Action"), this::chargesActionItem, this::chargesActionClick));
+        this.chargesProvider = new ListDataProvider(this.chargesValue);
+        this.chargesTable = new DataTable<>("chargesTable", chargesColumn, this.chargesProvider, 20);
+        this.form.add(this.chargesTable);
+        this.chargesTable.addTopToolbar(new HeadersToolbar<>(this.chargesTable, this.chargesProvider));
+        this.chargesTable.addBottomToolbar(new NoRecordsToolbar(this.chargesTable));
+
+        AjaxLink<Void> chargesAddLink = new AjaxLink<>("chargesAddLink");
+        chargesAddLink.setOnClick(this::chargesAddLinkClick);
+        this.form.add(chargesAddLink);
+    }
+
+    private void chargesAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.loanCycleValue = this.chargesValue;
+        this.loanCyclePopup.show(target);
+    }
+
+    private ItemPanel chargesWhenColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(String.valueOf(value)));
+    }
+
+    private ItemPanel chargesCycleColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Integer value = (Integer) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel chargesMinimumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel chargesDefaultColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private ItemPanel chargesMaximumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(String.valueOf(value)));
+        }
+    }
+
+    private void chargesActionClick(String s, Map<String, Object> stringObjectMap,
+            AjaxRequestTarget ajaxRequestTarget) {
+        int index = -1;
+        for (int i = 0; i < this.chargesValue.size(); i++) {
+            Map<String, Object> column = this.chargesValue.get(i);
+            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                index = i;
+                break;
+            }
+        }
+        if (index >= 0) {
+            this.chargesValue.remove(index);
+        }
+        ajaxRequestTarget.add(this.chargesTable);
+    }
+
+    private List<ActionItem> chargesActionItem(String s, Map<String, Object> stringObjectMap) {
+        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     protected void initAccounting() {
