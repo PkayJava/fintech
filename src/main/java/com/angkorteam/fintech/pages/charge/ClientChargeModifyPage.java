@@ -140,7 +140,6 @@ public class ClientChargeModifyPage extends Page {
         this.chargeTimeField = new Select2SingleChoice<>("chargeTimeField", 0,
                 new PropertyModel<>(this, "chargeTimeValue"), this.chargeTimeProvider);
         this.chargeTimeField.setRequired(true);
-        this.chargeTimeField.add(new OnChangeAjaxBehavior());
         this.chargeTimeField.add(new OnChangeAjaxBehavior(this::chargeTimeFieldUpdate, this::chargeTimeFieldError));
         this.form.add(this.chargeTimeField);
         this.chargeTimeFeedback = new TextFeedbackPanel("chargeTimeFeedback", this.chargeTimeField);

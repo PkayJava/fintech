@@ -164,7 +164,6 @@ public class SavingDepositChargeModifyPage extends Page {
         this.chargeCalculationProvider.setValues(ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount);
         this.chargeCalculationField = new Select2SingleChoice<>("chargeCalculationField", 0,
                 new PropertyModel<>(this, "chargeCalculationValue"), this.chargeCalculationProvider);
-        this.chargeCalculationField.add(new OnChangeAjaxBehavior());
         this.chargeCalculationField.setRequired(true);
         this.chargeCalculationField
                 .add(new OnChangeAjaxBehavior(this::chargeCalculationFieldUpdate, this::chargeCalculationFieldError));

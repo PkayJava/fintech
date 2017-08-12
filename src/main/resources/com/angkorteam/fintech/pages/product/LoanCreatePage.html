@@ -407,7 +407,7 @@
                 <div class="clearfix"></div>
                 
                 <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <label>&nbsp;</label>
                     <span style="display: block">
                         <label>
@@ -416,7 +416,25 @@
                     </span>
                     <span wicket:id="variableInstallmentsAllowedFeedback" class="help-block"></span>
                 </div>
+                <div class="clearfix"></div>
+
+                <wicket:container wicket:id="variableInstallmentsAllowedContainer">
+                <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="variableInstallmentsMinimumField">Variable Installments Minimum</label>
+                    <input wicket:id="variableInstallmentsMinimumField" type="text" class="form-control"/>
+                    <span wicket:id="variableInstallmentsMinimumFeedback" class="help-block"></span>
+                </div>
+                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <label wicket:for="variableInstallmentsMaximumField">Variable Installments Maximum</label>
+                    <input wicket:id="variableInstallmentsMaximumField" type="text" class="form-control"/>
+                    <span wicket:id="variableInstallmentsMaximumFeedback" class="help-block"></span>
+                </div>
+                <div class="clearfix"></div>
+                </wicket:container>
+                
+                <!-- Row -->
+                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <label>&nbsp;</label>
                     <span style="display: block">
                         <label>
@@ -796,22 +814,22 @@
             <div class="box-body">
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Fund source</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="cashFundSourceField">Fund source</label>
+                    <select wicket:id="cashFundSourceField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="cashFundSourceFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Loan portfolio</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="cashLoanPortfolioField">Loan portfolio</label>
+                    <select wicket:id="cashLoanPortfolioField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="cashLoanPortfolioFeedback" class="help-block"></span>
                 </div>
                 <div class="clearfix"></div>
 
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Transfer in suspense</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="cashTransferInSuspenseField">Transfer in suspense</label>
+                    <select wicket:id="cashTransferInSuspenseField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="cashTransferInSuspenseFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 </div>
@@ -823,27 +841,27 @@
             <div class="box-body">
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Income from Interest</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="cashIncomeFromInterestField" >Income from Interest</label>
+                    <select wicket:id="cashIncomeFromInterestField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="cashIncomeFromInterestFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Income from fees</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="cashIncomeFromFeeField" >Income from fees</label>
+                    <select wicket:id="cashIncomeFromFeeField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="cashIncomeFromFeeFeedback" class="help-block"></span>
                 </div>
                 <div class="clearfix"></div>
 
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Income from penalties</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="cashIncomeFromPenaltiesField" >Income from penalties</label>
+                    <select wicket:id="cashIncomeFromPenaltiesField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="cashIncomeFromPenaltiesFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Income from Recovery Repayments</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="cashIncomeFromRecoveryPaymentField">Income from Recovery Repayments</label>
+                    <select wicket:id="cashIncomeFromRecoveryPaymentField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="cashIncomeFromRecoveryPaymentFeedback" class="help-block"></span>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -853,9 +871,9 @@
             <div class="box-body">
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Losses written off</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="cashLossesWrittenOffField" >Losses written off</label>
+                    <select wicket:id="cashLossesWrittenOffField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="cashLossesWrittenOffFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 </div>
@@ -867,15 +885,16 @@
             <div class="box-body">
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Over payment liability</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="cashOverPaymentLiabilityField" >Over payment liability</label>
+                    <select wicket:id="cashOverPaymentLiabilityField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="cashOverPaymentLiabilityFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 </div>
                 <div class="clearfix"></div>
             </div>
             </wicket:container>
+            
             <wicket:container wicket:id="periodicContainer">
             <div class="box-header with-border">
                 <h3 class="box-title">Assets</h3>
@@ -883,35 +902,35 @@
             <div class="box-body">
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Fund source</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="periodicFundSourceField" >Fund source</label>
+                    <select wicket:id="periodicFundSourceField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="periodicFundSourceFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Loan portfolio</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="periodicLoanPortfolioField">Loan portfolio</label>
+                    <select wicket:id="periodicLoanPortfolioField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="periodicLoanPortfolioFeedback" class="help-block"></span>
                 </div>
                 <div class="clearfix"></div>
 
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Interest Receivable</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="periodicInterestReceivableField">Interest Receivable</label>
+                    <select wicket:id="periodicInterestReceivableField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="periodicInterestReceivableFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Fees Receivable</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="periodicFeesReceivableField">Fees Receivable</label>
+                    <select wicket:id="periodicFeesReceivableField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="periodicFeesReceivableFeedback" class="help-block"></span>
                 </div>
                 <div class="clearfix"></div>
                 
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Penalties Receivable</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="periodicPenaltiesReceivableField" >Penalties Receivable</label>
+                    <select wicket:id="periodicPenaltiesReceivableField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="periodicPenaltiesReceivableFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">                
                 </div>
@@ -919,9 +938,9 @@
 
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Transfer in suspense</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="periodicTransferInSuspenseField">Transfer in suspense</label>
+                    <select wicket:id="periodicTransferInSuspenseField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="periodicTransferInSuspenseFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">                
                 </div>
@@ -933,27 +952,27 @@
             <div class="box-body">
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Income from Interest</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="periodicIncomeFromInterestField">Income from Interest</label>
+                    <select wicket:id="periodicIncomeFromInterestField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="periodicIncomeFromInterestFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Income from fees</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="periodicIncomeFromFeesField">Income from fees</label>
+                    <select wicket:id="periodicIncomeFromFeesField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="periodicIncomeFromFeesFeedback" class="help-block"></span>
                 </div>
                 <div class="clearfix"></div>
 
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Income from penalties</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="periodicIncomeFromPenaltiesField">Income from penalties</label>
+                    <select wicket:id="periodicIncomeFromPenaltiesField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="periodicIncomeFromPenaltiesFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Income from Recovery Repayments</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="periodicIncomeFromRecoveryRepaymentsField">Income from Recovery Repayments</label>
+                    <select wicket:id="periodicIncomeFromRecoveryRepaymentsField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="periodicIncomeFromRecoveryRepaymentsFeedback" class="help-block"></span>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -963,9 +982,9 @@
             <div class="box-body">
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Losses written off</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="periodicLossesWrittenOffField">Losses written off</label>
+                    <select wicket:id="periodicLossesWrittenOffField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="periodicLossesWrittenOffFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 </div>
@@ -977,15 +996,16 @@
             <div class="box-body">
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Over payment liability</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="periodicOverPaymentLiabilityField">Over payment liability</label>
+                    <select wicket:id="periodicOverPaymentLiabilityField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="periodicOverPaymentLiabilityFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 </div>
                 <div class="clearfix"></div>
             </div>
             </wicket:container>
+            
             <wicket:container wicket:id="upfrontContainer">
             <div class="box-header with-border">
                 <h3 class="box-title">Assets</h3>
@@ -993,35 +1013,35 @@
             <div class="box-body">
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Fund source</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="upfrontFundSourceField">Fund source</label>
+                    <select wicket:id="upfrontFundSourceField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="upfrontFundSourceFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Loan portfolio</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="upfrontLoanPortfolioField">Loan portfolio</label>
+                    <select wicket:id="upfrontLoanPortfolioField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="upfrontLoanPortfolioFeedback" class="help-block"></span>
                 </div>
                 <div class="clearfix"></div>
 
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Interest Receivable</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="upfrontInterestReceivableField">Interest Receivable</label>
+                    <select wicket:id="upfrontInterestReceivableField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="upfrontInterestReceivableFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Fees Receivable</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="upfrontFeesReceivableField">Fees Receivable</label>
+                    <select wicket:id="upfrontFeesReceivableField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="upfrontFeesReceivableFeedback" class="help-block"></span>
                 </div>
                 <div class="clearfix"></div>
                 
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Penalties Receivable</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="upfrontPenaltiesReceivableField">Penalties Receivable</label>
+                    <select wicket:id="upfrontPenaltiesReceivableField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="upfrontPenaltiesReceivableFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">                
                 </div>
@@ -1029,9 +1049,9 @@
 
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Transfer in suspense</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="upfrontTransferInSuspenseField">Transfer in suspense</label>
+                    <select wicket:id="upfrontTransferInSuspenseField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="upfrontTransferInSuspenseFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">                
                 </div>
@@ -1043,27 +1063,27 @@
             <div class="box-body">
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Income from Interest</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="upfrontIncomeFromInterestField">Income from Interest</label>
+                    <select wicket:id="upfrontIncomeFromInterestField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="upfrontIncomeFromInterestFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Income from fees</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="upfrontIncomeFromFeesField">Income from fees</label>
+                    <select wicket:id="upfrontIncomeFromFeesField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="upfrontIncomeFromFeesFeedback" class="help-block"></span>
                 </div>
                 <div class="clearfix"></div>
 
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Income from penalties</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="upfrontIncomeFromPenaltiesField">Income from penalties</label>
+                    <select wicket:id="upfrontIncomeFromPenaltiesField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="upfrontIncomeFromPenaltiesFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Income from Recovery Repayments</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="upfrontIncomeFromRecoveryRepaymentsField">Income from Recovery Repayments</label>
+                    <select wicket:id="upfrontIncomeFromRecoveryRepaymentsField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="upfrontIncomeFromRecoveryRepaymentsFeedback" class="help-block"></span>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -1073,9 +1093,9 @@
             <div class="box-body">
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Losses written off</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="upfrontLossesWrittenOffField">Losses written off</label>
+                    <select wicket:id="upfrontLossesWrittenOffField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="upfrontLossesWrittenOffFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 </div>
@@ -1087,15 +1107,16 @@
             <div class="box-body">
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>Over payment liability</label>
-                    <select class="form-control select2" style="width: 100%;"></select>
-                    <span class="help-block"></span>
+                    <label wicket:for="upfrontOverPaymentLiabilityField">Over payment liability</label>
+                    <select wicket:id="upfrontOverPaymentLiabilityField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="upfrontOverPaymentLiabilityFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 </div>
                 <div class="clearfix"></div>
             </div>
             </wicket:container>
+            
             <wicket:container wicket:id="advancedAccountingRuleContainer">
             <div class="box-header with-border">
                 <h3 class="box-title">Advanced Accounting Rule</h3>

@@ -69,7 +69,7 @@ public class GlobalConfigurationPage extends Page {
         this.provider.selectField("id", Long.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Name"), "name", "name",
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name",
                 this::nameColumn));
         columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Enabled ?"), "enabled", "enabled",
                 this::enabledColumn));
@@ -95,7 +95,7 @@ public class GlobalConfigurationPage extends Page {
         this.form.add(this.saveButton);
 
         this.nameProvider = new SingleChoiceProvider("c_configuration", "id", "name");
-        this.nameField = new Select2SingleChoice<>("nameField", new PropertyModel<>(this, "nameValue"),
+        this.nameField = new Select2SingleChoice<>("nameField", 0, new PropertyModel<>(this, "nameValue"),
                 this.nameProvider);
         this.nameField.setRequired(true);
         this.form.add(this.nameField);

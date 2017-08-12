@@ -41,6 +41,12 @@ public class Page extends DashboardPage {
     }
 
     @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.render(CssHeaderItem.forCSS(".dropdown-menu {  z-index: 100060 !important; }", "menu"));
+    }
+
+    @Override
     protected void onInitialize() {
         super.onInitialize();
         this.feedbackPanel = new FeedbackPanel("feedbackPanel", this::report);
