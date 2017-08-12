@@ -1,5 +1,17 @@
 package com.angkorteam.fintech.pages;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
@@ -10,10 +22,17 @@ import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -23,17 +42,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -52,6 +60,33 @@ public class MakerCheckerPage extends Page {
 
     private Form<Void> form;
     private Button addButton;
+
+    private static final List<PageBreadcrumb> BREADCRUMB;
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        return Model.ofList(BREADCRUMB);
+    }
+
+    static {
+        BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Admin");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("System");
+            breadcrumb.setPage(SystemDashboardPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Maker Checker Setting");
+            BREADCRUMB.add(breadcrumb);
+        }
+    }
 
     @Override
     protected void onInitialize() {

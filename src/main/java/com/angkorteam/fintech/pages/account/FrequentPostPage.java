@@ -10,6 +10,7 @@ import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
@@ -140,6 +141,39 @@ public class FrequentPostPage extends Page {
     private List<Map<String, Object>> debitValue;
     private DataTable<Map<String, Object>, String> debitTable;
     private ListDataProvider debitProvider;
+    
+    private static final List<PageBreadcrumb> BREADCRUMB;
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        return Model.ofList(BREADCRUMB);
+    }
+
+    static {
+        BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Admin");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Accounting");
+            breadcrumb.setPage(AccountingPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Accounting Rule Selection");
+            breadcrumb.setPage(RuleSelectPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Frequent Posting");
+            BREADCRUMB.add(breadcrumb);
+        }
+    }
 
     @Override
     protected void onInitialize() {

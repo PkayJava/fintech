@@ -5,9 +5,11 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.HookBuilder;
 import com.angkorteam.fintech.helper.HookHelper;
+import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.HookFieldWidget;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -94,6 +96,39 @@ public class HookModifyPage extends Page {
 
     private Form<Void> hookForm;
     private Button saveButton;
+    
+    private static final List<PageBreadcrumb> BREADCRUMB;
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        return Model.ofList(BREADCRUMB);
+    }
+
+    static {
+        BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Admin");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("System");
+            breadcrumb.setPage(SystemDashboardPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Hook");
+            breadcrumb.setPage(HookBrowsePage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Hook Modify");
+            BREADCRUMB.add(breadcrumb);
+        }
+    }
 
     @Override
     protected void onInitialize() {

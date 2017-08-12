@@ -6,17 +6,22 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.AccrualBuilder;
 import com.angkorteam.fintech.helper.AccrualHelper;
 import com.angkorteam.fintech.pages.AccountingPage;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
+import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -31,6 +36,33 @@ public class AccrualAccountingPage extends Page {
     private Date tillDateValue;
     private DateTextField tillDateField;
     private TextFeedbackPanel tillDateFeedback;
+    
+    private static final List<PageBreadcrumb> BREADCRUMB;
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        return Model.ofList(BREADCRUMB);
+    }
+
+    static {
+        BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Admin");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Accounting");
+            breadcrumb.setPage(AccountingPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Periodic Accrual Accounting");
+            BREADCRUMB.add(breadcrumb);
+        }
+    }
 
     @Override
     protected void onInitialize() {

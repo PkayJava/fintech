@@ -7,6 +7,7 @@ import com.angkorteam.fintech.dto.request.AppUserBuilder;
 import com.angkorteam.fintech.helper.AppUserHelper;
 import com.angkorteam.fintech.provider.MultipleChoiceProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -14,6 +15,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
+import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -23,6 +25,8 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.EqualInputValidator;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import java.util.List;
@@ -76,6 +80,33 @@ public class UserCreatePage extends Page {
     private Form<Void> form;
     private Button saveButton;
     private BookmarkablePageLink<Void> closeLink;
+    
+    private static final List<PageBreadcrumb> BREADCRUMB;
+    
+    static {
+        BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Admin");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("User");
+            breadcrumb.setPage(UserBrowsePage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("User Create");
+            BREADCRUMB.add(breadcrumb);
+        }
+    }
+    
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        return Model.ofList(BREADCRUMB);
+    }
 
     @Override
     protected void onInitialize() {

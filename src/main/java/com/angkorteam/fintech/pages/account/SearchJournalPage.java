@@ -9,6 +9,7 @@ import com.angkorteam.fintech.provider.ManualEntryProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.*;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
@@ -76,6 +77,33 @@ public class SearchJournalPage extends Page {
 
     private DataTable<Map<String, Object>, String> entryTable;
     private JdbcProvider entryProvider;
+    
+    private static final List<PageBreadcrumb> BREADCRUMB;
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        return Model.ofList(BREADCRUMB);
+    }
+
+    static {
+        BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Admin");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Accounting");
+            breadcrumb.setPage(AccountingPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Search Journal Entries");
+            BREADCRUMB.add(breadcrumb);
+        }
+    }
 
     @Override
     protected void onInitialize() {

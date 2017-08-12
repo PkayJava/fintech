@@ -2,11 +2,13 @@ package com.angkorteam.fintech.pages.rate;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.BadgeType;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
@@ -35,9 +37,34 @@ public class FloatingRateBrowsePage extends Page {
 
     private JdbcProvider provider;
 
-    private BookmarkablePageLink<Void> hierarchyLink;
-
     private BookmarkablePageLink<Void> createLink;
+
+    private static final List<PageBreadcrumb> BREADCRUMB;
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        return Model.ofList(BREADCRUMB);
+    }
+
+    static {
+        BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Admin");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Product");
+            breadcrumb.setPage(ProductDashboardPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Floating Rate");
+            BREADCRUMB.add(breadcrumb);
+        }
+    }
 
     @Override
     protected void onInitialize() {
@@ -53,10 +80,14 @@ public class FloatingRateBrowsePage extends Page {
         this.provider.selectField("id", Long.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Created By"), "createdBy", "createdBy", this::createdByColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Is Base Lending Rate"), "base_lending_rate", "base_lending_rate", this::baseLendingRateColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Active"), "active", "active", this::activeColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name",
+                this::nameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Created By"), "createdBy",
+                "createdBy", this::createdByColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Is Base Lending Rate"),
+                "base_lending_rate", "base_lending_rate", this::baseLendingRateColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Active"), "active", "active",
+                this::activeColumn));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
         add(filterForm);

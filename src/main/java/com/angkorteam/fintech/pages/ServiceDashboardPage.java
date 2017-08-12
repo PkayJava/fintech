@@ -8,12 +8,45 @@ import com.angkorteam.fintech.pages.service.SMSConfigurationPage;
 import com.angkorteam.framework.BackgroundColor;
 import com.angkorteam.framework.Emoji;
 import com.angkorteam.framework.models.InfoBox;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.panels.InfoBoxPanel;
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ServiceDashboardPage extends Page {
+
+    private static final List<PageBreadcrumb> BREADCRUMB;
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        return Model.ofList(BREADCRUMB);
+    }
+
+    static {
+        BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Admin");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("System");
+            breadcrumb.setPage(SystemDashboardPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("External Service");
+            BREADCRUMB.add(breadcrumb);
+        }
+    }
 
     @Override
     protected void onInitialize() {

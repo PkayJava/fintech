@@ -2,9 +2,12 @@ package com.angkorteam.fintech.pages.tax;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.pages.ProductDashboardPage;
+import com.angkorteam.fintech.pages.TaxDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
@@ -36,6 +39,39 @@ public class TaxComponentBrowsePage extends Page {
 
     private BookmarkablePageLink<Void> createLink;
 
+    private static final List<PageBreadcrumb> BREADCRUMB;
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        return Model.ofList(BREADCRUMB);
+    }
+
+    static {
+        BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Admin");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Product");
+            breadcrumb.setPage(ProductDashboardPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Tax");
+            breadcrumb.setPage(TaxDashboardPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Tax Component");
+            BREADCRUMB.add(breadcrumb);
+        }
+    }
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
@@ -47,8 +83,10 @@ public class TaxComponentBrowsePage extends Page {
         this.provider.selectField("id", Long.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Double, Model.of("Percentage"), "percentage", "percentage", this::percentageColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name",
+                this::nameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Double, Model.of("Percentage"), "percentage",
+                "percentage", this::percentageColumn));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
         add(filterForm);

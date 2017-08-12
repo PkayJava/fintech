@@ -7,12 +7,14 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.TableType;
 import com.angkorteam.fintech.dto.request.DataTableBuilder;
 import com.angkorteam.fintech.helper.DataTableHelper;
+import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.provider.AppTableOptionProvider;
 import com.angkorteam.fintech.provider.ColumnTypeOptionProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.BadgeType;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -95,6 +97,39 @@ public class DataTableCreatePage extends Page {
     private List<Map<String, Object>> columnValue;
     private DataTable<Map<String, Object>, String> columnTable;
     private ListDataProvider columnProvider;
+
+    private static final List<PageBreadcrumb> BREADCRUMB;
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        return Model.ofList(BREADCRUMB);
+    }
+
+    static {
+        BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Admin");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("System");
+            breadcrumb.setPage(SystemDashboardPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Data Table");
+            breadcrumb.setPage(DataTableBrowsePage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Data Table Create");
+            BREADCRUMB.add(breadcrumb);
+        }
+    }
 
     @Override
     protected void onInitialize() {

@@ -2,9 +2,11 @@ package com.angkorteam.fintech.pages.office;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.pages.OrganizationDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
@@ -37,6 +39,33 @@ public class OfficeBrowsePage extends Page {
 
     private BookmarkablePageLink<Void> createLink;
 
+    private static final List<PageBreadcrumb> BREADCRUMB;
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        return Model.ofList(BREADCRUMB);
+    }
+
+    static {
+        BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Admin");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Organization");
+            breadcrumb.setPage(OrganizationDashboardPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Office");
+            BREADCRUMB.add(breadcrumb);
+        }
+    }
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
@@ -53,10 +82,14 @@ public class OfficeBrowsePage extends Page {
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
         columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("ID"), "id", "id", this::idColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("External ID"), "external_id", "external_id", this::externalIdColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Parent Name"), "parent_name", "parent_name", this::parentNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Opening Date"), "opening_date", "opening_date", this::openingDateColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("External ID"), "external_id",
+                "external_id", this::externalIdColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name",
+                this::nameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Parent Name"), "parent_name",
+                "parent_name", this::parentNameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Opening Date"), "opening_date",
+                "opening_date", this::openingDateColumn));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
         add(filterForm);

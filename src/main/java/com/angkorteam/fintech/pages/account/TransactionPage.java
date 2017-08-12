@@ -2,12 +2,14 @@ package com.angkorteam.fintech.pages.account;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.popup.ReversePopup;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.JoinType;
 import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -66,6 +68,39 @@ public class TransactionPage extends Page {
 
     private ModalWindow commentPopup;
 
+    private static final List<PageBreadcrumb> BREADCRUMB;
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        return Model.ofList(BREADCRUMB);
+    }
+
+    static {
+        BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Admin");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Accounting");
+            breadcrumb.setPage(AccountingPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Search Journal Entries");
+            breadcrumb.setPage(SearchJournalPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("View Transaction");
+            BREADCRUMB.add(breadcrumb);
+        }
+    }
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
@@ -103,8 +138,10 @@ public class TransactionPage extends Page {
         this.add(this.createdByField);
 
         Date transactionDate = (Date) entry.get("transaction_date");
-        this.transactionDateValue = transactionDate == null ? "" : DateFormatUtils.format(transactionDate, "yyyy-MM-dd");
-        this.transactionDateField = new Label("transactionDateField", new PropertyModel<>(this, "transactionDateValue"));
+        this.transactionDateValue = transactionDate == null ? ""
+                : DateFormatUtils.format(transactionDate, "yyyy-MM-dd");
+        this.transactionDateField = new Label("transactionDateField",
+                new PropertyModel<>(this, "transactionDateValue"));
         this.add(this.transactionDateField);
 
         Date createdOn = (Date) entry.get("created_date");
@@ -113,7 +150,8 @@ public class TransactionPage extends Page {
         this.add(this.createdOnField);
 
         this.transactionNumberValue = (String) entry.get("transaction_id");
-        this.transactionNumberField = new Label("transactionNumberField", new PropertyModel<>(this, "transactionNumberValue"));
+        this.transactionNumberField = new Label("transactionNumberField",
+                new PropertyModel<>(this, "transactionNumberValue"));
         this.add(this.transactionNumberField);
 
         this.entryProvider = new JdbcProvider("acc_gl_journal_entry");
@@ -126,19 +164,29 @@ public class TransactionPage extends Page {
         this.entryProvider.boardField("m_office.name", "office", String.class);
         this.entryProvider.boardField("acc_gl_journal_entry.entry_date", "transaction_date", Date.class);
         this.entryProvider.boardField("acc_gl_journal_entry.transaction_id", "transaction_id", Long.class);
-        this.entryProvider.boardField("CASE acc_gl_account.classification_enum WHEN 1 THEN 'Asset' WHEN 2 THEN 'Liability' WHEN 3 THEN 'Equity' WHEN 4 THEN 'Income' WHEN 5 THEN 'Expense' END", "account_type", String.class);
+        this.entryProvider.boardField(
+                "CASE acc_gl_account.classification_enum WHEN 1 THEN 'Asset' WHEN 2 THEN 'Liability' WHEN 3 THEN 'Equity' WHEN 4 THEN 'Income' WHEN 5 THEN 'Expense' END",
+                "account_type", String.class);
         this.entryProvider.boardField("m_appuser.username", "created_by", String.class);
-        this.entryProvider.boardField("if(acc_gl_journal_entry.type_enum = 1, NULL, acc_gl_journal_entry.amount)", "debit_amount", Double.class);
-        this.entryProvider.boardField("if(acc_gl_journal_entry.type_enum = 1, acc_gl_journal_entry.amount, NULL)", "credit_amount", Double.class);
+        this.entryProvider.boardField("if(acc_gl_journal_entry.type_enum = 1, NULL, acc_gl_journal_entry.amount)",
+                "debit_amount", Double.class);
+        this.entryProvider.boardField("if(acc_gl_journal_entry.type_enum = 1, acc_gl_journal_entry.amount, NULL)",
+                "credit_amount", Double.class);
 
-        this.entryProvider.applyWhere("transaction_id", "acc_gl_journal_entry.transaction_id = '" + this.transactionId + "'");
+        this.entryProvider.applyWhere("transaction_id",
+                "acc_gl_journal_entry.transaction_id = '" + this.transactionId + "'");
 
         List<IColumn<Map<String, Object>, String>> debitColumn = Lists.newArrayList();
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Entry ID"), "id", "id", this::idColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Type"), "account_type", "account_type", this::accountTypeColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Account"), "account_name", "account_name", this::accountNameColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Debit"), "debit_amount", "debit_amount", this::debitAmountColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Credit"), "credit_amount", "credit_amount", this::creditAmountColumn));
+        debitColumn.add(
+                new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Entry ID"), "id", "id", this::idColumn));
+        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Type"), "account_type",
+                "account_type", this::accountTypeColumn));
+        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Account"), "account_name",
+                "account_name", this::accountNameColumn));
+        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Debit"), "debit_amount",
+                "debit_amount", this::debitAmountColumn));
+        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Credit"), "credit_amount",
+                "credit_amount", this::creditAmountColumn));
 
         this.entryTable = new DataTable<>("entryTable", debitColumn, this.entryProvider, 20);
         this.add(this.entryTable);
@@ -148,7 +196,8 @@ public class TransactionPage extends Page {
         this.commentPopup = new ModalWindow("commentPopup");
         add(this.commentPopup);
 
-        this.commentPopup.setContent(new ReversePopup(this.commentPopup.getContentId(), this.commentPopup, this, this.transactionId));
+        this.commentPopup.setContent(
+                new ReversePopup(this.commentPopup.getContentId(), this.commentPopup, this, this.transactionId));
         this.commentPopup.setOnClose(this::commentPopupOnClose);
 
     }

@@ -1,26 +1,38 @@
 package com.angkorteam.fintech;
 
-import com.angkorteam.fintech.pages.*;
-import com.angkorteam.fintech.pages.staff.UserBrowsePage;
-import com.angkorteam.framework.Emoji;
-import com.angkorteam.framework.models.*;
-import com.angkorteam.framework.wicket.DashboardPage;
-import com.angkorteam.framework.wicket.markup.html.panel.FeedbackPanel;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
+import java.util.List;
+import java.util.MissingResourceException;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.List;
-import java.util.MissingResourceException;
+import com.angkorteam.fintech.pages.AccountingPage;
+import com.angkorteam.fintech.pages.IndexPage;
+import com.angkorteam.fintech.pages.LogoutPage;
+import com.angkorteam.fintech.pages.OrganizationDashboardPage;
+import com.angkorteam.fintech.pages.ProductDashboardPage;
+import com.angkorteam.fintech.pages.SystemDashboardPage;
+import com.angkorteam.fintech.pages.staff.UserBrowsePage;
+import com.angkorteam.framework.Emoji;
+import com.angkorteam.framework.models.NavBarMenu;
+import com.angkorteam.framework.models.NavBarMenuItem;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.models.PageFooter;
+import com.angkorteam.framework.models.PageHeader;
+import com.angkorteam.framework.models.PageLogo;
+import com.angkorteam.framework.models.SideMenu;
+import com.angkorteam.framework.models.UserInfo;
+import com.angkorteam.framework.wicket.DashboardPage;
+import com.angkorteam.framework.wicket.markup.html.panel.FeedbackPanel;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 6/17/17.

@@ -8,6 +8,7 @@ import com.angkorteam.fintech.helper.AppUserHelper;
 import com.angkorteam.fintech.provider.MultipleChoiceProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -17,6 +18,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
+import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -26,6 +28,8 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.validation.EqualInputValidator;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
@@ -74,6 +78,33 @@ public class UserModifyPage extends Page {
 
     private String passwordValue;
     private String repeatPasswordValue;
+    
+    private static final List<PageBreadcrumb> BREADCRUMB;
+
+    static {
+        BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Admin");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("User");
+            breadcrumb.setPage(UserBrowsePage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("User Modify");
+            BREADCRUMB.add(breadcrumb);
+        }
+    }
+    
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        return Model.ofList(BREADCRUMB);
+    }
 
     @Override
     protected void onInitialize() {
@@ -132,7 +163,7 @@ public class UserModifyPage extends Page {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", StaffBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", UserBrowsePage.class);
         this.form.add(this.closeLink);
 
         this.firstNameValue = (String) userObject.get("firstname");
