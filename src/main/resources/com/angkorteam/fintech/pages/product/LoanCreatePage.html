@@ -768,10 +768,10 @@
                 <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="box box-primary">
                         <div class="box-body">
-                            <table wicket:id="chargesTable"></table>
+                            <table wicket:id="chargeTable"></table>
                         </div>
                         <div class="box-footer">
-                            <a wicket:id="chargesAddLink" class="btn btn-default">Add</a>
+                            <a wicket:id="chargeAddLink" class="btn btn-default">Add</a>
                         </div>
                     </div>
                 </div>
@@ -786,10 +786,10 @@
                 <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="box box-primary">
                         <div class="box-body">
-                            <table wicket:id="overdueChargesTable"></table>
+                            <table wicket:id="overdueChargeTable"></table>
                         </div>
                         <div class="box-footer">
-                            <a wicket:id="overdueChargesAddLink" class="btn btn-default">Add</a>
+                            <a wicket:id="overdueChargeAddLink" class="btn btn-default">Add</a>
                         </div>
                     </div>
                 </div>
@@ -1178,6 +1178,11 @@
         </div>
     </form>
     <div wicket:id="loanCyclePopup"/>
+    <div wicket:id="chargePopup"/>
+    <div wicket:id="overdueChargePopup"/>
+    <div wicket:id="paymentPopup"/>
+    <div wicket:id="feeChargePopup"/>
+    <div wicket:id="penaltyChargePopup"/>
 </wicket:extend>
 </body>
 </html>

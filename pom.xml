@@ -17,10 +17,8 @@
 	<artifactId>fintech</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<!-- TODO project name -->
 	<name>fintech</name>
 	<description></description>
-	<!-- <organization> <name>company name</name> <url>company url</url> </organization> -->
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -38,9 +36,9 @@
 		<!-- allowed values: R7, 1.0, 1.5, 2.0 or none -->
 		<wtp.version>none</wtp.version>
 		<frmk.version>1.6.7</frmk.version>
-		<guava.version>22.0</guava.version>
+		<guava.version>23.0</guava.version>
 		<spring.version>4.3.10.RELEASE</spring.version>
-		<mysql.version>5.1.42</mysql.version>
+		<mysql.version>5.1.43</mysql.version>
 		<dbcp2.version>2.1.1</dbcp2.version>
 		<configuration.version>1.10</configuration.version>
 		<jasypt.version>1.9.2</jasypt.version>
