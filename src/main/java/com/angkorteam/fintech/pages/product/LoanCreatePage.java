@@ -24,6 +24,7 @@ import com.angkorteam.fintech.dto.Frequency;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.InterestRecalculationCompound;
+import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.popup.LoanCyclePopup;
 import com.angkorteam.fintech.provider.AdvancePaymentsAdjustmentTypeProvider;
 import com.angkorteam.fintech.provider.AmortizationProvider;
@@ -42,6 +43,7 @@ import com.angkorteam.fintech.provider.RepaymentStrategyProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
@@ -601,7 +603,7 @@ public class LoanCreatePage extends Page {
     private TextFeedbackPanel periodicOverPaymentLiabilityFeedback;
 
     private WebMarkupContainer upfrontContainer;
-    
+
     private SingleChoiceProvider upfrontFundSourceProvider;
     private Option upfrontFundSourceValue;
     private Select2SingleChoice<Option> upfrontFundSourceField;
@@ -690,6 +692,40 @@ public class LoanCreatePage extends Page {
     private List<Map<String, Object>> overdueChargesValue = Lists.newArrayList();
     private DataTable<Map<String, Object>, String> overdueChargesTable;
     private ListDataProvider overdueChargesProvider;
+
+    private static final List<PageBreadcrumb> BREADCRUMB;
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        return Model.ofList(BREADCRUMB);
+    }
+
+    static {
+        BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Admin");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Product");
+            breadcrumb.setPage(ProductDashboardPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Loan Product");
+            breadcrumb.setPage(LoanBrowsePage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Loan Product Create");
+            BREADCRUMB.add(breadcrumb);
+        }
+    }
 
     @Override
     protected void onInitialize() {
@@ -950,7 +986,7 @@ public class LoanCreatePage extends Page {
     protected void initAccountingUpFront() {
         this.upfrontContainer = new WebMarkupContainer("upfrontContainer");
         this.form.add(this.upfrontContainer);
-        
+
         this.upfrontFundSourceProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontFundSourceProvider.applyWhere("account_usage", "account_usage = 1");
         this.upfrontFundSourceProvider.applyWhere("classification_enum", "classification_enum = 1");
@@ -1003,8 +1039,7 @@ public class LoanCreatePage extends Page {
         this.upfrontPenaltiesReceivableProvider.applyWhere("account_usage", "account_usage = 1");
         this.upfrontPenaltiesReceivableProvider.applyWhere("classification_enum", "classification_enum = 1");
         this.upfrontPenaltiesReceivableField = new Select2SingleChoice<>("upfrontPenaltiesReceivableField",
-                new PropertyModel<>(this, "upfrontPenaltiesReceivableValue"),
-                this.upfrontPenaltiesReceivableProvider);
+                new PropertyModel<>(this, "upfrontPenaltiesReceivableValue"), this.upfrontPenaltiesReceivableProvider);
         this.upfrontPenaltiesReceivableField.setRequired(true);
         this.upfrontPenaltiesReceivableField.add(new OnChangeAjaxBehavior());
         this.upfrontContainer.add(this.upfrontPenaltiesReceivableField);
@@ -1052,8 +1087,7 @@ public class LoanCreatePage extends Page {
         this.upfrontIncomeFromPenaltiesProvider.applyWhere("account_usage", "account_usage = 1");
         this.upfrontIncomeFromPenaltiesProvider.applyWhere("classification_enum", "classification_enum = 4");
         this.upfrontIncomeFromPenaltiesField = new Select2SingleChoice<>("upfrontIncomeFromPenaltiesField",
-                new PropertyModel<>(this, "upfrontIncomeFromPenaltiesValue"),
-                this.upfrontIncomeFromPenaltiesProvider);
+                new PropertyModel<>(this, "upfrontIncomeFromPenaltiesValue"), this.upfrontIncomeFromPenaltiesProvider);
         this.upfrontIncomeFromPenaltiesField.setRequired(true);
         this.upfrontIncomeFromPenaltiesField.add(new OnChangeAjaxBehavior());
         this.upfrontContainer.add(this.upfrontIncomeFromPenaltiesField);

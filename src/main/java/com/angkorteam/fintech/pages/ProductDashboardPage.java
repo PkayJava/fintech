@@ -1,8 +1,15 @@
 package com.angkorteam.fintech.pages;
 
+import java.util.List;
+
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.charge.ChargeBrowsePage;
+import com.angkorteam.fintech.pages.product.LoanBrowsePage;
 import com.angkorteam.fintech.pages.rate.FloatingRateBrowsePage;
 import com.angkorteam.framework.BackgroundColor;
 import com.angkorteam.framework.Emoji;
@@ -10,12 +17,6 @@ import com.angkorteam.framework.models.InfoBox;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.panels.InfoBoxPanel;
 import com.google.common.collect.Lists;
-
-import java.util.List;
-
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 
 /**
  * Created by socheatkhauv on 7/16/17.
@@ -49,9 +50,9 @@ public class ProductDashboardPage extends Page {
         super.onInitialize();
 
         InfoBoxPanel loanProductsPage = new InfoBoxPanel("loanProductsPage",
-                Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Loan Products")
+                Model.of(new InfoBox().setPage(LoanBrowsePage.class).setTitle("Loan Products")
                         .setDescription("Add new loan product or modify or inactivate loan product")
-                        .setIcon(Emoji.ion_alert)));
+                        .setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(loanProductsPage);
 
         InfoBoxPanel productsMixPage = new InfoBoxPanel("productsMixPage",
