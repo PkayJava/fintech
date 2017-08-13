@@ -45,11 +45,6 @@ public class AccountHierarchyPage extends Page {
         BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Admin");
-            BREADCRUMB.add(breadcrumb);
-        }
-        {
-            PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Accounting");
             breadcrumb.setPage(AccountingPage.class);
             BREADCRUMB.add(breadcrumb);

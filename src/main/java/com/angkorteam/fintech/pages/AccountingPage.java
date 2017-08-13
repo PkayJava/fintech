@@ -1,21 +1,27 @@
 package com.angkorteam.fintech.pages;
 
+import java.util.List;
+
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.pages.account.*;
-import com.angkorteam.fintech.pages.charge.ChargeBrowsePage;
+import com.angkorteam.fintech.pages.account.AccountBrowsePage;
+import com.angkorteam.fintech.pages.account.AccrualAccountingPage;
+import com.angkorteam.fintech.pages.account.ClosureBrowsePage;
+import com.angkorteam.fintech.pages.account.FinancialActivityBrowsePage;
+import com.angkorteam.fintech.pages.account.JournalPostPage;
+import com.angkorteam.fintech.pages.account.RuleBrowsePage;
+import com.angkorteam.fintech.pages.account.RuleSelectPage;
+import com.angkorteam.fintech.pages.account.SearchJournalPage;
 import com.angkorteam.framework.BackgroundColor;
 import com.angkorteam.framework.Emoji;
 import com.angkorteam.framework.models.InfoBox;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.panels.InfoBoxPanel;
 import com.google.common.collect.Lists;
-
-import java.util.List;
-
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -32,11 +38,6 @@ public class AccountingPage extends Page {
 
     static {
         BREADCRUMB = Lists.newArrayList();
-        {
-            PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Admin");
-            BREADCRUMB.add(breadcrumb);
-        }
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Accounting");
