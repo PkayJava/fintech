@@ -15,8 +15,8 @@ public class RoleHelper {
     private static final String ENABLE_ROLE_COMMAND = "enable";
     private static final String ROLE_URL = "/api/v1/roles";
 
-    public static JsonNode create(IMifos session, JsonNode role) throws UnirestException {
-        return Helper.performServerPost(session, "/api/v1/roles", role);
+    public static JsonNode create(IMifos session, JsonNode object) throws UnirestException {
+        return Helper.performServerPost(session, "/api/v1/roles", object);
     }
 
     public static JsonNode disable(IMifos session, String id) throws UnirestException {

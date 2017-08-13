@@ -9,13 +9,13 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class HookHelper {
 
-    public static JsonNode create(IMifos session, JsonNode hook) throws UnirestException {
-        return Helper.performServerPost(session, "/api/v1/hooks", hook);
+    public static JsonNode create(IMifos session, JsonNode object) throws UnirestException {
+        return Helper.performServerPost(session, "/api/v1/hooks", object);
     }
 
-    public static JsonNode update(IMifos session, JsonNode hook) throws UnirestException {
-        String id = (String) hook.getObject().remove("id");
-        return Helper.performServerPut(session, "/api/v1/hooks/" + id, hook);
+    public static JsonNode update(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPut(session, "/api/v1/hooks/" + id, object);
     }
 
     public static JsonNode delete(IMifos session, String id) throws UnirestException {
