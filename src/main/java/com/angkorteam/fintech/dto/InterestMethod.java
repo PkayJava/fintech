@@ -2,7 +2,7 @@ package com.angkorteam.fintech.dto;
 
 public enum InterestMethod {
 
-    Flat("Flat", "Flat"), DecliningBalance("DecliningBalance", "Declining Balance");
+    Flat("1", "Flat"), DecliningBalance("0", "Declining Balance");
 
     private String literal;
 

@@ -2,9 +2,9 @@ package com.angkorteam.fintech.dto;
 
 public enum AdvancePaymentsAdjustmentType {
 
-    ReduceEMIAmount("ReduceEMIAmount", "Reduce EMI amount"), 
-    ReduceNumberOfInstallments("ReduceNumberOfInstallments", "Reduce number of installments"),
-    RescheduleNextRepayments("RescheduleNextRepayments", "Reschedule next repayments");
+    ReduceEMIAmount("3", "Reduce EMI amount"), 
+    ReduceNumberOfInstallments("2", "Reduce number of installments"),
+    RescheduleNextRepayments("1", "Reschedule next repayments");
 
     private String literal;
 

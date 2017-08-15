@@ -1,8 +1,8 @@
 package com.angkorteam.fintech.dto;
 
 public enum RepaidType {
-    
-    Day("Day", "Day"), Week("Week", "Weeks"), Month("Month", "Months");
+
+    Day("0", "Days"), Week("1", "Weeks"), Month("1", "Months");
 
     private String literal;
 

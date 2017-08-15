@@ -2,8 +2,8 @@ package com.angkorteam.fintech.dto;
 
 public enum DayInMonth {
     
-    Actual("Actual", "Actual"), 
-    D30("D30", "30 Days");
+    Actual("1", "Actual"), 
+    D30("30", "30 Days");
 
     private String literal;
 

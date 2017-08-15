@@ -2,9 +2,25 @@ package com.angkorteam.fintech.dto.request;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
+import com.angkorteam.fintech.dto.AdvancePaymentsAdjustmentType;
+import com.angkorteam.fintech.dto.Amortization;
+import com.angkorteam.fintech.dto.ClosureInterestCalculationRule;
+import com.angkorteam.fintech.dto.DayInMonth;
+import com.angkorteam.fintech.dto.DayInYear;
+import com.angkorteam.fintech.dto.InterestCalculationPeriod;
+import com.angkorteam.fintech.dto.InterestMethod;
+import com.angkorteam.fintech.dto.InterestRecalculationCompound;
+import com.angkorteam.fintech.dto.NominalInterestRateScheduleType;
+import com.angkorteam.fintech.dto.RepaidType;
+import com.angkorteam.fintech.dto.RepaymentStrategy;
+import com.angkorteam.fintech.dto.WhenType;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 
 public class LoanBuilder implements Serializable {
@@ -45,15 +61,6 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private Double numberOfRepayments;
-    private boolean hasNumberOfRepayments;
-
-    public LoanBuilder withNumberOfRepayments(Double numberOfRepayments) {
-        this.numberOfRepayments = numberOfRepayments;
-        this.hasNumberOfRepayments = true;
-        return this;
-    }
-
     private Integer repaymentEvery;
     private boolean hasRepaymentEvery;
 
@@ -63,55 +70,19 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private Integer repaymentFrequencyType;
-    private boolean hasRepaymentFrequencyType;
-
-    public LoanBuilder withRepaymentFrequencyType(Integer repaymentFrequencyType) {
-        this.repaymentFrequencyType = repaymentFrequencyType;
-        this.hasRepaymentFrequencyType = true;
-        return this;
-    }
-
-    private Integer amortizationType;
-    private boolean hasAmortizationType;
-
-    public LoanBuilder withAmortizationType(Integer amortizationType) {
-        this.amortizationType = amortizationType;
-        this.hasAmortizationType = true;
-        return this;
-    }
-
-    private Integer interestCalculationPeriodType;
-    private boolean hasInterestCalculationPeriodType;
-
-    public LoanBuilder hasInterestCalculationPeriodType(Integer interestCalculationPeriodType) {
-        this.interestCalculationPeriodType = interestCalculationPeriodType;
-        this.hasInterestCalculationPeriodType = true;
-        return this;
-    }
-
-    private Integer transactionProcessingStrategyId;
-    private boolean hasTransactionProcessingStrategyId;
-
-    public LoanBuilder withTransactionProcessingStrategyId(Integer transactionProcessingStrategyId) {
-        this.transactionProcessingStrategyId = transactionProcessingStrategyId;
-        this.hasTransactionProcessingStrategyId = true;
-        return this;
-    }
-
-    private Integer daysInYearType;
+    private DayInYear daysInYearType;
     private boolean hasDaysInYearType;
 
-    public LoanBuilder withDaysInYearType(Integer daysInYearType) {
+    public LoanBuilder withDaysInYearType(DayInYear daysInYearType) {
         this.daysInYearType = daysInYearType;
         this.hasDaysInYearType = true;
         return this;
     }
 
-    private Integer daysInMonthType;
+    private DayInMonth daysInMonthType;
     private boolean hasDaysInMonthType;
 
-    public LoanBuilder withDaysInMonthType(Integer daysInMonthType) {
+    public LoanBuilder withDaysInMonthType(DayInMonth daysInMonthType) {
         this.daysInMonthType = daysInMonthType;
         this.hasDaysInMonthType = true;
         return this;
@@ -123,24 +94,6 @@ public class LoanBuilder implements Serializable {
     public LoanBuilder withInterestRecalculationEnabled(boolean interestRecalculationEnabled) {
         this.interestRecalculationEnabled = interestRecalculationEnabled;
         this.hasInterestRecalculationEnabled = true;
-        return this;
-    }
-
-    private Integer interestRatePerPeriod;
-    private boolean hasInterestRatePerPeriod;
-
-    public LoanBuilder withInterestRatePerPeriod(Integer interestRatePerPeriod) {
-        this.interestRatePerPeriod = interestRatePerPeriod;
-        this.hasInterestRatePerPeriod = true;
-        return this;
-    }
-
-    private Integer interestRateFrequencyType;
-    private boolean hasInterestRateFrequencyType;
-
-    public LoanBuilder withInterestRateFrequencyType(Integer interestRateFrequencyType) {
-        this.interestRateFrequencyType = interestRateFrequencyType;
-        this.hasInterestRateFrequencyType = true;
         return this;
     }
 
@@ -234,26 +187,629 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private Integer minPrincipal;
+    private Double minPrincipal;
     private boolean hasMinPrincipal;
 
-    public LoanBuilder withMinPrincipal(Integer minPrincipal) {
+    public LoanBuilder withMinPrincipal(Double minPrincipal) {
         this.minPrincipal = minPrincipal;
         this.hasMinPrincipal = true;
         return this;
     }
 
-    private Integer maxPrincipal;
+    private Double maxPrincipal;
     private boolean hasMaxPrincipal;
 
-    public LoanBuilder withMaxPrincipal(Integer maxPrincipal) {
+    public LoanBuilder withMaxPrincipal(Double maxPrincipal) {
         this.maxPrincipal = maxPrincipal;
         this.hasMaxPrincipal = true;
         return this;
     }
 
+    private Double principal;
+    private boolean hasPrincipal;
+
+    public LoanBuilder withPrincipal(Double principal) {
+        this.principal = principal;
+        this.hasPrincipal = true;
+        return this;
+    }
+
+    private boolean useBorrowerCycle;
+    private boolean hasUseBorrowerCycle;
+
+    public LoanBuilder withUseBorrowerCycle(boolean useBorrowerCycle) {
+        this.useBorrowerCycle = useBorrowerCycle;
+        this.hasUseBorrowerCycle = true;
+        return this;
+    }
+
+    private Double minNumberOfRepayments;
+    private boolean hasMinNumberOfRepayments;
+
+    public LoanBuilder withMinNumberOfRepayments(Double minNumberOfRepayments) {
+        this.minNumberOfRepayments = minNumberOfRepayments;
+        this.hasMinNumberOfRepayments = true;
+        return this;
+    }
+
+    private Double numberOfRepayments;
+    private boolean hasNumberOfRepayments;
+
+    public LoanBuilder withNumberOfRepayments(Double numberOfRepayments) {
+        this.numberOfRepayments = numberOfRepayments;
+        this.hasNumberOfRepayments = true;
+        return this;
+    }
+
+    private Double maxNumberOfRepayments;
+    private boolean hasMaxNumberOfRepayments;
+
+    public LoanBuilder withMaxNumberOfRepayments(Double maxNumberOfRepayments) {
+        this.maxNumberOfRepayments = maxNumberOfRepayments;
+        this.hasMaxNumberOfRepayments = true;
+        return this;
+    }
+
+    private Double minInterestRatePerPeriod;
+    private boolean hasMinInterestRatePerPeriod;
+
+    public LoanBuilder withMinInterestRatePerPeriod(Double minInterestRatePerPeriod) {
+        this.minInterestRatePerPeriod = minInterestRatePerPeriod;
+        this.hasMinInterestRatePerPeriod = true;
+        return this;
+    }
+
+    private Double interestRatePerPeriod;
+    private boolean hasInterestRatePerPeriod;
+
+    public LoanBuilder withInterestRatePerPeriod(Double interestRatePerPeriod) {
+        this.interestRatePerPeriod = interestRatePerPeriod;
+        this.hasInterestRatePerPeriod = true;
+        return this;
+    }
+
+    private Double maxInterestRatePerPeriod;
+    private boolean hasMaxInterestRatePerPeriod;
+
+    public LoanBuilder withMaxInterestRatePerPeriod(Double maxInterestRatePerPeriod) {
+        this.maxInterestRatePerPeriod = maxInterestRatePerPeriod;
+        this.hasMaxInterestRatePerPeriod = true;
+        return this;
+    }
+
+    private NominalInterestRateScheduleType interestRateFrequencyType;
+    private boolean hasInterestRateFrequencyType;
+
+    public LoanBuilder withInterestRateFrequencyType(NominalInterestRateScheduleType interestRateFrequencyType) {
+        this.interestRateFrequencyType = interestRateFrequencyType;
+        this.hasInterestRateFrequencyType = true;
+        return this;
+    }
+
+    private Double minimumDaysBetweenDisbursalAndFirstRepayment;
+    private boolean hasMinimumDaysBetweenDisbursalAndFirstRepayment;
+
+    public LoanBuilder withMinimumDaysBetweenDisbursalAndFirstRepayment(
+            Double minimumDaysBetweenDisbursalAndFirstRepayment) {
+        this.minimumDaysBetweenDisbursalAndFirstRepayment = minimumDaysBetweenDisbursalAndFirstRepayment;
+        this.hasMinimumDaysBetweenDisbursalAndFirstRepayment = true;
+        return this;
+    }
+
+    private RepaidType repaymentFrequencyType;
+    private boolean hasRepaymentFrequencyType;
+
+    public LoanBuilder withRepaymentFrequencyType(RepaidType repaymentFrequencyType) {
+        this.repaymentFrequencyType = repaymentFrequencyType;
+        this.hasRepaymentFrequencyType = true;
+        return this;
+    }
+
+    private boolean linkedToFloatingInterestRates;
+    private boolean hasLinkedToFloatingInterestRates;
+
+    public LoanBuilder withLinkedToFloatingInterestRates(boolean linkedToFloatingInterestRates) {
+        this.linkedToFloatingInterestRates = linkedToFloatingInterestRates;
+        this.hasLinkedToFloatingInterestRates = true;
+        return this;
+    }
+
+    private boolean floatingInterestRateCalculationAllowed;
+    private boolean hasFloatingInterestRateCalculationAllowed;
+
+    public LoanBuilder withFloatingInterestRateCalculationAllowed(boolean floatingInterestRateCalculationAllowed) {
+        this.floatingInterestRateCalculationAllowed = floatingInterestRateCalculationAllowed;
+        this.hasFloatingInterestRateCalculationAllowed = true;
+        return this;
+    }
+
+    private Double interestRateDifferential;
+    private boolean hasInterestRateDifferential;
+
+    public LoanBuilder withInterestRateDifferential(Double interestRateDifferential) {
+        this.interestRateDifferential = interestRateDifferential;
+        this.hasInterestRateDifferential = true;
+        return this;
+    }
+
+    private String floatingRatesId;
+    private boolean hasFloatingRatesId;
+
+    public LoanBuilder withFloatingRatesId(String floatingRatesId) {
+        this.floatingRatesId = floatingRatesId;
+        this.hasFloatingRatesId = true;
+        return this;
+    }
+
+    private Double maxDifferentialLendingRate;
+    private boolean hasMaxDifferentialLendingRate;
+
+    public LoanBuilder withMaxDifferentialLendingRate(Double maxDifferentialLendingRate) {
+        this.maxDifferentialLendingRate = maxDifferentialLendingRate;
+        this.hasMaxDifferentialLendingRate = true;
+        return this;
+    }
+
+    private Double defaultDifferentialLendingRate;
+    private boolean hasDefaultDifferentialLendingRate;
+
+    public LoanBuilder withDefaultDifferentialLendingRate(Double defaultDifferentialLendingRate) {
+        this.defaultDifferentialLendingRate = defaultDifferentialLendingRate;
+        this.hasDefaultDifferentialLendingRate = true;
+        return this;
+    }
+
+    private Double minDifferentialLendingRate;
+    private boolean hasMinDifferentialLendingRate;
+
+    public LoanBuilder withMinDifferentialLendingRate(Double minDifferentialLendingRate) {
+        this.minDifferentialLendingRate = minDifferentialLendingRate;
+        this.hasMinDifferentialLendingRate = true;
+        return this;
+    }
+
+    private List<Map<String, Object>> principalVariationsForBorrowerCycle = Lists.newArrayList();
+    private boolean hasPrincipalVariationsForBorrowerCycle;
+
+    public LoanBuilder withPrincipalVariationsForBorrowerCycle(WhenType valueConditionType, Double borrowerCycleNumber,
+            Double minValue, Double defaultValue, Double maxValue) {
+        Map<String, Object> cycle = Maps.newHashMap();
+        cycle.put("valueConditionType", valueConditionType.getLiteral());
+        cycle.put("borrowerCycleNumber", borrowerCycleNumber);
+        cycle.put("minValue", minValue);
+        cycle.put("defaultValue", defaultValue);
+        cycle.put("maxValue", maxValue);
+        this.principalVariationsForBorrowerCycle.add(cycle);
+        this.hasPrincipalVariationsForBorrowerCycle = true;
+        return this;
+    }
+
+    private List<Map<String, Object>> numberOfRepaymentVariationsForBorrowerCycle = Lists.newArrayList();
+    private boolean hasNumberOfRepaymentVariationsForBorrowerCycle;
+
+    public LoanBuilder withNumberOfRepaymentVariationsForBorrowerCycle(WhenType valueConditionType,
+            Double borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
+        Map<String, Object> cycle = Maps.newHashMap();
+        cycle.put("valueConditionType", valueConditionType.getLiteral());
+        cycle.put("borrowerCycleNumber", borrowerCycleNumber);
+        cycle.put("minValue", minValue);
+        cycle.put("defaultValue", defaultValue);
+        cycle.put("maxValue", maxValue);
+        this.numberOfRepaymentVariationsForBorrowerCycle.add(cycle);
+        this.hasNumberOfRepaymentVariationsForBorrowerCycle = true;
+        return this;
+    }
+
+    private List<Map<String, Object>> interestRateVariationsForBorrowerCycle = Lists.newArrayList();
+    private boolean hasInterestRateVariationsForBorrowerCycle;
+
+    public LoanBuilder withInterestRateVariationsForBorrowerCycle(WhenType valueConditionType,
+            Double borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
+        Map<String, Object> cycle = Maps.newHashMap();
+        cycle.put("valueConditionType", valueConditionType.getLiteral());
+        cycle.put("borrowerCycleNumber", borrowerCycleNumber);
+        cycle.put("minValue", minValue);
+        cycle.put("defaultValue", defaultValue);
+        cycle.put("maxValue", maxValue);
+        this.interestRateVariationsForBorrowerCycle.add(cycle);
+        this.hasNumberOfRepaymentVariationsForBorrowerCycle = true;
+        return this;
+    }
+
+    private Amortization amortizationType;
+    private boolean hasAmortizationType;
+
+    public LoanBuilder withAmortizationType(Amortization amortizationType) {
+        this.amortizationType = amortizationType;
+        this.hasAmortizationType = true;
+        return this;
+    }
+
+    private InterestMethod interestType;
+    private boolean hasInterestType;
+
+    public LoanBuilder withInterestType(InterestMethod interestType) {
+        this.interestType = interestType;
+        this.hasInterestType = true;
+        return this;
+    }
+
+    private boolean allowPartialPeriodInterestCalcualtion;
+    private boolean hasAllowPartialPeriodInterestCalcualtion;
+
+    public LoanBuilder withAllowPartialPeriodInterestCalcualtion(boolean allowPartialPeriodInterestCalcualtion) {
+        this.allowPartialPeriodInterestCalcualtion = allowPartialPeriodInterestCalcualtion;
+        this.hasAllowPartialPeriodInterestCalcualtion = true;
+        return this;
+    }
+
+    private InterestCalculationPeriod interestCalculationPeriodType;
+    private boolean hasInterestCalculationPeriodType;
+
+    public LoanBuilder withInterestCalculationPeriodType(InterestCalculationPeriod interestCalculationPeriodType) {
+        this.interestCalculationPeriodType = interestCalculationPeriodType;
+        this.hasInterestCalculationPeriodType = true;
+        return this;
+    }
+
+    private RepaymentStrategy transactionProcessingStrategyId;
+    private boolean hasTransactionProcessingStrategyId;
+
+    public LoanBuilder withTransactionProcessingStrategyId(RepaymentStrategy repaymentStrategy) {
+        this.transactionProcessingStrategyId = repaymentStrategy;
+        this.hasTransactionProcessingStrategyId = true;
+        return this;
+    }
+
+    private Double graceOnPrincipalPayment;
+    private boolean hasGraceOnPrincipalPayment;
+
+    public LoanBuilder withGraceOnPrincipalPayment(Double graceOnPrincipalPayment) {
+        this.graceOnPrincipalPayment = graceOnPrincipalPayment;
+        this.hasGraceOnPrincipalPayment = true;
+        return this;
+    }
+
+    private Double graceOnInterestPayment;
+    private boolean hasGraceOnInterestPayment;
+
+    public LoanBuilder withGraceOnInterestPayment(Double graceOnInterestPayment) {
+        this.graceOnInterestPayment = graceOnInterestPayment;
+        this.hasGraceOnInterestPayment = true;
+        return this;
+    }
+
+    private Double graceOnInterestCharged;
+    private boolean hasGraceOnInterestCharged;
+
+    public LoanBuilder withGraceOnInterestCharged(Double graceOnInterestCharged) {
+        this.graceOnInterestCharged = graceOnInterestCharged;
+        this.hasGraceOnInterestCharged = true;
+        return this;
+    }
+
+    private Double inArrearsTolerance;
+    private boolean hasInArrearsTolerance;
+
+    public LoanBuilder withInArrearsTolerance(Double inArrearsTolerance) {
+        this.inArrearsTolerance = inArrearsTolerance;
+        this.hasInArrearsTolerance = true;
+        return this;
+    }
+
+    private boolean canDefineInstallmentAmount;
+    private boolean hasCanDefineInstallmentAmount;
+
+    public LoanBuilder withCanDefineInstallmentAmount(boolean canDefineInstallmentAmount) {
+        this.canDefineInstallmentAmount = canDefineInstallmentAmount;
+        this.hasCanDefineInstallmentAmount = true;
+        return this;
+    }
+
+    private Double graceOnArrearsAgeing;
+    private boolean hasGraceOnArrearsAgeing;
+
+    public LoanBuilder withGraceOnArrearsAgeing(Double graceOnArrearsAgeing) {
+        this.graceOnArrearsAgeing = graceOnArrearsAgeing;
+        this.hasGraceOnArrearsAgeing = true;
+        return this;
+    }
+
+    private Double overdueDaysForNPA;
+    private boolean hasOverdueDaysForNPA;
+
+    public LoanBuilder withOverdueDaysForNPA(Double overdueDaysForNPA) {
+        this.overdueDaysForNPA = overdueDaysForNPA;
+        this.hasOverdueDaysForNPA = true;
+        return this;
+    }
+
+    private Double principalThresholdForLastInstallment;
+    private boolean hasPrincipalThresholdForLastInstallment;
+
+    public LoanBuilder withPrincipalThresholdForLastInstallment(Double principalThresholdForLastInstallment) {
+        this.principalThresholdForLastInstallment = principalThresholdForLastInstallment;
+        this.hasPrincipalThresholdForLastInstallment = true;
+        return this;
+    }
+
+    private Double minimumGap;
+    private boolean hasMinimumGap;
+
+    public LoanBuilder withMinimumGap(Double minimumGap) {
+        this.minimumGap = minimumGap;
+        this.hasMinimumGap = true;
+        return this;
+    }
+
+    private Double maximumGap;
+    private boolean hasMaximumGap;
+
+    public LoanBuilder withMaximumGap(Double maximumGap) {
+        this.maximumGap = maximumGap;
+        this.hasMaximumGap = true;
+        return this;
+    }
+
+    private boolean accountMovesOutOfNPAOnlyOnArrearsCompletion;
+    private boolean hasAccountMovesOutOfNPAOnlyOnArrearsCompletion;
+
+    public LoanBuilder withAccountMovesOutOfNPAOnlyOnArrearsCompletion(
+            boolean accountMovesOutOfNPAOnlyOnArrearsCompletion) {
+        this.accountMovesOutOfNPAOnlyOnArrearsCompletion = accountMovesOutOfNPAOnlyOnArrearsCompletion;
+        this.hasAccountMovesOutOfNPAOnlyOnArrearsCompletion = true;
+        return this;
+    }
+
+    private boolean allowVariableInstallments;
+    private boolean hasAllowVariableInstallments;
+
+    public LoanBuilder withAllowVariableInstallments(boolean allowVariableInstallments) {
+        this.allowVariableInstallments = allowVariableInstallments;
+        this.hasAllowVariableInstallments = true;
+        return this;
+    }
+
+    private boolean canUseForTopup;
+    private boolean hasCanUseForTopup;
+
+    public LoanBuilder withCanUseForTopup(boolean canUseForTopup) {
+        this.canUseForTopup = canUseForTopup;
+        this.hasCanUseForTopup = true;
+        return this;
+    }
+
+    private ClosureInterestCalculationRule preClosureInterestCalculationStrategy;
+    private boolean hasPreClosureInterestCalculationStrategy;
+
+    public LoanBuilder withPreClosureInterestCalculationStrategy(
+            ClosureInterestCalculationRule preClosureInterestCalculationStrategy) {
+        this.preClosureInterestCalculationStrategy = preClosureInterestCalculationStrategy;
+        this.hasPreClosureInterestCalculationStrategy = true;
+        return this;
+    }
+
+    private AdvancePaymentsAdjustmentType rescheduleStrategyMethod;
+    private boolean hasRescheduleStrategyMethod;
+
+    public LoanBuilder withRescheduleStrategyMethod(AdvancePaymentsAdjustmentType rescheduleStrategyMethod) {
+        this.rescheduleStrategyMethod = rescheduleStrategyMethod;
+        this.hasRescheduleStrategyMethod = true;
+        return this;
+    }
+
+    private InterestRecalculationCompound interestRecalculationCompoundingMethod;
+    private boolean hasInterestRecalculationCompoundingMethod;
+
+    public LoanBuilder withInterestRecalculationCompoundingMethod(
+            InterestRecalculationCompound interestRecalculationCompoundingMethod) {
+        this.interestRecalculationCompoundingMethod = interestRecalculationCompoundingMethod;
+        this.hasInterestRecalculationCompoundingMethod = true;
+        return this;
+    }
+
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
+
+        if (this.hasInterestRecalculationCompoundingMethod) {
+            if (this.interestRecalculationCompoundingMethod != null) {
+                object.getObject().put("interestRecalculationCompoundingMethod",
+                        this.interestRecalculationCompoundingMethod.getLiteral());
+            } else {
+                object.getObject().put("interestRecalculationCompoundingMethod", (String) null);
+            }
+        }
+
+        if (this.hasRescheduleStrategyMethod) {
+            if (this.rescheduleStrategyMethod != null) {
+                object.getObject().put("rescheduleStrategyMethod", this.rescheduleStrategyMethod.getLiteral());
+            } else {
+                object.getObject().put("rescheduleStrategyMethod", (String) null);
+            }
+        }
+
+        if (this.hasPreClosureInterestCalculationStrategy) {
+            if (this.preClosureInterestCalculationStrategy != null) {
+                object.getObject().put("preClosureInterestCalculationStrategy",
+                        this.preClosureInterestCalculationStrategy.getLiteral());
+            } else {
+                object.getObject().put("preClosureInterestCalculationStrategy", (String) null);
+            }
+        }
+
+        if (this.hasCanUseForTopup) {
+            object.getObject().put("canUseForTopup", this.canUseForTopup);
+        }
+
+        if (this.hasAllowVariableInstallments) {
+            object.getObject().put("allowVariableInstallments", this.allowVariableInstallments);
+        }
+
+        if (this.hasAccountMovesOutOfNPAOnlyOnArrearsCompletion) {
+            object.getObject().put("accountMovesOutOfNPAOnlyOnArrearsCompletion",
+                    this.accountMovesOutOfNPAOnlyOnArrearsCompletion);
+        }
+
+        if (this.hasMaximumGap) {
+            object.getObject().put("maximumGap", this.maximumGap);
+        }
+
+        if (this.hasMinimumGap) {
+            object.getObject().put("minimumGap", this.minimumGap);
+        }
+
+        if (this.hasPrincipalThresholdForLastInstallment) {
+            object.getObject().put("principalThresholdForLastInstallment", this.principalThresholdForLastInstallment);
+        }
+
+        if (this.hasOverdueDaysForNPA) {
+            object.getObject().put("overdueDaysForNPA", this.overdueDaysForNPA);
+        }
+
+        if (this.hasGraceOnArrearsAgeing) {
+            object.getObject().put("graceOnArrearsAgeing", this.graceOnArrearsAgeing);
+        }
+
+        if (this.hasCanDefineInstallmentAmount) {
+            object.getObject().put("canDefineInstallmentAmount", this.canDefineInstallmentAmount);
+        }
+
+        if (this.hasInArrearsTolerance) {
+            object.getObject().put("inArrearsTolerance", this.inArrearsTolerance);
+        }
+
+        if (this.hasGraceOnInterestCharged) {
+            object.getObject().put("graceOnInterestCharged", this.graceOnInterestCharged);
+        }
+
+        if (this.hasGraceOnInterestCharged) {
+            object.getObject().put("graceOnInterestCharged", this.graceOnInterestCharged);
+        }
+
+        if (this.hasGraceOnInterestPayment) {
+            object.getObject().put("graceOnInterestPayment", this.graceOnInterestPayment);
+        }
+
+        if (this.hasGraceOnPrincipalPayment) {
+            object.getObject().put("graceOnPrincipalPayment", this.graceOnPrincipalPayment);
+        }
+
+        if (this.hasInterestCalculationPeriodType) {
+            if (this.interestCalculationPeriodType != null) {
+                object.getObject().put("interestCalculationPeriodType",
+                        this.interestCalculationPeriodType.getLiteral());
+            } else {
+                object.getObject().put("interestCalculationPeriodType", (String) null);
+            }
+        }
+
+        if (this.hasAllowPartialPeriodInterestCalcualtion) {
+            object.getObject().put("allowPartialPeriodInterestCalcualtion", this.allowPartialPeriodInterestCalcualtion);
+        }
+
+        if (this.hasInterestType) {
+            if (this.interestType != null) {
+                object.getObject().put("interestType", this.interestType.getLiteral());
+            } else {
+                object.getObject().put("interestType", (String) null);
+            }
+        }
+
+        if (this.hasAmortizationType) {
+            if (this.amortizationType != null) {
+                object.getObject().put("amortizationType", this.amortizationType.getLiteral());
+            } else {
+                object.getObject().put("amortizationType", (String) null);
+            }
+        }
+
+        if (this.hasInterestRateVariationsForBorrowerCycle) {
+            object.getObject().put("interestRateVariationsForBorrowerCycle",
+                    this.interestRateVariationsForBorrowerCycle);
+        }
+
+        if (this.hasNumberOfRepaymentVariationsForBorrowerCycle) {
+            object.getObject().put("numberOfRepaymentVariationsForBorrowerCycle",
+                    this.numberOfRepaymentVariationsForBorrowerCycle);
+        }
+
+        if (this.hasPrincipalVariationsForBorrowerCycle) {
+            object.getObject().put("principalVariationsForBorrowerCycle", this.principalVariationsForBorrowerCycle);
+        }
+
+        if (this.hasMinDifferentialLendingRate) {
+            object.getObject().put("minDifferentialLendingRate", this.minDifferentialLendingRate);
+        }
+
+        if (this.hasDefaultDifferentialLendingRate) {
+            object.getObject().put("defaultDifferentialLendingRate", this.defaultDifferentialLendingRate);
+        }
+
+        if (this.hasMaxDifferentialLendingRate) {
+            object.getObject().put("maxDifferentialLendingRate", this.maxDifferentialLendingRate);
+        }
+
+        if (this.hasFloatingRatesId) {
+            object.getObject().put("floatingRatesId", this.floatingRatesId);
+        }
+
+        if (this.hasInterestRateDifferential) {
+            object.getObject().put("interestRateDifferential", this.interestRateDifferential);
+        }
+
+        if (this.hasFloatingInterestRateCalculationAllowed) {
+            object.getObject().put("isFloatingInterestRateCalculationAllowed",
+                    this.floatingInterestRateCalculationAllowed);
+        }
+
+        if (this.hasLinkedToFloatingInterestRates) {
+            object.getObject().put("isLinkedToFloatingInterestRates", this.linkedToFloatingInterestRates);
+        }
+
+        if (this.hasMinimumDaysBetweenDisbursalAndFirstRepayment) {
+            object.getObject().put("minimumDaysBetweenDisbursalAndFirstRepayment",
+                    this.minimumDaysBetweenDisbursalAndFirstRepayment);
+        }
+
+        if (this.hasInterestRateFrequencyType) {
+            if (this.interestRateFrequencyType != null) {
+                object.getObject().put("interestRateFrequencyType", this.interestRateFrequencyType.getLiteral());
+            } else {
+                object.getObject().put("interestRateFrequencyType", (String) null);
+            }
+        }
+
+        if (this.hasMaxInterestRatePerPeriod) {
+            object.getObject().put("maxInterestRatePerPeriod", this.maxInterestRatePerPeriod);
+        }
+
+        if (this.hasInterestRatePerPeriod) {
+            object.getObject().put("interestRatePerPeriod", this.interestRatePerPeriod);
+        }
+
+        if (this.hasMinInterestRatePerPeriod) {
+            object.getObject().put("minInterestRatePerPeriod", this.minInterestRatePerPeriod);
+        }
+
+        if (this.hasMaxNumberOfRepayments) {
+            object.getObject().put("maxNumberOfRepayments", this.maxNumberOfRepayments);
+        }
+
+        if (this.hasMinNumberOfRepayments) {
+            object.getObject().put("minNumberOfRepayments", this.minNumberOfRepayments);
+        }
+
+        if (this.hasNumberOfRepayments) {
+            object.getObject().put("numberOfRepayments", this.numberOfRepayments);
+        }
+
+        if (this.hasPrincipal) {
+            object.getObject().put("principal", this.principal);
+        }
+
+        if (this.hasUseBorrowerCycle) {
+            object.getObject().put("useBorrowerCycle", this.useBorrowerCycle);
+        }
 
         if (this.hasMaxPrincipal) {
             object.getObject().put("maxPrincipal", this.maxPrincipal);
@@ -311,28 +867,33 @@ public class LoanBuilder implements Serializable {
             object.getObject().put("accountingRule", this.accountingRule);
         }
 
-        if (this.hasInterestRateFrequencyType) {
-            object.getObject().put("interestRateFrequencyType", this.interestRateFrequencyType);
-        }
-
-        if (this.hasInterestRatePerPeriod) {
-            object.getObject().put("interestRatePerPeriod", this.interestRatePerPeriod);
-        }
-
         if (this.hasInterestRecalculationEnabled) {
             object.getObject().put("isInterestRecalculationEnabled", interestRecalculationEnabled);
         }
 
         if (this.hasDaysInMonthType) {
-            object.getObject().put("daysInMonthType", this.daysInMonthType);
+            if (this.daysInMonthType != null) {
+                object.getObject().put("daysInMonthType", this.daysInMonthType.getLiteral());
+            } else {
+                object.getObject().put("daysInMonthType", (String) null);
+            }
         }
 
         if (this.hasDaysInYearType) {
-            object.getObject().put("daysInYearType", this.daysInYearType);
+            if (this.daysInYearType != null) {
+                object.getObject().put("daysInYearType", this.daysInYearType.getLiteral());
+            } else {
+                object.getObject().put("daysInYearType", (String) null);
+            }
         }
 
         if (this.hasTransactionProcessingStrategyId) {
-            object.getObject().put("transactionProcessingStrategyId", this.transactionProcessingStrategyId);
+            if (this.transactionProcessingStrategyId != null) {
+                object.getObject().put("transactionProcessingStrategyId",
+                        this.transactionProcessingStrategyId.getLiteral());
+            } else {
+                object.getObject().put("transactionProcessingStrategyId", (String) null);
+            }
         }
 
         if (this.hasName) {
@@ -360,7 +921,11 @@ public class LoanBuilder implements Serializable {
         }
 
         if (this.hasRepaymentFrequencyType) {
-            object.getObject().put("repaymentFrequencyType", this.repaymentFrequencyType);
+            if (this.repaymentFrequencyType != null) {
+                object.getObject().put("repaymentFrequencyType", this.repaymentFrequencyType.getLiteral());
+            } else {
+                object.getObject().put("repaymentFrequencyType", (String) null);
+            }
         }
 
         if (this.hasAmortizationType) {

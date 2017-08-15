@@ -210,17 +210,25 @@
                 
                 <div wicket:id="floatInterestRateContainer">
                 <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
                     <label wicket:for="floatingInterestRateField">Floating interest rate</label>
                     <select wicket:id="floatingInterestRateField" class="form-control select2" style="width: 100%;"></select>
                     <span wicket:id="floatingInterestRateFeedback" class="help-block"></span>
                 </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
                     <label wicket:for="floatingInterestDifferentialField">Floating interest differential rate</label>
                     <input wicket:id="floatingInterestDifferentialField" type="text" class="form-control"/>
                     <span wicket:id="floatingInterestDifferentialFeedback" class="help-block"></span>
                 </div>
-                
+                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <label>&nbsp;</label>
+                    <span style="display: block">
+                        <label>
+                            <input type="checkbox" wicket:id="floatingInterestAllowedField"> Is Floating Calculation Allowed?
+                        </label>
+                    </span>
+                    <span wicket:id="floatingInterestAllowedFeedback" class="help-block"></span>
+                </div>
                 <div class="clearfix"></div>
                 <!-- Row -->
                 <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">

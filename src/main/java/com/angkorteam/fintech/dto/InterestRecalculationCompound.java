@@ -2,10 +2,10 @@ package com.angkorteam.fintech.dto;
 
 public enum InterestRecalculationCompound {
 
-    None("None", "None"), 
-    Fee("Fee", "Fee"),
-    Interest("Interest", "Interest"),
-    FeeAndInterest("FeeAndInterest", "Fee and Interest");
+    None("0", "None"), 
+    Fee("2", "Fee"),
+    Interest("1", "Interest"),
+    FeeAndInterest("3", "Fee and Interest");
 
     private String literal;
 

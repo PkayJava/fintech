@@ -21,12 +21,19 @@ import org.apache.wicket.validation.validator.RangeValidator;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.AdvancePaymentsAdjustmentType;
+import com.angkorteam.fintech.dto.Amortization;
 import com.angkorteam.fintech.dto.ChargeCalculation;
 import com.angkorteam.fintech.dto.ChargeTime;
+import com.angkorteam.fintech.dto.ClosureInterestCalculationRule;
 import com.angkorteam.fintech.dto.Frequency;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.InterestCalculationPeriod;
+import com.angkorteam.fintech.dto.InterestMethod;
 import com.angkorteam.fintech.dto.InterestRecalculationCompound;
+import com.angkorteam.fintech.dto.NominalInterestRateScheduleType;
+import com.angkorteam.fintech.dto.RepaidType;
+import com.angkorteam.fintech.dto.WhenType;
 import com.angkorteam.fintech.dto.request.LoanBuilder;
 import com.angkorteam.fintech.helper.LoanHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
@@ -2261,6 +2268,47 @@ public class LoanCreatePage extends Page {
         this.recalculateInterestContainer
                 .setVisible(this.recalculateInterestValue != null && this.recalculateInterestValue);
 
+        this.compoundingTypeContainer.setVisible(false);
+        this.compoundingDayContainer.setVisible(false);
+        this.compoundingIntervalContainer.setVisible(false);
+
+        if (this.interestRecalculationCompoundingOnValue != null && InterestRecalculationCompound
+                .valueOf(this.interestRecalculationCompoundingOnValue.getId()) != InterestRecalculationCompound.None) {
+            this.compoundingContainer.setVisible(true);
+
+            if (this.compoundingValue != null) {
+                Frequency frequency = Frequency.valueOf(this.compoundingValue.getId());
+                if (frequency == Frequency.Daily || frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
+                    this.compoundingIntervalContainer.setVisible(true);
+                }
+                if (frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
+                    this.compoundingDayContainer.setVisible(true);
+                }
+                if (frequency == Frequency.Monthly) {
+                    this.compoundingTypeContainer.setVisible(true);
+                }
+            }
+        } else {
+            this.compoundingContainer.setVisible(false);
+        }
+
+        this.recalculateTypeContainer.setVisible(false);
+        this.recalculateDayContainer.setVisible(false);
+        this.recalculateIntervalContainer.setVisible(false);
+
+        if (this.recalculateValue != null) {
+            Frequency frequency = Frequency.valueOf(this.recalculateValue.getId());
+            if (frequency == Frequency.Daily || frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
+                this.recalculateIntervalContainer.setVisible(true);
+            }
+            if (frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
+                this.recalculateDayContainer.setVisible(true);
+            }
+            if (frequency == Frequency.Monthly) {
+                this.recalculateTypeContainer.setVisible(true);
+            }
+        }
+
         this.placeGuaranteeFundsOnHoldContainer
                 .setVisible(this.placeGuaranteeFundsOnHoldValue != null && this.placeGuaranteeFundsOnHoldValue);
 
@@ -2939,6 +2987,7 @@ public class LoanCreatePage extends Page {
     protected void loanCyclePopupOnClose(String elementId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", UUID.randomUUID().toString());
+        item.put("valueConditionType", WhenType.valueOf(this.itemWhenValue.getId()));
         item.put("when", this.itemWhenValue.getText());
         item.put("cycle", this.itemLoanCycleValue);
         item.put("minimum", this.itemMinimumValue);
@@ -3075,8 +3124,158 @@ public class LoanCreatePage extends Page {
         builder.withDigitsAfterDecimal(this.decimalPlaceValue);
         builder.withInMultiplesOf(this.currencyInMultipleOfValue);
         builder.withInstallmentAmountInMultiplesOf(this.installmentInMultipleOfValue);
-        
+
         // Terms
+
+        boolean useBorrowerCycle = this.termVaryBasedOnLoanCycleValue == null ? false
+                : this.termVaryBasedOnLoanCycleValue;
+        builder.withUseBorrowerCycle(useBorrowerCycle);
+        builder.withMinPrincipal(this.principalMinimumValue);
+        builder.withPrincipal(this.principalDefaultValue);
+        builder.withMaxPrincipal(this.principalMaximumValue);
+        builder.withMinNumberOfRepayments(this.numberOfRepaymentMinimumValue);
+        builder.withNumberOfRepayments(this.numberOfRepaymentDefaultValue);
+        builder.withMaxNumberOfRepayments(this.numberOfRepaymentMaximumValue);
+
+        boolean linkedToFloatingInterestRates = this.linkedToFloatingInterestRatesValue == null ? false
+                : this.linkedToFloatingInterestRatesValue;
+        builder.withLinkedToFloatingInterestRates(linkedToFloatingInterestRates);
+
+        if (linkedToFloatingInterestRates) {
+            builder.withMinDifferentialLendingRate(this.floatingInterestMinimumValue);
+            builder.withDefaultDifferentialLendingRate(this.floatingInterestDefaultValue);
+            builder.withMaxDifferentialLendingRate(this.floatingInterestMaximumValue);
+            if (this.floatingInterestRateValue != null) {
+                builder.withFloatingRatesId(this.floatingInterestRateValue.getId());
+            }
+            builder.withInterestRateDifferential(this.floatingInterestDifferentialValue);
+            builder.withFloatingInterestRateCalculationAllowed(
+                    this.floatingInterestAllowedValue == null ? false : this.floatingInterestAllowedValue);
+        } else {
+            builder.withMinInterestRatePerPeriod(this.nominalInterestRateMinimumValue);
+            builder.withInterestRatePerPeriod(this.nominalInterestRateDefaultValue);
+            builder.withMaxInterestRatePerPeriod(this.nominalInterestRateMaximumValue);
+            if (this.nominalInterestRateTypeValue != null) {
+                builder.withInterestRateFrequencyType(
+                        NominalInterestRateScheduleType.valueOf(this.nominalInterestRateTypeValue.getId()));
+            }
+        }
+
+        if (useBorrowerCycle) {
+            if (this.principalByLoanCycleValue != null) {
+                for (Map<String, Object> item : this.principalByLoanCycleValue) {
+                    WhenType valueConditionType = (WhenType) item.get("valueConditionType");
+                    Double borrowerCycleNumber = (Double) item.get("cycle");
+                    Double minValue = (Double) item.get("minimum");
+                    Double defaultValue = (Double) item.get("default");
+                    Double maxValue = (Double) item.get("maximum");
+                    builder.withPrincipalVariationsForBorrowerCycle(valueConditionType, borrowerCycleNumber, minValue,
+                            defaultValue, maxValue);
+                }
+            }
+            if (this.numberOfRepaymentByLoanCycleValue != null) {
+                for (Map<String, Object> item : this.numberOfRepaymentByLoanCycleValue) {
+                    WhenType valueConditionType = (WhenType) item.get("valueConditionType");
+                    Double borrowerCycleNumber = (Double) item.get("cycle");
+                    Double minValue = (Double) item.get("minimum");
+                    Double defaultValue = (Double) item.get("default");
+                    Double maxValue = (Double) item.get("maximum");
+                    builder.withNumberOfRepaymentVariationsForBorrowerCycle(valueConditionType, borrowerCycleNumber,
+                            minValue, defaultValue, maxValue);
+                }
+            }
+            if (this.nominalInterestRateByLoanCycleValue != null) {
+                for (Map<String, Object> item : this.nominalInterestRateByLoanCycleValue) {
+                    WhenType valueConditionType = (WhenType) item.get("valueConditionType");
+                    Double borrowerCycleNumber = (Double) item.get("cycle");
+                    Double minValue = (Double) item.get("minimum");
+                    Double defaultValue = (Double) item.get("default");
+                    Double maxValue = (Double) item.get("maximum");
+                    builder.withInterestRateVariationsForBorrowerCycle(valueConditionType, borrowerCycleNumber,
+                            minValue, defaultValue, maxValue);
+                }
+            }
+        }
+
+        builder.withRepaymentEvery(this.repaidEveryValue);
+        if (this.repaidTypeValue != null) {
+            builder.withRepaymentFrequencyType(RepaidType.valueOf(this.repaidTypeValue.getId()));
+        }
+        builder.withMinimumDaysBetweenDisbursalAndFirstRepayment(
+                this.minimumDayBetweenDisbursalAndFirstRepaymentDateValue);
+
+        // Settings
+
+        if (this.amortizationValue != null) {
+            builder.withAmortizationType(Amortization.valueOf(this.amortizationValue.getId()));
+        }
+        if (this.interestMethodValue != null) {
+            builder.withInterestType(InterestMethod.valueOf(this.interestMethodValue.getId()));
+        }
+        if (this.interestCalculationPeriodValue != null) {
+            InterestCalculationPeriod interestCalculationPeriod = InterestCalculationPeriod
+                    .valueOf(this.interestCalculationPeriodValue.getId());
+            builder.withInterestCalculationPeriodType(interestCalculationPeriod);
+            if (interestCalculationPeriod == InterestCalculationPeriod.SameAsPayment) {
+                builder.withAllowPartialPeriodInterestCalcualtion(
+                        this.calculateInterestForExactDaysInPartialPeriodValue == null ? false
+                                : this.calculateInterestForExactDaysInPartialPeriodValue);
+            }
+        }
+        builder.withGraceOnPrincipalPayment(this.moratoriumPrincipalValue);
+        builder.withGraceOnInterestPayment(this.moratoriumInterestValue);
+        builder.withGraceOnInterestCharged(this.interestFreePeriodValue);
+        builder.withInArrearsTolerance(this.arrearsToleranceValue);
+
+        builder.withCanDefineInstallmentAmount(this.allowFixingOfTheInstallmentAmountValue == null ? false
+                : this.allowFixingOfTheInstallmentAmountValue);
+
+        builder.withGraceOnArrearsAgeing(this.numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue);
+
+        builder.withOverdueDaysForNPA(this.maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue);
+
+        builder.withMinimumGap(this.variableInstallmentsMinimumValue);
+        builder.withMaximumGap(this.variableInstallmentsMaximumValue);
+        builder.withAccountMovesOutOfNPAOnlyOnArrearsCompletion(
+                this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue == null ? false
+                        : this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue);
+        builder.withAllowVariableInstallments(
+                this.variableInstallmentsAllowedValue == null ? false : this.variableInstallmentsAllowedValue);
+        builder.withCanUseForTopup(this.allowedToBeUsedForProvidingTopupLoansValue == null ? false
+                : this.allowedToBeUsedForProvidingTopupLoansValue);
+
+        // Interest Recalculation
+
+        boolean interestRecalculationEnabled = this.recalculateInterestValue == null ? false
+                : this.recalculateInterestValue;
+        builder.withInterestRecalculationEnabled(interestRecalculationEnabled);
+        if (interestRecalculationEnabled) {
+            if (this.preClosureInterestCalculationRuleValue != null) {
+                builder.withPreClosureInterestCalculationStrategy(
+                        ClosureInterestCalculationRule.valueOf(this.preClosureInterestCalculationRuleValue.getId()));
+            }
+            if (this.advancePaymentsAdjustmentTypeValue != null) {
+                builder.withRescheduleStrategyMethod(
+                        AdvancePaymentsAdjustmentType.valueOf(this.advancePaymentsAdjustmentTypeValue.getId()));
+            }
+
+            if (this.interestRecalculationCompoundingOnValue != null) {
+                InterestRecalculationCompound interestRecalculationCompound = InterestRecalculationCompound
+                        .valueOf(this.interestRecalculationCompoundingOnValue.getId());
+                builder.withInterestRecalculationCompoundingMethod(interestRecalculationCompound);
+
+                // Interest recalculation compounding on
+                if (interestRecalculationCompound == InterestRecalculationCompound.None) {
+                    //
+                } else if (interestRecalculationCompound == InterestRecalculationCompound.Fee
+                        || interestRecalculationCompound == InterestRecalculationCompound.Interest
+                        || interestRecalculationCompound == InterestRecalculationCompound.FeeAndInterest) {
+                    // compoundingField
+                }
+            }
+            
+            
+        }
 
         JsonNode node = null;
         try {

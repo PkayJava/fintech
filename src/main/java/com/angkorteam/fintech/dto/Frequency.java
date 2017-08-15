@@ -2,10 +2,10 @@ package com.angkorteam.fintech.dto;
 
 public enum Frequency {
 
-    Same("Same", "Same as repayment period"), 
-    Daily("Daily", "Daily"),
-    Weekly("Weekly", "Weekly"),
-    Monthly("Monthly", "Monthly");
+    Same("1", "Same as repayment period"), 
+    Daily("2", "Daily"),
+    Weekly("3", "Weekly"),
+    Monthly("4", "Monthly");
 
     private String literal;
 

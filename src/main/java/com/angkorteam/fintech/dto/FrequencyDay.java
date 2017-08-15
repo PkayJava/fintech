@@ -2,14 +2,13 @@ package com.angkorteam.fintech.dto;
 
 public enum FrequencyDay {
 
-    Day("Day", "Day"), 
-    Sunday("Sunday", "Sunday"),
-    Monday("Monday", "Monday"),
-    Tuesday("Tuesday", "Tuesday"),
-    Wednesday("Wednesday", "Wednesday"),
-    Thursday("Thursday", "Thursday"),
-    Friday("Friday", "Friday"),
-    Saturday("Saturday", "Saturday");
+    Sunday("7", "Sunday"),
+    Monday("1", "Monday"),
+    Tuesday("2", "Tuesday"),
+    Wednesday("3", "Wednesday"),
+    Thursday("4", "Thursday"),
+    Friday("5", "Friday"),
+    Saturday("6", "Saturday");
 
     private String literal;
 

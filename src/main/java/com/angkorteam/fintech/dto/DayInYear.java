@@ -1,11 +1,8 @@
 package com.angkorteam.fintech.dto;
 
 public enum DayInYear {
-    
-    Actual("Actual", "Actual"), 
-    D360("D360", "360 Days"), 
-    D364("D364", "364 Days"),
-    D365("D365", "365 Days");
+
+    Actual("1", "Actual"), D360("360", "360 Days"), D364("364", "364 Days"), D365("365", "365 Days");
 
     private String literal;
 

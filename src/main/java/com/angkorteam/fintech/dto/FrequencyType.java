@@ -2,12 +2,12 @@ package com.angkorteam.fintech.dto;
 
 public enum FrequencyType {
 
-    First("First", "First"), 
-    Second("Second", "Second"),
-    Third("Third", "Third"),
-    Fourth("Fourth", "Fourth"),
-    Last("Last", "Last"),
-    OnDay("OnDay", "On Day");
+    First("1", "First"), 
+    Second("2", "Second"),
+    Third("3", "Third"),
+    Fourth("4", "Fourth"),
+    Last("-1", "Last"),
+    OnDay("-2", "On Day");
 
     private String literal;
 

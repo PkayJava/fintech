@@ -2,7 +2,7 @@ package com.angkorteam.fintech.dto;
 
 public enum NominalInterestRateScheduleType {
 
-    Month("Month", "Per month"), Year("Year", "Per year");
+    Month("2", "Per month"), Year("3", "Per year");
 
     private String literal;
 

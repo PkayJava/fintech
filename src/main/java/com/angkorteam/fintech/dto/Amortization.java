@@ -1,7 +1,7 @@
 package com.angkorteam.fintech.dto;
 
 public enum Amortization {
-    Installment("Installment", "Equal Installments"), PrincipalPayment("PrincipalPayment", "Equal Principal Payments");
+    Installment("1", "Equal Installments"), PrincipalPayment("0", "Equal Principal Payments");
 
     private String literal;
 

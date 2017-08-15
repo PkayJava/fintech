@@ -2,8 +2,8 @@ package com.angkorteam.fintech.dto;
 
 public enum ClosureInterestCalculationRule {
     
-    PreClosureDate("PreClosureDate", "Calculate till pre closure date"), 
-    RestFrequencyDate("RestFrequencyDate", "Calculate till rest frequency date");
+    PreClosureDate("1", "Calculate till pre closure date"), 
+    RestFrequencyDate("2", "Calculate till rest frequency date");
 
     private String literal;
 
