@@ -27,6 +27,8 @@ import com.angkorteam.fintech.dto.ChargeCalculation;
 import com.angkorteam.fintech.dto.ChargeTime;
 import com.angkorteam.fintech.dto.ClosureInterestCalculationRule;
 import com.angkorteam.fintech.dto.Frequency;
+import com.angkorteam.fintech.dto.FrequencyDay;
+import com.angkorteam.fintech.dto.FrequencyType;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.InterestMethod;
@@ -3264,17 +3266,62 @@ public class LoanCreatePage extends Page {
                         .valueOf(this.interestRecalculationCompoundingOnValue.getId());
                 builder.withInterestRecalculationCompoundingMethod(interestRecalculationCompound);
 
-                // Interest recalculation compounding on
-                if (interestRecalculationCompound == InterestRecalculationCompound.None) {
-                    //
-                } else if (interestRecalculationCompound == InterestRecalculationCompound.Fee
+                if (interestRecalculationCompound == InterestRecalculationCompound.Fee
                         || interestRecalculationCompound == InterestRecalculationCompound.Interest
                         || interestRecalculationCompound == InterestRecalculationCompound.FeeAndInterest) {
-                    // compoundingField
+                    if (this.compoundingValue != null) {
+                        Frequency compoundingValue = Frequency.valueOf(this.compoundingValue.getId());
+                        builder.withRecalculationCompoundingFrequencyType(compoundingValue);
+                        if (compoundingValue == Frequency.Daily) {
+                            builder.withRecalculationCompoundingFrequencyInterval(this.compoundingIntervalValue);
+                        } else if (compoundingValue == Frequency.Weekly) {
+                            builder.withRecalculationCompoundingFrequencyInterval(this.compoundingIntervalValue);
+                            if (this.compoundingDayValue != null) {
+                                builder.withRecalculationCompoundingFrequencyDayOfWeekType(
+                                        FrequencyDay.valueOf(this.compoundingDayValue.getId()));
+                            }
+                        } else if (compoundingValue == Frequency.Monthly) {
+                            builder.withRecalculationCompoundingFrequencyInterval(this.compoundingIntervalValue);
+                            if (this.compoundingTypeValue != null) {
+                                builder.withRecalculationCompoundingFrequencyNthDayType(
+                                        FrequencyType.valueOf(this.compoundingTypeValue.getId()));
+                            }
+                            if (this.compoundingDayValue != null) {
+                                builder.withRecalculationCompoundingFrequencyDayOfWeekType(
+                                        FrequencyDay.valueOf(this.compoundingDayValue.getId()));
+                            }
+                        }
+                    }
                 }
+
+                if (this.recalculateValue != null) {
+                    Frequency recalculateValue = Frequency.valueOf(this.recalculateValue.getId());
+                    builder.withRecalculationRestFrequencyType(recalculateValue);
+                    if (recalculateValue == Frequency.Daily) {
+                        builder.withRecalculationRestFrequencyInterval(this.recalculateIntervalValue);
+                    } else if (recalculateValue == Frequency.Weekly) {
+                        if (this.recalculateDayValue != null) {
+                            builder.withRecalculationRestFrequencyDayOfWeekType(
+                                    FrequencyDay.valueOf(this.recalculateDayValue.getId()));
+                        }
+                        builder.withRecalculationRestFrequencyInterval(this.recalculateIntervalValue);
+                    } else if (recalculateValue == Frequency.Monthly) {
+                        if (this.recalculateTypeValue != null) {
+                            builder.withRecalculationRestFrequencyNthDayType(
+                                    FrequencyType.valueOf(this.recalculateTypeValue.getId()));
+                        }
+                        if (this.recalculateDayValue != null) {
+                            builder.withRecalculationRestFrequencyDayOfWeekType(
+                                    FrequencyDay.valueOf(this.recalculateDayValue.getId()));
+                        }
+                        builder.withRecalculationRestFrequencyInterval(this.recalculateIntervalValue);
+                    }
+                }
+                builder.withArrearsBasedOnOriginalSchedule(
+                        this.arrearsRecognizationBasedOnOriginalScheduleValue == null ? false
+                                : this.arrearsRecognizationBasedOnOriginalScheduleValue);
             }
-            
-            
+
         }
 
         JsonNode node = null;

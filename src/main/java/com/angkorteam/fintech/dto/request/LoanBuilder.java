@@ -12,6 +12,9 @@ import com.angkorteam.fintech.dto.Amortization;
 import com.angkorteam.fintech.dto.ClosureInterestCalculationRule;
 import com.angkorteam.fintech.dto.DayInMonth;
 import com.angkorteam.fintech.dto.DayInYear;
+import com.angkorteam.fintech.dto.Frequency;
+import com.angkorteam.fintech.dto.FrequencyDay;
+import com.angkorteam.fintech.dto.FrequencyType;
 import com.angkorteam.fintech.dto.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.InterestMethod;
 import com.angkorteam.fintech.dto.InterestRecalculationCompound;
@@ -608,8 +611,159 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
+    private Frequency recalculationCompoundingFrequencyType;
+    private boolean hasRecalculationCompoundingFrequencyType;
+
+    public LoanBuilder withRecalculationCompoundingFrequencyType(Frequency recalculationCompoundingFrequencyType) {
+        this.recalculationCompoundingFrequencyType = recalculationCompoundingFrequencyType;
+        this.hasRecalculationCompoundingFrequencyType = true;
+        return this;
+    }
+
+    private Double recalculationCompoundingFrequencyInterval;
+    private boolean hasRecalculationCompoundingFrequencyInterval;
+
+    public LoanBuilder withRecalculationCompoundingFrequencyInterval(Double recalculationCompoundingFrequencyInterval) {
+        this.recalculationCompoundingFrequencyInterval = recalculationCompoundingFrequencyInterval;
+        this.hasRecalculationCompoundingFrequencyInterval = true;
+        return this;
+    }
+
+    private FrequencyType recalculationCompoundingFrequencyNthDayType;
+    private boolean hasRecalculationCompoundingFrequencyNthDayType;
+
+    public LoanBuilder withRecalculationCompoundingFrequencyNthDayType(
+            FrequencyType recalculationCompoundingFrequencyNthDayType) {
+        this.recalculationCompoundingFrequencyNthDayType = recalculationCompoundingFrequencyNthDayType;
+        this.hasRecalculationCompoundingFrequencyNthDayType = true;
+        return this;
+    }
+
+    private FrequencyDay recalculationCompoundingFrequencyDayOfWeekType;
+    private boolean hasRecalculationCompoundingFrequencyDayOfWeekType;
+
+    public LoanBuilder withRecalculationCompoundingFrequencyDayOfWeekType(
+            FrequencyDay recalculationCompoundingFrequencyDayOfWeekType) {
+        this.recalculationCompoundingFrequencyDayOfWeekType = recalculationCompoundingFrequencyDayOfWeekType;
+        this.hasRecalculationCompoundingFrequencyDayOfWeekType = true;
+        return this;
+    }
+
+    private boolean arrearsBasedOnOriginalSchedule;
+    private boolean hasArrearsBasedOnOriginalSchedule;
+
+    public LoanBuilder withArrearsBasedOnOriginalSchedule(boolean arrearsBasedOnOriginalSchedule) {
+        this.arrearsBasedOnOriginalSchedule = arrearsBasedOnOriginalSchedule;
+        this.hasArrearsBasedOnOriginalSchedule = true;
+        return this;
+    }
+
+    private Double recalculationRestFrequencyInterval;
+    private boolean hasRecalculationRestFrequencyInterval;
+
+    public LoanBuilder withRecalculationRestFrequencyInterval(Double recalculationRestFrequencyInterval) {
+        this.recalculationRestFrequencyInterval = recalculationRestFrequencyInterval;
+        this.hasRecalculationRestFrequencyInterval = true;
+        return this;
+    }
+
+    private FrequencyDay recalculationRestFrequencyDayOfWeekType;
+    private boolean hasRecalculationRestFrequencyDayOfWeekType;
+
+    public LoanBuilder withRecalculationRestFrequencyDayOfWeekType(
+            FrequencyDay recalculationRestFrequencyDayOfWeekType) {
+        this.recalculationRestFrequencyDayOfWeekType = recalculationRestFrequencyDayOfWeekType;
+        this.hasRecalculationRestFrequencyDayOfWeekType = true;
+        return this;
+    }
+
+    private FrequencyType recalculationRestFrequencyNthDayType;
+    private boolean hasRecalculationRestFrequencyNthDayType;
+
+    public LoanBuilder withRecalculationRestFrequencyNthDayType(FrequencyType recalculationRestFrequencyNthDayType) {
+        this.recalculationRestFrequencyNthDayType = recalculationRestFrequencyNthDayType;
+        this.hasRecalculationRestFrequencyNthDayType = true;
+        return this;
+    }
+
+    private Frequency recalculationRestFrequencyType;
+    private boolean hasRecalculationRestFrequencyType;
+
+    public LoanBuilder withRecalculationRestFrequencyType(Frequency recalculationRestFrequencyType) {
+        this.recalculationRestFrequencyType = recalculationRestFrequencyType;
+        this.hasRecalculationRestFrequencyType = true;
+        return this;
+    }
+
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
+
+        if (this.hasRecalculationRestFrequencyType) {
+            if (this.recalculationRestFrequencyType != null) {
+                object.getObject().put("recalculationRestFrequencyType",
+                        this.recalculationRestFrequencyType.getLiteral());
+            } else {
+                object.getObject().put("recalculationRestFrequencyType", (String) null);
+            }
+        }
+
+        if (this.hasRecalculationRestFrequencyNthDayType) {
+            if (this.recalculationRestFrequencyNthDayType != null) {
+                object.getObject().put("recalculationRestFrequencyNthDayType",
+                        this.recalculationRestFrequencyNthDayType.getLiteral());
+            } else {
+                object.getObject().put("recalculationRestFrequencyNthDayType", (String) null);
+            }
+        }
+
+        if (this.hasRecalculationRestFrequencyDayOfWeekType) {
+            if (this.recalculationRestFrequencyDayOfWeekType != null) {
+                object.getObject().put("recalculationRestFrequencyDayOfWeekType",
+                        this.recalculationRestFrequencyDayOfWeekType.getLiteral());
+            } else {
+                object.getObject().put("recalculationRestFrequencyDayOfWeekType", (String) null);
+            }
+        }
+
+        if (this.hasRecalculationRestFrequencyInterval) {
+            object.getObject().put("recalculationRestFrequencyInterval", this.recalculationRestFrequencyInterval);
+        }
+
+        if (this.hasArrearsBasedOnOriginalSchedule) {
+            object.getObject().put("isArrearsBasedOnOriginalSchedule", this.arrearsBasedOnOriginalSchedule);
+        }
+
+        if (this.hasRecalculationCompoundingFrequencyDayOfWeekType) {
+            if (this.recalculationCompoundingFrequencyDayOfWeekType != null) {
+                object.getObject().put("recalculationCompoundingFrequencyDayOfWeekType",
+                        this.recalculationCompoundingFrequencyDayOfWeekType.getLiteral());
+            } else {
+                object.getObject().put("recalculationCompoundingFrequencyDayOfWeekType", (String) null);
+            }
+        }
+
+        if (this.hasRecalculationCompoundingFrequencyNthDayType) {
+            if (this.recalculationCompoundingFrequencyNthDayType != null) {
+                object.getObject().put("recalculationCompoundingFrequencyNthDayType",
+                        this.recalculationCompoundingFrequencyNthDayType.getLiteral());
+            } else {
+                object.getObject().put("recalculationCompoundingFrequencyNthDayType", (String) null);
+            }
+        }
+
+        if (this.hasRecalculationCompoundingFrequencyInterval) {
+            object.getObject().put("recalculationCompoundingFrequencyInterval",
+                    this.recalculationCompoundingFrequencyInterval);
+        }
+
+        if (this.hasRecalculationCompoundingFrequencyType) {
+            if (this.recalculationCompoundingFrequencyType != null) {
+                object.getObject().put("recalculationCompoundingFrequencyType",
+                        this.recalculationCompoundingFrequencyType.getLiteral());
+            } else {
+                object.getObject().put("recalculationCompoundingFrequencyType", (String) null);
+            }
+        }
 
         if (this.hasInterestRecalculationCompoundingMethod) {
             if (this.interestRecalculationCompoundingMethod != null) {
