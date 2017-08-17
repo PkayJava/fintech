@@ -36,6 +36,7 @@ import com.angkorteam.fintech.dto.InterestRecalculationCompound;
 import com.angkorteam.fintech.dto.NominalInterestRateScheduleType;
 import com.angkorteam.fintech.dto.RepaidType;
 import com.angkorteam.fintech.dto.WhenType;
+import com.angkorteam.fintech.dto.request.AllowAttributeOverrideBuilder;
 import com.angkorteam.fintech.dto.request.LoanBuilder;
 import com.angkorteam.fintech.helper.LoanHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
@@ -91,6 +92,11 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanCreatePage extends Page {
+
+    public static final String ACC_NONE = "None";
+    public static final String ACC_CASH = "Cash";
+    public static final String ACC_PERIODIC = "Periodic";
+    public static final String ACC_UPFRONT = "Upfront";
 
     private Form<Void> form;
     private Button saveButton;
@@ -562,10 +568,10 @@ public class LoanCreatePage extends Page {
     private Select2SingleChoice<Option> cashIncomeFromPenaltiesField;
     private TextFeedbackPanel cashIncomeFromPenaltiesFeedback;
 
-    private SingleChoiceProvider cashIncomeFromRecoveryPaymentProvider;
-    private Option cashIncomeFromRecoveryPaymentValue;
-    private Select2SingleChoice<Option> cashIncomeFromRecoveryPaymentField;
-    private TextFeedbackPanel cashIncomeFromRecoveryPaymentFeedback;
+    private SingleChoiceProvider cashIncomeFromRecoveryRepaymentProvider;
+    private Option cashIncomeFromRecoveryRepaymentValue;
+    private Select2SingleChoice<Option> cashIncomeFromRecoveryRepaymentField;
+    private TextFeedbackPanel cashIncomeFromRecoveryRepaymentFeedback;
 
     private SingleChoiceProvider cashLossesWrittenOffProvider;
     private Option cashLossesWrittenOffValue;
@@ -614,20 +620,20 @@ public class LoanCreatePage extends Page {
     private Select2SingleChoice<Option> periodicIncomeFromInterestField;
     private TextFeedbackPanel periodicIncomeFromInterestFeedback;
 
-    private SingleChoiceProvider periodicIncomeFromFeesProvider;
-    private Option periodicIncomeFromFeesValue;
-    private Select2SingleChoice<Option> periodicIncomeFromFeesField;
-    private TextFeedbackPanel periodicIncomeFromFeesFeedback;
+    private SingleChoiceProvider periodicIncomeFromFeeProvider;
+    private Option periodicIncomeFromFeeValue;
+    private Select2SingleChoice<Option> periodicIncomeFromFeeField;
+    private TextFeedbackPanel periodicIncomeFromFeeFeedback;
 
     private SingleChoiceProvider periodicIncomeFromPenaltiesProvider;
     private Option periodicIncomeFromPenaltiesValue;
     private Select2SingleChoice<Option> periodicIncomeFromPenaltiesField;
     private TextFeedbackPanel periodicIncomeFromPenaltiesFeedback;
 
-    private SingleChoiceProvider periodicIncomeFromRecoveryRepaymentsProvider;
-    private Option periodicIncomeFromRecoveryRepaymentsValue;
-    private Select2SingleChoice<Option> periodicIncomeFromRecoveryRepaymentsField;
-    private TextFeedbackPanel periodicIncomeFromRecoveryRepaymentsFeedback;
+    private SingleChoiceProvider periodicIncomeFromRecoveryRepaymentProvider;
+    private Option periodicIncomeFromRecoveryRepaymentValue;
+    private Select2SingleChoice<Option> periodicIncomeFromRecoveryRepaymentField;
+    private TextFeedbackPanel periodicIncomeFromRecoveryRepaymentFeedback;
 
     private SingleChoiceProvider periodicLossesWrittenOffProvider;
     private Option periodicLossesWrittenOffValue;
@@ -676,20 +682,20 @@ public class LoanCreatePage extends Page {
     private Select2SingleChoice<Option> upfrontIncomeFromInterestField;
     private TextFeedbackPanel upfrontIncomeFromInterestFeedback;
 
-    private SingleChoiceProvider upfrontIncomeFromFeesProvider;
-    private Option upfrontIncomeFromFeesValue;
-    private Select2SingleChoice<Option> upfrontIncomeFromFeesField;
-    private TextFeedbackPanel upfrontIncomeFromFeesFeedback;
+    private SingleChoiceProvider upfrontIncomeFromFeeProvider;
+    private Option upfrontIncomeFromFeeValue;
+    private Select2SingleChoice<Option> upfrontIncomeFromFeeField;
+    private TextFeedbackPanel upfrontIncomeFromFeeFeedback;
 
     private SingleChoiceProvider upfrontIncomeFromPenaltiesProvider;
     private Option upfrontIncomeFromPenaltiesValue;
     private Select2SingleChoice<Option> upfrontIncomeFromPenaltiesField;
     private TextFeedbackPanel upfrontIncomeFromPenaltiesFeedback;
 
-    private SingleChoiceProvider upfrontIncomeFromRecoveryRepaymentsProvider;
-    private Option upfrontIncomeFromRecoveryRepaymentsValue;
-    private Select2SingleChoice<Option> upfrontIncomeFromRecoveryRepaymentsField;
-    private TextFeedbackPanel upfrontIncomeFromRecoveryRepaymentsFeedback;
+    private SingleChoiceProvider upfrontIncomeFromRecoveryRepaymentProvider;
+    private Option upfrontIncomeFromRecoveryRepaymentValue;
+    private Select2SingleChoice<Option> upfrontIncomeFromRecoveryRepaymentField;
+    private TextFeedbackPanel upfrontIncomeFromRecoveryRepaymentFeedback;
 
     private SingleChoiceProvider upfrontLossesWrittenOffProvider;
     private Option upfrontLossesWrittenOffValue;
@@ -1024,10 +1030,10 @@ public class LoanCreatePage extends Page {
     protected void initAccounting() {
         this.accountingField = new RadioGroup<>("accountingField", new PropertyModel<>(this, "accountingValue"));
         this.accountingField.add(new AjaxFormChoiceComponentUpdatingBehavior(this::accountingFieldUpdate));
-        this.accountingField.add(new Radio<>("accountingNone", new Model<>("None")));
-        this.accountingField.add(new Radio<>("accountingCash", new Model<>("Cash")));
-        this.accountingField.add(new Radio<>("accountingPeriodic", new Model<>("Periodic")));
-        this.accountingField.add(new Radio<>("accountingUpfront", new Model<>("Upfront")));
+        this.accountingField.add(new Radio<>("accountingNone", new Model<>(ACC_NONE)));
+        this.accountingField.add(new Radio<>("accountingCash", new Model<>(ACC_CASH)));
+        this.accountingField.add(new Radio<>("accountingPeriodic", new Model<>(ACC_PERIODIC)));
+        this.accountingField.add(new Radio<>("accountingUpfront", new Model<>(ACC_UPFRONT)));
         this.form.add(this.accountingField);
 
         initAccountingCash();
@@ -1128,17 +1134,17 @@ public class LoanCreatePage extends Page {
                 this.upfrontIncomeFromInterestField);
         this.upfrontContainer.add(this.upfrontIncomeFromInterestFeedback);
 
-        this.upfrontIncomeFromFeesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.upfrontIncomeFromFeesProvider.applyWhere("account_usage", "account_usage = 1");
-        this.upfrontIncomeFromFeesProvider.applyWhere("classification_enum", "classification_enum = 4");
-        this.upfrontIncomeFromFeesField = new Select2SingleChoice<>("upfrontIncomeFromFeesField",
-                new PropertyModel<>(this, "upfrontIncomeFromFeesValue"), this.upfrontIncomeFromFeesProvider);
-        this.upfrontIncomeFromFeesField.setRequired(false);
-        this.upfrontIncomeFromFeesField.add(new OnChangeAjaxBehavior());
-        this.upfrontContainer.add(this.upfrontIncomeFromFeesField);
-        this.upfrontIncomeFromFeesFeedback = new TextFeedbackPanel("upfrontIncomeFromFeesFeedback",
-                this.upfrontIncomeFromFeesField);
-        this.upfrontContainer.add(this.upfrontIncomeFromFeesFeedback);
+        this.upfrontIncomeFromFeeProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.upfrontIncomeFromFeeProvider.applyWhere("account_usage", "account_usage = 1");
+        this.upfrontIncomeFromFeeProvider.applyWhere("classification_enum", "classification_enum = 4");
+        this.upfrontIncomeFromFeeField = new Select2SingleChoice<>("upfrontIncomeFromFeeField",
+                new PropertyModel<>(this, "upfrontIncomeFromFeeValue"), this.upfrontIncomeFromFeeProvider);
+        this.upfrontIncomeFromFeeField.setRequired(false);
+        this.upfrontIncomeFromFeeField.add(new OnChangeAjaxBehavior());
+        this.upfrontContainer.add(this.upfrontIncomeFromFeeField);
+        this.upfrontIncomeFromFeeFeedback = new TextFeedbackPanel("upfrontIncomeFromFeeFeedback",
+                this.upfrontIncomeFromFeeField);
+        this.upfrontContainer.add(this.upfrontIncomeFromFeeFeedback);
 
         this.upfrontIncomeFromPenaltiesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontIncomeFromPenaltiesProvider.applyWhere("account_usage", "account_usage = 1");
@@ -1152,19 +1158,19 @@ public class LoanCreatePage extends Page {
                 this.upfrontIncomeFromPenaltiesField);
         this.upfrontContainer.add(this.upfrontIncomeFromPenaltiesFeedback);
 
-        this.upfrontIncomeFromRecoveryRepaymentsProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.upfrontIncomeFromRecoveryRepaymentsProvider.applyWhere("account_usage", "account_usage = 1");
-        this.upfrontIncomeFromRecoveryRepaymentsProvider.applyWhere("classification_enum", "classification_enum = 4");
-        this.upfrontIncomeFromRecoveryRepaymentsField = new Select2SingleChoice<>(
-                "upfrontIncomeFromRecoveryRepaymentsField",
-                new PropertyModel<>(this, "upfrontIncomeFromRecoveryRepaymentsValue"),
-                this.upfrontIncomeFromRecoveryRepaymentsProvider);
-        this.upfrontIncomeFromRecoveryRepaymentsField.setRequired(false);
-        this.upfrontIncomeFromRecoveryRepaymentsField.add(new OnChangeAjaxBehavior());
-        this.upfrontContainer.add(this.upfrontIncomeFromRecoveryRepaymentsField);
-        this.upfrontIncomeFromRecoveryRepaymentsFeedback = new TextFeedbackPanel(
-                "upfrontIncomeFromRecoveryRepaymentsFeedback", this.upfrontIncomeFromRecoveryRepaymentsField);
-        this.upfrontContainer.add(this.upfrontIncomeFromRecoveryRepaymentsFeedback);
+        this.upfrontIncomeFromRecoveryRepaymentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.upfrontIncomeFromRecoveryRepaymentProvider.applyWhere("account_usage", "account_usage = 1");
+        this.upfrontIncomeFromRecoveryRepaymentProvider.applyWhere("classification_enum", "classification_enum = 4");
+        this.upfrontIncomeFromRecoveryRepaymentField = new Select2SingleChoice<>(
+                "upfrontIncomeFromRecoveryRepaymentField",
+                new PropertyModel<>(this, "upfrontIncomeFromRecoveryRepaymentValue"),
+                this.upfrontIncomeFromRecoveryRepaymentProvider);
+        this.upfrontIncomeFromRecoveryRepaymentField.setRequired(false);
+        this.upfrontIncomeFromRecoveryRepaymentField.add(new OnChangeAjaxBehavior());
+        this.upfrontContainer.add(this.upfrontIncomeFromRecoveryRepaymentField);
+        this.upfrontIncomeFromRecoveryRepaymentFeedback = new TextFeedbackPanel(
+                "upfrontIncomeFromRecoveryRepaymentFeedback", this.upfrontIncomeFromRecoveryRepaymentField);
+        this.upfrontContainer.add(this.upfrontIncomeFromRecoveryRepaymentFeedback);
 
         this.upfrontLossesWrittenOffProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontLossesWrittenOffProvider.applyWhere("account_usage", "account_usage = 1");
@@ -1267,18 +1273,18 @@ public class LoanCreatePage extends Page {
                 this.cashIncomeFromPenaltiesField);
         this.cashContainer.add(this.cashIncomeFromPenaltiesFeedback);
 
-        this.cashIncomeFromRecoveryPaymentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashIncomeFromRecoveryPaymentProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashIncomeFromRecoveryPaymentProvider.applyWhere("classification_enum", "classification_enum = 4");
-        this.cashIncomeFromRecoveryPaymentField = new Select2SingleChoice<>("cashIncomeFromRecoveryPaymentField",
-                new PropertyModel<>(this, "cashIncomeFromRecoveryPaymentValue"),
-                this.cashIncomeFromRecoveryPaymentProvider);
-        this.cashIncomeFromRecoveryPaymentField.setRequired(false);
-        this.cashIncomeFromRecoveryPaymentField.add(new OnChangeAjaxBehavior());
-        this.cashContainer.add(this.cashIncomeFromRecoveryPaymentField);
-        this.cashIncomeFromRecoveryPaymentFeedback = new TextFeedbackPanel("cashIncomeFromRecoveryPaymentFeedback",
-                this.cashIncomeFromRecoveryPaymentField);
-        this.cashContainer.add(this.cashIncomeFromRecoveryPaymentFeedback);
+        this.cashIncomeFromRecoveryRepaymentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.cashIncomeFromRecoveryRepaymentProvider.applyWhere("account_usage", "account_usage = 1");
+        this.cashIncomeFromRecoveryRepaymentProvider.applyWhere("classification_enum", "classification_enum = 4");
+        this.cashIncomeFromRecoveryRepaymentField = new Select2SingleChoice<>("cashIncomeFromRecoveryRepaymentField",
+                new PropertyModel<>(this, "cashIncomeFromRecoveryRepaymentValue"),
+                this.cashIncomeFromRecoveryRepaymentProvider);
+        this.cashIncomeFromRecoveryRepaymentField.setRequired(false);
+        this.cashIncomeFromRecoveryRepaymentField.add(new OnChangeAjaxBehavior());
+        this.cashContainer.add(this.cashIncomeFromRecoveryRepaymentField);
+        this.cashIncomeFromRecoveryRepaymentFeedback = new TextFeedbackPanel("cashIncomeFromRecoveryRepaymentFeedback",
+                this.cashIncomeFromRecoveryRepaymentField);
+        this.cashContainer.add(this.cashIncomeFromRecoveryRepaymentFeedback);
 
         this.cashLossesWrittenOffProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashLossesWrittenOffProvider.applyWhere("account_usage", "account_usage = 1");
@@ -1394,17 +1400,17 @@ public class LoanCreatePage extends Page {
                 this.periodicIncomeFromInterestField);
         this.periodicContainer.add(this.periodicIncomeFromInterestFeedback);
 
-        this.periodicIncomeFromFeesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.periodicIncomeFromFeesProvider.applyWhere("account_usage", "account_usage = 1");
-        this.periodicIncomeFromFeesProvider.applyWhere("classification_enum", "classification_enum = 4");
-        this.periodicIncomeFromFeesField = new Select2SingleChoice<>("periodicIncomeFromFeesField",
-                new PropertyModel<>(this, "periodicIncomeFromFeesValue"), this.periodicIncomeFromFeesProvider);
-        this.periodicIncomeFromFeesField.setRequired(false);
-        this.periodicIncomeFromFeesField.add(new OnChangeAjaxBehavior());
-        this.periodicContainer.add(this.periodicIncomeFromFeesField);
-        this.periodicIncomeFromFeesFeedback = new TextFeedbackPanel("periodicIncomeFromFeesFeedback",
-                this.periodicIncomeFromFeesField);
-        this.periodicContainer.add(this.periodicIncomeFromFeesFeedback);
+        this.periodicIncomeFromFeeProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.periodicIncomeFromFeeProvider.applyWhere("account_usage", "account_usage = 1");
+        this.periodicIncomeFromFeeProvider.applyWhere("classification_enum", "classification_enum = 4");
+        this.periodicIncomeFromFeeField = new Select2SingleChoice<>("periodicIncomeFromFeeField",
+                new PropertyModel<>(this, "periodicIncomeFromFeeValue"), this.periodicIncomeFromFeeProvider);
+        this.periodicIncomeFromFeeField.setRequired(false);
+        this.periodicIncomeFromFeeField.add(new OnChangeAjaxBehavior());
+        this.periodicContainer.add(this.periodicIncomeFromFeeField);
+        this.periodicIncomeFromFeeFeedback = new TextFeedbackPanel("periodicIncomeFromFeeFeedback",
+                this.periodicIncomeFromFeeField);
+        this.periodicContainer.add(this.periodicIncomeFromFeeFeedback);
 
         this.periodicIncomeFromPenaltiesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.periodicIncomeFromPenaltiesProvider.applyWhere("account_usage", "account_usage = 1");
@@ -1419,19 +1425,19 @@ public class LoanCreatePage extends Page {
                 this.periodicIncomeFromPenaltiesField);
         this.periodicContainer.add(this.periodicIncomeFromPenaltiesFeedback);
 
-        this.periodicIncomeFromRecoveryRepaymentsProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.periodicIncomeFromRecoveryRepaymentsProvider.applyWhere("account_usage", "account_usage = 1");
-        this.periodicIncomeFromRecoveryRepaymentsProvider.applyWhere("classification_enum", "classification_enum = 4");
-        this.periodicIncomeFromRecoveryRepaymentsField = new Select2SingleChoice<>(
-                "periodicIncomeFromRecoveryRepaymentsField",
-                new PropertyModel<>(this, "periodicIncomeFromRecoveryRepaymentsValue"),
-                this.periodicIncomeFromRecoveryRepaymentsProvider);
-        this.periodicIncomeFromRecoveryRepaymentsField.setRequired(false);
-        this.periodicIncomeFromRecoveryRepaymentsField.add(new OnChangeAjaxBehavior());
-        this.periodicContainer.add(this.periodicIncomeFromRecoveryRepaymentsField);
-        this.periodicIncomeFromRecoveryRepaymentsFeedback = new TextFeedbackPanel(
-                "periodicIncomeFromRecoveryRepaymentsFeedback", this.periodicIncomeFromRecoveryRepaymentsField);
-        this.periodicContainer.add(this.periodicIncomeFromRecoveryRepaymentsFeedback);
+        this.periodicIncomeFromRecoveryRepaymentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.periodicIncomeFromRecoveryRepaymentProvider.applyWhere("account_usage", "account_usage = 1");
+        this.periodicIncomeFromRecoveryRepaymentProvider.applyWhere("classification_enum", "classification_enum = 4");
+        this.periodicIncomeFromRecoveryRepaymentField = new Select2SingleChoice<>(
+                "periodicIncomeFromRecoveryRepaymentField",
+                new PropertyModel<>(this, "periodicIncomeFromRecoveryRepaymentValue"),
+                this.periodicIncomeFromRecoveryRepaymentProvider);
+        this.periodicIncomeFromRecoveryRepaymentField.setRequired(false);
+        this.periodicIncomeFromRecoveryRepaymentField.add(new OnChangeAjaxBehavior());
+        this.periodicContainer.add(this.periodicIncomeFromRecoveryRepaymentField);
+        this.periodicIncomeFromRecoveryRepaymentFeedback = new TextFeedbackPanel(
+                "periodicIncomeFromRecoveryRepaymentFeedback", this.periodicIncomeFromRecoveryRepaymentField);
+        this.periodicContainer.add(this.periodicIncomeFromRecoveryRepaymentFeedback);
 
         this.periodicLossesWrittenOffProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.periodicLossesWrittenOffProvider.applyWhere("account_usage", "account_usage = 1");
@@ -3060,6 +3066,7 @@ public class LoanCreatePage extends Page {
             }
         }
         item.put("uuid", chargeId);
+        item.put("chargeId", chargeId);
         item.put("name", chargeObject.get("name"));
         item.put("type", type);
         item.put("amount", chargeObject.get("amount"));
@@ -3096,6 +3103,7 @@ public class LoanCreatePage extends Page {
             }
         }
         item.put("uuid", chargeId);
+        item.put("chargeId", chargeId);
         item.put("name", chargeObject.get("name"));
         item.put("type", type);
         item.put("amount", chargeObject.get("amount"));
@@ -3317,11 +3325,210 @@ public class LoanCreatePage extends Page {
                         builder.withRecalculationRestFrequencyInterval(this.recalculateIntervalValue);
                     }
                 }
-                builder.withArrearsBasedOnOriginalSchedule(
-                        this.arrearsRecognizationBasedOnOriginalScheduleValue == null ? false
-                                : this.arrearsRecognizationBasedOnOriginalScheduleValue);
+                builder.withArrearsBasedOnOriginalSchedule(this.arrearsRecognizationBasedOnOriginalScheduleValue == null
+                        ? false : this.arrearsRecognizationBasedOnOriginalScheduleValue);
             }
 
+        }
+
+        // Guarantee Requirements
+
+        boolean holdGuaranteeFunds = this.placeGuaranteeFundsOnHoldValue == null ? false
+                : this.placeGuaranteeFundsOnHoldValue;
+        builder.withHoldGuaranteeFunds(holdGuaranteeFunds);
+        if (holdGuaranteeFunds) {
+            builder.withMandatoryGuarantee(this.mandatoryGuaranteeValue);
+            builder.withMinimumGuaranteeFromGuarantor(this.minimumGuaranteeFromGuarantorValue);
+            builder.withMinimumGuaranteeFromOwnFunds(this.minimumGuaranteeValue);
+        }
+
+        // Loan Tranche Details
+
+        boolean multiDisburseLoan = this.enableMultipleDisbursalValue == null ? false
+                : this.enableMultipleDisbursalValue;
+        builder.withMultiDisburseLoan(multiDisburseLoan);
+        if (multiDisburseLoan) {
+            builder.withOutstandingLoanBalance(this.maximumAllowedOutstandingBalanceValue);
+            builder.withMaxTrancheCount(this.maximumTrancheCountValue);
+        }
+
+        // Configurable Terms and Settings
+        boolean configurable = this.allowOverridingSelectTermsAndSettingsInLoanAccountValue == null ? false
+                : this.allowOverridingSelectTermsAndSettingsInLoanAccountValue;
+        AllowAttributeOverrideBuilder allowAttributeOverrideBuilder = new AllowAttributeOverrideBuilder();
+        if (configurable) {
+            allowAttributeOverrideBuilder.withAmortizationType(
+                    this.configurableAmortizationValue == null ? false : this.configurableAmortizationValue);
+            allowAttributeOverrideBuilder.withTransactionProcessingStrategyId(
+                    this.configurableRepaymentStrategyValue == null ? false : this.configurableRepaymentStrategyValue);
+            allowAttributeOverrideBuilder.withInArrearsTolerance(
+                    this.configurableArrearsToleranceValue == null ? false : this.configurableArrearsToleranceValue);
+            allowAttributeOverrideBuilder.withGraceOnPrincipalAndInterestPayment(
+                    this.configurableMoratoriumValue == null ? false : this.configurableMoratoriumValue);
+            allowAttributeOverrideBuilder.withInterestType(
+                    this.configurableInterestMethodValue == null ? false : this.configurableInterestMethodValue);
+            allowAttributeOverrideBuilder
+                    .withInterestCalculationPeriodType(this.configurableInterestCalculationPeriodValue == null ? false
+                            : this.configurableInterestCalculationPeriodValue);
+            allowAttributeOverrideBuilder.withRepaymentEvery(
+                    this.configurableRepaidEveryValue == null ? false : this.configurableRepaidEveryValue);
+            allowAttributeOverrideBuilder.withGraceOnArrearsAgeing(this.configurableOverdueBeforeMovingValue == null
+                    ? false : this.configurableOverdueBeforeMovingValue);
+        } else {
+            allowAttributeOverrideBuilder.withAmortizationType(false);
+            allowAttributeOverrideBuilder.withGraceOnArrearsAgeing(false);
+            allowAttributeOverrideBuilder.withGraceOnPrincipalAndInterestPayment(false);
+            allowAttributeOverrideBuilder.withInArrearsTolerance(false);
+            allowAttributeOverrideBuilder.withInterestCalculationPeriodType(false);
+            allowAttributeOverrideBuilder.withInterestType(false);
+            allowAttributeOverrideBuilder.withRepaymentEvery(false);
+            allowAttributeOverrideBuilder.withTransactionProcessingStrategyId(false);
+        }
+        JsonNode allowAttributeOverrides = allowAttributeOverrideBuilder.build();
+        builder.withAllowAttributeOverrides(allowAttributeOverrides);
+
+        // Charge
+
+        if (this.chargeValue != null && !this.chargeValue.isEmpty()) {
+            for (Map<String, Object> item : this.chargeValue) {
+                builder.withCharges((String) item.get("chargeId"));
+            }
+        }
+
+        // Overdue Charge
+
+        if (this.overdueChargeValue != null && !this.overdueChargeValue.isEmpty()) {
+            for (Map<String, Object> item : this.overdueChargeValue) {
+                builder.withOverdueCharges((String) item.get("chargeId"));
+            }
+        }
+
+        // Accounting
+
+        String accounting = this.accountingValue;
+        if (ACC_CASH.equals(accounting)) {
+            if (this.cashFundSourceValue != null) {
+                builder.withFundSourceAccountId(this.cashFundSourceValue.getId());
+            }
+            if (this.cashLoanPortfolioValue != null) {
+                builder.withLoanPortfolioAccountId(this.cashLoanPortfolioValue.getId());
+            }
+            if (this.cashTransferInSuspenseValue != null) {
+                builder.withTransfersInSuspenseAccountId(this.cashTransferInSuspenseValue.getId());
+            }
+            if (this.cashIncomeFromInterestValue != null) {
+                builder.withInterestOnLoanAccountId(this.cashIncomeFromInterestValue.getId());
+            }
+            if (this.cashIncomeFromFeeValue != null) {
+                builder.withIncomeFromFeeAccountId(this.cashIncomeFromFeeValue.getId());
+            }
+            if (this.cashIncomeFromPenaltiesValue != null) {
+                builder.withIncomeFromPenaltyAccountId(this.cashIncomeFromPenaltiesValue.getId());
+            }
+            if (this.cashIncomeFromRecoveryRepaymentValue != null) {
+                builder.withIncomeFromRecoveryAccountId(this.cashIncomeFromRecoveryRepaymentValue.getId());
+            }
+            if (this.cashLossesWrittenOffValue != null) {
+                builder.withWriteOffAccountId(this.cashLossesWrittenOffValue.getId());
+            }
+            if (this.cashOverPaymentLiabilityValue != null) {
+                builder.withOverpaymentLiabilityAccountId(this.cashOverPaymentLiabilityValue.getId());
+            }
+        } else if (ACC_PERIODIC.equals(accounting)) {
+            if (this.periodicFundSourceValue != null) {
+                builder.withFundSourceAccountId(this.periodicFundSourceValue.getId());
+            }
+            if (this.periodicLoanPortfolioValue != null) {
+                builder.withLoanPortfolioAccountId(this.periodicLoanPortfolioValue.getId());
+            }
+            if (this.periodicTransferInSuspenseValue != null) {
+                builder.withTransfersInSuspenseAccountId(this.periodicTransferInSuspenseValue.getId());
+            }
+            if (this.periodicIncomeFromInterestValue != null) {
+                builder.withInterestOnLoanAccountId(this.periodicIncomeFromInterestValue.getId());
+            }
+            if (this.periodicIncomeFromFeeValue != null) {
+                builder.withIncomeFromFeeAccountId(this.periodicIncomeFromFeeValue.getId());
+            }
+            if (this.periodicIncomeFromPenaltiesValue != null) {
+                builder.withIncomeFromPenaltyAccountId(this.periodicIncomeFromPenaltiesValue.getId());
+            }
+            if (this.periodicIncomeFromRecoveryRepaymentValue != null) {
+                builder.withIncomeFromRecoveryAccountId(this.periodicIncomeFromRecoveryRepaymentValue.getId());
+            }
+            if (this.periodicLossesWrittenOffValue != null) {
+                builder.withWriteOffAccountId(this.periodicLossesWrittenOffValue.getId());
+            }
+            if (this.periodicOverPaymentLiabilityValue != null) {
+                builder.withOverpaymentLiabilityAccountId(this.periodicOverPaymentLiabilityValue.getId());
+            }
+            if (this.periodicInterestReceivableValue != null) {
+                builder.withReceivableInterestAccountId(this.periodicInterestReceivableValue.getId());
+            }
+            if (this.periodicFeesReceivableValue != null) {
+                builder.withReceivableFeeAccountId(this.periodicFeesReceivableValue.getId());
+            }
+            if (this.periodicPenaltiesReceivableValue != null) {
+                builder.withReceivablePenaltyAccountId(this.periodicPenaltiesReceivableValue.getId());
+            }
+        } else if (ACC_UPFRONT.equals(accounting)) {
+            if (this.upfrontFundSourceValue != null) {
+                builder.withFundSourceAccountId(this.upfrontFundSourceValue.getId());
+            }
+            if (this.upfrontLoanPortfolioValue != null) {
+                builder.withLoanPortfolioAccountId(this.upfrontLoanPortfolioValue.getId());
+            }
+            if (this.upfrontTransferInSuspenseValue != null) {
+                builder.withTransfersInSuspenseAccountId(this.upfrontTransferInSuspenseValue.getId());
+            }
+            if (this.upfrontIncomeFromInterestValue != null) {
+                builder.withInterestOnLoanAccountId(this.upfrontIncomeFromInterestValue.getId());
+            }
+            if (this.upfrontIncomeFromFeeValue != null) {
+                builder.withIncomeFromFeeAccountId(this.upfrontIncomeFromFeeValue.getId());
+            }
+            if (this.upfrontIncomeFromPenaltiesValue != null) {
+                builder.withIncomeFromPenaltyAccountId(this.upfrontIncomeFromPenaltiesValue.getId());
+            }
+            if (this.upfrontIncomeFromRecoveryRepaymentValue != null) {
+                builder.withIncomeFromRecoveryAccountId(this.upfrontIncomeFromRecoveryRepaymentValue.getId());
+            }
+            if (this.upfrontLossesWrittenOffValue != null) {
+                builder.withWriteOffAccountId(this.upfrontLossesWrittenOffValue.getId());
+            }
+            if (this.upfrontOverPaymentLiabilityValue != null) {
+                builder.withOverpaymentLiabilityAccountId(this.upfrontOverPaymentLiabilityValue.getId());
+            }
+            if (this.upfrontInterestReceivableValue != null) {
+                builder.withReceivableInterestAccountId(this.upfrontInterestReceivableValue.getId());
+            }
+            if (this.upfrontFeesReceivableValue != null) {
+                builder.withReceivableFeeAccountId(this.upfrontFeesReceivableValue.getId());
+            }
+            if (this.upfrontPenaltiesReceivableValue != null) {
+                builder.withReceivablePenaltyAccountId(this.upfrontPenaltiesReceivableValue.getId());
+            }
+        }
+
+        if (ACC_CASH.equals(accounting) || ACC_PERIODIC.equals(accounting) || ACC_UPFRONT.equals(accounting)) {
+            if (this.fundSourceValue != null && !this.fundSourceValue.isEmpty()) {
+                for (Map<String, Object> item : this.fundSourceValue) {
+                    builder.withPaymentChannelToFundSourceMappings((String) item.get("paymentId"),
+                            (String) item.get("accountId"));
+                }
+            }
+            if (this.feeIncomeValue != null && !this.feeIncomeValue.isEmpty()) {
+                for (Map<String, Object> item : this.feeIncomeValue) {
+                    builder.withFeeToIncomeAccountMappings((String) item.get("chargeId"),
+                            (String) item.get("accountId"));
+                }
+            }
+            if (this.penaltyIncomeValue != null && !this.penaltyIncomeValue.isEmpty()) {
+                for (Map<String, Object> item : this.penaltyIncomeValue) {
+                    builder.withPenaltyToIncomeAccountMappings((String) item.get("chargeId"),
+                            (String) item.get("accountId"));
+                }
+            }
         }
 
         JsonNode node = null;

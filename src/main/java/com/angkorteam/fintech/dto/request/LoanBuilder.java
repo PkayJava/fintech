@@ -695,8 +695,346 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
+    private boolean holdGuaranteeFunds;
+    private boolean hasHoldGuaranteeFunds;
+
+    public LoanBuilder withHoldGuaranteeFunds(boolean holdGuaranteeFunds) {
+        this.holdGuaranteeFunds = holdGuaranteeFunds;
+        this.hasHoldGuaranteeFunds = true;
+        return this;
+    }
+
+    private Double mandatoryGuarantee;
+    private boolean hasMandatoryGuarantee;
+
+    public LoanBuilder withMandatoryGuarantee(Double mandatoryGuarantee) {
+        this.mandatoryGuarantee = mandatoryGuarantee;
+        this.hasMandatoryGuarantee = true;
+        return this;
+    }
+
+    private Double minimumGuaranteeFromGuarantor;
+    private boolean hasMinimumGuaranteeFromGuarantor;
+
+    public LoanBuilder withMinimumGuaranteeFromGuarantor(Double minimumGuaranteeFromGuarantor) {
+        this.minimumGuaranteeFromGuarantor = minimumGuaranteeFromGuarantor;
+        this.hasMinimumGuaranteeFromGuarantor = true;
+        return this;
+    }
+
+    private Double minimumGuaranteeFromOwnFunds;
+    private boolean hasMinimumGuaranteeFromOwnFunds;
+
+    public LoanBuilder withMinimumGuaranteeFromOwnFunds(Double minimumGuaranteeFromOwnFunds) {
+        this.minimumGuaranteeFromOwnFunds = minimumGuaranteeFromOwnFunds;
+        this.hasMinimumGuaranteeFromOwnFunds = true;
+        return this;
+    }
+
+    private boolean multiDisburseLoan;
+    private boolean hasMultiDisburseLoan;
+
+    public LoanBuilder withMultiDisburseLoan(boolean multiDisburseLoan) {
+        this.multiDisburseLoan = multiDisburseLoan;
+        this.hasMultiDisburseLoan = true;
+        return this;
+    }
+
+    private Double maxTrancheCount;
+    private boolean hasMaxTrancheCount;
+
+    public LoanBuilder withMaxTrancheCount(Double maxTrancheCount) {
+        this.maxTrancheCount = maxTrancheCount;
+        this.hasMaxTrancheCount = true;
+        return this;
+    }
+
+    private Double outstandingLoanBalance;
+    private boolean hasOutstandingLoanBalance;
+
+    public LoanBuilder withOutstandingLoanBalance(Double outstandingLoanBalance) {
+        this.outstandingLoanBalance = outstandingLoanBalance;
+        this.hasOutstandingLoanBalance = true;
+        return this;
+    }
+
+    private JsonNode allowAttributeOverrides;
+    private boolean hasAllowAttributeOverrides;
+
+    public LoanBuilder withAllowAttributeOverrides(JsonNode allowAttributeOverrides) {
+        this.allowAttributeOverrides = allowAttributeOverrides;
+        this.hasAllowAttributeOverrides = true;
+        return this;
+    }
+
+    private String fundSourceAccountId;
+    private boolean hasFundSourceAccountId;
+
+    public LoanBuilder withFundSourceAccountId(String fundSourceAccountId) {
+        this.fundSourceAccountId = fundSourceAccountId;
+        this.hasFundSourceAccountId = true;
+        return this;
+    }
+
+    private String loanPortfolioAccountId;
+    private boolean hasLoanPortfolioAccountId;
+
+    public LoanBuilder withLoanPortfolioAccountId(String loanPortfolioAccountId) {
+        this.loanPortfolioAccountId = loanPortfolioAccountId;
+        this.hasLoanPortfolioAccountId = true;
+        return this;
+    }
+
+    private String receivableInterestAccountId;
+    private boolean hasReceivableInterestAccountId;
+
+    public LoanBuilder withReceivableInterestAccountId(String receivableInterestAccountId) {
+        this.receivableInterestAccountId = receivableInterestAccountId;
+        this.hasReceivableInterestAccountId = true;
+        return this;
+    }
+
+    private String interestOnLoanAccountId;
+    private boolean hasInterestOnLoanAccountId;
+
+    public LoanBuilder withInterestOnLoanAccountId(String interestOnLoanAccountId) {
+        this.interestOnLoanAccountId = interestOnLoanAccountId;
+        this.hasInterestOnLoanAccountId = true;
+        return this;
+    }
+
+    private String incomeFromFeeAccountId;
+    private boolean hasIncomeFromFeeAccountId;
+
+    public LoanBuilder withIncomeFromFeeAccountId(String incomeFromFeeAccountId) {
+        this.incomeFromFeeAccountId = incomeFromFeeAccountId;
+        this.hasIncomeFromFeeAccountId = true;
+        return this;
+    }
+
+    private String incomeFromPenaltyAccountId;
+    private boolean hasIncomeFromPenaltyAccountId;
+
+    public LoanBuilder withIncomeFromPenaltyAccountId(String incomeFromPenaltyAccountId) {
+        this.incomeFromPenaltyAccountId = incomeFromPenaltyAccountId;
+        this.hasIncomeFromPenaltyAccountId = true;
+        return this;
+    }
+
+    private String incomeFromRecoveryAccountId;
+    private boolean hasIncomeFromRecoveryAccountId;
+
+    public LoanBuilder withIncomeFromRecoveryAccountId(String incomeFromRecoveryAccountId) {
+        this.incomeFromRecoveryAccountId = incomeFromRecoveryAccountId;
+        this.hasIncomeFromRecoveryAccountId = true;
+        return this;
+    }
+
+    private String writeOffAccountId;
+    private boolean hasWriteOffAccountId;
+
+    public LoanBuilder withWriteOffAccountId(String writeOffAccountId) {
+        this.writeOffAccountId = writeOffAccountId;
+        this.hasWriteOffAccountId = true;
+        return this;
+    }
+
+    private String overpaymentLiabilityAccountId;
+    private boolean hasOverpaymentLiabilityAccountId;
+
+    public LoanBuilder withOverpaymentLiabilityAccountId(String overpaymentLiabilityAccountId) {
+        this.overpaymentLiabilityAccountId = overpaymentLiabilityAccountId;
+        this.hasOverpaymentLiabilityAccountId = true;
+        return this;
+    }
+
+    private String transfersInSuspenseAccountId;
+    private boolean hasTransfersInSuspenseAccountId;
+
+    public LoanBuilder withTransfersInSuspenseAccountId(String transfersInSuspenseAccountId) {
+        this.transfersInSuspenseAccountId = transfersInSuspenseAccountId;
+        this.hasTransfersInSuspenseAccountId = true;
+        return this;
+    }
+
+    private String receivableFeeAccountId;
+    private boolean hasReceivableFeeAccountId;
+
+    public LoanBuilder withReceivableFeeAccountId(String receivableFeeAccountId) {
+        this.receivableFeeAccountId = receivableFeeAccountId;
+        this.hasReceivableFeeAccountId = true;
+        return this;
+    }
+
+    private String receivablePenaltyAccountId;
+    private boolean hasReceivablePenaltyAccountId;
+
+    public LoanBuilder withReceivablePenaltyAccountId(String receivablePenaltyAccountId) {
+        this.receivablePenaltyAccountId = receivablePenaltyAccountId;
+        this.hasReceivablePenaltyAccountId = true;
+        return this;
+    }
+
+    private List<Map<String, Object>> paymentChannelToFundSourceMappings = Lists.newArrayList();
+    private boolean hasPaymentChannelToFundSourceMappings;
+
+    public LoanBuilder withPaymentChannelToFundSourceMappings(String paymentTypeId, String fundSourceAccountId) {
+        Map<String, Object> item = Maps.newHashMap();
+        item.put("paymentTypeId", paymentTypeId);
+        item.put("fundSourceAccountId", fundSourceAccountId);
+        this.paymentChannelToFundSourceMappings.add(item);
+        this.hasPaymentChannelToFundSourceMappings = true;
+        return this;
+    }
+
+    private List<Map<String, Object>> feeToIncomeAccountMappings = Lists.newArrayList();
+    private boolean hasFeeToIncomeAccountMappings;
+
+    public LoanBuilder withFeeToIncomeAccountMappings(String chargeId, String incomeAccountId) {
+        Map<String, Object> item = Maps.newHashMap();
+        item.put("chargeId", chargeId);
+        item.put("incomeAccountId", incomeAccountId);
+        this.feeToIncomeAccountMappings.add(item);
+        this.hasFeeToIncomeAccountMappings = true;
+        return this;
+    }
+
+    private List<Map<String, Object>> penaltyToIncomeAccountMappings = Lists.newArrayList();
+    private boolean hasPenaltyToIncomeAccountMappings;
+
+    public LoanBuilder withPenaltyToIncomeAccountMappings(String chargeId, String incomeAccountId) {
+        Map<String, Object> item = Maps.newHashMap();
+        item.put("chargeId", chargeId);
+        item.put("incomeAccountId", incomeAccountId);
+        this.penaltyToIncomeAccountMappings.add(item);
+        this.hasPenaltyToIncomeAccountMappings = true;
+        return this;
+    }
+
+    private List<Map<String, Object>> charges = Lists.newArrayList();
+    private boolean hasCharges;
+
+    public LoanBuilder withCharges(String chargeId) {
+        Map<String, Object> item = Maps.newHashMap();
+        item.put("id", chargeId);
+        this.charges.add(item);
+        this.hasCharges = true;
+        return this;
+    }
+
+    private List<Map<String, Object>> overdueCharges = Lists.newArrayList();
+    private boolean hasOverdueCharges;
+
+    public LoanBuilder withOverdueCharges(String chargeId) {
+        Map<String, Object> item = Maps.newHashMap();
+        item.put("id", chargeId);
+        this.overdueCharges.add(item);
+        this.hasOverdueCharges = true;
+        return this;
+    }
+
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
+
+        if (this.hasOverdueCharges) {
+            object.getObject().put("overdueCharges", this.overdueCharges);
+        }
+
+        if (this.hasCharges) {
+            object.getObject().put("charges", this.charges);
+        }
+
+        if (this.hasPenaltyToIncomeAccountMappings) {
+            object.getObject().put("penaltyToIncomeAccountMappings", this.penaltyToIncomeAccountMappings);
+        }
+
+        if (this.hasFeeToIncomeAccountMappings) {
+            object.getObject().put("feeToIncomeAccountMappings", this.feeToIncomeAccountMappings);
+        }
+
+        if (this.hasPaymentChannelToFundSourceMappings) {
+            object.getObject().put("paymentChannelToFundSourceMappings", this.paymentChannelToFundSourceMappings);
+        }
+
+        if (this.hasReceivablePenaltyAccountId) {
+            object.getObject().put("receivablePenaltyAccountId", this.receivablePenaltyAccountId);
+        }
+
+        if (this.hasReceivableFeeAccountId) {
+            object.getObject().put("receivableFeeAccountId", this.receivableFeeAccountId);
+        }
+
+        if (this.hasTransfersInSuspenseAccountId) {
+            object.getObject().put("transfersInSuspenseAccountId", this.transfersInSuspenseAccountId);
+        }
+
+        if (this.hasOverpaymentLiabilityAccountId) {
+            object.getObject().put("overpaymentLiabilityAccountId", this.overpaymentLiabilityAccountId);
+        }
+
+        if (this.hasWriteOffAccountId) {
+            object.getObject().put("writeOffAccountId", this.writeOffAccountId);
+        }
+
+        if (this.hasIncomeFromRecoveryAccountId) {
+            object.getObject().put("incomeFromRecoveryAccountId", this.incomeFromRecoveryAccountId);
+        }
+
+        if (this.hasIncomeFromPenaltyAccountId) {
+            object.getObject().put("incomeFromPenaltyAccountId", this.incomeFromPenaltyAccountId);
+        }
+
+        if (this.hasIncomeFromFeeAccountId) {
+            object.getObject().put("incomeFromFeeAccountId", this.incomeFromFeeAccountId);
+        }
+
+        if (this.hasInterestOnLoanAccountId) {
+            object.getObject().put("interestOnLoanAccountId", this.interestOnLoanAccountId);
+        }
+
+        if (this.hasReceivableInterestAccountId) {
+            object.getObject().put("receivableInterestAccountId", this.receivableInterestAccountId);
+        }
+
+        if (this.hasLoanPortfolioAccountId) {
+            object.getObject().put("loanPortfolioAccountId", this.loanPortfolioAccountId);
+        }
+
+        if (this.hasFundSourceAccountId) {
+            object.getObject().put("fundSourceAccountId", this.fundSourceAccountId);
+        }
+
+        if (this.hasAllowAttributeOverrides) {
+            object.getObject().put("allowAttributeOverrides", this.allowAttributeOverrides);
+        }
+
+        if (this.hasOutstandingLoanBalance) {
+            object.getObject().put("outstandingLoanBalance", this.outstandingLoanBalance);
+        }
+
+        if (this.hasMaxTrancheCount) {
+            object.getObject().put("maxTrancheCount", this.maxTrancheCount);
+        }
+
+        if (this.hasMultiDisburseLoan) {
+            object.getObject().put("multiDisburseLoan", this.multiDisburseLoan);
+        }
+
+        if (this.hasMinimumGuaranteeFromOwnFunds) {
+            object.getObject().put("minimumGuaranteeFromOwnFunds", this.minimumGuaranteeFromOwnFunds);
+        }
+
+        if (this.hasMinimumGuaranteeFromGuarantor) {
+            object.getObject().put("minimumGuaranteeFromGuarantor", this.minimumGuaranteeFromGuarantor);
+        }
+
+        if (this.hasMandatoryGuarantee) {
+            object.getObject().put("mandatoryGuarantee", this.mandatoryGuarantee);
+        }
+
+        if (this.hasHoldGuaranteeFunds) {
+            object.getObject().put("holdGuaranteeFunds", this.holdGuaranteeFunds);
+        }
 
         if (this.hasRecalculationRestFrequencyType) {
             if (this.recalculationRestFrequencyType != null) {
