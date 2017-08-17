@@ -922,23 +922,8 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private List<Map<String, Object>> overdueCharges = Lists.newArrayList();
-    private boolean hasOverdueCharges;
-
-    public LoanBuilder withOverdueCharges(String chargeId) {
-        Map<String, Object> item = Maps.newHashMap();
-        item.put("id", chargeId);
-        this.overdueCharges.add(item);
-        this.hasOverdueCharges = true;
-        return this;
-    }
-
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
-
-        if (this.hasOverdueCharges) {
-            object.getObject().put("overdueCharges", this.overdueCharges);
-        }
 
         if (this.hasCharges) {
             object.getObject().put("charges", this.charges);

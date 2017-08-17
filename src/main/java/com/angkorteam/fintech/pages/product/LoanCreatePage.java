@@ -3399,7 +3399,7 @@ public class LoanCreatePage extends Page {
 
         if (this.overdueChargeValue != null && !this.overdueChargeValue.isEmpty()) {
             for (Map<String, Object> item : this.overdueChargeValue) {
-                builder.withOverdueCharges((String) item.get("chargeId"));
+                builder.withCharges((String) item.get("chargeId"));
             }
         }
 
