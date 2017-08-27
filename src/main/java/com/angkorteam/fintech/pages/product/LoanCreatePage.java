@@ -26,6 +26,8 @@ import com.angkorteam.fintech.dto.Amortization;
 import com.angkorteam.fintech.dto.ChargeCalculation;
 import com.angkorteam.fintech.dto.ChargeTime;
 import com.angkorteam.fintech.dto.ClosureInterestCalculationRule;
+import com.angkorteam.fintech.dto.DayInMonth;
+import com.angkorteam.fintech.dto.DayInYear;
 import com.angkorteam.fintech.dto.Frequency;
 import com.angkorteam.fintech.dto.FrequencyDay;
 import com.angkorteam.fintech.dto.FrequencyType;
@@ -35,6 +37,7 @@ import com.angkorteam.fintech.dto.InterestMethod;
 import com.angkorteam.fintech.dto.InterestRecalculationCompound;
 import com.angkorteam.fintech.dto.NominalInterestRateScheduleType;
 import com.angkorteam.fintech.dto.RepaidType;
+import com.angkorteam.fintech.dto.RepaymentStrategy;
 import com.angkorteam.fintech.dto.WhenType;
 import com.angkorteam.fintech.dto.request.AllowAttributeOverrideBuilder;
 import com.angkorteam.fintech.dto.request.LoanBuilder;
@@ -3254,6 +3257,18 @@ public class LoanCreatePage extends Page {
         builder.withCanUseForTopup(this.allowedToBeUsedForProvidingTopupLoansValue == null ? false
                 : this.allowedToBeUsedForProvidingTopupLoansValue);
 
+        if (this.repaymentStrategyValue != null) {
+            builder.withTransactionProcessingStrategyId(RepaymentStrategy.valueOf(this.repaymentStrategyValue.getId()));
+        }
+
+        if (this.dayInYearValue != null) {
+            builder.withDaysInYearType(DayInYear.valueOf(this.dayInYearValue.getId()));
+        }
+
+        if (this.dayInMonthValue != null) {
+            builder.withDaysInMonthType(DayInMonth.valueOf(this.dayInMonthValue.getId()));
+        }
+
         // Interest Recalculation
 
         boolean interestRecalculationEnabled = this.recalculateInterestValue == null ? false
@@ -3325,8 +3340,9 @@ public class LoanCreatePage extends Page {
                         builder.withRecalculationRestFrequencyInterval(this.recalculateIntervalValue);
                     }
                 }
-                builder.withArrearsBasedOnOriginalSchedule(this.arrearsRecognizationBasedOnOriginalScheduleValue == null
-                        ? false : this.arrearsRecognizationBasedOnOriginalScheduleValue);
+                builder.withArrearsBasedOnOriginalSchedule(
+                        this.arrearsRecognizationBasedOnOriginalScheduleValue == null ? false
+                                : this.arrearsRecognizationBasedOnOriginalScheduleValue);
             }
 
         }
@@ -3372,8 +3388,9 @@ public class LoanCreatePage extends Page {
                             : this.configurableInterestCalculationPeriodValue);
             allowAttributeOverrideBuilder.withRepaymentEvery(
                     this.configurableRepaidEveryValue == null ? false : this.configurableRepaidEveryValue);
-            allowAttributeOverrideBuilder.withGraceOnArrearsAgeing(this.configurableOverdueBeforeMovingValue == null
-                    ? false : this.configurableOverdueBeforeMovingValue);
+            allowAttributeOverrideBuilder
+                    .withGraceOnArrearsAgeing(this.configurableOverdueBeforeMovingValue == null ? false
+                            : this.configurableOverdueBeforeMovingValue);
         } else {
             allowAttributeOverrideBuilder.withAmortizationType(false);
             allowAttributeOverrideBuilder.withGraceOnArrearsAgeing(false);
@@ -3406,6 +3423,16 @@ public class LoanCreatePage extends Page {
         // Accounting
 
         String accounting = this.accountingValue;
+
+        if (ACC_NONE.equals(accounting)) {
+            builder.withAccountingRule(1);
+        } else if (ACC_CASH.equals(accounting)) {
+            builder.withAccountingRule(2);
+        } else if (ACC_PERIODIC.equals(accounting)) {
+            builder.withAccountingRule(3);
+        } else if (ACC_UPFRONT.equals(accounting)) {
+            builder.withAccountingRule(4);
+        }
         if (ACC_CASH.equals(accounting)) {
             if (this.cashFundSourceValue != null) {
                 builder.withFundSourceAccountId(this.cashFundSourceValue.getId());

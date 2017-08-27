@@ -990,7 +990,7 @@ public class LoanBuilder implements Serializable {
         }
 
         if (this.hasAllowAttributeOverrides) {
-            object.getObject().put("allowAttributeOverrides", this.allowAttributeOverrides);
+            object.getObject().put("allowAttributeOverrides", this.allowAttributeOverrides.getObject());
         }
 
         if (this.hasOutstandingLoanBalance) {
@@ -1405,13 +1405,6 @@ public class LoanBuilder implements Serializable {
             }
         }
 
-        if (this.hasAmortizationType) {
-            object.getObject().put("amortizationType", this.amortizationType);
-        }
-
-        if (this.hasInterestCalculationPeriodType) {
-            object.getObject().put("interestCalculationPeriodType", this.interestCalculationPeriodType);
-        }
         return object;
     }
 
