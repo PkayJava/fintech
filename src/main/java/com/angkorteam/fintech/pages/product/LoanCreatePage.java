@@ -536,7 +536,7 @@ public class LoanCreatePage extends Page {
 
     // Accounting
 
-    private String accountingValue;
+    private String accountingValue = ACC_NONE;
     private RadioGroup<String> accountingField;
 
     private WebMarkupContainer cashContainer;
@@ -2066,7 +2066,7 @@ public class LoanCreatePage extends Page {
         this.amortizationProvider = new AmortizationProvider();
         this.amortizationField = new Select2SingleChoice<>("amortizationField", 0,
                 new PropertyModel<>(this, "amortizationValue"), this.amortizationProvider);
-        this.amortizationField.setRequired(false);
+        this.amortizationField.setRequired(true);
         this.amortizationField.add(new OnChangeAjaxBehavior());
         this.form.add(this.amortizationField);
         this.amortizationFeedback = new TextFeedbackPanel("amortizationFeedback", this.amortizationField);
@@ -2075,7 +2075,7 @@ public class LoanCreatePage extends Page {
         this.interestMethodProvider = new InterestMethodProvider();
         this.interestMethodField = new Select2SingleChoice<>("interestMethodField", 0,
                 new PropertyModel<>(this, "interestMethodValue"), this.interestMethodProvider);
-        this.interestMethodField.setRequired(false);
+        this.interestMethodField.setRequired(true);
         this.interestMethodField.add(new OnChangeAjaxBehavior());
         this.form.add(this.interestMethodField);
         this.interestMethodFeedback = new TextFeedbackPanel("interestMethodFeedback", this.interestMethodField);
@@ -2084,7 +2084,7 @@ public class LoanCreatePage extends Page {
         this.interestCalculationPeriodProvider = new InterestCalculationPeriodProvider();
         this.interestCalculationPeriodField = new Select2SingleChoice<>("interestCalculationPeriodField", 0,
                 new PropertyModel<>(this, "interestCalculationPeriodValue"), this.interestCalculationPeriodProvider);
-        this.interestCalculationPeriodField.setRequired(false);
+        this.interestCalculationPeriodField.setRequired(true);
         this.interestCalculationPeriodField.add(new OnChangeAjaxBehavior(this::interestCalculationPeriodFieldUpdate));
         this.form.add(this.interestCalculationPeriodField);
         this.interestCalculationPeriodFeedback = new TextFeedbackPanel("interestCalculationPeriodFeedback",
@@ -2111,7 +2111,7 @@ public class LoanCreatePage extends Page {
         this.repaymentStrategyProvider = new RepaymentStrategyProvider();
         this.repaymentStrategyField = new Select2SingleChoice<>("repaymentStrategyField", 0,
                 new PropertyModel<>(this, "repaymentStrategyValue"), this.repaymentStrategyProvider);
-        this.repaymentStrategyField.setRequired(false);
+        this.repaymentStrategyField.setRequired(true);
         this.repaymentStrategyField.add(new OnChangeAjaxBehavior());
         this.form.add(this.repaymentStrategyField);
         this.repaymentStrategyFeedback = new TextFeedbackPanel("repaymentStrategyFeedback",
@@ -2156,7 +2156,7 @@ public class LoanCreatePage extends Page {
         this.dayInYearProvider = new DayInYearProvider();
         this.dayInYearField = new Select2SingleChoice<>("dayInYearField", 0,
                 new PropertyModel<>(this, "dayInYearValue"), this.dayInYearProvider);
-        this.dayInYearField.setRequired(false);
+        this.dayInYearField.setRequired(true);
         this.dayInYearField.add(new OnChangeAjaxBehavior());
         this.form.add(this.dayInYearField);
         this.dayInYearFeedback = new TextFeedbackPanel("dayInYearFeedback", this.dayInYearField);
@@ -2165,7 +2165,7 @@ public class LoanCreatePage extends Page {
         this.dayInMonthProvider = new DayInMonthProvider();
         this.dayInMonthField = new Select2SingleChoice<>("dayInMonthField", 0,
                 new PropertyModel<>(this, "dayInMonthValue"), this.dayInMonthProvider);
-        this.dayInMonthField.setRequired(false);
+        this.dayInMonthField.setRequired(true);
         this.dayInMonthField.add(new OnChangeAjaxBehavior());
         this.form.add(this.dayInMonthField);
         this.dayInMonthFeedback = new TextFeedbackPanel("dayInMonthFeedback", this.dayInMonthField);
@@ -2353,14 +2353,14 @@ public class LoanCreatePage extends Page {
 
     protected void initDetail() {
         this.productNameField = new TextField<>("productNameField", new PropertyModel<>(this, "productNameValue"));
-        this.productNameField.setRequired(false);
+        this.productNameField.setRequired(true);
         this.productNameField.add(new OnChangeAjaxBehavior());
         this.form.add(this.productNameField);
         this.productNameFeedback = new TextFeedbackPanel("productNameFeedback", this.productNameField);
         this.form.add(this.productNameFeedback);
 
         this.shortNameField = new TextField<>("shortNameField", new PropertyModel<>(this, "shortNameValue"));
-        this.shortNameField.setRequired(false);
+        this.shortNameField.setRequired(true);
         this.shortNameField.add(new OnChangeAjaxBehavior());
         this.form.add(this.shortNameField);
         this.shortNameFeedback = new TextFeedbackPanel("shortNameFeedback", this.shortNameField);
@@ -2412,13 +2412,13 @@ public class LoanCreatePage extends Page {
         this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"),
                 this.currencyProvider);
         this.currencyField.add(new OnChangeAjaxBehavior());
-        this.currencyField.setRequired(false);
+        this.currencyField.setRequired(true);
         this.form.add(this.currencyField);
         this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
         this.form.add(this.currencyFeedback);
 
         this.decimalPlaceField = new TextField<>("decimalPlaceField", new PropertyModel<>(this, "decimalPlaceValue"));
-        this.decimalPlaceField.setRequired(false);
+        this.decimalPlaceField.setRequired(true);
         this.decimalPlaceField.add(new OnChangeAjaxBehavior());
         this.decimalPlaceField.add(RangeValidator.range((int) 0, (int) 6));
         this.form.add(this.decimalPlaceField);
@@ -2519,7 +2519,7 @@ public class LoanCreatePage extends Page {
         this.numberOfRepaymentDefaultField = new TextField<>("numberOfRepaymentDefaultField",
                 new PropertyModel<>(this, "numberOfRepaymentDefaultValue"));
         this.numberOfRepaymentDefaultField.add(new OnChangeAjaxBehavior());
-        this.numberOfRepaymentDefaultField.setRequired(false);
+        this.numberOfRepaymentDefaultField.setRequired(true);
         this.form.add(this.numberOfRepaymentDefaultField);
         this.numberOfRepaymentDefaultFeedback = new TextFeedbackPanel("numberOfRepaymentDefaultFeedback",
                 this.numberOfRepaymentDefaultField);
@@ -2590,7 +2590,7 @@ public class LoanCreatePage extends Page {
 
             this.nominalInterestRateDefaultField = new TextField<>("nominalInterestRateDefaultField",
                     new PropertyModel<>(this, "nominalInterestRateDefaultValue"));
-            this.nominalInterestRateDefaultField.setRequired(false);
+            this.nominalInterestRateDefaultField.setRequired(true);
             this.nominalInterestRateDefaultField.add(new OnChangeAjaxBehavior());
             this.nominalInterestRateContainer.add(this.nominalInterestRateDefaultField);
             this.nominalInterestRateDefaultFeedback = new TextFeedbackPanel("nominalInterestRateDefaultFeedback",
@@ -2609,7 +2609,7 @@ public class LoanCreatePage extends Page {
             this.nominalInterestRateTypeProvider = new NominalInterestRateTypeProvider();
             this.nominalInterestRateTypeField = new Select2SingleChoice<>("nominalInterestRateTypeField", 0,
                     new PropertyModel<>(this, "nominalInterestRateTypeValue"), this.nominalInterestRateTypeProvider);
-            this.nominalInterestRateTypeField.setRequired(false);
+            this.nominalInterestRateTypeField.setRequired(true);
             this.nominalInterestRateTypeField.add(new OnChangeAjaxBehavior());
             this.nominalInterestRateContainer.add(this.nominalInterestRateTypeField);
             this.nominalInterestRateTypeFeedback = new TextFeedbackPanel("nominalInterestRateTypeFeedback",
@@ -2710,7 +2710,7 @@ public class LoanCreatePage extends Page {
         }
 
         this.repaidEveryField = new TextField<>("repaidEveryField", new PropertyModel<>(this, "repaidEveryValue"));
-        this.repaidEveryField.setRequired(false);
+        this.repaidEveryField.setRequired(true);
         this.repaidEveryField.add(new OnChangeAjaxBehavior());
         this.form.add(this.repaidEveryField);
         this.repaidEveryFeedback = new TextFeedbackPanel("repaidEveryFeedback", this.repaidEveryField);
@@ -2719,7 +2719,7 @@ public class LoanCreatePage extends Page {
         this.repaidTypeProvider = new RepaidTypeProvider();
         this.repaidTypeField = new Select2SingleChoice<>("repaidTypeField", 0,
                 new PropertyModel<>(this, "repaidTypeValue"), this.repaidTypeProvider);
-        this.repaidTypeField.setRequired(false);
+        this.repaidTypeField.setRequired(true);
         this.repaidTypeField.add(new OnChangeAjaxBehavior());
         this.form.add(this.repaidTypeField);
         this.repaidTypeFeedback = new TextFeedbackPanel("repaidTypeFeedback", this.repaidTypeField);
@@ -3269,6 +3269,8 @@ public class LoanCreatePage extends Page {
             builder.withDaysInMonthType(DayInMonth.valueOf(this.dayInMonthValue.getId()));
         }
 
+        builder.withPrincipalThresholdForLastInstallment(this.principalThresholdForLastInstalmentValue);
+
         // Interest Recalculation
 
         boolean interestRecalculationEnabled = this.recalculateInterestValue == null ? false
@@ -3568,7 +3570,7 @@ public class LoanCreatePage extends Page {
         if (reportError(node)) {
             return;
         }
-        setResponsePage(OfficeBrowsePage.class);
+        setResponsePage(LoanBrowsePage.class);
     }
 
 }
