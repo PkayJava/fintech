@@ -1,13 +1,14 @@
-package com.angkorteam.fintech.dto;
+package com.angkorteam.fintech.dto.loan;
 
-public enum Amortization {
-    Installment("1", "Equal Installments"), PrincipalPayment("0", "Equal Principal Payments");
+public enum InterestMethod {
+
+    Flat("1", "Flat"), DecliningBalance("0", "Declining Balance");
 
     private String literal;
 
     private String description;
 
-    Amortization(String literal, String description) {
+    InterestMethod(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }

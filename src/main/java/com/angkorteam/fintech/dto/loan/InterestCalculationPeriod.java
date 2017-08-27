@@ -1,14 +1,14 @@
-package com.angkorteam.fintech.dto;
+package com.angkorteam.fintech.dto.loan;
 
-public enum InterestMethod {
+public enum InterestCalculationPeriod {
 
-    Flat("1", "Flat"), DecliningBalance("0", "Declining Balance");
+    Daily("0", "Daily"), SameAsPayment("1", "Same as payment");
 
     private String literal;
 
     private String description;
 
-    InterestMethod(String literal, String description) {
+    InterestCalculationPeriod(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
@@ -20,4 +20,5 @@ public enum InterestMethod {
     public String getDescription() {
         return description;
     }
+
 }

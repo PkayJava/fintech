@@ -1,14 +1,14 @@
-package com.angkorteam.fintech.dto;
+package com.angkorteam.fintech.dto.loan;
 
-public enum DayInYear {
+public enum RepaidType {
 
-    Actual("1", "Actual"), D360("360", "360 Days"), D364("364", "364 Days"), D365("365", "365 Days");
+    Day("0", "Days"), Week("1", "Weeks"), Month("1", "Months");
 
     private String literal;
 
     private String description;
 
-    DayInYear(String literal, String description) {
+    RepaidType(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }

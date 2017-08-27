@@ -1,19 +1,14 @@
-package com.angkorteam.fintech.dto;
+package com.angkorteam.fintech.dto.loan;
 
-public enum FrequencyType {
+public enum NominalInterestRateScheduleType {
 
-    First("1", "First"), 
-    Second("2", "Second"),
-    Third("3", "Third"),
-    Fourth("4", "Fourth"),
-    Last("-1", "Last"),
-    OnDay("-2", "On Day");
+    Month("2", "Per month"), Year("3", "Per year");
 
     private String literal;
 
     private String description;
 
-    FrequencyType(String literal, String description) {
+    NominalInterestRateScheduleType(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }

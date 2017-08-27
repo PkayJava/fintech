@@ -1,14 +1,17 @@
-package com.angkorteam.fintech.dto;
+package com.angkorteam.fintech.dto.loan;
 
-public enum RepaidType {
+public enum Frequency {
 
-    Day("0", "Days"), Week("1", "Weeks"), Month("1", "Months");
+    Same("1", "Same as repayment period"), 
+    Daily("2", "Daily"),
+    Weekly("3", "Weekly"),
+    Monthly("4", "Monthly");
 
     private String literal;
 
     private String description;
 
-    RepaidType(String literal, String description) {
+    Frequency(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
@@ -20,4 +23,5 @@ public enum RepaidType {
     public String getDescription() {
         return description;
     }
+
 }

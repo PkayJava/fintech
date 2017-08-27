@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.dto;
+package com.angkorteam.fintech.dto.loan;
 
 public enum AdvancePaymentsAdjustmentType {
 

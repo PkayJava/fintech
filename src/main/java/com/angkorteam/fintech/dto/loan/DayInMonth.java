@@ -1,14 +1,15 @@
-package com.angkorteam.fintech.dto;
+package com.angkorteam.fintech.dto.loan;
 
-public enum NominalInterestRateScheduleType {
-
-    Month("2", "Per month"), Year("3", "Per year");
+public enum DayInMonth {
+    
+    Actual("1", "Actual"), 
+    D30("30", "30 Days");
 
     private String literal;
 
     private String description;
 
-    NominalInterestRateScheduleType(String literal, String description) {
+    DayInMonth(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
@@ -20,5 +21,4 @@ public enum NominalInterestRateScheduleType {
     public String getDescription() {
         return description;
     }
-
 }

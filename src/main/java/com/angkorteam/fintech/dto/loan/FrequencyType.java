@@ -1,14 +1,19 @@
-package com.angkorteam.fintech.dto;
+package com.angkorteam.fintech.dto.loan;
 
-public enum InterestCalculationPeriod {
+public enum FrequencyType {
 
-    Daily("0", "Daily"), SameAsPayment("1", "Same as payment");
+    First("1", "First"), 
+    Second("2", "Second"),
+    Third("3", "Third"),
+    Fourth("4", "Fourth"),
+    Last("-1", "Last"),
+    OnDay("-2", "On Day");
 
     private String literal;
 
     private String description;
 
-    InterestCalculationPeriod(String literal, String description) {
+    FrequencyType(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
