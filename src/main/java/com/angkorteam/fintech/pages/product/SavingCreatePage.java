@@ -7,12 +7,17 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.share.provider.ListDataProvider;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
@@ -22,6 +27,10 @@ public class SavingCreatePage extends Page {
 
     public static final String ACC_NONE = "None";
     public static final String ACC_CASH = "Cash";
+
+    private Form<Void> form;
+    private Button saveButton;
+    private BookmarkablePageLink<Void> closeLink;
 
     // Detail
 
@@ -239,5 +248,54 @@ public class SavingCreatePage extends Page {
     private List<Map<String, Object>> advancedAccountingRulePenaltyIncomeValue = Lists.newArrayList();
     private DataTable<Map<String, Object>, String> advancedAccountingRulePenaltyIncomeTable;
     private ListDataProvider advancedAccountingRulePenaltyIncomeProvider;
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        this.form = new Form<>("form");
+        add(this.form);
+
+        this.saveButton = new Button("saveButton");
+        this.saveButton.setOnSubmit(this::saveButtonSubmit);
+        this.form.add(this.saveButton);
+
+        this.closeLink = new BookmarkablePageLink<>("closeLink", LoanCreatePage.class);
+        this.form.add(this.closeLink);
+
+        initDetail();
+    }
+
+    protected void initDetail() {
+        this.detailProductNameField = new TextField<>("detailProductNameField",
+                new PropertyModel<>(this, "detailProductNameValue"));
+        this.detailProductNameField.setRequired(true);
+        this.detailProductNameField.add(new OnChangeAjaxBehavior());
+        this.form.add(this.detailProductNameField);
+        this.detailProductNameFeedback = new TextFeedbackPanel("detailProductNameFeedback",
+                this.detailProductNameField);
+        this.form.add(this.detailProductNameFeedback);
+
+        this.detailShortNameField = new TextField<>("detailShortNameField",
+                new PropertyModel<>(this, "detailShortNameValue"));
+        this.detailShortNameField.setRequired(true);
+        this.detailShortNameField.add(new OnChangeAjaxBehavior());
+        this.form.add(this.detailShortNameField);
+        this.detailShortNameFeedback = new TextFeedbackPanel("detailShortNameFeedback", this.detailShortNameField);
+        this.form.add(this.detailShortNameFeedback);
+
+        this.detailDescriptionField = new TextField<>("detailDescriptionField",
+                new PropertyModel<>(this, "detailDescriptionValue"));
+        this.detailDescriptionField.setRequired(false);
+        this.detailDescriptionField.add(new OnChangeAjaxBehavior());
+        this.form.add(this.detailDescriptionField);
+        this.detailDescriptionFeedback = new TextFeedbackPanel("detailDescriptionFeedback",
+                this.detailDescriptionField);
+        this.form.add(this.detailDescriptionFeedback);
+    }
+
+    private void saveButtonSubmit(Button button) {
+
+    }
 
 }
