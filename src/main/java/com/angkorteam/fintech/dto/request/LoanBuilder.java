@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import com.angkorteam.fintech.dto.WhenType;
 import com.angkorteam.fintech.dto.loan.AdvancePaymentsAdjustmentType;
 import com.angkorteam.fintech.dto.loan.Amortization;
 import com.angkorteam.fintech.dto.loan.ClosureInterestCalculationRule;
@@ -22,6 +21,7 @@ import com.angkorteam.fintech.dto.loan.InterestRecalculationCompound;
 import com.angkorteam.fintech.dto.loan.NominalInterestRateScheduleType;
 import com.angkorteam.fintech.dto.loan.RepaidType;
 import com.angkorteam.fintech.dto.loan.RepaymentStrategy;
+import com.angkorteam.fintech.dto.loan.WhenType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
