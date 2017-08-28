@@ -43,7 +43,6 @@ import com.angkorteam.fintech.dto.request.AllowAttributeOverrideBuilder;
 import com.angkorteam.fintech.dto.request.LoanBuilder;
 import com.angkorteam.fintech.helper.LoanHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
-import com.angkorteam.fintech.pages.office.OfficeBrowsePage;
 import com.angkorteam.fintech.popup.ChargePopup;
 import com.angkorteam.fintech.popup.FeeChargePopup;
 import com.angkorteam.fintech.popup.LoanCyclePopup;
@@ -709,6 +708,8 @@ public class LoanCreatePage extends Page {
     private Option upfrontOverPaymentLiabilityValue;
     private Select2SingleChoice<Option> upfrontOverPaymentLiabilityField;
     private TextFeedbackPanel upfrontOverPaymentLiabilityFeedback;
+
+    // Advanced Accounting Rule
 
     private WebMarkupContainer advancedAccountingRuleContainer;
 
@@ -3342,9 +3343,8 @@ public class LoanCreatePage extends Page {
                         builder.withRecalculationRestFrequencyInterval(this.recalculateIntervalValue);
                     }
                 }
-                builder.withArrearsBasedOnOriginalSchedule(
-                        this.arrearsRecognizationBasedOnOriginalScheduleValue == null ? false
-                                : this.arrearsRecognizationBasedOnOriginalScheduleValue);
+                builder.withArrearsBasedOnOriginalSchedule(this.arrearsRecognizationBasedOnOriginalScheduleValue == null
+                        ? false : this.arrearsRecognizationBasedOnOriginalScheduleValue);
             }
 
         }
@@ -3390,9 +3390,8 @@ public class LoanCreatePage extends Page {
                             : this.configurableInterestCalculationPeriodValue);
             allowAttributeOverrideBuilder.withRepaymentEvery(
                     this.configurableRepaidEveryValue == null ? false : this.configurableRepaidEveryValue);
-            allowAttributeOverrideBuilder
-                    .withGraceOnArrearsAgeing(this.configurableOverdueBeforeMovingValue == null ? false
-                            : this.configurableOverdueBeforeMovingValue);
+            allowAttributeOverrideBuilder.withGraceOnArrearsAgeing(this.configurableOverdueBeforeMovingValue == null
+                    ? false : this.configurableOverdueBeforeMovingValue);
         } else {
             allowAttributeOverrideBuilder.withAmortizationType(false);
             allowAttributeOverrideBuilder.withGraceOnArrearsAgeing(false);
