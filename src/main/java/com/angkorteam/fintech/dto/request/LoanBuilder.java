@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.json.JSONObject;
 
 import com.angkorteam.fintech.dto.loan.AdvancePaymentsAdjustmentType;
 import com.angkorteam.fintech.dto.loan.Amortization;
@@ -758,10 +759,10 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private JsonNode allowAttributeOverrides;
+    private JSONObject allowAttributeOverrides;
     private boolean hasAllowAttributeOverrides;
 
-    public LoanBuilder withAllowAttributeOverrides(JsonNode allowAttributeOverrides) {
+    public LoanBuilder withAllowAttributeOverrides(JSONObject allowAttributeOverrides) {
         this.allowAttributeOverrides = allowAttributeOverrides;
         this.hasAllowAttributeOverrides = true;
         return this;
@@ -990,7 +991,7 @@ public class LoanBuilder implements Serializable {
         }
 
         if (this.hasAllowAttributeOverrides) {
-            object.getObject().put("allowAttributeOverrides", this.allowAttributeOverrides.getObject());
+            object.getObject().put("allowAttributeOverrides", this.allowAttributeOverrides);
         }
 
         if (this.hasOutstandingLoanBalance) {
@@ -1153,10 +1154,6 @@ public class LoanBuilder implements Serializable {
 
         if (this.hasInArrearsTolerance) {
             object.getObject().put("inArrearsTolerance", this.inArrearsTolerance);
-        }
-
-        if (this.hasGraceOnInterestCharged) {
-            object.getObject().put("graceOnInterestCharged", this.graceOnInterestCharged);
         }
 
         if (this.hasGraceOnInterestCharged) {
@@ -1388,11 +1385,7 @@ public class LoanBuilder implements Serializable {
         if (this.hasDigitsAfterDecimal) {
             object.getObject().put("digitsAfterDecimal", this.digitsAfterDecimal);
         }
-
-        if (this.hasNumberOfRepayments) {
-            object.getObject().put("numberOfRepayments", this.numberOfRepayments);
-        }
-
+        
         if (this.hasRepaymentEvery) {
             object.getObject().put("repaymentEvery", this.repaymentEvery);
         }

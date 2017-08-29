@@ -3422,7 +3422,7 @@ public class LoanCreatePage extends Page {
             allowAttributeOverrideBuilder.withTransactionProcessingStrategyId(false);
         }
         JsonNode allowAttributeOverrides = allowAttributeOverrideBuilder.build();
-        builder.withAllowAttributeOverrides(allowAttributeOverrides);
+        builder.withAllowAttributeOverrides(allowAttributeOverrides.getObject());
 
         // Charge
 
