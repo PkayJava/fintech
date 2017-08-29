@@ -52,12 +52,14 @@ public class TaxGroupModifyPopup extends Panel {
         this.form.add(this.endDateFeedback);
     }
 
-    private void saveButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
+    protected boolean saveButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
         this.window.setElementId(ajaxButton.getId());
         this.window.close(target);
+        return true;
     }
 
-    private void saveButtonError(AjaxButton ajaxButton, AjaxRequestTarget target) {
+    protected boolean saveButtonError(AjaxButton ajaxButton, AjaxRequestTarget target) {
         target.add(this.form);
+        return true;
     }
 }

@@ -145,7 +145,7 @@ public class TaxGroupCreatePage extends Page {
         this.taxForm.add(this.startDateFeedback);
     }
 
-    private void addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
+    protected boolean addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
         Map<String, Object> tax = Maps.newHashMap();
         tax.put("uuid", UUID.randomUUID().toString());
         tax.put("taxComponentId", this.taxValue.getId());
@@ -156,6 +156,7 @@ public class TaxGroupCreatePage extends Page {
         this.startDateValue = null;
         target.add(this.form);
         target.add(this.taxForm);
+        return false;
     }
 
     private void initForm() {

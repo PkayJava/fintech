@@ -182,7 +182,7 @@ public class AccountCreatePage extends Page {
         this.form.add(this.descriptionFeedback);
     }
 
-    private void accountTypeFieldUpdate(AjaxRequestTarget target) {
+    protected boolean accountTypeFieldUpdate(AjaxRequestTarget target) {
         if (this.accountTypeValue == null) {
             this.tagValue = null;
             this.parentValue = null;
@@ -199,9 +199,10 @@ public class AccountCreatePage extends Page {
                     "classification_enum = " + this.accountTypeValue.getId());
         }
         target.add(this.form);
+        return false;
     }
 
-    private void accountTypeFieldError(AjaxRequestTarget target, RuntimeException error) {
+    protected boolean accountTypeFieldError(AjaxRequestTarget target, RuntimeException error) {
         if (error != null) {
             throw error;
         }
@@ -212,10 +213,10 @@ public class AccountCreatePage extends Page {
         this.parentProvider.removeWhere("classification_enum");
         this.parentProvider.setDisabled(true);
         target.add(this.form);
-        target.appendJavaScript(Select2SingleChoice.REMOVE_POPUP_UP_SCRIPT);
+        return false;
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         GLAccountBuilder builder = new GLAccountBuilder();
         builder.withDescription(this.descriptionValue);
         builder.withGlCode(this.glCodeValue);
@@ -245,7 +246,6 @@ public class AccountCreatePage extends Page {
             return;
         }
         setResponsePage(AccountBrowsePage.class);
-
     }
 
 }

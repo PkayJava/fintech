@@ -277,11 +277,12 @@ public class DataTableCreatePage extends Page {
         setResponsePage(DataTableBrowsePage.class);
     }
 
-    private void addButtonError(AjaxButton button, AjaxRequestTarget target) {
+    protected boolean addButtonError(AjaxButton button, AjaxRequestTarget target) {
         target.add(this.columnForm);
+        return false;
     }
 
-    private void addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
+    protected boolean addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
         Map<String, Object> column = Maps.newHashMap();
         column.put("uuid", UUID.randomUUID().toString());
         column.put("name", this.nameValue);
@@ -297,6 +298,7 @@ public class DataTableCreatePage extends Page {
         this.nameValue = "";
         target.add(this.columnForm);
         target.add(this.columnTable);
+        return false;
     }
 
     private ItemPanel codeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

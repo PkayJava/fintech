@@ -271,23 +271,17 @@ public class SavingDepositChargeModifyPage extends Page {
         this.form.add(this.taxGroupFeedback);
     }
 
-    private void chargePaymentFieldUpdate(AjaxRequestTarget target) {
+    protected boolean chargeCalculationFieldUpdate(AjaxRequestTarget target) {
         target.add(this.form);
+        return false;
     }
 
-    private void chargePaymentFieldError(AjaxRequestTarget target, RuntimeException error) {
+    protected boolean chargeCalculationFieldError(AjaxRequestTarget target, RuntimeException error) {
         target.add(this.form);
+        return false;
     }
 
-    private void chargeCalculationFieldUpdate(AjaxRequestTarget target) {
-        target.add(this.form);
-    }
-
-    private void chargeCalculationFieldError(AjaxRequestTarget target, RuntimeException error) {
-        target.add(this.form);
-    }
-
-    private void chargeTimeFieldUpdate(AjaxRequestTarget target) {
+    protected boolean chargeTimeFieldUpdate(AjaxRequestTarget target) {
         this.dueDateValue = null;
         this.repeatEveryValue = null;
         this.dueDateField.setRequired(false);
@@ -307,13 +301,15 @@ public class SavingDepositChargeModifyPage extends Page {
         } else if (chargeTime == ChargeTime.SavingNoActivityFee) {
         }
         target.add(this.form);
+        return false;
     }
 
-    private void chargeTimeFieldError(AjaxRequestTarget target, RuntimeException error) {
+    protected boolean chargeTimeFieldError(AjaxRequestTarget target, RuntimeException error) {
         target.add(this.form);
+        return false;
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         ChargeTime chargeTime = ChargeTime.valueOf(this.chargeTimeValue.getId());
 
         ChargeBuilder builder = new ChargeBuilder();
@@ -340,15 +336,15 @@ public class SavingDepositChargeModifyPage extends Page {
         }
 
         JsonNode node = null;
-        try {
-            node = ChargeHelper.update((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
-        if (reportError(node)) {
-            return;
-        }
+	try {
+	    node = ChargeHelper.update((Session) getSession(), builder.build());
+	} catch (UnirestException e) {
+	    error(e.getMessage());
+	    return;
+	}
+	if (reportError(node)) {
+	    return;
+	}
         setResponsePage(ChargeBrowsePage.class);
     }
 

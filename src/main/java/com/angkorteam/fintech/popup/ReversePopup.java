@@ -56,16 +56,18 @@ public class ReversePopup extends Panel {
         this.form.add(this.reasonFeedback);
     }
 
-    private void reverseButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
+    protected boolean reverseButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
         this.window.setElementId(ajaxButton.getId());
         try {
             GLAccountHelper.reverseEntry((Session) getSession(), this.transactionId, this.reasonValue);
             this.window.close(target);
         } catch (UnirestException e) {
         }
+        return true;
     }
 
-    private void reverseButtonError(AjaxButton ajaxButton, AjaxRequestTarget target) {
+    protected boolean reverseButtonError(AjaxButton ajaxButton, AjaxRequestTarget target) {
         target.add(this.form);
+        return true;
     }
 }

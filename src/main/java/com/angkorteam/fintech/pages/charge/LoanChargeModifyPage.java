@@ -304,23 +304,27 @@ public class LoanChargeModifyPage extends Page {
         }
     }
 
-    private void chargePaymentFieldUpdate(AjaxRequestTarget target) {
+    protected boolean chargePaymentFieldUpdate(AjaxRequestTarget target) {
         target.add(this.form);
+        return false;
     }
 
-    private void chargePaymentFieldError(AjaxRequestTarget target, RuntimeException error) {
+    protected boolean chargePaymentFieldError(AjaxRequestTarget target, RuntimeException error) {
         target.add(this.form);
+        return false;
     }
 
-    private void chargeCalculationFieldUpdate(AjaxRequestTarget target) {
+    protected boolean chargeCalculationFieldUpdate(AjaxRequestTarget target) {
         target.add(this.form);
+        return false;
     }
 
-    private void chargeCalculationFieldError(AjaxRequestTarget target, RuntimeException error) {
+    protected boolean chargeCalculationFieldError(AjaxRequestTarget target, RuntimeException error) {
         target.add(this.form);
+        return false;
     }
 
-    private void chargeTimeFieldUpdate(AjaxRequestTarget target) {
+    protected boolean chargeTimeFieldUpdate(AjaxRequestTarget target) {
         this.chargeFrequencyValue = null;
         this.frequencyIntervalValue = null;
         this.chargeCalculationValue = null;
@@ -353,13 +357,15 @@ public class LoanChargeModifyPage extends Page {
             this.chargeFrequencyProvider.setValues();
         }
         target.add(this.form);
+        return false;
     }
 
-    private void chargeTimeFieldError(AjaxRequestTarget target, RuntimeException error) {
+    protected boolean chargeTimeFieldError(AjaxRequestTarget target, RuntimeException error) {
         target.add(this.form);
+        return false;
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         ChargeTime chargeTime = ChargeTime.valueOf(this.chargeTimeValue.getId());
 
         ChargeBuilder builder = new ChargeBuilder();

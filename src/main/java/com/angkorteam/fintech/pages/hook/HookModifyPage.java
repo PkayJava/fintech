@@ -246,7 +246,7 @@ public class HookModifyPage extends Page {
         }
     }
 
-    private void groupingFieldUpdate(AjaxRequestTarget target) {
+    protected boolean groupingFieldUpdate(AjaxRequestTarget target) {
         if (this.groupingValue != null) {
             JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
             this.entityNameProvider = jdbcTemplate.query(
@@ -261,9 +261,10 @@ public class HookModifyPage extends Page {
             }
         }
         target.add(this.eventForm);
+        return false;
     }
 
-    private void entityNameFieldUpdate(AjaxRequestTarget target) {
+    protected boolean entityNameFieldUpdate(AjaxRequestTarget target) {
         if (this.entityNameValue != null) {
             JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
             this.actionNameProvider = jdbcTemplate.query(
@@ -275,6 +276,7 @@ public class HookModifyPage extends Page {
             }
         }
         target.add(this.eventForm);
+        return false;
     }
 
     private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
@@ -321,11 +323,12 @@ public class HookModifyPage extends Page {
         setResponsePage(HookBrowsePage.class);
     }
 
-    private void addButtonError(AjaxButton button, AjaxRequestTarget target) {
+    protected boolean addButtonError(AjaxButton button, AjaxRequestTarget target) {
         target.add(this.eventForm);
+        return false;
     }
 
-    private void addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
+    protected boolean addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
         Map<String, Object> event = Maps.newHashMap();
         event.put("uuid", UUID.randomUUID().toString());
         if (this.entityNameValue != null) {
@@ -339,6 +342,7 @@ public class HookModifyPage extends Page {
         this.actionNameValue = null;
         target.add(this.eventForm);
         target.add(this.dataTable);
+        return false;
     }
 
     private ItemPanel entityNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

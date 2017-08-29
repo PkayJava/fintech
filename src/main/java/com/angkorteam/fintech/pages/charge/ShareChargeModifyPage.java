@@ -218,23 +218,27 @@ public class ShareChargeModifyPage extends Page {
 
     }
 
-    private void chargeCalculationFieldUpdate(AjaxRequestTarget target) {
+    protected boolean chargeCalculationFieldUpdate(AjaxRequestTarget target) {
         target.add(this.form);
+        return false;
     }
 
-    private void chargeCalculationFieldError(AjaxRequestTarget target, RuntimeException error) {
+    protected boolean chargeCalculationFieldError(AjaxRequestTarget target, RuntimeException error) {
         target.add(this.form);
+        return false;
     }
 
-    private void chargeTimeFieldUpdate(AjaxRequestTarget target) {
+    protected boolean chargeTimeFieldUpdate(AjaxRequestTarget target) {
         target.add(this.form);
+        return false;
     }
 
-    private void chargeTimeFieldError(AjaxRequestTarget target, RuntimeException error) {
+    protected boolean chargeTimeFieldError(AjaxRequestTarget target, RuntimeException error) {
         target.add(this.form);
+        return false;
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         ChargeTime chargeTime = ChargeTime.valueOf(this.chargeTimeValue.getId());
 
         ChargeBuilder builder = new ChargeBuilder();

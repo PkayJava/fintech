@@ -206,11 +206,12 @@ public class UserCreatePage extends Page {
         this.form.add(new EqualInputValidator(this.passwordField, this.repeatPasswordField));
     }
 
-    private void officeFieldUpdate(AjaxRequestTarget target) {
+    protected boolean officeFieldUpdate(AjaxRequestTarget target) {
         this.staffValue = null;
         this.staffProvider.setDisabled(false);
         this.staffProvider.applyWhere("office", "office_id = " + this.officeValue.getId());
         target.add(this.form);
+        return false;
     }
 
     private void saveButtonSubmit(Button button) {

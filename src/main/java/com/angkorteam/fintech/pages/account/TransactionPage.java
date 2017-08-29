@@ -235,7 +235,8 @@ public class TransactionPage extends Page {
         }
     }
 
-    protected void reverseButtonClick(AjaxLink<Void> button, AjaxRequestTarget target) {
+    protected boolean reverseButtonClick(AjaxLink<Void> button, AjaxRequestTarget target) {
         this.commentPopup.show(target);
+        return false;
     }
 }

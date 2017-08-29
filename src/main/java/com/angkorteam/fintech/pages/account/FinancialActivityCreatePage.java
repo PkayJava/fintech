@@ -113,7 +113,7 @@ public class FinancialActivityCreatePage extends Page {
         this.form.add(this.accountFeedback);
     }
 
-    private void financialActivityFieldUpdate(AjaxRequestTarget target) {
+    protected boolean financialActivityFieldUpdate(AjaxRequestTarget target) {
         if (this.financialActivityValue == null) {
             this.accountValue = null;
             this.accountProvider.setDisabled(true);
@@ -131,17 +131,18 @@ public class FinancialActivityCreatePage extends Page {
                     "classification_enum = " + classification_enum.getLiteral());
         }
         target.add(this.form);
+        return false;
     }
 
-    private void financialActivityFieldError(AjaxRequestTarget target, RuntimeException e) {
+    protected boolean financialActivityFieldError(AjaxRequestTarget target, RuntimeException e) {
         if (e != null) {
             throw e;
         }
         target.add(this.form);
-        target.appendJavaScript(Select2SingleChoice.REMOVE_POPUP_UP_SCRIPT);
+        return false;
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         FinancialActivityBuilder builder = new FinancialActivityBuilder();
         if (this.financialActivityValue != null) {
             builder.withFinancialActivity(

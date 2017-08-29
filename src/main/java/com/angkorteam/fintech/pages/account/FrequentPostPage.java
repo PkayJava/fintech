@@ -487,7 +487,7 @@ public class FrequentPostPage extends Page {
         setResponsePage(AccountingPage.class);
     }
 
-    protected void debitButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
+    protected boolean debitButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
         Map<String, Object> debit = Maps.newHashMap();
         debit.put("uuid", UUID.randomUUID().toString());
         debit.put("id", this.debitAccountNameValue.getId());
@@ -497,17 +497,20 @@ public class FrequentPostPage extends Page {
         this.debitAmountValue = 0.d;
         target.add(this.form);
         target.add(this.debitForm);
+        return false;
     }
 
-    protected void creditButtonError(AjaxButton button, AjaxRequestTarget target) {
+    protected boolean creditButtonError(AjaxButton button, AjaxRequestTarget target) {
         target.add(this.creditForm);
+        return false;
     }
 
-    protected void debitButtonError(AjaxButton button, AjaxRequestTarget target) {
+    protected boolean debitButtonError(AjaxButton button, AjaxRequestTarget target) {
         target.add(this.debitForm);
+        return false;
     }
 
-    protected void creditButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
+    protected boolean creditButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
         Map<String, Object> credit = Maps.newHashMap();
         credit.put("uuid", UUID.randomUUID().toString());
         credit.put("id", this.creditAccountNameValue.getId());
@@ -517,6 +520,7 @@ public class FrequentPostPage extends Page {
         this.creditAmountValue = 0.d;
         target.add(this.form);
         target.add(this.creditForm);
+        return false;
     }
 
 }

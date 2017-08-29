@@ -227,11 +227,12 @@ public class UserModifyPage extends Page {
         this.staffProvider.applyWhere("office", "office_id = " + this.officeValue.getId());
     }
 
-    private void officeFieldUpdate(AjaxRequestTarget target) {
+    protected boolean officeFieldUpdate(AjaxRequestTarget target) {
         this.staffValue = null;
         this.staffProvider.setDisabled(false);
         this.staffProvider.applyWhere("office", "office_id = " + this.officeValue.getId());
         target.add(this.form);
+        return false;
     }
 
     private void updateButtonSubmit(Button button) {

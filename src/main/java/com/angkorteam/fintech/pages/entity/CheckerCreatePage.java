@@ -134,31 +134,33 @@ public class CheckerCreatePage extends Page {
 
     }
 
-    private void datatableFieldError(AjaxRequestTarget target, RuntimeException e) {
+    protected boolean datatableFieldError(AjaxRequestTarget target, RuntimeException e) {
         if (e != null) {
             throw e;
         }
         target.add(this.form);
-        target.appendJavaScript(Select2SingleChoice.REMOVE_POPUP_UP_SCRIPT);
+        return false;
     }
 
-    private void datatableFieldUpdate(AjaxRequestTarget target) {
+    protected boolean datatableFieldUpdate(AjaxRequestTarget target) {
         target.add(this.form);
+        return false;
     }
 
-    private void statusFieldError(AjaxRequestTarget target, RuntimeException e) {
+    protected boolean statusFieldError(AjaxRequestTarget target, RuntimeException e) {
         if (e != null) {
             throw e;
         }
         target.add(this.form);
-        target.appendJavaScript(Select2SingleChoice.REMOVE_POPUP_UP_SCRIPT);
+        return false;
     }
 
-    private void statusFieldUpdate(AjaxRequestTarget target) {
+    protected boolean statusFieldUpdate(AjaxRequestTarget target) {
         target.add(this.form);
+        return false;
     }
 
-    private void entityFieldError(AjaxRequestTarget target, RuntimeException e) {
+    protected boolean entityFieldError(AjaxRequestTarget target, RuntimeException e) {
         if (e != null) {
             throw e;
         }
@@ -170,10 +172,10 @@ public class CheckerCreatePage extends Page {
         this.datatableProvider.setDisabled(true);
 
         target.add(this.form);
-        target.appendJavaScript(Select2SingleChoice.REMOVE_POPUP_UP_SCRIPT);
+        return false;
     }
 
-    private void entityFieldUpdate(AjaxRequestTarget target) {
+    protected boolean entityFieldUpdate(AjaxRequestTarget target) {
 
         this.statusValue = null;
 
@@ -196,6 +198,7 @@ public class CheckerCreatePage extends Page {
         }
 
         target.add(this.form);
+        return false;
     }
 
     private void saveButtonSubmit(Button button) {

@@ -878,9 +878,10 @@ public class LoanCreatePage extends Page {
         this.form.add(overdueChargeAddLink);
     }
 
-    protected void overdueChargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+    protected boolean overdueChargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemOverdueChargeValue = null;
         this.overdueChargePopup.show(target);
+        return false;
     }
 
     protected ItemPanel overdueChargeNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -965,9 +966,10 @@ public class LoanCreatePage extends Page {
         this.form.add(chargeAddLink);
     }
 
-    protected void chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+    protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
         this.chargePopup.show(target);
+        return false;
     }
 
     protected ItemPanel chargeNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -1535,10 +1537,11 @@ public class LoanCreatePage extends Page {
         }
     }
 
-    protected void feeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+    protected boolean feeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
         this.itemAccountValue = null;
         this.feeChargePopup.show(target);
+        return false;
     }
 
     protected ItemPanel feeIncomeChargeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -1571,10 +1574,11 @@ public class LoanCreatePage extends Page {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void penaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+    protected boolean penaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
         this.itemAccountValue = null;
         this.penaltyChargePopup.show(target);
+        return false;
     }
 
     protected ItemPanel penaltyIncomeChargeColumn(String jdbcColumn, IModel<String> display,
@@ -1609,10 +1613,11 @@ public class LoanCreatePage extends Page {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void fundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+    protected boolean fundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemPaymentValue = null;
         this.itemAccountValue = null;
         this.paymentPopup.show(target);
+        return false;
     }
 
     protected ItemPanel fundSourcePaymentColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -1645,7 +1650,7 @@ public class LoanCreatePage extends Page {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void accountingFieldUpdate(AjaxRequestTarget target) {
+    protected boolean accountingFieldUpdate(AjaxRequestTarget target) {
         this.cashContainer.setVisible(false);
         this.periodicContainer.setVisible(false);
         this.upfrontContainer.setVisible(false);
@@ -1664,6 +1669,7 @@ public class LoanCreatePage extends Page {
         }
 
         target.add(this.form);
+        return false;
     }
 
     protected void initConfigurableTermsAndSettings() {
@@ -1760,11 +1766,12 @@ public class LoanCreatePage extends Page {
                 .add(this.configurableOverdueBeforeMovingFeedback);
     }
 
-    protected void allowOverridingSelectTermsAndSettingsInLoanAccountFieldUpdate(AjaxRequestTarget target) {
+    protected boolean allowOverridingSelectTermsAndSettingsInLoanAccountFieldUpdate(AjaxRequestTarget target) {
         this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer
                 .setVisible(this.allowOverridingSelectTermsAndSettingsInLoanAccountValue != null
                         && this.allowOverridingSelectTermsAndSettingsInLoanAccountValue);
         target.add(this.form);
+        return false;
     }
 
     protected void initLoanTrancheDetails() {
@@ -1799,10 +1806,11 @@ public class LoanCreatePage extends Page {
         this.enableMultipleDisbursalContainer.add(this.maximumAllowedOutstandingBalanceFeedback);
     }
 
-    protected void enableMultipleDisbursalFieldUpdate(AjaxRequestTarget target) {
+    protected boolean enableMultipleDisbursalFieldUpdate(AjaxRequestTarget target) {
         this.enableMultipleDisbursalContainer
                 .setVisible(this.enableMultipleDisbursalValue != null && this.enableMultipleDisbursalValue);
         target.add(this.form);
+        return false;
     }
 
     protected void initGuaranteeRequirements() {
@@ -1847,16 +1855,18 @@ public class LoanCreatePage extends Page {
 
     }
 
-    protected void placeGuaranteeFundsOnHoldFieldUpdate(AjaxRequestTarget target) {
+    protected boolean placeGuaranteeFundsOnHoldFieldUpdate(AjaxRequestTarget target) {
         this.placeGuaranteeFundsOnHoldContainer
                 .setVisible(this.placeGuaranteeFundsOnHoldValue != null && this.placeGuaranteeFundsOnHoldValue);
         target.add(this.form);
+        return false;
     }
 
-    protected void recalculateInterestFieldUpdate(AjaxRequestTarget target) {
+    protected boolean recalculateInterestFieldUpdate(AjaxRequestTarget target) {
         this.recalculateInterestContainer
                 .setVisible(this.recalculateInterestValue != null && this.recalculateInterestValue);
         target.add(this.form);
+        return false;
     }
 
     protected void initInterestRecalculation() {
@@ -2013,7 +2023,7 @@ public class LoanCreatePage extends Page {
 
     }
 
-    protected void recalculateFieldUpdate(AjaxRequestTarget target) {
+    protected boolean recalculateFieldUpdate(AjaxRequestTarget target) {
         this.recalculateTypeContainer.setVisible(false);
         this.recalculateDayContainer.setVisible(false);
         this.recalculateIntervalContainer.setVisible(false);
@@ -2032,9 +2042,10 @@ public class LoanCreatePage extends Page {
         }
 
         target.add(this.form);
+        return false;
     }
 
-    protected void compoundingFieldUpdate(AjaxRequestTarget target) {
+    protected boolean compoundingFieldUpdate(AjaxRequestTarget target) {
 
         this.compoundingTypeContainer.setVisible(false);
         this.compoundingDayContainer.setVisible(false);
@@ -2060,6 +2071,7 @@ public class LoanCreatePage extends Page {
             this.compoundingContainer.setVisible(false);
         }
         target.add(this.form);
+        return false;
     }
 
     protected void initSetting() {
@@ -2738,7 +2750,7 @@ public class LoanCreatePage extends Page {
         this.form.add(this.minimumDayBetweenDisbursalAndFirstRepaymentDateFeedback);
     }
 
-    protected void nominalInterestRateByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+    protected boolean nominalInterestRateByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemWhenValue = null;
         this.itemLoanCycleValue = null;
         this.itemMinimumValue = null;
@@ -2746,6 +2758,7 @@ public class LoanCreatePage extends Page {
         this.itemMaximumValue = null;
         this.loanCycleValue = this.nominalInterestRateByLoanCycleValue;
         this.loanCyclePopup.show(target);
+        return false;
     }
 
     protected ItemPanel nominalInterestRateByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display,
@@ -2814,7 +2827,7 @@ public class LoanCreatePage extends Page {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void numberOfRepaymentByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+    protected boolean numberOfRepaymentByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemWhenValue = null;
         this.itemLoanCycleValue = null;
         this.itemMinimumValue = null;
@@ -2822,6 +2835,7 @@ public class LoanCreatePage extends Page {
         this.itemMaximumValue = null;
         this.loanCycleValue = this.numberOfRepaymentByLoanCycleValue;
         this.loanCyclePopup.show(target);
+        return false;
     }
 
     protected ItemPanel numberOfRepaymentByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display,
@@ -2890,7 +2904,7 @@ public class LoanCreatePage extends Page {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void principalByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+    protected boolean principalByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemWhenValue = null;
         this.itemLoanCycleValue = null;
         this.itemMinimumValue = null;
@@ -2898,6 +2912,7 @@ public class LoanCreatePage extends Page {
         this.itemMaximumValue = null;
         this.loanCycleValue = this.principalByLoanCycleValue;
         this.loanCyclePopup.show(target);
+        return false;
     }
 
     protected ItemPanel principalByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display,
@@ -2966,21 +2981,23 @@ public class LoanCreatePage extends Page {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void linkedToFloatingInterestRatesFieldUpdate(AjaxRequestTarget target) {
+    protected boolean linkedToFloatingInterestRatesFieldUpdate(AjaxRequestTarget target) {
         this.nominalInterestRateContainer.setVisible(
                 this.linkedToFloatingInterestRatesValue == null ? true : !this.linkedToFloatingInterestRatesValue);
         this.floatInterestRateContainer.setVisible(!this.nominalInterestRateContainer.isVisible());
         target.add(this.form);
+        return false;
     }
 
-    protected void interestCalculationPeriodFieldUpdate(AjaxRequestTarget target) {
+    protected boolean interestCalculationPeriodFieldUpdate(AjaxRequestTarget target) {
         this.calculateInterestForExactDaysInPartialPeriodContainer
                 .setVisible(this.interestCalculationPeriodValue != null && InterestCalculationPeriod.valueOf(
                         this.interestCalculationPeriodValue.getId()) == InterestCalculationPeriod.SameAsPayment);
         target.add(this.form);
+        return false;
     }
 
-    protected void termVaryBasedOnLoanCycleFieldUpdate(AjaxRequestTarget target) {
+    protected boolean termVaryBasedOnLoanCycleFieldUpdate(AjaxRequestTarget target) {
         this.principalByLoanCycleContainer
                 .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
         this.numberOfRepaymentByLoanCycleContainer
@@ -2988,12 +3005,14 @@ public class LoanCreatePage extends Page {
         this.nominalInterestRateByLoanCycleContainer
                 .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
         target.add(this.form);
+        return false;
     }
 
-    protected void variableInstallmentsAllowedFieldUpdate(AjaxRequestTarget target) {
+    protected boolean variableInstallmentsAllowedFieldUpdate(AjaxRequestTarget target) {
         this.variableInstallmentsAllowedContainer
                 .setVisible(this.variableInstallmentsAllowedValue != null && this.variableInstallmentsAllowedValue);
         target.add(this.form);
+        return false;
     }
 
     protected void loanCyclePopupOnClose(String elementId, AjaxRequestTarget target) {

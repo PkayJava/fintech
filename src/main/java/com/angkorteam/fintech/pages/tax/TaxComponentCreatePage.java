@@ -156,18 +156,20 @@ public class TaxComponentCreatePage extends Page {
 
     }
 
-    private void accountTypeFieldUpdate(AjaxRequestTarget target) {
+    protected boolean accountTypeFieldUpdate(AjaxRequestTarget target) {
         this.accountValue = null;
         this.accountProvider.setDisabled(false);
         this.accountProvider.applyWhere("classification_enum",
                 "classification_enum = " + AccountType.valueOf(this.accountTypeValue.getId()).getLiteral());
         target.add(this.form);
+        return false;
     }
 
-    private void accountTypeFieldError(AjaxRequestTarget target, RuntimeException error) {
+    protected boolean accountTypeFieldError(AjaxRequestTarget target, RuntimeException error) {
         this.accountValue = null;
         this.accountProvider.setDisabled(true);
         target.add(this.form);
+        return false;
     }
 
     private void saveButtonSubmit(Button button) {

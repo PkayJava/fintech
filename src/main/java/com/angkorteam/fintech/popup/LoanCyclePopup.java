@@ -84,13 +84,15 @@ public class LoanCyclePopup extends Panel {
         this.form.add(this.maximumFeedback);
     }
 
-    private void okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
+    protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
         this.window.setElementId(ajaxButton.getId());
         this.window.close(target);
+        return true;
     }
 
-    private void okayButtonError(AjaxButton ajaxButton, AjaxRequestTarget target) {
+    protected boolean okayButtonError(AjaxButton ajaxButton, AjaxRequestTarget target) {
         target.add(this.form);
+        return true;
     }
 
 }

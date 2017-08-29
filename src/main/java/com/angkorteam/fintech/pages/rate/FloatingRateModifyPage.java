@@ -317,7 +317,7 @@ public class FloatingRateModifyPage extends Page {
         }
     }
 
-    private void addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
+    protected boolean addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
         Map<String, Object> rate = Maps.newHashMap();
         rate.put("uuid", UUID.randomUUID().toString());
         rate.put("fromDate", this.fromDateValue);
@@ -329,6 +329,7 @@ public class FloatingRateModifyPage extends Page {
         this.differentialValue = null;
         target.add(this.form);
         target.add(this.rateForm);
+        return false;
     }
 
     private void saveButtonSubmit(Button button) {
