@@ -84,17 +84,17 @@
                     <span wicket:id="termInterestCompoundingPeriodFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="termInterestCalculatedUsingField">Interest posting period</label>
-                    <select wicket:id="termInterestCalculatedUsingField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="termInterestCalculatedUsingFeedback" class="help-block"></span>
+                    <label wicket:for="termInterestPostingPeriodField">Interest posting period</label>
+                    <select wicket:id="termInterestPostingPeriodField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="termInterestPostingPeriodFeedback" class="help-block"></span>
                 </div>
                 <div class="clearfix"></div>
                 
                 <!-- Row -->
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="termInterestPostingPeriodField">Interest calculated using</label>
-                    <select wicket:id="termInterestPostingPeriodField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="termInterestPostingPeriodFeedback" class="help-block"></span>
+                    <label wicket:for="termInterestCalculatedUsingField">Interest calculated using</label>
+                    <select wicket:id="termInterestCalculatedUsingField" class="form-control select2" style="width: 100%;"></select>
+                    <span wicket:id="termInterestCalculatedUsingFeedback" class="help-block"></span>
                 </div>
                 <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <label wicket:for="termDaysInYearField">Days in year</label>
@@ -190,7 +190,7 @@
                 </div>
                 <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
                     <label wicket:for="settingMinOverdraftRequiredForInterestCalculationField">Min Overdraft Required For Interest Calculation</label>
-                    <select wicket:id="settingMinOverdraftRequiredForInterestCalculationField" class="form-control select2" style="width: 100%;"></select>
+                    <input wicket:id="settingMinOverdraftRequiredForInterestCalculationField" type="text" class="form-control"/>
                     <span wicket:id="settingMinOverdraftRequiredForInterestCalculationFeedback" class="help-block"></span>
                 </div>
                 <div class="clearfix"></div>
@@ -243,7 +243,7 @@
                 </div>
                 <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
                     <label wicket:for="settingNumberOfDaysToEscheatField">Number of Days to Escheat</label>
-                    <select wicket:id="settingNumberOfDaysToEscheatField" class="form-control select2" style="width: 100%;"></select>
+                    <input wicket:id="settingNumberOfDaysToEscheatField" type="text" class="form-control"/>
                     <span wicket:id="settingNumberOfDaysToEscheatFeedback" class="help-block"></span>
                 </div>
                 <div class="clearfix"></div>

@@ -1,18 +1,14 @@
-package com.angkorteam.fintech.provider;
+package com.angkorteam.fintech.provider.saving;
 
-import java.util.List;
-
-import org.apache.wicket.model.IModel;
-
-import com.angkorteam.fintech.dto.loan.Amortization;
+import com.angkorteam.fintech.dto.saving.InterestCalculatedUsing;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
+import org.apache.wicket.model.IModel;
 
-/**
- * Created by socheatkhauv on 7/2/17.
- */
-public class AmortizationProvider extends SingleChoiceProvider<Option> {
+import java.util.List;
+
+public class InterestCalculatedUsingProvider extends SingleChoiceProvider<Option> {
 
     @Override
     public Option toChoice(String id) {
@@ -28,7 +24,7 @@ public class AmortizationProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (Amortization a : Amortization.values()) {
+        for (InterestCalculatedUsing a : InterestCalculatedUsing.values()) {
             options.add(new Option(a.name(), a.getDescription()));
         }
         return options;

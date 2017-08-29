@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.provider;
+package com.angkorteam.fintech.provider.loan;
 
 import java.util.List;
 

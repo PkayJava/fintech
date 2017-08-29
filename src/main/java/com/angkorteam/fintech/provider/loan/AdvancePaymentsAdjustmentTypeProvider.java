@@ -1,10 +1,10 @@
-package com.angkorteam.fintech.provider;
+package com.angkorteam.fintech.provider.loan;
 
 import java.util.List;
 
 import org.apache.wicket.model.IModel;
 
-import com.angkorteam.fintech.dto.loan.RepaymentStrategy;
+import com.angkorteam.fintech.dto.loan.AdvancePaymentsAdjustmentType;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
@@ -12,7 +12,7 @@ import com.google.common.collect.Lists;
 /**
  * Created by socheatkhauv on 7/2/17.
  */
-public class RepaymentStrategyProvider extends SingleChoiceProvider<Option> {
+public class AdvancePaymentsAdjustmentTypeProvider extends SingleChoiceProvider<Option> {
 
     @Override
     public Option toChoice(String id) {
@@ -28,7 +28,7 @@ public class RepaymentStrategyProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (RepaymentStrategy a : RepaymentStrategy.values()) {
+        for (AdvancePaymentsAdjustmentType a : AdvancePaymentsAdjustmentType.values()) {
             options.add(new Option(a.name(), a.getDescription()));
         }
         return options;
