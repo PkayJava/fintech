@@ -1,1196 +1,1376 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 </head>
+
 <body>
-<wicket:extend>
-    <form role="form" wicket:id="form">
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">Detail</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="productNameField">Product Name</label>
-                    <input wicket:id="productNameField" type="text" class="form-control"/>
-                    <span wicket:id="productNameFeedback" class="help-block"></span>
+    <wicket:extend>
+        <form role="form" wicket:id="form">
+            <div class="box box-primary">
+
+                <div class="box-header with-border">
+                    <h3 class="box-title">Detail</h3>
                 </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="shortNameField">Short Name</label>
-                    <input wicket:id="shortNameField" type="text" class="form-control"/>
-                    <span wicket:id="shortNameFeedback" class="help-block"></span>
+
+                <div class="box-body">
+
+                    <!-- Row -->
+                    <div wicket:id="detailProductNameBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="detailProductNameContainer">
+                            <label wicket:for="detailProductNameField">Product Name</label>
+                            <input wicket:id="detailProductNameField" type="text" class="form-control" />
+                            <span wicket:id="detailProductNameFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="detailShortNameBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="detailShortNameContainer">
+                            <label wicket:for="detailShortNameField">Short Name</label>
+                            <input wicket:id="detailShortNameField" type="text" class="form-control" />
+                            <span wicket:id="detailShortNameFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="detailDescriptionBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="detailDescriptionContainer">
+                            <label wicket:for="detailDescriptionField">Description</label>
+                            <input wicket:id="detailDescriptionField" type="text" class="form-control" />
+                            <span wicket:id="detailDescriptionFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="detailFundBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="detailFundContainer">
+                            <label wicket:for="detailFundField">Fund</label>
+                            <select wicket:id="detailFundField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="detailFundFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="detailStartDateBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="detailStartDateContainer">
+                            <label wicket:for="detailStartDateField">Start Date</label>
+                            <input wicket:id="detailStartDateField" type="text" class="form-control" />
+                            <span wicket:id="detailStartDateFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="detailCloseDateBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="detailCloseDateContainer">
+                            <label wicket:for="detailCloseDateField">Close Date</label>
+                            <input wicket:id="detailCloseDateField" type="text" class="form-control" />
+                            <span wicket:id="detailCloseDateFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="detailIncludeInCustomerLoanCounterBlock" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <wicket:container wicket:id="detailIncludeInCustomerLoanCounterContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="detailIncludeInCustomerLoanCounterField"> Is Include in customer loan counter ?
+	                        </label>
+	                    </span>
+                            <span wicket:id="detailIncludeInCustomerLoanCounterFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
                 </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="descriptionField">Description</label>
-                    <input wicket:id="descriptionField" type="text" class="form-control"/>
-                    <span wicket:id="descriptionFeedback" class="help-block"></span>
+
+                <div class="box-header with-border">
+                    <h3 class="box-title">Currency</h3>
                 </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="fundField">Fund</label>
-                    <select wicket:id="fundField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="fundFeedback" class="help-block"></span>
+
+                <div class="box-body">
+
+                    <!-- Row -->
+                    <div wicket:id="currencyCodeBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="currencyCodeContainer">
+                            <label wicket:for="currencyCodeField">Currency</label>
+                            <select wicket:id="currencyCodeField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="currencyCodeFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="currencyDecimalPlaceBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="currencyDecimalPlaceContainer">
+                            <label wicket:for="currencyDecimalPlaceField">Decimal Places</label>
+                            <input wicket:id="currencyDecimalPlaceField" type="text" class="form-control" />
+                            <span wicket:id="currencyDecimalPlaceFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="currencyInMultipleOfBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="currencyInMultipleOfContainer">
+                            <label wicket:for="currencyInMultipleOfField">Currency in multiple of</label>
+                            <input wicket:id="currencyInMultipleOfField" type="text" class="form-control" />
+                            <span wicket:id="currencyInMultipleOfFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="currencyInstallmentInMultipleOfBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="currencyInstallmentInMultipleOfContainer">
+                            <label wicket:for="currencyInstallmentInMultipleOfField">Installment in multiple of</label>
+                            <input wicket:id="currencyInstallmentInMultipleOfField" type="text" class="form-control" />
+                            <span wicket:id="currencyInstallmentInMultipleOfFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
                 </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="startDateField">Start Date</label>
-                    <input wicket:id="startDateField" type="text" class="form-control"/>
-                    <span wicket:id="startDateFeedback" class="help-block"></span>
+
+                <div class="box-header with-border">
+                    <h3 class="box-title">Terms</h3>
                 </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="closeDateField">Close Date</label>
-                    <input wicket:id="closeDateField" type="text" class="form-control"/>
-                    <span wicket:id="closeDateFeedback" class="help-block"></span>
+
+                <div class="box-body">
+
+                    <!-- Row -->
+                    <div wicket:id="termVaryBasedOnLoanCycleBlock" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <wicket:container wicket:id="termVaryBasedOnLoanCycleContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="termVaryBasedOnLoanCycleField"> Is Terms vary based on loan cycle ?
+	                        </label>
+	                    	</span>
+                            <span wicket:id="termVaryBasedOnLoanCycleFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="termPrincipalMinimumBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <wicket:container wicket:id="termPrincipalMinimumContainer">
+                            <label wicket:for="termPrincipalMinimumField">Principal Minimum</label>
+                            <input wicket:id="termPrincipalMinimumField" type="text" class="form-control" />
+                            <span wicket:id="termPrincipalMinimumFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="termPrincipalDefaultBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <wicket:container wicket:id="termPrincipalDefaultContainer">
+                            <label wicket:for="termPrincipalDefaultField">Principal Default</label>
+                            <input wicket:id="termPrincipalDefaultField" type="text" class="form-control" />
+                            <span wicket:id="termPrincipalDefaultFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="termPrincipalMaximumBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <wicket:container wicket:id="termPrincipalMaximumContainer">
+                            <label wicket:for="termPrincipalMaximumField">Principal Maximum</label>
+                            <input wicket:id="termPrincipalMaximumField" type="text" class="form-control" />
+                            <span wicket:id="termPrincipalMaximumFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="termPrincipalByLoanCycleBlock" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <wicket:container wicket:id="termPrincipalByLoanCycleContainer">
+                            <div class="box box-primary">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Principal by loan cycle</h3>
+                                </div>
+                                <div class="box-body">
+                                    <table wicket:id="termPrincipalByLoanCycleTable" />
+                                </div>
+                                <div class="box-footer">
+                                    <a wicket:id="termPrincipalByLoanCycleAddLink" class="btn btn-default">Add</a>
+                                </div>
+                            </div>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="termNumberOfRepaymentMinimumBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <wicket:container wicket:id="termNumberOfRepaymentMinimumContainer">
+                            <label wicket:for="termNumberOfRepaymentMinimumField">Number of repayment Minimum</label>
+                            <input wicket:id="termNumberOfRepaymentMinimumField" type="text" class="form-control" />
+                            <span wicket:id="termNumberOfRepaymentMinimumFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="termNumberOfRepaymentDefaultBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <wicket:container wicket:id="termNumberOfRepaymentDefaultContainer">
+                            <label wicket:for="termNumberOfRepaymentDefaultField">Number of repayment Default</label>
+                            <input wicket:id="termNumberOfRepaymentDefaultField" type="text" class="form-control" />
+                            <span wicket:id="termNumberOfRepaymentDefaultFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="termNumberOfRepaymentMaximumBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <wicket:container wicket:id="termNumberOfRepaymentMaximumContainer">
+                            <label wicket:for="termNumberOfRepaymentMaximumField">Number of repayment Maximum</label>
+                            <input wicket:id="termNumberOfRepaymentMaximumField" type="text" class="form-control" />
+                            <span wicket:id="termNumberOfRepaymentMaximumFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="termNumberOfRepaymentByLoanCycleBlock" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <wicket:container wicket:id="termNumberOfRepaymentByLoanCycleContainer">
+                            <div class="box box-primary">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Number of repayment by loan cycle</h3>
+                                </div>
+                                <div class="box-body">
+                                    <table wicket:id="termNumberOfRepaymentByLoanCycleTable" />
+                                </div>
+                                <div class="box-footer">
+                                    <a wicket:id="termNumberOfRepaymentByLoanCycleAddLink" class="btn btn-default">Add</a>
+                                </div>
+                            </div>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="termLinkedToFloatingInterestRatesBlock" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <wicket:container wicket:id="termLinkedToFloatingInterestRatesContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="termLinkedToFloatingInterestRatesField"> Is Linked to Floating Interest Rates?
+	                        </label>
+		                    </span>
+                            <span wicket:id="termLinkedToFloatingInterestRatesFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="termNominalInterestRateMinimumBlock" class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <wicket:container wicket:id="termNominalInterestRateMinimumContainer">
+                            <label wicket:for="termNominalInterestRateMinimumField">Nominal interest rate minimum</label>
+                            <input wicket:id="termNominalInterestRateMinimumField" type="text" class="form-control" />
+                            <span wicket:id="termNominalInterestRateMinimumFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="termNominalInterestRateDefaultBlock" class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <wicket:container wicket:id="termNominalInterestRateDefaultContainer">
+                            <label wicket:for="termNominalInterestRateDefaultField">Nominal interest rate default</label>
+                            <input wicket:id="termNominalInterestRateDefaultField" type="text" class="form-control" />
+                            <span wicket:id="termNominalInterestRateDefaultFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="termNominalInterestRateMaximumBlock" class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <wicket:container wicket:id="termNominalInterestRateMaximumContainer">
+                            <label wicket:for="termNominalInterestRateMaximumField">Number of repayment Maximum</label>
+                            <input wicket:id="termNominalInterestRateMaximumField" type="text" class="form-control" />
+                            <span wicket:id="termNominalInterestRateMaximumFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="termNominalInterestRateTypeBlock" class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        <wicket:container wicket:id="termNominalInterestRateTypeContainer">
+                            <label wicket:for="termNominalInterestRateTypeField">Type</label>
+                            <select wicket:id="termNominalInterestRateTypeField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="termNominalInterestRateTypeFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+	                <!-- Row -->
+	                <div wicket:id="termFloatingInterestRateBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+	                    <wicket:container wicket:id="termFloatingInterestRateContainer">
+	                        <label wicket:for="termFloatingInterestRateField">Floating interest rate</label>
+	                        <select wicket:id="termFloatingInterestRateField" class="form-control select2" style="width: 100%;"></select>
+	                        <span wicket:id="termFloatingInterestRateFeedback" class="help-block"></span>
+	                    </wicket:container>
+	                </div>
+	                <div wicket:id="termFloatingInterestDifferentialBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+	                    <wicket:container wicket:id="termFloatingInterestDifferentialContainer">
+	                        <label wicket:for="termFloatingInterestDifferentialField">Floating interest differential rate</label>
+	                        <input wicket:id="termFloatingInterestDifferentialField" type="text" class="form-control" />
+	                        <span wicket:id="termFloatingInterestDifferentialFeedback" class="help-block"></span>
+	                    </wicket:container>
+	                </div>
+	                <div wicket:id="termFloatingInterestAllowedBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+	                    <wicket:container wicket:id="termFloatingInterestAllowedContainer">
+	                        <label>&nbsp;</label>
+	                        <span style="display: block">
+		                        <label>
+		                            <input type="checkbox" wicket:id="termFloatingInterestAllowedField"> Is Floating Calculation Allowed?
+		                        </label>
+		                    </span>
+	                        <span wicket:id="termFloatingInterestAllowedFeedback" class="help-block"></span>
+	                    </wicket:container>
+	                </div>
+	                <div class="clearfix"></div>
+
+	                <!-- Row -->
+	                <div wicket:id="termFloatingInterestMinimumBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+	                    <wicket:container wicket:id="termFloatingInterestMinimumContainer">
+	                        <label wicket:for="termFloatingInterestMinimumField">Floating interest minimum</label>
+	                        <input wicket:id="termFloatingInterestMinimumField" type="text" class="form-control" />
+	                        <span wicket:id="termFloatingInterestMinimumFeedback" class="help-block"></span>
+	                    </wicket:container>
+	                </div>
+	                <div wicket:id="termFloatingInterestDefaultBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+	                    <wicket:container wicket:id="termFloatingInterestDefaultContainer">
+	                        <label wicket:for="termFloatingInterestDefaultField">Floating interest default</label>
+	                        <input wicket:id="termFloatingInterestDefaultField" type="text" class="form-control" />
+	                        <span wicket:id="termFloatingInterestDefaultFeedback" class="help-block"></span>
+	                    </wicket:container>
+	                </div>
+	                <div wicket:id="termFloatingInterestMaximumBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+	                    <wicket:container wicket:id="termFloatingInterestMaximumContainer">
+	                        <label wicket:for="termFloatingInterestMaximumField">Floating interest maximum</label>
+	                        <input wicket:id="termFloatingInterestMaximumField" type="text" class="form-control" />
+	                        <span wicket:id="termFloatingInterestMaximumFeedback" class="help-block"></span>
+	                    </wicket:container>
+	                </div>
+	                <div class="clearfix"></div>
+
+	                <!-- Row -->
+	                <div wicket:id="termNominalInterestRateByLoanCycleBlock" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	                    <wicket:container wicket:id="termNominalInterestRateByLoanCycleContainer">
+	                        <div class="box box-primary">
+	                            <div class="box-header with-border">
+	                                <h3 class="box-title">Nominal Interest Rate by loan cycle</h3>
+	                            </div>
+	                            <div class="box-body">
+	                                <table wicket:id="termNominalInterestRateByLoanCycleTable" />
+	                            </div>
+	                            <div class="box-footer">
+	                                <a wicket:id="termNominalInterestRateByLoanCycleAddLink" class="btn btn-default">Add</a>
+	                            </div>
+	                        </div>
+	                    </wicket:container>
+	                </div>
+	                <div class="clearfix"></div>
+
+	                <!-- Row -->
+	                <div wicket:id="termRepaidEveryBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+	                    <wicket:container wicket:id="termRepaidEveryContainer">
+	                        <label wicket:for="termRepaidEveryField">Repaid every</label>
+	                        <input wicket:id="termRepaidEveryField" type="text" class="form-control" />
+	                        <span wicket:id="termRepaidEveryFeedback" class="help-block"></span>
+	                    </wicket:container>
+	                </div>
+	                <div wicket:id="termRepaidTypeBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+	                    <wicket:container wicket:id="termRepaidTypeContainer">
+	                        <label wicket:for="termRepaidTypeField">Repaid Type</label>
+	                        <select wicket:id="termRepaidTypeField" class="form-control select2" style="width: 100%;"></select>
+	                        <span wicket:id="termRepaidTypeFeedback" class="help-block"></span>
+	                    </wicket:container>
+	                </div>
+	                <div class="clearfix"></div>
+
+	                <!-- Row -->
+	                <div wicket:id="termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	                    <wicket:container wicket:id="termMinimumDayBetweenDisbursalAndFirstRepaymentDateContainer">
+	                        <label wicket:for="termMinimumDayBetweenDisbursalAndFirstRepaymentDateField">Minimum days between disbursal and first repayment date</label>
+	                        <input wicket:id="termMinimumDayBetweenDisbursalAndFirstRepaymentDateField" type="text" class="form-control" />
+	                        <span wicket:id="termMinimumDayBetweenDisbursalAndFirstRepaymentDateFeedback" class="help-block"></span>
+	                    </wicket:container>
+	                </div>
+	                <div class="clearfix"></div>
+	                
+	            </div>
+
+                <div class="box-header with-border">
+                    <h3 class="box-title">Settings</h3>
                 </div>
-                <div class="clearfix"></div>
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="includeInCustomerLoanCounterField"> Is Include in customer loan counter ?
-                        </label>
-                    </span>
-                    <span wicket:id="includeInCustomerLoanCounterFeedback" class="help-block"></span>
+
+                <div class="box-body">
+
+                    <!-- Row -->
+                    <div wicket:id="settingAmortizationBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingAmortizationContainer">
+                            <label wicket:for="settingAmortizationField">Amortization</label>
+                            <select wicket:id="settingAmortizationField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="settingAmortizationFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="settingInterestMethodBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingInterestMethodContainer">
+                            <label wicket:for="settingInterestMethodField">Interest method</label>
+                            <select wicket:id="settingInterestMethodField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="settingInterestMethodFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="settingInterestCalculationPeriodBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingInterestCalculationPeriodContainer">
+                            <label wicket:for="settingInterestCalculationPeriodField">Interest calculation period</label>
+                            <select wicket:id="settingInterestCalculationPeriodField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="settingInterestCalculationPeriodFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="settingCalculateInterestForExactDaysInPartialPeriodBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingCalculateInterestForExactDaysInPartialPeriodContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="settingCalculateInterestForExactDaysInPartialPeriodField"> Calculate interest for exact days in partial period ?
+	                        </label>
+	                    </span>
+                            <span wicket:id="settingCalculateInterestForExactDaysInPartialPeriodFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="settingRepaymentStrategyBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingRepaymentStrategyContainer">
+                            <label wicket:for="settingRepaymentStrategyField">Repayment strategy</label>
+                            <select wicket:id="settingRepaymentStrategyField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="settingRepaymentStrategyFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="settingMoratoriumPrincipalBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingMoratoriumPrincipalContainer">
+                            <label wicket:for="settingMoratoriumPrincipalField">Moratorium principal</label>
+                            <input wicket:id="settingMoratoriumPrincipalField" type="text" class="form-control" />
+                            <span wicket:id="settingMoratoriumPrincipalFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="settingMoratoriumInterestBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingMoratoriumInterestContainer">
+                            <label wicket:for="settingMoratoriumInterestField">Moratorium interest</label>
+                            <input wicket:id="settingMoratoriumInterestField" type="text" class="form-control" />
+                            <span wicket:id="settingMoratoriumInterestFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="settingInterestFreePeriodBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingInterestFreePeriodContainer">
+                            <label wicket:for="settingInterestFreePeriodField">Interest free period</label>
+                            <input wicket:id="settingInterestFreePeriodField" type="text" class="form-control" />
+                            <span wicket:id="settingInterestFreePeriodFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="settingArrearsToleranceBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingArrearsToleranceContainer">
+                            <label wicket:for="settingArrearsToleranceField">Arrears tolerance</label>
+                            <input wicket:id="settingArrearsToleranceField" type="text" class="form-control" />
+                            <span wicket:id="settingArrearsToleranceFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="settingDayInYearBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingDayInYearContainer">
+                            <label wicket:for="settingDayInYearField">Day in year</label>
+                            <select wicket:id="settingDayInYearField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="settingDayInYearFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="settingDayInMonthBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingDayInMonthContainer">
+                            <label wicket:for="settingDayInMonthField">Day in month</label>
+                            <select wicket:id="settingDayInMonthField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="settingDayInMonthFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="settingAllowFixingOfTheInstallmentAmountBlock" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <wicket:container wicket:id="settingAllowFixingOfTheInstallmentAmountContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="settingAllowFixingOfTheInstallmentAmountField"> Allow fixing of the installment amount ?
+	                        </label>
+	                    </span>
+                            <span wicket:id="settingAllowFixingOfTheInstallmentAmountFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsContainer">
+                            <label wicket:for="settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField">Number of days a loan may be overdue before moving into arrears</label>
+                            <input wicket:id="settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField" type="text" class="form-control" />
+                            <span wicket:id="settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaContainer">
+                            <label wicket:for="settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField">Maximum number of days a loan may be overdue before becoming a NPA</label>
+                            <input wicket:id="settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField" type="text" class="form-control" />
+                            <span wicket:id="settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField"> Account moves out of NPA only after all arrears have been cleared?
+	                        </label>
+	                    </span>
+                            <span wicket:id="settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="settingPrincipalThresholdForLastInstalmentBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingPrincipalThresholdForLastInstalmentContainer">
+                            <label wicket:for="settingPrincipalThresholdForLastInstalmentField">Principal Threshold (%) for Last Installment</label>
+                            <input wicket:id="settingPrincipalThresholdForLastInstalmentField" type="text" class="form-control" />
+                            <span wicket:id="settingPrincipalThresholdForLastInstalmentFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="settingVariableInstallmentsAllowedBlock" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <wicket:container wicket:id="settingVariableInstallmentsAllowedContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="settingVariableInstallmentsAllowedField"> Is Variable Installments Allowed?
+	                        </label>
+	                    </span>
+                            <span wicket:id="settingVariableInstallmentsAllowedFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="settingVariableInstallmentsMinimumBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingVariableInstallmentsMinimumContainer">
+                            <label wicket:for="settingVariableInstallmentsMinimumField">Variable Installments Minimum</label>
+                            <input wicket:id="settingVariableInstallmentsMinimumField" type="text" class="form-control" />
+                            <span wicket:id="settingVariableInstallmentsMinimumFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="settingVariableInstallmentsMaximumBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="settingVariableInstallmentsMaximumContainer">
+                            <label wicket:for="settingVariableInstallmentsMaximumField">Variable Installments Maximum</label>
+                            <input wicket:id="settingVariableInstallmentsMaximumField" type="text" class="form-control" />
+                            <span wicket:id="settingVariableInstallmentsMaximumFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="settingAllowedToBeUsedForProvidingTopupLoansBlock" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <wicket:container wicket:id="settingAllowedToBeUsedForProvidingTopupLoansContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="settingAllowedToBeUsedForProvidingTopupLoansField"> Is allowed to be used for providing Topup Loans?
+	                        </label>
+	                    </span>
+                            <span wicket:id="settingAllowedToBeUsedForProvidingTopupLoansFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
                 </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="box-header with-border">
-                <h3 class="box-title">Currency</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="currencyField">Currency</label>
-                    <select wicket:id="currencyField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="currencyFeedback" class="help-block"></span>
+
+                <div class="box-header with-border">
+                    <h3 class="box-title">Interest Recalculation</h3>
                 </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="decimalPlaceField">Decimal Places</label>
-                    <input wicket:id="decimalPlaceField" type="text" class="form-control"/>
-                    <span wicket:id="decimalPlaceFeedback" class="help-block"></span>
+
+                <div class="box-body">
+
+                    <!-- Row -->
+                    <div wicket:id="interestRecalculationRecalculateInterestBlock" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <wicket:container wicket:id="interestRecalculationRecalculateInterestContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="interestRecalculationRecalculateInterestField"> Is Recalculate Interest?
+	                        </label>
+	                    </span>
+                            <span wicket:id="interestRecalculationRecalculateInterestFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="interestRecalculationPreClosureInterestCalculationRuleBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="interestRecalculationPreClosureInterestCalculationRuleContainer">
+                            <label wicket:for="interestRecalculationPreClosureInterestCalculationRuleField">Pre-closure interest calculation rule</label>
+                            <select wicket:id="interestRecalculationPreClosureInterestCalculationRuleField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="interestRecalculationPreClosureInterestCalculationRuleFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="interestRecalculationAdvancePaymentsAdjustmentTypeBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="interestRecalculationAdvancePaymentsAdjustmentTypeContainer">
+                            <label wicket:for="interestRecalculationAdvancePaymentsAdjustmentTypeField">Advance payments adjustment type</label>
+                            <select wicket:id="interestRecalculationAdvancePaymentsAdjustmentTypeField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="interestRecalculationAdvancePaymentsAdjustmentTypeFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="interestRecalculationCompoundingOnBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <wicket:container wicket:id="interestRecalculationCompoundingOnContainer">
+                            <label wicket:for="interestRecalculationCompoundingOnField">Interest recalculation compounding on</label>
+                            <select wicket:id="interestRecalculationCompoundingOnField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="interestRecalculationCompoundingOnFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    </div>
+                    <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="interestRecalculationCompoundingBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <wicket:container wicket:id="interestRecalculationCompoundingContainer">
+                            <label wicket:for="interestRecalculationCompoundingField">Frequency for compounding</label>
+                            <select wicket:id="interestRecalculationCompoundingField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="interestRecalculationCompoundingFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="interestRecalculationCompoundingTypeBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <wicket:container wicket:id="interestRecalculationCompoundingTypeContainer">
+                            <label wicket:for="interestRecalculationCompoundingTypeField">Frequency type for compounding</label>
+                            <select wicket:id="interestRecalculationCompoundingTypeField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="interestRecalculationCompoundingTypeFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="interestRecalculationCompoundingDayBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <wicket:container wicket:id="interestRecalculationCompoundingDayContainer">
+                            <label wicket:for="interestRecalculationCompoundingDayField">Frequency day for compounding</label>
+                            <select wicket:id="interestRecalculationCompoundingDayField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="interestRecalculationCompoundingDayFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="interestRecalculationCompoundingIntervalBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <wicket:container wicket:id="interestRecalculationCompoundingIntervalContainer">
+                            <label wicket:for="interestRecalculationCompoundingIntervalField">Frequency Interval for compounding</label>
+                            <input wicket:id="interestRecalculationCompoundingIntervalField" type="text" class="form-control" />
+                            <span wicket:id="interestRecalculationCompoundingIntervalFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    </div>
+                    <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="interestRecalculationRecalculateBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <wicket:container wicket:id="interestRecalculationRecalculateContainer">
+                            <label wicket:for="interestRecalculationRecalculateField">Frequency for recalculate Outstanding Principal</label>
+                            <select wicket:id="interestRecalculationRecalculateField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="interestRecalculationRecalculateFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="interestRecalculationRecalculateTypeBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <wicket:container wicket:id="interestRecalculationRecalculateTypeContainer">
+                            <label wicket:for="interestRecalculationRecalculateTypeField">Frequency type for recalculate</label>
+                            <select wicket:id="interestRecalculationRecalculateTypeField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="interestRecalculationRecalculateTypeFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="interestRecalculationRecalculateDayBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <wicket:container wicket:id="interestRecalculationRecalculateDayContainer">
+                            <label wicket:for="interestRecalculationRecalculateDayField">Frequency day for recalculate</label>
+                            <select wicket:id="interestRecalculationRecalculateDayField" class="form-control select2" style="width: 100%;"></select>
+                            <span wicket:id="interestRecalculationRecalculateDayFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="interestRecalculationRecalculateIntervalBlock" class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <wicket:container wicket:id="interestRecalculationRecalculateIntervalContainer">
+                            <label wicket:for="interestRecalculationRecalculateIntervalField">Frequency Interval for recalculate</label>
+                            <input wicket:id="interestRecalculationRecalculateIntervalField" type="text" class="form-control" />
+                            <span wicket:id="interestRecalculationRecalculateIntervalFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    </div>
+                    <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <wicket:container wicket:id="interestRecalculationArrearsRecognizationBasedOnOriginalScheduleContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="interestRecalculationArrearsRecognizationBasedOnOriginalScheduleField"> Is Arrears recognization based on original schedule?
+	                        </label>
+	                    </span>
+                            <span wicket:id="interestRecalculationArrearsRecognizationBasedOnOriginalScheduleFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
                 </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="currencyInMultipleOfField">Currency in multiple of</label>
-                    <input wicket:id="currencyInMultipleOfField" type="text" class="form-control"/>
-                    <span wicket:id="currencyInMultipleOfFeedback" class="help-block"></span>
+
+                <div class="box-header with-border">
+                    <h3 class="box-title">Guarantee Requirements</h3>
                 </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="installmentInMultipleOfField">Installment in multiple of</label>
-                    <input wicket:id="installmentInMultipleOfField" type="text" class="form-control"/>
-                    <span wicket:id="installmentInMultipleOfFeedback" class="help-block"></span>
+
+                <div class="box-body">
+
+                    <!-- Row -->
+                    <div wicket:id="guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <wicket:container wicket:id="guaranteeRequirementPlaceGuaranteeFundsOnHoldContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="guaranteeRequirementPlaceGuaranteeFundsOnHoldField"> Is Place Guarantee Funds On-Hold?
+	                        </label>
+	                    </span>
+                            <span wicket:id="guaranteeRequirementPlaceGuaranteeFundsOnHoldFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="guaranteeRequirementMandatoryGuaranteeBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="guaranteeRequirementMandatoryGuaranteeContainer">
+                            <label wicket:for="guaranteeRequirementMandatoryGuaranteeField">Mandatory Guarantee: (%)</label>
+                            <input wicket:id="guaranteeRequirementMandatoryGuaranteeField" class="form-control" type="text" />
+                            <span wicket:id="guaranteeRequirementMandatoryGuaranteeFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="guaranteeRequirementMinimumGuaranteeBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="guaranteeRequirementMinimumGuaranteeContainer">
+                            <label wicket:for="guaranteeRequirementMinimumGuaranteeField">Minimum Guarantee from Own Funds: (%)</label>
+                            <input wicket:id="guaranteeRequirementMinimumGuaranteeField" class="form-control" type="text" />
+                            <span wicket:id="guaranteeRequirementMinimumGuaranteeFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="guaranteeRequirementMinimumGuaranteeFromGuarantorBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="guaranteeRequirementMinimumGuaranteeFromGuarantorContainer">
+                            <label wicket:for="guaranteeRequirementMinimumGuaranteeFromGuarantorField">Minimum Guarantee from Guarantor Funds: (%)</label>
+                            <input wicket:id="guaranteeRequirementMinimumGuaranteeFromGuarantorField" class="form-control" type="text" />
+                            <span wicket:id="guaranteeRequirementMinimumGuaranteeFromGuarantorFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
                 </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="box-header with-border">
-                <h3 class="box-title">Terms</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="termVaryBasedOnLoanCycleField"> Is Terms vary based on loan cycle ?
-                        </label>
-                    </span>
-                    <span wicket:id="termVaryBasedOnLoanCycleFeedback" class="help-block"></span>
+
+                <div class="box-header with-border">
+                    <h3 class="box-title">Loan Tranche Details</h3>
                 </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="principalMinimumField">Principal Minimum</label>
-                    <input wicket:id="principalMinimumField" type="text" class="form-control"/>
-                    <span wicket:id="principalMinimumFeedback" class="help-block"></span>
+
+                <div class="box-body">
+
+                    <!-- Row -->
+                    <div wicket:id="loanTrancheDetailEnableMultipleDisbursalBlock" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <wicket:container wicket:id="loanTrancheDetailEnableMultipleDisbursalContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="loanTrancheDetailEnableMultipleDisbursalField"> Is Enable Multiple Disbursals?
+	                        </label>
+	                    </span>
+                            <span wicket:id="loanTrancheDetailEnableMultipleDisbursalFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="loanTrancheDetailMaximumTrancheCountBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="loanTrancheDetailMaximumTrancheCountContainer">
+                            <label wicket:for="loanTrancheDetailMaximumTrancheCountField">Maximum Tranche count</label>
+                            <input wicket:id="loanTrancheDetailMaximumTrancheCountField" class="form-control" type="text" />
+                            <span wicket:id="loanTrancheDetailMaximumTrancheCountFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="loanTrancheDetailMaximumAllowedOutstandingBalanceBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="loanTrancheDetailMaximumAllowedOutstandingBalanceContainer">
+                            <label wicket:for="loanTrancheDetailMaximumAllowedOutstandingBalanceField">Maximum allowed outstanding balance</label>
+                            <input wicket:id="loanTrancheDetailMaximumAllowedOutstandingBalanceField" class="form-control" type="text" />
+                            <span wicket:id="loanTrancheDetailMaximumAllowedOutstandingBalanceFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
                 </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="principalDefaultField">Principal Default</label>
-                    <input wicket:id="principalDefaultField" type="text" class="form-control"/>
-                    <span wicket:id="principalDefaultFeedback" class="help-block"></span>
+
+                <div class="box-header with-border">
+                    <h3 class="box-title">Configurable Terms and Settings</h3>
                 </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="principalMaximumField">Principal Maximum</label>
-                    <input wicket:id="principalMaximumField" type="text" class="form-control"/>
-                    <span wicket:id="principalMaximumFeedback" class="help-block"></span>
+
+                <div class="box-body">
+
+                    <!-- Row -->
+                    <div wicket:id="configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <wicket:container wicket:id="configurableAllowOverridingSelectTermsAndSettingsInLoanAccountContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="configurableAllowOverridingSelectTermsAndSettingsInLoanAccountField"> Is Allow overriding select terms and settings in loan accounts?
+	                        </label>
+	                    </span>
+                            <span wicket:id="configurableAllowOverridingSelectTermsAndSettingsInLoanAccountFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="configurableAmortizationBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="configurableAmortizationContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="configurableAmortizationField"> Is Amortization?
+	                        </label>
+	                    </span>
+                            <span wicket:id="configurableAmortizationFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="configurableInterestMethodBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="configurableInterestMethodContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="configurableInterestMethodField"> Is Interest method?
+	                        </label>
+	                    </span>
+                            <span wicket:id="configurableInterestMethodFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="configurableRepaymentStrategyBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="configurableRepaymentStrategyContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="configurableRepaymentStrategyField"> Is Repayment strategy?
+	                        </label>
+	                    </span>
+                            <span wicket:id="configurableRepaymentStrategyFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="configurableInterestCalculationPeriodBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="configurableInterestCalculationPeriodContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="configurableInterestCalculationPeriodField"> Is Interest calculation period?
+	                        </label>
+	                    </span>
+                            <span wicket:id="configurableInterestCalculationPeriodFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="configurableArrearsToleranceBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="configurableArrearsToleranceContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="configurableArrearsToleranceField"> Is Arrears tolerance?
+	                        </label>
+	                    </span>
+                            <span wicket:id="configurableArrearsToleranceFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="configurableRepaidEveryBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="configurableRepaidEveryContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="configurableRepaidEveryField"> Is Repaid every?
+	                        </label>
+	                    </span>
+                            <span wicket:id="configurableRepaidEveryFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!-- Row -->
+                    <div wicket:id="configurableMoratoriumBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="configurableMoratoriumContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="configurableMoratoriumField"> Is Moratorium?
+	                        </label>
+	                    </span>
+                            <span wicket:id="configurableMoratoriumFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div wicket:id="configurableOverdueBeforeMovingBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <wicket:container wicket:id="configurableOverdueBeforeMovingContainer">
+                            <label>&nbsp;</label>
+                            <span style="display: block">
+	                        <label>
+	                            <input type="checkbox" wicket:id="configurableOverdueBeforeMovingField"> Is Number of days a loan may be overdue before moving into arrears?
+	                        </label>
+	                    </span>
+                            <span wicket:id="configurableOverdueBeforeMovingFeedback" class="help-block"></span>
+                        </wicket:container>
+                    </div>
+                    <div class="clearfix"></div>
+
                 </div>
-                <div class="clearfix"></div>
-                <!-- Row -->
-                <div wicket:id="principalByLoanCycleContainer" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Principal by loan cycle</h3>
-                        </div>
-                        <div class="box-body">
-                            <table wicket:id="principalByLoanCycleTable"/>
-                        </div>
-                        <div class="box-footer">
-                            <a wicket:id="addLink" class="btn btn-default">Add</a>
+
+                <div class="box-header with-border">
+                    <h3 class="box-title">Charges</h3>
+                </div>
+
+                <div class="box-body">
+
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="box box-primary">
+                            <div class="box-body">
+                                <table wicket:id="chargeTable"></table>
+                            </div>
+                            <div class="box-footer">
+                                <a wicket:id="chargeAddLink" class="btn btn-default">Add</a>
+                            </div>
                         </div>
                     </div>
+                    <div class="clearfix"></div>
                 </div>
-                <div class="clearfix"></div>
-                <!-- Row -->
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="numberOfRepaymentMinimumField">Number of repayment Minimum</label>
-                    <input wicket:id="numberOfRepaymentMinimumField" type="text" class="form-control"/>
-                    <span wicket:id="numberOfRepaymentMinimumFeedback" class="help-block"></span>
+
+                <div class="box-header with-border">
+                    <h3 class="box-title">Overdue Charges</h3>
                 </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="numberOfRepaymentDefaultField">Number of repayment Default</label>
-                    <input wicket:id="numberOfRepaymentDefaultField" type="text" class="form-control"/>
-                    <span wicket:id="numberOfRepaymentDefaultFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="numberOfRepaymentMaximumField">Number of repayment Maximum</label>
-                    <input wicket:id="numberOfRepaymentMaximumField" type="text" class="form-control"/>
-                    <span wicket:id="numberOfRepaymentMaximumFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                <!-- Row -->
-                <div wicket:id="numberOfRepaymentByLoanCycleContainer" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Number of repayment by loan cycle</h3>
-                        </div>
-                        <div class="box-body">
-                            <table wicket:id="numberOfRepaymentByLoanCycleTable"/>
-                        </div>
-                        <div class="box-footer">
-                            <a wicket:id="addLink" class="btn btn-default">Add</a>
+
+                <div class="box-body">
+
+                    <!-- Row -->
+                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="box box-primary">
+                            <div class="box-body">
+                                <table wicket:id="overdueChargeTable"></table>
+                            </div>
+                            <div class="box-footer">
+                                <a wicket:id="overdueChargeAddLink" class="btn btn-default">Add</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="linkedToFloatingInterestRatesField"> Is Linked to Floating Interest Rates?
-                        </label>
-                    </span>
-                    <span wicket:id="linkedToFloatingInterestRatesFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <div wicket:id="nominalInterestRateContainer">
-                <!-- Row -->
-                <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <label wicket:for="nominalInterestRateMinimumField">Nominal interest rate minimum</label>
-                    <input wicket:id="nominalInterestRateMinimumField" type="text" class="form-control"/>
-                    <span wicket:id="nominalInterestRateMinimumFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <label wicket:for="nominalInterestRateDefaultField">Nominal interest rate default</label>
-                    <input wicket:id="nominalInterestRateDefaultField" type="text" class="form-control"/>
-                    <span wicket:id="nominalInterestRateDefaultFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <label wicket:for="nominalInterestRateMaximumField">Number of repayment Maximum</label>
-                    <input wicket:id="nominalInterestRateMaximumField" type="text" class="form-control"/>
-                    <span wicket:id="nominalInterestRateMaximumFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <label wicket:for="nominalInterestRateTypeField">Type</label>
-                    <select wicket:id="nominalInterestRateTypeField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="nominalInterestRateTypeFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                </div>
-                
-                <div wicket:id="floatInterestRateContainer">
-                <!-- Row -->
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="floatingInterestRateField">Floating interest rate</label>
-                    <select wicket:id="floatingInterestRateField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="floatingInterestRateFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="floatingInterestDifferentialField">Floating interest differential rate</label>
-                    <input wicket:id="floatingInterestDifferentialField" type="text" class="form-control"/>
-                    <span wicket:id="floatingInterestDifferentialFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="floatingInterestAllowedField"> Is Floating Calculation Allowed?
-                        </label>
-                    </span>
-                    <span wicket:id="floatingInterestAllowedFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                <!-- Row -->
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="floatingInterestMinimumField">Floating interest minimum</label>
-                    <input wicket:id="floatingInterestMinimumField" type="text" class="form-control"/>
-                    <span wicket:id="floatingInterestMinimumFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="floatingInterestDefaultField">Floating interest default</label>
-                    <input wicket:id="floatingInterestDefaultField" type="text" class="form-control"/>
-                    <span wicket:id="floatingInterestDefaultFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="floatingInterestMaximumField">Floating interest maximum</label>
-                    <input wicket:id="floatingInterestMaximumField" type="text" class="form-control"/>
-                    <span wicket:id="floatingInterestMaximumFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
+                    <div class="clearfix"></div>
                 </div>
 
-                <!-- Row -->
-                <div wicket:id="nominalInterestRateByLoanCycleContainer" class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Nominal Interest Rate by loan cycle</h3>
-                        </div>
-                        <div class="box-body">
-                            <table wicket:id="nominalInterestRateByLoanCycleTable"/>
-                        </div>
-                        <div class="box-footer">
-                            <a wicket:id="addLink" class="btn btn-default">Add</a>
-                        </div>
-                    </div>
+                <div class="box-header with-border">
+                    <h3 class="box-title">Accounting</h3>
                 </div>
-                <div class="clearfix"></div>
 
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="repaidEveryField">Repaid every</label>
-                    <input wicket:id="repaidEveryField" type="text" class="form-control"/>
-                    <span wicket:id="repaidEveryFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="repaidTypeField">Repaid Type</label>
-                    <select wicket:id="repaidTypeField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="repaidTypeFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
+                <div class="box-body">
 
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label wicket:for="minimumDayBetweenDisbursalAndFirstRepaymentDateField">Minimum days between disbursal and first repayment date</label>
-                    <input wicket:id="minimumDayBetweenDisbursalAndFirstRepaymentDateField" type="text" class="form-control"/>
-                    <span wicket:id="minimumDayBetweenDisbursalAndFirstRepaymentDateFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            
-            <div class="box-header with-border">
-                <h3 class="box-title">Settings</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="amortizationField">Amortization</label>
-                    <select wicket:id="amortizationField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="amortizationFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="interestMethodField">Interest method</label>
-                    <select wicket:id="interestMethodField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="interestMethodFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="interestCalculationPeriodField">Interest calculation period</label>
-                    <select wicket:id="interestCalculationPeriodField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="interestCalculationPeriodFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                	    <wicket:container wicket:id="calculateInterestForExactDaysInPartialPeriodContainer">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="calculateInterestForExactDaysInPartialPeriodField"> Calculate interest for exact days in partial period ?
-                        </label>
-                    </span>
-                    <span wicket:id="calculateInterestForExactDaysInPartialPeriodFeedback" class="help-block"></span>
-                    </wicket:container>
-                </div>
-                <div class="clearfix"></div>
-
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="repaymentStrategyField">Repayment strategy</label>
-                    <select wicket:id="repaymentStrategyField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="repaymentStrategyFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                </div>
-                <div class="clearfix"></div>
-
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="moratoriumPrincipalField">Moratorium principal</label>
-                    <input wicket:id="moratoriumPrincipalField" type="text" class="form-control"/>
-                    <span wicket:id="moratoriumPrincipalFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="moratoriumInterestField">Moratorium interest</label>
-                    <input wicket:id="moratoriumInterestField" type="text" class="form-control"/>
-                    <span wicket:id="moratoriumInterestFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="interestFreePeriodField">Interest free period</label>
-                    <input wicket:id="interestFreePeriodField" type="text" class="form-control"/>
-                    <span wicket:id="interestFreePeriodFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="arrearsToleranceField">Arrears tolerance</label>
-                    <input wicket:id="arrearsToleranceField" type="text" class="form-control"/>
-                    <span wicket:id="arrearsToleranceFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="dayInYearField">Day in year</label>
-                    <select wicket:id="dayInYearField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="dayInYearFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="dayInMonthField">Day in month</label>
-                    <select wicket:id="dayInMonthField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="dayInMonthFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="allowFixingOfTheInstallmentAmountField"> Allow fixing of the installment amount ?
-                        </label>
-                    </span>
-                    <span wicket:id="allowFixingOfTheInstallmentAmountFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField">Number of days a loan may be overdue before moving into arrears</label>
-                    <input wicket:id="numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField" type="text" class="form-control"/>
-                    <span wicket:id="numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField">Maximum number of days a loan may be overdue before becoming a NPA</label>
-                    <input wicket:id="maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField" type="text" class="form-control"/>
-                    <span wicket:id="maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField"> Account moves out of NPA only after all arrears have been cleared?
-                        </label>
-                    </span>
-                    <span wicket:id="accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="principalThresholdForLastInstalmentField">Principal Threshold (%) for Last Installment</label>
-                    <input wicket:id="principalThresholdForLastInstalmentField" type="text" class="form-control"/>
-                    <span wicket:id="principalThresholdForLastInstalmentFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="variableInstallmentsAllowedField"> Is Variable Installments Allowed?
-                        </label>
-                    </span>
-                    <span wicket:id="variableInstallmentsAllowedFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-
-                <wicket:container wicket:id="variableInstallmentsAllowedContainer">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="variableInstallmentsMinimumField">Variable Installments Minimum</label>
-                    <input wicket:id="variableInstallmentsMinimumField" type="text" class="form-control"/>
-                    <span wicket:id="variableInstallmentsMinimumFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="variableInstallmentsMaximumField">Variable Installments Maximum</label>
-                    <input wicket:id="variableInstallmentsMaximumField" type="text" class="form-control"/>
-                    <span wicket:id="variableInstallmentsMaximumFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                </wicket:container>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="allowedToBeUsedForProvidingTopupLoansField"> Is allowed to be used for providing Topup Loans?
-                        </label>
-                    </span>
-                    <span wicket:id="allowedToBeUsedForProvidingTopupLoansFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-
-            </div>
-            
-            <div class="box-header with-border">
-                <h3 class="box-title">Interest Recalculation</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="recalculateInterestField"> Is Recalculate Interest?
-                        </label>
-                    </span>
-                    <span wicket:id="recalculateInterestFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <wicket:container wicket:id="recalculateInterestContainer">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="preClosureInterestCalculationRuleField">Pre-closure interest calculation rule</label>
-                    <select wicket:id="preClosureInterestCalculationRuleField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="preClosureInterestCalculationRuleFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="advancePaymentsAdjustmentTypeField">Advance payments adjustment type</label>
-                    <select wicket:id="advancePaymentsAdjustmentTypeField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="advancePaymentsAdjustmentTypeFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="interestRecalculationCompoundingOnField">Interest recalculation compounding on</label>
-                    <select wicket:id="interestRecalculationCompoundingOnField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="interestRecalculationCompoundingOnFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <wicket:container wicket:id="compoundingContainer">
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="compoundingField">Frequency for compounding</label>
-                    <select wicket:id="compoundingField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="compoundingFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <wicket:container wicket:id="compoundingTypeContainer">
-                    <label wicket:for="compoundingTypeField">Frequency type for compounding</label>
-                    <select wicket:id="compoundingTypeField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="compoundingTypeFeedback" class="help-block"></span>
-                </wicket:container>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <wicket:container wicket:id="compoundingDayContainer">
-                    <label wicket:for="compoundingDayField">Frequency day for compounding</label>
-                    <select wicket:id="compoundingDayField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="compoundingDayFeedback" class="help-block"></span>
-                </wicket:container>
-                </div>
-                <div class="clearfix"></div>
-                </wicket:container>
-                
-                <!-- Row -->
-                <wicket:container wicket:id="compoundingIntervalContainer">
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="compoundingIntervalField">Frequency Interval for compounding</label>
-                    <input wicket:id="compoundingIntervalField" type="text" class="form-control"/>
-                    <span wicket:id="compoundingIntervalFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                </div>
-                <div class="clearfix"></div>
-                </wicket:container>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="recalculateField">Frequency for recalculate Outstanding Principal</label>
-                    <select wicket:id="recalculateField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="recalculateFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <wicket:container wicket:id="recalculateTypeContainer">
-                    <label wicket:for="recalculateTypeField">Frequency type for recalculate</label>
-                    <select wicket:id="recalculateTypeField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="recalculateTypeFeedback" class="help-block"></span>
-                </wicket:container>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <wicket:container wicket:id="recalculateDayContainer">
-                    <label wicket:for="recalculateDayField">Frequency day for recalculate</label>
-                    <select wicket:id="recalculateDayField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="recalculateDayFeedback" class="help-block"></span>
-                </wicket:container>
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <wicket:container wicket:id="recalculateIntervalContainer">
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="recalculateIntervalField">Frequency Interval for recalculate</label>
-                    <input wicket:id="recalculateIntervalField" type="text" class="form-control"/>
-                    <span wicket:id="recalculateIntervalFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                </div>
-                <div class="clearfix"></div>
-                </wicket:container>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="arrearsRecognizationBasedOnOriginalScheduleField"> Is Arrears recognization based on original schedule?
-                        </label>
-                    </span>
-                    <span wicket:id="arrearsRecognizationBasedOnOriginalScheduleFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                </wicket:container>
-            </div>
-            
-            <div class="box-header with-border">
-                <h3 class="box-title">Guarantee Requirements</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="placeGuaranteeFundsOnHoldField"> Is Place Guarantee Funds On-Hold?
-                        </label>
-                    </span>
-                    <span wicket:id="placeGuaranteeFundsOnHoldFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <wicket:container wicket:id="placeGuaranteeFundsOnHoldContainer">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="mandatoryGuaranteeField">Mandatory Guarantee: (%)</label>
-                    <input wicket:id="mandatoryGuaranteeField" class="form-control" type="text"/>
-                    <span wicket:id="mandatoryGuaranteeFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="minimumGuaranteeField">Minimum Guarantee from Own Funds: (%)</label>
-                    <input wicket:id="minimumGuaranteeField" class="form-control" type="text"/>
-                    <span wicket:id="minimumGuaranteeFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="minimumGuaranteeFromGuarantorField">Minimum Guarantee from Guarantor Funds: (%)</label>
-                    <input wicket:id="minimumGuaranteeFromGuarantorField" class="form-control" type="text"/>
-                    <span wicket:id="minimumGuaranteeFromGuarantorFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                </wicket:container>
-            </div>
-            
-            <div class="box-header with-border">
-                <h3 class="box-title">Loan Tranche Details</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="enableMultipleDisbursalField"> Is Enable Multiple Disbursals?
-                        </label>
-                    </span>
-                    <span wicket:id="enableMultipleDisbursalFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <wicket:container wicket:id="enableMultipleDisbursalContainer">
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="maximumTrancheCountField">Maximum Tranche count</label>
-                    <input wicket:id="maximumTrancheCountField" class="form-control" type="text"/>
-                    <span wicket:id="maximumTrancheCountFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="maximumAllowedOutstandingBalanceField">Maximum allowed outstanding balance</label>
-                    <input wicket:id="maximumAllowedOutstandingBalanceField" class="form-control" type="text"/>
-                    <span wicket:id="maximumAllowedOutstandingBalanceFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                </wicket:container>
-            </div>
-            
-            <div class="box-header with-border">
-                <h3 class="box-title">Configurable Terms and Settings</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="allowOverridingSelectTermsAndSettingsInLoanAccountField"> Is Allow overriding select terms and settings in loan accounts?
-                        </label>
-                    </span>
-                    <span wicket:id="allowOverridingSelectTermsAndSettingsInLoanAccountFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <wicket:container wicket:id="allowOverridingSelectTermsAndSettingsInLoanAccountContainer">
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="configurableAmortizationField"> Is Amortization?
-                        </label>
-                    </span>
-                    <span wicket:id="configurableAmortizationFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="configurableInterestMethodField"> Is Interest method?
-                        </label>
-                    </span>
-                    <span wicket:id="configurableInterestMethodFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="configurableRepaymentStrategyField"> Is Repayment strategy?
-                        </label>
-                    </span>
-                    <span wicket:id="configurableRepaymentStrategyFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="configurableInterestCalculationPeriodField"> Is Interest calculation period?
-                        </label>
-                    </span>
-                    <span wicket:id="configurableInterestCalculationPeriodFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="configurableArrearsToleranceField"> Is Arrears tolerance?
-                        </label>
-                    </span>
-                    <span wicket:id="configurableArrearsToleranceFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="configurableRepaidEveryField"> Is Repaid every?
-                        </label>
-                    </span>
-                    <span wicket:id="configurableRepaidEveryFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="configurableMoratoriumField"> Is Moratorium?
-                        </label>
-                    </span>
-                    <span wicket:id="configurableMoratoriumFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label>&nbsp;</label>
-                    <span style="display: block">
-                        <label>
-                            <input type="checkbox" wicket:id="configurableOverdueBeforeMovingField"> Is Number of days a loan may be overdue before moving into arrears?
-                        </label>
-                    </span>
-                    <span wicket:id="configurableOverdueBeforeMovingFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                </wicket:container>
-            </div>
-
-            <div class="box-header with-border">
-                <h3 class="box-title">Charges</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="box box-primary">
-                        <div class="box-body">
-                            <table wicket:id="chargeTable"></table>
-                        </div>
-                        <div class="box-footer">
-                            <a wicket:id="chargeAddLink" class="btn btn-default">Add</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-
-            <div class="box-header with-border">
-                <h3 class="box-title">Overdue Charges</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="box box-primary">
-                        <div class="box-body">
-                            <table wicket:id="overdueChargeTable"></table>
-                        </div>
-                        <div class="box-footer">
-                            <a wicket:id="overdueChargeAddLink" class="btn btn-default">Add</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            
-            <div class="box-header with-border">
-                <h3 class="box-title">Accounting</h3>
-            </div>
-            <div class="box-body">
-                <span wicket:id="accountingField">
+                    <span wicket:id="accountingField">
                     <label><input wicket:id="accountingNone" type="radio"> None</label>&nbsp;&nbsp;&nbsp;
                     <label><input wicket:id="accountingCash" type="radio"> Cash</label>&nbsp;&nbsp;&nbsp;
                     <label><input wicket:id="accountingPeriodic" type="radio"> Accrual (periodic)</label>&nbsp;&nbsp;&nbsp;
                     <label><input wicket:id="accountingUpfront" type="radio"> Accrual (upfront)</label>&nbsp;&nbsp;&nbsp;
                 </span>
-            </div>
-            <wicket:container wicket:id="cashContainer">
-            <div class="box-header with-border">
-                <h3 class="box-title">Assets</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="cashFundSourceField">Fund source</label>
-                    <select wicket:id="cashFundSourceField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="cashFundSourceFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="cashLoanPortfolioField">Loan portfolio</label>
-                    <select wicket:id="cashLoanPortfolioField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="cashLoanPortfolioFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
 
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="cashTransferInSuspenseField">Transfer in suspense</label>
-                    <select wicket:id="cashTransferInSuspenseField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="cashTransferInSuspenseFeedback" class="help-block"></span>
                 </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="box-header with-border">
-                <h3 class="box-title">Income</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="cashIncomeFromInterestField">Income from Interest</label>
-                    <select wicket:id="cashIncomeFromInterestField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="cashIncomeFromInterestFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="cashIncomeFromFeeField">Income from fees</label>
-                    <select wicket:id="cashIncomeFromFeeField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="cashIncomeFromFeeFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
 
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="cashIncomeFromPenaltiesField">Income from penalties</label>
-                    <select wicket:id="cashIncomeFromPenaltiesField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="cashIncomeFromPenaltiesFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="cashIncomeFromRecoveryRepaymentField">Income from Recovery Repayments</label>
-                    <select wicket:id="cashIncomeFromRecoveryRepaymentField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="cashIncomeFromRecoveryRepaymentFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="box-header with-border">
-                <h3 class="box-title">Expenses</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="cashLossesWrittenOffField">Losses written off</label>
-                    <select wicket:id="cashLossesWrittenOffField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="cashLossesWrittenOffFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="box-header with-border">
-                <h3 class="box-title">Liabilities</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="cashOverPaymentLiabilityField">Over payment liability</label>
-                    <select wicket:id="cashOverPaymentLiabilityField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="cashOverPaymentLiabilityFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            </wicket:container>
-            
-            <wicket:container wicket:id="periodicContainer">
-            <div class="box-header with-border">
-                <h3 class="box-title">Assets</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="periodicFundSourceField">Fund source</label>
-                    <select wicket:id="periodicFundSourceField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="periodicFundSourceFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="periodicLoanPortfolioField">Loan portfolio</label>
-                    <select wicket:id="periodicLoanPortfolioField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="periodicLoanPortfolioFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="periodicInterestReceivableField">Interest Receivable</label>
-                    <select wicket:id="periodicInterestReceivableField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="periodicInterestReceivableFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="periodicFeesReceivableField">Fees Receivable</label>
-                    <select wicket:id="periodicFeesReceivableField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="periodicFeesReceivableFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="periodicPenaltiesReceivableField">Penalties Receivable</label>
-                    <select wicket:id="periodicPenaltiesReceivableField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="periodicPenaltiesReceivableFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">                
-                </div>
-                <div class="clearfix"></div>
-
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="periodicTransferInSuspenseField">Transfer in suspense</label>
-                    <select wicket:id="periodicTransferInSuspenseField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="periodicTransferInSuspenseFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">                
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="box-header with-border">
-                <h3 class="box-title">Income</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="periodicIncomeFromInterestField">Income from Interest</label>
-                    <select wicket:id="periodicIncomeFromInterestField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="periodicIncomeFromInterestFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="periodicIncomeFromFeeField">Income from fees</label>
-                    <select wicket:id="periodicIncomeFromFeeField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="periodicIncomeFromFeeFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="periodicIncomeFromPenaltiesField">Income from penalties</label>
-                    <select wicket:id="periodicIncomeFromPenaltiesField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="periodicIncomeFromPenaltiesFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="periodicIncomeFromRecoveryRepaymentField">Income from Recovery Repayments</label>
-                    <select wicket:id="periodicIncomeFromRecoveryRepaymentField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="periodicIncomeFromRecoveryRepaymentFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="box-header with-border">
-                <h3 class="box-title">Expenses</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="periodicLossesWrittenOffField">Losses written off</label>
-                    <select wicket:id="periodicLossesWrittenOffField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="periodicLossesWrittenOffFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="box-header with-border">
-                <h3 class="box-title">Liabilities</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="periodicOverPaymentLiabilityField">Over payment liability</label>
-                    <select wicket:id="periodicOverPaymentLiabilityField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="periodicOverPaymentLiabilityFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            </wicket:container>
-            
-            <wicket:container wicket:id="upfrontContainer">
-            <div class="box-header with-border">
-                <h3 class="box-title">Assets</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="upfrontFundSourceField">Fund source</label>
-                    <select wicket:id="upfrontFundSourceField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="upfrontFundSourceFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="upfrontLoanPortfolioField">Loan portfolio</label>
-                    <select wicket:id="upfrontLoanPortfolioField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="upfrontLoanPortfolioFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="upfrontInterestReceivableField">Interest Receivable</label>
-                    <select wicket:id="upfrontInterestReceivableField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="upfrontInterestReceivableFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="upfrontFeesReceivableField">Fees Receivable</label>
-                    <select wicket:id="upfrontFeesReceivableField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="upfrontFeesReceivableFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="upfrontPenaltiesReceivableField">Penalties Receivable</label>
-                    <select wicket:id="upfrontPenaltiesReceivableField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="upfrontPenaltiesReceivableFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">                
-                </div>
-                <div class="clearfix"></div>
-
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="upfrontTransferInSuspenseField">Transfer in suspense</label>
-                    <select wicket:id="upfrontTransferInSuspenseField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="upfrontTransferInSuspenseFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">                
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="box-header with-border">
-                <h3 class="box-title">Income</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="upfrontIncomeFromInterestField">Income from Interest</label>
-                    <select wicket:id="upfrontIncomeFromInterestField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="upfrontIncomeFromInterestFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="upfrontIncomeFromFeeField">Income from fees</label>
-                    <select wicket:id="upfrontIncomeFromFeeField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="upfrontIncomeFromFeeFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="upfrontIncomeFromPenaltiesField">Income from penalties</label>
-                    <select wicket:id="upfrontIncomeFromPenaltiesField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="upfrontIncomeFromPenaltiesFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="upfrontIncomeFromRecoveryRepaymentField">Income from Recovery Repayments</label>
-                    <select wicket:id="upfrontIncomeFromRecoveryRepaymentField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="upfrontIncomeFromRecoveryRepaymentFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="box-header with-border">
-                <h3 class="box-title">Expenses</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="upfrontLossesWrittenOffField">Losses written off</label>
-                    <select wicket:id="upfrontLossesWrittenOffField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="upfrontLossesWrittenOffFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="box-header with-border">
-                <h3 class="box-title">Liabilities</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="upfrontOverPaymentLiabilityField">Over payment liability</label>
-                    <select wicket:id="upfrontOverPaymentLiabilityField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="upfrontOverPaymentLiabilityFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            </wicket:container>
-            
-            <wicket:container wicket:id="advancedAccountingRuleContainer">
-            <div class="box-header with-border">
-                <h3 class="box-title">Advanced Accounting Rule</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="box box-primary">
+                <div wicket:id="cashBlock">
+                    <wicket:container wicket:id="cashContainer">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Configure Fund Sources for Payment Channels</h3>
+                            <h3 class="box-title">Assets</h3>
                         </div>
                         <div class="box-body">
-                            <table wicket:id="fundSourceTable"></table>
-                        </div>
-                        <div class="box-footer">
-                            <a wicket:id="fundSourceAddLink" class="btn btn-default">Add</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="cashFundSourceField">Fund source</label>
+                                <select wicket:id="cashFundSourceField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="cashFundSourceFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="cashLoanPortfolioField">Loan portfolio</label>
+                                <select wicket:id="cashLoanPortfolioField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="cashLoanPortfolioFeedback" class="help-block"></span>
+                            </div>
+                            <div class="clearfix"></div>
 
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="box box-primary">
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="cashTransferInSuspenseField">Transfer in suspense</label>
+                                <select wicket:id="cashTransferInSuspenseField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="cashTransferInSuspenseFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
                         <div class="box-header with-border">
-                            <h3 class="box-title">Map Fees to Income Accounts</h3>
+                            <h3 class="box-title">Income</h3>
                         </div>
                         <div class="box-body">
-                            <table wicket:id="feeIncomeTable"></table>
-                        </div>
-                        <div class="box-footer">
-                            <a wicket:id="feeIncomeAddLink" class="btn btn-default">Add</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="cashIncomeFromInterestField">Income from Interest</label>
+                                <select wicket:id="cashIncomeFromInterestField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="cashIncomeFromInterestFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="cashIncomeFromFeeField">Income from fees</label>
+                                <select wicket:id="cashIncomeFromFeeField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="cashIncomeFromFeeFeedback" class="help-block"></span>
+                            </div>
+                            <div class="clearfix"></div>
 
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="box box-primary">
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="cashIncomeFromPenaltiesField">Income from penalties</label>
+                                <select wicket:id="cashIncomeFromPenaltiesField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="cashIncomeFromPenaltiesFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="cashIncomeFromRecoveryRepaymentField">Income from Recovery Repayments</label>
+                                <select wicket:id="cashIncomeFromRecoveryRepaymentField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="cashIncomeFromRecoveryRepaymentFeedback" class="help-block"></span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
                         <div class="box-header with-border">
-                            <h3 class="box-title">Map Penalties to Specific Income Accounts</h3>
+                            <h3 class="box-title">Expenses</h3>
                         </div>
                         <div class="box-body">
-                            <table wicket:id="penaltyIncomeTable"></table>
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="cashLossesWrittenOffField">Losses written off</label>
+                                <select wicket:id="cashLossesWrittenOffField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="cashLossesWrittenOffFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="box-footer">
-                            <a wicket:id="penaltyIncomeAddLink" class="btn btn-default">Add</a>
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Liabilities</h3>
                         </div>
-                    </div>
+                        <div class="box-body">
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="cashOverPaymentLiabilityField">Over payment liability</label>
+                                <select wicket:id="cashOverPaymentLiabilityField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="cashOverPaymentLiabilityFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </wicket:container>
                 </div>
-                <div class="clearfix"></div>
+
+                <div wicket:id="periodicBlock">
+                    <wicket:container wicket:id="periodicContainer">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Assets</h3>
+                        </div>
+                        <div class="box-body">
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="periodicFundSourceField">Fund source</label>
+                                <select wicket:id="periodicFundSourceField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="periodicFundSourceFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="periodicLoanPortfolioField">Loan portfolio</label>
+                                <select wicket:id="periodicLoanPortfolioField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="periodicLoanPortfolioFeedback" class="help-block"></span>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="periodicInterestReceivableField">Interest Receivable</label>
+                                <select wicket:id="periodicInterestReceivableField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="periodicInterestReceivableFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="periodicFeesReceivableField">Fees Receivable</label>
+                                <select wicket:id="periodicFeesReceivableField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="periodicFeesReceivableFeedback" class="help-block"></span>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="periodicPenaltiesReceivableField">Penalties Receivable</label>
+                                <select wicket:id="periodicPenaltiesReceivableField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="periodicPenaltiesReceivableFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="periodicTransferInSuspenseField">Transfer in suspense</label>
+                                <select wicket:id="periodicTransferInSuspenseField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="periodicTransferInSuspenseFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Income</h3>
+                        </div>
+                        <div class="box-body">
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="periodicIncomeFromInterestField">Income from Interest</label>
+                                <select wicket:id="periodicIncomeFromInterestField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="periodicIncomeFromInterestFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="periodicIncomeFromFeeField">Income from fees</label>
+                                <select wicket:id="periodicIncomeFromFeeField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="periodicIncomeFromFeeFeedback" class="help-block"></span>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="periodicIncomeFromPenaltiesField">Income from penalties</label>
+                                <select wicket:id="periodicIncomeFromPenaltiesField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="periodicIncomeFromPenaltiesFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="periodicIncomeFromRecoveryRepaymentField">Income from Recovery Repayments</label>
+                                <select wicket:id="periodicIncomeFromRecoveryRepaymentField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="periodicIncomeFromRecoveryRepaymentFeedback" class="help-block"></span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Expenses</h3>
+                        </div>
+                        <div class="box-body">
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="periodicLossesWrittenOffField">Losses written off</label>
+                                <select wicket:id="periodicLossesWrittenOffField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="periodicLossesWrittenOffFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Liabilities</h3>
+                        </div>
+                        <div class="box-body">
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="periodicOverPaymentLiabilityField">Over payment liability</label>
+                                <select wicket:id="periodicOverPaymentLiabilityField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="periodicOverPaymentLiabilityFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </wicket:container>
+                </div>
+
+                <div wicket:id="upfrontBlock">
+                    <wicket:container wicket:id="upfrontContainer">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Assets</h3>
+                        </div>
+                        <div class="box-body">
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="upfrontFundSourceField">Fund source</label>
+                                <select wicket:id="upfrontFundSourceField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="upfrontFundSourceFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="upfrontLoanPortfolioField">Loan portfolio</label>
+                                <select wicket:id="upfrontLoanPortfolioField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="upfrontLoanPortfolioFeedback" class="help-block"></span>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="upfrontInterestReceivableField">Interest Receivable</label>
+                                <select wicket:id="upfrontInterestReceivableField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="upfrontInterestReceivableFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="upfrontFeesReceivableField">Fees Receivable</label>
+                                <select wicket:id="upfrontFeesReceivableField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="upfrontFeesReceivableFeedback" class="help-block"></span>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="upfrontPenaltiesReceivableField">Penalties Receivable</label>
+                                <select wicket:id="upfrontPenaltiesReceivableField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="upfrontPenaltiesReceivableFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="upfrontTransferInSuspenseField">Transfer in suspense</label>
+                                <select wicket:id="upfrontTransferInSuspenseField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="upfrontTransferInSuspenseFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Income</h3>
+                        </div>
+                        <div class="box-body">
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="upfrontIncomeFromInterestField">Income from Interest</label>
+                                <select wicket:id="upfrontIncomeFromInterestField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="upfrontIncomeFromInterestFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="upfrontIncomeFromFeeField">Income from fees</label>
+                                <select wicket:id="upfrontIncomeFromFeeField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="upfrontIncomeFromFeeFeedback" class="help-block"></span>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="upfrontIncomeFromPenaltiesField">Income from penalties</label>
+                                <select wicket:id="upfrontIncomeFromPenaltiesField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="upfrontIncomeFromPenaltiesFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="upfrontIncomeFromRecoveryRepaymentField">Income from Recovery Repayments</label>
+                                <select wicket:id="upfrontIncomeFromRecoveryRepaymentField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="upfrontIncomeFromRecoveryRepaymentFeedback" class="help-block"></span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Expenses</h3>
+                        </div>
+                        <div class="box-body">
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="upfrontLossesWrittenOffField">Losses written off</label>
+                                <select wicket:id="upfrontLossesWrittenOffField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="upfrontLossesWrittenOffFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Liabilities</h3>
+                        </div>
+                        <div class="box-body">
+                            <!-- Row -->
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <label wicket:for="upfrontOverPaymentLiabilityField">Over payment liability</label>
+                                <select wicket:id="upfrontOverPaymentLiabilityField" class="form-control select2" style="width: 100%;"></select>
+                                <span wicket:id="upfrontOverPaymentLiabilityFeedback" class="help-block"></span>
+                            </div>
+                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </wicket:container>
+                </div>
+
+                <div wicket:id="advancedAccountingRuleBlock">
+                    <wicket:container wicket:id="advancedAccountingRuleContainer">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Advanced Accounting Rule</h3>
+                        </div>
+                        <div class="box-body">
+                            <!-- Row -->
+                            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="box box-primary">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Configure Fund Sources for Payment Channels</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <table wicket:id="fundSourceTable"></table>
+                                    </div>
+                                    <div class="box-footer">
+                                        <a wicket:id="fundSourceAddLink" class="btn btn-default">Add</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <!-- Row -->
+                            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="box box-primary">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Map Fees to Income Accounts</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <table wicket:id="feeIncomeTable"></table>
+                                    </div>
+                                    <div class="box-footer">
+                                        <a wicket:id="feeIncomeAddLink" class="btn btn-default">Add</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <!-- Row -->
+                            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="box box-primary">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Map Penalties to Specific Income Accounts</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <table wicket:id="penaltyIncomeTable"></table>
+                                    </div>
+                                    <div class="box-footer">
+                                        <a wicket:id="penaltyIncomeAddLink" class="btn btn-default">Add</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </wicket:container>
+                </div>
+                <div class="box-footer">
+                    <button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+                    <a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
+                </div>
             </div>
-            </wicket:container>
-            <div class="box-footer">
-                <button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
-                <a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
-            </div>
-        </div>
-    </form>
-    <div wicket:id="loanCyclePopup"/>
-    <div wicket:id="chargePopup"/>
-    <div wicket:id="overdueChargePopup"/>
-    <div wicket:id="paymentPopup"/>
-    <div wicket:id="feeChargePopup"/>
-    <div wicket:id="penaltyChargePopup"/>
-</wicket:extend>
+        </form>
+        <div wicket:id="loanCyclePopup" />
+        <div wicket:id="chargePopup" />
+        <div wicket:id="overdueChargePopup" />
+        <div wicket:id="paymentPopup" />
+        <div wicket:id="feeChargePopup" />
+        <div wicket:id="penaltyChargePopup" />
+    </wicket:extend>
 </body>
+
 </html>

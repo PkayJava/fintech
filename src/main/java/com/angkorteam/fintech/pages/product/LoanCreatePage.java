@@ -92,7 +92,7 @@ import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-@AuthorizeInstantiation(Function.ALL_FUNCTION)
+//@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanCreatePage extends Page {
 
     public static final String ACC_NONE = "None";
@@ -105,170 +105,234 @@ public class LoanCreatePage extends Page {
     private BookmarkablePageLink<Void> closeLink;
 
     // Detail
-    private String productNameValue;
-    private TextField<String> productNameField;
-    private TextFeedbackPanel productNameFeedback;
+    private WebMarkupContainer detailProductNameBlock;
+    private WebMarkupContainer detailProductNameContainer;
+    private String detailProductNameValue;
+    private TextField<String> detailProductNameField;
+    private TextFeedbackPanel detailProductNameFeedback;
 
-    private String shortNameValue;
-    private TextField<String> shortNameField;
-    private TextFeedbackPanel shortNameFeedback;
+    private WebMarkupContainer detailShortNameBlock;
+    private WebMarkupContainer detailShortNameContainer;
+    private String detailShortNameValue;
+    private TextField<String> detailShortNameField;
+    private TextFeedbackPanel detailShortNameFeedback;
 
-    private String descriptionValue;
-    private TextField<String> descriptionField;
-    private TextFeedbackPanel descriptionFeedback;
+    private WebMarkupContainer detailDescriptionBlock;
+    private WebMarkupContainer detailDescriptionContainer;
+    private String detailDescriptionValue;
+    private TextField<String> detailDescriptionField;
+    private TextFeedbackPanel detailDescriptionFeedback;
 
-    private SingleChoiceProvider fundProvider;
-    private Option fundValue;
-    private Select2SingleChoice<Option> fundField;
-    private TextFeedbackPanel fundFeedback;
+    private WebMarkupContainer detailFundBlock;
+    private WebMarkupContainer detailFundContainer;
+    private SingleChoiceProvider detailFundProvider;
+    private Option detailFundValue;
+    private Select2SingleChoice<Option> detailFundField;
+    private TextFeedbackPanel detailFundFeedback;
 
-    private Date startDateValue;
-    private DateTextField startDateField;
-    private TextFeedbackPanel startDateFeedback;
+    private WebMarkupContainer detailStartDateBlock;
+    private WebMarkupContainer detailStartDateContainer;
+    private Date detailStartDateValue;
+    private DateTextField detailStartDateField;
+    private TextFeedbackPanel detailStartDateFeedback;
 
-    private Date closeDateValue;
-    private DateTextField closeDateField;
-    private TextFeedbackPanel closeDateFeedback;
+    private WebMarkupContainer detailCloseDateBlock;
+    private WebMarkupContainer detailCloseDateContainer;
+    private Date detailCloseDateValue;
+    private DateTextField detailCloseDateField;
+    private TextFeedbackPanel detailCloseDateFeedback;
 
-    private Boolean includeInCustomerLoanCounterValue;
-    private CheckBox includeInCustomerLoanCounterField;
-    private TextFeedbackPanel includeInCustomerLoanCounterFeedback;
+    private WebMarkupContainer detailIncludeInCustomerLoanCounterBlock;
+    private WebMarkupContainer detailIncludeInCustomerLoanCounterContainer;
+    private Boolean detailIncludeInCustomerLoanCounterValue;
+    private CheckBox detailIncludeInCustomerLoanCounterField;
+    private TextFeedbackPanel detailIncludeInCustomerLoanCounterFeedback;
 
     // Currency
-    private SingleChoiceProvider currencyProvider;
-    private Option currencyValue;
-    private Select2SingleChoice<Option> currencyField;
-    private TextFeedbackPanel currencyFeedback;
+    private WebMarkupContainer currencyCodeBlock;
+    private WebMarkupContainer currencyCodeContainer;
+    private SingleChoiceProvider currencyCodeProvider;
+    private Option currencyCodeValue;
+    private Select2SingleChoice<Option> currencyCodeField;
+    private TextFeedbackPanel currencyCodeFeedback;
 
-    private Integer decimalPlaceValue;
-    private TextField<Integer> decimalPlaceField;
-    private TextFeedbackPanel decimalPlaceFeedback;
+    private WebMarkupContainer currencyDecimalPlaceBlock;
+    private WebMarkupContainer currencyDecimalPlaceContainer;
+    private Integer currencyDecimalPlaceValue;
+    private TextField<Integer> currencyDecimalPlaceField;
+    private TextFeedbackPanel currencyDecimalPlaceFeedback;
 
+    private WebMarkupContainer currencyInMultipleOfBlock;
+    private WebMarkupContainer currencyInMultipleOfContainer;
     private Integer currencyInMultipleOfValue;
     private TextField<Integer> currencyInMultipleOfField;
     private TextFeedbackPanel currencyInMultipleOfFeedback;
 
-    private Integer installmentInMultipleOfValue;
-    private TextField<Integer> installmentInMultipleOfField;
-    private TextFeedbackPanel installmentInMultipleOfFeedback;
+    private WebMarkupContainer currencyInstallmentInMultipleOfBlock;
+    private WebMarkupContainer currencyInstallmentInMultipleOfContainer;
+    private Integer currencyInstallmentInMultipleOfValue;
+    private TextField<Integer> currencyInstallmentInMultipleOfField;
+    private TextFeedbackPanel currencyInstallmentInMultipleOfFeedback;
 
     // Terms
 
     // Row 1 : Terms vary based on loan cycle
+    private WebMarkupContainer termVaryBasedOnLoanCycleBlock;
+    private WebMarkupContainer termVaryBasedOnLoanCycleContainer;    
     private Boolean termVaryBasedOnLoanCycleValue;
     private CheckBox termVaryBasedOnLoanCycleField;
     private TextFeedbackPanel termVaryBasedOnLoanCycleFeedback;
 
     // Row 2 : Principal
-    private Double principalMinimumValue;
-    private TextField<Double> principalMinimumField;
-    private TextFeedbackPanel principalMinimumFeedback;
+    private WebMarkupContainer termPrincipalMinimumBlock;
+    private WebMarkupContainer termPrincipalMinimumContainer; 
+    private Double termPrincipalMinimumValue;
+    private TextField<Double> termPrincipalMinimumField;
+    private TextFeedbackPanel termPrincipalMinimumFeedback;
 
-    private Double principalDefaultValue;
-    private TextField<Double> principalDefaultField;
-    private TextFeedbackPanel principalDefaultFeedback;
+    private WebMarkupContainer termPrincipalDefaultBlock;
+    private WebMarkupContainer termPrincipalDefaultContainer; 
+    private Double termPrincipalDefaultValue;
+    private TextField<Double> termPrincipalDefaultField;
+    private TextFeedbackPanel termPrincipalDefaultFeedback;
 
-    private Double principalMaximumValue;
-    private TextField<Double> principalMaximumField;
-    private TextFeedbackPanel principalMaximumFeedback;
+    private WebMarkupContainer termPrincipalMaximumBlock;
+    private WebMarkupContainer termPrincipalMaximumContainer;
+    private Double termPrincipalMaximumValue;
+    private TextField<Double> termPrincipalMaximumField;
+    private TextFeedbackPanel termPrincipalMaximumFeedback;
 
     // Row 2 (Optional) : Principal by loan cycle
-    private WebMarkupContainer principalByLoanCycleContainer;
-    private List<Map<String, Object>> principalByLoanCycleValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> principalByLoanCycleTable;
-    private ListDataProvider principalByLoanCycleProvider;
+    private WebMarkupContainer termPrincipalByLoanCycleBlock;
+    private WebMarkupContainer termPrincipalByLoanCycleContainer;
+    private List<Map<String, Object>> termPrincipalByLoanCycleValue = Lists.newArrayList();
+    private DataTable<Map<String, Object>, String> termPrincipalByLoanCycleTable;
+    private ListDataProvider termPrincipalByLoanCycleProvider;
+    private AjaxLink<Void> termPrincipalByLoanCycleAddLink;
 
     // Row 3 : Number of repayments
-    private Double numberOfRepaymentMinimumValue;
-    private TextField<Integer> numberOfRepaymentMinimumField;
-    private TextFeedbackPanel numberOfRepaymentMinimumFeedback;
+    private WebMarkupContainer termNumberOfRepaymentMinimumBlock;
+    private WebMarkupContainer termNumberOfRepaymentMinimumContainer;
+    private Double termNumberOfRepaymentMinimumValue;
+    private TextField<Integer> termNumberOfRepaymentMinimumField;
+    private TextFeedbackPanel termNumberOfRepaymentMinimumFeedback;
 
-    private Double numberOfRepaymentDefaultValue;
-    private TextField<Integer> numberOfRepaymentDefaultField;
-    private TextFeedbackPanel numberOfRepaymentDefaultFeedback;
+    private WebMarkupContainer termNumberOfRepaymentDefaultBlock;
+    private WebMarkupContainer termNumberOfRepaymentDefaultContainer;
+    private Double termNumberOfRepaymentDefaultValue;
+    private TextField<Integer> termNumberOfRepaymentDefaultField;
+    private TextFeedbackPanel termNumberOfRepaymentDefaultFeedback;
 
-    private Double numberOfRepaymentMaximumValue;
-    private TextField<Integer> numberOfRepaymentMaximumField;
-    private TextFeedbackPanel numberOfRepaymentMaximumFeedback;
+    private WebMarkupContainer termNumberOfRepaymentMaximumBlock;
+    private WebMarkupContainer termNumberOfRepaymentMaximumContainer;
+    private Double termNumberOfRepaymentMaximumValue;
+    private TextField<Integer> termNumberOfRepaymentMaximumField;
+    private TextFeedbackPanel termNumberOfRepaymentMaximumFeedback;
 
     // Row 3 (Optional) : Number of Repayments by loan cycle
-    private WebMarkupContainer numberOfRepaymentByLoanCycleContainer;
-    private List<Map<String, Object>> numberOfRepaymentByLoanCycleValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> numberOfRepaymentByLoanCycleTable;
-    private ListDataProvider numberOfRepaymentByLoanCycleProvider;
+    private WebMarkupContainer termNumberOfRepaymentByLoanCycleBlock;
+    private WebMarkupContainer termNumberOfRepaymentByLoanCycleContainer;
+    private List<Map<String, Object>> termNumberOfRepaymentByLoanCycleValue = Lists.newArrayList();
+    private DataTable<Map<String, Object>, String> termNumberOfRepaymentByLoanCycleTable;
+    private ListDataProvider termNumberOfRepaymentByLoanCycleProvider;
+    private AjaxLink<Void> termNumberOfRepaymentByLoanCycleAddLink;
 
     // Row 4 : Is Linked to Floating Interest Rates?
-    private Boolean linkedToFloatingInterestRatesValue;
-    private CheckBox linkedToFloatingInterestRatesField;
-    private TextFeedbackPanel linkedToFloatingInterestRatesFeedback;
-
-    private WebMarkupContainer nominalInterestRateContainer;
+    private WebMarkupContainer termLinkedToFloatingInterestRatesBlock;
+    private WebMarkupContainer termLinkedToFloatingInterestRatesContainer;
+    private Boolean termLinkedToFloatingInterestRatesValue;
+    private CheckBox termLinkedToFloatingInterestRatesField;
+    private TextFeedbackPanel termLinkedToFloatingInterestRatesFeedback;
 
     // Row 5 : Nominal interest rate
-    private Double nominalInterestRateMinimumValue;
-    private TextField<Double> nominalInterestRateMinimumField;
-    private TextFeedbackPanel nominalInterestRateMinimumFeedback;
+    private WebMarkupContainer termNominalInterestRateMinimumBlock;
+    private WebMarkupContainer termNominalInterestRateMinimumContainer;
+    private Double termNominalInterestRateMinimumValue;
+    private TextField<Double> termNominalInterestRateMinimumField;
+    private TextFeedbackPanel termNominalInterestRateMinimumFeedback;
 
-    private Double nominalInterestRateDefaultValue;
-    private TextField<Double> nominalInterestRateDefaultField;
-    private TextFeedbackPanel nominalInterestRateDefaultFeedback;
+    private WebMarkupContainer termNominalInterestRateDefaultBlock;
+    private WebMarkupContainer termNominalInterestRateDefaultContainer;
+    private Double termNominalInterestRateDefaultValue;
+    private TextField<Double> termNominalInterestRateDefaultField;
+    private TextFeedbackPanel termNominalInterestRateDefaultFeedback;
 
-    private Double nominalInterestRateMaximumValue;
-    private TextField<Double> nominalInterestRateMaximumField;
-    private TextFeedbackPanel nominalInterestRateMaximumFeedback;
+    private WebMarkupContainer termNominalInterestRateMaximumBlock;
+    private WebMarkupContainer termNominalInterestRateMaximumContainer;
+    private Double termNominalInterestRateMaximumValue;
+    private TextField<Double> termNominalInterestRateMaximumField;
+    private TextFeedbackPanel termNominalInterestRateMaximumFeedback;
 
-    private NominalInterestRateTypeProvider nominalInterestRateTypeProvider;
-    private Option nominalInterestRateTypeValue;
-    private Select2SingleChoice<Option> nominalInterestRateTypeField;
-    private TextFeedbackPanel nominalInterestRateTypeFeedback;
-
-    private WebMarkupContainer floatInterestRateContainer;
-
-    // Row 3 (Optional) : Nominal interest rate by loan cycle
-    private WebMarkupContainer nominalInterestRateByLoanCycleContainer;
+    private WebMarkupContainer termNominalInterestRateTypeBlock;
+    private WebMarkupContainer termNominalInterestRateTypeContainer;
+    private NominalInterestRateTypeProvider termNominalInterestRateTypeProvider;
+    private Option termNominalInterestRateTypeValue;
+    private Select2SingleChoice<Option> termNominalInterestRateTypeField;
+    private TextFeedbackPanel termNominalInterestRateTypeFeedback;
 
     // Row 6
-    private List<Map<String, Object>> nominalInterestRateByLoanCycleValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> nominalInterestRateByLoanCycleTable;
-    private ListDataProvider nominalInterestRateByLoanCycleProvider;
+    private WebMarkupContainer termNominalInterestRateByLoanCycleBlock;
+    private WebMarkupContainer termNominalInterestRateByLoanCycleContainer;
+    private List<Map<String, Object>> termNominalInterestRateByLoanCycleValue = Lists.newArrayList();
+    private DataTable<Map<String, Object>, String> termNominalInterestRateByLoanCycleTable;
+    private ListDataProvider termNominalInterestRateByLoanCycleProvider;
+    private AjaxLink<Void> termNominalInterestRateByLoanCycleAddLink;
 
-    private Integer repaidEveryValue;
-    private TextField<Integer> repaidEveryField;
-    private TextFeedbackPanel repaidEveryFeedback;
+    private WebMarkupContainer termRepaidEveryBlock;
+    private WebMarkupContainer termRepaidEveryContainer;
+    private Integer termRepaidEveryValue;
+    private TextField<Integer> termRepaidEveryField;
+    private TextFeedbackPanel termRepaidEveryFeedback;
 
-    private RepaidTypeProvider repaidTypeProvider;
-    private Option repaidTypeValue;
-    private Select2SingleChoice<Option> repaidTypeField;
-    private TextFeedbackPanel repaidTypeFeedback;
+    private WebMarkupContainer termRepaidTypeBlock;
+    private WebMarkupContainer termRepaidTypeContainer;
+    private RepaidTypeProvider termRepaidTypeProvider;
+    private Option termRepaidTypeValue;
+    private Select2SingleChoice<Option> termRepaidTypeField;
+    private TextFeedbackPanel termRepaidTypeFeedback;
 
-    private Double minimumDayBetweenDisbursalAndFirstRepaymentDateValue;
-    private TextField<Double> minimumDayBetweenDisbursalAndFirstRepaymentDateField;
-    private TextFeedbackPanel minimumDayBetweenDisbursalAndFirstRepaymentDateFeedback;
+    private WebMarkupContainer termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock;
+    private WebMarkupContainer termMinimumDayBetweenDisbursalAndFirstRepaymentDateContainer;
+    private Double termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue;
+    private TextField<Double> termMinimumDayBetweenDisbursalAndFirstRepaymentDateField;
+    private TextFeedbackPanel termMinimumDayBetweenDisbursalAndFirstRepaymentDateFeedback;
 
-    private SingleChoiceProvider floatingInterestRateProvider;
-    private Option floatingInterestRateValue;
-    private Select2SingleChoice<Option> floatingInterestRateField;
-    private TextFeedbackPanel floatingInterestRateFeedback;
+    private WebMarkupContainer termFloatingInterestRateBlock;
+    private WebMarkupContainer termFloatingInterestRateContainer;
+    private SingleChoiceProvider termFloatingInterestRateProvider;
+    private Option termFloatingInterestRateValue;
+    private Select2SingleChoice<Option> termFloatingInterestRateField;
+    private TextFeedbackPanel termFloatingInterestRateFeedback;
 
-    private Double floatingInterestMinimumValue;
-    private TextField<Double> floatingInterestMinimumField;
-    private TextFeedbackPanel floatingInterestMinimumFeedback;
+    private WebMarkupContainer termFloatingInterestMinimumBlock;
+    private WebMarkupContainer termFloatingInterestMinimumContainer;
+    private Double termFloatingInterestMinimumValue;
+    private TextField<Double> termFloatingInterestMinimumField;
+    private TextFeedbackPanel termFloatingInterestMinimumFeedback;
 
-    private Double floatingInterestDefaultValue;
-    private TextField<Double> floatingInterestDefaultField;
-    private TextFeedbackPanel floatingInterestDefaultFeedback;
+    private WebMarkupContainer termFloatingInterestDefaultBlock;
+    private WebMarkupContainer termFloatingInterestDefaultContainer;
+    private Double termFloatingInterestDefaultValue;
+    private TextField<Double> termFloatingInterestDefaultField;
+    private TextFeedbackPanel termFloatingInterestDefaultFeedback;
 
-    private Double floatingInterestMaximumValue;
-    private TextField<Double> floatingInterestMaximumField;
-    private TextFeedbackPanel floatingInterestMaximumFeedback;
+    private WebMarkupContainer termFloatingInterestMaximumBlock;
+    private WebMarkupContainer termFloatingInterestMaximumContainer;
+    private Double termFloatingInterestMaximumValue;
+    private TextField<Double> termFloatingInterestMaximumField;
+    private TextFeedbackPanel termFloatingInterestMaximumFeedback;
 
-    private Double floatingInterestDifferentialValue;
-    private TextField<Double> floatingInterestDifferentialField;
-    private TextFeedbackPanel floatingInterestDifferentialFeedback;
+    private WebMarkupContainer termFloatingInterestDifferentialBlock;
+    private WebMarkupContainer termFloatingInterestDifferentialContainer;
+    private Double termFloatingInterestDifferentialValue;
+    private TextField<Double> termFloatingInterestDifferentialField;
+    private TextFeedbackPanel termFloatingInterestDifferentialFeedback;
 
-    private Boolean floatingInterestAllowedValue;
-    private CheckBox floatingInterestAllowedField;
-    private TextFeedbackPanel floatingInterestAllowedFeedback;
+    private WebMarkupContainer termFloatingInterestAllowedBlock;
+    private WebMarkupContainer termFloatingInterestAllowedContainer;
+    private Boolean termFloatingInterestAllowedValue;
+    private CheckBox termFloatingInterestAllowedField;
+    private TextFeedbackPanel termFloatingInterestAllowedFeedback;
 
     private Option itemWhenValue;
     private Integer itemLoanCycleValue;
@@ -294,241 +358,319 @@ public class LoanCreatePage extends Page {
     private ModalWindow penaltyChargePopup;
 
     // Settings
-    private AmortizationProvider amortizationProvider;
-    private Option amortizationValue;
-    private Select2SingleChoice<Option> amortizationField;
-    private TextFeedbackPanel amortizationFeedback;
+    private WebMarkupContainer settingAmortizationBlock;
+    private WebMarkupContainer settingAmortizationContainer;
+    private AmortizationProvider settingAmortizationProvider;
+    private Option settingAmortizationValue;
+    private Select2SingleChoice<Option> settingAmortizationField;
+    private TextFeedbackPanel settingAmortizationFeedback;
 
-    private InterestMethodProvider interestMethodProvider;
-    private Option interestMethodValue;
-    private Select2SingleChoice<Option> interestMethodField;
-    private TextFeedbackPanel interestMethodFeedback;
+    private WebMarkupContainer settingInterestMethodBlock;
+    private WebMarkupContainer settingInterestMethodContainer;
+    private InterestMethodProvider settingInterestMethodProvider;
+    private Option settingInterestMethodValue;
+    private Select2SingleChoice<Option> settingInterestMethodField;
+    private TextFeedbackPanel settingInterestMethodFeedback;
 
-    private InterestCalculationPeriodProvider interestCalculationPeriodProvider;
-    private Option interestCalculationPeriodValue;
-    private Select2SingleChoice<Option> interestCalculationPeriodField;
-    private TextFeedbackPanel interestCalculationPeriodFeedback;
+    private WebMarkupContainer settingInterestCalculationPeriodBlock;
+    private WebMarkupContainer settingInterestCalculationPeriodContainer;
+    private InterestCalculationPeriodProvider settingInterestCalculationPeriodProvider;
+    private Option settingInterestCalculationPeriodValue;
+    private Select2SingleChoice<Option> settingInterestCalculationPeriodField;
+    private TextFeedbackPanel settingInterestCalculationPeriodFeedback;
 
-    private WebMarkupContainer calculateInterestForExactDaysInPartialPeriodContainer;
+    private WebMarkupContainer settingCalculateInterestForExactDaysInPartialPeriodBlock;
+    private WebMarkupContainer settingCalculateInterestForExactDaysInPartialPeriodContainer;
+    private Boolean settingCalculateInterestForExactDaysInPartialPeriodValue;
+    private CheckBox settingCalculateInterestForExactDaysInPartialPeriodField;
+    private TextFeedbackPanel settingCalculateInterestForExactDaysInPartialPeriodFeedback;
 
-    private Boolean calculateInterestForExactDaysInPartialPeriodValue;
-    private CheckBox calculateInterestForExactDaysInPartialPeriodField;
-    private TextFeedbackPanel calculateInterestForExactDaysInPartialPeriodFeedback;
+    private WebMarkupContainer settingRepaymentStrategyBlock;
+    private WebMarkupContainer settingRepaymentStrategyContainer;
+    private RepaymentStrategyProvider settingRepaymentStrategyProvider;
+    private Option settingRepaymentStrategyValue;
+    private Select2SingleChoice<Option> settingRepaymentStrategyField;
+    private TextFeedbackPanel settingRepaymentStrategyFeedback;
 
-    private RepaymentStrategyProvider repaymentStrategyProvider;
-    private Option repaymentStrategyValue;
-    private Select2SingleChoice<Option> repaymentStrategyField;
-    private TextFeedbackPanel repaymentStrategyFeedback;
+    private WebMarkupContainer settingMoratoriumPrincipalBlock;
+    private WebMarkupContainer settingMoratoriumPrincipalContainer;
+    private Double settingMoratoriumPrincipalValue;
+    private TextField<Double> settingMoratoriumPrincipalField;
+    private TextFeedbackPanel settingMoratoriumPrincipalFeedback;
 
-    private Double moratoriumPrincipalValue;
-    private TextField<Double> moratoriumPrincipalField;
-    private TextFeedbackPanel moratoriumPrincipalFeedback;
+    private WebMarkupContainer settingMoratoriumInterestBlock;
+    private WebMarkupContainer settingMoratoriumInterestContainer;
+    private Double settingMoratoriumInterestValue;
+    private TextField<Double> settingMoratoriumInterestField;
+    private TextFeedbackPanel settingMoratoriumInterestFeedback;
 
-    private Double moratoriumInterestValue;
-    private TextField<Double> moratoriumInterestField;
-    private TextFeedbackPanel moratoriumInterestFeedback;
+    private WebMarkupContainer settingInterestFreePeriodBlock;
+    private WebMarkupContainer settingInterestFreePeriodContainer;
+    private Double settingInterestFreePeriodValue;
+    private TextField<Double> settingInterestFreePeriodField;
+    private TextFeedbackPanel settingInterestFreePeriodFeedback;
 
-    private Double interestFreePeriodValue;
-    private TextField<Double> interestFreePeriodField;
-    private TextFeedbackPanel interestFreePeriodFeedback;
+    private WebMarkupContainer settingArrearsToleranceBlock;
+    private WebMarkupContainer settingArrearsToleranceContainer;
+    private Double settingArrearsToleranceValue;
+    private TextField<Double> settingArrearsToleranceField;
+    private TextFeedbackPanel settingArrearsToleranceFeedback;
 
-    private Double arrearsToleranceValue;
-    private TextField<Double> arrearsToleranceField;
-    private TextFeedbackPanel arrearsToleranceFeedback;
+    private WebMarkupContainer settingDayInYearBlock;
+    private WebMarkupContainer settingDayInYearContainer;
+    private DayInYearProvider settingDayInYearProvider;
+    private Option settingDayInYearValue;
+    private Select2SingleChoice<Option> settingDayInYearField;
+    private TextFeedbackPanel settingDayInYearFeedback;
 
-    private DayInYearProvider dayInYearProvider;
-    private Option dayInYearValue;
-    private Select2SingleChoice<Option> dayInYearField;
-    private TextFeedbackPanel dayInYearFeedback;
+    private WebMarkupContainer settingDayInMonthBlock;
+    private WebMarkupContainer settingDayInMonthContainer;
+    private DayInMonthProvider settingDayInMonthProvider;
+    private Option settingDayInMonthValue;
+    private Select2SingleChoice<Option> settingDayInMonthField;
+    private TextFeedbackPanel settingDayInMonthFeedback;
 
-    private DayInMonthProvider dayInMonthProvider;
-    private Option dayInMonthValue;
-    private Select2SingleChoice<Option> dayInMonthField;
-    private TextFeedbackPanel dayInMonthFeedback;
+    private WebMarkupContainer settingAllowFixingOfTheInstallmentAmountBlock;
+    private WebMarkupContainer settingAllowFixingOfTheInstallmentAmountContainer;
+    private Boolean settingAllowFixingOfTheInstallmentAmountValue;
+    private CheckBox settingAllowFixingOfTheInstallmentAmountField;
+    private TextFeedbackPanel settingAllowFixingOfTheInstallmentAmountFeedback;
 
-    private Boolean allowFixingOfTheInstallmentAmountValue;
-    private CheckBox allowFixingOfTheInstallmentAmountField;
-    private TextFeedbackPanel allowFixingOfTheInstallmentAmountFeedback;
+    private WebMarkupContainer settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock;
+    private WebMarkupContainer settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsContainer;
+    private Double settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue;
+    private TextField<Double> settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField;
+    private TextFeedbackPanel settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback;
 
-    private Double numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue;
-    private TextField<Double> numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField;
-    private TextFeedbackPanel numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback;
+    private WebMarkupContainer settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock;
+    private WebMarkupContainer settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaContainer;
+    private Double settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue;
+    private TextField<Double> settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField;
+    private TextFeedbackPanel settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback;
 
-    private Double maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue;
-    private TextField<Double> maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField;
-    private TextFeedbackPanel maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback;
+    private WebMarkupContainer settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock;
+    private WebMarkupContainer settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedContainer;
+    private Boolean settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue;
+    private CheckBox settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField;
+    private TextFeedbackPanel settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback;
 
-    private Boolean accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue;
-    private CheckBox accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField;
-    private TextFeedbackPanel accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback;
+    private WebMarkupContainer settingPrincipalThresholdForLastInstalmentBlock;
+    private WebMarkupContainer settingPrincipalThresholdForLastInstalmentContainer;
+    private Double settingPrincipalThresholdForLastInstalmentValue;
+    private TextField<Double> settingPrincipalThresholdForLastInstalmentField;
+    private TextFeedbackPanel settingPrincipalThresholdForLastInstalmentFeedback;
 
-    private Double principalThresholdForLastInstalmentValue;
-    private TextField<Double> principalThresholdForLastInstalmentField;
-    private TextFeedbackPanel principalThresholdForLastInstalmentFeedback;
+    private WebMarkupContainer settingVariableInstallmentsAllowedBlock;
+    private WebMarkupContainer settingVariableInstallmentsAllowedContainer;
+    private Boolean settingVariableInstallmentsAllowedValue;
+    private CheckBox settingVariableInstallmentsAllowedField;
+    private TextFeedbackPanel settingVariableInstallmentsAllowedFeedback;
 
-    private Boolean variableInstallmentsAllowedValue;
-    private CheckBox variableInstallmentsAllowedField;
-    private TextFeedbackPanel variableInstallmentsAllowedFeedback;
+    private WebMarkupContainer settingVariableInstallmentsMinimumBlock;
+    private WebMarkupContainer settingVariableInstallmentsMinimumContainer;
+    private Double settingVariableInstallmentsMinimumValue;
+    private TextField<Double> settingVariableInstallmentsMinimumField;
+    private TextFeedbackPanel settingVariableInstallmentsMinimumFeedback;
 
-    private WebMarkupContainer variableInstallmentsAllowedContainer;
+    private WebMarkupContainer settingVariableInstallmentsMaximumBlock;
+    private WebMarkupContainer settingVariableInstallmentsMaximumContainer;
+    private Double settingVariableInstallmentsMaximumValue;
+    private TextField<Double> settingVariableInstallmentsMaximumField;
+    private TextFeedbackPanel settingVariableInstallmentsMaximumFeedback;
 
-    private Double variableInstallmentsMinimumValue;
-    private TextField<Double> variableInstallmentsMinimumField;
-    private TextFeedbackPanel variableInstallmentsMinimumFeedback;
-
-    private Double variableInstallmentsMaximumValue;
-    private TextField<Double> variableInstallmentsMaximumField;
-    private TextFeedbackPanel variableInstallmentsMaximumFeedback;
-
-    private Boolean allowedToBeUsedForProvidingTopupLoansValue;
-    private CheckBox allowedToBeUsedForProvidingTopupLoansField;
-    private TextFeedbackPanel allowedToBeUsedForProvidingTopupLoansFeedback;
+    private WebMarkupContainer settingAllowedToBeUsedForProvidingTopupLoansBlock;
+    private WebMarkupContainer settingAllowedToBeUsedForProvidingTopupLoansContainer;
+    private Boolean settingAllowedToBeUsedForProvidingTopupLoansValue;
+    private CheckBox settingAllowedToBeUsedForProvidingTopupLoansField;
+    private TextFeedbackPanel settingAllowedToBeUsedForProvidingTopupLoansFeedback;
 
     // Interest Recalculation
 
-    private Boolean recalculateInterestValue;
-    private CheckBox recalculateInterestField;
-    private TextFeedbackPanel recalculateInterestFeedback;
+    private WebMarkupContainer interestRecalculationRecalculateInterestBlock;
+    private WebMarkupContainer interestRecalculationRecalculateInterestContainer;
+    private Boolean interestRecalculationRecalculateInterestValue;
+    private CheckBox interestRecalculationRecalculateInterestField;
+    private TextFeedbackPanel interestRecalculationRecalculateInterestFeedback; 
 
-    private WebMarkupContainer recalculateInterestContainer;
+    private WebMarkupContainer interestRecalculationPreClosureInterestCalculationRuleBlock;
+    private WebMarkupContainer interestRecalculationPreClosureInterestCalculationRuleContainer;
+    private ClosureInterestCalculationRuleProvider interestRecalculationPreClosureInterestCalculationRuleProvider;
+    private Option interestRecalculationPreClosureInterestCalculationRuleValue;
+    private Select2SingleChoice<Option> interestRecalculationPreClosureInterestCalculationRuleField;
+    private TextFeedbackPanel interestRecalculationPreClosureInterestCalculationRuleFeedback;
 
-    private ClosureInterestCalculationRuleProvider preClosureInterestCalculationRuleProvider;
-    private Option preClosureInterestCalculationRuleValue;
-    private Select2SingleChoice<Option> preClosureInterestCalculationRuleField;
-    private TextFeedbackPanel preClosureInterestCalculationRuleFeedback;
+    private WebMarkupContainer interestRecalculationAdvancePaymentsAdjustmentTypeBlock;
+    private WebMarkupContainer interestRecalculationAdvancePaymentsAdjustmentTypeContainer;
+    private AdvancePaymentsAdjustmentTypeProvider interestRecalculationAdvancePaymentsAdjustmentTypeProvider;
+    private Option interestRecalculationAdvancePaymentsAdjustmentTypeValue;
+    private Select2SingleChoice<Option> interestRecalculationAdvancePaymentsAdjustmentTypeField;
+    private TextFeedbackPanel interestRecalculationAdvancePaymentsAdjustmentTypeFeedback;
 
-    private AdvancePaymentsAdjustmentTypeProvider advancePaymentsAdjustmentTypeProvider;
-    private Option advancePaymentsAdjustmentTypeValue;
-    private Select2SingleChoice<Option> advancePaymentsAdjustmentTypeField;
-    private TextFeedbackPanel advancePaymentsAdjustmentTypeFeedback;
-
+    private WebMarkupContainer interestRecalculationCompoundingOnBlock;
+    private WebMarkupContainer interestRecalculationCompoundingOnContainer;
     private InterestRecalculationCompoundProvider interestRecalculationCompoundingOnProvider;
     private Option interestRecalculationCompoundingOnValue;
     private Select2SingleChoice<Option> interestRecalculationCompoundingOnField;
     private TextFeedbackPanel interestRecalculationCompoundingOnFeedback;
 
-    private WebMarkupContainer compoundingContainer;
+    private WebMarkupContainer interestRecalculationCompoundingBlock;
+    private WebMarkupContainer interestRecalculationCompoundingContainer;
+    private FrequencyProvider interestRecalculationCompoundingProvider;
+    private Option interestRecalculationCompoundingValue;
+    private Select2SingleChoice<Option> interestRecalculationCompoundingField;
+    private TextFeedbackPanel interestRecalculationCompoundingFeedback;
 
-    private FrequencyProvider compoundingProvider;
-    private Option compoundingValue;
-    private Select2SingleChoice<Option> compoundingField;
-    private TextFeedbackPanel compoundingFeedback;
+    private WebMarkupContainer interestRecalculationCompoundingTypeBlock;
+    private WebMarkupContainer interestRecalculationCompoundingTypeContainer;
+    private FrequencyTypeProvider interestRecalculationCompoundingTypeProvider;
+    private Option interestRecalculationCompoundingTypeValue;
+    private Select2SingleChoice<Option> interestRecalculationCompoundingTypeField;
+    private TextFeedbackPanel interestRecalculationCompoundingTypeFeedback;
 
-    private WebMarkupContainer compoundingTypeContainer;
-    private FrequencyTypeProvider compoundingTypeProvider;
-    private Option compoundingTypeValue;
-    private Select2SingleChoice<Option> compoundingTypeField;
-    private TextFeedbackPanel compoundingTypeFeedback;
+    private WebMarkupContainer interestRecalculationCompoundingDayBlock;
+    private WebMarkupContainer interestRecalculationCompoundingDayContainer;
+    private FrequencyDayProvider interestRecalculationCompoundingDayProvider;
+    private Option interestRecalculationCompoundingDayValue;
+    private Select2SingleChoice<Option> interestRecalculationCompoundingDayField;
+    private TextFeedbackPanel interestRecalculationCompoundingDayFeedback;
 
-    private WebMarkupContainer compoundingDayContainer;
-    private FrequencyDayProvider compoundingDayProvider;
-    private Option compoundingDayValue;
-    private Select2SingleChoice<Option> compoundingDayField;
-    private TextFeedbackPanel compoundingDayFeedback;
+    private WebMarkupContainer interestRecalculationCompoundingIntervalBlock;
+    private WebMarkupContainer interestRecalculationCompoundingIntervalContainer;
+    private Double interestRecalculationCompoundingIntervalValue;
+    private TextField<Double> interestRecalculationCompoundingIntervalField;
+    private TextFeedbackPanel interestRecalculationCompoundingIntervalFeedback;
 
-    private WebMarkupContainer compoundingIntervalContainer;
-    private Double compoundingIntervalValue;
-    private TextField<Double> compoundingIntervalField;
-    private TextFeedbackPanel compoundingIntervalFeedback;
+    private WebMarkupContainer interestRecalculationRecalculateBlock;
+    private WebMarkupContainer interestRecalculationRecalculateContainer;
+    private FrequencyProvider interestRecalculationRecalculateProvider;
+    private Option interestRecalculationRecalculateValue;
+    private Select2SingleChoice<Option> interestRecalculationRecalculateField;
+    private TextFeedbackPanel interestRecalculationRecalculateFeedback;
 
-    private FrequencyProvider recalculateProvider;
-    private Option recalculateValue;
-    private Select2SingleChoice<Option> recalculateField;
-    private TextFeedbackPanel recalculateFeedback;
+    private WebMarkupContainer interestRecalculationRecalculateTypeBlock;
+    private WebMarkupContainer interestRecalculationRecalculateTypeContainer;
+    private FrequencyTypeProvider interestRecalculationRecalculateTypeProvider;
+    private Option interestRecalculationRecalculateTypeValue;
+    private Select2SingleChoice<Option> interestRecalculationRecalculateTypeField;
+    private TextFeedbackPanel interestRecalculationRecalculateTypeFeedback;
 
-    private WebMarkupContainer recalculateTypeContainer;
-    private FrequencyTypeProvider recalculateTypeProvider;
-    private Option recalculateTypeValue;
-    private Select2SingleChoice<Option> recalculateTypeField;
-    private TextFeedbackPanel recalculateTypeFeedback;
+    private WebMarkupContainer interestRecalculationRecalculateDayBlock;
+    private WebMarkupContainer interestRecalculationRecalculateDayContainer;
+    private FrequencyDayProvider interestRecalculationRecalculateDayProvider;
+    private Option interestRecalculationRecalculateDayValue;
+    private Select2SingleChoice<Option> interestRecalculationRecalculateDayField;
+    private TextFeedbackPanel interestRecalculationRecalculateDayFeedback;
 
-    private WebMarkupContainer recalculateDayContainer;
-    private FrequencyDayProvider recalculateDayProvider;
-    private Option recalculateDayValue;
-    private Select2SingleChoice<Option> recalculateDayField;
-    private TextFeedbackPanel recalculateDayFeedback;
+    private WebMarkupContainer interestRecalculationRecalculateIntervalBlock;
+    private WebMarkupContainer interestRecalculationRecalculateIntervalContainer;
+    private Double interestRecalculationRecalculateIntervalValue;
+    private TextField<Double> interestRecalculationRecalculateIntervalField;
+    private TextFeedbackPanel interestRecalculationRecalculateIntervalFeedback;
 
-    private WebMarkupContainer recalculateIntervalContainer;
-    private Double recalculateIntervalValue;
-    private TextField<Double> recalculateIntervalField;
-    private TextFeedbackPanel recalculateIntervalFeedback;
-
-    private Boolean arrearsRecognizationBasedOnOriginalScheduleValue;
-    private CheckBox arrearsRecognizationBasedOnOriginalScheduleField;
-    private TextFeedbackPanel arrearsRecognizationBasedOnOriginalScheduleFeedback;
+    private WebMarkupContainer interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock;
+    private WebMarkupContainer interestRecalculationArrearsRecognizationBasedOnOriginalScheduleContainer;
+    private Boolean interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue;
+    private CheckBox interestRecalculationArrearsRecognizationBasedOnOriginalScheduleField;
+    private TextFeedbackPanel interestRecalculationArrearsRecognizationBasedOnOriginalScheduleFeedback;
 
     // Guarantee Requirements
 
-    private Boolean placeGuaranteeFundsOnHoldValue;
-    private CheckBox placeGuaranteeFundsOnHoldField;
-    private TextFeedbackPanel placeGuaranteeFundsOnHoldFeedback;
+    private WebMarkupContainer guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock;
+    private WebMarkupContainer guaranteeRequirementPlaceGuaranteeFundsOnHoldContainer;
+    private Boolean guaranteeRequirementPlaceGuaranteeFundsOnHoldValue;
+    private CheckBox guaranteeRequirementPlaceGuaranteeFundsOnHoldField;
+    private TextFeedbackPanel guaranteeRequirementPlaceGuaranteeFundsOnHoldFeedback;
 
-    private WebMarkupContainer placeGuaranteeFundsOnHoldContainer;
+    private WebMarkupContainer guaranteeRequirementMandatoryGuaranteeBlock;
+    private WebMarkupContainer guaranteeRequirementMandatoryGuaranteeContainer;
+    private Double guaranteeRequirementMandatoryGuaranteeValue;
+    private TextField<Double> guaranteeRequirementMandatoryGuaranteeField;
+    private TextFeedbackPanel guaranteeRequirementMandatoryGuaranteeFeedback;
 
-    private Double mandatoryGuaranteeValue;
-    private TextField<Double> mandatoryGuaranteeField;
-    private TextFeedbackPanel mandatoryGuaranteeFeedback;
+    private WebMarkupContainer guaranteeRequirementMinimumGuaranteeBlock;
+    private WebMarkupContainer guaranteeRequirementMinimumGuaranteeContainer;
+    private Double guaranteeRequirementMinimumGuaranteeValue;
+    private TextField<Double> guaranteeRequirementMinimumGuaranteeField;
+    private TextFeedbackPanel guaranteeRequirementMinimumGuaranteeFeedback;
 
-    private Double minimumGuaranteeValue;
-    private TextField<Double> minimumGuaranteeField;
-    private TextFeedbackPanel minimumGuaranteeFeedback;
-
-    private Double minimumGuaranteeFromGuarantorValue;
-    private TextField<Double> minimumGuaranteeFromGuarantorField;
-    private TextFeedbackPanel minimumGuaranteeFromGuarantorFeedback;
+    private WebMarkupContainer guaranteeRequirementMinimumGuaranteeFromGuarantorBlock;
+    private WebMarkupContainer guaranteeRequirementMinimumGuaranteeFromGuarantorContainer;
+    private Double guaranteeRequirementMinimumGuaranteeFromGuarantorValue;
+    private TextField<Double> guaranteeRequirementMinimumGuaranteeFromGuarantorField;
+    private TextFeedbackPanel guaranteeRequirementMinimumGuaranteeFromGuarantorFeedback;
 
     // Loan Tranche Details
 
-    private Boolean enableMultipleDisbursalValue;
-    private CheckBox enableMultipleDisbursalField;
-    private TextFeedbackPanel enableMultipleDisbursalFeedback;
+    private WebMarkupContainer loanTrancheDetailEnableMultipleDisbursalBlock;
+    private WebMarkupContainer loanTrancheDetailEnableMultipleDisbursalContainer;
+    private Boolean loanTrancheDetailEnableMultipleDisbursalValue;
+    private CheckBox loanTrancheDetailEnableMultipleDisbursalField;
+    private TextFeedbackPanel loanTrancheDetailEnableMultipleDisbursalFeedback;
 
-    private WebMarkupContainer enableMultipleDisbursalContainer;
+    private WebMarkupContainer loanTrancheDetailMaximumTrancheCountBlock;
+    private WebMarkupContainer loanTrancheDetailMaximumTrancheCountContainer;
+    private Double loanTrancheDetailMaximumTrancheCountValue;
+    private TextField<Double> loanTrancheDetailMaximumTrancheCountField;
+    private TextFeedbackPanel loanTrancheDetailMaximumTrancheCountFeedback;
 
-    private Double maximumTrancheCountValue;
-    private TextField<Double> maximumTrancheCountField;
-    private TextFeedbackPanel maximumTrancheCountFeedback;
-
-    private Double maximumAllowedOutstandingBalanceValue;
-    private TextField<Double> maximumAllowedOutstandingBalanceField;
-    private TextFeedbackPanel maximumAllowedOutstandingBalanceFeedback;
+    private WebMarkupContainer loanTrancheDetailMaximumAllowedOutstandingBalanceBlock;
+    private WebMarkupContainer loanTrancheDetailMaximumAllowedOutstandingBalanceContainer;
+    private Double loanTrancheDetailMaximumAllowedOutstandingBalanceValue;
+    private TextField<Double> loanTrancheDetailMaximumAllowedOutstandingBalanceField;
+    private TextFeedbackPanel loanTrancheDetailMaximumAllowedOutstandingBalanceFeedback;
 
     // Configurable Terms and Settings
 
-    private Boolean allowOverridingSelectTermsAndSettingsInLoanAccountValue;
-    private CheckBox allowOverridingSelectTermsAndSettingsInLoanAccountField;
-    private TextFeedbackPanel allowOverridingSelectTermsAndSettingsInLoanAccountFeedback;
+    private WebMarkupContainer configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock;
+    private WebMarkupContainer configurableAllowOverridingSelectTermsAndSettingsInLoanAccountContainer;
+    private Boolean configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue;
+    private CheckBox configurableAllowOverridingSelectTermsAndSettingsInLoanAccountField;
+    private TextFeedbackPanel configurableAllowOverridingSelectTermsAndSettingsInLoanAccountFeedback;
 
-    private WebMarkupContainer allowOverridingSelectTermsAndSettingsInLoanAccountContainer;
-
+    private WebMarkupContainer configurableAmortizationBlock;
+    private WebMarkupContainer configurableAmortizationContainer;
     private Boolean configurableAmortizationValue;
     private CheckBox configurableAmortizationField;
     private TextFeedbackPanel configurableAmortizationFeedback;
 
+    private WebMarkupContainer configurableInterestMethodBlock;
+    private WebMarkupContainer configurableInterestMethodContainer;
     private Boolean configurableInterestMethodValue;
     private CheckBox configurableInterestMethodField;
     private TextFeedbackPanel configurableInterestMethodFeedback;
 
+    private WebMarkupContainer configurableRepaymentStrategyBlock;
+    private WebMarkupContainer configurableRepaymentStrategyContainer;
     private Boolean configurableRepaymentStrategyValue;
     private CheckBox configurableRepaymentStrategyField;
     private TextFeedbackPanel configurableRepaymentStrategyFeedback;
 
+    private WebMarkupContainer configurableInterestCalculationPeriodBlock;
+    private WebMarkupContainer configurableInterestCalculationPeriodContainer;
     private Boolean configurableInterestCalculationPeriodValue;
     private CheckBox configurableInterestCalculationPeriodField;
     private TextFeedbackPanel configurableInterestCalculationPeriodFeedback;
 
+    private WebMarkupContainer configurableArrearsToleranceBlock;
+    private WebMarkupContainer configurableArrearsToleranceContainer;
     private Boolean configurableArrearsToleranceValue;
     private CheckBox configurableArrearsToleranceField;
     private TextFeedbackPanel configurableArrearsToleranceFeedback;
 
+    private WebMarkupContainer configurableRepaidEveryBlock;
+    private WebMarkupContainer configurableRepaidEveryContainer;
     private Boolean configurableRepaidEveryValue;
     private CheckBox configurableRepaidEveryField;
     private TextFeedbackPanel configurableRepaidEveryFeedback;
 
+    private WebMarkupContainer configurableMoratoriumBlock;
+    private WebMarkupContainer configurableMoratoriumContainer;
     private Boolean configurableMoratoriumValue;
     private CheckBox configurableMoratoriumField;
     private TextFeedbackPanel configurableMoratoriumFeedback;
 
+    private WebMarkupContainer configurableOverdueBeforeMovingBlock;
+    private WebMarkupContainer configurableOverdueBeforeMovingContainer;
     private Boolean configurableOverdueBeforeMovingValue;
     private CheckBox configurableOverdueBeforeMovingField;
     private TextFeedbackPanel configurableOverdueBeforeMovingFeedback;
@@ -538,6 +680,7 @@ public class LoanCreatePage extends Page {
     private String accountingValue = ACC_NONE;
     private RadioGroup<String> accountingField;
 
+    private WebMarkupContainer cashBlock;
     private WebMarkupContainer cashContainer;
 
     private SingleChoiceProvider cashFundSourceProvider;
@@ -585,6 +728,7 @@ public class LoanCreatePage extends Page {
     private Select2SingleChoice<Option> cashOverPaymentLiabilityField;
     private TextFeedbackPanel cashOverPaymentLiabilityFeedback;
 
+    private WebMarkupContainer periodicBlock;
     private WebMarkupContainer periodicContainer;
 
     private SingleChoiceProvider periodicFundSourceProvider;
@@ -647,6 +791,7 @@ public class LoanCreatePage extends Page {
     private Select2SingleChoice<Option> periodicOverPaymentLiabilityField;
     private TextFeedbackPanel periodicOverPaymentLiabilityFeedback;
 
+    private WebMarkupContainer upfrontBlock;
     private WebMarkupContainer upfrontContainer;
 
     private SingleChoiceProvider upfrontFundSourceProvider;
@@ -711,6 +856,7 @@ public class LoanCreatePage extends Page {
 
     // Advanced Accounting Rule
 
+    private WebMarkupContainer advancedAccountingRuleBlock;
     private WebMarkupContainer advancedAccountingRuleContainer;
 
     private WebMarkupContainer fundSourceContainer;
@@ -778,11 +924,11 @@ public class LoanCreatePage extends Page {
     protected void onInitialize() {
         super.onInitialize();
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+//        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        Boolean officeSpecificProductsEnabled = jdbcTemplate.queryForObject(
-                "select value from c_configuration where name = 'office-specific-products-enabled'", Boolean.class);
-        officeSpecificProductsEnabled = officeSpecificProductsEnabled == null ? false : officeSpecificProductsEnabled;
+//        Boolean officeSpecificProductsEnabled = jdbcTemplate.queryForObject(
+//                "select value from c_configuration where name = 'office-specific-products-enabled'", Boolean.class);
+//        officeSpecificProductsEnabled = officeSpecificProductsEnabled == null ? false : officeSpecificProductsEnabled;
 
         this.loanCyclePopup = new ModalWindow("loanCyclePopup");
         add(this.loanCyclePopup);
@@ -1053,8 +1199,12 @@ public class LoanCreatePage extends Page {
     }
 
     protected void initAccountingUpFront() {
-        this.upfrontContainer = new WebMarkupContainer("upfrontContainer");
-        this.form.add(this.upfrontContainer);
+        this.upfrontBlock = new WebMarkupContainer("upfrontBlock");
+        this.upfrontBlock.setOutputMarkupId(true);
+        this.form.add(this.upfrontBlock);
+	
+	this.upfrontContainer = new WebMarkupContainer("upfrontContainer");
+        this.upfrontBlock.add(this.upfrontContainer);
 
         this.upfrontFundSourceProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontFundSourceProvider.applyWhere("account_usage", "account_usage = 1");
@@ -1205,8 +1355,13 @@ public class LoanCreatePage extends Page {
     }
 
     protected void initAccountingCash() {
+	
+	this.cashBlock = new WebMarkupContainer("cashBlock");
+	this.cashBlock.setOutputMarkupId(true);
+	this.form.add(this.cashBlock);
+	
         this.cashContainer = new WebMarkupContainer("cashContainer");
-        this.form.add(this.cashContainer);
+        this.cashBlock.add(this.cashContainer);
 
         this.cashFundSourceProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashFundSourceProvider.applyWhere("account_usage", "account_usage = 1");
@@ -1318,8 +1473,12 @@ public class LoanCreatePage extends Page {
     }
 
     protected void initAccountingPeriodic() {
-        this.periodicContainer = new WebMarkupContainer("periodicContainer");
-        this.form.add(this.periodicContainer);
+	this.periodicBlock = new WebMarkupContainer("periodicBlock");
+	this.periodicBlock.setOutputMarkupId(true);
+	this.form.add(this.periodicBlock);
+	
+	this.periodicContainer = new WebMarkupContainer("periodicContainer");
+        this.periodicBlock.add(this.periodicContainer);
 
         this.periodicFundSourceProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.periodicFundSourceProvider.applyWhere("account_usage", "account_usage = 1");
@@ -1473,9 +1632,13 @@ public class LoanCreatePage extends Page {
     }
 
     protected void initAdvancedAccountingRule() {
+	
+	this.advancedAccountingRuleBlock = new WebMarkupContainer("advancedAccountingRuleBlock");
+	this.advancedAccountingRuleBlock.setOutputMarkupId(true);
+	this.form.add(this.advancedAccountingRuleBlock);
 
         this.advancedAccountingRuleContainer = new WebMarkupContainer("advancedAccountingRuleContainer");
-        this.form.add(this.advancedAccountingRuleContainer);
+        this.advancedAccountingRuleBlock.add(this.advancedAccountingRuleContainer);
 
         {
             List<IColumn<Map<String, Object>, String>> fundSourceColumn = Lists.newArrayList();
@@ -1668,680 +1831,803 @@ public class LoanCreatePage extends Page {
             this.upfrontContainer.setVisible(true);
         }
 
-        target.add(this.form);
+        target.add(this.cashBlock);
+        target.add(this.periodicBlock);
+        target.add(this.upfrontBlock);
+        target.add(this.advancedAccountingRuleBlock);
         return false;
     }
 
     protected void initConfigurableTermsAndSettings() {
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountField = new CheckBox(
-                "allowOverridingSelectTermsAndSettingsInLoanAccountField",
-                new PropertyModel<>(this, "allowOverridingSelectTermsAndSettingsInLoanAccountValue"));
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountField.setRequired(false);
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountField
-                .add(new OnChangeAjaxBehavior(this::allowOverridingSelectTermsAndSettingsInLoanAccountFieldUpdate));
-        this.form.add(this.allowOverridingSelectTermsAndSettingsInLoanAccountField);
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountFeedback = new TextFeedbackPanel(
-                "allowOverridingSelectTermsAndSettingsInLoanAccountFeedback",
-                this.allowOverridingSelectTermsAndSettingsInLoanAccountField);
-        this.form.add(this.allowOverridingSelectTermsAndSettingsInLoanAccountFeedback);
+	
+	this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock = new WebMarkupContainer("configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock");
+	this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock.setOutputMarkupId(true);
+	this.form.add(this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock);
+	this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountContainer = new WebMarkupContainer("configurableAllowOverridingSelectTermsAndSettingsInLoanAccountContainer");
+	this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock.add(this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountContainer);
+        this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountField = new CheckBox("configurableAllowOverridingSelectTermsAndSettingsInLoanAccountField", new PropertyModel<>(this, "configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue"));
+        this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountField.setRequired(false);
+        this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountField.add(new OnChangeAjaxBehavior(this::configurableAllowOverridingSelectTermsAndSettingsInLoanAccountFieldUpdate));
+        this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountField);
+        this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountFeedback = new TextFeedbackPanel("configurableAllowOverridingSelectTermsAndSettingsInLoanAccountFeedback", this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountField);
+        this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountFeedback);
 
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer = new WebMarkupContainer(
-                "allowOverridingSelectTermsAndSettingsInLoanAccountContainer");
-        this.form.add(this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer);
-
-        this.configurableAmortizationField = new CheckBox("configurableAmortizationField",
-                new PropertyModel<>(this, "configurableAmortizationValue"));
+        this.configurableAmortizationBlock = new WebMarkupContainer("configurableAmortizationBlock");
+        this.configurableAmortizationBlock.setOutputMarkupId(true);
+        this.form.add(this.configurableAmortizationBlock);
+        this.configurableAmortizationContainer = new WebMarkupContainer("configurableAmortizationContainer");
+        this.configurableAmortizationBlock.add(this.configurableAmortizationContainer);
+        this.configurableAmortizationField = new CheckBox("configurableAmortizationField", new PropertyModel<>(this, "configurableAmortizationValue"));
         this.configurableAmortizationField.setRequired(false);
         this.configurableAmortizationField.add(new OnChangeAjaxBehavior());
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableAmortizationField);
-        this.configurableAmortizationFeedback = new TextFeedbackPanel("configurableAmortizationFeedback",
-                this.configurableAmortizationField);
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableAmortizationFeedback);
+        this.configurableAmortizationContainer.add(this.configurableAmortizationField);
+        this.configurableAmortizationFeedback = new TextFeedbackPanel("configurableAmortizationFeedback", this.configurableAmortizationField);
+        this.configurableAmortizationContainer.add(this.configurableAmortizationFeedback);
 
-        this.configurableInterestMethodField = new CheckBox("configurableInterestMethodField",
-                new PropertyModel<>(this, "configurableInterestMethodValue"));
+        this.configurableInterestMethodBlock = new WebMarkupContainer("configurableInterestMethodBlock");
+        this.configurableInterestMethodBlock.setOutputMarkupId(true);
+        this.form.add(this.configurableInterestMethodBlock);
+        this.configurableInterestMethodContainer = new WebMarkupContainer("configurableInterestMethodContainer");
+        this.configurableInterestMethodBlock.add(this.configurableInterestMethodContainer);
+        this.configurableInterestMethodField = new CheckBox("configurableInterestMethodField", new PropertyModel<>(this, "configurableInterestMethodValue"));
         this.configurableInterestMethodField.setRequired(false);
         this.configurableInterestMethodField.add(new OnChangeAjaxBehavior());
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableInterestMethodField);
-        this.configurableInterestMethodFeedback = new TextFeedbackPanel("configurableInterestMethodFeedback",
-                this.configurableInterestMethodField);
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableInterestMethodFeedback);
+        this.configurableInterestMethodContainer.add(this.configurableInterestMethodField);
+        this.configurableInterestMethodFeedback = new TextFeedbackPanel("configurableInterestMethodFeedback", this.configurableInterestMethodField);
+        this.configurableInterestMethodContainer.add(this.configurableInterestMethodFeedback);
 
-        this.configurableRepaymentStrategyField = new CheckBox("configurableRepaymentStrategyField",
-                new PropertyModel<>(this, "configurableRepaymentStrategyValue"));
+        this.configurableRepaymentStrategyBlock = new WebMarkupContainer("configurableRepaymentStrategyBlock");
+        this.configurableRepaymentStrategyBlock.setOutputMarkupId(true);
+        this.form.add(this.configurableRepaymentStrategyBlock);
+        this.configurableRepaymentStrategyContainer = new WebMarkupContainer("configurableRepaymentStrategyContainer");
+        this.configurableRepaymentStrategyBlock.add(this.configurableRepaymentStrategyContainer);
+        this.configurableRepaymentStrategyField = new CheckBox("configurableRepaymentStrategyField", new PropertyModel<>(this, "configurableRepaymentStrategyValue"));
         this.configurableRepaymentStrategyField.setRequired(false);
         this.configurableRepaymentStrategyField.add(new OnChangeAjaxBehavior());
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableRepaymentStrategyField);
-        this.configurableRepaymentStrategyFeedback = new TextFeedbackPanel("configurableRepaymentStrategyFeedback",
-                this.configurableRepaymentStrategyField);
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer
-                .add(this.configurableRepaymentStrategyFeedback);
+        this.configurableRepaymentStrategyContainer.add(this.configurableRepaymentStrategyField);
+        this.configurableRepaymentStrategyFeedback = new TextFeedbackPanel("configurableRepaymentStrategyFeedback", this.configurableRepaymentStrategyField);
+        this.configurableRepaymentStrategyContainer.add(this.configurableRepaymentStrategyFeedback);
 
-        this.configurableInterestCalculationPeriodField = new CheckBox("configurableInterestCalculationPeriodField",
-                new PropertyModel<>(this, "configurableInterestCalculationPeriodValue"));
+        this.configurableInterestCalculationPeriodBlock = new WebMarkupContainer("configurableInterestCalculationPeriodBlock");
+        this.configurableInterestCalculationPeriodBlock.setOutputMarkupId(true);
+        this.form.add(this.configurableInterestCalculationPeriodBlock);
+        this.configurableInterestCalculationPeriodContainer = new WebMarkupContainer("configurableInterestCalculationPeriodContainer");
+        this.configurableInterestCalculationPeriodBlock.add(this.configurableInterestCalculationPeriodContainer);
+        this.configurableInterestCalculationPeriodField = new CheckBox("configurableInterestCalculationPeriodField", new PropertyModel<>(this, "configurableInterestCalculationPeriodValue"));
         this.configurableInterestCalculationPeriodField.setRequired(false);
         this.configurableInterestCalculationPeriodField.add(new OnChangeAjaxBehavior());
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer
-                .add(this.configurableInterestCalculationPeriodField);
-        this.configurableInterestCalculationPeriodFeedback = new TextFeedbackPanel(
-                "configurableInterestCalculationPeriodFeedback", this.configurableInterestCalculationPeriodField);
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer
-                .add(this.configurableInterestCalculationPeriodFeedback);
+        this.configurableInterestCalculationPeriodContainer.add(this.configurableInterestCalculationPeriodField);
+        this.configurableInterestCalculationPeriodFeedback = new TextFeedbackPanel("configurableInterestCalculationPeriodFeedback", this.configurableInterestCalculationPeriodField);
+        this.configurableInterestCalculationPeriodContainer.add(this.configurableInterestCalculationPeriodFeedback);
 
-        this.configurableArrearsToleranceField = new CheckBox("configurableArrearsToleranceField",
-                new PropertyModel<>(this, "configurableArrearsToleranceValue"));
+        this.configurableArrearsToleranceBlock = new WebMarkupContainer("configurableArrearsToleranceBlock");
+        this.configurableArrearsToleranceBlock.setOutputMarkupId(true);
+        this.form.add(this.configurableArrearsToleranceBlock);
+        this.configurableArrearsToleranceContainer = new WebMarkupContainer("configurableArrearsToleranceContainer");
+        this.configurableArrearsToleranceBlock.add(this.configurableArrearsToleranceContainer);
+        this.configurableArrearsToleranceField = new CheckBox("configurableArrearsToleranceField", new PropertyModel<>(this, "configurableArrearsToleranceValue"));
         this.configurableArrearsToleranceField.setRequired(false);
         this.configurableArrearsToleranceField.add(new OnChangeAjaxBehavior());
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableArrearsToleranceField);
-        this.configurableArrearsToleranceFeedback = new TextFeedbackPanel("configurableArrearsToleranceFeedback",
-                this.configurableArrearsToleranceField);
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableArrearsToleranceFeedback);
+        this.configurableArrearsToleranceContainer.add(this.configurableArrearsToleranceField);
+        this.configurableArrearsToleranceFeedback = new TextFeedbackPanel("configurableArrearsToleranceFeedback", this.configurableArrearsToleranceField);
+        this.configurableArrearsToleranceContainer.add(this.configurableArrearsToleranceFeedback);
 
-        this.configurableRepaidEveryField = new CheckBox("configurableRepaidEveryField",
-                new PropertyModel<>(this, "configurableRepaidEveryValue"));
+        this.configurableRepaidEveryBlock = new WebMarkupContainer("configurableRepaidEveryBlock");
+        this.configurableRepaidEveryBlock.setOutputMarkupId(true);
+        this.form.add(this.configurableRepaidEveryBlock);
+        this.configurableRepaidEveryContainer = new WebMarkupContainer("configurableRepaidEveryContainer");
+        this.configurableRepaidEveryBlock.add(this.configurableRepaidEveryContainer);
+        this.configurableRepaidEveryField = new CheckBox("configurableRepaidEveryField", new PropertyModel<>(this, "configurableRepaidEveryValue"));
         this.configurableRepaidEveryField.setRequired(false);
         this.configurableRepaidEveryField.add(new OnChangeAjaxBehavior());
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableRepaidEveryField);
-        this.configurableRepaidEveryFeedback = new TextFeedbackPanel("configurableRepaidEveryFeedback",
-                this.configurableRepaidEveryField);
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableRepaidEveryFeedback);
+        this.configurableRepaidEveryContainer.add(this.configurableRepaidEveryField);
+        this.configurableRepaidEveryFeedback = new TextFeedbackPanel("configurableRepaidEveryFeedback", this.configurableRepaidEveryField);
+        this.configurableRepaidEveryContainer.add(this.configurableRepaidEveryFeedback);
 
-        this.configurableMoratoriumField = new CheckBox("configurableMoratoriumField",
-                new PropertyModel<>(this, "configurableMoratoriumValue"));
+        this.configurableMoratoriumBlock = new WebMarkupContainer("configurableMoratoriumBlock");
+        this.configurableMoratoriumBlock.setOutputMarkupId(true);
+        this.form.add(this.configurableMoratoriumBlock);
+        this.configurableMoratoriumContainer = new WebMarkupContainer("configurableMoratoriumContainer");
+        this.configurableMoratoriumBlock.add(this.configurableMoratoriumContainer);
+        this.configurableMoratoriumField = new CheckBox("configurableMoratoriumField", new PropertyModel<>(this, "configurableMoratoriumValue"));
         this.configurableMoratoriumField.setRequired(false);
         this.configurableMoratoriumField.add(new OnChangeAjaxBehavior());
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableMoratoriumField);
-        this.configurableMoratoriumFeedback = new TextFeedbackPanel("configurableMoratoriumFeedback",
-                this.configurableMoratoriumField);
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableMoratoriumFeedback);
+        this.configurableMoratoriumContainer.add(this.configurableMoratoriumField);
+        this.configurableMoratoriumFeedback = new TextFeedbackPanel("configurableMoratoriumFeedback", this.configurableMoratoriumField);
+        this.configurableMoratoriumContainer.add(this.configurableMoratoriumFeedback);
 
-        this.configurableOverdueBeforeMovingField = new CheckBox("configurableOverdueBeforeMovingField",
-                new PropertyModel<>(this, "configurableOverdueBeforeMovingValue"));
+        this.configurableOverdueBeforeMovingBlock = new WebMarkupContainer("configurableOverdueBeforeMovingBlock");
+        this.configurableOverdueBeforeMovingBlock.setOutputMarkupId(true);
+        this.form.add(this.configurableOverdueBeforeMovingBlock);
+        this.configurableOverdueBeforeMovingContainer = new WebMarkupContainer("configurableOverdueBeforeMovingContainer");
+        this.configurableOverdueBeforeMovingBlock.add(this.configurableOverdueBeforeMovingContainer);
+        this.configurableOverdueBeforeMovingField = new CheckBox("configurableOverdueBeforeMovingField", new PropertyModel<>(this, "configurableOverdueBeforeMovingValue"));
         this.configurableOverdueBeforeMovingField.setRequired(false);
         this.configurableOverdueBeforeMovingField.add(new OnChangeAjaxBehavior());
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer.add(this.configurableOverdueBeforeMovingField);
-        this.configurableOverdueBeforeMovingFeedback = new TextFeedbackPanel("configurableOverdueBeforeMovingFeedback",
-                this.configurableOverdueBeforeMovingField);
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer
-                .add(this.configurableOverdueBeforeMovingFeedback);
+        this.configurableOverdueBeforeMovingContainer.add(this.configurableOverdueBeforeMovingField);
+        this.configurableOverdueBeforeMovingFeedback = new TextFeedbackPanel("configurableOverdueBeforeMovingFeedback", this.configurableOverdueBeforeMovingField);
+        this.configurableOverdueBeforeMovingContainer.add(this.configurableOverdueBeforeMovingFeedback);
     }
 
-    protected boolean allowOverridingSelectTermsAndSettingsInLoanAccountFieldUpdate(AjaxRequestTarget target) {
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer
-                .setVisible(this.allowOverridingSelectTermsAndSettingsInLoanAccountValue != null
-                        && this.allowOverridingSelectTermsAndSettingsInLoanAccountValue);
+    protected boolean configurableAllowOverridingSelectTermsAndSettingsInLoanAccountFieldUpdate(AjaxRequestTarget target) {
+        this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountContainer
+                .setVisible(this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue != null
+                        && this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue);
         target.add(this.form);
         return false;
     }
 
     protected void initLoanTrancheDetails() {
-        this.enableMultipleDisbursalField = new CheckBox("enableMultipleDisbursalField",
-                new PropertyModel<>(this, "enableMultipleDisbursalValue"));
-        this.enableMultipleDisbursalField.setRequired(false);
-        this.enableMultipleDisbursalField.add(new OnChangeAjaxBehavior(this::enableMultipleDisbursalFieldUpdate));
-        this.form.add(this.enableMultipleDisbursalField);
-        this.enableMultipleDisbursalFeedback = new TextFeedbackPanel("enableMultipleDisbursalFeedback",
-                this.enableMultipleDisbursalField);
-        this.form.add(this.enableMultipleDisbursalFeedback);
+	
+	this.loanTrancheDetailEnableMultipleDisbursalBlock = new WebMarkupContainer("loanTrancheDetailEnableMultipleDisbursalBlock");
+	this.loanTrancheDetailEnableMultipleDisbursalBlock.setOutputMarkupId(true);
+	this.form.add(this.loanTrancheDetailEnableMultipleDisbursalBlock);
+	this.loanTrancheDetailEnableMultipleDisbursalContainer = new WebMarkupContainer("loanTrancheDetailEnableMultipleDisbursalContainer");
+	this.loanTrancheDetailEnableMultipleDisbursalBlock.add(this.loanTrancheDetailEnableMultipleDisbursalContainer);
+        this.loanTrancheDetailEnableMultipleDisbursalField = new CheckBox("loanTrancheDetailEnableMultipleDisbursalField", new PropertyModel<>(this, "loanTrancheDetailEnableMultipleDisbursalValue"));
+        this.loanTrancheDetailEnableMultipleDisbursalField.setRequired(false);
+        this.loanTrancheDetailEnableMultipleDisbursalField.add(new OnChangeAjaxBehavior(this::loanTrancheDetailEnableMultipleDisbursalFieldUpdate));
+        this.loanTrancheDetailEnableMultipleDisbursalContainer.add(this.loanTrancheDetailEnableMultipleDisbursalField);
+        this.loanTrancheDetailEnableMultipleDisbursalFeedback = new TextFeedbackPanel("loanTrancheDetailEnableMultipleDisbursalFeedback", this.loanTrancheDetailEnableMultipleDisbursalField);
+        this.loanTrancheDetailEnableMultipleDisbursalContainer.add(this.loanTrancheDetailEnableMultipleDisbursalFeedback);
 
-        this.enableMultipleDisbursalContainer = new WebMarkupContainer("enableMultipleDisbursalContainer");
-        this.form.add(this.enableMultipleDisbursalContainer);
+        this.loanTrancheDetailMaximumTrancheCountBlock = new WebMarkupContainer("loanTrancheDetailMaximumTrancheCountBlock");
+        this.loanTrancheDetailMaximumTrancheCountBlock.setOutputMarkupId(true);
+        this.form.add(this.loanTrancheDetailMaximumTrancheCountBlock);
+        this.loanTrancheDetailMaximumTrancheCountContainer = new WebMarkupContainer("loanTrancheDetailMaximumTrancheCountContainer");
+        this.loanTrancheDetailMaximumTrancheCountBlock.add(this.loanTrancheDetailMaximumTrancheCountContainer);
+        this.loanTrancheDetailMaximumTrancheCountField = new TextField<>("loanTrancheDetailMaximumTrancheCountField", new PropertyModel<>(this, "loanTrancheDetailMaximumTrancheCountValue"));
+        this.loanTrancheDetailMaximumTrancheCountField.setRequired(false);
+        this.loanTrancheDetailMaximumTrancheCountField.add(new OnChangeAjaxBehavior());
+        this.loanTrancheDetailMaximumTrancheCountContainer.add(this.loanTrancheDetailMaximumTrancheCountField);
+        this.loanTrancheDetailMaximumTrancheCountFeedback = new TextFeedbackPanel("loanTrancheDetailMaximumTrancheCountFeedback", this.loanTrancheDetailMaximumTrancheCountField);
+        this.loanTrancheDetailMaximumTrancheCountContainer.add(this.loanTrancheDetailMaximumTrancheCountFeedback);
 
-        this.maximumTrancheCountField = new TextField<>("maximumTrancheCountField",
-                new PropertyModel<>(this, "maximumTrancheCountValue"));
-        this.maximumTrancheCountField.setRequired(false);
-        this.maximumTrancheCountField.add(new OnChangeAjaxBehavior());
-        this.enableMultipleDisbursalContainer.add(this.maximumTrancheCountField);
-        this.maximumTrancheCountFeedback = new TextFeedbackPanel("maximumTrancheCountFeedback",
-                this.maximumTrancheCountField);
-        this.enableMultipleDisbursalContainer.add(this.maximumTrancheCountFeedback);
-
-        this.maximumAllowedOutstandingBalanceField = new TextField<>("maximumAllowedOutstandingBalanceField",
-                new PropertyModel<>(this, "maximumAllowedOutstandingBalanceValue"));
-        this.maximumAllowedOutstandingBalanceField.setRequired(false);
-        this.maximumAllowedOutstandingBalanceField.add(new OnChangeAjaxBehavior());
-        this.enableMultipleDisbursalContainer.add(this.maximumAllowedOutstandingBalanceField);
-        this.maximumAllowedOutstandingBalanceFeedback = new TextFeedbackPanel(
-                "maximumAllowedOutstandingBalanceFeedback", this.maximumAllowedOutstandingBalanceField);
-        this.enableMultipleDisbursalContainer.add(this.maximumAllowedOutstandingBalanceFeedback);
+        this.loanTrancheDetailMaximumAllowedOutstandingBalanceBlock = new WebMarkupContainer("loanTrancheDetailMaximumAllowedOutstandingBalanceBlock");
+        this.loanTrancheDetailMaximumAllowedOutstandingBalanceBlock.setOutputMarkupId(true);
+        this.form.add(this.loanTrancheDetailMaximumAllowedOutstandingBalanceBlock);
+        this.loanTrancheDetailMaximumAllowedOutstandingBalanceContainer = new WebMarkupContainer("loanTrancheDetailMaximumAllowedOutstandingBalanceContainer");
+        this.loanTrancheDetailMaximumAllowedOutstandingBalanceBlock.add(this.loanTrancheDetailMaximumAllowedOutstandingBalanceContainer);
+        this.loanTrancheDetailMaximumAllowedOutstandingBalanceField = new TextField<>("loanTrancheDetailMaximumAllowedOutstandingBalanceField", new PropertyModel<>(this, "loanTrancheDetailMaximumAllowedOutstandingBalanceValue"));
+        this.loanTrancheDetailMaximumAllowedOutstandingBalanceField.setRequired(false);
+        this.loanTrancheDetailMaximumAllowedOutstandingBalanceField.add(new OnChangeAjaxBehavior());
+        this.loanTrancheDetailMaximumAllowedOutstandingBalanceContainer.add(this.loanTrancheDetailMaximumAllowedOutstandingBalanceField);
+        this.loanTrancheDetailMaximumAllowedOutstandingBalanceFeedback = new TextFeedbackPanel( "loanTrancheDetailMaximumAllowedOutstandingBalanceFeedback", this.loanTrancheDetailMaximumAllowedOutstandingBalanceField);
+        this.loanTrancheDetailMaximumAllowedOutstandingBalanceContainer.add(this.loanTrancheDetailMaximumAllowedOutstandingBalanceFeedback);
     }
 
-    protected boolean enableMultipleDisbursalFieldUpdate(AjaxRequestTarget target) {
-        this.enableMultipleDisbursalContainer
-                .setVisible(this.enableMultipleDisbursalValue != null && this.enableMultipleDisbursalValue);
+    protected boolean loanTrancheDetailEnableMultipleDisbursalFieldUpdate(AjaxRequestTarget target) {
+        this.loanTrancheDetailEnableMultipleDisbursalContainer
+                .setVisible(this.loanTrancheDetailEnableMultipleDisbursalValue != null && this.loanTrancheDetailEnableMultipleDisbursalValue);
         target.add(this.form);
         return false;
     }
 
     protected void initGuaranteeRequirements() {
 
-        this.placeGuaranteeFundsOnHoldField = new CheckBox("placeGuaranteeFundsOnHoldField",
-                new PropertyModel<>(this, "placeGuaranteeFundsOnHoldValue"));
-        this.placeGuaranteeFundsOnHoldField.setRequired(false);
-        this.placeGuaranteeFundsOnHoldField.add(new OnChangeAjaxBehavior(this::placeGuaranteeFundsOnHoldFieldUpdate));
-        this.form.add(this.placeGuaranteeFundsOnHoldField);
-        this.placeGuaranteeFundsOnHoldFeedback = new TextFeedbackPanel("placeGuaranteeFundsOnHoldFeedback",
-                this.placeGuaranteeFundsOnHoldField);
-        this.form.add(this.placeGuaranteeFundsOnHoldFeedback);
+	this.guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock = new WebMarkupContainer("guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock");
+	this.guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock.setOutputMarkupId(true);
+	this.form.add(this.guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock);
+	this.guaranteeRequirementPlaceGuaranteeFundsOnHoldContainer = new WebMarkupContainer("guaranteeRequirementPlaceGuaranteeFundsOnHoldContainer");
+	this.guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock.add(this.guaranteeRequirementPlaceGuaranteeFundsOnHoldContainer);
+        this.guaranteeRequirementPlaceGuaranteeFundsOnHoldField = new CheckBox("guaranteeRequirementPlaceGuaranteeFundsOnHoldField", new PropertyModel<>(this, "guaranteeRequirementPlaceGuaranteeFundsOnHoldValue"));
+        this.guaranteeRequirementPlaceGuaranteeFundsOnHoldField.setRequired(false);
+        this.guaranteeRequirementPlaceGuaranteeFundsOnHoldField.add(new OnChangeAjaxBehavior(this::guaranteeRequirementPlaceGuaranteeFundsOnHoldFieldUpdate));
+        this.guaranteeRequirementPlaceGuaranteeFundsOnHoldContainer.add(this.guaranteeRequirementPlaceGuaranteeFundsOnHoldField);
+        this.guaranteeRequirementPlaceGuaranteeFundsOnHoldFeedback = new TextFeedbackPanel("guaranteeRequirementPlaceGuaranteeFundsOnHoldFeedback", this.guaranteeRequirementPlaceGuaranteeFundsOnHoldField);
+        this.guaranteeRequirementPlaceGuaranteeFundsOnHoldContainer.add(this.guaranteeRequirementPlaceGuaranteeFundsOnHoldFeedback);
 
-        this.placeGuaranteeFundsOnHoldContainer = new WebMarkupContainer("placeGuaranteeFundsOnHoldContainer");
-        this.form.add(this.placeGuaranteeFundsOnHoldContainer);
+        this.guaranteeRequirementMandatoryGuaranteeBlock = new WebMarkupContainer("guaranteeRequirementMandatoryGuaranteeBlock");
+        this.guaranteeRequirementMandatoryGuaranteeBlock.setOutputMarkupId(true);
+        this.form.add(this.guaranteeRequirementMandatoryGuaranteeBlock);
+        this.guaranteeRequirementMandatoryGuaranteeContainer = new WebMarkupContainer("guaranteeRequirementMandatoryGuaranteeContainer");
+        this.guaranteeRequirementMandatoryGuaranteeBlock.add(this.guaranteeRequirementMandatoryGuaranteeContainer);
+        this.guaranteeRequirementMandatoryGuaranteeField = new TextField<>("guaranteeRequirementMandatoryGuaranteeField", new PropertyModel<>(this, "guaranteeRequirementMandatoryGuaranteeValue"));
+        this.guaranteeRequirementMandatoryGuaranteeField.setRequired(false);
+        this.guaranteeRequirementMandatoryGuaranteeField.add(new OnChangeAjaxBehavior());
+        this.guaranteeRequirementMandatoryGuaranteeContainer.add(this.guaranteeRequirementMandatoryGuaranteeField);
+        this.guaranteeRequirementMandatoryGuaranteeFeedback = new TextFeedbackPanel("guaranteeRequirementMandatoryGuaranteeFeedback", this.guaranteeRequirementMandatoryGuaranteeField);
+        this.guaranteeRequirementMandatoryGuaranteeContainer.add(this.guaranteeRequirementMandatoryGuaranteeFeedback);
 
-        this.mandatoryGuaranteeField = new TextField<>("mandatoryGuaranteeField",
-                new PropertyModel<>(this, "mandatoryGuaranteeValue"));
-        this.mandatoryGuaranteeField.setRequired(false);
-        this.mandatoryGuaranteeField.add(new OnChangeAjaxBehavior());
-        this.placeGuaranteeFundsOnHoldContainer.add(this.mandatoryGuaranteeField);
-        this.mandatoryGuaranteeFeedback = new TextFeedbackPanel("mandatoryGuaranteeFeedback",
-                this.mandatoryGuaranteeField);
-        this.placeGuaranteeFundsOnHoldContainer.add(this.mandatoryGuaranteeFeedback);
+        this.guaranteeRequirementMinimumGuaranteeBlock = new WebMarkupContainer("guaranteeRequirementMinimumGuaranteeBlock");
+        this.guaranteeRequirementMinimumGuaranteeBlock.setOutputMarkupId(true);
+        this.form.add(this.guaranteeRequirementMinimumGuaranteeBlock);
+        this.guaranteeRequirementMinimumGuaranteeContainer = new WebMarkupContainer("guaranteeRequirementMinimumGuaranteeContainer");
+        this.guaranteeRequirementMinimumGuaranteeBlock.add(this.guaranteeRequirementMinimumGuaranteeContainer);
+        this.guaranteeRequirementMinimumGuaranteeField = new TextField<>("guaranteeRequirementMinimumGuaranteeField", new PropertyModel<>(this, "guaranteeRequirementMinimumGuaranteeValue"));
+        this.guaranteeRequirementMinimumGuaranteeField.setRequired(false);
+        this.guaranteeRequirementMinimumGuaranteeField.add(new OnChangeAjaxBehavior());
+        this.guaranteeRequirementMinimumGuaranteeContainer.add(this.guaranteeRequirementMinimumGuaranteeField);
+        this.guaranteeRequirementMinimumGuaranteeFeedback = new TextFeedbackPanel("guaranteeRequirementMinimumGuaranteeFeedback", this.guaranteeRequirementMinimumGuaranteeField);
+        this.guaranteeRequirementMinimumGuaranteeContainer.add(this.guaranteeRequirementMinimumGuaranteeFeedback);
 
-        this.minimumGuaranteeField = new TextField<>("minimumGuaranteeField",
-                new PropertyModel<>(this, "minimumGuaranteeValue"));
-        this.minimumGuaranteeField.setRequired(false);
-        this.minimumGuaranteeField.add(new OnChangeAjaxBehavior());
-        this.placeGuaranteeFundsOnHoldContainer.add(this.minimumGuaranteeField);
-        this.minimumGuaranteeFeedback = new TextFeedbackPanel("minimumGuaranteeFeedback", this.minimumGuaranteeField);
-        this.placeGuaranteeFundsOnHoldContainer.add(this.minimumGuaranteeFeedback);
-
-        this.minimumGuaranteeFromGuarantorField = new TextField<>("minimumGuaranteeFromGuarantorField",
-                new PropertyModel<>(this, "minimumGuaranteeFromGuarantorValue"));
-        this.minimumGuaranteeFromGuarantorField.setRequired(false);
-        this.minimumGuaranteeFromGuarantorField.add(new OnChangeAjaxBehavior());
-        this.placeGuaranteeFundsOnHoldContainer.add(this.minimumGuaranteeFromGuarantorField);
-        this.minimumGuaranteeFromGuarantorFeedback = new TextFeedbackPanel("minimumGuaranteeFromGuarantorFeedback",
-                this.minimumGuaranteeFromGuarantorField);
-        this.placeGuaranteeFundsOnHoldContainer.add(this.minimumGuaranteeFromGuarantorFeedback);
+        this.guaranteeRequirementMinimumGuaranteeFromGuarantorBlock = new WebMarkupContainer("guaranteeRequirementMinimumGuaranteeFromGuarantorBlock");
+        this.guaranteeRequirementMinimumGuaranteeFromGuarantorBlock.setOutputMarkupId(true);
+        this.form.add(this.guaranteeRequirementMinimumGuaranteeFromGuarantorBlock);
+        this.guaranteeRequirementMinimumGuaranteeFromGuarantorContainer = new WebMarkupContainer("guaranteeRequirementMinimumGuaranteeFromGuarantorContainer");
+        this.guaranteeRequirementMinimumGuaranteeFromGuarantorBlock.add(this.guaranteeRequirementMinimumGuaranteeFromGuarantorContainer);
+        this.guaranteeRequirementMinimumGuaranteeFromGuarantorField = new TextField<>("guaranteeRequirementMinimumGuaranteeFromGuarantorField", new PropertyModel<>(this, "guaranteeRequirementMinimumGuaranteeFromGuarantorValue"));
+        this.guaranteeRequirementMinimumGuaranteeFromGuarantorField.setRequired(false);
+        this.guaranteeRequirementMinimumGuaranteeFromGuarantorField.add(new OnChangeAjaxBehavior());
+        this.guaranteeRequirementMinimumGuaranteeFromGuarantorContainer.add(this.guaranteeRequirementMinimumGuaranteeFromGuarantorField);
+        this.guaranteeRequirementMinimumGuaranteeFromGuarantorFeedback = new TextFeedbackPanel("guaranteeRequirementMinimumGuaranteeFromGuarantorFeedback", this.guaranteeRequirementMinimumGuaranteeFromGuarantorField);
+        this.guaranteeRequirementMinimumGuaranteeFromGuarantorContainer.add(this.guaranteeRequirementMinimumGuaranteeFromGuarantorFeedback);
 
     }
 
-    protected boolean placeGuaranteeFundsOnHoldFieldUpdate(AjaxRequestTarget target) {
-        this.placeGuaranteeFundsOnHoldContainer
-                .setVisible(this.placeGuaranteeFundsOnHoldValue != null && this.placeGuaranteeFundsOnHoldValue);
+    protected boolean guaranteeRequirementPlaceGuaranteeFundsOnHoldFieldUpdate(AjaxRequestTarget target) {
+//        this.placeGuaranteeFundsOnHoldContainer
+//                .setVisible(this.guaranteeRequirementPlaceGuaranteeFundsOnHoldValue != null && this.guaranteeRequirementPlaceGuaranteeFundsOnHoldValue);
         target.add(this.form);
         return false;
     }
 
-    protected boolean recalculateInterestFieldUpdate(AjaxRequestTarget target) {
-        this.recalculateInterestContainer
-                .setVisible(this.recalculateInterestValue != null && this.recalculateInterestValue);
-        target.add(this.form);
-        return false;
+    protected boolean interestRecalculationRecalculateInterestFieldUpdate(AjaxRequestTarget target) {
+	boolean visible = this.interestRecalculationRecalculateInterestValue != null && this.interestRecalculationRecalculateInterestValue;
+	this.interestRecalculationPreClosureInterestCalculationRuleContainer.setVisible(visible);
+	this.interestRecalculationAdvancePaymentsAdjustmentTypeContainer.setVisible(visible);
+	this.interestRecalculationCompoundingOnContainer.setVisible(visible);
+	this.interestRecalculationCompoundingContainer.setVisible(visible);
+	this.interestRecalculationCompoundingTypeContainer.setVisible(visible);
+	this.interestRecalculationCompoundingDayContainer.setVisible(visible);
+	this.interestRecalculationCompoundingIntervalContainer.setVisible(visible);
+	this.interestRecalculationRecalculateContainer.setVisible(visible);
+	this.interestRecalculationRecalculateTypeContainer.setVisible(visible);
+	this.interestRecalculationRecalculateDayContainer.setVisible(visible);
+	this.interestRecalculationRecalculateIntervalContainer.setVisible(visible);
+	this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleContainer.setVisible(visible);	
+	if (target != null) {
+	    target.add(this.interestRecalculationPreClosureInterestCalculationRuleBlock);
+	    target.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock);
+	    target.add(this.interestRecalculationCompoundingOnBlock);
+	    target.add(this.interestRecalculationCompoundingBlock);
+	    target.add(this.interestRecalculationCompoundingTypeBlock);
+	    target.add(this.interestRecalculationCompoundingDayBlock);
+	    target.add(this.interestRecalculationCompoundingIntervalBlock);
+	    target.add(this.interestRecalculationRecalculateBlock);
+	    target.add(this.interestRecalculationRecalculateTypeBlock);
+	    target.add(this.interestRecalculationRecalculateDayBlock);
+	    target.add(this.interestRecalculationRecalculateIntervalBlock);
+	    target.add(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock);
+	}
+	return false;
     }
 
     protected void initInterestRecalculation() {
-        this.recalculateInterestField = new CheckBox("recalculateInterestField",
-                new PropertyModel<>(this, "recalculateInterestValue"));
-        this.recalculateInterestField.setRequired(false);
-        this.recalculateInterestField.add(new OnChangeAjaxBehavior(this::recalculateInterestFieldUpdate));
-        this.form.add(this.recalculateInterestField);
-        this.recalculateInterestFeedback = new TextFeedbackPanel("recalculateInterestFeedback",
-                this.recalculateInterestField);
-        this.form.add(this.recalculateInterestFeedback);
+	
+	this.interestRecalculationRecalculateInterestBlock = new WebMarkupContainer("interestRecalculationRecalculateInterestBlock");
+	this.interestRecalculationRecalculateInterestBlock.setOutputMarkupId(true);
+	this.form.add(this.interestRecalculationRecalculateInterestBlock);
+	this.interestRecalculationRecalculateInterestContainer = new WebMarkupContainer("interestRecalculationRecalculateInterestContainer");
+	this.interestRecalculationRecalculateInterestBlock.add(this.interestRecalculationRecalculateInterestContainer);
+        this.interestRecalculationRecalculateInterestField = new CheckBox("interestRecalculationRecalculateInterestField", new PropertyModel<>(this, "interestRecalculationRecalculateInterestValue"));
+        this.interestRecalculationRecalculateInterestField.setRequired(false);
+        this.interestRecalculationRecalculateInterestField.add(new OnChangeAjaxBehavior(this::interestRecalculationRecalculateInterestFieldUpdate));
+        this.interestRecalculationRecalculateInterestContainer.add(this.interestRecalculationRecalculateInterestField);
+        this.interestRecalculationRecalculateInterestFeedback = new TextFeedbackPanel("interestRecalculationRecalculateInterestFeedback", this.interestRecalculationRecalculateInterestField);
+        this.interestRecalculationRecalculateInterestContainer.add(this.interestRecalculationRecalculateInterestFeedback);
 
-        this.recalculateInterestContainer = new WebMarkupContainer("recalculateInterestContainer");
-        this.form.add(this.recalculateInterestContainer);
+        this.interestRecalculationPreClosureInterestCalculationRuleBlock = new WebMarkupContainer("interestRecalculationPreClosureInterestCalculationRuleBlock");
+        this.interestRecalculationPreClosureInterestCalculationRuleBlock.setOutputMarkupId(true);
+        this.form.add(this.interestRecalculationPreClosureInterestCalculationRuleBlock);
+        this.interestRecalculationPreClosureInterestCalculationRuleContainer = new WebMarkupContainer("interestRecalculationPreClosureInterestCalculationRuleContainer");
+        this.interestRecalculationPreClosureInterestCalculationRuleBlock.add(this.interestRecalculationPreClosureInterestCalculationRuleContainer);
+        this.interestRecalculationPreClosureInterestCalculationRuleProvider = new ClosureInterestCalculationRuleProvider();
+        this.interestRecalculationPreClosureInterestCalculationRuleField = new Select2SingleChoice<>("interestRecalculationPreClosureInterestCalculationRuleField", 0, new PropertyModel<>(this, "interestRecalculationPreClosureInterestCalculationRuleValue"), this.interestRecalculationPreClosureInterestCalculationRuleProvider);
+        this.interestRecalculationPreClosureInterestCalculationRuleField.setRequired(false);
+        this.interestRecalculationPreClosureInterestCalculationRuleField.add(new OnChangeAjaxBehavior());
+        this.interestRecalculationPreClosureInterestCalculationRuleContainer.add(this.interestRecalculationPreClosureInterestCalculationRuleField);
+        this.interestRecalculationPreClosureInterestCalculationRuleFeedback = new TextFeedbackPanel("interestRecalculationPreClosureInterestCalculationRuleFeedback", this.interestRecalculationPreClosureInterestCalculationRuleField);
+        this.interestRecalculationPreClosureInterestCalculationRuleContainer.add(this.interestRecalculationPreClosureInterestCalculationRuleFeedback);
 
-        this.preClosureInterestCalculationRuleProvider = new ClosureInterestCalculationRuleProvider();
-        this.preClosureInterestCalculationRuleField = new Select2SingleChoice<>(
-                "preClosureInterestCalculationRuleField", 0,
-                new PropertyModel<>(this, "preClosureInterestCalculationRuleValue"),
-                this.preClosureInterestCalculationRuleProvider);
-        this.preClosureInterestCalculationRuleField.setRequired(false);
-        this.preClosureInterestCalculationRuleField.add(new OnChangeAjaxBehavior());
-        this.recalculateInterestContainer.add(this.preClosureInterestCalculationRuleField);
-        this.preClosureInterestCalculationRuleFeedback = new TextFeedbackPanel(
-                "preClosureInterestCalculationRuleFeedback", this.preClosureInterestCalculationRuleField);
-        this.recalculateInterestContainer.add(this.preClosureInterestCalculationRuleFeedback);
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock = new WebMarkupContainer("interestRecalculationAdvancePaymentsAdjustmentTypeBlock");
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock.setOutputMarkupId(true);
+        this.form.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock);
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeContainer = new WebMarkupContainer("interestRecalculationAdvancePaymentsAdjustmentTypeContainer");
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeContainer);
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeProvider = new AdvancePaymentsAdjustmentTypeProvider();
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeField = new Select2SingleChoice<>("interestRecalculationAdvancePaymentsAdjustmentTypeField", 0, new PropertyModel<>(this, "interestRecalculationAdvancePaymentsAdjustmentTypeValue"), this.interestRecalculationAdvancePaymentsAdjustmentTypeProvider);
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeField.setRequired(false);
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeField.add(new OnChangeAjaxBehavior());
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeContainer.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeField);
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeFeedback = new TextFeedbackPanel("interestRecalculationAdvancePaymentsAdjustmentTypeFeedback", this.interestRecalculationAdvancePaymentsAdjustmentTypeField);
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeContainer.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeFeedback);
 
-        this.advancePaymentsAdjustmentTypeProvider = new AdvancePaymentsAdjustmentTypeProvider();
-        this.advancePaymentsAdjustmentTypeField = new Select2SingleChoice<>("advancePaymentsAdjustmentTypeField", 0,
-                new PropertyModel<>(this, "advancePaymentsAdjustmentTypeValue"),
-                this.advancePaymentsAdjustmentTypeProvider);
-        this.advancePaymentsAdjustmentTypeField.setRequired(false);
-        this.advancePaymentsAdjustmentTypeField.add(new OnChangeAjaxBehavior());
-        this.recalculateInterestContainer.add(this.advancePaymentsAdjustmentTypeField);
-        this.advancePaymentsAdjustmentTypeFeedback = new TextFeedbackPanel("advancePaymentsAdjustmentTypeFeedback",
-                this.advancePaymentsAdjustmentTypeField);
-        this.recalculateInterestContainer.add(this.advancePaymentsAdjustmentTypeFeedback);
-
+        this.interestRecalculationCompoundingOnBlock = new WebMarkupContainer("interestRecalculationCompoundingOnBlock");
+        this.interestRecalculationCompoundingOnBlock.setOutputMarkupId(true);
+        this.form.add(this.interestRecalculationCompoundingOnBlock);
+        this.interestRecalculationCompoundingOnContainer = new WebMarkupContainer("interestRecalculationCompoundingOnContainer");
+        this.interestRecalculationCompoundingOnBlock.add(this.interestRecalculationCompoundingOnContainer);
         this.interestRecalculationCompoundingOnProvider = new InterestRecalculationCompoundProvider();
-        this.interestRecalculationCompoundingOnField = new Select2SingleChoice<>(
-                "interestRecalculationCompoundingOnField", 0,
-                new PropertyModel<>(this, "interestRecalculationCompoundingOnValue"),
-                this.interestRecalculationCompoundingOnProvider);
+        this.interestRecalculationCompoundingOnField = new Select2SingleChoice<>("interestRecalculationCompoundingOnField", 0, new PropertyModel<>(this, "interestRecalculationCompoundingOnValue"), this.interestRecalculationCompoundingOnProvider);
         this.interestRecalculationCompoundingOnField.setRequired(false);
-        this.interestRecalculationCompoundingOnField.add(new OnChangeAjaxBehavior(this::compoundingFieldUpdate));
-        this.recalculateInterestContainer.add(this.interestRecalculationCompoundingOnField);
-        this.interestRecalculationCompoundingOnFeedback = new TextFeedbackPanel(
-                "interestRecalculationCompoundingOnFeedback", this.interestRecalculationCompoundingOnField);
-        this.recalculateInterestContainer.add(this.interestRecalculationCompoundingOnFeedback);
+        this.interestRecalculationCompoundingOnField.add(new OnChangeAjaxBehavior(this::interestRecalculationCompoundingFieldUpdate));
+        this.interestRecalculationCompoundingOnContainer.add(this.interestRecalculationCompoundingOnField);
+        this.interestRecalculationCompoundingOnFeedback = new TextFeedbackPanel("interestRecalculationCompoundingOnFeedback", this.interestRecalculationCompoundingOnField);
+        this.interestRecalculationCompoundingOnContainer.add(this.interestRecalculationCompoundingOnFeedback);
 
-        this.compoundingContainer = new WebMarkupContainer("compoundingContainer");
-        this.recalculateInterestContainer.add(this.compoundingContainer);
+        this.interestRecalculationCompoundingBlock = new WebMarkupContainer("interestRecalculationCompoundingBlock");
+        this.interestRecalculationCompoundingBlock.setOutputMarkupId(true);
+        this.form.add(this.interestRecalculationCompoundingBlock);
+        this.interestRecalculationCompoundingContainer = new WebMarkupContainer("interestRecalculationCompoundingContainer");
+        this.interestRecalculationCompoundingBlock.add(this.interestRecalculationCompoundingContainer);
+        this.interestRecalculationCompoundingProvider = new FrequencyProvider();
+        this.interestRecalculationCompoundingField = new Select2SingleChoice<>("interestRecalculationCompoundingField", 0, new PropertyModel<>(this, "interestRecalculationCompoundingValue"), this.interestRecalculationCompoundingProvider);
+        this.interestRecalculationCompoundingField.setRequired(false);
+        this.interestRecalculationCompoundingContainer.add(this.interestRecalculationCompoundingField);
+        this.interestRecalculationCompoundingField.add(new OnChangeAjaxBehavior(this::interestRecalculationCompoundingFieldUpdate));
+        this.interestRecalculationCompoundingFeedback = new TextFeedbackPanel("interestRecalculationCompoundingFeedback", this.interestRecalculationCompoundingField);
+        this.interestRecalculationCompoundingContainer.add(this.interestRecalculationCompoundingFeedback);
 
-        this.compoundingProvider = new FrequencyProvider();
-        this.compoundingField = new Select2SingleChoice<>("compoundingField", 0,
-                new PropertyModel<>(this, "compoundingValue"), this.compoundingProvider);
-        this.compoundingField.setRequired(false);
-        this.compoundingContainer.add(this.compoundingField);
-        this.compoundingField.add(new OnChangeAjaxBehavior(this::compoundingFieldUpdate));
-        this.compoundingFeedback = new TextFeedbackPanel("compoundingFeedback", this.compoundingField);
-        this.compoundingContainer.add(this.compoundingFeedback);
+        this.interestRecalculationCompoundingTypeBlock = new WebMarkupContainer("interestRecalculationCompoundingTypeBlock");
+        this.interestRecalculationCompoundingTypeBlock.setOutputMarkupId(true);
+        this.form.add(this.interestRecalculationCompoundingTypeBlock);
+        this.interestRecalculationCompoundingTypeContainer = new WebMarkupContainer("interestRecalculationCompoundingTypeContainer");
+        this.interestRecalculationCompoundingTypeBlock.add(this.interestRecalculationCompoundingTypeContainer);
+        this.interestRecalculationCompoundingTypeProvider = new FrequencyTypeProvider();
+        this.interestRecalculationCompoundingTypeField = new Select2SingleChoice<>("interestRecalculationCompoundingTypeField", 0, new PropertyModel<>(this, "interestRecalculationCompoundingTypeValue"), this.interestRecalculationCompoundingTypeProvider);
+        this.interestRecalculationCompoundingTypeField.setRequired(false);
+        this.interestRecalculationCompoundingTypeField.add(new OnChangeAjaxBehavior());
+        this.interestRecalculationCompoundingTypeContainer.add(this.interestRecalculationCompoundingTypeField);
+        this.interestRecalculationCompoundingTypeFeedback = new TextFeedbackPanel("interestRecalculationCompoundingTypeFeedback", this.interestRecalculationCompoundingTypeField);
+        this.interestRecalculationCompoundingTypeContainer.add(this.interestRecalculationCompoundingTypeFeedback);
 
-        this.compoundingTypeContainer = new WebMarkupContainer("compoundingTypeContainer");
-        this.compoundingContainer.add(this.compoundingTypeContainer);
+        this.interestRecalculationCompoundingDayBlock = new WebMarkupContainer("interestRecalculationCompoundingDayBlock");
+        this.interestRecalculationCompoundingDayBlock.setOutputMarkupId(true);
+        this.form.add(this.interestRecalculationCompoundingDayBlock);
+        this.interestRecalculationCompoundingDayContainer = new WebMarkupContainer("interestRecalculationCompoundingDayContainer");
+        this.interestRecalculationCompoundingDayBlock.add(this.interestRecalculationCompoundingDayContainer);
+        this.interestRecalculationCompoundingDayProvider = new FrequencyDayProvider();
+        this.interestRecalculationCompoundingDayField = new Select2SingleChoice<>("interestRecalculationCompoundingDayField", 0, new PropertyModel<>(this, "interestRecalculationCompoundingDayValue"), this.interestRecalculationCompoundingDayProvider);
+        this.interestRecalculationCompoundingDayField.setRequired(false);
+        this.interestRecalculationCompoundingDayField.add(new OnChangeAjaxBehavior());
+        this.interestRecalculationCompoundingDayContainer.add(this.interestRecalculationCompoundingDayField);
+        this.interestRecalculationCompoundingDayFeedback = new TextFeedbackPanel("interestRecalculationCompoundingDayFeedback", this.interestRecalculationCompoundingDayField);
+        this.interestRecalculationCompoundingDayContainer.add(this.interestRecalculationCompoundingDayFeedback);
 
-        this.compoundingTypeProvider = new FrequencyTypeProvider();
-        this.compoundingTypeField = new Select2SingleChoice<>("compoundingTypeField", 0,
-                new PropertyModel<>(this, "compoundingTypeValue"), this.compoundingTypeProvider);
-        this.compoundingTypeField.setRequired(false);
-        this.compoundingTypeField.add(new OnChangeAjaxBehavior());
-        this.compoundingTypeContainer.add(this.compoundingTypeField);
-        this.compoundingTypeFeedback = new TextFeedbackPanel("compoundingTypeFeedback", this.compoundingTypeField);
-        this.compoundingTypeContainer.add(this.compoundingTypeFeedback);
+        this.interestRecalculationCompoundingIntervalBlock = new WebMarkupContainer("interestRecalculationCompoundingIntervalBlock");
+        this.interestRecalculationCompoundingIntervalBlock.setOutputMarkupId(true);
+        this.form.add(this.interestRecalculationCompoundingIntervalBlock);
+        this.interestRecalculationCompoundingIntervalContainer = new WebMarkupContainer("interestRecalculationCompoundingIntervalContainer");
+        this.interestRecalculationCompoundingIntervalBlock.add(this.interestRecalculationCompoundingIntervalContainer);
+        this.interestRecalculationCompoundingIntervalField = new TextField<>("interestRecalculationCompoundingIntervalField", new PropertyModel<>(this, "interestRecalculationCompoundingIntervalValue"));
+        this.interestRecalculationCompoundingIntervalField.setRequired(false);
+        this.interestRecalculationCompoundingIntervalField.add(new OnChangeAjaxBehavior());
+        this.interestRecalculationCompoundingIntervalContainer.add(this.interestRecalculationCompoundingIntervalField);
+        this.interestRecalculationCompoundingIntervalFeedback = new TextFeedbackPanel("interestRecalculationCompoundingIntervalFeedback", this.interestRecalculationCompoundingIntervalField);
+        this.interestRecalculationCompoundingIntervalContainer.add(this.interestRecalculationCompoundingIntervalFeedback);
 
-        this.compoundingDayContainer = new WebMarkupContainer("compoundingDayContainer");
-        this.compoundingContainer.add(this.compoundingDayContainer);
+        this.interestRecalculationRecalculateBlock = new WebMarkupContainer("interestRecalculationRecalculateBlock");
+        this.interestRecalculationRecalculateBlock.setOutputMarkupId(true);
+        this.form.add(this.interestRecalculationRecalculateBlock);
+        this.interestRecalculationRecalculateContainer = new WebMarkupContainer("interestRecalculationRecalculateContainer");
+        this.interestRecalculationRecalculateBlock.add(this.interestRecalculationRecalculateContainer);
+        this.interestRecalculationRecalculateProvider = new FrequencyProvider();
+        this.interestRecalculationRecalculateField = new Select2SingleChoice<>("interestRecalculationRecalculateField", 0, new PropertyModel<>(this, "interestRecalculationRecalculateValue"), this.interestRecalculationRecalculateProvider);
+        this.interestRecalculationRecalculateField.setRequired(false);
+        this.interestRecalculationRecalculateField.add(new OnChangeAjaxBehavior(this::interestRecalculationRecalculateFieldUpdate));
+        this.interestRecalculationRecalculateContainer.add(this.interestRecalculationRecalculateField);
+        this.interestRecalculationRecalculateFeedback = new TextFeedbackPanel("interestRecalculationRecalculateFeedback", this.interestRecalculationRecalculateField);
+        this.interestRecalculationRecalculateContainer.add(this.interestRecalculationRecalculateFeedback);
 
-        this.compoundingDayProvider = new FrequencyDayProvider();
-        this.compoundingDayField = new Select2SingleChoice<>("compoundingDayField", 0,
-                new PropertyModel<>(this, "compoundingDayValue"), this.compoundingDayProvider);
-        this.compoundingDayField.setRequired(false);
-        this.compoundingDayField.add(new OnChangeAjaxBehavior());
-        this.compoundingDayContainer.add(this.compoundingDayField);
-        this.compoundingDayFeedback = new TextFeedbackPanel("compoundingDayFeedback", this.compoundingDayField);
-        this.compoundingDayContainer.add(this.compoundingDayFeedback);
+        this.interestRecalculationRecalculateTypeBlock = new WebMarkupContainer("interestRecalculationRecalculateTypeBlock");
+        this.interestRecalculationRecalculateTypeBlock.setOutputMarkupId(true);
+        this.form.add(this.interestRecalculationRecalculateTypeBlock);
+        this.interestRecalculationRecalculateTypeContainer = new WebMarkupContainer("interestRecalculationRecalculateTypeContainer");
+        this.interestRecalculationRecalculateTypeBlock.add(this.interestRecalculationRecalculateTypeContainer);
+        this.interestRecalculationRecalculateTypeProvider = new FrequencyTypeProvider();
+        this.interestRecalculationRecalculateTypeField = new Select2SingleChoice<>("interestRecalculationRecalculateTypeField", 0, new PropertyModel<>(this, "interestRecalculationRecalculateTypeValue"), this.interestRecalculationRecalculateTypeProvider);
+        this.interestRecalculationRecalculateTypeField.setRequired(false);
+        this.interestRecalculationRecalculateTypeField.add(new OnChangeAjaxBehavior());
+        this.interestRecalculationRecalculateTypeContainer.add(this.interestRecalculationRecalculateTypeField);
+        this.interestRecalculationRecalculateTypeFeedback = new TextFeedbackPanel("interestRecalculationRecalculateTypeFeedback", this.interestRecalculationRecalculateTypeField);
+        this.interestRecalculationRecalculateTypeContainer.add(this.interestRecalculationRecalculateTypeFeedback);
 
-        this.compoundingIntervalContainer = new WebMarkupContainer("compoundingIntervalContainer");
-        this.recalculateInterestContainer.add(this.compoundingIntervalContainer);
+        this.interestRecalculationRecalculateDayBlock = new WebMarkupContainer("interestRecalculationRecalculateDayBlock");
+        this.interestRecalculationRecalculateDayBlock.setOutputMarkupId(true);
+        this.form.add(this.interestRecalculationRecalculateDayBlock);
+        this.interestRecalculationRecalculateDayContainer = new WebMarkupContainer("interestRecalculationRecalculateDayContainer");
+        this.interestRecalculationRecalculateDayBlock.add(this.interestRecalculationRecalculateDayContainer);
+        this.interestRecalculationRecalculateDayProvider = new FrequencyDayProvider();
+        this.interestRecalculationRecalculateDayField = new Select2SingleChoice<>("interestRecalculationRecalculateDayField", 0, new PropertyModel<>(this, "interestRecalculationRecalculateDayValue"), this.interestRecalculationRecalculateDayProvider);
+        this.interestRecalculationRecalculateDayField.setRequired(false);
+        this.interestRecalculationRecalculateDayField.add(new OnChangeAjaxBehavior());
+        this.interestRecalculationRecalculateDayContainer.add(this.interestRecalculationRecalculateDayField);
+        this.interestRecalculationRecalculateDayFeedback = new TextFeedbackPanel("interestRecalculationRecalculateDayFeedback", this.interestRecalculationRecalculateDayField);
+        this.interestRecalculationRecalculateDayContainer.add(this.interestRecalculationRecalculateDayFeedback);
 
-        this.compoundingIntervalField = new TextField<>("compoundingIntervalField",
-                new PropertyModel<>(this, "compoundingIntervalValue"));
-        this.compoundingIntervalField.setRequired(false);
-        this.compoundingIntervalField.add(new OnChangeAjaxBehavior());
-        this.compoundingIntervalContainer.add(this.compoundingIntervalField);
-        this.compoundingIntervalFeedback = new TextFeedbackPanel("compoundingIntervalFeedback",
-                this.compoundingIntervalField);
-        this.compoundingIntervalContainer.add(this.compoundingIntervalFeedback);
+        this.interestRecalculationRecalculateIntervalBlock = new WebMarkupContainer("interestRecalculationRecalculateIntervalBlock");
+        this.interestRecalculationRecalculateIntervalBlock.setOutputMarkupId(true);
+        this.form.add(this.interestRecalculationRecalculateIntervalBlock);
+        this.interestRecalculationRecalculateIntervalContainer = new WebMarkupContainer("interestRecalculationRecalculateIntervalContainer");
+        this.interestRecalculationRecalculateIntervalBlock.add(this.interestRecalculationRecalculateIntervalContainer);
+        this.interestRecalculationRecalculateIntervalField = new TextField<>("interestRecalculationRecalculateIntervalField", new PropertyModel<>(this, "interestRecalculationRecalculateIntervalValue"));
+        this.interestRecalculationRecalculateIntervalField.setRequired(false);
+        this.interestRecalculationRecalculateIntervalField.add(new OnChangeAjaxBehavior());
+        this.interestRecalculationRecalculateIntervalContainer.add(this.interestRecalculationRecalculateIntervalField);
+        this.interestRecalculationRecalculateIntervalFeedback = new TextFeedbackPanel("interestRecalculationRecalculateIntervalFeedback", this.interestRecalculationRecalculateIntervalField);
+        this.interestRecalculationRecalculateIntervalContainer.add(this.interestRecalculationRecalculateIntervalFeedback);
 
-        this.recalculateProvider = new FrequencyProvider();
-        this.recalculateField = new Select2SingleChoice<>("recalculateField", 0,
-                new PropertyModel<>(this, "recalculateValue"), this.recalculateProvider);
-        this.recalculateField.setRequired(false);
-        this.recalculateField.add(new OnChangeAjaxBehavior(this::recalculateFieldUpdate));
-        this.recalculateInterestContainer.add(this.recalculateField);
-        this.recalculateFeedback = new TextFeedbackPanel("recalculateFeedback", this.recalculateField);
-        this.recalculateInterestContainer.add(this.recalculateFeedback);
-
-        this.recalculateTypeContainer = new WebMarkupContainer("recalculateTypeContainer");
-        this.recalculateInterestContainer.add(this.recalculateTypeContainer);
-
-        this.recalculateTypeProvider = new FrequencyTypeProvider();
-        this.recalculateTypeField = new Select2SingleChoice<>("recalculateTypeField", 0,
-                new PropertyModel<>(this, "recalculateTypeValue"), this.recalculateTypeProvider);
-        this.recalculateTypeField.setRequired(false);
-        this.recalculateTypeField.add(new OnChangeAjaxBehavior());
-        this.recalculateTypeContainer.add(this.recalculateTypeField);
-        this.recalculateTypeFeedback = new TextFeedbackPanel("recalculateTypeFeedback", this.recalculateTypeField);
-        this.recalculateTypeContainer.add(this.recalculateTypeFeedback);
-
-        this.recalculateDayContainer = new WebMarkupContainer("recalculateDayContainer");
-        this.recalculateInterestContainer.add(this.recalculateDayContainer);
-
-        this.recalculateDayProvider = new FrequencyDayProvider();
-        this.recalculateDayField = new Select2SingleChoice<>("recalculateDayField", 0,
-                new PropertyModel<>(this, "recalculateDayValue"), this.recalculateDayProvider);
-        this.recalculateDayField.setRequired(false);
-        this.recalculateDayField.add(new OnChangeAjaxBehavior());
-        this.recalculateDayContainer.add(this.recalculateDayField);
-        this.recalculateDayFeedback = new TextFeedbackPanel("recalculateDayFeedback", this.recalculateDayField);
-        this.recalculateDayContainer.add(this.recalculateDayFeedback);
-
-        this.recalculateIntervalContainer = new WebMarkupContainer("recalculateIntervalContainer");
-        this.recalculateInterestContainer.add(this.recalculateIntervalContainer);
-
-        this.recalculateIntervalField = new TextField<>("recalculateIntervalField",
-                new PropertyModel<>(this, "recalculateIntervalValue"));
-        this.recalculateIntervalField.setRequired(false);
-        this.recalculateIntervalField.add(new OnChangeAjaxBehavior());
-        this.recalculateIntervalContainer.add(this.recalculateIntervalField);
-        this.recalculateIntervalFeedback = new TextFeedbackPanel("recalculateIntervalFeedback",
-                this.recalculateIntervalField);
-        this.recalculateIntervalContainer.add(this.recalculateIntervalFeedback);
-
-        this.arrearsRecognizationBasedOnOriginalScheduleField = new CheckBox(
-                "arrearsRecognizationBasedOnOriginalScheduleField",
-                new PropertyModel<>(this, "arrearsRecognizationBasedOnOriginalScheduleValue"));
-        this.arrearsRecognizationBasedOnOriginalScheduleField.setRequired(false);
-        this.arrearsRecognizationBasedOnOriginalScheduleField.add(new OnChangeAjaxBehavior());
-        this.recalculateInterestContainer.add(this.arrearsRecognizationBasedOnOriginalScheduleField);
-        this.arrearsRecognizationBasedOnOriginalScheduleFeedback = new TextFeedbackPanel(
-                "arrearsRecognizationBasedOnOriginalScheduleFeedback",
-                this.arrearsRecognizationBasedOnOriginalScheduleField);
-        this.recalculateInterestContainer.add(this.arrearsRecognizationBasedOnOriginalScheduleFeedback);
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock = new WebMarkupContainer("interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock");
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock.setOutputMarkupId(true);
+        this.form.add(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock);
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleContainer = new WebMarkupContainer("interestRecalculationArrearsRecognizationBasedOnOriginalScheduleContainer");
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock.add(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleContainer);
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleField = new CheckBox( "interestRecalculationArrearsRecognizationBasedOnOriginalScheduleField", new PropertyModel<>(this, "interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue"));
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleField.setRequired(false);
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleField.add(new OnChangeAjaxBehavior());
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleContainer.add(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleField);
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleFeedback = new TextFeedbackPanel("interestRecalculationArrearsRecognizationBasedOnOriginalScheduleFeedback", this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleField);
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleContainer.add(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleFeedback);
 
     }
 
-    protected boolean recalculateFieldUpdate(AjaxRequestTarget target) {
-        this.recalculateTypeContainer.setVisible(false);
-        this.recalculateDayContainer.setVisible(false);
-        this.recalculateIntervalContainer.setVisible(false);
+    protected boolean interestRecalculationRecalculateFieldUpdate(AjaxRequestTarget target) {
+        this.interestRecalculationRecalculateTypeContainer.setVisible(false);
+        this.interestRecalculationRecalculateDayContainer.setVisible(false);
+        this.interestRecalculationRecalculateIntervalContainer.setVisible(false);
 
-        if (this.recalculateValue != null) {
-            Frequency frequency = Frequency.valueOf(this.recalculateValue.getId());
+        if (this.interestRecalculationRecalculateValue != null) {
+            Frequency frequency = Frequency.valueOf(this.interestRecalculationRecalculateValue.getId());
             if (frequency == Frequency.Daily || frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
-                this.recalculateIntervalContainer.setVisible(true);
+                this.interestRecalculationRecalculateIntervalContainer.setVisible(true);
             }
             if (frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
-                this.recalculateDayContainer.setVisible(true);
+                this.interestRecalculationRecalculateDayContainer.setVisible(true);
             }
             if (frequency == Frequency.Monthly) {
-                this.recalculateTypeContainer.setVisible(true);
+                this.interestRecalculationRecalculateTypeContainer.setVisible(true);
             }
         }
 
-        target.add(this.form);
+        target.add(this.interestRecalculationRecalculateTypeBlock);
+        target.add(this.interestRecalculationRecalculateDayBlock);
+        target.add(this.interestRecalculationRecalculateIntervalBlock);
         return false;
     }
 
-    protected boolean compoundingFieldUpdate(AjaxRequestTarget target) {
+    protected boolean interestRecalculationCompoundingFieldUpdate(AjaxRequestTarget target) {
 
-        this.compoundingTypeContainer.setVisible(false);
-        this.compoundingDayContainer.setVisible(false);
-        this.compoundingIntervalContainer.setVisible(false);
+        this.interestRecalculationCompoundingTypeContainer.setVisible(false);
+        this.interestRecalculationCompoundingDayContainer.setVisible(false);
+        this.interestRecalculationCompoundingIntervalContainer.setVisible(false);
 
         if (this.interestRecalculationCompoundingOnValue != null && InterestRecalculationCompound
                 .valueOf(this.interestRecalculationCompoundingOnValue.getId()) != InterestRecalculationCompound.None) {
-            this.compoundingContainer.setVisible(true);
+            this.interestRecalculationCompoundingContainer.setVisible(true);
 
-            if (this.compoundingValue != null) {
-                Frequency frequency = Frequency.valueOf(this.compoundingValue.getId());
+            if (this.interestRecalculationCompoundingValue != null) {
+                Frequency frequency = Frequency.valueOf(this.interestRecalculationCompoundingValue.getId());
                 if (frequency == Frequency.Daily || frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
-                    this.compoundingIntervalContainer.setVisible(true);
+                    this.interestRecalculationCompoundingIntervalContainer.setVisible(true);
                 }
                 if (frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
-                    this.compoundingDayContainer.setVisible(true);
+                    this.interestRecalculationCompoundingDayContainer.setVisible(true);
                 }
                 if (frequency == Frequency.Monthly) {
-                    this.compoundingTypeContainer.setVisible(true);
+                    this.interestRecalculationCompoundingTypeContainer.setVisible(true);
                 }
             }
         } else {
-            this.compoundingContainer.setVisible(false);
+            this.interestRecalculationCompoundingContainer.setVisible(false);
         }
-        target.add(this.form);
+	target.add(this.interestRecalculationCompoundingTypeBlock);
+	target.add(this.interestRecalculationCompoundingDayBlock);
+	target.add(this.interestRecalculationCompoundingIntervalBlock);
+	target.add(this.interestRecalculationCompoundingBlock);
         return false;
     }
 
     protected void initSetting() {
 
-        this.amortizationProvider = new AmortizationProvider();
-        this.amortizationField = new Select2SingleChoice<>("amortizationField", 0,
-                new PropertyModel<>(this, "amortizationValue"), this.amortizationProvider);
-        this.amortizationField.setRequired(true);
-        this.amortizationField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.amortizationField);
-        this.amortizationFeedback = new TextFeedbackPanel("amortizationFeedback", this.amortizationField);
-        this.form.add(this.amortizationFeedback);
+	this.settingAmortizationBlock = new WebMarkupContainer("settingAmortizationBlock");
+	this.settingAmortizationBlock.setOutputMarkupId(true);
+	this.form.add(this.settingAmortizationBlock);
+	this.settingAmortizationContainer = new WebMarkupContainer("settingAmortizationContainer");
+	this.settingAmortizationBlock.add(this.settingAmortizationContainer);
+        this.settingAmortizationProvider = new AmortizationProvider();
+        this.settingAmortizationField = new Select2SingleChoice<>("settingAmortizationField", 0, new PropertyModel<>(this, "settingAmortizationValue"), this.settingAmortizationProvider);
+        this.settingAmortizationField.setRequired(true);
+        this.settingAmortizationField.add(new OnChangeAjaxBehavior());
+        this.settingAmortizationContainer.add(this.settingAmortizationField);
+        this.settingAmortizationFeedback = new TextFeedbackPanel("settingAmortizationFeedback", this.settingAmortizationField);
+        this.settingAmortizationContainer.add(this.settingAmortizationFeedback);
 
-        this.interestMethodProvider = new InterestMethodProvider();
-        this.interestMethodField = new Select2SingleChoice<>("interestMethodField", 0,
-                new PropertyModel<>(this, "interestMethodValue"), this.interestMethodProvider);
-        this.interestMethodField.setRequired(true);
-        this.interestMethodField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.interestMethodField);
-        this.interestMethodFeedback = new TextFeedbackPanel("interestMethodFeedback", this.interestMethodField);
-        this.form.add(this.interestMethodFeedback);
+        this.settingInterestMethodBlock = new WebMarkupContainer("settingInterestMethodBlock");
+        this.settingInterestMethodBlock.setOutputMarkupId(true);
+        this.form.add(this.settingInterestMethodBlock);
+        this.settingInterestMethodContainer = new WebMarkupContainer("settingInterestMethodContainer");
+        this.settingInterestMethodBlock.add(this.settingInterestMethodContainer);
+        this.settingInterestMethodProvider = new InterestMethodProvider();
+        this.settingInterestMethodField = new Select2SingleChoice<>("settingInterestMethodField", 0, new PropertyModel<>(this, "settingInterestMethodValue"), this.settingInterestMethodProvider);
+        this.settingInterestMethodField.setRequired(true);
+        this.settingInterestMethodField.add(new OnChangeAjaxBehavior());
+        this.settingInterestMethodContainer.add(this.settingInterestMethodField);
+        this.settingInterestMethodFeedback = new TextFeedbackPanel("settingInterestMethodFeedback", this.settingInterestMethodField);
+        this.settingInterestMethodContainer.add(this.settingInterestMethodFeedback);
 
-        this.interestCalculationPeriodProvider = new InterestCalculationPeriodProvider();
-        this.interestCalculationPeriodField = new Select2SingleChoice<>("interestCalculationPeriodField", 0,
-                new PropertyModel<>(this, "interestCalculationPeriodValue"), this.interestCalculationPeriodProvider);
-        this.interestCalculationPeriodField.setRequired(true);
-        this.interestCalculationPeriodField.add(new OnChangeAjaxBehavior(this::interestCalculationPeriodFieldUpdate));
-        this.form.add(this.interestCalculationPeriodField);
-        this.interestCalculationPeriodFeedback = new TextFeedbackPanel("interestCalculationPeriodFeedback",
-                this.interestCalculationPeriodField);
-        this.form.add(this.interestCalculationPeriodFeedback);
+        this.settingInterestCalculationPeriodBlock = new WebMarkupContainer("settingInterestCalculationPeriodBlock");
+        this.settingInterestCalculationPeriodBlock.setOutputMarkupId(true);
+        this.form.add(this.settingInterestCalculationPeriodBlock);
+        this.settingInterestCalculationPeriodContainer = new WebMarkupContainer("settingInterestCalculationPeriodContainer");
+        this.settingInterestCalculationPeriodBlock.add(this.settingInterestCalculationPeriodContainer);
+        this.settingInterestCalculationPeriodProvider = new InterestCalculationPeriodProvider();
+        this.settingInterestCalculationPeriodField = new Select2SingleChoice<>("settingInterestCalculationPeriodField", 0, new PropertyModel<>(this, "settingInterestCalculationPeriodValue"), this.settingInterestCalculationPeriodProvider);
+        this.settingInterestCalculationPeriodField.setRequired(true);
+        this.settingInterestCalculationPeriodField.add(new OnChangeAjaxBehavior(this::settingInterestCalculationPeriodFieldUpdate));
+        this.settingInterestCalculationPeriodContainer.add(this.settingInterestCalculationPeriodField);
+        this.settingInterestCalculationPeriodFeedback = new TextFeedbackPanel("settingInterestCalculationPeriodFeedback", this.settingInterestCalculationPeriodField);
+        this.settingInterestCalculationPeriodContainer.add(this.settingInterestCalculationPeriodFeedback);
 
-        this.calculateInterestForExactDaysInPartialPeriodContainer = new WebMarkupContainer(
-                "calculateInterestForExactDaysInPartialPeriodContainer");
-        this.form.add(this.calculateInterestForExactDaysInPartialPeriodContainer);
+        this.settingCalculateInterestForExactDaysInPartialPeriodContainer = new WebMarkupContainer("settingCalculateInterestForExactDaysInPartialPeriodContainer");
+        this.form.add(this.settingCalculateInterestForExactDaysInPartialPeriodContainer);
 
-        this.calculateInterestForExactDaysInPartialPeriodField = new CheckBox(
-                "calculateInterestForExactDaysInPartialPeriodField",
-                new PropertyModel<>(this, "calculateInterestForExactDaysInPartialPeriodValue"));
-        this.calculateInterestForExactDaysInPartialPeriodField.setRequired(false);
-        this.calculateInterestForExactDaysInPartialPeriodField.add(new OnChangeAjaxBehavior());
-        this.calculateInterestForExactDaysInPartialPeriodContainer
-                .add(this.calculateInterestForExactDaysInPartialPeriodField);
-        this.calculateInterestForExactDaysInPartialPeriodFeedback = new TextFeedbackPanel(
-                "calculateInterestForExactDaysInPartialPeriodFeedback",
-                this.calculateInterestForExactDaysInPartialPeriodField);
-        this.calculateInterestForExactDaysInPartialPeriodContainer
-                .add(this.calculateInterestForExactDaysInPartialPeriodFeedback);
+        this.settingCalculateInterestForExactDaysInPartialPeriodBlock = new WebMarkupContainer("settingCalculateInterestForExactDaysInPartialPeriodBlock");
+        this.settingCalculateInterestForExactDaysInPartialPeriodBlock.setOutputMarkupId(true);
+        this.form.add(this.settingCalculateInterestForExactDaysInPartialPeriodBlock);
+        this.settingCalculateInterestForExactDaysInPartialPeriodContainer = new WebMarkupContainer("settingCalculateInterestForExactDaysInPartialPeriodContainer");
+        this.settingCalculateInterestForExactDaysInPartialPeriodBlock.add(this.settingCalculateInterestForExactDaysInPartialPeriodContainer);
+        this.settingCalculateInterestForExactDaysInPartialPeriodField = new CheckBox("settingCalculateInterestForExactDaysInPartialPeriodField", new PropertyModel<>(this, "settingCalculateInterestForExactDaysInPartialPeriodValue"));
+        this.settingCalculateInterestForExactDaysInPartialPeriodField.setRequired(false);
+        this.settingCalculateInterestForExactDaysInPartialPeriodField.add(new OnChangeAjaxBehavior());
+        this.settingCalculateInterestForExactDaysInPartialPeriodContainer.add(this.settingCalculateInterestForExactDaysInPartialPeriodField);
+        this.settingCalculateInterestForExactDaysInPartialPeriodFeedback = new TextFeedbackPanel("settingCalculateInterestForExactDaysInPartialPeriodFeedback", this.settingCalculateInterestForExactDaysInPartialPeriodField);
+        this.settingCalculateInterestForExactDaysInPartialPeriodContainer.add(this.settingCalculateInterestForExactDaysInPartialPeriodFeedback);
 
-        this.repaymentStrategyProvider = new RepaymentStrategyProvider();
-        this.repaymentStrategyField = new Select2SingleChoice<>("repaymentStrategyField", 0,
-                new PropertyModel<>(this, "repaymentStrategyValue"), this.repaymentStrategyProvider);
-        this.repaymentStrategyField.setRequired(true);
-        this.repaymentStrategyField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.repaymentStrategyField);
-        this.repaymentStrategyFeedback = new TextFeedbackPanel("repaymentStrategyFeedback",
-                this.repaymentStrategyField);
-        this.form.add(this.repaymentStrategyFeedback);
+        this.settingRepaymentStrategyBlock = new WebMarkupContainer("settingRepaymentStrategyBlock");
+        this.settingRepaymentStrategyBlock.setOutputMarkupId(true);
+        this.form.add(this.settingRepaymentStrategyBlock);
+        this.settingRepaymentStrategyContainer = new WebMarkupContainer("settingRepaymentStrategyContainer");
+        this.settingRepaymentStrategyBlock.add(this.settingRepaymentStrategyContainer);
+        this.settingRepaymentStrategyProvider = new RepaymentStrategyProvider();
+        this.settingRepaymentStrategyField = new Select2SingleChoice<>("settingRepaymentStrategyField", 0, new PropertyModel<>(this, "settingRepaymentStrategyValue"), this.settingRepaymentStrategyProvider);
+        this.settingRepaymentStrategyField.setRequired(true);
+        this.settingRepaymentStrategyField.add(new OnChangeAjaxBehavior());
+        this.settingRepaymentStrategyContainer.add(this.settingRepaymentStrategyField);
+        this.settingRepaymentStrategyFeedback = new TextFeedbackPanel("settingRepaymentStrategyFeedback", this.settingRepaymentStrategyField);
+        this.settingRepaymentStrategyContainer.add(this.settingRepaymentStrategyFeedback);
 
-        this.moratoriumPrincipalField = new TextField<>("moratoriumPrincipalField",
-                new PropertyModel<>(this, "moratoriumPrincipalValue"));
-        this.moratoriumPrincipalField.setRequired(false);
-        this.moratoriumPrincipalField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.moratoriumPrincipalField);
-        this.moratoriumPrincipalFeedback = new TextFeedbackPanel("moratoriumPrincipalFeedback",
-                this.moratoriumPrincipalField);
-        this.form.add(this.moratoriumPrincipalFeedback);
+        this.settingMoratoriumPrincipalBlock = new WebMarkupContainer("settingMoratoriumPrincipalBlock");
+        this.settingMoratoriumPrincipalBlock.setOutputMarkupId(true);
+        this.form.add(this.settingMoratoriumPrincipalBlock);
+        this.settingMoratoriumPrincipalContainer = new WebMarkupContainer("settingMoratoriumPrincipalContainer");
+        this.settingMoratoriumPrincipalBlock.add(this.settingMoratoriumPrincipalContainer);
+        this.settingMoratoriumPrincipalField = new TextField<>("settingMoratoriumPrincipalField", new PropertyModel<>(this, "settingMoratoriumPrincipalValue"));
+        this.settingMoratoriumPrincipalField.setRequired(false);
+        this.settingMoratoriumPrincipalField.add(new OnChangeAjaxBehavior());
+        this.settingMoratoriumPrincipalContainer.add(this.settingMoratoriumPrincipalField);
+        this.settingMoratoriumPrincipalFeedback = new TextFeedbackPanel("settingMoratoriumPrincipalFeedback", this.settingMoratoriumPrincipalField);
+        this.settingMoratoriumPrincipalContainer.add(this.settingMoratoriumPrincipalFeedback);
 
-        this.moratoriumInterestField = new TextField<>("moratoriumInterestField",
-                new PropertyModel<>(this, "moratoriumInterestValue"));
-        this.moratoriumInterestField.setRequired(false);
-        this.moratoriumInterestField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.moratoriumInterestField);
-        this.moratoriumInterestFeedback = new TextFeedbackPanel("moratoriumInterestFeedback",
-                this.moratoriumInterestField);
-        this.form.add(this.moratoriumInterestFeedback);
+        this.settingMoratoriumInterestBlock = new WebMarkupContainer("settingMoratoriumInterestBlock");
+        this.settingMoratoriumInterestBlock.setOutputMarkupId(true);
+	this.form.add(this.settingMoratoriumInterestBlock);
+	this.settingMoratoriumInterestContainer = new WebMarkupContainer("settingMoratoriumInterestContainer");
+        this.settingMoratoriumInterestBlock.add(this.settingMoratoriumInterestContainer);
+        this.settingMoratoriumInterestField = new TextField<>("settingMoratoriumInterestField", new PropertyModel<>(this, "settingMoratoriumInterestValue"));
+        this.settingMoratoriumInterestField.setRequired(false);
+        this.settingMoratoriumInterestField.add(new OnChangeAjaxBehavior());
+        this.settingMoratoriumInterestContainer.add(this.settingMoratoriumInterestField);
+        this.settingMoratoriumInterestFeedback = new TextFeedbackPanel("settingMoratoriumInterestFeedback", this.settingMoratoriumInterestField);
+        this.settingMoratoriumInterestContainer.add(this.settingMoratoriumInterestFeedback);
 
-        this.interestFreePeriodField = new TextField<>("interestFreePeriodField",
-                new PropertyModel<>(this, "interestFreePeriodValue"));
-        this.interestFreePeriodField.setRequired(false);
-        this.interestFreePeriodField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.interestFreePeriodField);
-        this.interestFreePeriodFeedback = new TextFeedbackPanel("interestFreePeriodFeedback",
-                this.interestFreePeriodField);
-        this.form.add(this.interestFreePeriodFeedback);
+        this.settingInterestFreePeriodBlock = new WebMarkupContainer("settingInterestFreePeriodBlock");
+        this.settingInterestFreePeriodBlock.setOutputMarkupId(true);
+        this.form.add(this.settingInterestFreePeriodBlock);
+        this.settingInterestFreePeriodContainer = new WebMarkupContainer("settingInterestFreePeriodContainer");
+        this.settingInterestFreePeriodBlock.add(this.settingInterestFreePeriodContainer);
+        this.settingInterestFreePeriodField = new TextField<>("settingInterestFreePeriodField", new PropertyModel<>(this, "settingInterestFreePeriodValue"));
+        this.settingInterestFreePeriodField.setRequired(false);
+        this.settingInterestFreePeriodField.add(new OnChangeAjaxBehavior());
+        this.settingInterestFreePeriodContainer.add(this.settingInterestFreePeriodField);
+        this.settingInterestFreePeriodFeedback = new TextFeedbackPanel("settingInterestFreePeriodFeedback", this.settingInterestFreePeriodField);
+        this.settingInterestFreePeriodContainer.add(this.settingInterestFreePeriodFeedback);
 
-        this.arrearsToleranceField = new TextField<>("arrearsToleranceField",
-                new PropertyModel<>(this, "arrearsToleranceValue"));
-        this.arrearsToleranceField.setRequired(false);
-        this.arrearsToleranceField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.arrearsToleranceField);
-        this.arrearsToleranceFeedback = new TextFeedbackPanel("arrearsToleranceFeedback", this.arrearsToleranceField);
-        this.form.add(this.arrearsToleranceFeedback);
+        this.settingArrearsToleranceBlock = new WebMarkupContainer("settingArrearsToleranceBlock");
+        this.settingArrearsToleranceBlock.setOutputMarkupId(true);
+        this.form.add(this.settingArrearsToleranceBlock);
+        this.settingArrearsToleranceContainer = new WebMarkupContainer("settingArrearsToleranceContainer");
+        this.settingArrearsToleranceBlock.add(this.settingArrearsToleranceContainer);
+        this.settingArrearsToleranceField = new TextField<>("settingArrearsToleranceField", new PropertyModel<>(this, "settingArrearsToleranceValue"));
+        this.settingArrearsToleranceField.setRequired(false);
+        this.settingArrearsToleranceField.add(new OnChangeAjaxBehavior());
+        this.settingArrearsToleranceContainer.add(this.settingArrearsToleranceField);
+        this.settingArrearsToleranceFeedback = new TextFeedbackPanel("settingArrearsToleranceFeedback", this.settingArrearsToleranceField);
+        this.settingArrearsToleranceContainer.add(this.settingArrearsToleranceFeedback);
 
-        this.dayInYearProvider = new DayInYearProvider();
-        this.dayInYearField = new Select2SingleChoice<>("dayInYearField", 0,
-                new PropertyModel<>(this, "dayInYearValue"), this.dayInYearProvider);
-        this.dayInYearField.setRequired(true);
-        this.dayInYearField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.dayInYearField);
-        this.dayInYearFeedback = new TextFeedbackPanel("dayInYearFeedback", this.dayInYearField);
-        this.form.add(this.dayInYearFeedback);
+        this.settingDayInYearBlock = new WebMarkupContainer("settingDayInYearBlock");
+        this.settingDayInYearBlock.setOutputMarkupId(true);
+        this.form.add(this.settingDayInYearBlock);
+        this.settingDayInYearContainer = new WebMarkupContainer("settingDayInYearContainer");
+        this.settingDayInYearBlock.add(this.settingDayInYearContainer);
+        this.settingDayInYearProvider = new DayInYearProvider();
+        this.settingDayInYearField = new Select2SingleChoice<>("settingDayInYearField", 0, new PropertyModel<>(this, "settingDayInYearValue"), this.settingDayInYearProvider);
+        this.settingDayInYearField.setRequired(true);
+        this.settingDayInYearField.add(new OnChangeAjaxBehavior());
+        this.settingDayInYearContainer.add(this.settingDayInYearField);
+        this.settingDayInYearFeedback = new TextFeedbackPanel("settingDayInYearFeedback", this.settingDayInYearField);
+        this.settingDayInYearContainer.add(this.settingDayInYearFeedback);
 
-        this.dayInMonthProvider = new DayInMonthProvider();
-        this.dayInMonthField = new Select2SingleChoice<>("dayInMonthField", 0,
-                new PropertyModel<>(this, "dayInMonthValue"), this.dayInMonthProvider);
-        this.dayInMonthField.setRequired(true);
-        this.dayInMonthField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.dayInMonthField);
-        this.dayInMonthFeedback = new TextFeedbackPanel("dayInMonthFeedback", this.dayInMonthField);
-        this.form.add(this.dayInMonthFeedback);
+        this.settingDayInMonthBlock = new WebMarkupContainer("settingDayInMonthBlock");
+        this.settingDayInMonthBlock.setOutputMarkupId(true);
+        this.form.add(this.settingDayInMonthBlock);
+        this.settingDayInMonthContainer = new WebMarkupContainer("settingDayInMonthContainer");
+        this.settingDayInMonthBlock.add(this.settingDayInMonthContainer);
+        this.settingDayInMonthProvider = new DayInMonthProvider();
+        this.settingDayInMonthField = new Select2SingleChoice<>("settingDayInMonthField", 0, new PropertyModel<>(this, "settingDayInMonthValue"), this.settingDayInMonthProvider);
+        this.settingDayInMonthField.setRequired(true);
+        this.settingDayInMonthField.add(new OnChangeAjaxBehavior());
+        this.settingDayInMonthContainer.add(this.settingDayInMonthField);
+        this.settingDayInMonthFeedback = new TextFeedbackPanel("settingDayInMonthFeedback", this.settingDayInMonthField);
+        this.settingDayInMonthContainer.add(this.settingDayInMonthFeedback);
 
-        this.allowFixingOfTheInstallmentAmountField = new CheckBox("allowFixingOfTheInstallmentAmountField",
-                new PropertyModel<>(this, "allowFixingOfTheInstallmentAmountValue"));
-        this.allowFixingOfTheInstallmentAmountField.setRequired(false);
-        this.allowFixingOfTheInstallmentAmountField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.allowFixingOfTheInstallmentAmountField);
-        this.allowFixingOfTheInstallmentAmountFeedback = new TextFeedbackPanel(
-                "allowFixingOfTheInstallmentAmountFeedback", this.allowFixingOfTheInstallmentAmountField);
-        this.form.add(this.allowFixingOfTheInstallmentAmountFeedback);
+        this.settingAllowFixingOfTheInstallmentAmountBlock = new WebMarkupContainer("settingAllowFixingOfTheInstallmentAmountBlock");
+        this.settingAllowFixingOfTheInstallmentAmountBlock.setOutputMarkupId(true);
+        this.form.add(this.settingAllowFixingOfTheInstallmentAmountBlock);
+        this.settingAllowFixingOfTheInstallmentAmountContainer = new WebMarkupContainer("settingAllowFixingOfTheInstallmentAmountContainer");
+        this.settingAllowFixingOfTheInstallmentAmountBlock.add(this.settingAllowFixingOfTheInstallmentAmountContainer);
+        this.settingAllowFixingOfTheInstallmentAmountField = new CheckBox("settingAllowFixingOfTheInstallmentAmountField", new PropertyModel<>(this, "settingAllowFixingOfTheInstallmentAmountValue"));
+        this.settingAllowFixingOfTheInstallmentAmountField.setRequired(false);
+        this.settingAllowFixingOfTheInstallmentAmountField.add(new OnChangeAjaxBehavior());
+        this.settingAllowFixingOfTheInstallmentAmountContainer.add(this.settingAllowFixingOfTheInstallmentAmountField);
+        this.settingAllowFixingOfTheInstallmentAmountFeedback = new TextFeedbackPanel("settingAllowFixingOfTheInstallmentAmountFeedback", this.settingAllowFixingOfTheInstallmentAmountField);
+        this.settingAllowFixingOfTheInstallmentAmountContainer.add(this.settingAllowFixingOfTheInstallmentAmountFeedback);
 
-        this.numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField = new TextField<>(
-                "numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField",
-                new PropertyModel<>(this, "numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue"));
-        this.numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField.setRequired(false);
-        this.numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField);
-        this.numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback = new TextFeedbackPanel(
-                "numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback",
-                this.numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField);
-        this.form.add(this.numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback);
+        this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock = new WebMarkupContainer("settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock");
+        this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock.setOutputMarkupId(true);
+        this.form.add(this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock);
+        this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsContainer = new WebMarkupContainer("settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsContainer");
+        this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock.add(this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsContainer);
+        this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField = new TextField<>("settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField", new PropertyModel<>(this, "settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue"));
+        this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField.setRequired(false);
+        this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField.add(new OnChangeAjaxBehavior());
+        this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsContainer.add(this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField);
+        this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback = new TextFeedbackPanel("settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback", this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField);
+        this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsContainer.add(this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback);
 
-        this.maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField = new TextField<>(
-                "maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField",
-                new PropertyModel<>(this, "maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue"));
-        this.maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField.setRequired(false);
-        this.maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField);
-        this.maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback = new TextFeedbackPanel(
-                "maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback",
-                this.maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField);
-        this.form.add(this.maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback);
+        this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock = new WebMarkupContainer("settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock");
+        this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock.setOutputMarkupId(true);
+        this.form.add(this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock);
+        this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaContainer = new WebMarkupContainer("settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaContainer");
+        this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock.add(this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaContainer);
+        this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField = new TextField<>("settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField", new PropertyModel<>(this, "settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue"));
+        this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField.setRequired(false);
+        this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField.add(new OnChangeAjaxBehavior());
+        this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaContainer.add(this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField);
+        this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback = new TextFeedbackPanel("settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback", this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField);
+        this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaContainer.add(this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback);
 
-        this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField = new CheckBox(
-                "accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField",
-                new PropertyModel<>(this, "accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue"));
-        this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField.setRequired(false);
-        this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField);
-        this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback = new TextFeedbackPanel(
-                "accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback",
-                this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField);
-        this.form.add(this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback);
+        this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock = new WebMarkupContainer("settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock");
+        this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock.setOutputMarkupId(true);
+        this.form.add(this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock);
+        this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedContainer = new WebMarkupContainer("settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedContainer");
+        this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock.add(this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedContainer);
+        this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField = new CheckBox("settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField", new PropertyModel<>(this, "settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue"));
+        this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField.setRequired(false);
+        this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField.add(new OnChangeAjaxBehavior());
+        this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedContainer.add(this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField);
+        this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback = new TextFeedbackPanel("settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback", this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField);
+        this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedContainer.add(this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback);
 
-        this.principalThresholdForLastInstalmentField = new TextField<>("principalThresholdForLastInstalmentField",
-                new PropertyModel<>(this, "principalThresholdForLastInstalmentValue"));
-        this.principalThresholdForLastInstalmentField.setRequired(false);
-        this.principalThresholdForLastInstalmentField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.principalThresholdForLastInstalmentField);
-        this.principalThresholdForLastInstalmentFeedback = new TextFeedbackPanel(
-                "principalThresholdForLastInstalmentFeedback", this.principalThresholdForLastInstalmentField);
-        this.form.add(this.principalThresholdForLastInstalmentFeedback);
+        this.settingPrincipalThresholdForLastInstalmentBlock = new WebMarkupContainer("settingPrincipalThresholdForLastInstalmentBlock");
+        this.settingPrincipalThresholdForLastInstalmentBlock.setOutputMarkupId(true);
+        this.form.add(this.settingPrincipalThresholdForLastInstalmentBlock);
+        this.settingPrincipalThresholdForLastInstalmentContainer = new WebMarkupContainer("settingPrincipalThresholdForLastInstalmentContainer");
+        this.settingPrincipalThresholdForLastInstalmentBlock.add(this.settingPrincipalThresholdForLastInstalmentContainer);
+        this.settingPrincipalThresholdForLastInstalmentField = new TextField<>("settingPrincipalThresholdForLastInstalmentField", new PropertyModel<>(this, "settingPrincipalThresholdForLastInstalmentValue"));
+        this.settingPrincipalThresholdForLastInstalmentField.setRequired(false);
+        this.settingPrincipalThresholdForLastInstalmentField.add(new OnChangeAjaxBehavior());
+        this.settingPrincipalThresholdForLastInstalmentContainer.add(this.settingPrincipalThresholdForLastInstalmentField);
+        this.settingPrincipalThresholdForLastInstalmentFeedback = new TextFeedbackPanel("settingPrincipalThresholdForLastInstalmentFeedback", this.settingPrincipalThresholdForLastInstalmentField);
+        this.settingPrincipalThresholdForLastInstalmentContainer.add(this.settingPrincipalThresholdForLastInstalmentFeedback);
 
-        this.variableInstallmentsAllowedField = new CheckBox("variableInstallmentsAllowedField",
-                new PropertyModel<>(this, "variableInstallmentsAllowedValue"));
-        this.variableInstallmentsAllowedField.setRequired(false);
-        this.variableInstallmentsAllowedField
-                .add(new OnChangeAjaxBehavior(this::variableInstallmentsAllowedFieldUpdate));
-        this.form.add(this.variableInstallmentsAllowedField);
-        this.variableInstallmentsAllowedFeedback = new TextFeedbackPanel("variableInstallmentsAllowedFeedback",
-                this.variableInstallmentsAllowedField);
-        this.form.add(this.variableInstallmentsAllowedFeedback);
+	this.settingVariableInstallmentsAllowedBlock = new WebMarkupContainer("settingVariableInstallmentsAllowedBlock");
+	this.settingVariableInstallmentsAllowedBlock.setOutputMarkupId(true);
+	this.form.add(this.settingVariableInstallmentsAllowedBlock);
+        this.settingVariableInstallmentsAllowedContainer = new WebMarkupContainer("settingVariableInstallmentsAllowedContainer");
+        this.settingVariableInstallmentsAllowedBlock.add(this.settingVariableInstallmentsAllowedContainer);
+        this.settingVariableInstallmentsAllowedField = new CheckBox("settingVariableInstallmentsAllowedField", new PropertyModel<>(this, "settingVariableInstallmentsAllowedValue"));
+        this.settingVariableInstallmentsAllowedField.setRequired(false);
+        this.settingVariableInstallmentsAllowedField.add(new OnChangeAjaxBehavior(this::settingVariableInstallmentsAllowedFieldUpdate));
+        this.settingVariableInstallmentsAllowedContainer.add(this.settingVariableInstallmentsAllowedField);
+        this.settingVariableInstallmentsAllowedFeedback = new TextFeedbackPanel("settingVariableInstallmentsAllowedFeedback", this.settingVariableInstallmentsAllowedField);
+        this.settingVariableInstallmentsAllowedContainer.add(this.settingVariableInstallmentsAllowedFeedback);
 
-        this.variableInstallmentsAllowedContainer = new WebMarkupContainer("variableInstallmentsAllowedContainer");
-        this.form.add(this.variableInstallmentsAllowedContainer);
+        this.settingVariableInstallmentsMinimumBlock = new WebMarkupContainer("settingVariableInstallmentsMinimumBlock");
+        this.settingVariableInstallmentsMinimumBlock.setOutputMarkupId(true);
+        this.form.add(this.settingVariableInstallmentsMinimumBlock);
+        this.settingVariableInstallmentsMinimumContainer = new WebMarkupContainer("settingVariableInstallmentsMinimumContainer");
+        this.settingVariableInstallmentsMinimumBlock.add(this.settingVariableInstallmentsMinimumContainer);
+        this.settingVariableInstallmentsMinimumField = new TextField<>("settingVariableInstallmentsMinimumField", new PropertyModel<>(this, "settingVariableInstallmentsMinimumValue"));
+        this.settingVariableInstallmentsMinimumField.setRequired(false);
+        this.settingVariableInstallmentsMinimumField.add(new OnChangeAjaxBehavior());
+        this.settingVariableInstallmentsMinimumContainer.add(this.settingVariableInstallmentsMinimumField);
+        this.settingVariableInstallmentsMinimumFeedback = new TextFeedbackPanel("settingVariableInstallmentsMinimumFeedback", this.settingVariableInstallmentsMinimumField);
+        this.settingVariableInstallmentsMinimumContainer.add(this.settingVariableInstallmentsMinimumFeedback);
 
-        this.variableInstallmentsMinimumField = new TextField<>("variableInstallmentsMinimumField",
-                new PropertyModel<>(this, "variableInstallmentsMinimumValue"));
-        this.variableInstallmentsMinimumField.setRequired(false);
-        this.variableInstallmentsMinimumField.add(new OnChangeAjaxBehavior());
-        this.variableInstallmentsAllowedContainer.add(this.variableInstallmentsMinimumField);
-        this.variableInstallmentsMinimumFeedback = new TextFeedbackPanel("variableInstallmentsMinimumFeedback",
-                this.variableInstallmentsMinimumField);
-        this.variableInstallmentsAllowedContainer.add(this.variableInstallmentsMinimumFeedback);
+        this.settingVariableInstallmentsMaximumBlock = new WebMarkupContainer("settingVariableInstallmentsMaximumBlock");
+        this.settingVariableInstallmentsMaximumBlock.setOutputMarkupId(true);
+        this.form.add(this.settingVariableInstallmentsMaximumBlock);
+        this.settingVariableInstallmentsMaximumContainer = new WebMarkupContainer("settingVariableInstallmentsMaximumContainer");
+        this.settingVariableInstallmentsMaximumBlock.add(this.settingVariableInstallmentsMaximumContainer);
+        this.settingVariableInstallmentsMaximumField = new TextField<>("settingVariableInstallmentsMaximumField", new PropertyModel<>(this, "settingVariableInstallmentsMaximumValue"));
+        this.settingVariableInstallmentsMaximumField.setRequired(false);
+        this.settingVariableInstallmentsMaximumField.add(new OnChangeAjaxBehavior());
+        this.settingVariableInstallmentsMaximumContainer.add(this.settingVariableInstallmentsMaximumField);
+        this.settingVariableInstallmentsMaximumFeedback = new TextFeedbackPanel("settingVariableInstallmentsMaximumFeedback", this.settingVariableInstallmentsMaximumField);
+        this.settingVariableInstallmentsMaximumContainer.add(this.settingVariableInstallmentsMaximumFeedback);
 
-        this.variableInstallmentsMaximumField = new TextField<>("variableInstallmentsMaximumField",
-                new PropertyModel<>(this, "variableInstallmentsMaximumValue"));
-        this.variableInstallmentsMaximumField.setRequired(false);
-        this.variableInstallmentsMaximumField.add(new OnChangeAjaxBehavior());
-        this.variableInstallmentsAllowedContainer.add(this.variableInstallmentsMaximumField);
-        this.variableInstallmentsMaximumFeedback = new TextFeedbackPanel("variableInstallmentsMaximumFeedback",
-                this.variableInstallmentsMaximumField);
-        this.variableInstallmentsAllowedContainer.add(this.variableInstallmentsMaximumFeedback);
-
-        this.allowedToBeUsedForProvidingTopupLoansField = new CheckBox("allowedToBeUsedForProvidingTopupLoansField",
-                new PropertyModel<>(this, "allowedToBeUsedForProvidingTopupLoansValue"));
-        this.allowedToBeUsedForProvidingTopupLoansField.setRequired(false);
-        this.allowedToBeUsedForProvidingTopupLoansField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.allowedToBeUsedForProvidingTopupLoansField);
-        this.allowedToBeUsedForProvidingTopupLoansFeedback = new TextFeedbackPanel(
-                "allowedToBeUsedForProvidingTopupLoansFeedback", this.allowedToBeUsedForProvidingTopupLoansField);
-        this.form.add(this.allowedToBeUsedForProvidingTopupLoansFeedback);
+        this.settingAllowedToBeUsedForProvidingTopupLoansBlock = new WebMarkupContainer("settingAllowedToBeUsedForProvidingTopupLoansBlock");
+        this.settingAllowedToBeUsedForProvidingTopupLoansBlock.setOutputMarkupId(true);
+        this.form.add(this.settingAllowedToBeUsedForProvidingTopupLoansBlock);
+        this.settingAllowedToBeUsedForProvidingTopupLoansContainer = new WebMarkupContainer("settingAllowedToBeUsedForProvidingTopupLoansContainer");
+        this.settingAllowedToBeUsedForProvidingTopupLoansBlock.add(this.settingAllowedToBeUsedForProvidingTopupLoansContainer);
+        this.settingAllowedToBeUsedForProvidingTopupLoansField = new CheckBox("settingAllowedToBeUsedForProvidingTopupLoansField", new PropertyModel<>(this, "settingAllowedToBeUsedForProvidingTopupLoansValue"));
+        this.settingAllowedToBeUsedForProvidingTopupLoansField.setRequired(false);
+        this.settingAllowedToBeUsedForProvidingTopupLoansField.add(new OnChangeAjaxBehavior());
+        this.settingAllowedToBeUsedForProvidingTopupLoansContainer.add(this.settingAllowedToBeUsedForProvidingTopupLoansField);
+        this.settingAllowedToBeUsedForProvidingTopupLoansFeedback = new TextFeedbackPanel("settingAllowedToBeUsedForProvidingTopupLoansFeedback", this.settingAllowedToBeUsedForProvidingTopupLoansField);
+        this.settingAllowedToBeUsedForProvidingTopupLoansContainer.add(this.settingAllowedToBeUsedForProvidingTopupLoansFeedback);
 
     }
 
     protected void initDefault() {
-        this.principalByLoanCycleContainer
-                .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
-        this.numberOfRepaymentByLoanCycleContainer
-                .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
-        this.nominalInterestRateByLoanCycleContainer
-                .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
+	termVaryBasedOnLoanCycleFieldUpdate(null);
+	
+        settingInterestCalculationPeriodFieldUpdate(null);
 
-        this.calculateInterestForExactDaysInPartialPeriodContainer
-                .setVisible(this.interestCalculationPeriodValue != null && InterestCalculationPeriod.valueOf(
-                        this.interestCalculationPeriodValue.getId()) == InterestCalculationPeriod.SameAsPayment);
+        interestRecalculationRecalculateInterestFieldUpdate(null);
 
-        this.recalculateInterestContainer
-                .setVisible(this.recalculateInterestValue != null && this.recalculateInterestValue);
-
-        this.compoundingTypeContainer.setVisible(false);
-        this.compoundingDayContainer.setVisible(false);
-        this.compoundingIntervalContainer.setVisible(false);
+        this.interestRecalculationCompoundingTypeContainer.setVisible(false);
+        this.interestRecalculationCompoundingDayContainer.setVisible(false);
+        this.interestRecalculationCompoundingIntervalContainer.setVisible(false);
 
         if (this.interestRecalculationCompoundingOnValue != null && InterestRecalculationCompound
                 .valueOf(this.interestRecalculationCompoundingOnValue.getId()) != InterestRecalculationCompound.None) {
-            this.compoundingContainer.setVisible(true);
+            this.interestRecalculationCompoundingContainer.setVisible(true);
 
-            if (this.compoundingValue != null) {
-                Frequency frequency = Frequency.valueOf(this.compoundingValue.getId());
+            if (this.interestRecalculationCompoundingValue != null) {
+                Frequency frequency = Frequency.valueOf(this.interestRecalculationCompoundingValue.getId());
                 if (frequency == Frequency.Daily || frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
-                    this.compoundingIntervalContainer.setVisible(true);
+                    this.interestRecalculationCompoundingIntervalContainer.setVisible(true);
                 }
                 if (frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
-                    this.compoundingDayContainer.setVisible(true);
+                    this.interestRecalculationCompoundingDayContainer.setVisible(true);
                 }
                 if (frequency == Frequency.Monthly) {
-                    this.compoundingTypeContainer.setVisible(true);
+                    this.interestRecalculationCompoundingTypeContainer.setVisible(true);
                 }
             }
         } else {
-            this.compoundingContainer.setVisible(false);
+            this.interestRecalculationCompoundingContainer.setVisible(false);
         }
 
-        this.recalculateTypeContainer.setVisible(false);
-        this.recalculateDayContainer.setVisible(false);
-        this.recalculateIntervalContainer.setVisible(false);
+        this.interestRecalculationRecalculateTypeContainer.setVisible(false);
+        this.interestRecalculationRecalculateDayContainer.setVisible(false);
+        this.interestRecalculationRecalculateIntervalContainer.setVisible(false);
 
-        if (this.recalculateValue != null) {
-            Frequency frequency = Frequency.valueOf(this.recalculateValue.getId());
+        if (this.interestRecalculationRecalculateValue != null) {
+            Frequency frequency = Frequency.valueOf(this.interestRecalculationRecalculateValue.getId());
             if (frequency == Frequency.Daily || frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
-                this.recalculateIntervalContainer.setVisible(true);
+                this.interestRecalculationRecalculateIntervalContainer.setVisible(true);
             }
             if (frequency == Frequency.Weekly || frequency == Frequency.Monthly) {
-                this.recalculateDayContainer.setVisible(true);
+                this.interestRecalculationRecalculateDayContainer.setVisible(true);
             }
             if (frequency == Frequency.Monthly) {
-                this.recalculateTypeContainer.setVisible(true);
+                this.interestRecalculationRecalculateTypeContainer.setVisible(true);
             }
         }
 
-        this.placeGuaranteeFundsOnHoldContainer
-                .setVisible(this.placeGuaranteeFundsOnHoldValue != null && this.placeGuaranteeFundsOnHoldValue);
+//        this.placeGuaranteeFundsOnHoldContainer
+//                .setVisible(this.guaranteeRequirementPlaceGuaranteeFundsOnHoldValue != null && this.guaranteeRequirementPlaceGuaranteeFundsOnHoldValue);
 
-        this.enableMultipleDisbursalContainer
-                .setVisible(this.enableMultipleDisbursalValue != null && this.enableMultipleDisbursalValue);
+        this.loanTrancheDetailEnableMultipleDisbursalContainer
+                .setVisible(this.loanTrancheDetailEnableMultipleDisbursalValue != null && this.loanTrancheDetailEnableMultipleDisbursalValue);
 
-        this.allowOverridingSelectTermsAndSettingsInLoanAccountContainer
-                .setVisible(this.allowOverridingSelectTermsAndSettingsInLoanAccountValue != null
-                        && this.allowOverridingSelectTermsAndSettingsInLoanAccountValue);
+        this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountContainer
+                .setVisible(this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue != null
+                        && this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue);
 
         this.cashContainer.setVisible(false);
         this.periodicContainer.setVisible(false);
@@ -2360,414 +2646,494 @@ public class LoanCreatePage extends Page {
             this.upfrontContainer.setVisible(true);
         }
 
-        this.variableInstallmentsAllowedContainer
-                .setVisible(this.variableInstallmentsAllowedValue != null && this.variableInstallmentsAllowedValue);
+        settingVariableInstallmentsAllowedFieldUpdate(null);
     }
 
     protected void initDetail() {
-        this.productNameField = new TextField<>("productNameField", new PropertyModel<>(this, "productNameValue"));
-        this.productNameField.setRequired(true);
-        this.productNameField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.productNameField);
-        this.productNameFeedback = new TextFeedbackPanel("productNameFeedback", this.productNameField);
-        this.form.add(this.productNameFeedback);
+	this.detailProductNameBlock = new WebMarkupContainer("detailProductNameBlock");
+	this.detailProductNameBlock.setOutputMarkupId(true);
+	this.form.add(this.detailProductNameBlock);
+	this.detailProductNameContainer = new WebMarkupContainer("detailProductNameContainer");
+	this.detailProductNameBlock.add(this.detailProductNameContainer);
+        this.detailProductNameField = new TextField<>("detailProductNameField", new PropertyModel<>(this, "detailProductNameValue"));
+        this.detailProductNameField.setRequired(true);
+        this.detailProductNameContainer.add(this.detailProductNameField);
+        this.detailProductNameFeedback = new TextFeedbackPanel("detailProductNameFeedback", this.detailProductNameField);
+        this.detailProductNameContainer.add(this.detailProductNameFeedback);
 
-        this.shortNameField = new TextField<>("shortNameField", new PropertyModel<>(this, "shortNameValue"));
-        this.shortNameField.setRequired(true);
-        this.shortNameField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.shortNameField);
-        this.shortNameFeedback = new TextFeedbackPanel("shortNameFeedback", this.shortNameField);
-        this.form.add(this.shortNameFeedback);
+	this.detailShortNameBlock = new WebMarkupContainer("detailShortNameBlock");
+	this.detailShortNameBlock.setOutputMarkupId(true);
+	this.form.add(this.detailShortNameBlock);
+	this.detailShortNameContainer = new WebMarkupContainer("detailShortNameContainer");
+	this.detailShortNameBlock.add(this.detailShortNameContainer);
+        this.detailShortNameField = new TextField<>("detailShortNameField", new PropertyModel<>(this, "detailShortNameValue"));
+        this.detailShortNameField.setRequired(true);
+        this.detailShortNameContainer.add(this.detailShortNameField);
+        this.detailShortNameFeedback = new TextFeedbackPanel("detailShortNameFeedback", this.detailShortNameField);
+        this.detailShortNameContainer.add(this.detailShortNameFeedback);
 
-        this.descriptionField = new TextField<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
-        this.descriptionField.setRequired(false);
-        this.descriptionField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.descriptionField);
-        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-        this.form.add(this.descriptionFeedback);
+        this.detailDescriptionBlock = new WebMarkupContainer("detailDescriptionBlock");
+        this.detailDescriptionBlock.setOutputMarkupId(true);
+        this.form.add(this.detailDescriptionBlock);
+        this.detailDescriptionContainer = new WebMarkupContainer("detailDescriptionContainer");
+        this.detailDescriptionBlock.add(this.detailDescriptionContainer);
+        this.detailDescriptionField = new TextField<>("detailDescriptionField", new PropertyModel<>(this, "detailDescriptionValue"));
+        this.detailDescriptionField.setRequired(false);
+        this.detailDescriptionContainer.add(this.detailDescriptionField);
+        this.detailDescriptionFeedback = new TextFeedbackPanel("detailDescriptionFeedback", this.detailDescriptionField);
+        this.detailDescriptionContainer.add(this.detailDescriptionFeedback);
 
-        this.fundProvider = new SingleChoiceProvider("m_fund", "id", "name");
-        this.fundField = new Select2SingleChoice<>("fundField", 0, new PropertyModel<>(this, "fundValue"),
-                this.fundProvider);
-        this.fundField.setRequired(false);
-        this.fundField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.fundField);
-        this.fundFeedback = new TextFeedbackPanel("fundFeedback", this.fundField);
-        this.form.add(this.fundFeedback);
+        this.detailFundProvider = new SingleChoiceProvider("m_fund", "id", "name");
+        this.detailFundBlock = new WebMarkupContainer("detailFundBlock");
+        this.detailFundBlock.setOutputMarkupId(true);
+        this.form.add(this.detailFundBlock);
+        this.detailFundContainer = new WebMarkupContainer("detailFundContainer");
+        this.detailFundBlock.add(this.detailFundContainer);
+        this.detailFundField = new Select2SingleChoice<>("detailFundField", 0, new PropertyModel<>(this, "detailFundValue"), this.detailFundProvider);
+        this.detailFundField.setRequired(false);
+        this.detailFundContainer.add(this.detailFundField);
+        this.detailFundFeedback = new TextFeedbackPanel("detailFundFeedback", this.detailFundField);
+        this.detailFundContainer.add(this.detailFundFeedback);
 
-        this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
-        this.startDateField.setRequired(false);
-        this.startDateField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.startDateField);
-        this.startDateFeedback = new TextFeedbackPanel("startDateFeedback", this.startDateField);
-        this.form.add(this.startDateFeedback);
+        this.detailStartDateBlock = new WebMarkupContainer("detailStartDateBlock");
+        this.detailStartDateBlock.setOutputMarkupId(true);
+        this.form.add(this.detailStartDateBlock);
+        this.detailStartDateContainer = new WebMarkupContainer("detailStartDateContainer");
+        this.detailStartDateBlock.add(this.detailStartDateContainer);
+        this.detailStartDateField = new DateTextField("detailStartDateField", new PropertyModel<>(this, "detailStartDateValue"));
+        this.detailStartDateField.setRequired(false);
+        this.detailStartDateContainer.add(this.detailStartDateField);
+        this.detailStartDateFeedback = new TextFeedbackPanel("detailStartDateFeedback", this.detailStartDateField);
+        this.detailStartDateContainer.add(this.detailStartDateFeedback);
 
-        this.closeDateField = new DateTextField("closeDateField", new PropertyModel<>(this, "closeDateValue"));
-        this.closeDateField.setRequired(false);
-        this.closeDateField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.closeDateField);
-        this.closeDateFeedback = new TextFeedbackPanel("closeDateFeedback", this.closeDateField);
-        this.form.add(this.closeDateFeedback);
+        this.detailCloseDateBlock = new WebMarkupContainer("detailCloseDateBlock");
+        this.detailCloseDateBlock.setOutputMarkupId(true);
+        this.form.add(this.detailCloseDateBlock);
+        this.detailCloseDateContainer = new WebMarkupContainer("detailCloseDateContainer");
+        this.detailCloseDateBlock.add(this.detailCloseDateContainer);
+        this.detailCloseDateField = new DateTextField("detailCloseDateField", new PropertyModel<>(this, "detailCloseDateValue"));
+        this.detailCloseDateField.setRequired(false);
+        this.detailCloseDateContainer.add(this.detailCloseDateField);
+        this.detailCloseDateFeedback = new TextFeedbackPanel("detailCloseDateFeedback", this.detailCloseDateField);
+        this.detailCloseDateContainer.add(this.detailCloseDateFeedback);
 
-        this.includeInCustomerLoanCounterField = new CheckBox("includeInCustomerLoanCounterField",
-                new PropertyModel<>(this, "includeInCustomerLoanCounterValue"));
-        this.includeInCustomerLoanCounterField.setRequired(false);
-        this.includeInCustomerLoanCounterField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.includeInCustomerLoanCounterField);
-        this.includeInCustomerLoanCounterFeedback = new TextFeedbackPanel("includeInCustomerLoanCounterFeedback",
-                this.includeInCustomerLoanCounterField);
-        this.form.add(this.includeInCustomerLoanCounterFeedback);
+        this.detailIncludeInCustomerLoanCounterBlock = new WebMarkupContainer("detailIncludeInCustomerLoanCounterBlock");
+        this.detailIncludeInCustomerLoanCounterBlock.setOutputMarkupId(true);
+        this.form.add(this.detailIncludeInCustomerLoanCounterBlock);
+        this.detailIncludeInCustomerLoanCounterContainer = new WebMarkupContainer("detailIncludeInCustomerLoanCounterContainer");
+        this.detailIncludeInCustomerLoanCounterBlock.add(this.detailIncludeInCustomerLoanCounterContainer);
+        this.detailIncludeInCustomerLoanCounterField = new CheckBox("detailIncludeInCustomerLoanCounterField", new PropertyModel<>(this, "detailIncludeInCustomerLoanCounterValue"));
+        this.detailIncludeInCustomerLoanCounterField.setRequired(false);
+        this.detailIncludeInCustomerLoanCounterContainer.add(this.detailIncludeInCustomerLoanCounterField);
+        this.detailIncludeInCustomerLoanCounterFeedback = new TextFeedbackPanel("detailIncludeInCustomerLoanCounterFeedback", this.detailIncludeInCustomerLoanCounterField);
+        this.detailIncludeInCustomerLoanCounterContainer.add(this.detailIncludeInCustomerLoanCounterFeedback);
     }
 
     protected void initCurrency() {
-        this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name",
-                "concat(name,' [', code,']')");
-        this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"),
-                this.currencyProvider);
-        this.currencyField.add(new OnChangeAjaxBehavior());
-        this.currencyField.setRequired(true);
-        this.form.add(this.currencyField);
-        this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
-        this.form.add(this.currencyFeedback);
+	
+	this.currencyCodeBlock = new WebMarkupContainer("currencyCodeBlock");
+	this.currencyCodeBlock.setOutputMarkupId(true);
+	this.form.add(this.currencyCodeBlock);
+	this.currencyCodeContainer = new WebMarkupContainer("currencyCodeContainer");
+	this.currencyCodeBlock.add(this.currencyCodeContainer);
+        this.currencyCodeProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", 0, new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
+        this.currencyCodeField.setRequired(true);
+        this.currencyCodeContainer.add(this.currencyCodeField);
+        this.currencyCodeFeedback = new TextFeedbackPanel("currencyCodeFeedback", this.currencyCodeField);
+        this.currencyCodeContainer.add(this.currencyCodeFeedback);
 
-        this.decimalPlaceField = new TextField<>("decimalPlaceField", new PropertyModel<>(this, "decimalPlaceValue"));
-        this.decimalPlaceField.setRequired(true);
-        this.decimalPlaceField.add(new OnChangeAjaxBehavior());
-        this.decimalPlaceField.add(RangeValidator.range((int) 0, (int) 6));
-        this.form.add(this.decimalPlaceField);
-        this.decimalPlaceFeedback = new TextFeedbackPanel("decimalPlaceFeedback", this.decimalPlaceField);
-        this.form.add(this.decimalPlaceFeedback);
+        this.currencyDecimalPlaceBlock = new WebMarkupContainer("currencyDecimalPlaceBlock");
+        this.currencyDecimalPlaceBlock.setOutputMarkupId(true);
+        this.form.add(this.currencyDecimalPlaceBlock);
+        this.currencyDecimalPlaceContainer = new WebMarkupContainer("currencyDecimalPlaceContainer");
+        this.currencyDecimalPlaceBlock.add(this.currencyDecimalPlaceContainer);
+        this.currencyDecimalPlaceField = new TextField<>("currencyDecimalPlaceField", new PropertyModel<>(this, "currencyDecimalPlaceValue"));
+        this.currencyDecimalPlaceField.setRequired(true);
+        this.currencyDecimalPlaceField.add(new OnChangeAjaxBehavior());
+        this.currencyDecimalPlaceField.add(RangeValidator.range((int) 0, (int) 6));
+        this.currencyDecimalPlaceContainer.add(this.currencyDecimalPlaceField);
+        this.currencyDecimalPlaceFeedback = new TextFeedbackPanel("currencyDecimalPlaceFeedback", this.currencyDecimalPlaceField);
+        this.currencyDecimalPlaceContainer.add(this.currencyDecimalPlaceFeedback);
 
-        this.currencyInMultipleOfField = new TextField<>("currencyInMultipleOfField",
-                new PropertyModel<>(this, "currencyInMultipleOfValue"));
+        this.currencyInMultipleOfBlock = new WebMarkupContainer("currencyInMultipleOfBlock");
+        this.currencyInMultipleOfBlock.setOutputMarkupId(true);
+	this.form.add(this.currencyInMultipleOfBlock);
+	this.currencyInMultipleOfContainer = new WebMarkupContainer("currencyInMultipleOfContainer");
+        this.currencyInMultipleOfBlock.add(this.currencyInMultipleOfContainer);
+        this.currencyInMultipleOfField = new TextField<>("currencyInMultipleOfField", new PropertyModel<>(this, "currencyInMultipleOfValue"));
         this.currencyInMultipleOfField.setRequired(false);
         this.currencyInMultipleOfField.add(new OnChangeAjaxBehavior());
         this.currencyInMultipleOfField.add(RangeValidator.minimum((int) 1));
-        this.form.add(this.currencyInMultipleOfField);
-        this.currencyInMultipleOfFeedback = new TextFeedbackPanel("currencyInMultipleOfFeedback",
-                this.currencyInMultipleOfField);
-        this.form.add(this.currencyInMultipleOfFeedback);
+        this.currencyInMultipleOfContainer.add(this.currencyInMultipleOfField);
+        this.currencyInMultipleOfFeedback = new TextFeedbackPanel("currencyInMultipleOfFeedback", this.currencyInMultipleOfField);
+        this.currencyInMultipleOfContainer.add(this.currencyInMultipleOfFeedback);
 
-        this.installmentInMultipleOfField = new TextField<>("installmentInMultipleOfField",
-                new PropertyModel<>(this, "installmentInMultipleOfValue"));
-        this.installmentInMultipleOfField.setRequired(false);
-        this.installmentInMultipleOfField.add(new OnChangeAjaxBehavior());
-        this.installmentInMultipleOfField.add(RangeValidator.minimum((int) 1));
-        this.form.add(this.installmentInMultipleOfField);
-        this.installmentInMultipleOfFeedback = new TextFeedbackPanel("installmentInMultipleOfFeedback",
-                this.installmentInMultipleOfField);
-        this.form.add(this.installmentInMultipleOfFeedback);
+        this.currencyInstallmentInMultipleOfBlock = new WebMarkupContainer("currencyInstallmentInMultipleOfBlock");
+        this.currencyInstallmentInMultipleOfBlock.setOutputMarkupId(true);
+        this.form.add(this.currencyInstallmentInMultipleOfBlock);
+        this.currencyInstallmentInMultipleOfContainer = new WebMarkupContainer("currencyInstallmentInMultipleOfContainer");
+        this.currencyInstallmentInMultipleOfBlock.add(this.currencyInstallmentInMultipleOfContainer);
+        this.currencyInstallmentInMultipleOfField = new TextField<>("currencyInstallmentInMultipleOfField", new PropertyModel<>(this, "currencyInstallmentInMultipleOfValue"));
+        this.currencyInstallmentInMultipleOfField.setRequired(false);
+        this.currencyInstallmentInMultipleOfField.add(new OnChangeAjaxBehavior());
+        this.currencyInstallmentInMultipleOfField.add(RangeValidator.minimum((int) 1));
+        this.currencyInstallmentInMultipleOfContainer.add(this.currencyInstallmentInMultipleOfField);
+        this.currencyInstallmentInMultipleOfFeedback = new TextFeedbackPanel("currencyInstallmentInMultipleOfFeedback", this.currencyInstallmentInMultipleOfField);
+        this.currencyInstallmentInMultipleOfContainer.add(this.currencyInstallmentInMultipleOfFeedback);
     }
 
     protected void initTerms() {
 
-        this.termVaryBasedOnLoanCycleField = new CheckBox("termVaryBasedOnLoanCycleField",
-                new PropertyModel<>(this, "termVaryBasedOnLoanCycleValue"));
+	this.termVaryBasedOnLoanCycleBlock = new WebMarkupContainer("termVaryBasedOnLoanCycleBlock");
+	this.termVaryBasedOnLoanCycleBlock.setOutputMarkupId(true);
+	this.form.add(this.termVaryBasedOnLoanCycleBlock);
+	this.termVaryBasedOnLoanCycleContainer = new WebMarkupContainer("termVaryBasedOnLoanCycleContainer");
+	this.termVaryBasedOnLoanCycleBlock.add(this.termVaryBasedOnLoanCycleContainer);
+        this.termVaryBasedOnLoanCycleField = new CheckBox("termVaryBasedOnLoanCycleField", new PropertyModel<>(this, "termVaryBasedOnLoanCycleValue"));
         this.termVaryBasedOnLoanCycleField.setRequired(false);
         this.termVaryBasedOnLoanCycleField.add(new OnChangeAjaxBehavior(this::termVaryBasedOnLoanCycleFieldUpdate));
-        this.form.add(this.termVaryBasedOnLoanCycleField);
-        this.termVaryBasedOnLoanCycleFeedback = new TextFeedbackPanel("termVaryBasedOnLoanCycleFeedback",
-                this.termVaryBasedOnLoanCycleField);
-        this.form.add(this.termVaryBasedOnLoanCycleFeedback);
+        this.termVaryBasedOnLoanCycleContainer.add(this.termVaryBasedOnLoanCycleField);
+        this.termVaryBasedOnLoanCycleFeedback = new TextFeedbackPanel("termVaryBasedOnLoanCycleFeedback", this.termVaryBasedOnLoanCycleField);
+        this.termVaryBasedOnLoanCycleContainer.add(this.termVaryBasedOnLoanCycleFeedback);
 
-        this.principalMinimumField = new TextField<>("principalMinimumField",
-                new PropertyModel<>(this, "principalMinimumValue"));
-        this.principalMinimumField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.principalMinimumField);
-        this.principalMinimumFeedback = new TextFeedbackPanel("principalMinimumFeedback", this.principalMinimumField);
-        this.form.add(this.principalMinimumFeedback);
+        this.termPrincipalMinimumBlock = new WebMarkupContainer("termPrincipalMinimumBlock");
+        this.termPrincipalMinimumBlock.setOutputMarkupId(true);
+        this.form.add(this.termPrincipalMinimumBlock);
+        this.termPrincipalMinimumContainer = new WebMarkupContainer("termPrincipalMinimumContainer");
+        this.termPrincipalMinimumBlock.add(this.termPrincipalMinimumContainer);
+        this.termPrincipalMinimumField = new TextField<>("termPrincipalMinimumField", new PropertyModel<>(this, "termPrincipalMinimumValue"));
+        this.termPrincipalMinimumField.add(new OnChangeAjaxBehavior());
+        this.termPrincipalMinimumContainer.add(this.termPrincipalMinimumField);
+        this.termPrincipalMinimumFeedback = new TextFeedbackPanel("termPrincipalMinimumFeedback", this.termPrincipalMinimumField);
+        this.termPrincipalMinimumContainer.add(this.termPrincipalMinimumFeedback);
 
-        this.principalDefaultField = new TextField<>("principalDefaultField",
-                new PropertyModel<>(this, "principalDefaultValue"));
-        this.principalDefaultField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.principalDefaultField);
-        this.principalDefaultFeedback = new TextFeedbackPanel("principalDefaultFeedback", this.principalDefaultField);
-        this.form.add(this.principalDefaultFeedback);
+        this.termPrincipalDefaultBlock = new WebMarkupContainer("termPrincipalDefaultBlock");
+        this.termPrincipalDefaultBlock.setOutputMarkupId(true);
+        this.form.add(this.termPrincipalDefaultBlock);
+        this.termPrincipalDefaultContainer = new WebMarkupContainer("termPrincipalDefaultContainer");
+        this.termPrincipalDefaultBlock.add(this.termPrincipalDefaultContainer);
+        this.termPrincipalDefaultField = new TextField<>("termPrincipalDefaultField", new PropertyModel<>(this, "termPrincipalDefaultValue"));
+        this.termPrincipalDefaultField.add(new OnChangeAjaxBehavior());
+        this.termPrincipalDefaultContainer.add(this.termPrincipalDefaultField);
+        this.termPrincipalDefaultFeedback = new TextFeedbackPanel("termPrincipalDefaultFeedback", this.termPrincipalDefaultField);
+        this.termPrincipalDefaultContainer.add(this.termPrincipalDefaultFeedback);
 
-        this.principalMaximumField = new TextField<>("principalMaximumField",
-                new PropertyModel<>(this, "principalMaximumValue"));
-        this.principalMaximumField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.principalMaximumField);
-        this.principalMaximumFeedback = new TextFeedbackPanel("principalMaximumFeedback", this.principalMaximumField);
-        this.form.add(this.principalMaximumFeedback);
+        this.termPrincipalMaximumBlock = new WebMarkupContainer("termPrincipalMaximumBlock");
+        this.termPrincipalMaximumBlock.setOutputMarkupId(true);
+        this.form.add(this.termPrincipalMaximumBlock);
+        this.termPrincipalMaximumContainer = new WebMarkupContainer("termPrincipalMaximumContainer");
+        this.termPrincipalMaximumBlock.add(this.termPrincipalMaximumContainer);
+        this.termPrincipalMaximumField = new TextField<>("termPrincipalMaximumField", new PropertyModel<>(this, "termPrincipalMaximumValue"));
+        this.termPrincipalMaximumField.add(new OnChangeAjaxBehavior());
+        this.termPrincipalMaximumContainer.add(this.termPrincipalMaximumField);
+        this.termPrincipalMaximumFeedback = new TextFeedbackPanel("termPrincipalMaximumFeedback", this.termPrincipalMaximumField);
+        this.termPrincipalMaximumContainer.add(this.termPrincipalMaximumFeedback);
 
         {
-            this.principalByLoanCycleContainer = new WebMarkupContainer("principalByLoanCycleContainer");
-            this.form.add(this.principalByLoanCycleContainer);
+            this.termPrincipalByLoanCycleBlock = new WebMarkupContainer("termPrincipalByLoanCycleBlock");
+            this.termPrincipalByLoanCycleBlock.setOutputMarkupId(true);
+            this.form.add(this.termPrincipalByLoanCycleBlock);
+            this.termPrincipalByLoanCycleContainer = new WebMarkupContainer("termPrincipalByLoanCycleContainer");
+            this.termPrincipalByLoanCycleBlock.add(this.termPrincipalByLoanCycleContainer);
 
-            List<IColumn<Map<String, Object>, String>> principalByLoanCycleColumn = Lists.newArrayList();
-            principalByLoanCycleColumn
-                    .add(new TextColumn(Model.of("When"), "when", "when", this::principalByLoanCycleWhenColumn));
-            principalByLoanCycleColumn.add(
-                    new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle", this::principalByLoanCycleCycleColumn));
-            principalByLoanCycleColumn.add(
-                    new TextColumn(Model.of("Min"), "minimum", "minimum", this::principalByLoanCycleMinimumColumn));
-            principalByLoanCycleColumn.add(
-                    new TextColumn(Model.of("Default"), "default", "default", this::principalByLoanCycleDefaultColumn));
-            principalByLoanCycleColumn.add(
-                    new TextColumn(Model.of("Max"), "maximum", "maximum", this::principalByLoanCycleMaximumColumn));
-            principalByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"),
-                    this::principalByLoanCycleActionItem, this::principalByLoanCycleActionClick));
-            this.principalByLoanCycleProvider = new ListDataProvider(this.principalByLoanCycleValue);
-            this.principalByLoanCycleTable = new DataTable<>("principalByLoanCycleTable", principalByLoanCycleColumn,
-                    this.principalByLoanCycleProvider, 20);
-            this.principalByLoanCycleContainer.add(this.principalByLoanCycleTable);
-            this.principalByLoanCycleTable.addTopToolbar(
-                    new HeadersToolbar<>(this.principalByLoanCycleTable, this.principalByLoanCycleProvider));
-            this.principalByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.principalByLoanCycleTable));
+            List<IColumn<Map<String, Object>, String>> termPrincipalByLoanCycleColumn = Lists.newArrayList();
+            termPrincipalByLoanCycleColumn.add(new TextColumn(Model.of("When"), "when", "when", this::termPrincipalByLoanCycleWhenColumn));
+            termPrincipalByLoanCycleColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle", this::termPrincipalByLoanCycleCycleColumn));
+            termPrincipalByLoanCycleColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum", this::termPrincipalByLoanCycleMinimumColumn));
+            termPrincipalByLoanCycleColumn.add(new TextColumn(Model.of("Default"), "default", "default", this::termPrincipalByLoanCycleDefaultColumn));
+            termPrincipalByLoanCycleColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum", this::termPrincipalByLoanCycleMaximumColumn));
+            termPrincipalByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::termPrincipalByLoanCycleActionItem, this::termPrincipalByLoanCycleActionClick));
+            this.termPrincipalByLoanCycleProvider = new ListDataProvider(this.termPrincipalByLoanCycleValue);
+            this.termPrincipalByLoanCycleTable = new DataTable<>("termPrincipalByLoanCycleTable", termPrincipalByLoanCycleColumn, this.termPrincipalByLoanCycleProvider, 20);
+            this.termPrincipalByLoanCycleContainer.add(this.termPrincipalByLoanCycleTable);
+            this.termPrincipalByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(this.termPrincipalByLoanCycleTable, this.termPrincipalByLoanCycleProvider));
+            this.termPrincipalByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.termPrincipalByLoanCycleTable));
 
-            AjaxLink<Void> addLink = new AjaxLink<>("addLink");
-            addLink.setOnClick(this::principalByLoanCycleAddLinkClick);
-            this.principalByLoanCycleContainer.add(addLink);
+            this.termPrincipalByLoanCycleAddLink = new AjaxLink<>("termPrincipalByLoanCycleAddLink");
+            this.termPrincipalByLoanCycleAddLink.setOnClick(this::termPrincipalByLoanCycleAddLinkClick);
+            this.termPrincipalByLoanCycleContainer.add(this.termPrincipalByLoanCycleAddLink);
         }
 
-        this.numberOfRepaymentMinimumField = new TextField<>("numberOfRepaymentMinimumField",
-                new PropertyModel<>(this, "numberOfRepaymentMinimumValue"));
-        this.numberOfRepaymentMinimumField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.numberOfRepaymentMinimumField);
-        this.numberOfRepaymentMinimumFeedback = new TextFeedbackPanel("numberOfRepaymentMinimumFeedback",
-                this.numberOfRepaymentMinimumField);
-        this.form.add(this.numberOfRepaymentMinimumFeedback);
+        this.termNumberOfRepaymentMinimumBlock = new WebMarkupContainer("termNumberOfRepaymentMinimumBlock");
+        this.termNumberOfRepaymentMinimumBlock.setOutputMarkupId(true);
+        this.form.add(this.termNumberOfRepaymentMinimumBlock);
+        this.termNumberOfRepaymentMinimumContainer = new WebMarkupContainer("termNumberOfRepaymentMinimumContainer");
+        this.termNumberOfRepaymentMinimumBlock.add(this.termNumberOfRepaymentMinimumContainer);
+        this.termNumberOfRepaymentMinimumField = new TextField<>("termNumberOfRepaymentMinimumField", new PropertyModel<>(this, "termNumberOfRepaymentMinimumValue"));
+        this.termNumberOfRepaymentMinimumField.add(new OnChangeAjaxBehavior());
+        this.termNumberOfRepaymentMinimumContainer.add(this.termNumberOfRepaymentMinimumField);
+        this.termNumberOfRepaymentMinimumFeedback = new TextFeedbackPanel("termNumberOfRepaymentMinimumFeedback", this.termNumberOfRepaymentMinimumField);
+        this.termNumberOfRepaymentMinimumContainer.add(this.termNumberOfRepaymentMinimumFeedback);
 
-        this.numberOfRepaymentDefaultField = new TextField<>("numberOfRepaymentDefaultField",
-                new PropertyModel<>(this, "numberOfRepaymentDefaultValue"));
-        this.numberOfRepaymentDefaultField.add(new OnChangeAjaxBehavior());
-        this.numberOfRepaymentDefaultField.setRequired(true);
-        this.form.add(this.numberOfRepaymentDefaultField);
-        this.numberOfRepaymentDefaultFeedback = new TextFeedbackPanel("numberOfRepaymentDefaultFeedback",
-                this.numberOfRepaymentDefaultField);
-        this.form.add(this.numberOfRepaymentDefaultFeedback);
+        this.termNumberOfRepaymentDefaultBlock = new WebMarkupContainer("termNumberOfRepaymentDefaultBlock");
+        this.termNumberOfRepaymentDefaultBlock.setOutputMarkupId(true);
+        this.form.add(this.termNumberOfRepaymentDefaultBlock);
+        this.termNumberOfRepaymentDefaultContainer = new WebMarkupContainer("termNumberOfRepaymentDefaultContainer");
+        this.termNumberOfRepaymentDefaultBlock.add(this.termNumberOfRepaymentDefaultContainer);
+        this.termNumberOfRepaymentDefaultField = new TextField<>("termNumberOfRepaymentDefaultField", new PropertyModel<>(this, "termNumberOfRepaymentDefaultValue"));
+        this.termNumberOfRepaymentDefaultField.add(new OnChangeAjaxBehavior());
+        this.termNumberOfRepaymentDefaultField.setRequired(true);
+        this.termNumberOfRepaymentDefaultContainer.add(this.termNumberOfRepaymentDefaultField);
+        this.termNumberOfRepaymentDefaultFeedback = new TextFeedbackPanel("termNumberOfRepaymentDefaultFeedback", this.termNumberOfRepaymentDefaultField);
+        this.termNumberOfRepaymentDefaultContainer.add(this.termNumberOfRepaymentDefaultFeedback);
 
-        this.numberOfRepaymentMaximumField = new TextField<>("numberOfRepaymentMaximumField",
-                new PropertyModel<>(this, "numberOfRepaymentMaximumValue"));
-        this.numberOfRepaymentMaximumField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.numberOfRepaymentMaximumField);
-        this.numberOfRepaymentMaximumFeedback = new TextFeedbackPanel("numberOfRepaymentMaximumFeedback",
-                this.numberOfRepaymentMaximumField);
-        this.form.add(this.numberOfRepaymentMaximumFeedback);
+        this.termNumberOfRepaymentMaximumBlock = new WebMarkupContainer("termNumberOfRepaymentMaximumBlock");
+        this.termNumberOfRepaymentMaximumBlock.setOutputMarkupId(true);
+        this.form.add(this.termNumberOfRepaymentMaximumBlock);
+        this.termNumberOfRepaymentMaximumContainer = new WebMarkupContainer("termNumberOfRepaymentMaximumContainer");
+        this.termNumberOfRepaymentMaximumBlock.add(this.termNumberOfRepaymentMaximumContainer);
+        this.termNumberOfRepaymentMaximumField = new TextField<>("termNumberOfRepaymentMaximumField", new PropertyModel<>(this, "termNumberOfRepaymentMaximumValue"));
+        this.termNumberOfRepaymentMaximumField.add(new OnChangeAjaxBehavior());
+        this.termNumberOfRepaymentMaximumContainer.add(this.termNumberOfRepaymentMaximumField);
+        this.termNumberOfRepaymentMaximumFeedback = new TextFeedbackPanel("termNumberOfRepaymentMaximumFeedback", this.termNumberOfRepaymentMaximumField);
+        this.termNumberOfRepaymentMaximumContainer.add(this.termNumberOfRepaymentMaximumFeedback);
 
         {
-            this.numberOfRepaymentByLoanCycleContainer = new WebMarkupContainer(
-                    "numberOfRepaymentByLoanCycleContainer");
-            this.form.add(this.numberOfRepaymentByLoanCycleContainer);
+            this.termNumberOfRepaymentByLoanCycleBlock = new WebMarkupContainer("termNumberOfRepaymentByLoanCycleBlock");
+            this.termNumberOfRepaymentByLoanCycleBlock.setOutputMarkupId(true);
+            this.form.add(this.termNumberOfRepaymentByLoanCycleBlock);
+            this.termNumberOfRepaymentByLoanCycleContainer = new WebMarkupContainer("termNumberOfRepaymentByLoanCycleContainer");
+            this.termNumberOfRepaymentByLoanCycleBlock.add(this.termNumberOfRepaymentByLoanCycleContainer);
 
-            List<IColumn<Map<String, Object>, String>> numberOfRepaymentByLoanCycleColumn = Lists.newArrayList();
-            numberOfRepaymentByLoanCycleColumn.add(
-                    new TextColumn(Model.of("When"), "when", "when", this::numberOfRepaymentByLoanCycleWhenColumn));
-            numberOfRepaymentByLoanCycleColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle",
-                    this::numberOfRepaymentByLoanCycleCycleColumn));
-            numberOfRepaymentByLoanCycleColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum",
-                    this::numberOfRepaymentByLoanCycleMinimumColumn));
-            numberOfRepaymentByLoanCycleColumn.add(new TextColumn(Model.of("Default"), "default", "default",
-                    this::numberOfRepaymentByLoanCycleDefaultColumn));
-            numberOfRepaymentByLoanCycleColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum",
-                    this::numberOfRepaymentByLoanCycleMaximumColumn));
-            numberOfRepaymentByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"),
-                    this::numberOfRepaymentByLoanCycleActionItem, this::numberOfRepaymentByLoanCycleActionClick));
-            this.numberOfRepaymentByLoanCycleProvider = new ListDataProvider(this.numberOfRepaymentByLoanCycleValue);
-            this.numberOfRepaymentByLoanCycleTable = new DataTable<>("numberOfRepaymentByLoanCycleTable",
-                    numberOfRepaymentByLoanCycleColumn, this.numberOfRepaymentByLoanCycleProvider, 20);
-            this.numberOfRepaymentByLoanCycleContainer.add(this.numberOfRepaymentByLoanCycleTable);
-            this.numberOfRepaymentByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(
-                    this.numberOfRepaymentByLoanCycleTable, this.numberOfRepaymentByLoanCycleProvider));
-            this.numberOfRepaymentByLoanCycleTable
-                    .addBottomToolbar(new NoRecordsToolbar(this.numberOfRepaymentByLoanCycleTable));
+            List<IColumn<Map<String, Object>, String>> termNumberOfRepaymentByLoanCycleColumn = Lists.newArrayList();
+            termNumberOfRepaymentByLoanCycleColumn.add(new TextColumn(Model.of("When"), "when", "when", this::termNumberOfRepaymentByLoanCycleWhenColumn));
+            termNumberOfRepaymentByLoanCycleColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle", this::termNumberOfRepaymentByLoanCycleCycleColumn));
+            termNumberOfRepaymentByLoanCycleColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum", this::termNumberOfRepaymentByLoanCycleMinimumColumn));
+            termNumberOfRepaymentByLoanCycleColumn.add(new TextColumn(Model.of("Default"), "default", "default", this::termNumberOfRepaymentByLoanCycleDefaultColumn));
+            termNumberOfRepaymentByLoanCycleColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum", this::termNumberOfRepaymentByLoanCycleMaximumColumn));
+            termNumberOfRepaymentByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::termNumberOfRepaymentByLoanCycleActionItem, this::termNumberOfRepaymentByLoanCycleActionClick));
+            this.termNumberOfRepaymentByLoanCycleProvider = new ListDataProvider(this.termNumberOfRepaymentByLoanCycleValue);
+            this.termNumberOfRepaymentByLoanCycleTable = new DataTable<>("termNumberOfRepaymentByLoanCycleTable", termNumberOfRepaymentByLoanCycleColumn, this.termNumberOfRepaymentByLoanCycleProvider, 20);
+            this.termNumberOfRepaymentByLoanCycleContainer.add(this.termNumberOfRepaymentByLoanCycleTable);
+            this.termNumberOfRepaymentByLoanCycleTable.addTopToolbar(new HeadersToolbar<>( this.termNumberOfRepaymentByLoanCycleTable, this.termNumberOfRepaymentByLoanCycleProvider));
+            this.termNumberOfRepaymentByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.termNumberOfRepaymentByLoanCycleTable));
 
-            AjaxLink<Void> addLink = new AjaxLink<>("addLink");
-            addLink.setOnClick(this::numberOfRepaymentByLoanCycleAddLinkClick);
-            this.numberOfRepaymentByLoanCycleContainer.add(addLink);
+            this.termNumberOfRepaymentByLoanCycleAddLink = new AjaxLink<>("termNumberOfRepaymentByLoanCycleAddLink");
+            this.termNumberOfRepaymentByLoanCycleAddLink.setOnClick(this::termNumberOfRepaymentByLoanCycleAddLinkClick);
+            this.termNumberOfRepaymentByLoanCycleContainer.add(this.termNumberOfRepaymentByLoanCycleAddLink);
         }
 
         // Linked to Floating Interest Rates
-        this.linkedToFloatingInterestRatesField = new CheckBox("linkedToFloatingInterestRatesField",
-                new PropertyModel<>(this, "linkedToFloatingInterestRatesValue"));
-        this.linkedToFloatingInterestRatesField.setRequired(false);
-        this.linkedToFloatingInterestRatesField
-                .add(new OnChangeAjaxBehavior(this::linkedToFloatingInterestRatesFieldUpdate));
-        this.form.add(this.linkedToFloatingInterestRatesField);
-        this.linkedToFloatingInterestRatesFeedback = new TextFeedbackPanel("linkedToFloatingInterestRatesFeedback",
-                this.linkedToFloatingInterestRatesField);
-        this.form.add(this.linkedToFloatingInterestRatesFeedback);
-
-        this.nominalInterestRateContainer = new WebMarkupContainer("nominalInterestRateContainer");
-        this.form.add(this.nominalInterestRateContainer);
-        {
-            this.nominalInterestRateMinimumField = new TextField<>("nominalInterestRateMinimumField",
-                    new PropertyModel<>(this, "nominalInterestRateMinimumValue"));
-            this.nominalInterestRateMinimumField.setRequired(false);
-            this.nominalInterestRateMinimumField.add(new OnChangeAjaxBehavior());
-            this.nominalInterestRateContainer.add(this.nominalInterestRateMinimumField);
-            this.nominalInterestRateMinimumFeedback = new TextFeedbackPanel("nominalInterestRateMinimumFeedback",
-                    this.nominalInterestRateMinimumField);
-            this.nominalInterestRateContainer.add(this.nominalInterestRateMinimumFeedback);
-
-            this.nominalInterestRateDefaultField = new TextField<>("nominalInterestRateDefaultField",
-                    new PropertyModel<>(this, "nominalInterestRateDefaultValue"));
-            this.nominalInterestRateDefaultField.setRequired(true);
-            this.nominalInterestRateDefaultField.add(new OnChangeAjaxBehavior());
-            this.nominalInterestRateContainer.add(this.nominalInterestRateDefaultField);
-            this.nominalInterestRateDefaultFeedback = new TextFeedbackPanel("nominalInterestRateDefaultFeedback",
-                    this.nominalInterestRateDefaultField);
-            this.nominalInterestRateContainer.add(this.nominalInterestRateDefaultFeedback);
-
-            this.nominalInterestRateMaximumField = new TextField<>("nominalInterestRateMaximumField",
-                    new PropertyModel<>(this, "nominalInterestRateMaximumValue"));
-            this.nominalInterestRateMaximumField.setRequired(false);
-            this.nominalInterestRateMaximumField.add(new OnChangeAjaxBehavior());
-            this.nominalInterestRateContainer.add(this.nominalInterestRateMaximumField);
-            this.nominalInterestRateMaximumFeedback = new TextFeedbackPanel("nominalInterestRateMaximumFeedback",
-                    this.nominalInterestRateMaximumField);
-            this.nominalInterestRateContainer.add(this.nominalInterestRateMaximumFeedback);
-
-            this.nominalInterestRateTypeProvider = new NominalInterestRateTypeProvider();
-            this.nominalInterestRateTypeField = new Select2SingleChoice<>("nominalInterestRateTypeField", 0,
-                    new PropertyModel<>(this, "nominalInterestRateTypeValue"), this.nominalInterestRateTypeProvider);
-            this.nominalInterestRateTypeField.setRequired(true);
-            this.nominalInterestRateTypeField.add(new OnChangeAjaxBehavior());
-            this.nominalInterestRateContainer.add(this.nominalInterestRateTypeField);
-            this.nominalInterestRateTypeFeedback = new TextFeedbackPanel("nominalInterestRateTypeFeedback",
-                    this.nominalInterestRateTypeField);
-            this.nominalInterestRateContainer.add(this.nominalInterestRateTypeFeedback);
-        }
-
-        this.floatInterestRateContainer = new WebMarkupContainer("floatInterestRateContainer");
-        this.form.add(this.floatInterestRateContainer);
-        {
-            this.floatingInterestRateProvider = new SingleChoiceProvider("m_floating_rates", "id", "name");
-            this.floatingInterestRateField = new Select2SingleChoice<>("floatingInterestRateField", 0,
-                    new PropertyModel<>(this, "floatingInterestRateValue"), this.floatingInterestRateProvider);
-            this.floatingInterestRateField.setRequired(false);
-            this.floatingInterestRateField.add(new OnChangeAjaxBehavior());
-            this.floatInterestRateContainer.add(this.floatingInterestRateField);
-            this.floatingInterestRateFeedback = new TextFeedbackPanel("floatingInterestRateFeedback",
-                    this.floatingInterestRateField);
-            this.floatInterestRateContainer.add(this.floatingInterestRateFeedback);
-
-            this.floatingInterestMinimumField = new TextField<>("floatingInterestMinimumField",
-                    new PropertyModel<>(this, "floatingInterestMinimumValue"));
-            this.floatingInterestMinimumField.setRequired(false);
-            this.floatingInterestMinimumField.add(new OnChangeAjaxBehavior());
-            this.floatInterestRateContainer.add(this.floatingInterestMinimumField);
-            this.floatingInterestMinimumFeedback = new TextFeedbackPanel("floatingInterestMinimumFeedback",
-                    this.floatingInterestMinimumField);
-            this.floatInterestRateContainer.add(this.floatingInterestMinimumFeedback);
-
-            this.floatingInterestDefaultField = new TextField<>("floatingInterestDefaultField",
-                    new PropertyModel<>(this, "floatingInterestDefaultValue"));
-            this.floatingInterestDefaultField.setRequired(false);
-            this.floatingInterestDefaultField.add(new OnChangeAjaxBehavior());
-            this.floatInterestRateContainer.add(this.floatingInterestDefaultField);
-            this.floatingInterestDefaultFeedback = new TextFeedbackPanel("floatingInterestDefaultFeedback",
-                    this.floatingInterestDefaultField);
-            this.floatInterestRateContainer.add(this.floatingInterestDefaultFeedback);
-
-            this.floatingInterestMaximumField = new TextField<>("floatingInterestMaximumField",
-                    new PropertyModel<>(this, "floatingInterestMaximumValue"));
-            this.floatingInterestMaximumField.setRequired(false);
-            this.floatingInterestMaximumField.add(new OnChangeAjaxBehavior());
-            this.floatInterestRateContainer.add(this.floatingInterestMaximumField);
-            this.floatingInterestMaximumFeedback = new TextFeedbackPanel("floatingInterestMaximumFeedback",
-                    this.floatingInterestMaximumField);
-            this.floatInterestRateContainer.add(this.floatingInterestMaximumFeedback);
-
-            this.floatingInterestDifferentialField = new TextField<>("floatingInterestDifferentialField",
-                    new PropertyModel<>(this, "floatingInterestDifferentialValue"));
-            this.floatingInterestDifferentialField.setRequired(false);
-            this.floatingInterestDifferentialField.add(new OnChangeAjaxBehavior());
-            this.floatInterestRateContainer.add(this.floatingInterestDifferentialField);
-            this.floatingInterestDifferentialFeedback = new TextFeedbackPanel("floatingInterestDifferentialFeedback",
-                    this.floatingInterestDifferentialField);
-            this.floatInterestRateContainer.add(this.floatingInterestDifferentialFeedback);
-
-            this.floatingInterestAllowedField = new CheckBox("floatingInterestAllowedField",
-                    new PropertyModel<>(this, "floatingInterestAllowedValue"));
-            this.floatingInterestAllowedField.setRequired(false);
-            this.floatingInterestAllowedField.add(new OnChangeAjaxBehavior());
-            this.floatInterestRateContainer.add(this.floatingInterestAllowedField);
-            this.floatingInterestAllowedFeedback = new TextFeedbackPanel("floatingInterestAllowedFeedback",
-                    this.floatingInterestAllowedField);
-            this.floatInterestRateContainer.add(this.floatingInterestAllowedFeedback);
-        }
+        this.termLinkedToFloatingInterestRatesBlock = new WebMarkupContainer("termLinkedToFloatingInterestRatesBlock");
+        this.termLinkedToFloatingInterestRatesBlock.setOutputMarkupId(true);
+        this.form.add(this.termLinkedToFloatingInterestRatesBlock);
+        this.termLinkedToFloatingInterestRatesContainer = new WebMarkupContainer("termLinkedToFloatingInterestRatesContainer");
+        this.termLinkedToFloatingInterestRatesBlock.add(this.termLinkedToFloatingInterestRatesContainer);
+        this.termLinkedToFloatingInterestRatesField = new CheckBox("termLinkedToFloatingInterestRatesField", new PropertyModel<>(this, "termLinkedToFloatingInterestRatesValue"));
+        this.termLinkedToFloatingInterestRatesField.setRequired(false);
+        this.termLinkedToFloatingInterestRatesField.add(new OnChangeAjaxBehavior(this::termLinkedToFloatingInterestRatesFieldUpdate));
+        this.termLinkedToFloatingInterestRatesContainer.add(this.termLinkedToFloatingInterestRatesField);
+        this.termLinkedToFloatingInterestRatesFeedback = new TextFeedbackPanel("termLinkedToFloatingInterestRatesFeedback", this.termLinkedToFloatingInterestRatesField);
+        this.termLinkedToFloatingInterestRatesContainer.add(this.termLinkedToFloatingInterestRatesFeedback);
 
         {
-            this.nominalInterestRateByLoanCycleContainer = new WebMarkupContainer(
-                    "nominalInterestRateByLoanCycleContainer");
-            this.form.add(this.nominalInterestRateByLoanCycleContainer);
+            this.termNominalInterestRateMinimumBlock = new WebMarkupContainer("termNominalInterestRateMinimumBlock");
+            this.termNominalInterestRateMinimumBlock.setOutputMarkupId(true);
+            this.form.add(this.termNominalInterestRateMinimumBlock);
+            this.termNominalInterestRateMinimumContainer = new WebMarkupContainer("termNominalInterestRateMinimumContainer");
+            this.termNominalInterestRateMinimumBlock.add(this.termNominalInterestRateMinimumContainer);
+            this.termNominalInterestRateMinimumField = new TextField<>("termNominalInterestRateMinimumField", new PropertyModel<>(this, "termNominalInterestRateMinimumValue"));
+            this.termNominalInterestRateMinimumField.setRequired(false);
+            this.termNominalInterestRateMinimumField.add(new OnChangeAjaxBehavior());
+            this.termNominalInterestRateMinimumContainer.add(this.termNominalInterestRateMinimumField);
+            this.termNominalInterestRateMinimumFeedback = new TextFeedbackPanel("termNominalInterestRateMinimumFeedback", this.termNominalInterestRateMinimumField);
+            this.termNominalInterestRateMinimumContainer.add(this.termNominalInterestRateMinimumFeedback);
 
-            List<IColumn<Map<String, Object>, String>> nominalInterestRateByLoanCycleColumn = Lists.newArrayList();
-            nominalInterestRateByLoanCycleColumn.add(
-                    new TextColumn(Model.of("When"), "when", "when", this::nominalInterestRateByLoanCycleWhenColumn));
-            nominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle",
-                    this::nominalInterestRateByLoanCycleCycleColumn));
-            nominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum",
-                    this::nominalInterestRateByLoanCycleMinimumColumn));
-            nominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Default"), "default", "default",
-                    this::nominalInterestRateByLoanCycleDefaultColumn));
-            nominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum",
-                    this::nominalInterestRateByLoanCycleMaximumColumn));
-            nominalInterestRateByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"),
-                    this::nominalInterestRateByLoanCycleActionItem, this::nominalInterestRateByLoanCycleActionClick));
-            this.nominalInterestRateByLoanCycleProvider = new ListDataProvider(
-                    this.nominalInterestRateByLoanCycleValue);
-            this.nominalInterestRateByLoanCycleTable = new DataTable<>("nominalInterestRateByLoanCycleTable",
-                    nominalInterestRateByLoanCycleColumn, this.nominalInterestRateByLoanCycleProvider, 20);
-            this.nominalInterestRateByLoanCycleContainer.add(this.nominalInterestRateByLoanCycleTable);
-            this.nominalInterestRateByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(
-                    this.nominalInterestRateByLoanCycleTable, this.nominalInterestRateByLoanCycleProvider));
-            this.nominalInterestRateByLoanCycleTable
-                    .addBottomToolbar(new NoRecordsToolbar(this.nominalInterestRateByLoanCycleTable));
+            this.termNominalInterestRateDefaultBlock = new WebMarkupContainer("termNominalInterestRateDefaultBlock");
+            this.termNominalInterestRateDefaultBlock.setOutputMarkupId(true);
+            this.form.add(this.termNominalInterestRateDefaultBlock);
+            this.termNominalInterestRateDefaultContainer = new WebMarkupContainer("termNominalInterestRateDefaultContainer");
+            this.termNominalInterestRateDefaultBlock.add(this.termNominalInterestRateDefaultContainer);
+            this.termNominalInterestRateDefaultField = new TextField<>("termNominalInterestRateDefaultField", new PropertyModel<>(this, "termNominalInterestRateDefaultValue"));
+            this.termNominalInterestRateDefaultField.setRequired(true);
+            this.termNominalInterestRateDefaultField.add(new OnChangeAjaxBehavior());
+            this.termNominalInterestRateDefaultContainer.add(this.termNominalInterestRateDefaultField);
+            this.termNominalInterestRateDefaultFeedback = new TextFeedbackPanel("termNominalInterestRateDefaultFeedback", this.termNominalInterestRateDefaultField);
+            this.termNominalInterestRateDefaultContainer.add(this.termNominalInterestRateDefaultFeedback);
 
-            AjaxLink<Void> addLink = new AjaxLink<>("addLink");
-            addLink.setOnClick(this::nominalInterestRateByLoanCycleAddLinkClick);
-            this.nominalInterestRateByLoanCycleContainer.add(addLink);
+            this.termNominalInterestRateMaximumBlock = new WebMarkupContainer("termNominalInterestRateMaximumBlock");
+            this.termNominalInterestRateMaximumBlock.setOutputMarkupId(true);
+            this.form.add(this.termNominalInterestRateMaximumBlock);
+            this.termNominalInterestRateMaximumContainer = new WebMarkupContainer("termNominalInterestRateMaximumContainer");
+            this.termNominalInterestRateMaximumBlock.add(this.termNominalInterestRateMaximumContainer);
+            this.termNominalInterestRateMaximumField = new TextField<>("termNominalInterestRateMaximumField", new PropertyModel<>(this, "termNominalInterestRateMaximumValue"));
+            this.termNominalInterestRateMaximumField.setRequired(false);
+            this.termNominalInterestRateMaximumField.add(new OnChangeAjaxBehavior());
+            this.termNominalInterestRateMaximumContainer.add(this.termNominalInterestRateMaximumField);
+            this.termNominalInterestRateMaximumFeedback = new TextFeedbackPanel("termNominalInterestRateMaximumFeedback", this.termNominalInterestRateMaximumField);
+            this.termNominalInterestRateMaximumContainer.add(this.termNominalInterestRateMaximumFeedback);
+
+            this.termNominalInterestRateTypeBlock = new WebMarkupContainer("termNominalInterestRateTypeBlock");
+            this.termNominalInterestRateTypeBlock.setOutputMarkupId(true);
+            this.form.add(this.termNominalInterestRateTypeBlock);
+            this.termNominalInterestRateTypeContainer = new WebMarkupContainer("termNominalInterestRateTypeContainer");
+            this.termNominalInterestRateTypeBlock.add(this.termNominalInterestRateTypeContainer);
+            this.termNominalInterestRateTypeProvider = new NominalInterestRateTypeProvider();
+            this.termNominalInterestRateTypeField = new Select2SingleChoice<>("termNominalInterestRateTypeField", 0, new PropertyModel<>(this, "termNominalInterestRateTypeValue"), this.termNominalInterestRateTypeProvider);
+            this.termNominalInterestRateTypeField.setRequired(true);
+            this.termNominalInterestRateTypeField.add(new OnChangeAjaxBehavior());
+            this.termNominalInterestRateTypeContainer.add(this.termNominalInterestRateTypeField);
+            this.termNominalInterestRateTypeFeedback = new TextFeedbackPanel("termNominalInterestRateTypeFeedback", this.termNominalInterestRateTypeField);
+            this.termNominalInterestRateTypeContainer.add(this.termNominalInterestRateTypeFeedback);
+        }
+        
+        {
+            this.termFloatingInterestRateBlock = new WebMarkupContainer("termFloatingInterestRateBlock");
+            this.termFloatingInterestRateBlock.setOutputMarkupId(true);
+            this.form.add(this.termFloatingInterestRateBlock);
+            this.termFloatingInterestRateContainer = new WebMarkupContainer("termFloatingInterestRateContainer");
+            this.termFloatingInterestRateBlock.add(this.termFloatingInterestRateContainer);
+            this.termFloatingInterestRateProvider = new SingleChoiceProvider("m_floating_rates", "id", "name");
+            this.termFloatingInterestRateField = new Select2SingleChoice<>("termFloatingInterestRateField", 0, new PropertyModel<>(this, "termFloatingInterestRateValue"), this.termFloatingInterestRateProvider);
+            this.termFloatingInterestRateField.setRequired(false);
+            this.termFloatingInterestRateField.add(new OnChangeAjaxBehavior());
+            this.termFloatingInterestRateContainer.add(this.termFloatingInterestRateField);
+            this.termFloatingInterestRateFeedback = new TextFeedbackPanel("termFloatingInterestRateFeedback", this.termFloatingInterestRateField);
+            this.termFloatingInterestRateContainer.add(this.termFloatingInterestRateFeedback);
+
+            this.termFloatingInterestMinimumBlock = new WebMarkupContainer("termFloatingInterestMinimumBlock");
+            this.termFloatingInterestMinimumBlock.setOutputMarkupId(true);
+            this.form.add(this.termFloatingInterestMinimumBlock);
+            this.termFloatingInterestMinimumContainer = new WebMarkupContainer("termFloatingInterestMinimumContainer");
+            this.termFloatingInterestMinimumBlock.add(this.termFloatingInterestMinimumContainer);
+            this.termFloatingInterestMinimumField = new TextField<>("termFloatingInterestMinimumField", new PropertyModel<>(this, "termFloatingInterestMinimumValue"));
+            this.termFloatingInterestMinimumField.setRequired(false);
+            this.termFloatingInterestMinimumField.add(new OnChangeAjaxBehavior());
+            this.termFloatingInterestMinimumContainer.add(this.termFloatingInterestMinimumField);
+            this.termFloatingInterestMinimumFeedback = new TextFeedbackPanel("termFloatingInterestMinimumFeedback", this.termFloatingInterestMinimumField);
+            this.termFloatingInterestMinimumContainer.add(this.termFloatingInterestMinimumFeedback);
+
+            this.termFloatingInterestDefaultBlock = new WebMarkupContainer("termFloatingInterestDefaultBlock");
+            this.termFloatingInterestDefaultBlock.setOutputMarkupId(true);
+            this.form.add(this.termFloatingInterestDefaultBlock);
+            this.termFloatingInterestDefaultContainer = new WebMarkupContainer("termFloatingInterestDefaultContainer");
+            this.termFloatingInterestDefaultBlock.add(this.termFloatingInterestDefaultContainer);
+            this.termFloatingInterestDefaultField = new TextField<>("termFloatingInterestDefaultField", new PropertyModel<>(this, "termFloatingInterestDefaultValue"));
+            this.termFloatingInterestDefaultField.setRequired(false);
+            this.termFloatingInterestDefaultField.add(new OnChangeAjaxBehavior());
+            this.termFloatingInterestDefaultContainer.add(this.termFloatingInterestDefaultField);
+            this.termFloatingInterestDefaultFeedback = new TextFeedbackPanel("termFloatingInterestDefaultFeedback", this.termFloatingInterestDefaultField);
+            this.termFloatingInterestDefaultContainer.add(this.termFloatingInterestDefaultFeedback);
+
+            this.termFloatingInterestMaximumBlock = new WebMarkupContainer("termFloatingInterestMaximumBlock");
+            this.termFloatingInterestMaximumBlock.setOutputMarkupId(true);
+            this.form.add(this.termFloatingInterestMaximumBlock);
+            this.termFloatingInterestMaximumContainer = new WebMarkupContainer("termFloatingInterestMaximumContainer");
+            this.termFloatingInterestMaximumBlock.add(this.termFloatingInterestMaximumContainer);
+            this.termFloatingInterestMaximumField = new TextField<>("termFloatingInterestMaximumField", new PropertyModel<>(this, "termFloatingInterestMaximumValue"));
+            this.termFloatingInterestMaximumField.setRequired(false);
+            this.termFloatingInterestMaximumField.add(new OnChangeAjaxBehavior());
+            this.termFloatingInterestMaximumContainer.add(this.termFloatingInterestMaximumField);
+            this.termFloatingInterestMaximumFeedback = new TextFeedbackPanel("termFloatingInterestMaximumFeedback", this.termFloatingInterestMaximumField);
+            this.termFloatingInterestMaximumContainer.add(this.termFloatingInterestMaximumFeedback);
+
+            this.termFloatingInterestDifferentialBlock = new WebMarkupContainer("termFloatingInterestDifferentialBlock");
+            this.termFloatingInterestDifferentialBlock.setOutputMarkupId(true);
+            this.form.add(this.termFloatingInterestDifferentialBlock);
+            this.termFloatingInterestDifferentialContainer = new WebMarkupContainer("termFloatingInterestDifferentialContainer");
+            this.termFloatingInterestDifferentialBlock.add(this.termFloatingInterestDifferentialContainer);
+            this.termFloatingInterestDifferentialField = new TextField<>("termFloatingInterestDifferentialField", new PropertyModel<>(this, "termFloatingInterestDifferentialValue"));
+            this.termFloatingInterestDifferentialField.setRequired(false);
+            this.termFloatingInterestDifferentialField.add(new OnChangeAjaxBehavior());
+            this.termFloatingInterestDifferentialContainer.add(this.termFloatingInterestDifferentialField);
+            this.termFloatingInterestDifferentialFeedback = new TextFeedbackPanel("termFloatingInterestDifferentialFeedback", this.termFloatingInterestDifferentialField);
+            this.termFloatingInterestDifferentialContainer.add(this.termFloatingInterestDifferentialFeedback);
+
+            this.termFloatingInterestAllowedBlock = new WebMarkupContainer("termFloatingInterestAllowedBlock");
+            this.termFloatingInterestAllowedBlock.setOutputMarkupId(true);
+            this.form.add(this.termFloatingInterestAllowedBlock);
+            this.termFloatingInterestAllowedContainer = new WebMarkupContainer("termFloatingInterestAllowedContainer");
+            this.termFloatingInterestAllowedBlock.add(this.termFloatingInterestAllowedContainer);
+            this.termFloatingInterestAllowedField = new CheckBox("termFloatingInterestAllowedField",new PropertyModel<>(this, "termFloatingInterestAllowedValue"));
+            this.termFloatingInterestAllowedField.setRequired(false);
+            this.termFloatingInterestAllowedField.add(new OnChangeAjaxBehavior());
+            this.termFloatingInterestAllowedContainer.add(this.termFloatingInterestAllowedField);
+            this.termFloatingInterestAllowedFeedback = new TextFeedbackPanel("termFloatingInterestAllowedFeedback", this.termFloatingInterestAllowedField);
+            this.termFloatingInterestAllowedContainer.add(this.termFloatingInterestAllowedFeedback);
         }
 
-        this.repaidEveryField = new TextField<>("repaidEveryField", new PropertyModel<>(this, "repaidEveryValue"));
-        this.repaidEveryField.setRequired(true);
-        this.repaidEveryField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.repaidEveryField);
-        this.repaidEveryFeedback = new TextFeedbackPanel("repaidEveryFeedback", this.repaidEveryField);
-        this.form.add(this.repaidEveryFeedback);
+        {
+            this.termNominalInterestRateByLoanCycleBlock = new WebMarkupContainer("termNominalInterestRateByLoanCycleBlock");
+            this.termNominalInterestRateByLoanCycleBlock.setOutputMarkupId(true);
+            this.form.add(this.termNominalInterestRateByLoanCycleBlock);
+            this.termNominalInterestRateByLoanCycleContainer = new WebMarkupContainer("termNominalInterestRateByLoanCycleContainer");
+            this.termNominalInterestRateByLoanCycleBlock.add(this.termNominalInterestRateByLoanCycleContainer);
 
-        this.repaidTypeProvider = new RepaidTypeProvider();
-        this.repaidTypeField = new Select2SingleChoice<>("repaidTypeField", 0,
-                new PropertyModel<>(this, "repaidTypeValue"), this.repaidTypeProvider);
-        this.repaidTypeField.setRequired(true);
-        this.repaidTypeField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.repaidTypeField);
-        this.repaidTypeFeedback = new TextFeedbackPanel("repaidTypeFeedback", this.repaidTypeField);
-        this.form.add(this.repaidTypeFeedback);
+            List<IColumn<Map<String, Object>, String>> termNominalInterestRateByLoanCycleColumn = Lists.newArrayList();
+            termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("When"), "when", "when", this::termNominalInterestRateByLoanCycleWhenColumn));
+            termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle", this::termNominalInterestRateByLoanCycleCycleColumn));
+            termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum", this::termNominalInterestRateByLoanCycleMinimumColumn));
+            termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Default"), "default", "default", this::termNominalInterestRateByLoanCycleDefaultColumn));
+            termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum", this::termNominalInterestRateByLoanCycleMaximumColumn));
+            termNominalInterestRateByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::termNominalInterestRateByLoanCycleActionItem, this::termNominalInterestRateByLoanCycleActionClick));
+            this.termNominalInterestRateByLoanCycleProvider = new ListDataProvider(this.termNominalInterestRateByLoanCycleValue);
+            this.termNominalInterestRateByLoanCycleTable = new DataTable<>("termNominalInterestRateByLoanCycleTable", termNominalInterestRateByLoanCycleColumn, this.termNominalInterestRateByLoanCycleProvider, 20);
+            this.termNominalInterestRateByLoanCycleContainer.add(this.termNominalInterestRateByLoanCycleTable);
+            this.termNominalInterestRateByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(this.termNominalInterestRateByLoanCycleTable, this.termNominalInterestRateByLoanCycleProvider));
+            this.termNominalInterestRateByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.termNominalInterestRateByLoanCycleTable));
 
-        this.minimumDayBetweenDisbursalAndFirstRepaymentDateField = new TextField<>(
-                "minimumDayBetweenDisbursalAndFirstRepaymentDateField",
-                new PropertyModel<>(this, "minimumDayBetweenDisbursalAndFirstRepaymentDateValue"));
-        this.minimumDayBetweenDisbursalAndFirstRepaymentDateField.setRequired(false);
-        this.minimumDayBetweenDisbursalAndFirstRepaymentDateField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.minimumDayBetweenDisbursalAndFirstRepaymentDateField);
-        this.minimumDayBetweenDisbursalAndFirstRepaymentDateFeedback = new TextFeedbackPanel(
-                "minimumDayBetweenDisbursalAndFirstRepaymentDateFeedback",
-                this.minimumDayBetweenDisbursalAndFirstRepaymentDateField);
-        this.form.add(this.minimumDayBetweenDisbursalAndFirstRepaymentDateFeedback);
+            this.termNominalInterestRateByLoanCycleAddLink = new AjaxLink<>("termNominalInterestRateByLoanCycleAddLink");
+            this.termNominalInterestRateByLoanCycleAddLink.setOnClick(this::termNominalInterestRateByLoanCycleAddLinkClick);
+            this.termNominalInterestRateByLoanCycleContainer.add(this.termNominalInterestRateByLoanCycleAddLink);
+        }
+
+        this.termRepaidEveryBlock = new WebMarkupContainer("termRepaidEveryBlock");
+        this.termRepaidEveryBlock.setOutputMarkupId(true);
+        this.form.add(this.termRepaidEveryBlock);
+        this.termRepaidEveryContainer = new WebMarkupContainer("termRepaidEveryContainer");
+        this.termRepaidEveryBlock.add(this.termRepaidEveryContainer);
+        this.termRepaidEveryField = new TextField<>("termRepaidEveryField", new PropertyModel<>(this, "termRepaidEveryValue"));
+        this.termRepaidEveryField.setRequired(true);
+        this.termRepaidEveryField.add(new OnChangeAjaxBehavior());
+        this.termRepaidEveryContainer.add(this.termRepaidEveryField);
+        this.termRepaidEveryFeedback = new TextFeedbackPanel("termRepaidEveryFeedback", this.termRepaidEveryField);
+        this.termRepaidEveryContainer.add(this.termRepaidEveryFeedback);
+
+        this.termRepaidTypeBlock = new WebMarkupContainer("termRepaidTypeBlock");
+        this.termRepaidTypeBlock.setOutputMarkupId(true);
+        this.termRepaidTypeProvider = new RepaidTypeProvider();
+        this.form.add(this.termRepaidTypeBlock);
+        this.termRepaidTypeContainer = new WebMarkupContainer("termRepaidTypeContainer");
+        this.termRepaidTypeBlock.add(this.termRepaidTypeContainer);
+        this.termRepaidTypeField = new Select2SingleChoice<>("termRepaidTypeField", 0, new PropertyModel<>(this, "termRepaidTypeValue"), this.termRepaidTypeProvider);
+        this.termRepaidTypeField.setRequired(true);
+        this.termRepaidTypeField.add(new OnChangeAjaxBehavior());
+        this.termRepaidTypeContainer.add(this.termRepaidTypeField);
+        this.termRepaidTypeFeedback = new TextFeedbackPanel("termRepaidTypeFeedback", this.termRepaidTypeField);
+        this.termRepaidTypeContainer.add(this.termRepaidTypeFeedback);
+
+        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock = new WebMarkupContainer("termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock");
+        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock.setOutputMarkupId(true);
+        this.form.add(this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock);
+        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateContainer = new WebMarkupContainer("termMinimumDayBetweenDisbursalAndFirstRepaymentDateContainer");
+        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock.add(this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateContainer);
+        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField = new TextField<>("termMinimumDayBetweenDisbursalAndFirstRepaymentDateField", new PropertyModel<>(this, "termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue"));
+        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField.setRequired(false);
+        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField.add(new OnChangeAjaxBehavior());
+        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateContainer.add(this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField);
+        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateFeedback = new TextFeedbackPanel("termMinimumDayBetweenDisbursalAndFirstRepaymentDateFeedback", this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField);
+        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateContainer.add(this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateFeedback);
     }
 
-    protected boolean nominalInterestRateByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+    protected boolean termNominalInterestRateByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemWhenValue = null;
         this.itemLoanCycleValue = null;
         this.itemMinimumValue = null;
         this.itemDefaultValue = null;
         this.itemMaximumValue = null;
-        this.loanCycleValue = this.nominalInterestRateByLoanCycleValue;
+        this.loanCycleValue = this.termNominalInterestRateByLoanCycleValue;
         this.loanCyclePopup.show(target);
         return false;
     }
 
-    protected ItemPanel nominalInterestRateByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display,
+    protected ItemPanel termNominalInterestRateByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display,
             Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(Model.of(value));
     }
 
-    protected ItemPanel nominalInterestRateByLoanCycleMinimumColumn(String jdbcColumn, IModel<String> display,
+    protected ItemPanel termNominalInterestRateByLoanCycleMinimumColumn(String jdbcColumn, IModel<String> display,
             Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
@@ -2777,7 +3143,7 @@ public class LoanCreatePage extends Page {
         }
     }
 
-    protected ItemPanel nominalInterestRateByLoanCycleDefaultColumn(String jdbcColumn, IModel<String> display,
+    protected ItemPanel termNominalInterestRateByLoanCycleDefaultColumn(String jdbcColumn, IModel<String> display,
             Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
@@ -2787,7 +3153,7 @@ public class LoanCreatePage extends Page {
         }
     }
 
-    protected ItemPanel nominalInterestRateByLoanCycleMaximumColumn(String jdbcColumn, IModel<String> display,
+    protected ItemPanel termNominalInterestRateByLoanCycleMaximumColumn(String jdbcColumn, IModel<String> display,
             Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
@@ -2797,7 +3163,7 @@ public class LoanCreatePage extends Page {
         }
     }
 
-    protected ItemPanel nominalInterestRateByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display,
+    protected ItemPanel termNominalInterestRateByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display,
             Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
         if (value == null) {
@@ -2807,44 +3173,44 @@ public class LoanCreatePage extends Page {
         }
     }
 
-    protected void nominalInterestRateByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap,
+    protected void termNominalInterestRateByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap,
             AjaxRequestTarget ajaxRequestTarget) {
         int index = -1;
-        for (int i = 0; i < this.nominalInterestRateByLoanCycleValue.size(); i++) {
-            Map<String, Object> column = this.nominalInterestRateByLoanCycleValue.get(i);
+        for (int i = 0; i < this.termNominalInterestRateByLoanCycleValue.size(); i++) {
+            Map<String, Object> column = this.termNominalInterestRateByLoanCycleValue.get(i);
             if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
         }
         if (index >= 0) {
-            this.nominalInterestRateByLoanCycleValue.remove(index);
+            this.termNominalInterestRateByLoanCycleValue.remove(index);
         }
-        ajaxRequestTarget.add(this.nominalInterestRateByLoanCycleTable);
+        ajaxRequestTarget.add(this.termNominalInterestRateByLoanCycleTable);
     }
 
-    protected List<ActionItem> nominalInterestRateByLoanCycleActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> termNominalInterestRateByLoanCycleActionItem(String s, Map<String, Object> stringObjectMap) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected boolean numberOfRepaymentByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+    protected boolean termNumberOfRepaymentByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemWhenValue = null;
         this.itemLoanCycleValue = null;
         this.itemMinimumValue = null;
         this.itemDefaultValue = null;
         this.itemMaximumValue = null;
-        this.loanCycleValue = this.numberOfRepaymentByLoanCycleValue;
+        this.loanCycleValue = this.termNumberOfRepaymentByLoanCycleValue;
         this.loanCyclePopup.show(target);
         return false;
     }
 
-    protected ItemPanel numberOfRepaymentByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display,
+    protected ItemPanel termNumberOfRepaymentByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display,
             Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(Model.of(value));
     }
 
-    protected ItemPanel numberOfRepaymentByLoanCycleMinimumColumn(String jdbcColumn, IModel<String> display,
+    protected ItemPanel termNumberOfRepaymentByLoanCycleMinimumColumn(String jdbcColumn, IModel<String> display,
             Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
@@ -2854,7 +3220,7 @@ public class LoanCreatePage extends Page {
         }
     }
 
-    protected ItemPanel numberOfRepaymentByLoanCycleDefaultColumn(String jdbcColumn, IModel<String> display,
+    protected ItemPanel termNumberOfRepaymentByLoanCycleDefaultColumn(String jdbcColumn, IModel<String> display,
             Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
@@ -2864,7 +3230,7 @@ public class LoanCreatePage extends Page {
         }
     }
 
-    protected ItemPanel numberOfRepaymentByLoanCycleMaximumColumn(String jdbcColumn, IModel<String> display,
+    protected ItemPanel termNumberOfRepaymentByLoanCycleMaximumColumn(String jdbcColumn, IModel<String> display,
             Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
@@ -2874,7 +3240,7 @@ public class LoanCreatePage extends Page {
         }
     }
 
-    protected ItemPanel numberOfRepaymentByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display,
+    protected ItemPanel termNumberOfRepaymentByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display,
             Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
         if (value == null) {
@@ -2884,44 +3250,44 @@ public class LoanCreatePage extends Page {
         }
     }
 
-    protected void numberOfRepaymentByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap,
+    protected void termNumberOfRepaymentByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap,
             AjaxRequestTarget ajaxRequestTarget) {
         int index = -1;
-        for (int i = 0; i < this.numberOfRepaymentByLoanCycleValue.size(); i++) {
-            Map<String, Object> column = this.numberOfRepaymentByLoanCycleValue.get(i);
+        for (int i = 0; i < this.termNumberOfRepaymentByLoanCycleValue.size(); i++) {
+            Map<String, Object> column = this.termNumberOfRepaymentByLoanCycleValue.get(i);
             if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
         }
         if (index >= 0) {
-            this.numberOfRepaymentByLoanCycleValue.remove(index);
+            this.termNumberOfRepaymentByLoanCycleValue.remove(index);
         }
-        ajaxRequestTarget.add(this.numberOfRepaymentByLoanCycleTable);
+        ajaxRequestTarget.add(this.termNumberOfRepaymentByLoanCycleTable);
     }
 
-    protected List<ActionItem> numberOfRepaymentByLoanCycleActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> termNumberOfRepaymentByLoanCycleActionItem(String s, Map<String, Object> stringObjectMap) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected boolean principalByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+    protected boolean termPrincipalByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemWhenValue = null;
         this.itemLoanCycleValue = null;
         this.itemMinimumValue = null;
         this.itemDefaultValue = null;
         this.itemMaximumValue = null;
-        this.loanCycleValue = this.principalByLoanCycleValue;
+        this.loanCycleValue = this.termPrincipalByLoanCycleValue;
         this.loanCyclePopup.show(target);
         return false;
     }
 
-    protected ItemPanel principalByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display,
+    protected ItemPanel termPrincipalByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display,
             Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(Model.of(value));
     }
 
-    protected ItemPanel principalByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display,
+    protected ItemPanel termPrincipalByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display,
             Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
         if (value == null) {
@@ -2931,7 +3297,7 @@ public class LoanCreatePage extends Page {
         }
     }
 
-    protected ItemPanel principalByLoanCycleMinimumColumn(String jdbcColumn, IModel<String> display,
+    protected ItemPanel termPrincipalByLoanCycleMinimumColumn(String jdbcColumn, IModel<String> display,
             Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
@@ -2941,7 +3307,7 @@ public class LoanCreatePage extends Page {
         }
     }
 
-    protected ItemPanel principalByLoanCycleDefaultColumn(String jdbcColumn, IModel<String> display,
+    protected ItemPanel termPrincipalByLoanCycleDefaultColumn(String jdbcColumn, IModel<String> display,
             Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
@@ -2951,7 +3317,7 @@ public class LoanCreatePage extends Page {
         }
     }
 
-    protected ItemPanel principalByLoanCycleMaximumColumn(String jdbcColumn, IModel<String> display,
+    protected ItemPanel termPrincipalByLoanCycleMaximumColumn(String jdbcColumn, IModel<String> display,
             Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
@@ -2961,57 +3327,81 @@ public class LoanCreatePage extends Page {
         }
     }
 
-    protected void principalByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap,
+    protected void termPrincipalByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap,
             AjaxRequestTarget ajaxRequestTarget) {
         int index = -1;
-        for (int i = 0; i < this.principalByLoanCycleValue.size(); i++) {
-            Map<String, Object> column = this.principalByLoanCycleValue.get(i);
+        for (int i = 0; i < this.termPrincipalByLoanCycleValue.size(); i++) {
+            Map<String, Object> column = this.termPrincipalByLoanCycleValue.get(i);
             if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
         }
         if (index >= 0) {
-            this.principalByLoanCycleValue.remove(index);
+            this.termPrincipalByLoanCycleValue.remove(index);
         }
-        ajaxRequestTarget.add(this.principalByLoanCycleTable);
+        ajaxRequestTarget.add(this.termPrincipalByLoanCycleTable);
     }
 
-    protected List<ActionItem> principalByLoanCycleActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> termPrincipalByLoanCycleActionItem(String s, Map<String, Object> stringObjectMap) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected boolean linkedToFloatingInterestRatesFieldUpdate(AjaxRequestTarget target) {
-        this.nominalInterestRateContainer.setVisible(
-                this.linkedToFloatingInterestRatesValue == null ? true : !this.linkedToFloatingInterestRatesValue);
-        this.floatInterestRateContainer.setVisible(!this.nominalInterestRateContainer.isVisible());
-        target.add(this.form);
+    protected boolean termLinkedToFloatingInterestRatesFieldUpdate(AjaxRequestTarget target) {
+	boolean notLinked = this.termLinkedToFloatingInterestRatesValue == null ? true : !this.termLinkedToFloatingInterestRatesValue;
+	this.termNominalInterestRateMinimumContainer.setVisible(notLinked);
+	this.termNominalInterestRateDefaultContainer.setVisible(notLinked);
+	this.termNominalInterestRateMaximumContainer.setVisible(notLinked);
+	this.termNominalInterestRateTypeContainer.setVisible(notLinked);
+	
+	this.termFloatingInterestRateContainer.setVisible(!notLinked);
+	this.termFloatingInterestDifferentialContainer.setVisible(!notLinked);
+	this.termFloatingInterestAllowedContainer.setVisible(!notLinked);
+	this.termFloatingInterestMinimumContainer.setVisible(!notLinked);
+	this.termFloatingInterestDefaultContainer.setVisible(!notLinked);
+	this.termFloatingInterestMaximumContainer.setVisible(!notLinked);
+	
+	target.add(this.termNominalInterestRateMinimumBlock);
+	target.add(this.termNominalInterestRateDefaultBlock);
+	target.add(this.termNominalInterestRateMaximumBlock);
+	target.add(this.termNominalInterestRateTypeBlock);
+	target.add(this.termFloatingInterestRateBlock);
+	target.add(this.termFloatingInterestDifferentialBlock);
+	target.add(this.termFloatingInterestAllowedBlock);
+	target.add(this.termFloatingInterestMinimumBlock);
+	target.add(this.termFloatingInterestDefaultBlock);
+	target.add(this.termFloatingInterestMaximumBlock);
         return false;
     }
 
-    protected boolean interestCalculationPeriodFieldUpdate(AjaxRequestTarget target) {
-        this.calculateInterestForExactDaysInPartialPeriodContainer
-                .setVisible(this.interestCalculationPeriodValue != null && InterestCalculationPeriod.valueOf(
-                        this.interestCalculationPeriodValue.getId()) == InterestCalculationPeriod.SameAsPayment);
-        target.add(this.form);
+    protected boolean settingInterestCalculationPeriodFieldUpdate(AjaxRequestTarget target) {
+        this.settingCalculateInterestForExactDaysInPartialPeriodContainer.setVisible(this.settingInterestCalculationPeriodValue != null && InterestCalculationPeriod.valueOf(this.settingInterestCalculationPeriodValue.getId()) == InterestCalculationPeriod.SameAsPayment);
+	if (target != null) {
+	    target.add(this.settingCalculateInterestForExactDaysInPartialPeriodContainer);
+	}
         return false;
     }
 
     protected boolean termVaryBasedOnLoanCycleFieldUpdate(AjaxRequestTarget target) {
-        this.principalByLoanCycleContainer
-                .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
-        this.numberOfRepaymentByLoanCycleContainer
-                .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
-        this.nominalInterestRateByLoanCycleContainer
-                .setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
-        target.add(this.form);
+        this.termPrincipalByLoanCycleContainer.setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
+        this.termNumberOfRepaymentByLoanCycleContainer.setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
+        this.termNominalInterestRateByLoanCycleContainer.setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
+	if (target != null) {
+	    target.add(this.termPrincipalByLoanCycleBlock);
+	    target.add(this.termNumberOfRepaymentByLoanCycleBlock);
+	    target.add(this.termNominalInterestRateByLoanCycleBlock);
+	}
         return false;
     }
 
-    protected boolean variableInstallmentsAllowedFieldUpdate(AjaxRequestTarget target) {
-        this.variableInstallmentsAllowedContainer
-                .setVisible(this.variableInstallmentsAllowedValue != null && this.variableInstallmentsAllowedValue);
-        target.add(this.form);
+    protected boolean settingVariableInstallmentsAllowedFieldUpdate(AjaxRequestTarget target) {
+	boolean visible = this.settingVariableInstallmentsAllowedValue != null && this.settingVariableInstallmentsAllowedValue;
+	this.settingVariableInstallmentsMinimumContainer.setVisible(visible);
+	this.settingVariableInstallmentsMaximumContainer.setVisible(visible);
+	if (target != null){
+	    target.add(this.settingVariableInstallmentsMinimumBlock);
+	    target.add(this.settingVariableInstallmentsMaximumBlock);	    
+	}
         return false;
     }
 
@@ -3140,63 +3530,63 @@ public class LoanCreatePage extends Page {
         LoanBuilder builder = new LoanBuilder();
 
         // Detail
-        builder.withName(this.productNameValue);
-        builder.withShortName(this.shortNameValue);
-        builder.withDescription(this.descriptionValue);
-        if (this.fundValue != null) {
-            builder.withFundId(this.fundValue.getId());
+        builder.withName(this.detailProductNameValue);
+        builder.withShortName(this.detailShortNameValue);
+        builder.withDescription(this.detailDescriptionValue);
+        if (this.detailFundValue != null) {
+            builder.withFundId(this.detailFundValue.getId());
         }
-        builder.withIncludeInBorrowerCycle(this.includeInCustomerLoanCounterValue);
-        builder.withStartDate(this.startDateValue);
-        builder.withCloseDate(this.closeDateValue);
+        builder.withIncludeInBorrowerCycle(this.detailIncludeInCustomerLoanCounterValue);
+        builder.withStartDate(this.detailStartDateValue);
+        builder.withCloseDate(this.detailCloseDateValue);
 
         // Currency
-        if (this.currencyValue != null) {
-            builder.withCurrencyCode(this.currencyValue.getId());
+        if (this.currencyCodeValue != null) {
+            builder.withCurrencyCode(this.currencyCodeValue.getId());
         }
-        builder.withDigitsAfterDecimal(this.decimalPlaceValue);
+        builder.withDigitsAfterDecimal(this.currencyDecimalPlaceValue);
         builder.withInMultiplesOf(this.currencyInMultipleOfValue);
-        builder.withInstallmentAmountInMultiplesOf(this.installmentInMultipleOfValue);
+        builder.withInstallmentAmountInMultiplesOf(this.currencyInstallmentInMultipleOfValue);
 
         // Terms
 
         boolean useBorrowerCycle = this.termVaryBasedOnLoanCycleValue == null ? false
                 : this.termVaryBasedOnLoanCycleValue;
         builder.withUseBorrowerCycle(useBorrowerCycle);
-        builder.withMinPrincipal(this.principalMinimumValue);
-        builder.withPrincipal(this.principalDefaultValue);
-        builder.withMaxPrincipal(this.principalMaximumValue);
-        builder.withMinNumberOfRepayments(this.numberOfRepaymentMinimumValue);
-        builder.withNumberOfRepayments(this.numberOfRepaymentDefaultValue);
-        builder.withMaxNumberOfRepayments(this.numberOfRepaymentMaximumValue);
+        builder.withMinPrincipal(this.termPrincipalMinimumValue);
+        builder.withPrincipal(this.termPrincipalDefaultValue);
+        builder.withMaxPrincipal(this.termPrincipalMaximumValue);
+        builder.withMinNumberOfRepayments(this.termNumberOfRepaymentMinimumValue);
+        builder.withNumberOfRepayments(this.termNumberOfRepaymentDefaultValue);
+        builder.withMaxNumberOfRepayments(this.termNumberOfRepaymentMaximumValue);
 
-        boolean linkedToFloatingInterestRates = this.linkedToFloatingInterestRatesValue == null ? false
-                : this.linkedToFloatingInterestRatesValue;
-        builder.withLinkedToFloatingInterestRates(linkedToFloatingInterestRates);
+        boolean termLinkedToFloatingInterestRates = this.termLinkedToFloatingInterestRatesValue == null ? false
+                : this.termLinkedToFloatingInterestRatesValue;
+        builder.withLinkedToFloatingInterestRates(termLinkedToFloatingInterestRates);
 
-        if (linkedToFloatingInterestRates) {
-            builder.withMinDifferentialLendingRate(this.floatingInterestMinimumValue);
-            builder.withDefaultDifferentialLendingRate(this.floatingInterestDefaultValue);
-            builder.withMaxDifferentialLendingRate(this.floatingInterestMaximumValue);
-            if (this.floatingInterestRateValue != null) {
-                builder.withFloatingRatesId(this.floatingInterestRateValue.getId());
+        if (termLinkedToFloatingInterestRates) {
+            builder.withMinDifferentialLendingRate(this.termFloatingInterestMinimumValue);
+            builder.withDefaultDifferentialLendingRate(this.termFloatingInterestDefaultValue);
+            builder.withMaxDifferentialLendingRate(this.termFloatingInterestMaximumValue);
+            if (this.termFloatingInterestRateValue != null) {
+                builder.withFloatingRatesId(this.termFloatingInterestRateValue.getId());
             }
-            builder.withInterestRateDifferential(this.floatingInterestDifferentialValue);
+            builder.withInterestRateDifferential(this.termFloatingInterestDifferentialValue);
             builder.withFloatingInterestRateCalculationAllowed(
-                    this.floatingInterestAllowedValue == null ? false : this.floatingInterestAllowedValue);
+                    this.termFloatingInterestAllowedValue == null ? false : this.termFloatingInterestAllowedValue);
         } else {
-            builder.withMinInterestRatePerPeriod(this.nominalInterestRateMinimumValue);
-            builder.withInterestRatePerPeriod(this.nominalInterestRateDefaultValue);
-            builder.withMaxInterestRatePerPeriod(this.nominalInterestRateMaximumValue);
-            if (this.nominalInterestRateTypeValue != null) {
+            builder.withMinInterestRatePerPeriod(this.termNominalInterestRateMinimumValue);
+            builder.withInterestRatePerPeriod(this.termNominalInterestRateDefaultValue);
+            builder.withMaxInterestRatePerPeriod(this.termNominalInterestRateMaximumValue);
+            if (this.termNominalInterestRateTypeValue != null) {
                 builder.withInterestRateFrequencyType(
-                        NominalInterestRateScheduleType.valueOf(this.nominalInterestRateTypeValue.getId()));
+                        NominalInterestRateScheduleType.valueOf(this.termNominalInterestRateTypeValue.getId()));
             }
         }
 
         if (useBorrowerCycle) {
-            if (this.principalByLoanCycleValue != null) {
-                for (Map<String, Object> item : this.principalByLoanCycleValue) {
+            if (this.termPrincipalByLoanCycleValue != null) {
+                for (Map<String, Object> item : this.termPrincipalByLoanCycleValue) {
                     WhenType valueConditionType = (WhenType) item.get("valueConditionType");
                     Double borrowerCycleNumber = (Double) item.get("cycle");
                     Double minValue = (Double) item.get("minimum");
@@ -3206,8 +3596,8 @@ public class LoanCreatePage extends Page {
                             defaultValue, maxValue);
                 }
             }
-            if (this.numberOfRepaymentByLoanCycleValue != null) {
-                for (Map<String, Object> item : this.numberOfRepaymentByLoanCycleValue) {
+            if (this.termNumberOfRepaymentByLoanCycleValue != null) {
+                for (Map<String, Object> item : this.termNumberOfRepaymentByLoanCycleValue) {
                     WhenType valueConditionType = (WhenType) item.get("valueConditionType");
                     Double borrowerCycleNumber = (Double) item.get("cycle");
                     Double minValue = (Double) item.get("minimum");
@@ -3217,8 +3607,8 @@ public class LoanCreatePage extends Page {
                             minValue, defaultValue, maxValue);
                 }
             }
-            if (this.nominalInterestRateByLoanCycleValue != null) {
-                for (Map<String, Object> item : this.nominalInterestRateByLoanCycleValue) {
+            if (this.termNominalInterestRateByLoanCycleValue != null) {
+                for (Map<String, Object> item : this.termNominalInterestRateByLoanCycleValue) {
                     WhenType valueConditionType = (WhenType) item.get("valueConditionType");
                     Double borrowerCycleNumber = (Double) item.get("cycle");
                     Double minValue = (Double) item.get("minimum");
@@ -3230,80 +3620,80 @@ public class LoanCreatePage extends Page {
             }
         }
 
-        builder.withRepaymentEvery(this.repaidEveryValue);
-        if (this.repaidTypeValue != null) {
-            builder.withRepaymentFrequencyType(RepaidType.valueOf(this.repaidTypeValue.getId()));
+        builder.withRepaymentEvery(this.termRepaidEveryValue);
+        if (this.termRepaidTypeValue != null) {
+            builder.withRepaymentFrequencyType(RepaidType.valueOf(this.termRepaidTypeValue.getId()));
         }
         builder.withMinimumDaysBetweenDisbursalAndFirstRepayment(
-                this.minimumDayBetweenDisbursalAndFirstRepaymentDateValue);
+                this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue);
 
         // Settings
 
-        if (this.amortizationValue != null) {
-            builder.withAmortizationType(Amortization.valueOf(this.amortizationValue.getId()));
+        if (this.settingAmortizationValue != null) {
+            builder.withAmortizationType(Amortization.valueOf(this.settingAmortizationValue.getId()));
         }
-        if (this.interestMethodValue != null) {
-            builder.withInterestType(InterestMethod.valueOf(this.interestMethodValue.getId()));
+        if (this.settingInterestMethodValue != null) {
+            builder.withInterestType(InterestMethod.valueOf(this.settingInterestMethodValue.getId()));
         }
-        if (this.interestCalculationPeriodValue != null) {
-            InterestCalculationPeriod interestCalculationPeriod = InterestCalculationPeriod
-                    .valueOf(this.interestCalculationPeriodValue.getId());
-            builder.withInterestCalculationPeriodType(interestCalculationPeriod);
-            if (interestCalculationPeriod == InterestCalculationPeriod.SameAsPayment) {
+        if (this.settingInterestCalculationPeriodValue != null) {
+            InterestCalculationPeriod settingInterestCalculationPeriod = InterestCalculationPeriod
+                    .valueOf(this.settingInterestCalculationPeriodValue.getId());
+            builder.withInterestCalculationPeriodType(settingInterestCalculationPeriod);
+            if (settingInterestCalculationPeriod == InterestCalculationPeriod.SameAsPayment) {
                 builder.withAllowPartialPeriodInterestCalcualtion(
-                        this.calculateInterestForExactDaysInPartialPeriodValue == null ? false
-                                : this.calculateInterestForExactDaysInPartialPeriodValue);
+                        this.settingCalculateInterestForExactDaysInPartialPeriodValue == null ? false
+                                : this.settingCalculateInterestForExactDaysInPartialPeriodValue);
             }
         }
-        builder.withGraceOnPrincipalPayment(this.moratoriumPrincipalValue);
-        builder.withGraceOnInterestPayment(this.moratoriumInterestValue);
-        builder.withGraceOnInterestCharged(this.interestFreePeriodValue);
-        builder.withInArrearsTolerance(this.arrearsToleranceValue);
+        builder.withGraceOnPrincipalPayment(this.settingMoratoriumPrincipalValue);
+        builder.withGraceOnInterestPayment(this.settingMoratoriumInterestValue);
+        builder.withGraceOnInterestCharged(this.settingInterestFreePeriodValue);
+        builder.withInArrearsTolerance(this.settingArrearsToleranceValue);
 
-        builder.withCanDefineInstallmentAmount(this.allowFixingOfTheInstallmentAmountValue == null ? false
-                : this.allowFixingOfTheInstallmentAmountValue);
+        builder.withCanDefineInstallmentAmount(this.settingAllowFixingOfTheInstallmentAmountValue == null ? false
+                : this.settingAllowFixingOfTheInstallmentAmountValue);
 
-        builder.withGraceOnArrearsAgeing(this.numberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue);
+        builder.withGraceOnArrearsAgeing(this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue);
 
-        builder.withOverdueDaysForNPA(this.maximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue);
+        builder.withOverdueDaysForNPA(this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue);
 
-        builder.withMinimumGap(this.variableInstallmentsMinimumValue);
-        builder.withMaximumGap(this.variableInstallmentsMaximumValue);
+        builder.withMinimumGap(this.settingVariableInstallmentsMinimumValue);
+        builder.withMaximumGap(this.settingVariableInstallmentsMaximumValue);
         builder.withAccountMovesOutOfNPAOnlyOnArrearsCompletion(
-                this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue == null ? false
-                        : this.accountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue);
+                this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue == null ? false
+                        : this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue);
         builder.withAllowVariableInstallments(
-                this.variableInstallmentsAllowedValue == null ? false : this.variableInstallmentsAllowedValue);
-        builder.withCanUseForTopup(this.allowedToBeUsedForProvidingTopupLoansValue == null ? false
-                : this.allowedToBeUsedForProvidingTopupLoansValue);
+                this.settingVariableInstallmentsAllowedValue == null ? false : this.settingVariableInstallmentsAllowedValue);
+        builder.withCanUseForTopup(this.settingAllowedToBeUsedForProvidingTopupLoansValue == null ? false
+                : this.settingAllowedToBeUsedForProvidingTopupLoansValue);
 
-        if (this.repaymentStrategyValue != null) {
-            builder.withTransactionProcessingStrategyId(RepaymentStrategy.valueOf(this.repaymentStrategyValue.getId()));
+        if (this.settingRepaymentStrategyValue != null) {
+            builder.withTransactionProcessingStrategyId(RepaymentStrategy.valueOf(this.settingRepaymentStrategyValue.getId()));
         }
 
-        if (this.dayInYearValue != null) {
-            builder.withDaysInYearType(DayInYear.valueOf(this.dayInYearValue.getId()));
+        if (this.settingDayInYearValue != null) {
+            builder.withDaysInYearType(DayInYear.valueOf(this.settingDayInYearValue.getId()));
         }
 
-        if (this.dayInMonthValue != null) {
-            builder.withDaysInMonthType(DayInMonth.valueOf(this.dayInMonthValue.getId()));
+        if (this.settingDayInMonthValue != null) {
+            builder.withDaysInMonthType(DayInMonth.valueOf(this.settingDayInMonthValue.getId()));
         }
 
-        builder.withPrincipalThresholdForLastInstallment(this.principalThresholdForLastInstalmentValue);
+        builder.withPrincipalThresholdForLastInstallment(this.settingPrincipalThresholdForLastInstalmentValue);
 
         // Interest Recalculation
 
-        boolean interestRecalculationEnabled = this.recalculateInterestValue == null ? false
-                : this.recalculateInterestValue;
+        boolean interestRecalculationEnabled = this.interestRecalculationRecalculateInterestValue == null ? false
+                : this.interestRecalculationRecalculateInterestValue;
         builder.withInterestRecalculationEnabled(interestRecalculationEnabled);
         if (interestRecalculationEnabled) {
-            if (this.preClosureInterestCalculationRuleValue != null) {
+            if (this.interestRecalculationPreClosureInterestCalculationRuleValue != null) {
                 builder.withPreClosureInterestCalculationStrategy(
-                        ClosureInterestCalculationRule.valueOf(this.preClosureInterestCalculationRuleValue.getId()));
+                        ClosureInterestCalculationRule.valueOf(this.interestRecalculationPreClosureInterestCalculationRuleValue.getId()));
             }
-            if (this.advancePaymentsAdjustmentTypeValue != null) {
+            if (this.interestRecalculationAdvancePaymentsAdjustmentTypeValue != null) {
                 builder.withRescheduleStrategyMethod(
-                        AdvancePaymentsAdjustmentType.valueOf(this.advancePaymentsAdjustmentTypeValue.getId()));
+                        AdvancePaymentsAdjustmentType.valueOf(this.interestRecalculationAdvancePaymentsAdjustmentTypeValue.getId()));
             }
 
             if (this.interestRecalculationCompoundingOnValue != null) {
@@ -3314,84 +3704,84 @@ public class LoanCreatePage extends Page {
                 if (interestRecalculationCompound == InterestRecalculationCompound.Fee
                         || interestRecalculationCompound == InterestRecalculationCompound.Interest
                         || interestRecalculationCompound == InterestRecalculationCompound.FeeAndInterest) {
-                    if (this.compoundingValue != null) {
-                        Frequency compoundingValue = Frequency.valueOf(this.compoundingValue.getId());
+                    if (this.interestRecalculationCompoundingValue != null) {
+                        Frequency compoundingValue = Frequency.valueOf(this.interestRecalculationCompoundingValue.getId());
                         builder.withRecalculationCompoundingFrequencyType(compoundingValue);
                         if (compoundingValue == Frequency.Daily) {
-                            builder.withRecalculationCompoundingFrequencyInterval(this.compoundingIntervalValue);
+                            builder.withRecalculationCompoundingFrequencyInterval(this.interestRecalculationCompoundingIntervalValue);
                         } else if (compoundingValue == Frequency.Weekly) {
-                            builder.withRecalculationCompoundingFrequencyInterval(this.compoundingIntervalValue);
-                            if (this.compoundingDayValue != null) {
+                            builder.withRecalculationCompoundingFrequencyInterval(this.interestRecalculationCompoundingIntervalValue);
+                            if (this.interestRecalculationCompoundingDayValue != null) {
                                 builder.withRecalculationCompoundingFrequencyDayOfWeekType(
-                                        FrequencyDay.valueOf(this.compoundingDayValue.getId()));
+                                        FrequencyDay.valueOf(this.interestRecalculationCompoundingDayValue.getId()));
                             }
                         } else if (compoundingValue == Frequency.Monthly) {
-                            builder.withRecalculationCompoundingFrequencyInterval(this.compoundingIntervalValue);
-                            if (this.compoundingTypeValue != null) {
+                            builder.withRecalculationCompoundingFrequencyInterval(this.interestRecalculationCompoundingIntervalValue);
+                            if (this.interestRecalculationCompoundingTypeValue != null) {
                                 builder.withRecalculationCompoundingFrequencyNthDayType(
-                                        FrequencyType.valueOf(this.compoundingTypeValue.getId()));
+                                        FrequencyType.valueOf(this.interestRecalculationCompoundingTypeValue.getId()));
                             }
-                            if (this.compoundingDayValue != null) {
+                            if (this.interestRecalculationCompoundingDayValue != null) {
                                 builder.withRecalculationCompoundingFrequencyDayOfWeekType(
-                                        FrequencyDay.valueOf(this.compoundingDayValue.getId()));
+                                        FrequencyDay.valueOf(this.interestRecalculationCompoundingDayValue.getId()));
                             }
                         }
                     }
                 }
 
-                if (this.recalculateValue != null) {
-                    Frequency recalculateValue = Frequency.valueOf(this.recalculateValue.getId());
+                if (this.interestRecalculationRecalculateValue != null) {
+                    Frequency recalculateValue = Frequency.valueOf(this.interestRecalculationRecalculateValue.getId());
                     builder.withRecalculationRestFrequencyType(recalculateValue);
                     if (recalculateValue == Frequency.Daily) {
-                        builder.withRecalculationRestFrequencyInterval(this.recalculateIntervalValue);
+                        builder.withRecalculationRestFrequencyInterval(this.interestRecalculationRecalculateIntervalValue);
                     } else if (recalculateValue == Frequency.Weekly) {
-                        if (this.recalculateDayValue != null) {
+                        if (this.interestRecalculationRecalculateDayValue != null) {
                             builder.withRecalculationRestFrequencyDayOfWeekType(
-                                    FrequencyDay.valueOf(this.recalculateDayValue.getId()));
+                                    FrequencyDay.valueOf(this.interestRecalculationRecalculateDayValue.getId()));
                         }
-                        builder.withRecalculationRestFrequencyInterval(this.recalculateIntervalValue);
+                        builder.withRecalculationRestFrequencyInterval(this.interestRecalculationRecalculateIntervalValue);
                     } else if (recalculateValue == Frequency.Monthly) {
-                        if (this.recalculateTypeValue != null) {
+                        if (this.interestRecalculationRecalculateTypeValue != null) {
                             builder.withRecalculationRestFrequencyNthDayType(
-                                    FrequencyType.valueOf(this.recalculateTypeValue.getId()));
+                                    FrequencyType.valueOf(this.interestRecalculationRecalculateTypeValue.getId()));
                         }
-                        if (this.recalculateDayValue != null) {
+                        if (this.interestRecalculationRecalculateDayValue != null) {
                             builder.withRecalculationRestFrequencyDayOfWeekType(
-                                    FrequencyDay.valueOf(this.recalculateDayValue.getId()));
+                                    FrequencyDay.valueOf(this.interestRecalculationRecalculateDayValue.getId()));
                         }
-                        builder.withRecalculationRestFrequencyInterval(this.recalculateIntervalValue);
+                        builder.withRecalculationRestFrequencyInterval(this.interestRecalculationRecalculateIntervalValue);
                     }
                 }
-                builder.withArrearsBasedOnOriginalSchedule(this.arrearsRecognizationBasedOnOriginalScheduleValue == null
-                        ? false : this.arrearsRecognizationBasedOnOriginalScheduleValue);
+                builder.withArrearsBasedOnOriginalSchedule(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue == null
+                        ? false : this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue);
             }
 
         }
 
         // Guarantee Requirements
 
-        boolean holdGuaranteeFunds = this.placeGuaranteeFundsOnHoldValue == null ? false
-                : this.placeGuaranteeFundsOnHoldValue;
+        boolean holdGuaranteeFunds = this.guaranteeRequirementPlaceGuaranteeFundsOnHoldValue == null ? false
+                : this.guaranteeRequirementPlaceGuaranteeFundsOnHoldValue;
         builder.withHoldGuaranteeFunds(holdGuaranteeFunds);
         if (holdGuaranteeFunds) {
-            builder.withMandatoryGuarantee(this.mandatoryGuaranteeValue);
-            builder.withMinimumGuaranteeFromGuarantor(this.minimumGuaranteeFromGuarantorValue);
-            builder.withMinimumGuaranteeFromOwnFunds(this.minimumGuaranteeValue);
+            builder.withMandatoryGuarantee(this.guaranteeRequirementMandatoryGuaranteeValue);
+            builder.withMinimumGuaranteeFromGuarantor(this.guaranteeRequirementMinimumGuaranteeFromGuarantorValue);
+            builder.withMinimumGuaranteeFromOwnFunds(this.guaranteeRequirementMinimumGuaranteeValue);
         }
 
         // Loan Tranche Details
 
-        boolean multiDisburseLoan = this.enableMultipleDisbursalValue == null ? false
-                : this.enableMultipleDisbursalValue;
+        boolean multiDisburseLoan = this.loanTrancheDetailEnableMultipleDisbursalValue == null ? false
+                : this.loanTrancheDetailEnableMultipleDisbursalValue;
         builder.withMultiDisburseLoan(multiDisburseLoan);
         if (multiDisburseLoan) {
-            builder.withOutstandingLoanBalance(this.maximumAllowedOutstandingBalanceValue);
-            builder.withMaxTrancheCount(this.maximumTrancheCountValue);
+            builder.withOutstandingLoanBalance(this.loanTrancheDetailMaximumAllowedOutstandingBalanceValue);
+            builder.withMaxTrancheCount(this.loanTrancheDetailMaximumTrancheCountValue);
         }
 
         // Configurable Terms and Settings
-        boolean configurable = this.allowOverridingSelectTermsAndSettingsInLoanAccountValue == null ? false
-                : this.allowOverridingSelectTermsAndSettingsInLoanAccountValue;
+        boolean configurable = this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue == null ? false
+                : this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue;
         AllowAttributeOverrideBuilder allowAttributeOverrideBuilder = new AllowAttributeOverrideBuilder();
         if (configurable) {
             allowAttributeOverrideBuilder.withAmortizationType(
