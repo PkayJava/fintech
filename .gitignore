@@ -27,3 +27,6 @@ hs_err_pid*
 .project
 fintech.iml
 .DS_Store
+/projectFilesBackup/
+/fintech.ipr
+/fintech.iws

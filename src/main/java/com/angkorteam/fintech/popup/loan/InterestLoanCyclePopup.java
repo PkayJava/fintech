@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.popup;
+package com.angkorteam.fintech.popup.loan;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.TextField;
@@ -13,7 +13,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 
-public class LoanCyclePopup extends Panel {
+public class InterestLoanCyclePopup extends Panel {
 
     private ModalWindow window;
 
@@ -38,7 +38,7 @@ public class LoanCyclePopup extends Panel {
 
     private Object model;
 
-    public LoanCyclePopup(String id, ModalWindow window, Object model) {
+    public InterestLoanCyclePopup(String id, ModalWindow window, Object model) {
         super(id);
         this.model = model;
         this.window = window;
