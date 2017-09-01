@@ -30,7 +30,7 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 6/22/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingBrowsePage extends Page {
+public class ShareBrowsePage extends Page {
 
     private DataTable<Map<String, Object>, String> dataTable;
 
@@ -60,7 +60,7 @@ public class SavingBrowsePage extends Page {
         }
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Saving Product");
+            breadcrumb.setLabel("Share Product");
             BREADCRUMB.add(breadcrumb);
         }
     }
@@ -68,16 +68,18 @@ public class SavingBrowsePage extends Page {
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        this.provider = new JdbcProvider("m_savings_product");
+        this.provider = new JdbcProvider("m_share_product");
         this.provider.boardField("id", "id", Long.class);
         this.provider.boardField("name", "name", String.class);
         this.provider.boardField("short_name", "shortName", String.class);
+        this.provider.boardField("total_shares", "totalShares", Long.class);
 
         this.provider.selectField("id", Long.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
         columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
         columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Short Name"), "shortName", "shortName", this::shortNameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("Total Shares"), "totalShares", "totalShares", this::totalSharesColumn));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
         add(filterForm);
@@ -86,7 +88,7 @@ public class SavingBrowsePage extends Page {
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
         filterForm.add(this.dataTable);
 
-        this.createLink = new BookmarkablePageLink<>("createLink", SavingCreatePage.class);
+        this.createLink = new BookmarkablePageLink<>("createLink", ShareCreatePage.class);
         add(this.createLink);
     }
 
@@ -95,11 +97,16 @@ public class SavingBrowsePage extends Page {
         return new TextCell(Model.of(value));
     }
 
+    private ItemPanel totalSharesColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Long value = (Long) model.get(jdbcColumn);
+        return new TextCell(Model.of(String.valueOf(value)));
+    }
+
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String name = (String) model.get(jdbcColumn);
         PageParameters parameters = new PageParameters();
-        parameters.add("savingId", model.get("id"));
-        return new LinkCell(SavingCreatePage.class, parameters, Model.of(name));
+        parameters.add("shareId", model.get("id"));
+        return new LinkCell(ShareCreatePage.class, parameters, Model.of(name));
     }
 
 }

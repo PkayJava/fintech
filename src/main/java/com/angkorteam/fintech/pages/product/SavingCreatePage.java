@@ -399,7 +399,7 @@ public class SavingCreatePage extends Page {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", LoanCreatePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
         this.form.add(this.closeLink);
 
         initDetail();
@@ -425,16 +425,7 @@ public class SavingCreatePage extends Page {
 
         settingEnableDormancyTrackingFieldUpdate(null);
 
-        this.cashContainer.setVisible(false);
-        this.advancedAccountingRuleContainer.setVisible(false);
-        if ("None".equals(this.accountingValue) || this.accountingValue == null) {
-            this.advancedAccountingRuleContainer.setVisible(false);
-        } else {
-            this.advancedAccountingRuleContainer.setVisible(true);
-        }
-        if ("Cash".equals(this.accountingValue)) {
-            this.cashContainer.setVisible(true);
-        }
+        accountingFieldUpdate(null);
     }
 
     protected void feeIncomePopupOnClose(String elementId, AjaxRequestTarget target) {
@@ -445,7 +436,7 @@ public class SavingCreatePage extends Page {
         item.put("accountId", this.itemAccountValue.getId());
         item.put("account", this.itemAccountValue.getText());
         this.advancedAccountingRuleFeeIncomeValue.add(item);
-        target.add(this.form);
+        target.add(this.advancedAccountingRuleFeeIncomeTable);
     }
 
     protected void penaltyIncomePopupOnClose(String elementId, AjaxRequestTarget target) {
@@ -456,7 +447,7 @@ public class SavingCreatePage extends Page {
         item.put("accountId", this.itemAccountValue.getId());
         item.put("account", this.itemAccountValue.getText());
         this.advancedAccountingRulePenaltyIncomeValue.add(item);
-        target.add(this.form);
+        target.add(this.advancedAccountingRulePenaltyIncomeTable);
     }
 
     protected void fundSourcePopupOnClose(String elementId, AjaxRequestTarget target) {
@@ -467,7 +458,7 @@ public class SavingCreatePage extends Page {
         item.put("accountId", this.itemAccountValue.getId());
         item.put("account", this.itemAccountValue.getText());
         this.advancedAccountingRuleFundSourceValue.add(item);
-        target.add(this.form);
+        target.add(this.advancedAccountingRuleFundSourceTable);
     }
 
     protected void initAccounting() {
@@ -791,7 +782,9 @@ public class SavingCreatePage extends Page {
             this.cashContainer.setVisible(true);
         }
 
-        target.add(this.form);
+        if (target != null) {
+            target.add(this.cashBlock);
+        }
         return false;
     }
 
@@ -827,7 +820,7 @@ public class SavingCreatePage extends Page {
         item.put("collect", collect);
         item.put("date", "");
         this.chargeValue.add(item);
-        target.add(this.form);
+        target.add(this.chargeTable);
     }
 
     protected void initCharge() {

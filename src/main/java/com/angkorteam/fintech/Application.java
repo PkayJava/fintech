@@ -3,6 +3,8 @@ package com.angkorteam.fintech;
 import com.angkorteam.fintech.pages.LoginPage;
 import com.angkorteam.fintech.pages.product.LoanCreatePage;
 import com.angkorteam.fintech.pages.product.SavingCreatePage;
+import com.angkorteam.fintech.pages.product.ShareBrowsePage;
+import com.angkorteam.fintech.pages.product.ShareCreatePage;
 import com.angkorteam.fintech.pages.staff.UserBrowsePage;
 import com.angkorteam.framework.ResourceScope;
 import org.apache.commons.configuration.XMLPropertiesConfiguration;
@@ -23,20 +25,18 @@ public class Application extends AuthenticatedWebApplication {
     @Override
     protected void init() {
         super.init();
-        getJavaScriptLibrarySettings().setJQueryReference(
-                new PackageResourceReference(ResourceScope.class, "AdminLTE/plugins/jQuery/jquery-3.1.1.min.js"));
+        getJavaScriptLibrarySettings().setJQueryReference(new PackageResourceReference(ResourceScope.class, "AdminLTE/plugins/jQuery/jquery-3.1.1.min.js"));
     }
 
     @Override
     public Class<? extends Page> getHomePage() {
         // return UserBrowsePage.class;
-        return SavingCreatePage.class;
+        return ShareBrowsePage.class;
     }
 
     @Override
     public RuntimeConfigurationType getConfigurationType() {
-        ApplicationContext applicationContext = WebApplicationContextUtils
-                .getRequiredWebApplicationContext(getServletContext());
+        ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
         XMLPropertiesConfiguration configuration = applicationContext.getBean(XMLPropertiesConfiguration.class);
         return RuntimeConfigurationType.valueOf(configuration.getString("wicket"));
     }

@@ -11,6 +11,7 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.charge.ChargeBrowsePage;
 import com.angkorteam.fintech.pages.product.LoanBrowsePage;
 import com.angkorteam.fintech.pages.product.SavingBrowsePage;
+import com.angkorteam.fintech.pages.product.ShareBrowsePage;
 import com.angkorteam.fintech.pages.rate.FloatingRateBrowsePage;
 import com.angkorteam.framework.BackgroundColor;
 import com.angkorteam.framework.Emoji;
@@ -69,13 +70,14 @@ public class ProductDashboardPage extends Page {
 
 	InfoBoxPanel fixedDepositProductsPage = new InfoBoxPanel("fixedDepositProductsPage",
 		Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Fixed Deposit Products")
-			.setDescription("Add, modify or inactivate a Fixed deposit product").setIcon(Emoji.ion_alert)));
+			.setDescription("Add, modify or inactivate a Fixed deposit product")
+			.setIcon(Emoji.ion_alert)));
 	add(fixedDepositProductsPage);
 
 	InfoBoxPanel shareProductsPage = new InfoBoxPanel("shareProductsPage",
-		Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Share Products")
+		Model.of(new InfoBox().setPage(ShareBrowsePage.class).setTitle("Share Products")
 			.setDescription("Add new share product or modify or inactivate share product")
-			.setIcon(Emoji.ion_alert)));
+			.setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
 	add(shareProductsPage);
 
 	InfoBoxPanel recurringDepositProductsPage = new InfoBoxPanel("recurringDepositProductsPage",
