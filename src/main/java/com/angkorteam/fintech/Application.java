@@ -2,6 +2,7 @@ package com.angkorteam.fintech;
 
 import com.angkorteam.fintech.pages.LoginPage;
 import com.angkorteam.fintech.pages.product.LoanCreatePage;
+import com.angkorteam.fintech.pages.product.SavingCreatePage;
 import com.angkorteam.fintech.pages.staff.UserBrowsePage;
 import com.angkorteam.framework.ResourceScope;
 import org.apache.commons.configuration.XMLPropertiesConfiguration;
@@ -29,7 +30,7 @@ public class Application extends AuthenticatedWebApplication {
     @Override
     public Class<? extends Page> getHomePage() {
         // return UserBrowsePage.class;
-        return LoanCreatePage.class;
+        return SavingCreatePage.class;
     }
 
     @Override

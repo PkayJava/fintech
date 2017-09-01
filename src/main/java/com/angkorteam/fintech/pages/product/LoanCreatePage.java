@@ -107,6 +107,7 @@ public class LoanCreatePage extends Page {
     private BookmarkablePageLink<Void> closeLink;
 
     // Detail
+    
     private WebMarkupContainer detailProductNameBlock;
     private WebMarkupContainer detailProductNameContainer;
     private String detailProductNameValue;
