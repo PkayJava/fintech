@@ -788,6 +788,31 @@ public class SavingCreatePage extends Page {
         return false;
     }
 
+    protected void initCharge() {
+
+        this.chargePopup = new ModalWindow("chargePopup");
+        add(this.chargePopup);
+        this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this));
+        this.chargePopup.setOnClose(this::chargePopupOnClose);
+
+        List<IColumn<Map<String, Object>, String>> chargeColumn = Lists.newArrayList();
+        chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeNameColumn));
+        chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeTypeColumn));
+        chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeAmountColumn));
+        chargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::chargeCollectColumn));
+        chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeDateColumn));
+        chargeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::chargeActionItem, this::chargeActionClick));
+        this.chargeProvider = new ListDataProvider(this.chargeValue);
+        this.chargeTable = new DataTable<>("chargeTable", chargeColumn, this.chargeProvider, 20);
+        this.form.add(this.chargeTable);
+        this.chargeTable.addTopToolbar(new HeadersToolbar<>(this.chargeTable, this.chargeProvider));
+        this.chargeTable.addBottomToolbar(new NoRecordsToolbar(this.chargeTable));
+
+        this.chargeAddLink = new AjaxLink<>("chargeAddLink");
+        this.chargeAddLink.setOnClick(this::chargeAddLinkClick);
+        this.form.add(this.chargeAddLink);
+    }
+    
     protected void chargePopupOnClose(String elementId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         String chargeId = this.itemChargeValue.getId();
@@ -821,31 +846,6 @@ public class SavingCreatePage extends Page {
         item.put("date", "");
         this.chargeValue.add(item);
         target.add(this.chargeTable);
-    }
-
-    protected void initCharge() {
-
-        this.chargePopup = new ModalWindow("chargePopup");
-        add(this.chargePopup);
-        this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this));
-        this.chargePopup.setOnClose(this::chargePopupOnClose);
-
-        List<IColumn<Map<String, Object>, String>> chargeColumn = Lists.newArrayList();
-        chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeNameColumn));
-        chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeTypeColumn));
-        chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeAmountColumn));
-        chargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::chargeCollectColumn));
-        chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeDateColumn));
-        chargeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::chargeActionItem, this::chargeActionClick));
-        this.chargeProvider = new ListDataProvider(this.chargeValue);
-        this.chargeTable = new DataTable<>("chargeTable", chargeColumn, this.chargeProvider, 20);
-        this.form.add(this.chargeTable);
-        this.chargeTable.addTopToolbar(new HeadersToolbar<>(this.chargeTable, this.chargeProvider));
-        this.chargeTable.addBottomToolbar(new NoRecordsToolbar(this.chargeTable));
-
-        this.chargeAddLink = new AjaxLink<>("chargeAddLink");
-        this.chargeAddLink.setOnClick(this::chargeAddLinkClick);
-        this.form.add(this.chargeAddLink);
     }
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
