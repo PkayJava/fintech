@@ -30,6 +30,7 @@ import com.angkorteam.fintech.popup.InterestRateChartPopup;
 import com.angkorteam.fintech.popup.PaymentTypePopup;
 import com.angkorteam.fintech.popup.PenaltyChargePopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.provider.fixed.ApplyPenalOnProvider;
 import com.angkorteam.fintech.provider.fixed.DayInYearProvider;
 import com.angkorteam.fintech.provider.fixed.InterestCalculatedUsingProvider;
 import com.angkorteam.fintech.provider.fixed.InterestCompoundingPeriodProvider;
@@ -183,7 +184,7 @@ public class FixedDepositCreatePage extends Page {
 
     private WebMarkupContainer settingMinimumDepositTypeBlock;
     private WebMarkupContainer settingMinimumDepositTypeContainer;
-    private SingleChoiceProvider settingMinimumDepositTypeProvider;
+    private LockInPeriodProvider settingMinimumDepositTypeProvider;
     private Option settingMinimumDepositTypeValue;
     private Select2SingleChoice<Option> settingMinimumDepositTypeField;
     private TextFeedbackPanel settingMinimumDepositTypeFeedback;
@@ -196,7 +197,7 @@ public class FixedDepositCreatePage extends Page {
 
     private WebMarkupContainer settingInMultiplesTypeBlock;
     private WebMarkupContainer settingInMultiplesTypeContainer;
-    private SingleChoiceProvider settingInMultiplesTypeProvider;
+    private LockInPeriodProvider settingInMultiplesTypeProvider;
     private Option settingInMultiplesTypeValue;
     private Select2SingleChoice<Option> settingInMultiplesTypeField;
     private TextFeedbackPanel settingInMultiplesTypeFeedback;
@@ -209,7 +210,7 @@ public class FixedDepositCreatePage extends Page {
 
     private WebMarkupContainer settingMaximumDepositTypeBlock;
     private WebMarkupContainer settingMaximumDepositTypeContainer;
-    private SingleChoiceProvider settingMaximumDepositTypeProvider;
+    private LockInPeriodProvider settingMaximumDepositTypeProvider;
     private Option settingMaximumDepositTypeValue;
     private Select2SingleChoice<Option> settingMaximumDepositTypeField;
     private TextFeedbackPanel settingMaximumDepositTypeFeedback;
@@ -228,7 +229,7 @@ public class FixedDepositCreatePage extends Page {
 
     private WebMarkupContainer settingApplyPenalOnBlock;
     private WebMarkupContainer settingApplyPenalOnContainer;
-    private SingleChoiceProvider settingApplyPenalOnProvider;
+    private ApplyPenalOnProvider settingApplyPenalOnProvider;
     private Option settingApplyPenalOnValue;
     private Select2SingleChoice<Option> settingApplyPenalOnField;
     private TextFeedbackPanel settingApplyPenalOnFeedback;
@@ -405,14 +406,23 @@ public class FixedDepositCreatePage extends Page {
         initTerm();
 
         initSetting();
-        
+
         initInterestRateChart();
-        
+
         initCharge();
-        
+
         initAccounting();
+
+        initDefault();
     }
-    
+
+    protected void initDefault() {
+
+        settingWithholdTaxApplicableFieldUpdate(null);
+
+        accountingFieldUpdate(null);
+    }
+
     protected void initAccounting() {
         this.accountingField = new RadioGroup<>("accountingField", new PropertyModel<>(this, "accountingValue"));
         this.accountingField.add(new AjaxFormChoiceComponentUpdatingBehavior(this::accountingFieldUpdate));
@@ -424,15 +434,13 @@ public class FixedDepositCreatePage extends Page {
 
         initAdvancedAccountingRule();
     }
-    
+
     protected void initAccountingCash() {
         this.cashBlock = new WebMarkupContainer("cashBlock");
         this.cashBlock.setOutputMarkupId(true);
         this.form.add(this.cashBlock);
         this.cashContainer = new WebMarkupContainer("cashContainer");
         this.cashBlock.add(this.cashContainer);
-        
-        // TODO
 
         this.cashSavingReferenceProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashSavingReferenceProvider.applyWhere("account_usage", "account_usage = 1");
@@ -494,7 +502,7 @@ public class FixedDepositCreatePage extends Page {
         this.cashIncomeFromPenaltiesFeedback = new TextFeedbackPanel("cashIncomeFromPenaltiesFeedback", this.cashIncomeFromPenaltiesField);
         this.cashContainer.add(this.cashIncomeFromPenaltiesFeedback);
     }
-    
+
     protected void initAdvancedAccountingRule() {
         this.advancedAccountingRuleBlock = new WebMarkupContainer("advancedAccountingRuleBlock");
         this.advancedAccountingRuleBlock.setOutputMarkupId(true);
@@ -568,7 +576,7 @@ public class FixedDepositCreatePage extends Page {
             this.advancedAccountingRuleContainer.add(this.advancedAccountingRulePenaltyIncomeAddLink);
         }
     }
-    
+
     protected void feeIncomePopupOnClose(String elementId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", UUID.randomUUID().toString());
@@ -601,7 +609,7 @@ public class FixedDepositCreatePage extends Page {
         this.advancedAccountingRuleFundSourceValue.add(item);
         target.add(this.advancedAccountingRuleFundSourceTable);
     }
-    
+
     protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
         this.itemAccountValue = null;
@@ -715,7 +723,7 @@ public class FixedDepositCreatePage extends Page {
     protected List<ActionItem> fundSourceActionItem(String s, Map<String, Object> stringObjectMap) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
-    
+
     protected boolean accountingFieldUpdate(AjaxRequestTarget target) {
         this.cashContainer.setVisible(false);
         this.advancedAccountingRuleContainer.setVisible(false);
@@ -733,7 +741,7 @@ public class FixedDepositCreatePage extends Page {
         }
         return false;
     }
-    
+
     protected void initCharge() {
         this.chargePopup = new ModalWindow("chargePopup");
         add(this.chargePopup);
@@ -757,7 +765,7 @@ public class FixedDepositCreatePage extends Page {
         this.chargeAddLink.setOnClick(this::chargeAddLinkClick);
         this.form.add(this.chargeAddLink);
     }
-    
+
     protected void chargePopupOnClose(String elementId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         String chargeId = this.itemChargeValue.getId();
@@ -792,9 +800,9 @@ public class FixedDepositCreatePage extends Page {
         this.chargeValue.add(item);
         target.add(this.chargeTable);
     }
-    
+
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-//        this.itemchargeValue = null;
+        // this.itemchargeValue = null;
         this.chargePopup.show(target);
         return false;
     }
@@ -858,7 +866,7 @@ public class FixedDepositCreatePage extends Page {
     protected List<ActionItem> chargeActionItem(String s, Map<String, Object> stringObjectMap) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
-    
+
     protected void initInterestRateChart() {
         this.interestRateValidFromDateBlock = new WebMarkupContainer("interestRateValidFromDateBlock");
         this.interestRateValidFromDateBlock.setOutputMarkupId(true);
@@ -892,7 +900,7 @@ public class FixedDepositCreatePage extends Page {
         this.interestRatePrimaryGroupingByAmountContainer.add(this.interestRatePrimaryGroupingByAmountField);
         this.interestRatePrimaryGroupingByAmountFeedback = new TextFeedbackPanel("interestRatePrimaryGroupingByAmountFeedback", this.interestRatePrimaryGroupingByAmountField);
         this.interestRatePrimaryGroupingByAmountContainer.add(this.interestRatePrimaryGroupingByAmountFeedback);
-        
+
         // Table
         this.interestRateChartPopup = new ModalWindow("interestRateChartPopup");
         add(this.interestRateChartPopup);
@@ -916,7 +924,7 @@ public class FixedDepositCreatePage extends Page {
         this.interestRateChartAddLink.setOnClick(this::interestRateChartAddLinkClick);
         this.form.add(this.interestRateChartAddLink);
     }
-    
+
     protected void interestRateChartPopupOnClose(String elementId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         String chargeId = this.itemChargeValue.getId();
@@ -951,9 +959,9 @@ public class FixedDepositCreatePage extends Page {
         this.chargeValue.add(item);
         target.add(this.chargeTable);
     }
-    
+
     protected boolean interestRateChartAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-//        this.itemInterestRateChartValue = null;
+        // this.itemInterestRateChartValue = null;
         this.interestRateChartPopup.show(target);
         return false;
     }
@@ -1057,7 +1065,7 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.settingMinimumDepositTypeBlock);
         this.settingMinimumDepositTypeContainer = new WebMarkupContainer("settingMinimumDepositTypeContainer");
         this.settingMinimumDepositTypeBlock.add(this.settingMinimumDepositTypeContainer);
-        this.settingMinimumDepositTypeProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.settingMinimumDepositTypeProvider = new LockInPeriodProvider();
         this.settingMinimumDepositTypeField = new Select2SingleChoice<>("settingMinimumDepositTypeField", 0, new PropertyModel<>(this, "settingMinimumDepositTypeValue"), this.settingMinimumDepositTypeProvider);
         this.settingMinimumDepositTypeField.add(new OnChangeAjaxBehavior());
         this.settingMinimumDepositTypeField.setRequired(true);
@@ -1080,7 +1088,7 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.settingInMultiplesTypeBlock);
         this.settingInMultiplesTypeContainer = new WebMarkupContainer("settingInMultiplesTypeContainer");
         this.settingInMultiplesTypeBlock.add(this.settingInMultiplesTypeContainer);
-        this.settingInMultiplesTypeProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.settingInMultiplesTypeProvider = new LockInPeriodProvider();
         this.settingInMultiplesTypeField = new Select2SingleChoice<>("settingInMultiplesTypeField", 0, new PropertyModel<>(this, "settingInMultiplesTypeValue"), this.settingInMultiplesTypeProvider);
         this.settingInMultiplesTypeField.add(new OnChangeAjaxBehavior());
         this.settingInMultiplesTypeField.setRequired(true);
@@ -1103,7 +1111,7 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.settingMaximumDepositTypeBlock);
         this.settingMaximumDepositTypeContainer = new WebMarkupContainer("settingMaximumDepositTypeContainer");
         this.settingMaximumDepositTypeBlock.add(this.settingMaximumDepositTypeContainer);
-        this.settingMaximumDepositTypeProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.settingMaximumDepositTypeProvider = new LockInPeriodProvider();
         this.settingMaximumDepositTypeField = new Select2SingleChoice<>("settingMaximumDepositTypeField", 0, new PropertyModel<>(this, "settingMaximumDepositTypeValue"), this.settingMaximumDepositTypeProvider);
         this.settingMaximumDepositTypeField.add(new OnChangeAjaxBehavior());
         this.settingMaximumDepositTypeField.setRequired(true);
@@ -1137,7 +1145,7 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.settingApplyPenalOnBlock);
         this.settingApplyPenalOnContainer = new WebMarkupContainer("settingApplyPenalOnContainer");
         this.settingApplyPenalOnBlock.add(this.settingApplyPenalOnContainer);
-        this.settingApplyPenalOnProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.settingApplyPenalOnProvider = new ApplyPenalOnProvider();
         this.settingApplyPenalOnField = new Select2SingleChoice<>("settingApplyPenalOnField", 0, new PropertyModel<>(this, "settingApplyPenalOnValue"), this.settingApplyPenalOnProvider);
         this.settingApplyPenalOnField.add(new OnChangeAjaxBehavior());
         this.settingApplyPenalOnField.setRequired(true);
@@ -1151,16 +1159,17 @@ public class FixedDepositCreatePage extends Page {
         this.settingWithholdTaxApplicableBlock.add(this.settingWithholdTaxApplicableContainer);
         this.settingWithholdTaxApplicableField = new CheckBox("settingWithholdTaxApplicableField", new PropertyModel<>(this, "settingWithholdTaxApplicableValue"));
         this.settingWithholdTaxApplicableField.setRequired(false);
-        this.settingWithholdTaxApplicableField.add(new OnChangeAjaxBehavior());
+        this.settingWithholdTaxApplicableField.add(new OnChangeAjaxBehavior(this::settingWithholdTaxApplicableFieldUpdate));
         this.settingWithholdTaxApplicableContainer.add(this.settingWithholdTaxApplicableField);
         this.settingWithholdTaxApplicableFeedback = new TextFeedbackPanel("settingWithholdTaxApplicableFeedback", this.settingWithholdTaxApplicableField);
         this.settingWithholdTaxApplicableContainer.add(this.settingWithholdTaxApplicableFeedback);
 
         this.settingTaxGroupBlock = new WebMarkupContainer("settingTaxGroupBlock");
+        this.settingTaxGroupBlock.setOutputMarkupId(true);
         this.form.add(this.settingTaxGroupBlock);
         this.settingTaxGroupContainer = new WebMarkupContainer("settingTaxGroupContainer");
         this.settingTaxGroupBlock.add(this.settingTaxGroupContainer);
-        this.settingTaxGroupProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.settingTaxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
         this.settingTaxGroupField = new Select2SingleChoice<>("settingTaxGroupField", 0, new PropertyModel<>(this, "settingTaxGroupValue"), this.settingTaxGroupProvider);
         this.settingTaxGroupField.add(new OnChangeAjaxBehavior());
         this.settingTaxGroupField.setRequired(true);
@@ -1168,6 +1177,15 @@ public class FixedDepositCreatePage extends Page {
         this.settingTaxGroupFeedback = new TextFeedbackPanel("settingTaxGroupFeedback", this.settingTaxGroupField);
         this.settingTaxGroupContainer.add(this.settingTaxGroupFeedback);
 
+    }
+
+    protected boolean settingWithholdTaxApplicableFieldUpdate(AjaxRequestTarget target) {
+        boolean visible = this.settingWithholdTaxApplicableValue != null && this.settingWithholdTaxApplicableValue;
+        this.settingTaxGroupContainer.setVisible(visible);
+        if (target != null) {
+            target.add(this.settingTaxGroupBlock);
+        }
+        return false;
     }
 
     protected void initTerm() {
