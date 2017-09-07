@@ -288,11 +288,6 @@ public class FixedDepositCreatePage extends Page {
     private Select2SingleChoice<Option> cashSavingReferenceField;
     private TextFeedbackPanel cashSavingReferenceFeedback;
 
-    private SingleChoiceProvider cashOverdraftPortfolioProvider;
-    private Option cashOverdraftPortfolioValue;
-    private Select2SingleChoice<Option> cashOverdraftPortfolioField;
-    private TextFeedbackPanel cashOverdraftPortfolioFeedback;
-
     private SingleChoiceProvider cashSavingControlProvider;
     private Option cashSavingControlValue;
     private Select2SingleChoice<Option> cashSavingControlField;
@@ -303,35 +298,25 @@ public class FixedDepositCreatePage extends Page {
     private Select2SingleChoice<Option> cashSavingsTransfersInSuspenseField;
     private TextFeedbackPanel cashSavingsTransfersInSuspenseFeedback;
 
-    private SingleChoiceProvider cashEscheatLiabilityProvider;
-    private Option cashEscheatLiabilityValue;
-    private Select2SingleChoice<Option> cashEscheatLiabilityField;
-    private TextFeedbackPanel cashEscheatLiabilityFeedback;
+    private SingleChoiceProvider cashInterestOnSavingsProvider;
+    private Option cashInterestOnSavingsValue;
+    private Select2SingleChoice<Option> cashInterestOnSavingsField;
+    private TextFeedbackPanel cashInterestOnSavingsFeedback;
 
     private SingleChoiceProvider cashInterestOnSavingProvider;
     private Option cashInterestOnSavingValue;
     private Select2SingleChoice<Option> cashInterestOnSavingField;
     private TextFeedbackPanel cashInterestOnSavingFeedback;
 
-    private SingleChoiceProvider cashWriteOffProvider;
-    private Option cashWriteOffValue;
-    private Select2SingleChoice<Option> cashWriteOffField;
-    private TextFeedbackPanel cashWriteOffFeedback;
-
-    private SingleChoiceProvider cashIncomeFromFeeProvider;
-    private Option cashIncomeFromFeeValue;
-    private Select2SingleChoice<Option> cashIncomeFromFeeField;
-    private TextFeedbackPanel cashIncomeFromFeeFeedback;
+    private SingleChoiceProvider cashIncomeFromFeesProvider;
+    private Option cashIncomeFromFeesValue;
+    private Select2SingleChoice<Option> cashIncomeFromFeesField;
+    private TextFeedbackPanel cashIncomeFromFeesFeedback;
 
     private SingleChoiceProvider cashIncomeFromPenaltiesProvider;
     private Option cashIncomeFromPenaltiesValue;
     private Select2SingleChoice<Option> cashIncomeFromPenaltiesField;
     private TextFeedbackPanel cashIncomeFromPenaltiesFeedback;
-
-    private SingleChoiceProvider cashOverdraftInterestIncomeProvider;
-    private Option cashOverdraftInterestIncomeValue;
-    private Select2SingleChoice<Option> cashOverdraftInterestIncomeField;
-    private TextFeedbackPanel cashOverdraftInterestIncomeFeedback;
 
     // Advanced Accounting Rule
 
@@ -441,6 +426,8 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.cashBlock);
         this.cashContainer = new WebMarkupContainer("cashContainer");
         this.cashBlock.add(this.cashContainer);
+        
+        // TODO
 
         this.cashSavingReferenceProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashSavingReferenceProvider.applyWhere("account_usage", "account_usage = 1");
@@ -451,16 +438,6 @@ public class FixedDepositCreatePage extends Page {
         this.cashContainer.add(this.cashSavingReferenceField);
         this.cashSavingReferenceFeedback = new TextFeedbackPanel("cashSavingReferenceFeedback", this.cashSavingReferenceField);
         this.cashContainer.add(this.cashSavingReferenceFeedback);
-
-        this.cashOverdraftPortfolioProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashOverdraftPortfolioProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashOverdraftPortfolioProvider.applyWhere("classification_enum", "classification_enum = 1");
-        this.cashOverdraftPortfolioField = new Select2SingleChoice<>("cashOverdraftPortfolioField", new PropertyModel<>(this, "cashOverdraftPortfolioValue"), this.cashOverdraftPortfolioProvider);
-        this.cashOverdraftPortfolioField.setRequired(false);
-        this.cashOverdraftPortfolioField.add(new OnChangeAjaxBehavior());
-        this.cashContainer.add(this.cashOverdraftPortfolioField);
-        this.cashOverdraftPortfolioFeedback = new TextFeedbackPanel("cashOverdraftPortfolioFeedback", this.cashOverdraftPortfolioField);
-        this.cashContainer.add(this.cashOverdraftPortfolioFeedback);
 
         this.cashSavingControlProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashSavingControlProvider.applyWhere("account_usage", "account_usage = 1");
@@ -482,45 +459,25 @@ public class FixedDepositCreatePage extends Page {
         this.cashSavingsTransfersInSuspenseFeedback = new TextFeedbackPanel("cashSavingsTransfersInSuspenseFeedback", this.cashSavingsTransfersInSuspenseField);
         this.cashContainer.add(this.cashSavingsTransfersInSuspenseFeedback);
 
-        this.cashEscheatLiabilityProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashEscheatLiabilityProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashEscheatLiabilityProvider.applyWhere("classification_enum", "classification_enum = 4");
-        this.cashEscheatLiabilityField = new Select2SingleChoice<>("cashEscheatLiabilityField", new PropertyModel<>(this, "cashEscheatLiabilityValue"), this.cashEscheatLiabilityProvider);
-        this.cashEscheatLiabilityField.setRequired(false);
-        this.cashEscheatLiabilityField.add(new OnChangeAjaxBehavior());
-        this.cashContainer.add(this.cashEscheatLiabilityField);
-        this.cashEscheatLiabilityFeedback = new TextFeedbackPanel("cashEscheatLiabilityFeedback", this.cashEscheatLiabilityField);
-        this.cashContainer.add(this.cashEscheatLiabilityFeedback);
+        this.cashInterestOnSavingsProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.cashInterestOnSavingsProvider.applyWhere("account_usage", "account_usage = 1");
+        this.cashInterestOnSavingsProvider.applyWhere("classification_enum", "classification_enum = 4");
+        this.cashInterestOnSavingsField = new Select2SingleChoice<>("cashInterestOnSavingsField", new PropertyModel<>(this, "cashInterestOnSavingsValue"), this.cashInterestOnSavingsProvider);
+        this.cashInterestOnSavingsField.setRequired(false);
+        this.cashInterestOnSavingsField.add(new OnChangeAjaxBehavior());
+        this.cashContainer.add(this.cashInterestOnSavingsField);
+        this.cashInterestOnSavingsFeedback = new TextFeedbackPanel("cashInterestOnSavingsFeedback", this.cashInterestOnSavingsField);
+        this.cashContainer.add(this.cashInterestOnSavingsFeedback);
 
-        this.cashInterestOnSavingProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashInterestOnSavingProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashInterestOnSavingProvider.applyWhere("classification_enum", "classification_enum = 4");
-        this.cashInterestOnSavingField = new Select2SingleChoice<>("cashInterestOnSavingField", new PropertyModel<>(this, "cashInterestOnSavingValue"), this.cashInterestOnSavingProvider);
-        this.cashInterestOnSavingField.setRequired(false);
-        this.cashInterestOnSavingField.add(new OnChangeAjaxBehavior());
-        this.cashContainer.add(this.cashInterestOnSavingField);
-        this.cashInterestOnSavingFeedback = new TextFeedbackPanel("cashInterestOnSavingFeedback", this.cashInterestOnSavingField);
-        this.cashContainer.add(this.cashInterestOnSavingFeedback);
-
-        this.cashWriteOffProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashWriteOffProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashWriteOffProvider.applyWhere("classification_enum", "classification_enum = 4");
-        this.cashWriteOffField = new Select2SingleChoice<>("cashWriteOffField", new PropertyModel<>(this, "cashWriteOffValue"), this.cashWriteOffProvider);
-        this.cashWriteOffField.setRequired(false);
-        this.cashWriteOffField.add(new OnChangeAjaxBehavior());
-        this.cashContainer.add(this.cashWriteOffField);
-        this.cashWriteOffFeedback = new TextFeedbackPanel("cashWriteOffFeedback", this.cashWriteOffField);
-        this.cashContainer.add(this.cashWriteOffFeedback);
-
-        this.cashIncomeFromFeeProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashIncomeFromFeeProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashIncomeFromFeeProvider.applyWhere("classification_enum", "classification_enum = 5");
-        this.cashIncomeFromFeeField = new Select2SingleChoice<>("cashIncomeFromFeeField", new PropertyModel<>(this, "cashIncomeFromFeeValue"), this.cashIncomeFromFeeProvider);
-        this.cashIncomeFromFeeField.setRequired(false);
-        this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
-        this.cashContainer.add(this.cashIncomeFromFeeField);
-        this.cashIncomeFromFeeFeedback = new TextFeedbackPanel("cashIncomeFromFeeFeedback", this.cashIncomeFromFeeField);
-        this.cashContainer.add(this.cashIncomeFromFeeFeedback);
+        this.cashIncomeFromFeesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.cashIncomeFromFeesProvider.applyWhere("account_usage", "account_usage = 1");
+        this.cashIncomeFromFeesProvider.applyWhere("classification_enum", "classification_enum = 5");
+        this.cashIncomeFromFeesField = new Select2SingleChoice<>("cashIncomeFromFeesField", new PropertyModel<>(this, "cashIncomeFromFeesValue"), this.cashIncomeFromFeesProvider);
+        this.cashIncomeFromFeesField.setRequired(false);
+        this.cashIncomeFromFeesField.add(new OnChangeAjaxBehavior());
+        this.cashContainer.add(this.cashIncomeFromFeesField);
+        this.cashIncomeFromFeesFeedback = new TextFeedbackPanel("cashIncomeFromFeesFeedback", this.cashIncomeFromFeesField);
+        this.cashContainer.add(this.cashIncomeFromFeesFeedback);
 
         this.cashIncomeFromPenaltiesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashIncomeFromPenaltiesProvider.applyWhere("account_usage", "account_usage = 1");
@@ -531,16 +488,6 @@ public class FixedDepositCreatePage extends Page {
         this.cashContainer.add(this.cashIncomeFromPenaltiesField);
         this.cashIncomeFromPenaltiesFeedback = new TextFeedbackPanel("cashIncomeFromPenaltiesFeedback", this.cashIncomeFromPenaltiesField);
         this.cashContainer.add(this.cashIncomeFromPenaltiesFeedback);
-
-        this.cashOverdraftInterestIncomeProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashOverdraftInterestIncomeProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashOverdraftInterestIncomeProvider.applyWhere("classification_enum", "classification_enum = 2");
-        this.cashOverdraftInterestIncomeField = new Select2SingleChoice<>("cashOverdraftInterestIncomeField", new PropertyModel<>(this, "cashOverdraftInterestIncomeValue"), this.cashOverdraftInterestIncomeProvider);
-        this.cashOverdraftInterestIncomeField.setRequired(false);
-        this.cashOverdraftInterestIncomeField.add(new OnChangeAjaxBehavior());
-        this.cashContainer.add(this.cashOverdraftInterestIncomeField);
-        this.cashOverdraftInterestIncomeFeedback = new TextFeedbackPanel("cashOverdraftInterestIncomeFeedback", this.cashOverdraftInterestIncomeField);
-        this.cashContainer.add(this.cashOverdraftInterestIncomeFeedback);
     }
     
     protected void initAdvancedAccountingRule() {
@@ -930,7 +877,7 @@ public class FixedDepositCreatePage extends Page {
         this.interestRateValidEndDateFeedback = new TextFeedbackPanel("interestRateValidEndDateFeedback", this.interestRateValidEndDateField);
         this.interestRateValidEndDateContainer.add(this.interestRateValidEndDateFeedback);
 
-        this.interestRatePrimaryGroupingByAmountBlock = new WebMarkupContainer("settingWithholdTaxApplicableBlock");
+        this.interestRatePrimaryGroupingByAmountBlock = new WebMarkupContainer("interestRatePrimaryGroupingByAmountBlock");
         this.form.add(this.interestRatePrimaryGroupingByAmountBlock);
         this.interestRatePrimaryGroupingByAmountContainer = new WebMarkupContainer("interestRatePrimaryGroupingByAmountContainer");
         this.interestRatePrimaryGroupingByAmountBlock.add(this.interestRatePrimaryGroupingByAmountContainer);
