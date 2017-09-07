@@ -30,6 +30,11 @@ import com.angkorteam.fintech.popup.InterestRateChartPopup;
 import com.angkorteam.fintech.popup.PaymentTypePopup;
 import com.angkorteam.fintech.popup.PenaltyChargePopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.provider.fixed.DayInYearProvider;
+import com.angkorteam.fintech.provider.fixed.InterestCalculatedUsingProvider;
+import com.angkorteam.fintech.provider.fixed.InterestCompoundingPeriodProvider;
+import com.angkorteam.fintech.provider.fixed.InterestPostingPeriodProvider;
+import com.angkorteam.fintech.provider.fixed.LockInPeriodProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -129,28 +134,28 @@ public class FixedDepositCreatePage extends Page {
 
     private WebMarkupContainer termInterestCompoundingPeriodBlock;
     private WebMarkupContainer termInterestCompoundingPeriodContainer;
-    private SingleChoiceProvider termInterestCompoundingPeriodProvider;
+    private InterestCompoundingPeriodProvider termInterestCompoundingPeriodProvider;
     private Option termInterestCompoundingPeriodValue;
     private Select2SingleChoice<Option> termInterestCompoundingPeriodField;
     private TextFeedbackPanel termInterestCompoundingPeriodFeedback;
 
     private WebMarkupContainer termInterestPostingPeriodBlock;
     private WebMarkupContainer termInterestPostingPeriodContainer;
-    private SingleChoiceProvider termInterestPostingPeriodProvider;
+    private InterestPostingPeriodProvider termInterestPostingPeriodProvider;
     private Option termInterestPostingPeriodValue;
     private Select2SingleChoice<Option> termInterestPostingPeriodField;
     private TextFeedbackPanel termInterestPostingPeriodFeedback;
 
     private WebMarkupContainer termInterestCalculatedUsingBlock;
     private WebMarkupContainer termInterestCalculatedUsingContainer;
-    private SingleChoiceProvider termInterestCalculatedUsingProvider;
+    private InterestCalculatedUsingProvider termInterestCalculatedUsingProvider;
     private Option termInterestCalculatedUsingValue;
     private Select2SingleChoice<Option> termInterestCalculatedUsingField;
     private TextFeedbackPanel termInterestCalculatedUsingFeedback;
 
     private WebMarkupContainer termDayInYearBlock;
     private WebMarkupContainer termDayInYearContainer;
-    private SingleChoiceProvider termDayInYearProvider;
+    private DayInYearProvider termDayInYearProvider;
     private Option termDayInYearValue;
     private Select2SingleChoice<Option> termDayInYearField;
     private TextFeedbackPanel termDayInYearFeedback;
@@ -165,7 +170,7 @@ public class FixedDepositCreatePage extends Page {
 
     private WebMarkupContainer settingLockInTypeBlock;
     private WebMarkupContainer settingLockInTypeContainer;
-    private SingleChoiceProvider settingLockInTypeProvider;
+    private LockInPeriodProvider settingLockInTypeProvider;
     private Option settingLockInTypeValue;
     private Select2SingleChoice<Option> settingLockInTypeField;
     private TextFeedbackPanel settingLockInTypeFeedback;
@@ -1029,7 +1034,7 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.settingLockInTypeBlock);
         this.settingLockInTypeContainer = new WebMarkupContainer("settingLockInTypeContainer");
         this.settingLockInTypeBlock.add(this.settingLockInTypeContainer);
-        this.settingLockInTypeProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.settingLockInTypeProvider = new LockInPeriodProvider();
         this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", 0, new PropertyModel<>(this, "settingLockInTypeValue"), this.settingLockInTypeProvider);
         this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
         this.settingLockInTypeField.setRequired(true);
@@ -1204,7 +1209,7 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.termInterestCompoundingPeriodBlock);
         this.termInterestCompoundingPeriodContainer = new WebMarkupContainer("termInterestCompoundingPeriodContainer");
         this.termInterestCompoundingPeriodBlock.add(this.termInterestCompoundingPeriodContainer);
-        this.termInterestCompoundingPeriodProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.termInterestCompoundingPeriodProvider = new InterestCompoundingPeriodProvider();
         this.termInterestCompoundingPeriodField = new Select2SingleChoice<>("termInterestCompoundingPeriodField", 0, new PropertyModel<>(this, "termInterestCompoundingPeriodValue"), this.termInterestCompoundingPeriodProvider);
         this.termInterestCompoundingPeriodField.add(new OnChangeAjaxBehavior());
         this.termInterestCompoundingPeriodField.setRequired(true);
@@ -1216,7 +1221,7 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.termInterestPostingPeriodBlock);
         this.termInterestPostingPeriodContainer = new WebMarkupContainer("termInterestPostingPeriodContainer");
         this.termInterestPostingPeriodBlock.add(this.termInterestPostingPeriodContainer);
-        this.termInterestPostingPeriodProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.termInterestPostingPeriodProvider = new InterestPostingPeriodProvider();
         this.termInterestPostingPeriodField = new Select2SingleChoice<>("termInterestPostingPeriodField", 0, new PropertyModel<>(this, "termInterestPostingPeriodValue"), this.termInterestPostingPeriodProvider);
         this.termInterestPostingPeriodField.add(new OnChangeAjaxBehavior());
         this.termInterestPostingPeriodField.setRequired(true);
@@ -1228,7 +1233,7 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.termInterestCalculatedUsingBlock);
         this.termInterestCalculatedUsingContainer = new WebMarkupContainer("termInterestCalculatedUsingContainer");
         this.termInterestCalculatedUsingBlock.add(this.termInterestCalculatedUsingContainer);
-        this.termInterestCalculatedUsingProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.termInterestCalculatedUsingProvider = new InterestCalculatedUsingProvider();
         this.termInterestCalculatedUsingField = new Select2SingleChoice<>("termInterestCalculatedUsingField", 0, new PropertyModel<>(this, "termInterestCalculatedUsingValue"), this.termInterestCalculatedUsingProvider);
         this.termInterestCalculatedUsingField.add(new OnChangeAjaxBehavior());
         this.termInterestCalculatedUsingField.setRequired(true);
@@ -1240,7 +1245,7 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.termDayInYearBlock);
         this.termDayInYearContainer = new WebMarkupContainer("termDayInYearContainer");
         this.termDayInYearBlock.add(this.termDayInYearContainer);
-        this.termDayInYearProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.termDayInYearProvider = new DayInYearProvider();
         this.termDayInYearField = new Select2SingleChoice<>("termDayInYearField", 0, new PropertyModel<>(this, "termDayInYearValue"), this.termDayInYearProvider);
         this.termDayInYearField.add(new OnChangeAjaxBehavior());
         this.termDayInYearField.setRequired(true);

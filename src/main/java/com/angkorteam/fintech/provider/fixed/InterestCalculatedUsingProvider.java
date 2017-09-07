@@ -1,6 +1,6 @@
-package com.angkorteam.fintech.provider.saving;
+package com.angkorteam.fintech.provider.fixed;
 
-import com.angkorteam.fintech.dto.fixed.InterestCompoundingPeriod;
+import com.angkorteam.fintech.dto.fixed.InterestCalculatedUsing;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
@@ -8,10 +8,7 @@ import org.apache.wicket.model.IModel;
 
 import java.util.List;
 
-/**
- * Created by socheatkhauv on 7/2/17.
- */
-public class InterestCompoundingPeriodProvider extends SingleChoiceProvider<Option> {
+public class InterestCalculatedUsingProvider extends SingleChoiceProvider<Option> {
 
     @Override
     public Option toChoice(String id) {
@@ -27,7 +24,7 @@ public class InterestCompoundingPeriodProvider extends SingleChoiceProvider<Opti
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (InterestCompoundingPeriod a : InterestCompoundingPeriod.values()) {
+        for (InterestCalculatedUsing a : InterestCalculatedUsing.values()) {
             options.add(new Option(a.name(), a.getDescription()));
         }
         return options;

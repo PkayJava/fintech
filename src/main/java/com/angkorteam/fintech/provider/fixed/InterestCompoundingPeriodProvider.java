@@ -1,6 +1,6 @@
-package com.angkorteam.fintech.provider.saving;
+package com.angkorteam.fintech.provider.fixed;
 
-import com.angkorteam.fintech.dto.fixed.InterestCompoundingPeriod;
+import com.angkorteam.fintech.dto.saving.InterestCompoundingPeriod;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
