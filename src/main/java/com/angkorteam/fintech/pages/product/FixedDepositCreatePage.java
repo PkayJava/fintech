@@ -738,6 +738,7 @@ public class FixedDepositCreatePage extends Page {
 
         if (target != null) {
             target.add(this.cashBlock);
+            target.add(this.advancedAccountingRuleBlock);
         }
         return false;
     }
