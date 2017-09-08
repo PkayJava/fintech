@@ -30,6 +30,7 @@ import com.angkorteam.fintech.popup.FeeChargePopup;
 import com.angkorteam.fintech.popup.InterestRateChartPopup;
 import com.angkorteam.fintech.popup.PaymentTypePopup;
 import com.angkorteam.fintech.popup.PenaltyChargePopup;
+import com.angkorteam.fintech.popup.fixed.IncentivePopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.provider.fixed.ApplyPenalOnProvider;
 import com.angkorteam.fintech.provider.fixed.DayInYearProvider;
@@ -918,6 +919,15 @@ public class FixedDepositCreatePage extends Page {
         add(this.interestRateChartPopup);
         this.interestRateChartPopup.setContent(new InterestRateChartPopup(this.interestRateChartPopup.getContentId(), this.interestRateChartPopup, this));
         this.interestRateChartPopup.setOnClose(this::interestRateChartPopupOnClose);
+        
+        this.incentivePopup = new ModalWindow("incentivePopup");
+	// this.incentivePopup.setHeightUnit("px");
+	// this.incentivePopup.setWidthUnit("px");
+	// this.incentivePopup.setInitialHeight(400);
+	// this.incentivePopup.setInitialWidth(600);
+        add(this.incentivePopup);
+        // this.incentivePopup.setContent(new IncentivePopup(this.incentivePopup.getContentId(), this.incentivePopup, this));
+        this.incentivePopup.setOnClose(this::incentivePopupOnClose);
 
         List<IColumn<Map<String, Object>, String>> interestRateChartColumn = Lists.newArrayList();
         interestRateChartColumn.add(new TextColumn(Model.of("Period Type"), "periodType", "periodType", this::interestRateChartPeriodTypeColumn));
@@ -937,6 +947,10 @@ public class FixedDepositCreatePage extends Page {
         this.interestRateChartAddLink = new AjaxLink<>("interestRateChartAddLink");
         this.interestRateChartAddLink.setOnClick(this::interestRateChartAddLinkClick);
         this.form.add(this.interestRateChartAddLink);
+    }
+    
+    protected void incentivePopupOnClose(String elementId, AjaxRequestTarget target) {
+	
     }
 
     protected void interestRateChartPopupOnClose(String elementId, AjaxRequestTarget target) {
@@ -1042,6 +1056,7 @@ public class FixedDepositCreatePage extends Page {
 	    target.add(this.interestRateChartTable);
 	} else if ("incentives".equals(s)){
 	    this.incentiveValue = (List<Map<String, Object>>)stringObjectMap.get("incentiveValue");	
+	    this.incentivePopup.setContent(new IncentivePopup(this.incentivePopup.getContentId(), this.incentivePopup, this));
 	    this.incentivePopup.show(target);
 	}
     }

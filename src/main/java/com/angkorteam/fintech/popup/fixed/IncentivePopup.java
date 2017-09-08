@@ -66,15 +66,24 @@ public class IncentivePopup extends Panel {
     private DataTable<Map<String, Object>, String> dataTable;
     private ListDataProvider provider;
 
-    public IncentivePopup(String id, ModalWindow window, List<Map<String, Object>> incentiveValue) {
+    private Object model;
+
+    public IncentivePopup(String id, ModalWindow window, Object model) {
 	super(id);
 	this.window = window;
-	this.incentiveValue = incentiveValue;
+	this.model = model;
     }
 
     @Override
     protected void onInitialize() {
 	super.onInitialize();
+	
+	System.out.println("hello");
+
+	this.incentiveValue = new PropertyModel<List<Map<String, Object>>>(this.model, "incentiveValue").getObject();
+	if (this.incentiveValue == null) {
+	    this.incentiveValue = Lists.newArrayList();
+	}
 
 	this.form = new Form<>("form");
 	add(this.form);
@@ -127,7 +136,7 @@ public class IncentivePopup extends Panel {
 		.add(new TextColumn(Model.of("Interest"), "amountRangeTo", "amountRangeTo", this::interestColumn));
 	incentiveColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 	this.provider = new ListDataProvider(this.incentiveValue);
-	this.dataTable = new DataTable<>("incentiveTable", incentiveColumn, this.provider, 20);
+	this.dataTable = new DataTable<>("dataTable", incentiveColumn, this.provider, 20);
 	add(this.dataTable);
 	this.dataTable.addTopToolbar(new HeadersToolbar<>(this.dataTable, this.provider));
 	this.dataTable.addBottomToolbar(new NoRecordsToolbar(this.dataTable));
