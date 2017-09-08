@@ -273,6 +273,9 @@ public class FixedDepositCreatePage extends Page {
     private ModalWindow interestRateChartPopup;
     private AjaxLink<Void> interestRateChartAddLink;
 
+    private List<Map<String, Object>> incentiveValue;
+    private ModalWindow incentivePopup;
+
     // Charges
 
     private List<Map<String, Object>> chargeValue = Lists.newArrayList();
@@ -348,6 +351,13 @@ public class FixedDepositCreatePage extends Page {
     private ModalWindow penaltyIncomePopup;
 
     private Option itemChargeValue;
+    private Option itemPeriodTypeValue;
+    private Date itemPeriodFromValue;
+    private Date itemPeriodToValue;
+    private Double itemAmountRangeFromValue;
+    private Double itemAmountRangeToValue;
+    private Double itemInterestValue;
+    private String itemDescriptionValue;
     private Option itemPaymentValue;
     private Option itemAccountValue;
 
@@ -909,11 +919,13 @@ public class FixedDepositCreatePage extends Page {
         this.interestRateChartPopup.setOnClose(this::interestRateChartPopupOnClose);
 
         List<IColumn<Map<String, Object>, String>> interestRateChartColumn = Lists.newArrayList();
-        interestRateChartColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::interestRateChartNameColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::interestRateChartTypeColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::interestRateChartAmountColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::interestRateChartCollectColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::interestRateChartDateColumn));
+        interestRateChartColumn.add(new TextColumn(Model.of("Period Type"), "periodTypeText", "periodTypeText", this::interestRateChartNameColumn));
+        interestRateChartColumn.add(new TextColumn(Model.of("Period From"), "periodFrom", "periodFrom", this::interestRateChartTypeColumn));
+        interestRateChartColumn.add(new TextColumn(Model.of("Period To"), "periodTo", "periodTo", this::interestRateChartAmountColumn));
+        interestRateChartColumn.add(new TextColumn(Model.of("Amount Range From"), "amountRangeFrom", "amountRangeFrom", this::interestRateChartCollectColumn));
+        interestRateChartColumn.add(new TextColumn(Model.of("Amount Range To"), "amountRangeTo", "amountRangeTo", this::interestRateChartCollectColumn));
+        interestRateChartColumn.add(new TextColumn(Model.of("Interest"), "interest", "interest", this::interestRateChartDateColumn));
+        interestRateChartColumn.add(new TextColumn(Model.of("Description"), "description", "description", this::interestRateChartDateColumn));
         interestRateChartColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::interestRateChartActionItem, this::interestRateChartActionClick));
         this.interestRateChartProvider = new ListDataProvider(this.interestRateChartValue);
         this.interestRateChartTable = new DataTable<>("interestRateChartTable", interestRateChartColumn, this.interestRateChartProvider, 20);
@@ -927,44 +939,32 @@ public class FixedDepositCreatePage extends Page {
     }
 
     protected void interestRateChartPopupOnClose(String elementId, AjaxRequestTarget target) {
-        Map<String, Object> item = Maps.newHashMap();
-        String chargeId = this.itemChargeValue.getId();
-        for (Map<String, Object> temp : this.chargeValue) {
-            if (chargeId.equals(temp.get("uuid"))) {
-                return;
-            }
-        }
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, concat(charge_calculation_enum,'') type, concat(charge_time_enum,'') collect, amount from m_charge where id = ?", chargeId);
-        String type = (String) chargeObject.get("type");
-        for (ChargeCalculation calculation : ChargeCalculation.values()) {
-            if (type.equals(calculation.getLiteral())) {
-                type = calculation.getDescription();
-                break;
-            }
-        }
-        String collect = (String) chargeObject.get("collect");
-        for (ChargeTime time : ChargeTime.values()) {
-            if (collect.equals(time.getLiteral())) {
-                collect = time.getDescription();
-                break;
-            }
-        }
-        item.put("uuid", chargeId);
-        item.put("chargeId", chargeId);
-        item.put("name", chargeObject.get("name"));
-        item.put("type", type);
-        item.put("amount", chargeObject.get("amount"));
-        item.put("collect", collect);
-        item.put("date", "");
-        this.chargeValue.add(item);
-        target.add(this.chargeTable);
+	Map<String, Object> item = Maps.newHashMap();
+	String uuid = UUID.randomUUID().toString();
+	item.put("uuid", uuid);
+	item.put("periodType", this.itemPeriodTypeValue.getId());
+	item.put("periodTypeText", this.itemPeriodTypeValue.getText());
+	item.put("periodFrom", this.itemPeriodFromValue);
+	item.put("periodTo", this.itemPeriodToValue);
+	item.put("amountRangeFrom", this.itemAmountRangeFromValue);
+	item.put("amountRangeTo", this.itemAmountRangeToValue);
+	item.put("interest", this.itemInterestValue);
+	item.put("description", this.itemDescriptionValue);
+	item.put("interestRate", Lists.newArrayList());
+	this.interestRateChartValue.add(item);
+	target.add(this.chargeTable);
     }
 
     protected boolean interestRateChartAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        // this.itemInterestRateChartValue = null;
-        this.interestRateChartPopup.show(target);
-        return false;
+	this.itemPeriodTypeValue = null;
+	this.itemPeriodFromValue = null;
+	this.itemPeriodToValue = null;
+	this.itemAmountRangeFromValue = null;
+	this.itemAmountRangeToValue = null;
+	this.itemInterestValue = null;
+	this.itemDescriptionValue = null;
+	this.interestRateChartPopup.show(target);
+	return false;
     }
 
     protected ItemPanel interestRateChartNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -1008,23 +1008,31 @@ public class FixedDepositCreatePage extends Page {
         }
     }
 
-    protected void interestRateChartActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-        int index = -1;
-        for (int i = 0; i < this.interestRateChartValue.size(); i++) {
-            Map<String, Object> column = this.interestRateChartValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
-                index = i;
-                break;
-            }
-        }
-        if (index >= 0) {
-            this.interestRateChartValue.remove(index);
-        }
-        ajaxRequestTarget.add(this.interestRateChartTable);
+    protected void interestRateChartActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget target) {
+	if ("delete".equals(s)) {
+	    int index = -1;
+	    for (int i = 0; i < this.interestRateChartValue.size(); i++) {
+		Map<String, Object> column = this.interestRateChartValue.get(i);
+		if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+		    index = i;
+		    break;
+		}
+	    }
+	    if (index >= 0) {
+		this.interestRateChartValue.remove(index);
+	    }
+	    target.add(this.interestRateChartTable);
+	} else if ("incentives".equals(s)){
+	    this.incentiveValue = (List<Map<String, Object>>)stringObjectMap.get("incentiveValue");	
+	    this.incentivePopup.show(target);
+	}
     }
 
     protected List<ActionItem> interestRateChartActionItem(String s, Map<String, Object> stringObjectMap) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+	List<ActionItem> actions = Lists.newArrayList();
+	actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+	actions.add(new ActionItem("incentives", Model.of("Incentives"), ItemCss.PRIMARY));
+	return actions;
     }
 
     protected void initSetting() {

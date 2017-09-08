@@ -1,12 +1,14 @@
 package com.angkorteam.fintech.popup;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.provider.fixed.LockInPeriodProvider;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
@@ -19,50 +21,95 @@ public class InterestRateChartPopup extends Panel {
     private Form<Void> form;
     private AjaxButton okayButton;
 
-    private SingleChoiceProvider chargeProvider;
-    private Select2SingleChoice<Option> chargeField;
-    private TextFeedbackPanel chargeFeedback;
+    private LockInPeriodProvider periodTypeProvider;
+    private Select2SingleChoice<Option> periodTypeField;
+    private TextFeedbackPanel periodTypeFeedback;
+
+    private DateTextField periodFromField;
+    private TextFeedbackPanel periodFromFeedback;
+
+    private DateTextField periodToField;
+    private TextFeedbackPanel periodToFeedback;
+
+    private TextField<Double> amountRangeFromField;
+    private TextFeedbackPanel amountRangeFromFeedback;
+
+    private TextField<Double> amountRangeToField;
+    private TextFeedbackPanel amountRangeToFeedback;
+
+    private TextField<Double> interestField;
+    private TextFeedbackPanel interestFeedback;
+
+    private TextField<String> descriptionField;
+    private TextFeedbackPanel descriptionFeedback;
 
     private Object model;
 
     public InterestRateChartPopup(String id, ModalWindow window, Object model) {
-        super(id);
-        this.model = model;
-        this.window = window;
+	super(id);
+	this.model = model;
+	this.window = window;
     }
 
     @Override
     protected void onInitialize() {
-        super.onInitialize();
+	super.onInitialize();
 
-        this.form = new Form<>("form");
-        add(this.form);
+	this.form = new Form<>("form");
+	add(this.form);
 
-        this.okayButton = new AjaxButton("okayButton");
-        this.okayButton.setOnSubmit(this::okayButtonSubmit);
-        this.okayButton.setOnError(this::okayButtonError);
-        this.form.add(this.okayButton);
+	this.okayButton = new AjaxButton("okayButton");
+	this.okayButton.setOnSubmit(this::okayButtonSubmit);
+	this.okayButton.setOnError(this::okayButtonError);
+	this.form.add(this.okayButton);
 
-        this.chargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
-        this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = 1");
-        this.chargeProvider.applyWhere("is_penalty", "is_penalty = 0");
-        this.chargeField = new Select2SingleChoice<>("chargeField", 0,
-                new PropertyModel<>(this.model, "itemChargeValue"), this.chargeProvider);
-        this.form.add(this.chargeField);
-        this.chargeFeedback = new TextFeedbackPanel("chargeFeedback", this.chargeField);
-        this.form.add(this.chargeFeedback);
+	this.periodTypeProvider = new LockInPeriodProvider();
+	this.periodTypeField = new Select2SingleChoice<>("periodTypeField", 0, new PropertyModel<>(this.model, "itemPeriodTypeValue"), this.periodTypeProvider);
+	this.form.add(this.periodTypeField);
+	this.periodTypeFeedback = new TextFeedbackPanel("periodTypeFeedback", this.periodTypeField);
+	this.form.add(this.periodTypeFeedback);
+	
+	this.periodFromField = new DateTextField("periodFromField", new PropertyModel<>(this.model, "itemPeriodFromValue"));
+	this.form.add(this.periodFromField);
+	this.periodFromFeedback = new TextFeedbackPanel("periodFromFeedback", this.periodFromField);
+	this.form.add(this.periodFromFeedback);
+	
+	this.periodToField = new DateTextField("periodToField", new PropertyModel<>(this.model, "itemPeriodToValue"));
+	this.form.add(this.periodToField);
+	this.periodToFeedback = new TextFeedbackPanel("periodToFeedback", this.periodToField);
+	this.form.add(this.periodToFeedback);
+	
+	this.amountRangeFromField = new TextField<Double>("amountRangeFromField", new PropertyModel<>(this.model, "itemAmountRangeFromValue"));
+	this.form.add(this.amountRangeFromField);
+	this.amountRangeFromFeedback = new TextFeedbackPanel("amountRangeFromFeedback", this.amountRangeFromField);
+	this.form.add(this.amountRangeFromFeedback);
+	
+	this.amountRangeToField = new TextField<Double>("amountRangeToField", new PropertyModel<>(this.model, "itemAmountRangeToValue"));
+	this.form.add(this.amountRangeToField);
+	this.amountRangeToFeedback = new TextFeedbackPanel("amountRangeToFeedback", this.amountRangeToField);
+	this.form.add(this.amountRangeToFeedback);
+	
+	this.interestField = new TextField<Double>("interestField", new PropertyModel<>(this.model, "itemInterestValue"));
+	this.form.add(this.interestField);
+	this.interestFeedback = new TextFeedbackPanel("interestFeedback", this.interestField);
+	this.form.add(this.interestFeedback);
+	
+	this.descriptionField = new TextField<String>("descriptionField", new PropertyModel<>(this.model, "itemDescriptionValue"));
+	this.form.add(this.descriptionField);
+	this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
+	this.form.add(this.descriptionFeedback);
 
     }
 
     protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
-        this.window.setElementId(ajaxButton.getId());
-        this.window.close(target);
-        return true;
+	this.window.setElementId(ajaxButton.getId());
+	this.window.close(target);
+	return true;
     }
 
     protected boolean okayButtonError(AjaxButton ajaxButton, AjaxRequestTarget target) {
-        target.add(this.form);
-        return true;
+	target.add(this.form);
+	return true;
     }
-    
+
 }
