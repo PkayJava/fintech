@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.dto.fixed;
 
-public enum Operand {
+public enum Operator {
     
     LessThan("1", "Less Than"),
     Equal("2", "Equal"),
@@ -11,7 +11,7 @@ public enum Operand {
 
     private String description;
 
-    Operand(String literal, String description) {
+    Operator(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }

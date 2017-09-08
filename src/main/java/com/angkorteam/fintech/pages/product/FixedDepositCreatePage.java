@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -62,7 +63,7 @@ import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-@AuthorizeInstantiation(Function.ALL_FUNCTION)
+//@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FixedDepositCreatePage extends Page {
 
     public static final String ACC_NONE = "None";
@@ -919,13 +920,13 @@ public class FixedDepositCreatePage extends Page {
         this.interestRateChartPopup.setOnClose(this::interestRateChartPopupOnClose);
 
         List<IColumn<Map<String, Object>, String>> interestRateChartColumn = Lists.newArrayList();
-        interestRateChartColumn.add(new TextColumn(Model.of("Period Type"), "periodTypeText", "periodTypeText", this::interestRateChartNameColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Period From"), "periodFrom", "periodFrom", this::interestRateChartTypeColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Period To"), "periodTo", "periodTo", this::interestRateChartAmountColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Amount Range From"), "amountRangeFrom", "amountRangeFrom", this::interestRateChartCollectColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Amount Range To"), "amountRangeTo", "amountRangeTo", this::interestRateChartCollectColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Interest"), "interest", "interest", this::interestRateChartDateColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Description"), "description", "description", this::interestRateChartDateColumn));
+        interestRateChartColumn.add(new TextColumn(Model.of("Period Type"), "periodType", "periodType", this::interestRateChartPeriodTypeColumn));
+        interestRateChartColumn.add(new TextColumn(Model.of("Period From"), "periodFrom", "periodFrom", this::interestRateChartPeriodFromColumn));
+        interestRateChartColumn.add(new TextColumn(Model.of("Period To"), "periodTo", "periodTo", this::interestRateChartPeriodToColumn));
+        interestRateChartColumn.add(new TextColumn(Model.of("Amount Range From"), "amountRangeFrom", "amountRangeFrom", this::interestRateChartAmountRangeFromColumn));
+        interestRateChartColumn.add(new TextColumn(Model.of("Amount Range To"), "amountRangeTo", "amountRangeTo", this::interestRateChartAmountRangeToColumn));
+        interestRateChartColumn.add(new TextColumn(Model.of("Interest"), "interest", "interest", this::interestRateChartInterestColumn));
+        interestRateChartColumn.add(new TextColumn(Model.of("Description"), "description", "description", this::interestRateChartDescriptionColumn));
         interestRateChartColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::interestRateChartActionItem, this::interestRateChartActionClick));
         this.interestRateChartProvider = new ListDataProvider(this.interestRateChartValue);
         this.interestRateChartTable = new DataTable<>("interestRateChartTable", interestRateChartColumn, this.interestRateChartProvider, 20);
@@ -942,8 +943,7 @@ public class FixedDepositCreatePage extends Page {
 	Map<String, Object> item = Maps.newHashMap();
 	String uuid = UUID.randomUUID().toString();
 	item.put("uuid", uuid);
-	item.put("periodType", this.itemPeriodTypeValue.getId());
-	item.put("periodTypeText", this.itemPeriodTypeValue.getText());
+	item.put("periodType", this.itemPeriodTypeValue);
 	item.put("periodFrom", this.itemPeriodFromValue);
 	item.put("periodTo", this.itemPeriodToValue);
 	item.put("amountRangeFrom", this.itemAmountRangeFromValue);
@@ -952,7 +952,7 @@ public class FixedDepositCreatePage extends Page {
 	item.put("description", this.itemDescriptionValue);
 	item.put("interestRate", Lists.newArrayList());
 	this.interestRateChartValue.add(item);
-	target.add(this.chargeTable);
+	target.add(this.interestRateChartTable);
     }
 
     protected boolean interestRateChartAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
@@ -967,39 +967,57 @@ public class FixedDepositCreatePage extends Page {
 	return false;
     }
 
-    protected ItemPanel interestRateChartNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+    protected ItemPanel interestRateChartPeriodTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+	Option value = (Option) model.get(jdbcColumn);
+	return new TextCell(Model.of(value == null ? "" : value.getText()));
     }
 
-    protected ItemPanel interestRateChartTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
+    protected ItemPanel interestRateChartPeriodFromColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+	Date value = (Date) model.get(jdbcColumn);
+	if (value == null) {
+	    return new TextCell(Model.of(""));
+	} else {
+	    return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(value)));
+	}
+    }
+
+    protected ItemPanel interestRateChartPeriodToColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+	Date value = (Date) model.get(jdbcColumn);
+	if (value == null) {
+	    return new TextCell(Model.of(""));
+	} else {
+	    return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(value)));
+	}
+    }
+
+    protected ItemPanel interestRateChartAmountRangeFromColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
         } else {
-            return new TextCell(Model.of(value));
+            return new TextCell(Model.of(String.valueOf(value)));
         }
     }
-
-    protected ItemPanel interestRateChartAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Number value = (Number) model.get(jdbcColumn);
+    
+    protected ItemPanel interestRateChartAmountRangeToColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
         } else {
-            return new TextCell(Model.of(String.valueOf(value.doubleValue())));
+            return new TextCell(Model.of(String.valueOf(value)));
         }
     }
 
-    protected ItemPanel interestRateChartCollectColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
+    protected ItemPanel interestRateChartInterestColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
         } else {
-            return new TextCell(Model.of(value));
+            return new TextCell(Model.of(String.valueOf(value)));
         }
     }
-
-    protected ItemPanel interestRateChartDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    
+    protected ItemPanel interestRateChartDescriptionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));

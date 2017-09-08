@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.apache.wicket.model.IModel;
 
-import com.angkorteam.fintech.dto.fixed.Operand;
+import com.angkorteam.fintech.dto.fixed.Operator;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
 
-public class OperandProvider extends SingleChoiceProvider<Option> {
+public class OperatorProvider extends SingleChoiceProvider<Option> {
 
     @Override
     public Option toChoice(String id) {
@@ -25,7 +25,7 @@ public class OperandProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
 	List<Option> options = Lists.newArrayList();
-	for (Operand a : Operand.values()) {
+	for (Operator a : Operator.values()) {
 	    options.add(new Option(a.name(), a.getDescription()));
 	}
 	return options;
