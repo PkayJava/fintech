@@ -64,7 +64,7 @@ import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-//@AuthorizeInstantiation(Function.ALL_FUNCTION)
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FixedDepositCreatePage extends Page {
 
     public static final String ACC_NONE = "None";
@@ -275,7 +275,6 @@ public class FixedDepositCreatePage extends Page {
     private ModalWindow interestRateChartPopup;
     private AjaxLink<Void> interestRateChartAddLink;
 
-    private List<Map<String, Object>> incentiveValue;
     private ModalWindow incentivePopup;
 
     // Charges
@@ -815,7 +814,7 @@ public class FixedDepositCreatePage extends Page {
     }
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        // this.itemchargeValue = null;
+        this.itemChargeValue = null;
         this.chargePopup.show(target);
         return false;
     }
@@ -916,17 +915,20 @@ public class FixedDepositCreatePage extends Page {
 
         // Table
         this.interestRateChartPopup = new ModalWindow("interestRateChartPopup");
+        this.interestRateChartPopup.setHeightUnit("px");
+        this.interestRateChartPopup.setWidthUnit("px");
+        this.interestRateChartPopup.setInitialHeight(600);
+        this.interestRateChartPopup.setInitialWidth(1000);
         add(this.interestRateChartPopup);
         this.interestRateChartPopup.setContent(new InterestRateChartPopup(this.interestRateChartPopup.getContentId(), this.interestRateChartPopup, this));
         this.interestRateChartPopup.setOnClose(this::interestRateChartPopupOnClose);
-        
+
         this.incentivePopup = new ModalWindow("incentivePopup");
-	// this.incentivePopup.setHeightUnit("px");
-	// this.incentivePopup.setWidthUnit("px");
-	// this.incentivePopup.setInitialHeight(400);
-	// this.incentivePopup.setInitialWidth(600);
+        this.incentivePopup.setHeightUnit("px");
+        this.incentivePopup.setWidthUnit("px");
+        this.incentivePopup.setInitialHeight(600);
+        this.incentivePopup.setInitialWidth(1100);
         add(this.incentivePopup);
-        // this.incentivePopup.setContent(new IncentivePopup(this.incentivePopup.getContentId(), this.incentivePopup, this));
         this.incentivePopup.setOnClose(this::incentivePopupOnClose);
 
         List<IColumn<Map<String, Object>, String>> interestRateChartColumn = Lists.newArrayList();
@@ -948,60 +950,60 @@ public class FixedDepositCreatePage extends Page {
         this.interestRateChartAddLink.setOnClick(this::interestRateChartAddLinkClick);
         this.form.add(this.interestRateChartAddLink);
     }
-    
+
     protected void incentivePopupOnClose(String elementId, AjaxRequestTarget target) {
-	
+
     }
 
     protected void interestRateChartPopupOnClose(String elementId, AjaxRequestTarget target) {
-	Map<String, Object> item = Maps.newHashMap();
-	String uuid = UUID.randomUUID().toString();
-	item.put("uuid", uuid);
-	item.put("periodType", this.itemPeriodTypeValue);
-	item.put("periodFrom", this.itemPeriodFromValue);
-	item.put("periodTo", this.itemPeriodToValue);
-	item.put("amountRangeFrom", this.itemAmountRangeFromValue);
-	item.put("amountRangeTo", this.itemAmountRangeToValue);
-	item.put("interest", this.itemInterestValue);
-	item.put("description", this.itemDescriptionValue);
-	item.put("interestRate", Lists.newArrayList());
-	this.interestRateChartValue.add(item);
-	target.add(this.interestRateChartTable);
+        Map<String, Object> item = Maps.newHashMap();
+        String uuid = UUID.randomUUID().toString();
+        item.put("uuid", uuid);
+        item.put("periodType", this.itemPeriodTypeValue);
+        item.put("periodFrom", this.itemPeriodFromValue);
+        item.put("periodTo", this.itemPeriodToValue);
+        item.put("amountRangeFrom", this.itemAmountRangeFromValue);
+        item.put("amountRangeTo", this.itemAmountRangeToValue);
+        item.put("interest", this.itemInterestValue);
+        item.put("description", this.itemDescriptionValue);
+        item.put("interestRate", Lists.newArrayList());
+        this.interestRateChartValue.add(item);
+        target.add(this.interestRateChartTable);
     }
 
     protected boolean interestRateChartAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-	this.itemPeriodTypeValue = null;
-	this.itemPeriodFromValue = null;
-	this.itemPeriodToValue = null;
-	this.itemAmountRangeFromValue = null;
-	this.itemAmountRangeToValue = null;
-	this.itemInterestValue = null;
-	this.itemDescriptionValue = null;
-	this.interestRateChartPopup.show(target);
-	return false;
+        this.itemPeriodTypeValue = null;
+        this.itemPeriodFromValue = null;
+        this.itemPeriodToValue = null;
+        this.itemAmountRangeFromValue = null;
+        this.itemAmountRangeToValue = null;
+        this.itemInterestValue = null;
+        this.itemDescriptionValue = null;
+        this.interestRateChartPopup.show(target);
+        return false;
     }
 
     protected ItemPanel interestRateChartPeriodTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-	Option value = (Option) model.get(jdbcColumn);
-	return new TextCell(Model.of(value == null ? "" : value.getText()));
+        Option value = (Option) model.get(jdbcColumn);
+        return new TextCell(Model.of(value == null ? "" : value.getText()));
     }
 
     protected ItemPanel interestRateChartPeriodFromColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-	Date value = (Date) model.get(jdbcColumn);
-	if (value == null) {
-	    return new TextCell(Model.of(""));
-	} else {
-	    return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(value)));
-	}
+        Date value = (Date) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(value)));
+        }
     }
 
     protected ItemPanel interestRateChartPeriodToColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-	Date value = (Date) model.get(jdbcColumn);
-	if (value == null) {
-	    return new TextCell(Model.of(""));
-	} else {
-	    return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(value)));
-	}
+        Date value = (Date) model.get(jdbcColumn);
+        if (value == null) {
+            return new TextCell(Model.of(""));
+        } else {
+            return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(value)));
+        }
     }
 
     protected ItemPanel interestRateChartAmountRangeFromColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -1012,7 +1014,7 @@ public class FixedDepositCreatePage extends Page {
             return new TextCell(Model.of(String.valueOf(value)));
         }
     }
-    
+
     protected ItemPanel interestRateChartAmountRangeToColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         if (value == null) {
@@ -1030,7 +1032,7 @@ public class FixedDepositCreatePage extends Page {
             return new TextCell(Model.of(String.valueOf(value)));
         }
     }
-    
+
     protected ItemPanel interestRateChartDescriptionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         if (value == null) {
@@ -1041,31 +1043,31 @@ public class FixedDepositCreatePage extends Page {
     }
 
     protected void interestRateChartActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget target) {
-	if ("delete".equals(s)) {
-	    int index = -1;
-	    for (int i = 0; i < this.interestRateChartValue.size(); i++) {
-		Map<String, Object> column = this.interestRateChartValue.get(i);
-		if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
-		    index = i;
-		    break;
-		}
-	    }
-	    if (index >= 0) {
-		this.interestRateChartValue.remove(index);
-	    }
-	    target.add(this.interestRateChartTable);
-	} else if ("incentives".equals(s)){
-	    this.incentiveValue = (List<Map<String, Object>>)stringObjectMap.get("incentiveValue");	
-	    this.incentivePopup.setContent(new IncentivePopup(this.incentivePopup.getContentId(), this.incentivePopup, this));
-	    this.incentivePopup.show(target);
-	}
+        if ("delete".equals(s)) {
+            int index = -1;
+            for (int i = 0; i < this.interestRateChartValue.size(); i++) {
+                Map<String, Object> column = this.interestRateChartValue.get(i);
+                if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index >= 0) {
+                this.interestRateChartValue.remove(index);
+            }
+            target.add(this.interestRateChartTable);
+        } else if ("incentives".equals(s)) {
+            List<Map<String, Object>> incentiveValue = (List<Map<String, Object>>) stringObjectMap.get("interestRate");
+            this.incentivePopup.setContent(new IncentivePopup(this.incentivePopup.getContentId(), this.incentivePopup, incentiveValue));
+            this.incentivePopup.show(target);
+        }
     }
 
     protected List<ActionItem> interestRateChartActionItem(String s, Map<String, Object> stringObjectMap) {
-	List<ActionItem> actions = Lists.newArrayList();
-	actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
-	actions.add(new ActionItem("incentives", Model.of("Incentives"), ItemCss.PRIMARY));
-	return actions;
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        actions.add(new ActionItem("incentives", Model.of("Incentives"), ItemCss.PRIMARY));
+        return actions;
     }
 
     protected void initSetting() {
