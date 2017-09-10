@@ -21,9 +21,18 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.RangeValidator;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.ChargeCalculation;
 import com.angkorteam.fintech.dto.ChargeTime;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.fixed.ApplyPenalOn;
+import com.angkorteam.fintech.dto.fixed.DayInYear;
+import com.angkorteam.fintech.dto.fixed.InterestCalculatedUsing;
+import com.angkorteam.fintech.dto.fixed.InterestCompoundingPeriod;
+import com.angkorteam.fintech.dto.fixed.InterestPostingPeriod;
+import com.angkorteam.fintech.dto.fixed.LockInPeriod;
+import com.angkorteam.fintech.dto.request.FixedBuilder;
+import com.angkorteam.fintech.helper.FixedHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.popup.ChargePopup;
 import com.angkorteam.fintech.popup.FeeChargePopup;
@@ -63,6 +72,8 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FixedDepositCreatePage extends Page {
@@ -119,20 +130,20 @@ public class FixedDepositCreatePage extends Page {
 
     private WebMarkupContainer termDefaultDepositAmountBlock;
     private WebMarkupContainer termDefaultDepositAmountContainer;
-    private Integer termDefaultDepositAmountValue;
-    private TextField<Integer> termDefaultDepositAmountField;
+    private Double termDefaultDepositAmountValue;
+    private TextField<Double> termDefaultDepositAmountField;
     private TextFeedbackPanel termDefaultDepositAmountFeedback;
 
     private WebMarkupContainer termMinimumDepositAmountBlock;
     private WebMarkupContainer termMinimumDepositAmountContainer;
-    private Integer termMinimumDepositAmountValue;
-    private TextField<Integer> termMinimumDepositAmountField;
+    private Double termMinimumDepositAmountValue;
+    private TextField<Double> termMinimumDepositAmountField;
     private TextFeedbackPanel termMinimumDepositAmountFeedback;
 
     private WebMarkupContainer termMaximumDepositAmountBlock;
     private WebMarkupContainer termMaximumDepositAmountContainer;
-    private Integer termMaximumDepositAmountValue;
-    private TextField<Integer> termMaximumDepositAmountField;
+    private Double termMaximumDepositAmountValue;
+    private TextField<Double> termMaximumDepositAmountField;
     private TextFeedbackPanel termMaximumDepositAmountFeedback;
 
     private WebMarkupContainer termInterestCompoundingPeriodBlock;
@@ -180,8 +191,8 @@ public class FixedDepositCreatePage extends Page {
 
     private WebMarkupContainer settingMinimumDepositTermBlock;
     private WebMarkupContainer settingMinimumDepositTermContainer;
-    private Integer settingMinimumDepositTermValue;
-    private TextField<Integer> settingMinimumDepositTermField;
+    private Double settingMinimumDepositTermValue;
+    private TextField<Double> settingMinimumDepositTermField;
     private TextFeedbackPanel settingMinimumDepositTermFeedback;
 
     private WebMarkupContainer settingMinimumDepositTypeBlock;
@@ -206,8 +217,8 @@ public class FixedDepositCreatePage extends Page {
 
     private WebMarkupContainer settingMaximumDepositTermBlock;
     private WebMarkupContainer settingMaximumDepositTermContainer;
-    private Integer settingMaximumDepositTermValue;
-    private TextField<Integer> settingMaximumDepositTermField;
+    private Double settingMaximumDepositTermValue;
+    private TextField<Double> settingMaximumDepositTermField;
     private TextFeedbackPanel settingMaximumDepositTermFeedback;
 
     private WebMarkupContainer settingMaximumDepositTypeBlock;
@@ -225,8 +236,8 @@ public class FixedDepositCreatePage extends Page {
 
     private WebMarkupContainer settingApplyPenalInterestBlock;
     private WebMarkupContainer settingApplyPenalInterestContainer;
-    private Integer settingApplyPenalInterestValue;
-    private TextField<Integer> settingApplyPenalInterestField;
+    private Double settingApplyPenalInterestValue;
+    private TextField<Double> settingApplyPenalInterestField;
     private TextFeedbackPanel settingApplyPenalInterestFeedback;
 
     private WebMarkupContainer settingApplyPenalOnBlock;
@@ -1392,7 +1403,170 @@ public class FixedDepositCreatePage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
+        FixedBuilder builder = new FixedBuilder();
 
+        // Detail
+        builder.withName(this.detailProductNameValue);
+        builder.withShortName(this.detailShortNameValue);
+        builder.withDescription(this.detailDescriptionValue);
+
+        // Currency
+        if (this.currencyCodeValue != null) {
+            builder.withCurrencyCode(this.currencyCodeValue.getId());
+        }
+        builder.withDigitsAfterDecimal(this.currencyDecimalPlaceValue);
+        builder.withInMultiplesOf(this.currencyMultipleOfValue);
+
+        // Term
+
+        builder.withDepositAmount(this.termDefaultDepositAmountValue);
+        builder.withMinDepositAmount(this.termMinimumDepositAmountValue);
+        builder.withMaxDepositAmount(this.termMaximumDepositAmountValue);
+
+        if (this.termInterestCompoundingPeriodValue != null) {
+            builder.withInterestCompoundingPeriodType(InterestCompoundingPeriod.valueOf(this.termInterestCompoundingPeriodValue.getId()));
+        }
+
+        if (this.termInterestPostingPeriodValue != null) {
+            builder.withInterestPostingPeriodType(InterestPostingPeriod.valueOf(this.termInterestPostingPeriodValue.getId()));
+        }
+
+        if (this.termInterestCalculatedUsingValue != null) {
+            builder.withInterestCalculationType(InterestCalculatedUsing.valueOf(this.termInterestCalculatedUsingValue.getId()));
+        }
+
+        if (this.termDayInYearValue != null) {
+            builder.withInterestCalculationDaysInYearType(DayInYear.valueOf(this.termDayInYearValue.getId()));
+        }
+
+        builder.withLockInPeriodFrequency(this.settingLockInPeriodValue);
+        if (this.settingLockInTypeValue != null) {
+            builder.withLockinPeriodFrequencyType(LockInPeriod.valueOf(this.settingLockInTypeValue.getId()));
+        }
+
+        builder.withMinDepositTerm(this.settingMinimumDepositTermValue);
+
+        if (this.settingMinimumDepositTypeValue != null) {
+            builder.withMinDepositTermTypeId(LockInPeriod.valueOf(this.settingMinimumDepositTypeValue.getId()));
+        }
+
+        builder.withInMultiplesOfDepositTerm(this.settingInMultiplesOfValue);
+
+        if (this.settingInMultiplesTypeValue != null) {
+            builder.withInMultiplesOfDepositTermTypeId(LockInPeriod.valueOf(this.settingInMultiplesTypeValue.getId()));
+        }
+
+        builder.withMaxDepositTerm(this.settingMaximumDepositTermValue);
+
+        if (this.settingMaximumDepositTypeValue != null) {
+            builder.withMaxDepositTermTypeId(LockInPeriod.valueOf(this.settingMaximumDepositTypeValue.getId()));
+        }
+
+        builder.withPreClosurePenalApplicable(this.settingForPreMatureClosureValue == null ? false : this.settingForPreMatureClosureValue);
+
+        builder.withPreClosurePenalInterest(this.settingApplyPenalInterestValue);
+
+        if (this.settingApplyPenalOnValue != null) {
+            builder.withPreClosurePenalInterestOnTypeId(ApplyPenalOn.valueOf(this.settingApplyPenalOnValue.getId()));
+        }
+
+        boolean holdTax = this.settingWithholdTaxApplicableValue == null ? false : this.settingWithholdTaxApplicableValue;
+        builder.withHoldTax(holdTax);
+        if (holdTax) {
+            if (this.settingTaxGroupValue != null) {
+                builder.withTaxGroupId(this.settingTaxGroupValue.getId());
+            }
+        }
+
+        // Interest Rate Chart
+
+        for (Map<String, Object> interestRateChart : this.interestRateChartValue) {
+            // LockInPeriod
+            Option periodType = (Option) interestRateChart.get("periodType");
+            Date periodFrom = (Date) interestRateChart.get("periodFrom");
+            Date periodTo = (Date) interestRateChart.get("periodTo");
+            Double amountRangeFrom = (Double) interestRateChart.get("amountRangeFrom");
+            Double amountRangeTo = (Double) interestRateChart.get("amountRangeTo");
+            Double interest = (Double) interestRateChart.get("interest");
+            String description = (String) interestRateChart.get("description");
+            List<Map<String, Object>> interestRate = (List<Map<String, Object>>) interestRateChart.get("interestRate");
+            
+            item.put("uuid", UUID.randomUUID().toString());
+            item.put("attribute", this.attributeValue);
+            item.put("operator", this.operatorValue);
+            item.put("operand", this.operandValue);
+            item.put("operandType", this.operandTypeValue);
+            item.put("interest", this.interestValue);
+        }
+
+        // Charge
+
+        if (this.chargeValue != null && !this.chargeValue.isEmpty()) {
+            for (Map<String, Object> item : this.chargeValue) {
+                builder.withCharges((String) item.get("chargeId"));
+            }
+        }
+
+        // Accounting
+
+        String accounting = this.accountingValue;
+
+        if (ACC_NONE.equals(accounting)) {
+            builder.withAccountingRule(1);
+        } else if (ACC_CASH.equals(accounting)) {
+            builder.withAccountingRule(2);
+        }
+
+        if (ACC_CASH.equals(accounting)) {
+            if (this.cashSavingReferenceValue != null) {
+                builder.withSavingsReferenceAccountId(this.cashSavingReferenceValue.getId());
+            }
+            if (this.cashSavingControlValue != null) {
+                builder.withSavingsControlAccountId(this.cashSavingControlValue.getId());
+            }
+            if (this.cashSavingsTransfersInSuspenseValue != null) {
+                builder.withTransfersInSuspenseAccountId(this.cashSavingsTransfersInSuspenseValue.getId());
+            }
+            if (this.cashInterestOnSavingValue != null) {
+                builder.withInterestOnSavingsAccountId(this.cashInterestOnSavingValue.getId());
+            }
+            if (this.cashIncomeFromFeesValue != null) {
+                builder.withIncomeFromFeeAccountId(this.cashIncomeFromFeesValue.getId());
+            }
+            if (this.cashIncomeFromPenaltiesValue != null) {
+                builder.withIncomeFromPenaltyAccountId(this.cashIncomeFromPenaltiesValue.getId());
+            }
+        }
+
+        if (ACC_CASH.equals(accounting)) {
+            if (this.advancedAccountingRuleFundSourceValue != null && !this.advancedAccountingRuleFundSourceValue.isEmpty()) {
+                for (Map<String, Object> item : this.advancedAccountingRuleFundSourceValue) {
+                    builder.withPaymentChannelToFundSourceMappings((String) item.get("paymentId"), (String) item.get("accountId"));
+                }
+            }
+            if (this.advancedAccountingRuleFeeIncomeValue != null && !this.advancedAccountingRuleFeeIncomeValue.isEmpty()) {
+                for (Map<String, Object> item : this.advancedAccountingRuleFeeIncomeValue) {
+                    builder.withFeeToIncomeAccountMappings((String) item.get("chargeId"), (String) item.get("accountId"));
+                }
+            }
+            if (this.advancedAccountingRulePenaltyIncomeValue != null && !this.advancedAccountingRulePenaltyIncomeValue.isEmpty()) {
+                for (Map<String, Object> item : this.advancedAccountingRulePenaltyIncomeValue) {
+                    builder.withPenaltyToIncomeAccountMappings((String) item.get("chargeId"), (String) item.get("accountId"));
+                }
+            }
+        }
+
+        JsonNode node = null;
+        try {
+            node = FixedHelper.create((Session) getSession(), builder.build());
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+        setResponsePage(SavingBrowsePage.class);
     }
 
 }
