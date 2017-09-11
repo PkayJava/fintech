@@ -1,15 +1,15 @@
-package com.angkorteam.fintech.provider.fixed;
+package com.angkorteam.fintech.provider.recurring;
 
 import java.util.List;
 
 import org.apache.wicket.model.IModel;
 
-import com.angkorteam.fintech.dto.fixed.InterestPostingPeriod;
+import com.angkorteam.fintech.dto.recurring.ApplyPenalOn;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
 
-public class InterestPostingPeriodProvider extends SingleChoiceProvider<Option> {
+public class ApplyPenalOnProvider extends SingleChoiceProvider<Option> {
 
     @Override
     public Option toChoice(String id) {
@@ -25,7 +25,7 @@ public class InterestPostingPeriodProvider extends SingleChoiceProvider<Option> 
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (InterestPostingPeriod a : InterestPostingPeriod.values()) {
+        for (ApplyPenalOn a : ApplyPenalOn.values()) {
             options.add(new Option(a.name(), a.getDescription()));
         }
         return options;

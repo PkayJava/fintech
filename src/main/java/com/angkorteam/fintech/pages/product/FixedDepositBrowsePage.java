@@ -42,71 +42,74 @@ public class FixedDepositBrowsePage extends Page {
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
+	return Model.ofList(BREADCRUMB);
     }
 
     static {
-        BREADCRUMB = Lists.newArrayList();
-        {
-            PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Admin");
-            BREADCRUMB.add(breadcrumb);
-        }
-        {
-            PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Product");
-            breadcrumb.setPage(ProductDashboardPage.class);
-            BREADCRUMB.add(breadcrumb);
-        }
-        {
-            PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Share Product");
-            BREADCRUMB.add(breadcrumb);
-        }
+	BREADCRUMB = Lists.newArrayList();
+	{
+	    PageBreadcrumb breadcrumb = new PageBreadcrumb();
+	    breadcrumb.setLabel("Admin");
+	    BREADCRUMB.add(breadcrumb);
+	}
+	{
+	    PageBreadcrumb breadcrumb = new PageBreadcrumb();
+	    breadcrumb.setLabel("Product");
+	    breadcrumb.setPage(ProductDashboardPage.class);
+	    BREADCRUMB.add(breadcrumb);
+	}
+	{
+	    PageBreadcrumb breadcrumb = new PageBreadcrumb();
+	    breadcrumb.setLabel("Fixed Deposit Product");
+	    BREADCRUMB.add(breadcrumb);
+	}
     }
 
     @Override
     protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("m_share_product");
-        this.provider.boardField("id", "id", Long.class);
-        this.provider.boardField("name", "name", String.class);
-        this.provider.boardField("short_name", "shortName", String.class);
-        this.provider.boardField("total_shares", "totalShares", Long.class);
+	super.onInitialize();
+	this.provider = new JdbcProvider("m_share_product");
+	this.provider.boardField("id", "id", Long.class);
+	this.provider.boardField("name", "name", String.class);
+	this.provider.boardField("short_name", "shortName", String.class);
+	this.provider.boardField("total_shares", "totalShares", Long.class);
 
-        this.provider.selectField("id", Long.class);
+	this.provider.selectField("id", Long.class);
 
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Short Name"), "shortName", "shortName", this::shortNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("Total Shares"), "totalShares", "totalShares", this::totalSharesColumn));
+	List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
+	columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name",
+		this::nameColumn));
+	columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Short Name"), "shortName",
+		"shortName", this::shortNameColumn));
+	columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("Total Shares"), "totalShares",
+		"totalShares", this::totalSharesColumn));
 
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
+	FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
+	add(filterForm);
 
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+	this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
+	this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
+	filterForm.add(this.dataTable);
 
-        this.createLink = new BookmarkablePageLink<>("createLink", ShareCreatePage.class);
-        add(this.createLink);
+	this.createLink = new BookmarkablePageLink<>("createLink", FixedDepositCreatePage.class);
+	add(this.createLink);
     }
 
     private ItemPanel shortNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+	String value = (String) model.get(jdbcColumn);
+	return new TextCell(Model.of(value));
     }
 
     private ItemPanel totalSharesColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long value = (Long) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(value)));
+	Long value = (Long) model.get(jdbcColumn);
+	return new TextCell(Model.of(String.valueOf(value)));
     }
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        PageParameters parameters = new PageParameters();
-        parameters.add("shareId", model.get("id"));
-        return new LinkCell(ShareCreatePage.class, parameters, Model.of(name));
+	String name = (String) model.get(jdbcColumn);
+	PageParameters parameters = new PageParameters();
+	parameters.add("shareId", model.get("id"));
+	return new LinkCell(ShareCreatePage.class, parameters, Model.of(name));
     }
 
 }

@@ -1,12 +1,13 @@
 package com.angkorteam.fintech.provider.fixed;
 
+import java.util.List;
+
+import org.apache.wicket.model.IModel;
+
 import com.angkorteam.fintech.dto.fixed.InterestCalculatedUsing;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
-import org.apache.wicket.model.IModel;
-
-import java.util.List;
 
 public class InterestCalculatedUsingProvider extends SingleChoiceProvider<Option> {
 

@@ -261,14 +261,14 @@ public class ShareCreatePage extends Page {
         }
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Share Product");
+            breadcrumb.setLabel("Share Loan Product");
             breadcrumb.setPage(ShareBrowsePage.class);
             BREADCRUMB.add(breadcrumb);
         }
 
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Share Product Create");
+            breadcrumb.setLabel("Share Loan Product Create");
             BREADCRUMB.add(breadcrumb);
         }
     }

@@ -36,7 +36,7 @@ import com.angkorteam.fintech.dto.fixed.LockInPeriod;
 import com.angkorteam.fintech.dto.fixed.OperandType;
 import com.angkorteam.fintech.dto.fixed.Operator;
 import com.angkorteam.fintech.dto.request.FixedBuilder;
-import com.angkorteam.fintech.dto.request.IncentiveBuilder;
+import com.angkorteam.fintech.dto.request.FixedBuilder.IncentiveBuilder;
 import com.angkorteam.fintech.helper.FixedHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.popup.ChargePopup;
@@ -1583,6 +1583,8 @@ public class FixedDepositCreatePage extends Page {
 	    builder.withInterestCalculationDaysInYearType(DayInYear.valueOf(this.termDayInYearValue.getId()));
 	}
 
+	// Setting
+
 	builder.withLockInPeriodFrequency(this.settingLockInPeriodValue);
 	if (this.settingLockInTypeValue != null) {
 	    builder.withLockinPeriodFrequencyType(LockInPeriod.valueOf(this.settingLockInTypeValue.getId()));
@@ -1743,7 +1745,7 @@ public class FixedDepositCreatePage extends Page {
 	if (reportError(node)) {
 	    return;
 	}
-	setResponsePage(SavingBrowsePage.class);
+	setResponsePage(FixedDepositBrowsePage.class);
     }
 
 }

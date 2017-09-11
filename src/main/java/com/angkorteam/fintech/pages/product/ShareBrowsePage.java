@@ -60,7 +60,7 @@ public class ShareBrowsePage extends Page {
         }
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Share Product");
+            breadcrumb.setLabel("Share Loan Product");
             BREADCRUMB.add(breadcrumb);
         }
     }
