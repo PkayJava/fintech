@@ -1,5 +1,13 @@
 package com.angkorteam.fintech.pages;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.PropertyModel;
+
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.provider.MifosSingleChoiceProvider;
 import com.angkorteam.framework.ReferenceUtilities;
@@ -7,13 +15,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.PropertyModel;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by socheatkhauv on 6/17/17.
@@ -41,7 +42,7 @@ public class LoginPage extends WebPage {
 
         this.identifierProvider = new MifosSingleChoiceProvider("tenants", "identifier", "name");
         this.identifierField = new Select2SingleChoice<>("identifierField", 0, new PropertyModel<>(this, "identifierValue"), this.identifierProvider);
-        this.identifierField.setRequired(true);
+//        this.identifierField.setRequired(true);
         this.form.add(this.identifierField);
 
         this.loginField = new TextField<>("loginField", new PropertyModel<>(this, "loginValue"));
@@ -59,6 +60,14 @@ public class LoginPage extends WebPage {
     }
 
     protected void loginButtonClick(Button button) {
+	// System.out.println(this.identifierValue.getId());
+	System.out.println();
+	System.out.println();
+	System.out.println();
+	System.out.println();
+	System.out.println();
+	System.out.println(this.loginValue);
+	System.out.println(this.passwordValue);
         Session session = (Session) getSession();
         HttpServletRequest request = (HttpServletRequest) getRequest().getContainerRequest();
         boolean valid = session.signIn(request.getSession(), this.identifierValue.getId(), this.loginValue, this.passwordValue);
