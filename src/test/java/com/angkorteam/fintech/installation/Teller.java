@@ -1,4 +1,4 @@
-package com.angkorteam.adminlte;
+package com.angkorteam.fintech.installation;
 
 import com.angkorteam.fintech.dto.TellerState;
 

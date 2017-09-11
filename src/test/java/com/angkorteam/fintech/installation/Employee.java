@@ -1,4 +1,4 @@
-package com.angkorteam.adminlte;
+package com.angkorteam.fintech.installation;
 
 public enum Employee {
     Emp001("Abbie Fernando", false),

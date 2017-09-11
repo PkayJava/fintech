@@ -1,4 +1,4 @@
-package com.angkorteam.adminlte;
+package com.angkorteam.fintech.installation;
 
 import com.angkorteam.framework.spring.JdbcTemplate;
 import org.apache.commons.dbcp2.BasicDataSource;
