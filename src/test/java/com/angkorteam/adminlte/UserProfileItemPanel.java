@@ -1,4 +1,4 @@
-package com.angkorteam.adminlte.example;
+package com.angkorteam.adminlte;
 
 import com.angkorteam.framework.panels.UserHeaderPanel;
 import org.apache.wicket.model.IModel;
