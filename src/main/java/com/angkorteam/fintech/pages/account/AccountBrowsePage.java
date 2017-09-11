@@ -106,38 +106,38 @@ public class AccountBrowsePage extends Page {
         add(this.createLink);
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-        Long id = (Long) stringObjectMap.get("id");
-        if ("delete".equals(s)) {
+    private void actionClick(String link, Map<String, Object> model, AjaxRequestTarget target) {
+        Long id = (Long) model.get("id");
+        if ("delete".equals(link)) {
             JsonNode node = null;
             try {
                 node = GLAccountHelper.delete((Session) getSession(), String.valueOf(id));
             } catch (UnirestException e) {
             }
-            reportError(node, ajaxRequestTarget);
-            ajaxRequestTarget.add(this.dataTable);
-        } else if ("enable".equals(s)) {
+            reportError(node, target);
+            target.add(this.dataTable);
+        } else if ("enable".equals(link)) {
             JsonNode node = null;
             try {
                 node = GLAccountHelper.enable((Session) getSession(), String.valueOf(id));
             } catch (UnirestException e) {
             }
-            reportError(node, ajaxRequestTarget);
-            ajaxRequestTarget.add(this.dataTable);
-        } else if ("disable".equals(s)) {
+            reportError(node, target);
+            target.add(this.dataTable);
+        } else if ("disable".equals(link)) {
             JsonNode node = null;
             try {
                 node = GLAccountHelper.disable((Session) getSession(), String.valueOf(id));
             } catch (UnirestException e) {
             }
-            reportError(node, ajaxRequestTarget);
-            ajaxRequestTarget.add(this.dataTable);
+            reportError(node, target);
+            target.add(this.dataTable);
         }
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> actionItem(String link, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
-        Boolean disabled = (Boolean) stringObjectMap.get("disabled");
+        Boolean disabled = (Boolean) model.get("disabled");
         if (disabled == null || disabled) {
             actions.add(new ActionItem("enable", Model.of("Enable"), ItemCss.INFO));
         } else {
