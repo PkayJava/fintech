@@ -329,11 +329,11 @@ public class FixedBuilder implements Serializable {
     private List<Map<String, Object>> chartSlabs = Lists.newArrayList();
     private boolean hasChartSlabs;
 
-    public FixedBuilder withChartSlab(Integer periodType, String fromPeriod, String toPeriod, String amountRangeFrom, String amountRangeTo, Integer annualInterestRate, String description, List<JSONObject> incentives) {
+    public FixedBuilder withChartSlab(LockInPeriod periodType, Date fromPeriod, Date toPeriod, Double amountRangeFrom, Double amountRangeTo, Double annualInterestRate, String description, List<JSONObject> incentives) {
         Map<String, Object> chartSlab = Maps.newHashMap();
-        chartSlab.put("periodType", periodType);
-        chartSlab.put("fromPeriod", fromPeriod);
-        chartSlab.put("toPeriod", toPeriod);
+	chartSlab.put("periodType", periodType == null ? null : periodType.getLiteral());
+	chartSlab.put("fromPeriod", fromPeriod == null ? null : DateFormatUtils.format(fromPeriod, this.dateFormat));
+	chartSlab.put("toPeriod", toPeriod == null ? null : DateFormatUtils.format(toPeriod, this.dateFormat));
         chartSlab.put("amountRangeFrom", amountRangeFrom);
         chartSlab.put("amountRangeTo", amountRangeTo);
         chartSlab.put("annualInterestRate", annualInterestRate);
