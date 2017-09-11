@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<wicket:extend>
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Mixed Product Browse</h3>
+            <div class="box-tools pull-right">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-gear"></i></button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a wicket:id="createLink">Create</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <form wicket:id="filter-form">
+                <table wicket:id="table"/>
+            </form>
+        </div>
+    </div>
+</wicket:extend>
+</body>
+</html>

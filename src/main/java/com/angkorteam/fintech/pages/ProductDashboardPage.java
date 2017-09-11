@@ -9,7 +9,10 @@ import org.apache.wicket.model.Model;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.charge.ChargeBrowsePage;
+import com.angkorteam.fintech.pages.product.FixedDepositBrowsePage;
 import com.angkorteam.fintech.pages.product.LoanBrowsePage;
+import com.angkorteam.fintech.pages.product.MixedCreatePage;
+import com.angkorteam.fintech.pages.product.RecurringDepositBrowsePage;
 import com.angkorteam.fintech.pages.product.SavingBrowsePage;
 import com.angkorteam.fintech.pages.product.ShareBrowsePage;
 import com.angkorteam.fintech.pages.rate.FloatingRateBrowsePage;
@@ -58,8 +61,9 @@ public class ProductDashboardPage extends Page {
 	add(loanProductsPage);
 
 	InfoBoxPanel productsMixPage = new InfoBoxPanel("productsMixPage",
-		Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Products Mix")
-			.setDescription("Defines rules for taking multiple rules").setIcon(Emoji.ion_alert)));
+		Model.of(new InfoBox().setPage(MixedCreatePage.class).setTitle("Products Mix")
+			.setDescription("Defines rules for taking multiple rules")
+			.setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
 	add(productsMixPage);
 
 	InfoBoxPanel savingsProductsPage = new InfoBoxPanel("savingsProductsPage",
@@ -69,9 +73,9 @@ public class ProductDashboardPage extends Page {
 	add(savingsProductsPage);
 
 	InfoBoxPanel fixedDepositProductsPage = new InfoBoxPanel("fixedDepositProductsPage",
-		Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Fixed Deposit Products")
+		Model.of(new InfoBox().setPage(FixedDepositBrowsePage.class).setTitle("Fixed Deposit Products")
 			.setDescription("Add, modify or inactivate a Fixed deposit product")
-			.setIcon(Emoji.ion_alert)));
+			.setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
 	add(fixedDepositProductsPage);
 
 	InfoBoxPanel shareProductsPage = new InfoBoxPanel("shareProductsPage",
@@ -81,9 +85,9 @@ public class ProductDashboardPage extends Page {
 	add(shareProductsPage);
 
 	InfoBoxPanel recurringDepositProductsPage = new InfoBoxPanel("recurringDepositProductsPage",
-		Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Recurring Deposit Products")
+		Model.of(new InfoBox().setPage(RecurringDepositBrowsePage.class).setTitle("Recurring Deposit Products")
 			.setDescription("Add, modify or inactivate a Recurring Deposit product")
-			.setIcon(Emoji.ion_alert)));
+			.setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
 	add(recurringDepositProductsPage);
 
 	InfoBoxPanel chargesProductPage = new InfoBoxPanel("chargesProductPage",
