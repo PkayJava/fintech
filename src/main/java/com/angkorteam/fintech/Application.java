@@ -1,7 +1,5 @@
 package com.angkorteam.fintech;
 
-import javax.servlet.ServletContext;
-
 import org.apache.commons.configuration.XMLPropertiesConfiguration;
 import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;

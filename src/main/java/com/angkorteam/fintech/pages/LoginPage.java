@@ -42,7 +42,7 @@ public class LoginPage extends WebPage {
 
         this.identifierProvider = new MifosSingleChoiceProvider("tenants", "identifier", "name");
         this.identifierField = new Select2SingleChoice<>("identifierField", 0, new PropertyModel<>(this, "identifierValue"), this.identifierProvider);
-//        this.identifierField.setRequired(true);
+        this.identifierField.setRequired(true);
         this.form.add(this.identifierField);
 
         this.loginField = new TextField<>("loginField", new PropertyModel<>(this, "loginValue"));
@@ -60,14 +60,6 @@ public class LoginPage extends WebPage {
     }
 
     protected void loginButtonClick(Button button) {
-	// System.out.println(this.identifierValue.getId());
-	System.out.println();
-	System.out.println();
-	System.out.println();
-	System.out.println();
-	System.out.println();
-	System.out.println(this.loginValue);
-	System.out.println(this.passwordValue);
         Session session = (Session) getSession();
         HttpServletRequest request = (HttpServletRequest) getRequest().getContainerRequest();
         boolean valid = session.signIn(request.getSession(), this.identifierValue.getId(), this.loginValue, this.passwordValue);

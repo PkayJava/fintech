@@ -59,6 +59,8 @@ public class Session extends AbstractAuthenticatedWebSession implements IMifos {
         } catch (UnirestException e) {
             e.printStackTrace();
         }
+        System.out.println("token : " + this.token);
+        System.out.println("identifier : " + this.identifier);
         return false;
     }
 

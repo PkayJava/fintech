@@ -17,20 +17,19 @@ public class LoginPageTest {
 
     @Test
     public void loginPage() {
-	// start and render the test page
+
 	tester.startPage(LoginPage.class);
 
-	// assert rendered page class
 	tester.assertRenderedPage(LoginPage.class);
 
 	FormTester formTester = tester.newFormTester("form");
 
-	// formTester.setValue("identifierField", "default");
+	formTester.setValue("identifierField", "default");
 	formTester.setValue("loginField", "mifos");
 	formTester.setValue("passwordField", "password");
-	formTester.submit();
+	formTester.submit("loginButton");
 
-	// System.out.println(tester.getTagByWicketId("loginField").getClass().getName());
+	tester.assertRenderedPage(tester.getApplication().getHomePage());
 
     }
 
