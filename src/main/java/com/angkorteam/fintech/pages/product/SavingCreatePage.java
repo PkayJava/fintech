@@ -20,6 +20,8 @@ import org.apache.wicket.validation.validator.RangeValidator;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.AccountType;
+import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.fintech.dto.ChargeCalculation;
 import com.angkorteam.fintech.dto.ChargeTime;
 import com.angkorteam.fintech.dto.Function;
@@ -670,8 +672,8 @@ public class SavingCreatePage extends Page {
         this.cashBlock.add(this.cashContainer);
 
         this.cashSavingReferenceProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashSavingReferenceProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashSavingReferenceProvider.applyWhere("classification_enum", "classification_enum = 1");
+        this.cashSavingReferenceProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashSavingReferenceProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.cashSavingReferenceField = new Select2SingleChoice<>("cashSavingReferenceField", new PropertyModel<>(this, "cashSavingReferenceValue"), this.cashSavingReferenceProvider);
         this.cashSavingReferenceField.setRequired(false);
         this.cashSavingReferenceField.add(new OnChangeAjaxBehavior());
@@ -680,8 +682,8 @@ public class SavingCreatePage extends Page {
         this.cashContainer.add(this.cashSavingReferenceFeedback);
 
         this.cashOverdraftPortfolioProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashOverdraftPortfolioProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashOverdraftPortfolioProvider.applyWhere("classification_enum", "classification_enum = 1");
+        this.cashOverdraftPortfolioProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashOverdraftPortfolioProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.cashOverdraftPortfolioField = new Select2SingleChoice<>("cashOverdraftPortfolioField", new PropertyModel<>(this, "cashOverdraftPortfolioValue"), this.cashOverdraftPortfolioProvider);
         this.cashOverdraftPortfolioField.setRequired(false);
         this.cashOverdraftPortfolioField.add(new OnChangeAjaxBehavior());
@@ -690,8 +692,8 @@ public class SavingCreatePage extends Page {
         this.cashContainer.add(this.cashOverdraftPortfolioFeedback);
 
         this.cashSavingControlProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashSavingControlProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashSavingControlProvider.applyWhere("classification_enum", "classification_enum = 1");
+        this.cashSavingControlProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashSavingControlProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
         this.cashSavingControlField = new Select2SingleChoice<>("cashSavingControlField", new PropertyModel<>(this, "cashSavingControlValue"), this.cashSavingControlProvider);
         this.cashSavingControlField.setRequired(false);
         this.cashSavingControlField.add(new OnChangeAjaxBehavior());
@@ -700,8 +702,8 @@ public class SavingCreatePage extends Page {
         this.cashContainer.add(this.cashSavingControlFeedback);
 
         this.cashSavingsTransfersInSuspenseProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashSavingsTransfersInSuspenseProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashSavingsTransfersInSuspenseProvider.applyWhere("classification_enum", "classification_enum = 4");
+        this.cashSavingsTransfersInSuspenseProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashSavingsTransfersInSuspenseProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
         this.cashSavingsTransfersInSuspenseField = new Select2SingleChoice<>("cashSavingsTransfersInSuspenseField", new PropertyModel<>(this, "cashSavingsTransfersInSuspenseValue"), this.cashSavingsTransfersInSuspenseProvider);
         this.cashSavingsTransfersInSuspenseField.setRequired(false);
         this.cashSavingsTransfersInSuspenseField.add(new OnChangeAjaxBehavior());
@@ -710,8 +712,8 @@ public class SavingCreatePage extends Page {
         this.cashContainer.add(this.cashSavingsTransfersInSuspenseFeedback);
 
         this.cashEscheatLiabilityProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashEscheatLiabilityProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashEscheatLiabilityProvider.applyWhere("classification_enum", "classification_enum = 4");
+        this.cashEscheatLiabilityProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashEscheatLiabilityProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
         this.cashEscheatLiabilityField = new Select2SingleChoice<>("cashEscheatLiabilityField", new PropertyModel<>(this, "cashEscheatLiabilityValue"), this.cashEscheatLiabilityProvider);
         this.cashEscheatLiabilityField.setRequired(false);
         this.cashEscheatLiabilityField.add(new OnChangeAjaxBehavior());
@@ -720,8 +722,8 @@ public class SavingCreatePage extends Page {
         this.cashContainer.add(this.cashEscheatLiabilityFeedback);
 
         this.cashInterestOnSavingProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashInterestOnSavingProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashInterestOnSavingProvider.applyWhere("classification_enum", "classification_enum = 4");
+        this.cashInterestOnSavingProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashInterestOnSavingProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Expense.getLiteral());
         this.cashInterestOnSavingField = new Select2SingleChoice<>("cashInterestOnSavingField", new PropertyModel<>(this, "cashInterestOnSavingValue"), this.cashInterestOnSavingProvider);
         this.cashInterestOnSavingField.setRequired(false);
         this.cashInterestOnSavingField.add(new OnChangeAjaxBehavior());
@@ -730,8 +732,8 @@ public class SavingCreatePage extends Page {
         this.cashContainer.add(this.cashInterestOnSavingFeedback);
 
         this.cashWriteOffProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashWriteOffProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashWriteOffProvider.applyWhere("classification_enum", "classification_enum = 4");
+        this.cashWriteOffProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashWriteOffProvider.applyWhere("classification_enum", "classification_enum  = " + AccountType.Expense.getLiteral());
         this.cashWriteOffField = new Select2SingleChoice<>("cashWriteOffField", new PropertyModel<>(this, "cashWriteOffValue"), this.cashWriteOffProvider);
         this.cashWriteOffField.setRequired(false);
         this.cashWriteOffField.add(new OnChangeAjaxBehavior());
@@ -740,8 +742,8 @@ public class SavingCreatePage extends Page {
         this.cashContainer.add(this.cashWriteOffFeedback);
 
         this.cashIncomeFromFeeProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashIncomeFromFeeProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashIncomeFromFeeProvider.applyWhere("classification_enum", "classification_enum = 5");
+        this.cashIncomeFromFeeProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromFeeProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.cashIncomeFromFeeField = new Select2SingleChoice<>("cashIncomeFromFeeField", new PropertyModel<>(this, "cashIncomeFromFeeValue"), this.cashIncomeFromFeeProvider);
         this.cashIncomeFromFeeField.setRequired(false);
         this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
@@ -750,8 +752,8 @@ public class SavingCreatePage extends Page {
         this.cashContainer.add(this.cashIncomeFromFeeFeedback);
 
         this.cashIncomeFromPenaltiesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashIncomeFromPenaltiesProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashIncomeFromPenaltiesProvider.applyWhere("classification_enum", "classification_enum = 2");
+        this.cashIncomeFromPenaltiesProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromPenaltiesProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.cashIncomeFromPenaltiesField = new Select2SingleChoice<>("cashIncomeFromPenaltiesField", new PropertyModel<>(this, "cashIncomeFromPenaltiesValue"), this.cashIncomeFromPenaltiesProvider);
         this.cashIncomeFromPenaltiesField.setRequired(false);
         this.cashIncomeFromPenaltiesField.add(new OnChangeAjaxBehavior());
@@ -760,8 +762,8 @@ public class SavingCreatePage extends Page {
         this.cashContainer.add(this.cashIncomeFromPenaltiesFeedback);
 
         this.cashOverdraftInterestIncomeProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashOverdraftInterestIncomeProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashOverdraftInterestIncomeProvider.applyWhere("classification_enum", "classification_enum = 2");
+        this.cashOverdraftInterestIncomeProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashOverdraftInterestIncomeProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.cashOverdraftInterestIncomeField = new Select2SingleChoice<>("cashOverdraftInterestIncomeField", new PropertyModel<>(this, "cashOverdraftInterestIncomeValue"), this.cashOverdraftInterestIncomeProvider);
         this.cashOverdraftInterestIncomeField.setRequired(false);
         this.cashOverdraftInterestIncomeField.add(new OnChangeAjaxBehavior());
@@ -812,7 +814,7 @@ public class SavingCreatePage extends Page {
         this.chargeAddLink.setOnClick(this::chargeAddLinkClick);
         this.form.add(this.chargeAddLink);
     }
-    
+
     protected void chargePopupOnClose(String elementId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         String chargeId = this.itemChargeValue.getId();
@@ -920,6 +922,7 @@ public class SavingCreatePage extends Page {
         this.settingMinimumOpeningBalanceContainer = new WebMarkupContainer("settingMinimumOpeningBalanceContainer");
         this.settingMinimumOpeningBalanceBlock.add(this.settingMinimumOpeningBalanceContainer);
         this.settingMinimumOpeningBalanceField = new TextField<>("settingMinimumOpeningBalanceField", new PropertyModel<>(this, "settingMinimumOpeningBalanceValue"));
+        this.settingMinimumOpeningBalanceField.setLabel(Model.of("Minimum opening balance"));
         this.settingMinimumOpeningBalanceField.add(new OnChangeAjaxBehavior());
         this.settingMinimumOpeningBalanceContainer.add(this.settingMinimumOpeningBalanceField);
         this.settingMinimumOpeningBalanceFeedback = new TextFeedbackPanel("settingMinimumOpeningBalanceFeedback", this.settingMinimumOpeningBalanceField);
@@ -930,6 +933,7 @@ public class SavingCreatePage extends Page {
         this.settingLockInPeriodContainer = new WebMarkupContainer("settingLockInPeriodContainer");
         this.settingLockInPeriodBlock.add(this.settingLockInPeriodContainer);
         this.settingLockInPeriodField = new TextField<>("settingLockInPeriodField", new PropertyModel<>(this, "settingLockInPeriodValue"));
+        this.settingLockInPeriodField.setLabel(Model.of("Lock-in period"));
         this.settingLockInPeriodField.add(new OnChangeAjaxBehavior());
         this.settingLockInPeriodContainer.add(this.settingLockInPeriodField);
         this.settingLockInPeriodFeedback = new TextFeedbackPanel("settingLockInPeriodFeedback", this.settingLockInPeriodField);
@@ -941,6 +945,7 @@ public class SavingCreatePage extends Page {
         this.settingLockInTypeBlock.add(this.settingLockInTypeContainer);
         this.settingLockInTypeProvider = new LockInTypeProvider();
         this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", 0, new PropertyModel<>(this, "settingLockInTypeValue"), this.settingLockInTypeProvider);
+        this.settingLockInTypeField.setLabel(Model.of("Type"));
         this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
         this.settingLockInTypeField.setRequired(false);
         this.settingLockInTypeContainer.add(this.settingLockInTypeField);
@@ -963,6 +968,7 @@ public class SavingCreatePage extends Page {
         this.settingBalanceRequiredForInterestCalculationContainer = new WebMarkupContainer("settingBalanceRequiredForInterestCalculationContainer");
         this.settingBalanceRequiredForInterestCalculationBlock.add(this.settingBalanceRequiredForInterestCalculationContainer);
         this.settingBalanceRequiredForInterestCalculationField = new TextField<>("settingBalanceRequiredForInterestCalculationField", new PropertyModel<>(this, "settingBalanceRequiredForInterestCalculationValue"));
+        this.settingBalanceRequiredForInterestCalculationField.setLabel(Model.of("Balance Required For Interest Calculation"));
         this.settingBalanceRequiredForInterestCalculationField.add(new OnChangeAjaxBehavior());
         this.settingBalanceRequiredForInterestCalculationContainer.add(this.settingBalanceRequiredForInterestCalculationField);
         this.settingBalanceRequiredForInterestCalculationFeedback = new TextFeedbackPanel("settingBalanceRequiredForInterestCalculationFeedback", this.settingBalanceRequiredForInterestCalculationField);
@@ -985,6 +991,7 @@ public class SavingCreatePage extends Page {
         this.settingMinimumBalanceBlock.add(this.settingMinimumBalanceContainer);
         this.settingMinimumBalanceField = new TextField<>("settingMinimumBalanceField", new PropertyModel<>(this, "settingMinimumBalanceValue"));
         this.settingMinimumBalanceField.add(new OnChangeAjaxBehavior());
+        this.settingMinimumBalanceField.setLabel(Model.of("Minimum balance"));
         this.settingMinimumBalanceContainer.add(this.settingMinimumBalanceField);
         this.settingMinimumBalanceFeedback = new TextFeedbackPanel("settingMinimumBalanceFeedback", this.settingMinimumBalanceField);
         this.settingMinimumBalanceContainer.add(this.settingMinimumBalanceFeedback);
@@ -1006,6 +1013,7 @@ public class SavingCreatePage extends Page {
         this.settingMaximumOverdraftAmountLimitContainer = new WebMarkupContainer("settingMaximumOverdraftAmountLimitContainer");
         this.settingMaximumOverdraftAmountLimitBlock.add(this.settingMaximumOverdraftAmountLimitContainer);
         this.settingMaximumOverdraftAmountLimitField = new TextField<>("settingMaximumOverdraftAmountLimitField", new PropertyModel<>(this, "settingMaximumOverdraftAmountLimitValue"));
+        this.settingMaximumOverdraftAmountLimitField.setLabel(Model.of("Maximum Overdraft Amount Limit"));
         this.settingMaximumOverdraftAmountLimitField.add(new OnChangeAjaxBehavior());
         this.settingMaximumOverdraftAmountLimitContainer.add(this.settingMaximumOverdraftAmountLimitField);
         this.settingMaximumOverdraftAmountLimitFeedback = new TextFeedbackPanel("settingMaximumOverdraftAmountLimitFeedback", this.settingMaximumOverdraftAmountLimitField);
@@ -1017,6 +1025,7 @@ public class SavingCreatePage extends Page {
         this.settingNominalAnnualInterestForOverdraftContainer = new WebMarkupContainer("settingNominalAnnualInterestForOverdraftContainer");
         this.settingNominalAnnualInterestForOverdraftBlock.add(this.settingNominalAnnualInterestForOverdraftContainer);
         this.settingNominalAnnualInterestForOverdraftField = new TextField<>("settingNominalAnnualInterestForOverdraftField", new PropertyModel<>(this, "settingNominalAnnualInterestForOverdraftValue"));
+        this.settingNominalAnnualInterestForOverdraftField.setLabel(Model.of("Nominal annual interest for overdraft"));
         this.settingNominalAnnualInterestForOverdraftField.add(new OnChangeAjaxBehavior());
         this.settingNominalAnnualInterestForOverdraftContainer.add(this.settingNominalAnnualInterestForOverdraftField);
         this.settingNominalAnnualInterestForOverdraftFeedback = new TextFeedbackPanel("settingNominalAnnualInterestForOverdraftFeedback", this.settingNominalAnnualInterestForOverdraftField);
@@ -1028,6 +1037,7 @@ public class SavingCreatePage extends Page {
         this.settingMinOverdraftRequiredForInterestCalculationContainer = new WebMarkupContainer("settingMinOverdraftRequiredForInterestCalculationContainer");
         this.settingMinOverdraftRequiredForInterestCalculationBlock.add(this.settingMinOverdraftRequiredForInterestCalculationContainer);
         this.settingMinOverdraftRequiredForInterestCalculationField = new TextField<>("settingMinOverdraftRequiredForInterestCalculationField", new PropertyModel<>(this, "settingMinOverdraftRequiredForInterestCalculationValue"));
+        this.settingMinOverdraftRequiredForInterestCalculationField.setLabel(Model.of("Min Overdraft Required For Interest Calculation"));
         this.settingMinOverdraftRequiredForInterestCalculationField.add(new OnChangeAjaxBehavior());
         this.settingMinOverdraftRequiredForInterestCalculationContainer.add(this.settingMinOverdraftRequiredForInterestCalculationField);
         this.settingMinOverdraftRequiredForInterestCalculationFeedback = new TextFeedbackPanel("settingMinOverdraftRequiredForInterestCalculationFeedback", this.settingMinOverdraftRequiredForInterestCalculationField);
@@ -1051,6 +1061,7 @@ public class SavingCreatePage extends Page {
         this.settingTaxGroupBlock.add(this.settingTaxGroupContainer);
         this.settingTaxGroupProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
         this.settingTaxGroupField = new Select2SingleChoice<>("settingTaxGroupField", 0, new PropertyModel<>(this, "settingTaxGroupValue"), this.settingTaxGroupProvider);
+        this.settingTaxGroupField.setLabel(Model.of("Tax Group"));
         this.settingTaxGroupField.add(new OnChangeAjaxBehavior());
         this.settingTaxGroupField.setRequired(false);
         this.settingTaxGroupContainer.add(this.settingTaxGroupField);
@@ -1074,6 +1085,7 @@ public class SavingCreatePage extends Page {
         this.settingNumberOfDaysToInactiveSubStatusContainer = new WebMarkupContainer("settingNumberOfDaysToInactiveSubStatusContainer");
         this.settingNumberOfDaysToInactiveSubStatusBlock.add(this.settingNumberOfDaysToInactiveSubStatusContainer);
         this.settingNumberOfDaysToInactiveSubStatusField = new TextField<>("settingNumberOfDaysToInactiveSubStatusField", new PropertyModel<>(this, "settingNumberOfDaysToInactiveSubStatusValue"));
+        this.settingNumberOfDaysToInactiveSubStatusField.setLabel(Model.of("Number of Days to Inactive sub-status"));
         this.settingNumberOfDaysToInactiveSubStatusField.add(new OnChangeAjaxBehavior());
         this.settingNumberOfDaysToInactiveSubStatusContainer.add(this.settingNumberOfDaysToInactiveSubStatusField);
         this.settingNumberOfDaysToInactiveSubStatusFeedback = new TextFeedbackPanel("settingNumberOfDaysToInactiveSubStatusFeedback", this.settingNumberOfDaysToInactiveSubStatusField);
@@ -1085,6 +1097,7 @@ public class SavingCreatePage extends Page {
         this.settingNumberOfDaysToDormantSubStatusContainer = new WebMarkupContainer("settingNumberOfDaysToDormantSubStatusContainer");
         this.settingNumberOfDaysToDormantSubStatusBlock.add(this.settingNumberOfDaysToDormantSubStatusContainer);
         this.settingNumberOfDaysToDormantSubStatusField = new TextField<>("settingNumberOfDaysToDormantSubStatusField", new PropertyModel<>(this, "settingNumberOfDaysToDormantSubStatusValue"));
+        this.settingNumberOfDaysToDormantSubStatusField.setLabel(Model.of("Number of Days to Dormant sub-status"));
         this.settingNumberOfDaysToDormantSubStatusField.add(new OnChangeAjaxBehavior());
         this.settingNumberOfDaysToDormantSubStatusContainer.add(this.settingNumberOfDaysToDormantSubStatusField);
         this.settingNumberOfDaysToDormantSubStatusFeedback = new TextFeedbackPanel("settingNumberOfDaysToDormantSubStatusFeedback", this.settingNumberOfDaysToDormantSubStatusField);
@@ -1096,6 +1109,7 @@ public class SavingCreatePage extends Page {
         this.settingNumberOfDaysToEscheatContainer = new WebMarkupContainer("settingNumberOfDaysToEscheatContainer");
         this.settingNumberOfDaysToEscheatBlock.add(this.settingNumberOfDaysToEscheatContainer);
         this.settingNumberOfDaysToEscheatField = new TextField<>("settingNumberOfDaysToEscheatField", new PropertyModel<>(this, "settingNumberOfDaysToEscheatValue"));
+        this.settingNumberOfDaysToEscheatField.setLabel(Model.of("Number of Days to Escheat"));
         this.settingNumberOfDaysToEscheatField.add(new OnChangeAjaxBehavior());
         this.settingNumberOfDaysToEscheatContainer.add(this.settingNumberOfDaysToEscheatField);
         this.settingNumberOfDaysToEscheatFeedback = new TextFeedbackPanel("settingNumberOfDaysToEscheatFeedback", this.settingNumberOfDaysToEscheatField);
@@ -1109,6 +1123,7 @@ public class SavingCreatePage extends Page {
         this.termNominalAnnualInterestContainer = new WebMarkupContainer("termNominalAnnualInterestContainer");
         this.termNominalAnnualInterestBlock.add(this.termNominalAnnualInterestContainer);
         this.termNominalAnnualInterestField = new TextField<>("termNominalAnnualInterestField", new PropertyModel<>(this, "termNominalAnnualInterestValue"));
+        this.termNominalAnnualInterestField.setLabel(Model.of("Nominal annual interest"));
         this.termNominalAnnualInterestField.setRequired(true);
         this.termNominalAnnualInterestField.add(new OnChangeAjaxBehavior());
         this.termNominalAnnualInterestContainer.add(this.termNominalAnnualInterestField);
@@ -1121,6 +1136,7 @@ public class SavingCreatePage extends Page {
         this.termInterestCompoundingPeriodBlock.add(this.termInterestCompoundingPeriodContainer);
         this.termInterestCompoundingPeriodProvider = new InterestCompoundingPeriodProvider();
         this.termInterestCompoundingPeriodField = new Select2SingleChoice<>("termInterestCompoundingPeriodField", 0, new PropertyModel<>(this, "termInterestCompoundingPeriodValue"), this.termInterestCompoundingPeriodProvider);
+        this.termInterestCompoundingPeriodField.setLabel(Model.of("Interest compounding period"));
         this.termInterestCompoundingPeriodField.add(new OnChangeAjaxBehavior());
         this.termInterestCompoundingPeriodField.setRequired(true);
         this.termInterestCompoundingPeriodContainer.add(this.termInterestCompoundingPeriodField);
@@ -1133,6 +1149,7 @@ public class SavingCreatePage extends Page {
         this.termInterestCalculatedUsingBlock.add(this.termInterestCalculatedUsingContainer);
         this.termInterestCalculatedUsingProvider = new InterestCalculatedUsingProvider();
         this.termInterestCalculatedUsingField = new Select2SingleChoice<>("termInterestCalculatedUsingField", 0, new PropertyModel<>(this, "termInterestCalculatedUsingValue"), this.termInterestCalculatedUsingProvider);
+        this.termInterestCalculatedUsingField.setLabel(Model.of("Interest posting period"));
         this.termInterestCalculatedUsingField.add(new OnChangeAjaxBehavior());
         this.termInterestCalculatedUsingField.setRequired(true);
         this.termInterestCalculatedUsingContainer.add(this.termInterestCalculatedUsingField);
@@ -1145,6 +1162,7 @@ public class SavingCreatePage extends Page {
         this.termInterestPostingPeriodBlock.add(this.termInterestPostingPeriodContainer);
         this.termInterestPostingPeriodProvider = new InterestPostingPeriodProvider();
         this.termInterestPostingPeriodField = new Select2SingleChoice<>("termInterestPostingPeriodField", 0, new PropertyModel<>(this, "termInterestPostingPeriodValue"), this.termInterestPostingPeriodProvider);
+        this.termInterestPostingPeriodField.setLabel(Model.of("Interest calculated using"));
         this.termInterestPostingPeriodField.add(new OnChangeAjaxBehavior());
         this.termInterestPostingPeriodField.setRequired(true);
         this.termInterestPostingPeriodContainer.add(this.termInterestPostingPeriodField);
@@ -1157,6 +1175,7 @@ public class SavingCreatePage extends Page {
         this.termDaysInYearBlock.add(this.termDaysInYearContainer);
         this.termDaysInYearProvider = new DayInYearProvider();
         this.termDaysInYearField = new Select2SingleChoice<>("termDaysInYearField", 0, new PropertyModel<>(this, "termDaysInYearValue"), this.termDaysInYearProvider);
+        this.termDaysInYearField.setLabel(Model.of("Days in year"));
         this.termDaysInYearField.add(new OnChangeAjaxBehavior());
         this.termDaysInYearField.setRequired(true);
         this.termDaysInYearContainer.add(this.termDaysInYearField);
@@ -1172,6 +1191,7 @@ public class SavingCreatePage extends Page {
         this.currencyCodeBlock.add(this.currencyCodeContainer);
         this.currencyCodeProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
         this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", 0, new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
+        this.currencyCodeField.setLabel(Model.of("Currency"));
         this.currencyCodeField.add(new OnChangeAjaxBehavior());
         this.currencyCodeField.setRequired(true);
         this.currencyCodeContainer.add(this.currencyCodeField);
@@ -1183,6 +1203,7 @@ public class SavingCreatePage extends Page {
         this.currencyDecimalPlaceContainer = new WebMarkupContainer("currencyDecimalPlaceContainer");
         this.currencyDecimalPlaceBlock.add(this.currencyDecimalPlaceContainer);
         this.currencyDecimalPlaceField = new TextField<>("currencyDecimalPlaceField", new PropertyModel<>(this, "currencyDecimalPlaceValue"));
+        this.currencyDecimalPlaceField.setLabel(Model.of("Decimal places"));
         this.currencyDecimalPlaceField.setRequired(true);
         this.currencyDecimalPlaceField.add(new OnChangeAjaxBehavior());
         this.currencyDecimalPlaceField.add(RangeValidator.range((int) 0, (int) 6));
@@ -1195,6 +1216,7 @@ public class SavingCreatePage extends Page {
         this.currencyMultipleOfContainer = new WebMarkupContainer("currencyMultipleOfContainer");
         this.currencyMultipleOfBlock.add(this.currencyMultipleOfContainer);
         this.currencyMultipleOfField = new TextField<>("currencyMultipleOfField", new PropertyModel<>(this, "currencyMultipleOfValue"));
+        this.currencyMultipleOfField.setLabel(Model.of("Multiples of"));
         this.currencyMultipleOfField.setRequired(false);
         this.currencyMultipleOfField.add(new OnChangeAjaxBehavior());
         this.currencyMultipleOfField.add(RangeValidator.minimum((int) 1));
@@ -1210,6 +1232,7 @@ public class SavingCreatePage extends Page {
         this.detailProductNameContainer = new WebMarkupContainer("detailProductNameContainer");
         this.detailProductNameBlock.add(this.detailProductNameContainer);
         this.detailProductNameField = new TextField<>("detailProductNameField", new PropertyModel<>(this, "detailProductNameValue"));
+        this.detailProductNameField.setLabel(Model.of("Product Name"));
         this.detailProductNameField.setRequired(true);
         this.detailProductNameContainer.add(this.detailProductNameField);
         this.detailProductNameFeedback = new TextFeedbackPanel("detailProductNameFeedback", this.detailProductNameField);
@@ -1221,6 +1244,7 @@ public class SavingCreatePage extends Page {
         this.detailShortNameContainer = new WebMarkupContainer("detailShortNameContainer");
         this.detailShortNameBlock.add(this.detailShortNameContainer);
         this.detailShortNameField = new TextField<>("detailShortNameField", new PropertyModel<>(this, "detailShortNameValue"));
+        this.detailShortNameField.setLabel(Model.of("Short Name"));
         this.detailShortNameField.setRequired(true);
         this.detailShortNameContainer.add(this.detailShortNameField);
         this.detailShortNameFeedback = new TextFeedbackPanel("detailShortNameFeedback", this.detailShortNameField);
@@ -1232,6 +1256,7 @@ public class SavingCreatePage extends Page {
         this.detailDescriptionContainer = new WebMarkupContainer("detailDescriptionContainer");
         this.detailDescriptionBlock.add(this.detailDescriptionContainer);
         this.detailDescriptionField = new TextField<>("detailDescriptionField", new PropertyModel<>(this, "detailDescriptionValue"));
+        this.detailDescriptionField.setLabel(Model.of("Description"));
         this.detailDescriptionField.setRequired(true);
         this.detailDescriptionContainer.add(this.detailDescriptionField);
         this.detailDescriptionFeedback = new TextFeedbackPanel("detailDescriptionFeedback", this.detailDescriptionField);

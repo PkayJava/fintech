@@ -22,6 +22,8 @@ import org.apache.wicket.validation.validator.RangeValidator;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.AccountType;
+import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.fintech.dto.ChargeCalculation;
 import com.angkorteam.fintech.dto.ChargeTime;
 import com.angkorteam.fintech.dto.Function;
@@ -340,9 +342,10 @@ public class ShareCreatePage extends Page {
         this.cashBlock.add(this.cashContainer);
 
         this.cashShareReferenceProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashShareReferenceProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashShareReferenceProvider.applyWhere("classification_enum", "classification_enum = 1");
+        this.cashShareReferenceProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashShareReferenceProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.cashShareReferenceField = new Select2SingleChoice<>("cashShareReferenceField", new PropertyModel<>(this, "cashShareReferenceValue"), this.cashShareReferenceProvider);
+        this.cashShareReferenceField.setLabel(Model.of("Share reference"));
         this.cashShareReferenceField.setRequired(false);
         this.cashShareReferenceField.add(new OnChangeAjaxBehavior());
         this.cashContainer.add(this.cashShareReferenceField);
@@ -350,9 +353,10 @@ public class ShareCreatePage extends Page {
         this.cashContainer.add(this.cashShareReferenceFeedback);
 
         this.cashShareSuspenseControlProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashShareSuspenseControlProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashShareSuspenseControlProvider.applyWhere("classification_enum", "classification_enum = 1");
+        this.cashShareSuspenseControlProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashShareSuspenseControlProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
         this.cashShareSuspenseControlField = new Select2SingleChoice<>("cashShareSuspenseControlField", new PropertyModel<>(this, "cashShareSuspenseControlValue"), this.cashShareSuspenseControlProvider);
+        this.cashShareSuspenseControlField.setLabel(Model.of("Share Suspense control"));
         this.cashShareSuspenseControlField.setRequired(false);
         this.cashShareSuspenseControlField.add(new OnChangeAjaxBehavior());
         this.cashContainer.add(this.cashShareSuspenseControlField);
@@ -360,9 +364,10 @@ public class ShareCreatePage extends Page {
         this.cashContainer.add(this.cashShareSuspenseControlFeedback);
 
         this.cashEquityProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashEquityProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashEquityProvider.applyWhere("classification_enum", "classification_enum = 1");
+        this.cashEquityProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashEquityProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Equity.getLiteral());
         this.cashEquityField = new Select2SingleChoice<>("cashEquityField", new PropertyModel<>(this, "cashEquityValue"), this.cashEquityProvider);
+        this.cashEquityField.setLabel(Model.of("Equity"));
         this.cashEquityField.setRequired(false);
         this.cashEquityField.add(new OnChangeAjaxBehavior());
         this.cashContainer.add(this.cashEquityField);
@@ -370,9 +375,10 @@ public class ShareCreatePage extends Page {
         this.cashContainer.add(this.cashEquityFeedback);
 
         this.cashIncomeFromFeesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashIncomeFromFeesProvider.applyWhere("account_usage", "account_usage = 1");
-        this.cashIncomeFromFeesProvider.applyWhere("classification_enum", "classification_enum = 4");
+        this.cashIncomeFromFeesProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromFeesProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.cashIncomeFromFeesField = new Select2SingleChoice<>("cashIncomeFromFeesField", new PropertyModel<>(this, "cashIncomeFromFeesValue"), this.cashIncomeFromFeesProvider);
+        this.cashIncomeFromFeesField.setLabel(Model.of("Income from fees"));
         this.cashIncomeFromFeesField.setRequired(false);
         this.cashIncomeFromFeesField.add(new OnChangeAjaxBehavior());
         this.cashContainer.add(this.cashIncomeFromFeesField);
@@ -615,6 +621,7 @@ public class ShareCreatePage extends Page {
         this.settingSharePerClientMinimumContainer = new WebMarkupContainer("settingSharePerClientMinimumContainer");
         this.settingSharePerClientMinimumBlock.add(this.settingSharePerClientMinimumContainer);
         this.settingSharePerClientMinimumField = new TextField<>("settingSharePerClientMinimumField", new PropertyModel<>(this, "settingSharePerClientMinimumValue"));
+        this.settingSharePerClientMinimumField.setLabel(Model.of("Shares per Client Minimum"));
         this.settingSharePerClientMinimumField.setRequired(false);
         this.settingSharePerClientMinimumField.add(new OnChangeAjaxBehavior());
         this.settingSharePerClientMinimumContainer.add(this.settingSharePerClientMinimumField);
@@ -626,6 +633,7 @@ public class ShareCreatePage extends Page {
         this.settingSharePerClientDefaultContainer = new WebMarkupContainer("settingSharePerClientDefaultContainer");
         this.settingSharePerClientDefaultBlock.add(this.settingSharePerClientDefaultContainer);
         this.settingSharePerClientDefaultField = new TextField<>("settingSharePerClientDefaultField", new PropertyModel<>(this, "settingSharePerClientDefaultValue"));
+        this.settingSharePerClientDefaultField.setLabel(Model.of("Shares per Client Default"));
         this.settingSharePerClientDefaultField.setRequired(true);
         this.settingSharePerClientDefaultField.add(new OnChangeAjaxBehavior());
         this.settingSharePerClientDefaultContainer.add(this.settingSharePerClientDefaultField);
@@ -637,6 +645,7 @@ public class ShareCreatePage extends Page {
         this.settingSharePerClientMaximumContainer = new WebMarkupContainer("settingSharePerClientMaximumContainer");
         this.settingSharePerClientMaximumBlock.add(this.settingSharePerClientMaximumContainer);
         this.settingSharePerClientMaximumField = new TextField<>("settingSharePerClientMaximumField", new PropertyModel<>(this, "settingSharePerClientMaximumValue"));
+        this.settingSharePerClientMaximumField.setLabel(Model.of("Shares per Client Maximum"));
         this.settingSharePerClientMaximumField.setRequired(false);
         this.settingSharePerClientMaximumField.add(new OnChangeAjaxBehavior());
         this.settingSharePerClientMaximumContainer.add(this.settingSharePerClientMaximumField);
@@ -648,6 +657,7 @@ public class ShareCreatePage extends Page {
         this.settingMinimumActivePeriodContainer = new WebMarkupContainer("settingMinimumActivePeriodContainer");
         this.settingMinimumActivePeriodBlock.add(this.settingMinimumActivePeriodContainer);
         this.settingMinimumActivePeriodField = new TextField<>("settingMinimumActivePeriodField", new PropertyModel<>(this, "settingMinimumActivePeriodValue"));
+        this.settingMinimumActivePeriodField.setLabel(Model.of("Minimum Active Period"));
         this.settingMinimumActivePeriodField.setRequired(false);
         this.settingMinimumActivePeriodField.add(new OnChangeAjaxBehavior());
         this.settingMinimumActivePeriodContainer.add(this.settingMinimumActivePeriodField);
@@ -660,6 +670,7 @@ public class ShareCreatePage extends Page {
         this.settingMinimumActiveTypeBlock.add(this.settingMinimumActiveTypeContainer);
         this.settingMinimumActiveTypeProvider = new MinimumActivePeriodProvider();
         this.settingMinimumActiveTypeField = new Select2SingleChoice<>("settingMinimumActiveTypeField", 0, new PropertyModel<>(this, "settingMinimumActiveTypeValue"), this.settingMinimumActiveTypeProvider);
+        this.settingMinimumActiveTypeField.setLabel(Model.of("Type"));
         this.settingMinimumActiveTypeField.setRequired(false);
         this.settingMinimumActiveTypeField.add(new OnChangeAjaxBehavior());
         this.settingMinimumActiveTypeContainer.add(this.settingMinimumActiveTypeField);
@@ -671,6 +682,7 @@ public class ShareCreatePage extends Page {
         this.settingLockInPeriodContainer = new WebMarkupContainer("settingLockInPeriodContainer");
         this.settingLockInPeriodBlock.add(this.settingLockInPeriodContainer);
         this.settingLockInPeriodField = new TextField<>("settingLockInPeriodField", new PropertyModel<>(this, "settingLockInPeriodValue"));
+        this.settingLockInPeriodField.setLabel(Model.of("Lock-in period"));
         this.settingLockInPeriodField.setRequired(false);
         this.settingLockInPeriodField.add(new OnChangeAjaxBehavior());
         this.settingLockInPeriodContainer.add(this.settingLockInPeriodField);
@@ -683,6 +695,7 @@ public class ShareCreatePage extends Page {
         this.settingLockInTypeBlock.add(this.settingLockInTypeContainer);
         this.settingLockInTypeProvider = new LockInPeriodProvider();
         this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", 0, new PropertyModel<>(this, "settingLockInTypeValue"), this.settingLockInTypeProvider);
+        this.settingLockInTypeField.setLabel(Model.of("Type"));
         this.settingLockInTypeField.setRequired(false);
         this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
         this.settingLockInTypeContainer.add(this.settingLockInTypeField);
@@ -709,6 +722,7 @@ public class ShareCreatePage extends Page {
         this.termTotalNumberOfShareContainer = new WebMarkupContainer("termTotalNumberOfShareContainer");
         this.termTotalNumberOfShareBlock.add(this.termTotalNumberOfShareContainer);
         this.termTotalNumberOfShareField = new TextField<>("termTotalNumberOfShareField", new PropertyModel<>(this, "termTotalNumberOfShareValue"));
+        this.termTotalNumberOfShareField.setLabel(Model.of("Total Number of Shares"));
         this.termTotalNumberOfShareField.setRequired(true);
         this.termTotalNumberOfShareField.add(new OnChangeAjaxBehavior());
         this.termTotalNumberOfShareContainer.add(this.termTotalNumberOfShareField);
@@ -720,6 +734,7 @@ public class ShareCreatePage extends Page {
         this.termShareToBeIssuedContainer = new WebMarkupContainer("termShareToBeIssuedContainer");
         this.termShareToBeIssuedBlock.add(this.termShareToBeIssuedContainer);
         this.termShareToBeIssuedField = new TextField<>("termShareToBeIssuedField", new PropertyModel<>(this, "termShareToBeIssuedValue"));
+        this.termShareToBeIssuedField.setLabel(Model.of("Shares to be issued"));
         this.termShareToBeIssuedField.setRequired(false);
         this.termShareToBeIssuedField.add(new OnChangeAjaxBehavior());
         this.termShareToBeIssuedContainer.add(this.termShareToBeIssuedField);
@@ -731,6 +746,7 @@ public class ShareCreatePage extends Page {
         this.termNominalPriceContainer = new WebMarkupContainer("termNominalPriceContainer");
         this.termNominalPriceBlock.add(this.termNominalPriceContainer);
         this.termNominalPriceField = new TextField<>("termNominalPriceField", new PropertyModel<>(this, "termNominalPriceValue"));
+        this.termNominalPriceField.setLabel(Model.of("Nominal Price"));
         this.termNominalPriceField.setRequired(true);
         this.termNominalPriceField.add(new OnChangeAjaxBehavior());
         this.termNominalPriceContainer.add(this.termNominalPriceField);
@@ -742,6 +758,7 @@ public class ShareCreatePage extends Page {
         this.termCapitalContainer = new WebMarkupContainer("termCapitalContainer");
         this.termCapitalBlock.add(this.termCapitalContainer);
         this.termCapitalField = new TextField<>("termCapitalField", new PropertyModel<>(this, "termCapitalValue"));
+        this.termCapitalField.setLabel(Model.of("Capital Value"));
         this.termCapitalField.setRequired(false);
         this.termCapitalField.add(new OnChangeAjaxBehavior());
         this.termCapitalContainer.add(this.termCapitalField);
@@ -758,6 +775,7 @@ public class ShareCreatePage extends Page {
         this.currencyCodeBlock.add(this.currencyCodeContainer);
         this.currencyCodeProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
         this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", 0, new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
+        this.currencyCodeField.setLabel(Model.of("Currency"));
         this.currencyCodeField.add(new OnChangeAjaxBehavior());
         this.currencyCodeField.setRequired(true);
         this.currencyCodeContainer.add(this.currencyCodeField);
@@ -769,6 +787,7 @@ public class ShareCreatePage extends Page {
         this.currencyDecimalPlaceContainer = new WebMarkupContainer("currencyDecimalPlaceContainer");
         this.currencyDecimalPlaceBlock.add(this.currencyDecimalPlaceContainer);
         this.currencyDecimalPlaceField = new TextField<>("currencyDecimalPlaceField", new PropertyModel<>(this, "currencyDecimalPlaceValue"));
+        this.currencyDecimalPlaceField.setLabel(Model.of("Decimal places"));
         this.currencyDecimalPlaceField.setRequired(true);
         this.currencyDecimalPlaceField.add(new OnChangeAjaxBehavior());
         this.currencyDecimalPlaceField.add(RangeValidator.range((int) 0, (int) 6));
@@ -781,6 +800,7 @@ public class ShareCreatePage extends Page {
         this.currencyMultipleOfContainer = new WebMarkupContainer("currencyMultipleOfContainer");
         this.currencyMultipleOfBlock.add(this.currencyMultipleOfContainer);
         this.currencyMultipleOfField = new TextField<>("currencyMultipleOfField", new PropertyModel<>(this, "currencyMultipleOfValue"));
+        this.currencyMultipleOfField.setLabel(Model.of("Multiples of"));
         this.currencyMultipleOfField.setRequired(false);
         this.currencyMultipleOfField.add(new OnChangeAjaxBehavior());
         this.currencyMultipleOfField.add(RangeValidator.minimum((int) 1));
@@ -796,6 +816,7 @@ public class ShareCreatePage extends Page {
         this.detailProductNameContainer = new WebMarkupContainer("detailProductNameContainer");
         this.detailProductNameBlock.add(this.detailProductNameContainer);
         this.detailProductNameField = new TextField<>("detailProductNameField", new PropertyModel<>(this, "detailProductNameValue"));
+        this.detailProductNameField.setLabel(Model.of("Product Name"));
         this.detailProductNameField.setRequired(true);
         this.detailProductNameContainer.add(this.detailProductNameField);
         this.detailProductNameFeedback = new TextFeedbackPanel("detailProductNameFeedback", this.detailProductNameField);
@@ -807,6 +828,7 @@ public class ShareCreatePage extends Page {
         this.detailShortNameContainer = new WebMarkupContainer("detailShortNameContainer");
         this.detailShortNameBlock.add(this.detailShortNameContainer);
         this.detailShortNameField = new TextField<>("detailShortNameField", new PropertyModel<>(this, "detailShortNameValue"));
+        this.detailShortNameField.setLabel(Model.of("Short Name"));
         this.detailShortNameField.setRequired(true);
         this.detailShortNameContainer.add(this.detailShortNameField);
         this.detailShortNameFeedback = new TextFeedbackPanel("detailShortNameFeedback", this.detailShortNameField);
@@ -818,6 +840,7 @@ public class ShareCreatePage extends Page {
         this.detailDescriptionContainer = new WebMarkupContainer("detailDescriptionContainer");
         this.detailDescriptionBlock.add(this.detailDescriptionContainer);
         this.detailDescriptionField = new TextField<>("detailDescriptionField", new PropertyModel<>(this, "detailDescriptionValue"));
+        this.detailDescriptionField.setLabel(Model.of("Description"));
         this.detailDescriptionField.setRequired(true);
         this.detailDescriptionContainer.add(this.detailDescriptionField);
         this.detailDescriptionFeedback = new TextFeedbackPanel("detailDescriptionFeedback", this.detailDescriptionField);

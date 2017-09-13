@@ -105,6 +105,7 @@ public class MixedCreatePage extends Page {
         this.productProvider = new SingleChoiceProvider("m_product_loan", "id", "name");
         this.productProvider.applyWhere("product", "m_product_loan.id not in (select product_id from m_product_mix)");
         this.productField = new Select2SingleChoice<>("productField", new PropertyModel<>(this, "productValue"), this.productProvider);
+        this.productField.setLabel(Model.of("Product"));
         this.productField.setRequired(false);
         this.productField.add(new OnChangeAjaxBehavior());
         this.productContainer.add(this.productField);
@@ -117,6 +118,7 @@ public class MixedCreatePage extends Page {
         this.restrictedBlock.add(this.restrictedContainer);
         this.restrictedProvider = new MultipleChoiceProvider("m_product_loan", "id", "name");
         this.restrictedField = new Select2MultipleChoice<>("restrictedField", new PropertyModel<>(this, "restrictedValue"), this.restrictedProvider);
+        this.restrictedField.setLabel(Model.of("Restricted"));
         this.restrictedField.setRequired(false);
         this.restrictedField.add(new OnChangeAjaxBehavior());
         this.restrictedContainer.add(this.restrictedField);
