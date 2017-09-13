@@ -54,105 +54,100 @@ public class MixedCreatePage extends Page {
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-	return Model.ofList(BREADCRUMB);
+        return Model.ofList(BREADCRUMB);
     }
 
     static {
-	BREADCRUMB = Lists.newArrayList();
-	{
-	    PageBreadcrumb breadcrumb = new PageBreadcrumb();
-	    breadcrumb.setLabel("Admin");
-	    BREADCRUMB.add(breadcrumb);
-	}
-	{
-	    PageBreadcrumb breadcrumb = new PageBreadcrumb();
-	    breadcrumb.setLabel("Product");
-	    breadcrumb.setPage(ProductDashboardPage.class);
-	    BREADCRUMB.add(breadcrumb);
-	}
-	{
-	    PageBreadcrumb breadcrumb = new PageBreadcrumb();
-	    breadcrumb.setLabel("Mixed Product");
-	    breadcrumb.setPage(MixedBrowsePage.class);
-	    BREADCRUMB.add(breadcrumb);
-	}
+        BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Admin");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Product");
+            breadcrumb.setPage(ProductDashboardPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Mixed Product");
+            breadcrumb.setPage(MixedBrowsePage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
 
-	{
-	    PageBreadcrumb breadcrumb = new PageBreadcrumb();
-	    breadcrumb.setLabel("Mixed Product Create");
-	    BREADCRUMB.add(breadcrumb);
-	}
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Mixed Product Create");
+            BREADCRUMB.add(breadcrumb);
+        }
     }
 
     @Override
     protected void onInitialize() {
-	super.onInitialize();
+        super.onInitialize();
 
-	this.form = new Form<>("form");
-	add(this.form);
+        this.form = new Form<>("form");
+        add(this.form);
 
-	this.saveButton = new Button("saveButton");
-	this.saveButton.setOnSubmit(this::saveButtonSubmit);
-	this.form.add(this.saveButton);
+        this.saveButton = new Button("saveButton");
+        this.saveButton.setOnSubmit(this::saveButtonSubmit);
+        this.form.add(this.saveButton);
 
-	this.closeLink = new BookmarkablePageLink<>("closeLink", MixedBrowsePage.class);
-	this.form.add(this.closeLink);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", MixedBrowsePage.class);
+        this.form.add(this.closeLink);
 
-	this.productBlock = new WebMarkupContainer("productBlock");
-	this.form.add(this.productBlock);
-	this.productContainer = new WebMarkupContainer("productContainer");
-	this.productBlock.add(this.productContainer);
-	this.productProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-	this.productProvider.applyWhere("account_usage", "account_usage = 1");
-	this.productProvider.applyWhere("classification_enum", "classification_enum = 1");
-	this.productField = new Select2SingleChoice<>("productField", new PropertyModel<>(this, "productValue"),
-		this.productProvider);
-	this.productField.setRequired(false);
-	this.productField.add(new OnChangeAjaxBehavior());
-	this.productContainer.add(this.productField);
-	this.productFeedback = new TextFeedbackPanel("productFeedback", this.productField);
-	this.productContainer.add(this.productFeedback);
+        this.productBlock = new WebMarkupContainer("productBlock");
+        this.form.add(this.productBlock);
+        this.productContainer = new WebMarkupContainer("productContainer");
+        this.productBlock.add(this.productContainer);
+        this.productProvider = new SingleChoiceProvider("m_product_loan", "id", "name");
+        this.productProvider.applyWhere("product", "m_product_loan.id not in (select product_id from m_product_mix)");
+        this.productField = new Select2SingleChoice<>("productField", new PropertyModel<>(this, "productValue"), this.productProvider);
+        this.productField.setRequired(false);
+        this.productField.add(new OnChangeAjaxBehavior());
+        this.productContainer.add(this.productField);
+        this.productFeedback = new TextFeedbackPanel("productFeedback", this.productField);
+        this.productContainer.add(this.productFeedback);
 
-	this.restrictedBlock = new WebMarkupContainer("restrictedBlock");
-	this.form.add(this.restrictedBlock);
-	this.restrictedContainer = new WebMarkupContainer("restrictedContainer");
-	this.restrictedBlock.add(this.restrictedContainer);
-	this.restrictedProvider = new MultipleChoiceProvider("acc_gl_account", "id", "name");
-	this.restrictedProvider.applyWhere("account_usage", "account_usage = 1");
-	this.restrictedProvider.applyWhere("classification_enum", "classification_enum = 1");
-	this.restrictedField = new Select2MultipleChoice<>("restrictedField",
-		new PropertyModel<>(this, "restrictedValue"), this.restrictedProvider);
-	this.restrictedField.setRequired(false);
-	this.restrictedField.add(new OnChangeAjaxBehavior());
-	this.restrictedContainer.add(this.restrictedField);
-	this.restrictedFeedback = new TextFeedbackPanel("restrictedFeedback", this.restrictedField);
-	this.restrictedContainer.add(this.restrictedFeedback);
+        this.restrictedBlock = new WebMarkupContainer("restrictedBlock");
+        this.form.add(this.restrictedBlock);
+        this.restrictedContainer = new WebMarkupContainer("restrictedContainer");
+        this.restrictedBlock.add(this.restrictedContainer);
+        this.restrictedProvider = new MultipleChoiceProvider("m_product_loan", "id", "name");
+        this.restrictedField = new Select2MultipleChoice<>("restrictedField", new PropertyModel<>(this, "restrictedValue"), this.restrictedProvider);
+        this.restrictedField.setRequired(false);
+        this.restrictedField.add(new OnChangeAjaxBehavior());
+        this.restrictedContainer.add(this.restrictedField);
+        this.restrictedFeedback = new TextFeedbackPanel("restrictedFeedback", this.restrictedField);
+        this.restrictedContainer.add(this.restrictedFeedback);
     }
 
     private void saveButtonSubmit(Button button) {
-	MixedBuilder builder = new MixedBuilder();
+        MixedBuilder builder = new MixedBuilder();
 
-	if (this.productValue != null) {
-	    builder.withLoanId(this.productValue.getId());
-	}
+        if (this.productValue != null) {
+            builder.withLoanId(this.productValue.getId());
+        }
 
-	if (this.restrictedValue != null && !this.restrictedValue.isEmpty()) {
-	    for (Option restricted : this.restrictedValue) {
-		builder.withRestrictedProduct(Integer.valueOf(restricted.getId()));
-	    }
-	}
+        if (this.restrictedValue != null && !this.restrictedValue.isEmpty()) {
+            for (Option restricted : this.restrictedValue) {
+                builder.withRestrictedProduct(Integer.valueOf(restricted.getId()));
+            }
+        }
 
-	JsonNode node = null;
-	try {
-	    node = MixedHelper.create((Session) getSession(), builder.build());
-	} catch (UnirestException e) {
-	    error(e.getMessage());
-	    return;
-	}
-	if (reportError(node)) {
-	    return;
-	}
-	setResponsePage(MixedBrowsePage.class);
+        JsonNode node = null;
+        try {
+            node = MixedHelper.create((Session) getSession(), builder.build());
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+        setResponsePage(MixedBrowsePage.class);
     }
 
 }

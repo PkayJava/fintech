@@ -12,6 +12,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.DepositType;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -69,6 +70,7 @@ public class SavingBrowsePage extends Page {
     protected void onInitialize() {
         super.onInitialize();
         this.provider = new JdbcProvider("m_savings_product");
+        this.provider.applyWhere("DepositType", "deposit_type_enum = " + DepositType.Saving.getLiteral());
         this.provider.boardField("id", "id", Long.class);
         this.provider.boardField("name", "name", String.class);
         this.provider.boardField("short_name", "shortName", String.class);

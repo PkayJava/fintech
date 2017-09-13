@@ -1,10 +1,8 @@
 package com.angkorteam.fintech.pages.product;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
@@ -17,10 +15,7 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
-import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.LinkCell;
-import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -73,23 +68,15 @@ public class MixedBrowsePage extends Page {
     protected void onInitialize() {
         super.onInitialize();
         this.provider = new JdbcProvider("m_product_loan");
-        this.provider.boardField("id", "id", Long.class);
-        this.provider.boardField("name", "name", String.class);
-        this.provider.boardField("short_name", "shortName", String.class);
-        this.provider.boardField("close_date", "expiryDate", Date.class);
-        this.provider.boardField("if(close_date >= date(now()), 'Active','Inactive')", "status", String.class);
+        this.provider.addJoin("INNER JOIN m_product_mix ON m_product_loan.id = m_product_mix.product_id");
+        this.provider.setGroupBy("m_product_loan.id");
+        this.provider.boardField("m_product_loan.id", "id", Long.class);
+        this.provider.boardField("MAX(m_product_loan.name)", "name", String.class);
 
         this.provider.selectField("id", Long.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name",
-                this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Short Name"), "shortName",
-                "shortName", this::shortNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Expiry Date"), "expiryDate",
-                "expiryDate", this::expiryDateColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Status"), "status", "status",
-                this::statusColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
         add(filterForm);
@@ -100,29 +87,6 @@ public class MixedBrowsePage extends Page {
 
         this.createLink = new BookmarkablePageLink<>("createLink", MixedCreatePage.class);
         add(this.createLink);
-    }
-
-    private ItemPanel statusColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        if (value != null && value.equals("Active")) {
-            return new BadgeCell(BadgeType.Success, Model.of("Active"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("Inactive"));
-        }
-    }
-
-    private ItemPanel expiryDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date value = (Date) model.get(jdbcColumn);
-        if (value != null) {
-            return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(value)));
-        } else {
-            return new TextCell(Model.of(""));
-        }
-    }
-
-    private ItemPanel shortNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
     }
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

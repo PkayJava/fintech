@@ -11,7 +11,7 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.charge.ChargeBrowsePage;
 import com.angkorteam.fintech.pages.product.FixedDepositBrowsePage;
 import com.angkorteam.fintech.pages.product.LoanBrowsePage;
-import com.angkorteam.fintech.pages.product.MixedCreatePage;
+import com.angkorteam.fintech.pages.product.MixedBrowsePage;
 import com.angkorteam.fintech.pages.product.RecurringDepositBrowsePage;
 import com.angkorteam.fintech.pages.product.SavingBrowsePage;
 import com.angkorteam.fintech.pages.product.ShareBrowsePage;
@@ -61,7 +61,7 @@ public class ProductDashboardPage extends Page {
 	add(loanProductsPage);
 
 	InfoBoxPanel productsMixPage = new InfoBoxPanel("productsMixPage",
-		Model.of(new InfoBox().setPage(MixedCreatePage.class).setTitle("Products Mix")
+		Model.of(new InfoBox().setPage(MixedBrowsePage.class).setTitle("Products Mix")
 			.setDescription("Defines rules for taking multiple rules")
 			.setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
 	add(productsMixPage);
