@@ -289,6 +289,18 @@
 					</properties>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.6.4</version>
+				<configuration>
+					<container>
+						<containerId>jetty9x</containerId>
+						<type>embedded</type>
+					</container>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
