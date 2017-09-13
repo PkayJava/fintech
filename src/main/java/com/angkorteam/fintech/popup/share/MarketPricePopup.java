@@ -9,7 +9,7 @@ import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 
 public class MarketPricePopup extends Panel {
 

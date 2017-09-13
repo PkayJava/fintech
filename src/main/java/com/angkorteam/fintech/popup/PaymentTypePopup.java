@@ -10,7 +10,7 @@ import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWi
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 
 public class PaymentTypePopup extends Panel {
 

@@ -51,6 +51,9 @@ import com.angkorteam.fintech.popup.PenaltyChargePopup;
 import com.angkorteam.fintech.popup.loan.InterestLoanCyclePopup;
 import com.angkorteam.fintech.popup.loan.PrincipalLoanCyclePopup;
 import com.angkorteam.fintech.popup.loan.RepaymentLoanCyclePopup;
+import com.angkorteam.fintech.provider.NominalInterestRateTypeProvider;
+import com.angkorteam.fintech.provider.RepaidTypeProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.provider.loan.AdvancePaymentsAdjustmentTypeProvider;
 import com.angkorteam.fintech.provider.loan.AmortizationProvider;
 import com.angkorteam.fintech.provider.loan.ClosureInterestCalculationRuleProvider;
@@ -62,10 +65,7 @@ import com.angkorteam.fintech.provider.loan.FrequencyTypeProvider;
 import com.angkorteam.fintech.provider.loan.InterestCalculationPeriodProvider;
 import com.angkorteam.fintech.provider.loan.InterestMethodProvider;
 import com.angkorteam.fintech.provider.loan.InterestRecalculationCompoundProvider;
-import com.angkorteam.fintech.provider.NominalInterestRateTypeProvider;
-import com.angkorteam.fintech.provider.RepaidTypeProvider;
 import com.angkorteam.fintech.provider.loan.RepaymentStrategyProvider;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -88,7 +88,7 @@ import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
@@ -107,7 +107,7 @@ public class LoanCreatePage extends Page {
     private BookmarkablePageLink<Void> closeLink;
 
     // Detail
-    
+
     private WebMarkupContainer detailProductNameBlock;
     private WebMarkupContainer detailProductNameContainer;
     private String detailProductNameValue;
@@ -970,7 +970,7 @@ public class LoanCreatePage extends Page {
         add(this.overdueChargePopup);
         this.overdueChargePopup.setContent(new OverdueChargePopup(this.overdueChargePopup.getContentId(), this.overdueChargePopup, this));
         this.overdueChargePopup.setOnClose(this::overdueChargePopupOnClose);
-        
+
         List<IColumn<Map<String, Object>, String>> overdueChargeColumn = Lists.newArrayList();
         overdueChargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::overdueChargeNameColumn));
         overdueChargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::overdueChargeTypeColumn));
@@ -1056,12 +1056,12 @@ public class LoanCreatePage extends Page {
     }
 
     protected void initCharge() {
-        
+
         this.chargePopup = new ModalWindow("chargePopup");
         add(this.chargePopup);
         this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this));
         this.chargePopup.setOnClose(this::chargePopupOnClose);
-        
+
         List<IColumn<Map<String, Object>, String>> chargeColumn = Lists.newArrayList();
         chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeNameColumn));
         chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeTypeColumn));
@@ -1539,7 +1539,7 @@ public class LoanCreatePage extends Page {
             add(this.fundSourcePopup);
             this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this));
             this.fundSourcePopup.setOnClose(this::fundSourcePopupOnClose);
-            
+
             List<IColumn<Map<String, Object>, String>> fundSourceColumn = Lists.newArrayList();
             fundSourceColumn.add(new TextColumn(Model.of("Payment Type"), "payment", "payment", this::fundSourcePaymentColumn));
             fundSourceColumn.add(new TextColumn(Model.of("Fund Source"), "account", "account", this::fundSourceAccountColumn));
@@ -1561,7 +1561,7 @@ public class LoanCreatePage extends Page {
             add(this.feeIncomePopup);
             this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this));
             this.feeIncomePopup.setOnClose(this::feeIncomePopupOnClose);
-            
+
             List<IColumn<Map<String, Object>, String>> feeIncomeColumn = Lists.newArrayList();
             feeIncomeColumn.add(new TextColumn(Model.of("Fees"), "charge", "charge", this::feeIncomeChargeColumn));
             feeIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::feeIncomeAccountColumn));
@@ -1583,7 +1583,7 @@ public class LoanCreatePage extends Page {
             add(this.penaltyIncomePopup);
             this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this));
             this.penaltyIncomePopup.setOnClose(this::penaltyIncomePopupOnClose);
-            
+
             List<IColumn<Map<String, Object>, String>> penaltyIncomeColumn = Lists.newArrayList();
             penaltyIncomeColumn.add(new TextColumn(Model.of("Penalty"), "charge", "charge", this::penaltyIncomeChargeColumn));
             penaltyIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::penaltyIncomeAccountColumn));
@@ -2524,6 +2524,7 @@ public class LoanCreatePage extends Page {
         this.detailProductNameContainer = new WebMarkupContainer("detailProductNameContainer");
         this.detailProductNameBlock.add(this.detailProductNameContainer);
         this.detailProductNameField = new TextField<>("detailProductNameField", new PropertyModel<>(this, "detailProductNameValue"));
+        this.detailProductNameField.setLabel(Model.of("Product Name"));
         this.detailProductNameField.setRequired(true);
         this.detailProductNameContainer.add(this.detailProductNameField);
         this.detailProductNameFeedback = new TextFeedbackPanel("detailProductNameFeedback", this.detailProductNameField);
@@ -2535,6 +2536,7 @@ public class LoanCreatePage extends Page {
         this.detailShortNameContainer = new WebMarkupContainer("detailShortNameContainer");
         this.detailShortNameBlock.add(this.detailShortNameContainer);
         this.detailShortNameField = new TextField<>("detailShortNameField", new PropertyModel<>(this, "detailShortNameValue"));
+        this.detailShortNameField.setLabel(Model.of("Short Name"));
         this.detailShortNameField.setRequired(true);
         this.detailShortNameContainer.add(this.detailShortNameField);
         this.detailShortNameFeedback = new TextFeedbackPanel("detailShortNameFeedback", this.detailShortNameField);
@@ -2546,6 +2548,7 @@ public class LoanCreatePage extends Page {
         this.detailDescriptionContainer = new WebMarkupContainer("detailDescriptionContainer");
         this.detailDescriptionBlock.add(this.detailDescriptionContainer);
         this.detailDescriptionField = new TextField<>("detailDescriptionField", new PropertyModel<>(this, "detailDescriptionValue"));
+        this.detailDescriptionField.setLabel(Model.of("Description"));
         this.detailDescriptionField.setRequired(false);
         this.detailDescriptionContainer.add(this.detailDescriptionField);
         this.detailDescriptionFeedback = new TextFeedbackPanel("detailDescriptionFeedback", this.detailDescriptionField);
@@ -2558,6 +2561,7 @@ public class LoanCreatePage extends Page {
         this.detailFundContainer = new WebMarkupContainer("detailFundContainer");
         this.detailFundBlock.add(this.detailFundContainer);
         this.detailFundField = new Select2SingleChoice<>("detailFundField", 0, new PropertyModel<>(this, "detailFundValue"), this.detailFundProvider);
+        this.detailFundField.setLabel(Model.of("Fund"));
         this.detailFundField.setRequired(false);
         this.detailFundContainer.add(this.detailFundField);
         this.detailFundFeedback = new TextFeedbackPanel("detailFundFeedback", this.detailFundField);
@@ -2569,6 +2573,7 @@ public class LoanCreatePage extends Page {
         this.detailStartDateContainer = new WebMarkupContainer("detailStartDateContainer");
         this.detailStartDateBlock.add(this.detailStartDateContainer);
         this.detailStartDateField = new DateTextField("detailStartDateField", new PropertyModel<>(this, "detailStartDateValue"));
+        this.detailStartDateField.setLabel(Model.of("Start Date"));
         this.detailStartDateField.setRequired(false);
         this.detailStartDateContainer.add(this.detailStartDateField);
         this.detailStartDateFeedback = new TextFeedbackPanel("detailStartDateFeedback", this.detailStartDateField);
@@ -2580,6 +2585,7 @@ public class LoanCreatePage extends Page {
         this.detailCloseDateContainer = new WebMarkupContainer("detailCloseDateContainer");
         this.detailCloseDateBlock.add(this.detailCloseDateContainer);
         this.detailCloseDateField = new DateTextField("detailCloseDateField", new PropertyModel<>(this, "detailCloseDateValue"));
+        this.detailCloseDateField.setLabel(Model.of("Close Date"));
         this.detailCloseDateField.setRequired(false);
         this.detailCloseDateContainer.add(this.detailCloseDateField);
         this.detailCloseDateFeedback = new TextFeedbackPanel("detailCloseDateFeedback", this.detailCloseDateField);
@@ -2606,6 +2612,7 @@ public class LoanCreatePage extends Page {
         this.currencyCodeBlock.add(this.currencyCodeContainer);
         this.currencyCodeProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
         this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", 0, new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
+        this.currencyCodeField.setLabel(Model.of("Currency"));
         this.currencyCodeField.setRequired(true);
         this.currencyCodeContainer.add(this.currencyCodeField);
         this.currencyCodeFeedback = new TextFeedbackPanel("currencyCodeFeedback", this.currencyCodeField);
@@ -2618,6 +2625,7 @@ public class LoanCreatePage extends Page {
         this.currencyDecimalPlaceBlock.add(this.currencyDecimalPlaceContainer);
         this.currencyDecimalPlaceField = new TextField<>("currencyDecimalPlaceField", new PropertyModel<>(this, "currencyDecimalPlaceValue"));
         this.currencyDecimalPlaceField.setRequired(true);
+        this.currencyDecimalPlaceField.setLabel(Model.of("Decimal Places"));
         this.currencyDecimalPlaceField.add(new OnChangeAjaxBehavior());
         this.currencyDecimalPlaceField.add(RangeValidator.range((int) 0, (int) 6));
         this.currencyDecimalPlaceContainer.add(this.currencyDecimalPlaceField);
@@ -2631,6 +2639,7 @@ public class LoanCreatePage extends Page {
         this.currencyInMultipleOfBlock.add(this.currencyInMultipleOfContainer);
         this.currencyInMultipleOfField = new TextField<>("currencyInMultipleOfField", new PropertyModel<>(this, "currencyInMultipleOfValue"));
         this.currencyInMultipleOfField.setRequired(false);
+        this.currencyInMultipleOfField.setLabel(Model.of("Currency in multiple of"));
         this.currencyInMultipleOfField.add(new OnChangeAjaxBehavior());
         this.currencyInMultipleOfField.add(RangeValidator.minimum((int) 1));
         this.currencyInMultipleOfContainer.add(this.currencyInMultipleOfField);
@@ -2643,6 +2652,7 @@ public class LoanCreatePage extends Page {
         this.currencyInstallmentInMultipleOfContainer = new WebMarkupContainer("currencyInstallmentInMultipleOfContainer");
         this.currencyInstallmentInMultipleOfBlock.add(this.currencyInstallmentInMultipleOfContainer);
         this.currencyInstallmentInMultipleOfField = new TextField<>("currencyInstallmentInMultipleOfField", new PropertyModel<>(this, "currencyInstallmentInMultipleOfValue"));
+        this.currencyInstallmentInMultipleOfField.setLabel(Model.of("Installment in multiple of"));
         this.currencyInstallmentInMultipleOfField.setRequired(false);
         this.currencyInstallmentInMultipleOfField.add(new OnChangeAjaxBehavior());
         this.currencyInstallmentInMultipleOfField.add(RangeValidator.minimum((int) 1));
@@ -2703,7 +2713,7 @@ public class LoanCreatePage extends Page {
             add(this.termPrincipalByLoanCyclePopup);
             this.termPrincipalByLoanCyclePopup.setContent(new PrincipalLoanCyclePopup(this.termPrincipalByLoanCyclePopup.getContentId(), this.termPrincipalByLoanCyclePopup, this));
             this.termPrincipalByLoanCyclePopup.setOnClose(this::termPrincipalByLoanCyclePopupOnClose);
-            
+
             this.termPrincipalByLoanCycleBlock = new WebMarkupContainer("termPrincipalByLoanCycleBlock");
             this.termPrincipalByLoanCycleBlock.setOutputMarkupId(true);
             this.form.add(this.termPrincipalByLoanCycleBlock);
@@ -2768,7 +2778,7 @@ public class LoanCreatePage extends Page {
             add(this.termNumberOfRepaymentByLoanCyclePopup);
             this.termNumberOfRepaymentByLoanCyclePopup.setContent(new RepaymentLoanCyclePopup(this.termNumberOfRepaymentByLoanCyclePopup.getContentId(), this.termNumberOfRepaymentByLoanCyclePopup, this));
             this.termNumberOfRepaymentByLoanCyclePopup.setOnClose(this::termNumberOfRepaymentByLoanCyclePopupOnClose);
-            
+
             this.termNumberOfRepaymentByLoanCycleBlock = new WebMarkupContainer("termNumberOfRepaymentByLoanCycleBlock");
             this.termNumberOfRepaymentByLoanCycleBlock.setOutputMarkupId(true);
             this.form.add(this.termNumberOfRepaymentByLoanCycleBlock);
