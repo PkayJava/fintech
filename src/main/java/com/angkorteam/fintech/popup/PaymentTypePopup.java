@@ -2,8 +2,11 @@ package com.angkorteam.fintech.popup;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import com.angkorteam.fintech.dto.AccountType;
+import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -48,17 +51,17 @@ public class PaymentTypePopup extends Panel {
         this.form.add(this.okayButton);
 
         this.paymentProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
-        this.paymentField = new Select2SingleChoice<>("paymentField", 0,
-                new PropertyModel<>(this.model, "itemPaymentValue"), this.paymentProvider);
+        this.paymentField = new Select2SingleChoice<>("paymentField", 0, new PropertyModel<>(this.model, "itemPaymentValue"), this.paymentProvider);
+        this.paymentField.setLabel(Model.of("Payment"));
         this.form.add(this.paymentField);
         this.paymentFeedback = new TextFeedbackPanel("paymentFeedback", this.paymentField);
         this.form.add(this.paymentFeedback);
 
         this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.accountProvider.applyWhere("account_usage", "account_usage = 1");
-        this.accountProvider.applyWhere("classification_enum", "classification_enum = 1");
-        this.accountField = new Select2SingleChoice<>("accountField", 0,
-                new PropertyModel<>(this.model, "itemAccountValue"), this.accountProvider);
+        this.accountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.accountProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
+        this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this.model, "itemAccountValue"), this.accountProvider);
+        this.accountField.setLabel(Model.of("Account"));
         this.form.add(this.accountField);
         this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
         this.form.add(this.accountFeedback);

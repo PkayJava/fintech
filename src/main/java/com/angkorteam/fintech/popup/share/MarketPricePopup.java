@@ -3,6 +3,7 @@ package com.angkorteam.fintech.popup.share;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
@@ -45,12 +46,14 @@ public class MarketPricePopup extends Panel {
         this.form.add(this.okayButton);
 
         this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this.model, "itemFromDateValue"));
+        this.fromDateField.setLabel(Model.of("From Date"));
         this.fromDateField.setRequired(true);
         this.form.add(this.fromDateField);
         this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
         this.form.add(this.fromDateFeedback);
 
         this.unitPriceField = new TextField<>("unitPriceField", new PropertyModel<>(this.model, "itemUnitPriceValue"));
+        this.unitPriceField.setLabel(Model.of("Unit Price"));
         this.unitPriceField.setRequired(true);
         this.form.add(this.unitPriceField);
         this.unitPriceFeedback = new TextFeedbackPanel("unitPriceFeedback", this.unitPriceField);

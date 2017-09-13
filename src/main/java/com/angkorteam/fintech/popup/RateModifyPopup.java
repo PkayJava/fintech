@@ -1,15 +1,17 @@
 package com.angkorteam.fintech.popup;
 
-import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
 
 public class RateModifyPopup extends Panel {
 
@@ -48,20 +50,21 @@ public class RateModifyPopup extends Panel {
         this.form.add(this.saveButton);
 
         this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this.model, "itemFromDateValue"));
+        this.fromDateField.setLabel(Model.of("From Date"));
         this.fromDateField.setRequired(true);
         this.form.add(this.fromDateField);
         this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
         this.form.add(this.fromDateFeedback);
 
-        this.interestRateField = new TextField<>("interestRateField",
-                new PropertyModel<>(this.model, "itemInterestRateValue"));
+        this.interestRateField = new TextField<>("interestRateField", new PropertyModel<>(this.model, "itemInterestRateValue"));
+        this.interestRateField.setLabel(Model.of("Interest Rate"));
         this.interestRateField.setRequired(true);
         this.form.add(this.interestRateField);
         this.interestRateFeedback = new TextFeedbackPanel("interestRateFeedback", this.interestRateField);
         this.form.add(this.interestRateFeedback);
 
-        this.differentialField = new CheckBox("differentialField",
-                new PropertyModel<>(this.model, "itemDifferentialValue"));
+        this.differentialField = new CheckBox("differentialField", new PropertyModel<>(this.model, "itemDifferentialValue"));
+        this.differentialField.setLabel(Model.of("Differential"));
         this.differentialField.setRequired(true);
         this.form.add(this.differentialField);
         this.differentialFeedback = new TextFeedbackPanel("differentialFeedback", this.differentialField);

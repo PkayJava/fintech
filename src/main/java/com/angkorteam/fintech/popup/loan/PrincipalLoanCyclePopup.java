@@ -3,6 +3,7 @@ package com.angkorteam.fintech.popup.loan;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.provider.WhenProvider;
@@ -57,28 +58,32 @@ public class PrincipalLoanCyclePopup extends Panel {
         this.form.add(this.okayButton);
 
         this.whenProvider = new WhenProvider();
-        this.whenField = new Select2SingleChoice<>("whenField", 0, new PropertyModel<>(this.model, "itemWhenValue"),
-                this.whenProvider);
+        this.whenField = new Select2SingleChoice<>("whenField", 0, new PropertyModel<>(this.model, "itemWhenValue"), this.whenProvider);
+        this.whenField.setLabel(Model.of("When"));
         this.form.add(this.whenField);
         this.whenFeedback = new TextFeedbackPanel("whenFeedback", this.whenField);
         this.form.add(this.whenFeedback);
 
         this.loanCycleField = new TextField<>("loanCycleField", new PropertyModel<>(this.model, "itemLoanCycleValue"));
+        this.loanCycleField.setLabel(Model.of("Loan Cycle"));
         this.form.add(this.loanCycleField);
         this.loanCycleFeedback = new TextFeedbackPanel("loanCycleFeedback", this.loanCycleField);
         this.form.add(this.loanCycleFeedback);
 
         this.minimumField = new TextField<>("minimumField", new PropertyModel<>(this.model, "itemMinimumValue"));
+        this.minimumField.setLabel(Model.of("Minimum"));
         this.form.add(this.minimumField);
         this.minimumFeedback = new TextFeedbackPanel("minimumFeedback", this.minimumField);
         this.form.add(this.minimumFeedback);
 
         this.defaultField = new TextField<>("defaultField", new PropertyModel<>(this.model, "itemDefaultValue"));
+        this.defaultField.setLabel(Model.of("Default"));
         this.form.add(this.defaultField);
         this.defaultFeedback = new TextFeedbackPanel("defaultFeedback", this.defaultField);
         this.form.add(this.defaultFeedback);
 
         this.maximumField = new TextField<>("maximumField", new PropertyModel<>(this.model, "itemMaximumValue"));
+        this.maximumField.setLabel(Model.of("Maximum"));
         this.form.add(this.maximumField);
         this.maximumFeedback = new TextFeedbackPanel("maximumFeedback", this.maximumField);
         this.form.add(this.maximumFeedback);

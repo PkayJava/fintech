@@ -8,6 +8,7 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 public class TaxGroupModifyPopup extends Panel {
@@ -46,6 +47,7 @@ public class TaxGroupModifyPopup extends Panel {
         this.form.add(this.startDateField);
 
         this.endDateField = new DateTextField("endDateField", new PropertyModel<>(this.model, "itemEndDateValue"));
+        this.endDateField.setLabel(Model.of("End Date"));
         this.endDateField.setRequired(true);
         this.form.add(this.endDateField);
         this.endDateFeedback = new TextFeedbackPanel("endDateFeedback", this.endDateField);

@@ -10,6 +10,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 /**
@@ -50,6 +51,7 @@ public class ReversePopup extends Panel {
         this.form.add(this.reverseButton);
 
         this.reasonField = new TextArea<>("reasonField", new PropertyModel<>(this, "reasonValue"));
+        this.reasonField.setLabel(Model.of("Reason"));
         this.reasonField.setRequired(true);
         this.form.add(this.reasonField);
         this.reasonFeedback = new TextFeedbackPanel("reasonFeedback", this.reasonField);

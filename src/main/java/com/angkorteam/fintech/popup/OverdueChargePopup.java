@@ -2,6 +2,7 @@ package com.angkorteam.fintech.popup;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -46,8 +47,8 @@ public class OverdueChargePopup extends Panel {
         this.overdueChargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
         this.overdueChargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = 1");
         this.overdueChargeProvider.applyWhere("is_penalty", "is_penalty = 1");
-        this.overdueChargeField = new Select2SingleChoice<>("overdueChargeField", 0,
-                new PropertyModel<>(this.model, "itemOverdueChargeValue"), this.overdueChargeProvider);
+        this.overdueChargeField = new Select2SingleChoice<>("overdueChargeField", 0, new PropertyModel<>(this.model, "itemOverdueChargeValue"), this.overdueChargeProvider);
+        this.overdueChargeField.setLabel(Model.of("Overdue Charge"));
         this.form.add(this.overdueChargeField);
         this.overdueChargeFeedback = new TextFeedbackPanel("overdueChargeFeedback", this.overdueChargeField);
         this.form.add(this.overdueChargeFeedback);

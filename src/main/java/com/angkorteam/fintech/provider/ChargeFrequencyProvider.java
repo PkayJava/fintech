@@ -1,16 +1,15 @@
 package com.angkorteam.fintech.provider;
 
+import java.util.List;
+
+import org.apache.wicket.model.IModel;
+
 import com.angkorteam.fintech.dto.ChargeFrequency;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
-import org.apache.wicket.model.IModel;
-
-import java.util.List;
 
 public class ChargeFrequencyProvider extends SingleChoiceProvider<Option> {
-
-    private ChargeFrequency[] values;
 
     @Override
     public Option toChoice(String id) {
@@ -26,10 +25,8 @@ public class ChargeFrequencyProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        if (this.values != null && this.values.length > 0) {
-            for (ChargeFrequency option : this.values) {
-                options.add(new Option(option.name(), option.getDescription()));
-            }
+        for (ChargeFrequency option : ChargeFrequency.values()) {
+            options.add(new Option(option.name(), option.getDescription()));
         }
         return options;
     }
@@ -57,14 +54,6 @@ public class ChargeFrequencyProvider extends SingleChoiceProvider<Option> {
             }
         }
         return null;
-    }
-
-    public ChargeFrequency[] getValues() {
-        return values;
-    }
-
-    public void setValues(ChargeFrequency... values) {
-        this.values = values;
     }
 
 }

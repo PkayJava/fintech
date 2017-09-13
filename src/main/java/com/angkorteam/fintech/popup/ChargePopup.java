@@ -2,6 +2,7 @@ package com.angkorteam.fintech.popup;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -46,8 +47,8 @@ public class ChargePopup extends Panel {
         this.chargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
         this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = 1");
         this.chargeProvider.applyWhere("is_penalty", "is_penalty = 0");
-        this.chargeField = new Select2SingleChoice<>("chargeField", 0,
-                new PropertyModel<>(this.model, "itemChargeValue"), this.chargeProvider);
+        this.chargeField = new Select2SingleChoice<>("chargeField", 0, new PropertyModel<>(this.model, "itemChargeValue"), this.chargeProvider);
+        this.chargeField.setLabel(Model.of("Charge"));
         this.form.add(this.chargeField);
         this.chargeFeedback = new TextFeedbackPanel("chargeFeedback", this.chargeField);
         this.form.add(this.chargeFeedback);
