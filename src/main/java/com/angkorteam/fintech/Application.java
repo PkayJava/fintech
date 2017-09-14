@@ -10,9 +10,8 @@ import org.apache.wicket.request.resource.PackageResourceReference;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.angkorteam.fintech.pages.ABCPage;
 import com.angkorteam.fintech.pages.LoginPage;
-import com.angkorteam.fintech.pages.product.FixedDepositCreatePage;
+import com.angkorteam.fintech.pages.staff.UserBrowsePage;
 import com.angkorteam.framework.ResourceScope;
 
 /**
@@ -28,8 +27,7 @@ public class Application extends AuthenticatedWebApplication {
 
     @Override
     public Class<? extends Page> getHomePage() {
-        // return UserBrowsePage.class;
-        return ABCPage.class;
+         return UserBrowsePage.class;
     }
 
     @Override

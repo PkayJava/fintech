@@ -14,32 +14,32 @@ public class LoginPageTest {
 
     @Before
     public void before() {
-        this.wicket = new JUnitWicketTester();
+	this.wicket = new JUnitWicketTester();
     }
 
     @Test
     public void identifierField() {
-        this.wicket.startPage(LoginPage.class);
+	this.wicket.startPage(LoginPage.class);
 
-        FormTester formTester = this.wicket.newFormTester("form");
-        Component component = formTester.getForm().get("identifierField");
+	FormTester formTester = this.wicket.newFormTester("form");
+	Component component = formTester.getForm().get("identifierField");
 
-        Throwable throwable = null;
-        try {
-            this.wicket.executeListener(component);
-        } catch (Throwable e) {
-            throwable = e;
-        }
+	Throwable throwable = null;
+	try {
+	    this.wicket.executeListener(component);
+	} catch (Throwable e) {
+	    throwable = e;
+	}
 
-        Assert.assertNull(throwable == null ? "" : throwable.getMessage(), throwable);
+	Assert.assertNull(throwable == null ? "" : throwable.getMessage(), throwable);
     }
 
     @Test
     public void loginPage() {
 
-        this.wicket.login();
+	this.wicket.login();
 
-        Assert.assertNotNull("token is null", this.wicket.getSession().getToken());
+	Assert.assertNotNull("token is null", this.wicket.getSession().getToken());
 
     }
 
