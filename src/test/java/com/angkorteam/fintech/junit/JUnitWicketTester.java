@@ -11,10 +11,13 @@ import org.apache.wicket.request.mapper.parameter.INamedParameters;
 import org.apache.wicket.request.mapper.parameter.INamedParameters.NamedPair;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 
 import com.angkorteam.fintech.Application;
+import com.angkorteam.fintech.Constants;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.pages.LoginPage;
 
 public class JUnitWicketTester extends WicketTester {
 
@@ -30,6 +33,18 @@ public class JUnitWicketTester extends WicketTester {
     @Override
     public Application getApplication() {
         return (Application) super.getApplication();
+    }
+
+    public void login() {
+        this.startPage(LoginPage.class);
+
+        FormTester form = this.newFormTester("form");
+
+        form.setValue("identifierField", Constants.AID);
+        form.setValue("loginField", Constants.UID);
+        form.setValue("passwordField", Constants.PWD);
+        form.submit("loginButton");
+
     }
 
     public void executeListener(final Component component, PageParameters parameters) {

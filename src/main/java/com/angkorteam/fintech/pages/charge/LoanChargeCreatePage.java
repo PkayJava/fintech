@@ -299,6 +299,11 @@ public class LoanChargeCreatePage extends Page {
     }
 
     protected boolean chargeTimeFieldUpdate(AjaxRequestTarget target) {
+
+        System.out.println("hellohellohellohellohellohellohellohello");
+
+        System.out.println(this.chargeTimeValue.getText());
+
         this.chargeFrequencyValue = null;
         this.frequencyIntervalValue = null;
         this.chargeCalculationValue = null;

@@ -10,23 +10,23 @@ import com.angkorteam.fintech.junit.JUnitWicketTester;
 
 public class LoginPageTest {
 
-    private JUnitWicketTester tester;
+    private JUnitWicketTester wicket;
 
     @Before
     public void before() {
-        this.tester = new JUnitWicketTester();
+        this.wicket = new JUnitWicketTester();
     }
 
     @Test
     public void identifierField() {
-        this.tester.startPage(LoginPage.class);
+        this.wicket.startPage(LoginPage.class);
 
-        FormTester formTester = this.tester.newFormTester("form");
+        FormTester formTester = this.wicket.newFormTester("form");
         Component component = formTester.getForm().get("identifierField");
 
         Throwable throwable = null;
         try {
-            this.tester.executeListener(component);
+            this.wicket.executeListener(component);
         } catch (Throwable e) {
             throwable = e;
         }
@@ -37,15 +37,9 @@ public class LoginPageTest {
     @Test
     public void loginPage() {
 
-        this.tester.startPage(LoginPage.class);
+        this.wicket.login();
 
-        FormTester formTester = this.tester.newFormTester("form");
-        formTester.setValue("identifierField", "default");
-        formTester.setValue("loginField", "mifos");
-        formTester.setValue("passwordField", "password");
-        formTester.submit("loginButton");
-
-        Assert.assertNotNull("token is null", this.tester.getSession().getToken());
+        Assert.assertNotNull("token is null", this.wicket.getSession().getToken());
 
     }
 
