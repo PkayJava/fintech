@@ -1,5 +1,9 @@
 package com.angkorteam.fintech.junit;
 
+import javax.sql.DataSource;
+
+import org.apache.commons.text.CharacterPredicates;
+import org.apache.commons.text.RandomStringGenerator;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.core.request.handler.BookmarkableListenerRequestHandler;
@@ -16,13 +20,21 @@ import org.apache.wicket.util.tester.WicketTester;
 
 import com.angkorteam.fintech.Application;
 import com.angkorteam.fintech.Constants;
+import com.angkorteam.fintech.MifosDataSourceManager;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.pages.LoginPage;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.spring.JdbcNamed;
+import com.angkorteam.framework.spring.JdbcTemplate;
 
 public class JUnitWicketTester extends WicketTester {
 
+    private RandomStringGenerator generator;
+
     public JUnitWicketTester() {
 	super(JUnit.getApplication(), JUnit.getServletContext());
+	this.generator = new RandomStringGenerator.Builder().withinRange('0', 'z')
+		.filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS).build();
     }
 
     @Override
@@ -77,6 +89,24 @@ public class JUnitWicketTester extends WicketTester {
 
 	// Process the request
 	processRequest(getRequest(), null);
+    }
+
+    public RandomStringGenerator getGenerator() {
+	return generator;
+    }
+
+    public JdbcTemplate getJdbcTemplate() {
+	MifosDataSourceManager manager = SpringBean.getBean(MifosDataSourceManager.class);
+	DataSource dataSource = manager.getDataSource(Constants.AID);
+	JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	return jdbcTemplate;
+    }
+
+    public JdbcNamed getJdbcNamed() {
+	MifosDataSourceManager manager = SpringBean.getBean(MifosDataSourceManager.class);
+	DataSource dataSource = manager.getDataSource(Constants.AID);
+	JdbcNamed jdbcTemplate = new JdbcNamed(dataSource);
+	return jdbcTemplate;
     }
 
 }

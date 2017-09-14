@@ -350,6 +350,8 @@ public class LoanChargeCreatePage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
+	
+	System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
 	ChargeTime chargeTime = this.chargeTimeValue == null ? null : ChargeTime.valueOf(this.chargeTimeValue.getId());
 
 	ChargeBuilder builder = new ChargeBuilder();
@@ -388,6 +390,9 @@ public class LoanChargeCreatePage extends Page {
 	if (reportError(node)) {
 	    return;
 	}
+	
+	System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+	
 	setResponsePage(ChargeBrowsePage.class);
     }
 
