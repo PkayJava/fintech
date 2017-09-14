@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import com.angkorteam.fintech.dto.ChargeTime;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
-import com.angkorteam.fintech.pages.ABCPage;
 
 public class LoanChargeCreatePageTest {
 
@@ -22,7 +21,7 @@ public class LoanChargeCreatePageTest {
     }
 
     @Test
-    public void dataEntry1() {
+    public void dataEntry() {
 	this.wicket.login();
 	this.wicket.startPage(LoanChargeCreatePage.class);
 	FormTester form = this.wicket.newFormTester("form");
@@ -33,15 +32,4 @@ public class LoanChargeCreatePageTest {
 	this.wicket.executeBehavior(behavior);
     }
 
-    @Test
-    public void dataEntry() {
-	this.wicket.startPage(ABCPage.class);
-	FormTester form = this.wicket.newFormTester("form");
-	form.setValue("select", "nice");
-	Component chargeTimeField = form.getForm().get("select");
-	AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(chargeTimeField,
-		OnChangeAjaxBehavior.EVENT_CHANGE);
-	this.wicket.executeBehavior(behavior);
-
-    }
 }
