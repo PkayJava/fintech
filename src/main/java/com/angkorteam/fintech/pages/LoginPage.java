@@ -11,6 +11,7 @@ import org.apache.wicket.model.PropertyModel;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.provider.MifosSingleChoiceProvider;
 import com.angkorteam.framework.ReferenceUtilities;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -42,6 +43,7 @@ public class LoginPage extends WebPage {
 
         this.identifierProvider = new MifosSingleChoiceProvider("tenants", "identifier", "name");
         this.identifierField = new Select2SingleChoice<>("identifierField", 0, new PropertyModel<>(this, "identifierValue"), this.identifierProvider);
+        this.identifierField.add(new OnChangeAjaxBehavior());
         this.identifierField.setRequired(true);
         this.form.add(this.identifierField);
 

@@ -22,60 +22,61 @@ import com.angkorteam.fintech.pages.LoginPage;
 public class JUnitWicketTester extends WicketTester {
 
     public JUnitWicketTester() {
-        super(JUnit.getApplication(), JUnit.getServletContext());
+	super(JUnit.getApplication(), JUnit.getServletContext());
     }
 
     @Override
     public Session getSession() {
-        return (Session) super.getSession();
+	return (Session) super.getSession();
     }
 
     @Override
     public Application getApplication() {
-        return (Application) super.getApplication();
+	return (Application) super.getApplication();
     }
 
     public void login() {
-        this.startPage(LoginPage.class);
+	this.startPage(LoginPage.class);
 
-        FormTester form = this.newFormTester("form");
+	FormTester form = this.newFormTester("form");
 
-        form.setValue("identifierField", Constants.AID);
-        form.setValue("loginField", Constants.UID);
-        form.setValue("passwordField", Constants.PWD);
-        form.submit("loginButton");
+	form.setValue("identifierField", Constants.AID);
+	form.setValue("loginField", Constants.UID);
+	form.setValue("passwordField", Constants.PWD);
+	form.submit("loginButton");
 
     }
 
     public void executeListener(final Component component, PageParameters parameters) {
-        Args.notNull(component, "component");
+	Args.notNull(component, "component");
 
-        // there are two ways to do this. RequestCycle could be forced to call the
-        // handler
-        // directly but constructing and parsing the URL increases the chance of
-        // triggering bugs
-        Page page = component.getPage();
-        PageAndComponentProvider pageAndComponentProvider = new PageAndComponentProvider(page, component);
+	// there are two ways to do this. RequestCycle could be forced to call
+	// the
+	// handler
+	// directly but constructing and parsing the URL increases the chance of
+	// triggering bugs
+	Page page = component.getPage();
+	PageAndComponentProvider pageAndComponentProvider = new PageAndComponentProvider(page, component);
 
-        IRequestHandler handler = null;
-        if (page.isPageStateless() || (page.isBookmarkable() && page.wasCreatedBookmarkable())) {
-            handler = new BookmarkableListenerRequestHandler(pageAndComponentProvider);
-        } else {
-            handler = new ListenerRequestHandler(pageAndComponentProvider);
-        }
+	IRequestHandler handler = null;
+	if (page.isPageStateless() || (page.isBookmarkable() && page.wasCreatedBookmarkable())) {
+	    handler = new BookmarkableListenerRequestHandler(pageAndComponentProvider);
+	} else {
+	    handler = new ListenerRequestHandler(pageAndComponentProvider);
+	}
 
-        Url url = urlFor(handler);
-        if (parameters != null) {
-            for (NamedPair namedPair : parameters.getAllNamed()) {
-                if (namedPair.getType() == INamedParameters.Type.QUERY_STRING) {
-                    url.addQueryParameter(namedPair.getKey(), namedPair.getValue());
-                }
-            }
-        }
-        getRequest().setUrl(url);
+	Url url = urlFor(handler);
+	if (parameters != null) {
+	    for (NamedPair namedPair : parameters.getAllNamed()) {
+		if (namedPair.getType() == INamedParameters.Type.MANUAL) {
+		    url.addQueryParameter(namedPair.getKey(), namedPair.getValue());
+		}
+	    }
+	}
+	getRequest().setUrl(url);
 
-        // Process the request
-        processRequest(getRequest(), null);
+	// Process the request
+	processRequest(getRequest(), null);
     }
 
 }
