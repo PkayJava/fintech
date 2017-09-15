@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 
 public class LoginPageTest {
@@ -14,7 +15,7 @@ public class LoginPageTest {
 
     @Before
     public void before() {
-        this.wicket = new JUnitWicketTester();
+        this.wicket = JUnit.getWicket();
     }
 
     @Test

@@ -339,7 +339,11 @@ public class LoanChargeCreatePage extends Page {
 
     protected void saveButtonSubmit(Button button) {
 
-        ChargeTime chargeTime = this.chargeTimeValue == null ? null : ChargeTime.valueOf(this.chargeTimeValue.getId());
+        ChargeTime chargeTime = null;
+
+        if (this.chargeTimeValue != null) {
+            chargeTime = ChargeTime.valueOf(this.chargeTimeValue.getId());
+        }
 
         ChargeBuilder builder = new ChargeBuilder();
         builder.withChargeAppliesTo(ChargeType.Loan);
@@ -347,7 +351,9 @@ public class LoanChargeCreatePage extends Page {
         if (this.currencyValue != null) {
             builder.withCurrencyCode(this.currencyValue.getId());
         }
-        builder.withChargeTimeType(chargeTime);
+        if (this.chargeTimeValue != null) {
+            builder.withChargeTimeType(chargeTime);
+        }
         if (this.chargeCalculationValue != null) {
             builder.withChargeCalculationType(ChargeCalculation.valueOf(this.chargeCalculationValue.getId()));
         }

@@ -1,11 +1,16 @@
 package com.angkorteam.fintech.dto.request;
 
-import com.angkorteam.fintech.dto.*;
-import com.mashape.unirest.http.JsonNode;
-import org.apache.commons.lang3.time.DateFormatUtils;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import org.apache.commons.lang3.time.DateFormatUtils;
+
+import com.angkorteam.fintech.dto.ChargeCalculation;
+import com.angkorteam.fintech.dto.ChargeFrequency;
+import com.angkorteam.fintech.dto.ChargePayment;
+import com.angkorteam.fintech.dto.ChargeTime;
+import com.angkorteam.fintech.dto.ChargeType;
+import com.mashape.unirest.http.JsonNode;
 
 public class ChargeBuilder implements Serializable {
 
@@ -39,7 +44,7 @@ public class ChargeBuilder implements Serializable {
     private Double amount;
     private boolean hasAmount;
 
-    private int feeInterval;
+    private Integer feeInterval;
     private boolean hasFeeInterval;
 
     private ChargeFrequency feeFrequency;
@@ -69,11 +74,19 @@ public class ChargeBuilder implements Serializable {
             object.getObject().put("incomeAccountId", this.incomeAccountId);
         }
         if (this.hasChargeAppliesTo) {
-            object.getObject().put("chargeAppliesTo", this.chargeAppliesTo.getLiteral());
+            if (this.chargeAppliesTo != null) {
+                object.getObject().put("chargeAppliesTo", this.chargeAppliesTo.getLiteral());
+            } else {
+                object.getObject().put("chargeAppliesTo", (String) null);
+            }
         }
 
         if (this.hasChargeTimeType) {
-            object.getObject().put("chargeTimeType", this.chargeTimeType.getLiteral());
+            if (this.chargeTimeType != null) {
+                object.getObject().put("chargeTimeType", this.chargeTimeType.getLiteral());
+            } else {
+                object.getObject().put("chargeTimeType", (String) null);
+            }
         }
 
         if (this.hasName) {
@@ -85,11 +98,19 @@ public class ChargeBuilder implements Serializable {
         }
 
         if (this.hasChargeCalculationType) {
-            object.getObject().put("chargeCalculationType", this.chargeCalculationType.getLiteral());
+            if (this.chargeCalculationType != null) {
+                object.getObject().put("chargeCalculationType", this.chargeCalculationType.getLiteral());
+            } else {
+                object.getObject().put("chargeCalculationType", (String) null);
+            }
         }
 
         if (this.hasChargePaymentMode) {
-            object.getObject().put("chargePaymentMode", this.chargePaymentMode.getLiteral());
+            if (this.chargePaymentMode != null) {
+                object.getObject().put("chargePaymentMode", this.chargePaymentMode.getLiteral());
+            } else {
+                object.getObject().put("chargePaymentMode", (String) null);
+            }
         }
 
         if (this.hasTaxGroupId) {
@@ -113,7 +134,11 @@ public class ChargeBuilder implements Serializable {
         }
 
         if (this.hasFeeFrequency) {
-            object.getObject().put("feeFrequency", this.feeFrequency.getLiteral());
+            if (this.feeFrequency != null) {
+                object.getObject().put("feeFrequency", this.feeFrequency.getLiteral());
+            } else {
+                object.getObject().put("feeFrequency", (String) null);
+            }
         }
 
         if (this.hasLocale) {
@@ -125,10 +150,10 @@ public class ChargeBuilder implements Serializable {
         }
 
         if (this.hasFeeOnMonthDay) {
-            if (this.feeOnMonthDay == null) {
-                object.getObject().put("feeOnMonthDay", (String) null);
-            } else {
+            if (this.feeOnMonthDay != null) {
                 object.getObject().put("feeOnMonthDay", DateFormatUtils.format(this.feeOnMonthDay, this.monthDayFormat));
+            } else {
+                object.getObject().put("feeOnMonthDay", (String) null);
             }
         }
         return object;
@@ -206,7 +231,7 @@ public class ChargeBuilder implements Serializable {
         return this;
     }
 
-    public ChargeBuilder withFeeInterval(int feeInterval) {
+    public ChargeBuilder withFeeInterval(Integer feeInterval) {
         this.feeInterval = feeInterval;
         this.hasFeeInterval = true;
         return this;

@@ -16,6 +16,7 @@ import com.angkorteam.fintech.dto.ChargeCalculation;
 import com.angkorteam.fintech.dto.ChargeFrequency;
 import com.angkorteam.fintech.dto.ChargePayment;
 import com.angkorteam.fintech.dto.ChargeTime;
+import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -26,7 +27,7 @@ public class LoanChargeCreatePageTest {
 
     @Before
     public void before() {
-        this.wicket = new JUnitWicketTester();
+        this.wicket = JUnit.getWicket();
     }
 
     @Test

@@ -219,15 +219,20 @@ public class ClientChargeCreatePage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        ChargeTime chargeTime = ChargeTime.valueOf(this.chargeTimeValue.getId());
 
         ChargeBuilder builder = new ChargeBuilder();
         builder.withChargeAppliesTo(ChargeType.Client);
         builder.withName(this.nameValue);
         builder.withCurrencyCode(this.currencyValue.getId());
-        builder.withChargeTimeType(chargeTime);
-        builder.withChargeCalculationType(ChargeCalculation.valueOf(this.chargeCalculationValue.getId()));
-        builder.withChargePaymentMode(ChargePayment.valueOf(this.chargePaymentValue.getId()));
+        if (this.chargeTimeValue != null) {
+            builder.withChargeTimeType(ChargeTime.valueOf(this.chargeTimeValue.getId()));
+        }
+        if (this.chargeCalculationValue != null) {
+            builder.withChargeCalculationType(ChargeCalculation.valueOf(this.chargeCalculationValue.getId()));
+        }
+        if (this.chargePaymentValue != null) {
+            builder.withChargePaymentMode(ChargePayment.valueOf(this.chargePaymentValue.getId()));
+        }
         builder.withAmount(this.amountValue);
         builder.withActive(this.activeValue);
         builder.withPenalty(this.penaltyValue);

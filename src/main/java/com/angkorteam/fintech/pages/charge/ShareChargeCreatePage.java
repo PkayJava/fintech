@@ -179,14 +179,24 @@ public class ShareChargeCreatePage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        ChargeTime chargeTime = ChargeTime.valueOf(this.chargeTimeValue.getId());
+        ChargeTime chargeTime = null;
+
+        if (this.chargeTimeValue != null) {
+            chargeTime = ChargeTime.valueOf(this.chargeTimeValue.getId());
+        }
 
         ChargeBuilder builder = new ChargeBuilder();
         builder.withChargeAppliesTo(ChargeType.Share);
         builder.withName(this.nameValue);
-        builder.withCurrencyCode(this.currencyValue.getId());
-        builder.withChargeTimeType(chargeTime);
-        builder.withChargeCalculationType(ChargeCalculation.valueOf(this.chargeCalculationValue.getId()));
+        if (this.currencyValue != null) {
+            builder.withCurrencyCode(this.currencyValue.getId());
+        }
+        if (this.chargeTimeValue != null) {
+            builder.withChargeTimeType(chargeTime);
+        }
+        if (this.chargeCalculationValue != null) {
+            builder.withChargeCalculationType(ChargeCalculation.valueOf(this.chargeCalculationValue.getId()));
+        }
         builder.withAmount(this.amountValue);
         builder.withActive(this.activeValue);
         if (this.taxGroupValue != null) {

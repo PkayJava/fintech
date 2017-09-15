@@ -404,18 +404,40 @@ public class LoanChargeModifyPage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        ChargeTime chargeTime = ChargeTime.valueOf(this.chargeTimeValue.getId());
+        ChargeTime chargeTime = null;
+        if (this.chargeTimeValue != null) {
+            chargeTime = ChargeTime.valueOf(this.chargeTimeValue.getId());
+        }
 
         ChargeBuilder builder = new ChargeBuilder();
         builder.withId(this.chargeId);
         builder.withName(this.nameValue);
-        builder.withCurrencyCode(this.currencyValue.getId());
+        if (this.currencyValue != null) {
+            builder.withCurrencyCode(this.currencyValue.getId());
+        } else {
+            builder.withCurrencyCode(null);
+        }
         builder.withChargeTimeType(chargeTime);
-        builder.withChargeCalculationType(ChargeCalculation.valueOf(this.chargeCalculationValue.getId()));
-        builder.withChargePaymentMode(ChargePayment.valueOf(this.chargePaymentValue.getId()));
-        if (chargeTime == ChargeTime.OverdueFees) {
-            builder.withFeeFrequency(ChargeFrequency.valueOf(this.chargeFrequencyValue.getId()));
+        if (this.chargeCalculationValue != null) {
+            builder.withChargeCalculationType(ChargeCalculation.valueOf(this.chargeCalculationValue.getId()));
+        } else {
+            builder.withChargeCalculationType(null);
+        }
+        if (this.chargePaymentValue != null) {
+            builder.withChargePaymentMode(ChargePayment.valueOf(this.chargePaymentValue.getId()));
+        } else {
+            builder.withChargePaymentMode(null);
+        }
+        if (chargeTime == ChargeTime.OverdueFees && this.feeFrequencyValue != null && this.feeFrequencyValue) {
+            if (this.chargeFrequencyValue != null) {
+                builder.withFeeFrequency(ChargeFrequency.valueOf(this.chargeFrequencyValue.getId()));
+            } else {
+                builder.withFeeFrequency(null);
+            }
             builder.withFeeInterval(this.frequencyIntervalValue);
+        } else {
+            builder.withFeeFrequency(null);
+            builder.withFeeInterval(null);
         }
         builder.withAmount(this.amountValue);
         builder.withActive(this.activeValue);

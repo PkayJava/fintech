@@ -15,13 +15,16 @@ public class JUnit extends RunListener {
 
     private static File location;
 
+    private static JUnitWicketTester wicket;
+
     public void testRunStarted(Description description) throws Exception {
-	location = new File("");
-	application = new JUnitApplication();
-	servletContext = new JUnitMockServletContext(application, null);
-	servletContext.addInitParameter("contextConfigLocation", "/WEB-INF/api-context.xml");
-	ContextLoaderListener listener = new ContextLoaderListener();
-	listener.initWebApplicationContext(servletContext);
+        location = new File("");
+        application = new JUnitApplication();
+        servletContext = new JUnitMockServletContext(application, null);
+        servletContext.addInitParameter("contextConfigLocation", "/WEB-INF/api-context.xml");
+        ContextLoaderListener listener = new ContextLoaderListener();
+        listener.initWebApplicationContext(servletContext);
+        wicket = new JUnitWicketTester();
     }
 
     public void testRunFinished(Result result) throws Exception {
@@ -29,15 +32,19 @@ public class JUnit extends RunListener {
     }
 
     public static JUnitApplication getApplication() {
-	return application;
+        return application;
     }
 
     public static File getLocation() {
-	return location;
+        return location;
     }
 
     public static JUnitMockServletContext getServletContext() {
-	return servletContext;
+        return servletContext;
+    }
+
+    public static JUnitWicketTester getWicket() {
+        return wicket;
     }
 
 }
