@@ -117,11 +117,7 @@ public class ShareChargeModifyPage extends Page {
     protected void onInitialize() {
         super.onInitialize();
 
-        PageParameters parameters = getPageParameters();
-        this.chargeId = parameters.get("chargeId").toString("");
-
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select * from m_charge where id = ?", this.chargeId);
+        initData();
 
         this.form = new Form<>("form");
         this.add(this.form);
@@ -133,20 +129,74 @@ public class ShareChargeModifyPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ChargeBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.nameValue = (String) chargeObject.get("name");
         this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setLabel(Model.of("Name"));
         this.nameField.setRequired(true);
         this.form.add(this.nameField);
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
         this.form.add(this.nameFeedback);
 
-        this.currencyValue = jdbcTemplate.queryForObject("select code id, concat(name,' [', code,']') text from m_organisation_currency where code = ?", new OptionMapper(), chargeObject.get("currency_code"));
-        this.currencyProvider = new SingleChoiceProvider("m_currency", "id", "name");
+        this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
         this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
+        this.currencyField.setLabel(Model.of("Currency"));
         this.currencyField.setRequired(true);
         this.form.add(this.currencyField);
         this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
         this.form.add(this.currencyFeedback);
+
+        this.chargeTimeProvider = new ChargeTimeProvider();
+        this.chargeTimeProvider.setValues(ChargeTime.ShareAccountActivate, ChargeTime.SharePurchase, ChargeTime.ShareRedeem);
+        this.chargeTimeField = new Select2SingleChoice<>("chargeTimeField", 0, new PropertyModel<>(this, "chargeTimeValue"), this.chargeTimeProvider);
+        this.chargeTimeField.setLabel(Model.of("Charge time type"));
+        this.chargeTimeField.setRequired(true);
+        this.chargeTimeField.add(new OnChangeAjaxBehavior());
+        this.form.add(this.chargeTimeField);
+        this.chargeTimeFeedback = new TextFeedbackPanel("chargeTimeFeedback", this.chargeTimeField);
+        this.form.add(this.chargeTimeFeedback);
+
+        this.chargeCalculationProvider = new ChargeCalculationProvider();
+        this.chargeCalculationProvider.setValues(ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount);
+        this.chargeCalculationField = new Select2SingleChoice<>("chargeCalculationField", 0, new PropertyModel<>(this, "chargeCalculationValue"), this.chargeCalculationProvider);
+        this.chargeCalculationField.setLabel(Model.of("Charge calculation"));
+        this.chargeCalculationField.setRequired(true);
+        this.chargeCalculationField.add(new OnChangeAjaxBehavior());
+        this.form.add(this.chargeCalculationField);
+        this.chargeCalculationFeedback = new TextFeedbackPanel("chargeCalculationFeedback", this.chargeCalculationField);
+        this.form.add(this.chargeCalculationFeedback);
+
+        this.amountField = new TextField<>("amountField", new PropertyModel<>(this, "amountValue"));
+        this.amountField.setRequired(true);
+        this.amountField.setLabel(Model.of("Amount"));
+        this.form.add(this.amountField);
+        this.amountFeedback = new TextFeedbackPanel("amountFeedback", this.amountField);
+        this.form.add(this.amountFeedback);
+
+        this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
+        this.activeField.setRequired(true);
+        this.form.add(this.activeField);
+        this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
+        this.form.add(this.activeFeedback);
+
+        this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
+        this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
+        this.taxGroupField.setLabel(Model.of("Tax Group"));
+        this.form.add(this.taxGroupField);
+        this.taxGroupFeedback = new TextFeedbackPanel("taxGroupFeedback", this.taxGroupField);
+        this.form.add(this.taxGroupFeedback);
+
+    }
+
+    protected void initData() {
+
+        PageParameters parameters = getPageParameters();
+        this.chargeId = parameters.get("chargeId").toString("");
+
+        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select * from m_charge where id = ?", this.chargeId);
+
+        this.nameValue = (String) chargeObject.get("name");
+
+        this.currencyValue = jdbcTemplate.queryForObject("select code id, concat(name,' [', code,']') text from m_organisation_currency where code = ?", new OptionMapper(), chargeObject.get("currency_code"));
 
         String charge_time_enum = String.valueOf(chargeObject.get("charge_time_enum"));
         for (ChargeTime time : ChargeTime.values()) {
@@ -155,14 +205,6 @@ public class ShareChargeModifyPage extends Page {
                 break;
             }
         }
-        this.chargeTimeProvider = new ChargeTimeProvider();
-        this.chargeTimeProvider.setValues(ChargeTime.ShareAccountActivate, ChargeTime.SharePurchase, ChargeTime.ShareRedeem);
-        this.chargeTimeField = new Select2SingleChoice<>("chargeTimeField", 0, new PropertyModel<>(this, "chargeTimeValue"), this.chargeTimeProvider);
-        this.chargeTimeField.setRequired(true);
-        this.chargeTimeField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.chargeTimeField);
-        this.chargeTimeFeedback = new TextFeedbackPanel("chargeTimeFeedback", this.chargeTimeField);
-        this.form.add(this.chargeTimeFeedback);
 
         String charge_calculation_enum = String.valueOf(chargeObject.get("charge_calculation_enum"));
         for (ChargeCalculation calculation : ChargeCalculation.values()) {
@@ -171,39 +213,16 @@ public class ShareChargeModifyPage extends Page {
                 break;
             }
         }
-        this.chargeCalculationProvider = new ChargeCalculationProvider();
-        this.chargeCalculationProvider.setValues(ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount);
-        this.chargeCalculationField = new Select2SingleChoice<>("chargeCalculationField", 0, new PropertyModel<>(this, "chargeCalculationValue"), this.chargeCalculationProvider);
-        this.chargeCalculationField.setRequired(true);
-        this.chargeCalculationField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.chargeCalculationField);
-        this.chargeCalculationFeedback = new TextFeedbackPanel("chargeCalculationFeedback", this.chargeCalculationField);
-        this.form.add(this.chargeCalculationFeedback);
 
         if (chargeObject.get("amount") instanceof BigDecimal) {
             this.amountValue = ((BigDecimal) chargeObject.get("amount")).doubleValue();
         } else if (chargeObject.get("amount") instanceof Double) {
             this.amountValue = (Double) chargeObject.get("amount");
         }
-        this.amountField = new TextField<>("amountField", new PropertyModel<>(this, "amountValue"));
-        this.amountField.setRequired(true);
-        this.form.add(this.amountField);
-        this.amountFeedback = new TextFeedbackPanel("amountFeedback", this.amountField);
-        this.form.add(this.amountFeedback);
 
         this.activeValue = (Boolean) chargeObject.get("is_active");
-        this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
-        this.activeField.setRequired(true);
-        this.form.add(this.activeField);
-        this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
-        this.form.add(this.activeFeedback);
 
         this.taxGroupValue = jdbcTemplate.queryForObject("select id, name text from m_tax_group where id = ?", new OptionMapper(), chargeObject.get("tax_group_id"));
-        this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
-        this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
-        this.form.add(this.taxGroupField);
-        this.taxGroupFeedback = new TextFeedbackPanel("taxGroupFeedback", this.taxGroupField);
-        this.form.add(this.taxGroupFeedback);
 
     }
 

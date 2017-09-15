@@ -149,6 +149,7 @@ public class ClientChargeModifyPage extends Page {
 
         this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
         this.nameField.setRequired(true);
+        this.nameField.setLabel(Model.of("Name"));
         this.nameField.add(new OnChangeAjaxBehavior());
         this.form.add(this.nameField);
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
@@ -156,6 +157,7 @@ public class ClientChargeModifyPage extends Page {
 
         this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
         this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
+        this.currencyField.setLabel(Model.of("Currency"));
         this.currencyField.add(new OnChangeAjaxBehavior());
         this.currencyField.setRequired(true);
         this.form.add(this.currencyField);
@@ -165,6 +167,7 @@ public class ClientChargeModifyPage extends Page {
         this.chargeTimeProvider = new ChargeTimeProvider();
         this.chargeTimeProvider.setValues(ChargeTime.SpecifiedDueDate);
         this.chargeTimeField = new Select2SingleChoice<>("chargeTimeField", 0, new PropertyModel<>(this, "chargeTimeValue"), this.chargeTimeProvider);
+        this.chargeTimeField.setLabel(Model.of("Charge time type"));
         this.chargeTimeField.setRequired(true);
         this.chargeTimeField.add(new OnChangeAjaxBehavior());
         this.form.add(this.chargeTimeField);
@@ -174,6 +177,7 @@ public class ClientChargeModifyPage extends Page {
         this.chargeCalculationProvider = new ChargeCalculationProvider();
         this.chargeCalculationProvider.setValues(ChargeCalculation.Flat);
         this.chargeCalculationField = new Select2SingleChoice<>("chargeCalculationField", 0, new PropertyModel<>(this, "chargeCalculationValue"), this.chargeCalculationProvider);
+        this.chargeCalculationField.setLabel(Model.of("Charge calculation"));
         this.chargeCalculationField.setRequired(true);
         this.chargeCalculationField.add(new OnChangeAjaxBehavior());
         this.form.add(this.chargeCalculationField);
@@ -182,6 +186,7 @@ public class ClientChargeModifyPage extends Page {
 
         this.chargePaymentProvider = new ChargePaymentProvider();
         this.chargePaymentField = new Select2SingleChoice<>("chargePaymentField", 0, new PropertyModel<>(this, "chargePaymentValue"), this.chargePaymentProvider);
+        this.chargePaymentField.setLabel(Model.of("Charge payment by"));
         this.chargePaymentField.add(new OnChangeAjaxBehavior());
         this.chargePaymentField.setRequired(true);
         this.form.add(this.chargePaymentField);
@@ -190,6 +195,7 @@ public class ClientChargeModifyPage extends Page {
 
         this.amountField = new TextField<>("amountField", new PropertyModel<>(this, "amountValue"));
         this.amountField.setRequired(true);
+        this.amountField.setLabel(Model.of("Amount"));
         this.amountField.add(new OnChangeAjaxBehavior());
         this.form.add(this.amountField);
         this.amountFeedback = new TextFeedbackPanel("amountFeedback", this.amountField);
@@ -211,6 +217,7 @@ public class ClientChargeModifyPage extends Page {
 
         this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
         this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
+        this.taxGroupField.setLabel(Model.of("Tax Group"));
         this.taxGroupField.add(new OnChangeAjaxBehavior());
         this.form.add(this.taxGroupField);
         this.taxGroupFeedback = new TextFeedbackPanel("taxGroupFeedback", this.taxGroupField);
@@ -220,6 +227,7 @@ public class ClientChargeModifyPage extends Page {
         this.incomeChargeProvider.applyWhere("classification_enum", "classification_enum in (" + AccountType.Liability.getLiteral() + ", " + AccountType.Income.getLiteral() + ")");
         this.incomeChargeProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.incomeChargeField = new Select2SingleChoice<>("incomeChargeField", 0, new PropertyModel<>(this, "incomeChargeValue"), this.incomeChargeProvider);
+        this.incomeChargeField.setLabel(Model.of("Income from charge"));
         this.incomeChargeField.add(new OnChangeAjaxBehavior());
         this.form.add(this.incomeChargeField);
         this.incomeChargeFeedback = new TextFeedbackPanel("incomeChargeFeedback", this.incomeChargeField);

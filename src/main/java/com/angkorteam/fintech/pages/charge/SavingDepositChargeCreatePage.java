@@ -141,6 +141,7 @@ public class SavingDepositChargeCreatePage extends Page {
         this.form.add(this.closeLink);
 
         this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setLabel(Model.of("Name"));
         this.nameField.setRequired(true);
         this.nameField.add(new OnChangeAjaxBehavior());
         this.form.add(this.nameField);
@@ -149,6 +150,7 @@ public class SavingDepositChargeCreatePage extends Page {
 
         this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
         this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
+        this.currencyField.setLabel(Model.of("Currency"));
         this.currencyField.setRequired(true);
         this.currencyField.add(new OnChangeAjaxBehavior());
         this.form.add(this.currencyField);
@@ -158,6 +160,7 @@ public class SavingDepositChargeCreatePage extends Page {
         this.chargeTimeProvider = new ChargeTimeProvider();
         this.chargeTimeProvider.setValues(ChargeTime.SpecifiedDueDate, ChargeTime.SavingsActivation, ChargeTime.WithdrawalFee, ChargeTime.AnnualFee, ChargeTime.MonthlyFee, ChargeTime.WeeklyFee, ChargeTime.OverdraftFee, ChargeTime.SavingNoActivityFee);
         this.chargeTimeField = new Select2SingleChoice<>("chargeTimeField", 0, new PropertyModel<>(this, "chargeTimeValue"), this.chargeTimeProvider);
+        this.chargeTimeField.setLabel(Model.of("Charge time type"));
         this.chargeTimeField.setRequired(true);
         this.chargeTimeField.add(new OnChangeAjaxBehavior(this::chargeTimeFieldUpdate));
         this.form.add(this.chargeTimeField);
@@ -167,6 +170,7 @@ public class SavingDepositChargeCreatePage extends Page {
         this.chargeCalculationProvider = new ChargeCalculationProvider();
         this.chargeCalculationProvider.setValues(ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount);
         this.chargeCalculationField = new Select2SingleChoice<>("chargeCalculationField", 0, new PropertyModel<>(this, "chargeCalculationValue"), this.chargeCalculationProvider);
+        this.chargeCalculationField.setLabel(Model.of("Charge calculation"));
         this.chargeCalculationField.setRequired(true);
         this.chargeCalculationField.add(new OnChangeAjaxBehavior());
         this.form.add(this.chargeCalculationField);
@@ -180,6 +184,7 @@ public class SavingDepositChargeCreatePage extends Page {
         this.dueDateBlock.add(this.dueDateContainer);
         this.dueDateField = new DayMonthTextField("dueDateField", new PropertyModel<>(this, "dueDateValue"));
         this.dueDateField.setRequired(true);
+        this.dueDateField.setLabel(Model.of("Due date"));
         this.dueDateField.add(new OnChangeAjaxBehavior());
         this.dueDateContainer.add(this.dueDateField);
         this.dueDateFeedback = new TextFeedbackPanel("dueDateFeedback", this.dueDateField);
@@ -191,6 +196,7 @@ public class SavingDepositChargeCreatePage extends Page {
         this.repeatEveryContainer = new WebMarkupContainer("repeatEveryContainer");
         this.repeatEveryBlock.add(this.repeatEveryContainer);
         this.repeatEveryField = new TextField<>("repeatEveryField", new PropertyModel<>(this, "repeatEveryValue"));
+        this.repeatEveryField.setLabel(Model.of("Repeats every"));
         this.repeatEveryField.setRequired(true);
         this.repeatEveryField.add(new OnChangeAjaxBehavior());
         this.repeatEveryContainer.add(this.repeatEveryField);
@@ -199,6 +205,7 @@ public class SavingDepositChargeCreatePage extends Page {
 
         this.amountField = new TextField<>("amountField", new PropertyModel<>(this, "amountValue"));
         this.amountField.setRequired(true);
+        this.amountField.setLabel(Model.of("Amount"));
         this.amountField.add(new OnChangeAjaxBehavior());
         this.form.add(this.amountField);
         this.amountFeedback = new TextFeedbackPanel("amountFeedback", this.amountField);
@@ -220,6 +227,7 @@ public class SavingDepositChargeCreatePage extends Page {
 
         this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
         this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
+        this.taxGroupField.setLabel(Model.of("Tax Group"));
         this.taxGroupField.add(new OnChangeAjaxBehavior());
         this.form.add(this.taxGroupField);
         this.taxGroupFeedback = new TextFeedbackPanel("taxGroupFeedback", this.taxGroupField);

@@ -164,7 +164,6 @@ public class ShareChargeCreatePage extends Page {
 
         this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
         this.activeField.setRequired(true);
-        this.activeField.setLabel(Model.of("Active"));
         this.form.add(this.activeField);
         this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
         this.form.add(this.activeFeedback);
