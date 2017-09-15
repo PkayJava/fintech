@@ -223,6 +223,7 @@ public class LoanChargeModifyPage extends Page {
         this.form.add(this.closeLink);
 
         this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setLabel(Model.of("Name"));
         this.nameField.setRequired(true);
         this.nameField.add(new OnChangeAjaxBehavior());
         this.form.add(this.nameField);
@@ -231,6 +232,7 @@ public class LoanChargeModifyPage extends Page {
 
         this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
         this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
+        this.currencyField.setLabel(Model.of("Currency"));
         this.currencyField.add(new OnChangeAjaxBehavior());
         this.currencyField.setRequired(true);
         this.form.add(this.currencyField);
@@ -240,8 +242,9 @@ public class LoanChargeModifyPage extends Page {
         this.chargeTimeProvider = new ChargeTimeProvider();
         this.chargeTimeProvider.setValues(ChargeTime.Disbursement, ChargeTime.SpecifiedDueDate, ChargeTime.InstallmentFee, ChargeTime.OverdueFees, ChargeTime.TrancheDisbursement);
         this.chargeTimeField = new Select2SingleChoice<>("chargeTimeField", 0, new PropertyModel<>(this, "chargeTimeValue"), this.chargeTimeProvider);
+        this.chargeTimeField.setLabel(Model.of("Charge time type"));
         this.chargeTimeField.setRequired(true);
-        this.chargeTimeField.add(new OnChangeAjaxBehavior(this::chargeTimeFieldUpdate, this::chargeTimeFieldError));
+        this.chargeTimeField.add(new OnChangeAjaxBehavior(this::chargeTimeFieldUpdate));
         this.form.add(this.chargeTimeField);
         this.chargeTimeFeedback = new TextFeedbackPanel("chargeTimeFeedback", this.chargeTimeField);
         this.form.add(this.chargeTimeFeedback);
@@ -253,15 +256,17 @@ public class LoanChargeModifyPage extends Page {
         this.chargeCalculationBlock.add(this.chargeCalculationContainer);
         this.chargeCalculationProvider = new ChargeCalculationProvider();
         this.chargeCalculationField = new Select2SingleChoice<>("chargeCalculationField", 0, new PropertyModel<>(this, "chargeCalculationValue"), this.chargeCalculationProvider);
+        this.chargeCalculationField.setLabel(Model.of("Charge calculation"));
         this.chargeCalculationField.setRequired(true);
-        this.chargeCalculationField.add(new OnChangeAjaxBehavior(this::chargeCalculationFieldUpdate, this::chargeCalculationFieldError));
+        this.chargeCalculationField.add(new OnChangeAjaxBehavior());
         this.chargeCalculationContainer.add(this.chargeCalculationField);
         this.chargeCalculationFeedback = new TextFeedbackPanel("chargeCalculationFeedback", this.chargeCalculationField);
         this.chargeCalculationContainer.add(this.chargeCalculationFeedback);
 
         this.chargePaymentProvider = new ChargePaymentProvider();
         this.chargePaymentField = new Select2SingleChoice<>("chargePaymentField", 0, new PropertyModel<>(this, "chargePaymentValue"), this.chargePaymentProvider);
-        this.chargePaymentField.add(new OnChangeAjaxBehavior(this::chargePaymentFieldUpdate, this::chargePaymentFieldError));
+        this.chargePaymentField.setLabel(Model.of("Charge payment by"));
+        this.chargePaymentField.add(new OnChangeAjaxBehavior());
         this.chargePaymentField.setRequired(true);
         this.form.add(this.chargePaymentField);
         this.chargePaymentFeedback = new TextFeedbackPanel("chargePaymentFeedback", this.chargePaymentField);
@@ -273,11 +278,13 @@ public class LoanChargeModifyPage extends Page {
         this.feeFrequencyContainer = new WebMarkupContainer("feeFrequencyContainer");
         this.feeFrequencyBlock.add(this.feeFrequencyContainer);
         this.feeFrequencyField = new CheckBox("feeFrequencyField", new PropertyModel<>(this, "feeFrequencyValue"));
+        this.feeFrequencyField.add(new OnChangeAjaxBehavior(this::feeFrequencyUpdate));
         this.feeFrequencyContainer.add(this.feeFrequencyField);
         this.feeFrequencyFeedback = new TextFeedbackPanel("feeFrequencyFeedback", this.feeFrequencyField);
         this.feeFrequencyContainer.add(this.feeFrequencyFeedback);
 
         this.amountField = new TextField<>("amountField", new PropertyModel<>(this, "amountValue"));
+        this.amountField.setLabel(Model.of("Amount"));
         this.amountField.setRequired(true);
         this.amountField.add(new OnChangeAjaxBehavior());
         this.form.add(this.amountField);
@@ -300,6 +307,7 @@ public class LoanChargeModifyPage extends Page {
 
         this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
         this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
+        this.taxGroupField.setLabel(Model.of("Tax Group"));
         this.taxGroupField.add(new OnChangeAjaxBehavior());
         this.form.add(this.taxGroupField);
         this.taxGroupFeedback = new TextFeedbackPanel("taxGroupFeedback", this.taxGroupField);
@@ -312,6 +320,7 @@ public class LoanChargeModifyPage extends Page {
         this.chargeFrequencyBlock.add(this.chargeFrequencyContainer);
         this.chargeFrequencyProvider = new ChargeFrequencyProvider();
         this.chargeFrequencyField = new Select2SingleChoice<>("chargeFrequencyField", 0, new PropertyModel<>(this, "chargeFrequencyValue"), this.chargeFrequencyProvider);
+        this.chargeFrequencyField.setLabel(Model.of("Charge Frequency"));
         this.chargeFrequencyField.add(new OnChangeAjaxBehavior());
         this.chargeFrequencyContainer.add(this.chargeFrequencyField);
         this.chargeFrequencyFeedback = new TextFeedbackPanel("chargeFrequencyFeedback", this.chargeFrequencyField);
@@ -323,47 +332,47 @@ public class LoanChargeModifyPage extends Page {
         this.frequencyIntervalContainer = new WebMarkupContainer("frequencyIntervalContainer");
         this.frequencyIntervalBlock.add(this.frequencyIntervalContainer);
         this.frequencyIntervalField = new TextField<>("frequencyIntervalField", new PropertyModel<>(this, "frequencyIntervalValue"));
+        this.frequencyIntervalField.setLabel(Model.of("Frequency Interval"));
         this.frequencyIntervalField.add(new OnChangeAjaxBehavior());
         this.frequencyIntervalContainer.add(this.frequencyIntervalField);
         this.frequencyIntervalFeedback = new TextFeedbackPanel("frequencyIntervalFeedback", this.frequencyIntervalField);
         this.frequencyIntervalContainer.add(this.frequencyIntervalFeedback);
 
-        if (this.chargeTimeValue != null) {
-            ChargeTime chargeTime = ChargeTime.valueOf(this.chargeTimeValue.getId());
+        initDefault();
+    }
 
-            if (chargeTime == ChargeTime.TrancheDisbursement) {
-                this.chargeCalculationProvider.setValues(ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount, ChargeCalculation.DisbursementAmount);
-            } else {
-                this.chargeCalculationProvider.setValues(ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount, ChargeCalculation.LoanAmountInterest, ChargeCalculation.Interest);
-            }
+    protected void initDefault() {
+        chargeTimeFieldUpdate(null);
+    }
+
+    protected boolean feeFrequencyUpdate(AjaxRequestTarget target) {
+        boolean visible = this.feeFrequencyValue == null ? false : this.feeFrequencyValue;
+        this.chargeFrequencyContainer.setVisible(visible);
+        this.frequencyIntervalContainer.setVisible(visible);
+
+        ChargeTime chargeTime = this.chargeTimeValue == null ? null : ChargeTime.valueOf(this.chargeTimeValue.getId());
+
+        boolean required = visible && chargeTime == ChargeTime.OverdueFees;
+
+        this.chargeFrequencyField.setRequired(required);
+        this.frequencyIntervalField.setRequired(required);
+
+        if (target != null) {
+            target.add(this.chargeFrequencyBlock);
+            target.add(this.frequencyIntervalBlock);
         }
-    }
-
-    protected boolean chargePaymentFieldUpdate(AjaxRequestTarget target) {
-        target.add(this.form);
-        return false;
-    }
-
-    protected boolean chargePaymentFieldError(AjaxRequestTarget target, RuntimeException error) {
-        target.add(this.form);
-        return false;
-    }
-
-    protected boolean chargeCalculationFieldUpdate(AjaxRequestTarget target) {
-        target.add(this.form);
-        return false;
-    }
-
-    protected boolean chargeCalculationFieldError(AjaxRequestTarget target, RuntimeException error) {
-        target.add(this.form);
         return false;
     }
 
     protected boolean chargeTimeFieldUpdate(AjaxRequestTarget target) {
-        this.chargeFrequencyValue = null;
-        this.frequencyIntervalValue = null;
-        this.chargeCalculationValue = null;
-        ChargeTime chargeTime = ChargeTime.valueOf(this.chargeTimeValue.getId());
+
+        if (target != null) {
+            this.chargeFrequencyValue = null;
+            this.frequencyIntervalValue = null;
+            this.chargeCalculationValue = null;
+        }
+
+        ChargeTime chargeTime = this.chargeTimeValue == null ? null : ChargeTime.valueOf(this.chargeTimeValue.getId());
         if (chargeTime == ChargeTime.Disbursement) {
             this.chargeCalculationProvider.setValues(ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount, ChargeCalculation.LoanAmountInterest, ChargeCalculation.Interest);
         } else if (chargeTime == ChargeTime.SpecifiedDueDate) {
@@ -374,21 +383,23 @@ public class LoanChargeModifyPage extends Page {
             this.chargeCalculationProvider.setValues(ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount, ChargeCalculation.LoanAmountInterest, ChargeCalculation.Interest);
         } else if (chargeTime == ChargeTime.TrancheDisbursement) {
             this.chargeCalculationProvider.setValues(ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount, ChargeCalculation.DisbursementAmount);
-        }
-
-        if (chargeTime == ChargeTime.OverdueFees) {
-            this.chargeFrequencyField.setRequired(true);
-            this.frequencyIntervalField.setRequired(true);
         } else {
-            this.chargeFrequencyField.setRequired(false);
-            this.frequencyIntervalField.setRequired(false);
+            this.chargeCalculationProvider.setValues();
         }
-        target.add(this.form);
-        return false;
-    }
 
-    protected boolean chargeTimeFieldError(AjaxRequestTarget target, RuntimeException error) {
-        target.add(this.form);
+        this.chargeCalculationContainer.setVisible(chargeTime != null);
+        this.chargeCalculationField.setRequired(chargeTime != null);
+
+        boolean visible = chargeTime == ChargeTime.OverdueFees;
+        this.feeFrequencyContainer.setVisible(visible);
+
+        if (target != null) {
+            target.add(this.chargeCalculationBlock);
+            target.add(this.feeFrequencyBlock);
+        }
+
+        feeFrequencyUpdate(target);
+
         return false;
     }
 

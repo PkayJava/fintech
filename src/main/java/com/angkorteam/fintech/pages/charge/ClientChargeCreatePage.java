@@ -1,29 +1,7 @@
 package com.angkorteam.fintech.pages.charge;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.*;
-import com.angkorteam.fintech.dto.request.ChargeBuilder;
-import com.angkorteam.fintech.helper.ChargeHelper;
-import com.angkorteam.fintech.pages.ProductDashboardPage;
-import com.angkorteam.fintech.provider.ChargeCalculationProvider;
-import com.angkorteam.fintech.provider.ChargePaymentProvider;
-import com.angkorteam.fintech.provider.ChargeTimeProvider;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
-
 import java.util.List;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
@@ -31,6 +9,33 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.AccountType;
+import com.angkorteam.fintech.dto.AccountUsage;
+import com.angkorteam.fintech.dto.ChargeCalculation;
+import com.angkorteam.fintech.dto.ChargePayment;
+import com.angkorteam.fintech.dto.ChargeTime;
+import com.angkorteam.fintech.dto.ChargeType;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.request.ChargeBuilder;
+import com.angkorteam.fintech.helper.ChargeHelper;
+import com.angkorteam.fintech.pages.ProductDashboardPage;
+import com.angkorteam.fintech.provider.ChargeCalculationProvider;
+import com.angkorteam.fintech.provider.ChargePaymentProvider;
+import com.angkorteam.fintech.provider.ChargeTimeProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ClientChargeCreatePage extends Page {
@@ -84,7 +89,7 @@ public class ClientChargeCreatePage extends Page {
     private Option taxGroupValue;
     private Select2SingleChoice<Option> taxGroupField;
     private TextFeedbackPanel taxGroupFeedback;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -140,10 +145,8 @@ public class ClientChargeCreatePage extends Page {
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
         this.form.add(this.nameFeedback);
 
-        this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name",
-                "concat(name,' [', code,']')");
-        this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"),
-                this.currencyProvider);
+        this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
         this.currencyField.add(new OnChangeAjaxBehavior());
         this.currencyField.setRequired(true);
         this.form.add(this.currencyField);
@@ -152,31 +155,25 @@ public class ClientChargeCreatePage extends Page {
 
         this.chargeTimeProvider = new ChargeTimeProvider();
         this.chargeTimeProvider.setValues(ChargeTime.SpecifiedDueDate);
-        this.chargeTimeField = new Select2SingleChoice<>("chargeTimeField", 0,
-                new PropertyModel<>(this, "chargeTimeValue"), this.chargeTimeProvider);
+        this.chargeTimeField = new Select2SingleChoice<>("chargeTimeField", 0, new PropertyModel<>(this, "chargeTimeValue"), this.chargeTimeProvider);
         this.chargeTimeField.setRequired(true);
-        this.chargeTimeField.add(new OnChangeAjaxBehavior(this::chargeTimeFieldUpdate, this::chargeTimeFieldError));
+        this.chargeTimeField.add(new OnChangeAjaxBehavior());
         this.form.add(this.chargeTimeField);
         this.chargeTimeFeedback = new TextFeedbackPanel("chargeTimeFeedback", this.chargeTimeField);
         this.form.add(this.chargeTimeFeedback);
 
         this.chargeCalculationProvider = new ChargeCalculationProvider();
         this.chargeCalculationProvider.setValues(ChargeCalculation.Flat);
-        this.chargeCalculationField = new Select2SingleChoice<>("chargeCalculationField", 0,
-                new PropertyModel<>(this, "chargeCalculationValue"), this.chargeCalculationProvider);
+        this.chargeCalculationField = new Select2SingleChoice<>("chargeCalculationField", 0, new PropertyModel<>(this, "chargeCalculationValue"), this.chargeCalculationProvider);
         this.chargeCalculationField.setRequired(true);
-        this.chargeCalculationField
-                .add(new OnChangeAjaxBehavior(this::chargeCalculationFieldUpdate, this::chargeCalculationFieldError));
+        this.chargeCalculationField.add(new OnChangeAjaxBehavior());
         this.form.add(this.chargeCalculationField);
-        this.chargeCalculationFeedback = new TextFeedbackPanel("chargeCalculationFeedback",
-                this.chargeCalculationField);
+        this.chargeCalculationFeedback = new TextFeedbackPanel("chargeCalculationFeedback", this.chargeCalculationField);
         this.form.add(this.chargeCalculationFeedback);
 
         this.chargePaymentProvider = new ChargePaymentProvider();
-        this.chargePaymentField = new Select2SingleChoice<>("chargePaymentField", 0,
-                new PropertyModel<>(this, "chargePaymentValue"), this.chargePaymentProvider);
-        this.chargePaymentField
-                .add(new OnChangeAjaxBehavior(this::chargePaymentFieldUpdate, this::chargePaymentFieldError));
+        this.chargePaymentField = new Select2SingleChoice<>("chargePaymentField", 0, new PropertyModel<>(this, "chargePaymentValue"), this.chargePaymentProvider);
+        this.chargePaymentField.add(new OnChangeAjaxBehavior());
         this.chargePaymentField.setRequired(true);
         this.form.add(this.chargePaymentField);
         this.chargePaymentFeedback = new TextFeedbackPanel("chargePaymentFeedback", this.chargePaymentField);
@@ -204,54 +201,21 @@ public class ClientChargeCreatePage extends Page {
         this.form.add(this.penaltyFeedback);
 
         this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
-        this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"),
-                this.taxGroupProvider);
+        this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
         this.taxGroupField.add(new OnChangeAjaxBehavior());
         this.form.add(this.taxGroupField);
         this.taxGroupFeedback = new TextFeedbackPanel("taxGroupFeedback", this.taxGroupField);
         this.form.add(this.taxGroupFeedback);
 
         this.incomeChargeProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.incomeChargeProvider.applyWhere("classification_enum", "classification_enum in ("
-                + AccountType.Liability.getLiteral() + ", " + AccountType.Income.getLiteral() + ")");
+        this.incomeChargeProvider.applyWhere("classification_enum", "classification_enum in (" + AccountType.Liability.getLiteral() + ", " + AccountType.Income.getLiteral() + ")");
         this.incomeChargeProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.incomeChargeField = new Select2SingleChoice<>("incomeChargeField", 0,
-                new PropertyModel<>(this, "incomeChargeValue"), this.incomeChargeProvider);
+        this.incomeChargeField = new Select2SingleChoice<>("incomeChargeField", 0, new PropertyModel<>(this, "incomeChargeValue"), this.incomeChargeProvider);
         this.incomeChargeField.add(new OnChangeAjaxBehavior());
         this.form.add(this.incomeChargeField);
         this.incomeChargeFeedback = new TextFeedbackPanel("incomeChargeFeedback", this.incomeChargeField);
         this.form.add(this.incomeChargeFeedback);
 
-    }
-
-    protected boolean chargePaymentFieldUpdate(AjaxRequestTarget target) {
-        target.add(this.form);
-        return false;
-    }
-
-    protected boolean chargePaymentFieldError(AjaxRequestTarget target, RuntimeException error) {
-        target.add(this.form);
-        return false;
-    }
-
-    protected boolean chargeCalculationFieldUpdate(AjaxRequestTarget target) {
-        target.add(this.form);
-        return false;
-    }
-
-    protected boolean chargeCalculationFieldError(AjaxRequestTarget target, RuntimeException error) {
-        target.add(this.form);
-        return false;
-    }
-
-    protected boolean chargeTimeFieldUpdate(AjaxRequestTarget target) {
-        target.add(this.form);
-        return false;
-    }
-
-    protected boolean chargeTimeFieldError(AjaxRequestTarget target, RuntimeException error) {
-        target.add(this.form);
-        return false;
     }
 
     protected void saveButtonSubmit(Button button) {

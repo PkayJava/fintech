@@ -36,7 +36,7 @@ public class ChargeBuilder implements Serializable {
     private boolean active;
     private boolean hasActive;
 
-    private double amount;
+    private Double amount;
     private boolean hasAmount;
 
     private int feeInterval;
@@ -200,7 +200,7 @@ public class ChargeBuilder implements Serializable {
         return this;
     }
 
-    public ChargeBuilder withAmount(double amount) {
+    public ChargeBuilder withAmount(Double amount) {
         this.amount = amount;
         this.hasAmount = true;
         return this;

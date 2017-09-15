@@ -20,7 +20,7 @@ import com.angkorteam.fintech.junit.JUnitWicketTester;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
-public class LoanChargeCreatePageTest {
+public class ClientChargeCreatePageTest {
 
     private JUnitWicketTester wicket;
 
@@ -32,7 +32,7 @@ public class LoanChargeCreatePageTest {
     @Test
     public void chargeTimeFieldUpdate() {
         this.wicket.login();
-        LoanChargeCreatePage page = this.wicket.startPage(LoanChargeCreatePage.class);
+        ClientChargeCreatePage page = this.wicket.startPage(ClientChargeCreatePage.class);
         Assert.assertNull(new PropertyModel<>(page, "chargeTimeValue").getObject());
         FormTester form = this.wicket.newFormTester("form");
         form.setValue("chargeTimeField", ChargeTime.OverdueFees.name());
