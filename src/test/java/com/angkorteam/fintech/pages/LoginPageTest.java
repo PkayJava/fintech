@@ -1,12 +1,12 @@
 package com.angkorteam.fintech.pages;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.util.tester.FormTester;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.angkorteam.fintech.junit.JUnit;
+import com.angkorteam.fintech.junit.JUnitFormTester;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 
 public class LoginPageTest {
@@ -22,7 +22,7 @@ public class LoginPageTest {
     public void identifierField() {
         this.wicket.startPage(LoginPage.class);
 
-        FormTester formTester = this.wicket.newFormTester("form");
+        JUnitFormTester formTester = this.wicket.newFormTester("form");
         Component component = formTester.getForm().get("identifierField");
 
         Throwable throwable = null;

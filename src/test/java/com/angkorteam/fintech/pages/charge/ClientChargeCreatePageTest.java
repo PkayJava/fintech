@@ -2,7 +2,6 @@ package com.angkorteam.fintech.pages.charge;
 
 import java.util.Map;
 
-import org.apache.wicket.util.tester.FormTester;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +10,7 @@ import com.angkorteam.fintech.dto.ChargeCalculation;
 import com.angkorteam.fintech.dto.ChargePayment;
 import com.angkorteam.fintech.dto.ChargeTime;
 import com.angkorteam.fintech.junit.JUnit;
+import com.angkorteam.fintech.junit.JUnitFormTester;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 import com.angkorteam.framework.spring.JdbcTemplate;
 
@@ -29,19 +29,19 @@ public class ClientChargeCreatePageTest {
 
         this.wicket.startPage(ClientChargeCreatePage.class);
 
-        FormTester form = this.wicket.newFormTester("form");
+        JUnitFormTester form = this.wicket.newFormTester("form");
 
-        String nameValue = "CLIENT_CHARGE_" + this.wicket.getGenerator().generate(20);
+        String nameValue = "CLIENT_CHARGE_" + this.wicket.getStringGenerator().generate(20);
 
         form.setValue("nameField", nameValue);
 
         form.setValue("currencyField", "USD");
 
-        form.setValue("chargeTimeField", ChargeTime.SpecifiedDueDate.name());
+        form.setValue("chargeTimeField", ChargeTime.SpecifiedDueDate);
 
-        form.setValue("chargeCalculationField", ChargeCalculation.Flat.name());
+        form.setValue("chargeCalculationField", ChargeCalculation.Flat);
 
-        form.setValue("chargePaymentField", ChargePayment.RegularMode.name());
+        form.setValue("chargePaymentField", ChargePayment.RegularMode);
 
         form.setValue("amountField", "100");
 
@@ -58,19 +58,19 @@ public class ClientChargeCreatePageTest {
 
         this.wicket.startPage(ClientChargeCreatePage.class);
 
-        FormTester form = this.wicket.newFormTester("form");
+        JUnitFormTester form = this.wicket.newFormTester("form");
 
-        String nameValue = "CLIENT_CHARGE_" + this.wicket.getGenerator().generate(20);
+        String nameValue = "CLIENT_CHARGE_" + this.wicket.getStringGenerator().generate(20);
 
         form.setValue("nameField", nameValue);
 
         form.setValue("currencyField", "USD");
 
-        form.setValue("chargeTimeField", ChargeTime.SpecifiedDueDate.name());
+        form.setValue("chargeTimeField", ChargeTime.SpecifiedDueDate);
 
-        form.setValue("chargeCalculationField", ChargeCalculation.Flat.name());
+        form.setValue("chargeCalculationField", ChargeCalculation.Flat);
 
-        form.setValue("chargePaymentField", ChargePayment.RegularMode.name());
+        form.setValue("chargePaymentField", ChargePayment.RegularMode);
 
         form.setValue("amountField", "100");
 

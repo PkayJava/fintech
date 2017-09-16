@@ -2,7 +2,6 @@ package com.angkorteam.fintech.pages.charge;
 
 import java.util.Map;
 
-import org.apache.wicket.util.tester.FormTester;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +9,7 @@ import org.junit.Test;
 import com.angkorteam.fintech.dto.ChargeCalculation;
 import com.angkorteam.fintech.dto.ChargeTime;
 import com.angkorteam.fintech.junit.JUnit;
+import com.angkorteam.fintech.junit.JUnitFormTester;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 import com.angkorteam.framework.spring.JdbcTemplate;
 
@@ -28,13 +28,13 @@ public class ShareChargeCreatePageTest {
 
         this.wicket.startPage(ShareChargeCreatePage.class);
 
-        FormTester form = this.wicket.newFormTester("form");
+        JUnitFormTester form = this.wicket.newFormTester("form");
 
-        String nameValue = "SHARE_CHARGE_" + this.wicket.getGenerator().generate(20);
+        String nameValue = "SHARE_CHARGE_" + this.wicket.getStringGenerator().generate(20);
 
-        form.setValue("chargeTimeField", ChargeTime.ShareRedeem.name());
+        form.setValue("chargeTimeField", ChargeTime.ShareRedeem);
 
-        form.setValue("chargeCalculationField", ChargeCalculation.Flat.name());
+        form.setValue("chargeCalculationField", ChargeCalculation.Flat);
 
         form.setValue("nameField", nameValue);
 
@@ -55,13 +55,13 @@ public class ShareChargeCreatePageTest {
 
         this.wicket.startPage(ShareChargeCreatePage.class);
 
-        FormTester form = this.wicket.newFormTester("form");
+        JUnitFormTester form = this.wicket.newFormTester("form");
 
-        String nameValue = "SHARE_CHARGE_" + this.wicket.getGenerator().generate(20);
+        String nameValue = "SHARE_CHARGE_" + this.wicket.getStringGenerator().generate(20);
 
-        form.setValue("chargeTimeField", ChargeTime.SharePurchase.name());
+        form.setValue("chargeTimeField", ChargeTime.SharePurchase);
 
-        form.setValue("chargeCalculationField", ChargeCalculation.ApprovedAmount.name());
+        form.setValue("chargeCalculationField", ChargeCalculation.ApprovedAmount);
 
         form.setValue("nameField", nameValue);
 

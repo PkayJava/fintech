@@ -6,10 +6,10 @@ package com.angkorteam.fintech.dto;
 public enum AccountType {
 
     Asset("1", "Asset", "AssetAccountTags"),
-    Liability("2", "Liability", "EquityAccountTags"),
-    Equity("3", "Equity", "ExpenseAccountTags"),
+    Liability("2", "Liability", "LiabilityAccountTags"),
+    Equity("3", "Equity", "EquityAccountTags"),
     Income("4", "Income", "IncomeAccountTags"),
-    Expense("5", "Expense", "LiabilityAccountTags");
+    Expense("5", "Expense", "ExpenseAccountTags");
 
     private String literal;
 

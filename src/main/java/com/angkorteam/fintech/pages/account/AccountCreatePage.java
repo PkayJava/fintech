@@ -79,7 +79,7 @@ public class AccountCreatePage extends Page {
     private String descriptionValue;
     private TextArea<String> descriptionField;
     private TextFeedbackPanel descriptionFeedback;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -123,10 +123,10 @@ public class AccountCreatePage extends Page {
         this.form.add(this.closeLink);
 
         this.accountTypeProvider = new AccountTypeProvider();
-        this.accountTypeField = new Select2SingleChoice<>("accountTypeField", 0,
-                new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
+        this.accountTypeField = new Select2SingleChoice<>("accountTypeField", 0, new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
+        this.accountTypeField.setLabel(Model.of("Account Type"));
         this.accountTypeField.setRequired(true);
-        this.accountTypeField.add(new OnChangeAjaxBehavior(this::accountTypeFieldUpdate, this::accountTypeFieldError));
+        this.accountTypeField.add(new OnChangeAjaxBehavior(this::accountTypeFieldUpdate));
         this.form.add(this.accountTypeField);
         this.accountTypeFeedback = new TextFeedbackPanel("accountTypeFeedback", this.accountTypeField);
         this.form.add(this.accountTypeFeedback);
@@ -134,36 +134,38 @@ public class AccountCreatePage extends Page {
         this.parentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.parentProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Header.getLiteral());
         this.parentProvider.setDisabled(true);
-        this.parentField = new Select2SingleChoice<>("parentField", 0, new PropertyModel<>(this, "parentValue"),
-                this.parentProvider);
+        this.parentField = new Select2SingleChoice<>("parentField", 0, new PropertyModel<>(this, "parentValue"), this.parentProvider);
+        this.parentField.setLabel(Model.of("Parent Account"));
         this.form.add(this.parentField);
         this.parentFeedback = new TextFeedbackPanel("parentFeedback", this.parentField);
         this.form.add(this.parentFeedback);
 
         this.glCodeField = new TextField<>("glCodeField", new PropertyModel<>(this, "glCodeValue"));
         this.glCodeField.setRequired(true);
+        this.glCodeField.setLabel(Model.of("GL Code"));
         this.form.add(this.glCodeField);
         this.glCodeFeedback = new TextFeedbackPanel("glCodeFeedback", this.glCodeField);
         this.form.add(this.glCodeFeedback);
 
         this.accountNameField = new TextField<>("accountNameField", new PropertyModel<>(this, "accountNameValue"));
         this.accountNameField.setRequired(true);
+        this.accountNameField.setLabel(Model.of("Account Name"));
         this.form.add(this.accountNameField);
         this.accountNameFeedback = new TextFeedbackPanel("accountNameFeedback", this.accountNameField);
         this.form.add(this.accountNameFeedback);
 
         this.accountUsageProvider = new AccountUsageProvider();
-        this.accountUsageField = new Select2SingleChoice<>("accountUsageField", 0,
-                new PropertyModel<>(this, "accountUsageValue"), this.accountUsageProvider);
+        this.accountUsageField = new Select2SingleChoice<>("accountUsageField", 0, new PropertyModel<>(this, "accountUsageValue"), this.accountUsageProvider);
         this.accountUsageField.setRequired(true);
+        this.accountUsageField.setLabel(Model.of("Account Usage"));
         this.form.add(this.accountUsageField);
         this.accountUsageFeedback = new TextFeedbackPanel("accountUsageFeedback", this.accountUsageField);
         this.form.add(this.accountUsageFeedback);
 
         this.tagProvider = new SingleChoiceProvider("m_code_value", "id", "code_value");
         this.tagProvider.setDisabled(true);
-        this.tagField = new Select2SingleChoice<>("tagField", 0, new PropertyModel<>(this, "tagValue"),
-                this.tagProvider);
+        this.tagField = new Select2SingleChoice<>("tagField", 0, new PropertyModel<>(this, "tagValue"), this.tagProvider);
+        this.tagField.setLabel(Model.of("Tag"));
         this.tagField.setRequired(true);
         this.form.add(this.tagField);
         this.tagFeedback = new TextFeedbackPanel("tagFeedback", this.tagField);
@@ -177,6 +179,7 @@ public class AccountCreatePage extends Page {
 
         this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
         this.descriptionField.setRequired(true);
+        this.descriptionField.setLabel(Model.of("Description"));
         this.form.add(this.descriptionField);
         this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
         this.form.add(this.descriptionFeedback);
@@ -188,31 +191,17 @@ public class AccountCreatePage extends Page {
             this.parentValue = null;
             this.tagProvider.removeWhere("code");
         } else {
-            AccountType temp = AccountType.valueOf(this.accountTypeValue.getId());
+            AccountType accountType = AccountType.valueOf(this.accountTypeValue.getId());
             this.tagValue = null;
             this.parentValue = null;
-            this.tagProvider.applyWhere("code",
-                    "code_id in (select id from m_code where code_name = '" + temp.getTag() + "')");
+            this.tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + accountType.getTag() + "')");
             this.tagProvider.setDisabled(false);
             this.parentProvider.setDisabled(false);
-            this.parentProvider.applyWhere("classification_enum",
-                    "classification_enum = " + this.accountTypeValue.getId());
+            this.parentProvider.applyWhere("classification_enum", "classification_enum = " + accountType.getLiteral());
         }
-        target.add(this.form);
-        return false;
-    }
-
-    protected boolean accountTypeFieldError(AjaxRequestTarget target, RuntimeException error) {
-        if (error != null) {
-            throw error;
+        if (target != null) {
+            target.add(this.form);
         }
-        this.tagValue = null;
-        this.parentValue = null;
-        this.tagProvider.removeWhere("code");
-        this.tagProvider.setDisabled(true);
-        this.parentProvider.removeWhere("classification_enum");
-        this.parentProvider.setDisabled(true);
-        target.add(this.form);
         return false;
     }
 

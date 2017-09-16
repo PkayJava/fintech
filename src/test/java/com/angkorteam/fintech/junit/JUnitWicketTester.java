@@ -9,6 +9,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.core.request.handler.BookmarkableListenerRequestHandler;
 import org.apache.wicket.core.request.handler.ListenerRequestHandler;
 import org.apache.wicket.core.request.handler.PageAndComponentProvider;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.mapper.parameter.INamedParameters;
@@ -32,81 +33,90 @@ public class JUnitWicketTester extends WicketTester {
     private RandomStringGenerator generator;
 
     public JUnitWicketTester() {
-	super(JUnit.getApplication(), JUnit.getServletContext());
-	this.generator = new RandomStringGenerator.Builder().withinRange('0', 'z')
-		.filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS).build();
+        super(JUnit.getApplication(), JUnit.getServletContext());
+        this.generator = new RandomStringGenerator.Builder().withinRange('0', 'z').filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS).build();
     }
 
     @Override
     public Session getSession() {
-	return (Session) super.getSession();
+        return (Session) super.getSession();
     }
 
     @Override
     public Application getApplication() {
-	return (Application) super.getApplication();
+        return (Application) super.getApplication();
     }
 
     public void login() {
-	this.startPage(LoginPage.class);
+        this.startPage(LoginPage.class);
 
-	FormTester form = this.newFormTester("form");
+        FormTester form = this.newFormTester("form");
 
-	form.setValue("identifierField", Constants.AID);
-	form.setValue("loginField", Constants.UID);
-	form.setValue("passwordField", Constants.PWD);
-	form.submit("loginButton");
+        form.setValue("identifierField", Constants.AID);
+        form.setValue("loginField", Constants.UID);
+        form.setValue("passwordField", Constants.PWD);
+        form.submit("loginButton");
 
     }
 
     public void executeListener(final Component component, PageParameters parameters) {
-	Args.notNull(component, "component");
+        Args.notNull(component, "component");
 
-	// there are two ways to do this. RequestCycle could be forced to call
-	// the
-	// handler
-	// directly but constructing and parsing the URL increases the chance of
-	// triggering bugs
-	Page page = component.getPage();
-	PageAndComponentProvider pageAndComponentProvider = new PageAndComponentProvider(page, component);
+        // there are two ways to do this. RequestCycle could be forced to call
+        // the
+        // handler
+        // directly but constructing and parsing the URL increases the chance of
+        // triggering bugs
+        Page page = component.getPage();
+        PageAndComponentProvider pageAndComponentProvider = new PageAndComponentProvider(page, component);
 
-	IRequestHandler handler = null;
-	if (page.isPageStateless() || (page.isBookmarkable() && page.wasCreatedBookmarkable())) {
-	    handler = new BookmarkableListenerRequestHandler(pageAndComponentProvider);
-	} else {
-	    handler = new ListenerRequestHandler(pageAndComponentProvider);
-	}
+        IRequestHandler handler = null;
+        if (page.isPageStateless() || (page.isBookmarkable() && page.wasCreatedBookmarkable())) {
+            handler = new BookmarkableListenerRequestHandler(pageAndComponentProvider);
+        } else {
+            handler = new ListenerRequestHandler(pageAndComponentProvider);
+        }
 
-	Url url = urlFor(handler);
-	if (parameters != null) {
-	    for (NamedPair namedPair : parameters.getAllNamed()) {
-		if (namedPair.getType() == INamedParameters.Type.MANUAL) {
-		    url.addQueryParameter(namedPair.getKey(), namedPair.getValue());
-		}
-	    }
-	}
-	getRequest().setUrl(url);
+        Url url = urlFor(handler);
+        if (parameters != null) {
+            for (NamedPair namedPair : parameters.getAllNamed()) {
+                if (namedPair.getType() == INamedParameters.Type.MANUAL) {
+                    url.addQueryParameter(namedPair.getKey(), namedPair.getValue());
+                }
+            }
+        }
+        getRequest().setUrl(url);
 
-	// Process the request
-	processRequest(getRequest(), null);
+        // Process the request
+        processRequest(getRequest(), null);
     }
 
-    public RandomStringGenerator getGenerator() {
-	return generator;
+    public RandomStringGenerator getStringGenerator() {
+        return generator;
     }
 
     public JdbcTemplate getJdbcTemplate() {
-	MifosDataSourceManager manager = SpringBean.getBean(MifosDataSourceManager.class);
-	DataSource dataSource = manager.getDataSource(Constants.AID);
-	JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-	return jdbcTemplate;
+        MifosDataSourceManager manager = SpringBean.getBean(MifosDataSourceManager.class);
+        DataSource dataSource = manager.getDataSource(Constants.AID);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        return jdbcTemplate;
     }
 
     public JdbcNamed getJdbcNamed() {
-	MifosDataSourceManager manager = SpringBean.getBean(MifosDataSourceManager.class);
-	DataSource dataSource = manager.getDataSource(Constants.AID);
-	JdbcNamed jdbcTemplate = new JdbcNamed(dataSource);
-	return jdbcTemplate;
+        MifosDataSourceManager manager = SpringBean.getBean(MifosDataSourceManager.class);
+        DataSource dataSource = manager.getDataSource(Constants.AID);
+        JdbcNamed jdbcTemplate = new JdbcNamed(dataSource);
+        return jdbcTemplate;
+    }
+
+    @Override
+    public JUnitFormTester newFormTester(String path) {
+        return (JUnitFormTester) super.newFormTester(path);
+    }
+
+    @Override
+    public JUnitFormTester newFormTester(final String path, final boolean fillBlankString) {
+        return new JUnitFormTester(path, (Form<?>) getComponentFromLastRenderedPage(path), this, fillBlankString);
     }
 
 }

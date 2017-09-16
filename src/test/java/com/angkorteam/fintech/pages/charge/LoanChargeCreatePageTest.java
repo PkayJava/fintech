@@ -6,7 +6,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTesterHelper;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,6 +16,7 @@ import com.angkorteam.fintech.dto.ChargeFrequency;
 import com.angkorteam.fintech.dto.ChargePayment;
 import com.angkorteam.fintech.dto.ChargeTime;
 import com.angkorteam.fintech.junit.JUnit;
+import com.angkorteam.fintech.junit.JUnitFormTester;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -35,8 +35,8 @@ public class LoanChargeCreatePageTest {
         this.wicket.login();
         LoanChargeCreatePage page = this.wicket.startPage(LoanChargeCreatePage.class);
         Assert.assertNull(new PropertyModel<>(page, "chargeTimeValue").getObject());
-        FormTester form = this.wicket.newFormTester("form");
-        form.setValue("chargeTimeField", ChargeTime.OverdueFees.name());
+        JUnitFormTester form = this.wicket.newFormTester("form");
+        form.setValue("chargeTimeField", ChargeTime.OverdueFees);
         Component chargeTimeField = form.getForm().get("chargeTimeField");
         AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(chargeTimeField, OnChangeAjaxBehavior.EVENT_CHANGE);
         this.wicket.executeBehavior(behavior);
@@ -48,16 +48,15 @@ public class LoanChargeCreatePageTest {
     public void feeFrequencyUpdate() {
         this.wicket.login();
         LoanChargeCreatePage page = this.wicket.startPage(LoanChargeCreatePage.class);
+        JUnitFormTester form = this.wicket.newFormTester("form");
         {
-            FormTester form = this.wicket.newFormTester("form");
-            form.setValue("chargeTimeField", ChargeTime.OverdueFees.name());
+            form.setValue("chargeTimeField", ChargeTime.OverdueFees);
             Component chargeTimeField = form.getForm().get("chargeTimeField");
             AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(chargeTimeField, OnChangeAjaxBehavior.EVENT_CHANGE);
             this.wicket.executeBehavior(behavior);
         }
         {
             Assert.assertEquals(false, new PropertyModel<>(page, "feeFrequencyValue").getObject() == null ? false : new PropertyModel<>(page, "feeFrequencyValue").getObject());
-            FormTester form = this.wicket.newFormTester("form");
             form.setValue("feeFrequencyBlock:feeFrequencyContainer:feeFrequencyField", true);
             Component feeFrequencyField = form.getForm().get("feeFrequencyBlock:feeFrequencyContainer:feeFrequencyField");
             AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(feeFrequencyField, OnChangeAjaxBehavior.EVENT_CHANGE);
@@ -72,26 +71,26 @@ public class LoanChargeCreatePageTest {
 
         this.wicket.startPage(LoanChargeCreatePage.class);
 
-        FormTester form = this.wicket.newFormTester("form");
+        JUnitFormTester form = this.wicket.newFormTester("form");
 
-        String nameValue = "LOAN_CHARGE_" + this.wicket.getGenerator().generate(20);
+        String nameValue = "LOAN_CHARGE_" + this.wicket.getStringGenerator().generate(20);
 
         {
-            form.setValue("chargeTimeField", ChargeTime.InstallmentFee.name());
+            form.setValue("chargeTimeField", ChargeTime.InstallmentFee);
             Component chargeTimeField = form.getForm().get("chargeTimeField");
             AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(chargeTimeField, OnChangeAjaxBehavior.EVENT_CHANGE);
             this.wicket.executeBehavior(behavior);
         }
 
-        form.setValue("chargeTimeField", ChargeTime.InstallmentFee.name());
+        form.setValue("chargeTimeField", ChargeTime.InstallmentFee);
 
         form.setValue("nameField", nameValue);
 
         form.setValue("currencyField", "USD");
 
-        form.setValue("chargeCalculationBlock:chargeCalculationContainer:chargeCalculationField", ChargeCalculation.ApprovedAmount.name());
+        form.setValue("chargeCalculationBlock:chargeCalculationContainer:chargeCalculationField", ChargeCalculation.ApprovedAmount);
 
-        form.setValue("chargePaymentField", ChargePayment.RegularMode.name());
+        form.setValue("chargePaymentField", ChargePayment.RegularMode);
 
         form.setValue("amountField", "100");
 
@@ -108,12 +107,12 @@ public class LoanChargeCreatePageTest {
 
         this.wicket.startPage(LoanChargeCreatePage.class);
 
-        FormTester form = this.wicket.newFormTester("form");
+        JUnitFormTester form = this.wicket.newFormTester("form");
 
-        String nameValue = "LOAN_CHARGE_" + this.wicket.getGenerator().generate(20);
+        String nameValue = "LOAN_CHARGE_" + this.wicket.getStringGenerator().generate(20);
 
         {
-            form.setValue("chargeTimeField", ChargeTime.OverdueFees.name());
+            form.setValue("chargeTimeField", ChargeTime.OverdueFees);
             Component chargeTimeField = form.getForm().get("chargeTimeField");
             AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(chargeTimeField, OnChangeAjaxBehavior.EVENT_CHANGE);
             this.wicket.executeBehavior(behavior);
@@ -128,11 +127,11 @@ public class LoanChargeCreatePageTest {
 
         form.setValue("feeFrequencyBlock:feeFrequencyContainer:feeFrequencyField", true);
 
-        form.setValue("chargeFrequencyBlock:chargeFrequencyContainer:chargeFrequencyField", ChargeFrequency.Day.name());
+        form.setValue("chargeFrequencyBlock:chargeFrequencyContainer:chargeFrequencyField", ChargeFrequency.Day);
 
         form.setValue("frequencyIntervalBlock:frequencyIntervalContainer:frequencyIntervalField", "100");
 
-        form.setValue("chargeTimeField", ChargeTime.OverdueFees.name());
+        form.setValue("chargeTimeField", ChargeTime.OverdueFees);
 
         form.setValue("nameField", nameValue);
 
@@ -144,9 +143,9 @@ public class LoanChargeCreatePageTest {
 
         form.setValue("taxGroupField", "1");
 
-        form.setValue("chargeCalculationBlock:chargeCalculationContainer:chargeCalculationField", ChargeCalculation.Flat.name());
+        form.setValue("chargeCalculationBlock:chargeCalculationContainer:chargeCalculationField", ChargeCalculation.Flat);
 
-        form.setValue("chargePaymentField", ChargePayment.RegularMode.name());
+        form.setValue("chargePaymentField", ChargePayment.RegularMode);
 
         form.setValue("amountField", "100");
 
