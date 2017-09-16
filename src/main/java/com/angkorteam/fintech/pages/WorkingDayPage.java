@@ -1,23 +1,8 @@
 package com.angkorteam.fintech.pages;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.RepaymentOption;
-import com.angkorteam.fintech.dto.request.WorkingDayBuilder;
-import com.angkorteam.fintech.helper.WorkingDayHelper;
-import com.angkorteam.fintech.provider.RepaymentOptionProvider;
-import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -26,8 +11,24 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import java.util.List;
-import java.util.Map;
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.RepaymentOption;
+import com.angkorteam.fintech.dto.request.WorkingDayBuilder;
+import com.angkorteam.fintech.helper.WorkingDayHelper;
+import com.angkorteam.fintech.provider.RepaymentOptionProvider;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -75,7 +76,7 @@ public class WorkingDayPage extends Page {
     private Boolean repaymentExtendTermValue;
     private CheckBox repaymentExtendTermField;
     private TextFeedbackPanel repaymentExtendTermFeedback;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -107,9 +108,7 @@ public class WorkingDayPage extends Page {
     protected void onInitialize() {
         super.onInitialize();
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-
-        Map<String, Object> object = jdbcTemplate.queryForMap("select * from m_working_days limit 1");
+        initData();
 
         this.form = new Form<>("form");
         add(this.form);
@@ -121,53 +120,42 @@ public class WorkingDayPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", OrganizationDashboardPage.class);
         this.form.add(this.closeLink);
 
-        String recurrence = (String) object.get("recurrence");
-        String[] recurrenceSegments = StringUtils.split(recurrence, ';');
-        String days = recurrenceSegments[2];
-
-        this.mondayValue = days.contains("MO");
         this.mondayField = new CheckBox("mondayField", new PropertyModel<>(this, "mondayValue"));
         this.mondayField.setRequired(true);
         this.form.add(this.mondayField);
         this.mondayFeedback = new TextFeedbackPanel("mondayFeedback", this.mondayField);
         this.form.add(this.mondayFeedback);
 
-        this.tuesdayValue = days.contains("TU");
         this.tuesdayField = new CheckBox("tuesdayField", new PropertyModel<>(this, "tuesdayValue"));
         this.tuesdayField.setRequired(true);
         this.form.add(this.tuesdayField);
         this.tuesdayFeedback = new TextFeedbackPanel("tuesdayFeedback", this.tuesdayField);
         this.form.add(this.tuesdayFeedback);
 
-        this.wednesdayValue = days.contains("WE");
         this.wednesdayField = new CheckBox("wednesdayField", new PropertyModel<>(this, "wednesdayValue"));
         this.wednesdayField.setRequired(true);
         this.form.add(this.wednesdayField);
         this.wednesdayFeedback = new TextFeedbackPanel("wednesdayFeedback", this.wednesdayField);
         this.form.add(this.wednesdayFeedback);
 
-        this.thursdayValue = days.contains("TH");
         this.thursdayField = new CheckBox("thursdayField", new PropertyModel<>(this, "thursdayValue"));
         this.thursdayField.setRequired(true);
         this.form.add(this.thursdayField);
         this.thursdayFeedback = new TextFeedbackPanel("thursdayFeedback", this.thursdayField);
         this.form.add(this.thursdayFeedback);
 
-        this.fridayValue = days.contains("FR");
         this.fridayField = new CheckBox("fridayField", new PropertyModel<>(this, "fridayValue"));
         this.fridayField.setRequired(true);
         this.form.add(this.fridayField);
         this.fridayFeedback = new TextFeedbackPanel("fridayFeedback", this.fridayField);
         this.form.add(this.fridayFeedback);
 
-        this.saturdayValue = days.contains("ST");
         this.saturdayField = new CheckBox("saturdayField", new PropertyModel<>(this, "saturdayValue"));
         this.saturdayField.setRequired(true);
         this.form.add(this.saturdayField);
         this.saturdayFeedback = new TextFeedbackPanel("saturdayFeedback", this.saturdayField);
         this.form.add(this.saturdayFeedback);
 
-        this.sundayValue = days.contains("SU");
         this.sundayField = new CheckBox("sundayField", new PropertyModel<>(this, "sundayValue"));
         this.sundayField.setRequired(true);
         this.form.add(this.sundayField);
@@ -175,28 +163,46 @@ public class WorkingDayPage extends Page {
         this.form.add(this.sundayFeedback);
 
         this.repaymentOptionProvider = new RepaymentOptionProvider();
-        if (object.get("repayment_rescheduling_enum") != null) {
-            this.repaymentOptionValue = this.repaymentOptionProvider
-                    .toChoice(String.valueOf(object.get("repayment_rescheduling_enum")));
-        }
-        this.repaymentOptionField = new Select2SingleChoice<>("repaymentOptionField",
-                new PropertyModel<>(this, "repaymentOptionValue"), this.repaymentOptionProvider);
+        this.repaymentOptionField = new Select2SingleChoice<>("repaymentOptionField", new PropertyModel<>(this, "repaymentOptionValue"), this.repaymentOptionProvider);
         this.repaymentOptionField.setRequired(true);
         this.form.add(this.repaymentOptionField);
         this.repaymentOptionFeedback = new TextFeedbackPanel("repaymentOptionFeedback", this.repaymentOptionField);
         this.form.add(this.repaymentOptionFeedback);
 
-        this.repaymentExtendTermValue = (Boolean) object.get("extend_term_daily_repayments");
-        this.repaymentExtendTermField = new CheckBox("repaymentExtendTermField",
-                new PropertyModel<>(this, "repaymentExtendTermValue"));
+        this.repaymentExtendTermField = new CheckBox("repaymentExtendTermField", new PropertyModel<>(this, "repaymentExtendTermValue"));
         this.repaymentExtendTermField.setRequired(true);
         this.form.add(this.repaymentExtendTermField);
-        this.repaymentExtendTermFeedback = new TextFeedbackPanel("repaymentExtendTermFeedback",
-                this.repaymentExtendTermField);
+        this.repaymentExtendTermFeedback = new TextFeedbackPanel("repaymentExtendTermFeedback", this.repaymentExtendTermField);
         this.form.add(this.repaymentExtendTermFeedback);
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void initData() {
+        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+
+        Map<String, Object> object = jdbcTemplate.queryForMap("select * from m_working_days limit 1");
+
+        String recurrence = (String) object.get("recurrence");
+        String[] recurrenceSegments = StringUtils.split(recurrence, ';');
+        String days = recurrenceSegments[2];
+        this.mondayValue = days.contains("MO");
+        this.tuesdayValue = days.contains("TU");
+        this.wednesdayValue = days.contains("WE");
+        this.thursdayValue = days.contains("TH");
+        this.fridayValue = days.contains("FR");
+        this.saturdayValue = days.contains("ST");
+        this.sundayValue = days.contains("SU");
+        if (object.get("repayment_rescheduling_enum") != null) {
+            for (RepaymentOption repayment : RepaymentOption.values()) {
+                if (repayment.getLiteral().equals(object.get("repayment_rescheduling_enum"))) {
+                    this.repaymentOptionValue = new Option(repayment.name(), repayment.getDescription());
+                }
+            }
+
+        }
+        this.repaymentExtendTermValue = (Boolean) object.get("extend_term_daily_repayments");
+    }
+
+    protected void saveButtonSubmit(Button button) {
         WorkingDayBuilder builder = new WorkingDayBuilder();
         builder.withExtendTermForDailyRepayments(this.repaymentExtendTermValue);
         if (this.repaymentOptionValue != null) {
