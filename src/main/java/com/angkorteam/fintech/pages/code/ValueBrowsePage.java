@@ -83,8 +83,7 @@ public class ValueBrowsePage extends Page {
         this.codeId = parameters.get("codeId").toString("");
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        String codeName = jdbcTemplate.queryForObject("select code_name from m_code where id = ?", String.class,
-                this.codeId);
+        String codeName = jdbcTemplate.queryForObject("select code_name from m_code where id = ?", String.class, this.codeId);
         List<PageBreadcrumb> temp = Lists.newArrayList(BREADCRUMB);
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
@@ -135,14 +134,10 @@ public class ValueBrowsePage extends Page {
         this.provider.selectField("id", Integer.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "code_value", "code_value",
-                this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Description"), "code_description",
-                "code_description", this::descriptionColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Integer, Model.of("Position"), "order_position",
-                "order_position", this::positionColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Is Active ?"), "active", "active",
-                this::activeColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "code_value", "code_value", this::nameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Description"), "code_description", "code_description", this::descriptionColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Integer, Model.of("Position"), "order_position", "order_position", this::positionColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Is Active ?"), "active", "active", this::activeColumn));
         columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
@@ -160,18 +155,21 @@ public class ValueBrowsePage extends Page {
         this.form.add(this.addButton);
 
         this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setLabel(Model.of("Name"));
         this.nameField.setRequired(true);
         this.form.add(this.nameField);
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
         this.form.add(this.nameFeedback);
 
         this.descriptionField = new TextField<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
+        this.descriptionField.setLabel(Model.of("Description"));
         this.descriptionField.setRequired(true);
         this.form.add(this.descriptionField);
         this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
         this.form.add(this.descriptionFeedback);
 
         this.positionField = new TextField<>("positionField", new PropertyModel<>(this, "positionValue"));
+        this.positionField.setLabel(Model.of("Position"));
         this.positionField.setRequired(true);
         this.form.add(this.positionField);
         this.positionFeedback = new TextFeedbackPanel("positionFeedback", this.positionField);

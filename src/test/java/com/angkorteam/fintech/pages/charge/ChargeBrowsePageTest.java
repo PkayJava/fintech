@@ -16,7 +16,7 @@ public class ChargeBrowsePageTest {
     }
 
     @Test
-    public void browsing() {
+    public void pageVisit() {
         this.wicket.login();
 
         this.wicket.startPage(ChargeBrowsePage.class);
