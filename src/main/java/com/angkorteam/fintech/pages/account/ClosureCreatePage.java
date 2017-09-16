@@ -94,8 +94,7 @@ public class ClosureCreatePage extends Page {
         this.form.add(this.closeLink);
 
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
-                this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.form.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
         this.form.add(this.officeFeedback);

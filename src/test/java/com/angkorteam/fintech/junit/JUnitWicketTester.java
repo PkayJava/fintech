@@ -9,6 +9,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.core.request.handler.BookmarkableListenerRequestHandler;
 import org.apache.wicket.core.request.handler.ListenerRequestHandler;
 import org.apache.wicket.core.request.handler.PageAndComponentProvider;
+import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Url;
@@ -17,7 +18,9 @@ import org.apache.wicket.request.mapper.parameter.INamedParameters.NamedPair;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.tester.FormTester;
+import org.apache.wicket.util.tester.Result;
 import org.apache.wicket.util.tester.WicketTester;
+import org.junit.Assert;
 
 import com.angkorteam.fintech.Application;
 import com.angkorteam.fintech.Constants;
@@ -112,6 +115,12 @@ public class JUnitWicketTester extends WicketTester {
     @Override
     public JUnitFormTester newFormTester(String path) {
         return (JUnitFormTester) super.newFormTester(path);
+    }
+
+    public void assertErrorMessage() {
+        int level = FeedbackMessage.ERROR;
+        Result result = hasNoFeedbackMessage(level);
+        Assert.assertTrue(result.getMessage(), result.wasFailed());
     }
 
     @Override

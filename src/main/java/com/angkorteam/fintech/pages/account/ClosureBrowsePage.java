@@ -45,7 +45,7 @@ public class ClosureBrowsePage extends Page {
     private JdbcProvider provider;
 
     private BookmarkablePageLink<Void> createLink;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -83,14 +83,10 @@ public class ClosureBrowsePage extends Page {
         this.provider.selectField("id", Long.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Office"), "office", "office",
-                this::officeColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Accounting Closure Date"),
-                "closing_date", "closing_date", this::closingDateColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Comments"), "comment", "comment",
-                this::commentColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Created By"), "created_by",
-                "created_by", this::createdByColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Office"), "office", "office", this::officeColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Accounting Closure Date"), "closing_date", "closing_date", this::closingDateColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Comments"), "comment", "comment", this::commentColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Created By"), "created_by", "created_by", this::createdByColumn));
         columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
@@ -105,10 +101,10 @@ public class ClosureBrowsePage extends Page {
     }
 
     private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-        Long id = (Long) stringObjectMap.get("id");
+        Long value = (Long) stringObjectMap.get("id");
         JsonNode node = null;
         try {
-            node = AccountingClosureHelper.delete((Session) getSession(), String.valueOf(id));
+            node = AccountingClosureHelper.delete((Session) getSession(), String.valueOf(value));
         } catch (UnirestException e) {
         }
         reportError(node, ajaxRequestTarget);
@@ -122,24 +118,24 @@ public class ClosureBrowsePage extends Page {
     }
 
     private ItemPanel createdByColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String createdBy = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(createdBy));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(value));
     }
 
     private ItemPanel officeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String office = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(office));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(value));
     }
 
     private ItemPanel commentColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String comment = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(comment));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(value));
     }
 
     private ItemPanel closingDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date closingDate = (Date) model.get(jdbcColumn);
-        if (closingDate != null) {
-            return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(closingDate)));
+        Date value = (Date) model.get(jdbcColumn);
+        if (value != null) {
+            return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(value)));
         } else {
             return new TextCell(Model.of(""));
         }

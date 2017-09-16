@@ -1,10 +1,10 @@
 package com.angkorteam.fintech.dto.request;
 
+import java.io.Serializable;
+
 import com.angkorteam.fintech.dto.AccountType;
 import com.angkorteam.fintech.dto.AccountUsage;
 import com.mashape.unirest.http.JsonNode;
-
-import java.io.Serializable;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -113,10 +113,18 @@ public class GLAccountBuilder implements Serializable {
             object.getObject().put("manualEntriesAllowed", Boolean.valueOf(this.manualEntriesAllowed));
         }
         if (this.hasType) {
-            object.getObject().put("type", Integer.valueOf(this.type.getLiteral()));
+            if (this.type != null) {
+                object.getObject().put("type", Integer.valueOf(this.type.getLiteral()));
+            } else {
+                object.getObject().put("type", (String) null);
+            }
         }
         if (this.hasUsage) {
-            object.getObject().put("usage", Integer.valueOf(this.usage.getLiteral()));
+            if (this.usage != null) {
+                object.getObject().put("usage", Integer.valueOf(this.usage.getLiteral()));
+            } else {
+                object.getObject().put("usage", (String) null);
+            }
         }
         if (this.hasDescription) {
             object.getObject().put("description", this.description);

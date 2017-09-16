@@ -37,7 +37,7 @@ public class AccrualAccountingPage extends Page {
     private Date tillDateValue;
     private DateTextField tillDateField;
     private TextFeedbackPanel tillDateFeedback;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override

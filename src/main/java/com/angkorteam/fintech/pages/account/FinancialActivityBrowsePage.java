@@ -72,8 +72,7 @@ public class FinancialActivityBrowsePage extends Page {
     protected void onInitialize() {
         super.onInitialize();
         this.provider = new JdbcProvider("acc_gl_financial_activity_account");
-        this.provider.addJoin(
-                "LEFT JOIN acc_gl_account ON acc_gl_financial_activity_account.gl_account_id = acc_gl_account.id");
+        this.provider.addJoin("LEFT JOIN acc_gl_account ON acc_gl_financial_activity_account.gl_account_id = acc_gl_account.id");
         this.provider.boardField("acc_gl_financial_activity_account.id", "id", Long.class);
         this.provider.boardField("acc_gl_account.name", "account", String.class);
         this.provider.boardField("acc_gl_financial_activity_account.financial_activity_type", "type", Integer.class);
@@ -81,10 +80,8 @@ public class FinancialActivityBrowsePage extends Page {
         this.provider.selectField("id", Long.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Integer, Model.of("Financial Activity"), "type",
-                "type", this::typeColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Account Name"), "account",
-                "account", this::accountColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Integer, Model.of("Financial Activity"), "type", "type", this::typeColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Account Name"), "account", "account", this::accountColumn));
         columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
@@ -98,7 +95,7 @@ public class FinancialActivityBrowsePage extends Page {
         add(this.createLink);
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget target) {
         Long id = (Long) stringObjectMap.get("id");
         if ("modify".equals(s)) {
             PageParameters parameters = new PageParameters();
@@ -110,8 +107,8 @@ public class FinancialActivityBrowsePage extends Page {
                 FinancialActivityHelper.delete((Session) getSession(), String.valueOf(id));
             } catch (UnirestException e) {
             }
-            reportError(node, ajaxRequestTarget);
-            ajaxRequestTarget.add(this.dataTable);
+            reportError(node, target);
+            target.add(this.dataTable);
         }
     }
 
@@ -123,31 +120,29 @@ public class FinancialActivityBrowsePage extends Page {
     }
 
     private ItemPanel typeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer type = (Integer) model.get(jdbcColumn);
-        if (FinancialActivityType.AssetTransfer.getLiteral().equals(String.valueOf(type))) {
-            return new TextCell(Model.of(type + "." + FinancialActivityType.AssetTransfer.getDescription()));
-        } else if (FinancialActivityType.CashAtTellersCashiers.getLiteral().equals(String.valueOf(type))) {
-            return new TextCell(Model.of(type + "." + FinancialActivityType.CashAtTellersCashiers.getDescription()));
-        } else if (FinancialActivityType.FundSource.getLiteral().equals(String.valueOf(type))) {
-            return new TextCell(Model.of(type + "." + FinancialActivityType.FundSource.getDescription()));
-        } else if (FinancialActivityType.MainCashAccountOrCashAtVault.getLiteral().equals(String.valueOf(type))) {
-            return new TextCell(
-                    Model.of(type + "." + FinancialActivityType.MainCashAccountOrCashAtVault.getDescription()));
-        } else if (FinancialActivityType.OpeningBalancesTransferContra.getLiteral().equals(String.valueOf(type))) {
-            return new TextCell(
-                    Model.of(type + "." + FinancialActivityType.OpeningBalancesTransferContra.getDescription()));
-        } else if (FinancialActivityType.PayableDividends.getLiteral().equals(String.valueOf(type))) {
-            return new TextCell(Model.of(type + "." + FinancialActivityType.PayableDividends.getDescription()));
-        } else if (FinancialActivityType.LiabilityTransfer.getLiteral().equals(String.valueOf(type))) {
-            return new TextCell(Model.of(type + "." + FinancialActivityType.LiabilityTransfer.getDescription()));
+        Integer value = (Integer) model.get(jdbcColumn);
+        if (FinancialActivityType.AssetTransfer.getLiteral().equals(String.valueOf(value))) {
+            return new TextCell(Model.of(value + "." + FinancialActivityType.AssetTransfer.getDescription()));
+        } else if (FinancialActivityType.CashAtTellersCashiers.getLiteral().equals(String.valueOf(value))) {
+            return new TextCell(Model.of(value + "." + FinancialActivityType.CashAtTellersCashiers.getDescription()));
+        } else if (FinancialActivityType.FundSource.getLiteral().equals(String.valueOf(value))) {
+            return new TextCell(Model.of(value + "." + FinancialActivityType.FundSource.getDescription()));
+        } else if (FinancialActivityType.MainCashAccountOrCashAtVault.getLiteral().equals(String.valueOf(value))) {
+            return new TextCell(Model.of(value + "." + FinancialActivityType.MainCashAccountOrCashAtVault.getDescription()));
+        } else if (FinancialActivityType.OpeningBalancesTransferContra.getLiteral().equals(String.valueOf(value))) {
+            return new TextCell(Model.of(value + "." + FinancialActivityType.OpeningBalancesTransferContra.getDescription()));
+        } else if (FinancialActivityType.PayableDividends.getLiteral().equals(String.valueOf(value))) {
+            return new TextCell(Model.of(value + "." + FinancialActivityType.PayableDividends.getDescription()));
+        } else if (FinancialActivityType.LiabilityTransfer.getLiteral().equals(String.valueOf(value))) {
+            return new TextCell(Model.of(value + "." + FinancialActivityType.LiabilityTransfer.getDescription()));
         } else {
             return new TextCell(Model.of(""));
         }
     }
 
     private ItemPanel accountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String account = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(account));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(value));
     }
 
 }
