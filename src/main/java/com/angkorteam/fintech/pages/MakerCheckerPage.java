@@ -20,10 +20,9 @@ import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.provider.MultipleChoiceProvider;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.BadgeType;
-import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
@@ -37,7 +36,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
@@ -69,6 +67,7 @@ public class MakerCheckerPage extends Page {
     }
 
     static {
+
         BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
@@ -93,7 +92,6 @@ public class MakerCheckerPage extends Page {
         super.onInitialize();
 
         this.provider = new JdbcProvider("m_permission");
-        // this.provider.boardField("id", "id", Long.class);
         this.provider.boardField("m_permission.grouping", "grouping", String.class);
         this.provider.boardField("m_permission.code", "code", String.class);
         this.provider.boardField("m_permission.entity_name", "entity_name", String.class);
@@ -102,18 +100,11 @@ public class MakerCheckerPage extends Page {
         this.provider.setSort("grouping", SortOrder.ASCENDING);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        // columns.add(new TextFilterColumn(this.provider, ItemClass.Long,
-        // Model.of("ID"), "id", "id", this::idColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Grouping"), "grouping", "grouping",
-                this::groupingColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Code"), "code", "code",
-                this::codeColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Entity"), "entity_name",
-                "entity_name", this::entityColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Operation"), "action_name",
-                "action_name", this::operationColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Is Enabled ?"), "can_maker_checker",
-                "can_maker_checker", this::enabledColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Grouping"), "grouping", "grouping", this::groupingColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Code"), "code", "code", this::codeColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Entity"), "entity_name", "entity_name", this::entityColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Operation"), "action_name", "action_name", this::operationColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Is Enabled ?"), "can_maker_checker", "can_maker_checker", this::enabledColumn));
         columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
@@ -130,37 +121,22 @@ public class MakerCheckerPage extends Page {
         this.addButton.setOnSubmit(this::addButtonSubmit);
         this.form.add(this.addButton);
 
-        this.permissionProvider = new MultipleChoiceProvider("m_permission", "code", "code",
-                "concat(code,' ', '[', grouping,']',  ' ', '[', IF(entity_name is NULL , 'N/A', entity_name), ']',' ', '[' , IF(action_name is NULL , 'N/A', action_name),']')");
+        this.permissionProvider = new MultipleChoiceProvider("m_permission", "code", "code", "concat(code,' ', '[', grouping,']',  ' ', '[', IF(entity_name is NULL , 'N/A', entity_name), ']',' ', '[' , IF(action_name is NULL , 'N/A', action_name),']')");
         this.permissionProvider.applyWhere("maker", "can_maker_checker = 0");
-        this.permissionField = new Select2MultipleChoice<>("permissionField",
-                new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
+        this.permissionField = new Select2MultipleChoice<>("permissionField", new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
         this.permissionField.setRequired(true);
         this.form.add(this.permissionField);
         this.permissionFeedback = new TextFeedbackPanel("permissionFeedback", this.permissionField);
         this.form.add(this.permissionFeedback);
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-
-        String falseCode = (String) stringObjectMap.get("code");
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-
-        List<String> trueCodes = jdbcTemplate.queryForList(
-                "select m_permission.code from m_permission where can_maker_checker = ?", String.class, 1);
-        List<String> allCodes = jdbcTemplate.queryForList("select code from m_permission", String.class);
+    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+        String code = (String) model.get("code");
         Map<String, Boolean> permissions = Maps.newHashMap();
-        for (String code : allCodes) {
-            permissions.put(code, false);
-        }
-        for (String code : trueCodes) {
-            permissions.put(code, true);
-        }
-
         if ("disable".equals(s)) {
-            permissions.put(falseCode, false);
+            permissions.put(code, false);
         } else if ("enable".equals(s)) {
-            permissions.put(falseCode, true);
+            permissions.put(code, true);
         }
 
         JsonNode node = null;
@@ -168,17 +144,21 @@ public class MakerCheckerPage extends Page {
             node = RoleHelper.makerCheckerPermission((Session) getSession(), permissions);
         } catch (UnirestException e) {
             error(e.getMessage());
+            setResponsePage(MakerCheckerPage.class);
             return;
         }
         if (reportError(node)) {
+            setResponsePage(MakerCheckerPage.class);
             return;
         }
-        ajaxRequestTarget.add(this.dataTable);
+        if (target != null) {
+            target.add(this.dataTable);
+        }
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
-        Boolean enabled = (Boolean) stringObjectMap.get("can_maker_checker");
+        Boolean enabled = (Boolean) model.get("can_maker_checker");
         if (enabled != null && enabled) {
             actions.add(new ActionItem("disable", Model.of("Disable"), ItemCss.INFO));
         } else {
@@ -189,18 +169,7 @@ public class MakerCheckerPage extends Page {
     }
 
     private void addButtonSubmit(Button button) {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-
-        List<String> trueCodes = jdbcTemplate.queryForList(
-                "select m_permission.code from m_permission where can_maker_checker = ?", String.class, 1);
-        List<String> allCodes = jdbcTemplate.queryForList("select code from m_permission", String.class);
         Map<String, Boolean> permissions = Maps.newHashMap();
-        for (String code : allCodes) {
-            permissions.put(code, false);
-        }
-        for (String code : trueCodes) {
-            permissions.put(code, true);
-        }
         if (this.permissionValue != null) {
             for (Option option : this.permissionValue) {
                 permissions.put(option.getId(), true);
@@ -230,22 +199,22 @@ public class MakerCheckerPage extends Page {
     }
 
     private ItemPanel codeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String externalId = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(externalId));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(value));
     }
 
     private ItemPanel entityColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String entity = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(entity));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(value));
     }
 
     private ItemPanel groupingColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String grouping = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(grouping));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(value));
     }
 
     private ItemPanel operationColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String operation = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(operation));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(value));
     }
 }

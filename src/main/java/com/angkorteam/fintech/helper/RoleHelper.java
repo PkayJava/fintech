@@ -31,8 +31,7 @@ public class RoleHelper {
         return Helper.performServerDelete(session, createRoleOperationURL(ENABLE_ROLE_COMMAND, id));
     }
 
-    public static JsonNode assignPermission(IMifos session, String id, Map<String, Boolean> permissions)
-            throws UnirestException {
+    public static JsonNode assignPermission(IMifos session, String id, Map<String, Boolean> permissions) throws UnirestException {
         JsonNode node = new com.angkorteam.fintech.dto.JsonNode();
         node.getObject().put("permissions", permissions);
         return Helper.performServerPut(session, "/api/v1/roles/" + id + "/permissions", node);
@@ -42,8 +41,7 @@ public class RoleHelper {
         return ROLE_URL + "/" + roleId + "?command=" + command;
     }
 
-    public static JsonNode makerCheckerPermission(IMifos session, Map<String, Boolean> permissions)
-            throws UnirestException {
+    public static JsonNode makerCheckerPermission(IMifos session, Map<String, Boolean> permissions) throws UnirestException {
         JsonNode node = new com.angkorteam.fintech.dto.JsonNode();
         node.getObject().put("permissions", permissions);
         return Helper.performServerPut(session, "/api/v1/permissions", node);

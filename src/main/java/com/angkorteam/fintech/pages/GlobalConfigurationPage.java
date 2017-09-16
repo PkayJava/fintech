@@ -1,28 +1,11 @@
 package com.angkorteam.fintech.pages;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.helper.GlobalConfigurationHelper;
-import com.angkorteam.fintech.provider.JdbcProvider;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.table.BadgeCell;
-import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.framework.BadgeType;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import org.apache.wicket.markup.html.form.TextField;
@@ -31,8 +14,33 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import java.util.List;
-import java.util.Map;
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.helper.GlobalConfigurationHelper;
+import com.angkorteam.fintech.provider.JdbcProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.table.BadgeCell;
+import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.framework.BadgeType;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -51,8 +59,8 @@ public class GlobalConfigurationPage extends Page {
     private Select2SingleChoice<Option> nameField;
     private TextFeedbackPanel nameFeedback;
 
-    private String valueValue;
-    private TextField<String> valueField;
+    private Integer valueValue;
+    private TextField<Integer> valueField;
     private TextFeedbackPanel valueFeedback;
 
     private Form<Void> form;
@@ -94,15 +102,14 @@ public class GlobalConfigurationPage extends Page {
         this.provider.boardField("enabled", "enabled", Boolean.class);
         this.provider.boardField("value", "value", Integer.class);
 
+        this.provider.setSort("name", SortOrder.ASCENDING);
+
         this.provider.selectField("id", Long.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name",
-                this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Enabled ?"), "enabled", "enabled",
-                this::enabledColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Integer, Model.of("Value"), "value", "value",
-                this::valueColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Enabled ?"), "enabled", "enabled", this::enabledColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Integer, Model.of("Value"), "value", "value", this::valueColumn));
         columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
@@ -123,8 +130,7 @@ public class GlobalConfigurationPage extends Page {
         this.form.add(this.saveButton);
 
         this.nameProvider = new SingleChoiceProvider("c_configuration", "id", "name");
-        this.nameField = new Select2SingleChoice<>("nameField", 0, new PropertyModel<>(this, "nameValue"),
-                this.nameProvider);
+        this.nameField = new Select2SingleChoice<>("nameField", 0, new PropertyModel<>(this, "nameValue"), this.nameProvider);
         this.nameField.setRequired(true);
         this.form.add(this.nameField);
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
@@ -137,11 +143,10 @@ public class GlobalConfigurationPage extends Page {
         this.form.add(this.valueFeedback);
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         JsonNode node = null;
         try {
-            node = GlobalConfigurationHelper.updateValueForGlobalConfiguration((Session) getSession(),
-                    this.nameValue.getId(), this.valueValue);
+            node = GlobalConfigurationHelper.updateValueForGlobalConfiguration((Session) getSession(), this.nameValue.getId(), String.valueOf(this.valueValue));
         } catch (UnirestException e) {
             error(e.getMessage());
             return;
@@ -152,25 +157,23 @@ public class GlobalConfigurationPage extends Page {
         setResponsePage(GlobalConfigurationPage.class);
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         try {
-            Long id = (Long) stringObjectMap.get("id");
+            Long id = (Long) model.get("id");
             if ("enable".equals(s)) {
-                GlobalConfigurationHelper.updateEnabledFlagForGlobalConfiguration((Session) getSession(),
-                        String.valueOf(id), true);
-                ajaxRequestTarget.add(this.dataTable);
+                GlobalConfigurationHelper.updateEnabledFlagForGlobalConfiguration((Session) getSession(), String.valueOf(id), true);
+                target.add(this.dataTable);
             } else if ("disable".equals(s)) {
-                GlobalConfigurationHelper.updateEnabledFlagForGlobalConfiguration((Session) getSession(),
-                        String.valueOf(id), false);
-                ajaxRequestTarget.add(this.dataTable);
+                GlobalConfigurationHelper.updateEnabledFlagForGlobalConfiguration((Session) getSession(), String.valueOf(id), false);
+                target.add(this.dataTable);
             }
         } catch (UnirestException e) {
         }
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> actionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
-        Boolean enabled = (Boolean) stringObjectMap.get("enabled");
+        Boolean enabled = (Boolean) model.get("enabled");
         if (enabled != null && enabled) {
             actions.add(new ActionItem("disable", Model.of("Disable"), ItemCss.PRIMARY));
         } else {
@@ -179,21 +182,21 @@ public class GlobalConfigurationPage extends Page {
         return actions;
     }
 
-    private ItemPanel enabledColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean enabled = (Boolean) model.get(jdbcColumn);
-        if (enabled != null && enabled) {
+    protected ItemPanel enabledColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Boolean value = (Boolean) model.get(jdbcColumn);
+        if (value != null && value) {
             return new BadgeCell(BadgeType.Success, Model.of("Yes"));
         } else {
             return new BadgeCell(BadgeType.Danger, Model.of("No"));
         }
     }
 
-    private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(name));
+    protected ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(Model.of(value));
     }
 
-    private ItemPanel valueColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel valueColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
         return new TextCell(Model.of(value == null ? "" : String.valueOf(value)));
     }
