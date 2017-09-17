@@ -36,7 +36,7 @@ public class TaxGroupBrowsePage extends Page {
     private JdbcProvider provider;
 
     private BookmarkablePageLink<Void> createLink;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override

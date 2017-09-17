@@ -74,7 +74,7 @@ public class TaxGroupCreatePage extends Page {
     private List<Map<String, Object>> taxComponentValue;
     private DataTable<Map<String, Object>, String> taxComponentTable;
     private ListDataProvider taxComponentProvider;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -132,8 +132,7 @@ public class TaxGroupCreatePage extends Page {
         this.taxForm.add(this.addButton);
 
         this.taxProvider = new SingleChoiceProvider("m_tax_component", "id", "name");
-        this.taxField = new Select2SingleChoice<>("taxField", 0, new PropertyModel<>(this, "taxValue"),
-                this.taxProvider);
+        this.taxField = new Select2SingleChoice<>("taxField", 0, new PropertyModel<>(this, "taxValue"), this.taxProvider);
         this.taxForm.add(this.taxField);
         this.taxFeedback = new TextFeedbackPanel("taxFeedback", this.taxField);
         this.taxForm.add(this.taxFeedback);
@@ -178,14 +177,11 @@ public class TaxGroupCreatePage extends Page {
 
         List<IColumn<Map<String, Object>, String>> taxComponentColumn = Lists.newArrayList();
         taxComponentColumn.add(new TextColumn(Model.of("Tax Component"), "tax", "tax", this::taxComponentTaxColumn));
-        taxComponentColumn.add(
-                new TextColumn(Model.of("Start Date"), "startDate", "startDate", this::taxComponentStartDateColumn));
-        taxComponentColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::taxComponentActionItem,
-                this::taxComponentActionClick));
+        taxComponentColumn.add(new TextColumn(Model.of("Start Date"), "startDate", "startDate", this::taxComponentStartDateColumn));
+        taxComponentColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::taxComponentActionItem, this::taxComponentActionClick));
         this.taxComponentValue = Lists.newArrayList();
         this.taxComponentProvider = new ListDataProvider(this.taxComponentValue);
-        this.taxComponentTable = new DataTable<>("taxComponentTable", taxComponentColumn, this.taxComponentProvider,
-                20);
+        this.taxComponentTable = new DataTable<>("taxComponentTable", taxComponentColumn, this.taxComponentProvider, 20);
         this.form.add(this.taxComponentTable);
         this.taxComponentTable.addTopToolbar(new HeadersToolbar<>(this.taxComponentTable, this.taxComponentProvider));
         this.taxComponentTable.addBottomToolbar(new NoRecordsToolbar(this.taxComponentTable));
@@ -196,8 +192,7 @@ public class TaxGroupCreatePage extends Page {
         return new TextCell(Model.of(tax));
     }
 
-    private ItemPanel taxComponentStartDateColumn(String jdbcColumn, IModel<String> display,
-                                                  Map<String, Object> model) {
+    private ItemPanel taxComponentStartDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Date startDate = (Date) model.get(jdbcColumn);
         if (startDate == null) {
             return new TextCell(Model.of(""));
@@ -206,8 +201,7 @@ public class TaxGroupCreatePage extends Page {
         }
     }
 
-    private void taxComponentActionClick(String s, Map<String, Object> stringObjectMap,
-                                         AjaxRequestTarget ajaxRequestTarget) {
+    private void taxComponentActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
         int index = -1;
         for (int i = 0; i < this.taxComponentValue.size(); i++) {
             Map<String, Object> column = this.taxComponentValue.get(i);
