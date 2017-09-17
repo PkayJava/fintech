@@ -32,12 +32,13 @@ import com.angkorteam.fintech.dto.share.LockInPeriod;
 import com.angkorteam.fintech.dto.share.MinimumActivePeriod;
 import com.angkorteam.fintech.helper.ShareHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
-import com.angkorteam.fintech.popup.ChargePopup;
+import com.angkorteam.fintech.popup.share.ChargePopup;
 import com.angkorteam.fintech.popup.share.MarketPricePopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.provider.share.LockInPeriodProvider;
 import com.angkorteam.fintech.provider.share.MinimumActivePeriodProvider;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -58,7 +59,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
@@ -492,7 +492,6 @@ public class ShareCreatePage extends Page {
     protected void initCharge() {
         this.chargePopup = new ModalWindow("chargePopup");
         add(this.chargePopup);
-        this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this));
         this.chargePopup.setOnClose(this::chargePopupOnClose);
 
         List<IColumn<Map<String, Object>, String>> chargeColumn = Lists.newArrayList();
@@ -550,7 +549,10 @@ public class ShareCreatePage extends Page {
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
-        this.chargePopup.show(target);
+        if (this.currencyCodeValue != null) {
+            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
+            this.chargePopup.show(target);
+        }
         return false;
     }
 

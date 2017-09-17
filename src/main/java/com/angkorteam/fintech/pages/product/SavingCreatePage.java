@@ -33,10 +33,10 @@ import com.angkorteam.fintech.dto.saving.InterestPostingPeriod;
 import com.angkorteam.fintech.dto.saving.LockInType;
 import com.angkorteam.fintech.helper.SavingHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
-import com.angkorteam.fintech.popup.ChargePopup;
-import com.angkorteam.fintech.popup.FeeChargePopup;
 import com.angkorteam.fintech.popup.PaymentTypePopup;
-import com.angkorteam.fintech.popup.PenaltyChargePopup;
+import com.angkorteam.fintech.popup.saving.ChargePopup;
+import com.angkorteam.fintech.popup.saving.FeeChargePopup;
+import com.angkorteam.fintech.popup.saving.PenaltyChargePopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.provider.saving.DayInYearProvider;
 import com.angkorteam.fintech.provider.saving.InterestCalculatedUsingProvider;
@@ -44,6 +44,7 @@ import com.angkorteam.fintech.provider.saving.InterestCompoundingPeriodProvider;
 import com.angkorteam.fintech.provider.saving.InterestPostingPeriodProvider;
 import com.angkorteam.fintech.provider.saving.LockInTypeProvider;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -64,7 +65,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
@@ -299,6 +299,8 @@ public class SavingCreatePage extends Page {
     private Select2SingleChoice<Option> cashSavingsTransfersInSuspenseField;
     private TextFeedbackPanel cashSavingsTransfersInSuspenseFeedback;
 
+    private WebMarkupContainer cashEscheatLiabilityBlock;
+    private WebMarkupContainer cashEscheatLiabilityContainer;
     private SingleChoiceProvider cashEscheatLiabilityProvider;
     private Option cashEscheatLiabilityValue;
     private Select2SingleChoice<Option> cashEscheatLiabilityField;
@@ -509,7 +511,6 @@ public class SavingCreatePage extends Page {
         {
             this.feeIncomePopup = new ModalWindow("feeIncomePopup");
             add(this.feeIncomePopup);
-            this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this));
             this.feeIncomePopup.setOnClose(this::feeIncomePopupOnClose);
 
             List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFeeIncomeColumn = Lists.newArrayList();
@@ -531,7 +532,6 @@ public class SavingCreatePage extends Page {
         {
             this.penaltyIncomePopup = new ModalWindow("penaltyIncomePopup");
             add(this.penaltyIncomePopup);
-            this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this));
             this.penaltyIncomePopup.setOnClose(this::penaltyIncomePopupOnClose);
 
             List<IColumn<Map<String, Object>, String>> advancedAccountingRulePenaltyIncomeColumn = Lists.newArrayList();
@@ -553,7 +553,10 @@ public class SavingCreatePage extends Page {
     protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
         this.itemAccountValue = null;
-        this.penaltyIncomePopup.show(target);
+        if (this.currencyCodeValue != null) {
+            this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this, this.currencyCodeValue.getId()));
+            this.penaltyIncomePopup.show(target);
+        }
         return false;
     }
 
@@ -593,7 +596,10 @@ public class SavingCreatePage extends Page {
     protected boolean advancedAccountingRuleFeeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
         this.itemAccountValue = null;
-        this.feeIncomePopup.show(target);
+        if (this.currencyCodeValue != null) {
+            this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this, this.currencyCodeValue.getId()));
+            this.feeIncomePopup.show(target);
+        }
         return false;
     }
 
@@ -711,15 +717,20 @@ public class SavingCreatePage extends Page {
         this.cashSavingsTransfersInSuspenseFeedback = new TextFeedbackPanel("cashSavingsTransfersInSuspenseFeedback", this.cashSavingsTransfersInSuspenseField);
         this.cashContainer.add(this.cashSavingsTransfersInSuspenseFeedback);
 
+        this.cashEscheatLiabilityBlock = new WebMarkupContainer("cashEscheatLiabilityBlock");
+        this.cashEscheatLiabilityBlock.setOutputMarkupId(true);
+        this.cashContainer.add(cashEscheatLiabilityBlock);
+        this.cashEscheatLiabilityContainer = new WebMarkupContainer("cashEscheatLiabilityContainer");
+        this.cashEscheatLiabilityBlock.add(this.cashEscheatLiabilityContainer);
         this.cashEscheatLiabilityProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashEscheatLiabilityProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.cashEscheatLiabilityProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
         this.cashEscheatLiabilityField = new Select2SingleChoice<>("cashEscheatLiabilityField", new PropertyModel<>(this, "cashEscheatLiabilityValue"), this.cashEscheatLiabilityProvider);
         this.cashEscheatLiabilityField.setRequired(false);
         this.cashEscheatLiabilityField.add(new OnChangeAjaxBehavior());
-        this.cashContainer.add(this.cashEscheatLiabilityField);
+        this.cashEscheatLiabilityContainer.add(this.cashEscheatLiabilityField);
         this.cashEscheatLiabilityFeedback = new TextFeedbackPanel("cashEscheatLiabilityFeedback", this.cashEscheatLiabilityField);
-        this.cashContainer.add(this.cashEscheatLiabilityFeedback);
+        this.cashEscheatLiabilityContainer.add(this.cashEscheatLiabilityFeedback);
 
         this.cashInterestOnSavingProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashInterestOnSavingProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
@@ -786,6 +797,7 @@ public class SavingCreatePage extends Page {
 
         if (target != null) {
             target.add(this.cashBlock);
+            target.add(this.advancedAccountingRuleBlock);
         }
         return false;
     }
@@ -794,7 +806,6 @@ public class SavingCreatePage extends Page {
 
         this.chargePopup = new ModalWindow("chargePopup");
         add(this.chargePopup);
-        this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this));
         this.chargePopup.setOnClose(this::chargePopupOnClose);
 
         List<IColumn<Map<String, Object>, String>> chargeColumn = Lists.newArrayList();
@@ -852,7 +863,10 @@ public class SavingCreatePage extends Page {
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
-        this.chargePopup.show(target);
+        if (this.currencyCodeValue != null) {
+            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
+            this.chargePopup.show(target);
+        }
         return false;
     }
 
@@ -1290,10 +1304,12 @@ public class SavingCreatePage extends Page {
         this.settingNumberOfDaysToInactiveSubStatusContainer.setVisible(visible);
         this.settingNumberOfDaysToDormantSubStatusContainer.setVisible(visible);
         this.settingNumberOfDaysToEscheatContainer.setVisible(visible);
+        this.cashEscheatLiabilityContainer.setVisible(visible);
         if (target != null) {
             target.add(this.settingNumberOfDaysToInactiveSubStatusBlock);
             target.add(this.settingNumberOfDaysToDormantSubStatusBlock);
             target.add(this.settingNumberOfDaysToEscheatBlock);
+            target.add(this.cashEscheatLiabilityBlock);
         }
         return false;
     }
@@ -1390,8 +1406,10 @@ public class SavingCreatePage extends Page {
             if (this.cashSavingsTransfersInSuspenseValue != null) {
                 builder.withTransfersInSuspenseAccountId(this.cashSavingsTransfersInSuspenseValue.getId());
             }
-            if (this.cashEscheatLiabilityValue != null) {
-                builder.withEscheatLiabilityId(this.cashEscheatLiabilityValue.getId());
+            if (this.settingEnableDormancyTrackingValue != null && this.settingEnableDormancyTrackingValue) {
+                if (this.cashEscheatLiabilityValue != null) {
+                    builder.withEscheatLiabilityId(this.cashEscheatLiabilityValue.getId());
+                }
             }
             if (this.cashInterestOnSavingValue != null) {
                 builder.withInterestOnSavingsAccountId(this.cashInterestOnSavingValue.getId());

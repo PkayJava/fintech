@@ -41,12 +41,12 @@ import com.angkorteam.fintech.dto.request.RecurringBuilder;
 import com.angkorteam.fintech.dto.request.RecurringBuilder.IncentiveBuilder;
 import com.angkorteam.fintech.helper.RecurringHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
-import com.angkorteam.fintech.popup.ChargePopup;
-import com.angkorteam.fintech.popup.FeeChargePopup;
 import com.angkorteam.fintech.popup.InterestRateChartPopup;
 import com.angkorteam.fintech.popup.PaymentTypePopup;
-import com.angkorteam.fintech.popup.PenaltyChargePopup;
+import com.angkorteam.fintech.popup.recurring.ChargePopup;
+import com.angkorteam.fintech.popup.recurring.FeeChargePopup;
 import com.angkorteam.fintech.popup.recurring.IncentivePopup;
+import com.angkorteam.fintech.popup.recurring.PenaltyChargePopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.provider.recurring.ApplyPenalOnProvider;
 import com.angkorteam.fintech.provider.recurring.DayInYearProvider;
@@ -595,7 +595,6 @@ public class RecurringDepositCreatePage extends Page {
         {
             this.feeIncomePopup = new ModalWindow("feeIncomePopup");
             add(this.feeIncomePopup);
-            this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this));
             this.feeIncomePopup.setOnClose(this::feeIncomePopupOnClose);
 
             List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFeeIncomeColumn = Lists.newArrayList();
@@ -617,7 +616,6 @@ public class RecurringDepositCreatePage extends Page {
         {
             this.penaltyIncomePopup = new ModalWindow("penaltyIncomePopup");
             add(this.penaltyIncomePopup);
-            this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this));
             this.penaltyIncomePopup.setOnClose(this::penaltyIncomePopupOnClose);
 
             List<IColumn<Map<String, Object>, String>> advancedAccountingRulePenaltyIncomeColumn = Lists.newArrayList();
@@ -672,7 +670,10 @@ public class RecurringDepositCreatePage extends Page {
     protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
         this.itemAccountValue = null;
-        this.penaltyIncomePopup.show(target);
+        if (this.currencyCodeValue != null) {
+            this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this, this.currencyCodeValue.getId()));
+            this.penaltyIncomePopup.show(target);
+        }
         return false;
     }
 
@@ -712,7 +713,10 @@ public class RecurringDepositCreatePage extends Page {
     protected boolean advancedAccountingRuleFeeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
         this.itemAccountValue = null;
-        this.feeIncomePopup.show(target);
+        if (this.currencyCodeValue != null) {
+            this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this, this.currencyCodeValue.getId()));
+            this.feeIncomePopup.show(target);
+        }
         return false;
     }
 
@@ -805,7 +809,6 @@ public class RecurringDepositCreatePage extends Page {
     protected void initCharge() {
         this.chargePopup = new ModalWindow("chargePopup");
         add(this.chargePopup);
-        this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this));
         this.chargePopup.setOnClose(this::chargePopupOnClose);
 
         List<IColumn<Map<String, Object>, String>> chargeColumn = Lists.newArrayList();
@@ -863,7 +866,10 @@ public class RecurringDepositCreatePage extends Page {
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
-        this.chargePopup.show(target);
+        if (this.currencyCodeValue != null) {
+            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
+            this.chargePopup.show(target);
+        }
         return false;
     }
 

@@ -45,12 +45,12 @@ import com.angkorteam.fintech.dto.request.AllowAttributeOverrideBuilder;
 import com.angkorteam.fintech.dto.request.LoanBuilder;
 import com.angkorteam.fintech.helper.LoanHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
-import com.angkorteam.fintech.popup.ChargePopup;
-import com.angkorteam.fintech.popup.FeeChargePopup;
-import com.angkorteam.fintech.popup.OverdueChargePopup;
 import com.angkorteam.fintech.popup.PaymentTypePopup;
-import com.angkorteam.fintech.popup.PenaltyChargePopup;
+import com.angkorteam.fintech.popup.loan.ChargePopup;
+import com.angkorteam.fintech.popup.loan.FeeChargePopup;
 import com.angkorteam.fintech.popup.loan.InterestLoanCyclePopup;
+import com.angkorteam.fintech.popup.loan.OverdueChargePopup;
+import com.angkorteam.fintech.popup.loan.PenaltyChargePopup;
 import com.angkorteam.fintech.popup.loan.PrincipalLoanCyclePopup;
 import com.angkorteam.fintech.popup.loan.RepaymentLoanCyclePopup;
 import com.angkorteam.fintech.provider.NominalInterestRateTypeProvider;
@@ -69,6 +69,7 @@ import com.angkorteam.fintech.provider.loan.InterestMethodProvider;
 import com.angkorteam.fintech.provider.loan.InterestRecalculationCompoundProvider;
 import com.angkorteam.fintech.provider.loan.RepaymentStrategyProvider;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -90,7 +91,6 @@ import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
@@ -970,7 +970,6 @@ public class LoanCreatePage extends Page {
     protected void initOverdueCharge() {
         this.overdueChargePopup = new ModalWindow("overdueChargePopup");
         add(this.overdueChargePopup);
-        this.overdueChargePopup.setContent(new OverdueChargePopup(this.overdueChargePopup.getContentId(), this.overdueChargePopup, this));
         this.overdueChargePopup.setOnClose(this::overdueChargePopupOnClose);
 
         List<IColumn<Map<String, Object>, String>> overdueChargeColumn = Lists.newArrayList();
@@ -993,7 +992,10 @@ public class LoanCreatePage extends Page {
 
     protected boolean overdueChargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemOverdueChargeValue = null;
-        this.overdueChargePopup.show(target);
+        if (this.currencyCodeValue != null) {
+            this.overdueChargePopup.setContent(new OverdueChargePopup(this.overdueChargePopup.getContentId(), this.overdueChargePopup, this, this.currencyCodeValue.getId()));
+            this.overdueChargePopup.show(target);
+        }
         return false;
     }
 
@@ -1061,7 +1063,6 @@ public class LoanCreatePage extends Page {
 
         this.chargePopup = new ModalWindow("chargePopup");
         add(this.chargePopup);
-        this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this));
         this.chargePopup.setOnClose(this::chargePopupOnClose);
 
         List<IColumn<Map<String, Object>, String>> chargeColumn = Lists.newArrayList();
@@ -1084,7 +1085,10 @@ public class LoanCreatePage extends Page {
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
-        this.chargePopup.show(target);
+        if (this.currencyCodeValue != null) {
+            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
+            this.chargePopup.show(target);
+        }
         return false;
     }
 
@@ -1594,7 +1598,6 @@ public class LoanCreatePage extends Page {
         {
             this.feeIncomePopup = new ModalWindow("feeIncomePopup");
             add(this.feeIncomePopup);
-            this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this));
             this.feeIncomePopup.setOnClose(this::feeIncomePopupOnClose);
 
             List<IColumn<Map<String, Object>, String>> feeIncomeColumn = Lists.newArrayList();
@@ -1616,7 +1619,6 @@ public class LoanCreatePage extends Page {
         {
             this.penaltyIncomePopup = new ModalWindow("penaltyIncomePopup");
             add(this.penaltyIncomePopup);
-            this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this));
             this.penaltyIncomePopup.setOnClose(this::penaltyIncomePopupOnClose);
 
             List<IColumn<Map<String, Object>, String>> penaltyIncomeColumn = Lists.newArrayList();
@@ -1638,7 +1640,10 @@ public class LoanCreatePage extends Page {
     protected boolean feeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
         this.itemAccountValue = null;
-        this.feeIncomePopup.show(target);
+        if (this.currencyCodeValue != null) {
+            this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this, this.currencyCodeValue.getId()));
+            this.feeIncomePopup.show(target);
+        }
         return false;
     }
 
@@ -1674,7 +1679,10 @@ public class LoanCreatePage extends Page {
     protected boolean penaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
         this.itemAccountValue = null;
-        this.penaltyIncomePopup.show(target);
+        if (this.currencyCodeValue != null) {
+            this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this, this.currencyCodeValue.getId()));
+            this.penaltyIncomePopup.show(target);
+        }
         return false;
     }
 
@@ -2678,6 +2686,7 @@ public class LoanCreatePage extends Page {
         this.currencyCodeBlock.add(this.currencyCodeContainer);
         this.currencyCodeProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
         this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", 0, new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
+        this.currencyCodeField.add(new OnChangeAjaxBehavior());
         this.currencyCodeField.setLabel(Model.of("Currency"));
         this.currencyCodeField.setRequired(true);
         this.currencyCodeContainer.add(this.currencyCodeField);

@@ -362,10 +362,12 @@
                             <div class="clearfix"></div>
 
                             <!-- Row -->
-                            <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label wicket:for="cashEscheatLiabilityField">Escheat Liability</label>
-                                <select wicket:id="cashEscheatLiabilityField" class="form-control select2" style="width: 100%;"></select>
-                                <span wicket:id="cashEscheatLiabilityFeedback" class="help-block"></span>
+		                    <div wicket:id="cashEscheatLiabilityBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+		                        <wicket:container wicket:id="cashEscheatLiabilityContainer">
+	                                <label wicket:for="cashEscheatLiabilityField">Escheat Liability</label>
+	                                <select wicket:id="cashEscheatLiabilityField" class="form-control select2" style="width: 100%;"></select>
+	                                <span wicket:id="cashEscheatLiabilityFeedback" class="help-block"></span>
+	                            </wicket:container>
                             </div>
                             <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             </div>
