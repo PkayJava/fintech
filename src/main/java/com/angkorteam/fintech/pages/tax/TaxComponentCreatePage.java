@@ -1,5 +1,16 @@
 package com.angkorteam.fintech.pages.tax;
 
+import java.util.Date;
+import java.util.List;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.AccountType;
@@ -11,6 +22,7 @@ import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.pages.TaxDashboardPage;
 import com.angkorteam.fintech.provider.AccountTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -18,20 +30,9 @@ import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by socheatkhauv on 7/16/17.
@@ -64,7 +65,7 @@ public class TaxComponentCreatePage extends Page {
     private Date startDateValue;
     private DateTextField startDateField;
     private TextFeedbackPanel startDateFeedback;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -131,10 +132,9 @@ public class TaxComponentCreatePage extends Page {
         this.form.add(this.percentageFeedback);
 
         this.accountTypeProvider = new AccountTypeProvider();
-        this.accountTypeField = new Select2SingleChoice<>("accountTypeField", 0,
-                new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
+        this.accountTypeField = new Select2SingleChoice<>("accountTypeField", 0, new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
         this.accountTypeField.setRequired(true);
-        this.accountTypeField.add(new OnChangeAjaxBehavior(this::accountTypeFieldUpdate, this::accountTypeFieldError));
+        this.accountTypeField.add(new OnChangeAjaxBehavior(this::accountTypeFieldUpdate));
         this.form.add(this.accountTypeField);
         this.accountTypeFeedback = new TextFeedbackPanel("accountTypeFeedback", this.accountTypeField);
         this.form.add(this.accountTypeFeedback);
@@ -142,8 +142,7 @@ public class TaxComponentCreatePage extends Page {
         this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.accountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.accountProvider.setDisabled(true);
-        this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this, "accountValue"),
-                this.accountProvider);
+        this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this, "accountValue"), this.accountProvider);
         this.form.add(this.accountField);
         this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
         this.form.add(this.accountFeedback);
@@ -159,15 +158,7 @@ public class TaxComponentCreatePage extends Page {
     protected boolean accountTypeFieldUpdate(AjaxRequestTarget target) {
         this.accountValue = null;
         this.accountProvider.setDisabled(false);
-        this.accountProvider.applyWhere("classification_enum",
-                "classification_enum = " + AccountType.valueOf(this.accountTypeValue.getId()).getLiteral());
-        target.add(this.form);
-        return false;
-    }
-
-    protected boolean accountTypeFieldError(AjaxRequestTarget target, RuntimeException error) {
-        this.accountValue = null;
-        this.accountProvider.setDisabled(true);
+        this.accountProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.valueOf(this.accountTypeValue.getId()).getLiteral());
         target.add(this.form);
         return false;
     }
