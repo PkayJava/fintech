@@ -371,10 +371,10 @@ public class FixedBuilder implements Serializable {
         return this;
     }
 
-    private Double minDepositTerm;
+    private Integer minDepositTerm;
     private boolean hasMinDepositTerm;
 
-    public FixedBuilder withMinDepositTerm(Double minDepositTerm) {
+    public FixedBuilder withMinDepositTerm(Integer minDepositTerm) {
         this.minDepositTerm = minDepositTerm;
         this.hasMinDepositTerm = true;
         return this;
@@ -407,10 +407,10 @@ public class FixedBuilder implements Serializable {
         return this;
     }
 
-    private Double maxDepositTerm;
+    private Integer maxDepositTerm;
     private boolean hasMaxDepositTerm;
 
-    public FixedBuilder withMaxDepositTerm(Double maxDepositTerm) {
+    public FixedBuilder withMaxDepositTerm(Integer maxDepositTerm) {
         this.maxDepositTerm = maxDepositTerm;
         this.hasMaxDepositTerm = true;
         return this;

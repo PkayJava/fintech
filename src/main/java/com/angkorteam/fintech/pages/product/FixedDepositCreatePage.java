@@ -198,8 +198,8 @@ public class FixedDepositCreatePage extends Page {
 
     private WebMarkupContainer settingMinimumDepositTermBlock;
     private WebMarkupContainer settingMinimumDepositTermContainer;
-    private Double settingMinimumDepositTermValue;
-    private TextField<Double> settingMinimumDepositTermField;
+    private Integer settingMinimumDepositTermValue;
+    private TextField<Integer> settingMinimumDepositTermField;
     private TextFeedbackPanel settingMinimumDepositTermFeedback;
 
     private WebMarkupContainer settingMinimumDepositTypeBlock;
@@ -224,8 +224,8 @@ public class FixedDepositCreatePage extends Page {
 
     private WebMarkupContainer settingMaximumDepositTermBlock;
     private WebMarkupContainer settingMaximumDepositTermContainer;
-    private Double settingMaximumDepositTermValue;
-    private TextField<Double> settingMaximumDepositTermField;
+    private Integer settingMaximumDepositTermValue;
+    private TextField<Integer> settingMaximumDepositTermField;
     private TextFeedbackPanel settingMaximumDepositTermFeedback;
 
     private WebMarkupContainer settingMaximumDepositTypeBlock;
