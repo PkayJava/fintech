@@ -120,8 +120,7 @@ public class OfficeCreatePage extends Page {
         this.form.add(this.openingDateFeedback);
 
         this.parentProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"),
-                this.parentProvider);
+        this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"), this.parentProvider);
         this.parentField.setRequired(true);
         this.form.add(this.parentField);
         this.parentFeedback = new TextFeedbackPanel("parentFeedback", this.parentField);

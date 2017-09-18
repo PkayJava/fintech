@@ -83,7 +83,7 @@ public class FloatingRateCreatePage extends Page {
     private List<Map<String, Object>> rateValue = Lists.newArrayList();
     private DataTable<Map<String, Object>, String> rateTable;
     private ListDataProvider rateProvider;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -176,10 +176,8 @@ public class FloatingRateCreatePage extends Page {
 
         List<IColumn<Map<String, Object>, String>> rateColumn = Lists.newArrayList();
         rateColumn.add(new TextColumn(Model.of("From Date"), "fromDate", "fromDate", this::rateFromDateColumn));
-        rateColumn.add(new TextColumn(Model.of("Interest Rate"), "interestRate", "interestRate",
-                this::rateInterestRateColumn));
-        rateColumn.add(new TextColumn(Model.of("Is Differential"), "differential", "differential",
-                this::rateDifferentialColumn));
+        rateColumn.add(new TextColumn(Model.of("Interest Rate"), "interestRate", "interestRate", this::rateInterestRateColumn));
+        rateColumn.add(new TextColumn(Model.of("Is Differential"), "differential", "differential", this::rateDifferentialColumn));
         rateColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::rateActionItem, this::rateActionClick));
         this.rateProvider = new ListDataProvider(this.rateValue);
         this.rateTable = new DataTable<>("rateTable", rateColumn, this.rateProvider, 20);
@@ -255,8 +253,7 @@ public class FloatingRateCreatePage extends Page {
         builder.withBaseLendingRate(this.baseLendingValue);
         builder.withName(this.nameValue);
         for (Map<String, Object> rate : this.rateValue) {
-            builder.withRatePeriod((Date) rate.get("fromDate"), (Double) rate.get("interestRate"),
-                    (Boolean) rate.get("differential"));
+            builder.withRatePeriod((Date) rate.get("fromDate"), (Double) rate.get("interestRate"), (Boolean) rate.get("differential"));
         }
 
         JsonNode node = null;

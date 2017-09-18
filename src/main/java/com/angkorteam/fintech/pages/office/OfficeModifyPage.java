@@ -60,7 +60,7 @@ public class OfficeModifyPage extends Page {
     private Form<Void> form;
     private Button saveButton;
     private BookmarkablePageLink<Void> closeLink;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -136,11 +136,9 @@ public class OfficeModifyPage extends Page {
         this.openingDateFeedback = new TextFeedbackPanel("openingDateFeedback", this.openingDateField);
         this.form.add(this.openingDateFeedback);
 
-        this.parentValue = jdbcTemplate.queryForObject("select id, name as text from m_office where id = ?",
-                new OptionMapper(), object.get("parent_id"));
+        this.parentValue = jdbcTemplate.queryForObject("select id, name as text from m_office where id = ?", new OptionMapper(), object.get("parent_id"));
         this.parentProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"),
-                this.parentProvider);
+        this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"), this.parentProvider);
         this.parentField.setRequired(true);
         this.form.add(this.parentField);
         this.parentFeedback = new TextFeedbackPanel("parentFeedback", this.parentField);

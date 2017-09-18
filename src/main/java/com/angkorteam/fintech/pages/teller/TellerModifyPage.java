@@ -115,8 +115,7 @@ public class TellerModifyPage extends Page {
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        Map<String, Object> tellerObject = jdbcTemplate.queryForMap("select * from m_tellers where id = ?",
-                this.tellerId);
+        Map<String, Object> tellerObject = jdbcTemplate.queryForMap("select * from m_tellers where id = ?", this.tellerId);
 
         this.form = new Form<>("form");
         add(this.form);
@@ -128,11 +127,9 @@ public class TellerModifyPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", TellerBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?",
-                new OptionMapper(), tellerObject.get("office_id"));
+        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", new OptionMapper(), tellerObject.get("office_id"));
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
-                this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.form.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
@@ -144,8 +141,7 @@ public class TellerModifyPage extends Page {
             this.statusValue = new Option(TellerState.Inactive.name(), TellerState.Inactive.getDescription());
         }
         this.statusProvider = new TellerStateProvider();
-        this.statusField = new Select2SingleChoice<>("statusField", 0, new PropertyModel<>(this, "statusValue"),
-                this.statusProvider);
+        this.statusField = new Select2SingleChoice<>("statusField", 0, new PropertyModel<>(this, "statusValue"), this.statusProvider);
         this.form.add(this.statusField);
         this.statusFeedback = new TextFeedbackPanel("statusFeedback", this.statusField);
         this.form.add(this.statusFeedback);

@@ -139,8 +139,7 @@ public class FloatingRateModifyPage extends Page {
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        Map<String, Object> rateObject = jdbcTemplate.queryForMap("select * from m_floating_rates where id = ?",
-                this.rateId);
+        Map<String, Object> rateObject = jdbcTemplate.queryForMap("select * from m_floating_rates where id = ?", this.rateId);
 
         this.rateForm = new Form<>("rateForm");
         add(this.rateForm);
@@ -202,10 +201,8 @@ public class FloatingRateModifyPage extends Page {
 
         List<IColumn<Map<String, Object>, String>> rateColumn = Lists.newArrayList();
         rateColumn.add(new TextColumn(Model.of("From Date"), "fromDate", "fromDate", this::rateFromDateColumn));
-        rateColumn.add(new TextColumn(Model.of("Interest Rate"), "interestRate", "interestRate",
-                this::rateInterestRateColumn));
-        rateColumn.add(new TextColumn(Model.of("Is Differential"), "differential", "differential",
-                this::rateDifferentialColumn));
+        rateColumn.add(new TextColumn(Model.of("Interest Rate"), "interestRate", "interestRate", this::rateInterestRateColumn));
+        rateColumn.add(new TextColumn(Model.of("Is Differential"), "differential", "differential", this::rateDifferentialColumn));
         rateColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::rateActionItem, this::rateActionClick));
         this.rateProvider = new ListDataProvider(this.rateValue);
         this.rateTable = new DataTable<>("rateTable", rateColumn, this.rateProvider, 20);
@@ -222,9 +219,7 @@ public class FloatingRateModifyPage extends Page {
     private void refillTable() {
         this.rateValue.clear();
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        List<Map<String, Object>> rates = jdbcTemplate.queryForList(
-                "select id, from_date fromDate, concat(id, '') uuid, interest_rate interestRate, is_differential_to_base_lending_rate differential from m_floating_rates_periods where floating_rates_id = ? order by id desc",
-                this.rateId);
+        List<Map<String, Object>> rates = jdbcTemplate.queryForList("select id, from_date fromDate, concat(id, '') uuid, interest_rate interestRate, is_differential_to_base_lending_rate differential from m_floating_rates_periods where floating_rates_id = ? order by id desc", this.rateId);
         List<String> dates = Lists.newArrayList();
         for (Map<String, Object> rate : rates) {
             String date = DateFormatUtils.format((Date) rate.get("fromDate"), "yyyy-MM-dd");
@@ -340,11 +335,9 @@ public class FloatingRateModifyPage extends Page {
         builder.withName(this.nameValue);
         for (Map<String, Object> rate : this.rateValue) {
             if (rate.get("interestRate") instanceof Double) {
-                builder.withRatePeriod((Date) rate.get("fromDate"), (Double) rate.get("interestRate"),
-                        (Boolean) rate.get("differential"));
+                builder.withRatePeriod((Date) rate.get("fromDate"), (Double) rate.get("interestRate"), (Boolean) rate.get("differential"));
             } else if (rate.get("interestRate") instanceof BigDecimal) {
-                builder.withRatePeriod((Date) rate.get("fromDate"),
-                        ((BigDecimal) rate.get("interestRate")).doubleValue(), (Boolean) rate.get("differential"));
+                builder.withRatePeriod((Date) rate.get("fromDate"), ((BigDecimal) rate.get("interestRate")).doubleValue(), (Boolean) rate.get("differential"));
             }
         }
 

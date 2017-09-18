@@ -68,8 +68,7 @@ public class RuleSelectPage extends Page {
         add(this.form);
 
         this.ruleProvider = new SingleChoiceProvider("acc_accounting_rule", "id", "name");
-        this.ruleField = new Select2SingleChoice<>("ruleField", new PropertyModel<>(this, "ruleValue"),
-                this.ruleProvider);
+        this.ruleField = new Select2SingleChoice<>("ruleField", new PropertyModel<>(this, "ruleValue"), this.ruleProvider);
         this.ruleField.setRequired(true);
         this.form.add(this.ruleField);
         this.ruleFeedback = new TextFeedbackPanel("ruleFeedback", this.ruleField);

@@ -71,12 +71,9 @@ public class DataTableBrowsePage extends Page {
         this.provider.boardField("category", "category", Integer.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Table Name"), "table_name",
-                "table_name", this::tableNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Associated"), "associated",
-                "associated", this::associatedColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Integer, Model.of("Category"), "category", "category",
-                this::categoryColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Table Name"), "table_name", "table_name", this::tableNameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Associated"), "associated", "associated", this::associatedColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Integer, Model.of("Category"), "category", "category", this::categoryColumn));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
         add(filterForm);

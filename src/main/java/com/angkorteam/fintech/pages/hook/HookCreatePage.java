@@ -94,7 +94,7 @@ public class HookCreatePage extends Page {
 
     private Form<Void> hookForm;
     private Button createButton;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -148,10 +148,8 @@ public class HookCreatePage extends Page {
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        this.groupingProvider = jdbcTemplate.query(
-                "select max(grouping) id, max(grouping) text from m_permission GROUP BY grouping", new OptionMapper());
-        this.groupingField = new DropDownChoice<>("groupingField", new PropertyModel<>(this, "groupingValue"),
-                new PropertyModel<>(this, "groupingProvider"), new OptionChoiceRenderer());
+        this.groupingProvider = jdbcTemplate.query("select max(grouping) id, max(grouping) text from m_permission GROUP BY grouping", new OptionMapper());
+        this.groupingField = new DropDownChoice<>("groupingField", new PropertyModel<>(this, "groupingValue"), new PropertyModel<>(this, "groupingProvider"), new OptionChoiceRenderer());
         this.groupingField.setRequired(true);
         this.groupingField.add(new OnChangeAjaxBehavior(this::groupingFieldUpdate));
         this.eventForm.add(this.groupingField);
@@ -159,8 +157,7 @@ public class HookCreatePage extends Page {
         this.eventForm.add(this.groupingFeedback);
 
         this.entityNameProvider = Lists.newArrayList();
-        this.entityNameField = new DropDownChoice<>("entityNameField", new PropertyModel<>(this, "entityNameValue"),
-                new PropertyModel<>(this, "entityNameProvider"), new OptionChoiceRenderer());
+        this.entityNameField = new DropDownChoice<>("entityNameField", new PropertyModel<>(this, "entityNameValue"), new PropertyModel<>(this, "entityNameProvider"), new OptionChoiceRenderer());
         this.entityNameField.setRequired(true);
         this.entityNameField.add(new OnChangeAjaxBehavior(this::entityNameFieldUpdate));
         this.eventForm.add(this.entityNameField);
@@ -168,8 +165,7 @@ public class HookCreatePage extends Page {
         this.eventForm.add(this.entityNameFeedback);
 
         this.actionNameProvider = Lists.newArrayList();
-        this.actionNameField = new DropDownChoice<>("actionNameField", new PropertyModel<>(this, "actionNameValue"),
-                new PropertyModel<>(this, "actionNameProvider"), new OptionChoiceRenderer());
+        this.actionNameField = new DropDownChoice<>("actionNameField", new PropertyModel<>(this, "actionNameValue"), new PropertyModel<>(this, "actionNameProvider"), new OptionChoiceRenderer());
         this.actionNameField.setRequired(true);
         this.eventForm.add(this.actionNameField);
         this.actionNameFeedback = new TextFeedbackPanel("actionNameFeedback", this.actionNameField);
@@ -204,15 +200,13 @@ public class HookCreatePage extends Page {
         this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
         this.hookForm.add(this.activeFeedback);
 
-        this.templateValue = jdbcTemplate.queryForObject("SELECT name from m_hook_templates where id = ?", String.class,
-                this.templateId);
+        this.templateValue = jdbcTemplate.queryForObject("SELECT name from m_hook_templates where id = ?", String.class, this.templateId);
         this.templateField = new Label("templateField", new PropertyModel<>(this, "templateValue"));
         this.hookForm.add(this.templateField);
 
         this.configField = new RepeatingView("configField");
         this.hookForm.add(this.configField);
-        List<Map<String, Object>> temps = jdbcTemplate
-                .queryForList("select * from m_hook_schema where hook_template_id = ?", this.templateId);
+        List<Map<String, Object>> temps = jdbcTemplate.queryForList("select * from m_hook_schema where hook_template_id = ?", this.templateId);
         for (Map<String, Object> temp : temps) {
             String id = this.configField.newChildId();
             HookFieldWidget field = new HookFieldWidget(id, (String) temp.get("field_name"), this.configValue);
@@ -223,9 +217,7 @@ public class HookCreatePage extends Page {
     protected boolean entityNameFieldUpdate(AjaxRequestTarget target) {
         if (this.entityNameValue != null) {
             JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-            this.actionNameProvider = jdbcTemplate.query(
-                    "select max(action_name) id, max(action_name) text from m_permission WHERE  entity_name = ? GROUP BY action_name",
-                    new OptionMapper(), this.entityNameValue.getId());
+            this.actionNameProvider = jdbcTemplate.query("select max(action_name) id, max(action_name) text from m_permission WHERE  entity_name = ? GROUP BY action_name", new OptionMapper(), this.entityNameValue.getId());
         } else {
             if (this.actionNameProvider != null) {
                 this.actionNameProvider.clear();
@@ -238,9 +230,7 @@ public class HookCreatePage extends Page {
     protected boolean groupingFieldUpdate(AjaxRequestTarget target) {
         if (this.groupingValue != null) {
             JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-            this.entityNameProvider = jdbcTemplate.query(
-                    "select max(entity_name) id, max(entity_name) text from m_permission WHERE  grouping = ? GROUP BY entity_name",
-                    new OptionMapper(), this.groupingValue.getId());
+            this.entityNameProvider = jdbcTemplate.query("select max(entity_name) id, max(entity_name) text from m_permission WHERE  grouping = ? GROUP BY entity_name", new OptionMapper(), this.groupingValue.getId());
         } else {
             if (this.entityNameProvider != null) {
                 this.entityNameProvider.clear();

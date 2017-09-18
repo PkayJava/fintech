@@ -82,14 +82,10 @@ public class OfficeBrowsePage extends Page {
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
         columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("ID"), "id", "id", this::idColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("External ID"), "external_id",
-                "external_id", this::externalIdColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name",
-                this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Parent Name"), "parent_name",
-                "parent_name", this::parentNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Opening Date"), "opening_date",
-                "opening_date", this::openingDateColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("External ID"), "external_id", "external_id", this::externalIdColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Parent Name"), "parent_name", "parent_name", this::parentNameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Opening Date"), "opening_date", "opening_date", this::openingDateColumn));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
         add(filterForm);

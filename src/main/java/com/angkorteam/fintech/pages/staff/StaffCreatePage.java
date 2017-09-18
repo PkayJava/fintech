@@ -62,7 +62,7 @@ public class StaffCreatePage extends Page {
     private Form<Void> form;
     private Button saveButton;
     private BookmarkablePageLink<Void> closeLink;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -129,8 +129,7 @@ public class StaffCreatePage extends Page {
         this.form.add(this.joinedDateFeedback);
 
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
-                this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.form.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);

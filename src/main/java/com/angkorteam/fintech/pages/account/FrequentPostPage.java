@@ -142,7 +142,7 @@ public class FrequentPostPage extends Page {
     private List<Map<String, Object>> debitValue;
     private DataTable<Map<String, Object>, String> debitTable;
     private ListDataProvider debitProvider;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -180,8 +180,7 @@ public class FrequentPostPage extends Page {
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        Map<String, Object> ruleObject = jdbcTemplate.queryForMap("select * from acc_accounting_rule where id = ?",
-                this.ruleId);
+        Map<String, Object> ruleObject = jdbcTemplate.queryForMap("select * from acc_accounting_rule where id = ?", this.ruleId);
 
         this.creditValue = Lists.newArrayList();
         this.debitValue = Lists.newArrayList();
@@ -196,20 +195,16 @@ public class FrequentPostPage extends Page {
 
         this.debitAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.debitAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.debitAccountNameField = new Select2SingleChoice<>("debitAccountNameField", 0,
-                new PropertyModel<>(this, "debitAccountNameValue"), this.debitAccountNameProvider);
+        this.debitAccountNameField = new Select2SingleChoice<>("debitAccountNameField", 0, new PropertyModel<>(this, "debitAccountNameValue"), this.debitAccountNameProvider);
         this.debitAccountNameField.setRequired(true);
         this.debitForm.add(this.debitAccountNameField);
         this.debitAccountNameFeedback = new TextFeedbackPanel("debitAccountNameFeedback", this.debitAccountNameField);
         this.debitForm.add(this.debitAccountNameFeedback);
         if (ruleObject.get("debit_account_id") != null) {
-            this.debitAccountNameValue = jdbcTemplate.queryForObject(
-                    "select id, name text from acc_gl_account where id = ?", new OptionMapper(),
-                    ruleObject.get("debit_account_id"));
+            this.debitAccountNameValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", new OptionMapper(), ruleObject.get("debit_account_id"));
             this.debitAccountNameProvider.applyWhere("id", "id = " + ruleObject.get("debit_account_id"));
         } else {
-            List<String> tags = jdbcTemplate.queryForList("SELECT tag_id FROM acc_rule_tags WHERE acc_type_enum = "
-                    + RuleBrowsePage.DEBIT + " and acc_rule_id = ?", String.class, this.ruleId);
+            List<String> tags = jdbcTemplate.queryForList("SELECT tag_id FROM acc_rule_tags WHERE acc_type_enum = " + RuleBrowsePage.DEBIT + " and acc_rule_id = ?", String.class, this.ruleId);
             if (tags != null && !tags.isEmpty()) {
                 this.debitAccountNameProvider.applyWhere("tag", "tag_id in (" + StringUtils.join(tags, ",") + ")");
             }
@@ -232,21 +227,16 @@ public class FrequentPostPage extends Page {
         this.creditAccountNameValue = null;
         this.creditAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.creditAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.creditAccountNameField = new Select2SingleChoice<>("creditAccountNameField", 0,
-                new PropertyModel<>(this, "creditAccountNameValue"), this.creditAccountNameProvider);
+        this.creditAccountNameField = new Select2SingleChoice<>("creditAccountNameField", 0, new PropertyModel<>(this, "creditAccountNameValue"), this.creditAccountNameProvider);
         this.creditAccountNameField.setRequired(true);
         this.creditForm.add(this.creditAccountNameField);
-        this.creditAccountNameFeedback = new TextFeedbackPanel("creditAccountNameFeedback",
-                this.creditAccountNameField);
+        this.creditAccountNameFeedback = new TextFeedbackPanel("creditAccountNameFeedback", this.creditAccountNameField);
         this.creditForm.add(this.creditAccountNameFeedback);
         if (ruleObject.get("credit_account_id") != null) {
-            this.creditAccountNameValue = jdbcTemplate.queryForObject(
-                    "select id, name text from acc_gl_account where id = ?", new OptionMapper(),
-                    ruleObject.get("credit_account_id"));
+            this.creditAccountNameValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", new OptionMapper(), ruleObject.get("credit_account_id"));
             this.creditAccountNameProvider.applyWhere("id", "id = " + ruleObject.get("credit_account_id"));
         } else {
-            List<String> tags = jdbcTemplate.queryForList("SELECT tag_id FROM acc_rule_tags WHERE acc_type_enum = "
-                    + RuleBrowsePage.CREDIT + " and acc_rule_id = ?", String.class, this.ruleId);
+            List<String> tags = jdbcTemplate.queryForList("SELECT tag_id FROM acc_rule_tags WHERE acc_type_enum = " + RuleBrowsePage.CREDIT + " and acc_rule_id = ?", String.class, this.ruleId);
             if (tags != null && !tags.isEmpty()) {
                 this.creditAccountNameProvider.applyWhere("tag", "tag_id in (" + StringUtils.join(tags, ",") + ")");
             }
@@ -269,22 +259,18 @@ public class FrequentPostPage extends Page {
         this.form.add(this.closeLink);
 
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
-                this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.form.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
         this.form.add(this.officeFeedback);
         if (ruleObject.get("office_id") != null) {
-            this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?",
-                    new OptionMapper(), ruleObject.get("office_id"));
+            this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", new OptionMapper(), ruleObject.get("office_id"));
             this.officeProvider.applyWhere("id", "id = " + ruleObject.get("office_id"));
         }
 
-        this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name",
-                "concat(name,' [', code,']')");
-        this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"),
-                this.currencyProvider);
+        this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
         this.currencyField.setRequired(true);
         this.form.add(this.currencyField);
         this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
@@ -312,24 +298,21 @@ public class FrequentPostPage extends Page {
         this.creditTable.addTopToolbar(new HeadersToolbar<>(this.creditTable, this.creditProvider));
         this.creditTable.addBottomToolbar(new NoRecordsToolbar(this.creditTable));
 
-        this.referenceNumberField = new TextField<>("referenceNumberField",
-                new PropertyModel<>(this, "referenceNumberValue"));
+        this.referenceNumberField = new TextField<>("referenceNumberField", new PropertyModel<>(this, "referenceNumberValue"));
         this.referenceNumberField.setRequired(true);
         this.form.add(this.referenceNumberField);
         this.referenceNumberFeedback = new TextFeedbackPanel("referenceNumberFeedback", this.referenceNumberField);
         this.form.add(this.referenceNumberFeedback);
 
         this.transactionDateValue = new Date();
-        this.transactionDateField = new DateTextField("transactionDateField",
-                new PropertyModel<>(this, "transactionDateValue"));
+        this.transactionDateField = new DateTextField("transactionDateField", new PropertyModel<>(this, "transactionDateValue"));
         this.transactionDateField.setRequired(true);
         this.form.add(this.transactionDateField);
         this.transactionDateFeedback = new TextFeedbackPanel("transactionDateFeedback", this.transactionDateField);
         this.form.add(this.transactionDateFeedback);
 
         this.paymentTypeProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
-        this.paymentTypeField = new Select2SingleChoice<>("paymentTypeField", 0,
-                new PropertyModel<>(this, "paymentTypeValue"), this.paymentTypeProvider);
+        this.paymentTypeField = new Select2SingleChoice<>("paymentTypeField", 0, new PropertyModel<>(this, "paymentTypeValue"), this.paymentTypeProvider);
         this.form.add(this.paymentTypeField);
         this.paymentTypeFeedback = new TextFeedbackPanel("paymentTypeFeedback", this.paymentTypeField);
         this.form.add(this.paymentTypeFeedback);

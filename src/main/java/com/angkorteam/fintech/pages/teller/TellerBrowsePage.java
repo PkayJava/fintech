@@ -39,7 +39,7 @@ public class TellerBrowsePage extends Page {
     private JdbcProvider provider;
 
     private BookmarkablePageLink<Void> createLink;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -75,24 +75,18 @@ public class TellerBrowsePage extends Page {
         this.provider.boardField("m_tellers.id", "id", Long.class);
         this.provider.boardField("m_office.name", "branch", String.class);
         this.provider.boardField("m_tellers.name", "name", String.class);
-        this.provider.boardField("case m_tellers.state when 300 then 'Active' when 400 then 'Inactive' end", "state",
-                Integer.class);
+        this.provider.boardField("case m_tellers.state when 300 then 'Active' when 400 then 'Inactive' end", "state", Integer.class);
         this.provider.boardField("m_tellers.valid_from", "valid_from", Date.class);
         this.provider.boardField("m_tellers.valid_to", "valid_to", Date.class);
 
         this.provider.selectField("id", Long.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Branch"), "branch", "branch",
-                this::branchColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name",
-                this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("State"), "state", "state",
-                this::stateColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Valid From"), "valid_from",
-                "valid_from", this::validFromColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Valid To"), "valid_to", "valid_to",
-                this::validToColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Branch"), "branch", "branch", this::branchColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("State"), "state", "state", this::stateColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Valid From"), "valid_from", "valid_from", this::validFromColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Valid To"), "valid_to", "valid_to", this::validToColumn));
         columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);

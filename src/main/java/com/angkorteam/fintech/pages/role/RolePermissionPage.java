@@ -116,14 +116,10 @@ public class RolePermissionPage extends Page {
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
         // columns.add(new TextFilterColumn(this.provider, ItemClass.Long,
         // Model.of("ID"), "id", "id", this::idColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Grouping"), "grouping", "grouping",
-                this::groupingColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Code"), "code", "code",
-                this::codeColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Entity"), "entity_name",
-                "entity_name", this::entityColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Operation"), "action_name",
-                "action_name", this::operationColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Grouping"), "grouping", "grouping", this::groupingColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Code"), "code", "code", this::codeColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Entity"), "entity_name", "entity_name", this::entityColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Operation"), "action_name", "action_name", this::operationColumn));
         columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
@@ -140,12 +136,9 @@ public class RolePermissionPage extends Page {
         this.addButton.setOnSubmit(this::addButtonSubmit);
         this.form.add(this.addButton);
 
-        this.permissionProvider = new MultipleChoiceProvider("m_permission", "code", "code",
-                "concat(code,' ', '[', grouping,']',  ' ', '[', IF(entity_name is NULL , 'N/A', entity_name), ']',' ', '[' , IF(action_name is NULL , 'N/A', action_name),']')");
-        this.permissionProvider.applyWhere("id",
-                "id not IN (SELECT permission_id from m_role_permission where  role_id = " + this.roleId + ")");
-        this.permissionField = new Select2MultipleChoice<>("permissionField",
-                new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
+        this.permissionProvider = new MultipleChoiceProvider("m_permission", "code", "code", "concat(code,' ', '[', grouping,']',  ' ', '[', IF(entity_name is NULL , 'N/A', entity_name), ']',' ', '[' , IF(action_name is NULL , 'N/A', action_name),']')");
+        this.permissionProvider.applyWhere("id", "id not IN (SELECT permission_id from m_role_permission where  role_id = " + this.roleId + ")");
+        this.permissionField = new Select2MultipleChoice<>("permissionField", new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
         this.permissionField.setRequired(true);
         this.form.add(this.permissionField);
         this.permissionFeedback = new TextFeedbackPanel("permissionFeedback", this.permissionField);
@@ -157,9 +150,7 @@ public class RolePermissionPage extends Page {
             String falseCode = (String) stringObjectMap.get("code");
             JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-            List<String> trueCodes = jdbcTemplate.queryForList(
-                    "select m_permission.code from m_role_permission INNER JOIN m_permission ON m_role_permission.permission_id = m_permission.id where m_role_permission.role_id = ?",
-                    String.class, this.roleId);
+            List<String> trueCodes = jdbcTemplate.queryForList("select m_permission.code from m_role_permission INNER JOIN m_permission ON m_role_permission.permission_id = m_permission.id where m_role_permission.role_id = ?", String.class, this.roleId);
             List<String> allCodes = jdbcTemplate.queryForList("select code from m_permission", String.class);
             Map<String, Boolean> permissions = Maps.newHashMap();
             for (String code : allCodes) {
@@ -194,9 +185,7 @@ public class RolePermissionPage extends Page {
     private void addButtonSubmit(Button button) {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        List<String> trueCodes = jdbcTemplate.queryForList(
-                "select m_permission.code from m_role_permission INNER JOIN m_permission ON m_role_permission.permission_id = m_permission.id where m_role_permission.role_id = ?",
-                String.class, this.roleId);
+        List<String> trueCodes = jdbcTemplate.queryForList("select m_permission.code from m_role_permission INNER JOIN m_permission ON m_role_permission.permission_id = m_permission.id where m_role_permission.role_id = ?", String.class, this.roleId);
         List<String> allCodes = jdbcTemplate.queryForList("select code from m_permission", String.class);
         Map<String, Boolean> permissions = Maps.newHashMap();
         for (String code : allCodes) {

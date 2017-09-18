@@ -20,7 +20,7 @@ public class MifosSingleChoiceProvider extends OptionSingleChoiceProvider {
     }
 
     @Override
-    protected JdbcNamed getNamed() { 
+    protected JdbcNamed getNamed() {
         Delegate delegate = SpringBean.getBean(Delegate.class);
         return new JdbcNamed(delegate);
     }

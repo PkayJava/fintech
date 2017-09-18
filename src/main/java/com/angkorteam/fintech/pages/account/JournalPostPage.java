@@ -184,8 +184,7 @@ public class JournalPostPage extends Page {
 
         this.debitAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.debitAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.debitAccountNameField = new Select2SingleChoice<>("debitAccountNameField", 0,
-                new PropertyModel<>(this, "debitAccountNameValue"), this.debitAccountNameProvider);
+        this.debitAccountNameField = new Select2SingleChoice<>("debitAccountNameField", 0, new PropertyModel<>(this, "debitAccountNameValue"), this.debitAccountNameProvider);
         this.debitAccountNameField.setRequired(true);
         this.debitForm.add(this.debitAccountNameField);
         this.debitAccountNameFeedback = new TextFeedbackPanel("debitAccountNameFeedback", this.debitAccountNameField);
@@ -209,12 +208,10 @@ public class JournalPostPage extends Page {
 
         this.creditAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.creditAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.creditAccountNameField = new Select2SingleChoice<>("creditAccountNameField", 0,
-                new PropertyModel<>(this, "creditAccountNameValue"), this.creditAccountNameProvider);
+        this.creditAccountNameField = new Select2SingleChoice<>("creditAccountNameField", 0, new PropertyModel<>(this, "creditAccountNameValue"), this.creditAccountNameProvider);
         this.creditAccountNameField.setRequired(true);
         this.creditForm.add(this.creditAccountNameField);
-        this.creditAccountNameFeedback = new TextFeedbackPanel("creditAccountNameFeedback",
-                this.creditAccountNameField);
+        this.creditAccountNameFeedback = new TextFeedbackPanel("creditAccountNameFeedback", this.creditAccountNameField);
         this.creditForm.add(this.creditAccountNameFeedback);
 
         this.creditAmountField = new TextField<>("creditAmountField", new PropertyModel<>(this, "creditAmountValue"));
@@ -236,17 +233,14 @@ public class JournalPostPage extends Page {
         this.form.add(this.closeLink);
 
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
-                this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.form.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
         this.form.add(this.officeFeedback);
 
-        this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name",
-                "concat(name,' [', code,']')");
-        this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"),
-                this.currencyProvider);
+        this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
         this.currencyField.setRequired(true);
         this.form.add(this.currencyField);
         this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
@@ -274,24 +268,21 @@ public class JournalPostPage extends Page {
         this.creditTable.addTopToolbar(new HeadersToolbar<>(this.creditTable, this.creditProvider));
         this.creditTable.addBottomToolbar(new NoRecordsToolbar(this.creditTable));
 
-        this.referenceNumberField = new TextField<>("referenceNumberField",
-                new PropertyModel<>(this, "referenceNumberValue"));
+        this.referenceNumberField = new TextField<>("referenceNumberField", new PropertyModel<>(this, "referenceNumberValue"));
         this.referenceNumberField.setRequired(true);
         this.form.add(this.referenceNumberField);
         this.referenceNumberFeedback = new TextFeedbackPanel("referenceNumberFeedback", this.referenceNumberField);
         this.form.add(this.referenceNumberFeedback);
 
         this.transactionDateValue = new Date();
-        this.transactionDateField = new DateTextField("transactionDateField",
-                new PropertyModel<>(this, "transactionDateValue"));
+        this.transactionDateField = new DateTextField("transactionDateField", new PropertyModel<>(this, "transactionDateValue"));
         this.transactionDateField.setRequired(true);
         this.form.add(this.transactionDateField);
         this.transactionDateFeedback = new TextFeedbackPanel("transactionDateFeedback", this.transactionDateField);
         this.form.add(this.transactionDateFeedback);
 
         this.paymentTypeProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
-        this.paymentTypeField = new Select2SingleChoice<>("paymentTypeField", 0,
-                new PropertyModel<>(this, "paymentTypeValue"), this.paymentTypeProvider);
+        this.paymentTypeField = new Select2SingleChoice<>("paymentTypeField", 0, new PropertyModel<>(this, "paymentTypeValue"), this.paymentTypeProvider);
         this.form.add(this.paymentTypeField);
         this.paymentTypeFeedback = new TextFeedbackPanel("paymentTypeFeedback", this.paymentTypeField);
         this.form.add(this.paymentTypeFeedback);

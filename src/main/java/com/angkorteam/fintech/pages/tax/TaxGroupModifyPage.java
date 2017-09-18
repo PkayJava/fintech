@@ -1,5 +1,21 @@
 package com.angkorteam.fintech.pages.tax;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
@@ -10,6 +26,7 @@ import com.angkorteam.fintech.pages.TaxDashboardPage;
 import com.angkorteam.fintech.popup.TaxGroupModifyPopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -29,26 +46,10 @@ import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by socheatkhauv on 7/16/17.
@@ -86,7 +87,7 @@ public class TaxGroupModifyPage extends Page {
     private String itemStartDateValue;
     private Date itemEndDateValue;
     private ModalWindow taxPopup;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -151,8 +152,7 @@ public class TaxGroupModifyPage extends Page {
         this.taxForm.add(this.addButton);
 
         this.taxProvider = new SingleChoiceProvider("m_tax_component", "id", "name");
-        this.taxField = new Select2SingleChoice<>("taxField", 0, new PropertyModel<>(this, "taxValue"),
-                this.taxProvider);
+        this.taxField = new Select2SingleChoice<>("taxField", 0, new PropertyModel<>(this, "taxValue"), this.taxProvider);
         this.taxForm.add(this.taxField);
         this.taxFeedback = new TextFeedbackPanel("taxFeedback", this.taxField);
         this.taxForm.add(this.taxFeedback);
@@ -184,9 +184,7 @@ public class TaxGroupModifyPage extends Page {
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        List<Map<String, Object>> groups = jdbcTemplate.queryForList(
-                "SELECT if(m_tax_group_mappings.end_date is null, 'Y', 'N') allow, m_tax_group_mappings.id, concat(m_tax_group_mappings.id, '') AS uuid, concat(m_tax_component.id, '') taxComponentId, m_tax_component.name tax, m_tax_group_mappings.start_date startDate, m_tax_group_mappings.end_date endDate FROM m_tax_group_mappings INNER join m_tax_component on m_tax_group_mappings.tax_component_id = m_tax_component.id WHERE tax_group_id = ?",
-                this.taxId);
+        List<Map<String, Object>> groups = jdbcTemplate.queryForList("SELECT if(m_tax_group_mappings.end_date is null, 'Y', 'N') allow, m_tax_group_mappings.id, concat(m_tax_group_mappings.id, '') AS uuid, concat(m_tax_component.id, '') taxComponentId, m_tax_component.name tax, m_tax_group_mappings.start_date startDate, m_tax_group_mappings.end_date endDate FROM m_tax_group_mappings INNER join m_tax_component on m_tax_group_mappings.tax_component_id = m_tax_component.id WHERE tax_group_id = ?", this.taxId);
         this.taxComponentValue.addAll(groups);
 
         this.saveButton = new Button("saveButton");
@@ -205,15 +203,11 @@ public class TaxGroupModifyPage extends Page {
 
         List<IColumn<Map<String, Object>, String>> taxComponentColumn = Lists.newArrayList();
         taxComponentColumn.add(new TextColumn(Model.of("Tax Component"), "tax", "tax", this::taxComponentTaxColumn));
-        taxComponentColumn.add(
-                new TextColumn(Model.of("Start Date"), "startDate", "startDate", this::taxComponentStartDateColumn));
-        taxComponentColumn
-                .add(new TextColumn(Model.of("End Date"), "endDate", "endDate", this::taxComponentEndDateColumn));
-        taxComponentColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::taxComponentActionItem,
-                this::taxComponentActionClick));
+        taxComponentColumn.add(new TextColumn(Model.of("Start Date"), "startDate", "startDate", this::taxComponentStartDateColumn));
+        taxComponentColumn.add(new TextColumn(Model.of("End Date"), "endDate", "endDate", this::taxComponentEndDateColumn));
+        taxComponentColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::taxComponentActionItem, this::taxComponentActionClick));
         this.taxComponentProvider = new ListDataProvider(this.taxComponentValue);
-        this.taxComponentTable = new DataTable<>("taxComponentTable", taxComponentColumn, this.taxComponentProvider,
-                20);
+        this.taxComponentTable = new DataTable<>("taxComponentTable", taxComponentColumn, this.taxComponentProvider, 20);
         this.form.add(this.taxComponentTable);
         this.taxComponentTable.addTopToolbar(new HeadersToolbar<>(this.taxComponentTable, this.taxComponentProvider));
         this.taxComponentTable.addBottomToolbar(new NoRecordsToolbar(this.taxComponentTable));
@@ -240,8 +234,7 @@ public class TaxGroupModifyPage extends Page {
         return new TextCell(Model.of(tax));
     }
 
-    private ItemPanel taxComponentStartDateColumn(String jdbcColumn, IModel<String> display,
-                                                  Map<String, Object> model) {
+    private ItemPanel taxComponentStartDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Date startDate = (Date) model.get(jdbcColumn);
         if (startDate == null) {
             return new TextCell(Model.of(""));
@@ -300,8 +293,7 @@ public class TaxGroupModifyPage extends Page {
         for (Map<String, Object> tax : this.taxComponentValue) {
             Long id = (Long) tax.get("id");
             String taxComponentId = (String) tax.get("taxComponentId");
-            builder.withTaxComponent(id == null ? null : String.valueOf(id), taxComponentId,
-                    (Date) tax.get("startDate"), (Date) tax.get("endDate"));
+            builder.withTaxComponent(id == null ? null : String.valueOf(id), taxComponentId, (Date) tax.get("startDate"), (Date) tax.get("endDate"));
         }
 
         JsonNode node = null;

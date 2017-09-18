@@ -50,7 +50,7 @@ public class FinancialActivityCreatePage extends Page {
     private Option accountValue;
     private Select2SingleChoice<Option> accountField;
     private TextFeedbackPanel accountFeedback;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -94,20 +94,16 @@ public class FinancialActivityCreatePage extends Page {
         this.form.add(this.closeLink);
 
         this.financialActivityProvider = new FinancialActivityProvider();
-        this.financialActivityField = new Select2SingleChoice<>("financialActivityField", 0,
-                new PropertyModel<>(this, "financialActivityValue"), this.financialActivityProvider);
+        this.financialActivityField = new Select2SingleChoice<>("financialActivityField", 0, new PropertyModel<>(this, "financialActivityValue"), this.financialActivityProvider);
         this.form.add(this.financialActivityField);
-        this.financialActivityFeedback = new TextFeedbackPanel("financialActivityFeedback",
-                this.financialActivityField);
+        this.financialActivityFeedback = new TextFeedbackPanel("financialActivityFeedback", this.financialActivityField);
         this.form.add(this.financialActivityFeedback);
-        this.financialActivityField
-                .add(new OnChangeAjaxBehavior(this::financialActivityFieldUpdate, this::financialActivityFieldError));
+        this.financialActivityField.add(new OnChangeAjaxBehavior(this::financialActivityFieldUpdate, this::financialActivityFieldError));
 
         this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.accountProvider.applyWhere("usage", AccountUsage.Detail.getLiteral());
         this.accountProvider.setDisabled(true);
-        this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this, "accountValue"),
-                this.accountProvider);
+        this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this, "accountValue"), this.accountProvider);
         this.form.add(this.accountField);
         this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
         this.form.add(this.accountFeedback);
@@ -127,8 +123,7 @@ public class FinancialActivityCreatePage extends Page {
             }
             this.accountValue = null;
             this.accountProvider.setDisabled(false);
-            this.accountProvider.applyWhere("classification_enum",
-                    "classification_enum = " + classification_enum.getLiteral());
+            this.accountProvider.applyWhere("classification_enum", "classification_enum = " + classification_enum.getLiteral());
         }
         target.add(this.form);
         return false;
@@ -145,8 +140,7 @@ public class FinancialActivityCreatePage extends Page {
     protected void saveButtonSubmit(Button button) {
         FinancialActivityBuilder builder = new FinancialActivityBuilder();
         if (this.financialActivityValue != null) {
-            builder.withFinancialActivity(
-                    FinancialActivityType.valueOf(this.financialActivityValue.getId()).getLiteral());
+            builder.withFinancialActivity(FinancialActivityType.valueOf(this.financialActivityValue.getId()).getLiteral());
         }
         if (this.accountValue != null) {
             builder.withGlAccountId(this.accountValue.getId());

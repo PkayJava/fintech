@@ -18,5 +18,6 @@ public class TaxComponentCreatePageTest {
     public void dataEntry() {
         this.wicket.login();
         TaxComponentCreatePage page = this.wicket.startPage(TaxComponentCreatePage.class);
+        this.wicket.assertRenderedPage(TaxComponentCreatePage.class);
     }
 }

@@ -1,23 +1,9 @@
 package com.angkorteam.fintech.pages.tax;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.AccountType;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.request.TaxComponentBuilder;
-import com.angkorteam.fintech.helper.TaxComponentHelper;
-import com.angkorteam.fintech.pages.ProductDashboardPage;
-import com.angkorteam.fintech.pages.TaxDashboardPage;
-import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
@@ -27,9 +13,24 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.AccountType;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.request.TaxComponentBuilder;
+import com.angkorteam.fintech.helper.TaxComponentHelper;
+import com.angkorteam.fintech.pages.ProductDashboardPage;
+import com.angkorteam.fintech.pages.TaxDashboardPage;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 7/16/17.
@@ -60,7 +61,7 @@ public class TaxComponentModifyPage extends Page {
     private Date startDateValue;
     private DateTextField startDateField;
     private TextFeedbackPanel startDateFeedback;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -109,8 +110,7 @@ public class TaxComponentModifyPage extends Page {
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        Map<String, Object> taxObject = jdbcTemplate.queryForMap("select * from m_tax_component where id = ?",
-                this.tagId);
+        Map<String, Object> taxObject = jdbcTemplate.queryForMap("select * from m_tax_component where id = ?", this.tagId);
 
         this.form = new Form<>("form");
         add(this.form);
@@ -151,8 +151,7 @@ public class TaxComponentModifyPage extends Page {
         this.accountTypeField = new Label("accountTypeField", new PropertyModel<>(this, "accountTypeValue"));
         this.form.add(this.accountTypeField);
 
-        this.accountValue = jdbcTemplate.queryForObject("select name from acc_gl_account WHERE id = ?", String.class,
-                taxObject.get("credit_account_id"));
+        this.accountValue = jdbcTemplate.queryForObject("select name from acc_gl_account WHERE id = ?", String.class, taxObject.get("credit_account_id"));
         this.accountField = new Label("accountField", new PropertyModel<>(this, "accountValue"));
         this.form.add(this.accountField);
 

@@ -55,7 +55,7 @@ public class EMailConfigurationPage extends Page {
     private Boolean useTlsValue;
     private CheckBox useTlsField;
     private TextFeedbackPanel useTlsFeedback;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -94,9 +94,7 @@ public class EMailConfigurationPage extends Page {
         super.onInitialize();
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        List<Map<String, Object>> temps = jdbcTemplate.queryForList(
-                "select name, value from c_external_service_properties where external_service_id = ?",
-                ServiceType.SMTP.getLiteral());
+        List<Map<String, Object>> temps = jdbcTemplate.queryForList("select name, value from c_external_service_properties where external_service_id = ?", ServiceType.SMTP.getLiteral());
         Map<String, Object> params = Maps.newHashMap();
         for (Map<String, Object> temp : temps) {
             params.put((String) temp.get("name"), temp.get("value"));

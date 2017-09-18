@@ -70,16 +70,11 @@ public class UserBrowsePage extends Page {
         this.provider.selectField("id", Long.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Login"), "username", "username",
-                this::loginColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("First Name"), "firstname",
-                "firstname", this::firstNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Last Name"), "lastname", "lastname",
-                this::lastNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Email"), "email", "email",
-                this::emailColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Office"), "office", "office",
-                this::officeColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Login"), "username", "username", this::loginColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("First Name"), "firstname", "firstname", this::firstNameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Last Name"), "lastname", "lastname", this::lastNameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Email"), "email", "email", this::emailColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Office"), "office", "office", this::officeColumn));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
         add(filterForm);

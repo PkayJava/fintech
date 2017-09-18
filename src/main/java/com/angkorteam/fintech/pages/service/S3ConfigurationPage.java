@@ -85,9 +85,7 @@ public class S3ConfigurationPage extends Page {
         super.onInitialize();
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        List<Map<String, Object>> temps = jdbcTemplate.queryForList(
-                "select name, value from c_external_service_properties where external_service_id = ?",
-                ServiceType.S3.getLiteral());
+        List<Map<String, Object>> temps = jdbcTemplate.queryForList("select name, value from c_external_service_properties where external_service_id = ?", ServiceType.S3.getLiteral());
         Map<String, Object> params = Maps.newHashMap();
         for (Map<String, Object> temp : temps) {
             params.put((String) temp.get("name"), temp.get("value"));

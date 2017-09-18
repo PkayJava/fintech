@@ -22,7 +22,7 @@ public class ValueBrowsePageTest {
         this.wicket.login();
 
         String nameValue = "TEST_JUNIT_" + this.wicket.getStringGenerator().generate(10);
-        String codeId = this.wicket.getJdbcTemplate().queryForObject("select id from m_code where code_name = ?", String.class, "TEST_JUNIT");
+        String codeId = this.wicket.getJdbcTemplate().queryForObject("select id from m_code where is_system_defined = 0 and code_name like ? limit 1", String.class, "TEST_%");
         PageParameters parameters = new PageParameters();
         parameters.add("codeId", codeId);
 

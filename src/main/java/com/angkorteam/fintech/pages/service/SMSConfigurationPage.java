@@ -50,7 +50,7 @@ public class SMSConfigurationPage extends Page {
     private int portValue = 9191;
     private TextField<Integer> portField;
     private TextFeedbackPanel portFeedback;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -89,9 +89,7 @@ public class SMSConfigurationPage extends Page {
         super.onInitialize();
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        List<Map<String, Object>> temps = jdbcTemplate.queryForList(
-                "select name, value from c_external_service_properties where external_service_id = ?",
-                ServiceType.SMS.getLiteral());
+        List<Map<String, Object>> temps = jdbcTemplate.queryForList("select name, value from c_external_service_properties where external_service_id = ?", ServiceType.SMS.getLiteral());
         Map<String, Object> params = Maps.newHashMap();
         for (Map<String, Object> temp : temps) {
             params.put((String) temp.get("name"), temp.get("value"));

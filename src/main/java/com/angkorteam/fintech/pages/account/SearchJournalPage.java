@@ -82,7 +82,7 @@ public class SearchJournalPage extends Page {
 
     private DataTable<Map<String, Object>, String> entryTable;
     private JdbcProvider entryProvider;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override

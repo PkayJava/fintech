@@ -29,7 +29,7 @@ import com.google.common.collect.Lists;
 public class OrganizationDashboardPage extends Page {
 
     private static final List<PageBreadcrumb> BREADCRUMB;
-    
+
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
         return Model.ofList(BREADCRUMB);
@@ -53,92 +53,49 @@ public class OrganizationDashboardPage extends Page {
     protected void onInitialize() {
         super.onInitialize();
 
-        InfoBoxPanel manageOfficePage = new InfoBoxPanel("manageOfficePage",
-                Model.of(new InfoBox().setPage(OfficeBrowsePage.class).setTitle("Manage Offices")
-                        .setDescription("Add new office or modify or deactivate office or modify office hierarchy")
-                        .setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
+        InfoBoxPanel manageOfficePage = new InfoBoxPanel("manageOfficePage", Model.of(new InfoBox().setPage(OfficeBrowsePage.class).setTitle("Manage Offices").setDescription("Add new office or modify or deactivate office or modify office hierarchy").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(manageOfficePage);
 
-        InfoBoxPanel manageHolidayPage = new InfoBoxPanel("manageHolidayPage",
-                Model.of(new InfoBox().setPage(HolidayBrowsePage.class).setTitle("Manage Holidays")
-                        .setDescription("Define holidays for office").setBackgroundColor(BackgroundColor.AquaActive)
-                        .setIcon(Emoji.ion_alert)));
+        InfoBoxPanel manageHolidayPage = new InfoBoxPanel("manageHolidayPage", Model.of(new InfoBox().setPage(HolidayBrowsePage.class).setTitle("Manage Holidays").setDescription("Define holidays for office").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(manageHolidayPage);
 
-        InfoBoxPanel manageEmployeePage = new InfoBoxPanel("manageEmployeePage",
-                Model.of(new InfoBox().setPage(StaffBrowsePage.class).setTitle("Manage Employees")
-                        .setDescription("A employee represents loan officers with no access to systems")
-                        .setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
+        InfoBoxPanel manageEmployeePage = new InfoBoxPanel("manageEmployeePage", Model.of(new InfoBox().setPage(StaffBrowsePage.class).setTitle("Manage Employees").setDescription("A employee represents loan officers with no access to systems").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(manageEmployeePage);
 
-        InfoBoxPanel standingInstructionHistoryPage = new InfoBoxPanel("standingInstructionHistoryPage",
-                Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Standing Instructions History")
-                        .setDescription("View logged history of standing instructions").setIcon(Emoji.ion_alert)));
+        InfoBoxPanel standingInstructionHistoryPage = new InfoBoxPanel("standingInstructionHistoryPage", Model.of(new InfoBox().setPage(LoginPage.class).setTitle("Standing Instructions History").setDescription("View logged history of standing instructions").setIcon(Emoji.ion_alert)));
         add(standingInstructionHistoryPage);
 
-        InfoBoxPanel fundMappingPage = new InfoBoxPanel("fundMappingPage",
-                Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Fund Mapping")
-                        .setDescription("Bulk entry screen for mapping fund sources to loans")
-                        .setIcon(Emoji.ion_alert)));
+        InfoBoxPanel fundMappingPage = new InfoBoxPanel("fundMappingPage", Model.of(new InfoBox().setPage(LoginPage.class).setTitle("Fund Mapping").setDescription("Bulk entry screen for mapping fund sources to loans").setIcon(Emoji.ion_alert)));
         add(fundMappingPage);
 
-        InfoBoxPanel passwordPreferencePage = new InfoBoxPanel("passwordPreferencePage",
-                Model.of(new InfoBox().setPage(PasswordPreferencesPage.class).setTitle("Password Preferences")
-                        .setDescription("Define standards for enforcing the usage of stronger passwords")
-                        .setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
+        InfoBoxPanel passwordPreferencePage = new InfoBoxPanel("passwordPreferencePage", Model.of(new InfoBox().setPage(PasswordPreferencesPage.class).setTitle("Password Preferences").setDescription("Define standards for enforcing the usage of stronger passwords").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(passwordPreferencePage);
 
-        InfoBoxPanel loanProvisioningCriteriaPage = new InfoBoxPanel("loanProvisioningCriteriaPage",
-                Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Loan Provisioning Criteria")
-                        .setDescription("Define Loan Provisioning Criteria for Organization")
-                        .setIcon(Emoji.ion_alert)));
+        InfoBoxPanel loanProvisioningCriteriaPage = new InfoBoxPanel("loanProvisioningCriteriaPage", Model.of(new InfoBox().setPage(LoginPage.class).setTitle("Loan Provisioning Criteria").setDescription("Define Loan Provisioning Criteria for Organization").setIcon(Emoji.ion_alert)));
         add(loanProvisioningCriteriaPage);
 
-        InfoBoxPanel entryDataTableCheckPage = new InfoBoxPanel("entryDataTableCheckPage",
-                Model.of(new InfoBox().setPage(CheckerBrowsePage.class).setTitle("Entity Data Table Checks")
-                        .setDescription("Define Loan Provisioning Criteria for Organization")
-                        .setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
+        InfoBoxPanel entryDataTableCheckPage = new InfoBoxPanel("entryDataTableCheckPage", Model.of(new InfoBox().setPage(CheckerBrowsePage.class).setTitle("Entity Data Table Checks").setDescription("Define Loan Provisioning Criteria for Organization").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(entryDataTableCheckPage);
 
-        InfoBoxPanel currencyConfigurationPage = new InfoBoxPanel("currencyConfigurationPage",
-                Model.of(new InfoBox().setPage(CurrencyConfigurationPage.class).setTitle("Currency Configuration")
-                        .setDescription("Currencies available across organization for different products")
-                        .setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
+        InfoBoxPanel currencyConfigurationPage = new InfoBoxPanel("currencyConfigurationPage", Model.of(new InfoBox().setPage(CurrencyConfigurationPage.class).setTitle("Currency Configuration").setDescription("Currencies available across organization for different products").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(currencyConfigurationPage);
 
-        InfoBoxPanel manageFundPage = new InfoBoxPanel("manageFundPage",
-                Model.of(new InfoBox().setTitle("Manage Funds").setPage(FundBrowsePage.class)
-                        .setDescription("Funds are associated with loans")
-                        .setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
+        InfoBoxPanel manageFundPage = new InfoBoxPanel("manageFundPage", Model.of(new InfoBox().setTitle("Manage Funds").setPage(FundBrowsePage.class).setDescription("Funds are associated with loans").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(manageFundPage);
 
-        InfoBoxPanel bulkLoanReassignmentPage = new InfoBoxPanel("bulkLoanReassignmentPage",
-                Model.of(new InfoBox().setPage(IndexPage.class).setTitle("Bulk Loan Reassignment")
-                        .setDescription("Easy way to reassign all the loan from one LO to another LO")
-                        .setIcon(Emoji.ion_alert)));
+        InfoBoxPanel bulkLoanReassignmentPage = new InfoBoxPanel("bulkLoanReassignmentPage", Model.of(new InfoBox().setPage(LoginPage.class).setTitle("Bulk Loan Reassignment").setDescription("Easy way to reassign all the loan from one LO to another LO").setIcon(Emoji.ion_alert)));
         add(bulkLoanReassignmentPage);
 
-        InfoBoxPanel tellerCashierManagementPage = new InfoBoxPanel("tellerCashierManagementPage",
-                Model.of(new InfoBox().setPage(TellerBrowsePage.class).setTitle("Teller / Cashier Management")
-                        .setDescription("Manage Tellers / Cashiers and Cash Allocation and Settlement")
-                        .setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
+        InfoBoxPanel tellerCashierManagementPage = new InfoBoxPanel("tellerCashierManagementPage", Model.of(new InfoBox().setPage(TellerBrowsePage.class).setTitle("Teller / Cashier Management").setDescription("Manage Tellers / Cashiers and Cash Allocation and Settlement").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(tellerCashierManagementPage);
 
-        InfoBoxPanel workingDayPage = new InfoBoxPanel("workingDayPage",
-                Model.of(new InfoBox().setPage(WorkingDayPage.class).setTitle("Working Days")
-                        .setDescription("Define working days and configure behavior of payments due on holidays")
-                        .setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
+        InfoBoxPanel workingDayPage = new InfoBoxPanel("workingDayPage", Model.of(new InfoBox().setPage(WorkingDayPage.class).setTitle("Working Days").setDescription("Define working days and configure behavior of payments due on holidays").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(workingDayPage);
 
-        InfoBoxPanel paymentTypePage = new InfoBoxPanel("paymentTypePage",
-                Model.of(new InfoBox().setPage(PaymentTypeBrowsePage.class).setTitle("Payment Type")
-                        .setDescription("Manage payment types").setBackgroundColor(BackgroundColor.AquaActive)
-                        .setIcon(Emoji.ion_alert)));
+        InfoBoxPanel paymentTypePage = new InfoBoxPanel("paymentTypePage", Model.of(new InfoBox().setPage(PaymentTypeBrowsePage.class).setTitle("Payment Type").setDescription("Manage payment types").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(paymentTypePage);
 
-        InfoBoxPanel smsCampaignPage = new InfoBoxPanel("smsCampaignPage",
-                Model.of(new InfoBox().setPage(IndexPage.class).setTitle("SMS Campaigns")
-                        .setDescription("Define SMS Campaigns for Organization").setIcon(Emoji.ion_alert)));
+        InfoBoxPanel smsCampaignPage = new InfoBoxPanel("smsCampaignPage", Model.of(new InfoBox().setPage(LoginPage.class).setTitle("SMS Campaigns").setDescription("Define SMS Campaigns for Organization").setIcon(Emoji.ion_alert)));
         add(smsCampaignPage);
 
     }

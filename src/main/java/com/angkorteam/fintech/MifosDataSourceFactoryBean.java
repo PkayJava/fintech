@@ -1,7 +1,11 @@
 package com.angkorteam.fintech;
 
-import com.angkorteam.framework.HttpServletRequestDataSource;
-import com.angkorteam.framework.spring.HttpServletRequestDataSourceFactoryBean;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
@@ -9,10 +13,8 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
+import com.angkorteam.framework.HttpServletRequestDataSource;
+import com.angkorteam.framework.spring.HttpServletRequestDataSourceFactoryBean;
 
 public class MifosDataSourceFactoryBean implements FactoryBean<DataSource>, InitializingBean, DisposableBean {
 
@@ -53,7 +55,7 @@ public class MifosDataSourceFactoryBean implements FactoryBean<DataSource>, Init
         if (identifier != null && !"".equals(identifier)) {
             this.dataSource = new HttpServletRequestDataSource(this.manager.getDataSource(identifier));
         } else {
-            this.dataSource = new MockDataSource();
+            throw new RuntimeException("could not find datasource for " + identifier);
         }
     }
 

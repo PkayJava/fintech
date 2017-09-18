@@ -161,15 +161,15 @@ public class AccountBrowsePage extends Page {
     }
 
     private ItemPanel glCodeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String glCode = (String) model.get(jdbcColumn);
+        String value = (String) model.get(jdbcColumn);
         PageParameters parameters = new PageParameters();
         parameters.add("accountId", model.get("id"));
-        return new LinkCell(AccountModifyPage.class, parameters, Model.of(glCode));
+        return new LinkCell(AccountModifyPage.class, parameters, Model.of(value));
     }
 
     private ItemPanel disabledColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean disabled = (Boolean) model.get(jdbcColumn);
-        if (disabled == null || disabled) {
+        Boolean value = (Boolean) model.get(jdbcColumn);
+        if (value == null || value) {
             return new BadgeCell(BadgeType.Danger, Model.of("Yes"));
         } else {
             return new BadgeCell(BadgeType.Success, Model.of("No"));

@@ -85,17 +85,14 @@ public class HolidayCreatePage extends Page {
         this.toDateFeedback = new TextFeedbackPanel("toDateFeedback", this.toDateField);
         this.form.add(this.toDateFeedback);
 
-        this.repaymentsRescheduledToField = new DateTextField("repaymentsRescheduledToField",
-                new PropertyModel<>(this, "repaymentsRescheduledToValue"));
+        this.repaymentsRescheduledToField = new DateTextField("repaymentsRescheduledToField", new PropertyModel<>(this, "repaymentsRescheduledToValue"));
         this.repaymentsRescheduledToField.setRequired(true);
         this.form.add(this.repaymentsRescheduledToField);
-        this.repaymentsRescheduledToFeedback = new TextFeedbackPanel("repaymentsRescheduledToFeedback",
-                this.repaymentsRescheduledToField);
+        this.repaymentsRescheduledToFeedback = new TextFeedbackPanel("repaymentsRescheduledToFeedback", this.repaymentsRescheduledToField);
         this.form.add(this.repaymentsRescheduledToFeedback);
 
         this.officeProvider = new MultipleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2MultipleChoice<>("officeField", new PropertyModel<>(this, "officeValue"),
-                this.officeProvider);
+        this.officeField = new Select2MultipleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.form.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);

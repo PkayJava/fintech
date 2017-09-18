@@ -89,21 +89,17 @@ public class GroupModifyPage extends Page {
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
         this.form.add(this.nameFeedback);
 
-        this.parentValue = jdbcTemplate.queryForObject("select id, display_name as text from m_group where id = ?",
-                new OptionMapper(), object.get("parent_id"));
+        this.parentValue = jdbcTemplate.queryForObject("select id, display_name as text from m_group where id = ?", new OptionMapper(), object.get("parent_id"));
         this.parentProvider = new SingleChoiceProvider("m_group", "id", "display_name");
-        this.parentField = new Select2SingleChoice<>("parentField", 0, new PropertyModel<>(this, "parentValue"),
-                this.parentProvider);
+        this.parentField = new Select2SingleChoice<>("parentField", 0, new PropertyModel<>(this, "parentValue"), this.parentProvider);
         this.parentField.setRequired(true);
         this.form.add(this.parentField);
         this.parentFeedback = new TextFeedbackPanel("parentFeedback", this.parentField);
         this.form.add(this.parentFeedback);
 
-        this.officeValue = jdbcTemplate.queryForObject("select id, name as text from m_office where id = ?",
-                new OptionMapper(), object.get("office_id"));
+        this.officeValue = jdbcTemplate.queryForObject("select id, name as text from m_office where id = ?", new OptionMapper(), object.get("office_id"));
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
-                this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.form.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);

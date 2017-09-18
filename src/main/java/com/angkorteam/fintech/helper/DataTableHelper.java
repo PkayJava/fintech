@@ -17,10 +17,8 @@ public class DataTableHelper {
         return Helper.performServerDelete(session, "/api/v1/datatables/" + datatableName);
     }
 
-    public static JsonNode deleteEntry(IMifos session, String datatableName, final Integer apptableId)
-            throws UnirestException {
-        return Helper.performServerDelete(session,
-                "/api/v1/datatables/" + datatableName + "/" + apptableId + "?genericResultSet=true");
+    public static JsonNode deleteEntry(IMifos session, String datatableName, final Integer apptableId) throws UnirestException {
+        return Helper.performServerDelete(session, "/api/v1/datatables/" + datatableName + "/" + apptableId + "?genericResultSet=true");
     }
 
 }

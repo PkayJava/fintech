@@ -104,8 +104,7 @@ public class CheckerCreatePage extends Page {
         this.form.add(this.closeLink);
 
         this.entityProvider = new EntityTypeProvider();
-        this.entityField = new Select2SingleChoice<>("entityField", 0, new PropertyModel<>(this, "entityValue"),
-                this.entityProvider);
+        this.entityField = new Select2SingleChoice<>("entityField", 0, new PropertyModel<>(this, "entityValue"), this.entityProvider);
         this.entityField.setRequired(true);
         this.form.add(this.entityField);
         this.entityFeedback = new TextFeedbackPanel("entityFeedback", this.entityField);
@@ -113,19 +112,16 @@ public class CheckerCreatePage extends Page {
         this.entityField.add(new OnChangeAjaxBehavior(this::entityFieldUpdate, this::entityFieldError));
 
         this.statusProvider = new EntityStatusProvider();
-        this.statusField = new Select2SingleChoice<>("statusField", 0, new PropertyModel<>(this, "statusValue"),
-                this.statusProvider);
+        this.statusField = new Select2SingleChoice<>("statusField", 0, new PropertyModel<>(this, "statusValue"), this.statusProvider);
         this.statusField.setRequired(true);
         this.form.add(this.statusField);
         this.statusFeedback = new TextFeedbackPanel("statusFeedback", this.statusField);
         this.form.add(this.statusFeedback);
         this.statusField.add(new OnChangeAjaxBehavior(this::statusFieldUpdate, this::statusFieldError));
 
-        this.datatableProvider = new SingleChoiceProvider("x_registered_table", "application_table_name",
-                "registered_table_name");
+        this.datatableProvider = new SingleChoiceProvider("x_registered_table", "application_table_name", "registered_table_name");
         this.datatableProvider.setDisabled(true);
-        this.datatableField = new Select2SingleChoice<>("datatableField", 0,
-                new PropertyModel<>(this, "datatableValue"), this.datatableProvider);
+        this.datatableField = new Select2SingleChoice<>("datatableField", 0, new PropertyModel<>(this, "datatableValue"), this.datatableProvider);
         this.datatableField.setRequired(true);
         this.datatableField.add(new OnChangeAjaxBehavior(this::datatableFieldUpdate, this::datatableFieldError));
         this.form.add(this.datatableField);
@@ -191,8 +187,7 @@ public class CheckerCreatePage extends Page {
         if (this.entityValue != null) {
             EntityType entityType = EntityType.valueOf(this.entityValue.getId());
             this.datatableProvider.setDisabled(false);
-            this.datatableProvider.applyWhere("application_table_name",
-                    "application_table_name = '" + entityType.getLiteral() + "'");
+            this.datatableProvider.applyWhere("application_table_name", "application_table_name = '" + entityType.getLiteral() + "'");
         } else {
             this.datatableProvider.setDisabled(true);
         }

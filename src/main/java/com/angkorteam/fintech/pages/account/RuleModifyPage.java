@@ -127,8 +127,7 @@ public class RuleModifyPage extends Page {
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        Map<String, Object> ruleObject = jdbcTemplate.queryForMap("select * from acc_accounting_rule where id = ?",
-                this.ruleId);
+        Map<String, Object> ruleObject = jdbcTemplate.queryForMap("select * from acc_accounting_rule where id = ?", this.ruleId);
 
         this.form = new Form<>("form");
         add(this.form);
@@ -154,34 +153,26 @@ public class RuleModifyPage extends Page {
         this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
         this.form.add(this.descriptionFeedback);
 
-        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?",
-                new OptionMapper(), ruleObject.get("office_id"));
+        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", new OptionMapper(), ruleObject.get("office_id"));
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
-                this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.form.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
         this.form.add(this.officeFeedback);
 
-        this.debitAccountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?",
-                new OptionMapper(), ruleObject.get("debit_account_id"));
+        this.debitAccountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", new OptionMapper(), ruleObject.get("debit_account_id"));
         this.debitAccountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.debitAccountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.debitAccountField = new Select2SingleChoice<>("debitAccountField", 0,
-                new PropertyModel<>(this, "debitAccountValue"), this.debitAccountProvider);
+        this.debitAccountField = new Select2SingleChoice<>("debitAccountField", 0, new PropertyModel<>(this, "debitAccountValue"), this.debitAccountProvider);
         this.form.add(this.debitAccountField);
         this.debitAccountFeedback = new TextFeedbackPanel("debitAccountFeedback", this.debitAccountField);
         this.form.add(this.debitAccountFeedback);
 
-        this.debitTagValue = jdbcTemplate.query(
-                "SELECT m_code_value.id, m_code_value.code_value text FROM acc_rule_tags INNER JOIN m_code_value ON acc_rule_tags.tag_id = m_code_value.id WHERE acc_type_enum = "
-                        + RuleBrowsePage.DEBIT + " and acc_rule_tags.acc_rule_id = ?",
-                new OptionMapper(), ruleObject.get("id"));
+        this.debitTagValue = jdbcTemplate.query("SELECT m_code_value.id, m_code_value.code_value text FROM acc_rule_tags INNER JOIN m_code_value ON acc_rule_tags.tag_id = m_code_value.id WHERE acc_type_enum = " + RuleBrowsePage.DEBIT + " and acc_rule_tags.acc_rule_id = ?", new OptionMapper(), ruleObject.get("id"));
         this.debitTagProvider = new MultipleChoiceProvider("m_code_value", "id", "code_value");
         this.debitTagProvider.applyWhere("code_id", "code_id in (7,8,9,10,11)");
-        this.debitTagField = new Select2MultipleChoice<>("debitTagField", 0, new PropertyModel<>(this, "debitTagValue"),
-                this.debitTagProvider);
+        this.debitTagField = new Select2MultipleChoice<>("debitTagField", 0, new PropertyModel<>(this, "debitTagValue"), this.debitTagProvider);
         this.form.add(this.debitTagField);
         this.debitTagFeedback = new TextFeedbackPanel("debitTagFeedback", this.debitTagField);
         this.form.add(this.debitTagFeedback);
@@ -193,31 +184,24 @@ public class RuleModifyPage extends Page {
         this.multipleDebitFeedback = new TextFeedbackPanel("multipleDebitFeedback", this.multipleDebitField);
         this.form.add(this.multipleDebitFeedback);
 
-        this.creditAccountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?",
-                new OptionMapper(), ruleObject.get("credit_account_id"));
+        this.creditAccountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", new OptionMapper(), ruleObject.get("credit_account_id"));
         this.creditAccountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.creditAccountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.creditAccountField = new Select2SingleChoice<>("creditAccountField", 0,
-                new PropertyModel<>(this, "creditAccountValue"), this.creditAccountProvider);
+        this.creditAccountField = new Select2SingleChoice<>("creditAccountField", 0, new PropertyModel<>(this, "creditAccountValue"), this.creditAccountProvider);
         this.form.add(this.creditAccountField);
         this.creditAccountFeedback = new TextFeedbackPanel("creditAccountFeedback", this.creditAccountField);
         this.form.add(this.creditAccountFeedback);
 
-        this.creditTagValue = jdbcTemplate.query(
-                "SELECT m_code_value.id, m_code_value.code_value text FROM acc_rule_tags INNER JOIN m_code_value ON acc_rule_tags.tag_id = m_code_value.id WHERE acc_type_enum = "
-                        + RuleBrowsePage.CREDIT + " and acc_rule_tags.acc_rule_id = ?",
-                new OptionMapper(), ruleObject.get("id"));
+        this.creditTagValue = jdbcTemplate.query("SELECT m_code_value.id, m_code_value.code_value text FROM acc_rule_tags INNER JOIN m_code_value ON acc_rule_tags.tag_id = m_code_value.id WHERE acc_type_enum = " + RuleBrowsePage.CREDIT + " and acc_rule_tags.acc_rule_id = ?", new OptionMapper(), ruleObject.get("id"));
         this.creditTagProvider = new MultipleChoiceProvider("m_code_value", "id", "code_value");
         this.creditTagProvider.applyWhere("code_id", "code_id in (7,8,9,10,11)");
-        this.creditTagField = new Select2MultipleChoice<>("creditTagField", 0,
-                new PropertyModel<>(this, "creditTagValue"), this.creditTagProvider);
+        this.creditTagField = new Select2MultipleChoice<>("creditTagField", 0, new PropertyModel<>(this, "creditTagValue"), this.creditTagProvider);
         this.form.add(this.creditTagField);
         this.creditTagFeedback = new TextFeedbackPanel("creditTagFeedback", this.creditTagField);
         this.form.add(this.creditTagFeedback);
 
         this.multipleCreditValue = (Boolean) ruleObject.get("allow_multiple_credits");
-        this.multipleCreditField = new CheckBox("multipleCreditField",
-                new PropertyModel<>(this, "multipleCreditValue"));
+        this.multipleCreditField = new CheckBox("multipleCreditField", new PropertyModel<>(this, "multipleCreditValue"));
         this.multipleCreditField.setRequired(true);
         this.form.add(this.multipleCreditField);
         this.multipleCreditFeedback = new TextFeedbackPanel("multipleCreditFeedback", this.multipleCreditField);

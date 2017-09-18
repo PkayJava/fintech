@@ -45,8 +45,7 @@ public class GroupBrowsePage extends Page {
     protected void onInitialize() {
         super.onInitialize();
         this.provider = new JdbcProvider("m_group g");
-        this.provider.addJoin(
-                "LEFT JOIN m_group parent ON g.parent_id = parent.id LEFT JOIN m_office office ON g.office_id = office.id");
+        this.provider.addJoin("LEFT JOIN m_group parent ON g.parent_id = parent.id LEFT JOIN m_office office ON g.office_id = office.id");
         this.provider.boardField("g.id", "id", Long.class);
         this.provider.boardField("g.external_id", "external_id", String.class);
         this.provider.boardField("parent.id", "parent_id", Long.class);
@@ -59,16 +58,11 @@ public class GroupBrowsePage extends Page {
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
         columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("ID"), "id", "id", this::idColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("External ID"), "external_id",
-                "external_id", this::externalIdColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name",
-                this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Parent Name"), "parent_name",
-                "parent_name", this::parentNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Office"), "office", "office",
-                this::officeColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Submitted On Date"),
-                "submittedon_date", "submittedon_date", this::submittedOnDateColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("External ID"), "external_id", "external_id", this::externalIdColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Parent Name"), "parent_name", "parent_name", this::parentNameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Office"), "office", "office", this::officeColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Submitted On Date"), "submittedon_date", "submittedon_date", this::submittedOnDateColumn));
         columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);

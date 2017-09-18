@@ -80,16 +80,11 @@ public class StaffBrowsePage extends Page {
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
         columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("ID"), "id", "id", this::idColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("First Name"), "firstname",
-                "firstname", this::firstNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Last Name"), "lastname", "lastname",
-                this::lastNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Is Loan Officer"), "loan_officer",
-                "loan_officer", this::loanOfficerColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Active"), "active", "active",
-                this::activeColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Office"), "office", "office",
-                this::officeColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("First Name"), "firstname", "firstname", this::firstNameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Last Name"), "lastname", "lastname", this::lastNameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Is Loan Officer"), "loan_officer", "loan_officer", this::loanOfficerColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Active"), "active", "active", this::activeColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Office"), "office", "office", this::officeColumn));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
         add(filterForm);

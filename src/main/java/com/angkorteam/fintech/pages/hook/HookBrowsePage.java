@@ -51,7 +51,7 @@ public class HookBrowsePage extends Page {
 
     private Form<Void> form;
     private Button createButton;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -92,12 +92,9 @@ public class HookBrowsePage extends Page {
         this.provider.selectField("id", Long.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name",
-                this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Template"), "template", "template",
-                this::templateColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Integer, Model.of("Is Active ?"), "active", "active",
-                this::activeColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Template"), "template", "template", this::templateColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Integer, Model.of("Is Active ?"), "active", "active", this::activeColumn));
         columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
@@ -115,8 +112,7 @@ public class HookBrowsePage extends Page {
         this.form.add(this.createButton);
 
         this.templateProvider = new SingleChoiceProvider("m_hook_templates", "id", "name");
-        this.templateField = new Select2SingleChoice<>("templateField", new PropertyModel<>(this, "templateValue"),
-                this.templateProvider);
+        this.templateField = new Select2SingleChoice<>("templateField", new PropertyModel<>(this, "templateValue"), this.templateProvider);
         this.templateField.setRequired(true);
         this.form.add(this.templateField);
         this.templateFeedback = new TextFeedbackPanel("templateFeedback", this.templateField);

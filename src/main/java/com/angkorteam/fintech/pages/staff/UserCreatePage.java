@@ -80,9 +80,9 @@ public class UserCreatePage extends Page {
     private Form<Void> form;
     private Button saveButton;
     private BookmarkablePageLink<Void> closeLink;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
-    
+
     static {
         BREADCRUMB = Lists.newArrayList();
         {
@@ -102,7 +102,7 @@ public class UserCreatePage extends Page {
             BREADCRUMB.add(breadcrumb);
         }
     }
-    
+
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
         return Model.ofList(BREADCRUMB);
@@ -137,8 +137,7 @@ public class UserCreatePage extends Page {
         this.passwordFeedback = new TextFeedbackPanel("passwordFeedback", this.passwordField);
         this.form.add(this.passwordFeedback);
 
-        this.repeatPasswordField = new PasswordTextField("repeatPasswordField",
-                new PropertyModel<>(this, "repeatPasswordValue"));
+        this.repeatPasswordField = new PasswordTextField("repeatPasswordField", new PropertyModel<>(this, "repeatPasswordValue"));
         this.repeatPasswordField.setRequired(false);
         this.repeatPasswordField.setResetPassword(false);
         this.repeatPasswordField.add(new OnChangeAjaxBehavior());
@@ -161,8 +160,7 @@ public class UserCreatePage extends Page {
         this.form.add(this.lastNameFeedback);
 
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
-                this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.add(new OnChangeAjaxBehavior(this::officeFieldUpdate));
         this.officeField.setRequired(true);
         this.form.add(this.officeField);
@@ -170,8 +168,7 @@ public class UserCreatePage extends Page {
         this.form.add(this.officeFeedback);
 
         this.permissionProvider = new MultipleChoiceProvider("m_role", "id", "name");
-        this.permissionField = new Select2MultipleChoice<>("permissionField", 0,
-                new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
+        this.permissionField = new Select2MultipleChoice<>("permissionField", 0, new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
         this.permissionField.add(new OnChangeAjaxBehavior());
         this.permissionField.setRequired(true);
         this.form.add(this.permissionField);
@@ -180,8 +177,7 @@ public class UserCreatePage extends Page {
 
         this.staffProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
         this.staffProvider.setDisabled(true);
-        this.staffField = new Select2SingleChoice<>("staffField", 0, new PropertyModel<>(this, "staffValue"),
-                this.staffProvider);
+        this.staffField = new Select2SingleChoice<>("staffField", 0, new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.add(new OnChangeAjaxBehavior());
         this.form.add(this.staffField);
         this.staffFeedback = new TextFeedbackPanel("staffFeedback", this.staffField);
@@ -194,13 +190,11 @@ public class UserCreatePage extends Page {
         this.loginFeedback = new TextFeedbackPanel("loginFeedback", this.loginField);
         this.form.add(this.loginFeedback);
 
-        this.overridePasswordExpiryPolicyField = new CheckBox("overridePasswordExpiryPolicyField",
-                new PropertyModel<>(this, "overridePasswordExpiryPolicyValue"));
+        this.overridePasswordExpiryPolicyField = new CheckBox("overridePasswordExpiryPolicyField", new PropertyModel<>(this, "overridePasswordExpiryPolicyValue"));
         this.overridePasswordExpiryPolicyField.setRequired(true);
         this.overridePasswordExpiryPolicyField.add(new OnChangeAjaxBehavior());
         this.form.add(this.overridePasswordExpiryPolicyField);
-        this.overridePasswordExpiryPolicyFeedback = new TextFeedbackPanel("overridePasswordExpiryPolicyFeedback",
-                this.overridePasswordExpiryPolicyField);
+        this.overridePasswordExpiryPolicyFeedback = new TextFeedbackPanel("overridePasswordExpiryPolicyFeedback", this.overridePasswordExpiryPolicyField);
         this.form.add(this.overridePasswordExpiryPolicyFeedback);
 
         this.form.add(new EqualInputValidator(this.passwordField, this.repeatPasswordField));

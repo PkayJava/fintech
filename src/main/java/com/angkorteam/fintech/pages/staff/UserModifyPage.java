@@ -78,7 +78,7 @@ public class UserModifyPage extends Page {
 
     private String passwordValue;
     private String repeatPasswordValue;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     static {
@@ -100,7 +100,7 @@ public class UserModifyPage extends Page {
             BREADCRUMB.add(breadcrumb);
         }
     }
-    
+
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
         return Model.ofList(BREADCRUMB);
@@ -132,8 +132,7 @@ public class UserModifyPage extends Page {
         BookmarkablePageLink<Void> closeLink = new BookmarkablePageLink<>("closeLink", UserBrowsePage.class);
         passwordForm.add(closeLink);
 
-        PasswordTextField passwordField = new PasswordTextField("passwordField",
-                new PropertyModel<>(this, "passwordValue"));
+        PasswordTextField passwordField = new PasswordTextField("passwordField", new PropertyModel<>(this, "passwordValue"));
         passwordField.setRequired(false);
         passwordField.setResetPassword(false);
         passwordField.add(new OnChangeAjaxBehavior());
@@ -141,8 +140,7 @@ public class UserModifyPage extends Page {
         TextFeedbackPanel passwordFeedback = new TextFeedbackPanel("passwordFeedback", passwordField);
         passwordForm.add(passwordFeedback);
 
-        PasswordTextField repeatPasswordField = new PasswordTextField("repeatPasswordField",
-                new PropertyModel<>(this, "repeatPasswordValue"));
+        PasswordTextField repeatPasswordField = new PasswordTextField("repeatPasswordField", new PropertyModel<>(this, "repeatPasswordValue"));
         repeatPasswordField.setRequired(false);
         repeatPasswordField.setResetPassword(false);
         repeatPasswordField.add(new OnChangeAjaxBehavior());
@@ -178,34 +176,27 @@ public class UserModifyPage extends Page {
         this.lastNameField = new Label("lastNameField", new PropertyModel<>(this, "lastNameValue"));
         this.form.add(this.lastNameField);
 
-        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?",
-                new OptionMapper(), userObject.get("office_id"));
+        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", new OptionMapper(), userObject.get("office_id"));
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"),
-                this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.add(new OnChangeAjaxBehavior(this::officeFieldUpdate));
         this.officeField.setRequired(true);
         this.form.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
         this.form.add(this.officeFeedback);
 
-        this.permissionValue = jdbcTemplate.query(
-                "select m_role.id, m_role.name text from m_appuser_role inner join m_role on m_appuser_role.role_id = m_role.id where m_appuser_role.appuser_id = ?",
-                new OptionMapper(), userObject.get("id"));
+        this.permissionValue = jdbcTemplate.query("select m_role.id, m_role.name text from m_appuser_role inner join m_role on m_appuser_role.role_id = m_role.id where m_appuser_role.appuser_id = ?", new OptionMapper(), userObject.get("id"));
         this.permissionProvider = new MultipleChoiceProvider("m_role", "id", "name");
-        this.permissionField = new Select2MultipleChoice<>("permissionField", 0,
-                new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
+        this.permissionField = new Select2MultipleChoice<>("permissionField", 0, new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
         this.permissionField.add(new OnChangeAjaxBehavior());
         this.permissionField.setRequired(true);
         this.form.add(this.permissionField);
         this.permissionFeedback = new TextFeedbackPanel("permissionFeedback", this.permissionField);
         this.form.add(this.permissionFeedback);
 
-        this.staffValue = jdbcTemplate.queryForObject("select id, display_name text from m_staff where id = ?",
-                new OptionMapper(), userObject.get("staff_id"));
+        this.staffValue = jdbcTemplate.queryForObject("select id, display_name text from m_staff where id = ?", new OptionMapper(), userObject.get("staff_id"));
         this.staffProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
-        this.staffField = new Select2SingleChoice<>("staffField", 0, new PropertyModel<>(this, "staffValue"),
-                this.staffProvider);
+        this.staffField = new Select2SingleChoice<>("staffField", 0, new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.add(new OnChangeAjaxBehavior());
         this.form.add(this.staffField);
         this.staffFeedback = new TextFeedbackPanel("staffFeedback", this.staffField);
@@ -215,13 +206,11 @@ public class UserModifyPage extends Page {
         this.loginField = new Label("loginField", new PropertyModel<>(this, "loginValue"));
         this.form.add(this.loginField);
 
-        this.overridePasswordExpiryPolicyField = new CheckBox("overridePasswordExpiryPolicyField",
-                new PropertyModel<>(this, "overridePasswordExpiryPolicyValue"));
+        this.overridePasswordExpiryPolicyField = new CheckBox("overridePasswordExpiryPolicyField", new PropertyModel<>(this, "overridePasswordExpiryPolicyValue"));
         this.overridePasswordExpiryPolicyField.setRequired(true);
         this.overridePasswordExpiryPolicyField.add(new OnChangeAjaxBehavior());
         this.form.add(this.overridePasswordExpiryPolicyField);
-        this.overridePasswordExpiryPolicyFeedback = new TextFeedbackPanel("overridePasswordExpiryPolicyFeedback",
-                this.overridePasswordExpiryPolicyField);
+        this.overridePasswordExpiryPolicyFeedback = new TextFeedbackPanel("overridePasswordExpiryPolicyFeedback", this.overridePasswordExpiryPolicyField);
         this.form.add(this.overridePasswordExpiryPolicyFeedback);
 
         this.staffProvider.applyWhere("office", "office_id = " + this.officeValue.getId());

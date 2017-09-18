@@ -94,8 +94,7 @@ public class FinancialActivityModifyPage extends Page {
         this.financialActivityId = parameters.get("financialActivityId").toString("");
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> financialActivityObject = jdbcTemplate
-                .queryForMap("select * from acc_gl_financial_activity_account where id = ?", financialActivityId);
+        Map<String, Object> financialActivityObject = jdbcTemplate.queryForMap("select * from acc_gl_financial_activity_account where id = ?", financialActivityId);
 
         this.form = new Form<>("form");
         add(this.form);
@@ -108,11 +107,9 @@ public class FinancialActivityModifyPage extends Page {
         this.form.add(this.closeLink);
 
         this.financialActivityProvider = new FinancialActivityProvider();
-        this.financialActivityField = new Select2SingleChoice<>("financialActivityField", 0,
-                new PropertyModel<>(this, "financialActivityValue"), this.financialActivityProvider);
+        this.financialActivityField = new Select2SingleChoice<>("financialActivityField", 0, new PropertyModel<>(this, "financialActivityValue"), this.financialActivityProvider);
         this.form.add(this.financialActivityField);
-        this.financialActivityFeedback = new TextFeedbackPanel("financialActivityFeedback",
-                this.financialActivityField);
+        this.financialActivityFeedback = new TextFeedbackPanel("financialActivityFeedback", this.financialActivityField);
         this.form.add(this.financialActivityFeedback);
         if (financialActivityObject.get("financial_activity_type") != null) {
             String type = String.valueOf(financialActivityObject.get("financial_activity_type"));
@@ -123,18 +120,15 @@ public class FinancialActivityModifyPage extends Page {
                 }
             }
         }
-        this.financialActivityField
-                .add(new OnChangeAjaxBehavior(this::financialActivityFieldUpdate, this::financialActivityFieldError));
+        this.financialActivityField.add(new OnChangeAjaxBehavior(this::financialActivityFieldUpdate, this::financialActivityFieldError));
 
         if (financialActivityObject.get("gl_account_id") != null) {
-            this.accountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?",
-                    new OptionMapper(), financialActivityObject.get("gl_account_id"));
+            this.accountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", new OptionMapper(), financialActivityObject.get("gl_account_id"));
         }
         this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.accountProvider.applyWhere("usage", AccountUsage.Detail.getLiteral());
         this.accountProvider.setDisabled(true);
-        this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this, "accountValue"),
-                this.accountProvider);
+        this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this, "accountValue"), this.accountProvider);
         this.form.add(this.accountField);
         this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
         this.form.add(this.accountFeedback);
@@ -151,8 +145,7 @@ public class FinancialActivityModifyPage extends Page {
                 }
             }
             this.accountProvider.setDisabled(false);
-            this.accountProvider.applyWhere("classification_enum",
-                    "classification_enum = " + classification_enum.getLiteral());
+            this.accountProvider.applyWhere("classification_enum", "classification_enum = " + classification_enum.getLiteral());
         }
     }
 
@@ -170,8 +163,7 @@ public class FinancialActivityModifyPage extends Page {
             }
             this.accountValue = null;
             this.accountProvider.setDisabled(false);
-            this.accountProvider.applyWhere("classification_enum",
-                    "classification_enum = " + classification_enum.getLiteral());
+            this.accountProvider.applyWhere("classification_enum", "classification_enum = " + classification_enum.getLiteral());
         }
         target.add(this.form);
         return false;
@@ -189,8 +181,7 @@ public class FinancialActivityModifyPage extends Page {
         FinancialActivityBuilder builder = new FinancialActivityBuilder();
         builder.withId(this.financialActivityId);
         if (this.financialActivityValue != null) {
-            builder.withFinancialActivity(
-                    FinancialActivityType.valueOf(this.financialActivityValue.getId()).getLiteral());
+            builder.withFinancialActivity(FinancialActivityType.valueOf(this.financialActivityValue.getId()).getLiteral());
         }
         if (this.accountValue != null) {
             builder.withGlAccountId(this.accountValue.getId());

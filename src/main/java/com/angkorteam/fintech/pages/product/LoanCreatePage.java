@@ -929,7 +929,8 @@ public class LoanCreatePage extends Page {
         // Boolean officeSpecificProductsEnabled = jdbcTemplate.queryForObject(
         // "select value from c_configuration where name =
         // 'office-specific-products-enabled'", Boolean.class);
-        // officeSpecificProductsEnabled = officeSpecificProductsEnabled == null ? false
+        // officeSpecificProductsEnabled = officeSpecificProductsEnabled == null
+        // ? false
         // : officeSpecificProductsEnabled;
 
         this.form = new Form<>("form");

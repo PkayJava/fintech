@@ -1,5 +1,18 @@
 package com.angkorteam.fintech.pages.table;
 
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.ColumnType;
@@ -13,6 +26,7 @@ import com.angkorteam.fintech.provider.ColumnTypeOptionProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -29,23 +43,10 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -156,16 +157,14 @@ public class DataTableCreatePage extends Page {
         this.columnForm.add(this.mandatoryFeedback);
 
         this.typeProvider = new ColumnTypeOptionProvider();
-        this.typeField = new Select2SingleChoice<>("typeField", 0, new PropertyModel<>(this, "typeValue"),
-                this.typeProvider);
+        this.typeField = new Select2SingleChoice<>("typeField", 0, new PropertyModel<>(this, "typeValue"), this.typeProvider);
         this.typeField.setRequired(true);
         this.columnForm.add(this.typeField);
         this.typeFeedback = new TextFeedbackPanel("typeFeedback", this.typeField);
         this.columnForm.add(this.typeFeedback);
 
         this.codeProvider = new SingleChoiceProvider("m_code", "code_name", "code_name");
-        this.codeField = new Select2SingleChoice<>("codeField", 0, new PropertyModel<>(this, "codeValue"),
-                this.codeProvider);
+        this.codeField = new Select2SingleChoice<>("codeField", 0, new PropertyModel<>(this, "codeValue"), this.codeProvider);
         this.columnForm.add(this.codeField);
         this.codeFeedback = new TextFeedbackPanel("codeFeedback", this.codeField);
         this.columnForm.add(this.codeFeedback);
@@ -209,8 +208,7 @@ public class DataTableCreatePage extends Page {
         this.tableForm.add(this.multiRowFeedback);
 
         this.appTableProvider = new AppTableOptionProvider();
-        this.appTableField = new Select2SingleChoice<>("appTableField", 0, new PropertyModel<>(this, "appTableValue"),
-                this.appTableProvider);
+        this.appTableField = new Select2SingleChoice<>("appTableField", 0, new PropertyModel<>(this, "appTableValue"), this.appTableProvider);
         this.appTableField.setRequired(true);
         this.tableForm.add(this.appTableField);
         this.appTableFeedback = new TextFeedbackPanel("appTableFeedback", this.appTableField);
@@ -244,8 +242,7 @@ public class DataTableCreatePage extends Page {
         for (Map<String, Object> column : columnValue) {
             String type = (String) column.get("type");
             if ("String".equals(type)) {
-                builder.withColumnString((String) column.get("name"), (Boolean) column.get("mandatory"),
-                        (Integer) column.get("length"));
+                builder.withColumnString((String) column.get("name"), (Boolean) column.get("mandatory"), (Integer) column.get("length"));
             } else if ("Number".equals(type)) {
                 builder.withColumnNumber((String) column.get("name"), (Boolean) column.get("mandatory"));
             } else if ("Decimal".equals(type)) {
@@ -259,8 +256,7 @@ public class DataTableCreatePage extends Page {
             } else if ("Text".equals(type)) {
                 builder.withColumnText((String) column.get("name"), (Boolean) column.get("mandatory"));
             } else if ("DropDown".equals(type)) {
-                builder.withColumnDropDown((String) column.get("name"), (Boolean) column.get("mandatory"),
-                        (String) column.get("code"));
+                builder.withColumnDropDown((String) column.get("name"), (Boolean) column.get("mandatory"), (String) column.get("code"));
             }
         }
 

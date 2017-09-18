@@ -54,7 +54,7 @@ public class PaymentTypeModifyPage extends Page {
     private Form<Void> form;
     private Button saveButton;
     private BookmarkablePageLink<Void> closeLink;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -97,8 +97,7 @@ public class PaymentTypeModifyPage extends Page {
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        Map<String, Object> object = jdbcTemplate.queryForMap("select * from m_payment_type where id = ?",
-                this.paymentTypeId);
+        Map<String, Object> object = jdbcTemplate.queryForMap("select * from m_payment_type where id = ?", this.paymentTypeId);
 
         this.form = new Form<>("form");
         add(this.form);

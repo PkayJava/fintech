@@ -1,13 +1,15 @@
 package com.angkorteam.fintech;
 
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.google.common.collect.Maps;
+import java.util.Map;
+
+import javax.sql.DataSource;
+
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
-import javax.sql.DataSource;
-import java.util.Map;
+import com.angkorteam.framework.spring.JdbcTemplate;
+import com.google.common.collect.Maps;
 
 public class MifosDataSourceManager implements DisposableBean, InitializingBean {
 
@@ -42,10 +44,8 @@ public class MifosDataSourceManager implements DisposableBean, InitializingBean 
     public DataSource getDataSource(String identifier) {
         if (!this.dataSources.containsKey(identifier)) {
             JdbcTemplate jdbcTemplate = new JdbcTemplate(this.delegate);
-            Map<String, Object> tenantObject = jdbcTemplate.queryForMap("select * from tenants where identifier = ?",
-                    identifier);
-            Map<String, Object> connectionObject = jdbcTemplate
-                    .queryForMap("select * from tenant_server_connections where id = ?", tenantObject.get("id"));
+            Map<String, Object> tenantObject = jdbcTemplate.queryForMap("select * from tenants where identifier = ?", identifier);
+            Map<String, Object> connectionObject = jdbcTemplate.queryForMap("select * from tenant_server_connections where id = ?", tenantObject.get("id"));
             BasicDataSource dataSource = new BasicDataSource();
             dataSource.setDriverClassName("com.mysql.jdbc.Driver");
             dataSource.setUsername((String) connectionObject.get("schema_username"));
@@ -55,10 +55,7 @@ public class MifosDataSourceManager implements DisposableBean, InitializingBean 
             dataSource.setMaxWaitMillis(5000);
             dataSource.setMaxTotal(200);
             dataSource.setInitialSize(30);
-            String jdbcUrl = "jdbc:mysql://" + connectionObject.get("schema_server") + ":"
-                    + String.valueOf(connectionObject.get("schema_server_port")) + "/"
-                    + connectionObject.get("schema_name")
-                    + "?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&serverTimezone=UTC";
+            String jdbcUrl = "jdbc:mysql://" + connectionObject.get("schema_server") + ":" + String.valueOf(connectionObject.get("schema_server_port")) + "/" + connectionObject.get("schema_name") + "?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&serverTimezone=UTC";
             dataSource.setUrl(jdbcUrl);
             this.dataSources.put(identifier, dataSource);
         }

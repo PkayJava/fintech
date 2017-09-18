@@ -41,7 +41,7 @@ public class CheckerBrowsePage extends Page {
     private JdbcProvider provider;
 
     private BookmarkablePageLink<Void> createLink;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -85,8 +85,7 @@ public class CheckerBrowsePage extends Page {
 
         this.provider = new JdbcProvider("m_entity_datatable_check");
         this.provider.boardField("id", "id", Long.class);
-        this.provider.boardField("case application_table_name " + StringUtils.join(entity, " ") + " end", "entity",
-                String.class);
+        this.provider.boardField("case application_table_name " + StringUtils.join(entity, " ") + " end", "entity", String.class);
         this.provider.boardField("case system_defined when 0 then 'No' else 'Yes' end", "system", String.class);
         this.provider.boardField("case status_enum " + StringUtils.join(status, " ") + " end", "status", String.class);
         this.provider.boardField("x_registered_table_name", "dataTable", String.class);
@@ -95,16 +94,11 @@ public class CheckerBrowsePage extends Page {
         this.provider.selectField("id", Long.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Entity"), "entity", "entity",
-                this::entityColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("Product"), "product", "account",
-                this::productColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Data Table"), "dataTable",
-                "dataTable", this::dataTableColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Status"), "status", "status",
-                this::statusColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("System"), "system", "system",
-                this::systemColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Entity"), "entity", "entity", this::entityColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("Product"), "product", "account", this::productColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Data Table"), "dataTable", "dataTable", this::dataTableColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Status"), "status", "status", this::statusColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("System"), "system", "system", this::systemColumn));
         columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);

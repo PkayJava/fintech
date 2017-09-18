@@ -39,7 +39,7 @@ public class ChargeBrowsePage extends Page {
     private BookmarkablePageLink<Void> createClientChargeLink;
     private BookmarkablePageLink<Void> createSavingDepositChargeLink;
     private BookmarkablePageLink<Void> createShareChargeLink;
-    
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -107,8 +107,8 @@ public class ChargeBrowsePage extends Page {
     }
 
     private ItemPanel penaltyColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean penalty = (Boolean) model.get(jdbcColumn);
-        if (penalty != null && penalty) {
+        Boolean value = (Boolean) model.get(jdbcColumn);
+        if (value != null && value) {
             return new BadgeCell(BadgeType.Success, Model.of("Yes"));
         } else {
             return new BadgeCell(BadgeType.Danger, Model.of("No"));
@@ -116,8 +116,8 @@ public class ChargeBrowsePage extends Page {
     }
 
     private ItemPanel activeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean active = (Boolean) model.get(jdbcColumn);
-        if (active != null && active) {
+        Boolean value = (Boolean) model.get(jdbcColumn);
+        if (value != null && value) {
             return new BadgeCell(BadgeType.Success, Model.of("Yes"));
         } else {
             return new BadgeCell(BadgeType.Danger, Model.of("No"));

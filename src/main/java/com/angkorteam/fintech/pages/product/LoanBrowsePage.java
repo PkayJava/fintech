@@ -82,14 +82,10 @@ public class LoanBrowsePage extends Page {
         this.provider.selectField("id", Long.class);
 
         List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name",
-                this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Short Name"), "shortName",
-                "shortName", this::shortNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Expiry Date"), "expiryDate",
-                "expiryDate", this::expiryDateColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Status"), "status", "status",
-                this::statusColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Short Name"), "shortName", "shortName", this::shortNameColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Expiry Date"), "expiryDate", "expiryDate", this::expiryDateColumn));
+        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Status"), "status", "status", this::statusColumn));
 
         FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
         add(filterForm);
