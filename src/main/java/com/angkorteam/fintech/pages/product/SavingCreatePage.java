@@ -33,6 +33,7 @@ import com.angkorteam.fintech.dto.saving.InterestPostingPeriod;
 import com.angkorteam.fintech.dto.saving.LockInType;
 import com.angkorteam.fintech.helper.SavingHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
+import com.angkorteam.fintech.popup.CurrencyPopup;
 import com.angkorteam.fintech.popup.PaymentTypePopup;
 import com.angkorteam.fintech.popup.saving.ChargePopup;
 import com.angkorteam.fintech.popup.saving.FeeChargePopup;
@@ -358,6 +359,8 @@ public class SavingCreatePage extends Page {
     private Option itemPaymentValue;
     private Option itemAccountValue;
 
+    private ModalWindow currencyPopup;
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -405,6 +408,10 @@ public class SavingCreatePage extends Page {
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
         this.form.add(this.closeLink);
+
+        this.currencyPopup = new ModalWindow("currencyPopup");
+        this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
+        add(this.currencyPopup);
 
         initDetail();
 
@@ -556,6 +563,8 @@ public class SavingCreatePage extends Page {
         if (this.currencyCodeValue != null) {
             this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
+        } else {
+            this.currencyPopup.show(target);
         }
         return false;
     }
@@ -599,6 +608,8 @@ public class SavingCreatePage extends Page {
         if (this.currencyCodeValue != null) {
             this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
+        } else {
+            this.currencyPopup.show(target);
         }
         return false;
     }
@@ -866,6 +877,8 @@ public class SavingCreatePage extends Page {
         if (this.currencyCodeValue != null) {
             this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
+        } else {
+            this.currencyPopup.show(target);
         }
         return false;
     }

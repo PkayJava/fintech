@@ -45,6 +45,7 @@ import com.angkorteam.fintech.dto.request.AllowAttributeOverrideBuilder;
 import com.angkorteam.fintech.dto.request.LoanBuilder;
 import com.angkorteam.fintech.helper.LoanHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
+import com.angkorteam.fintech.popup.CurrencyPopup;
 import com.angkorteam.fintech.popup.PaymentTypePopup;
 import com.angkorteam.fintech.popup.loan.ChargePopup;
 import com.angkorteam.fintech.popup.loan.FeeChargePopup;
@@ -886,6 +887,8 @@ public class LoanCreatePage extends Page {
     private ListDataProvider overdueChargeProvider;
     private ModalWindow overdueChargePopup;
 
+    private ModalWindow currencyPopup;
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -924,15 +927,6 @@ public class LoanCreatePage extends Page {
     protected void onInitialize() {
         super.onInitialize();
 
-        // JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-
-        // Boolean officeSpecificProductsEnabled = jdbcTemplate.queryForObject(
-        // "select value from c_configuration where name =
-        // 'office-specific-products-enabled'", Boolean.class);
-        // officeSpecificProductsEnabled = officeSpecificProductsEnabled == null
-        // ? false
-        // : officeSpecificProductsEnabled;
-
         this.form = new Form<>("form");
         add(this.form);
 
@@ -942,6 +936,10 @@ public class LoanCreatePage extends Page {
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", LoanBrowsePage.class);
         this.form.add(this.closeLink);
+
+        this.currencyPopup = new ModalWindow("currencyPopup");
+        this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
+        add(this.currencyPopup);
 
         initDetail();
 
@@ -996,6 +994,8 @@ public class LoanCreatePage extends Page {
         if (this.currencyCodeValue != null) {
             this.overdueChargePopup.setContent(new OverdueChargePopup(this.overdueChargePopup.getContentId(), this.overdueChargePopup, this, this.currencyCodeValue.getId()));
             this.overdueChargePopup.show(target);
+        } else {
+            this.currencyPopup.show(target);
         }
         return false;
     }
@@ -1089,6 +1089,8 @@ public class LoanCreatePage extends Page {
         if (this.currencyCodeValue != null) {
             this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
+        } else {
+            this.currencyPopup.show(target);
         }
         return false;
     }
@@ -1644,6 +1646,8 @@ public class LoanCreatePage extends Page {
         if (this.currencyCodeValue != null) {
             this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
+        } else {
+            this.currencyPopup.show(target);
         }
         return false;
     }
@@ -1683,6 +1687,8 @@ public class LoanCreatePage extends Page {
         if (this.currencyCodeValue != null) {
             this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
+        } else {
+            this.currencyPopup.show(target);
         }
         return false;
     }

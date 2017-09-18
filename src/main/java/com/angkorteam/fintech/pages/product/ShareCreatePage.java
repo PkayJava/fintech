@@ -32,6 +32,7 @@ import com.angkorteam.fintech.dto.share.LockInPeriod;
 import com.angkorteam.fintech.dto.share.MinimumActivePeriod;
 import com.angkorteam.fintech.helper.ShareHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
+import com.angkorteam.fintech.popup.CurrencyPopup;
 import com.angkorteam.fintech.popup.share.ChargePopup;
 import com.angkorteam.fintech.popup.share.MarketPricePopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -241,6 +242,8 @@ public class ShareCreatePage extends Page {
     private Date itemFromDateValue;
     private Double itemUnitPriceValue;
 
+    private ModalWindow currencyPopup;
+
     private static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
@@ -288,6 +291,10 @@ public class ShareCreatePage extends Page {
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", ShareBrowsePage.class);
         this.form.add(this.closeLink);
+
+        this.currencyPopup = new ModalWindow("currencyPopup");
+        this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
+        add(this.currencyPopup);
 
         initDetail();
 
@@ -552,6 +559,8 @@ public class ShareCreatePage extends Page {
         if (this.currencyCodeValue != null) {
             this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
+        } else {
+            this.currencyPopup.show(target);
         }
         return false;
     }
