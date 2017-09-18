@@ -2,10 +2,16 @@ package com.angkorteam.fintech.pages.product;
 
 import java.util.Map;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
+import org.apache.wicket.util.tester.WicketTesterHelper;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import com.angkorteam.fintech.dto.ChargeType;
 import com.angkorteam.fintech.dto.DepositType;
 import com.angkorteam.fintech.dto.fixed.ApplyPenalOn;
 import com.angkorteam.fintech.dto.fixed.DayInYear;
@@ -27,7 +33,7 @@ public class FixedDepositCreatePageTest {
         this.wicket = JUnit.getWicket();
     }
 
-    @Test
+    @Ignore
     public void dataEntryMinimum() {
         this.wicket.login();
 
@@ -68,6 +74,7 @@ public class FixedDepositCreatePageTest {
         form.setValue("settingMaximumDepositTypeBlock:settingMaximumDepositTypeContainer:settingMaximumDepositTypeField", LockInPeriod.Month);
         form.setValue("settingApplyPenalInterestBlock:settingApplyPenalInterestContainer:settingApplyPenalInterestField", "1.99");
         form.setValue("settingApplyPenalOnBlock:settingApplyPenalOnContainer:settingApplyPenalOnField", ApplyPenalOn.WholeTerm);
+
         form.submit("saveButton");
 
         this.wicket.assertNoErrorMessage();
@@ -89,6 +96,31 @@ public class FixedDepositCreatePageTest {
         this.wicket.startPage(FixedDepositCreatePage.class);
 
         JUnitFormTester form = this.wicket.newFormTester("form");
+
+        {
+            form.setValue("currencyCodeBlock:currencyCodeContainer:currencyCodeField", "USD");
+            Component currencyCodeField = form.getForm().get("currencyCodeBlock:currencyCodeContainer:currencyCodeField");
+            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(currencyCodeField, OnChangeAjaxBehavior.EVENT_CHANGE);
+            this.wicket.executeBehavior(behavior);
+        }
+
+        {
+            Component chargeAddLink = this.wicket.getComponentFromLastRenderedPage("form:chargeAddLink");
+            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(chargeAddLink, "click");
+            this.wicket.executeBehavior(behavior);
+            
+            // not sure popup on close is not call
+            // http://localhost:8080/wicket/bookmarkable/LoanCreatePage?7-1.1-chargePopup&_=1505748654786
+        }
+
+        {
+            String id = this.wicket.getJdbcTemplate().queryForObject("select id from m_charge where currency_code = ? and charge_applies_to_enum = ? and is_penalty = ? and is_active = ? limit 1", String.class, "USD", ChargeType.SavingDeposit.getLiteral(), 0, 1);
+            JUnitFormTester popupForm = this.wicket.newFormTester("chargePopup:content:form");
+            popupForm.setValue("chargeField", id);
+            Component okayButton = this.wicket.getComponentFromLastRenderedPage("chargePopup:content:form:okayButton");
+            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(okayButton, "click");
+            this.wicket.executeBehavior(behavior);
+        }
 
         // Detail
         form.setValue("detailProductNameBlock:detailProductNameContainer:detailProductNameField", detailProductNameValue);
@@ -119,6 +151,7 @@ public class FixedDepositCreatePageTest {
         form.setValue("settingMaximumDepositTypeBlock:settingMaximumDepositTypeContainer:settingMaximumDepositTypeField", LockInPeriod.Month);
         form.setValue("settingApplyPenalInterestBlock:settingApplyPenalInterestContainer:settingApplyPenalInterestField", "1.99");
         form.setValue("settingApplyPenalOnBlock:settingApplyPenalOnContainer:settingApplyPenalOnField", ApplyPenalOn.WholeTerm);
+
         form.submit("saveButton");
 
         this.wicket.assertNoErrorMessage();
@@ -126,6 +159,6 @@ public class FixedDepositCreatePageTest {
         JdbcTemplate jdbcTemplate = this.wicket.getJdbcTemplate();
         Map<String, Object> actual = jdbcTemplate.queryForMap("select * from m_savings_product where name = ? and deposit_type_enum = ?", detailProductNameValue, DepositType.Fixed.getLiteral());
         Assert.assertNotNull("expected to have m_savings_product name = '" + detailProductNameValue + "'", actual);
-    }
 
+    }
 }
