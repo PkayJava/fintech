@@ -332,11 +332,11 @@ public class FixedBuilder implements Serializable {
     private List<Map<String, Object>> chartSlabs = Lists.newArrayList();
     private boolean hasChartSlabs;
 
-    public FixedBuilder withChartSlab(LockInPeriod periodType, Date fromPeriod, Date toPeriod, Double amountRangeFrom, Double amountRangeTo, Double annualInterestRate, String description, List<JSONObject> incentives) {
+    public FixedBuilder withChartSlab(LockInPeriod periodType, Integer fromPeriod, Integer toPeriod, Double amountRangeFrom, Double amountRangeTo, Double annualInterestRate, String description, List<JSONObject> incentives) {
         Map<String, Object> chartSlab = Maps.newHashMap();
-	chartSlab.put("periodType", periodType == null ? null : periodType.getLiteral());
-	chartSlab.put("fromPeriod", fromPeriod == null ? null : DateFormatUtils.format(fromPeriod, this.dateFormat));
-	chartSlab.put("toPeriod", toPeriod == null ? null : DateFormatUtils.format(toPeriod, this.dateFormat));
+        chartSlab.put("periodType", periodType == null ? null : periodType.getLiteral());
+        chartSlab.put("fromPeriod", fromPeriod == null ? null : fromPeriod);
+        chartSlab.put("toPeriod", toPeriod == null ? null : toPeriod);
         chartSlab.put("amountRangeFrom", amountRangeFrom);
         chartSlab.put("amountRangeTo", amountRangeTo);
         chartSlab.put("annualInterestRate", annualInterestRate);
@@ -667,104 +667,104 @@ public class FixedBuilder implements Serializable {
 
         return object;
     }
-    
+
     public static class IncentiveBuilder implements Serializable {
 
-	    private String entityType;
-	    private boolean hasEntityType;
+        private String entityType;
+        private boolean hasEntityType;
 
-	    public IncentiveBuilder withEntityType(String entityType) {
-		this.entityType = entityType;
-		this.hasEntityType = true;
-		return this;
-	    }
+        public IncentiveBuilder withEntityType(String entityType) {
+            this.entityType = entityType;
+            this.hasEntityType = true;
+            return this;
+        }
 
-	    private Attribute attributeName;
-	    private boolean hasAttributeName;
+        private Attribute attributeName;
+        private boolean hasAttributeName;
 
-	    public IncentiveBuilder withAttributeName(Attribute attributeName) {
-		this.attributeName = attributeName;
-		this.hasAttributeName = true;
-		return this;
-	    }
+        public IncentiveBuilder withAttributeName(Attribute attributeName) {
+            this.attributeName = attributeName;
+            this.hasAttributeName = true;
+            return this;
+        }
 
-	    private Operator conditionType;
-	    private boolean hasConditionType;
+        private Operator conditionType;
+        private boolean hasConditionType;
 
-	    public IncentiveBuilder withConditionType(Operator conditionType) {
-		this.conditionType = conditionType;
-		this.hasConditionType = true;
-		return this;
-	    }
+        public IncentiveBuilder withConditionType(Operator conditionType) {
+            this.conditionType = conditionType;
+            this.hasConditionType = true;
+            return this;
+        }
 
-	    private String attributeValue;
-	    private boolean hasAttributeValue;
+        private String attributeValue;
+        private boolean hasAttributeValue;
 
-	    public IncentiveBuilder withAttributeValue(String attributeValue) {
-		this.attributeValue = attributeValue;
-		this.hasAttributeValue = true;
-		return this;
-	    }
+        public IncentiveBuilder withAttributeValue(String attributeValue) {
+            this.attributeValue = attributeValue;
+            this.hasAttributeValue = true;
+            return this;
+        }
 
-	    private OperandType incentiveType;
-	    private boolean hasIncentiveType;
+        private OperandType incentiveType;
+        private boolean hasIncentiveType;
 
-	    public IncentiveBuilder withIncentiveType(OperandType incentiveType) {
-		this.incentiveType = incentiveType;
-		this.hasIncentiveType = true;
-		return this;
-	    }
+        public IncentiveBuilder withIncentiveType(OperandType incentiveType) {
+            this.incentiveType = incentiveType;
+            this.hasIncentiveType = true;
+            return this;
+        }
 
-	    private Double amount;
-	    private boolean hasAmount;
+        private Double amount;
+        private boolean hasAmount;
 
-	    public IncentiveBuilder withAmount(Double amount) {
-		this.amount = amount;
-		this.hasAmount = true;
-		return this;
-	    }
+        public IncentiveBuilder withAmount(Double amount) {
+            this.amount = amount;
+            this.hasAmount = true;
+            return this;
+        }
 
-	    public JsonNode build() {
-		JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
+        public JsonNode build() {
+            JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
 
-		if (this.hasAmount) {
-		    object.getObject().put("amount", this.amount);
-		}
+            if (this.hasAmount) {
+                object.getObject().put("amount", this.amount);
+            }
 
-		if (this.hasIncentiveType) {
-		    if (this.incentiveType != null) {
-			object.getObject().put("incentiveType", this.incentiveType.getLiteral());
-		    } else {
-			object.getObject().put("incentiveType", (String) null);
-		    }
-		}
+            if (this.hasIncentiveType) {
+                if (this.incentiveType != null) {
+                    object.getObject().put("incentiveType", this.incentiveType.getLiteral());
+                } else {
+                    object.getObject().put("incentiveType", (String) null);
+                }
+            }
 
-		if (this.hasAttributeValue) {
-		    object.getObject().put("attributeValue", this.attributeValue);
-		}
+            if (this.hasAttributeValue) {
+                object.getObject().put("attributeValue", this.attributeValue);
+            }
 
-		if (this.hasConditionType) {
-		    if (this.conditionType != null) {
-			object.getObject().put("conditionType", this.conditionType.getLiteral());
-		    } else {
-			object.getObject().put("conditionType", (String) null);
-		    }
-		}
+            if (this.hasConditionType) {
+                if (this.conditionType != null) {
+                    object.getObject().put("conditionType", this.conditionType.getLiteral());
+                } else {
+                    object.getObject().put("conditionType", (String) null);
+                }
+            }
 
-		if (this.hasAttributeName) {
-		    if (this.attributeName != null) {
-			object.getObject().put("attributeName", this.attributeName.getLiteral());
-		    } else {
-			object.getObject().put("attributeName", (String) null);
-		    }
-		}
+            if (this.hasAttributeName) {
+                if (this.attributeName != null) {
+                    object.getObject().put("attributeName", this.attributeName.getLiteral());
+                } else {
+                    object.getObject().put("attributeName", (String) null);
+                }
+            }
 
-		if (this.hasEntityType) {
-		    object.getObject().put("entityType", this.entityType);
-		}
-		return object;
-	    }
+            if (this.hasEntityType) {
+                object.getObject().put("entityType", this.entityType);
+            }
+            return object;
+        }
 
-	}
+    }
 
 }

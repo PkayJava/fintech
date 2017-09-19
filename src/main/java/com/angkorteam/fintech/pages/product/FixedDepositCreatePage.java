@@ -1,11 +1,13 @@
 package com.angkorteam.fintech.pages.product;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -20,6 +22,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.RangeValidator;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
@@ -86,304 +90,301 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FixedDepositCreatePage extends Page {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FixedDepositCreatePage.class);
+
     public static final String ACC_NONE = "None";
     public static final String ACC_CASH = "Cash";
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
     // Detail
 
-    private WebMarkupContainer detailProductNameBlock;
-    private WebMarkupContainer detailProductNameContainer;
-    private String detailProductNameValue;
-    private TextField<String> detailProductNameField;
-    private TextFeedbackPanel detailProductNameFeedback;
+    protected WebMarkupContainer detailProductNameBlock;
+    protected WebMarkupContainer detailProductNameContainer;
+    protected String detailProductNameValue;
+    protected TextField<String> detailProductNameField;
+    protected TextFeedbackPanel detailProductNameFeedback;
 
-    private WebMarkupContainer detailShortNameBlock;
-    private WebMarkupContainer detailShortNameContainer;
-    private String detailShortNameValue;
-    private TextField<String> detailShortNameField;
-    private TextFeedbackPanel detailShortNameFeedback;
+    protected WebMarkupContainer detailShortNameBlock;
+    protected WebMarkupContainer detailShortNameContainer;
+    protected String detailShortNameValue;
+    protected TextField<String> detailShortNameField;
+    protected TextFeedbackPanel detailShortNameFeedback;
 
-    private WebMarkupContainer detailDescriptionBlock;
-    private WebMarkupContainer detailDescriptionContainer;
-    private String detailDescriptionValue;
-    private TextField<String> detailDescriptionField;
-    private TextFeedbackPanel detailDescriptionFeedback;
+    protected WebMarkupContainer detailDescriptionBlock;
+    protected WebMarkupContainer detailDescriptionContainer;
+    protected String detailDescriptionValue;
+    protected TextField<String> detailDescriptionField;
+    protected TextFeedbackPanel detailDescriptionFeedback;
 
     // Currency
 
-    private WebMarkupContainer currencyCodeBlock;
-    private WebMarkupContainer currencyCodeContainer;
-    private SingleChoiceProvider currencyCodeProvider;
-    private Option currencyCodeValue;
-    private Select2SingleChoice<Option> currencyCodeField;
-    private TextFeedbackPanel currencyCodeFeedback;
+    protected WebMarkupContainer currencyCodeBlock;
+    protected WebMarkupContainer currencyCodeContainer;
+    protected SingleChoiceProvider currencyCodeProvider;
+    protected Option currencyCodeValue;
+    protected Select2SingleChoice<Option> currencyCodeField;
+    protected TextFeedbackPanel currencyCodeFeedback;
 
-    private WebMarkupContainer currencyDecimalPlaceBlock;
-    private WebMarkupContainer currencyDecimalPlaceContainer;
-    private Integer currencyDecimalPlaceValue;
-    private TextField<Integer> currencyDecimalPlaceField;
-    private TextFeedbackPanel currencyDecimalPlaceFeedback;
+    protected WebMarkupContainer currencyDecimalPlaceBlock;
+    protected WebMarkupContainer currencyDecimalPlaceContainer;
+    protected Integer currencyDecimalPlaceValue;
+    protected TextField<Integer> currencyDecimalPlaceField;
+    protected TextFeedbackPanel currencyDecimalPlaceFeedback;
 
-    private WebMarkupContainer currencyMultipleOfBlock;
-    private WebMarkupContainer currencyMultipleOfContainer;
-    private Integer currencyMultipleOfValue;
-    private TextField<Integer> currencyMultipleOfField;
-    private TextFeedbackPanel currencyMultipleOfFeedback;
+    protected WebMarkupContainer currencyMultipleOfBlock;
+    protected WebMarkupContainer currencyMultipleOfContainer;
+    protected Integer currencyMultipleOfValue;
+    protected TextField<Integer> currencyMultipleOfField;
+    protected TextFeedbackPanel currencyMultipleOfFeedback;
 
     // Terms
 
-    private WebMarkupContainer termDefaultDepositAmountBlock;
-    private WebMarkupContainer termDefaultDepositAmountContainer;
-    private Double termDefaultDepositAmountValue;
-    private TextField<Double> termDefaultDepositAmountField;
-    private TextFeedbackPanel termDefaultDepositAmountFeedback;
+    protected WebMarkupContainer termDefaultDepositAmountBlock;
+    protected WebMarkupContainer termDefaultDepositAmountContainer;
+    protected Double termDefaultDepositAmountValue;
+    protected TextField<Double> termDefaultDepositAmountField;
+    protected TextFeedbackPanel termDefaultDepositAmountFeedback;
 
-    private WebMarkupContainer termMinimumDepositAmountBlock;
-    private WebMarkupContainer termMinimumDepositAmountContainer;
-    private Double termMinimumDepositAmountValue;
-    private TextField<Double> termMinimumDepositAmountField;
-    private TextFeedbackPanel termMinimumDepositAmountFeedback;
+    protected WebMarkupContainer termMinimumDepositAmountBlock;
+    protected WebMarkupContainer termMinimumDepositAmountContainer;
+    protected Double termMinimumDepositAmountValue;
+    protected TextField<Double> termMinimumDepositAmountField;
+    protected TextFeedbackPanel termMinimumDepositAmountFeedback;
 
-    private WebMarkupContainer termMaximumDepositAmountBlock;
-    private WebMarkupContainer termMaximumDepositAmountContainer;
-    private Double termMaximumDepositAmountValue;
-    private TextField<Double> termMaximumDepositAmountField;
-    private TextFeedbackPanel termMaximumDepositAmountFeedback;
+    protected WebMarkupContainer termMaximumDepositAmountBlock;
+    protected WebMarkupContainer termMaximumDepositAmountContainer;
+    protected Double termMaximumDepositAmountValue;
+    protected TextField<Double> termMaximumDepositAmountField;
+    protected TextFeedbackPanel termMaximumDepositAmountFeedback;
 
-    private WebMarkupContainer termInterestCompoundingPeriodBlock;
-    private WebMarkupContainer termInterestCompoundingPeriodContainer;
-    private InterestCompoundingPeriodProvider termInterestCompoundingPeriodProvider;
-    private Option termInterestCompoundingPeriodValue;
-    private Select2SingleChoice<Option> termInterestCompoundingPeriodField;
-    private TextFeedbackPanel termInterestCompoundingPeriodFeedback;
+    protected WebMarkupContainer termInterestCompoundingPeriodBlock;
+    protected WebMarkupContainer termInterestCompoundingPeriodContainer;
+    protected InterestCompoundingPeriodProvider termInterestCompoundingPeriodProvider;
+    protected Option termInterestCompoundingPeriodValue;
+    protected Select2SingleChoice<Option> termInterestCompoundingPeriodField;
+    protected TextFeedbackPanel termInterestCompoundingPeriodFeedback;
 
-    private WebMarkupContainer termInterestPostingPeriodBlock;
-    private WebMarkupContainer termInterestPostingPeriodContainer;
-    private InterestPostingPeriodProvider termInterestPostingPeriodProvider;
-    private Option termInterestPostingPeriodValue;
-    private Select2SingleChoice<Option> termInterestPostingPeriodField;
-    private TextFeedbackPanel termInterestPostingPeriodFeedback;
+    protected WebMarkupContainer termInterestPostingPeriodBlock;
+    protected WebMarkupContainer termInterestPostingPeriodContainer;
+    protected InterestPostingPeriodProvider termInterestPostingPeriodProvider;
+    protected Option termInterestPostingPeriodValue;
+    protected Select2SingleChoice<Option> termInterestPostingPeriodField;
+    protected TextFeedbackPanel termInterestPostingPeriodFeedback;
 
-    private WebMarkupContainer termInterestCalculatedUsingBlock;
-    private WebMarkupContainer termInterestCalculatedUsingContainer;
-    private InterestCalculatedUsingProvider termInterestCalculatedUsingProvider;
-    private Option termInterestCalculatedUsingValue;
-    private Select2SingleChoice<Option> termInterestCalculatedUsingField;
-    private TextFeedbackPanel termInterestCalculatedUsingFeedback;
+    protected WebMarkupContainer termInterestCalculatedUsingBlock;
+    protected WebMarkupContainer termInterestCalculatedUsingContainer;
+    protected InterestCalculatedUsingProvider termInterestCalculatedUsingProvider;
+    protected Option termInterestCalculatedUsingValue;
+    protected Select2SingleChoice<Option> termInterestCalculatedUsingField;
+    protected TextFeedbackPanel termInterestCalculatedUsingFeedback;
 
-    private WebMarkupContainer termDayInYearBlock;
-    private WebMarkupContainer termDayInYearContainer;
-    private DayInYearProvider termDayInYearProvider;
-    private Option termDayInYearValue;
-    private Select2SingleChoice<Option> termDayInYearField;
-    private TextFeedbackPanel termDayInYearFeedback;
+    protected WebMarkupContainer termDayInYearBlock;
+    protected WebMarkupContainer termDayInYearContainer;
+    protected DayInYearProvider termDayInYearProvider;
+    protected Option termDayInYearValue;
+    protected Select2SingleChoice<Option> termDayInYearField;
+    protected TextFeedbackPanel termDayInYearFeedback;
 
     // Setting
 
-    private WebMarkupContainer settingLockInPeriodBlock;
-    private WebMarkupContainer settingLockInPeriodContainer;
-    private Integer settingLockInPeriodValue;
-    private TextField<Integer> settingLockInPeriodField;
-    private TextFeedbackPanel settingLockInPeriodFeedback;
+    protected WebMarkupContainer settingLockInPeriodBlock;
+    protected WebMarkupContainer settingLockInPeriodContainer;
+    protected Integer settingLockInPeriodValue;
+    protected TextField<Integer> settingLockInPeriodField;
+    protected TextFeedbackPanel settingLockInPeriodFeedback;
 
-    private WebMarkupContainer settingLockInTypeBlock;
-    private WebMarkupContainer settingLockInTypeContainer;
-    private LockInPeriodProvider settingLockInTypeProvider;
-    private Option settingLockInTypeValue;
-    private Select2SingleChoice<Option> settingLockInTypeField;
-    private TextFeedbackPanel settingLockInTypeFeedback;
+    protected WebMarkupContainer settingLockInTypeBlock;
+    protected WebMarkupContainer settingLockInTypeContainer;
+    protected LockInPeriodProvider settingLockInTypeProvider;
+    protected Option settingLockInTypeValue;
+    protected Select2SingleChoice<Option> settingLockInTypeField;
+    protected TextFeedbackPanel settingLockInTypeFeedback;
 
-    private WebMarkupContainer settingMinimumDepositTermBlock;
-    private WebMarkupContainer settingMinimumDepositTermContainer;
-    private Integer settingMinimumDepositTermValue;
-    private TextField<Integer> settingMinimumDepositTermField;
-    private TextFeedbackPanel settingMinimumDepositTermFeedback;
+    protected WebMarkupContainer settingMinimumDepositTermBlock;
+    protected WebMarkupContainer settingMinimumDepositTermContainer;
+    protected Integer settingMinimumDepositTermValue;
+    protected TextField<Integer> settingMinimumDepositTermField;
+    protected TextFeedbackPanel settingMinimumDepositTermFeedback;
 
-    private WebMarkupContainer settingMinimumDepositTypeBlock;
-    private WebMarkupContainer settingMinimumDepositTypeContainer;
-    private LockInPeriodProvider settingMinimumDepositTypeProvider;
-    private Option settingMinimumDepositTypeValue;
-    private Select2SingleChoice<Option> settingMinimumDepositTypeField;
-    private TextFeedbackPanel settingMinimumDepositTypeFeedback;
+    protected WebMarkupContainer settingMinimumDepositTypeBlock;
+    protected WebMarkupContainer settingMinimumDepositTypeContainer;
+    protected LockInPeriodProvider settingMinimumDepositTypeProvider;
+    protected Option settingMinimumDepositTypeValue;
+    protected Select2SingleChoice<Option> settingMinimumDepositTypeField;
+    protected TextFeedbackPanel settingMinimumDepositTypeFeedback;
 
-    private WebMarkupContainer settingInMultiplesOfBlock;
-    private WebMarkupContainer settingInMultiplesOfContainer;
-    private Integer settingInMultiplesOfValue;
-    private TextField<Integer> settingInMultiplesOfField;
-    private TextFeedbackPanel settingInMultiplesOfFeedback;
+    protected WebMarkupContainer settingInMultiplesOfBlock;
+    protected WebMarkupContainer settingInMultiplesOfContainer;
+    protected Integer settingInMultiplesOfValue;
+    protected TextField<Integer> settingInMultiplesOfField;
+    protected TextFeedbackPanel settingInMultiplesOfFeedback;
 
-    private WebMarkupContainer settingInMultiplesTypeBlock;
-    private WebMarkupContainer settingInMultiplesTypeContainer;
-    private LockInPeriodProvider settingInMultiplesTypeProvider;
-    private Option settingInMultiplesTypeValue;
-    private Select2SingleChoice<Option> settingInMultiplesTypeField;
-    private TextFeedbackPanel settingInMultiplesTypeFeedback;
+    protected WebMarkupContainer settingInMultiplesTypeBlock;
+    protected WebMarkupContainer settingInMultiplesTypeContainer;
+    protected LockInPeriodProvider settingInMultiplesTypeProvider;
+    protected Option settingInMultiplesTypeValue;
+    protected Select2SingleChoice<Option> settingInMultiplesTypeField;
+    protected TextFeedbackPanel settingInMultiplesTypeFeedback;
 
-    private WebMarkupContainer settingMaximumDepositTermBlock;
-    private WebMarkupContainer settingMaximumDepositTermContainer;
-    private Integer settingMaximumDepositTermValue;
-    private TextField<Integer> settingMaximumDepositTermField;
-    private TextFeedbackPanel settingMaximumDepositTermFeedback;
+    protected WebMarkupContainer settingMaximumDepositTermBlock;
+    protected WebMarkupContainer settingMaximumDepositTermContainer;
+    protected Integer settingMaximumDepositTermValue;
+    protected TextField<Integer> settingMaximumDepositTermField;
+    protected TextFeedbackPanel settingMaximumDepositTermFeedback;
 
-    private WebMarkupContainer settingMaximumDepositTypeBlock;
-    private WebMarkupContainer settingMaximumDepositTypeContainer;
-    private LockInPeriodProvider settingMaximumDepositTypeProvider;
-    private Option settingMaximumDepositTypeValue;
-    private Select2SingleChoice<Option> settingMaximumDepositTypeField;
-    private TextFeedbackPanel settingMaximumDepositTypeFeedback;
+    protected WebMarkupContainer settingMaximumDepositTypeBlock;
+    protected WebMarkupContainer settingMaximumDepositTypeContainer;
+    protected LockInPeriodProvider settingMaximumDepositTypeProvider;
+    protected Option settingMaximumDepositTypeValue;
+    protected Select2SingleChoice<Option> settingMaximumDepositTypeField;
+    protected TextFeedbackPanel settingMaximumDepositTypeFeedback;
 
-    private WebMarkupContainer settingForPreMatureClosureBlock;
-    private WebMarkupContainer settingForPreMatureClosureContainer;
-    private Boolean settingForPreMatureClosureValue;
-    private CheckBox settingForPreMatureClosureField;
-    private TextFeedbackPanel settingForPreMatureClosureFeedback;
+    protected WebMarkupContainer settingForPreMatureClosureBlock;
+    protected WebMarkupContainer settingForPreMatureClosureContainer;
+    protected Boolean settingForPreMatureClosureValue;
+    protected CheckBox settingForPreMatureClosureField;
+    protected TextFeedbackPanel settingForPreMatureClosureFeedback;
 
-    private WebMarkupContainer settingApplyPenalInterestBlock;
-    private WebMarkupContainer settingApplyPenalInterestContainer;
-    private Double settingApplyPenalInterestValue;
-    private TextField<Double> settingApplyPenalInterestField;
-    private TextFeedbackPanel settingApplyPenalInterestFeedback;
+    protected WebMarkupContainer settingApplyPenalInterestBlock;
+    protected WebMarkupContainer settingApplyPenalInterestContainer;
+    protected Double settingApplyPenalInterestValue;
+    protected TextField<Double> settingApplyPenalInterestField;
+    protected TextFeedbackPanel settingApplyPenalInterestFeedback;
 
-    private WebMarkupContainer settingApplyPenalOnBlock;
-    private WebMarkupContainer settingApplyPenalOnContainer;
-    private ApplyPenalOnProvider settingApplyPenalOnProvider;
-    private Option settingApplyPenalOnValue;
-    private Select2SingleChoice<Option> settingApplyPenalOnField;
-    private TextFeedbackPanel settingApplyPenalOnFeedback;
+    protected WebMarkupContainer settingApplyPenalOnBlock;
+    protected WebMarkupContainer settingApplyPenalOnContainer;
+    protected ApplyPenalOnProvider settingApplyPenalOnProvider;
+    protected Option settingApplyPenalOnValue;
+    protected Select2SingleChoice<Option> settingApplyPenalOnField;
+    protected TextFeedbackPanel settingApplyPenalOnFeedback;
 
-    private WebMarkupContainer settingWithholdTaxApplicableBlock;
-    private WebMarkupContainer settingWithholdTaxApplicableContainer;
-    private Boolean settingWithholdTaxApplicableValue;
-    private CheckBox settingWithholdTaxApplicableField;
-    private TextFeedbackPanel settingWithholdTaxApplicableFeedback;
+    protected WebMarkupContainer settingWithholdTaxApplicableBlock;
+    protected WebMarkupContainer settingWithholdTaxApplicableContainer;
+    protected Boolean settingWithholdTaxApplicableValue;
+    protected CheckBox settingWithholdTaxApplicableField;
+    protected TextFeedbackPanel settingWithholdTaxApplicableFeedback;
 
-    private WebMarkupContainer settingTaxGroupBlock;
-    private WebMarkupContainer settingTaxGroupContainer;
-    private SingleChoiceProvider settingTaxGroupProvider;
-    private Option settingTaxGroupValue;
-    private Select2SingleChoice<Option> settingTaxGroupField;
-    private TextFeedbackPanel settingTaxGroupFeedback;
+    protected WebMarkupContainer settingTaxGroupBlock;
+    protected WebMarkupContainer settingTaxGroupContainer;
+    protected SingleChoiceProvider settingTaxGroupProvider;
+    protected Option settingTaxGroupValue;
+    protected Select2SingleChoice<Option> settingTaxGroupField;
+    protected TextFeedbackPanel settingTaxGroupFeedback;
 
     // Interest Rate Chart
 
-    private WebMarkupContainer interestRateValidFromDateBlock;
-    private WebMarkupContainer interestRateValidFromDateContainer;
-    private Date interestRateValidFromDateValue;
-    private DateTextField interestRateValidFromDateField;
-    private TextFeedbackPanel interestRateValidFromDateFeedback;
+    protected WebMarkupContainer interestRateValidFromDateBlock;
+    protected WebMarkupContainer interestRateValidFromDateContainer;
+    protected Date interestRateValidFromDateValue;
+    protected DateTextField interestRateValidFromDateField;
+    protected TextFeedbackPanel interestRateValidFromDateFeedback;
 
-    private WebMarkupContainer interestRateValidEndDateBlock;
-    private WebMarkupContainer interestRateValidEndDateContainer;
-    private Date interestRateValidEndDateValue;
-    private DateTextField interestRateValidEndDateField;
-    private TextFeedbackPanel interestRateValidEndDateFeedback;
+    protected WebMarkupContainer interestRateValidEndDateBlock;
+    protected WebMarkupContainer interestRateValidEndDateContainer;
+    protected Date interestRateValidEndDateValue;
+    protected DateTextField interestRateValidEndDateField;
+    protected TextFeedbackPanel interestRateValidEndDateFeedback;
 
-    private WebMarkupContainer interestRatePrimaryGroupingByAmountBlock;
-    private WebMarkupContainer interestRatePrimaryGroupingByAmountContainer;
-    private Boolean interestRatePrimaryGroupingByAmountValue;
-    private CheckBox interestRatePrimaryGroupingByAmountField;
-    private TextFeedbackPanel interestRatePrimaryGroupingByAmountFeedback;
+    protected WebMarkupContainer interestRatePrimaryGroupingByAmountBlock;
+    protected WebMarkupContainer interestRatePrimaryGroupingByAmountContainer;
+    protected Boolean interestRatePrimaryGroupingByAmountValue;
+    protected CheckBox interestRatePrimaryGroupingByAmountField;
+    protected TextFeedbackPanel interestRatePrimaryGroupingByAmountFeedback;
 
-    private List<Map<String, Object>> interestRateChartValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> interestRateChartTable;
-    private ListDataProvider interestRateChartProvider;
-    private ModalWindow interestRateChartPopup;
-    private AjaxLink<Void> interestRateChartAddLink;
+    protected List<Map<String, Object>> interestRateChartValue = Lists.newLinkedList();
+    protected DataTable<Map<String, Object>, String> interestRateChartTable;
+    protected ListDataProvider interestRateChartProvider;
+    protected ModalWindow interestRateChartPopup;
+    protected AjaxLink<Void> interestRateChartAddLink;
 
-    private ModalWindow incentivePopup;
+    protected ModalWindow incentivePopup;
 
     // Charges
 
-    protected List<Map<String, Object>> chargeValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> chargeTable;
-    private ListDataProvider chargeProvider;
-    private ModalWindow chargePopup;
-    private AjaxLink<Void> chargeAddLink;
+    protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
+    protected DataTable<Map<String, Object>, String> chargeTable;
+    protected ListDataProvider chargeProvider;
+    protected ModalWindow chargePopup;
+    protected AjaxLink<Void> chargeAddLink;
 
     // Accounting
 
-    private String accountingValue = ACC_NONE;
-    private RadioGroup<String> accountingField;
+    protected String accountingValue = ACC_NONE;
+    protected RadioGroup<String> accountingField;
 
-    private WebMarkupContainer cashBlock;
-    private WebMarkupContainer cashContainer;
+    protected WebMarkupContainer cashBlock;
+    protected WebMarkupContainer cashContainer;
 
-    private SingleChoiceProvider cashSavingReferenceProvider;
-    private Option cashSavingReferenceValue;
-    private Select2SingleChoice<Option> cashSavingReferenceField;
-    private TextFeedbackPanel cashSavingReferenceFeedback;
+    protected SingleChoiceProvider cashSavingReferenceProvider;
+    protected Option cashSavingReferenceValue;
+    protected Select2SingleChoice<Option> cashSavingReferenceField;
+    protected TextFeedbackPanel cashSavingReferenceFeedback;
 
-    private SingleChoiceProvider cashSavingControlProvider;
-    private Option cashSavingControlValue;
-    private Select2SingleChoice<Option> cashSavingControlField;
-    private TextFeedbackPanel cashSavingControlFeedback;
+    protected SingleChoiceProvider cashSavingControlProvider;
+    protected Option cashSavingControlValue;
+    protected Select2SingleChoice<Option> cashSavingControlField;
+    protected TextFeedbackPanel cashSavingControlFeedback;
 
-    private SingleChoiceProvider cashSavingsTransfersInSuspenseProvider;
-    private Option cashSavingsTransfersInSuspenseValue;
-    private Select2SingleChoice<Option> cashSavingsTransfersInSuspenseField;
-    private TextFeedbackPanel cashSavingsTransfersInSuspenseFeedback;
+    protected SingleChoiceProvider cashSavingsTransfersInSuspenseProvider;
+    protected Option cashSavingsTransfersInSuspenseValue;
+    protected Select2SingleChoice<Option> cashSavingsTransfersInSuspenseField;
+    protected TextFeedbackPanel cashSavingsTransfersInSuspenseFeedback;
 
-    private SingleChoiceProvider cashInterestOnSavingsProvider;
-    private Option cashInterestOnSavingsValue;
-    private Select2SingleChoice<Option> cashInterestOnSavingsField;
-    private TextFeedbackPanel cashInterestOnSavingsFeedback;
+    protected SingleChoiceProvider cashInterestOnSavingsProvider;
+    protected Option cashInterestOnSavingsValue;
+    protected Select2SingleChoice<Option> cashInterestOnSavingsField;
+    protected TextFeedbackPanel cashInterestOnSavingsFeedback;
 
-    private SingleChoiceProvider cashInterestOnSavingProvider;
-    private Option cashInterestOnSavingValue;
-    private Select2SingleChoice<Option> cashInterestOnSavingField;
-    private TextFeedbackPanel cashInterestOnSavingFeedback;
+    protected SingleChoiceProvider cashIncomeFromFeesProvider;
+    protected Option cashIncomeFromFeesValue;
+    protected Select2SingleChoice<Option> cashIncomeFromFeesField;
+    protected TextFeedbackPanel cashIncomeFromFeesFeedback;
 
-    private SingleChoiceProvider cashIncomeFromFeesProvider;
-    private Option cashIncomeFromFeesValue;
-    private Select2SingleChoice<Option> cashIncomeFromFeesField;
-    private TextFeedbackPanel cashIncomeFromFeesFeedback;
-
-    private SingleChoiceProvider cashIncomeFromPenaltiesProvider;
-    private Option cashIncomeFromPenaltiesValue;
-    private Select2SingleChoice<Option> cashIncomeFromPenaltiesField;
-    private TextFeedbackPanel cashIncomeFromPenaltiesFeedback;
+    protected SingleChoiceProvider cashIncomeFromPenaltiesProvider;
+    protected Option cashIncomeFromPenaltiesValue;
+    protected Select2SingleChoice<Option> cashIncomeFromPenaltiesField;
+    protected TextFeedbackPanel cashIncomeFromPenaltiesFeedback;
 
     // Advanced Accounting Rule
 
-    private WebMarkupContainer advancedAccountingRuleBlock;
-    private WebMarkupContainer advancedAccountingRuleContainer;
+    protected WebMarkupContainer advancedAccountingRuleBlock;
+    protected WebMarkupContainer advancedAccountingRuleContainer;
 
-    private List<Map<String, Object>> advancedAccountingRuleFundSourceValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> advancedAccountingRuleFundSourceTable;
-    private ListDataProvider advancedAccountingRuleFundSourceProvider;
-    private AjaxLink<Void> advancedAccountingRuleFundSourceAddLink;
-    private ModalWindow fundSourcePopup;
+    protected List<Map<String, Object>> advancedAccountingRuleFundSourceValue = Lists.newLinkedList();
+    protected DataTable<Map<String, Object>, String> advancedAccountingRuleFundSourceTable;
+    protected ListDataProvider advancedAccountingRuleFundSourceProvider;
+    protected AjaxLink<Void> advancedAccountingRuleFundSourceAddLink;
+    protected ModalWindow fundSourcePopup;
 
-    private List<Map<String, Object>> advancedAccountingRuleFeeIncomeValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> advancedAccountingRuleFeeIncomeTable;
-    private ListDataProvider advancedAccountingRuleFeeIncomeProvider;
-    private AjaxLink<Void> advancedAccountingRuleFeeIncomeAddLink;
-    private ModalWindow feeIncomePopup;
+    protected List<Map<String, Object>> advancedAccountingRuleFeeIncomeValue = Lists.newLinkedList();
+    protected DataTable<Map<String, Object>, String> advancedAccountingRuleFeeIncomeTable;
+    protected ListDataProvider advancedAccountingRuleFeeIncomeProvider;
+    protected AjaxLink<Void> advancedAccountingRuleFeeIncomeAddLink;
+    protected ModalWindow feeIncomePopup;
 
-    private List<Map<String, Object>> advancedAccountingRulePenaltyIncomeValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> advancedAccountingRulePenaltyIncomeTable;
-    private ListDataProvider advancedAccountingRulePenaltyIncomeProvider;
-    private AjaxLink<Void> advancedAccountingRulePenaltyIncomeAddLink;
-    private ModalWindow penaltyIncomePopup;
+    protected List<Map<String, Object>> advancedAccountingRulePenaltyIncomeValue = Lists.newLinkedList();
+    protected DataTable<Map<String, Object>, String> advancedAccountingRulePenaltyIncomeTable;
+    protected ListDataProvider advancedAccountingRulePenaltyIncomeProvider;
+    protected AjaxLink<Void> advancedAccountingRulePenaltyIncomeAddLink;
+    protected ModalWindow penaltyIncomePopup;
 
-    private Option itemChargeValue;
-    private Option itemPeriodTypeValue;
-    private Date itemPeriodFromValue;
-    private Date itemPeriodToValue;
-    private Double itemAmountRangeFromValue;
-    private Double itemAmountRangeToValue;
-    private Double itemInterestValue;
-    private String itemDescriptionValue;
-    private Option itemPaymentValue;
-    private Option itemAccountValue;
+    protected Option itemChargeValue;
+    protected Option itemPeriodTypeValue;
+    protected Integer itemPeriodFromValue;
+    protected Integer itemPeriodToValue;
+    protected Double itemAmountRangeFromValue;
+    protected Double itemAmountRangeToValue;
+    protected Double itemInterestValue;
+    protected String itemDescriptionValue;
+    protected Option itemPaymentValue;
+    protected Option itemAccountValue;
 
-    private ModalWindow currencyPopup;
+    protected ModalWindow currencyPopup;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -391,7 +392,7 @@ public class FixedDepositCreatePage extends Page {
     }
 
     static {
-        BREADCRUMB = Lists.newArrayList();
+        BREADCRUMB = Lists.newLinkedList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -559,7 +560,7 @@ public class FixedDepositCreatePage extends Page {
             this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this));
             this.fundSourcePopup.setOnClose(this::fundSourcePopupOnClose);
 
-            List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFundSourceColumn = Lists.newArrayList();
+            List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFundSourceColumn = Lists.newLinkedList();
             advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Payment Type"), "payment", "payment", this::advancedAccountingRuleFundSourcePaymentColumn));
             advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Fund Source"), "account", "account", this::advancedAccountingRuleFundSourceAccountColumn));
             advancedAccountingRuleFundSourceColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFundSourceActionItem, this::advancedAccountingRuleFundSourceActionClick));
@@ -580,7 +581,7 @@ public class FixedDepositCreatePage extends Page {
             add(this.feeIncomePopup);
             this.feeIncomePopup.setOnClose(this::feeIncomePopupOnClose);
 
-            List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFeeIncomeColumn = Lists.newArrayList();
+            List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFeeIncomeColumn = Lists.newLinkedList();
             advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Fees"), "charge", "charge", this::advancedAccountingRuleFeeIncomeChargeColumn));
             advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRuleFeeIncomeAccountColumn));
             advancedAccountingRuleFeeIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFeeIncomeActionItem, this::advancedAccountingRuleFeeIncomeActionClick));
@@ -601,7 +602,7 @@ public class FixedDepositCreatePage extends Page {
             add(this.penaltyIncomePopup);
             this.penaltyIncomePopup.setOnClose(this::penaltyIncomePopupOnClose);
 
-            List<IColumn<Map<String, Object>, String>> advancedAccountingRulePenaltyIncomeColumn = Lists.newArrayList();
+            List<IColumn<Map<String, Object>, String>> advancedAccountingRulePenaltyIncomeColumn = Lists.newLinkedList();
             advancedAccountingRulePenaltyIncomeColumn.add(new TextColumn(Model.of("Penalty"), "charge", "charge", this::advancedAccountingRulePenaltyIncomeChargeColumn));
             advancedAccountingRulePenaltyIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRulePenaltyIncomeAccountColumn));
             advancedAccountingRulePenaltyIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRulePenaltyIncomeActionItem, this::advancedAccountingRulePenaltyIncomeActionClick));
@@ -672,11 +673,11 @@ public class FixedDepositCreatePage extends Page {
         return new TextCell(Model.of(value));
     }
 
-    protected void advancedAccountingRulePenaltyIncomeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void advancedAccountingRulePenaltyIncomeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.advancedAccountingRulePenaltyIncomeValue.size(); i++) {
             Map<String, Object> column = this.advancedAccountingRulePenaltyIncomeValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -684,14 +685,14 @@ public class FixedDepositCreatePage extends Page {
         if (index >= 0) {
             this.advancedAccountingRulePenaltyIncomeValue.remove(index);
         }
-        ajaxRequestTarget.add(this.advancedAccountingRulePenaltyIncomeTable);
+        target.add(this.advancedAccountingRulePenaltyIncomeTable);
     }
 
-    protected List<ActionItem> advancedAccountingRulePenaltyIncomeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> advancedAccountingRulePenaltyIncomeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected List<ActionItem> advancedAccountingRuleFeeIncomeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> advancedAccountingRuleFeeIncomeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -717,11 +718,11 @@ public class FixedDepositCreatePage extends Page {
         return new TextCell(Model.of(value));
     }
 
-    protected void advancedAccountingRuleFeeIncomeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void advancedAccountingRuleFeeIncomeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.advancedAccountingRuleFeeIncomeValue.size(); i++) {
             Map<String, Object> column = this.advancedAccountingRuleFeeIncomeValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -729,18 +730,14 @@ public class FixedDepositCreatePage extends Page {
         if (index >= 0) {
             this.advancedAccountingRuleFeeIncomeValue.remove(index);
         }
-        ajaxRequestTarget.add(this.advancedAccountingRuleFeeIncomeTable);
+        target.add(this.advancedAccountingRuleFeeIncomeTable);
     }
 
-    protected List<ActionItem> feeIncomeActionItem(String s, Map<String, Object> stringObjectMap) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
-    }
-
-    protected void advancedAccountingRuleFundSourceActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void advancedAccountingRuleFundSourceActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.advancedAccountingRuleFundSourceValue.size(); i++) {
             Map<String, Object> column = this.advancedAccountingRuleFundSourceValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -748,10 +745,10 @@ public class FixedDepositCreatePage extends Page {
         if (index >= 0) {
             this.advancedAccountingRuleFundSourceValue.remove(index);
         }
-        ajaxRequestTarget.add(this.advancedAccountingRuleFundSourceTable);
+        target.add(this.advancedAccountingRuleFundSourceTable);
     }
 
-    protected List<ActionItem> advancedAccountingRuleFundSourceActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> advancedAccountingRuleFundSourceActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -768,10 +765,6 @@ public class FixedDepositCreatePage extends Page {
     protected ItemPanel advancedAccountingRuleFundSourceAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(Model.of(value));
-    }
-
-    protected List<ActionItem> fundSourceActionItem(String s, Map<String, Object> stringObjectMap) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     protected boolean accountingFieldUpdate(AjaxRequestTarget target) {
@@ -798,7 +791,7 @@ public class FixedDepositCreatePage extends Page {
         add(this.chargePopup);
         this.chargePopup.setOnClose(this::chargePopupOnClose);
 
-        List<IColumn<Map<String, Object>, String>> chargeColumn = Lists.newArrayList();
+        List<IColumn<Map<String, Object>, String>> chargeColumn = Lists.newLinkedList();
         chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeNameColumn));
         chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeTypeColumn));
         chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeAmountColumn));
@@ -817,7 +810,6 @@ public class FixedDepositCreatePage extends Page {
     }
 
     protected void chargePopupOnClose(String elementId, AjaxRequestTarget target) {
-        System.out.println("ppppppppppppppppppppppppppppppp");
         Map<String, Object> item = Maps.newHashMap();
         String chargeId = this.itemChargeValue.getId();
         for (Map<String, Object> temp : this.chargeValue) {
@@ -904,11 +896,11 @@ public class FixedDepositCreatePage extends Page {
         }
     }
 
-    protected void chargeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void chargeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.chargeValue.size(); i++) {
             Map<String, Object> column = this.chargeValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -916,10 +908,10 @@ public class FixedDepositCreatePage extends Page {
         if (index >= 0) {
             this.chargeValue.remove(index);
         }
-        ajaxRequestTarget.add(this.chargeTable);
+        target.add(this.chargeTable);
     }
 
-    protected List<ActionItem> chargeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> chargeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -966,7 +958,6 @@ public class FixedDepositCreatePage extends Page {
         this.interestRateChartPopup.setInitialHeight(600);
         this.interestRateChartPopup.setInitialWidth(1000);
         add(this.interestRateChartPopup);
-        this.interestRateChartPopup.setContent(new InterestRateChartPopup(this.interestRateChartPopup.getContentId(), this.interestRateChartPopup, this));
         this.interestRateChartPopup.setOnClose(this::interestRateChartPopupOnClose);
 
         this.incentivePopup = new ModalWindow("incentivePopup");
@@ -977,7 +968,7 @@ public class FixedDepositCreatePage extends Page {
         add(this.incentivePopup);
         this.incentivePopup.setOnClose(this::incentivePopupOnClose);
 
-        List<IColumn<Map<String, Object>, String>> interestRateChartColumn = Lists.newArrayList();
+        List<IColumn<Map<String, Object>, String>> interestRateChartColumn = Lists.newLinkedList();
         interestRateChartColumn.add(new TextColumn(Model.of("Period Type"), "periodType", "periodType", this::interestRateChartPeriodTypeColumn));
         interestRateChartColumn.add(new TextColumn(Model.of("Period From"), "periodFrom", "periodFrom", this::interestRateChartPeriodFromColumn));
         interestRateChartColumn.add(new TextColumn(Model.of("Period To"), "periodTo", "periodTo", this::interestRateChartPeriodToColumn));
@@ -998,7 +989,6 @@ public class FixedDepositCreatePage extends Page {
     }
 
     protected void incentivePopupOnClose(String elementId, AjaxRequestTarget target) {
-
     }
 
     protected void interestRateChartPopupOnClose(String elementId, AjaxRequestTarget target) {
@@ -1012,7 +1002,7 @@ public class FixedDepositCreatePage extends Page {
         item.put("amountRangeTo", this.itemAmountRangeToValue);
         item.put("interest", this.itemInterestValue);
         item.put("description", this.itemDescriptionValue);
-        item.put("interestRate", Lists.newArrayList());
+        item.put("interestRate", Lists.newLinkedList());
         this.interestRateChartValue.add(item);
         target.add(this.interestRateChartTable);
     }
@@ -1025,6 +1015,7 @@ public class FixedDepositCreatePage extends Page {
         this.itemAmountRangeToValue = null;
         this.itemInterestValue = null;
         this.itemDescriptionValue = null;
+        this.interestRateChartPopup.setContent(new InterestRateChartPopup(this.interestRateChartPopup.getContentId(), this.interestRateChartPopup, this));
         this.interestRateChartPopup.show(target);
         return false;
     }
@@ -1035,20 +1026,20 @@ public class FixedDepositCreatePage extends Page {
     }
 
     protected ItemPanel interestRateChartPeriodFromColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date value = (Date) model.get(jdbcColumn);
+        Integer value = (Integer) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
         } else {
-            return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(value)));
+            return new TextCell(Model.of(String.valueOf(value)));
         }
     }
 
     protected ItemPanel interestRateChartPeriodToColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date value = (Date) model.get(jdbcColumn);
+        Integer value = (Integer) model.get(jdbcColumn);
         if (value == null) {
             return new TextCell(Model.of(""));
         } else {
-            return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(value)));
+            return new TextCell(Model.of(String.valueOf(value)));
         }
     }
 
@@ -1088,12 +1079,12 @@ public class FixedDepositCreatePage extends Page {
         }
     }
 
-    protected void interestRateChartActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget target) {
-        if ("delete".equals(s)) {
+    protected void interestRateChartActionClick(String link, Map<String, Object> model, AjaxRequestTarget target) {
+        if ("delete".equals(link)) {
             int index = -1;
             for (int i = 0; i < this.interestRateChartValue.size(); i++) {
                 Map<String, Object> column = this.interestRateChartValue.get(i);
-                if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                if (model.get("uuid").equals(column.get("uuid"))) {
                     index = i;
                     break;
                 }
@@ -1102,15 +1093,15 @@ public class FixedDepositCreatePage extends Page {
                 this.interestRateChartValue.remove(index);
             }
             target.add(this.interestRateChartTable);
-        } else if ("incentives".equals(s)) {
-            List<Map<String, Object>> incentiveValue = (List<Map<String, Object>>) stringObjectMap.get("interestRate");
+        } else if ("incentives".equals(link)) {
+            List<Map<String, Object>> incentiveValue = (List<Map<String, Object>>) model.get("interestRate");
             this.incentivePopup.setContent(new IncentivePopup(this.incentivePopup.getContentId(), this.incentivePopup, incentiveValue));
             this.incentivePopup.show(target);
         }
     }
 
-    protected List<ActionItem> interestRateChartActionItem(String s, Map<String, Object> stringObjectMap) {
-        List<ActionItem> actions = Lists.newArrayList();
+    protected List<ActionItem> interestRateChartActionItem(String s, Map<String, Object> model) {
+        List<ActionItem> actions = Lists.newLinkedList();
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         actions.add(new ActionItem("incentives", Model.of("Incentives"), ItemCss.PRIMARY));
         return actions;
@@ -1541,12 +1532,16 @@ public class FixedDepositCreatePage extends Page {
 
         // Interest Rate Chart
 
+        builder.withFromDate(this.interestRateValidFromDateValue);
+        builder.withEndDate(this.interestRateValidEndDateValue);
+
+        builder.withPrimaryGroupingByAmount(this.interestRatePrimaryGroupingByAmountValue == null ? false : this.interestRatePrimaryGroupingByAmountValue);
+
         for (Map<String, Object> interestRateChart : this.interestRateChartValue) {
-            // LockInPeriod
             Option periodTypeOption = (Option) interestRateChart.get("periodType");
             LockInPeriod periodType = periodTypeOption == null ? null : LockInPeriod.valueOf(periodTypeOption.getId());
-            Date fromPeriod = (Date) interestRateChart.get("periodFrom");
-            Date toPeriod = (Date) interestRateChart.get("periodTo");
+            Integer fromPeriod = (Integer) interestRateChart.get("periodFrom");
+            Integer toPeriod = (Integer) interestRateChart.get("periodTo");
             Double amountRangeFrom = (Double) interestRateChart.get("amountRangeFrom");
             Double amountRangeTo = (Double) interestRateChart.get("amountRangeTo");
             Double annualInterestRate = (Double) interestRateChart.get("interest");
@@ -1554,7 +1549,7 @@ public class FixedDepositCreatePage extends Page {
             List<Map<String, Object>> interestRate = (List<Map<String, Object>>) interestRateChart.get("interestRate");
             List<JSONObject> incentives = null;
             if (interestRate != null && !interestRate.isEmpty()) {
-                incentives = Lists.newArrayList();
+                incentives = Lists.newLinkedList();
                 for (Map<String, Object> rate : interestRate) {
 
                     IncentiveBuilder incentiveBuilder = new IncentiveBuilder();
@@ -1611,8 +1606,8 @@ public class FixedDepositCreatePage extends Page {
             if (this.cashSavingsTransfersInSuspenseValue != null) {
                 builder.withTransfersInSuspenseAccountId(this.cashSavingsTransfersInSuspenseValue.getId());
             }
-            if (this.cashInterestOnSavingValue != null) {
-                builder.withInterestOnSavingsAccountId(this.cashInterestOnSavingValue.getId());
+            if (this.cashInterestOnSavingsValue != null) {
+                builder.withInterestOnSavingsAccountId(this.cashInterestOnSavingsValue.getId());
             }
             if (this.cashIncomeFromFeesValue != null) {
                 builder.withIncomeFromFeeAccountId(this.cashIncomeFromFeesValue.getId());
@@ -1641,13 +1636,19 @@ public class FixedDepositCreatePage extends Page {
         }
 
         JsonNode node = null;
+        JsonNode request = builder.build();
         try {
-            node = FixedHelper.create((Session) getSession(), builder.build());
+            node = FixedHelper.create((Session) getSession(), request);
         } catch (UnirestException e) {
             error(e.getMessage());
             return;
         }
         if (reportError(node)) {
+            try {
+                FileUtils.write(new File("C:\\Users\\socheat\\Documents\\SKH\\fintech\\src\\test\\resources\\format.json"), builder.build().toString(), "UTF-8");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return;
         }
         setResponsePage(FixedDepositBrowsePage.class);

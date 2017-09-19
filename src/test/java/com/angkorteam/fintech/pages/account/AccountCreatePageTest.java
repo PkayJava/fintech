@@ -16,6 +16,7 @@ import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitFormTester;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 public class AccountCreatePageTest {
 
@@ -40,12 +41,10 @@ public class AccountCreatePageTest {
         String tagValue = this.wicket.getJdbcTemplate().queryForObject("select m_code_value.id from m_code_value INNER join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? LIMIT 1", String.class, AccountType.Asset.getTag());
 
         JUnitFormTester form = this.wicket.newFormTester("form");
-        {
-            form.setValue("accountTypeField", AccountType.Asset);
-            Component accountTypeField = form.getForm().get("accountTypeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(accountTypeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+
+        form.setValue("accountTypeField", AccountType.Asset);
+        Select2SingleChoice<?> accountTypeField = this.wicket.getComponentFromLastRenderedPage("form:accountTypeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(accountTypeField);
 
         form.setValue("accountTypeField", AccountType.Asset);
 
@@ -83,12 +82,10 @@ public class AccountCreatePageTest {
         String tagValue = this.wicket.getJdbcTemplate().queryForObject("select m_code_value.id from m_code_value INNER join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? LIMIT 1", String.class, AccountType.Liability.getTag());
 
         JUnitFormTester form = this.wicket.newFormTester("form");
-        {
-            form.setValue("accountTypeField", AccountType.Liability);
-            Component accountTypeField = form.getForm().get("accountTypeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(accountTypeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+
+        form.setValue("accountTypeField", AccountType.Liability);
+        Select2SingleChoice<?> accountTypeField = this.wicket.getComponentFromLastRenderedPage("form:accountTypeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(accountTypeField);
 
         form.setValue("accountTypeField", AccountType.Liability);
 
@@ -126,12 +123,10 @@ public class AccountCreatePageTest {
         String tagValue = this.wicket.getJdbcTemplate().queryForObject("select m_code_value.id from m_code_value INNER join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? LIMIT 1", String.class, AccountType.Equity.getTag());
 
         JUnitFormTester form = this.wicket.newFormTester("form");
-        {
-            form.setValue("accountTypeField", AccountType.Equity);
-            Component accountTypeField = form.getForm().get("accountTypeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(accountTypeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+
+        form.setValue("accountTypeField", AccountType.Equity);
+        Select2SingleChoice<?> accountTypeField = this.wicket.getComponentFromLastRenderedPage("form:accountTypeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(accountTypeField);
 
         form.setValue("accountTypeField", AccountType.Equity);
 
@@ -169,12 +164,10 @@ public class AccountCreatePageTest {
         String tagValue = this.wicket.getJdbcTemplate().queryForObject("select m_code_value.id from m_code_value INNER join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? LIMIT 1", String.class, AccountType.Income.getTag());
 
         JUnitFormTester form = this.wicket.newFormTester("form");
-        {
-            form.setValue("accountTypeField", AccountType.Income);
-            Component accountTypeField = form.getForm().get("accountTypeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(accountTypeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+
+        form.setValue("accountTypeField", AccountType.Income);
+        Select2SingleChoice<?> accountTypeField = this.wicket.getComponentFromLastRenderedPage("form:accountTypeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(accountTypeField);
 
         form.setValue("accountTypeField", AccountType.Income);
 
@@ -212,12 +205,10 @@ public class AccountCreatePageTest {
         String tagValue = this.wicket.getJdbcTemplate().queryForObject("select m_code_value.id from m_code_value INNER join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? LIMIT 1", String.class, AccountType.Expense.getTag());
 
         JUnitFormTester form = this.wicket.newFormTester("form");
-        {
-            form.setValue("accountTypeField", AccountType.Expense);
-            Component accountTypeField = form.getForm().get("accountTypeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(accountTypeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+
+        form.setValue("accountTypeField", AccountType.Expense);
+        Select2SingleChoice<?> accountTypeField = this.wicket.getComponentFromLastRenderedPage("form:accountTypeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(accountTypeField);
 
         form.setValue("accountTypeField", AccountType.Expense);
 
@@ -255,12 +246,10 @@ public class AccountCreatePageTest {
         String tagValue = this.wicket.getJdbcTemplate().queryForObject("select m_code_value.id from m_code_value INNER join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? LIMIT 1", String.class, AccountType.Asset.getTag());
 
         JUnitFormTester form = this.wicket.newFormTester("form");
-        {
-            form.setValue("accountTypeField", AccountType.Asset);
-            Component accountTypeField = form.getForm().get("accountTypeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(accountTypeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+
+        form.setValue("accountTypeField", AccountType.Asset);
+        Select2SingleChoice<?> accountTypeField = this.wicket.getComponentFromLastRenderedPage("form:accountTypeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(accountTypeField);
 
         form.setValue("accountTypeField", AccountType.Asset);
 
@@ -299,12 +288,10 @@ public class AccountCreatePageTest {
         String parentValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where gl_code = ?", String.class, prefix + "_PR_JUNIT");
 
         JUnitFormTester form = this.wicket.newFormTester("form");
-        {
-            form.setValue("accountTypeField", AccountType.Asset);
-            Component accountTypeField = form.getForm().get("accountTypeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(accountTypeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+
+        form.setValue("accountTypeField", AccountType.Asset);
+        Select2SingleChoice<?> accountTypeField = this.wicket.getComponentFromLastRenderedPage("form:accountTypeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(accountTypeField);
 
         form.setValue("accountTypeField", AccountType.Asset);
 
@@ -344,12 +331,10 @@ public class AccountCreatePageTest {
         String tagValue = this.wicket.getJdbcTemplate().queryForObject("select m_code_value.id from m_code_value INNER join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? LIMIT 1", String.class, AccountType.Liability.getTag());
 
         JUnitFormTester form = this.wicket.newFormTester("form");
-        {
-            form.setValue("accountTypeField", AccountType.Liability);
-            Component accountTypeField = form.getForm().get("accountTypeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(accountTypeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+
+        form.setValue("accountTypeField", AccountType.Liability);
+        Select2SingleChoice<?> accountTypeField = this.wicket.getComponentFromLastRenderedPage("form:accountTypeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(accountTypeField);
 
         form.setValue("accountTypeField", AccountType.Liability);
 
@@ -387,12 +372,10 @@ public class AccountCreatePageTest {
         String parentValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where gl_code = ?", String.class, prefix + "_PR_JUNIT");
 
         JUnitFormTester form = this.wicket.newFormTester("form");
-        {
-            form.setValue("accountTypeField", AccountType.Liability);
-            Component accountTypeField = form.getForm().get("accountTypeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(accountTypeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+
+        form.setValue("accountTypeField", AccountType.Liability);
+        Select2SingleChoice<?> accountTypeField = this.wicket.getComponentFromLastRenderedPage("form:accountTypeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(accountTypeField);
 
         form.setValue("accountTypeField", AccountType.Liability);
 
@@ -431,12 +414,10 @@ public class AccountCreatePageTest {
         String tagValue = this.wicket.getJdbcTemplate().queryForObject("select m_code_value.id from m_code_value INNER join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? LIMIT 1", String.class, AccountType.Equity.getTag());
 
         JUnitFormTester form = this.wicket.newFormTester("form");
-        {
-            form.setValue("accountTypeField", AccountType.Equity);
-            Component accountTypeField = form.getForm().get("accountTypeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(accountTypeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+
+        form.setValue("accountTypeField", AccountType.Equity);
+        Select2SingleChoice<?> accountTypeField = this.wicket.getComponentFromLastRenderedPage("form:accountTypeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(accountTypeField);
 
         form.setValue("accountTypeField", AccountType.Equity);
 
@@ -474,12 +455,10 @@ public class AccountCreatePageTest {
         String parentValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where gl_code = ?", String.class, prefix + "_PR_JUNIT");
 
         JUnitFormTester form = this.wicket.newFormTester("form");
-        {
-            form.setValue("accountTypeField", AccountType.Equity);
-            Component accountTypeField = form.getForm().get("accountTypeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(accountTypeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+
+        form.setValue("accountTypeField", AccountType.Equity);
+        Select2SingleChoice<?> accountTypeField = this.wicket.getComponentFromLastRenderedPage("form:accountTypeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(accountTypeField);
 
         form.setValue("accountTypeField", AccountType.Equity);
 
@@ -518,12 +497,10 @@ public class AccountCreatePageTest {
         String tagValue = this.wicket.getJdbcTemplate().queryForObject("select m_code_value.id from m_code_value INNER join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? LIMIT 1", String.class, AccountType.Income.getTag());
 
         JUnitFormTester form = this.wicket.newFormTester("form");
-        {
-            form.setValue("accountTypeField", AccountType.Income);
-            Component accountTypeField = form.getForm().get("accountTypeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(accountTypeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+
+        form.setValue("accountTypeField", AccountType.Income);
+        Select2SingleChoice<?> accountTypeField = this.wicket.getComponentFromLastRenderedPage("form:accountTypeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(accountTypeField);
 
         form.setValue("accountTypeField", AccountType.Income);
 
@@ -561,12 +538,10 @@ public class AccountCreatePageTest {
         String parentValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where gl_code = ?", String.class, prefix + "_PR_JUNIT");
 
         JUnitFormTester form = this.wicket.newFormTester("form");
-        {
-            form.setValue("accountTypeField", AccountType.Income);
-            Component accountTypeField = form.getForm().get("accountTypeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(accountTypeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+
+        form.setValue("accountTypeField", AccountType.Income);
+        Select2SingleChoice<?> accountTypeField = this.wicket.getComponentFromLastRenderedPage("form:accountTypeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(accountTypeField);
 
         form.setValue("accountTypeField", AccountType.Income);
 
@@ -605,12 +580,10 @@ public class AccountCreatePageTest {
         String tagValue = this.wicket.getJdbcTemplate().queryForObject("select m_code_value.id from m_code_value INNER join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? LIMIT 1", String.class, AccountType.Expense.getTag());
 
         JUnitFormTester form = this.wicket.newFormTester("form");
-        {
-            form.setValue("accountTypeField", AccountType.Expense);
-            Component accountTypeField = form.getForm().get("accountTypeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(accountTypeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+
+        form.setValue("accountTypeField", AccountType.Expense);
+        Select2SingleChoice<?> accountTypeField = this.wicket.getComponentFromLastRenderedPage("form:accountTypeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(accountTypeField);
 
         form.setValue("accountTypeField", AccountType.Expense);
 
@@ -648,12 +621,10 @@ public class AccountCreatePageTest {
         String parentValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where gl_code = ?", String.class, prefix + "_PR_JUNIT");
 
         JUnitFormTester form = this.wicket.newFormTester("form");
-        {
-            form.setValue("accountTypeField", AccountType.Expense);
-            Component accountTypeField = form.getForm().get("accountTypeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(accountTypeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+
+        form.setValue("accountTypeField", AccountType.Expense);
+        Select2SingleChoice<?> accountTypeField = this.wicket.getComponentFromLastRenderedPage("form:accountTypeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(accountTypeField);
 
         form.setValue("accountTypeField", AccountType.Expense);
 

@@ -26,10 +26,10 @@ public class InterestRateChartPopup extends Panel {
     private Select2SingleChoice<Option> periodTypeField;
     private TextFeedbackPanel periodTypeFeedback;
 
-    private DateTextField periodFromField;
+    private TextField<Integer> periodFromField;
     private TextFeedbackPanel periodFromFeedback;
 
-    private DateTextField periodToField;
+    private TextField<Integer> periodToField;
     private TextFeedbackPanel periodToFeedback;
 
     private TextField<Double> amountRangeFromField;
@@ -71,13 +71,13 @@ public class InterestRateChartPopup extends Panel {
         this.periodTypeFeedback = new TextFeedbackPanel("periodTypeFeedback", this.periodTypeField);
         this.form.add(this.periodTypeFeedback);
 
-        this.periodFromField = new DateTextField("periodFromField", new PropertyModel<>(this.model, "itemPeriodFromValue"));
+        this.periodFromField = new TextField<>("periodFromField", new PropertyModel<>(this.model, "itemPeriodFromValue"));
         this.periodFromField.setLabel(Model.of("Period From"));
         this.form.add(this.periodFromField);
         this.periodFromFeedback = new TextFeedbackPanel("periodFromFeedback", this.periodFromField);
         this.form.add(this.periodFromFeedback);
 
-        this.periodToField = new DateTextField("periodToField", new PropertyModel<>(this.model, "itemPeriodToValue"));
+        this.periodToField = new TextField<>("periodToField", new PropertyModel<>(this.model, "itemPeriodToValue"));
         this.periodToField.setLabel(Model.of("Period To"));
         this.form.add(this.periodToField);
         this.periodToFeedback = new TextFeedbackPanel("periodToFeedback", this.periodToField);

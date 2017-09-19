@@ -4,10 +4,6 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxEventBehavior;
-import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
-import org.apache.wicket.util.tester.WicketTesterHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +14,7 @@ import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitFormTester;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 public class SavingDepositChargeCreatePageTest {
     private JUnitWicketTester wicket;
@@ -62,12 +59,9 @@ public class SavingDepositChargeCreatePageTest {
 
         JUnitFormTester form = this.wicket.newFormTester("form");
 
-        {
-            form.setValue("chargeTimeField", ChargeTime.MonthlyFee);
-            Component chargeTimeField = form.getForm().get("chargeTimeField");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(chargeTimeField, OnChangeAjaxBehavior.EVENT_CHANGE);
-            this.wicket.executeBehavior(behavior);
-        }
+        form.setValue("chargeTimeField", ChargeTime.MonthlyFee);
+        Select2SingleChoice<?> chargeTimeField = this.wicket.getComponentFromLastRenderedPage("form:chargeTimeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(chargeTimeField);
 
         String nameValue = "SAVING_DEPOSIT_CHARGE_" + this.wicket.getStringGenerator().generate(20);
 

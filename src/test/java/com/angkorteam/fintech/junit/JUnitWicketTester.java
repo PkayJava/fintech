@@ -1,16 +1,25 @@
 package com.angkorteam.fintech.junit;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
+import org.apache.wicket.behavior.AbstractAjaxBehavior;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.core.request.handler.BookmarkableListenerRequestHandler;
 import org.apache.wicket.core.request.handler.ListenerRequestHandler;
 import org.apache.wicket.core.request.handler.PageAndComponentProvider;
 import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RadioGroup;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.mapper.parameter.INamedParameters;
@@ -20,6 +29,7 @@ import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.Result;
 import org.apache.wicket.util.tester.WicketTester;
+import org.apache.wicket.util.tester.WicketTesterHelper;
 import org.junit.Assert;
 
 import com.angkorteam.fintech.Application;
@@ -30,6 +40,10 @@ import com.angkorteam.fintech.pages.LoginPage;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
+import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 public class JUnitWicketTester extends WicketTester {
 
@@ -60,6 +74,63 @@ public class JUnitWicketTester extends WicketTester {
         form.setValue("passwordField", Constants.PWD);
         form.submit("loginButton");
 
+    }
+
+    public void executeBehavior(Select2SingleChoice<?> select) {
+        AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(select, OnChangeAjaxBehavior.EVENT_CHANGE);
+        if (behavior != null) {
+            super.executeBehavior(behavior);
+        }
+    }
+
+    public void executeBehavior(CheckBox checkbox) {
+        AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(checkbox, OnChangeAjaxBehavior.EVENT_CHANGE);
+        if (behavior != null) {
+            super.executeBehavior(behavior);
+        }
+    }
+
+    public void executeBehavior(RadioGroup<?> radio) {
+        AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(radio, "click");
+        if (behavior != null) {
+            super.executeBehavior(behavior);
+        }
+    }
+
+    public void executeBehavior(TextField<?> text) {
+        AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(text, OnChangeAjaxBehavior.EVENT_CHANGE);
+        if (behavior != null) {
+            super.executeBehavior(behavior);
+        }
+    }
+
+    public void executeModalWindowOnClose(ModalWindow window) {
+        List<? extends Behavior> behaviors = window.getBehaviors();
+        for (Behavior behavior : behaviors) {
+            String clazzName = behavior.getClass().getName();
+            if (clazzName.contains("WindowClosedBehavior")) {
+                super.executeBehavior((AbstractAjaxBehavior) behavior);
+            }
+        }
+    }
+
+    public void executeAjaxButton(AjaxButton button) {
+        AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(button, "click");
+        if (behavior != null) {
+            super.executeBehavior(behavior);
+        }
+    }
+
+    public void executeAjaxLink(AjaxLink<?> link) {
+        AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(link, "click");
+        if (behavior != null) {
+            super.executeBehavior(behavior);
+        }
+    }
+
+    public <T> T getComponentFromLastRenderedPage(String path, Class<T> clazz) {
+        Component component = super.getComponentFromLastRenderedPage(path);
+        return (T) component;
     }
 
     public void executeListener(final Component component, PageParameters parameters) {
