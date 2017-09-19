@@ -332,7 +332,7 @@ public class FixedBuilder implements Serializable {
     private List<Map<String, Object>> chartSlabs = Lists.newArrayList();
     private boolean hasChartSlabs;
 
-    public FixedBuilder withChartSlab(LockInPeriod periodType, Integer fromPeriod, Integer toPeriod, Double amountRangeFrom, Double amountRangeTo, Double annualInterestRate, String description, List<JSONObject> incentives) {
+    public FixedBuilder withChartSlab(LockInPeriod periodType, Integer fromPeriod, Integer toPeriod, Integer amountRangeFrom, Integer amountRangeTo, Double annualInterestRate, String description, List<JSONObject> incentives) {
         Map<String, Object> chartSlab = Maps.newHashMap();
         chartSlab.put("periodType", periodType == null ? null : periodType.getLiteral());
         chartSlab.put("fromPeriod", fromPeriod == null ? null : fromPeriod);

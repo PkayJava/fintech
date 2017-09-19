@@ -10,7 +10,6 @@ import com.angkorteam.fintech.provider.fixed.LockInPeriodProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
@@ -32,10 +31,10 @@ public class InterestRateChartPopup extends Panel {
     private TextField<Integer> periodToField;
     private TextFeedbackPanel periodToFeedback;
 
-    private TextField<Double> amountRangeFromField;
+    private TextField<Integer> amountRangeFromField;
     private TextFeedbackPanel amountRangeFromFeedback;
 
-    private TextField<Double> amountRangeToField;
+    private TextField<Integer> amountRangeToField;
     private TextFeedbackPanel amountRangeToFeedback;
 
     private TextField<Double> interestField;
@@ -83,25 +82,25 @@ public class InterestRateChartPopup extends Panel {
         this.periodToFeedback = new TextFeedbackPanel("periodToFeedback", this.periodToField);
         this.form.add(this.periodToFeedback);
 
-        this.amountRangeFromField = new TextField<Double>("amountRangeFromField", new PropertyModel<>(this.model, "itemAmountRangeFromValue"));
+        this.amountRangeFromField = new TextField<>("amountRangeFromField", new PropertyModel<>(this.model, "itemAmountRangeFromValue"));
         this.amountRangeFromField.setLabel(Model.of("Amount Range From"));
         this.form.add(this.amountRangeFromField);
         this.amountRangeFromFeedback = new TextFeedbackPanel("amountRangeFromFeedback", this.amountRangeFromField);
         this.form.add(this.amountRangeFromFeedback);
 
-        this.amountRangeToField = new TextField<Double>("amountRangeToField", new PropertyModel<>(this.model, "itemAmountRangeToValue"));
+        this.amountRangeToField = new TextField<>("amountRangeToField", new PropertyModel<>(this.model, "itemAmountRangeToValue"));
         this.amountRangeToField.setLabel(Model.of("Amount Range To"));
         this.form.add(this.amountRangeToField);
         this.amountRangeToFeedback = new TextFeedbackPanel("amountRangeToFeedback", this.amountRangeToField);
         this.form.add(this.amountRangeToFeedback);
 
-        this.interestField = new TextField<Double>("interestField", new PropertyModel<>(this.model, "itemInterestValue"));
+        this.interestField = new TextField<>("interestField", new PropertyModel<>(this.model, "itemInterestValue"));
         this.interestField.setLabel(Model.of("Interest"));
         this.form.add(this.interestField);
         this.interestFeedback = new TextFeedbackPanel("interestFeedback", this.interestField);
         this.form.add(this.interestFeedback);
 
-        this.descriptionField = new TextField<String>("descriptionField", new PropertyModel<>(this.model, "itemDescriptionValue"));
+        this.descriptionField = new TextField<>("descriptionField", new PropertyModel<>(this.model, "itemDescriptionValue"));
         this.descriptionField.setLabel(Model.of("Description"));
         this.form.add(this.descriptionField);
         this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);

@@ -11,7 +11,6 @@ import org.apache.wicket.markup.html.form.RadioGroup;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.angkorteam.fintech.dto.AccountType;
@@ -48,7 +47,7 @@ public class FixedDepositCreatePageTest {
         this.wicket = JUnit.getWicket();
     }
 
-    @Ignore
+    @Test
     public void dataEntryMinimum() {
         this.wicket.login();
 
@@ -109,10 +108,9 @@ public class FixedDepositCreatePageTest {
     }
 
     @Test
-    public void dataEntryMaximum() {
+    public void dataEntryMaximumGroupByPrice() {
         this.wicket.login();
-        
-        // https://mifosforge.jira.com/wiki/spaces/docs/pages/121831466/Interest+rate+chart+with+amount+range
+
         // https://mifosforge.jira.com/wiki/spaces/docs/pages/121831466/Interest+rate+chart+with+amount+range
         // acc_product_mapping
         // m_deposit_product_interest_rate_chart
@@ -204,8 +202,8 @@ public class FixedDepositCreatePageTest {
             item.put("periodType", new Option(LockInPeriod.Month.name(), LockInPeriod.Month.getDescription()));
             item.put("periodFrom", 1);
             item.put("periodTo", 10);
-            item.put("amountRangeFrom", 0d);
-            item.put("amountRangeTo", 500d);
+            item.put("amountRangeFrom", 0);
+            // item.put("amountRangeTo", 500);
             item.put("interest", 10.99d);
             item.put("description", "JUNIT_" + this.wicket.getStringGenerator().generate(10));
             List<Map<String, Object>> interestRate = Lists.newArrayList();
@@ -223,8 +221,193 @@ public class FixedDepositCreatePageTest {
             Map<String, Object> item = Maps.newHashMap();
             item.put("periodType", new Option(LockInPeriod.Month.name(), LockInPeriod.Month.getDescription()));
             item.put("periodFrom", 11);
-            item.put("amountRangeFrom", 0d);
-            item.put("amountRangeTo", 10000d);
+            item.put("amountRangeFrom", 0);
+            // item.put("amountRangeTo", 10000);
+            item.put("interest", 10.99d);
+            item.put("description", "JUNIT_" + this.wicket.getStringGenerator().generate(10));
+            List<Map<String, Object>> interestRate = Lists.newArrayList();
+            Map<String, Object> rateItem = Maps.newHashMap();
+            rateItem.put("attribute", new Option(Attribute.Age.name(), Attribute.Age.getDescription()));
+            rateItem.put("operator", new Option(Operator.GreaterThan.name(), Operator.GreaterThan.getDescription()));
+            rateItem.put("operand", "100");
+            rateItem.put("operandType", new Option(OperandType.Fixed.name(), OperandType.Fixed.getDescription()));
+            rateItem.put("interest", 10.99d);
+            interestRate.add(rateItem);
+            item.put("interestRate", interestRate);
+            page.interestRateChartValue.add(item);
+        }
+
+        // Charge
+        {
+            String chargeValue = this.wicket.getJdbcTemplate().queryForObject("select id from m_charge where currency_code = ? and charge_applies_to_enum = ? and is_penalty = ? and is_active = 1 limit 1", String.class, currencyCodeValue, ChargeType.SavingDeposit.getLiteral(), 0);
+            Map<String, Object> item = Maps.newHashMap();
+            item.put("chargeId", chargeValue);
+            page.chargeValue.add(item);
+        }
+
+        // Accounting
+        form.select("accountingField", accountingValue);
+
+        form.setValue("cashBlock:cashContainer:cashSavingReferenceField", this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Asset.getLiteral()));
+        form.setValue("cashBlock:cashContainer:cashSavingControlField", this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Liability.getLiteral()));
+        form.setValue("cashBlock:cashContainer:cashSavingsTransfersInSuspenseField", this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Liability.getLiteral()));
+        form.setValue("cashBlock:cashContainer:cashInterestOnSavingsField", this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Expense.getLiteral()));
+        form.setValue("cashBlock:cashContainer:cashIncomeFromFeesField", this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Income.getLiteral()));
+        form.setValue("cashBlock:cashContainer:cashIncomeFromPenaltiesField", this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Income.getLiteral()));
+
+        {
+            String paymentId = this.wicket.getJdbcTemplate().queryForObject("SELECT id FROM m_payment_type LIMIT 1", String.class);
+            String accountId = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Asset.getLiteral());
+            Map<String, Object> item = Maps.newHashMap();
+            item.put("paymentId", paymentId);
+            item.put("accountId", accountId);
+            page.advancedAccountingRuleFundSourceValue.add(item);
+        }
+        {
+            String chargeId = this.wicket.getJdbcTemplate().queryForObject("select id from m_charge where  charge_applies_to_enum = ? and currency_code = ? and is_penalty = 0 and is_active = 1 limit 1", String.class, ChargeType.SavingDeposit.getLiteral(), currencyCodeValue);
+            String accountId = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Income.getLiteral());
+            Map<String, Object> item = Maps.newHashMap();
+            item.put("chargeId", chargeId);
+            item.put("accountId", accountId);
+            page.advancedAccountingRuleFeeIncomeValue.add(item);
+        }
+
+        {
+            String chargeId = this.wicket.getJdbcTemplate().queryForObject("select id from m_charge where  charge_applies_to_enum = ? and currency_code = ? and is_penalty = 1 and is_active = 1 limit 1", String.class, ChargeType.SavingDeposit.getLiteral(), currencyCodeValue);
+            String accountId = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Income.getLiteral());
+            Map<String, Object> item = Maps.newHashMap();
+            item.put("chargeId", chargeId);
+            item.put("accountId", accountId);
+            page.advancedAccountingRulePenaltyIncomeValue.add(item);
+        }
+
+        form.submit("saveButton");
+
+        this.wicket.assertNoErrorMessage();
+
+        JdbcTemplate jdbcTemplate = this.wicket.getJdbcTemplate();
+        Map<String, Object> actual = jdbcTemplate.queryForMap("select * from m_savings_product where name = ? and deposit_type_enum = ?", detailProductNameValue, DepositType.Fixed.getLiteral());
+        Assert.assertNotNull("expected to have m_savings_product name = '" + detailProductNameValue + "'", actual);
+
+    }
+
+    @Test
+    public void dataEntryMaximumPeriod() {
+        this.wicket.login();
+
+        // https://mifosforge.jira.com/wiki/spaces/docs/pages/121831466/Interest+rate+chart+with+amount+range
+        // acc_product_mapping
+        // m_deposit_product_interest_rate_chart
+        // m_savings_product_charge
+        // m_interest_incentives
+        // m_deposit_product_term_and_preclosure
+        // m_interest_rate_slab
+        // m_savings_product
+        // m_interest_rate_chart
+
+        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+
+        JUnitFormTester form = null;
+
+        String detailProductNameValue = "FIXED_DEPOSIT_PRODUCT_" + this.wicket.getStringGenerator().generate(10);
+        String detailShortNameValue = this.wicket.getStringGenerator().generate(4);
+        String detailDescriptionValue = detailProductNameValue;
+        String settingTaxGroupValue = this.wicket.getJdbcTemplate().queryForObject("SELECT id FROM m_tax_group LIMIT 1", String.class);
+        String currencyCodeValue = "USD";
+        Boolean settingWithholdTaxApplicableValue = true;
+        int accountingValue = 1;
+        {
+            form = this.wicket.newFormTester("form");
+            form.setValue("settingWithholdTaxApplicableBlock:settingWithholdTaxApplicableContainer:settingWithholdTaxApplicableField", settingWithholdTaxApplicableValue);
+            CheckBox settingWithholdTaxApplicableField = this.wicket.getComponentFromLastRenderedPage("form:settingWithholdTaxApplicableBlock:settingWithholdTaxApplicableContainer:settingWithholdTaxApplicableField", CheckBox.class);
+            this.wicket.executeBehavior(settingWithholdTaxApplicableField);
+        }
+
+        {
+            form = this.wicket.newFormTester("form");
+            form.setValue("currencyCodeBlock:currencyCodeContainer:currencyCodeField", currencyCodeValue);
+            Select2SingleChoice<?> currencyCodeField = this.wicket.getComponentFromLastRenderedPage("form:currencyCodeBlock:currencyCodeContainer:currencyCodeField", Select2SingleChoice.class);
+            this.wicket.executeBehavior(currencyCodeField);
+        }
+
+        {
+            form = this.wicket.newFormTester("form");
+            form.select("accountingField", accountingValue);
+            RadioGroup<?> accountingField = this.wicket.getComponentFromLastRenderedPage("form:accountingField", RadioGroup.class);
+            this.wicket.executeBehavior(accountingField);
+        }
+
+        form = this.wicket.newFormTester("form");
+
+        // Detail
+        form.setValue("detailProductNameBlock:detailProductNameContainer:detailProductNameField", detailProductNameValue);
+        form.setValue("detailShortNameBlock:detailShortNameContainer:detailShortNameField", detailShortNameValue);
+        form.setValue("detailDescriptionBlock:detailDescriptionContainer:detailDescriptionField", detailDescriptionValue);
+
+        // Currency
+        form.setValue("currencyCodeBlock:currencyCodeContainer:currencyCodeField", currencyCodeValue);
+        form.setValue("currencyDecimalPlaceBlock:currencyDecimalPlaceContainer:currencyDecimalPlaceField", "2");
+        form.setValue("currencyMultipleOfBlock:currencyMultipleOfContainer:currencyMultipleOfField", "1");
+
+        // Terms
+        form.setValue("termDefaultDepositAmountBlock:termDefaultDepositAmountContainer:termDefaultDepositAmountField", "1000.99");
+        form.setValue("termMinimumDepositAmountBlock:termMinimumDepositAmountContainer:termMinimumDepositAmountField", "1");
+        form.setValue("termMaximumDepositAmountBlock:termMaximumDepositAmountContainer:termMaximumDepositAmountField", "10000000000.99");
+        form.setValue("termInterestCompoundingPeriodBlock:termInterestCompoundingPeriodContainer:termInterestCompoundingPeriodField", InterestCompoundingPeriod.Annually);
+        form.setValue("termInterestPostingPeriodBlock:termInterestPostingPeriodContainer:termInterestPostingPeriodField", InterestPostingPeriod.Annually);
+        form.setValue("termInterestCalculatedUsingBlock:termInterestCalculatedUsingContainer:termInterestCalculatedUsingField", InterestCalculatedUsing.AverageDailyBalance);
+        form.setValue("termDayInYearBlock:termDayInYearContainer:termDayInYearField", DayInYear.D365);
+
+        // Settings
+        form.setValue("settingLockInPeriodBlock:settingLockInPeriodContainer:settingLockInPeriodField", "1");
+        form.setValue("settingLockInTypeBlock:settingLockInTypeContainer:settingLockInTypeField", LockInPeriod.Month);
+        form.setValue("settingMinimumDepositTermBlock:settingMinimumDepositTermContainer:settingMinimumDepositTermField", "12");
+        form.setValue("settingMinimumDepositTypeBlock:settingMinimumDepositTypeContainer:settingMinimumDepositTypeField", LockInPeriod.Month);
+        form.setValue("settingInMultiplesOfBlock:settingInMultiplesOfContainer:settingInMultiplesOfField", "1");
+        form.setValue("settingInMultiplesTypeBlock:settingInMultiplesTypeContainer:settingInMultiplesTypeField", LockInPeriod.Month);
+        form.setValue("settingMaximumDepositTermBlock:settingMaximumDepositTermContainer:settingMaximumDepositTermField", "240");
+        form.setValue("settingMaximumDepositTypeBlock:settingMaximumDepositTypeContainer:settingMaximumDepositTypeField", LockInPeriod.Month);
+        form.setValue("settingApplyPenalInterestBlock:settingApplyPenalInterestContainer:settingApplyPenalInterestField", "1.99");
+        form.setValue("settingApplyPenalOnBlock:settingApplyPenalOnContainer:settingApplyPenalOnField", ApplyPenalOn.WholeTerm);
+        form.setValue("settingWithholdTaxApplicableBlock:settingWithholdTaxApplicableContainer:settingWithholdTaxApplicableField", settingWithholdTaxApplicableValue);
+        form.setValue("settingTaxGroupBlock:settingTaxGroupContainer:settingTaxGroupField", settingTaxGroupValue);
+        form.setValue("settingForPreMatureClosureBlock:settingForPreMatureClosureContainer:settingForPreMatureClosureField", true);
+
+        // Interest Rate Chart
+
+        Date fromDate = DateTime.now().toDate();
+        Date endDate = DateTime.now().plusMonths(12).toDate();
+        form.setValue("interestRateValidFromDateBlock:interestRateValidFromDateContainer:interestRateValidFromDateField", DateFormatUtils.format(fromDate, "dd/MM/yyyy"));
+        form.setValue("interestRateValidEndDateBlock:interestRateValidEndDateContainer:interestRateValidEndDateField", DateFormatUtils.format(endDate, "dd/MM/yyyy"));
+        form.setValue("interestRatePrimaryGroupingByAmountBlock:interestRatePrimaryGroupingByAmountContainer:interestRatePrimaryGroupingByAmountField", false);
+
+        {
+            Map<String, Object> item = Maps.newHashMap();
+            item.put("periodType", new Option(LockInPeriod.Month.name(), LockInPeriod.Month.getDescription()));
+            item.put("periodFrom", 1);
+            // item.put("periodTo", 10);
+            item.put("amountRangeFrom", 0);
+            item.put("amountRangeTo", 500);
+            item.put("interest", 10.99d);
+            item.put("description", "JUNIT_" + this.wicket.getStringGenerator().generate(10));
+            List<Map<String, Object>> interestRate = Lists.newArrayList();
+            Map<String, Object> rateItem = Maps.newHashMap();
+            rateItem.put("attribute", new Option(Attribute.Age.name(), Attribute.Age.getDescription()));
+            rateItem.put("operator", new Option(Operator.GreaterThan.name(), Operator.GreaterThan.getDescription()));
+            rateItem.put("operand", "100");
+            rateItem.put("operandType", new Option(OperandType.Fixed.name(), OperandType.Fixed.getDescription()));
+            rateItem.put("interest", 10.99d);
+            interestRate.add(rateItem);
+            item.put("interestRate", interestRate);
+            page.interestRateChartValue.add(item);
+        }
+        {
+            Map<String, Object> item = Maps.newHashMap();
+            item.put("periodType", new Option(LockInPeriod.Month.name(), LockInPeriod.Month.getDescription()));
+            item.put("periodFrom", 1);
+            // item.put("periodTo", 10);
+            item.put("amountRangeFrom", 501);
+            // item.put("amountRangeTo", 10000);
             item.put("interest", 10.99d);
             item.put("description", "JUNIT_" + this.wicket.getStringGenerator().generate(10));
             List<Map<String, Object>> interestRate = Lists.newArrayList();

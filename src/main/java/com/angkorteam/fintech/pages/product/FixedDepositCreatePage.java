@@ -1,13 +1,10 @@
 package com.angkorteam.fintech.pages.product;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -375,8 +372,8 @@ public class FixedDepositCreatePage extends Page {
     protected Option itemPeriodTypeValue;
     protected Integer itemPeriodFromValue;
     protected Integer itemPeriodToValue;
-    protected Double itemAmountRangeFromValue;
-    protected Double itemAmountRangeToValue;
+    protected Integer itemAmountRangeFromValue;
+    protected Integer itemAmountRangeToValue;
     protected Double itemInterestValue;
     protected String itemDescriptionValue;
     protected Option itemPaymentValue;
@@ -1542,8 +1539,8 @@ public class FixedDepositCreatePage extends Page {
             LockInPeriod periodType = periodTypeOption == null ? null : LockInPeriod.valueOf(periodTypeOption.getId());
             Integer fromPeriod = (Integer) interestRateChart.get("periodFrom");
             Integer toPeriod = (Integer) interestRateChart.get("periodTo");
-            Double amountRangeFrom = (Double) interestRateChart.get("amountRangeFrom");
-            Double amountRangeTo = (Double) interestRateChart.get("amountRangeTo");
+            Integer amountRangeFrom = (Integer) interestRateChart.get("amountRangeFrom");
+            Integer amountRangeTo = (Integer) interestRateChart.get("amountRangeTo");
             Double annualInterestRate = (Double) interestRateChart.get("interest");
             String description = (String) interestRateChart.get("description");
             List<Map<String, Object>> interestRate = (List<Map<String, Object>>) interestRateChart.get("interestRate");
@@ -1644,11 +1641,6 @@ public class FixedDepositCreatePage extends Page {
             return;
         }
         if (reportError(node)) {
-            try {
-                FileUtils.write(new File("C:\\Users\\socheat\\Documents\\SKH\\fintech\\src\\test\\resources\\format.json"), builder.build().toString(), "UTF-8");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             return;
         }
         setResponsePage(FixedDepositBrowsePage.class);
