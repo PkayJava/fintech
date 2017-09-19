@@ -105,791 +105,791 @@ public class LoanCreatePage extends Page {
     public static final String ACC_PERIODIC = "Periodic";
     public static final String ACC_UPFRONT = "Upfront";
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
     // Detail
 
-    private WebMarkupContainer detailProductNameBlock;
-    private WebMarkupContainer detailProductNameContainer;
-    private String detailProductNameValue;
-    private TextField<String> detailProductNameField;
-    private TextFeedbackPanel detailProductNameFeedback;
+    protected WebMarkupContainer detailProductNameBlock;
+    protected WebMarkupContainer detailProductNameContainer;
+    protected String detailProductNameValue;
+    protected TextField<String> detailProductNameField;
+    protected TextFeedbackPanel detailProductNameFeedback;
 
-    private WebMarkupContainer detailShortNameBlock;
-    private WebMarkupContainer detailShortNameContainer;
-    private String detailShortNameValue;
-    private TextField<String> detailShortNameField;
-    private TextFeedbackPanel detailShortNameFeedback;
+    protected WebMarkupContainer detailShortNameBlock;
+    protected WebMarkupContainer detailShortNameContainer;
+    protected String detailShortNameValue;
+    protected TextField<String> detailShortNameField;
+    protected TextFeedbackPanel detailShortNameFeedback;
 
-    private WebMarkupContainer detailDescriptionBlock;
-    private WebMarkupContainer detailDescriptionContainer;
-    private String detailDescriptionValue;
-    private TextField<String> detailDescriptionField;
-    private TextFeedbackPanel detailDescriptionFeedback;
+    protected WebMarkupContainer detailDescriptionBlock;
+    protected WebMarkupContainer detailDescriptionContainer;
+    protected String detailDescriptionValue;
+    protected TextField<String> detailDescriptionField;
+    protected TextFeedbackPanel detailDescriptionFeedback;
 
-    private WebMarkupContainer detailFundBlock;
-    private WebMarkupContainer detailFundContainer;
-    private SingleChoiceProvider detailFundProvider;
-    private Option detailFundValue;
-    private Select2SingleChoice<Option> detailFundField;
-    private TextFeedbackPanel detailFundFeedback;
+    protected WebMarkupContainer detailFundBlock;
+    protected WebMarkupContainer detailFundContainer;
+    protected SingleChoiceProvider detailFundProvider;
+    protected Option detailFundValue;
+    protected Select2SingleChoice<Option> detailFundField;
+    protected TextFeedbackPanel detailFundFeedback;
 
-    private WebMarkupContainer detailStartDateBlock;
-    private WebMarkupContainer detailStartDateContainer;
-    private Date detailStartDateValue;
-    private DateTextField detailStartDateField;
-    private TextFeedbackPanel detailStartDateFeedback;
+    protected WebMarkupContainer detailStartDateBlock;
+    protected WebMarkupContainer detailStartDateContainer;
+    protected Date detailStartDateValue;
+    protected DateTextField detailStartDateField;
+    protected TextFeedbackPanel detailStartDateFeedback;
 
-    private WebMarkupContainer detailCloseDateBlock;
-    private WebMarkupContainer detailCloseDateContainer;
-    private Date detailCloseDateValue;
-    private DateTextField detailCloseDateField;
-    private TextFeedbackPanel detailCloseDateFeedback;
+    protected WebMarkupContainer detailCloseDateBlock;
+    protected WebMarkupContainer detailCloseDateContainer;
+    protected Date detailCloseDateValue;
+    protected DateTextField detailCloseDateField;
+    protected TextFeedbackPanel detailCloseDateFeedback;
 
-    private WebMarkupContainer detailIncludeInCustomerLoanCounterBlock;
-    private WebMarkupContainer detailIncludeInCustomerLoanCounterContainer;
-    private Boolean detailIncludeInCustomerLoanCounterValue;
-    private CheckBox detailIncludeInCustomerLoanCounterField;
-    private TextFeedbackPanel detailIncludeInCustomerLoanCounterFeedback;
+    protected WebMarkupContainer detailIncludeInCustomerLoanCounterBlock;
+    protected WebMarkupContainer detailIncludeInCustomerLoanCounterContainer;
+    protected Boolean detailIncludeInCustomerLoanCounterValue;
+    protected CheckBox detailIncludeInCustomerLoanCounterField;
+    protected TextFeedbackPanel detailIncludeInCustomerLoanCounterFeedback;
 
     // Currency
-    private WebMarkupContainer currencyCodeBlock;
-    private WebMarkupContainer currencyCodeContainer;
-    private SingleChoiceProvider currencyCodeProvider;
-    private Option currencyCodeValue;
-    private Select2SingleChoice<Option> currencyCodeField;
-    private TextFeedbackPanel currencyCodeFeedback;
+    protected WebMarkupContainer currencyCodeBlock;
+    protected WebMarkupContainer currencyCodeContainer;
+    protected SingleChoiceProvider currencyCodeProvider;
+    protected Option currencyCodeValue;
+    protected Select2SingleChoice<Option> currencyCodeField;
+    protected TextFeedbackPanel currencyCodeFeedback;
 
-    private WebMarkupContainer currencyDecimalPlaceBlock;
-    private WebMarkupContainer currencyDecimalPlaceContainer;
-    private Integer currencyDecimalPlaceValue;
-    private TextField<Integer> currencyDecimalPlaceField;
-    private TextFeedbackPanel currencyDecimalPlaceFeedback;
+    protected WebMarkupContainer currencyDecimalPlaceBlock;
+    protected WebMarkupContainer currencyDecimalPlaceContainer;
+    protected Integer currencyDecimalPlaceValue;
+    protected TextField<Integer> currencyDecimalPlaceField;
+    protected TextFeedbackPanel currencyDecimalPlaceFeedback;
 
-    private WebMarkupContainer currencyInMultipleOfBlock;
-    private WebMarkupContainer currencyInMultipleOfContainer;
-    private Integer currencyInMultipleOfValue;
-    private TextField<Integer> currencyInMultipleOfField;
-    private TextFeedbackPanel currencyInMultipleOfFeedback;
+    protected WebMarkupContainer currencyInMultipleOfBlock;
+    protected WebMarkupContainer currencyInMultipleOfContainer;
+    protected Integer currencyInMultipleOfValue;
+    protected TextField<Integer> currencyInMultipleOfField;
+    protected TextFeedbackPanel currencyInMultipleOfFeedback;
 
-    private WebMarkupContainer currencyInstallmentInMultipleOfBlock;
-    private WebMarkupContainer currencyInstallmentInMultipleOfContainer;
-    private Integer currencyInstallmentInMultipleOfValue;
-    private TextField<Integer> currencyInstallmentInMultipleOfField;
-    private TextFeedbackPanel currencyInstallmentInMultipleOfFeedback;
+    protected WebMarkupContainer currencyInstallmentInMultipleOfBlock;
+    protected WebMarkupContainer currencyInstallmentInMultipleOfContainer;
+    protected Integer currencyInstallmentInMultipleOfValue;
+    protected TextField<Integer> currencyInstallmentInMultipleOfField;
+    protected TextFeedbackPanel currencyInstallmentInMultipleOfFeedback;
 
     // Terms
 
     // Row 1 : Terms vary based on loan cycle
-    private WebMarkupContainer termVaryBasedOnLoanCycleBlock;
-    private WebMarkupContainer termVaryBasedOnLoanCycleContainer;
-    private Boolean termVaryBasedOnLoanCycleValue;
-    private CheckBox termVaryBasedOnLoanCycleField;
-    private TextFeedbackPanel termVaryBasedOnLoanCycleFeedback;
+    protected WebMarkupContainer termVaryBasedOnLoanCycleBlock;
+    protected WebMarkupContainer termVaryBasedOnLoanCycleContainer;
+    protected Boolean termVaryBasedOnLoanCycleValue;
+    protected CheckBox termVaryBasedOnLoanCycleField;
+    protected TextFeedbackPanel termVaryBasedOnLoanCycleFeedback;
 
     // Row 2 : Principal
-    private WebMarkupContainer termPrincipalMinimumBlock;
-    private WebMarkupContainer termPrincipalMinimumContainer;
-    private Double termPrincipalMinimumValue;
-    private TextField<Double> termPrincipalMinimumField;
-    private TextFeedbackPanel termPrincipalMinimumFeedback;
+    protected WebMarkupContainer termPrincipalMinimumBlock;
+    protected WebMarkupContainer termPrincipalMinimumContainer;
+    protected Double termPrincipalMinimumValue;
+    protected TextField<Double> termPrincipalMinimumField;
+    protected TextFeedbackPanel termPrincipalMinimumFeedback;
 
-    private WebMarkupContainer termPrincipalDefaultBlock;
-    private WebMarkupContainer termPrincipalDefaultContainer;
-    private Double termPrincipalDefaultValue;
-    private TextField<Double> termPrincipalDefaultField;
-    private TextFeedbackPanel termPrincipalDefaultFeedback;
+    protected WebMarkupContainer termPrincipalDefaultBlock;
+    protected WebMarkupContainer termPrincipalDefaultContainer;
+    protected Double termPrincipalDefaultValue;
+    protected TextField<Double> termPrincipalDefaultField;
+    protected TextFeedbackPanel termPrincipalDefaultFeedback;
 
-    private WebMarkupContainer termPrincipalMaximumBlock;
-    private WebMarkupContainer termPrincipalMaximumContainer;
-    private Double termPrincipalMaximumValue;
-    private TextField<Double> termPrincipalMaximumField;
-    private TextFeedbackPanel termPrincipalMaximumFeedback;
+    protected WebMarkupContainer termPrincipalMaximumBlock;
+    protected WebMarkupContainer termPrincipalMaximumContainer;
+    protected Double termPrincipalMaximumValue;
+    protected TextField<Double> termPrincipalMaximumField;
+    protected TextFeedbackPanel termPrincipalMaximumFeedback;
 
     // Row 2 (Optional) : Principal by loan cycle
-    private WebMarkupContainer termPrincipalByLoanCycleBlock;
-    private WebMarkupContainer termPrincipalByLoanCycleContainer;
-    private List<Map<String, Object>> termPrincipalByLoanCycleValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> termPrincipalByLoanCycleTable;
-    private ListDataProvider termPrincipalByLoanCycleProvider;
-    private AjaxLink<Void> termPrincipalByLoanCycleAddLink;
-    private ModalWindow termPrincipalByLoanCyclePopup;
+    protected WebMarkupContainer termPrincipalByLoanCycleBlock;
+    protected WebMarkupContainer termPrincipalByLoanCycleContainer;
+    protected List<Map<String, Object>> termPrincipalByLoanCycleValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> termPrincipalByLoanCycleTable;
+    protected ListDataProvider termPrincipalByLoanCycleProvider;
+    protected AjaxLink<Void> termPrincipalByLoanCycleAddLink;
+    protected ModalWindow termPrincipalByLoanCyclePopup;
 
     // Row 3 : Number of repayments
-    private WebMarkupContainer termNumberOfRepaymentMinimumBlock;
-    private WebMarkupContainer termNumberOfRepaymentMinimumContainer;
-    private Double termNumberOfRepaymentMinimumValue;
-    private TextField<Integer> termNumberOfRepaymentMinimumField;
-    private TextFeedbackPanel termNumberOfRepaymentMinimumFeedback;
+    protected WebMarkupContainer termNumberOfRepaymentMinimumBlock;
+    protected WebMarkupContainer termNumberOfRepaymentMinimumContainer;
+    protected Double termNumberOfRepaymentMinimumValue;
+    protected TextField<Integer> termNumberOfRepaymentMinimumField;
+    protected TextFeedbackPanel termNumberOfRepaymentMinimumFeedback;
 
-    private WebMarkupContainer termNumberOfRepaymentDefaultBlock;
-    private WebMarkupContainer termNumberOfRepaymentDefaultContainer;
-    private Double termNumberOfRepaymentDefaultValue;
-    private TextField<Integer> termNumberOfRepaymentDefaultField;
-    private TextFeedbackPanel termNumberOfRepaymentDefaultFeedback;
+    protected WebMarkupContainer termNumberOfRepaymentDefaultBlock;
+    protected WebMarkupContainer termNumberOfRepaymentDefaultContainer;
+    protected Double termNumberOfRepaymentDefaultValue;
+    protected TextField<Integer> termNumberOfRepaymentDefaultField;
+    protected TextFeedbackPanel termNumberOfRepaymentDefaultFeedback;
 
-    private WebMarkupContainer termNumberOfRepaymentMaximumBlock;
-    private WebMarkupContainer termNumberOfRepaymentMaximumContainer;
-    private Double termNumberOfRepaymentMaximumValue;
-    private TextField<Integer> termNumberOfRepaymentMaximumField;
-    private TextFeedbackPanel termNumberOfRepaymentMaximumFeedback;
+    protected WebMarkupContainer termNumberOfRepaymentMaximumBlock;
+    protected WebMarkupContainer termNumberOfRepaymentMaximumContainer;
+    protected Double termNumberOfRepaymentMaximumValue;
+    protected TextField<Integer> termNumberOfRepaymentMaximumField;
+    protected TextFeedbackPanel termNumberOfRepaymentMaximumFeedback;
 
     // Row 3 (Optional) : Number of Repayments by loan cycle
-    private WebMarkupContainer termNumberOfRepaymentByLoanCycleBlock;
-    private WebMarkupContainer termNumberOfRepaymentByLoanCycleContainer;
-    private List<Map<String, Object>> termNumberOfRepaymentByLoanCycleValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> termNumberOfRepaymentByLoanCycleTable;
-    private ListDataProvider termNumberOfRepaymentByLoanCycleProvider;
-    private AjaxLink<Void> termNumberOfRepaymentByLoanCycleAddLink;
-    private ModalWindow termNumberOfRepaymentByLoanCyclePopup;
+    protected WebMarkupContainer termNumberOfRepaymentByLoanCycleBlock;
+    protected WebMarkupContainer termNumberOfRepaymentByLoanCycleContainer;
+    protected List<Map<String, Object>> termNumberOfRepaymentByLoanCycleValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> termNumberOfRepaymentByLoanCycleTable;
+    protected ListDataProvider termNumberOfRepaymentByLoanCycleProvider;
+    protected AjaxLink<Void> termNumberOfRepaymentByLoanCycleAddLink;
+    protected ModalWindow termNumberOfRepaymentByLoanCyclePopup;
 
     // Row 4 : Is Linked to Floating Interest Rates?
-    private WebMarkupContainer termLinkedToFloatingInterestRatesBlock;
-    private WebMarkupContainer termLinkedToFloatingInterestRatesContainer;
-    private Boolean termLinkedToFloatingInterestRatesValue;
-    private CheckBox termLinkedToFloatingInterestRatesField;
-    private TextFeedbackPanel termLinkedToFloatingInterestRatesFeedback;
+    protected WebMarkupContainer termLinkedToFloatingInterestRatesBlock;
+    protected WebMarkupContainer termLinkedToFloatingInterestRatesContainer;
+    protected Boolean termLinkedToFloatingInterestRatesValue;
+    protected CheckBox termLinkedToFloatingInterestRatesField;
+    protected TextFeedbackPanel termLinkedToFloatingInterestRatesFeedback;
 
     // Row 5 : Nominal interest rate
-    private WebMarkupContainer termNominalInterestRateMinimumBlock;
-    private WebMarkupContainer termNominalInterestRateMinimumContainer;
-    private Double termNominalInterestRateMinimumValue;
-    private TextField<Double> termNominalInterestRateMinimumField;
-    private TextFeedbackPanel termNominalInterestRateMinimumFeedback;
+    protected WebMarkupContainer termNominalInterestRateMinimumBlock;
+    protected WebMarkupContainer termNominalInterestRateMinimumContainer;
+    protected Double termNominalInterestRateMinimumValue;
+    protected TextField<Double> termNominalInterestRateMinimumField;
+    protected TextFeedbackPanel termNominalInterestRateMinimumFeedback;
 
-    private WebMarkupContainer termNominalInterestRateDefaultBlock;
-    private WebMarkupContainer termNominalInterestRateDefaultContainer;
-    private Double termNominalInterestRateDefaultValue;
-    private TextField<Double> termNominalInterestRateDefaultField;
-    private TextFeedbackPanel termNominalInterestRateDefaultFeedback;
+    protected WebMarkupContainer termNominalInterestRateDefaultBlock;
+    protected WebMarkupContainer termNominalInterestRateDefaultContainer;
+    protected Double termNominalInterestRateDefaultValue;
+    protected TextField<Double> termNominalInterestRateDefaultField;
+    protected TextFeedbackPanel termNominalInterestRateDefaultFeedback;
 
-    private WebMarkupContainer termNominalInterestRateMaximumBlock;
-    private WebMarkupContainer termNominalInterestRateMaximumContainer;
-    private Double termNominalInterestRateMaximumValue;
-    private TextField<Double> termNominalInterestRateMaximumField;
-    private TextFeedbackPanel termNominalInterestRateMaximumFeedback;
+    protected WebMarkupContainer termNominalInterestRateMaximumBlock;
+    protected WebMarkupContainer termNominalInterestRateMaximumContainer;
+    protected Double termNominalInterestRateMaximumValue;
+    protected TextField<Double> termNominalInterestRateMaximumField;
+    protected TextFeedbackPanel termNominalInterestRateMaximumFeedback;
 
-    private WebMarkupContainer termNominalInterestRateTypeBlock;
-    private WebMarkupContainer termNominalInterestRateTypeContainer;
-    private NominalInterestRateTypeProvider termNominalInterestRateTypeProvider;
-    private Option termNominalInterestRateTypeValue;
-    private Select2SingleChoice<Option> termNominalInterestRateTypeField;
-    private TextFeedbackPanel termNominalInterestRateTypeFeedback;
+    protected WebMarkupContainer termNominalInterestRateTypeBlock;
+    protected WebMarkupContainer termNominalInterestRateTypeContainer;
+    protected NominalInterestRateTypeProvider termNominalInterestRateTypeProvider;
+    protected Option termNominalInterestRateTypeValue;
+    protected Select2SingleChoice<Option> termNominalInterestRateTypeField;
+    protected TextFeedbackPanel termNominalInterestRateTypeFeedback;
 
     // Row 6
-    private WebMarkupContainer termNominalInterestRateByLoanCycleBlock;
-    private WebMarkupContainer termNominalInterestRateByLoanCycleContainer;
-    private List<Map<String, Object>> termNominalInterestRateByLoanCycleValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> termNominalInterestRateByLoanCycleTable;
-    private ListDataProvider termNominalInterestRateByLoanCycleProvider;
-    private AjaxLink<Void> termNominalInterestRateByLoanCycleAddLink;
-    private ModalWindow termNominalInterestRateByLoanCyclePopup;
+    protected WebMarkupContainer termNominalInterestRateByLoanCycleBlock;
+    protected WebMarkupContainer termNominalInterestRateByLoanCycleContainer;
+    protected List<Map<String, Object>> termNominalInterestRateByLoanCycleValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> termNominalInterestRateByLoanCycleTable;
+    protected ListDataProvider termNominalInterestRateByLoanCycleProvider;
+    protected AjaxLink<Void> termNominalInterestRateByLoanCycleAddLink;
+    protected ModalWindow termNominalInterestRateByLoanCyclePopup;
 
-    private WebMarkupContainer termRepaidEveryBlock;
-    private WebMarkupContainer termRepaidEveryContainer;
-    private Integer termRepaidEveryValue;
-    private TextField<Integer> termRepaidEveryField;
-    private TextFeedbackPanel termRepaidEveryFeedback;
+    protected WebMarkupContainer termRepaidEveryBlock;
+    protected WebMarkupContainer termRepaidEveryContainer;
+    protected Integer termRepaidEveryValue;
+    protected TextField<Integer> termRepaidEveryField;
+    protected TextFeedbackPanel termRepaidEveryFeedback;
 
-    private WebMarkupContainer termRepaidTypeBlock;
-    private WebMarkupContainer termRepaidTypeContainer;
-    private RepaidTypeProvider termRepaidTypeProvider;
-    private Option termRepaidTypeValue;
-    private Select2SingleChoice<Option> termRepaidTypeField;
-    private TextFeedbackPanel termRepaidTypeFeedback;
+    protected WebMarkupContainer termRepaidTypeBlock;
+    protected WebMarkupContainer termRepaidTypeContainer;
+    protected RepaidTypeProvider termRepaidTypeProvider;
+    protected Option termRepaidTypeValue;
+    protected Select2SingleChoice<Option> termRepaidTypeField;
+    protected TextFeedbackPanel termRepaidTypeFeedback;
 
-    private WebMarkupContainer termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock;
-    private WebMarkupContainer termMinimumDayBetweenDisbursalAndFirstRepaymentDateContainer;
-    private Double termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue;
-    private TextField<Double> termMinimumDayBetweenDisbursalAndFirstRepaymentDateField;
-    private TextFeedbackPanel termMinimumDayBetweenDisbursalAndFirstRepaymentDateFeedback;
+    protected WebMarkupContainer termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock;
+    protected WebMarkupContainer termMinimumDayBetweenDisbursalAndFirstRepaymentDateContainer;
+    protected Double termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue;
+    protected TextField<Double> termMinimumDayBetweenDisbursalAndFirstRepaymentDateField;
+    protected TextFeedbackPanel termMinimumDayBetweenDisbursalAndFirstRepaymentDateFeedback;
 
-    private WebMarkupContainer termFloatingInterestRateBlock;
-    private WebMarkupContainer termFloatingInterestRateContainer;
-    private SingleChoiceProvider termFloatingInterestRateProvider;
-    private Option termFloatingInterestRateValue;
-    private Select2SingleChoice<Option> termFloatingInterestRateField;
-    private TextFeedbackPanel termFloatingInterestRateFeedback;
+    protected WebMarkupContainer termFloatingInterestRateBlock;
+    protected WebMarkupContainer termFloatingInterestRateContainer;
+    protected SingleChoiceProvider termFloatingInterestRateProvider;
+    protected Option termFloatingInterestRateValue;
+    protected Select2SingleChoice<Option> termFloatingInterestRateField;
+    protected TextFeedbackPanel termFloatingInterestRateFeedback;
 
-    private WebMarkupContainer termFloatingInterestMinimumBlock;
-    private WebMarkupContainer termFloatingInterestMinimumContainer;
-    private Double termFloatingInterestMinimumValue;
-    private TextField<Double> termFloatingInterestMinimumField;
-    private TextFeedbackPanel termFloatingInterestMinimumFeedback;
+    protected WebMarkupContainer termFloatingInterestMinimumBlock;
+    protected WebMarkupContainer termFloatingInterestMinimumContainer;
+    protected Double termFloatingInterestMinimumValue;
+    protected TextField<Double> termFloatingInterestMinimumField;
+    protected TextFeedbackPanel termFloatingInterestMinimumFeedback;
 
-    private WebMarkupContainer termFloatingInterestDefaultBlock;
-    private WebMarkupContainer termFloatingInterestDefaultContainer;
-    private Double termFloatingInterestDefaultValue;
-    private TextField<Double> termFloatingInterestDefaultField;
-    private TextFeedbackPanel termFloatingInterestDefaultFeedback;
+    protected WebMarkupContainer termFloatingInterestDefaultBlock;
+    protected WebMarkupContainer termFloatingInterestDefaultContainer;
+    protected Double termFloatingInterestDefaultValue;
+    protected TextField<Double> termFloatingInterestDefaultField;
+    protected TextFeedbackPanel termFloatingInterestDefaultFeedback;
 
-    private WebMarkupContainer termFloatingInterestMaximumBlock;
-    private WebMarkupContainer termFloatingInterestMaximumContainer;
-    private Double termFloatingInterestMaximumValue;
-    private TextField<Double> termFloatingInterestMaximumField;
-    private TextFeedbackPanel termFloatingInterestMaximumFeedback;
+    protected WebMarkupContainer termFloatingInterestMaximumBlock;
+    protected WebMarkupContainer termFloatingInterestMaximumContainer;
+    protected Double termFloatingInterestMaximumValue;
+    protected TextField<Double> termFloatingInterestMaximumField;
+    protected TextFeedbackPanel termFloatingInterestMaximumFeedback;
 
-    private WebMarkupContainer termFloatingInterestDifferentialBlock;
-    private WebMarkupContainer termFloatingInterestDifferentialContainer;
-    private Double termFloatingInterestDifferentialValue;
-    private TextField<Double> termFloatingInterestDifferentialField;
-    private TextFeedbackPanel termFloatingInterestDifferentialFeedback;
+    protected WebMarkupContainer termFloatingInterestDifferentialBlock;
+    protected WebMarkupContainer termFloatingInterestDifferentialContainer;
+    protected Double termFloatingInterestDifferentialValue;
+    protected TextField<Double> termFloatingInterestDifferentialField;
+    protected TextFeedbackPanel termFloatingInterestDifferentialFeedback;
 
-    private WebMarkupContainer termFloatingInterestAllowedBlock;
-    private WebMarkupContainer termFloatingInterestAllowedContainer;
-    private Boolean termFloatingInterestAllowedValue;
-    private CheckBox termFloatingInterestAllowedField;
-    private TextFeedbackPanel termFloatingInterestAllowedFeedback;
+    protected WebMarkupContainer termFloatingInterestAllowedBlock;
+    protected WebMarkupContainer termFloatingInterestAllowedContainer;
+    protected Boolean termFloatingInterestAllowedValue;
+    protected CheckBox termFloatingInterestAllowedField;
+    protected TextFeedbackPanel termFloatingInterestAllowedFeedback;
 
-    private Option itemWhenValue;
-    private Integer itemLoanCycleValue;
-    private Double itemMinimumValue;
-    private Double itemDefaultValue;
-    private Double itemMaximumValue;
-    private Option itemChargeValue;
-    private Option itemOverdueChargeValue;
-    private Option itemPaymentValue;
-    private Option itemAccountValue;
+    protected Option itemWhenValue;
+    protected Integer itemLoanCycleValue;
+    protected Double itemMinimumValue;
+    protected Double itemDefaultValue;
+    protected Double itemMaximumValue;
+    protected Option itemChargeValue;
+    protected Option itemOverdueChargeValue;
+    protected Option itemPaymentValue;
+    protected Option itemAccountValue;
 
     // Settings
-    private WebMarkupContainer settingAmortizationBlock;
-    private WebMarkupContainer settingAmortizationContainer;
-    private AmortizationProvider settingAmortizationProvider;
-    private Option settingAmortizationValue;
-    private Select2SingleChoice<Option> settingAmortizationField;
-    private TextFeedbackPanel settingAmortizationFeedback;
+    protected WebMarkupContainer settingAmortizationBlock;
+    protected WebMarkupContainer settingAmortizationContainer;
+    protected AmortizationProvider settingAmortizationProvider;
+    protected Option settingAmortizationValue;
+    protected Select2SingleChoice<Option> settingAmortizationField;
+    protected TextFeedbackPanel settingAmortizationFeedback;
 
-    private WebMarkupContainer settingInterestMethodBlock;
-    private WebMarkupContainer settingInterestMethodContainer;
-    private InterestMethodProvider settingInterestMethodProvider;
-    private Option settingInterestMethodValue;
-    private Select2SingleChoice<Option> settingInterestMethodField;
-    private TextFeedbackPanel settingInterestMethodFeedback;
+    protected WebMarkupContainer settingInterestMethodBlock;
+    protected WebMarkupContainer settingInterestMethodContainer;
+    protected InterestMethodProvider settingInterestMethodProvider;
+    protected Option settingInterestMethodValue;
+    protected Select2SingleChoice<Option> settingInterestMethodField;
+    protected TextFeedbackPanel settingInterestMethodFeedback;
 
-    private WebMarkupContainer settingInterestCalculationPeriodBlock;
-    private WebMarkupContainer settingInterestCalculationPeriodContainer;
-    private InterestCalculationPeriodProvider settingInterestCalculationPeriodProvider;
-    private Option settingInterestCalculationPeriodValue;
-    private Select2SingleChoice<Option> settingInterestCalculationPeriodField;
-    private TextFeedbackPanel settingInterestCalculationPeriodFeedback;
+    protected WebMarkupContainer settingInterestCalculationPeriodBlock;
+    protected WebMarkupContainer settingInterestCalculationPeriodContainer;
+    protected InterestCalculationPeriodProvider settingInterestCalculationPeriodProvider;
+    protected Option settingInterestCalculationPeriodValue;
+    protected Select2SingleChoice<Option> settingInterestCalculationPeriodField;
+    protected TextFeedbackPanel settingInterestCalculationPeriodFeedback;
 
-    private WebMarkupContainer settingCalculateInterestForExactDaysInPartialPeriodBlock;
-    private WebMarkupContainer settingCalculateInterestForExactDaysInPartialPeriodContainer;
-    private Boolean settingCalculateInterestForExactDaysInPartialPeriodValue;
-    private CheckBox settingCalculateInterestForExactDaysInPartialPeriodField;
-    private TextFeedbackPanel settingCalculateInterestForExactDaysInPartialPeriodFeedback;
+    protected WebMarkupContainer settingCalculateInterestForExactDaysInPartialPeriodBlock;
+    protected WebMarkupContainer settingCalculateInterestForExactDaysInPartialPeriodContainer;
+    protected Boolean settingCalculateInterestForExactDaysInPartialPeriodValue;
+    protected CheckBox settingCalculateInterestForExactDaysInPartialPeriodField;
+    protected TextFeedbackPanel settingCalculateInterestForExactDaysInPartialPeriodFeedback;
 
-    private WebMarkupContainer settingRepaymentStrategyBlock;
-    private WebMarkupContainer settingRepaymentStrategyContainer;
-    private RepaymentStrategyProvider settingRepaymentStrategyProvider;
-    private Option settingRepaymentStrategyValue;
-    private Select2SingleChoice<Option> settingRepaymentStrategyField;
-    private TextFeedbackPanel settingRepaymentStrategyFeedback;
+    protected WebMarkupContainer settingRepaymentStrategyBlock;
+    protected WebMarkupContainer settingRepaymentStrategyContainer;
+    protected RepaymentStrategyProvider settingRepaymentStrategyProvider;
+    protected Option settingRepaymentStrategyValue;
+    protected Select2SingleChoice<Option> settingRepaymentStrategyField;
+    protected TextFeedbackPanel settingRepaymentStrategyFeedback;
 
-    private WebMarkupContainer settingMoratoriumPrincipalBlock;
-    private WebMarkupContainer settingMoratoriumPrincipalContainer;
-    private Double settingMoratoriumPrincipalValue;
-    private TextField<Double> settingMoratoriumPrincipalField;
-    private TextFeedbackPanel settingMoratoriumPrincipalFeedback;
+    protected WebMarkupContainer settingMoratoriumPrincipalBlock;
+    protected WebMarkupContainer settingMoratoriumPrincipalContainer;
+    protected Double settingMoratoriumPrincipalValue;
+    protected TextField<Double> settingMoratoriumPrincipalField;
+    protected TextFeedbackPanel settingMoratoriumPrincipalFeedback;
 
-    private WebMarkupContainer settingMoratoriumInterestBlock;
-    private WebMarkupContainer settingMoratoriumInterestContainer;
-    private Double settingMoratoriumInterestValue;
-    private TextField<Double> settingMoratoriumInterestField;
-    private TextFeedbackPanel settingMoratoriumInterestFeedback;
+    protected WebMarkupContainer settingMoratoriumInterestBlock;
+    protected WebMarkupContainer settingMoratoriumInterestContainer;
+    protected Double settingMoratoriumInterestValue;
+    protected TextField<Double> settingMoratoriumInterestField;
+    protected TextFeedbackPanel settingMoratoriumInterestFeedback;
 
-    private WebMarkupContainer settingInterestFreePeriodBlock;
-    private WebMarkupContainer settingInterestFreePeriodContainer;
-    private Double settingInterestFreePeriodValue;
-    private TextField<Double> settingInterestFreePeriodField;
-    private TextFeedbackPanel settingInterestFreePeriodFeedback;
+    protected WebMarkupContainer settingInterestFreePeriodBlock;
+    protected WebMarkupContainer settingInterestFreePeriodContainer;
+    protected Double settingInterestFreePeriodValue;
+    protected TextField<Double> settingInterestFreePeriodField;
+    protected TextFeedbackPanel settingInterestFreePeriodFeedback;
 
-    private WebMarkupContainer settingArrearsToleranceBlock;
-    private WebMarkupContainer settingArrearsToleranceContainer;
-    private Double settingArrearsToleranceValue;
-    private TextField<Double> settingArrearsToleranceField;
-    private TextFeedbackPanel settingArrearsToleranceFeedback;
+    protected WebMarkupContainer settingArrearsToleranceBlock;
+    protected WebMarkupContainer settingArrearsToleranceContainer;
+    protected Double settingArrearsToleranceValue;
+    protected TextField<Double> settingArrearsToleranceField;
+    protected TextFeedbackPanel settingArrearsToleranceFeedback;
 
-    private WebMarkupContainer settingDayInYearBlock;
-    private WebMarkupContainer settingDayInYearContainer;
-    private DayInYearProvider settingDayInYearProvider;
-    private Option settingDayInYearValue;
-    private Select2SingleChoice<Option> settingDayInYearField;
-    private TextFeedbackPanel settingDayInYearFeedback;
+    protected WebMarkupContainer settingDayInYearBlock;
+    protected WebMarkupContainer settingDayInYearContainer;
+    protected DayInYearProvider settingDayInYearProvider;
+    protected Option settingDayInYearValue;
+    protected Select2SingleChoice<Option> settingDayInYearField;
+    protected TextFeedbackPanel settingDayInYearFeedback;
 
-    private WebMarkupContainer settingDayInMonthBlock;
-    private WebMarkupContainer settingDayInMonthContainer;
-    private DayInMonthProvider settingDayInMonthProvider;
-    private Option settingDayInMonthValue;
-    private Select2SingleChoice<Option> settingDayInMonthField;
-    private TextFeedbackPanel settingDayInMonthFeedback;
+    protected WebMarkupContainer settingDayInMonthBlock;
+    protected WebMarkupContainer settingDayInMonthContainer;
+    protected DayInMonthProvider settingDayInMonthProvider;
+    protected Option settingDayInMonthValue;
+    protected Select2SingleChoice<Option> settingDayInMonthField;
+    protected TextFeedbackPanel settingDayInMonthFeedback;
 
-    private WebMarkupContainer settingAllowFixingOfTheInstallmentAmountBlock;
-    private WebMarkupContainer settingAllowFixingOfTheInstallmentAmountContainer;
-    private Boolean settingAllowFixingOfTheInstallmentAmountValue;
-    private CheckBox settingAllowFixingOfTheInstallmentAmountField;
-    private TextFeedbackPanel settingAllowFixingOfTheInstallmentAmountFeedback;
+    protected WebMarkupContainer settingAllowFixingOfTheInstallmentAmountBlock;
+    protected WebMarkupContainer settingAllowFixingOfTheInstallmentAmountContainer;
+    protected Boolean settingAllowFixingOfTheInstallmentAmountValue;
+    protected CheckBox settingAllowFixingOfTheInstallmentAmountField;
+    protected TextFeedbackPanel settingAllowFixingOfTheInstallmentAmountFeedback;
 
-    private WebMarkupContainer settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock;
-    private WebMarkupContainer settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsContainer;
-    private Double settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue;
-    private TextField<Double> settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField;
-    private TextFeedbackPanel settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback;
+    protected WebMarkupContainer settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock;
+    protected WebMarkupContainer settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsContainer;
+    protected Double settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue;
+    protected TextField<Double> settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField;
+    protected TextFeedbackPanel settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback;
 
-    private WebMarkupContainer settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock;
-    private WebMarkupContainer settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaContainer;
-    private Double settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue;
-    private TextField<Double> settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField;
-    private TextFeedbackPanel settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback;
+    protected WebMarkupContainer settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock;
+    protected WebMarkupContainer settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaContainer;
+    protected Double settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue;
+    protected TextField<Double> settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField;
+    protected TextFeedbackPanel settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback;
 
-    private WebMarkupContainer settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock;
-    private WebMarkupContainer settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedContainer;
-    private Boolean settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue;
-    private CheckBox settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField;
-    private TextFeedbackPanel settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback;
+    protected WebMarkupContainer settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock;
+    protected WebMarkupContainer settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedContainer;
+    protected Boolean settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue;
+    protected CheckBox settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField;
+    protected TextFeedbackPanel settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback;
 
-    private WebMarkupContainer settingPrincipalThresholdForLastInstalmentBlock;
-    private WebMarkupContainer settingPrincipalThresholdForLastInstalmentContainer;
-    private Double settingPrincipalThresholdForLastInstalmentValue;
-    private TextField<Double> settingPrincipalThresholdForLastInstalmentField;
-    private TextFeedbackPanel settingPrincipalThresholdForLastInstalmentFeedback;
+    protected WebMarkupContainer settingPrincipalThresholdForLastInstalmentBlock;
+    protected WebMarkupContainer settingPrincipalThresholdForLastInstalmentContainer;
+    protected Double settingPrincipalThresholdForLastInstalmentValue;
+    protected TextField<Double> settingPrincipalThresholdForLastInstalmentField;
+    protected TextFeedbackPanel settingPrincipalThresholdForLastInstalmentFeedback;
 
-    private WebMarkupContainer settingVariableInstallmentsAllowedBlock;
-    private WebMarkupContainer settingVariableInstallmentsAllowedContainer;
-    private Boolean settingVariableInstallmentsAllowedValue;
-    private CheckBox settingVariableInstallmentsAllowedField;
-    private TextFeedbackPanel settingVariableInstallmentsAllowedFeedback;
+    protected WebMarkupContainer settingVariableInstallmentsAllowedBlock;
+    protected WebMarkupContainer settingVariableInstallmentsAllowedContainer;
+    protected Boolean settingVariableInstallmentsAllowedValue;
+    protected CheckBox settingVariableInstallmentsAllowedField;
+    protected TextFeedbackPanel settingVariableInstallmentsAllowedFeedback;
 
-    private WebMarkupContainer settingVariableInstallmentsMinimumBlock;
-    private WebMarkupContainer settingVariableInstallmentsMinimumContainer;
-    private Double settingVariableInstallmentsMinimumValue;
-    private TextField<Double> settingVariableInstallmentsMinimumField;
-    private TextFeedbackPanel settingVariableInstallmentsMinimumFeedback;
+    protected WebMarkupContainer settingVariableInstallmentsMinimumBlock;
+    protected WebMarkupContainer settingVariableInstallmentsMinimumContainer;
+    protected Double settingVariableInstallmentsMinimumValue;
+    protected TextField<Double> settingVariableInstallmentsMinimumField;
+    protected TextFeedbackPanel settingVariableInstallmentsMinimumFeedback;
 
-    private WebMarkupContainer settingVariableInstallmentsMaximumBlock;
-    private WebMarkupContainer settingVariableInstallmentsMaximumContainer;
-    private Double settingVariableInstallmentsMaximumValue;
-    private TextField<Double> settingVariableInstallmentsMaximumField;
-    private TextFeedbackPanel settingVariableInstallmentsMaximumFeedback;
+    protected WebMarkupContainer settingVariableInstallmentsMaximumBlock;
+    protected WebMarkupContainer settingVariableInstallmentsMaximumContainer;
+    protected Double settingVariableInstallmentsMaximumValue;
+    protected TextField<Double> settingVariableInstallmentsMaximumField;
+    protected TextFeedbackPanel settingVariableInstallmentsMaximumFeedback;
 
-    private WebMarkupContainer settingAllowedToBeUsedForProvidingTopupLoansBlock;
-    private WebMarkupContainer settingAllowedToBeUsedForProvidingTopupLoansContainer;
-    private Boolean settingAllowedToBeUsedForProvidingTopupLoansValue;
-    private CheckBox settingAllowedToBeUsedForProvidingTopupLoansField;
-    private TextFeedbackPanel settingAllowedToBeUsedForProvidingTopupLoansFeedback;
+    protected WebMarkupContainer settingAllowedToBeUsedForProvidingTopupLoansBlock;
+    protected WebMarkupContainer settingAllowedToBeUsedForProvidingTopupLoansContainer;
+    protected Boolean settingAllowedToBeUsedForProvidingTopupLoansValue;
+    protected CheckBox settingAllowedToBeUsedForProvidingTopupLoansField;
+    protected TextFeedbackPanel settingAllowedToBeUsedForProvidingTopupLoansFeedback;
 
     // Interest Recalculation
 
-    private WebMarkupContainer interestRecalculationRecalculateInterestBlock;
-    private WebMarkupContainer interestRecalculationRecalculateInterestContainer;
-    private Boolean interestRecalculationRecalculateInterestValue;
-    private CheckBox interestRecalculationRecalculateInterestField;
-    private TextFeedbackPanel interestRecalculationRecalculateInterestFeedback;
+    protected WebMarkupContainer interestRecalculationRecalculateInterestBlock;
+    protected WebMarkupContainer interestRecalculationRecalculateInterestContainer;
+    protected Boolean interestRecalculationRecalculateInterestValue;
+    protected CheckBox interestRecalculationRecalculateInterestField;
+    protected TextFeedbackPanel interestRecalculationRecalculateInterestFeedback;
 
-    private WebMarkupContainer interestRecalculationPreClosureInterestCalculationRuleBlock;
-    private WebMarkupContainer interestRecalculationPreClosureInterestCalculationRuleContainer;
-    private ClosureInterestCalculationRuleProvider interestRecalculationPreClosureInterestCalculationRuleProvider;
-    private Option interestRecalculationPreClosureInterestCalculationRuleValue;
-    private Select2SingleChoice<Option> interestRecalculationPreClosureInterestCalculationRuleField;
-    private TextFeedbackPanel interestRecalculationPreClosureInterestCalculationRuleFeedback;
+    protected WebMarkupContainer interestRecalculationPreClosureInterestCalculationRuleBlock;
+    protected WebMarkupContainer interestRecalculationPreClosureInterestCalculationRuleContainer;
+    protected ClosureInterestCalculationRuleProvider interestRecalculationPreClosureInterestCalculationRuleProvider;
+    protected Option interestRecalculationPreClosureInterestCalculationRuleValue;
+    protected Select2SingleChoice<Option> interestRecalculationPreClosureInterestCalculationRuleField;
+    protected TextFeedbackPanel interestRecalculationPreClosureInterestCalculationRuleFeedback;
 
-    private WebMarkupContainer interestRecalculationAdvancePaymentsAdjustmentTypeBlock;
-    private WebMarkupContainer interestRecalculationAdvancePaymentsAdjustmentTypeContainer;
-    private AdvancePaymentsAdjustmentTypeProvider interestRecalculationAdvancePaymentsAdjustmentTypeProvider;
-    private Option interestRecalculationAdvancePaymentsAdjustmentTypeValue;
-    private Select2SingleChoice<Option> interestRecalculationAdvancePaymentsAdjustmentTypeField;
-    private TextFeedbackPanel interestRecalculationAdvancePaymentsAdjustmentTypeFeedback;
+    protected WebMarkupContainer interestRecalculationAdvancePaymentsAdjustmentTypeBlock;
+    protected WebMarkupContainer interestRecalculationAdvancePaymentsAdjustmentTypeContainer;
+    protected AdvancePaymentsAdjustmentTypeProvider interestRecalculationAdvancePaymentsAdjustmentTypeProvider;
+    protected Option interestRecalculationAdvancePaymentsAdjustmentTypeValue;
+    protected Select2SingleChoice<Option> interestRecalculationAdvancePaymentsAdjustmentTypeField;
+    protected TextFeedbackPanel interestRecalculationAdvancePaymentsAdjustmentTypeFeedback;
 
-    private WebMarkupContainer interestRecalculationCompoundingOnBlock;
-    private WebMarkupContainer interestRecalculationCompoundingOnContainer;
-    private InterestRecalculationCompoundProvider interestRecalculationCompoundingOnProvider;
-    private Option interestRecalculationCompoundingOnValue;
-    private Select2SingleChoice<Option> interestRecalculationCompoundingOnField;
-    private TextFeedbackPanel interestRecalculationCompoundingOnFeedback;
+    protected WebMarkupContainer interestRecalculationCompoundingOnBlock;
+    protected WebMarkupContainer interestRecalculationCompoundingOnContainer;
+    protected InterestRecalculationCompoundProvider interestRecalculationCompoundingOnProvider;
+    protected Option interestRecalculationCompoundingOnValue;
+    protected Select2SingleChoice<Option> interestRecalculationCompoundingOnField;
+    protected TextFeedbackPanel interestRecalculationCompoundingOnFeedback;
 
-    private WebMarkupContainer interestRecalculationCompoundingBlock;
-    private WebMarkupContainer interestRecalculationCompoundingContainer;
-    private FrequencyProvider interestRecalculationCompoundingProvider;
-    private Option interestRecalculationCompoundingValue;
-    private Select2SingleChoice<Option> interestRecalculationCompoundingField;
-    private TextFeedbackPanel interestRecalculationCompoundingFeedback;
+    protected WebMarkupContainer interestRecalculationCompoundingBlock;
+    protected WebMarkupContainer interestRecalculationCompoundingContainer;
+    protected FrequencyProvider interestRecalculationCompoundingProvider;
+    protected Option interestRecalculationCompoundingValue;
+    protected Select2SingleChoice<Option> interestRecalculationCompoundingField;
+    protected TextFeedbackPanel interestRecalculationCompoundingFeedback;
 
-    private WebMarkupContainer interestRecalculationCompoundingTypeBlock;
-    private WebMarkupContainer interestRecalculationCompoundingTypeContainer;
-    private FrequencyTypeProvider interestRecalculationCompoundingTypeProvider;
-    private Option interestRecalculationCompoundingTypeValue;
-    private Select2SingleChoice<Option> interestRecalculationCompoundingTypeField;
-    private TextFeedbackPanel interestRecalculationCompoundingTypeFeedback;
+    protected WebMarkupContainer interestRecalculationCompoundingTypeBlock;
+    protected WebMarkupContainer interestRecalculationCompoundingTypeContainer;
+    protected FrequencyTypeProvider interestRecalculationCompoundingTypeProvider;
+    protected Option interestRecalculationCompoundingTypeValue;
+    protected Select2SingleChoice<Option> interestRecalculationCompoundingTypeField;
+    protected TextFeedbackPanel interestRecalculationCompoundingTypeFeedback;
 
-    private WebMarkupContainer interestRecalculationCompoundingDayBlock;
-    private WebMarkupContainer interestRecalculationCompoundingDayContainer;
-    private FrequencyDayProvider interestRecalculationCompoundingDayProvider;
-    private Option interestRecalculationCompoundingDayValue;
-    private Select2SingleChoice<Option> interestRecalculationCompoundingDayField;
-    private TextFeedbackPanel interestRecalculationCompoundingDayFeedback;
+    protected WebMarkupContainer interestRecalculationCompoundingDayBlock;
+    protected WebMarkupContainer interestRecalculationCompoundingDayContainer;
+    protected FrequencyDayProvider interestRecalculationCompoundingDayProvider;
+    protected Option interestRecalculationCompoundingDayValue;
+    protected Select2SingleChoice<Option> interestRecalculationCompoundingDayField;
+    protected TextFeedbackPanel interestRecalculationCompoundingDayFeedback;
 
-    private WebMarkupContainer interestRecalculationCompoundingIntervalBlock;
-    private WebMarkupContainer interestRecalculationCompoundingIntervalContainer;
-    private Double interestRecalculationCompoundingIntervalValue;
-    private TextField<Double> interestRecalculationCompoundingIntervalField;
-    private TextFeedbackPanel interestRecalculationCompoundingIntervalFeedback;
+    protected WebMarkupContainer interestRecalculationCompoundingIntervalBlock;
+    protected WebMarkupContainer interestRecalculationCompoundingIntervalContainer;
+    protected Double interestRecalculationCompoundingIntervalValue;
+    protected TextField<Double> interestRecalculationCompoundingIntervalField;
+    protected TextFeedbackPanel interestRecalculationCompoundingIntervalFeedback;
 
-    private WebMarkupContainer interestRecalculationRecalculateBlock;
-    private WebMarkupContainer interestRecalculationRecalculateContainer;
-    private FrequencyProvider interestRecalculationRecalculateProvider;
-    private Option interestRecalculationRecalculateValue;
-    private Select2SingleChoice<Option> interestRecalculationRecalculateField;
-    private TextFeedbackPanel interestRecalculationRecalculateFeedback;
+    protected WebMarkupContainer interestRecalculationRecalculateBlock;
+    protected WebMarkupContainer interestRecalculationRecalculateContainer;
+    protected FrequencyProvider interestRecalculationRecalculateProvider;
+    protected Option interestRecalculationRecalculateValue;
+    protected Select2SingleChoice<Option> interestRecalculationRecalculateField;
+    protected TextFeedbackPanel interestRecalculationRecalculateFeedback;
 
-    private WebMarkupContainer interestRecalculationRecalculateTypeBlock;
-    private WebMarkupContainer interestRecalculationRecalculateTypeContainer;
-    private FrequencyTypeProvider interestRecalculationRecalculateTypeProvider;
-    private Option interestRecalculationRecalculateTypeValue;
-    private Select2SingleChoice<Option> interestRecalculationRecalculateTypeField;
-    private TextFeedbackPanel interestRecalculationRecalculateTypeFeedback;
+    protected WebMarkupContainer interestRecalculationRecalculateTypeBlock;
+    protected WebMarkupContainer interestRecalculationRecalculateTypeContainer;
+    protected FrequencyTypeProvider interestRecalculationRecalculateTypeProvider;
+    protected Option interestRecalculationRecalculateTypeValue;
+    protected Select2SingleChoice<Option> interestRecalculationRecalculateTypeField;
+    protected TextFeedbackPanel interestRecalculationRecalculateTypeFeedback;
 
-    private WebMarkupContainer interestRecalculationRecalculateDayBlock;
-    private WebMarkupContainer interestRecalculationRecalculateDayContainer;
-    private FrequencyDayProvider interestRecalculationRecalculateDayProvider;
-    private Option interestRecalculationRecalculateDayValue;
-    private Select2SingleChoice<Option> interestRecalculationRecalculateDayField;
-    private TextFeedbackPanel interestRecalculationRecalculateDayFeedback;
+    protected WebMarkupContainer interestRecalculationRecalculateDayBlock;
+    protected WebMarkupContainer interestRecalculationRecalculateDayContainer;
+    protected FrequencyDayProvider interestRecalculationRecalculateDayProvider;
+    protected Option interestRecalculationRecalculateDayValue;
+    protected Select2SingleChoice<Option> interestRecalculationRecalculateDayField;
+    protected TextFeedbackPanel interestRecalculationRecalculateDayFeedback;
 
-    private WebMarkupContainer interestRecalculationRecalculateIntervalBlock;
-    private WebMarkupContainer interestRecalculationRecalculateIntervalContainer;
-    private Double interestRecalculationRecalculateIntervalValue;
-    private TextField<Double> interestRecalculationRecalculateIntervalField;
-    private TextFeedbackPanel interestRecalculationRecalculateIntervalFeedback;
+    protected WebMarkupContainer interestRecalculationRecalculateIntervalBlock;
+    protected WebMarkupContainer interestRecalculationRecalculateIntervalContainer;
+    protected Double interestRecalculationRecalculateIntervalValue;
+    protected TextField<Double> interestRecalculationRecalculateIntervalField;
+    protected TextFeedbackPanel interestRecalculationRecalculateIntervalFeedback;
 
-    private WebMarkupContainer interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock;
-    private WebMarkupContainer interestRecalculationArrearsRecognizationBasedOnOriginalScheduleContainer;
-    private Boolean interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue;
-    private CheckBox interestRecalculationArrearsRecognizationBasedOnOriginalScheduleField;
-    private TextFeedbackPanel interestRecalculationArrearsRecognizationBasedOnOriginalScheduleFeedback;
+    protected WebMarkupContainer interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock;
+    protected WebMarkupContainer interestRecalculationArrearsRecognizationBasedOnOriginalScheduleContainer;
+    protected Boolean interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue;
+    protected CheckBox interestRecalculationArrearsRecognizationBasedOnOriginalScheduleField;
+    protected TextFeedbackPanel interestRecalculationArrearsRecognizationBasedOnOriginalScheduleFeedback;
 
     // Guarantee Requirements
 
-    private WebMarkupContainer guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock;
-    private WebMarkupContainer guaranteeRequirementPlaceGuaranteeFundsOnHoldContainer;
-    private Boolean guaranteeRequirementPlaceGuaranteeFundsOnHoldValue;
-    private CheckBox guaranteeRequirementPlaceGuaranteeFundsOnHoldField;
-    private TextFeedbackPanel guaranteeRequirementPlaceGuaranteeFundsOnHoldFeedback;
+    protected WebMarkupContainer guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock;
+    protected WebMarkupContainer guaranteeRequirementPlaceGuaranteeFundsOnHoldContainer;
+    protected Boolean guaranteeRequirementPlaceGuaranteeFundsOnHoldValue;
+    protected CheckBox guaranteeRequirementPlaceGuaranteeFundsOnHoldField;
+    protected TextFeedbackPanel guaranteeRequirementPlaceGuaranteeFundsOnHoldFeedback;
 
-    private WebMarkupContainer guaranteeRequirementMandatoryGuaranteeBlock;
-    private WebMarkupContainer guaranteeRequirementMandatoryGuaranteeContainer;
-    private Double guaranteeRequirementMandatoryGuaranteeValue;
-    private TextField<Double> guaranteeRequirementMandatoryGuaranteeField;
-    private TextFeedbackPanel guaranteeRequirementMandatoryGuaranteeFeedback;
+    protected WebMarkupContainer guaranteeRequirementMandatoryGuaranteeBlock;
+    protected WebMarkupContainer guaranteeRequirementMandatoryGuaranteeContainer;
+    protected Double guaranteeRequirementMandatoryGuaranteeValue;
+    protected TextField<Double> guaranteeRequirementMandatoryGuaranteeField;
+    protected TextFeedbackPanel guaranteeRequirementMandatoryGuaranteeFeedback;
 
-    private WebMarkupContainer guaranteeRequirementMinimumGuaranteeBlock;
-    private WebMarkupContainer guaranteeRequirementMinimumGuaranteeContainer;
-    private Double guaranteeRequirementMinimumGuaranteeValue;
-    private TextField<Double> guaranteeRequirementMinimumGuaranteeField;
-    private TextFeedbackPanel guaranteeRequirementMinimumGuaranteeFeedback;
+    protected WebMarkupContainer guaranteeRequirementMinimumGuaranteeBlock;
+    protected WebMarkupContainer guaranteeRequirementMinimumGuaranteeContainer;
+    protected Double guaranteeRequirementMinimumGuaranteeValue;
+    protected TextField<Double> guaranteeRequirementMinimumGuaranteeField;
+    protected TextFeedbackPanel guaranteeRequirementMinimumGuaranteeFeedback;
 
-    private WebMarkupContainer guaranteeRequirementMinimumGuaranteeFromGuarantorBlock;
-    private WebMarkupContainer guaranteeRequirementMinimumGuaranteeFromGuarantorContainer;
-    private Double guaranteeRequirementMinimumGuaranteeFromGuarantorValue;
-    private TextField<Double> guaranteeRequirementMinimumGuaranteeFromGuarantorField;
-    private TextFeedbackPanel guaranteeRequirementMinimumGuaranteeFromGuarantorFeedback;
+    protected WebMarkupContainer guaranteeRequirementMinimumGuaranteeFromGuarantorBlock;
+    protected WebMarkupContainer guaranteeRequirementMinimumGuaranteeFromGuarantorContainer;
+    protected Double guaranteeRequirementMinimumGuaranteeFromGuarantorValue;
+    protected TextField<Double> guaranteeRequirementMinimumGuaranteeFromGuarantorField;
+    protected TextFeedbackPanel guaranteeRequirementMinimumGuaranteeFromGuarantorFeedback;
 
     // Loan Tranche Details
 
-    private WebMarkupContainer loanTrancheDetailEnableMultipleDisbursalBlock;
-    private WebMarkupContainer loanTrancheDetailEnableMultipleDisbursalContainer;
-    private Boolean loanTrancheDetailEnableMultipleDisbursalValue;
-    private CheckBox loanTrancheDetailEnableMultipleDisbursalField;
-    private TextFeedbackPanel loanTrancheDetailEnableMultipleDisbursalFeedback;
+    protected WebMarkupContainer loanTrancheDetailEnableMultipleDisbursalBlock;
+    protected WebMarkupContainer loanTrancheDetailEnableMultipleDisbursalContainer;
+    protected Boolean loanTrancheDetailEnableMultipleDisbursalValue;
+    protected CheckBox loanTrancheDetailEnableMultipleDisbursalField;
+    protected TextFeedbackPanel loanTrancheDetailEnableMultipleDisbursalFeedback;
 
-    private WebMarkupContainer loanTrancheDetailMaximumTrancheCountBlock;
-    private WebMarkupContainer loanTrancheDetailMaximumTrancheCountContainer;
-    private Double loanTrancheDetailMaximumTrancheCountValue;
-    private TextField<Double> loanTrancheDetailMaximumTrancheCountField;
-    private TextFeedbackPanel loanTrancheDetailMaximumTrancheCountFeedback;
+    protected WebMarkupContainer loanTrancheDetailMaximumTrancheCountBlock;
+    protected WebMarkupContainer loanTrancheDetailMaximumTrancheCountContainer;
+    protected Double loanTrancheDetailMaximumTrancheCountValue;
+    protected TextField<Double> loanTrancheDetailMaximumTrancheCountField;
+    protected TextFeedbackPanel loanTrancheDetailMaximumTrancheCountFeedback;
 
-    private WebMarkupContainer loanTrancheDetailMaximumAllowedOutstandingBalanceBlock;
-    private WebMarkupContainer loanTrancheDetailMaximumAllowedOutstandingBalanceContainer;
-    private Double loanTrancheDetailMaximumAllowedOutstandingBalanceValue;
-    private TextField<Double> loanTrancheDetailMaximumAllowedOutstandingBalanceField;
-    private TextFeedbackPanel loanTrancheDetailMaximumAllowedOutstandingBalanceFeedback;
+    protected WebMarkupContainer loanTrancheDetailMaximumAllowedOutstandingBalanceBlock;
+    protected WebMarkupContainer loanTrancheDetailMaximumAllowedOutstandingBalanceContainer;
+    protected Double loanTrancheDetailMaximumAllowedOutstandingBalanceValue;
+    protected TextField<Double> loanTrancheDetailMaximumAllowedOutstandingBalanceField;
+    protected TextFeedbackPanel loanTrancheDetailMaximumAllowedOutstandingBalanceFeedback;
 
     // Configurable Terms and Settings
 
-    private WebMarkupContainer configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock;
-    private WebMarkupContainer configurableAllowOverridingSelectTermsAndSettingsInLoanAccountContainer;
-    private Boolean configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue;
-    private CheckBox configurableAllowOverridingSelectTermsAndSettingsInLoanAccountField;
-    private TextFeedbackPanel configurableAllowOverridingSelectTermsAndSettingsInLoanAccountFeedback;
+    protected WebMarkupContainer configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock;
+    protected WebMarkupContainer configurableAllowOverridingSelectTermsAndSettingsInLoanAccountContainer;
+    protected Boolean configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue;
+    protected CheckBox configurableAllowOverridingSelectTermsAndSettingsInLoanAccountField;
+    protected TextFeedbackPanel configurableAllowOverridingSelectTermsAndSettingsInLoanAccountFeedback;
 
-    private WebMarkupContainer configurableAmortizationBlock;
-    private WebMarkupContainer configurableAmortizationContainer;
-    private Boolean configurableAmortizationValue;
-    private CheckBox configurableAmortizationField;
-    private TextFeedbackPanel configurableAmortizationFeedback;
+    protected WebMarkupContainer configurableAmortizationBlock;
+    protected WebMarkupContainer configurableAmortizationContainer;
+    protected Boolean configurableAmortizationValue;
+    protected CheckBox configurableAmortizationField;
+    protected TextFeedbackPanel configurableAmortizationFeedback;
 
-    private WebMarkupContainer configurableInterestMethodBlock;
-    private WebMarkupContainer configurableInterestMethodContainer;
-    private Boolean configurableInterestMethodValue;
-    private CheckBox configurableInterestMethodField;
-    private TextFeedbackPanel configurableInterestMethodFeedback;
+    protected WebMarkupContainer configurableInterestMethodBlock;
+    protected WebMarkupContainer configurableInterestMethodContainer;
+    protected Boolean configurableInterestMethodValue;
+    protected CheckBox configurableInterestMethodField;
+    protected TextFeedbackPanel configurableInterestMethodFeedback;
 
-    private WebMarkupContainer configurableRepaymentStrategyBlock;
-    private WebMarkupContainer configurableRepaymentStrategyContainer;
-    private Boolean configurableRepaymentStrategyValue;
-    private CheckBox configurableRepaymentStrategyField;
-    private TextFeedbackPanel configurableRepaymentStrategyFeedback;
+    protected WebMarkupContainer configurableRepaymentStrategyBlock;
+    protected WebMarkupContainer configurableRepaymentStrategyContainer;
+    protected Boolean configurableRepaymentStrategyValue;
+    protected CheckBox configurableRepaymentStrategyField;
+    protected TextFeedbackPanel configurableRepaymentStrategyFeedback;
 
-    private WebMarkupContainer configurableInterestCalculationPeriodBlock;
-    private WebMarkupContainer configurableInterestCalculationPeriodContainer;
-    private Boolean configurableInterestCalculationPeriodValue;
-    private CheckBox configurableInterestCalculationPeriodField;
-    private TextFeedbackPanel configurableInterestCalculationPeriodFeedback;
+    protected WebMarkupContainer configurableInterestCalculationPeriodBlock;
+    protected WebMarkupContainer configurableInterestCalculationPeriodContainer;
+    protected Boolean configurableInterestCalculationPeriodValue;
+    protected CheckBox configurableInterestCalculationPeriodField;
+    protected TextFeedbackPanel configurableInterestCalculationPeriodFeedback;
 
-    private WebMarkupContainer configurableArrearsToleranceBlock;
-    private WebMarkupContainer configurableArrearsToleranceContainer;
-    private Boolean configurableArrearsToleranceValue;
-    private CheckBox configurableArrearsToleranceField;
-    private TextFeedbackPanel configurableArrearsToleranceFeedback;
+    protected WebMarkupContainer configurableArrearsToleranceBlock;
+    protected WebMarkupContainer configurableArrearsToleranceContainer;
+    protected Boolean configurableArrearsToleranceValue;
+    protected CheckBox configurableArrearsToleranceField;
+    protected TextFeedbackPanel configurableArrearsToleranceFeedback;
 
-    private WebMarkupContainer configurableRepaidEveryBlock;
-    private WebMarkupContainer configurableRepaidEveryContainer;
-    private Boolean configurableRepaidEveryValue;
-    private CheckBox configurableRepaidEveryField;
-    private TextFeedbackPanel configurableRepaidEveryFeedback;
+    protected WebMarkupContainer configurableRepaidEveryBlock;
+    protected WebMarkupContainer configurableRepaidEveryContainer;
+    protected Boolean configurableRepaidEveryValue;
+    protected CheckBox configurableRepaidEveryField;
+    protected TextFeedbackPanel configurableRepaidEveryFeedback;
 
-    private WebMarkupContainer configurableMoratoriumBlock;
-    private WebMarkupContainer configurableMoratoriumContainer;
-    private Boolean configurableMoratoriumValue;
-    private CheckBox configurableMoratoriumField;
-    private TextFeedbackPanel configurableMoratoriumFeedback;
+    protected WebMarkupContainer configurableMoratoriumBlock;
+    protected WebMarkupContainer configurableMoratoriumContainer;
+    protected Boolean configurableMoratoriumValue;
+    protected CheckBox configurableMoratoriumField;
+    protected TextFeedbackPanel configurableMoratoriumFeedback;
 
-    private WebMarkupContainer configurableOverdueBeforeMovingBlock;
-    private WebMarkupContainer configurableOverdueBeforeMovingContainer;
-    private Boolean configurableOverdueBeforeMovingValue;
-    private CheckBox configurableOverdueBeforeMovingField;
-    private TextFeedbackPanel configurableOverdueBeforeMovingFeedback;
+    protected WebMarkupContainer configurableOverdueBeforeMovingBlock;
+    protected WebMarkupContainer configurableOverdueBeforeMovingContainer;
+    protected Boolean configurableOverdueBeforeMovingValue;
+    protected CheckBox configurableOverdueBeforeMovingField;
+    protected TextFeedbackPanel configurableOverdueBeforeMovingFeedback;
 
     // Accounting
 
-    private String accountingValue = ACC_NONE;
-    private RadioGroup<String> accountingField;
+    protected String accountingValue = ACC_NONE;
+    protected RadioGroup<String> accountingField;
 
-    private WebMarkupContainer cashBlock;
-    private WebMarkupContainer cashContainer;
+    protected WebMarkupContainer cashBlock;
+    protected WebMarkupContainer cashContainer;
 
-    private SingleChoiceProvider cashFundSourceProvider;
-    private Option cashFundSourceValue;
-    private Select2SingleChoice<Option> cashFundSourceField;
-    private TextFeedbackPanel cashFundSourceFeedback;
+    protected SingleChoiceProvider cashFundSourceProvider;
+    protected Option cashFundSourceValue;
+    protected Select2SingleChoice<Option> cashFundSourceField;
+    protected TextFeedbackPanel cashFundSourceFeedback;
 
-    private SingleChoiceProvider cashLoanPortfolioProvider;
-    private Option cashLoanPortfolioValue;
-    private Select2SingleChoice<Option> cashLoanPortfolioField;
-    private TextFeedbackPanel cashLoanPortfolioFeedback;
+    protected SingleChoiceProvider cashLoanPortfolioProvider;
+    protected Option cashLoanPortfolioValue;
+    protected Select2SingleChoice<Option> cashLoanPortfolioField;
+    protected TextFeedbackPanel cashLoanPortfolioFeedback;
 
-    private SingleChoiceProvider cashTransferInSuspenseProvider;
-    private Option cashTransferInSuspenseValue;
-    private Select2SingleChoice<Option> cashTransferInSuspenseField;
-    private TextFeedbackPanel cashTransferInSuspenseFeedback;
+    protected SingleChoiceProvider cashTransferInSuspenseProvider;
+    protected Option cashTransferInSuspenseValue;
+    protected Select2SingleChoice<Option> cashTransferInSuspenseField;
+    protected TextFeedbackPanel cashTransferInSuspenseFeedback;
 
-    private SingleChoiceProvider cashIncomeFromInterestProvider;
-    private Option cashIncomeFromInterestValue;
-    private Select2SingleChoice<Option> cashIncomeFromInterestField;
-    private TextFeedbackPanel cashIncomeFromInterestFeedback;
+    protected SingleChoiceProvider cashIncomeFromInterestProvider;
+    protected Option cashIncomeFromInterestValue;
+    protected Select2SingleChoice<Option> cashIncomeFromInterestField;
+    protected TextFeedbackPanel cashIncomeFromInterestFeedback;
 
-    private SingleChoiceProvider cashIncomeFromFeeProvider;
-    private Option cashIncomeFromFeeValue;
-    private Select2SingleChoice<Option> cashIncomeFromFeeField;
-    private TextFeedbackPanel cashIncomeFromFeeFeedback;
+    protected SingleChoiceProvider cashIncomeFromFeeProvider;
+    protected Option cashIncomeFromFeeValue;
+    protected Select2SingleChoice<Option> cashIncomeFromFeeField;
+    protected TextFeedbackPanel cashIncomeFromFeeFeedback;
 
-    private SingleChoiceProvider cashIncomeFromPenaltiesProvider;
-    private Option cashIncomeFromPenaltiesValue;
-    private Select2SingleChoice<Option> cashIncomeFromPenaltiesField;
-    private TextFeedbackPanel cashIncomeFromPenaltiesFeedback;
+    protected SingleChoiceProvider cashIncomeFromPenaltiesProvider;
+    protected Option cashIncomeFromPenaltiesValue;
+    protected Select2SingleChoice<Option> cashIncomeFromPenaltiesField;
+    protected TextFeedbackPanel cashIncomeFromPenaltiesFeedback;
 
-    private SingleChoiceProvider cashIncomeFromRecoveryRepaymentProvider;
-    private Option cashIncomeFromRecoveryRepaymentValue;
-    private Select2SingleChoice<Option> cashIncomeFromRecoveryRepaymentField;
-    private TextFeedbackPanel cashIncomeFromRecoveryRepaymentFeedback;
+    protected SingleChoiceProvider cashIncomeFromRecoveryRepaymentProvider;
+    protected Option cashIncomeFromRecoveryRepaymentValue;
+    protected Select2SingleChoice<Option> cashIncomeFromRecoveryRepaymentField;
+    protected TextFeedbackPanel cashIncomeFromRecoveryRepaymentFeedback;
 
-    private SingleChoiceProvider cashLossesWrittenOffProvider;
-    private Option cashLossesWrittenOffValue;
-    private Select2SingleChoice<Option> cashLossesWrittenOffField;
-    private TextFeedbackPanel cashLossesWrittenOffFeedback;
+    protected SingleChoiceProvider cashLossesWrittenOffProvider;
+    protected Option cashLossesWrittenOffValue;
+    protected Select2SingleChoice<Option> cashLossesWrittenOffField;
+    protected TextFeedbackPanel cashLossesWrittenOffFeedback;
 
-    private SingleChoiceProvider cashOverPaymentLiabilityProvider;
-    private Option cashOverPaymentLiabilityValue;
-    private Select2SingleChoice<Option> cashOverPaymentLiabilityField;
-    private TextFeedbackPanel cashOverPaymentLiabilityFeedback;
+    protected SingleChoiceProvider cashOverPaymentLiabilityProvider;
+    protected Option cashOverPaymentLiabilityValue;
+    protected Select2SingleChoice<Option> cashOverPaymentLiabilityField;
+    protected TextFeedbackPanel cashOverPaymentLiabilityFeedback;
 
-    private WebMarkupContainer periodicBlock;
-    private WebMarkupContainer periodicContainer;
+    protected WebMarkupContainer periodicBlock;
+    protected WebMarkupContainer periodicContainer;
 
-    private SingleChoiceProvider periodicFundSourceProvider;
-    private Option periodicFundSourceValue;
-    private Select2SingleChoice<Option> periodicFundSourceField;
-    private TextFeedbackPanel periodicFundSourceFeedback;
+    protected SingleChoiceProvider periodicFundSourceProvider;
+    protected Option periodicFundSourceValue;
+    protected Select2SingleChoice<Option> periodicFundSourceField;
+    protected TextFeedbackPanel periodicFundSourceFeedback;
 
-    private SingleChoiceProvider periodicLoanPortfolioProvider;
-    private Option periodicLoanPortfolioValue;
-    private Select2SingleChoice<Option> periodicLoanPortfolioField;
-    private TextFeedbackPanel periodicLoanPortfolioFeedback;
+    protected SingleChoiceProvider periodicLoanPortfolioProvider;
+    protected Option periodicLoanPortfolioValue;
+    protected Select2SingleChoice<Option> periodicLoanPortfolioField;
+    protected TextFeedbackPanel periodicLoanPortfolioFeedback;
 
-    private SingleChoiceProvider periodicInterestReceivableProvider;
-    private Option periodicInterestReceivableValue;
-    private Select2SingleChoice<Option> periodicInterestReceivableField;
-    private TextFeedbackPanel periodicInterestReceivableFeedback;
+    protected SingleChoiceProvider periodicInterestReceivableProvider;
+    protected Option periodicInterestReceivableValue;
+    protected Select2SingleChoice<Option> periodicInterestReceivableField;
+    protected TextFeedbackPanel periodicInterestReceivableFeedback;
 
-    private SingleChoiceProvider periodicFeesReceivableProvider;
-    private Option periodicFeesReceivableValue;
-    private Select2SingleChoice<Option> periodicFeesReceivableField;
-    private TextFeedbackPanel periodicFeesReceivableFeedback;
+    protected SingleChoiceProvider periodicFeesReceivableProvider;
+    protected Option periodicFeesReceivableValue;
+    protected Select2SingleChoice<Option> periodicFeesReceivableField;
+    protected TextFeedbackPanel periodicFeesReceivableFeedback;
 
-    private SingleChoiceProvider periodicPenaltiesReceivableProvider;
-    private Option periodicPenaltiesReceivableValue;
-    private Select2SingleChoice<Option> periodicPenaltiesReceivableField;
-    private TextFeedbackPanel periodicPenaltiesReceivableFeedback;
+    protected SingleChoiceProvider periodicPenaltiesReceivableProvider;
+    protected Option periodicPenaltiesReceivableValue;
+    protected Select2SingleChoice<Option> periodicPenaltiesReceivableField;
+    protected TextFeedbackPanel periodicPenaltiesReceivableFeedback;
 
-    private SingleChoiceProvider periodicTransferInSuspenseProvider;
-    private Option periodicTransferInSuspenseValue;
-    private Select2SingleChoice<Option> periodicTransferInSuspenseField;
-    private TextFeedbackPanel periodicTransferInSuspenseFeedback;
+    protected SingleChoiceProvider periodicTransferInSuspenseProvider;
+    protected Option periodicTransferInSuspenseValue;
+    protected Select2SingleChoice<Option> periodicTransferInSuspenseField;
+    protected TextFeedbackPanel periodicTransferInSuspenseFeedback;
 
-    private SingleChoiceProvider periodicIncomeFromInterestProvider;
-    private Option periodicIncomeFromInterestValue;
-    private Select2SingleChoice<Option> periodicIncomeFromInterestField;
-    private TextFeedbackPanel periodicIncomeFromInterestFeedback;
+    protected SingleChoiceProvider periodicIncomeFromInterestProvider;
+    protected Option periodicIncomeFromInterestValue;
+    protected Select2SingleChoice<Option> periodicIncomeFromInterestField;
+    protected TextFeedbackPanel periodicIncomeFromInterestFeedback;
 
-    private SingleChoiceProvider periodicIncomeFromFeeProvider;
-    private Option periodicIncomeFromFeeValue;
-    private Select2SingleChoice<Option> periodicIncomeFromFeeField;
-    private TextFeedbackPanel periodicIncomeFromFeeFeedback;
+    protected SingleChoiceProvider periodicIncomeFromFeeProvider;
+    protected Option periodicIncomeFromFeeValue;
+    protected Select2SingleChoice<Option> periodicIncomeFromFeeField;
+    protected TextFeedbackPanel periodicIncomeFromFeeFeedback;
 
-    private SingleChoiceProvider periodicIncomeFromPenaltiesProvider;
-    private Option periodicIncomeFromPenaltiesValue;
-    private Select2SingleChoice<Option> periodicIncomeFromPenaltiesField;
-    private TextFeedbackPanel periodicIncomeFromPenaltiesFeedback;
+    protected SingleChoiceProvider periodicIncomeFromPenaltiesProvider;
+    protected Option periodicIncomeFromPenaltiesValue;
+    protected Select2SingleChoice<Option> periodicIncomeFromPenaltiesField;
+    protected TextFeedbackPanel periodicIncomeFromPenaltiesFeedback;
 
-    private SingleChoiceProvider periodicIncomeFromRecoveryRepaymentProvider;
-    private Option periodicIncomeFromRecoveryRepaymentValue;
-    private Select2SingleChoice<Option> periodicIncomeFromRecoveryRepaymentField;
-    private TextFeedbackPanel periodicIncomeFromRecoveryRepaymentFeedback;
+    protected SingleChoiceProvider periodicIncomeFromRecoveryRepaymentProvider;
+    protected Option periodicIncomeFromRecoveryRepaymentValue;
+    protected Select2SingleChoice<Option> periodicIncomeFromRecoveryRepaymentField;
+    protected TextFeedbackPanel periodicIncomeFromRecoveryRepaymentFeedback;
 
-    private SingleChoiceProvider periodicLossesWrittenOffProvider;
-    private Option periodicLossesWrittenOffValue;
-    private Select2SingleChoice<Option> periodicLossesWrittenOffField;
-    private TextFeedbackPanel periodicLossesWrittenOffFeedback;
+    protected SingleChoiceProvider periodicLossesWrittenOffProvider;
+    protected Option periodicLossesWrittenOffValue;
+    protected Select2SingleChoice<Option> periodicLossesWrittenOffField;
+    protected TextFeedbackPanel periodicLossesWrittenOffFeedback;
 
-    private SingleChoiceProvider periodicOverPaymentLiabilityProvider;
-    private Option periodicOverPaymentLiabilityValue;
-    private Select2SingleChoice<Option> periodicOverPaymentLiabilityField;
-    private TextFeedbackPanel periodicOverPaymentLiabilityFeedback;
+    protected SingleChoiceProvider periodicOverPaymentLiabilityProvider;
+    protected Option periodicOverPaymentLiabilityValue;
+    protected Select2SingleChoice<Option> periodicOverPaymentLiabilityField;
+    protected TextFeedbackPanel periodicOverPaymentLiabilityFeedback;
 
-    private WebMarkupContainer upfrontBlock;
-    private WebMarkupContainer upfrontContainer;
+    protected WebMarkupContainer upfrontBlock;
+    protected WebMarkupContainer upfrontContainer;
 
-    private SingleChoiceProvider upfrontFundSourceProvider;
-    private Option upfrontFundSourceValue;
-    private Select2SingleChoice<Option> upfrontFundSourceField;
-    private TextFeedbackPanel upfrontFundSourceFeedback;
+    protected SingleChoiceProvider upfrontFundSourceProvider;
+    protected Option upfrontFundSourceValue;
+    protected Select2SingleChoice<Option> upfrontFundSourceField;
+    protected TextFeedbackPanel upfrontFundSourceFeedback;
 
-    private SingleChoiceProvider upfrontLoanPortfolioProvider;
-    private Option upfrontLoanPortfolioValue;
-    private Select2SingleChoice<Option> upfrontLoanPortfolioField;
-    private TextFeedbackPanel upfrontLoanPortfolioFeedback;
+    protected SingleChoiceProvider upfrontLoanPortfolioProvider;
+    protected Option upfrontLoanPortfolioValue;
+    protected Select2SingleChoice<Option> upfrontLoanPortfolioField;
+    protected TextFeedbackPanel upfrontLoanPortfolioFeedback;
 
-    private SingleChoiceProvider upfrontInterestReceivableProvider;
-    private Option upfrontInterestReceivableValue;
-    private Select2SingleChoice<Option> upfrontInterestReceivableField;
-    private TextFeedbackPanel upfrontInterestReceivableFeedback;
+    protected SingleChoiceProvider upfrontInterestReceivableProvider;
+    protected Option upfrontInterestReceivableValue;
+    protected Select2SingleChoice<Option> upfrontInterestReceivableField;
+    protected TextFeedbackPanel upfrontInterestReceivableFeedback;
 
-    private SingleChoiceProvider upfrontFeesReceivableProvider;
-    private Option upfrontFeesReceivableValue;
-    private Select2SingleChoice<Option> upfrontFeesReceivableField;
-    private TextFeedbackPanel upfrontFeesReceivableFeedback;
+    protected SingleChoiceProvider upfrontFeesReceivableProvider;
+    protected Option upfrontFeesReceivableValue;
+    protected Select2SingleChoice<Option> upfrontFeesReceivableField;
+    protected TextFeedbackPanel upfrontFeesReceivableFeedback;
 
-    private SingleChoiceProvider upfrontPenaltiesReceivableProvider;
-    private Option upfrontPenaltiesReceivableValue;
-    private Select2SingleChoice<Option> upfrontPenaltiesReceivableField;
-    private TextFeedbackPanel upfrontPenaltiesReceivableFeedback;
+    protected SingleChoiceProvider upfrontPenaltiesReceivableProvider;
+    protected Option upfrontPenaltiesReceivableValue;
+    protected Select2SingleChoice<Option> upfrontPenaltiesReceivableField;
+    protected TextFeedbackPanel upfrontPenaltiesReceivableFeedback;
 
-    private SingleChoiceProvider upfrontTransferInSuspenseProvider;
-    private Option upfrontTransferInSuspenseValue;
-    private Select2SingleChoice<Option> upfrontTransferInSuspenseField;
-    private TextFeedbackPanel upfrontTransferInSuspenseFeedback;
+    protected SingleChoiceProvider upfrontTransferInSuspenseProvider;
+    protected Option upfrontTransferInSuspenseValue;
+    protected Select2SingleChoice<Option> upfrontTransferInSuspenseField;
+    protected TextFeedbackPanel upfrontTransferInSuspenseFeedback;
 
-    private SingleChoiceProvider upfrontIncomeFromInterestProvider;
-    private Option upfrontIncomeFromInterestValue;
-    private Select2SingleChoice<Option> upfrontIncomeFromInterestField;
-    private TextFeedbackPanel upfrontIncomeFromInterestFeedback;
+    protected SingleChoiceProvider upfrontIncomeFromInterestProvider;
+    protected Option upfrontIncomeFromInterestValue;
+    protected Select2SingleChoice<Option> upfrontIncomeFromInterestField;
+    protected TextFeedbackPanel upfrontIncomeFromInterestFeedback;
 
-    private SingleChoiceProvider upfrontIncomeFromFeeProvider;
-    private Option upfrontIncomeFromFeeValue;
-    private Select2SingleChoice<Option> upfrontIncomeFromFeeField;
-    private TextFeedbackPanel upfrontIncomeFromFeeFeedback;
+    protected SingleChoiceProvider upfrontIncomeFromFeeProvider;
+    protected Option upfrontIncomeFromFeeValue;
+    protected Select2SingleChoice<Option> upfrontIncomeFromFeeField;
+    protected TextFeedbackPanel upfrontIncomeFromFeeFeedback;
 
-    private SingleChoiceProvider upfrontIncomeFromPenaltiesProvider;
-    private Option upfrontIncomeFromPenaltiesValue;
-    private Select2SingleChoice<Option> upfrontIncomeFromPenaltiesField;
-    private TextFeedbackPanel upfrontIncomeFromPenaltiesFeedback;
+    protected SingleChoiceProvider upfrontIncomeFromPenaltiesProvider;
+    protected Option upfrontIncomeFromPenaltiesValue;
+    protected Select2SingleChoice<Option> upfrontIncomeFromPenaltiesField;
+    protected TextFeedbackPanel upfrontIncomeFromPenaltiesFeedback;
 
-    private SingleChoiceProvider upfrontIncomeFromRecoveryRepaymentProvider;
-    private Option upfrontIncomeFromRecoveryRepaymentValue;
-    private Select2SingleChoice<Option> upfrontIncomeFromRecoveryRepaymentField;
-    private TextFeedbackPanel upfrontIncomeFromRecoveryRepaymentFeedback;
+    protected SingleChoiceProvider upfrontIncomeFromRecoveryRepaymentProvider;
+    protected Option upfrontIncomeFromRecoveryRepaymentValue;
+    protected Select2SingleChoice<Option> upfrontIncomeFromRecoveryRepaymentField;
+    protected TextFeedbackPanel upfrontIncomeFromRecoveryRepaymentFeedback;
 
-    private SingleChoiceProvider upfrontLossesWrittenOffProvider;
-    private Option upfrontLossesWrittenOffValue;
-    private Select2SingleChoice<Option> upfrontLossesWrittenOffField;
-    private TextFeedbackPanel upfrontLossesWrittenOffFeedback;
+    protected SingleChoiceProvider upfrontLossesWrittenOffProvider;
+    protected Option upfrontLossesWrittenOffValue;
+    protected Select2SingleChoice<Option> upfrontLossesWrittenOffField;
+    protected TextFeedbackPanel upfrontLossesWrittenOffFeedback;
 
-    private SingleChoiceProvider upfrontOverPaymentLiabilityProvider;
-    private Option upfrontOverPaymentLiabilityValue;
-    private Select2SingleChoice<Option> upfrontOverPaymentLiabilityField;
-    private TextFeedbackPanel upfrontOverPaymentLiabilityFeedback;
+    protected SingleChoiceProvider upfrontOverPaymentLiabilityProvider;
+    protected Option upfrontOverPaymentLiabilityValue;
+    protected Select2SingleChoice<Option> upfrontOverPaymentLiabilityField;
+    protected TextFeedbackPanel upfrontOverPaymentLiabilityFeedback;
 
     // Advanced Accounting Rule
 
-    private WebMarkupContainer advancedAccountingRuleBlock;
-    private WebMarkupContainer advancedAccountingRuleContainer;
+    protected WebMarkupContainer advancedAccountingRuleBlock;
+    protected WebMarkupContainer advancedAccountingRuleContainer;
 
-    private WebMarkupContainer fundSourceContainer;
-    private List<Map<String, Object>> fundSourceValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> fundSourceTable;
-    private ListDataProvider fundSourceProvider;
-    private ModalWindow fundSourcePopup;
+    protected WebMarkupContainer fundSourceContainer;
+    protected List<Map<String, Object>> fundSourceValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> fundSourceTable;
+    protected ListDataProvider fundSourceProvider;
+    protected ModalWindow fundSourcePopup;
 
-    private WebMarkupContainer feeIncomeContainer;
-    private List<Map<String, Object>> feeIncomeValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> feeIncomeTable;
-    private ListDataProvider feeIncomeProvider;
-    private ModalWindow feeIncomePopup;
+    protected WebMarkupContainer feeIncomeContainer;
+    protected List<Map<String, Object>> feeIncomeValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> feeIncomeTable;
+    protected ListDataProvider feeIncomeProvider;
+    protected ModalWindow feeIncomePopup;
 
-    private WebMarkupContainer penaltyIncomeContainer;
-    private List<Map<String, Object>> penaltyIncomeValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> penaltyIncomeTable;
-    private ListDataProvider penaltyIncomeProvider;
-    private ModalWindow penaltyIncomePopup;
+    protected WebMarkupContainer penaltyIncomeContainer;
+    protected List<Map<String, Object>> penaltyIncomeValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> penaltyIncomeTable;
+    protected ListDataProvider penaltyIncomeProvider;
+    protected ModalWindow penaltyIncomePopup;
 
     // Charges
 
-    private List<Map<String, Object>> chargeValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> chargeTable;
-    private ListDataProvider chargeProvider;
-    private ModalWindow chargePopup;
+    protected List<Map<String, Object>> chargeValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> chargeTable;
+    protected ListDataProvider chargeProvider;
+    protected ModalWindow chargePopup;
 
     // Overdue Charges
 
-    private List<Map<String, Object>> overdueChargeValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> overdueChargeTable;
-    private ListDataProvider overdueChargeProvider;
-    private ModalWindow overdueChargePopup;
+    protected List<Map<String, Object>> overdueChargeValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> overdueChargeTable;
+    protected ListDataProvider overdueChargeProvider;
+    protected ModalWindow overdueChargePopup;
 
-    private ModalWindow currencyPopup;
+    protected ModalWindow currencyPopup;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -2599,6 +2599,7 @@ public class LoanCreatePage extends Page {
     }
 
     protected void initDetail() {
+        
         this.detailProductNameBlock = new WebMarkupContainer("detailProductNameBlock");
         this.detailProductNameBlock.setOutputMarkupId(true);
         this.form.add(this.detailProductNameBlock);
@@ -3517,7 +3518,7 @@ public class LoanCreatePage extends Page {
         target.add(this.chargeTable);
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         LoanBuilder builder = new LoanBuilder();
 
         // Detail

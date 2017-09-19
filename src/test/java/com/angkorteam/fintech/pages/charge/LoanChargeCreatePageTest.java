@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.charge;
 
 import java.util.Map;
 
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.model.PropertyModel;
 import org.junit.Assert;
 import org.junit.Before;
@@ -56,7 +57,7 @@ public class LoanChargeCreatePageTest {
         Assert.assertEquals(false, new PropertyModel<>(page, "feeFrequencyValue").getObject() == null ? false : new PropertyModel<>(page, "feeFrequencyValue").getObject());
         form.setValue("feeFrequencyBlock:feeFrequencyContainer:feeFrequencyField", true);
 
-        Select2SingleChoice<?> feeFrequencyField = this.wicket.getComponentFromLastRenderedPage("form:feeFrequencyBlock:feeFrequencyContainer:feeFrequencyField", Select2SingleChoice.class);
+        CheckBox feeFrequencyField = this.wicket.getComponentFromLastRenderedPage("form:feeFrequencyBlock:feeFrequencyContainer:feeFrequencyField", CheckBox.class);
         this.wicket.executeBehavior(feeFrequencyField);
 
         Assert.assertEquals(true, new PropertyModel<>(page, "feeFrequencyValue").getObject());
@@ -111,7 +112,7 @@ public class LoanChargeCreatePageTest {
         this.wicket.executeBehavior(chargeTimeField);
 
         form.setValue("feeFrequencyBlock:feeFrequencyContainer:feeFrequencyField", true);
-        Select2SingleChoice<?> feeFrequencyField = this.wicket.getComponentFromLastRenderedPage("form:feeFrequencyBlock:feeFrequencyContainer:feeFrequencyField", Select2SingleChoice.class);
+        CheckBox feeFrequencyField = this.wicket.getComponentFromLastRenderedPage("form:feeFrequencyBlock:feeFrequencyContainer:feeFrequencyField", CheckBox.class);
         this.wicket.executeBehavior(feeFrequencyField);
 
         form.setValue("feeFrequencyBlock:feeFrequencyContainer:feeFrequencyField", true);
