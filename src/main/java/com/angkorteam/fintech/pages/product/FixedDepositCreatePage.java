@@ -298,7 +298,7 @@ public class FixedDepositCreatePage extends Page {
 
     // Charges
 
-    private List<Map<String, Object>> chargeValue = Lists.newArrayList();
+    protected List<Map<String, Object>> chargeValue = Lists.newArrayList();
     private DataTable<Map<String, Object>, String> chargeTable;
     private ListDataProvider chargeProvider;
     private ModalWindow chargePopup;
@@ -817,6 +817,7 @@ public class FixedDepositCreatePage extends Page {
     }
 
     protected void chargePopupOnClose(String elementId, AjaxRequestTarget target) {
+        System.out.println("ppppppppppppppppppppppppppppppp");
         Map<String, Object> item = Maps.newHashMap();
         String chargeId = this.itemChargeValue.getId();
         for (Map<String, Object> temp : this.chargeValue) {

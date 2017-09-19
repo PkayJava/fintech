@@ -1,10 +1,13 @@
 package com.angkorteam.fintech.pages.product;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
+import org.apache.wicket.behavior.AbstractAjaxBehavior;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.util.tester.WicketTesterHelper;
 import org.junit.Assert;
 import org.junit.Before;
@@ -93,7 +96,7 @@ public class FixedDepositCreatePageTest {
         String detailShortNameValue = this.wicket.getStringGenerator().generate(4);
         String detailDescriptionValue = detailProductNameValue;
 
-        this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
 
         JUnitFormTester form = this.wicket.newFormTester("form");
 
@@ -108,9 +111,6 @@ public class FixedDepositCreatePageTest {
             Component chargeAddLink = this.wicket.getComponentFromLastRenderedPage("form:chargeAddLink");
             AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(chargeAddLink, "click");
             this.wicket.executeBehavior(behavior);
-            
-            // not sure popup on close is not call
-            // http://localhost:8080/wicket/bookmarkable/LoanCreatePage?7-1.1-chargePopup&_=1505748654786
         }
 
         {
@@ -118,8 +118,27 @@ public class FixedDepositCreatePageTest {
             JUnitFormTester popupForm = this.wicket.newFormTester("chargePopup:content:form");
             popupForm.setValue("chargeField", id);
             Component okayButton = this.wicket.getComponentFromLastRenderedPage("chargePopup:content:form:okayButton");
-            AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(okayButton, "click");
-            this.wicket.executeBehavior(behavior);
+            {
+                AjaxEventBehavior behavior = WicketTesterHelper.findAjaxEventBehavior(okayButton, "click");
+                this.wicket.executeBehavior(behavior);
+            }
+            {
+                Component chargePopup = this.wicket.getComponentFromLastRenderedPage("chargePopup");
+                List<? extends Behavior> behaviors = chargePopup.getBehaviors();
+                for (Behavior behavior : behaviors) {
+                    String clazzName = behavior.getClass().getName();
+                    if (clazzName.contains("WindowClosedBehavior")) {
+                        AbstractAjaxBehavior request = (AbstractAjaxBehavior) behavior;
+                        this.wicket.executeBehavior(request);
+                    }
+                }
+            }
+        }
+
+        if (page.chargeValue != null) {
+            for (Map<String, Object> charge : page.chargeValue) {
+                System.out.println(charge.get("uuid"));
+            }
         }
 
         // Detail
