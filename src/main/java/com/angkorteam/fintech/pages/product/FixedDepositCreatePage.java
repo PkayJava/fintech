@@ -662,7 +662,7 @@ public class FixedDepositCreatePage extends Page {
 
     protected ItemPanel advancedAccountingRulePenaltyIncomeChargeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel advancedAccountingRulePenaltyIncomeAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -707,12 +707,12 @@ public class FixedDepositCreatePage extends Page {
 
     protected ItemPanel advancedAccountingRuleFeeIncomeChargeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel advancedAccountingRuleFeeIncomeAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected void advancedAccountingRuleFeeIncomeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
@@ -756,12 +756,12 @@ public class FixedDepositCreatePage extends Page {
 
     protected ItemPanel advancedAccountingRuleFundSourcePaymentColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel advancedAccountingRuleFundSourceAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected boolean accountingFieldUpdate(AjaxRequestTarget target) {
@@ -854,43 +854,27 @@ public class FixedDepositCreatePage extends Page {
 
     protected ItemPanel chargeNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Number value = (Number) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value.doubleValue())));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeCollectColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected void chargeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
@@ -1024,56 +1008,32 @@ public class FixedDepositCreatePage extends Page {
 
     protected ItemPanel interestRateChartPeriodFromColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel interestRateChartPeriodToColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel interestRateChartAmountRangeFromColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel interestRateChartAmountRangeToColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel interestRateChartInterestColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel interestRateChartDescriptionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected void interestRateChartActionClick(String link, Map<String, Object> model, AjaxRequestTarget target) {
