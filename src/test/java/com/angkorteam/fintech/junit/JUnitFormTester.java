@@ -68,6 +68,22 @@ public class JUnitFormTester extends FormTester {
         return (JUnitFormTester) super.setValue(formComponentId, value);
     }
 
+    public JUnitFormTester setValue(String formComponentId, int value) {
+        return (JUnitFormTester) super.setValue(formComponentId, String.valueOf(value));
+    }
+
+    public JUnitFormTester setValue(String formComponentId, long value) {
+        return (JUnitFormTester) super.setValue(formComponentId, String.valueOf(value));
+    }
+
+    public JUnitFormTester setValue(String formComponentId, double value) {
+        return (JUnitFormTester) super.setValue(formComponentId, String.valueOf(value));
+    }
+
+    public JUnitFormTester setValue(String formComponentId, float value) {
+        return (JUnitFormTester) super.setValue(formComponentId, String.valueOf(value));
+    }
+
     public JUnitFormTester setValue(String formComponentId, Enum<?> value) {
         return (JUnitFormTester) super.setValue(formComponentId, value.name());
     }

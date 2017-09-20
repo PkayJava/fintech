@@ -131,7 +131,21 @@ public class FixedDepositCreatePageTest {
         String settingTaxGroupValue = this.wicket.getJdbcTemplate().queryForObject("SELECT id FROM m_tax_group LIMIT 1", String.class);
         String currencyCodeValue = "USD";
         Boolean settingWithholdTaxApplicableValue = true;
+        int currencyDecimalPlaceValue = 2;
+        int currencyMultipleOfFieldValue = 1;
         int accountingValue = 1;
+        double termDefaultDepositAmountValue = 1000.99;
+        double termMinimumDepositAmountValue = 1;
+        double termMaximumDepositAmountValue = 10000000000.99;
+        int settingLockInPeriodValue = 1;
+        int settingMinimumDepositTermValue = 12;
+        int settingInMultiplesOfValue = 1;
+        int settingMaximumDepositTermValue = 240;
+        double settingApplyPenalInterestValue = 1.99;
+        boolean settingForPreMatureClosureValue = true;
+        Date interestRateValidFromDateValue = DateTime.now().toDate();
+        Date interestRateValidEndDateValue = DateTime.now().plusMonths(12).toDate();
+
         {
             form = this.wicket.newFormTester("form");
             form.setValue("settingWithholdTaxApplicableBlock:settingWithholdTaxApplicableContainer:settingWithholdTaxApplicableField", settingWithholdTaxApplicableValue);
@@ -162,76 +176,83 @@ public class FixedDepositCreatePageTest {
 
         // Currency
         form.setValue("currencyCodeBlock:currencyCodeContainer:currencyCodeField", currencyCodeValue);
-        form.setValue("currencyDecimalPlaceBlock:currencyDecimalPlaceContainer:currencyDecimalPlaceField", "2");
-        form.setValue("currencyMultipleOfBlock:currencyMultipleOfContainer:currencyMultipleOfField", "1");
+        form.setValue("currencyDecimalPlaceBlock:currencyDecimalPlaceContainer:currencyDecimalPlaceField", currencyDecimalPlaceValue);
+        form.setValue("currencyMultipleOfBlock:currencyMultipleOfContainer:currencyMultipleOfField", currencyMultipleOfFieldValue);
 
         // Terms
-        form.setValue("termDefaultDepositAmountBlock:termDefaultDepositAmountContainer:termDefaultDepositAmountField", "1000.99");
-        form.setValue("termMinimumDepositAmountBlock:termMinimumDepositAmountContainer:termMinimumDepositAmountField", "1");
-        form.setValue("termMaximumDepositAmountBlock:termMaximumDepositAmountContainer:termMaximumDepositAmountField", "10000000000.99");
+        form.setValue("termDefaultDepositAmountBlock:termDefaultDepositAmountContainer:termDefaultDepositAmountField", termDefaultDepositAmountValue);
+        form.setValue("termMinimumDepositAmountBlock:termMinimumDepositAmountContainer:termMinimumDepositAmountField", termMinimumDepositAmountValue);
+        form.setValue("termMaximumDepositAmountBlock:termMaximumDepositAmountContainer:termMaximumDepositAmountField", termMaximumDepositAmountValue);
         form.setValue("termInterestCompoundingPeriodBlock:termInterestCompoundingPeriodContainer:termInterestCompoundingPeriodField", InterestCompoundingPeriod.Annually);
         form.setValue("termInterestPostingPeriodBlock:termInterestPostingPeriodContainer:termInterestPostingPeriodField", InterestPostingPeriod.Annually);
         form.setValue("termInterestCalculatedUsingBlock:termInterestCalculatedUsingContainer:termInterestCalculatedUsingField", InterestCalculatedUsing.AverageDailyBalance);
         form.setValue("termDayInYearBlock:termDayInYearContainer:termDayInYearField", DayInYear.D365);
 
         // Settings
-        form.setValue("settingLockInPeriodBlock:settingLockInPeriodContainer:settingLockInPeriodField", "1");
+        form.setValue("settingLockInPeriodBlock:settingLockInPeriodContainer:settingLockInPeriodField", settingLockInPeriodValue);
         form.setValue("settingLockInTypeBlock:settingLockInTypeContainer:settingLockInTypeField", LockInPeriod.Month);
-        form.setValue("settingMinimumDepositTermBlock:settingMinimumDepositTermContainer:settingMinimumDepositTermField", "12");
+        form.setValue("settingMinimumDepositTermBlock:settingMinimumDepositTermContainer:settingMinimumDepositTermField", settingMinimumDepositTermValue);
         form.setValue("settingMinimumDepositTypeBlock:settingMinimumDepositTypeContainer:settingMinimumDepositTypeField", LockInPeriod.Month);
-        form.setValue("settingInMultiplesOfBlock:settingInMultiplesOfContainer:settingInMultiplesOfField", "1");
+        form.setValue("settingInMultiplesOfBlock:settingInMultiplesOfContainer:settingInMultiplesOfField", settingInMultiplesOfValue);
         form.setValue("settingInMultiplesTypeBlock:settingInMultiplesTypeContainer:settingInMultiplesTypeField", LockInPeriod.Month);
-        form.setValue("settingMaximumDepositTermBlock:settingMaximumDepositTermContainer:settingMaximumDepositTermField", "240");
+        form.setValue("settingMaximumDepositTermBlock:settingMaximumDepositTermContainer:settingMaximumDepositTermField", settingMaximumDepositTermValue);
         form.setValue("settingMaximumDepositTypeBlock:settingMaximumDepositTypeContainer:settingMaximumDepositTypeField", LockInPeriod.Month);
-        form.setValue("settingApplyPenalInterestBlock:settingApplyPenalInterestContainer:settingApplyPenalInterestField", "1.99");
+        form.setValue("settingApplyPenalInterestBlock:settingApplyPenalInterestContainer:settingApplyPenalInterestField", settingApplyPenalInterestValue);
         form.setValue("settingApplyPenalOnBlock:settingApplyPenalOnContainer:settingApplyPenalOnField", ApplyPenalOn.WholeTerm);
         form.setValue("settingWithholdTaxApplicableBlock:settingWithholdTaxApplicableContainer:settingWithholdTaxApplicableField", settingWithholdTaxApplicableValue);
         form.setValue("settingTaxGroupBlock:settingTaxGroupContainer:settingTaxGroupField", settingTaxGroupValue);
-        form.setValue("settingForPreMatureClosureBlock:settingForPreMatureClosureContainer:settingForPreMatureClosureField", true);
+        form.setValue("settingForPreMatureClosureBlock:settingForPreMatureClosureContainer:settingForPreMatureClosureField", settingForPreMatureClosureValue);
 
         // Interest Rate Chart
 
-        Date fromDate = DateTime.now().toDate();
-        Date endDate = DateTime.now().plusMonths(12).toDate();
-        form.setValue("interestRateValidFromDateBlock:interestRateValidFromDateContainer:interestRateValidFromDateField", DateFormatUtils.format(fromDate, "dd/MM/yyyy"));
-        form.setValue("interestRateValidEndDateBlock:interestRateValidEndDateContainer:interestRateValidEndDateField", DateFormatUtils.format(endDate, "dd/MM/yyyy"));
+        form.setValue("interestRateValidFromDateBlock:interestRateValidFromDateContainer:interestRateValidFromDateField", DateFormatUtils.format(interestRateValidFromDateValue, "dd/MM/yyyy"));
+        form.setValue("interestRateValidEndDateBlock:interestRateValidEndDateContainer:interestRateValidEndDateField", DateFormatUtils.format(interestRateValidEndDateValue, "dd/MM/yyyy"));
         form.setValue("interestRatePrimaryGroupingByAmountBlock:interestRatePrimaryGroupingByAmountContainer:interestRatePrimaryGroupingByAmountField", true);
 
         {
+            Option periodType = new Option(LockInPeriod.Month.name(), LockInPeriod.Month.getDescription());
+            int periodFrom = 1;
+            int periodTo = 10;
+            int amountRangeFrom = 0;
+            double interest = 10.99;
             Map<String, Object> item = Maps.newHashMap();
-            item.put("periodType", new Option(LockInPeriod.Month.name(), LockInPeriod.Month.getDescription()));
-            item.put("periodFrom", 1);
-            item.put("periodTo", 10);
-            item.put("amountRangeFrom", 0);
-            // item.put("amountRangeTo", 500);
-            item.put("interest", 10.99d);
+            item.put("periodType", periodType);
+            item.put("periodFrom", periodFrom);
+            item.put("periodTo", periodTo);
+            item.put("amountRangeFrom", amountRangeFrom);
+            item.put("interest", interest);
             item.put("description", "JUNIT_" + this.wicket.getStringGenerator().generate(10));
             List<Map<String, Object>> interestRate = Lists.newArrayList();
+            int operand = 100;
             Map<String, Object> rateItem = Maps.newHashMap();
             rateItem.put("attribute", new Option(Attribute.Age.name(), Attribute.Age.getDescription()));
             rateItem.put("operator", new Option(Operator.GreaterThan.name(), Operator.GreaterThan.getDescription()));
-            rateItem.put("operand", "100");
+            rateItem.put("operand", operand);
             rateItem.put("operandType", new Option(OperandType.Fixed.name(), OperandType.Fixed.getDescription()));
-            rateItem.put("interest", 10.99d);
+            rateItem.put("interest", interest);
             interestRate.add(rateItem);
             item.put("interestRate", interestRate);
             page.interestRateChartValue.add(item);
         }
         {
+            Option periodType = new Option(LockInPeriod.Month.name(), LockInPeriod.Month.getDescription());
+            int periodFrom = 11;
+            int amountRangeFrom = 0;
+            double interest = 10.99;
             Map<String, Object> item = Maps.newHashMap();
-            item.put("periodType", new Option(LockInPeriod.Month.name(), LockInPeriod.Month.getDescription()));
-            item.put("periodFrom", 11);
-            item.put("amountRangeFrom", 0);
-            // item.put("amountRangeTo", 10000);
-            item.put("interest", 10.99d);
+            item.put("periodType", periodType);
+            item.put("periodFrom", periodFrom);
+            item.put("amountRangeFrom", amountRangeFrom);
+            item.put("interest", interest);
             item.put("description", "JUNIT_" + this.wicket.getStringGenerator().generate(10));
             List<Map<String, Object>> interestRate = Lists.newArrayList();
+            int operand = 100;
             Map<String, Object> rateItem = Maps.newHashMap();
             rateItem.put("attribute", new Option(Attribute.Age.name(), Attribute.Age.getDescription()));
             rateItem.put("operator", new Option(Operator.GreaterThan.name(), Operator.GreaterThan.getDescription()));
-            rateItem.put("operand", "100");
+            rateItem.put("operand", operand);
             rateItem.put("operandType", new Option(OperandType.Fixed.name(), OperandType.Fixed.getDescription()));
-            rateItem.put("interest", 10.99d);
+            rateItem.put("interest", interest);
             interestRate.add(rateItem);
             item.put("interestRate", interestRate);
             page.interestRateChartValue.add(item);
@@ -248,12 +269,19 @@ public class FixedDepositCreatePageTest {
         // Accounting
         form.select("accountingField", accountingValue);
 
-        form.setValue("cashBlock:cashContainer:cashSavingReferenceField", this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Asset.getLiteral()));
-        form.setValue("cashBlock:cashContainer:cashSavingControlField", this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Liability.getLiteral()));
-        form.setValue("cashBlock:cashContainer:cashSavingsTransfersInSuspenseField", this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Liability.getLiteral()));
-        form.setValue("cashBlock:cashContainer:cashInterestOnSavingsField", this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Expense.getLiteral()));
-        form.setValue("cashBlock:cashContainer:cashIncomeFromFeesField", this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Income.getLiteral()));
-        form.setValue("cashBlock:cashContainer:cashIncomeFromPenaltiesField", this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Income.getLiteral()));
+        String cashSavingReferenceValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Asset.getLiteral());
+        String cashSavingControlValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Liability.getLiteral());
+        String cashSavingsTransfersInSuspenseValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Liability.getLiteral());
+        String cashInterestOnSavingsValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Expense.getLiteral());
+        String cashIncomeFromFeesValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Income.getLiteral());
+        String cashIncomeFromPenaltiesValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Income.getLiteral());
+
+        form.setValue("cashBlock:cashContainer:cashSavingReferenceField", cashSavingReferenceValue);
+        form.setValue("cashBlock:cashContainer:cashSavingControlField", cashSavingControlValue);
+        form.setValue("cashBlock:cashContainer:cashSavingsTransfersInSuspenseField", cashSavingsTransfersInSuspenseValue);
+        form.setValue("cashBlock:cashContainer:cashInterestOnSavingsField", cashInterestOnSavingsValue);
+        form.setValue("cashBlock:cashContainer:cashIncomeFromFeesField", cashIncomeFromFeesValue);
+        form.setValue("cashBlock:cashContainer:cashIncomeFromPenaltiesField", cashIncomeFromPenaltiesValue);
 
         {
             String paymentId = this.wicket.getJdbcTemplate().queryForObject("SELECT id FROM m_payment_type LIMIT 1", String.class);
