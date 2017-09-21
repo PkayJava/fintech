@@ -155,6 +155,7 @@ public class LoanCreatePage extends Page {
     protected TextFeedbackPanel detailIncludeInCustomerLoanCounterFeedback;
 
     // Currency
+
     protected WebMarkupContainer currencyCodeBlock;
     protected WebMarkupContainer currencyCodeContainer;
     protected SingleChoiceProvider currencyCodeProvider;
@@ -278,6 +279,43 @@ public class LoanCreatePage extends Page {
     protected Select2SingleChoice<Option> termNominalInterestRateTypeField;
     protected TextFeedbackPanel termNominalInterestRateTypeFeedback;
 
+    protected WebMarkupContainer termFloatingInterestRateBlock;
+    protected WebMarkupContainer termFloatingInterestRateContainer;
+    protected SingleChoiceProvider termFloatingInterestRateProvider;
+    protected Option termFloatingInterestRateValue;
+    protected Select2SingleChoice<Option> termFloatingInterestRateField;
+    protected TextFeedbackPanel termFloatingInterestRateFeedback;
+
+    protected WebMarkupContainer termFloatingInterestDifferentialBlock;
+    protected WebMarkupContainer termFloatingInterestDifferentialContainer;
+    protected Double termFloatingInterestDifferentialValue;
+    protected TextField<Double> termFloatingInterestDifferentialField;
+    protected TextFeedbackPanel termFloatingInterestDifferentialFeedback;
+
+    protected WebMarkupContainer termFloatingInterestAllowedBlock;
+    protected WebMarkupContainer termFloatingInterestAllowedContainer;
+    protected Boolean termFloatingInterestAllowedValue;
+    protected CheckBox termFloatingInterestAllowedField;
+    protected TextFeedbackPanel termFloatingInterestAllowedFeedback;
+
+    protected WebMarkupContainer termFloatingInterestMinimumBlock;
+    protected WebMarkupContainer termFloatingInterestMinimumContainer;
+    protected Double termFloatingInterestMinimumValue;
+    protected TextField<Double> termFloatingInterestMinimumField;
+    protected TextFeedbackPanel termFloatingInterestMinimumFeedback;
+
+    protected WebMarkupContainer termFloatingInterestDefaultBlock;
+    protected WebMarkupContainer termFloatingInterestDefaultContainer;
+    protected Double termFloatingInterestDefaultValue;
+    protected TextField<Double> termFloatingInterestDefaultField;
+    protected TextFeedbackPanel termFloatingInterestDefaultFeedback;
+
+    protected WebMarkupContainer termFloatingInterestMaximumBlock;
+    protected WebMarkupContainer termFloatingInterestMaximumContainer;
+    protected Double termFloatingInterestMaximumValue;
+    protected TextField<Double> termFloatingInterestMaximumField;
+    protected TextFeedbackPanel termFloatingInterestMaximumFeedback;
+
     // Row 6
     protected WebMarkupContainer termNominalInterestRateByLoanCycleBlock;
     protected WebMarkupContainer termNominalInterestRateByLoanCycleContainer;
@@ -302,46 +340,9 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupContainer termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock;
     protected WebMarkupContainer termMinimumDayBetweenDisbursalAndFirstRepaymentDateContainer;
-    protected Double termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue;
-    protected TextField<Double> termMinimumDayBetweenDisbursalAndFirstRepaymentDateField;
+    protected Integer termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue;
+    protected TextField<Integer> termMinimumDayBetweenDisbursalAndFirstRepaymentDateField;
     protected TextFeedbackPanel termMinimumDayBetweenDisbursalAndFirstRepaymentDateFeedback;
-
-    protected WebMarkupContainer termFloatingInterestRateBlock;
-    protected WebMarkupContainer termFloatingInterestRateContainer;
-    protected SingleChoiceProvider termFloatingInterestRateProvider;
-    protected Option termFloatingInterestRateValue;
-    protected Select2SingleChoice<Option> termFloatingInterestRateField;
-    protected TextFeedbackPanel termFloatingInterestRateFeedback;
-
-    protected WebMarkupContainer termFloatingInterestMinimumBlock;
-    protected WebMarkupContainer termFloatingInterestMinimumContainer;
-    protected Double termFloatingInterestMinimumValue;
-    protected TextField<Double> termFloatingInterestMinimumField;
-    protected TextFeedbackPanel termFloatingInterestMinimumFeedback;
-
-    protected WebMarkupContainer termFloatingInterestDefaultBlock;
-    protected WebMarkupContainer termFloatingInterestDefaultContainer;
-    protected Double termFloatingInterestDefaultValue;
-    protected TextField<Double> termFloatingInterestDefaultField;
-    protected TextFeedbackPanel termFloatingInterestDefaultFeedback;
-
-    protected WebMarkupContainer termFloatingInterestMaximumBlock;
-    protected WebMarkupContainer termFloatingInterestMaximumContainer;
-    protected Double termFloatingInterestMaximumValue;
-    protected TextField<Double> termFloatingInterestMaximumField;
-    protected TextFeedbackPanel termFloatingInterestMaximumFeedback;
-
-    protected WebMarkupContainer termFloatingInterestDifferentialBlock;
-    protected WebMarkupContainer termFloatingInterestDifferentialContainer;
-    protected Double termFloatingInterestDifferentialValue;
-    protected TextField<Double> termFloatingInterestDifferentialField;
-    protected TextFeedbackPanel termFloatingInterestDifferentialFeedback;
-
-    protected WebMarkupContainer termFloatingInterestAllowedBlock;
-    protected WebMarkupContainer termFloatingInterestAllowedContainer;
-    protected Boolean termFloatingInterestAllowedValue;
-    protected CheckBox termFloatingInterestAllowedField;
-    protected TextFeedbackPanel termFloatingInterestAllowedFeedback;
 
     protected Option itemWhenValue;
     protected Integer itemLoanCycleValue;
@@ -354,6 +355,7 @@ public class LoanCreatePage extends Page {
     protected Option itemAccountValue;
 
     // Settings
+
     protected WebMarkupContainer settingAmortizationBlock;
     protected WebMarkupContainer settingAmortizationContainer;
     protected AmortizationProvider settingAmortizationProvider;
@@ -390,20 +392,20 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupContainer settingMoratoriumPrincipalBlock;
     protected WebMarkupContainer settingMoratoriumPrincipalContainer;
-    protected Double settingMoratoriumPrincipalValue;
-    protected TextField<Double> settingMoratoriumPrincipalField;
+    protected Integer settingMoratoriumPrincipalValue;
+    protected TextField<Integer> settingMoratoriumPrincipalField;
     protected TextFeedbackPanel settingMoratoriumPrincipalFeedback;
 
     protected WebMarkupContainer settingMoratoriumInterestBlock;
     protected WebMarkupContainer settingMoratoriumInterestContainer;
-    protected Double settingMoratoriumInterestValue;
-    protected TextField<Double> settingMoratoriumInterestField;
+    protected Integer settingMoratoriumInterestValue;
+    protected TextField<Integer> settingMoratoriumInterestField;
     protected TextFeedbackPanel settingMoratoriumInterestFeedback;
 
     protected WebMarkupContainer settingInterestFreePeriodBlock;
     protected WebMarkupContainer settingInterestFreePeriodContainer;
-    protected Double settingInterestFreePeriodValue;
-    protected TextField<Double> settingInterestFreePeriodField;
+    protected Integer settingInterestFreePeriodValue;
+    protected TextField<Integer> settingInterestFreePeriodField;
     protected TextFeedbackPanel settingInterestFreePeriodFeedback;
 
     protected WebMarkupContainer settingArrearsToleranceBlock;
@@ -434,14 +436,14 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupContainer settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock;
     protected WebMarkupContainer settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsContainer;
-    protected Double settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue;
-    protected TextField<Double> settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField;
+    protected Integer settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue;
+    protected TextField<Integer> settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField;
     protected TextFeedbackPanel settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback;
 
     protected WebMarkupContainer settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock;
     protected WebMarkupContainer settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaContainer;
-    protected Double settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue;
-    protected TextField<Double> settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField;
+    protected Integer settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue;
+    protected TextField<Integer> settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField;
     protected TextFeedbackPanel settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback;
 
     protected WebMarkupContainer settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock;
@@ -464,14 +466,14 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupContainer settingVariableInstallmentsMinimumBlock;
     protected WebMarkupContainer settingVariableInstallmentsMinimumContainer;
-    protected Double settingVariableInstallmentsMinimumValue;
-    protected TextField<Double> settingVariableInstallmentsMinimumField;
+    protected Integer settingVariableInstallmentsMinimumValue;
+    protected TextField<Integer> settingVariableInstallmentsMinimumField;
     protected TextFeedbackPanel settingVariableInstallmentsMinimumFeedback;
 
     protected WebMarkupContainer settingVariableInstallmentsMaximumBlock;
     protected WebMarkupContainer settingVariableInstallmentsMaximumContainer;
-    protected Double settingVariableInstallmentsMaximumValue;
-    protected TextField<Double> settingVariableInstallmentsMaximumField;
+    protected Integer settingVariableInstallmentsMaximumValue;
+    protected TextField<Integer> settingVariableInstallmentsMaximumField;
     protected TextFeedbackPanel settingVariableInstallmentsMaximumFeedback;
 
     protected WebMarkupContainer settingAllowedToBeUsedForProvidingTopupLoansBlock;
@@ -532,8 +534,8 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupContainer interestRecalculationCompoundingIntervalBlock;
     protected WebMarkupContainer interestRecalculationCompoundingIntervalContainer;
-    protected Double interestRecalculationCompoundingIntervalValue;
-    protected TextField<Double> interestRecalculationCompoundingIntervalField;
+    protected Integer interestRecalculationCompoundingIntervalValue;
+    protected TextField<Integer> interestRecalculationCompoundingIntervalField;
     protected TextFeedbackPanel interestRecalculationCompoundingIntervalFeedback;
 
     protected WebMarkupContainer interestRecalculationRecalculateBlock;
@@ -559,8 +561,8 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupContainer interestRecalculationRecalculateIntervalBlock;
     protected WebMarkupContainer interestRecalculationRecalculateIntervalContainer;
-    protected Double interestRecalculationRecalculateIntervalValue;
-    protected TextField<Double> interestRecalculationRecalculateIntervalField;
+    protected Integer interestRecalculationRecalculateIntervalValue;
+    protected TextField<Integer> interestRecalculationRecalculateIntervalField;
     protected TextFeedbackPanel interestRecalculationRecalculateIntervalFeedback;
 
     protected WebMarkupContainer interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock;
@@ -605,8 +607,8 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupContainer loanTrancheDetailMaximumTrancheCountBlock;
     protected WebMarkupContainer loanTrancheDetailMaximumTrancheCountContainer;
-    protected Double loanTrancheDetailMaximumTrancheCountValue;
-    protected TextField<Double> loanTrancheDetailMaximumTrancheCountField;
+    protected Integer loanTrancheDetailMaximumTrancheCountValue;
+    protected TextField<Integer> loanTrancheDetailMaximumTrancheCountField;
     protected TextFeedbackPanel loanTrancheDetailMaximumTrancheCountFeedback;
 
     protected WebMarkupContainer loanTrancheDetailMaximumAllowedOutstandingBalanceBlock;
@@ -2599,7 +2601,7 @@ public class LoanCreatePage extends Page {
     }
 
     protected void initDetail() {
-        
+
         this.detailProductNameBlock = new WebMarkupContainer("detailProductNameBlock");
         this.detailProductNameBlock.setOutputMarkupId(true);
         this.form.add(this.detailProductNameBlock);
@@ -3576,7 +3578,7 @@ public class LoanCreatePage extends Page {
             if (this.termPrincipalByLoanCycleValue != null) {
                 for (Map<String, Object> item : this.termPrincipalByLoanCycleValue) {
                     WhenType valueConditionType = (WhenType) item.get("valueConditionType");
-                    Double borrowerCycleNumber = (Double) item.get("cycle");
+                    Integer borrowerCycleNumber = (Integer) item.get("cycle");
                     Double minValue = (Double) item.get("minimum");
                     Double defaultValue = (Double) item.get("default");
                     Double maxValue = (Double) item.get("maximum");
@@ -3586,7 +3588,7 @@ public class LoanCreatePage extends Page {
             if (this.termNumberOfRepaymentByLoanCycleValue != null) {
                 for (Map<String, Object> item : this.termNumberOfRepaymentByLoanCycleValue) {
                     WhenType valueConditionType = (WhenType) item.get("valueConditionType");
-                    Double borrowerCycleNumber = (Double) item.get("cycle");
+                    Integer borrowerCycleNumber = (Integer) item.get("cycle");
                     Double minValue = (Double) item.get("minimum");
                     Double defaultValue = (Double) item.get("default");
                     Double maxValue = (Double) item.get("maximum");
@@ -3596,7 +3598,7 @@ public class LoanCreatePage extends Page {
             if (this.termNominalInterestRateByLoanCycleValue != null) {
                 for (Map<String, Object> item : this.termNominalInterestRateByLoanCycleValue) {
                     WhenType valueConditionType = (WhenType) item.get("valueConditionType");
-                    Double borrowerCycleNumber = (Double) item.get("cycle");
+                    Integer borrowerCycleNumber = (Integer) item.get("cycle");
                     Double minValue = (Double) item.get("minimum");
                     Double defaultValue = (Double) item.get("default");
                     Double maxValue = (Double) item.get("maximum");

@@ -290,11 +290,10 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private Double minimumDaysBetweenDisbursalAndFirstRepayment;
+    private Integer minimumDaysBetweenDisbursalAndFirstRepayment;
     private boolean hasMinimumDaysBetweenDisbursalAndFirstRepayment;
 
-    public LoanBuilder withMinimumDaysBetweenDisbursalAndFirstRepayment(
-            Double minimumDaysBetweenDisbursalAndFirstRepayment) {
+    public LoanBuilder withMinimumDaysBetweenDisbursalAndFirstRepayment(Integer minimumDaysBetweenDisbursalAndFirstRepayment) {
         this.minimumDaysBetweenDisbursalAndFirstRepayment = minimumDaysBetweenDisbursalAndFirstRepayment;
         this.hasMinimumDaysBetweenDisbursalAndFirstRepayment = true;
         return this;
@@ -375,8 +374,7 @@ public class LoanBuilder implements Serializable {
     private List<Map<String, Object>> principalVariationsForBorrowerCycle = Lists.newArrayList();
     private boolean hasPrincipalVariationsForBorrowerCycle;
 
-    public LoanBuilder withPrincipalVariationsForBorrowerCycle(WhenType valueConditionType, Double borrowerCycleNumber,
-            Double minValue, Double defaultValue, Double maxValue) {
+    public LoanBuilder withPrincipalVariationsForBorrowerCycle(WhenType valueConditionType, Integer borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
         Map<String, Object> cycle = Maps.newHashMap();
         cycle.put("valueConditionType", valueConditionType.getLiteral());
         cycle.put("borrowerCycleNumber", borrowerCycleNumber);
@@ -391,8 +389,7 @@ public class LoanBuilder implements Serializable {
     private List<Map<String, Object>> numberOfRepaymentVariationsForBorrowerCycle = Lists.newArrayList();
     private boolean hasNumberOfRepaymentVariationsForBorrowerCycle;
 
-    public LoanBuilder withNumberOfRepaymentVariationsForBorrowerCycle(WhenType valueConditionType,
-            Double borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
+    public LoanBuilder withNumberOfRepaymentVariationsForBorrowerCycle(WhenType valueConditionType, Integer borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
         Map<String, Object> cycle = Maps.newHashMap();
         cycle.put("valueConditionType", valueConditionType.getLiteral());
         cycle.put("borrowerCycleNumber", borrowerCycleNumber);
@@ -407,8 +404,7 @@ public class LoanBuilder implements Serializable {
     private List<Map<String, Object>> interestRateVariationsForBorrowerCycle = Lists.newArrayList();
     private boolean hasInterestRateVariationsForBorrowerCycle;
 
-    public LoanBuilder withInterestRateVariationsForBorrowerCycle(WhenType valueConditionType,
-            Double borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
+    public LoanBuilder withInterestRateVariationsForBorrowerCycle(WhenType valueConditionType, Integer borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
         Map<String, Object> cycle = Maps.newHashMap();
         cycle.put("valueConditionType", valueConditionType.getLiteral());
         cycle.put("borrowerCycleNumber", borrowerCycleNumber);
@@ -465,28 +461,28 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private Double graceOnPrincipalPayment;
+    private Integer graceOnPrincipalPayment;
     private boolean hasGraceOnPrincipalPayment;
 
-    public LoanBuilder withGraceOnPrincipalPayment(Double graceOnPrincipalPayment) {
+    public LoanBuilder withGraceOnPrincipalPayment(Integer graceOnPrincipalPayment) {
         this.graceOnPrincipalPayment = graceOnPrincipalPayment;
         this.hasGraceOnPrincipalPayment = true;
         return this;
     }
 
-    private Double graceOnInterestPayment;
+    private Integer graceOnInterestPayment;
     private boolean hasGraceOnInterestPayment;
 
-    public LoanBuilder withGraceOnInterestPayment(Double graceOnInterestPayment) {
+    public LoanBuilder withGraceOnInterestPayment(Integer graceOnInterestPayment) {
         this.graceOnInterestPayment = graceOnInterestPayment;
         this.hasGraceOnInterestPayment = true;
         return this;
     }
 
-    private Double graceOnInterestCharged;
+    private Integer graceOnInterestCharged;
     private boolean hasGraceOnInterestCharged;
 
-    public LoanBuilder withGraceOnInterestCharged(Double graceOnInterestCharged) {
+    public LoanBuilder withGraceOnInterestCharged(Integer graceOnInterestCharged) {
         this.graceOnInterestCharged = graceOnInterestCharged;
         this.hasGraceOnInterestCharged = true;
         return this;
@@ -510,19 +506,19 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private Double graceOnArrearsAgeing;
+    private Integer graceOnArrearsAgeing;
     private boolean hasGraceOnArrearsAgeing;
 
-    public LoanBuilder withGraceOnArrearsAgeing(Double graceOnArrearsAgeing) {
+    public LoanBuilder withGraceOnArrearsAgeing(Integer graceOnArrearsAgeing) {
         this.graceOnArrearsAgeing = graceOnArrearsAgeing;
         this.hasGraceOnArrearsAgeing = true;
         return this;
     }
 
-    private Double overdueDaysForNPA;
+    private Integer overdueDaysForNPA;
     private boolean hasOverdueDaysForNPA;
 
-    public LoanBuilder withOverdueDaysForNPA(Double overdueDaysForNPA) {
+    public LoanBuilder withOverdueDaysForNPA(Integer overdueDaysForNPA) {
         this.overdueDaysForNPA = overdueDaysForNPA;
         this.hasOverdueDaysForNPA = true;
         return this;
@@ -537,19 +533,19 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private Double minimumGap;
+    private Integer minimumGap;
     private boolean hasMinimumGap;
 
-    public LoanBuilder withMinimumGap(Double minimumGap) {
+    public LoanBuilder withMinimumGap(Integer minimumGap) {
         this.minimumGap = minimumGap;
         this.hasMinimumGap = true;
         return this;
     }
 
-    private Double maximumGap;
+    private Integer maximumGap;
     private boolean hasMaximumGap;
 
-    public LoanBuilder withMaximumGap(Double maximumGap) {
+    public LoanBuilder withMaximumGap(Integer maximumGap) {
         this.maximumGap = maximumGap;
         this.hasMaximumGap = true;
         return this;
@@ -558,8 +554,7 @@ public class LoanBuilder implements Serializable {
     private boolean accountMovesOutOfNPAOnlyOnArrearsCompletion;
     private boolean hasAccountMovesOutOfNPAOnlyOnArrearsCompletion;
 
-    public LoanBuilder withAccountMovesOutOfNPAOnlyOnArrearsCompletion(
-            boolean accountMovesOutOfNPAOnlyOnArrearsCompletion) {
+    public LoanBuilder withAccountMovesOutOfNPAOnlyOnArrearsCompletion(boolean accountMovesOutOfNPAOnlyOnArrearsCompletion) {
         this.accountMovesOutOfNPAOnlyOnArrearsCompletion = accountMovesOutOfNPAOnlyOnArrearsCompletion;
         this.hasAccountMovesOutOfNPAOnlyOnArrearsCompletion = true;
         return this;
@@ -586,8 +581,7 @@ public class LoanBuilder implements Serializable {
     private ClosureInterestCalculationRule preClosureInterestCalculationStrategy;
     private boolean hasPreClosureInterestCalculationStrategy;
 
-    public LoanBuilder withPreClosureInterestCalculationStrategy(
-            ClosureInterestCalculationRule preClosureInterestCalculationStrategy) {
+    public LoanBuilder withPreClosureInterestCalculationStrategy(ClosureInterestCalculationRule preClosureInterestCalculationStrategy) {
         this.preClosureInterestCalculationStrategy = preClosureInterestCalculationStrategy;
         this.hasPreClosureInterestCalculationStrategy = true;
         return this;
@@ -605,8 +599,7 @@ public class LoanBuilder implements Serializable {
     private InterestRecalculationCompound interestRecalculationCompoundingMethod;
     private boolean hasInterestRecalculationCompoundingMethod;
 
-    public LoanBuilder withInterestRecalculationCompoundingMethod(
-            InterestRecalculationCompound interestRecalculationCompoundingMethod) {
+    public LoanBuilder withInterestRecalculationCompoundingMethod(InterestRecalculationCompound interestRecalculationCompoundingMethod) {
         this.interestRecalculationCompoundingMethod = interestRecalculationCompoundingMethod;
         this.hasInterestRecalculationCompoundingMethod = true;
         return this;
@@ -621,10 +614,10 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private Double recalculationCompoundingFrequencyInterval;
+    private Integer recalculationCompoundingFrequencyInterval;
     private boolean hasRecalculationCompoundingFrequencyInterval;
 
-    public LoanBuilder withRecalculationCompoundingFrequencyInterval(Double recalculationCompoundingFrequencyInterval) {
+    public LoanBuilder withRecalculationCompoundingFrequencyInterval(Integer recalculationCompoundingFrequencyInterval) {
         this.recalculationCompoundingFrequencyInterval = recalculationCompoundingFrequencyInterval;
         this.hasRecalculationCompoundingFrequencyInterval = true;
         return this;
@@ -633,8 +626,7 @@ public class LoanBuilder implements Serializable {
     private FrequencyType recalculationCompoundingFrequencyNthDayType;
     private boolean hasRecalculationCompoundingFrequencyNthDayType;
 
-    public LoanBuilder withRecalculationCompoundingFrequencyNthDayType(
-            FrequencyType recalculationCompoundingFrequencyNthDayType) {
+    public LoanBuilder withRecalculationCompoundingFrequencyNthDayType(FrequencyType recalculationCompoundingFrequencyNthDayType) {
         this.recalculationCompoundingFrequencyNthDayType = recalculationCompoundingFrequencyNthDayType;
         this.hasRecalculationCompoundingFrequencyNthDayType = true;
         return this;
@@ -643,8 +635,7 @@ public class LoanBuilder implements Serializable {
     private FrequencyDay recalculationCompoundingFrequencyDayOfWeekType;
     private boolean hasRecalculationCompoundingFrequencyDayOfWeekType;
 
-    public LoanBuilder withRecalculationCompoundingFrequencyDayOfWeekType(
-            FrequencyDay recalculationCompoundingFrequencyDayOfWeekType) {
+    public LoanBuilder withRecalculationCompoundingFrequencyDayOfWeekType(FrequencyDay recalculationCompoundingFrequencyDayOfWeekType) {
         this.recalculationCompoundingFrequencyDayOfWeekType = recalculationCompoundingFrequencyDayOfWeekType;
         this.hasRecalculationCompoundingFrequencyDayOfWeekType = true;
         return this;
@@ -659,10 +650,10 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private Double recalculationRestFrequencyInterval;
+    private Integer recalculationRestFrequencyInterval;
     private boolean hasRecalculationRestFrequencyInterval;
 
-    public LoanBuilder withRecalculationRestFrequencyInterval(Double recalculationRestFrequencyInterval) {
+    public LoanBuilder withRecalculationRestFrequencyInterval(Integer recalculationRestFrequencyInterval) {
         this.recalculationRestFrequencyInterval = recalculationRestFrequencyInterval;
         this.hasRecalculationRestFrequencyInterval = true;
         return this;
@@ -671,8 +662,7 @@ public class LoanBuilder implements Serializable {
     private FrequencyDay recalculationRestFrequencyDayOfWeekType;
     private boolean hasRecalculationRestFrequencyDayOfWeekType;
 
-    public LoanBuilder withRecalculationRestFrequencyDayOfWeekType(
-            FrequencyDay recalculationRestFrequencyDayOfWeekType) {
+    public LoanBuilder withRecalculationRestFrequencyDayOfWeekType(FrequencyDay recalculationRestFrequencyDayOfWeekType) {
         this.recalculationRestFrequencyDayOfWeekType = recalculationRestFrequencyDayOfWeekType;
         this.hasRecalculationRestFrequencyDayOfWeekType = true;
         return this;
@@ -741,10 +731,10 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private Double maxTrancheCount;
+    private Integer maxTrancheCount;
     private boolean hasMaxTrancheCount;
 
-    public LoanBuilder withMaxTrancheCount(Double maxTrancheCount) {
+    public LoanBuilder withMaxTrancheCount(Integer maxTrancheCount) {   
         this.maxTrancheCount = maxTrancheCount;
         this.hasMaxTrancheCount = true;
         return this;
@@ -1024,8 +1014,7 @@ public class LoanBuilder implements Serializable {
 
         if (this.hasRecalculationRestFrequencyType) {
             if (this.recalculationRestFrequencyType != null) {
-                object.getObject().put("recalculationRestFrequencyType",
-                        this.recalculationRestFrequencyType.getLiteral());
+                object.getObject().put("recalculationRestFrequencyType", this.recalculationRestFrequencyType.getLiteral());
             } else {
                 object.getObject().put("recalculationRestFrequencyType", (String) null);
             }
@@ -1033,8 +1022,7 @@ public class LoanBuilder implements Serializable {
 
         if (this.hasRecalculationRestFrequencyNthDayType) {
             if (this.recalculationRestFrequencyNthDayType != null) {
-                object.getObject().put("recalculationRestFrequencyNthDayType",
-                        this.recalculationRestFrequencyNthDayType.getLiteral());
+                object.getObject().put("recalculationRestFrequencyNthDayType", this.recalculationRestFrequencyNthDayType.getLiteral());
             } else {
                 object.getObject().put("recalculationRestFrequencyNthDayType", (String) null);
             }
@@ -1042,8 +1030,7 @@ public class LoanBuilder implements Serializable {
 
         if (this.hasRecalculationRestFrequencyDayOfWeekType) {
             if (this.recalculationRestFrequencyDayOfWeekType != null) {
-                object.getObject().put("recalculationRestFrequencyDayOfWeekType",
-                        this.recalculationRestFrequencyDayOfWeekType.getLiteral());
+                object.getObject().put("recalculationRestFrequencyDayOfWeekType", this.recalculationRestFrequencyDayOfWeekType.getLiteral());
             } else {
                 object.getObject().put("recalculationRestFrequencyDayOfWeekType", (String) null);
             }
@@ -1059,8 +1046,7 @@ public class LoanBuilder implements Serializable {
 
         if (this.hasRecalculationCompoundingFrequencyDayOfWeekType) {
             if (this.recalculationCompoundingFrequencyDayOfWeekType != null) {
-                object.getObject().put("recalculationCompoundingFrequencyDayOfWeekType",
-                        this.recalculationCompoundingFrequencyDayOfWeekType.getLiteral());
+                object.getObject().put("recalculationCompoundingFrequencyDayOfWeekType", this.recalculationCompoundingFrequencyDayOfWeekType.getLiteral());
             } else {
                 object.getObject().put("recalculationCompoundingFrequencyDayOfWeekType", (String) null);
             }
@@ -1068,22 +1054,19 @@ public class LoanBuilder implements Serializable {
 
         if (this.hasRecalculationCompoundingFrequencyNthDayType) {
             if (this.recalculationCompoundingFrequencyNthDayType != null) {
-                object.getObject().put("recalculationCompoundingFrequencyNthDayType",
-                        this.recalculationCompoundingFrequencyNthDayType.getLiteral());
+                object.getObject().put("recalculationCompoundingFrequencyNthDayType", this.recalculationCompoundingFrequencyNthDayType.getLiteral());
             } else {
                 object.getObject().put("recalculationCompoundingFrequencyNthDayType", (String) null);
             }
         }
 
         if (this.hasRecalculationCompoundingFrequencyInterval) {
-            object.getObject().put("recalculationCompoundingFrequencyInterval",
-                    this.recalculationCompoundingFrequencyInterval);
+            object.getObject().put("recalculationCompoundingFrequencyInterval", this.recalculationCompoundingFrequencyInterval);
         }
 
         if (this.hasRecalculationCompoundingFrequencyType) {
             if (this.recalculationCompoundingFrequencyType != null) {
-                object.getObject().put("recalculationCompoundingFrequencyType",
-                        this.recalculationCompoundingFrequencyType.getLiteral());
+                object.getObject().put("recalculationCompoundingFrequencyType", this.recalculationCompoundingFrequencyType.getLiteral());
             } else {
                 object.getObject().put("recalculationCompoundingFrequencyType", (String) null);
             }
@@ -1091,8 +1074,7 @@ public class LoanBuilder implements Serializable {
 
         if (this.hasInterestRecalculationCompoundingMethod) {
             if (this.interestRecalculationCompoundingMethod != null) {
-                object.getObject().put("interestRecalculationCompoundingMethod",
-                        this.interestRecalculationCompoundingMethod.getLiteral());
+                object.getObject().put("interestRecalculationCompoundingMethod", this.interestRecalculationCompoundingMethod.getLiteral());
             } else {
                 object.getObject().put("interestRecalculationCompoundingMethod", (String) null);
             }
@@ -1108,8 +1090,7 @@ public class LoanBuilder implements Serializable {
 
         if (this.hasPreClosureInterestCalculationStrategy) {
             if (this.preClosureInterestCalculationStrategy != null) {
-                object.getObject().put("preClosureInterestCalculationStrategy",
-                        this.preClosureInterestCalculationStrategy.getLiteral());
+                object.getObject().put("preClosureInterestCalculationStrategy", this.preClosureInterestCalculationStrategy.getLiteral());
             } else {
                 object.getObject().put("preClosureInterestCalculationStrategy", (String) null);
             }
@@ -1124,8 +1105,7 @@ public class LoanBuilder implements Serializable {
         }
 
         if (this.hasAccountMovesOutOfNPAOnlyOnArrearsCompletion) {
-            object.getObject().put("accountMovesOutOfNPAOnlyOnArrearsCompletion",
-                    this.accountMovesOutOfNPAOnlyOnArrearsCompletion);
+            object.getObject().put("accountMovesOutOfNPAOnlyOnArrearsCompletion", this.accountMovesOutOfNPAOnlyOnArrearsCompletion);
         }
 
         if (this.hasMaximumGap) {
@@ -1170,8 +1150,7 @@ public class LoanBuilder implements Serializable {
 
         if (this.hasInterestCalculationPeriodType) {
             if (this.interestCalculationPeriodType != null) {
-                object.getObject().put("interestCalculationPeriodType",
-                        this.interestCalculationPeriodType.getLiteral());
+                object.getObject().put("interestCalculationPeriodType", this.interestCalculationPeriodType.getLiteral());
             } else {
                 object.getObject().put("interestCalculationPeriodType", (String) null);
             }
@@ -1198,13 +1177,11 @@ public class LoanBuilder implements Serializable {
         }
 
         if (this.hasInterestRateVariationsForBorrowerCycle) {
-            object.getObject().put("interestRateVariationsForBorrowerCycle",
-                    this.interestRateVariationsForBorrowerCycle);
+            object.getObject().put("interestRateVariationsForBorrowerCycle", this.interestRateVariationsForBorrowerCycle);
         }
 
         if (this.hasNumberOfRepaymentVariationsForBorrowerCycle) {
-            object.getObject().put("numberOfRepaymentVariationsForBorrowerCycle",
-                    this.numberOfRepaymentVariationsForBorrowerCycle);
+            object.getObject().put("numberOfRepaymentVariationsForBorrowerCycle", this.numberOfRepaymentVariationsForBorrowerCycle);
         }
 
         if (this.hasPrincipalVariationsForBorrowerCycle) {
@@ -1232,8 +1209,7 @@ public class LoanBuilder implements Serializable {
         }
 
         if (this.hasFloatingInterestRateCalculationAllowed) {
-            object.getObject().put("isFloatingInterestRateCalculationAllowed",
-                    this.floatingInterestRateCalculationAllowed);
+            object.getObject().put("isFloatingInterestRateCalculationAllowed", this.floatingInterestRateCalculationAllowed);
         }
 
         if (this.hasLinkedToFloatingInterestRates) {
@@ -1241,8 +1217,7 @@ public class LoanBuilder implements Serializable {
         }
 
         if (this.hasMinimumDaysBetweenDisbursalAndFirstRepayment) {
-            object.getObject().put("minimumDaysBetweenDisbursalAndFirstRepayment",
-                    this.minimumDaysBetweenDisbursalAndFirstRepayment);
+            object.getObject().put("minimumDaysBetweenDisbursalAndFirstRepayment", this.minimumDaysBetweenDisbursalAndFirstRepayment);
         }
 
         if (this.hasInterestRateFrequencyType) {
@@ -1363,8 +1338,7 @@ public class LoanBuilder implements Serializable {
 
         if (this.hasTransactionProcessingStrategyId) {
             if (this.transactionProcessingStrategyId != null) {
-                object.getObject().put("transactionProcessingStrategyId",
-                        this.transactionProcessingStrategyId.getLiteral());
+                object.getObject().put("transactionProcessingStrategyId", this.transactionProcessingStrategyId.getLiteral());
             } else {
                 object.getObject().put("transactionProcessingStrategyId", (String) null);
             }
@@ -1385,7 +1359,7 @@ public class LoanBuilder implements Serializable {
         if (this.hasDigitsAfterDecimal) {
             object.getObject().put("digitsAfterDecimal", this.digitsAfterDecimal);
         }
-        
+
         if (this.hasRepaymentEvery) {
             object.getObject().put("repaymentEvery", this.repaymentEvery);
         }
