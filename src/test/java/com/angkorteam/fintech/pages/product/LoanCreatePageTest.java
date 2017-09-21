@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.product;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -14,6 +15,7 @@ import org.junit.Test;
 
 import com.angkorteam.fintech.dto.AccountType;
 import com.angkorteam.fintech.dto.AccountUsage;
+import com.angkorteam.fintech.dto.ChargeType;
 import com.angkorteam.fintech.dto.loan.AdvancePaymentsAdjustmentType;
 import com.angkorteam.fintech.dto.loan.Amortization;
 import com.angkorteam.fintech.dto.loan.ClosureInterestCalculationRule;
@@ -37,6 +39,7 @@ import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.google.common.collect.Maps;
 
 public class LoanCreatePageTest {
 
@@ -84,7 +87,7 @@ public class LoanCreatePageTest {
         int termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue = 12;
 
         Amortization settingAmortizationValue = Amortization.Installment;
-        InterestMethod settingInterestMethodValue = InterestMethod.Flat;
+        InterestMethod settingInterestMethodValue = InterestMethod.DecliningBalance;
         InterestCalculationPeriod settingInterestCalculationPeriodValue = InterestCalculationPeriod.SameAsPayment;
         boolean settingCalculateInterestForExactDaysInPartialPeriodValue = true;
         RepaymentStrategy settingRepaymentStrategyValue = RepaymentStrategy.Overdue;
@@ -111,15 +114,15 @@ public class LoanCreatePageTest {
         Frequency interestRecalculationCompoundingValue = Frequency.Monthly;
         FrequencyType interestRecalculationCompoundingTypeValue = FrequencyType.First;
         FrequencyDay interestRecalculationCompoundingDayValue = FrequencyDay.Monday;
-        int interestRecalculationCompoundingIntervalValue = 21;
+        int interestRecalculationCompoundingIntervalValue = 1;
         Frequency interestRecalculationRecalculateValue = Frequency.Monthly;
         FrequencyType interestRecalculationRecalculateTypeValue = FrequencyType.First;
         FrequencyDay interestRecalculationRecalculateDayValue = FrequencyDay.Monday;
-        int interestRecalculationRecalculateIntervalValue = 23;
+        int interestRecalculationRecalculateIntervalValue = 1;
         boolean interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue = true;
 
         boolean guaranteeRequirementPlaceGuaranteeFundsOnHoldValue = true;
-        double guaranteeRequirementMandatoryGuaranteeValue = 24.99;
+        double guaranteeRequirementMandatoryGuaranteeValue = 100.99;
         double guaranteeRequirementMinimumGuaranteeValue = 25.99;
         double guaranteeRequirementMinimumGuaranteeFromGuarantorValue = 26.99;
 
@@ -147,6 +150,9 @@ public class LoanCreatePageTest {
         String cashLossesWrittenOffValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Expense.getLiteral());
         String cashOverPaymentLiabilityValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Liability.getLiteral());
 
+        String chargeValue = this.wicket.getJdbcTemplate().queryForObject("select id from m_charge where currency_code = ? and charge_applies_to_enum = ? and is_penalty = ? and is_active = 1 limit 1", String.class, currencyCodeValue, ChargeType.Loan.getLiteral(), 0);
+        String overdueChargeValue = this.wicket.getJdbcTemplate().queryForObject("select id from m_charge where currency_code = ? and charge_applies_to_enum = ? and is_penalty = ? and is_active = 1 limit 1", String.class, currencyCodeValue, ChargeType.Loan.getLiteral(), 1);
+
         int accountingValue = 1;
 
         LoanCreatePage page = this.wicket.startPage(LoanCreatePage.class);
@@ -166,56 +172,139 @@ public class LoanCreatePageTest {
             this.wicket.executeBehavior(currencyCodeField);
         }
         {
-            AjaxLink<?> termPrincipalByLoanCycleAddLink = this.wicket.getComponentFromLastRenderedPage("form:termPrincipalByLoanCycleBlock:termPrincipalByLoanCycleContainer:termPrincipalByLoanCycleAddLink", AjaxLink.class);
-            form = this.wicket.newFormTester("form");
-            this.wicket.executeAjaxLink(termPrincipalByLoanCycleAddLink);
+            AjaxLink<?> chargeAddLink = this.wicket.getComponentFromLastRenderedPage("form:chargeAddLink", AjaxLink.class);
+            this.wicket.executeAjaxLink(chargeAddLink);
 
-            JUnitFormTester popupForm = this.wicket.newFormTester("termPrincipalByLoanCyclePopup:content:form");
-            popupForm.setValue("whenField", WhenType.GreaterThen);
-            popupForm.setValue("loanCycleField", (int) 12);
-            popupForm.setValue("minimumField", (double) 0.99);
-            popupForm.setValue("defaultField", (double) 100.99);
-            popupForm.setValue("maximumField", (double) 200.99);
-            AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("termPrincipalByLoanCyclePopup:content:form:okayButton", AjaxButton.class);
+            JUnitFormTester popupForm = this.wicket.newFormTester("chargePopup:content:form");
+            popupForm.setValue("chargeField", chargeValue);
+
+            AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("chargePopup:content:form:okayButton", AjaxButton.class);
             this.wicket.executeAjaxButton(okayButton);
 
-            ModalWindow termPrincipalByLoanCyclePopup = this.wicket.getComponentFromLastRenderedPage("termPrincipalByLoanCyclePopup", ModalWindow.class);
-            this.wicket.executeModalWindowOnClose(termPrincipalByLoanCyclePopup);
+            ModalWindow chargePopup = this.wicket.getComponentFromLastRenderedPage("chargePopup", ModalWindow.class);
+            this.wicket.executeModalWindowOnClose(chargePopup);
+        }
+        {
+            AjaxLink<?> overdueChargeAddLink = this.wicket.getComponentFromLastRenderedPage("form:overdueChargeAddLink", AjaxLink.class);
+            this.wicket.executeAjaxLink(overdueChargeAddLink);
+
+            JUnitFormTester popupForm = this.wicket.newFormTester("overdueChargePopup:content:form");
+            popupForm.setValue("overdueChargeField", overdueChargeValue);
+
+            AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("overdueChargePopup:content:form:okayButton", AjaxButton.class);
+            this.wicket.executeAjaxButton(okayButton);
+
+            ModalWindow overdueChargePopup = this.wicket.getComponentFromLastRenderedPage("overdueChargePopup", ModalWindow.class);
+            this.wicket.executeModalWindowOnClose(overdueChargePopup);
+        }
+        {
+            {
+                AjaxLink<?> termPrincipalByLoanCycleAddLink = this.wicket.getComponentFromLastRenderedPage("form:termPrincipalByLoanCycleBlock:termPrincipalByLoanCycleContainer:termPrincipalByLoanCycleAddLink", AjaxLink.class);
+                form = this.wicket.newFormTester("form");
+                this.wicket.executeAjaxLink(termPrincipalByLoanCycleAddLink);
+
+                JUnitFormTester popupForm = this.wicket.newFormTester("termPrincipalByLoanCyclePopup:content:form");
+                popupForm.setValue("whenField", WhenType.Equals);
+                popupForm.setValue("loanCycleField", (int) 1);
+                popupForm.setValue("minimumField", (double) 0.99);
+                popupForm.setValue("defaultField", (double) 100.99);
+                popupForm.setValue("maximumField", (double) 200.99);
+                AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("termPrincipalByLoanCyclePopup:content:form:okayButton", AjaxButton.class);
+                this.wicket.executeAjaxButton(okayButton);
+
+                ModalWindow termPrincipalByLoanCyclePopup = this.wicket.getComponentFromLastRenderedPage("termPrincipalByLoanCyclePopup", ModalWindow.class);
+                this.wicket.executeModalWindowOnClose(termPrincipalByLoanCyclePopup);
+            }
+            {
+                AjaxLink<?> termPrincipalByLoanCycleAddLink = this.wicket.getComponentFromLastRenderedPage("form:termPrincipalByLoanCycleBlock:termPrincipalByLoanCycleContainer:termPrincipalByLoanCycleAddLink", AjaxLink.class);
+                form = this.wicket.newFormTester("form");
+                this.wicket.executeAjaxLink(termPrincipalByLoanCycleAddLink);
+
+                JUnitFormTester popupForm = this.wicket.newFormTester("termPrincipalByLoanCyclePopup:content:form");
+                popupForm.setValue("whenField", WhenType.GreaterThen);
+                popupForm.setValue("loanCycleField", (int) 1);
+                popupForm.setValue("minimumField", (double) 0.99);
+                popupForm.setValue("defaultField", (double) 100.99);
+                popupForm.setValue("maximumField", (double) 200.99);
+                AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("termPrincipalByLoanCyclePopup:content:form:okayButton", AjaxButton.class);
+                this.wicket.executeAjaxButton(okayButton);
+
+                ModalWindow termPrincipalByLoanCyclePopup = this.wicket.getComponentFromLastRenderedPage("termPrincipalByLoanCyclePopup", ModalWindow.class);
+                this.wicket.executeModalWindowOnClose(termPrincipalByLoanCyclePopup);
+            }
         }
 
         {
-            AjaxLink<?> termNumberOfRepaymentByLoanCycleAddLink = this.wicket.getComponentFromLastRenderedPage("form:termNumberOfRepaymentByLoanCycleBlock:termNumberOfRepaymentByLoanCycleContainer:termNumberOfRepaymentByLoanCycleAddLink", AjaxLink.class);
-            form = this.wicket.newFormTester("form");
-            this.wicket.executeAjaxLink(termNumberOfRepaymentByLoanCycleAddLink);
+            {
+                AjaxLink<?> termNumberOfRepaymentByLoanCycleAddLink = this.wicket.getComponentFromLastRenderedPage("form:termNumberOfRepaymentByLoanCycleBlock:termNumberOfRepaymentByLoanCycleContainer:termNumberOfRepaymentByLoanCycleAddLink", AjaxLink.class);
+                form = this.wicket.newFormTester("form");
+                this.wicket.executeAjaxLink(termNumberOfRepaymentByLoanCycleAddLink);
 
-            JUnitFormTester popupForm = this.wicket.newFormTester("termNumberOfRepaymentByLoanCyclePopup:content:form");
-            popupForm.setValue("whenField", WhenType.GreaterThen);
-            popupForm.setValue("loanCycleField", (int) 12);
-            popupForm.setValue("minimumField", (double) 0.99);
-            popupForm.setValue("defaultField", (double) 100.99);
-            popupForm.setValue("maximumField", (double) 200.99);
-            AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("termNumberOfRepaymentByLoanCyclePopup:content:form:okayButton", AjaxButton.class);
-            this.wicket.executeAjaxButton(okayButton);
+                JUnitFormTester popupForm = this.wicket.newFormTester("termNumberOfRepaymentByLoanCyclePopup:content:form");
+                popupForm.setValue("whenField", WhenType.Equals);
+                popupForm.setValue("loanCycleField", (int) 1);
+                popupForm.setValue("minimumField", (double) 0.99);
+                popupForm.setValue("defaultField", (double) 100.99);
+                popupForm.setValue("maximumField", (double) 200.99);
+                AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("termNumberOfRepaymentByLoanCyclePopup:content:form:okayButton", AjaxButton.class);
+                this.wicket.executeAjaxButton(okayButton);
 
-            ModalWindow termNumberOfRepaymentByLoanCyclePopup = this.wicket.getComponentFromLastRenderedPage("termNumberOfRepaymentByLoanCyclePopup", ModalWindow.class);
-            this.wicket.executeModalWindowOnClose(termNumberOfRepaymentByLoanCyclePopup);
+                ModalWindow termNumberOfRepaymentByLoanCyclePopup = this.wicket.getComponentFromLastRenderedPage("termNumberOfRepaymentByLoanCyclePopup", ModalWindow.class);
+                this.wicket.executeModalWindowOnClose(termNumberOfRepaymentByLoanCyclePopup);
+            }
+            {
+                AjaxLink<?> termNumberOfRepaymentByLoanCycleAddLink = this.wicket.getComponentFromLastRenderedPage("form:termNumberOfRepaymentByLoanCycleBlock:termNumberOfRepaymentByLoanCycleContainer:termNumberOfRepaymentByLoanCycleAddLink", AjaxLink.class);
+                form = this.wicket.newFormTester("form");
+                this.wicket.executeAjaxLink(termNumberOfRepaymentByLoanCycleAddLink);
+
+                JUnitFormTester popupForm = this.wicket.newFormTester("termNumberOfRepaymentByLoanCyclePopup:content:form");
+                popupForm.setValue("whenField", WhenType.GreaterThen);
+                popupForm.setValue("loanCycleField", (int) 1);
+                popupForm.setValue("minimumField", (double) 0.99);
+                popupForm.setValue("defaultField", (double) 100.99);
+                popupForm.setValue("maximumField", (double) 200.99);
+                AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("termNumberOfRepaymentByLoanCyclePopup:content:form:okayButton", AjaxButton.class);
+                this.wicket.executeAjaxButton(okayButton);
+
+                ModalWindow termNumberOfRepaymentByLoanCyclePopup = this.wicket.getComponentFromLastRenderedPage("termNumberOfRepaymentByLoanCyclePopup", ModalWindow.class);
+                this.wicket.executeModalWindowOnClose(termNumberOfRepaymentByLoanCyclePopup);
+            }
         }
         {
-            AjaxLink<?> termNominalInterestRateByLoanCycleAddLink = this.wicket.getComponentFromLastRenderedPage("form:termNominalInterestRateByLoanCycleBlock:termNominalInterestRateByLoanCycleContainer:termNominalInterestRateByLoanCycleAddLink", AjaxLink.class);
-            form = this.wicket.newFormTester("form");
-            this.wicket.executeAjaxLink(termNominalInterestRateByLoanCycleAddLink);
+            {
+                AjaxLink<?> termNominalInterestRateByLoanCycleAddLink = this.wicket.getComponentFromLastRenderedPage("form:termNominalInterestRateByLoanCycleBlock:termNominalInterestRateByLoanCycleContainer:termNominalInterestRateByLoanCycleAddLink", AjaxLink.class);
+                form = this.wicket.newFormTester("form");
+                this.wicket.executeAjaxLink(termNominalInterestRateByLoanCycleAddLink);
 
-            JUnitFormTester popupForm = this.wicket.newFormTester("termNominalInterestRateByLoanCyclePopup:content:form");
-            popupForm.setValue("whenField", WhenType.GreaterThen);
-            popupForm.setValue("loanCycleField", (int) 12);
-            popupForm.setValue("minimumField", (double) 0.99);
-            popupForm.setValue("defaultField", (double) 100.99);
-            popupForm.setValue("maximumField", (double) 200.99);
-            AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("termNominalInterestRateByLoanCyclePopup:content:form:okayButton", AjaxButton.class);
-            this.wicket.executeAjaxButton(okayButton);
+                JUnitFormTester popupForm = this.wicket.newFormTester("termNominalInterestRateByLoanCyclePopup:content:form");
+                popupForm.setValue("whenField", WhenType.GreaterThen);
+                popupForm.setValue("loanCycleField", (int) 1);
+                popupForm.setValue("minimumField", (double) 0.99);
+                popupForm.setValue("defaultField", (double) 100.99);
+                popupForm.setValue("maximumField", (double) 200.99);
+                AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("termNominalInterestRateByLoanCyclePopup:content:form:okayButton", AjaxButton.class);
+                this.wicket.executeAjaxButton(okayButton);
 
-            ModalWindow termNominalInterestRateByLoanCyclePopup = this.wicket.getComponentFromLastRenderedPage("termNominalInterestRateByLoanCyclePopup", ModalWindow.class);
-            this.wicket.executeModalWindowOnClose(termNominalInterestRateByLoanCyclePopup);
+                ModalWindow termNominalInterestRateByLoanCyclePopup = this.wicket.getComponentFromLastRenderedPage("termNominalInterestRateByLoanCyclePopup", ModalWindow.class);
+                this.wicket.executeModalWindowOnClose(termNominalInterestRateByLoanCyclePopup);
+            }
+            {
+                AjaxLink<?> termNominalInterestRateByLoanCycleAddLink = this.wicket.getComponentFromLastRenderedPage("form:termNominalInterestRateByLoanCycleBlock:termNominalInterestRateByLoanCycleContainer:termNominalInterestRateByLoanCycleAddLink", AjaxLink.class);
+                form = this.wicket.newFormTester("form");
+                this.wicket.executeAjaxLink(termNominalInterestRateByLoanCycleAddLink);
+
+                JUnitFormTester popupForm = this.wicket.newFormTester("termNominalInterestRateByLoanCyclePopup:content:form");
+                popupForm.setValue("whenField", WhenType.GreaterThen);
+                popupForm.setValue("loanCycleField", (int) 1);
+                popupForm.setValue("minimumField", (double) 0.99);
+                popupForm.setValue("defaultField", (double) 100.99);
+                popupForm.setValue("maximumField", (double) 200.99);
+                AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("termNominalInterestRateByLoanCyclePopup:content:form:okayButton", AjaxButton.class);
+                this.wicket.executeAjaxButton(okayButton);
+
+                ModalWindow termNominalInterestRateByLoanCyclePopup = this.wicket.getComponentFromLastRenderedPage("termNominalInterestRateByLoanCyclePopup", ModalWindow.class);
+                this.wicket.executeModalWindowOnClose(termNominalInterestRateByLoanCyclePopup);
+            }
         }
         {
             CheckBox termVaryBasedOnLoanCycleField = this.wicket.getComponentFromLastRenderedPage("form:termLinkedToFloatingInterestRatesBlock:termLinkedToFloatingInterestRatesContainer:termLinkedToFloatingInterestRatesField", CheckBox.class);
@@ -282,6 +371,55 @@ public class LoanCreatePageTest {
             form = this.wicket.newFormTester("form");
             form.setValue("interestRecalculationRecalculateBlock:interestRecalculationRecalculateContainer:interestRecalculationRecalculateField", interestRecalculationRecalculateValue);
             this.wicket.executeBehavior(interestRecalculationRecalculateField);
+        }
+        {
+            AjaxLink<?> advancedAccountingRuleFundSourceAddLink = this.wicket.getComponentFromLastRenderedPage("form:advancedAccountingRuleBlock:advancedAccountingRuleContainer:advancedAccountingRuleFundSourceAddLink", AjaxLink.class);
+            this.wicket.executeAjaxLink(advancedAccountingRuleFundSourceAddLink);
+
+            String paymentValue = this.wicket.getJdbcTemplate().queryForObject("SELECT id FROM m_payment_type LIMIT 1", String.class);
+            String accountValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Asset.getLiteral());
+
+            JUnitFormTester popupForm = this.wicket.newFormTester("fundSourcePopup:content:form");
+            popupForm.setValue("paymentField", paymentValue);
+            popupForm.setValue("accountField", accountValue);
+
+            AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("fundSourcePopup:content:form:okayButton", AjaxButton.class);
+            this.wicket.executeAjaxButton(okayButton);
+
+            ModalWindow fundSourcePopup = this.wicket.getComponentFromLastRenderedPage("fundSourcePopup", ModalWindow.class);
+            this.wicket.executeModalWindowOnClose(fundSourcePopup);
+        }
+        {
+            AjaxLink<?> advancedAccountingRuleFeeIncomeAddLink = this.wicket.getComponentFromLastRenderedPage("form:advancedAccountingRuleBlock:advancedAccountingRuleContainer:advancedAccountingRuleFeeIncomeAddLink", AjaxLink.class);
+            this.wicket.executeAjaxLink(advancedAccountingRuleFeeIncomeAddLink);
+
+            String tempChargeValue = this.wicket.getJdbcTemplate().queryForObject("select id from m_charge where  charge_applies_to_enum = ? and currency_code = ? and is_penalty = 0 and is_active = 1 limit 1", String.class, ChargeType.Loan.getLiteral(), currencyCodeValue);
+            String accountValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Liability.getLiteral());
+            JUnitFormTester popupForm = this.wicket.newFormTester("feeIncomePopup:content:form");
+            popupForm.setValue("chargeField", tempChargeValue);
+            popupForm.setValue("accountField", accountValue);
+
+            AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("feeIncomePopup:content:form:okayButton", AjaxButton.class);
+            this.wicket.executeAjaxButton(okayButton);
+
+            ModalWindow feeIncomePopup = this.wicket.getComponentFromLastRenderedPage("feeIncomePopup", ModalWindow.class);
+            this.wicket.executeModalWindowOnClose(feeIncomePopup);
+        }
+        {
+            AjaxLink<?> advancedAccountingRulePenaltyIncomeAddLink = this.wicket.getComponentFromLastRenderedPage("form:advancedAccountingRuleBlock:advancedAccountingRuleContainer:advancedAccountingRulePenaltyIncomeAddLink", AjaxLink.class);
+            this.wicket.executeAjaxLink(advancedAccountingRulePenaltyIncomeAddLink);
+
+            String tempChargeValue = this.wicket.getJdbcTemplate().queryForObject("select id from m_charge where  charge_applies_to_enum = ? and currency_code = ? and is_penalty = 1 and is_active = 1 limit 1", String.class, ChargeType.Loan.getLiteral(), currencyCodeValue);
+            String accountValue = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where account_usage = ? and classification_enum = ? limit 1", String.class, AccountUsage.Detail.getLiteral(), AccountType.Income.getLiteral());
+            JUnitFormTester popupForm = this.wicket.newFormTester("penaltyIncomePopup:content:form");
+            popupForm.setValue("chargeField", tempChargeValue);
+            popupForm.setValue("accountField", accountValue);
+
+            AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("penaltyIncomePopup:content:form:okayButton", AjaxButton.class);
+            this.wicket.executeAjaxButton(okayButton);
+
+            ModalWindow penaltyIncomePopup = this.wicket.getComponentFromLastRenderedPage("penaltyIncomePopup", ModalWindow.class);
+            this.wicket.executeModalWindowOnClose(penaltyIncomePopup);
         }
 
         form = this.wicket.newFormTester("form");
@@ -535,6 +673,405 @@ public class LoanCreatePageTest {
         Map<String, Object> actual = jdbcTemplate.queryForMap("select * from m_product_loan where name = ?", detailProductNameValue);
         Assert.assertNotNull("expected to have m_product_loan name = '" + detailProductNameValue + "'", actual);
 
+    }
+
+    @Test
+    public void chargeAddLinkClickDuplicatedTest() {
+        this.wicket.login();
+
+        String currencyCodeValue = "USD";
+
+        String chargeValue = this.wicket.getJdbcTemplate().queryForObject("select id from m_charge where currency_code = ? and charge_applies_to_enum = ? and is_penalty = ? and is_active = 1 limit 1", String.class, currencyCodeValue, ChargeType.Loan.getLiteral(), 0);
+
+        LoanCreatePage page = this.wicket.startPage(LoanCreatePage.class);
+
+        Map<String, Object> item = Maps.newHashMap();
+        item.put("uuid", chargeValue);
+        page.chargeValue.add(item);
+
+        JUnitFormTester form = this.wicket.newFormTester("form");
+
+        form.setValue("currencyCodeBlock:currencyCodeContainer:currencyCodeField", currencyCodeValue);
+        Select2SingleChoice<?> currencyCodeField = this.wicket.getComponentFromLastRenderedPage("form:currencyCodeBlock:currencyCodeContainer:currencyCodeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(currencyCodeField);
+
+        AjaxLink<?> chargeAddLink = this.wicket.getComponentFromLastRenderedPage("form:chargeAddLink", AjaxLink.class);
+        this.wicket.executeAjaxLink(chargeAddLink);
+
+        JUnitFormTester popupForm = this.wicket.newFormTester("chargePopup:content:form");
+        popupForm.setValue("chargeField", chargeValue);
+
+        AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("chargePopup:content:form:okayButton", AjaxButton.class);
+        this.wicket.executeAjaxButton(okayButton);
+
+        ModalWindow chargePopup = this.wicket.getComponentFromLastRenderedPage("chargePopup", ModalWindow.class);
+        this.wicket.executeModalWindowOnClose(chargePopup);
+
+        this.wicket.startPage(page);
+
+        Assert.assertEquals("expected to have chargeValue one item inside", page.chargeValue.size(), 1);
+
+    }
+
+    @Test
+    public void overdueChargeAddLinkClickDuplicatedTest() {
+        this.wicket.login();
+
+        String currencyCodeValue = "USD";
+
+        String overdueChargeValue = this.wicket.getJdbcTemplate().queryForObject("select id from m_charge where currency_code = ? and charge_applies_to_enum = ? and is_penalty = ? and is_active = 1 limit 1", String.class, currencyCodeValue, ChargeType.Loan.getLiteral(), 1);
+
+        LoanCreatePage page = this.wicket.startPage(LoanCreatePage.class);
+
+        Map<String, Object> item = Maps.newHashMap();
+        item.put("uuid", overdueChargeValue);
+        page.overdueChargeValue.add(item);
+
+        JUnitFormTester form = this.wicket.newFormTester("form");
+
+        form.setValue("currencyCodeBlock:currencyCodeContainer:currencyCodeField", currencyCodeValue);
+        Select2SingleChoice<?> currencyCodeField = this.wicket.getComponentFromLastRenderedPage("form:currencyCodeBlock:currencyCodeContainer:currencyCodeField", Select2SingleChoice.class);
+        this.wicket.executeBehavior(currencyCodeField);
+
+        AjaxLink<?> overdueChargeAddLink = this.wicket.getComponentFromLastRenderedPage("form:overdueChargeAddLink", AjaxLink.class);
+        this.wicket.executeAjaxLink(overdueChargeAddLink);
+
+        JUnitFormTester popupForm = this.wicket.newFormTester("overdueChargePopup:content:form");
+        popupForm.setValue("overdueChargeField", overdueChargeValue);
+
+        AjaxButton okayButton = this.wicket.getComponentFromLastRenderedPage("overdueChargePopup:content:form:okayButton", AjaxButton.class);
+        this.wicket.executeAjaxButton(okayButton);
+
+        ModalWindow overdueChargePopup = this.wicket.getComponentFromLastRenderedPage("overdueChargePopup", ModalWindow.class);
+        this.wicket.executeModalWindowOnClose(overdueChargePopup);
+
+        this.wicket.startPage(page);
+
+        Assert.assertEquals("expected to have overdueChargeValue one item inside", page.overdueChargeValue.size(), 1);
+
+    }
+
+    @Test
+    public void advancedAccountingRuleFundSourceActionClickTest() {
+        this.wicket.login();
+
+        LoanCreatePage page = this.wicket.startPage(LoanCreatePage.class);
+
+        JUnitFormTester form = null;
+
+        form = this.wicket.newFormTester("form");
+
+        form.select("accountingField", 1);
+
+        RadioGroup<?> accountingField = this.wicket.getComponentFromLastRenderedPage("form:accountingField", RadioGroup.class);
+        this.wicket.executeBehavior(accountingField);
+
+        this.wicket.startPage(page);
+
+        Map<String, Object> item = Maps.newHashMap();
+        String uuid = UUID.randomUUID().toString();
+        item.put("uuid", uuid);
+        page.advancedAccountingRuleFundSourceValue.add(item);
+
+        this.wicket.startPage(page);
+
+        this.wicket.executeAjaxEvent("form:advancedAccountingRuleBlock:advancedAccountingRuleContainer:advancedAccountingRuleFundSourceTable:body:rows:1:cells:3:cell:1:link", "click");
+
+        this.wicket.startPage(page);
+
+        Assert.assertEquals("expected to have advancedAccountingRuleFundSourceValue one item inside", page.advancedAccountingRuleFundSourceValue.size(), 0);
+    }
+
+    @Test
+    public void advancedAccountingRulePenaltyIncomeActionClickTest() {
+        this.wicket.login();
+
+        LoanCreatePage page = this.wicket.startPage(LoanCreatePage.class);
+
+        JUnitFormTester form = null;
+
+        form = this.wicket.newFormTester("form");
+
+        form.select("accountingField", 1);
+
+        RadioGroup<?> accountingField = this.wicket.getComponentFromLastRenderedPage("form:accountingField", RadioGroup.class);
+        this.wicket.executeBehavior(accountingField);
+
+        this.wicket.startPage(page);
+
+        Map<String, Object> item = Maps.newHashMap();
+        String uuid = UUID.randomUUID().toString();
+        item.put("uuid", uuid);
+        page.advancedAccountingRulePenaltyIncomeValue.add(item);
+
+        this.wicket.startPage(page);
+
+        this.wicket.executeAjaxEvent("form:advancedAccountingRuleBlock:advancedAccountingRuleContainer:advancedAccountingRulePenaltyIncomeTable:body:rows:1:cells:3:cell:1:link", "click");
+
+        this.wicket.startPage(page);
+
+        Assert.assertEquals("expected to have advancedAccountingRulePenaltyIncomeValue one item inside", page.advancedAccountingRulePenaltyIncomeValue.size(), 0);
+    }
+
+    @Test
+    public void advancedAccountingRuleFeeIncomeActionClickTest() {
+        this.wicket.login();
+
+        LoanCreatePage page = this.wicket.startPage(LoanCreatePage.class);
+
+        JUnitFormTester form = null;
+
+        form = this.wicket.newFormTester("form");
+
+        form.select("accountingField", 1);
+
+        RadioGroup<?> accountingField = this.wicket.getComponentFromLastRenderedPage("form:accountingField", RadioGroup.class);
+        this.wicket.executeBehavior(accountingField);
+
+        this.wicket.startPage(page);
+
+        Map<String, Object> item = Maps.newHashMap();
+        String uuid = UUID.randomUUID().toString();
+        item.put("uuid", uuid);
+        page.advancedAccountingRuleFeeIncomeValue.add(item);
+
+        this.wicket.startPage(page);
+
+        this.wicket.executeAjaxEvent("form:advancedAccountingRuleBlock:advancedAccountingRuleContainer:advancedAccountingRuleFeeIncomeTable:body:rows:1:cells:3:cell:1:link", "click");
+
+        this.wicket.startPage(page);
+
+        Assert.assertEquals("expected to have advancedAccountingRuleFeeIncomeValue one item inside", page.advancedAccountingRuleFeeIncomeValue.size(), 0);
+    }
+
+    @Test
+    public void chargeAddLinkClickNoCurrencyTest() {
+        this.wicket.login();
+
+        LoanCreatePage page = this.wicket.startPage(LoanCreatePage.class);
+
+        AjaxLink<?> chargeAddLink = this.wicket.getComponentFromLastRenderedPage("form:chargeAddLink", AjaxLink.class);
+        this.wicket.executeAjaxLink(chargeAddLink);
+
+        Assert.assertEquals("exected currencyPopup to be shown", page.currencyPopup.isShown(), true);
+    }
+
+    @Test
+    public void overdueChargesActionClickTest() {
+        this.wicket.login();
+
+        LoanCreatePage page = this.wicket.startPage(LoanCreatePage.class);
+
+        JUnitFormTester form = null;
+
+        form = this.wicket.newFormTester("form");
+
+        this.wicket.startPage(page);
+
+        Map<String, Object> item = Maps.newHashMap();
+        String uuid = UUID.randomUUID().toString();
+        item.put("uuid", uuid);
+        page.overdueChargeValue.add(item);
+
+        this.wicket.startPage(page);
+
+        this.wicket.executeAjaxEvent("form:overdueChargeTable:body:rows:1:cells:6:cell:1:link", "click");
+
+        this.wicket.startPage(page);
+
+        Assert.assertEquals("expected to have overdueChargeValue one item inside", page.overdueChargeValue.size(), 0);
+    }
+
+    @Test
+    public void chargeActionClickTest() {
+        this.wicket.login();
+
+        LoanCreatePage page = this.wicket.startPage(LoanCreatePage.class);
+
+        JUnitFormTester form = null;
+
+        form = this.wicket.newFormTester("form");
+
+        this.wicket.startPage(page);
+
+        Map<String, Object> item = Maps.newHashMap();
+        String uuid = UUID.randomUUID().toString();
+        item.put("uuid", uuid);
+        page.chargeValue.add(item);
+
+        this.wicket.startPage(page);
+
+        this.wicket.executeAjaxEvent("form:chargeTable:body:rows:1:cells:6:cell:1:link", "click");
+
+        this.wicket.startPage(page);
+
+        Assert.assertEquals("expected to have chargeValue one item inside", page.chargeValue.size(), 0);
+    }
+
+    @Test
+    public void overdueChargeAddLinkClickNoCurrencyTest() {
+        this.wicket.login();
+
+        LoanCreatePage page = this.wicket.startPage(LoanCreatePage.class);
+
+        AjaxLink<?> chargeAddLink = this.wicket.getComponentFromLastRenderedPage("form:overdueChargeAddLink", AjaxLink.class);
+        this.wicket.executeAjaxLink(chargeAddLink);
+
+        Assert.assertEquals("exected currencyPopup to be shown", page.currencyPopup.isShown(), true);
+    }
+
+    @Test
+    public void advancedAccountingRulePenaltyIncomeAddLinkClickNoCurrencyTest() {
+        this.wicket.login();
+
+        LoanCreatePage page = this.wicket.startPage(LoanCreatePage.class);
+
+        JUnitFormTester form = null;
+
+        form = this.wicket.newFormTester("form");
+
+        form.select("accountingField", 1);
+
+        RadioGroup<?> accountingField = this.wicket.getComponentFromLastRenderedPage("form:accountingField", RadioGroup.class);
+        this.wicket.executeBehavior(accountingField);
+
+        this.wicket.startPage(page);
+
+        AjaxLink<?> advancedAccountingRulePenaltyIncomeAddLink = this.wicket.getComponentFromLastRenderedPage("form:advancedAccountingRuleBlock:advancedAccountingRuleContainer:advancedAccountingRulePenaltyIncomeAddLink", AjaxLink.class);
+        this.wicket.executeAjaxLink(advancedAccountingRulePenaltyIncomeAddLink);
+
+        Assert.assertEquals("exected currencyPopup to be shown", page.currencyPopup.isShown(), true);
+
+    }
+
+    @Test
+    public void advancedAccountingRuleFeeIncomeAddLinkClickNoCurrencyTest() {
+
+        this.wicket.login();
+
+        LoanCreatePage page = this.wicket.startPage(LoanCreatePage.class);
+
+        JUnitFormTester form = null;
+
+        form = this.wicket.newFormTester("form");
+
+        form.select("accountingField", 1);
+
+        RadioGroup<?> accountingField = this.wicket.getComponentFromLastRenderedPage("form:accountingField", RadioGroup.class);
+        this.wicket.executeBehavior(accountingField);
+
+        this.wicket.startPage(page);
+
+        AjaxLink<?> advancedAccountingRuleFeeIncomeAddLink = this.wicket.getComponentFromLastRenderedPage("form:advancedAccountingRuleBlock:advancedAccountingRuleContainer:advancedAccountingRuleFeeIncomeAddLink", AjaxLink.class);
+        this.wicket.executeAjaxLink(advancedAccountingRuleFeeIncomeAddLink);
+
+        Assert.assertEquals("exected currencyPopup to be shown", page.currencyPopup.isShown(), true);
+
+    }
+
+    @Test
+    public void termNominalInterestRateByLoanCycleActionClickTest() {
+        this.wicket.login();
+
+        boolean termVaryBasedOnLoanCycleValue = true;
+
+        LoanCreatePage page = this.wicket.startPage(LoanCreatePage.class);
+
+        JUnitFormTester form = null;
+
+        {
+            CheckBox termVaryBasedOnLoanCycleField = this.wicket.getComponentFromLastRenderedPage("form:termVaryBasedOnLoanCycleBlock:termVaryBasedOnLoanCycleContainer:termVaryBasedOnLoanCycleField", CheckBox.class);
+            form = this.wicket.newFormTester("form");
+            form.setValue("termVaryBasedOnLoanCycleBlock:termVaryBasedOnLoanCycleContainer:termVaryBasedOnLoanCycleField", termVaryBasedOnLoanCycleValue);
+            this.wicket.executeBehavior(termVaryBasedOnLoanCycleField);
+        }
+
+        form = this.wicket.newFormTester("form");
+
+        this.wicket.startPage(page);
+
+        Map<String, Object> item = Maps.newHashMap();
+        String uuid = UUID.randomUUID().toString();
+        item.put("uuid", uuid);
+        page.termNominalInterestRateByLoanCycleValue.add(item);
+
+        this.wicket.startPage(page);
+
+        this.wicket.executeAjaxEvent("form:termNominalInterestRateByLoanCycleBlock:termNominalInterestRateByLoanCycleContainer:termNominalInterestRateByLoanCycleTable:body:rows:1:cells:6:cell:1:link", "click");
+
+        this.wicket.startPage(page);
+
+        Assert.assertEquals("expected to have termNominalInterestRateByLoanCycleValue one item inside", page.termNominalInterestRateByLoanCycleValue.size(), 0);
+    }
+
+    @Test
+    public void termNumberOfRepaymentByLoanCycleActionClickTest() {
+        this.wicket.login();
+
+        boolean termVaryBasedOnLoanCycleValue = true;
+
+        LoanCreatePage page = this.wicket.startPage(LoanCreatePage.class);
+
+        JUnitFormTester form = null;
+
+        {
+            CheckBox termVaryBasedOnLoanCycleField = this.wicket.getComponentFromLastRenderedPage("form:termVaryBasedOnLoanCycleBlock:termVaryBasedOnLoanCycleContainer:termVaryBasedOnLoanCycleField", CheckBox.class);
+            form = this.wicket.newFormTester("form");
+            form.setValue("termVaryBasedOnLoanCycleBlock:termVaryBasedOnLoanCycleContainer:termVaryBasedOnLoanCycleField", termVaryBasedOnLoanCycleValue);
+            this.wicket.executeBehavior(termVaryBasedOnLoanCycleField);
+        }
+
+        form = this.wicket.newFormTester("form");
+
+        this.wicket.startPage(page);
+
+        Map<String, Object> item = Maps.newHashMap();
+        String uuid = UUID.randomUUID().toString();
+        item.put("uuid", uuid);
+        page.termNumberOfRepaymentByLoanCycleValue.add(item);
+
+        this.wicket.startPage(page);
+
+        this.wicket.executeAjaxEvent("form:termNumberOfRepaymentByLoanCycleBlock:termNumberOfRepaymentByLoanCycleContainer:termNumberOfRepaymentByLoanCycleTable:body:rows:1:cells:6:cell:1:link", "click");
+
+        this.wicket.startPage(page);
+
+        Assert.assertEquals("expected to have termNumberOfRepaymentByLoanCycleValue one item inside", page.termNumberOfRepaymentByLoanCycleValue.size(), 0);
+    }
+
+    @Test
+    public void termPrincipalByLoanCycleActionClickTest() {
+        this.wicket.login();
+
+        boolean termVaryBasedOnLoanCycleValue = true;
+
+        LoanCreatePage page = this.wicket.startPage(LoanCreatePage.class);
+
+        JUnitFormTester form = null;
+
+        {
+            CheckBox termVaryBasedOnLoanCycleField = this.wicket.getComponentFromLastRenderedPage("form:termVaryBasedOnLoanCycleBlock:termVaryBasedOnLoanCycleContainer:termVaryBasedOnLoanCycleField", CheckBox.class);
+            form = this.wicket.newFormTester("form");
+            form.setValue("termVaryBasedOnLoanCycleBlock:termVaryBasedOnLoanCycleContainer:termVaryBasedOnLoanCycleField", termVaryBasedOnLoanCycleValue);
+            this.wicket.executeBehavior(termVaryBasedOnLoanCycleField);
+        }
+
+        form = this.wicket.newFormTester("form");
+
+        this.wicket.startPage(page);
+
+        Map<String, Object> item = Maps.newHashMap();
+        String uuid = UUID.randomUUID().toString();
+        item.put("uuid", uuid);
+        page.termPrincipalByLoanCycleValue.add(item);
+
+        this.wicket.startPage(page);
+
+        this.wicket.executeAjaxEvent("form:termPrincipalByLoanCycleBlock:termPrincipalByLoanCycleContainer:termPrincipalByLoanCycleTable:body:rows:1:cells:6:cell:1:link", "click");
+
+        this.wicket.startPage(page);
+
+        Assert.assertEquals("expected to have termPrincipalByLoanCycleValue one item inside", page.termPrincipalByLoanCycleValue.size(), 0);
     }
 
 }

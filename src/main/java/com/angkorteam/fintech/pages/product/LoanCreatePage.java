@@ -857,24 +857,23 @@ public class LoanCreatePage extends Page {
     protected WebMarkupContainer advancedAccountingRuleBlock;
     protected WebMarkupContainer advancedAccountingRuleContainer;
 
-    protected WebMarkupContainer fundSourceContainer;
-    protected List<Map<String, Object>> fundSourceValue = Lists.newArrayList();
-    protected DataTable<Map<String, Object>, String> fundSourceTable;
-    protected ListDataProvider fundSourceProvider;
+    protected List<Map<String, Object>> advancedAccountingRuleFundSourceValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> advancedAccountingRuleFundSourceTable;
+    protected ListDataProvider advancedAccountingRuleFundSourceProvider;
+    protected AjaxLink<Void> advancedAccountingRuleFundSourceAddLink;
     protected ModalWindow fundSourcePopup;
 
-    protected WebMarkupContainer feeIncomeContainer;
-    protected List<Map<String, Object>> feeIncomeValue = Lists.newArrayList();
-    protected DataTable<Map<String, Object>, String> feeIncomeTable;
-    protected ListDataProvider feeIncomeProvider;
+    protected List<Map<String, Object>> advancedAccountingRuleFeeIncomeValue = Lists.newLinkedList();
+    protected DataTable<Map<String, Object>, String> advancedAccountingRuleFeeIncomeTable;
+    protected ListDataProvider advancedAccountingRuleFeeIncomeProvider;
+    protected AjaxLink<Void> advancedAccountingRuleFeeIncomeAddLink;
     protected ModalWindow feeIncomePopup;
 
-    protected WebMarkupContainer penaltyIncomeContainer;
-    protected List<Map<String, Object>> penaltyIncomeValue = Lists.newArrayList();
-    protected DataTable<Map<String, Object>, String> penaltyIncomeTable;
-    protected ListDataProvider penaltyIncomeProvider;
+    protected List<Map<String, Object>> advancedAccountingRulePenaltyIncomeValue = Lists.newLinkedList();
+    protected DataTable<Map<String, Object>, String> advancedAccountingRulePenaltyIncomeTable;
+    protected ListDataProvider advancedAccountingRulePenaltyIncomeProvider;
+    protected AjaxLink<Void> advancedAccountingRulePenaltyIncomeAddLink;
     protected ModalWindow penaltyIncomePopup;
-
     // Charges
 
     protected List<Map<String, Object>> chargeValue = Lists.newArrayList();
@@ -940,7 +939,6 @@ public class LoanCreatePage extends Page {
         this.form.add(this.closeLink);
 
         this.currencyPopup = new ModalWindow("currencyPopup");
-        this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
         add(this.currencyPopup);
 
         initDetail();
@@ -997,6 +995,7 @@ public class LoanCreatePage extends Page {
             this.overdueChargePopup.setContent(new OverdueChargePopup(this.overdueChargePopup.getContentId(), this.overdueChargePopup, this, this.currencyCodeValue.getId()));
             this.overdueChargePopup.show(target);
         } else {
+            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
             this.currencyPopup.show(target);
         }
         return false;
@@ -1004,50 +1003,34 @@ public class LoanCreatePage extends Page {
 
     protected ItemPanel overdueChargeNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel overdueChargeTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel overdueChargeAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Number value = (Number) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value.doubleValue())));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel overdueChargeCollectColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel overdueChargeDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
-    protected void overdueChargesActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void overdueChargesActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.overdueChargeValue.size(); i++) {
             Map<String, Object> column = this.overdueChargeValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -1055,10 +1038,10 @@ public class LoanCreatePage extends Page {
         if (index >= 0) {
             this.overdueChargeValue.remove(index);
         }
-        ajaxRequestTarget.add(this.overdueChargeTable);
+        target.add(this.overdueChargeTable);
     }
 
-    protected List<ActionItem> overdueChargeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> overdueChargeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -1092,6 +1075,7 @@ public class LoanCreatePage extends Page {
             this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
+            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
             this.currencyPopup.show(target);
         }
         return false;
@@ -1099,50 +1083,34 @@ public class LoanCreatePage extends Page {
 
     protected ItemPanel chargeNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Number value = (Number) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value.doubleValue())));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeCollectColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
-    protected void chargeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void chargeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.chargeValue.size(); i++) {
             Map<String, Object> column = this.chargeValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -1150,10 +1118,10 @@ public class LoanCreatePage extends Page {
         if (index >= 0) {
             this.chargeValue.remove(index);
         }
-        ajaxRequestTarget.add(this.chargeTable);
+        target.add(this.chargeTable);
     }
 
-    protected List<ActionItem> chargeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> chargeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -1581,22 +1549,21 @@ public class LoanCreatePage extends Page {
         {
             this.fundSourcePopup = new ModalWindow("fundSourcePopup");
             add(this.fundSourcePopup);
-            this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this));
             this.fundSourcePopup.setOnClose(this::fundSourcePopupOnClose);
 
-            List<IColumn<Map<String, Object>, String>> fundSourceColumn = Lists.newArrayList();
-            fundSourceColumn.add(new TextColumn(Model.of("Payment Type"), "payment", "payment", this::fundSourcePaymentColumn));
-            fundSourceColumn.add(new TextColumn(Model.of("Fund Source"), "account", "account", this::fundSourceAccountColumn));
-            fundSourceColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::fundSourceActionItem, this::fundSourceActionClick));
-            this.fundSourceProvider = new ListDataProvider(this.fundSourceValue);
-            this.fundSourceTable = new DataTable<>("fundSourceTable", fundSourceColumn, this.fundSourceProvider, 20);
-            this.advancedAccountingRuleContainer.add(this.fundSourceTable);
-            this.fundSourceTable.addTopToolbar(new HeadersToolbar<>(this.fundSourceTable, this.fundSourceProvider));
-            this.fundSourceTable.addBottomToolbar(new NoRecordsToolbar(this.fundSourceTable));
+            List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFundSourceColumn = Lists.newArrayList();
+            advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Payment Type"), "payment", "payment", this::advancedAccountingRuleFundSourcePaymentColumn));
+            advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Fund Source"), "account", "account", this::advancedAccountingRuleFundSourceAccountColumn));
+            advancedAccountingRuleFundSourceColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFundSourceActionItem, this::advancedAccountingRuleFundSourceActionClick));
+            this.advancedAccountingRuleFundSourceProvider = new ListDataProvider(this.advancedAccountingRuleFundSourceValue);
+            this.advancedAccountingRuleFundSourceTable = new DataTable<>("advancedAccountingRuleFundSourceTable", advancedAccountingRuleFundSourceColumn, this.advancedAccountingRuleFundSourceProvider, 20);
+            this.advancedAccountingRuleContainer.add(this.advancedAccountingRuleFundSourceTable);
+            this.advancedAccountingRuleFundSourceTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRuleFundSourceTable, this.advancedAccountingRuleFundSourceProvider));
+            this.advancedAccountingRuleFundSourceTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRuleFundSourceTable));
 
-            AjaxLink<Void> fundSourceAddLink = new AjaxLink<>("fundSourceAddLink");
-            fundSourceAddLink.setOnClick(this::fundSourceAddLinkClick);
-            this.advancedAccountingRuleContainer.add(fundSourceAddLink);
+            this.advancedAccountingRuleFundSourceAddLink = new AjaxLink<>("advancedAccountingRuleFundSourceAddLink");
+            advancedAccountingRuleFundSourceAddLink.setOnClick(this::advancedAccountingRuleFundSourceAddLinkClick);
+            this.advancedAccountingRuleContainer.add(advancedAccountingRuleFundSourceAddLink);
         }
 
         // Table
@@ -1605,19 +1572,19 @@ public class LoanCreatePage extends Page {
             add(this.feeIncomePopup);
             this.feeIncomePopup.setOnClose(this::feeIncomePopupOnClose);
 
-            List<IColumn<Map<String, Object>, String>> feeIncomeColumn = Lists.newArrayList();
-            feeIncomeColumn.add(new TextColumn(Model.of("Fees"), "charge", "charge", this::feeIncomeChargeColumn));
-            feeIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::feeIncomeAccountColumn));
-            feeIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::feeIncomeActionItem, this::feeIncomeActionClick));
-            this.feeIncomeProvider = new ListDataProvider(this.feeIncomeValue);
-            this.feeIncomeTable = new DataTable<>("feeIncomeTable", feeIncomeColumn, this.feeIncomeProvider, 20);
-            this.advancedAccountingRuleContainer.add(this.feeIncomeTable);
-            this.feeIncomeTable.addTopToolbar(new HeadersToolbar<>(this.feeIncomeTable, this.feeIncomeProvider));
-            this.feeIncomeTable.addBottomToolbar(new NoRecordsToolbar(this.feeIncomeTable));
+            List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFeeIncomeColumn = Lists.newArrayList();
+            advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Fees"), "charge", "charge", this::advancedAccountingRuleFeeIncomeChargeColumn));
+            advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRuleFeeIncomeAccountColumn));
+            advancedAccountingRuleFeeIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFeeIncomeActionItem, this::advancedAccountingRuleFeeIncomeActionClick));
+            this.advancedAccountingRuleFeeIncomeProvider = new ListDataProvider(this.advancedAccountingRuleFeeIncomeValue);
+            this.advancedAccountingRuleFeeIncomeTable = new DataTable<>("advancedAccountingRuleFeeIncomeTable", advancedAccountingRuleFeeIncomeColumn, this.advancedAccountingRuleFeeIncomeProvider, 20);
+            this.advancedAccountingRuleContainer.add(this.advancedAccountingRuleFeeIncomeTable);
+            this.advancedAccountingRuleFeeIncomeTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRuleFeeIncomeTable, this.advancedAccountingRuleFeeIncomeProvider));
+            this.advancedAccountingRuleFeeIncomeTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRuleFeeIncomeTable));
 
-            AjaxLink<Void> feeIncomeAddLink = new AjaxLink<>("feeIncomeAddLink");
-            feeIncomeAddLink.setOnClick(this::feeIncomeAddLinkClick);
-            this.advancedAccountingRuleContainer.add(feeIncomeAddLink);
+            AjaxLink<Void> advancedAccountingRuleFeeIncomeAddLink = new AjaxLink<>("advancedAccountingRuleFeeIncomeAddLink");
+            advancedAccountingRuleFeeIncomeAddLink.setOnClick(this::advancedAccountingRuleFeeIncomeAddLinkClick);
+            this.advancedAccountingRuleContainer.add(advancedAccountingRuleFeeIncomeAddLink);
         }
 
         // Table
@@ -1626,137 +1593,140 @@ public class LoanCreatePage extends Page {
             add(this.penaltyIncomePopup);
             this.penaltyIncomePopup.setOnClose(this::penaltyIncomePopupOnClose);
 
-            List<IColumn<Map<String, Object>, String>> penaltyIncomeColumn = Lists.newArrayList();
-            penaltyIncomeColumn.add(new TextColumn(Model.of("Penalty"), "charge", "charge", this::penaltyIncomeChargeColumn));
-            penaltyIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::penaltyIncomeAccountColumn));
-            penaltyIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::penaltyIncomeActionItem, this::penaltyIncomeActionClick));
-            this.penaltyIncomeProvider = new ListDataProvider(this.penaltyIncomeValue);
-            this.penaltyIncomeTable = new DataTable<>("penaltyIncomeTable", penaltyIncomeColumn, this.penaltyIncomeProvider, 20);
-            this.advancedAccountingRuleContainer.add(this.penaltyIncomeTable);
-            this.penaltyIncomeTable.addTopToolbar(new HeadersToolbar<>(this.penaltyIncomeTable, this.penaltyIncomeProvider));
-            this.penaltyIncomeTable.addBottomToolbar(new NoRecordsToolbar(this.penaltyIncomeTable));
+            List<IColumn<Map<String, Object>, String>> advancedAccountingRulePenaltyIncomeColumn = Lists.newArrayList();
+            advancedAccountingRulePenaltyIncomeColumn.add(new TextColumn(Model.of("Penalty"), "charge", "charge", this::advancedAccountingRulePenaltyIncomeChargeColumn));
+            advancedAccountingRulePenaltyIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRulePenaltyIncomeAccountColumn));
+            advancedAccountingRulePenaltyIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRulePenaltyIncomeActionItem, this::advancedAccountingRulePenaltyIncomeActionClick));
+            this.advancedAccountingRulePenaltyIncomeProvider = new ListDataProvider(this.advancedAccountingRulePenaltyIncomeValue);
+            this.advancedAccountingRulePenaltyIncomeTable = new DataTable<>("advancedAccountingRulePenaltyIncomeTable", advancedAccountingRulePenaltyIncomeColumn, this.advancedAccountingRulePenaltyIncomeProvider, 20);
+            this.advancedAccountingRuleContainer.add(this.advancedAccountingRulePenaltyIncomeTable);
+            this.advancedAccountingRulePenaltyIncomeTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRulePenaltyIncomeTable, this.advancedAccountingRulePenaltyIncomeProvider));
+            this.advancedAccountingRulePenaltyIncomeTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRulePenaltyIncomeTable));
 
-            AjaxLink<Void> penaltyIncomeAddLink = new AjaxLink<>("penaltyIncomeAddLink");
-            penaltyIncomeAddLink.setOnClick(this::penaltyIncomeAddLinkClick);
-            this.advancedAccountingRuleContainer.add(penaltyIncomeAddLink);
+            AjaxLink<Void> advancedAccountingRulePenaltyIncomeAddLink = new AjaxLink<>("advancedAccountingRulePenaltyIncomeAddLink");
+            advancedAccountingRulePenaltyIncomeAddLink.setOnClick(this::advancedAccountingRulePenaltyIncomeAddLinkClick);
+            this.advancedAccountingRuleContainer.add(advancedAccountingRulePenaltyIncomeAddLink);
         }
     }
 
-    protected boolean feeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+    protected boolean advancedAccountingRuleFeeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
         this.itemAccountValue = null;
         if (this.currencyCodeValue != null) {
             this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
         } else {
+            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
             this.currencyPopup.show(target);
         }
         return false;
     }
 
-    protected ItemPanel feeIncomeChargeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel advancedAccountingRuleFeeIncomeChargeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
-    protected ItemPanel feeIncomeAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel advancedAccountingRuleFeeIncomeAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
-    protected void feeIncomeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void advancedAccountingRuleFeeIncomeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
-        for (int i = 0; i < this.feeIncomeValue.size(); i++) {
-            Map<String, Object> column = this.feeIncomeValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+        for (int i = 0; i < this.advancedAccountingRuleFeeIncomeValue.size(); i++) {
+            Map<String, Object> column = this.advancedAccountingRuleFeeIncomeValue.get(i);
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
         }
         if (index >= 0) {
-            this.feeIncomeValue.remove(index);
+            this.advancedAccountingRuleFeeIncomeValue.remove(index);
         }
-        ajaxRequestTarget.add(this.feeIncomeTable);
+        target.add(this.advancedAccountingRuleFeeIncomeTable);
     }
 
-    protected List<ActionItem> feeIncomeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> advancedAccountingRuleFeeIncomeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected boolean penaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+    protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
         this.itemAccountValue = null;
         if (this.currencyCodeValue != null) {
             this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
         } else {
+            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
             this.currencyPopup.show(target);
         }
         return false;
     }
 
-    protected ItemPanel penaltyIncomeChargeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel advancedAccountingRulePenaltyIncomeChargeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
-    protected ItemPanel penaltyIncomeAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel advancedAccountingRulePenaltyIncomeAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
-    protected void penaltyIncomeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void advancedAccountingRulePenaltyIncomeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
-        for (int i = 0; i < this.penaltyIncomeValue.size(); i++) {
-            Map<String, Object> column = this.penaltyIncomeValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+        for (int i = 0; i < this.advancedAccountingRulePenaltyIncomeValue.size(); i++) {
+            Map<String, Object> column = this.advancedAccountingRulePenaltyIncomeValue.get(i);
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
         }
         if (index >= 0) {
-            this.penaltyIncomeValue.remove(index);
+            this.advancedAccountingRulePenaltyIncomeValue.remove(index);
         }
-        ajaxRequestTarget.add(this.penaltyIncomeTable);
+        target.add(this.advancedAccountingRulePenaltyIncomeTable);
     }
 
-    protected List<ActionItem> penaltyIncomeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> advancedAccountingRulePenaltyIncomeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected boolean fundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+    protected boolean advancedAccountingRuleFundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemPaymentValue = null;
         this.itemAccountValue = null;
+        this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this));
         this.fundSourcePopup.show(target);
         return false;
     }
 
-    protected ItemPanel fundSourcePaymentColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel advancedAccountingRuleFundSourcePaymentColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
-    protected ItemPanel fundSourceAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel advancedAccountingRuleFundSourceAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
-    protected void fundSourceActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void advancedAccountingRuleFundSourceActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
-        for (int i = 0; i < this.fundSourceValue.size(); i++) {
-            Map<String, Object> column = this.fundSourceValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+        for (int i = 0; i < this.advancedAccountingRuleFundSourceValue.size(); i++) {
+            Map<String, Object> column = this.advancedAccountingRuleFundSourceValue.get(i);
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
         }
         if (index >= 0) {
-            this.fundSourceValue.remove(index);
+            this.advancedAccountingRuleFundSourceValue.remove(index);
         }
-        ajaxRequestTarget.add(this.fundSourceTable);
+        target.add(this.advancedAccountingRuleFundSourceTable);
     }
 
-    protected List<ActionItem> fundSourceActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> advancedAccountingRuleFundSourceActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -2799,7 +2769,6 @@ public class LoanCreatePage extends Page {
         {
             this.termPrincipalByLoanCyclePopup = new ModalWindow("termPrincipalByLoanCyclePopup");
             add(this.termPrincipalByLoanCyclePopup);
-            this.termPrincipalByLoanCyclePopup.setContent(new PrincipalLoanCyclePopup(this.termPrincipalByLoanCyclePopup.getContentId(), this.termPrincipalByLoanCyclePopup, this));
             this.termPrincipalByLoanCyclePopup.setOnClose(this::termPrincipalByLoanCyclePopupOnClose);
 
             this.termPrincipalByLoanCycleBlock = new WebMarkupContainer("termPrincipalByLoanCycleBlock");
@@ -2867,7 +2836,6 @@ public class LoanCreatePage extends Page {
         {
             this.termNumberOfRepaymentByLoanCyclePopup = new ModalWindow("termNumberOfRepaymentByLoanCyclePopup");
             add(this.termNumberOfRepaymentByLoanCyclePopup);
-            this.termNumberOfRepaymentByLoanCyclePopup.setContent(new RepaymentLoanCyclePopup(this.termNumberOfRepaymentByLoanCyclePopup.getContentId(), this.termNumberOfRepaymentByLoanCyclePopup, this));
             this.termNumberOfRepaymentByLoanCyclePopup.setOnClose(this::termNumberOfRepaymentByLoanCyclePopupOnClose);
 
             this.termNumberOfRepaymentByLoanCycleBlock = new WebMarkupContainer("termNumberOfRepaymentByLoanCycleBlock");
@@ -3048,7 +3016,6 @@ public class LoanCreatePage extends Page {
 
             this.termNominalInterestRateByLoanCyclePopup = new ModalWindow("termNominalInterestRateByLoanCyclePopup");
             add(this.termNominalInterestRateByLoanCyclePopup);
-            this.termNominalInterestRateByLoanCyclePopup.setContent(new InterestLoanCyclePopup(this.termNominalInterestRateByLoanCyclePopup.getContentId(), this.termNominalInterestRateByLoanCyclePopup, this));
             this.termNominalInterestRateByLoanCyclePopup.setOnClose(this::termNominalInterestRateByLoanCyclePopupOnClose);
 
             List<IColumn<Map<String, Object>, String>> termNominalInterestRateByLoanCycleColumn = Lists.newArrayList();
@@ -3116,56 +3083,41 @@ public class LoanCreatePage extends Page {
         this.itemMinimumValue = null;
         this.itemDefaultValue = null;
         this.itemMaximumValue = null;
+        this.termNominalInterestRateByLoanCyclePopup.setContent(new InterestLoanCyclePopup(this.termNominalInterestRateByLoanCyclePopup.getContentId(), this.termNominalInterestRateByLoanCyclePopup, this));
         this.termNominalInterestRateByLoanCyclePopup.show(target);
         return false;
     }
 
     protected ItemPanel termNominalInterestRateByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel termNominalInterestRateByLoanCycleMinimumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel termNominalInterestRateByLoanCycleDefaultColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel termNominalInterestRateByLoanCycleMaximumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel termNominalInterestRateByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
-    protected void termNominalInterestRateByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void termNominalInterestRateByLoanCycleActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.termNominalInterestRateByLoanCycleValue.size(); i++) {
             Map<String, Object> column = this.termNominalInterestRateByLoanCycleValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -3173,10 +3125,10 @@ public class LoanCreatePage extends Page {
         if (index >= 0) {
             this.termNominalInterestRateByLoanCycleValue.remove(index);
         }
-        ajaxRequestTarget.add(this.termNominalInterestRateByLoanCycleTable);
+        target.add(this.termNominalInterestRateByLoanCycleTable);
     }
 
-    protected List<ActionItem> termNominalInterestRateByLoanCycleActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> termNominalInterestRateByLoanCycleActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -3186,56 +3138,41 @@ public class LoanCreatePage extends Page {
         this.itemMinimumValue = null;
         this.itemDefaultValue = null;
         this.itemMaximumValue = null;
+        this.termNumberOfRepaymentByLoanCyclePopup.setContent(new RepaymentLoanCyclePopup(this.termNumberOfRepaymentByLoanCyclePopup.getContentId(), this.termNumberOfRepaymentByLoanCyclePopup, this));
         this.termNumberOfRepaymentByLoanCyclePopup.show(target);
         return false;
     }
 
     protected ItemPanel termNumberOfRepaymentByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel termNumberOfRepaymentByLoanCycleMinimumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel termNumberOfRepaymentByLoanCycleDefaultColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel termNumberOfRepaymentByLoanCycleMaximumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel termNumberOfRepaymentByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
-    protected void termNumberOfRepaymentByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void termNumberOfRepaymentByLoanCycleActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.termNumberOfRepaymentByLoanCycleValue.size(); i++) {
             Map<String, Object> column = this.termNumberOfRepaymentByLoanCycleValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -3243,10 +3180,10 @@ public class LoanCreatePage extends Page {
         if (index >= 0) {
             this.termNumberOfRepaymentByLoanCycleValue.remove(index);
         }
-        ajaxRequestTarget.add(this.termNumberOfRepaymentByLoanCycleTable);
+        target.add(this.termNumberOfRepaymentByLoanCycleTable);
     }
 
-    protected List<ActionItem> termNumberOfRepaymentByLoanCycleActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> termNumberOfRepaymentByLoanCycleActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -3256,6 +3193,7 @@ public class LoanCreatePage extends Page {
         this.itemMinimumValue = null;
         this.itemDefaultValue = null;
         this.itemMaximumValue = null;
+        this.termPrincipalByLoanCyclePopup.setContent(new PrincipalLoanCyclePopup(this.termPrincipalByLoanCyclePopup.getContentId(), this.termPrincipalByLoanCyclePopup, this));
         this.termPrincipalByLoanCyclePopup.show(target);
         return false;
     }
@@ -3275,50 +3213,34 @@ public class LoanCreatePage extends Page {
 
     protected ItemPanel termPrincipalByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel termPrincipalByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel termPrincipalByLoanCycleMinimumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel termPrincipalByLoanCycleDefaultColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel termPrincipalByLoanCycleMaximumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
-    protected void termPrincipalByLoanCycleActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void termPrincipalByLoanCycleActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.termPrincipalByLoanCycleValue.size(); i++) {
             Map<String, Object> column = this.termPrincipalByLoanCycleValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -3326,10 +3248,10 @@ public class LoanCreatePage extends Page {
         if (index >= 0) {
             this.termPrincipalByLoanCycleValue.remove(index);
         }
-        ajaxRequestTarget.add(this.termPrincipalByLoanCycleTable);
+        target.add(this.termPrincipalByLoanCycleTable);
     }
 
-    protected List<ActionItem> termPrincipalByLoanCycleActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> termPrincipalByLoanCycleActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -3424,8 +3346,8 @@ public class LoanCreatePage extends Page {
         item.put("payment", this.itemPaymentValue.getText());
         item.put("accountId", this.itemAccountValue.getId());
         item.put("account", this.itemAccountValue.getText());
-        this.fundSourceValue.add(item);
-        target.add(this.fundSourceTable);
+        this.advancedAccountingRuleFundSourceValue.add(item);
+        target.add(this.advancedAccountingRuleFundSourceTable);
     }
 
     protected void feeIncomePopupOnClose(String elementId, AjaxRequestTarget target) {
@@ -3435,8 +3357,8 @@ public class LoanCreatePage extends Page {
         item.put("charge", this.itemChargeValue.getText());
         item.put("accountId", this.itemAccountValue.getId());
         item.put("account", this.itemAccountValue.getText());
-        this.feeIncomeValue.add(item);
-        target.add(this.feeIncomeTable);
+        this.advancedAccountingRuleFeeIncomeValue.add(item);
+        target.add(this.advancedAccountingRuleFeeIncomeTable);
     }
 
     protected void penaltyIncomePopupOnClose(String elementId, AjaxRequestTarget target) {
@@ -3446,8 +3368,8 @@ public class LoanCreatePage extends Page {
         item.put("charge", this.itemChargeValue.getText());
         item.put("accountId", this.itemAccountValue.getId());
         item.put("account", this.itemAccountValue.getText());
-        this.penaltyIncomeValue.add(item);
-        target.add(this.penaltyIncomeTable);
+        this.advancedAccountingRulePenaltyIncomeValue.add(item);
+        target.add(this.advancedAccountingRulePenaltyIncomeTable);
     }
 
     protected void overdueChargePopupOnClose(String elementId, AjaxRequestTarget target) {
@@ -3901,18 +3823,18 @@ public class LoanCreatePage extends Page {
         }
 
         if (ACC_CASH.equals(accounting) || ACC_PERIODIC.equals(accounting) || ACC_UPFRONT.equals(accounting)) {
-            if (this.fundSourceValue != null && !this.fundSourceValue.isEmpty()) {
-                for (Map<String, Object> item : this.fundSourceValue) {
+            if (this.advancedAccountingRuleFundSourceValue != null && !this.advancedAccountingRuleFundSourceValue.isEmpty()) {
+                for (Map<String, Object> item : this.advancedAccountingRuleFundSourceValue) {
                     builder.withPaymentChannelToFundSourceMappings((String) item.get("paymentId"), (String) item.get("accountId"));
                 }
             }
-            if (this.feeIncomeValue != null && !this.feeIncomeValue.isEmpty()) {
-                for (Map<String, Object> item : this.feeIncomeValue) {
+            if (this.advancedAccountingRuleFeeIncomeValue != null && !this.advancedAccountingRuleFeeIncomeValue.isEmpty()) {
+                for (Map<String, Object> item : this.advancedAccountingRuleFeeIncomeValue) {
                     builder.withFeeToIncomeAccountMappings((String) item.get("chargeId"), (String) item.get("accountId"));
                 }
             }
-            if (this.penaltyIncomeValue != null && !this.penaltyIncomeValue.isEmpty()) {
-                for (Map<String, Object> item : this.penaltyIncomeValue) {
+            if (this.advancedAccountingRulePenaltyIncomeValue != null && !this.advancedAccountingRulePenaltyIncomeValue.isEmpty()) {
+                for (Map<String, Object> item : this.advancedAccountingRulePenaltyIncomeValue) {
                     builder.withPenaltyToIncomeAccountMappings((String) item.get("chargeId"), (String) item.get("accountId"));
                 }
             }

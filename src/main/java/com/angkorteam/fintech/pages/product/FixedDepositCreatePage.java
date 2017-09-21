@@ -430,7 +430,6 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.closeLink);
 
         this.currencyPopup = new ModalWindow("currencyPopup");
-        this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
         add(this.currencyPopup);
 
         initDetail();
@@ -554,7 +553,6 @@ public class FixedDepositCreatePage extends Page {
         {
             this.fundSourcePopup = new ModalWindow("fundSourcePopup");
             add(this.fundSourcePopup);
-            this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this));
             this.fundSourcePopup.setOnClose(this::fundSourcePopupOnClose);
 
             List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFundSourceColumn = Lists.newLinkedList();
@@ -655,6 +653,7 @@ public class FixedDepositCreatePage extends Page {
             this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
         } else {
+            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
             this.currencyPopup.show(target);
         }
         return false;
@@ -700,6 +699,7 @@ public class FixedDepositCreatePage extends Page {
             this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
         } else {
+            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
             this.currencyPopup.show(target);
         }
         return false;
@@ -750,6 +750,7 @@ public class FixedDepositCreatePage extends Page {
     }
 
     protected boolean advancedAccountingRuleFundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this));
         this.fundSourcePopup.show(target);
         return false;
     }
@@ -847,6 +848,7 @@ public class FixedDepositCreatePage extends Page {
             this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
+            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
             this.currencyPopup.show(target);
         }
         return false;

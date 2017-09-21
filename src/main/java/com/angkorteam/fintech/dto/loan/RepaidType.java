@@ -2,7 +2,7 @@ package com.angkorteam.fintech.dto.loan;
 
 public enum RepaidType {
 
-    Day("0", "Days"), Week("1", "Weeks"), Month("1", "Months");
+    Day("0", "Days"), Week("1", "Weeks"), Month("2", "Months");
 
     private String literal;
 
