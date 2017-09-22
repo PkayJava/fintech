@@ -54,7 +54,31 @@ public class FixedDepositCreatePageTest {
         String detailProductNameValue = "FIXED_DEPOSIT_PRODUCT_" + this.wicket.getStringGenerator().generate(10);
         String detailShortNameValue = this.wicket.getStringGenerator().generate(4);
         String detailDescriptionValue = detailProductNameValue;
+
         String currencyCodeValue = "USD";
+        int currencyDecimalPlaceValue = 2;
+
+        double termDefaultDepositAmountValue = 1000.99;
+        double termMinimumDepositAmountValue = 1;
+        double termMaximumDepositAmountValue = 10000000000.99;
+        InterestCompoundingPeriod termInterestCompoundingPeriodValue = InterestCompoundingPeriod.Annually;
+        InterestPostingPeriod termInterestPostingPeriodValue = InterestPostingPeriod.Annually;
+        InterestCalculatedUsing termInterestCalculatedUsingValue = InterestCalculatedUsing.AverageDailyBalance;
+        DayInYear termDayInYearValue = DayInYear.D365;
+
+        int settingLockInPeriodValue = 1;
+        LockInPeriod settingLockInTypeValue = LockInPeriod.Month;
+        int settingMinimumDepositTermValue = 12;
+        LockInPeriod settingMinimumDepositTypeValue = LockInPeriod.Month;
+        int settingInMultiplesOfValue = 1;
+        LockInPeriod settingInMultiplesTypeValue = LockInPeriod.Month;
+        int settingMaximumDepositTermValue = 240;
+        LockInPeriod settingMaximumDepositTypeValue = LockInPeriod.Month;
+        double settingApplyPenalInterestValue = 1.99;
+        ApplyPenalOn settingApplyPenalOnValue = ApplyPenalOn.WholeTerm;
+
+        Date interestRateValidFromDateValue = DateTime.now().plusDays(1).toDate();
+        Date interestRateValidEndDateValue = DateTime.now().plusMonths(12).toDate();
 
         this.wicket.startPage(FixedDepositCreatePage.class);
 
@@ -67,35 +91,33 @@ public class FixedDepositCreatePageTest {
 
         // Currency
         form.setValue("currencyCodeBlock:currencyCodeContainer:currencyCodeField", currencyCodeValue);
-        form.setValue("currencyDecimalPlaceBlock:currencyDecimalPlaceContainer:currencyDecimalPlaceField", "2");
+        form.setValue("currencyDecimalPlaceBlock:currencyDecimalPlaceContainer:currencyDecimalPlaceField", currencyDecimalPlaceValue);
 
         // Terms
-        form.setValue("termDefaultDepositAmountBlock:termDefaultDepositAmountContainer:termDefaultDepositAmountField", "1000.99");
-        form.setValue("termMinimumDepositAmountBlock:termMinimumDepositAmountContainer:termMinimumDepositAmountField", "1");
-        form.setValue("termMaximumDepositAmountBlock:termMaximumDepositAmountContainer:termMaximumDepositAmountField", "10000000000.99");
-        form.setValue("termInterestCompoundingPeriodBlock:termInterestCompoundingPeriodContainer:termInterestCompoundingPeriodField", InterestCompoundingPeriod.Annually);
-        form.setValue("termInterestPostingPeriodBlock:termInterestPostingPeriodContainer:termInterestPostingPeriodField", InterestPostingPeriod.Annually);
-        form.setValue("termInterestCalculatedUsingBlock:termInterestCalculatedUsingContainer:termInterestCalculatedUsingField", InterestCalculatedUsing.AverageDailyBalance);
-        form.setValue("termDayInYearBlock:termDayInYearContainer:termDayInYearField", DayInYear.D365);
+        form.setValue("termDefaultDepositAmountBlock:termDefaultDepositAmountContainer:termDefaultDepositAmountField", termDefaultDepositAmountValue);
+        form.setValue("termMinimumDepositAmountBlock:termMinimumDepositAmountContainer:termMinimumDepositAmountField", termMinimumDepositAmountValue);
+        form.setValue("termMaximumDepositAmountBlock:termMaximumDepositAmountContainer:termMaximumDepositAmountField", termMaximumDepositAmountValue);
+        form.setValue("termInterestCompoundingPeriodBlock:termInterestCompoundingPeriodContainer:termInterestCompoundingPeriodField", termInterestCompoundingPeriodValue);
+        form.setValue("termInterestPostingPeriodBlock:termInterestPostingPeriodContainer:termInterestPostingPeriodField", termInterestPostingPeriodValue);
+        form.setValue("termInterestCalculatedUsingBlock:termInterestCalculatedUsingContainer:termInterestCalculatedUsingField", termInterestCalculatedUsingValue);
+        form.setValue("termDayInYearBlock:termDayInYearContainer:termDayInYearField", termDayInYearValue);
 
         // Settings
-        form.setValue("settingLockInPeriodBlock:settingLockInPeriodContainer:settingLockInPeriodField", "1");
-        form.setValue("settingLockInTypeBlock:settingLockInTypeContainer:settingLockInTypeField", LockInPeriod.Month);
-        form.setValue("settingMinimumDepositTermBlock:settingMinimumDepositTermContainer:settingMinimumDepositTermField", "12");
-        form.setValue("settingMinimumDepositTypeBlock:settingMinimumDepositTypeContainer:settingMinimumDepositTypeField", LockInPeriod.Month);
-        form.setValue("settingInMultiplesOfBlock:settingInMultiplesOfContainer:settingInMultiplesOfField", "1");
-        form.setValue("settingInMultiplesTypeBlock:settingInMultiplesTypeContainer:settingInMultiplesTypeField", LockInPeriod.Month);
-        form.setValue("settingMaximumDepositTermBlock:settingMaximumDepositTermContainer:settingMaximumDepositTermField", "240");
-        form.setValue("settingMaximumDepositTypeBlock:settingMaximumDepositTypeContainer:settingMaximumDepositTypeField", LockInPeriod.Month);
-        form.setValue("settingApplyPenalInterestBlock:settingApplyPenalInterestContainer:settingApplyPenalInterestField", "1.99");
-        form.setValue("settingApplyPenalOnBlock:settingApplyPenalOnContainer:settingApplyPenalOnField", ApplyPenalOn.WholeTerm);
+        form.setValue("settingLockInPeriodBlock:settingLockInPeriodContainer:settingLockInPeriodField", settingLockInPeriodValue);
+        form.setValue("settingLockInTypeBlock:settingLockInTypeContainer:settingLockInTypeField", settingLockInTypeValue);
+        form.setValue("settingMinimumDepositTermBlock:settingMinimumDepositTermContainer:settingMinimumDepositTermField", settingMinimumDepositTermValue);
+        form.setValue("settingMinimumDepositTypeBlock:settingMinimumDepositTypeContainer:settingMinimumDepositTypeField", settingMinimumDepositTypeValue);
+        form.setValue("settingInMultiplesOfBlock:settingInMultiplesOfContainer:settingInMultiplesOfField", settingInMultiplesOfValue);
+        form.setValue("settingInMultiplesTypeBlock:settingInMultiplesTypeContainer:settingInMultiplesTypeField", settingInMultiplesTypeValue);
+        form.setValue("settingMaximumDepositTermBlock:settingMaximumDepositTermContainer:settingMaximumDepositTermField", settingMaximumDepositTermValue);
+        form.setValue("settingMaximumDepositTypeBlock:settingMaximumDepositTypeContainer:settingMaximumDepositTypeField", settingMaximumDepositTypeValue);
+        form.setValue("settingApplyPenalInterestBlock:settingApplyPenalInterestContainer:settingApplyPenalInterestField", settingApplyPenalInterestValue);
+        form.setValue("settingApplyPenalOnBlock:settingApplyPenalOnContainer:settingApplyPenalOnField", settingApplyPenalOnValue);
 
         // Interest Rate Chart
 
-        Date fromDate = DateTime.now().plusDays(1).toDate();
-        Date endDate = DateTime.now().plusMonths(12).toDate();
-        form.setValue("interestRateValidFromDateBlock:interestRateValidFromDateContainer:interestRateValidFromDateField", DateFormatUtils.format(fromDate, "dd/MM/yyyy"));
-        form.setValue("interestRateValidEndDateBlock:interestRateValidEndDateContainer:interestRateValidEndDateField", DateFormatUtils.format(endDate, "dd/MM/yyyy"));
+        form.setValue("interestRateValidFromDateBlock:interestRateValidFromDateContainer:interestRateValidFromDateField", DateFormatUtils.format(interestRateValidFromDateValue, "dd/MM/yyyy"));
+        form.setValue("interestRateValidEndDateBlock:interestRateValidEndDateContainer:interestRateValidEndDateField", DateFormatUtils.format(interestRateValidEndDateValue, "dd/MM/yyyy"));
 
         form.submit("saveButton");
 
@@ -110,16 +132,6 @@ public class FixedDepositCreatePageTest {
     @Test
     public void dataEntryMaximumGroupByPrice() {
         this.wicket.login();
-
-        // https://mifosforge.jira.com/wiki/spaces/docs/pages/121831466/Interest+rate+chart+with+amount+range
-        // acc_product_mapping
-        // m_deposit_product_interest_rate_chart
-        // m_savings_product_charge
-        // m_interest_incentives
-        // m_deposit_product_term_and_preclosure
-        // m_interest_rate_slab
-        // m_savings_product
-        // m_interest_rate_chart
 
         FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
 
@@ -137,11 +149,20 @@ public class FixedDepositCreatePageTest {
         double termDefaultDepositAmountValue = 1000.99;
         double termMinimumDepositAmountValue = 1;
         double termMaximumDepositAmountValue = 10000000000.99;
+        InterestCompoundingPeriod termInterestCompoundingPeriodValue = InterestCompoundingPeriod.Annually;
+        InterestPostingPeriod termInterestPostingPeriodValue = InterestPostingPeriod.Annually;
+        InterestCalculatedUsing termInterestCalculatedUsingValue = InterestCalculatedUsing.AverageDailyBalance;
+        DayInYear termDayInYearValue = DayInYear.D365;
         int settingLockInPeriodValue = 1;
+        LockInPeriod settingLockInTypeValue = LockInPeriod.Month;
         int settingMinimumDepositTermValue = 12;
+        LockInPeriod settingMinimumDepositTypeValue = LockInPeriod.Month;
         int settingInMultiplesOfValue = 1;
+        LockInPeriod settingInMultiplesTypeValue = LockInPeriod.Month;
         int settingMaximumDepositTermValue = 240;
+        LockInPeriod settingMaximumDepositTypeValue = LockInPeriod.Month;
         double settingApplyPenalInterestValue = 1.99;
+        ApplyPenalOn settingApplyPenalOnValue = ApplyPenalOn.WholeTerm;
         boolean settingForPreMatureClosureValue = true;
         Date interestRateValidFromDateValue = DateTime.now().toDate();
         Date interestRateValidEndDateValue = DateTime.now().plusMonths(12).toDate();
@@ -183,22 +204,22 @@ public class FixedDepositCreatePageTest {
         form.setValue("termDefaultDepositAmountBlock:termDefaultDepositAmountContainer:termDefaultDepositAmountField", termDefaultDepositAmountValue);
         form.setValue("termMinimumDepositAmountBlock:termMinimumDepositAmountContainer:termMinimumDepositAmountField", termMinimumDepositAmountValue);
         form.setValue("termMaximumDepositAmountBlock:termMaximumDepositAmountContainer:termMaximumDepositAmountField", termMaximumDepositAmountValue);
-        form.setValue("termInterestCompoundingPeriodBlock:termInterestCompoundingPeriodContainer:termInterestCompoundingPeriodField", InterestCompoundingPeriod.Annually);
-        form.setValue("termInterestPostingPeriodBlock:termInterestPostingPeriodContainer:termInterestPostingPeriodField", InterestPostingPeriod.Annually);
-        form.setValue("termInterestCalculatedUsingBlock:termInterestCalculatedUsingContainer:termInterestCalculatedUsingField", InterestCalculatedUsing.AverageDailyBalance);
-        form.setValue("termDayInYearBlock:termDayInYearContainer:termDayInYearField", DayInYear.D365);
+        form.setValue("termInterestCompoundingPeriodBlock:termInterestCompoundingPeriodContainer:termInterestCompoundingPeriodField", termInterestCompoundingPeriodValue);
+        form.setValue("termInterestPostingPeriodBlock:termInterestPostingPeriodContainer:termInterestPostingPeriodField", termInterestPostingPeriodValue);
+        form.setValue("termInterestCalculatedUsingBlock:termInterestCalculatedUsingContainer:termInterestCalculatedUsingField", termInterestCalculatedUsingValue);
+        form.setValue("termDayInYearBlock:termDayInYearContainer:termDayInYearField", termDayInYearValue);
 
         // Settings
         form.setValue("settingLockInPeriodBlock:settingLockInPeriodContainer:settingLockInPeriodField", settingLockInPeriodValue);
-        form.setValue("settingLockInTypeBlock:settingLockInTypeContainer:settingLockInTypeField", LockInPeriod.Month);
+        form.setValue("settingLockInTypeBlock:settingLockInTypeContainer:settingLockInTypeField", settingLockInTypeValue);
         form.setValue("settingMinimumDepositTermBlock:settingMinimumDepositTermContainer:settingMinimumDepositTermField", settingMinimumDepositTermValue);
-        form.setValue("settingMinimumDepositTypeBlock:settingMinimumDepositTypeContainer:settingMinimumDepositTypeField", LockInPeriod.Month);
+        form.setValue("settingMinimumDepositTypeBlock:settingMinimumDepositTypeContainer:settingMinimumDepositTypeField", settingMinimumDepositTypeValue);
         form.setValue("settingInMultiplesOfBlock:settingInMultiplesOfContainer:settingInMultiplesOfField", settingInMultiplesOfValue);
-        form.setValue("settingInMultiplesTypeBlock:settingInMultiplesTypeContainer:settingInMultiplesTypeField", LockInPeriod.Month);
+        form.setValue("settingInMultiplesTypeBlock:settingInMultiplesTypeContainer:settingInMultiplesTypeField", settingInMultiplesTypeValue);
         form.setValue("settingMaximumDepositTermBlock:settingMaximumDepositTermContainer:settingMaximumDepositTermField", settingMaximumDepositTermValue);
-        form.setValue("settingMaximumDepositTypeBlock:settingMaximumDepositTypeContainer:settingMaximumDepositTypeField", LockInPeriod.Month);
+        form.setValue("settingMaximumDepositTypeBlock:settingMaximumDepositTypeContainer:settingMaximumDepositTypeField", settingMaximumDepositTypeValue);
         form.setValue("settingApplyPenalInterestBlock:settingApplyPenalInterestContainer:settingApplyPenalInterestField", settingApplyPenalInterestValue);
-        form.setValue("settingApplyPenalOnBlock:settingApplyPenalOnContainer:settingApplyPenalOnField", ApplyPenalOn.WholeTerm);
+        form.setValue("settingApplyPenalOnBlock:settingApplyPenalOnContainer:settingApplyPenalOnField", settingApplyPenalOnValue);
         form.setValue("settingWithholdTaxApplicableBlock:settingWithholdTaxApplicableContainer:settingWithholdTaxApplicableField", settingWithholdTaxApplicableValue);
         form.setValue("settingTaxGroupBlock:settingTaxGroupContainer:settingTaxGroupField", settingTaxGroupValue);
         form.setValue("settingForPreMatureClosureBlock:settingForPreMatureClosureContainer:settingForPreMatureClosureField", settingForPreMatureClosureValue);
@@ -223,7 +244,7 @@ public class FixedDepositCreatePageTest {
             item.put("interest", interest);
             item.put("description", "JUNIT_" + this.wicket.getStringGenerator().generate(10));
             List<Map<String, Object>> interestRate = Lists.newArrayList();
-            int operand = 100;
+            String operand = "100";
             Map<String, Object> rateItem = Maps.newHashMap();
             rateItem.put("attribute", new Option(Attribute.Age.name(), Attribute.Age.getDescription()));
             rateItem.put("operator", new Option(Operator.GreaterThan.name(), Operator.GreaterThan.getDescription()));
@@ -246,7 +267,7 @@ public class FixedDepositCreatePageTest {
             item.put("interest", interest);
             item.put("description", "JUNIT_" + this.wicket.getStringGenerator().generate(10));
             List<Map<String, Object>> interestRate = Lists.newArrayList();
-            int operand = 100;
+            String operand = "100";
             Map<String, Object> rateItem = Maps.newHashMap();
             rateItem.put("attribute", new Option(Attribute.Age.name(), Attribute.Age.getDescription()));
             rateItem.put("operator", new Option(Operator.GreaterThan.name(), Operator.GreaterThan.getDescription()));
@@ -323,16 +344,6 @@ public class FixedDepositCreatePageTest {
     public void dataEntryMaximumPeriod() {
         this.wicket.login();
 
-        // https://mifosforge.jira.com/wiki/spaces/docs/pages/121831466/Interest+rate+chart+with+amount+range
-        // acc_product_mapping
-        // m_deposit_product_interest_rate_chart
-        // m_savings_product_charge
-        // m_interest_incentives
-        // m_deposit_product_term_and_preclosure
-        // m_interest_rate_slab
-        // m_savings_product
-        // m_interest_rate_chart
-
         FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
 
         JUnitFormTester form = null;
@@ -340,8 +351,35 @@ public class FixedDepositCreatePageTest {
         String detailProductNameValue = "FIXED_DEPOSIT_PRODUCT_" + this.wicket.getStringGenerator().generate(10);
         String detailShortNameValue = this.wicket.getStringGenerator().generate(4);
         String detailDescriptionValue = detailProductNameValue;
-        String settingTaxGroupValue = this.wicket.getJdbcTemplate().queryForObject("SELECT id FROM m_tax_group LIMIT 1", String.class);
+
         String currencyCodeValue = "USD";
+        int currencyDecimalPlaceValue = 2;
+        int currencyMultipleOfValue = 1;
+
+        double termDefaultDepositAmountValue = 1000.99;
+        double termMinimumDepositAmountValue = 1;
+        double termMaximumDepositAmountValue = 10000000000.99;
+        InterestCompoundingPeriod termInterestCompoundingPeriodValue = InterestCompoundingPeriod.Annually;
+        InterestPostingPeriod termInterestPostingPeriodValue = InterestPostingPeriod.Annually;
+        InterestCalculatedUsing termInterestCalculatedUsingValue = InterestCalculatedUsing.AverageDailyBalance;
+        DayInYear termDayInYearValue = DayInYear.D365;
+
+        int settingLockInPeriodValue = 1;
+        LockInPeriod settingLockInTypeValue = LockInPeriod.Month;
+        int settingMinimumDepositTermValue = 12;
+        LockInPeriod settingMinimumDepositTypeValue = LockInPeriod.Month;
+        int settingInMultiplesOfValue = 1;
+        LockInPeriod settingInMultiplesTypeValue = LockInPeriod.Month;
+        int settingMaximumDepositTermValue = 240;
+        LockInPeriod settingMaximumDepositTypeValue = LockInPeriod.Month;
+        double settingApplyPenalInterestValue = 1.99;
+        ApplyPenalOn settingApplyPenalOnValue = ApplyPenalOn.WholeTerm;
+        boolean settingForPreMatureClosureValue = true;
+
+        Date interestRateValidFromDateValue = DateTime.now().toDate();
+        Date interestRateValidEndDateValue = DateTime.now().plusMonths(12).toDate();
+
+        String settingTaxGroupValue = this.wicket.getJdbcTemplate().queryForObject("SELECT id FROM m_tax_group LIMIT 1", String.class);
         Boolean settingWithholdTaxApplicableValue = true;
         int accountingValue = 1;
         {
@@ -374,39 +412,37 @@ public class FixedDepositCreatePageTest {
 
         // Currency
         form.setValue("currencyCodeBlock:currencyCodeContainer:currencyCodeField", currencyCodeValue);
-        form.setValue("currencyDecimalPlaceBlock:currencyDecimalPlaceContainer:currencyDecimalPlaceField", "2");
-        form.setValue("currencyMultipleOfBlock:currencyMultipleOfContainer:currencyMultipleOfField", "1");
+        form.setValue("currencyDecimalPlaceBlock:currencyDecimalPlaceContainer:currencyDecimalPlaceField", currencyDecimalPlaceValue);
+        form.setValue("currencyMultipleOfBlock:currencyMultipleOfContainer:currencyMultipleOfField", currencyMultipleOfValue);
 
         // Terms
-        form.setValue("termDefaultDepositAmountBlock:termDefaultDepositAmountContainer:termDefaultDepositAmountField", "1000.99");
-        form.setValue("termMinimumDepositAmountBlock:termMinimumDepositAmountContainer:termMinimumDepositAmountField", "1");
-        form.setValue("termMaximumDepositAmountBlock:termMaximumDepositAmountContainer:termMaximumDepositAmountField", "10000000000.99");
-        form.setValue("termInterestCompoundingPeriodBlock:termInterestCompoundingPeriodContainer:termInterestCompoundingPeriodField", InterestCompoundingPeriod.Annually);
-        form.setValue("termInterestPostingPeriodBlock:termInterestPostingPeriodContainer:termInterestPostingPeriodField", InterestPostingPeriod.Annually);
-        form.setValue("termInterestCalculatedUsingBlock:termInterestCalculatedUsingContainer:termInterestCalculatedUsingField", InterestCalculatedUsing.AverageDailyBalance);
-        form.setValue("termDayInYearBlock:termDayInYearContainer:termDayInYearField", DayInYear.D365);
+        form.setValue("termDefaultDepositAmountBlock:termDefaultDepositAmountContainer:termDefaultDepositAmountField", termDefaultDepositAmountValue);
+        form.setValue("termMinimumDepositAmountBlock:termMinimumDepositAmountContainer:termMinimumDepositAmountField", termMinimumDepositAmountValue);
+        form.setValue("termMaximumDepositAmountBlock:termMaximumDepositAmountContainer:termMaximumDepositAmountField", termMaximumDepositAmountValue);
+        form.setValue("termInterestCompoundingPeriodBlock:termInterestCompoundingPeriodContainer:termInterestCompoundingPeriodField", termInterestCompoundingPeriodValue);
+        form.setValue("termInterestPostingPeriodBlock:termInterestPostingPeriodContainer:termInterestPostingPeriodField", termInterestPostingPeriodValue);
+        form.setValue("termInterestCalculatedUsingBlock:termInterestCalculatedUsingContainer:termInterestCalculatedUsingField", termInterestCalculatedUsingValue);
+        form.setValue("termDayInYearBlock:termDayInYearContainer:termDayInYearField", termDayInYearValue);
 
         // Settings
-        form.setValue("settingLockInPeriodBlock:settingLockInPeriodContainer:settingLockInPeriodField", "1");
-        form.setValue("settingLockInTypeBlock:settingLockInTypeContainer:settingLockInTypeField", LockInPeriod.Month);
-        form.setValue("settingMinimumDepositTermBlock:settingMinimumDepositTermContainer:settingMinimumDepositTermField", "12");
-        form.setValue("settingMinimumDepositTypeBlock:settingMinimumDepositTypeContainer:settingMinimumDepositTypeField", LockInPeriod.Month);
-        form.setValue("settingInMultiplesOfBlock:settingInMultiplesOfContainer:settingInMultiplesOfField", "1");
-        form.setValue("settingInMultiplesTypeBlock:settingInMultiplesTypeContainer:settingInMultiplesTypeField", LockInPeriod.Month);
-        form.setValue("settingMaximumDepositTermBlock:settingMaximumDepositTermContainer:settingMaximumDepositTermField", "240");
-        form.setValue("settingMaximumDepositTypeBlock:settingMaximumDepositTypeContainer:settingMaximumDepositTypeField", LockInPeriod.Month);
-        form.setValue("settingApplyPenalInterestBlock:settingApplyPenalInterestContainer:settingApplyPenalInterestField", "1.99");
-        form.setValue("settingApplyPenalOnBlock:settingApplyPenalOnContainer:settingApplyPenalOnField", ApplyPenalOn.WholeTerm);
+        form.setValue("settingLockInPeriodBlock:settingLockInPeriodContainer:settingLockInPeriodField", settingLockInPeriodValue);
+        form.setValue("settingLockInTypeBlock:settingLockInTypeContainer:settingLockInTypeField", settingLockInTypeValue);
+        form.setValue("settingMinimumDepositTermBlock:settingMinimumDepositTermContainer:settingMinimumDepositTermField", settingMinimumDepositTermValue);
+        form.setValue("settingMinimumDepositTypeBlock:settingMinimumDepositTypeContainer:settingMinimumDepositTypeField", settingMinimumDepositTypeValue);
+        form.setValue("settingInMultiplesOfBlock:settingInMultiplesOfContainer:settingInMultiplesOfField", settingInMultiplesOfValue);
+        form.setValue("settingInMultiplesTypeBlock:settingInMultiplesTypeContainer:settingInMultiplesTypeField", settingInMultiplesTypeValue);
+        form.setValue("settingMaximumDepositTermBlock:settingMaximumDepositTermContainer:settingMaximumDepositTermField", settingMaximumDepositTermValue);
+        form.setValue("settingMaximumDepositTypeBlock:settingMaximumDepositTypeContainer:settingMaximumDepositTypeField", settingMaximumDepositTypeValue);
+        form.setValue("settingApplyPenalInterestBlock:settingApplyPenalInterestContainer:settingApplyPenalInterestField", settingApplyPenalInterestValue);
+        form.setValue("settingApplyPenalOnBlock:settingApplyPenalOnContainer:settingApplyPenalOnField", settingApplyPenalOnValue);
         form.setValue("settingWithholdTaxApplicableBlock:settingWithholdTaxApplicableContainer:settingWithholdTaxApplicableField", settingWithholdTaxApplicableValue);
         form.setValue("settingTaxGroupBlock:settingTaxGroupContainer:settingTaxGroupField", settingTaxGroupValue);
-        form.setValue("settingForPreMatureClosureBlock:settingForPreMatureClosureContainer:settingForPreMatureClosureField", true);
+        form.setValue("settingForPreMatureClosureBlock:settingForPreMatureClosureContainer:settingForPreMatureClosureField", settingForPreMatureClosureValue);
 
         // Interest Rate Chart
 
-        Date fromDate = DateTime.now().toDate();
-        Date endDate = DateTime.now().plusMonths(12).toDate();
-        form.setValue("interestRateValidFromDateBlock:interestRateValidFromDateContainer:interestRateValidFromDateField", DateFormatUtils.format(fromDate, "dd/MM/yyyy"));
-        form.setValue("interestRateValidEndDateBlock:interestRateValidEndDateContainer:interestRateValidEndDateField", DateFormatUtils.format(endDate, "dd/MM/yyyy"));
+        form.setValue("interestRateValidFromDateBlock:interestRateValidFromDateContainer:interestRateValidFromDateField", DateFormatUtils.format(interestRateValidFromDateValue, "dd/MM/yyyy"));
+        form.setValue("interestRateValidEndDateBlock:interestRateValidEndDateContainer:interestRateValidEndDateField", DateFormatUtils.format(interestRateValidEndDateValue, "dd/MM/yyyy"));
         form.setValue("interestRatePrimaryGroupingByAmountBlock:interestRatePrimaryGroupingByAmountContainer:interestRatePrimaryGroupingByAmountField", false);
 
         {
