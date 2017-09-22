@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -356,11 +355,6 @@ public class RecurringDepositCreatePage extends Page {
     private Select2SingleChoice<Option> cashInterestOnSavingsField;
     private TextFeedbackPanel cashInterestOnSavingsFeedback;
 
-    private SingleChoiceProvider cashInterestOnSavingProvider;
-    private Option cashInterestOnSavingValue;
-    private Select2SingleChoice<Option> cashInterestOnSavingField;
-    private TextFeedbackPanel cashInterestOnSavingFeedback;
-
     private SingleChoiceProvider cashIncomeFromFeesProvider;
     private Option cashIncomeFromFeesValue;
     private Select2SingleChoice<Option> cashIncomeFromFeesField;
@@ -394,16 +388,16 @@ public class RecurringDepositCreatePage extends Page {
     private AjaxLink<Void> advancedAccountingRulePenaltyIncomeAddLink;
     private ModalWindow penaltyIncomePopup;
 
-    private Option itemChargeValue;
-    private Option itemPeriodTypeValue;
-    private Date itemPeriodFromValue;
-    private Date itemPeriodToValue;
-    private Double itemAmountRangeFromValue;
-    private Double itemAmountRangeToValue;
-    private Double itemInterestValue;
-    private String itemDescriptionValue;
-    private Option itemPaymentValue;
-    private Option itemAccountValue;
+    protected Option itemChargeValue;
+    protected Option itemPeriodTypeValue;
+    protected Integer itemPeriodFromValue;
+    protected Integer itemPeriodToValue;
+    protected Integer itemAmountRangeFromValue;
+    protected Integer itemAmountRangeToValue;
+    protected Double itemInterestValue;
+    protected String itemDescriptionValue;
+    protected Option itemPaymentValue;
+    protected Option itemAccountValue;
 
     private ModalWindow currencyPopup;
 
@@ -456,7 +450,6 @@ public class RecurringDepositCreatePage extends Page {
         this.form.add(this.closeLink);
 
         this.currencyPopup = new ModalWindow("currencyPopup");
-        this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
         add(this.currencyPopup);
 
         initDetail();
@@ -580,7 +573,6 @@ public class RecurringDepositCreatePage extends Page {
         {
             this.fundSourcePopup = new ModalWindow("fundSourcePopup");
             add(this.fundSourcePopup);
-            this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this));
             this.fundSourcePopup.setOnClose(this::fundSourcePopupOnClose);
 
             List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFundSourceColumn = Lists.newArrayList();
@@ -681,6 +673,7 @@ public class RecurringDepositCreatePage extends Page {
             this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
         } else {
+            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
             this.currencyPopup.show(target);
         }
         return false;
@@ -688,12 +681,12 @@ public class RecurringDepositCreatePage extends Page {
 
     protected ItemPanel advancedAccountingRulePenaltyIncomeChargeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel advancedAccountingRulePenaltyIncomeAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected void advancedAccountingRulePenaltyIncomeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
@@ -726,6 +719,7 @@ public class RecurringDepositCreatePage extends Page {
             this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
         } else {
+            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
             this.currencyPopup.show(target);
         }
         return false;
@@ -733,12 +727,12 @@ public class RecurringDepositCreatePage extends Page {
 
     protected ItemPanel advancedAccountingRuleFeeIncomeChargeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel advancedAccountingRuleFeeIncomeAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected void advancedAccountingRuleFeeIncomeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
@@ -780,18 +774,19 @@ public class RecurringDepositCreatePage extends Page {
     }
 
     protected boolean advancedAccountingRuleFundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this));
         this.fundSourcePopup.show(target);
         return false;
     }
 
     protected ItemPanel advancedAccountingRuleFundSourcePaymentColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel advancedAccountingRuleFundSourceAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected List<ActionItem> fundSourceActionItem(String s, Map<String, Object> stringObjectMap) {
@@ -881,6 +876,7 @@ public class RecurringDepositCreatePage extends Page {
             this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
+            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
             this.currencyPopup.show(target);
         }
         return false;
@@ -888,43 +884,27 @@ public class RecurringDepositCreatePage extends Page {
 
     protected ItemPanel chargeNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Number value = (Number) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value.doubleValue())));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeCollectColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected void chargeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
@@ -989,7 +969,6 @@ public class RecurringDepositCreatePage extends Page {
         this.interestRateChartPopup.setInitialHeight(600);
         this.interestRateChartPopup.setInitialWidth(1000);
         add(this.interestRateChartPopup);
-        this.interestRateChartPopup.setContent(new InterestRateChartPopup(this.interestRateChartPopup.getContentId(), this.interestRateChartPopup, this));
         this.interestRateChartPopup.setOnClose(this::interestRateChartPopupOnClose);
 
         this.incentivePopup = new ModalWindow("incentivePopup");
@@ -1035,7 +1014,7 @@ public class RecurringDepositCreatePage extends Page {
         item.put("amountRangeTo", this.itemAmountRangeToValue);
         item.put("interest", this.itemInterestValue);
         item.put("description", this.itemDescriptionValue);
-        item.put("interestRate", Lists.newArrayList());
+        item.put("interestRate", Lists.newLinkedList());
         this.interestRateChartValue.add(item);
         target.add(this.interestRateChartTable);
     }
@@ -1048,67 +1027,44 @@ public class RecurringDepositCreatePage extends Page {
         this.itemAmountRangeToValue = null;
         this.itemInterestValue = null;
         this.itemDescriptionValue = null;
+        this.interestRateChartPopup.setContent(new InterestRateChartPopup(this.interestRateChartPopup.getContentId(), this.interestRateChartPopup, this));
         this.interestRateChartPopup.show(target);
         return false;
     }
 
     protected ItemPanel interestRateChartPeriodTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Option value = (Option) model.get(jdbcColumn);
-        return new TextCell(Model.of(value == null ? "" : value.getText()));
+        return new TextCell(value == null ? "" : value.getText());
     }
 
     protected ItemPanel interestRateChartPeriodFromColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date value = (Date) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(value)));
-        }
+        Integer value = (Integer) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     protected ItemPanel interestRateChartPeriodToColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date value = (Date) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(value)));
-        }
+        Integer value = (Integer) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     protected ItemPanel interestRateChartAmountRangeFromColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        Integer value = (Integer) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     protected ItemPanel interestRateChartAmountRangeToColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        Integer value = (Integer) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     protected ItemPanel interestRateChartInterestColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel interestRateChartDescriptionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected void interestRateChartActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget target) {
@@ -1618,20 +1574,24 @@ public class RecurringDepositCreatePage extends Page {
 
         // Interest Rate Chart
 
+        builder.withFromDate(this.interestRateValidFromDateValue);
+        builder.withEndDate(this.interestRateValidEndDateValue);
+
+        builder.withPrimaryGroupingByAmount(this.interestRatePrimaryGroupingByAmountValue == null ? false : this.interestRatePrimaryGroupingByAmountValue);
+
         for (Map<String, Object> interestRateChart : this.interestRateChartValue) {
-            // LockInPeriod
             Option periodTypeOption = (Option) interestRateChart.get("periodType");
             LockInPeriod periodType = periodTypeOption == null ? null : LockInPeriod.valueOf(periodTypeOption.getId());
-            Date fromPeriod = (Date) interestRateChart.get("periodFrom");
-            Date toPeriod = (Date) interestRateChart.get("periodTo");
-            Double amountRangeFrom = (Double) interestRateChart.get("amountRangeFrom");
-            Double amountRangeTo = (Double) interestRateChart.get("amountRangeTo");
+            Integer fromPeriod = (Integer) interestRateChart.get("periodFrom");
+            Integer toPeriod = (Integer) interestRateChart.get("periodTo");
+            Integer amountRangeFrom = (Integer) interestRateChart.get("amountRangeFrom");
+            Integer amountRangeTo = (Integer) interestRateChart.get("amountRangeTo");
             Double annualInterestRate = (Double) interestRateChart.get("interest");
             String description = (String) interestRateChart.get("description");
             List<Map<String, Object>> interestRate = (List<Map<String, Object>>) interestRateChart.get("interestRate");
             List<JSONObject> incentives = null;
             if (interestRate != null && !interestRate.isEmpty()) {
-                incentives = Lists.newArrayList();
+                incentives = Lists.newLinkedList();
                 for (Map<String, Object> rate : interestRate) {
 
                     IncentiveBuilder incentiveBuilder = new IncentiveBuilder();
@@ -1688,8 +1648,8 @@ public class RecurringDepositCreatePage extends Page {
             if (this.cashSavingsTransfersInSuspenseValue != null) {
                 builder.withTransfersInSuspenseAccountId(this.cashSavingsTransfersInSuspenseValue.getId());
             }
-            if (this.cashInterestOnSavingValue != null) {
-                builder.withInterestOnSavingsAccountId(this.cashInterestOnSavingValue.getId());
+            if (this.cashInterestOnSavingsValue != null) {
+                builder.withInterestOnSavingsAccountId(this.cashInterestOnSavingsValue.getId());
             }
             if (this.cashIncomeFromFeesValue != null) {
                 builder.withIncomeFromFeeAccountId(this.cashIncomeFromFeesValue.getId());

@@ -1005,7 +1005,7 @@ public class FixedDepositCreatePage extends Page {
 
     protected ItemPanel interestRateChartPeriodTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Option value = (Option) model.get(jdbcColumn);
-        return new TextCell(Model.of(value == null ? "" : value.getText()));
+        return new TextCell(value == null ? "" : value.getText());
     }
 
     protected ItemPanel interestRateChartPeriodFromColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -1019,12 +1019,12 @@ public class FixedDepositCreatePage extends Page {
     }
 
     protected ItemPanel interestRateChartAmountRangeFromColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double value = (Double) model.get(jdbcColumn);
+        Integer value = (Integer) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
     protected ItemPanel interestRateChartAmountRangeToColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double value = (Double) model.get(jdbcColumn);
+        Integer value = (Integer) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
