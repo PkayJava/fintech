@@ -77,291 +77,291 @@ public class SavingCreatePage extends Page {
     public static final String ACC_NONE = "None";
     public static final String ACC_CASH = "Cash";
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
     // Detail
 
-    private WebMarkupContainer detailProductNameBlock;
-    private WebMarkupContainer detailProductNameContainer;
-    private String detailProductNameValue;
-    private TextField<String> detailProductNameField;
-    private TextFeedbackPanel detailProductNameFeedback;
+    protected WebMarkupContainer detailProductNameBlock;
+    protected WebMarkupContainer detailProductNameContainer;
+    protected String detailProductNameValue;
+    protected TextField<String> detailProductNameField;
+    protected TextFeedbackPanel detailProductNameFeedback;
 
-    private WebMarkupContainer detailShortNameBlock;
-    private WebMarkupContainer detailShortNameContainer;
-    private String detailShortNameValue;
-    private TextField<String> detailShortNameField;
-    private TextFeedbackPanel detailShortNameFeedback;
+    protected WebMarkupContainer detailShortNameBlock;
+    protected WebMarkupContainer detailShortNameContainer;
+    protected String detailShortNameValue;
+    protected TextField<String> detailShortNameField;
+    protected TextFeedbackPanel detailShortNameFeedback;
 
-    private WebMarkupContainer detailDescriptionBlock;
-    private WebMarkupContainer detailDescriptionContainer;
-    private String detailDescriptionValue;
-    private TextField<String> detailDescriptionField;
-    private TextFeedbackPanel detailDescriptionFeedback;
+    protected WebMarkupContainer detailDescriptionBlock;
+    protected WebMarkupContainer detailDescriptionContainer;
+    protected String detailDescriptionValue;
+    protected TextField<String> detailDescriptionField;
+    protected TextFeedbackPanel detailDescriptionFeedback;
 
     // Currency
 
-    private WebMarkupContainer currencyCodeBlock;
-    private WebMarkupContainer currencyCodeContainer;
-    private SingleChoiceProvider currencyCodeProvider;
-    private Option currencyCodeValue;
-    private Select2SingleChoice<Option> currencyCodeField;
-    private TextFeedbackPanel currencyCodeFeedback;
+    protected WebMarkupContainer currencyCodeBlock;
+    protected WebMarkupContainer currencyCodeContainer;
+    protected SingleChoiceProvider currencyCodeProvider;
+    protected Option currencyCodeValue;
+    protected Select2SingleChoice<Option> currencyCodeField;
+    protected TextFeedbackPanel currencyCodeFeedback;
 
-    private WebMarkupContainer currencyDecimalPlaceBlock;
-    private WebMarkupContainer currencyDecimalPlaceContainer;
-    private Integer currencyDecimalPlaceValue;
-    private TextField<Integer> currencyDecimalPlaceField;
-    private TextFeedbackPanel currencyDecimalPlaceFeedback;
+    protected WebMarkupContainer currencyDecimalPlaceBlock;
+    protected WebMarkupContainer currencyDecimalPlaceContainer;
+    protected Integer currencyDecimalPlaceValue;
+    protected TextField<Integer> currencyDecimalPlaceField;
+    protected TextFeedbackPanel currencyDecimalPlaceFeedback;
 
-    private WebMarkupContainer currencyMultipleOfBlock;
-    private WebMarkupContainer currencyMultipleOfContainer;
-    private Integer currencyMultipleOfValue;
-    private TextField<Integer> currencyMultipleOfField;
-    private TextFeedbackPanel currencyMultipleOfFeedback;
+    protected WebMarkupContainer currencyMultipleOfBlock;
+    protected WebMarkupContainer currencyMultipleOfContainer;
+    protected Integer currencyMultipleOfValue;
+    protected TextField<Integer> currencyMultipleOfField;
+    protected TextFeedbackPanel currencyMultipleOfFeedback;
 
     // Terms
 
-    private WebMarkupContainer termNominalAnnualInterestBlock;
-    private WebMarkupContainer termNominalAnnualInterestContainer;
-    private Double termNominalAnnualInterestValue;
-    private TextField<Double> termNominalAnnualInterestField;
-    private TextFeedbackPanel termNominalAnnualInterestFeedback;
+    protected WebMarkupContainer termNominalAnnualInterestBlock;
+    protected WebMarkupContainer termNominalAnnualInterestContainer;
+    protected Double termNominalAnnualInterestValue;
+    protected TextField<Double> termNominalAnnualInterestField;
+    protected TextFeedbackPanel termNominalAnnualInterestFeedback;
 
-    private WebMarkupContainer termInterestCompoundingPeriodBlock;
-    private WebMarkupContainer termInterestCompoundingPeriodContainer;
-    private InterestCompoundingPeriodProvider termInterestCompoundingPeriodProvider;
-    private Option termInterestCompoundingPeriodValue;
-    private Select2SingleChoice<Option> termInterestCompoundingPeriodField;
-    private TextFeedbackPanel termInterestCompoundingPeriodFeedback;
+    protected WebMarkupContainer termInterestCompoundingPeriodBlock;
+    protected WebMarkupContainer termInterestCompoundingPeriodContainer;
+    protected InterestCompoundingPeriodProvider termInterestCompoundingPeriodProvider;
+    protected Option termInterestCompoundingPeriodValue;
+    protected Select2SingleChoice<Option> termInterestCompoundingPeriodField;
+    protected TextFeedbackPanel termInterestCompoundingPeriodFeedback;
 
-    private WebMarkupContainer termInterestCalculatedUsingBlock;
-    private WebMarkupContainer termInterestCalculatedUsingContainer;
-    private InterestCalculatedUsingProvider termInterestCalculatedUsingProvider;
-    private Option termInterestCalculatedUsingValue;
-    private Select2SingleChoice<Option> termInterestCalculatedUsingField;
-    private TextFeedbackPanel termInterestCalculatedUsingFeedback;
+    protected WebMarkupContainer termInterestCalculatedUsingBlock;
+    protected WebMarkupContainer termInterestCalculatedUsingContainer;
+    protected InterestCalculatedUsingProvider termInterestCalculatedUsingProvider;
+    protected Option termInterestCalculatedUsingValue;
+    protected Select2SingleChoice<Option> termInterestCalculatedUsingField;
+    protected TextFeedbackPanel termInterestCalculatedUsingFeedback;
 
-    private WebMarkupContainer termInterestPostingPeriodBlock;
-    private WebMarkupContainer termInterestPostingPeriodContainer;
-    private InterestPostingPeriodProvider termInterestPostingPeriodProvider;
-    private Option termInterestPostingPeriodValue;
-    private Select2SingleChoice<Option> termInterestPostingPeriodField;
-    private TextFeedbackPanel termInterestPostingPeriodFeedback;
+    protected WebMarkupContainer termInterestPostingPeriodBlock;
+    protected WebMarkupContainer termInterestPostingPeriodContainer;
+    protected InterestPostingPeriodProvider termInterestPostingPeriodProvider;
+    protected Option termInterestPostingPeriodValue;
+    protected Select2SingleChoice<Option> termInterestPostingPeriodField;
+    protected TextFeedbackPanel termInterestPostingPeriodFeedback;
 
-    private WebMarkupContainer termDaysInYearBlock;
-    private WebMarkupContainer termDaysInYearContainer;
-    private DayInYearProvider termDaysInYearProvider;
-    private Option termDaysInYearValue;
-    private Select2SingleChoice<Option> termDaysInYearField;
-    private TextFeedbackPanel termDaysInYearFeedback;
+    protected WebMarkupContainer termDaysInYearBlock;
+    protected WebMarkupContainer termDaysInYearContainer;
+    protected DayInYearProvider termDaysInYearProvider;
+    protected Option termDaysInYearValue;
+    protected Select2SingleChoice<Option> termDaysInYearField;
+    protected TextFeedbackPanel termDaysInYearFeedback;
 
     // Settings
 
-    private WebMarkupContainer settingMinimumOpeningBalanceBlock;
-    private WebMarkupContainer settingMinimumOpeningBalanceContainer;
-    private String settingMinimumOpeningBalanceValue;
-    private TextField<String> settingMinimumOpeningBalanceField;
-    private TextFeedbackPanel settingMinimumOpeningBalanceFeedback;
+    protected WebMarkupContainer settingMinimumOpeningBalanceBlock;
+    protected WebMarkupContainer settingMinimumOpeningBalanceContainer;
+    protected String settingMinimumOpeningBalanceValue;
+    protected TextField<String> settingMinimumOpeningBalanceField;
+    protected TextFeedbackPanel settingMinimumOpeningBalanceFeedback;
 
-    private WebMarkupContainer settingLockInPeriodBlock;
-    private WebMarkupContainer settingLockInPeriodContainer;
-    private String settingLockInPeriodValue;
-    private TextField<String> settingLockInPeriodField;
-    private TextFeedbackPanel settingLockInPeriodFeedback;
+    protected WebMarkupContainer settingLockInPeriodBlock;
+    protected WebMarkupContainer settingLockInPeriodContainer;
+    protected String settingLockInPeriodValue;
+    protected TextField<String> settingLockInPeriodField;
+    protected TextFeedbackPanel settingLockInPeriodFeedback;
 
-    private WebMarkupContainer settingLockInTypeBlock;
-    private WebMarkupContainer settingLockInTypeContainer;
-    private LockInTypeProvider settingLockInTypeProvider;
-    private Option settingLockInTypeValue;
-    private Select2SingleChoice<Option> settingLockInTypeField;
-    private TextFeedbackPanel settingLockInTypeFeedback;
+    protected WebMarkupContainer settingLockInTypeBlock;
+    protected WebMarkupContainer settingLockInTypeContainer;
+    protected LockInTypeProvider settingLockInTypeProvider;
+    protected Option settingLockInTypeValue;
+    protected Select2SingleChoice<Option> settingLockInTypeField;
+    protected TextFeedbackPanel settingLockInTypeFeedback;
 
-    private WebMarkupContainer settingApplyWithdrawalFeeForTransferBlock;
-    private WebMarkupContainer settingApplyWithdrawalFeeForTransferContainer;
-    private Boolean settingApplyWithdrawalFeeForTransferValue;
-    private CheckBox settingApplyWithdrawalFeeForTransferField;
-    private TextFeedbackPanel settingApplyWithdrawalFeeForTransferFeedback;
+    protected WebMarkupContainer settingApplyWithdrawalFeeForTransferBlock;
+    protected WebMarkupContainer settingApplyWithdrawalFeeForTransferContainer;
+    protected Boolean settingApplyWithdrawalFeeForTransferValue;
+    protected CheckBox settingApplyWithdrawalFeeForTransferField;
+    protected TextFeedbackPanel settingApplyWithdrawalFeeForTransferFeedback;
 
-    private WebMarkupContainer settingBalanceRequiredForInterestCalculationBlock;
-    private WebMarkupContainer settingBalanceRequiredForInterestCalculationContainer;
-    private String settingBalanceRequiredForInterestCalculationValue;
-    private TextField<String> settingBalanceRequiredForInterestCalculationField;
-    private TextFeedbackPanel settingBalanceRequiredForInterestCalculationFeedback;
+    protected WebMarkupContainer settingBalanceRequiredForInterestCalculationBlock;
+    protected WebMarkupContainer settingBalanceRequiredForInterestCalculationContainer;
+    protected String settingBalanceRequiredForInterestCalculationValue;
+    protected TextField<String> settingBalanceRequiredForInterestCalculationField;
+    protected TextFeedbackPanel settingBalanceRequiredForInterestCalculationFeedback;
 
-    private WebMarkupContainer settingEnforceMinimumBalanceBlock;
-    private WebMarkupContainer settingEnforceMinimumBalanceContainer;
-    private Boolean settingEnforceMinimumBalanceValue;
-    private CheckBox settingEnforceMinimumBalanceField;
-    private TextFeedbackPanel settingEnforceMinimumBalanceFeedback;
+    protected WebMarkupContainer settingEnforceMinimumBalanceBlock;
+    protected WebMarkupContainer settingEnforceMinimumBalanceContainer;
+    protected Boolean settingEnforceMinimumBalanceValue;
+    protected CheckBox settingEnforceMinimumBalanceField;
+    protected TextFeedbackPanel settingEnforceMinimumBalanceFeedback;
 
-    private WebMarkupContainer settingMinimumBalanceBlock;
-    private WebMarkupContainer settingMinimumBalanceContainer;
-    private String settingMinimumBalanceValue;
-    private TextField<String> settingMinimumBalanceField;
-    private TextFeedbackPanel settingMinimumBalanceFeedback;
+    protected WebMarkupContainer settingMinimumBalanceBlock;
+    protected WebMarkupContainer settingMinimumBalanceContainer;
+    protected String settingMinimumBalanceValue;
+    protected TextField<String> settingMinimumBalanceField;
+    protected TextFeedbackPanel settingMinimumBalanceFeedback;
 
-    private WebMarkupContainer settingOverdraftAllowedBlock;
-    private WebMarkupContainer settingOverdraftAllowedContainer;
-    private Boolean settingOverdraftAllowedValue;
-    private CheckBox settingOverdraftAllowedField;
-    private TextFeedbackPanel settingOverdraftAllowedFeedback;
+    protected WebMarkupContainer settingOverdraftAllowedBlock;
+    protected WebMarkupContainer settingOverdraftAllowedContainer;
+    protected Boolean settingOverdraftAllowedValue;
+    protected CheckBox settingOverdraftAllowedField;
+    protected TextFeedbackPanel settingOverdraftAllowedFeedback;
 
-    private WebMarkupContainer settingMaximumOverdraftAmountLimitBlock;
-    private WebMarkupContainer settingMaximumOverdraftAmountLimitContainer;
-    private String settingMaximumOverdraftAmountLimitValue;
-    private TextField<String> settingMaximumOverdraftAmountLimitField;
-    private TextFeedbackPanel settingMaximumOverdraftAmountLimitFeedback;
+    protected WebMarkupContainer settingMaximumOverdraftAmountLimitBlock;
+    protected WebMarkupContainer settingMaximumOverdraftAmountLimitContainer;
+    protected String settingMaximumOverdraftAmountLimitValue;
+    protected TextField<String> settingMaximumOverdraftAmountLimitField;
+    protected TextFeedbackPanel settingMaximumOverdraftAmountLimitFeedback;
 
-    private WebMarkupContainer settingNominalAnnualInterestForOverdraftBlock;
-    private WebMarkupContainer settingNominalAnnualInterestForOverdraftContainer;
-    private String settingNominalAnnualInterestForOverdraftValue;
-    private TextField<String> settingNominalAnnualInterestForOverdraftField;
-    private TextFeedbackPanel settingNominalAnnualInterestForOverdraftFeedback;
+    protected WebMarkupContainer settingNominalAnnualInterestForOverdraftBlock;
+    protected WebMarkupContainer settingNominalAnnualInterestForOverdraftContainer;
+    protected String settingNominalAnnualInterestForOverdraftValue;
+    protected TextField<String> settingNominalAnnualInterestForOverdraftField;
+    protected TextFeedbackPanel settingNominalAnnualInterestForOverdraftFeedback;
 
-    private WebMarkupContainer settingMinOverdraftRequiredForInterestCalculationBlock;
-    private WebMarkupContainer settingMinOverdraftRequiredForInterestCalculationContainer;
-    private String settingMinOverdraftRequiredForInterestCalculationValue;
-    private TextField<String> settingMinOverdraftRequiredForInterestCalculationField;
-    private TextFeedbackPanel settingMinOverdraftRequiredForInterestCalculationFeedback;
+    protected WebMarkupContainer settingMinOverdraftRequiredForInterestCalculationBlock;
+    protected WebMarkupContainer settingMinOverdraftRequiredForInterestCalculationContainer;
+    protected String settingMinOverdraftRequiredForInterestCalculationValue;
+    protected TextField<String> settingMinOverdraftRequiredForInterestCalculationField;
+    protected TextFeedbackPanel settingMinOverdraftRequiredForInterestCalculationFeedback;
 
-    private WebMarkupContainer settingWithholdTaxApplicableBlock;
-    private WebMarkupContainer settingWithholdTaxApplicableContainer;
-    private Boolean settingWithholdTaxApplicableValue;
-    private CheckBox settingWithholdTaxApplicableField;
-    private TextFeedbackPanel settingWithholdTaxApplicableFeedback;
+    protected WebMarkupContainer settingWithholdTaxApplicableBlock;
+    protected WebMarkupContainer settingWithholdTaxApplicableContainer;
+    protected Boolean settingWithholdTaxApplicableValue;
+    protected CheckBox settingWithholdTaxApplicableField;
+    protected TextFeedbackPanel settingWithholdTaxApplicableFeedback;
 
-    private WebMarkupContainer settingTaxGroupBlock;
-    private WebMarkupContainer settingTaxGroupContainer;
-    private SingleChoiceProvider settingTaxGroupProvider;
-    private Option settingTaxGroupValue;
-    private Select2SingleChoice<Option> settingTaxGroupField;
-    private TextFeedbackPanel settingTaxGroupFeedback;
+    protected WebMarkupContainer settingTaxGroupBlock;
+    protected WebMarkupContainer settingTaxGroupContainer;
+    protected SingleChoiceProvider settingTaxGroupProvider;
+    protected Option settingTaxGroupValue;
+    protected Select2SingleChoice<Option> settingTaxGroupField;
+    protected TextFeedbackPanel settingTaxGroupFeedback;
 
-    private WebMarkupContainer settingEnableDormancyTrackingBlock;
-    private WebMarkupContainer settingEnableDormancyTrackingContainer;
-    private Boolean settingEnableDormancyTrackingValue;
-    private CheckBox settingEnableDormancyTrackingField;
-    private TextFeedbackPanel settingEnableDormancyTrackingFeedback;
+    protected WebMarkupContainer settingEnableDormancyTrackingBlock;
+    protected WebMarkupContainer settingEnableDormancyTrackingContainer;
+    protected Boolean settingEnableDormancyTrackingValue;
+    protected CheckBox settingEnableDormancyTrackingField;
+    protected TextFeedbackPanel settingEnableDormancyTrackingFeedback;
 
-    private WebMarkupContainer settingNumberOfDaysToInactiveSubStatusBlock;
-    private WebMarkupContainer settingNumberOfDaysToInactiveSubStatusContainer;
-    private String settingNumberOfDaysToInactiveSubStatusValue;
-    private TextField<String> settingNumberOfDaysToInactiveSubStatusField;
-    private TextFeedbackPanel settingNumberOfDaysToInactiveSubStatusFeedback;
+    protected WebMarkupContainer settingNumberOfDaysToInactiveSubStatusBlock;
+    protected WebMarkupContainer settingNumberOfDaysToInactiveSubStatusContainer;
+    protected String settingNumberOfDaysToInactiveSubStatusValue;
+    protected TextField<String> settingNumberOfDaysToInactiveSubStatusField;
+    protected TextFeedbackPanel settingNumberOfDaysToInactiveSubStatusFeedback;
 
-    private WebMarkupContainer settingNumberOfDaysToDormantSubStatusBlock;
-    private WebMarkupContainer settingNumberOfDaysToDormantSubStatusContainer;
-    private String settingNumberOfDaysToDormantSubStatusValue;
-    private TextField<String> settingNumberOfDaysToDormantSubStatusField;
-    private TextFeedbackPanel settingNumberOfDaysToDormantSubStatusFeedback;
+    protected WebMarkupContainer settingNumberOfDaysToDormantSubStatusBlock;
+    protected WebMarkupContainer settingNumberOfDaysToDormantSubStatusContainer;
+    protected String settingNumberOfDaysToDormantSubStatusValue;
+    protected TextField<String> settingNumberOfDaysToDormantSubStatusField;
+    protected TextFeedbackPanel settingNumberOfDaysToDormantSubStatusFeedback;
 
-    private WebMarkupContainer settingNumberOfDaysToEscheatBlock;
-    private WebMarkupContainer settingNumberOfDaysToEscheatContainer;
-    private String settingNumberOfDaysToEscheatValue;
-    private TextField<String> settingNumberOfDaysToEscheatField;
-    private TextFeedbackPanel settingNumberOfDaysToEscheatFeedback;
+    protected WebMarkupContainer settingNumberOfDaysToEscheatBlock;
+    protected WebMarkupContainer settingNumberOfDaysToEscheatContainer;
+    protected String settingNumberOfDaysToEscheatValue;
+    protected TextField<String> settingNumberOfDaysToEscheatField;
+    protected TextFeedbackPanel settingNumberOfDaysToEscheatFeedback;
 
     // Charges
 
-    private List<Map<String, Object>> chargeValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> chargeTable;
-    private ListDataProvider chargeProvider;
-    private ModalWindow chargePopup;
-    private AjaxLink<Void> chargeAddLink;
+    protected List<Map<String, Object>> chargeValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> chargeTable;
+    protected ListDataProvider chargeProvider;
+    protected ModalWindow chargePopup;
+    protected AjaxLink<Void> chargeAddLink;
 
     // Accounting
 
-    private String accountingValue = ACC_NONE;
-    private RadioGroup<String> accountingField;
+    protected String accountingValue = ACC_NONE;
+    protected RadioGroup<String> accountingField;
 
-    private WebMarkupContainer cashBlock;
-    private WebMarkupContainer cashContainer;
+    protected WebMarkupContainer cashBlock;
+    protected WebMarkupContainer cashContainer;
 
-    private SingleChoiceProvider cashSavingReferenceProvider;
-    private Option cashSavingReferenceValue;
-    private Select2SingleChoice<Option> cashSavingReferenceField;
-    private TextFeedbackPanel cashSavingReferenceFeedback;
+    protected SingleChoiceProvider cashSavingReferenceProvider;
+    protected Option cashSavingReferenceValue;
+    protected Select2SingleChoice<Option> cashSavingReferenceField;
+    protected TextFeedbackPanel cashSavingReferenceFeedback;
 
-    private SingleChoiceProvider cashOverdraftPortfolioProvider;
-    private Option cashOverdraftPortfolioValue;
-    private Select2SingleChoice<Option> cashOverdraftPortfolioField;
-    private TextFeedbackPanel cashOverdraftPortfolioFeedback;
+    protected SingleChoiceProvider cashOverdraftPortfolioProvider;
+    protected Option cashOverdraftPortfolioValue;
+    protected Select2SingleChoice<Option> cashOverdraftPortfolioField;
+    protected TextFeedbackPanel cashOverdraftPortfolioFeedback;
 
-    private SingleChoiceProvider cashSavingControlProvider;
-    private Option cashSavingControlValue;
-    private Select2SingleChoice<Option> cashSavingControlField;
-    private TextFeedbackPanel cashSavingControlFeedback;
+    protected SingleChoiceProvider cashSavingControlProvider;
+    protected Option cashSavingControlValue;
+    protected Select2SingleChoice<Option> cashSavingControlField;
+    protected TextFeedbackPanel cashSavingControlFeedback;
 
-    private SingleChoiceProvider cashSavingsTransfersInSuspenseProvider;
-    private Option cashSavingsTransfersInSuspenseValue;
-    private Select2SingleChoice<Option> cashSavingsTransfersInSuspenseField;
-    private TextFeedbackPanel cashSavingsTransfersInSuspenseFeedback;
+    protected SingleChoiceProvider cashSavingsTransfersInSuspenseProvider;
+    protected Option cashSavingsTransfersInSuspenseValue;
+    protected Select2SingleChoice<Option> cashSavingsTransfersInSuspenseField;
+    protected TextFeedbackPanel cashSavingsTransfersInSuspenseFeedback;
 
-    private WebMarkupContainer cashEscheatLiabilityBlock;
-    private WebMarkupContainer cashEscheatLiabilityContainer;
-    private SingleChoiceProvider cashEscheatLiabilityProvider;
-    private Option cashEscheatLiabilityValue;
-    private Select2SingleChoice<Option> cashEscheatLiabilityField;
-    private TextFeedbackPanel cashEscheatLiabilityFeedback;
+    protected WebMarkupContainer cashEscheatLiabilityBlock;
+    protected WebMarkupContainer cashEscheatLiabilityContainer;
+    protected SingleChoiceProvider cashEscheatLiabilityProvider;
+    protected Option cashEscheatLiabilityValue;
+    protected Select2SingleChoice<Option> cashEscheatLiabilityField;
+    protected TextFeedbackPanel cashEscheatLiabilityFeedback;
 
-    private SingleChoiceProvider cashInterestOnSavingProvider;
-    private Option cashInterestOnSavingValue;
-    private Select2SingleChoice<Option> cashInterestOnSavingField;
-    private TextFeedbackPanel cashInterestOnSavingFeedback;
+    protected SingleChoiceProvider cashInterestOnSavingProvider;
+    protected Option cashInterestOnSavingValue;
+    protected Select2SingleChoice<Option> cashInterestOnSavingField;
+    protected TextFeedbackPanel cashInterestOnSavingFeedback;
 
-    private SingleChoiceProvider cashWriteOffProvider;
-    private Option cashWriteOffValue;
-    private Select2SingleChoice<Option> cashWriteOffField;
-    private TextFeedbackPanel cashWriteOffFeedback;
+    protected SingleChoiceProvider cashWriteOffProvider;
+    protected Option cashWriteOffValue;
+    protected Select2SingleChoice<Option> cashWriteOffField;
+    protected TextFeedbackPanel cashWriteOffFeedback;
 
-    private SingleChoiceProvider cashIncomeFromFeeProvider;
-    private Option cashIncomeFromFeeValue;
-    private Select2SingleChoice<Option> cashIncomeFromFeeField;
-    private TextFeedbackPanel cashIncomeFromFeeFeedback;
+    protected SingleChoiceProvider cashIncomeFromFeeProvider;
+    protected Option cashIncomeFromFeeValue;
+    protected Select2SingleChoice<Option> cashIncomeFromFeeField;
+    protected TextFeedbackPanel cashIncomeFromFeeFeedback;
 
-    private SingleChoiceProvider cashIncomeFromPenaltiesProvider;
-    private Option cashIncomeFromPenaltiesValue;
-    private Select2SingleChoice<Option> cashIncomeFromPenaltiesField;
-    private TextFeedbackPanel cashIncomeFromPenaltiesFeedback;
+    protected SingleChoiceProvider cashIncomeFromPenaltiesProvider;
+    protected Option cashIncomeFromPenaltiesValue;
+    protected Select2SingleChoice<Option> cashIncomeFromPenaltiesField;
+    protected TextFeedbackPanel cashIncomeFromPenaltiesFeedback;
 
-    private SingleChoiceProvider cashOverdraftInterestIncomeProvider;
-    private Option cashOverdraftInterestIncomeValue;
-    private Select2SingleChoice<Option> cashOverdraftInterestIncomeField;
-    private TextFeedbackPanel cashOverdraftInterestIncomeFeedback;
+    protected SingleChoiceProvider cashOverdraftInterestIncomeProvider;
+    protected Option cashOverdraftInterestIncomeValue;
+    protected Select2SingleChoice<Option> cashOverdraftInterestIncomeField;
+    protected TextFeedbackPanel cashOverdraftInterestIncomeFeedback;
 
     // Advanced Accounting Rule
 
-    private WebMarkupContainer advancedAccountingRuleBlock;
-    private WebMarkupContainer advancedAccountingRuleContainer;
+    protected WebMarkupContainer advancedAccountingRuleBlock;
+    protected WebMarkupContainer advancedAccountingRuleContainer;
 
-    private List<Map<String, Object>> advancedAccountingRuleFundSourceValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> advancedAccountingRuleFundSourceTable;
-    private ListDataProvider advancedAccountingRuleFundSourceProvider;
-    private AjaxLink<Void> advancedAccountingRuleFundSourceAddLink;
-    private ModalWindow fundSourcePopup;
+    protected List<Map<String, Object>> advancedAccountingRuleFundSourceValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> advancedAccountingRuleFundSourceTable;
+    protected ListDataProvider advancedAccountingRuleFundSourceProvider;
+    protected AjaxLink<Void> advancedAccountingRuleFundSourceAddLink;
+    protected ModalWindow fundSourcePopup;
 
-    private List<Map<String, Object>> advancedAccountingRuleFeeIncomeValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> advancedAccountingRuleFeeIncomeTable;
-    private ListDataProvider advancedAccountingRuleFeeIncomeProvider;
-    private AjaxLink<Void> advancedAccountingRuleFeeIncomeAddLink;
-    private ModalWindow feeIncomePopup;
+    protected List<Map<String, Object>> advancedAccountingRuleFeeIncomeValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> advancedAccountingRuleFeeIncomeTable;
+    protected ListDataProvider advancedAccountingRuleFeeIncomeProvider;
+    protected AjaxLink<Void> advancedAccountingRuleFeeIncomeAddLink;
+    protected ModalWindow feeIncomePopup;
 
-    private List<Map<String, Object>> advancedAccountingRulePenaltyIncomeValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> advancedAccountingRulePenaltyIncomeTable;
-    private ListDataProvider advancedAccountingRulePenaltyIncomeProvider;
-    private AjaxLink<Void> advancedAccountingRulePenaltyIncomeAddLink;
-    private ModalWindow penaltyIncomePopup;
+    protected List<Map<String, Object>> advancedAccountingRulePenaltyIncomeValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> advancedAccountingRulePenaltyIncomeTable;
+    protected ListDataProvider advancedAccountingRulePenaltyIncomeProvider;
+    protected AjaxLink<Void> advancedAccountingRulePenaltyIncomeAddLink;
+    protected ModalWindow penaltyIncomePopup;
 
-    private Option itemChargeValue;
-    private Option itemPaymentValue;
-    private Option itemAccountValue;
+    protected Option itemChargeValue;
+    protected Option itemPaymentValue;
+    protected Option itemAccountValue;
 
-    private ModalWindow currencyPopup;
+    protected ModalWindow currencyPopup;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -579,11 +579,11 @@ public class SavingCreatePage extends Page {
         return new TextCell(Model.of(value));
     }
 
-    protected void advancedAccountingRulePenaltyIncomeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void advancedAccountingRulePenaltyIncomeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.advancedAccountingRulePenaltyIncomeValue.size(); i++) {
             Map<String, Object> column = this.advancedAccountingRulePenaltyIncomeValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -591,14 +591,14 @@ public class SavingCreatePage extends Page {
         if (index >= 0) {
             this.advancedAccountingRulePenaltyIncomeValue.remove(index);
         }
-        ajaxRequestTarget.add(this.advancedAccountingRulePenaltyIncomeTable);
+        target.add(this.advancedAccountingRulePenaltyIncomeTable);
     }
 
-    protected List<ActionItem> advancedAccountingRulePenaltyIncomeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> advancedAccountingRulePenaltyIncomeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected List<ActionItem> advancedAccountingRuleFeeIncomeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> advancedAccountingRuleFeeIncomeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -624,11 +624,11 @@ public class SavingCreatePage extends Page {
         return new TextCell(Model.of(value));
     }
 
-    protected void advancedAccountingRuleFeeIncomeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void advancedAccountingRuleFeeIncomeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.advancedAccountingRuleFeeIncomeValue.size(); i++) {
             Map<String, Object> column = this.advancedAccountingRuleFeeIncomeValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -636,18 +636,18 @@ public class SavingCreatePage extends Page {
         if (index >= 0) {
             this.advancedAccountingRuleFeeIncomeValue.remove(index);
         }
-        ajaxRequestTarget.add(this.advancedAccountingRuleFeeIncomeTable);
+        target.add(this.advancedAccountingRuleFeeIncomeTable);
     }
 
-    protected List<ActionItem> feeIncomeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> feeIncomeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void advancedAccountingRuleFundSourceActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void advancedAccountingRuleFundSourceActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.advancedAccountingRuleFundSourceValue.size(); i++) {
             Map<String, Object> column = this.advancedAccountingRuleFundSourceValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -655,10 +655,10 @@ public class SavingCreatePage extends Page {
         if (index >= 0) {
             this.advancedAccountingRuleFundSourceValue.remove(index);
         }
-        ajaxRequestTarget.add(this.advancedAccountingRuleFundSourceTable);
+        target.add(this.advancedAccountingRuleFundSourceTable);
     }
 
-    protected List<ActionItem> advancedAccountingRuleFundSourceActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> advancedAccountingRuleFundSourceActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -677,7 +677,7 @@ public class SavingCreatePage extends Page {
         return new TextCell(Model.of(value));
     }
 
-    protected List<ActionItem> fundSourceActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> fundSourceActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -924,11 +924,11 @@ public class SavingCreatePage extends Page {
         }
     }
 
-    protected void chargeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void chargeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.chargeValue.size(); i++) {
             Map<String, Object> column = this.chargeValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -936,10 +936,10 @@ public class SavingCreatePage extends Page {
         if (index >= 0) {
             this.chargeValue.remove(index);
         }
-        ajaxRequestTarget.add(this.chargeTable);
+        target.add(this.chargeTable);
     }
 
-    protected List<ActionItem> chargeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> chargeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 

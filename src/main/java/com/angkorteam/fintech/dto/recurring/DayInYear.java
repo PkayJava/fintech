@@ -2,8 +2,8 @@ package com.angkorteam.fintech.dto.recurring;
 
 public enum DayInYear {
 
-    D360("360", "360 Days"),
-    D365("365", "365 Days");
+    D365("365", "365 Days"),
+    D360("360", "360 Days");
 
     private String literal;
 

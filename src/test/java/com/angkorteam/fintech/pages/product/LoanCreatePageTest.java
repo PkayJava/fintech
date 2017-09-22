@@ -435,7 +435,6 @@ public class LoanCreatePageTest {
 
         form.setValue("currencyCodeBlock:currencyCodeContainer:currencyCodeField", currencyCodeValue);
         form.setValue("currencyDecimalPlaceBlock:currencyDecimalPlaceContainer:currencyDecimalPlaceField", currencyDecimalPlaceValue);
-        form.setValue("currencyDecimalPlaceBlock:currencyDecimalPlaceContainer:currencyDecimalPlaceField", currencyDecimalPlaceValue);
         form.setValue("currencyInMultipleOfBlock:currencyInMultipleOfContainer:currencyInMultipleOfField", currencyInMultipleOfValue);
         form.setValue("currencyInstallmentInMultipleOfBlock:currencyInstallmentInMultipleOfContainer:currencyInstallmentInMultipleOfField", currencyInstallmentInMultipleOfValue);
 
@@ -801,7 +800,6 @@ public class LoanCreatePageTest {
         form.setValue("detailIncludeInCustomerLoanCounterBlock:detailIncludeInCustomerLoanCounterContainer:detailIncludeInCustomerLoanCounterField", detailIncludeInCustomerLoanCounterValue);
 
         form.setValue("currencyCodeBlock:currencyCodeContainer:currencyCodeField", currencyCodeValue);
-        form.setValue("currencyDecimalPlaceBlock:currencyDecimalPlaceContainer:currencyDecimalPlaceField", currencyDecimalPlaceValue);
         form.setValue("currencyDecimalPlaceBlock:currencyDecimalPlaceContainer:currencyDecimalPlaceField", currencyDecimalPlaceValue);
         form.setValue("currencyInMultipleOfBlock:currencyInMultipleOfContainer:currencyInMultipleOfField", currencyInMultipleOfValue);
         form.setValue("currencyInstallmentInMultipleOfBlock:currencyInstallmentInMultipleOfContainer:currencyInstallmentInMultipleOfField", currencyInstallmentInMultipleOfValue);
@@ -1169,7 +1167,6 @@ public class LoanCreatePageTest {
         form.setValue("detailIncludeInCustomerLoanCounterBlock:detailIncludeInCustomerLoanCounterContainer:detailIncludeInCustomerLoanCounterField", detailIncludeInCustomerLoanCounterValue);
 
         form.setValue("currencyCodeBlock:currencyCodeContainer:currencyCodeField", currencyCodeValue);
-        form.setValue("currencyDecimalPlaceBlock:currencyDecimalPlaceContainer:currencyDecimalPlaceField", currencyDecimalPlaceValue);
         form.setValue("currencyDecimalPlaceBlock:currencyDecimalPlaceContainer:currencyDecimalPlaceField", currencyDecimalPlaceValue);
         form.setValue("currencyInMultipleOfBlock:currencyInMultipleOfContainer:currencyInMultipleOfField", currencyInMultipleOfValue);
         form.setValue("currencyInstallmentInMultipleOfBlock:currencyInstallmentInMultipleOfContainer:currencyInstallmentInMultipleOfField", currencyInstallmentInMultipleOfValue);

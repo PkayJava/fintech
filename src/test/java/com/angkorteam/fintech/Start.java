@@ -21,7 +21,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * with jconsole).
  */
 public class Start {
-    
+
     /**
      * Main function, starts the jetty server.
      *
@@ -32,13 +32,16 @@ public class Start {
 
         Server server = new Server();
 
+        int httpPort = 9080;
+        int httpSecurePort = 9443;
+
         HttpConfiguration http_config = new HttpConfiguration();
         http_config.setSecureScheme("https");
-        http_config.setSecurePort(8443);
+        http_config.setSecurePort(httpSecurePort);
         http_config.setOutputBufferSize(32768);
 
         ServerConnector http = new ServerConnector(server, new HttpConnectionFactory(http_config));
-        http.setPort(8080);
+        http.setPort(httpPort);
         http.setIdleTimeout(1000 * 60 * 60);
 
         server.addConnector(http);
@@ -60,9 +63,8 @@ public class Start {
             HttpConfiguration https_config = new HttpConfiguration(http_config);
             https_config.addCustomizer(new SecureRequestCustomizer());
 
-            ServerConnector https = new ServerConnector(server, new SslConnectionFactory(sslContextFactory, "http/1.1"),
-                    new HttpConnectionFactory(https_config));
-            https.setPort(8443);
+            ServerConnector https = new ServerConnector(server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https_config));
+            https.setPort(httpSecurePort);
             https.setIdleTimeout(500000);
 
             server.addConnector(https);
