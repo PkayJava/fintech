@@ -162,14 +162,14 @@ public class SavingCreatePage extends Page {
 
     protected WebMarkupContainer settingMinimumOpeningBalanceBlock;
     protected WebMarkupContainer settingMinimumOpeningBalanceContainer;
-    protected String settingMinimumOpeningBalanceValue;
-    protected TextField<String> settingMinimumOpeningBalanceField;
+    protected Double settingMinimumOpeningBalanceValue;
+    protected TextField<Double> settingMinimumOpeningBalanceField;
     protected TextFeedbackPanel settingMinimumOpeningBalanceFeedback;
 
     protected WebMarkupContainer settingLockInPeriodBlock;
     protected WebMarkupContainer settingLockInPeriodContainer;
-    protected String settingLockInPeriodValue;
-    protected TextField<String> settingLockInPeriodField;
+    protected Integer settingLockInPeriodValue;
+    protected TextField<Integer> settingLockInPeriodField;
     protected TextFeedbackPanel settingLockInPeriodFeedback;
 
     protected WebMarkupContainer settingLockInTypeBlock;
@@ -187,8 +187,8 @@ public class SavingCreatePage extends Page {
 
     protected WebMarkupContainer settingBalanceRequiredForInterestCalculationBlock;
     protected WebMarkupContainer settingBalanceRequiredForInterestCalculationContainer;
-    protected String settingBalanceRequiredForInterestCalculationValue;
-    protected TextField<String> settingBalanceRequiredForInterestCalculationField;
+    protected Double settingBalanceRequiredForInterestCalculationValue;
+    protected TextField<Double> settingBalanceRequiredForInterestCalculationField;
     protected TextFeedbackPanel settingBalanceRequiredForInterestCalculationFeedback;
 
     protected WebMarkupContainer settingEnforceMinimumBalanceBlock;
@@ -199,8 +199,8 @@ public class SavingCreatePage extends Page {
 
     protected WebMarkupContainer settingMinimumBalanceBlock;
     protected WebMarkupContainer settingMinimumBalanceContainer;
-    protected String settingMinimumBalanceValue;
-    protected TextField<String> settingMinimumBalanceField;
+    protected Double settingMinimumBalanceValue;
+    protected TextField<Double> settingMinimumBalanceField;
     protected TextFeedbackPanel settingMinimumBalanceFeedback;
 
     protected WebMarkupContainer settingOverdraftAllowedBlock;
@@ -211,20 +211,20 @@ public class SavingCreatePage extends Page {
 
     protected WebMarkupContainer settingMaximumOverdraftAmountLimitBlock;
     protected WebMarkupContainer settingMaximumOverdraftAmountLimitContainer;
-    protected String settingMaximumOverdraftAmountLimitValue;
-    protected TextField<String> settingMaximumOverdraftAmountLimitField;
+    protected Double settingMaximumOverdraftAmountLimitValue;
+    protected TextField<Double> settingMaximumOverdraftAmountLimitField;
     protected TextFeedbackPanel settingMaximumOverdraftAmountLimitFeedback;
 
     protected WebMarkupContainer settingNominalAnnualInterestForOverdraftBlock;
     protected WebMarkupContainer settingNominalAnnualInterestForOverdraftContainer;
-    protected String settingNominalAnnualInterestForOverdraftValue;
-    protected TextField<String> settingNominalAnnualInterestForOverdraftField;
+    protected Double settingNominalAnnualInterestForOverdraftValue;
+    protected TextField<Double> settingNominalAnnualInterestForOverdraftField;
     protected TextFeedbackPanel settingNominalAnnualInterestForOverdraftFeedback;
 
     protected WebMarkupContainer settingMinOverdraftRequiredForInterestCalculationBlock;
     protected WebMarkupContainer settingMinOverdraftRequiredForInterestCalculationContainer;
-    protected String settingMinOverdraftRequiredForInterestCalculationValue;
-    protected TextField<String> settingMinOverdraftRequiredForInterestCalculationField;
+    protected Double settingMinOverdraftRequiredForInterestCalculationValue;
+    protected TextField<Double> settingMinOverdraftRequiredForInterestCalculationField;
     protected TextFeedbackPanel settingMinOverdraftRequiredForInterestCalculationFeedback;
 
     protected WebMarkupContainer settingWithholdTaxApplicableBlock;
@@ -248,20 +248,20 @@ public class SavingCreatePage extends Page {
 
     protected WebMarkupContainer settingNumberOfDaysToInactiveSubStatusBlock;
     protected WebMarkupContainer settingNumberOfDaysToInactiveSubStatusContainer;
-    protected String settingNumberOfDaysToInactiveSubStatusValue;
-    protected TextField<String> settingNumberOfDaysToInactiveSubStatusField;
+    protected Integer settingNumberOfDaysToInactiveSubStatusValue;
+    protected TextField<Integer> settingNumberOfDaysToInactiveSubStatusField;
     protected TextFeedbackPanel settingNumberOfDaysToInactiveSubStatusFeedback;
 
     protected WebMarkupContainer settingNumberOfDaysToDormantSubStatusBlock;
     protected WebMarkupContainer settingNumberOfDaysToDormantSubStatusContainer;
-    protected String settingNumberOfDaysToDormantSubStatusValue;
-    protected TextField<String> settingNumberOfDaysToDormantSubStatusField;
+    protected Integer settingNumberOfDaysToDormantSubStatusValue;
+    protected TextField<Integer> settingNumberOfDaysToDormantSubStatusField;
     protected TextFeedbackPanel settingNumberOfDaysToDormantSubStatusFeedback;
 
     protected WebMarkupContainer settingNumberOfDaysToEscheatBlock;
     protected WebMarkupContainer settingNumberOfDaysToEscheatContainer;
-    protected String settingNumberOfDaysToEscheatValue;
-    protected TextField<String> settingNumberOfDaysToEscheatField;
+    protected Integer settingNumberOfDaysToEscheatValue;
+    protected TextField<Integer> settingNumberOfDaysToEscheatField;
     protected TextFeedbackPanel settingNumberOfDaysToEscheatFeedback;
 
     // Charges
@@ -410,7 +410,6 @@ public class SavingCreatePage extends Page {
         this.form.add(this.closeLink);
 
         this.currencyPopup = new ModalWindow("currencyPopup");
-        this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
         add(this.currencyPopup);
 
         initDetail();
@@ -496,7 +495,6 @@ public class SavingCreatePage extends Page {
         {
             this.fundSourcePopup = new ModalWindow("fundSourcePopup");
             add(this.fundSourcePopup);
-            this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this));
             this.fundSourcePopup.setOnClose(this::fundSourcePopupOnClose);
 
             List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFundSourceColumn = Lists.newArrayList();
@@ -564,6 +562,7 @@ public class SavingCreatePage extends Page {
             this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
         } else {
+            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
             this.currencyPopup.show(target);
         }
         return false;
@@ -571,12 +570,12 @@ public class SavingCreatePage extends Page {
 
     protected ItemPanel advancedAccountingRulePenaltyIncomeChargeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel advancedAccountingRulePenaltyIncomeAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected void advancedAccountingRulePenaltyIncomeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
@@ -595,11 +594,15 @@ public class SavingCreatePage extends Page {
     }
 
     protected List<ActionItem> advancedAccountingRulePenaltyIncomeActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return actions;
     }
 
     protected List<ActionItem> advancedAccountingRuleFeeIncomeActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return actions;
     }
 
     protected boolean advancedAccountingRuleFeeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
@@ -609,6 +612,7 @@ public class SavingCreatePage extends Page {
             this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
         } else {
+            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
             this.currencyPopup.show(target);
         }
         return false;
@@ -616,12 +620,12 @@ public class SavingCreatePage extends Page {
 
     protected ItemPanel advancedAccountingRuleFeeIncomeChargeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel advancedAccountingRuleFeeIncomeAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected void advancedAccountingRuleFeeIncomeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
@@ -637,10 +641,6 @@ public class SavingCreatePage extends Page {
             this.advancedAccountingRuleFeeIncomeValue.remove(index);
         }
         target.add(this.advancedAccountingRuleFeeIncomeTable);
-    }
-
-    protected List<ActionItem> feeIncomeActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     protected void advancedAccountingRuleFundSourceActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
@@ -659,26 +659,25 @@ public class SavingCreatePage extends Page {
     }
 
     protected List<ActionItem> advancedAccountingRuleFundSourceActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return actions;
     }
 
     protected boolean advancedAccountingRuleFundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this));
         this.fundSourcePopup.show(target);
         return false;
     }
 
     protected ItemPanel advancedAccountingRuleFundSourcePaymentColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel advancedAccountingRuleFundSourceAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
-    }
-
-    protected List<ActionItem> fundSourceActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return new TextCell(value);
     }
 
     protected void initAccountingCash() {
@@ -878,6 +877,7 @@ public class SavingCreatePage extends Page {
             this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
+            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
             this.currencyPopup.show(target);
         }
         return false;
@@ -885,43 +885,27 @@ public class SavingCreatePage extends Page {
 
     protected ItemPanel chargeNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Number value = (Number) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value.doubleValue())));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeCollectColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected void chargeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
@@ -940,7 +924,9 @@ public class SavingCreatePage extends Page {
     }
 
     protected List<ActionItem> chargeActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return actions;
     }
 
     protected void initSetting() {
@@ -1086,7 +1072,7 @@ public class SavingCreatePage extends Page {
         this.form.add(this.settingTaxGroupBlock);
         this.settingTaxGroupContainer = new WebMarkupContainer("settingTaxGroupContainer");
         this.settingTaxGroupBlock.add(this.settingTaxGroupContainer);
-        this.settingTaxGroupProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.settingTaxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
         this.settingTaxGroupField = new Select2SingleChoice<>("settingTaxGroupField", 0, new PropertyModel<>(this, "settingTaxGroupValue"), this.settingTaxGroupProvider);
         this.settingTaxGroupField.setLabel(Model.of("Tax Group"));
         this.settingTaxGroupField.add(new OnChangeAjaxBehavior());

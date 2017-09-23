@@ -1042,7 +1042,9 @@ public class LoanCreatePage extends Page {
     }
 
     protected List<ActionItem> overdueChargeActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return actions;
     }
 
     protected void initCharge() {
@@ -1122,7 +1124,9 @@ public class LoanCreatePage extends Page {
     }
 
     protected List<ActionItem> chargeActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return actions;
     }
 
     protected void initAccounting() {
@@ -1648,7 +1652,9 @@ public class LoanCreatePage extends Page {
     }
 
     protected List<ActionItem> advancedAccountingRuleFeeIncomeActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return actions;
     }
 
     protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
@@ -1690,7 +1696,9 @@ public class LoanCreatePage extends Page {
     }
 
     protected List<ActionItem> advancedAccountingRulePenaltyIncomeActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return actions;
     }
 
     protected boolean advancedAccountingRuleFundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
@@ -1727,7 +1735,9 @@ public class LoanCreatePage extends Page {
     }
 
     protected List<ActionItem> advancedAccountingRuleFundSourceActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return actions;
     }
 
     protected boolean accountingFieldUpdate(AjaxRequestTarget target) {
@@ -3129,7 +3139,9 @@ public class LoanCreatePage extends Page {
     }
 
     protected List<ActionItem> termNominalInterestRateByLoanCycleActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return actions;
     }
 
     protected boolean termNumberOfRepaymentByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
@@ -3184,7 +3196,9 @@ public class LoanCreatePage extends Page {
     }
 
     protected List<ActionItem> termNumberOfRepaymentByLoanCycleActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return actions;
     }
 
     protected boolean termPrincipalByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
@@ -3252,7 +3266,9 @@ public class LoanCreatePage extends Page {
     }
 
     protected List<ActionItem> termPrincipalByLoanCycleActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return actions;
     }
 
     protected boolean termLinkedToFloatingInterestRatesFieldUpdate(AjaxRequestTarget target) {

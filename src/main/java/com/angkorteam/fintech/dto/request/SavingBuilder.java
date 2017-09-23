@@ -179,19 +179,19 @@ public class SavingBuilder implements Serializable {
         return this;
     }
 
-    private String minRequiredOpeningBalance;
+    private Double minRequiredOpeningBalance;
     private boolean hasMinRequiredOpeningBalance;
 
-    public SavingBuilder withMinRequiredOpeningBalance(String minRequiredOpeningBalance) {
+    public SavingBuilder withMinRequiredOpeningBalance(Double minRequiredOpeningBalance) {
         this.minRequiredOpeningBalance = minRequiredOpeningBalance;
         this.hasMinRequiredOpeningBalance = true;
         return this;
     }
 
-    private String lockinPeriodFrequency;
+    private Integer lockinPeriodFrequency;
     private boolean hasLockinPeriodFrequency;
 
-    public SavingBuilder withLockinPeriodFrequency(String lockinPeriodFrequency) {
+    public SavingBuilder withLockinPeriodFrequency(Integer lockinPeriodFrequency) {
         this.lockinPeriodFrequency = lockinPeriodFrequency;
         this.hasLockinPeriodFrequency = true;
         return this;
@@ -260,73 +260,73 @@ public class SavingBuilder implements Serializable {
         return this;
     }
 
-    private String minBalanceForInterestCalculation;
+    private Double minBalanceForInterestCalculation;
     private boolean hasMinBalanceForInterestCalculation;
 
-    public SavingBuilder withMinBalanceForInterestCalculation(String minBalanceForInterestCalculation) {
+    public SavingBuilder withMinBalanceForInterestCalculation(Double minBalanceForInterestCalculation) {
         this.minBalanceForInterestCalculation = minBalanceForInterestCalculation;
         this.hasMinBalanceForInterestCalculation = true;
         return this;
     }
 
-    private String minRequiredBalance;
+    private Double minRequiredBalance;
     private boolean hasMinRequiredBalance;
 
-    public SavingBuilder withMinRequiredBalance(String minRequiredBalance) {
+    public SavingBuilder withMinRequiredBalance(Double minRequiredBalance) {
         this.minRequiredBalance = minRequiredBalance;
         this.hasMinRequiredBalance = true;
         return this;
     }
 
-    private String overdraftLimit;
+    private Double overdraftLimit;
     private boolean hasOverdraftLimit;
 
-    public SavingBuilder withOverdraftLimit(String overdraftLimit) {
+    public SavingBuilder withOverdraftLimit(Double overdraftLimit) {
         this.overdraftLimit = overdraftLimit;
         this.hasOverdraftLimit = true;
         return this;
     }
 
-    private String nominalAnnualInterestRateOverdraft;
+    private Double nominalAnnualInterestRateOverdraft;
     private boolean hasNominalAnnualInterestRateOverdraft;
 
-    public SavingBuilder withNominalAnnualInterestRateOverdraft(String nominalAnnualInterestRateOverdraft) {
+    public SavingBuilder withNominalAnnualInterestRateOverdraft(Double nominalAnnualInterestRateOverdraft) {
         this.nominalAnnualInterestRateOverdraft = nominalAnnualInterestRateOverdraft;
         this.hasNominalAnnualInterestRateOverdraft = true;
         return this;
     }
 
-    private String minOverdraftForInterestCalculation;
+    private Double minOverdraftForInterestCalculation;
     private boolean hasMinOverdraftForInterestCalculation;
 
-    public SavingBuilder withMinOverdraftForInterestCalculation(String minOverdraftForInterestCalculation) {
+    public SavingBuilder withMinOverdraftForInterestCalculation(Double minOverdraftForInterestCalculation) {
         this.minOverdraftForInterestCalculation = minOverdraftForInterestCalculation;
         this.hasMinOverdraftForInterestCalculation = true;
         return this;
     }
 
-    private String daysToInactive;
+    private Integer daysToInactive;
     private boolean hasDaysToInactive;
 
-    public SavingBuilder withDaysToInactive(String daysToInactive) {
+    public SavingBuilder withDaysToInactive(Integer daysToInactive) {
         this.daysToInactive = daysToInactive;
         this.hasDaysToInactive = true;
         return this;
     }
 
-    private String daysToDormancy;
+    private Integer daysToDormancy;
     private boolean hasDaysToDormancy;
 
-    public SavingBuilder withDaysToDormancy(String daysToDormancy) {
+    public SavingBuilder withDaysToDormancy(Integer daysToDormancy) {
         this.daysToDormancy = daysToDormancy;
         this.hasDaysToDormancy = true;
         return this;
     }
 
-    private String daysToEscheat;
+    private Integer daysToEscheat;
     private boolean hasDaysToEscheat;
 
-    public SavingBuilder withDaysToEscheat(String daysToEscheat) {
+    public SavingBuilder withDaysToEscheat(Integer daysToEscheat) {
         this.daysToEscheat = daysToEscheat;
         this.hasDaysToEscheat = true;
         return this;
