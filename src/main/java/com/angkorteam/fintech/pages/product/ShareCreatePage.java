@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -71,180 +70,180 @@ public class ShareCreatePage extends Page {
     public static final String ACC_NONE = "None";
     public static final String ACC_CASH = "Cash";
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
     // Detail
 
-    private WebMarkupContainer detailProductNameBlock;
-    private WebMarkupContainer detailProductNameContainer;
-    private String detailProductNameValue;
-    private TextField<String> detailProductNameField;
-    private TextFeedbackPanel detailProductNameFeedback;
+    protected WebMarkupContainer detailProductNameBlock;
+    protected WebMarkupContainer detailProductNameContainer;
+    protected String detailProductNameValue;
+    protected TextField<String> detailProductNameField;
+    protected TextFeedbackPanel detailProductNameFeedback;
 
-    private WebMarkupContainer detailShortNameBlock;
-    private WebMarkupContainer detailShortNameContainer;
-    private String detailShortNameValue;
-    private TextField<String> detailShortNameField;
-    private TextFeedbackPanel detailShortNameFeedback;
+    protected WebMarkupContainer detailShortNameBlock;
+    protected WebMarkupContainer detailShortNameContainer;
+    protected String detailShortNameValue;
+    protected TextField<String> detailShortNameField;
+    protected TextFeedbackPanel detailShortNameFeedback;
 
-    private WebMarkupContainer detailDescriptionBlock;
-    private WebMarkupContainer detailDescriptionContainer;
-    private String detailDescriptionValue;
-    private TextField<String> detailDescriptionField;
-    private TextFeedbackPanel detailDescriptionFeedback;
+    protected WebMarkupContainer detailDescriptionBlock;
+    protected WebMarkupContainer detailDescriptionContainer;
+    protected String detailDescriptionValue;
+    protected TextField<String> detailDescriptionField;
+    protected TextFeedbackPanel detailDescriptionFeedback;
 
     // Currency
 
-    private WebMarkupContainer currencyCodeBlock;
-    private WebMarkupContainer currencyCodeContainer;
-    private SingleChoiceProvider currencyCodeProvider;
-    private Option currencyCodeValue;
-    private Select2SingleChoice<Option> currencyCodeField;
-    private TextFeedbackPanel currencyCodeFeedback;
+    protected WebMarkupContainer currencyCodeBlock;
+    protected WebMarkupContainer currencyCodeContainer;
+    protected SingleChoiceProvider currencyCodeProvider;
+    protected Option currencyCodeValue;
+    protected Select2SingleChoice<Option> currencyCodeField;
+    protected TextFeedbackPanel currencyCodeFeedback;
 
-    private WebMarkupContainer currencyDecimalPlaceBlock;
-    private WebMarkupContainer currencyDecimalPlaceContainer;
-    private Integer currencyDecimalPlaceValue;
-    private TextField<Integer> currencyDecimalPlaceField;
-    private TextFeedbackPanel currencyDecimalPlaceFeedback;
+    protected WebMarkupContainer currencyDecimalPlaceBlock;
+    protected WebMarkupContainer currencyDecimalPlaceContainer;
+    protected Integer currencyDecimalPlaceValue;
+    protected TextField<Integer> currencyDecimalPlaceField;
+    protected TextFeedbackPanel currencyDecimalPlaceFeedback;
 
-    private WebMarkupContainer currencyMultipleOfBlock;
-    private WebMarkupContainer currencyMultipleOfContainer;
-    private Integer currencyMultipleOfValue;
-    private TextField<Integer> currencyMultipleOfField;
-    private TextFeedbackPanel currencyMultipleOfFeedback;
+    protected WebMarkupContainer currencyMultipleOfBlock;
+    protected WebMarkupContainer currencyMultipleOfContainer;
+    protected Integer currencyMultipleOfValue;
+    protected TextField<Integer> currencyMultipleOfField;
+    protected TextFeedbackPanel currencyMultipleOfFeedback;
 
     // Term
 
-    private WebMarkupContainer termTotalNumberOfShareBlock;
-    private WebMarkupContainer termTotalNumberOfShareContainer;
-    private Integer termTotalNumberOfShareValue;
-    private TextField<Integer> termTotalNumberOfShareField;
-    private TextFeedbackPanel termTotalNumberOfShareFeedback;
+    protected WebMarkupContainer termTotalNumberOfShareBlock;
+    protected WebMarkupContainer termTotalNumberOfShareContainer;
+    protected Integer termTotalNumberOfShareValue;
+    protected TextField<Integer> termTotalNumberOfShareField;
+    protected TextFeedbackPanel termTotalNumberOfShareFeedback;
 
-    private WebMarkupContainer termShareToBeIssuedBlock;
-    private WebMarkupContainer termShareToBeIssuedContainer;
-    private Integer termShareToBeIssuedValue;
-    private TextField<Integer> termShareToBeIssuedField;
-    private TextFeedbackPanel termShareToBeIssuedFeedback;
+    protected WebMarkupContainer termShareToBeIssuedBlock;
+    protected WebMarkupContainer termShareToBeIssuedContainer;
+    protected Integer termShareToBeIssuedValue;
+    protected TextField<Integer> termShareToBeIssuedField;
+    protected TextFeedbackPanel termShareToBeIssuedFeedback;
 
-    private WebMarkupContainer termNominalPriceBlock;
-    private WebMarkupContainer termNominalPriceContainer;
-    private Double termNominalPriceValue;
-    private TextField<Double> termNominalPriceField;
-    private TextFeedbackPanel termNominalPriceFeedback;
+    protected WebMarkupContainer termNominalPriceBlock;
+    protected WebMarkupContainer termNominalPriceContainer;
+    protected Double termNominalPriceValue;
+    protected TextField<Double> termNominalPriceField;
+    protected TextFeedbackPanel termNominalPriceFeedback;
 
-    private WebMarkupContainer termCapitalBlock;
-    private WebMarkupContainer termCapitalContainer;
-    private Double termCapitalValue;
-    private TextField<Double> termCapitalField;
-    private TextFeedbackPanel termCapitalFeedback;
+    protected WebMarkupContainer termCapitalBlock;
+    protected WebMarkupContainer termCapitalContainer;
+    protected Double termCapitalValue;
+    protected TextField<Double> termCapitalField;
+    protected TextFeedbackPanel termCapitalFeedback;
 
     // Setting
 
-    private WebMarkupContainer settingSharePerClientMinimumBlock;
-    private WebMarkupContainer settingSharePerClientMinimumContainer;
-    private Integer settingSharePerClientMinimumValue;
-    private TextField<Integer> settingSharePerClientMinimumField;
-    private TextFeedbackPanel settingSharePerClientMinimumFeedback;
+    protected WebMarkupContainer settingSharePerClientMinimumBlock;
+    protected WebMarkupContainer settingSharePerClientMinimumContainer;
+    protected Integer settingSharePerClientMinimumValue;
+    protected TextField<Integer> settingSharePerClientMinimumField;
+    protected TextFeedbackPanel settingSharePerClientMinimumFeedback;
 
-    private WebMarkupContainer settingSharePerClientDefaultBlock;
-    private WebMarkupContainer settingSharePerClientDefaultContainer;
-    private Integer settingSharePerClientDefaultValue;
-    private TextField<Integer> settingSharePerClientDefaultField;
-    private TextFeedbackPanel settingSharePerClientDefaultFeedback;
+    protected WebMarkupContainer settingSharePerClientDefaultBlock;
+    protected WebMarkupContainer settingSharePerClientDefaultContainer;
+    protected Integer settingSharePerClientDefaultValue;
+    protected TextField<Integer> settingSharePerClientDefaultField;
+    protected TextFeedbackPanel settingSharePerClientDefaultFeedback;
 
-    private WebMarkupContainer settingSharePerClientMaximumBlock;
-    private WebMarkupContainer settingSharePerClientMaximumContainer;
-    private Integer settingSharePerClientMaximumValue;
-    private TextField<Integer> settingSharePerClientMaximumField;
-    private TextFeedbackPanel settingSharePerClientMaximumFeedback;
+    protected WebMarkupContainer settingSharePerClientMaximumBlock;
+    protected WebMarkupContainer settingSharePerClientMaximumContainer;
+    protected Integer settingSharePerClientMaximumValue;
+    protected TextField<Integer> settingSharePerClientMaximumField;
+    protected TextFeedbackPanel settingSharePerClientMaximumFeedback;
 
-    private WebMarkupContainer settingMinimumActivePeriodBlock;
-    private WebMarkupContainer settingMinimumActivePeriodContainer;
-    private Integer settingMinimumActivePeriodValue;
-    private TextField<Integer> settingMinimumActivePeriodField;
-    private TextFeedbackPanel settingMinimumActivePeriodFeedback;
+    protected WebMarkupContainer settingMinimumActivePeriodBlock;
+    protected WebMarkupContainer settingMinimumActivePeriodContainer;
+    protected Integer settingMinimumActivePeriodValue;
+    protected TextField<Integer> settingMinimumActivePeriodField;
+    protected TextFeedbackPanel settingMinimumActivePeriodFeedback;
 
-    private WebMarkupContainer settingMinimumActiveTypeBlock;
-    private WebMarkupContainer settingMinimumActiveTypeContainer;
-    private MinimumActivePeriodProvider settingMinimumActiveTypeProvider;
-    private Option settingMinimumActiveTypeValue;
-    private Select2SingleChoice<Option> settingMinimumActiveTypeField;
-    private TextFeedbackPanel settingMinimumActiveTypeFeedback;
+    protected WebMarkupContainer settingMinimumActiveTypeBlock;
+    protected WebMarkupContainer settingMinimumActiveTypeContainer;
+    protected MinimumActivePeriodProvider settingMinimumActiveTypeProvider;
+    protected Option settingMinimumActiveTypeValue;
+    protected Select2SingleChoice<Option> settingMinimumActiveTypeField;
+    protected TextFeedbackPanel settingMinimumActiveTypeFeedback;
 
-    private WebMarkupContainer settingLockInPeriodBlock;
-    private WebMarkupContainer settingLockInPeriodContainer;
-    private Integer settingLockInPeriodValue;
-    private TextField<Integer> settingLockInPeriodField;
-    private TextFeedbackPanel settingLockInPeriodFeedback;
+    protected WebMarkupContainer settingLockInPeriodBlock;
+    protected WebMarkupContainer settingLockInPeriodContainer;
+    protected Integer settingLockInPeriodValue;
+    protected TextField<Integer> settingLockInPeriodField;
+    protected TextFeedbackPanel settingLockInPeriodFeedback;
 
-    private WebMarkupContainer settingLockInTypeBlock;
-    private WebMarkupContainer settingLockInTypeContainer;
-    private LockInPeriodProvider settingLockInTypeProvider;
-    private Option settingLockInTypeValue;
-    private Select2SingleChoice<Option> settingLockInTypeField;
-    private TextFeedbackPanel settingLockInTypeFeedback;
+    protected WebMarkupContainer settingLockInTypeBlock;
+    protected WebMarkupContainer settingLockInTypeContainer;
+    protected LockInPeriodProvider settingLockInTypeProvider;
+    protected Option settingLockInTypeValue;
+    protected Select2SingleChoice<Option> settingLockInTypeField;
+    protected TextFeedbackPanel settingLockInTypeFeedback;
 
-    private WebMarkupContainer settingAllowDividendForInactiveClientBlock;
-    private WebMarkupContainer settingAllowDividendForInactiveClientContainer;
-    private Boolean settingAllowDividendForInactiveClientValue;
-    private CheckBox settingAllowDividendForInactiveClientField;
-    private TextFeedbackPanel settingAllowDividendForInactiveClientFeedback;
+    protected WebMarkupContainer settingAllowDividendForInactiveClientBlock;
+    protected WebMarkupContainer settingAllowDividendForInactiveClientContainer;
+    protected Boolean settingAllowDividendForInactiveClientValue;
+    protected CheckBox settingAllowDividendForInactiveClientField;
+    protected TextFeedbackPanel settingAllowDividendForInactiveClientFeedback;
 
     // Market Price
 
-    private List<Map<String, Object>> marketPriceValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> marketPriceTable;
-    private ListDataProvider marketPriceProvider;
-    private ModalWindow marketPricePopup;
-    private AjaxLink<Void> marketPriceAddLink;
+    protected List<Map<String, Object>> marketPriceValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> marketPriceTable;
+    protected ListDataProvider marketPriceProvider;
+    protected ModalWindow marketPricePopup;
+    protected AjaxLink<Void> marketPriceAddLink;
 
     // Charges
 
-    private List<Map<String, Object>> chargeValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> chargeTable;
-    private ListDataProvider chargeProvider;
-    private ModalWindow chargePopup;
-    private AjaxLink<Void> chargeAddLink;
+    protected List<Map<String, Object>> chargeValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> chargeTable;
+    protected ListDataProvider chargeProvider;
+    protected ModalWindow chargePopup;
+    protected AjaxLink<Void> chargeAddLink;
 
     // Accounting
 
-    private String accountingValue = ACC_NONE;
-    private RadioGroup<String> accountingField;
+    protected String accountingValue = ACC_NONE;
+    protected RadioGroup<String> accountingField;
 
-    private WebMarkupContainer cashBlock;
-    private WebMarkupContainer cashContainer;
+    protected WebMarkupContainer cashBlock;
+    protected WebMarkupContainer cashContainer;
 
-    private SingleChoiceProvider cashShareReferenceProvider;
-    private Option cashShareReferenceValue;
-    private Select2SingleChoice<Option> cashShareReferenceField;
-    private TextFeedbackPanel cashShareReferenceFeedback;
+    protected SingleChoiceProvider cashShareReferenceProvider;
+    protected Option cashShareReferenceValue;
+    protected Select2SingleChoice<Option> cashShareReferenceField;
+    protected TextFeedbackPanel cashShareReferenceFeedback;
 
-    private SingleChoiceProvider cashShareSuspenseControlProvider;
-    private Option cashShareSuspenseControlValue;
-    private Select2SingleChoice<Option> cashShareSuspenseControlField;
-    private TextFeedbackPanel cashShareSuspenseControlFeedback;
+    protected SingleChoiceProvider cashShareSuspenseControlProvider;
+    protected Option cashShareSuspenseControlValue;
+    protected Select2SingleChoice<Option> cashShareSuspenseControlField;
+    protected TextFeedbackPanel cashShareSuspenseControlFeedback;
 
-    private SingleChoiceProvider cashEquityProvider;
-    private Option cashEquityValue;
-    private Select2SingleChoice<Option> cashEquityField;
-    private TextFeedbackPanel cashEquityFeedback;
+    protected SingleChoiceProvider cashEquityProvider;
+    protected Option cashEquityValue;
+    protected Select2SingleChoice<Option> cashEquityField;
+    protected TextFeedbackPanel cashEquityFeedback;
 
-    private SingleChoiceProvider cashIncomeFromFeesProvider;
-    private Option cashIncomeFromFeesValue;
-    private Select2SingleChoice<Option> cashIncomeFromFeesField;
-    private TextFeedbackPanel cashIncomeFromFeesFeedback;
+    protected SingleChoiceProvider cashIncomeFromFeesProvider;
+    protected Option cashIncomeFromFeesValue;
+    protected Select2SingleChoice<Option> cashIncomeFromFeesField;
+    protected TextFeedbackPanel cashIncomeFromFeesFeedback;
 
-    private Option itemChargeValue;
-    private Date itemFromDateValue;
-    private Double itemUnitPriceValue;
+    protected Option itemChargeValue;
+    protected Date itemFromDateValue;
+    protected Double itemUnitPriceValue;
 
-    private ModalWindow currencyPopup;
+    protected ModalWindow currencyPopup;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -293,7 +292,6 @@ public class ShareCreatePage extends Page {
         this.form.add(this.closeLink);
 
         this.currencyPopup = new ModalWindow("currencyPopup");
-        this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
         add(this.currencyPopup);
 
         initDetail();
@@ -397,7 +395,6 @@ public class ShareCreatePage extends Page {
 
         this.marketPricePopup = new ModalWindow("marketPricePopup");
         add(this.marketPricePopup);
-        this.marketPricePopup.setContent(new MarketPricePopup(this.marketPricePopup.getContentId(), this.marketPricePopup, this));
         this.marketPricePopup.setOnClose(this::marketPricePopupOnClose);
 
         List<IColumn<Map<String, Object>, String>> marketPriceColumn = Lists.newArrayList();
@@ -428,60 +425,26 @@ public class ShareCreatePage extends Page {
     protected boolean marketPriceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemFromDateValue = null;
         this.itemUnitPriceValue = null;
+        this.marketPricePopup.setContent(new MarketPricePopup(this.marketPricePopup.getContentId(), this.marketPricePopup, this));
         this.marketPricePopup.show(target);
         return false;
     }
 
     protected ItemPanel marketFromDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Date value = (Date) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(value)));
-        }
+        return new TextCell(value, "dd/MM/yyyy");
     }
 
     protected ItemPanel marketUnitPriceColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value)));
-        }
+        return new TextCell(value);
     }
 
-    protected ItemPanel marketPriceAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Number value = (Number) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value.doubleValue())));
-        }
-    }
-
-    protected ItemPanel marketPriceCollectColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
-    }
-
-    protected ItemPanel marketPriceDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
-    }
-
-    protected void marketPriceActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void marketPriceActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.marketPriceValue.size(); i++) {
             Map<String, Object> column = this.marketPriceValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -489,10 +452,10 @@ public class ShareCreatePage extends Page {
         if (index >= 0) {
             this.marketPriceValue.remove(index);
         }
-        ajaxRequestTarget.add(this.marketPriceTable);
+        target.add(this.marketPriceTable);
     }
 
-    protected List<ActionItem> marketPriceActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> marketPriceActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -560,6 +523,7 @@ public class ShareCreatePage extends Page {
             this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
+            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
             this.currencyPopup.show(target);
         }
         return false;
@@ -567,50 +531,34 @@ public class ShareCreatePage extends Page {
 
     protected ItemPanel chargeNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Number value = (Number) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(value.doubleValue())));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeCollectColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
     protected ItemPanel chargeDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        if (value == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(value));
-        }
+        return new TextCell(value);
     }
 
-    protected void chargeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void chargeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.chargeValue.size(); i++) {
             Map<String, Object> column = this.chargeValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -618,10 +566,10 @@ public class ShareCreatePage extends Page {
         if (index >= 0) {
             this.chargeValue.remove(index);
         }
-        ajaxRequestTarget.add(this.chargeTable);
+        target.add(this.chargeTable);
     }
 
-    protected List<ActionItem> chargeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> chargeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -746,7 +694,7 @@ public class ShareCreatePage extends Page {
         this.termShareToBeIssuedBlock.add(this.termShareToBeIssuedContainer);
         this.termShareToBeIssuedField = new TextField<>("termShareToBeIssuedField", new PropertyModel<>(this, "termShareToBeIssuedValue"));
         this.termShareToBeIssuedField.setLabel(Model.of("Shares to be issued"));
-        this.termShareToBeIssuedField.setRequired(false);
+        this.termShareToBeIssuedField.setRequired(true);
         this.termShareToBeIssuedField.add(new OnChangeAjaxBehavior());
         this.termShareToBeIssuedContainer.add(this.termShareToBeIssuedField);
         this.termShareToBeIssuedFeedback = new TextFeedbackPanel("termShareToBeIssuedFeedback", this.termShareToBeIssuedField);
