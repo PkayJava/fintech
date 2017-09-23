@@ -24,6 +24,7 @@ import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -39,7 +40,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -207,8 +207,8 @@ public class ValueBrowsePage extends Page {
         setResponsePage(ValueBrowsePage.class, parameters);
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-        Integer id = (Integer) stringObjectMap.get("id");
+    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+        Integer id = (Integer) model.get("id");
         try {
             if ("disable".equals(s)) {
                 CodeValueBuilder builder = new CodeValueBuilder();
@@ -225,12 +225,12 @@ public class ValueBrowsePage extends Page {
             }
         } catch (UnirestException e) {
         }
-        ajaxRequestTarget.add(this.dataTable);
+        target.add(this.dataTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
-        Boolean active = (Boolean) stringObjectMap.get("active");
+        Boolean active = (Boolean) model.get("active");
         if (active != null && active) {
             actions.add(new ActionItem("disable", Model.of("Disable"), ItemCss.INFO));
         } else {
@@ -240,18 +240,18 @@ public class ValueBrowsePage extends Page {
     }
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(name));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel descriptionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String description = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(description));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel positionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer position = (Integer) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(position)));
+        Integer value = (Integer) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel activeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

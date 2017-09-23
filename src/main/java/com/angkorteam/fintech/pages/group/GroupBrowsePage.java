@@ -1,19 +1,9 @@
 package com.angkorteam.fintech.pages.group;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.helper.GroupHelper;
-import com.angkorteam.fintech.provider.JdbcProvider;
-import com.angkorteam.fintech.table.LinkCell;
-import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.commons.lang3.time.DateFormatUtils;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -23,9 +13,26 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.helper.GroupHelper;
+import com.angkorteam.fintech.provider.JdbcProvider;
+import com.angkorteam.fintech.table.LinkCell;
+import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.Calendar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/22/17.
@@ -79,63 +86,59 @@ public class GroupBrowsePage extends Page {
         add(this.createLink);
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-        Long id = (Long) stringObjectMap.get("id");
+    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+        Long id = (Long) model.get("id");
         try {
             GroupHelper.delete((Session) getSession(), String.valueOf(id));
         } catch (UnirestException e) {
         }
-        ajaxRequestTarget.add(this.dataTable);
+        target.add(this.dataTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long id = (Long) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(id)));
+        Long value = (Long) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel externalIdColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String externalId = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(externalId));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel parentNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String parentName = (String) model.get(jdbcColumn);
-        if (Strings.isNullOrEmpty(parentName)) {
-            return new TextCell(Model.of(parentName));
+        String value = (String) model.get(jdbcColumn);
+        if (Strings.isNullOrEmpty(value)) {
+            return new TextCell(value);
         } else {
             PageParameters parameters = new PageParameters();
             parameters.add("groupId", model.get("parent_id"));
-            return new LinkCell(GroupModifyPage.class, parameters, Model.of(parentName));
+            return new LinkCell(GroupModifyPage.class, parameters, Model.of(value));
         }
     }
 
     private ItemPanel officeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String office = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(office));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        if (Strings.isNullOrEmpty(name)) {
-            return new TextCell(Model.of(name));
+        String value = (String) model.get(jdbcColumn);
+        if (Strings.isNullOrEmpty(value)) {
+            return new TextCell(value);
         } else {
             PageParameters parameters = new PageParameters();
             parameters.add("groupId", model.get("id"));
-            return new LinkCell(GroupModifyPage.class, parameters, Model.of(name));
+            return new LinkCell(GroupModifyPage.class, parameters, Model.of(value));
         }
     }
 
     private ItemPanel submittedOnDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date submittedOnDate = (Date) model.get(jdbcColumn);
-        if (submittedOnDate == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(submittedOnDate)));
-        }
+        Date value = (Date) model.get(jdbcColumn);
+        return new TextCell(value, "dd/MM/yyyy");
     }
 
 }

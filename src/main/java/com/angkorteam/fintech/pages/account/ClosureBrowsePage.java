@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -100,18 +99,18 @@ public class ClosureBrowsePage extends Page {
         add(this.createLink);
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-        Long value = (Long) stringObjectMap.get("id");
+    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+        Long value = (Long) model.get("id");
         JsonNode node = null;
         try {
             node = AccountingClosureHelper.delete((Session) getSession(), String.valueOf(value));
         } catch (UnirestException e) {
         }
-        reportError(node, ajaxRequestTarget);
-        ajaxRequestTarget.add(this.dataTable);
+        reportError(node, target);
+        target.add(this.dataTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         return actions;
@@ -119,26 +118,22 @@ public class ClosureBrowsePage extends Page {
 
     private ItemPanel createdByColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     private ItemPanel officeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     private ItemPanel commentColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     private ItemPanel closingDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Date value = (Date) model.get(jdbcColumn);
-        if (value != null) {
-            return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(value)));
-        } else {
-            return new TextCell(Model.of(""));
-        }
+        return new TextCell(value, "dd/MM/yyyy");
     }
 
 }

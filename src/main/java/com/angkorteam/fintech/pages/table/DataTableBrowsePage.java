@@ -87,18 +87,18 @@ public class DataTableBrowsePage extends Page {
     }
 
     private ItemPanel categoryColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer category = (Integer) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(category)));
+        Integer value = (Integer) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel tableNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String tableName = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(tableName));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel associatedColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String associated = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(associated));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
 }

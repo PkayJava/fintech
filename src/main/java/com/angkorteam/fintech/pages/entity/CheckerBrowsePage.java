@@ -112,56 +112,52 @@ public class CheckerBrowsePage extends Page {
         add(this.createLink);
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-        Integer id = (Integer) stringObjectMap.get("id");
+    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+        Integer id = (Integer) model.get("id");
         JsonNode node = null;
         try {
             EntityCheckHelper.delete((Session) getSession(), String.valueOf(id));
         } catch (UnirestException e) {
         }
-        reportError(node, ajaxRequestTarget);
-        ajaxRequestTarget.add(this.dataTable);
+        reportError(node, target);
+        target.add(this.dataTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         return actions;
     }
 
     private ItemPanel productColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer product = (Integer) model.get(jdbcColumn);
-        if (product != null) {
-            return new TextCell(Model.of(String.valueOf(product)));
-        } else {
-            return new TextCell(Model.of(""));
-        }
+        Integer value = (Integer) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel entityColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String entity = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(entity));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel dataTableColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String dataTable = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(dataTable));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel systemColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String system = (String) model.get(jdbcColumn);
-        if ("Yes".equals(system)) {
+        String value = (String) model.get(jdbcColumn);
+        if ("Yes".equals(value)) {
             return new BadgeCell(BadgeType.Danger, Model.of("Yes"));
-        } else if ("No".equals(system)) {
+        } else if ("No".equals(value)) {
             return new BadgeCell(BadgeType.Success, Model.of("No"));
         } else {
-            return new TextCell(Model.of(system));
+            return new TextCell(value);
         }
     }
 
     private ItemPanel statusColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String status = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(status));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
 }

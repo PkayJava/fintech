@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -25,6 +24,7 @@ import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.pages.staff.StaffBrowsePage;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -40,7 +40,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
@@ -186,12 +185,12 @@ public class FloatingRateCreatePage extends Page {
         this.rateTable.addBottomToolbar(new NoRecordsToolbar(this.rateTable));
     }
 
-    private void rateActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget target) {
+    private void rateActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         if ("delete".equals(s)) {
             int index = -1;
             for (int i = 0; i < this.rateValue.size(); i++) {
                 Map<String, Object> column = this.rateValue.get(i);
-                if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                if (model.get("uuid").equals(column.get("uuid"))) {
                     index = i;
                     break;
                 }
@@ -203,24 +202,20 @@ public class FloatingRateCreatePage extends Page {
         }
     }
 
-    private List<ActionItem> rateActionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> rateActionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         return actions;
     }
 
     private ItemPanel rateInterestRateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double interestRate = (Double) model.get(jdbcColumn);
-        return new TextCell(Model.of(interestRate == null ? "" : String.valueOf(interestRate)));
+        Double value = (Double) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel rateFromDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date fromDate = (Date) model.get(jdbcColumn);
-        if (fromDate == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(DateFormatUtils.format(fromDate, "yyyy-MM-dd")));
-        }
+        Date value = (Date) model.get(jdbcColumn);
+        return new TextCell(value, "dd/MM/yyyy");
     }
 
     private ItemPanel rateDifferentialColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

@@ -319,24 +319,20 @@ public class JournalPostPage extends Page {
     }
 
     private ItemPanel debitNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(name));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel debitAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double amount = (Double) model.get(jdbcColumn);
-        if (amount == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(amount)));
-        }
+        Double value = (Double) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
-    private void debitActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    private void debitActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.debitValue.size(); i++) {
             Map<String, Object> column = this.debitValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -344,32 +340,28 @@ public class JournalPostPage extends Page {
         if (index >= 0) {
             this.debitValue.remove(index);
         }
-        ajaxRequestTarget.add(this.debitTable);
+        target.add(this.debitTable);
     }
 
-    private List<ActionItem> debitActionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> debitActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     private ItemPanel creditNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(name));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel creditAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double amount = (Double) model.get(jdbcColumn);
-        if (amount == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(String.valueOf(amount)));
-        }
+        Double value = (Double) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
-    private void creditActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    private void creditActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.creditValue.size(); i++) {
             Map<String, Object> column = this.creditValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -377,10 +369,10 @@ public class JournalPostPage extends Page {
         if (index >= 0) {
             this.creditValue.remove(index);
         }
-        ajaxRequestTarget.add(this.creditTable);
+        target.add(this.creditTable);
     }
 
-    private List<ActionItem> creditActionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> creditActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 

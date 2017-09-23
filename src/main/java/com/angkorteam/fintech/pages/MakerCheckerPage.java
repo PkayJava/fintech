@@ -200,21 +200,21 @@ public class MakerCheckerPage extends Page {
 
     private ItemPanel codeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     private ItemPanel entityColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     private ItemPanel groupingColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     private ItemPanel operationColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 }

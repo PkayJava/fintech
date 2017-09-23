@@ -1,20 +1,9 @@
 package com.angkorteam.fintech.pages.holiday;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.provider.JdbcProvider;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.time.DateFormatUtils;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
@@ -23,9 +12,24 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.provider.JdbcProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.Calendar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.google.common.collect.Lists;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -103,45 +107,33 @@ public class HolidayBrowsePage extends Page {
     }
 
     private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long id = (Long) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(id)));
+        Long value = (Long) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel statusColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer status = (Integer) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(status)));
+        Integer value = (Integer) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel startDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date startDate = (Date) model.get(jdbcColumn);
-        if (startDate == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(DateFormatUtils.format(startDate, "yyyy-MM-dd")));
-        }
+        Date value = (Date) model.get(jdbcColumn);
+        return new TextCell(value, "dd/MM/yyyy");
     }
 
     private ItemPanel endDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date endDate = (Date) model.get(jdbcColumn);
-        if (endDate == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(DateFormatUtils.format(endDate, "yyyy-MM-dd")));
-        }
+        Date value = (Date) model.get(jdbcColumn);
+        return new TextCell(value, "dd/MM/yyyy");
     }
 
     private ItemPanel alternateWorkingDayColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date alternateWorkingDay = (Date) model.get(jdbcColumn);
-        if (alternateWorkingDay == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(DateFormatUtils.format(alternateWorkingDay, "yyyy-MM-dd")));
-        }
+        Date value = (Date) model.get(jdbcColumn);
+        return new TextCell(value, "dd/MM/yyyy");
     }
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(name));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
 }

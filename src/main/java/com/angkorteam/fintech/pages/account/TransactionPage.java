@@ -189,36 +189,28 @@ public class TransactionPage extends Page {
     }
 
     private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long id = (Long) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(id)));
+        Long value = (Long) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel accountTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String accountType = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(accountType));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel accountNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String accountName = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(accountName));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel debitAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        BigDecimal amount = (BigDecimal) model.get(jdbcColumn);
-        if (amount == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(FORMAT.format(amount.doubleValue())));
-        }
+        BigDecimal value = (BigDecimal) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel creditAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        BigDecimal amount = (BigDecimal) model.get(jdbcColumn);
-        if (amount == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(FORMAT.format(amount.doubleValue())));
-        }
+        BigDecimal value = (BigDecimal) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     protected boolean reverseButtonClick(AjaxLink<Void> button, AjaxRequestTarget target) {

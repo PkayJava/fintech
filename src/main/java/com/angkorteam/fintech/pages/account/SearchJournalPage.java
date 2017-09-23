@@ -25,6 +25,7 @@ import com.angkorteam.fintech.provider.ManualEntryProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
@@ -38,7 +39,6 @@ import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 
 /**
@@ -187,8 +187,8 @@ public class SearchJournalPage extends Page {
     }
 
     private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long id = (Long) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(id)));
+        Long value = (Long) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel transactionIdColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -199,50 +199,38 @@ public class SearchJournalPage extends Page {
     }
 
     private ItemPanel accountTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String accountType = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(accountType));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel createdByColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String createdBy = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(createdBy));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel accountNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String accountName = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(accountName));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel debitAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        BigDecimal amount = (BigDecimal) model.get(jdbcColumn);
-        if (amount == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(FORMAT.format(amount.doubleValue())));
-        }
+        BigDecimal value = (BigDecimal) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel officeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String office = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(office));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel creditAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        BigDecimal amount = (BigDecimal) model.get(jdbcColumn);
-        if (amount == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(FORMAT.format(amount.doubleValue())));
-        }
+        BigDecimal value = (BigDecimal) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel transactionDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date transactionDate = (Date) model.get(jdbcColumn);
-        if (transactionDate != null) {
-            return new TextCell(Model.of(DateFormatUtils.format(transactionDate, "yyyy-MM-dd")));
-        } else {
-            return new TextCell(Model.of(""));
-        }
+        Date value = (Date) model.get(jdbcColumn);
+        return new TextCell(value, "dd/MM/yyyy");
     }
 
     protected void searchButtonSubmit(Button button) {

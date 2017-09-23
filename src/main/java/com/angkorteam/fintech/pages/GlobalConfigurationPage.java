@@ -193,12 +193,12 @@ public class GlobalConfigurationPage extends Page {
 
     protected ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel valueColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
-        return new TextCell(Model.of(value == null ? "" : String.valueOf(value)));
+        return new TextCell(value);
     }
 
 }

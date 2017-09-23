@@ -125,8 +125,8 @@ public class ChargeBrowsePage extends Page {
     }
 
     private ItemPanel chargeApplyColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String chargeApply = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(chargeApply));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

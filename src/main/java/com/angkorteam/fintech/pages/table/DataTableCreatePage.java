@@ -215,11 +215,11 @@ public class DataTableCreatePage extends Page {
         this.tableForm.add(this.appTableFeedback);
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.columnValue.size(); i++) {
             Map<String, Object> column = this.columnValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -227,10 +227,10 @@ public class DataTableCreatePage extends Page {
         if (index >= 0) {
             this.columnValue.remove(index);
         }
-        ajaxRequestTarget.add(this.columnTable);
+        target.add(this.columnTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -298,23 +298,23 @@ public class DataTableCreatePage extends Page {
     }
 
     private ItemPanel codeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String code = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(code));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(name));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel typeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String type = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(type));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel lengthColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer length = (Integer) model.get(jdbcColumn);
-        return new TextCell(length == null ? Model.of("") : Model.of(String.valueOf(length)));
+        Integer value = (Integer) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel mandatoryColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

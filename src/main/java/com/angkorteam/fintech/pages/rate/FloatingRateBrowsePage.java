@@ -115,8 +115,8 @@ public class FloatingRateBrowsePage extends Page {
     }
 
     private ItemPanel createdByColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String createdBy = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(createdBy));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

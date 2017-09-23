@@ -689,11 +689,11 @@ public class RecurringDepositCreatePage extends Page {
         return new TextCell(value);
     }
 
-    protected void advancedAccountingRulePenaltyIncomeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void advancedAccountingRulePenaltyIncomeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.advancedAccountingRulePenaltyIncomeValue.size(); i++) {
             Map<String, Object> column = this.advancedAccountingRulePenaltyIncomeValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -701,14 +701,14 @@ public class RecurringDepositCreatePage extends Page {
         if (index >= 0) {
             this.advancedAccountingRulePenaltyIncomeValue.remove(index);
         }
-        ajaxRequestTarget.add(this.advancedAccountingRulePenaltyIncomeTable);
+        target.add(this.advancedAccountingRulePenaltyIncomeTable);
     }
 
-    protected List<ActionItem> advancedAccountingRulePenaltyIncomeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> advancedAccountingRulePenaltyIncomeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected List<ActionItem> advancedAccountingRuleFeeIncomeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> advancedAccountingRuleFeeIncomeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -735,11 +735,11 @@ public class RecurringDepositCreatePage extends Page {
         return new TextCell(value);
     }
 
-    protected void advancedAccountingRuleFeeIncomeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void advancedAccountingRuleFeeIncomeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.advancedAccountingRuleFeeIncomeValue.size(); i++) {
             Map<String, Object> column = this.advancedAccountingRuleFeeIncomeValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -747,18 +747,18 @@ public class RecurringDepositCreatePage extends Page {
         if (index >= 0) {
             this.advancedAccountingRuleFeeIncomeValue.remove(index);
         }
-        ajaxRequestTarget.add(this.advancedAccountingRuleFeeIncomeTable);
+        target.add(this.advancedAccountingRuleFeeIncomeTable);
     }
 
-    protected List<ActionItem> feeIncomeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> feeIncomeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void advancedAccountingRuleFundSourceActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void advancedAccountingRuleFundSourceActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.advancedAccountingRuleFundSourceValue.size(); i++) {
             Map<String, Object> column = this.advancedAccountingRuleFundSourceValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -766,10 +766,10 @@ public class RecurringDepositCreatePage extends Page {
         if (index >= 0) {
             this.advancedAccountingRuleFundSourceValue.remove(index);
         }
-        ajaxRequestTarget.add(this.advancedAccountingRuleFundSourceTable);
+        target.add(this.advancedAccountingRuleFundSourceTable);
     }
 
-    protected List<ActionItem> advancedAccountingRuleFundSourceActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> advancedAccountingRuleFundSourceActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -789,7 +789,7 @@ public class RecurringDepositCreatePage extends Page {
         return new TextCell(value);
     }
 
-    protected List<ActionItem> fundSourceActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> fundSourceActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -907,11 +907,11 @@ public class RecurringDepositCreatePage extends Page {
         return new TextCell(value);
     }
 
-    protected void chargeActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    protected void chargeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.chargeValue.size(); i++) {
             Map<String, Object> column = this.chargeValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -919,10 +919,10 @@ public class RecurringDepositCreatePage extends Page {
         if (index >= 0) {
             this.chargeValue.remove(index);
         }
-        ajaxRequestTarget.add(this.chargeTable);
+        target.add(this.chargeTable);
     }
 
-    protected List<ActionItem> chargeActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> chargeActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -1067,12 +1067,12 @@ public class RecurringDepositCreatePage extends Page {
         return new TextCell(value);
     }
 
-    protected void interestRateChartActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget target) {
+    protected void interestRateChartActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         if ("delete".equals(s)) {
             int index = -1;
             for (int i = 0; i < this.interestRateChartValue.size(); i++) {
                 Map<String, Object> column = this.interestRateChartValue.get(i);
-                if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                if (model.get("uuid").equals(column.get("uuid"))) {
                     index = i;
                     break;
                 }
@@ -1082,13 +1082,13 @@ public class RecurringDepositCreatePage extends Page {
             }
             target.add(this.interestRateChartTable);
         } else if ("incentives".equals(s)) {
-            List<Map<String, Object>> incentiveValue = (List<Map<String, Object>>) stringObjectMap.get("interestRate");
+            List<Map<String, Object>> incentiveValue = (List<Map<String, Object>>) model.get("interestRate");
             this.incentivePopup.setContent(new IncentivePopup(this.incentivePopup.getContentId(), this.incentivePopup, incentiveValue));
             this.incentivePopup.show(target);
         }
     }
 
-    protected List<ActionItem> interestRateChartActionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> interestRateChartActionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         actions.add(new ActionItem("incentives", Model.of("Incentives"), ItemCss.PRIMARY));

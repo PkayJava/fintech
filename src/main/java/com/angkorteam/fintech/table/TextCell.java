@@ -10,6 +10,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 /**
  * Created by socheatkhauv on 6/17/17.
@@ -97,7 +98,11 @@ public class TextCell extends ItemPanel {
     public TextCell(char v) {
         this(Model.of(String.valueOf(v)));
     }
-    
+
+    public TextCell(Option v) {
+        this(v != null & v.getText() != null && !"".equals(v.getText()) ? Model.of(String.valueOf(v.getText())) : Model.of(""));
+    }
+
     public TextCell(Number v) {
         this(v != null ? Model.of(String.valueOf(v.doubleValue())) : Model.of(""));
     }

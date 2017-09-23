@@ -16,6 +16,7 @@ import com.angkorteam.fintech.provider.recurring.AttributeProvider;
 import com.angkorteam.fintech.provider.recurring.OperandTypeProvider;
 import com.angkorteam.fintech.provider.recurring.OperatorProvider;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -30,7 +31,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -153,35 +153,35 @@ public class IncentivePopup extends Panel {
 
     protected ItemPanel attributeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Option value = (Option) model.get(jdbcColumn);
-        return new TextCell(Model.of(value == null ? "" : value.getText()));
+        return new TextCell(value);
     }
 
     protected ItemPanel operatorColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Option value = (Option) model.get(jdbcColumn);
-        return new TextCell(Model.of(value == null ? "" : value.getText()));
+        return new TextCell(value);
     }
 
     protected ItemPanel operandColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     protected ItemPanel operandTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Option value = (Option) model.get(jdbcColumn);
-        return new TextCell(Model.of(value == null ? "" : value.getText()));
+        return new TextCell(value);
     }
 
     protected ItemPanel interestColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
-        return new TextCell(Model.of(value == null ? "" : String.valueOf(value)));
+        return new TextCell(value);
     }
 
-    protected void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget target) {
+    protected void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         if ("delete".equals(s)) {
             int index = -1;
             for (int i = 0; i < this.incentiveValue.size(); i++) {
                 Map<String, Object> column = this.incentiveValue.get(i);
-                if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                if (model.get("uuid").equals(column.get("uuid"))) {
                     index = i;
                     break;
                 }
@@ -193,7 +193,7 @@ public class IncentivePopup extends Panel {
         }
     }
 
-    protected List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    protected List<ActionItem> actionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         return actions;

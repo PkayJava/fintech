@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -189,24 +188,20 @@ public class TaxGroupCreatePage extends Page {
     }
 
     private ItemPanel taxComponentTaxColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String tax = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(tax));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel taxComponentStartDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date startDate = (Date) model.get(jdbcColumn);
-        if (startDate == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(DateFormatUtils.format(startDate, "yyyy-MM-dd")));
-        }
+        Date value = (Date) model.get(jdbcColumn);
+        return new TextCell(value, "dd/MM/yyyy");
     }
 
-    private void taxComponentActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    private void taxComponentActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.taxComponentValue.size(); i++) {
             Map<String, Object> column = this.taxComponentValue.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -214,10 +209,10 @@ public class TaxGroupCreatePage extends Page {
         if (index >= 0) {
             this.taxComponentValue.remove(index);
         }
-        ajaxRequestTarget.add(this.taxComponentTable);
+        target.add(this.taxComponentTable);
     }
 
-    private List<ActionItem> taxComponentActionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> taxComponentActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 

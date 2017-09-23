@@ -100,45 +100,37 @@ public class TellerBrowsePage extends Page {
         add(this.createLink);
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-        Long id = (Long) stringObjectMap.get("id");
+    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+        Long id = (Long) model.get("id");
         try {
             TellerHelper.delete((Session) getSession(), String.valueOf(id));
         } catch (UnirestException e) {
         }
-        ajaxRequestTarget.add(this.dataTable);
+        target.add(this.dataTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     private ItemPanel stateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String state = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(state)));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel branchColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String branch = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(branch));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel validFromColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date validFrom = (Date) model.get(jdbcColumn);
-        if (validFrom != null) {
-            return new TextCell(Model.of(DateFormatUtils.format(validFrom, "yyyy-MM-dd")));
-        } else {
-            return new TextCell(Model.of(""));
-        }
+        Date value = (Date) model.get(jdbcColumn);
+        return new TextCell(value, "dd/MM/yyyy");
     }
 
     private ItemPanel validToColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date validTo = (Date) model.get(jdbcColumn);
-        if (validTo != null) {
-            return new TextCell(Model.of(DateFormatUtils.format(validTo, "yyyy-MM-dd")));
-        } else {
-            return new TextCell(Model.of(""));
-        }
+        Date value = (Date) model.get(jdbcColumn);
+        return new TextCell(value, "dd/MM/yyyy");
     }
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

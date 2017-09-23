@@ -246,12 +246,12 @@ public class FloatingRateModifyPage extends Page {
         target.add(this.rateTable);
     }
 
-    private void rateActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget target) {
+    private void rateActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         if ("delete".equals(s)) {
             int index = -1;
             for (int i = 0; i < this.rateValue.size(); i++) {
                 Map<String, Object> column = this.rateValue.get(i);
-                if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                if (model.get("uuid").equals(column.get("uuid"))) {
                     index = i;
                     break;
                 }
@@ -261,21 +261,21 @@ public class FloatingRateModifyPage extends Page {
             }
             target.add(this.rateTable);
         } else if ("modify".equals(s)) {
-            this.itemId = (Long) stringObjectMap.get("id");
-            this.itemFromDateValue = (Date) stringObjectMap.get("fromDate");
-            if (stringObjectMap.get("interestRate") instanceof Double) {
-                this.itemInterestRateValue = (Double) stringObjectMap.get("interestRate");
-            } else if (stringObjectMap.get("interestRate") instanceof BigDecimal) {
-                this.itemInterestRateValue = ((BigDecimal) stringObjectMap.get("interestRate")).doubleValue();
+            this.itemId = (Long) model.get("id");
+            this.itemFromDateValue = (Date) model.get("fromDate");
+            if (model.get("interestRate") instanceof Double) {
+                this.itemInterestRateValue = (Double) model.get("interestRate");
+            } else if (model.get("interestRate") instanceof BigDecimal) {
+                this.itemInterestRateValue = ((BigDecimal) model.get("interestRate")).doubleValue();
             }
-            this.itemDifferentialValue = (Boolean) stringObjectMap.get("differential");
+            this.itemDifferentialValue = (Boolean) model.get("differential");
             this.ratePopup.show(target);
         }
     }
 
-    private List<ActionItem> rateActionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> rateActionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
-        if (stringObjectMap.get("id") == null) {
+        if (model.get("id") == null) {
             actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         } else {
             actions.add(new ActionItem("modify", Model.of("Modify"), ItemCss.INFO));
@@ -284,23 +284,13 @@ public class FloatingRateModifyPage extends Page {
     }
 
     private ItemPanel rateInterestRateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        if (model.get(jdbcColumn) instanceof Double) {
-            Double interestRate = (Double) model.get(jdbcColumn);
-            return new TextCell(Model.of(interestRate == null ? "" : String.valueOf(interestRate)));
-        } else if (model.get(jdbcColumn) instanceof BigDecimal) {
-            BigDecimal interestRate = (BigDecimal) model.get(jdbcColumn);
-            return new TextCell(Model.of(interestRate == null ? "" : String.valueOf(interestRate.doubleValue())));
-        }
-        return null;
+        Number value = (Number) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel rateFromDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date fromDate = (Date) model.get(jdbcColumn);
-        if (fromDate == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(DateFormatUtils.format(fromDate, "yyyy-MM-dd")));
-        }
+        Date value = (Date) model.get(jdbcColumn);
+        return new TextCell(value, "dd/MM/yy");
     }
 
     private ItemPanel rateDifferentialColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

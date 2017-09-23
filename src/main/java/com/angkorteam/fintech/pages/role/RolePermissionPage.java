@@ -145,9 +145,9 @@ public class RolePermissionPage extends Page {
         this.form.add(this.permissionFeedback);
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         if ("delete".equals(s)) {
-            String falseCode = (String) stringObjectMap.get("code");
+            String falseCode = (String) model.get("code");
             JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
             List<String> trueCodes = jdbcTemplate.queryForList("select m_permission.code from m_role_permission INNER JOIN m_permission ON m_role_permission.permission_id = m_permission.id where m_role_permission.role_id = ?", String.class, this.roleId);
@@ -178,7 +178,7 @@ public class RolePermissionPage extends Page {
         }
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -216,27 +216,27 @@ public class RolePermissionPage extends Page {
     }
 
     private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long id = (Long) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(id)));
+        Long value = (Long) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel codeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String externalId = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(externalId));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel entityColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String entity = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(entity));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel groupingColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String grouping = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(grouping));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel operationColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String operation = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(operation));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 }

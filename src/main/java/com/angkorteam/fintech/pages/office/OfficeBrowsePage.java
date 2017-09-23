@@ -1,5 +1,17 @@
 package com.angkorteam.fintech.pages.office;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
@@ -9,21 +21,13 @@ import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.Calendar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by socheatkhauv on 6/22/17.
@@ -102,23 +106,23 @@ public class OfficeBrowsePage extends Page {
     }
 
     private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long id = (Long) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(id)));
+        Long value = (Long) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel externalIdColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String externalId = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(externalId));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel parentNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String parentName = (String) model.get(jdbcColumn);
-        if (Strings.isNullOrEmpty(parentName)) {
-            return new TextCell(Model.of(parentName));
+        String value = (String) model.get(jdbcColumn);
+        if (Strings.isNullOrEmpty(value)) {
+            return new TextCell(value);
         } else {
             PageParameters parameters = new PageParameters();
             parameters.add("officeId", model.get("parent_id"));
-            return new LinkCell(OfficeModifyPage.class, parameters, Model.of(parentName));
+            return new LinkCell(OfficeModifyPage.class, parameters, Model.of(value));
         }
 
     }
@@ -131,12 +135,8 @@ public class OfficeBrowsePage extends Page {
     }
 
     private ItemPanel openingDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date openingDate = (Date) model.get(jdbcColumn);
-        if (openingDate == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(openingDate)));
-        }
+        Date value = (Date) model.get(jdbcColumn);
+        return new TextCell(value, "dd/MM/yyyy");
     }
 
 }

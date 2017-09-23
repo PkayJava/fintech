@@ -99,12 +99,8 @@ public class TaxComponentBrowsePage extends Page {
     }
 
     private ItemPanel percentageColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        BigDecimal percentage = (BigDecimal) model.get(jdbcColumn);
-        if (percentage == null) {
-            return new TextCell(Model.of(String.valueOf("")));
-        } else {
-            return new TextCell(Model.of(String.valueOf(percentage.doubleValue())));
-        }
+        BigDecimal value = (BigDecimal) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

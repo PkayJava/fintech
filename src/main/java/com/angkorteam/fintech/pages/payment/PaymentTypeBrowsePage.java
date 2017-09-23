@@ -1,5 +1,17 @@
 package com.angkorteam.fintech.pages.payment;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
@@ -13,21 +25,16 @@ import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -97,32 +104,32 @@ public class PaymentTypeBrowsePage extends Page {
         add(this.createLink);
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-        Integer id = (Integer) stringObjectMap.get("id");
+    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+        Integer id = (Integer) model.get("id");
         try {
             PaymentTypeHelper.delete((Session) getSession(), String.valueOf(id));
         } catch (UnirestException e) {
         }
-        ajaxRequestTarget.add(this.dataTable);
+        target.add(this.dataTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer id = (Integer) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(id)));
+        Integer value = (Integer) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel descriptionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String description = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(description));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel positionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer position = (Integer) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(position)));
+        Integer value = (Integer) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel cashColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -135,13 +142,13 @@ public class PaymentTypeBrowsePage extends Page {
     }
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        if (Strings.isNullOrEmpty(name)) {
-            return new TextCell(Model.of(name));
+        String value = (String) model.get(jdbcColumn);
+        if (Strings.isNullOrEmpty(value)) {
+            return new TextCell(value);
         } else {
             PageParameters parameters = new PageParameters();
             parameters.add("paymentTypeId", model.get("id"));
-            return new LinkCell(PaymentTypeModifyPage.class, parameters, Model.of(name));
+            return new LinkCell(PaymentTypeModifyPage.class, parameters, Model.of(value));
         }
     }
 }

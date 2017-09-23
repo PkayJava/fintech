@@ -94,12 +94,12 @@ public class ShareBrowsePage extends Page {
 
     private ItemPanel shortNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     private ItemPanel totalSharesColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Long value = (Long) model.get(jdbcColumn);
-        return new TextCell(Model.of(String.valueOf(value)));
+        return new TextCell(value);
     }
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

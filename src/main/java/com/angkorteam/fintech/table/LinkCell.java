@@ -13,6 +13,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 /**
  * Created by socheatkhauv on 6/17/17.
@@ -107,6 +108,10 @@ public class LinkCell extends ItemPanel {
 
     public LinkCell(Class<? extends Page> page, PageParameters parameters, char v) {
         this(page, parameters, Model.of(String.valueOf(v)));
+    }
+
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, Option v) {
+        this(page, parameters, v != null & v.getText() != null && !"".equals(v.getText()) ? Model.of(String.valueOf(v.getText())) : Model.of(""));
     }
 
     public LinkCell(Class<? extends Page> page, PageParameters parameters, IModel<?> model) {

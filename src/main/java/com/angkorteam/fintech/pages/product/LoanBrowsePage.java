@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
@@ -109,16 +108,12 @@ public class LoanBrowsePage extends Page {
 
     private ItemPanel expiryDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Date value = (Date) model.get(jdbcColumn);
-        if (value != null) {
-            return new TextCell(Model.of(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(value)));
-        } else {
-            return new TextCell(Model.of(""));
-        }
+        return new TextCell(value, "dd/MM/yyyy");
     }
 
     private ItemPanel shortNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
     private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

@@ -97,8 +97,8 @@ public class PasswordPreferencesPage extends Page {
         add(this.closeLink);
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget target) {
-        Integer id = (Integer) stringObjectMap.get("id");
+    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+        Integer id = (Integer) model.get("id");
         try {
             PasswordPreferencesHelper.update((Session) getSession(), String.valueOf(id));
         } catch (UnirestException e) {
@@ -106,9 +106,9 @@ public class PasswordPreferencesPage extends Page {
         target.add(this.dataTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
-        Integer active = (Integer) stringObjectMap.get("active");
+        Integer active = (Integer) model.get("active");
         if (active == null || active != 1) {
             actions.add(new ActionItem("activate", Model.of("Activate"), ItemCss.PRIMARY));
         }
@@ -126,7 +126,7 @@ public class PasswordPreferencesPage extends Page {
 
     private ItemPanel descriptionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
 }

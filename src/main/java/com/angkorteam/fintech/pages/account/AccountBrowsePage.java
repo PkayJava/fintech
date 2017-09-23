@@ -156,8 +156,8 @@ public class AccountBrowsePage extends Page {
     }
 
     private ItemPanel accountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String account = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(account));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel glCodeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -187,7 +187,7 @@ public class AccountBrowsePage extends Page {
 
     private ItemPanel accountTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(value));
+        return new TextCell(value);
     }
 
 }

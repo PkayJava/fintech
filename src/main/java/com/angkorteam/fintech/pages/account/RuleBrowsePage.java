@@ -117,33 +117,33 @@ public class RuleBrowsePage extends Page {
         add(this.createLink);
     }
 
-    private void postClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-        Long id = (Long) stringObjectMap.get("id");
+    private void postClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+        Long id = (Long) model.get("id");
         PageParameters parameters = new PageParameters();
         parameters.add("ruleId", id);
         setResponsePage(FrequentPostPage.class, parameters);
     }
 
-    private List<ActionItem> postItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> postItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         actions.add(new ActionItem("post", Model.of("Post"), ItemCss.INFO));
         return actions;
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-        Long id = (Long) stringObjectMap.get("id");
+    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+        Long id = (Long) model.get("id");
         if ("delete".equals(s)) {
             JsonNode node = null;
             try {
                 node = AccountingRuleHelper.delete((Session) getSession(), String.valueOf(id));
             } catch (UnirestException e) {
             }
-            reportError(node, ajaxRequestTarget);
-            ajaxRequestTarget.add(this.dataTable);
+            reportError(node, target);
+            target.add(this.dataTable);
         }
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         return actions;
@@ -157,28 +157,28 @@ public class RuleBrowsePage extends Page {
     }
 
     private ItemPanel officeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String office = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(office));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel debitTagsColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String debitTags = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(debitTags));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel debitAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String debitAccount = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(debitAccount));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel creditAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String creditAccount = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(creditAccount));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel creditTagsColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String creditTags = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(creditTags));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
 }

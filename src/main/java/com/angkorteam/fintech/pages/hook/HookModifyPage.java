@@ -1,5 +1,22 @@
 package com.angkorteam.fintech.pages.hook;
 
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
@@ -8,6 +25,7 @@ import com.angkorteam.fintech.helper.HookHelper;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.HookFieldWidget;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -27,27 +45,10 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.OptionChoiceRenderer;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.repeater.RepeatingView;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -266,11 +267,11 @@ public class HookModifyPage extends Page {
         return false;
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
+    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.events.size(); i++) {
             Map<String, Object> column = this.events.get(i);
-            if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+            if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
@@ -278,10 +279,10 @@ public class HookModifyPage extends Page {
         if (index >= 0) {
             this.events.remove(index);
         }
-        ajaxRequestTarget.add(this.dataTable);
+        target.add(this.dataTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -333,12 +334,12 @@ public class HookModifyPage extends Page {
     }
 
     private ItemPanel entityNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String entityName = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(entityName));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel actionNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String actionName = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(actionName));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 }

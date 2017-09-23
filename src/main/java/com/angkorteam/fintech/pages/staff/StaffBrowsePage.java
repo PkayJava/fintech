@@ -105,18 +105,18 @@ public class StaffBrowsePage extends Page {
     }
 
     private ItemPanel firstNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String firstName = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(firstName));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel lastNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String lastName = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(lastName));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel officeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String office = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(office));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel activeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

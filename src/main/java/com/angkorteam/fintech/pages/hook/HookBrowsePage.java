@@ -119,16 +119,16 @@ public class HookBrowsePage extends Page {
         this.form.add(this.templateFeedback);
     }
 
-    private void actionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget ajaxRequestTarget) {
-        Long id = (Long) stringObjectMap.get("id");
+    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+        Long id = (Long) model.get("id");
         try {
             HookHelper.delete((Session) getSession(), String.valueOf(id));
         } catch (UnirestException e) {
         }
-        ajaxRequestTarget.add(this.dataTable);
+        target.add(this.dataTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -146,8 +146,8 @@ public class HookBrowsePage extends Page {
     }
 
     private ItemPanel templateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String template = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(template));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel activeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

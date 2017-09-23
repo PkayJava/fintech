@@ -230,34 +230,26 @@ public class TaxGroupModifyPage extends Page {
     }
 
     private ItemPanel taxComponentTaxColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String tax = (String) model.get(jdbcColumn);
-        return new TextCell(Model.of(tax));
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     private ItemPanel taxComponentStartDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date startDate = (Date) model.get(jdbcColumn);
-        if (startDate == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(DateFormatUtils.format(startDate, "yyyy-MM-dd")));
-        }
+        Date value = (Date) model.get(jdbcColumn);
+        return new TextCell(value, "dd/MM/yyyy");
     }
 
     private ItemPanel taxComponentEndDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date endDate = (Date) model.get(jdbcColumn);
-        if (endDate == null) {
-            return new TextCell(Model.of(""));
-        } else {
-            return new TextCell(Model.of(DateFormatUtils.format(endDate, "yyyy-MM-dd")));
-        }
+        Date value = (Date) model.get(jdbcColumn);
+        return new TextCell(value, "dd/MM/yyyy");
     }
 
-    private void taxComponentActionClick(String s, Map<String, Object> stringObjectMap, AjaxRequestTarget target) {
+    private void taxComponentActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         if ("delete".equals(s)) {
             int index = -1;
             for (int i = 0; i < this.taxComponentValue.size(); i++) {
                 Map<String, Object> column = this.taxComponentValue.get(i);
-                if (stringObjectMap.get("uuid").equals(column.get("uuid"))) {
+                if (model.get("uuid").equals(column.get("uuid"))) {
                     index = i;
                     break;
                 }
@@ -267,17 +259,17 @@ public class TaxGroupModifyPage extends Page {
             }
             target.add(this.taxComponentTable);
         } else if ("modify".equals(s)) {
-            this.itemId = (Long) stringObjectMap.get("id");
-            this.itemEndDateValue = (Date) stringObjectMap.get("endDate");
-            this.itemStartDateValue = DateFormatUtils.format((Date) stringObjectMap.get("startDate"), "yyyy-MM-dd");
+            this.itemId = (Long) model.get("id");
+            this.itemEndDateValue = (Date) model.get("endDate");
+            this.itemStartDateValue = DateFormatUtils.format((Date) model.get("startDate"), "yyyy-MM-dd");
             this.taxPopup.show(target);
         }
     }
 
-    private List<ActionItem> taxComponentActionItem(String s, Map<String, Object> stringObjectMap) {
+    private List<ActionItem> taxComponentActionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
-        if (stringObjectMap.get("id") != null) {
-            if (!"N".equals(stringObjectMap.get("allow"))) {
+        if (model.get("id") != null) {
+            if (!"N".equals(model.get("allow"))) {
                 actions.add(new ActionItem("modify", Model.of("Modify"), ItemCss.INFO));
             }
         } else {
