@@ -371,10 +371,10 @@ public class RecurringBuilder implements Serializable {
         return this;
     }
 
-    private Double minDepositTerm;
+    private Integer minDepositTerm;
     private boolean hasMinDepositTerm;
 
-    public RecurringBuilder withMinDepositTerm(Double minDepositTerm) {
+    public RecurringBuilder withMinDepositTerm(Integer minDepositTerm) {
         this.minDepositTerm = minDepositTerm;
         this.hasMinDepositTerm = true;
         return this;
@@ -407,10 +407,10 @@ public class RecurringBuilder implements Serializable {
         return this;
     }
 
-    private Double maxDepositTerm;
+    private Integer maxDepositTerm;
     private boolean hasMaxDepositTerm;
 
-    public RecurringBuilder withMaxDepositTerm(Double maxDepositTerm) {
+    public RecurringBuilder withMaxDepositTerm(Integer maxDepositTerm) {
         this.maxDepositTerm = maxDepositTerm;
         this.hasMaxDepositTerm = true;
         return this;
