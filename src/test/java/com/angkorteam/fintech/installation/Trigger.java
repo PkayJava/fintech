@@ -56,6 +56,15 @@ public class Trigger {
             ResultSet resultSet = connection.createStatement().executeQuery("select * from " + table);
             ResultSetMetaData metaData = resultSet.getMetaData();
 
+            boolean hasId = false;
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                String fieldName = metaData.getColumnName(i);
+                if (fieldName.equals("id")) {
+                    hasId = true;
+                    break;
+                }
+            }
+
             {
                 StringBuffer delete = new StringBuffer();
                 delete.append("DROP TRIGGER IF EXISTS " + table + "_d;").append("\n");
@@ -67,7 +76,11 @@ public class Trigger {
                 delete.append("  BEGIN").append("\n");
                 delete.append("    DECLARE _id VARCHAR(100);").append("\n");
                 delete.append("    SELECT uuid() INTO _id FROM dual;").append("\n");
-                delete.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', '" + table + "');").append("\n");
+                String logScript = "CONCAT('DELETE FROM " + table + " WHERE id = ', OLD.id)";
+                if (!hasId) {
+                    logScript = "NULL";
+                }
+                delete.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', '" + table + "', " + logScript + ");").append("\n");
                 for (int i = 1; i <= metaData.getColumnCount(); i++) {
                     String fieldName = metaData.getColumnName(i);
                     delete.append("    INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, '" + fieldName + "', OLD." + fieldName + ", NULL);").append("\n");
@@ -87,7 +100,31 @@ public class Trigger {
                 insert.append("  BEGIN").append("\n");
                 insert.append("    DECLARE _id VARCHAR(100);").append("\n");
                 insert.append("    SELECT uuid() INTO _id FROM dual;").append("\n");
-                insert.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', '" + table + "');").append("\n");
+                String logScript = "CONCAT('INSERT INTO " + table + "(";
+                for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                    if (i == metaData.getColumnCount()) {
+                        String fieldName = metaData.getColumnName(i);
+                        logScript = logScript + fieldName;
+                    } else {
+                        String fieldName = metaData.getColumnName(i);
+                        logScript = logScript + fieldName + ", ";
+                    }
+                }
+                logScript = logScript + ") VALUES(', ";
+                for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                    String fieldName = metaData.getColumnName(i);
+                    String n = "NEW." + fieldName;
+                    if (i == metaData.getColumnCount()) {
+                        logScript = logScript + '\'' + '\\' + '\'' + '\'' + ", " + n + ", " + '\'' + '\\' + '\'' + '\'' + ", ";
+                    } else {
+                        logScript = logScript + '\'' + '\\' + '\'' + '\'' + ", " + n + ", " + '\'' + '\\' + '\'' + '\'' + ", " + '\'' + ',' + '\'' + ", ";
+                    }
+                }
+                logScript = logScript + "')')";
+                if (!hasId) {
+                    logScript = "NULL";
+                }
+                insert.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', '" + table + "', " + logScript + ");").append("\n");
                 for (int i = 1; i <= metaData.getColumnCount(); i++) {
                     String fieldName = metaData.getColumnName(i);
                     insert.append("    INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, '" + fieldName + "', NEW." + fieldName + ", NULL);").append("\n");
@@ -107,7 +144,21 @@ public class Trigger {
                 update.append("  BEGIN").append("\n");
                 update.append("    DECLARE _id VARCHAR(100);").append("\n");
                 update.append("    SELECT uuid() INTO _id FROM dual;").append("\n");
-                update.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', '" + table + "');").append("\n");
+                String logScript = "CONCAT('UPDATE " + table + " SET ";
+                for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                    String fieldName = metaData.getColumnName(i);
+                    String value = "'NEW." + fieldName + "'";
+                    if (i == metaData.getColumnCount()) {
+                        logScript = logScript + fieldName + " = ', " + value + ", ' ";
+                    } else {
+                        logScript = logScript + fieldName + " = ', " + value + ", '" + ", ";
+                    }
+                }
+                logScript = logScript + "WHERE id = NEW.id')";
+                if (!hasId) {
+                    logScript = "NULL";
+                }
+                update.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', '" + table + "', " + logScript + ");").append("\n");
                 for (int i = 1; i <= metaData.getColumnCount(); i++) {
                     String fieldName = metaData.getColumnName(i);
                     update.append("    INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, '" + fieldName + "', OLD." + fieldName + ", NEW." + fieldName + ");").append("\n");

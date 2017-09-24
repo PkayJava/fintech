@@ -7,7 +7,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'acc_accounting_rule');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'acc_accounting_rule', CONCAT('DELETE FROM acc_accounting_rule WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NULL);
@@ -27,7 +27,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'acc_accounting_rule');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'acc_accounting_rule', CONCAT('INSERT INTO acc_accounting_rule(id, name, office_id, debit_account_id, allow_multiple_debits, credit_account_id, allow_multiple_credits, description, system_defined) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.office_id, '\'', ',', '\'', NEW.debit_account_id, '\'', ',', '\'', NEW.allow_multiple_debits, '\'', ',', '\'', NEW.credit_account_id, '\'', ',', '\'', NEW.allow_multiple_credits, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.system_defined, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'office_id', NEW.office_id, NULL);
@@ -47,7 +47,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'acc_accounting_rule');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'acc_accounting_rule', CONCAT('UPDATE acc_accounting_rule SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', office_id = ', 'NEW.office_id', ', debit_account_id = ', 'NEW.debit_account_id', ', allow_multiple_debits = ', 'NEW.allow_multiple_debits', ', credit_account_id = ', 'NEW.credit_account_id', ', allow_multiple_credits = ', 'NEW.allow_multiple_credits', ', description = ', 'NEW.description', ', system_defined = ', 'NEW.system_defined', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NEW.office_id);
@@ -67,7 +67,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'acc_gl_account');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'acc_gl_account', CONCAT('DELETE FROM acc_gl_account WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parent_id', OLD.parent_id, NULL);
@@ -89,7 +89,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'acc_gl_account');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'acc_gl_account', CONCAT('INSERT INTO acc_gl_account(id, name, parent_id, hierarchy, gl_code, disabled, manual_journal_entries_allowed, account_usage, classification_enum, tag_id, description) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.parent_id, '\'', ',', '\'', NEW.hierarchy, '\'', ',', '\'', NEW.gl_code, '\'', ',', '\'', NEW.disabled, '\'', ',', '\'', NEW.manual_journal_entries_allowed, '\'', ',', '\'', NEW.account_usage, '\'', ',', '\'', NEW.classification_enum, '\'', ',', '\'', NEW.tag_id, '\'', ',', '\'', NEW.description, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'parent_id', NEW.parent_id, NULL);
@@ -111,7 +111,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'acc_gl_account');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'acc_gl_account', CONCAT('UPDATE acc_gl_account SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', parent_id = ', 'NEW.parent_id', ', hierarchy = ', 'NEW.hierarchy', ', gl_code = ', 'NEW.gl_code', ', disabled = ', 'NEW.disabled', ', manual_journal_entries_allowed = ', 'NEW.manual_journal_entries_allowed', ', account_usage = ', 'NEW.account_usage', ', classification_enum = ', 'NEW.classification_enum', ', tag_id = ', 'NEW.tag_id', ', description = ', 'NEW.description', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parent_id', OLD.parent_id, NEW.parent_id);
@@ -133,7 +133,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'acc_gl_closure');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'acc_gl_closure', CONCAT('DELETE FROM acc_gl_closure WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'closing_date', OLD.closing_date, NULL);
@@ -153,7 +153,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'acc_gl_closure');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'acc_gl_closure', CONCAT('INSERT INTO acc_gl_closure(id, office_id, closing_date, is_deleted, createdby_id, lastmodifiedby_id, created_date, lastmodified_date, comments) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.office_id, '\'', ',', '\'', NEW.closing_date, '\'', ',', '\'', NEW.is_deleted, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodified_date, '\'', ',', '\'', NEW.comments, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'office_id', NEW.office_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'closing_date', NEW.closing_date, NULL);
@@ -173,7 +173,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'acc_gl_closure');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'acc_gl_closure', CONCAT('UPDATE acc_gl_closure SET id = ', 'NEW.id', ', office_id = ', 'NEW.office_id', ', closing_date = ', 'NEW.closing_date', ', is_deleted = ', 'NEW.is_deleted', ', createdby_id = ', 'NEW.createdby_id', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', created_date = ', 'NEW.created_date', ', lastmodified_date = ', 'NEW.lastmodified_date', ', comments = ', 'NEW.comments', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NEW.office_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'closing_date', OLD.closing_date, NEW.closing_date);
@@ -193,7 +193,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'acc_gl_financial_activity_account');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'acc_gl_financial_activity_account', CONCAT('DELETE FROM acc_gl_financial_activity_account WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'gl_account_id', OLD.gl_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'financial_activity_type', OLD.financial_activity_type, NULL);
@@ -207,7 +207,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'acc_gl_financial_activity_account');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'acc_gl_financial_activity_account', CONCAT('INSERT INTO acc_gl_financial_activity_account(id, gl_account_id, financial_activity_type) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.gl_account_id, '\'', ',', '\'', NEW.financial_activity_type, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'gl_account_id', NEW.gl_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'financial_activity_type', NEW.financial_activity_type, NULL);
@@ -221,7 +221,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'acc_gl_financial_activity_account');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'acc_gl_financial_activity_account', CONCAT('UPDATE acc_gl_financial_activity_account SET id = ', 'NEW.id', ', gl_account_id = ', 'NEW.gl_account_id', ', financial_activity_type = ', 'NEW.financial_activity_type', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'gl_account_id', OLD.gl_account_id, NEW.gl_account_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'financial_activity_type', OLD.financial_activity_type, NEW.financial_activity_type);
@@ -235,7 +235,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'acc_gl_journal_entry');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'acc_gl_journal_entry', CONCAT('DELETE FROM acc_gl_journal_entry WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_id', OLD.account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NULL);
@@ -273,7 +273,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'acc_gl_journal_entry');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'acc_gl_journal_entry', CONCAT('INSERT INTO acc_gl_journal_entry(id, account_id, office_id, reversal_id, currency_code, transaction_id, loan_transaction_id, savings_transaction_id, client_transaction_id, reversed, ref_num, manual_entry, entry_date, type_enum, amount, description, entity_type_enum, entity_id, createdby_id, lastmodifiedby_id, created_date, lastmodified_date, is_running_balance_calculated, office_running_balance, organization_running_balance, payment_details_id, share_transaction_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.account_id, '\'', ',', '\'', NEW.office_id, '\'', ',', '\'', NEW.reversal_id, '\'', ',', '\'', NEW.currency_code, '\'', ',', '\'', NEW.transaction_id, '\'', ',', '\'', NEW.loan_transaction_id, '\'', ',', '\'', NEW.savings_transaction_id, '\'', ',', '\'', NEW.client_transaction_id, '\'', ',', '\'', NEW.reversed, '\'', ',', '\'', NEW.ref_num, '\'', ',', '\'', NEW.manual_entry, '\'', ',', '\'', NEW.entry_date, '\'', ',', '\'', NEW.type_enum, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.entity_type_enum, '\'', ',', '\'', NEW.entity_id, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodified_date, '\'', ',', '\'', NEW.is_running_balance_calculated, '\'', ',', '\'', NEW.office_running_balance, '\'', ',', '\'', NEW.organization_running_balance, '\'', ',', '\'', NEW.payment_details_id, '\'', ',', '\'', NEW.share_transaction_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'account_id', NEW.account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'office_id', NEW.office_id, NULL);
@@ -311,7 +311,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'acc_gl_journal_entry');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'acc_gl_journal_entry', CONCAT('UPDATE acc_gl_journal_entry SET id = ', 'NEW.id', ', account_id = ', 'NEW.account_id', ', office_id = ', 'NEW.office_id', ', reversal_id = ', 'NEW.reversal_id', ', currency_code = ', 'NEW.currency_code', ', transaction_id = ', 'NEW.transaction_id', ', loan_transaction_id = ', 'NEW.loan_transaction_id', ', savings_transaction_id = ', 'NEW.savings_transaction_id', ', client_transaction_id = ', 'NEW.client_transaction_id', ', reversed = ', 'NEW.reversed', ', ref_num = ', 'NEW.ref_num', ', manual_entry = ', 'NEW.manual_entry', ', entry_date = ', 'NEW.entry_date', ', type_enum = ', 'NEW.type_enum', ', amount = ', 'NEW.amount', ', description = ', 'NEW.description', ', entity_type_enum = ', 'NEW.entity_type_enum', ', entity_id = ', 'NEW.entity_id', ', createdby_id = ', 'NEW.createdby_id', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', created_date = ', 'NEW.created_date', ', lastmodified_date = ', 'NEW.lastmodified_date', ', is_running_balance_calculated = ', 'NEW.is_running_balance_calculated', ', office_running_balance = ', 'NEW.office_running_balance', ', organization_running_balance = ', 'NEW.organization_running_balance', ', payment_details_id = ', 'NEW.payment_details_id', ', share_transaction_id = ', 'NEW.share_transaction_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_id', OLD.account_id, NEW.account_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NEW.office_id);
@@ -349,7 +349,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'acc_product_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'acc_product_mapping', CONCAT('DELETE FROM acc_product_mapping WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'gl_account_id', OLD.gl_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NULL);
@@ -367,7 +367,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'acc_product_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'acc_product_mapping', CONCAT('INSERT INTO acc_product_mapping(id, gl_account_id, product_id, product_type, payment_type, charge_id, financial_account_type) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.gl_account_id, '\'', ',', '\'', NEW.product_id, '\'', ',', '\'', NEW.product_type, '\'', ',', '\'', NEW.payment_type, '\'', ',', '\'', NEW.charge_id, '\'', ',', '\'', NEW.financial_account_type, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'gl_account_id', NEW.gl_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'product_id', NEW.product_id, NULL);
@@ -385,7 +385,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'acc_product_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'acc_product_mapping', CONCAT('UPDATE acc_product_mapping SET id = ', 'NEW.id', ', gl_account_id = ', 'NEW.gl_account_id', ', product_id = ', 'NEW.product_id', ', product_type = ', 'NEW.product_type', ', payment_type = ', 'NEW.payment_type', ', charge_id = ', 'NEW.charge_id', ', financial_account_type = ', 'NEW.financial_account_type', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'gl_account_id', OLD.gl_account_id, NEW.gl_account_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NEW.product_id);
@@ -403,7 +403,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'acc_rule_tags');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'acc_rule_tags', CONCAT('DELETE FROM acc_rule_tags WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'acc_rule_id', OLD.acc_rule_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'tag_id', OLD.tag_id, NULL);
@@ -418,7 +418,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'acc_rule_tags');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'acc_rule_tags', CONCAT('INSERT INTO acc_rule_tags(id, acc_rule_id, tag_id, acc_type_enum) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.acc_rule_id, '\'', ',', '\'', NEW.tag_id, '\'', ',', '\'', NEW.acc_type_enum, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'acc_rule_id', NEW.acc_rule_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'tag_id', NEW.tag_id, NULL);
@@ -433,7 +433,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'acc_rule_tags');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'acc_rule_tags', CONCAT('UPDATE acc_rule_tags SET id = ', 'NEW.id', ', acc_rule_id = ', 'NEW.acc_rule_id', ', tag_id = ', 'NEW.tag_id', ', acc_type_enum = ', 'NEW.acc_type_enum', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'acc_rule_id', OLD.acc_rule_id, NEW.acc_rule_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'tag_id', OLD.tag_id, NEW.tag_id);
@@ -448,7 +448,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'c_account_number_format');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'c_account_number_format', CONCAT('DELETE FROM c_account_number_format WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_type_enum', OLD.account_type_enum, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'prefix_type_enum', OLD.prefix_type_enum, NULL);
@@ -462,7 +462,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'c_account_number_format');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'c_account_number_format', CONCAT('INSERT INTO c_account_number_format(id, account_type_enum, prefix_type_enum) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.account_type_enum, '\'', ',', '\'', NEW.prefix_type_enum, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'account_type_enum', NEW.account_type_enum, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'prefix_type_enum', NEW.prefix_type_enum, NULL);
@@ -476,7 +476,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'c_account_number_format');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'c_account_number_format', CONCAT('UPDATE c_account_number_format SET id = ', 'NEW.id', ', account_type_enum = ', 'NEW.account_type_enum', ', prefix_type_enum = ', 'NEW.prefix_type_enum', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_type_enum', OLD.account_type_enum, NEW.account_type_enum);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'prefix_type_enum', OLD.prefix_type_enum, NEW.prefix_type_enum);
@@ -490,7 +490,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'c_cache');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'c_cache', CONCAT('DELETE FROM c_cache WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'cache_type_enum', OLD.cache_type_enum, NULL);
   END;
@@ -503,7 +503,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'c_cache');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'c_cache', CONCAT('INSERT INTO c_cache(id, cache_type_enum) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.cache_type_enum, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'cache_type_enum', NEW.cache_type_enum, NULL);
   END;
@@ -516,7 +516,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'c_cache');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'c_cache', CONCAT('UPDATE c_cache SET id = ', 'NEW.id', ', cache_type_enum = ', 'NEW.cache_type_enum', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'cache_type_enum', OLD.cache_type_enum, NEW.cache_type_enum);
   END;
@@ -529,7 +529,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'c_configuration');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'c_configuration', CONCAT('DELETE FROM c_configuration WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'value', OLD.value, NULL);
@@ -547,7 +547,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'c_configuration');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'c_configuration', CONCAT('INSERT INTO c_configuration(id, name, value, date_value, enabled, is_trap_door, description) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.value, '\'', ',', '\'', NEW.date_value, '\'', ',', '\'', NEW.enabled, '\'', ',', '\'', NEW.is_trap_door, '\'', ',', '\'', NEW.description, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'value', NEW.value, NULL);
@@ -565,7 +565,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'c_configuration');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'c_configuration', CONCAT('UPDATE c_configuration SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', value = ', 'NEW.value', ', date_value = ', 'NEW.date_value', ', enabled = ', 'NEW.enabled', ', is_trap_door = ', 'NEW.is_trap_door', ', description = ', 'NEW.description', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'value', OLD.value, NEW.value);
@@ -583,7 +583,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'c_external_service');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'c_external_service', CONCAT('DELETE FROM c_external_service WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
   END;
@@ -596,7 +596,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'c_external_service');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'c_external_service', CONCAT('INSERT INTO c_external_service(id, name) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
   END;
@@ -609,7 +609,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'c_external_service');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'c_external_service', CONCAT('UPDATE c_external_service SET id = ', 'NEW.id', ', name = ', 'NEW.name', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
   END;
@@ -622,7 +622,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'c_external_service_properties');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'c_external_service_properties', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'value', OLD.value, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'external_service_id', OLD.external_service_id, NULL);
@@ -636,7 +636,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'c_external_service_properties');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'c_external_service_properties', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'value', NEW.value, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'external_service_id', NEW.external_service_id, NULL);
@@ -650,7 +650,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'c_external_service_properties');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'c_external_service_properties', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'value', OLD.value, NEW.value);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'external_service_id', OLD.external_service_id, NEW.external_service_id);
@@ -664,7 +664,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'job');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'job', CONCAT('DELETE FROM job WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'display_name', OLD.display_name, NULL);
@@ -691,7 +691,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'job');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'job', CONCAT('INSERT INTO job(id, name, display_name, cron_expression, create_time, task_priority, group_name, previous_run_start_time, next_run_time, job_key, initializing_errorlog, is_active, currently_running, updates_allowed, scheduler_group, is_misfired) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.display_name, '\'', ',', '\'', NEW.cron_expression, '\'', ',', '\'', NEW.create_time, '\'', ',', '\'', NEW.task_priority, '\'', ',', '\'', NEW.group_name, '\'', ',', '\'', NEW.previous_run_start_time, '\'', ',', '\'', NEW.next_run_time, '\'', ',', '\'', NEW.job_key, '\'', ',', '\'', NEW.initializing_errorlog, '\'', ',', '\'', NEW.is_active, '\'', ',', '\'', NEW.currently_running, '\'', ',', '\'', NEW.updates_allowed, '\'', ',', '\'', NEW.scheduler_group, '\'', ',', '\'', NEW.is_misfired, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'display_name', NEW.display_name, NULL);
@@ -718,7 +718,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'job');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'job', CONCAT('UPDATE job SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', display_name = ', 'NEW.display_name', ', cron_expression = ', 'NEW.cron_expression', ', create_time = ', 'NEW.create_time', ', task_priority = ', 'NEW.task_priority', ', group_name = ', 'NEW.group_name', ', previous_run_start_time = ', 'NEW.previous_run_start_time', ', next_run_time = ', 'NEW.next_run_time', ', job_key = ', 'NEW.job_key', ', initializing_errorlog = ', 'NEW.initializing_errorlog', ', is_active = ', 'NEW.is_active', ', currently_running = ', 'NEW.currently_running', ', updates_allowed = ', 'NEW.updates_allowed', ', scheduler_group = ', 'NEW.scheduler_group', ', is_misfired = ', 'NEW.is_misfired', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'display_name', OLD.display_name, NEW.display_name);
@@ -745,7 +745,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'job_run_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'job_run_history', CONCAT('DELETE FROM job_run_history WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'job_id', OLD.job_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'version', OLD.version, NULL);
@@ -765,7 +765,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'job_run_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'job_run_history', CONCAT('INSERT INTO job_run_history(id, job_id, version, start_time, end_time, status, error_message, trigger_type, error_log) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.job_id, '\'', ',', '\'', NEW.version, '\'', ',', '\'', NEW.start_time, '\'', ',', '\'', NEW.end_time, '\'', ',', '\'', NEW.status, '\'', ',', '\'', NEW.error_message, '\'', ',', '\'', NEW.trigger_type, '\'', ',', '\'', NEW.error_log, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'job_id', NEW.job_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'version', NEW.version, NULL);
@@ -785,7 +785,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'job_run_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'job_run_history', CONCAT('UPDATE job_run_history SET id = ', 'NEW.id', ', job_id = ', 'NEW.job_id', ', version = ', 'NEW.version', ', start_time = ', 'NEW.start_time', ', end_time = ', 'NEW.end_time', ', status = ', 'NEW.status', ', error_message = ', 'NEW.error_message', ', trigger_type = ', 'NEW.trigger_type', ', error_log = ', 'NEW.error_log', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'job_id', OLD.job_id, NEW.job_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'version', OLD.version, NEW.version);
@@ -805,7 +805,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_account_transfer_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_account_transfer_details', CONCAT('DELETE FROM m_account_transfer_details WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_office_id', OLD.from_office_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'to_office_id', OLD.to_office_id, NULL);
@@ -826,7 +826,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_account_transfer_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_account_transfer_details', CONCAT('INSERT INTO m_account_transfer_details(id, from_office_id, to_office_id, from_client_id, to_client_id, from_savings_account_id, to_savings_account_id, from_loan_account_id, to_loan_account_id, transfer_type) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.from_office_id, '\'', ',', '\'', NEW.to_office_id, '\'', ',', '\'', NEW.from_client_id, '\'', ',', '\'', NEW.to_client_id, '\'', ',', '\'', NEW.from_savings_account_id, '\'', ',', '\'', NEW.to_savings_account_id, '\'', ',', '\'', NEW.from_loan_account_id, '\'', ',', '\'', NEW.to_loan_account_id, '\'', ',', '\'', NEW.transfer_type, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'from_office_id', NEW.from_office_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'to_office_id', NEW.to_office_id, NULL);
@@ -847,7 +847,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_account_transfer_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_account_transfer_details', CONCAT('UPDATE m_account_transfer_details SET id = ', 'NEW.id', ', from_office_id = ', 'NEW.from_office_id', ', to_office_id = ', 'NEW.to_office_id', ', from_client_id = ', 'NEW.from_client_id', ', to_client_id = ', 'NEW.to_client_id', ', from_savings_account_id = ', 'NEW.from_savings_account_id', ', to_savings_account_id = ', 'NEW.to_savings_account_id', ', from_loan_account_id = ', 'NEW.from_loan_account_id', ', to_loan_account_id = ', 'NEW.to_loan_account_id', ', transfer_type = ', 'NEW.transfer_type', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_office_id', OLD.from_office_id, NEW.from_office_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'to_office_id', OLD.to_office_id, NEW.to_office_id);
@@ -868,7 +868,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_account_transfer_standing_instructions');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_account_transfer_standing_instructions', CONCAT('DELETE FROM m_account_transfer_standing_instructions WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_transfer_details_id', OLD.account_transfer_details_id, NULL);
@@ -894,7 +894,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_account_transfer_standing_instructions');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_account_transfer_standing_instructions', CONCAT('INSERT INTO m_account_transfer_standing_instructions(id, name, account_transfer_details_id, priority, status, instruction_type, amount, valid_from, valid_till, recurrence_type, recurrence_frequency, recurrence_interval, recurrence_on_day, recurrence_on_month, last_run_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.account_transfer_details_id, '\'', ',', '\'', NEW.priority, '\'', ',', '\'', NEW.status, '\'', ',', '\'', NEW.instruction_type, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.valid_from, '\'', ',', '\'', NEW.valid_till, '\'', ',', '\'', NEW.recurrence_type, '\'', ',', '\'', NEW.recurrence_frequency, '\'', ',', '\'', NEW.recurrence_interval, '\'', ',', '\'', NEW.recurrence_on_day, '\'', ',', '\'', NEW.recurrence_on_month, '\'', ',', '\'', NEW.last_run_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'account_transfer_details_id', NEW.account_transfer_details_id, NULL);
@@ -920,7 +920,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_account_transfer_standing_instructions');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_account_transfer_standing_instructions', CONCAT('UPDATE m_account_transfer_standing_instructions SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', account_transfer_details_id = ', 'NEW.account_transfer_details_id', ', priority = ', 'NEW.priority', ', status = ', 'NEW.status', ', instruction_type = ', 'NEW.instruction_type', ', amount = ', 'NEW.amount', ', valid_from = ', 'NEW.valid_from', ', valid_till = ', 'NEW.valid_till', ', recurrence_type = ', 'NEW.recurrence_type', ', recurrence_frequency = ', 'NEW.recurrence_frequency', ', recurrence_interval = ', 'NEW.recurrence_interval', ', recurrence_on_day = ', 'NEW.recurrence_on_day', ', recurrence_on_month = ', 'NEW.recurrence_on_month', ', last_run_date = ', 'NEW.last_run_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_transfer_details_id', OLD.account_transfer_details_id, NEW.account_transfer_details_id);
@@ -946,7 +946,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_account_transfer_standing_instructions_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_account_transfer_standing_instructions_history', CONCAT('DELETE FROM m_account_transfer_standing_instructions_history WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'standing_instruction_id', OLD.standing_instruction_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'status', OLD.status, NULL);
@@ -963,7 +963,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_account_transfer_standing_instructions_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_account_transfer_standing_instructions_history', CONCAT('INSERT INTO m_account_transfer_standing_instructions_history(id, standing_instruction_id, status, execution_time, amount, error_log) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.standing_instruction_id, '\'', ',', '\'', NEW.status, '\'', ',', '\'', NEW.execution_time, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.error_log, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'standing_instruction_id', NEW.standing_instruction_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'status', NEW.status, NULL);
@@ -980,7 +980,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_account_transfer_standing_instructions_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_account_transfer_standing_instructions_history', CONCAT('UPDATE m_account_transfer_standing_instructions_history SET id = ', 'NEW.id', ', standing_instruction_id = ', 'NEW.standing_instruction_id', ', status = ', 'NEW.status', ', execution_time = ', 'NEW.execution_time', ', amount = ', 'NEW.amount', ', error_log = ', 'NEW.error_log', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'standing_instruction_id', OLD.standing_instruction_id, NEW.standing_instruction_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'status', OLD.status, NEW.status);
@@ -997,7 +997,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_account_transfer_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_account_transfer_transaction', CONCAT('DELETE FROM m_account_transfer_transaction WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_transfer_details_id', OLD.account_transfer_details_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_savings_transaction_id', OLD.from_savings_transaction_id, NULL);
@@ -1021,7 +1021,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_account_transfer_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_account_transfer_transaction', CONCAT('INSERT INTO m_account_transfer_transaction(id, account_transfer_details_id, from_savings_transaction_id, from_loan_transaction_id, to_savings_transaction_id, to_loan_transaction_id, is_reversed, transaction_date, currency_code, currency_digits, currency_multiplesof, amount, description) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.account_transfer_details_id, '\'', ',', '\'', NEW.from_savings_transaction_id, '\'', ',', '\'', NEW.from_loan_transaction_id, '\'', ',', '\'', NEW.to_savings_transaction_id, '\'', ',', '\'', NEW.to_loan_transaction_id, '\'', ',', '\'', NEW.is_reversed, '\'', ',', '\'', NEW.transaction_date, '\'', ',', '\'', NEW.currency_code, '\'', ',', '\'', NEW.currency_digits, '\'', ',', '\'', NEW.currency_multiplesof, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.description, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'account_transfer_details_id', NEW.account_transfer_details_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'from_savings_transaction_id', NEW.from_savings_transaction_id, NULL);
@@ -1045,7 +1045,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_account_transfer_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_account_transfer_transaction', CONCAT('UPDATE m_account_transfer_transaction SET id = ', 'NEW.id', ', account_transfer_details_id = ', 'NEW.account_transfer_details_id', ', from_savings_transaction_id = ', 'NEW.from_savings_transaction_id', ', from_loan_transaction_id = ', 'NEW.from_loan_transaction_id', ', to_savings_transaction_id = ', 'NEW.to_savings_transaction_id', ', to_loan_transaction_id = ', 'NEW.to_loan_transaction_id', ', is_reversed = ', 'NEW.is_reversed', ', transaction_date = ', 'NEW.transaction_date', ', currency_code = ', 'NEW.currency_code', ', currency_digits = ', 'NEW.currency_digits', ', currency_multiplesof = ', 'NEW.currency_multiplesof', ', amount = ', 'NEW.amount', ', description = ', 'NEW.description', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_transfer_details_id', OLD.account_transfer_details_id, NEW.account_transfer_details_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_savings_transaction_id', OLD.from_savings_transaction_id, NEW.from_savings_transaction_id);
@@ -1069,7 +1069,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_address');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_address', CONCAT('DELETE FROM m_address WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'street', OLD.street, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'address_line_1', OLD.address_line_1, NULL);
@@ -1097,7 +1097,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_address');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_address', CONCAT('INSERT INTO m_address(id, street, address_line_1, address_line_2, address_line_3, town_village, city, county_district, state_province_id, country_id, postal_code, latitude, longitude, created_by, created_on, updated_by, updated_on) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.street, '\'', ',', '\'', NEW.address_line_1, '\'', ',', '\'', NEW.address_line_2, '\'', ',', '\'', NEW.address_line_3, '\'', ',', '\'', NEW.town_village, '\'', ',', '\'', NEW.city, '\'', ',', '\'', NEW.county_district, '\'', ',', '\'', NEW.state_province_id, '\'', ',', '\'', NEW.country_id, '\'', ',', '\'', NEW.postal_code, '\'', ',', '\'', NEW.latitude, '\'', ',', '\'', NEW.longitude, '\'', ',', '\'', NEW.created_by, '\'', ',', '\'', NEW.created_on, '\'', ',', '\'', NEW.updated_by, '\'', ',', '\'', NEW.updated_on, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'street', NEW.street, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'address_line_1', NEW.address_line_1, NULL);
@@ -1125,7 +1125,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_address');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_address', CONCAT('UPDATE m_address SET id = ', 'NEW.id', ', street = ', 'NEW.street', ', address_line_1 = ', 'NEW.address_line_1', ', address_line_2 = ', 'NEW.address_line_2', ', address_line_3 = ', 'NEW.address_line_3', ', town_village = ', 'NEW.town_village', ', city = ', 'NEW.city', ', county_district = ', 'NEW.county_district', ', state_province_id = ', 'NEW.state_province_id', ', country_id = ', 'NEW.country_id', ', postal_code = ', 'NEW.postal_code', ', latitude = ', 'NEW.latitude', ', longitude = ', 'NEW.longitude', ', created_by = ', 'NEW.created_by', ', created_on = ', 'NEW.created_on', ', updated_by = ', 'NEW.updated_by', ', updated_on = ', 'NEW.updated_on', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'street', OLD.street, NEW.street);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'address_line_1', OLD.address_line_1, NEW.address_line_1);
@@ -1153,7 +1153,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_adhoc');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_adhoc', CONCAT('DELETE FROM m_adhoc WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'query', OLD.query, NULL);
@@ -1175,7 +1175,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_adhoc');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_adhoc', CONCAT('INSERT INTO m_adhoc(id, name, query, table_name, table_fields, email, IsActive, created_date, createdby_id, lastmodifiedby_id, lastmodified_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.query, '\'', ',', '\'', NEW.table_name, '\'', ',', '\'', NEW.table_fields, '\'', ',', '\'', NEW.email, '\'', ',', '\'', NEW.IsActive, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.lastmodified_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'query', NEW.query, NULL);
@@ -1197,7 +1197,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_adhoc');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_adhoc', CONCAT('UPDATE m_adhoc SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', query = ', 'NEW.query', ', table_name = ', 'NEW.table_name', ', table_fields = ', 'NEW.table_fields', ', email = ', 'NEW.email', ', IsActive = ', 'NEW.IsActive', ', created_date = ', 'NEW.created_date', ', createdby_id = ', 'NEW.createdby_id', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', lastmodified_date = ', 'NEW.lastmodified_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'query', OLD.query, NEW.query);
@@ -1219,7 +1219,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_appuser');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_appuser', CONCAT('DELETE FROM m_appuser WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'is_deleted', OLD.is_deleted, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NULL);
@@ -1247,7 +1247,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_appuser');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_appuser', CONCAT('INSERT INTO m_appuser(id, is_deleted, office_id, staff_id, username, firstname, lastname, password, email, firsttime_login_remaining, nonexpired, nonlocked, nonexpired_credentials, enabled, last_time_password_updated, password_never_expires, is_self_service_user) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.is_deleted, '\'', ',', '\'', NEW.office_id, '\'', ',', '\'', NEW.staff_id, '\'', ',', '\'', NEW.username, '\'', ',', '\'', NEW.firstname, '\'', ',', '\'', NEW.lastname, '\'', ',', '\'', NEW.password, '\'', ',', '\'', NEW.email, '\'', ',', '\'', NEW.firsttime_login_remaining, '\'', ',', '\'', NEW.nonexpired, '\'', ',', '\'', NEW.nonlocked, '\'', ',', '\'', NEW.nonexpired_credentials, '\'', ',', '\'', NEW.enabled, '\'', ',', '\'', NEW.last_time_password_updated, '\'', ',', '\'', NEW.password_never_expires, '\'', ',', '\'', NEW.is_self_service_user, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'is_deleted', NEW.is_deleted, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'office_id', NEW.office_id, NULL);
@@ -1275,7 +1275,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_appuser');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_appuser', CONCAT('UPDATE m_appuser SET id = ', 'NEW.id', ', is_deleted = ', 'NEW.is_deleted', ', office_id = ', 'NEW.office_id', ', staff_id = ', 'NEW.staff_id', ', username = ', 'NEW.username', ', firstname = ', 'NEW.firstname', ', lastname = ', 'NEW.lastname', ', password = ', 'NEW.password', ', email = ', 'NEW.email', ', firsttime_login_remaining = ', 'NEW.firsttime_login_remaining', ', nonexpired = ', 'NEW.nonexpired', ', nonlocked = ', 'NEW.nonlocked', ', nonexpired_credentials = ', 'NEW.nonexpired_credentials', ', enabled = ', 'NEW.enabled', ', last_time_password_updated = ', 'NEW.last_time_password_updated', ', password_never_expires = ', 'NEW.password_never_expires', ', is_self_service_user = ', 'NEW.is_self_service_user', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'is_deleted', OLD.is_deleted, NEW.is_deleted);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NEW.office_id);
@@ -1303,7 +1303,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_appuser_previous_password');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_appuser_previous_password', CONCAT('DELETE FROM m_appuser_previous_password WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'user_id', OLD.user_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'password', OLD.password, NULL);
@@ -1318,7 +1318,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_appuser_previous_password');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_appuser_previous_password', CONCAT('INSERT INTO m_appuser_previous_password(id, user_id, password, removal_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.user_id, '\'', ',', '\'', NEW.password, '\'', ',', '\'', NEW.removal_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'user_id', NEW.user_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'password', NEW.password, NULL);
@@ -1333,7 +1333,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_appuser_previous_password');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_appuser_previous_password', CONCAT('UPDATE m_appuser_previous_password SET id = ', 'NEW.id', ', user_id = ', 'NEW.user_id', ', password = ', 'NEW.password', ', removal_date = ', 'NEW.removal_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'user_id', OLD.user_id, NEW.user_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'password', OLD.password, NEW.password);
@@ -1348,7 +1348,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_appuser_role');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_appuser_role', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'appuser_id', OLD.appuser_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'role_id', OLD.role_id, NULL);
   END;
@@ -1361,7 +1361,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_appuser_role');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_appuser_role', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'appuser_id', NEW.appuser_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'role_id', NEW.role_id, NULL);
   END;
@@ -1374,7 +1374,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_appuser_role');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_appuser_role', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'appuser_id', OLD.appuser_id, NEW.appuser_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'role_id', OLD.role_id, NEW.role_id);
   END;
@@ -1387,7 +1387,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_calendar');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_calendar', CONCAT('DELETE FROM m_calendar WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'title', OLD.title, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NULL);
@@ -1416,7 +1416,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_calendar');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_calendar', CONCAT('INSERT INTO m_calendar(id, title, description, location, start_date, end_date, duration, calendar_type_enum, repeating, recurrence, remind_by_enum, first_reminder, second_reminder, createdby_id, lastmodifiedby_id, created_date, lastmodified_date, meeting_time) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.title, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.location, '\'', ',', '\'', NEW.start_date, '\'', ',', '\'', NEW.end_date, '\'', ',', '\'', NEW.duration, '\'', ',', '\'', NEW.calendar_type_enum, '\'', ',', '\'', NEW.repeating, '\'', ',', '\'', NEW.recurrence, '\'', ',', '\'', NEW.remind_by_enum, '\'', ',', '\'', NEW.first_reminder, '\'', ',', '\'', NEW.second_reminder, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodified_date, '\'', ',', '\'', NEW.meeting_time, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'title', NEW.title, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'description', NEW.description, NULL);
@@ -1445,7 +1445,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_calendar');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_calendar', CONCAT('UPDATE m_calendar SET id = ', 'NEW.id', ', title = ', 'NEW.title', ', description = ', 'NEW.description', ', location = ', 'NEW.location', ', start_date = ', 'NEW.start_date', ', end_date = ', 'NEW.end_date', ', duration = ', 'NEW.duration', ', calendar_type_enum = ', 'NEW.calendar_type_enum', ', repeating = ', 'NEW.repeating', ', recurrence = ', 'NEW.recurrence', ', remind_by_enum = ', 'NEW.remind_by_enum', ', first_reminder = ', 'NEW.first_reminder', ', second_reminder = ', 'NEW.second_reminder', ', createdby_id = ', 'NEW.createdby_id', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', created_date = ', 'NEW.created_date', ', lastmodified_date = ', 'NEW.lastmodified_date', ', meeting_time = ', 'NEW.meeting_time', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'title', OLD.title, NEW.title);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NEW.description);
@@ -1474,7 +1474,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_calendar_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_calendar_history', CONCAT('DELETE FROM m_calendar_history WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'calendar_id', OLD.calendar_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'title', OLD.title, NULL);
@@ -1499,7 +1499,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_calendar_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_calendar_history', CONCAT('INSERT INTO m_calendar_history(id, calendar_id, title, description, location, start_date, end_date, duration, calendar_type_enum, repeating, recurrence, remind_by_enum, first_reminder, second_reminder) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.calendar_id, '\'', ',', '\'', NEW.title, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.location, '\'', ',', '\'', NEW.start_date, '\'', ',', '\'', NEW.end_date, '\'', ',', '\'', NEW.duration, '\'', ',', '\'', NEW.calendar_type_enum, '\'', ',', '\'', NEW.repeating, '\'', ',', '\'', NEW.recurrence, '\'', ',', '\'', NEW.remind_by_enum, '\'', ',', '\'', NEW.first_reminder, '\'', ',', '\'', NEW.second_reminder, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'calendar_id', NEW.calendar_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'title', NEW.title, NULL);
@@ -1524,7 +1524,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_calendar_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_calendar_history', CONCAT('UPDATE m_calendar_history SET id = ', 'NEW.id', ', calendar_id = ', 'NEW.calendar_id', ', title = ', 'NEW.title', ', description = ', 'NEW.description', ', location = ', 'NEW.location', ', start_date = ', 'NEW.start_date', ', end_date = ', 'NEW.end_date', ', duration = ', 'NEW.duration', ', calendar_type_enum = ', 'NEW.calendar_type_enum', ', repeating = ', 'NEW.repeating', ', recurrence = ', 'NEW.recurrence', ', remind_by_enum = ', 'NEW.remind_by_enum', ', first_reminder = ', 'NEW.first_reminder', ', second_reminder = ', 'NEW.second_reminder', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'calendar_id', OLD.calendar_id, NEW.calendar_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'title', OLD.title, NEW.title);
@@ -1549,7 +1549,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_calendar_instance');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_calendar_instance', CONCAT('DELETE FROM m_calendar_instance WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'calendar_id', OLD.calendar_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entity_id', OLD.entity_id, NULL);
@@ -1564,7 +1564,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_calendar_instance');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_calendar_instance', CONCAT('INSERT INTO m_calendar_instance(id, calendar_id, entity_id, entity_type_enum) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.calendar_id, '\'', ',', '\'', NEW.entity_id, '\'', ',', '\'', NEW.entity_type_enum, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'calendar_id', NEW.calendar_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'entity_id', NEW.entity_id, NULL);
@@ -1579,7 +1579,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_calendar_instance');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_calendar_instance', CONCAT('UPDATE m_calendar_instance SET id = ', 'NEW.id', ', calendar_id = ', 'NEW.calendar_id', ', entity_id = ', 'NEW.entity_id', ', entity_type_enum = ', 'NEW.entity_type_enum', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'calendar_id', OLD.calendar_id, NEW.calendar_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entity_id', OLD.entity_id, NEW.entity_id);
@@ -1594,7 +1594,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_cashier_transactions');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_cashier_transactions', CONCAT('DELETE FROM m_cashier_transactions WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'cashier_id', OLD.cashier_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'txn_type', OLD.txn_type, NULL);
@@ -1615,7 +1615,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_cashier_transactions');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_cashier_transactions', CONCAT('INSERT INTO m_cashier_transactions(id, cashier_id, txn_type, txn_amount, txn_date, created_date, entity_type, entity_id, txn_note, currency_code) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.cashier_id, '\'', ',', '\'', NEW.txn_type, '\'', ',', '\'', NEW.txn_amount, '\'', ',', '\'', NEW.txn_date, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.entity_type, '\'', ',', '\'', NEW.entity_id, '\'', ',', '\'', NEW.txn_note, '\'', ',', '\'', NEW.currency_code, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'cashier_id', NEW.cashier_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'txn_type', NEW.txn_type, NULL);
@@ -1636,7 +1636,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_cashier_transactions');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_cashier_transactions', CONCAT('UPDATE m_cashier_transactions SET id = ', 'NEW.id', ', cashier_id = ', 'NEW.cashier_id', ', txn_type = ', 'NEW.txn_type', ', txn_amount = ', 'NEW.txn_amount', ', txn_date = ', 'NEW.txn_date', ', created_date = ', 'NEW.created_date', ', entity_type = ', 'NEW.entity_type', ', entity_id = ', 'NEW.entity_id', ', txn_note = ', 'NEW.txn_note', ', currency_code = ', 'NEW.currency_code', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'cashier_id', OLD.cashier_id, NEW.cashier_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'txn_type', OLD.txn_type, NEW.txn_type);
@@ -1657,7 +1657,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_cashiers');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_cashiers', CONCAT('DELETE FROM m_cashiers WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'staff_id', OLD.staff_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'teller_id', OLD.teller_id, NULL);
@@ -1677,7 +1677,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_cashiers');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_cashiers', CONCAT('INSERT INTO m_cashiers(id, staff_id, teller_id, description, start_date, end_date, start_time, end_time, full_day) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.staff_id, '\'', ',', '\'', NEW.teller_id, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.start_date, '\'', ',', '\'', NEW.end_date, '\'', ',', '\'', NEW.start_time, '\'', ',', '\'', NEW.end_time, '\'', ',', '\'', NEW.full_day, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'staff_id', NEW.staff_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'teller_id', NEW.teller_id, NULL);
@@ -1697,7 +1697,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_cashiers');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_cashiers', CONCAT('UPDATE m_cashiers SET id = ', 'NEW.id', ', staff_id = ', 'NEW.staff_id', ', teller_id = ', 'NEW.teller_id', ', description = ', 'NEW.description', ', start_date = ', 'NEW.start_date', ', end_date = ', 'NEW.end_date', ', start_time = ', 'NEW.start_time', ', end_time = ', 'NEW.end_time', ', full_day = ', 'NEW.full_day', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'staff_id', OLD.staff_id, NEW.staff_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'teller_id', OLD.teller_id, NEW.teller_id);
@@ -1717,7 +1717,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_charge', CONCAT('DELETE FROM m_charge WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'currency_code', OLD.currency_code, NULL);
@@ -1747,7 +1747,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_charge', CONCAT('INSERT INTO m_charge(id, name, currency_code, charge_applies_to_enum, charge_time_enum, charge_calculation_enum, charge_payment_mode_enum, amount, fee_on_day, fee_interval, fee_on_month, is_penalty, is_active, is_deleted, min_cap, max_cap, fee_frequency, income_or_liability_account_id, tax_group_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.currency_code, '\'', ',', '\'', NEW.charge_applies_to_enum, '\'', ',', '\'', NEW.charge_time_enum, '\'', ',', '\'', NEW.charge_calculation_enum, '\'', ',', '\'', NEW.charge_payment_mode_enum, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.fee_on_day, '\'', ',', '\'', NEW.fee_interval, '\'', ',', '\'', NEW.fee_on_month, '\'', ',', '\'', NEW.is_penalty, '\'', ',', '\'', NEW.is_active, '\'', ',', '\'', NEW.is_deleted, '\'', ',', '\'', NEW.min_cap, '\'', ',', '\'', NEW.max_cap, '\'', ',', '\'', NEW.fee_frequency, '\'', ',', '\'', NEW.income_or_liability_account_id, '\'', ',', '\'', NEW.tax_group_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'currency_code', NEW.currency_code, NULL);
@@ -1777,7 +1777,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_charge', CONCAT('UPDATE m_charge SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', currency_code = ', 'NEW.currency_code', ', charge_applies_to_enum = ', 'NEW.charge_applies_to_enum', ', charge_time_enum = ', 'NEW.charge_time_enum', ', charge_calculation_enum = ', 'NEW.charge_calculation_enum', ', charge_payment_mode_enum = ', 'NEW.charge_payment_mode_enum', ', amount = ', 'NEW.amount', ', fee_on_day = ', 'NEW.fee_on_day', ', fee_interval = ', 'NEW.fee_interval', ', fee_on_month = ', 'NEW.fee_on_month', ', is_penalty = ', 'NEW.is_penalty', ', is_active = ', 'NEW.is_active', ', is_deleted = ', 'NEW.is_deleted', ', min_cap = ', 'NEW.min_cap', ', max_cap = ', 'NEW.max_cap', ', fee_frequency = ', 'NEW.fee_frequency', ', income_or_liability_account_id = ', 'NEW.income_or_liability_account_id', ', tax_group_id = ', 'NEW.tax_group_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'currency_code', OLD.currency_code, NEW.currency_code);
@@ -1807,7 +1807,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_client');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_client', CONCAT('DELETE FROM m_client WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_no', OLD.account_no, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'external_id', OLD.external_id, NULL);
@@ -1861,7 +1861,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_client');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_client', CONCAT('INSERT INTO m_client(id, account_no, external_id, status_enum, sub_status, activation_date, office_joining_date, office_id, transfer_to_office_id, staff_id, firstname, middlename, lastname, fullname, display_name, mobile_no, is_staff, gender_cv_id, date_of_birth, image_id, closure_reason_cv_id, closedon_date, updated_by, updated_on, submittedon_date, submittedon_userid, activatedon_userid, closedon_userid, default_savings_product, default_savings_account, client_type_cv_id, client_classification_cv_id, reject_reason_cv_id, rejectedon_date, rejectedon_userid, withdraw_reason_cv_id, withdrawn_on_date, withdraw_on_userid, reactivated_on_date, reactivated_on_userid, legal_form_enum, reopened_on_date, reopened_by_userid) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.account_no, '\'', ',', '\'', NEW.external_id, '\'', ',', '\'', NEW.status_enum, '\'', ',', '\'', NEW.sub_status, '\'', ',', '\'', NEW.activation_date, '\'', ',', '\'', NEW.office_joining_date, '\'', ',', '\'', NEW.office_id, '\'', ',', '\'', NEW.transfer_to_office_id, '\'', ',', '\'', NEW.staff_id, '\'', ',', '\'', NEW.firstname, '\'', ',', '\'', NEW.middlename, '\'', ',', '\'', NEW.lastname, '\'', ',', '\'', NEW.fullname, '\'', ',', '\'', NEW.display_name, '\'', ',', '\'', NEW.mobile_no, '\'', ',', '\'', NEW.is_staff, '\'', ',', '\'', NEW.gender_cv_id, '\'', ',', '\'', NEW.date_of_birth, '\'', ',', '\'', NEW.image_id, '\'', ',', '\'', NEW.closure_reason_cv_id, '\'', ',', '\'', NEW.closedon_date, '\'', ',', '\'', NEW.updated_by, '\'', ',', '\'', NEW.updated_on, '\'', ',', '\'', NEW.submittedon_date, '\'', ',', '\'', NEW.submittedon_userid, '\'', ',', '\'', NEW.activatedon_userid, '\'', ',', '\'', NEW.closedon_userid, '\'', ',', '\'', NEW.default_savings_product, '\'', ',', '\'', NEW.default_savings_account, '\'', ',', '\'', NEW.client_type_cv_id, '\'', ',', '\'', NEW.client_classification_cv_id, '\'', ',', '\'', NEW.reject_reason_cv_id, '\'', ',', '\'', NEW.rejectedon_date, '\'', ',', '\'', NEW.rejectedon_userid, '\'', ',', '\'', NEW.withdraw_reason_cv_id, '\'', ',', '\'', NEW.withdrawn_on_date, '\'', ',', '\'', NEW.withdraw_on_userid, '\'', ',', '\'', NEW.reactivated_on_date, '\'', ',', '\'', NEW.reactivated_on_userid, '\'', ',', '\'', NEW.legal_form_enum, '\'', ',', '\'', NEW.reopened_on_date, '\'', ',', '\'', NEW.reopened_by_userid, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'account_no', NEW.account_no, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'external_id', NEW.external_id, NULL);
@@ -1915,7 +1915,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_client');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_client', CONCAT('UPDATE m_client SET id = ', 'NEW.id', ', account_no = ', 'NEW.account_no', ', external_id = ', 'NEW.external_id', ', status_enum = ', 'NEW.status_enum', ', sub_status = ', 'NEW.sub_status', ', activation_date = ', 'NEW.activation_date', ', office_joining_date = ', 'NEW.office_joining_date', ', office_id = ', 'NEW.office_id', ', transfer_to_office_id = ', 'NEW.transfer_to_office_id', ', staff_id = ', 'NEW.staff_id', ', firstname = ', 'NEW.firstname', ', middlename = ', 'NEW.middlename', ', lastname = ', 'NEW.lastname', ', fullname = ', 'NEW.fullname', ', display_name = ', 'NEW.display_name', ', mobile_no = ', 'NEW.mobile_no', ', is_staff = ', 'NEW.is_staff', ', gender_cv_id = ', 'NEW.gender_cv_id', ', date_of_birth = ', 'NEW.date_of_birth', ', image_id = ', 'NEW.image_id', ', closure_reason_cv_id = ', 'NEW.closure_reason_cv_id', ', closedon_date = ', 'NEW.closedon_date', ', updated_by = ', 'NEW.updated_by', ', updated_on = ', 'NEW.updated_on', ', submittedon_date = ', 'NEW.submittedon_date', ', submittedon_userid = ', 'NEW.submittedon_userid', ', activatedon_userid = ', 'NEW.activatedon_userid', ', closedon_userid = ', 'NEW.closedon_userid', ', default_savings_product = ', 'NEW.default_savings_product', ', default_savings_account = ', 'NEW.default_savings_account', ', client_type_cv_id = ', 'NEW.client_type_cv_id', ', client_classification_cv_id = ', 'NEW.client_classification_cv_id', ', reject_reason_cv_id = ', 'NEW.reject_reason_cv_id', ', rejectedon_date = ', 'NEW.rejectedon_date', ', rejectedon_userid = ', 'NEW.rejectedon_userid', ', withdraw_reason_cv_id = ', 'NEW.withdraw_reason_cv_id', ', withdrawn_on_date = ', 'NEW.withdrawn_on_date', ', withdraw_on_userid = ', 'NEW.withdraw_on_userid', ', reactivated_on_date = ', 'NEW.reactivated_on_date', ', reactivated_on_userid = ', 'NEW.reactivated_on_userid', ', legal_form_enum = ', 'NEW.legal_form_enum', ', reopened_on_date = ', 'NEW.reopened_on_date', ', reopened_by_userid = ', 'NEW.reopened_by_userid', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_no', OLD.account_no, NEW.account_no);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'external_id', OLD.external_id, NEW.external_id);
@@ -1969,7 +1969,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_client_address');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_client_address', CONCAT('DELETE FROM m_client_address WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'address_id', OLD.address_id, NULL);
@@ -1985,7 +1985,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_client_address');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_client_address', CONCAT('INSERT INTO m_client_address(id, client_id, address_id, address_type_id, is_active) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.address_id, '\'', ',', '\'', NEW.address_type_id, '\'', ',', '\'', NEW.is_active, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_id', NEW.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'address_id', NEW.address_id, NULL);
@@ -2001,7 +2001,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_client_address');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_client_address', CONCAT('UPDATE m_client_address SET id = ', 'NEW.id', ', client_id = ', 'NEW.client_id', ', address_id = ', 'NEW.address_id', ', address_type_id = ', 'NEW.address_type_id', ', is_active = ', 'NEW.is_active', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NEW.client_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'address_id', OLD.address_id, NEW.address_id);
@@ -2017,7 +2017,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_client_attendance');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_client_attendance', CONCAT('DELETE FROM m_client_attendance WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'meeting_id', OLD.meeting_id, NULL);
@@ -2032,7 +2032,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_client_attendance');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_client_attendance', CONCAT('INSERT INTO m_client_attendance(id, client_id, meeting_id, attendance_type_enum) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.meeting_id, '\'', ',', '\'', NEW.attendance_type_enum, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_id', NEW.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'meeting_id', NEW.meeting_id, NULL);
@@ -2047,7 +2047,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_client_attendance');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_client_attendance', CONCAT('UPDATE m_client_attendance SET id = ', 'NEW.id', ', client_id = ', 'NEW.client_id', ', meeting_id = ', 'NEW.meeting_id', ', attendance_type_enum = ', 'NEW.attendance_type_enum', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NEW.client_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'meeting_id', OLD.meeting_id, NEW.meeting_id);
@@ -2062,7 +2062,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_client_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_client_charge', CONCAT('DELETE FROM m_client_charge WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NULL);
@@ -2089,7 +2089,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_client_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_client_charge', CONCAT('INSERT INTO m_client_charge(id, client_id, charge_id, is_penalty, charge_time_enum, charge_due_date, charge_calculation_enum, amount, amount_paid_derived, amount_waived_derived, amount_writtenoff_derived, amount_outstanding_derived, is_paid_derived, waived, is_active, inactivated_on_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.charge_id, '\'', ',', '\'', NEW.is_penalty, '\'', ',', '\'', NEW.charge_time_enum, '\'', ',', '\'', NEW.charge_due_date, '\'', ',', '\'', NEW.charge_calculation_enum, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.amount_paid_derived, '\'', ',', '\'', NEW.amount_waived_derived, '\'', ',', '\'', NEW.amount_writtenoff_derived, '\'', ',', '\'', NEW.amount_outstanding_derived, '\'', ',', '\'', NEW.is_paid_derived, '\'', ',', '\'', NEW.waived, '\'', ',', '\'', NEW.is_active, '\'', ',', '\'', NEW.inactivated_on_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_id', NEW.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'charge_id', NEW.charge_id, NULL);
@@ -2116,7 +2116,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_client_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_client_charge', CONCAT('UPDATE m_client_charge SET id = ', 'NEW.id', ', client_id = ', 'NEW.client_id', ', charge_id = ', 'NEW.charge_id', ', is_penalty = ', 'NEW.is_penalty', ', charge_time_enum = ', 'NEW.charge_time_enum', ', charge_due_date = ', 'NEW.charge_due_date', ', charge_calculation_enum = ', 'NEW.charge_calculation_enum', ', amount = ', 'NEW.amount', ', amount_paid_derived = ', 'NEW.amount_paid_derived', ', amount_waived_derived = ', 'NEW.amount_waived_derived', ', amount_writtenoff_derived = ', 'NEW.amount_writtenoff_derived', ', amount_outstanding_derived = ', 'NEW.amount_outstanding_derived', ', is_paid_derived = ', 'NEW.is_paid_derived', ', waived = ', 'NEW.waived', ', is_active = ', 'NEW.is_active', ', inactivated_on_date = ', 'NEW.inactivated_on_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NEW.client_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NEW.charge_id);
@@ -2143,7 +2143,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_client_charge_paid_by');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_client_charge_paid_by', CONCAT('DELETE FROM m_client_charge_paid_by WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_transaction_id', OLD.client_transaction_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_charge_id', OLD.client_charge_id, NULL);
@@ -2158,7 +2158,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_client_charge_paid_by');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_client_charge_paid_by', CONCAT('INSERT INTO m_client_charge_paid_by(id, client_transaction_id, client_charge_id, amount) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.client_transaction_id, '\'', ',', '\'', NEW.client_charge_id, '\'', ',', '\'', NEW.amount, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_transaction_id', NEW.client_transaction_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_charge_id', NEW.client_charge_id, NULL);
@@ -2173,7 +2173,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_client_charge_paid_by');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_client_charge_paid_by', CONCAT('UPDATE m_client_charge_paid_by SET id = ', 'NEW.id', ', client_transaction_id = ', 'NEW.client_transaction_id', ', client_charge_id = ', 'NEW.client_charge_id', ', amount = ', 'NEW.amount', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_transaction_id', OLD.client_transaction_id, NEW.client_transaction_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_charge_id', OLD.client_charge_id, NEW.client_charge_id);
@@ -2188,7 +2188,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_client_identifier');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_client_identifier', CONCAT('DELETE FROM m_client_identifier WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'document_type_id', OLD.document_type_id, NULL);
@@ -2210,7 +2210,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_client_identifier');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_client_identifier', CONCAT('INSERT INTO m_client_identifier(id, client_id, document_type_id, document_key, status, active, description, createdby_id, lastmodifiedby_id, created_date, lastmodified_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.document_type_id, '\'', ',', '\'', NEW.document_key, '\'', ',', '\'', NEW.status, '\'', ',', '\'', NEW.active, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodified_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_id', NEW.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'document_type_id', NEW.document_type_id, NULL);
@@ -2232,7 +2232,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_client_identifier');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_client_identifier', CONCAT('UPDATE m_client_identifier SET id = ', 'NEW.id', ', client_id = ', 'NEW.client_id', ', document_type_id = ', 'NEW.document_type_id', ', document_key = ', 'NEW.document_key', ', status = ', 'NEW.status', ', active = ', 'NEW.active', ', description = ', 'NEW.description', ', createdby_id = ', 'NEW.createdby_id', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', created_date = ', 'NEW.created_date', ', lastmodified_date = ', 'NEW.lastmodified_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NEW.client_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'document_type_id', OLD.document_type_id, NEW.document_type_id);
@@ -2254,7 +2254,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_client_non_person');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_client_non_person', CONCAT('DELETE FROM m_client_non_person WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'constitution_cv_id', OLD.constitution_cv_id, NULL);
@@ -2272,7 +2272,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_client_non_person');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_client_non_person', CONCAT('INSERT INTO m_client_non_person(id, client_id, constitution_cv_id, incorp_no, incorp_validity_till, main_business_line_cv_id, remarks) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.constitution_cv_id, '\'', ',', '\'', NEW.incorp_no, '\'', ',', '\'', NEW.incorp_validity_till, '\'', ',', '\'', NEW.main_business_line_cv_id, '\'', ',', '\'', NEW.remarks, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_id', NEW.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'constitution_cv_id', NEW.constitution_cv_id, NULL);
@@ -2290,7 +2290,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_client_non_person');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_client_non_person', CONCAT('UPDATE m_client_non_person SET id = ', 'NEW.id', ', client_id = ', 'NEW.client_id', ', constitution_cv_id = ', 'NEW.constitution_cv_id', ', incorp_no = ', 'NEW.incorp_no', ', incorp_validity_till = ', 'NEW.incorp_validity_till', ', main_business_line_cv_id = ', 'NEW.main_business_line_cv_id', ', remarks = ', 'NEW.remarks', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NEW.client_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'constitution_cv_id', OLD.constitution_cv_id, NEW.constitution_cv_id);
@@ -2308,7 +2308,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_client_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_client_transaction', CONCAT('DELETE FROM m_client_transaction WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NULL);
@@ -2331,7 +2331,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_client_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_client_transaction', CONCAT('INSERT INTO m_client_transaction(id, client_id, office_id, currency_code, payment_detail_id, is_reversed, external_id, transaction_date, transaction_type_enum, amount, created_date, appuser_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.office_id, '\'', ',', '\'', NEW.currency_code, '\'', ',', '\'', NEW.payment_detail_id, '\'', ',', '\'', NEW.is_reversed, '\'', ',', '\'', NEW.external_id, '\'', ',', '\'', NEW.transaction_date, '\'', ',', '\'', NEW.transaction_type_enum, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.appuser_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_id', NEW.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'office_id', NEW.office_id, NULL);
@@ -2354,7 +2354,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_client_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_client_transaction', CONCAT('UPDATE m_client_transaction SET id = ', 'NEW.id', ', client_id = ', 'NEW.client_id', ', office_id = ', 'NEW.office_id', ', currency_code = ', 'NEW.currency_code', ', payment_detail_id = ', 'NEW.payment_detail_id', ', is_reversed = ', 'NEW.is_reversed', ', external_id = ', 'NEW.external_id', ', transaction_date = ', 'NEW.transaction_date', ', transaction_type_enum = ', 'NEW.transaction_type_enum', ', amount = ', 'NEW.amount', ', created_date = ', 'NEW.created_date', ', appuser_id = ', 'NEW.appuser_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NEW.client_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NEW.office_id);
@@ -2377,7 +2377,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_code');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_code', CONCAT('DELETE FROM m_code WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code_name', OLD.code_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'is_system_defined', OLD.is_system_defined, NULL);
@@ -2391,7 +2391,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_code');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_code', CONCAT('INSERT INTO m_code(id, code_name, is_system_defined) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.code_name, '\'', ',', '\'', NEW.is_system_defined, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'code_name', NEW.code_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'is_system_defined', NEW.is_system_defined, NULL);
@@ -2405,7 +2405,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_code');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_code', CONCAT('UPDATE m_code SET id = ', 'NEW.id', ', code_name = ', 'NEW.code_name', ', is_system_defined = ', 'NEW.is_system_defined', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code_name', OLD.code_name, NEW.code_name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'is_system_defined', OLD.is_system_defined, NEW.is_system_defined);
@@ -2419,7 +2419,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_code_value');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_code_value', CONCAT('DELETE FROM m_code_value WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code_id', OLD.code_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code_value', OLD.code_value, NULL);
@@ -2438,7 +2438,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_code_value');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_code_value', CONCAT('INSERT INTO m_code_value(id, code_id, code_value, code_description, order_position, code_score, is_active, is_mandatory) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.code_id, '\'', ',', '\'', NEW.code_value, '\'', ',', '\'', NEW.code_description, '\'', ',', '\'', NEW.order_position, '\'', ',', '\'', NEW.code_score, '\'', ',', '\'', NEW.is_active, '\'', ',', '\'', NEW.is_mandatory, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'code_id', NEW.code_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'code_value', NEW.code_value, NULL);
@@ -2457,7 +2457,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_code_value');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_code_value', CONCAT('UPDATE m_code_value SET id = ', 'NEW.id', ', code_id = ', 'NEW.code_id', ', code_value = ', 'NEW.code_value', ', code_description = ', 'NEW.code_description', ', order_position = ', 'NEW.order_position', ', code_score = ', 'NEW.code_score', ', is_active = ', 'NEW.is_active', ', is_mandatory = ', 'NEW.is_mandatory', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code_id', OLD.code_id, NEW.code_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code_value', OLD.code_value, NEW.code_value);
@@ -2476,7 +2476,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_creditbureau');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_creditbureau', CONCAT('DELETE FROM m_creditbureau WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product', OLD.product, NULL);
@@ -2492,7 +2492,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_creditbureau');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_creditbureau', CONCAT('INSERT INTO m_creditbureau(id, name, product, country, implementationKey) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.product, '\'', ',', '\'', NEW.country, '\'', ',', '\'', NEW.implementationKey, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'product', NEW.product, NULL);
@@ -2508,7 +2508,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_creditbureau');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_creditbureau', CONCAT('UPDATE m_creditbureau SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', product = ', 'NEW.product', ', country = ', 'NEW.country', ', implementationKey = ', 'NEW.implementationKey', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product', OLD.product, NEW.product);
@@ -2524,7 +2524,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_creditbureau_configuration');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_creditbureau_configuration', CONCAT('DELETE FROM m_creditbureau_configuration WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'configkey', OLD.configkey, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'value', OLD.value, NULL);
@@ -2540,7 +2540,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_creditbureau_configuration');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_creditbureau_configuration', CONCAT('INSERT INTO m_creditbureau_configuration(id, configkey, value, organisation_creditbureau_id, description) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.configkey, '\'', ',', '\'', NEW.value, '\'', ',', '\'', NEW.organisation_creditbureau_id, '\'', ',', '\'', NEW.description, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'configkey', NEW.configkey, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'value', NEW.value, NULL);
@@ -2556,7 +2556,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_creditbureau_configuration');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_creditbureau_configuration', CONCAT('UPDATE m_creditbureau_configuration SET id = ', 'NEW.id', ', configkey = ', 'NEW.configkey', ', value = ', 'NEW.value', ', organisation_creditbureau_id = ', 'NEW.organisation_creditbureau_id', ', description = ', 'NEW.description', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'configkey', OLD.configkey, NEW.configkey);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'value', OLD.value, NEW.value);
@@ -2572,7 +2572,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_creditbureau_loanproduct_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_creditbureau_loanproduct_mapping', CONCAT('DELETE FROM m_creditbureau_loanproduct_mapping WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'organisation_creditbureau_id', OLD.organisation_creditbureau_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_product_id', OLD.loan_product_id, NULL);
@@ -2590,7 +2590,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_creditbureau_loanproduct_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_creditbureau_loanproduct_mapping', CONCAT('INSERT INTO m_creditbureau_loanproduct_mapping(id, organisation_creditbureau_id, loan_product_id, is_creditcheck_mandatory, skip_creditcheck_in_failure, stale_period, is_active) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.organisation_creditbureau_id, '\'', ',', '\'', NEW.loan_product_id, '\'', ',', '\'', NEW.is_creditcheck_mandatory, '\'', ',', '\'', NEW.skip_creditcheck_in_failure, '\'', ',', '\'', NEW.stale_period, '\'', ',', '\'', NEW.is_active, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'organisation_creditbureau_id', NEW.organisation_creditbureau_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_product_id', NEW.loan_product_id, NULL);
@@ -2608,7 +2608,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_creditbureau_loanproduct_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_creditbureau_loanproduct_mapping', CONCAT('UPDATE m_creditbureau_loanproduct_mapping SET id = ', 'NEW.id', ', organisation_creditbureau_id = ', 'NEW.organisation_creditbureau_id', ', loan_product_id = ', 'NEW.loan_product_id', ', is_creditcheck_mandatory = ', 'NEW.is_creditcheck_mandatory', ', skip_creditcheck_in_failure = ', 'NEW.skip_creditcheck_in_failure', ', stale_period = ', 'NEW.stale_period', ', is_active = ', 'NEW.is_active', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'organisation_creditbureau_id', OLD.organisation_creditbureau_id, NEW.organisation_creditbureau_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_product_id', OLD.loan_product_id, NEW.loan_product_id);
@@ -2626,7 +2626,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_currency');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_currency', CONCAT('DELETE FROM m_currency WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code', OLD.code, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'decimal_places', OLD.decimal_places, NULL);
@@ -2644,7 +2644,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_currency');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_currency', CONCAT('INSERT INTO m_currency(id, code, decimal_places, currency_multiplesof, display_symbol, name, internationalized_name_code) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.code, '\'', ',', '\'', NEW.decimal_places, '\'', ',', '\'', NEW.currency_multiplesof, '\'', ',', '\'', NEW.display_symbol, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.internationalized_name_code, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'code', NEW.code, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'decimal_places', NEW.decimal_places, NULL);
@@ -2662,7 +2662,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_currency');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_currency', CONCAT('UPDATE m_currency SET id = ', 'NEW.id', ', code = ', 'NEW.code', ', decimal_places = ', 'NEW.decimal_places', ', currency_multiplesof = ', 'NEW.currency_multiplesof', ', display_symbol = ', 'NEW.display_symbol', ', name = ', 'NEW.name', ', internationalized_name_code = ', 'NEW.internationalized_name_code', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code', OLD.code, NEW.code);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'decimal_places', OLD.decimal_places, NEW.decimal_places);
@@ -2680,7 +2680,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_deposit_account_on_hold_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_deposit_account_on_hold_transaction', CONCAT('DELETE FROM m_deposit_account_on_hold_transaction WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'amount', OLD.amount, NULL);
@@ -2698,7 +2698,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_deposit_account_on_hold_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_deposit_account_on_hold_transaction', CONCAT('INSERT INTO m_deposit_account_on_hold_transaction(id, savings_account_id, amount, transaction_type_enum, transaction_date, is_reversed, created_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.savings_account_id, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.transaction_type_enum, '\'', ',', '\'', NEW.transaction_date, '\'', ',', '\'', NEW.is_reversed, '\'', ',', '\'', NEW.created_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_account_id', NEW.savings_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'amount', NEW.amount, NULL);
@@ -2716,7 +2716,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_deposit_account_on_hold_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_deposit_account_on_hold_transaction', CONCAT('UPDATE m_deposit_account_on_hold_transaction SET id = ', 'NEW.id', ', savings_account_id = ', 'NEW.savings_account_id', ', amount = ', 'NEW.amount', ', transaction_type_enum = ', 'NEW.transaction_type_enum', ', transaction_date = ', 'NEW.transaction_date', ', is_reversed = ', 'NEW.is_reversed', ', created_date = ', 'NEW.created_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NEW.savings_account_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'amount', OLD.amount, NEW.amount);
@@ -2734,7 +2734,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_deposit_account_recurring_detail');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_deposit_account_recurring_detail', CONCAT('DELETE FROM m_deposit_account_recurring_detail WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'mandatory_recommended_deposit_amount', OLD.mandatory_recommended_deposit_amount, NULL);
@@ -2754,7 +2754,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_deposit_account_recurring_detail');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_deposit_account_recurring_detail', CONCAT('INSERT INTO m_deposit_account_recurring_detail(id, savings_account_id, mandatory_recommended_deposit_amount, is_mandatory, allow_withdrawal, adjust_advance_towards_future_payments, is_calendar_inherited, total_overdue_amount, no_of_overdue_installments) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.savings_account_id, '\'', ',', '\'', NEW.mandatory_recommended_deposit_amount, '\'', ',', '\'', NEW.is_mandatory, '\'', ',', '\'', NEW.allow_withdrawal, '\'', ',', '\'', NEW.adjust_advance_towards_future_payments, '\'', ',', '\'', NEW.is_calendar_inherited, '\'', ',', '\'', NEW.total_overdue_amount, '\'', ',', '\'', NEW.no_of_overdue_installments, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_account_id', NEW.savings_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'mandatory_recommended_deposit_amount', NEW.mandatory_recommended_deposit_amount, NULL);
@@ -2774,7 +2774,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_deposit_account_recurring_detail');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_deposit_account_recurring_detail', CONCAT('UPDATE m_deposit_account_recurring_detail SET id = ', 'NEW.id', ', savings_account_id = ', 'NEW.savings_account_id', ', mandatory_recommended_deposit_amount = ', 'NEW.mandatory_recommended_deposit_amount', ', is_mandatory = ', 'NEW.is_mandatory', ', allow_withdrawal = ', 'NEW.allow_withdrawal', ', adjust_advance_towards_future_payments = ', 'NEW.adjust_advance_towards_future_payments', ', is_calendar_inherited = ', 'NEW.is_calendar_inherited', ', total_overdue_amount = ', 'NEW.total_overdue_amount', ', no_of_overdue_installments = ', 'NEW.no_of_overdue_installments', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NEW.savings_account_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'mandatory_recommended_deposit_amount', OLD.mandatory_recommended_deposit_amount, NEW.mandatory_recommended_deposit_amount);
@@ -2794,7 +2794,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_deposit_account_term_and_preclosure');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_deposit_account_term_and_preclosure', CONCAT('DELETE FROM m_deposit_account_term_and_preclosure WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'min_deposit_term', OLD.min_deposit_term, NULL);
@@ -2824,7 +2824,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_deposit_account_term_and_preclosure');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_deposit_account_term_and_preclosure', CONCAT('INSERT INTO m_deposit_account_term_and_preclosure(id, savings_account_id, min_deposit_term, max_deposit_term, min_deposit_term_type_enum, max_deposit_term_type_enum, in_multiples_of_deposit_term, in_multiples_of_deposit_term_type_enum, pre_closure_penal_applicable, pre_closure_penal_interest, pre_closure_penal_interest_on_enum, deposit_period, deposit_period_frequency_enum, deposit_amount, maturity_amount, maturity_date, on_account_closure_enum, expected_firstdepositon_date, transfer_interest_to_linked_account) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.savings_account_id, '\'', ',', '\'', NEW.min_deposit_term, '\'', ',', '\'', NEW.max_deposit_term, '\'', ',', '\'', NEW.min_deposit_term_type_enum, '\'', ',', '\'', NEW.max_deposit_term_type_enum, '\'', ',', '\'', NEW.in_multiples_of_deposit_term, '\'', ',', '\'', NEW.in_multiples_of_deposit_term_type_enum, '\'', ',', '\'', NEW.pre_closure_penal_applicable, '\'', ',', '\'', NEW.pre_closure_penal_interest, '\'', ',', '\'', NEW.pre_closure_penal_interest_on_enum, '\'', ',', '\'', NEW.deposit_period, '\'', ',', '\'', NEW.deposit_period_frequency_enum, '\'', ',', '\'', NEW.deposit_amount, '\'', ',', '\'', NEW.maturity_amount, '\'', ',', '\'', NEW.maturity_date, '\'', ',', '\'', NEW.on_account_closure_enum, '\'', ',', '\'', NEW.expected_firstdepositon_date, '\'', ',', '\'', NEW.transfer_interest_to_linked_account, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_account_id', NEW.savings_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'min_deposit_term', NEW.min_deposit_term, NULL);
@@ -2854,7 +2854,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_deposit_account_term_and_preclosure');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_deposit_account_term_and_preclosure', CONCAT('UPDATE m_deposit_account_term_and_preclosure SET id = ', 'NEW.id', ', savings_account_id = ', 'NEW.savings_account_id', ', min_deposit_term = ', 'NEW.min_deposit_term', ', max_deposit_term = ', 'NEW.max_deposit_term', ', min_deposit_term_type_enum = ', 'NEW.min_deposit_term_type_enum', ', max_deposit_term_type_enum = ', 'NEW.max_deposit_term_type_enum', ', in_multiples_of_deposit_term = ', 'NEW.in_multiples_of_deposit_term', ', in_multiples_of_deposit_term_type_enum = ', 'NEW.in_multiples_of_deposit_term_type_enum', ', pre_closure_penal_applicable = ', 'NEW.pre_closure_penal_applicable', ', pre_closure_penal_interest = ', 'NEW.pre_closure_penal_interest', ', pre_closure_penal_interest_on_enum = ', 'NEW.pre_closure_penal_interest_on_enum', ', deposit_period = ', 'NEW.deposit_period', ', deposit_period_frequency_enum = ', 'NEW.deposit_period_frequency_enum', ', deposit_amount = ', 'NEW.deposit_amount', ', maturity_amount = ', 'NEW.maturity_amount', ', maturity_date = ', 'NEW.maturity_date', ', on_account_closure_enum = ', 'NEW.on_account_closure_enum', ', expected_firstdepositon_date = ', 'NEW.expected_firstdepositon_date', ', transfer_interest_to_linked_account = ', 'NEW.transfer_interest_to_linked_account', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NEW.savings_account_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'min_deposit_term', OLD.min_deposit_term, NEW.min_deposit_term);
@@ -2884,7 +2884,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_deposit_product_interest_rate_chart');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_deposit_product_interest_rate_chart', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'deposit_product_id', OLD.deposit_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'interest_rate_chart_id', OLD.interest_rate_chart_id, NULL);
   END;
@@ -2897,7 +2897,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_deposit_product_interest_rate_chart');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_deposit_product_interest_rate_chart', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'deposit_product_id', NEW.deposit_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'interest_rate_chart_id', NEW.interest_rate_chart_id, NULL);
   END;
@@ -2910,7 +2910,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_deposit_product_interest_rate_chart');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_deposit_product_interest_rate_chart', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'deposit_product_id', OLD.deposit_product_id, NEW.deposit_product_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'interest_rate_chart_id', OLD.interest_rate_chart_id, NEW.interest_rate_chart_id);
   END;
@@ -2923,7 +2923,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_deposit_product_recurring_detail');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_deposit_product_recurring_detail', CONCAT('DELETE FROM m_deposit_product_recurring_detail WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_product_id', OLD.savings_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'is_mandatory', OLD.is_mandatory, NULL);
@@ -2939,7 +2939,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_deposit_product_recurring_detail');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_deposit_product_recurring_detail', CONCAT('INSERT INTO m_deposit_product_recurring_detail(id, savings_product_id, is_mandatory, allow_withdrawal, adjust_advance_towards_future_payments) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.savings_product_id, '\'', ',', '\'', NEW.is_mandatory, '\'', ',', '\'', NEW.allow_withdrawal, '\'', ',', '\'', NEW.adjust_advance_towards_future_payments, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_product_id', NEW.savings_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'is_mandatory', NEW.is_mandatory, NULL);
@@ -2955,7 +2955,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_deposit_product_recurring_detail');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_deposit_product_recurring_detail', CONCAT('UPDATE m_deposit_product_recurring_detail SET id = ', 'NEW.id', ', savings_product_id = ', 'NEW.savings_product_id', ', is_mandatory = ', 'NEW.is_mandatory', ', allow_withdrawal = ', 'NEW.allow_withdrawal', ', adjust_advance_towards_future_payments = ', 'NEW.adjust_advance_towards_future_payments', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_product_id', OLD.savings_product_id, NEW.savings_product_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'is_mandatory', OLD.is_mandatory, NEW.is_mandatory);
@@ -2971,7 +2971,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_deposit_product_term_and_preclosure');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_deposit_product_term_and_preclosure', CONCAT('DELETE FROM m_deposit_product_term_and_preclosure WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_product_id', OLD.savings_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'min_deposit_term', OLD.min_deposit_term, NULL);
@@ -2996,7 +2996,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_deposit_product_term_and_preclosure');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_deposit_product_term_and_preclosure', CONCAT('INSERT INTO m_deposit_product_term_and_preclosure(id, savings_product_id, min_deposit_term, max_deposit_term, min_deposit_term_type_enum, max_deposit_term_type_enum, in_multiples_of_deposit_term, in_multiples_of_deposit_term_type_enum, pre_closure_penal_applicable, pre_closure_penal_interest, pre_closure_penal_interest_on_enum, min_deposit_amount, max_deposit_amount, deposit_amount) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.savings_product_id, '\'', ',', '\'', NEW.min_deposit_term, '\'', ',', '\'', NEW.max_deposit_term, '\'', ',', '\'', NEW.min_deposit_term_type_enum, '\'', ',', '\'', NEW.max_deposit_term_type_enum, '\'', ',', '\'', NEW.in_multiples_of_deposit_term, '\'', ',', '\'', NEW.in_multiples_of_deposit_term_type_enum, '\'', ',', '\'', NEW.pre_closure_penal_applicable, '\'', ',', '\'', NEW.pre_closure_penal_interest, '\'', ',', '\'', NEW.pre_closure_penal_interest_on_enum, '\'', ',', '\'', NEW.min_deposit_amount, '\'', ',', '\'', NEW.max_deposit_amount, '\'', ',', '\'', NEW.deposit_amount, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_product_id', NEW.savings_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'min_deposit_term', NEW.min_deposit_term, NULL);
@@ -3021,7 +3021,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_deposit_product_term_and_preclosure');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_deposit_product_term_and_preclosure', CONCAT('UPDATE m_deposit_product_term_and_preclosure SET id = ', 'NEW.id', ', savings_product_id = ', 'NEW.savings_product_id', ', min_deposit_term = ', 'NEW.min_deposit_term', ', max_deposit_term = ', 'NEW.max_deposit_term', ', min_deposit_term_type_enum = ', 'NEW.min_deposit_term_type_enum', ', max_deposit_term_type_enum = ', 'NEW.max_deposit_term_type_enum', ', in_multiples_of_deposit_term = ', 'NEW.in_multiples_of_deposit_term', ', in_multiples_of_deposit_term_type_enum = ', 'NEW.in_multiples_of_deposit_term_type_enum', ', pre_closure_penal_applicable = ', 'NEW.pre_closure_penal_applicable', ', pre_closure_penal_interest = ', 'NEW.pre_closure_penal_interest', ', pre_closure_penal_interest_on_enum = ', 'NEW.pre_closure_penal_interest_on_enum', ', min_deposit_amount = ', 'NEW.min_deposit_amount', ', max_deposit_amount = ', 'NEW.max_deposit_amount', ', deposit_amount = ', 'NEW.deposit_amount', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_product_id', OLD.savings_product_id, NEW.savings_product_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'min_deposit_term', OLD.min_deposit_term, NEW.min_deposit_term);
@@ -3046,7 +3046,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_document');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_document', CONCAT('DELETE FROM m_document WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parent_entity_type', OLD.parent_entity_type, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parent_entity_id', OLD.parent_entity_id, NULL);
@@ -3067,7 +3067,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_document');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_document', CONCAT('INSERT INTO m_document(id, parent_entity_type, parent_entity_id, name, file_name, size, type, description, location, storage_type_enum) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.parent_entity_type, '\'', ',', '\'', NEW.parent_entity_id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.file_name, '\'', ',', '\'', NEW.size, '\'', ',', '\'', NEW.type, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.location, '\'', ',', '\'', NEW.storage_type_enum, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'parent_entity_type', NEW.parent_entity_type, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'parent_entity_id', NEW.parent_entity_id, NULL);
@@ -3088,7 +3088,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_document');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_document', CONCAT('UPDATE m_document SET id = ', 'NEW.id', ', parent_entity_type = ', 'NEW.parent_entity_type', ', parent_entity_id = ', 'NEW.parent_entity_id', ', name = ', 'NEW.name', ', file_name = ', 'NEW.file_name', ', size = ', 'NEW.size', ', type = ', 'NEW.type', ', description = ', 'NEW.description', ', location = ', 'NEW.location', ', storage_type_enum = ', 'NEW.storage_type_enum', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parent_entity_type', OLD.parent_entity_type, NEW.parent_entity_type);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parent_entity_id', OLD.parent_entity_id, NEW.parent_entity_id);
@@ -3109,7 +3109,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_entity_datatable_check');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_entity_datatable_check', CONCAT('DELETE FROM m_entity_datatable_check WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'application_table_name', OLD.application_table_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'x_registered_table_name', OLD.x_registered_table_name, NULL);
@@ -3126,7 +3126,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_entity_datatable_check');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_entity_datatable_check', CONCAT('INSERT INTO m_entity_datatable_check(id, application_table_name, x_registered_table_name, status_enum, system_defined, product_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.application_table_name, '\'', ',', '\'', NEW.x_registered_table_name, '\'', ',', '\'', NEW.status_enum, '\'', ',', '\'', NEW.system_defined, '\'', ',', '\'', NEW.product_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'application_table_name', NEW.application_table_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'x_registered_table_name', NEW.x_registered_table_name, NULL);
@@ -3143,7 +3143,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_entity_datatable_check');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_entity_datatable_check', CONCAT('UPDATE m_entity_datatable_check SET id = ', 'NEW.id', ', application_table_name = ', 'NEW.application_table_name', ', x_registered_table_name = ', 'NEW.x_registered_table_name', ', status_enum = ', 'NEW.status_enum', ', system_defined = ', 'NEW.system_defined', ', product_id = ', 'NEW.product_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'application_table_name', OLD.application_table_name, NEW.application_table_name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'x_registered_table_name', OLD.x_registered_table_name, NEW.x_registered_table_name);
@@ -3160,7 +3160,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_entity_relation');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_entity_relation', CONCAT('DELETE FROM m_entity_relation WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_entity_type', OLD.from_entity_type, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'to_entity_type', OLD.to_entity_type, NULL);
@@ -3175,7 +3175,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_entity_relation');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_entity_relation', CONCAT('INSERT INTO m_entity_relation(id, from_entity_type, to_entity_type, code_name) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.from_entity_type, '\'', ',', '\'', NEW.to_entity_type, '\'', ',', '\'', NEW.code_name, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'from_entity_type', NEW.from_entity_type, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'to_entity_type', NEW.to_entity_type, NULL);
@@ -3190,7 +3190,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_entity_relation');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_entity_relation', CONCAT('UPDATE m_entity_relation SET id = ', 'NEW.id', ', from_entity_type = ', 'NEW.from_entity_type', ', to_entity_type = ', 'NEW.to_entity_type', ', code_name = ', 'NEW.code_name', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_entity_type', OLD.from_entity_type, NEW.from_entity_type);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'to_entity_type', OLD.to_entity_type, NEW.to_entity_type);
@@ -3205,7 +3205,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_entity_to_entity_access');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_entity_to_entity_access', CONCAT('DELETE FROM m_entity_to_entity_access WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entity_type', OLD.entity_type, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entity_id', OLD.entity_id, NULL);
@@ -3222,7 +3222,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_entity_to_entity_access');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_entity_to_entity_access', CONCAT('INSERT INTO m_entity_to_entity_access(id, entity_type, entity_id, access_type_code_value_id, second_entity_type, second_entity_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.entity_type, '\'', ',', '\'', NEW.entity_id, '\'', ',', '\'', NEW.access_type_code_value_id, '\'', ',', '\'', NEW.second_entity_type, '\'', ',', '\'', NEW.second_entity_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'entity_type', NEW.entity_type, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'entity_id', NEW.entity_id, NULL);
@@ -3239,7 +3239,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_entity_to_entity_access');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_entity_to_entity_access', CONCAT('UPDATE m_entity_to_entity_access SET id = ', 'NEW.id', ', entity_type = ', 'NEW.entity_type', ', entity_id = ', 'NEW.entity_id', ', access_type_code_value_id = ', 'NEW.access_type_code_value_id', ', second_entity_type = ', 'NEW.second_entity_type', ', second_entity_id = ', 'NEW.second_entity_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entity_type', OLD.entity_type, NEW.entity_type);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entity_id', OLD.entity_id, NEW.entity_id);
@@ -3256,7 +3256,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_entity_to_entity_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_entity_to_entity_mapping', CONCAT('DELETE FROM m_entity_to_entity_mapping WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'rel_id', OLD.rel_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_id', OLD.from_id, NULL);
@@ -3273,7 +3273,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_entity_to_entity_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_entity_to_entity_mapping', CONCAT('INSERT INTO m_entity_to_entity_mapping(id, rel_id, from_id, to_id, start_date, end_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.rel_id, '\'', ',', '\'', NEW.from_id, '\'', ',', '\'', NEW.to_id, '\'', ',', '\'', NEW.start_date, '\'', ',', '\'', NEW.end_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'rel_id', NEW.rel_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'from_id', NEW.from_id, NULL);
@@ -3290,7 +3290,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_entity_to_entity_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_entity_to_entity_mapping', CONCAT('UPDATE m_entity_to_entity_mapping SET id = ', 'NEW.id', ', rel_id = ', 'NEW.rel_id', ', from_id = ', 'NEW.from_id', ', to_id = ', 'NEW.to_id', ', start_date = ', 'NEW.start_date', ', end_date = ', 'NEW.end_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'rel_id', OLD.rel_id, NEW.rel_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_id', OLD.from_id, NEW.from_id);
@@ -3307,7 +3307,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_family_members');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_family_members', CONCAT('DELETE FROM m_family_members WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'firstname', OLD.firstname, NULL);
@@ -3332,7 +3332,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_family_members');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_family_members', CONCAT('INSERT INTO m_family_members(id, client_id, firstname, middlename, lastname, qualification, relationship_cv_id, marital_status_cv_id, gender_cv_id, date_of_birth, age, profession_cv_id, mobile_number, is_dependent) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.firstname, '\'', ',', '\'', NEW.middlename, '\'', ',', '\'', NEW.lastname, '\'', ',', '\'', NEW.qualification, '\'', ',', '\'', NEW.relationship_cv_id, '\'', ',', '\'', NEW.marital_status_cv_id, '\'', ',', '\'', NEW.gender_cv_id, '\'', ',', '\'', NEW.date_of_birth, '\'', ',', '\'', NEW.age, '\'', ',', '\'', NEW.profession_cv_id, '\'', ',', '\'', NEW.mobile_number, '\'', ',', '\'', NEW.is_dependent, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_id', NEW.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'firstname', NEW.firstname, NULL);
@@ -3357,7 +3357,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_family_members');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_family_members', CONCAT('UPDATE m_family_members SET id = ', 'NEW.id', ', client_id = ', 'NEW.client_id', ', firstname = ', 'NEW.firstname', ', middlename = ', 'NEW.middlename', ', lastname = ', 'NEW.lastname', ', qualification = ', 'NEW.qualification', ', relationship_cv_id = ', 'NEW.relationship_cv_id', ', marital_status_cv_id = ', 'NEW.marital_status_cv_id', ', gender_cv_id = ', 'NEW.gender_cv_id', ', date_of_birth = ', 'NEW.date_of_birth', ', age = ', 'NEW.age', ', profession_cv_id = ', 'NEW.profession_cv_id', ', mobile_number = ', 'NEW.mobile_number', ', is_dependent = ', 'NEW.is_dependent', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NEW.client_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'firstname', OLD.firstname, NEW.firstname);
@@ -3382,7 +3382,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_field_configuration');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_field_configuration', CONCAT('DELETE FROM m_field_configuration WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entity', OLD.entity, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'subentity', OLD.subentity, NULL);
@@ -3400,7 +3400,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_field_configuration');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_field_configuration', CONCAT('INSERT INTO m_field_configuration(id, entity, subentity, field, is_enabled, is_mandatory, validation_regex) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.entity, '\'', ',', '\'', NEW.subentity, '\'', ',', '\'', NEW.field, '\'', ',', '\'', NEW.is_enabled, '\'', ',', '\'', NEW.is_mandatory, '\'', ',', '\'', NEW.validation_regex, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'entity', NEW.entity, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'subentity', NEW.subentity, NULL);
@@ -3418,7 +3418,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_field_configuration');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_field_configuration', CONCAT('UPDATE m_field_configuration SET id = ', 'NEW.id', ', entity = ', 'NEW.entity', ', subentity = ', 'NEW.subentity', ', field = ', 'NEW.field', ', is_enabled = ', 'NEW.is_enabled', ', is_mandatory = ', 'NEW.is_mandatory', ', validation_regex = ', 'NEW.validation_regex', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entity', OLD.entity, NEW.entity);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'subentity', OLD.subentity, NEW.subentity);
@@ -3436,7 +3436,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_floating_rates');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_floating_rates', CONCAT('DELETE FROM m_floating_rates WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'is_base_lending_rate', OLD.is_base_lending_rate, NULL);
@@ -3455,7 +3455,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_floating_rates');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_floating_rates', CONCAT('INSERT INTO m_floating_rates(id, name, is_base_lending_rate, is_active, createdby_id, created_date, lastmodifiedby_id, lastmodified_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.is_base_lending_rate, '\'', ',', '\'', NEW.is_active, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.lastmodified_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'is_base_lending_rate', NEW.is_base_lending_rate, NULL);
@@ -3474,7 +3474,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_floating_rates');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_floating_rates', CONCAT('UPDATE m_floating_rates SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', is_base_lending_rate = ', 'NEW.is_base_lending_rate', ', is_active = ', 'NEW.is_active', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', lastmodified_date = ', 'NEW.lastmodified_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'is_base_lending_rate', OLD.is_base_lending_rate, NEW.is_base_lending_rate);
@@ -3493,7 +3493,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_floating_rates_periods');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_floating_rates_periods', CONCAT('DELETE FROM m_floating_rates_periods WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'floating_rates_id', OLD.floating_rates_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_date', OLD.from_date, NULL);
@@ -3514,7 +3514,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_floating_rates_periods');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_floating_rates_periods', CONCAT('INSERT INTO m_floating_rates_periods(id, floating_rates_id, from_date, interest_rate, is_differential_to_base_lending_rate, is_active, createdby_id, created_date, lastmodifiedby_id, lastmodified_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.floating_rates_id, '\'', ',', '\'', NEW.from_date, '\'', ',', '\'', NEW.interest_rate, '\'', ',', '\'', NEW.is_differential_to_base_lending_rate, '\'', ',', '\'', NEW.is_active, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.lastmodified_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'floating_rates_id', NEW.floating_rates_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'from_date', NEW.from_date, NULL);
@@ -3535,7 +3535,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_floating_rates_periods');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_floating_rates_periods', CONCAT('UPDATE m_floating_rates_periods SET id = ', 'NEW.id', ', floating_rates_id = ', 'NEW.floating_rates_id', ', from_date = ', 'NEW.from_date', ', interest_rate = ', 'NEW.interest_rate', ', is_differential_to_base_lending_rate = ', 'NEW.is_differential_to_base_lending_rate', ', is_active = ', 'NEW.is_active', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', lastmodified_date = ', 'NEW.lastmodified_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'floating_rates_id', OLD.floating_rates_id, NEW.floating_rates_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_date', OLD.from_date, NEW.from_date);
@@ -3556,7 +3556,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_fund');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_fund', CONCAT('DELETE FROM m_fund WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'external_id', OLD.external_id, NULL);
@@ -3570,7 +3570,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_fund');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_fund', CONCAT('INSERT INTO m_fund(id, name, external_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.external_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'external_id', NEW.external_id, NULL);
@@ -3584,7 +3584,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_fund');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_fund', CONCAT('UPDATE m_fund SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', external_id = ', 'NEW.external_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'external_id', OLD.external_id, NEW.external_id);
@@ -3598,7 +3598,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_group');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_group', CONCAT('DELETE FROM m_group WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'external_id', OLD.external_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'status_enum', OLD.status_enum, NULL);
@@ -3626,7 +3626,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_group');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_group', CONCAT('INSERT INTO m_group(id, external_id, status_enum, activation_date, office_id, staff_id, parent_id, level_id, display_name, hierarchy, closure_reason_cv_id, closedon_date, activatedon_userid, submittedon_date, submittedon_userid, closedon_userid, account_no) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.external_id, '\'', ',', '\'', NEW.status_enum, '\'', ',', '\'', NEW.activation_date, '\'', ',', '\'', NEW.office_id, '\'', ',', '\'', NEW.staff_id, '\'', ',', '\'', NEW.parent_id, '\'', ',', '\'', NEW.level_id, '\'', ',', '\'', NEW.display_name, '\'', ',', '\'', NEW.hierarchy, '\'', ',', '\'', NEW.closure_reason_cv_id, '\'', ',', '\'', NEW.closedon_date, '\'', ',', '\'', NEW.activatedon_userid, '\'', ',', '\'', NEW.submittedon_date, '\'', ',', '\'', NEW.submittedon_userid, '\'', ',', '\'', NEW.closedon_userid, '\'', ',', '\'', NEW.account_no, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'external_id', NEW.external_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'status_enum', NEW.status_enum, NULL);
@@ -3654,7 +3654,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_group');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_group', CONCAT('UPDATE m_group SET id = ', 'NEW.id', ', external_id = ', 'NEW.external_id', ', status_enum = ', 'NEW.status_enum', ', activation_date = ', 'NEW.activation_date', ', office_id = ', 'NEW.office_id', ', staff_id = ', 'NEW.staff_id', ', parent_id = ', 'NEW.parent_id', ', level_id = ', 'NEW.level_id', ', display_name = ', 'NEW.display_name', ', hierarchy = ', 'NEW.hierarchy', ', closure_reason_cv_id = ', 'NEW.closure_reason_cv_id', ', closedon_date = ', 'NEW.closedon_date', ', activatedon_userid = ', 'NEW.activatedon_userid', ', submittedon_date = ', 'NEW.submittedon_date', ', submittedon_userid = ', 'NEW.submittedon_userid', ', closedon_userid = ', 'NEW.closedon_userid', ', account_no = ', 'NEW.account_no', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'external_id', OLD.external_id, NEW.external_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'status_enum', OLD.status_enum, NEW.status_enum);
@@ -3682,7 +3682,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_group_client');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_group_client', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'group_id', OLD.group_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NULL);
   END;
@@ -3695,7 +3695,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_group_client');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_group_client', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'group_id', NEW.group_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_id', NEW.client_id, NULL);
   END;
@@ -3708,7 +3708,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_group_client');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_group_client', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'group_id', OLD.group_id, NEW.group_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NEW.client_id);
   END;
@@ -3721,7 +3721,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_group_level');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_group_level', CONCAT('DELETE FROM m_group_level WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parent_id', OLD.parent_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'super_parent', OLD.super_parent, NULL);
@@ -3738,7 +3738,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_group_level');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_group_level', CONCAT('INSERT INTO m_group_level(id, parent_id, super_parent, level_name, recursable, can_have_clients) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.parent_id, '\'', ',', '\'', NEW.super_parent, '\'', ',', '\'', NEW.level_name, '\'', ',', '\'', NEW.recursable, '\'', ',', '\'', NEW.can_have_clients, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'parent_id', NEW.parent_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'super_parent', NEW.super_parent, NULL);
@@ -3755,7 +3755,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_group_level');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_group_level', CONCAT('UPDATE m_group_level SET id = ', 'NEW.id', ', parent_id = ', 'NEW.parent_id', ', super_parent = ', 'NEW.super_parent', ', level_name = ', 'NEW.level_name', ', recursable = ', 'NEW.recursable', ', can_have_clients = ', 'NEW.can_have_clients', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parent_id', OLD.parent_id, NEW.parent_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'super_parent', OLD.super_parent, NEW.super_parent);
@@ -3772,7 +3772,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_group_roles');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_group_roles', CONCAT('DELETE FROM m_group_roles WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'group_id', OLD.group_id, NULL);
@@ -3787,7 +3787,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_group_roles');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_group_roles', CONCAT('INSERT INTO m_group_roles(id, client_id, group_id, role_cv_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.group_id, '\'', ',', '\'', NEW.role_cv_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_id', NEW.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'group_id', NEW.group_id, NULL);
@@ -3802,7 +3802,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_group_roles');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_group_roles', CONCAT('UPDATE m_group_roles SET id = ', 'NEW.id', ', client_id = ', 'NEW.client_id', ', group_id = ', 'NEW.group_id', ', role_cv_id = ', 'NEW.role_cv_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NEW.client_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'group_id', OLD.group_id, NEW.group_id);
@@ -3817,7 +3817,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_guarantor');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_guarantor', CONCAT('DELETE FROM m_guarantor WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_reln_cv_id', OLD.client_reln_cv_id, NULL);
@@ -3846,7 +3846,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_guarantor');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_guarantor', CONCAT('INSERT INTO m_guarantor(id, loan_id, client_reln_cv_id, type_enum, entity_id, firstname, lastname, dob, address_line_1, address_line_2, city, state, country, zip, house_phone_number, mobile_number, comment, is_active) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_id, '\'', ',', '\'', NEW.client_reln_cv_id, '\'', ',', '\'', NEW.type_enum, '\'', ',', '\'', NEW.entity_id, '\'', ',', '\'', NEW.firstname, '\'', ',', '\'', NEW.lastname, '\'', ',', '\'', NEW.dob, '\'', ',', '\'', NEW.address_line_1, '\'', ',', '\'', NEW.address_line_2, '\'', ',', '\'', NEW.city, '\'', ',', '\'', NEW.state, '\'', ',', '\'', NEW.country, '\'', ',', '\'', NEW.zip, '\'', ',', '\'', NEW.house_phone_number, '\'', ',', '\'', NEW.mobile_number, '\'', ',', '\'', NEW.comment, '\'', ',', '\'', NEW.is_active, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_id', NEW.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_reln_cv_id', NEW.client_reln_cv_id, NULL);
@@ -3875,7 +3875,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_guarantor');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_guarantor', CONCAT('UPDATE m_guarantor SET id = ', 'NEW.id', ', loan_id = ', 'NEW.loan_id', ', client_reln_cv_id = ', 'NEW.client_reln_cv_id', ', type_enum = ', 'NEW.type_enum', ', entity_id = ', 'NEW.entity_id', ', firstname = ', 'NEW.firstname', ', lastname = ', 'NEW.lastname', ', dob = ', 'NEW.dob', ', address_line_1 = ', 'NEW.address_line_1', ', address_line_2 = ', 'NEW.address_line_2', ', city = ', 'NEW.city', ', state = ', 'NEW.state', ', country = ', 'NEW.country', ', zip = ', 'NEW.zip', ', house_phone_number = ', 'NEW.house_phone_number', ', mobile_number = ', 'NEW.mobile_number', ', comment = ', 'NEW.comment', ', is_active = ', 'NEW.is_active', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NEW.loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_reln_cv_id', OLD.client_reln_cv_id, NEW.client_reln_cv_id);
@@ -3904,7 +3904,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_guarantor_funding_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_guarantor_funding_details', CONCAT('DELETE FROM m_guarantor_funding_details WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'guarantor_id', OLD.guarantor_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_associations_id', OLD.account_associations_id, NULL);
@@ -3923,7 +3923,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_guarantor_funding_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_guarantor_funding_details', CONCAT('INSERT INTO m_guarantor_funding_details(id, guarantor_id, account_associations_id, amount, amount_released_derived, amount_remaining_derived, amount_transfered_derived, status_enum) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.guarantor_id, '\'', ',', '\'', NEW.account_associations_id, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.amount_released_derived, '\'', ',', '\'', NEW.amount_remaining_derived, '\'', ',', '\'', NEW.amount_transfered_derived, '\'', ',', '\'', NEW.status_enum, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'guarantor_id', NEW.guarantor_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'account_associations_id', NEW.account_associations_id, NULL);
@@ -3942,7 +3942,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_guarantor_funding_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_guarantor_funding_details', CONCAT('UPDATE m_guarantor_funding_details SET id = ', 'NEW.id', ', guarantor_id = ', 'NEW.guarantor_id', ', account_associations_id = ', 'NEW.account_associations_id', ', amount = ', 'NEW.amount', ', amount_released_derived = ', 'NEW.amount_released_derived', ', amount_remaining_derived = ', 'NEW.amount_remaining_derived', ', amount_transfered_derived = ', 'NEW.amount_transfered_derived', ', status_enum = ', 'NEW.status_enum', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'guarantor_id', OLD.guarantor_id, NEW.guarantor_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_associations_id', OLD.account_associations_id, NEW.account_associations_id);
@@ -3961,7 +3961,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_guarantor_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_guarantor_transaction', CONCAT('DELETE FROM m_guarantor_transaction WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'guarantor_fund_detail_id', OLD.guarantor_fund_detail_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_transaction_id', OLD.loan_transaction_id, NULL);
@@ -3977,7 +3977,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_guarantor_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_guarantor_transaction', CONCAT('INSERT INTO m_guarantor_transaction(id, guarantor_fund_detail_id, loan_transaction_id, deposit_on_hold_transaction_id, is_reversed) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.guarantor_fund_detail_id, '\'', ',', '\'', NEW.loan_transaction_id, '\'', ',', '\'', NEW.deposit_on_hold_transaction_id, '\'', ',', '\'', NEW.is_reversed, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'guarantor_fund_detail_id', NEW.guarantor_fund_detail_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_transaction_id', NEW.loan_transaction_id, NULL);
@@ -3993,7 +3993,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_guarantor_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_guarantor_transaction', CONCAT('UPDATE m_guarantor_transaction SET id = ', 'NEW.id', ', guarantor_fund_detail_id = ', 'NEW.guarantor_fund_detail_id', ', loan_transaction_id = ', 'NEW.loan_transaction_id', ', deposit_on_hold_transaction_id = ', 'NEW.deposit_on_hold_transaction_id', ', is_reversed = ', 'NEW.is_reversed', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'guarantor_fund_detail_id', OLD.guarantor_fund_detail_id, NEW.guarantor_fund_detail_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_transaction_id', OLD.loan_transaction_id, NEW.loan_transaction_id);
@@ -4009,7 +4009,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_holiday');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_holiday', CONCAT('DELETE FROM m_holiday WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_date', OLD.from_date, NULL);
@@ -4029,7 +4029,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_holiday');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_holiday', CONCAT('INSERT INTO m_holiday(id, name, from_date, to_date, repayments_rescheduled_to, status_enum, processed, description, rescheduling_type) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.from_date, '\'', ',', '\'', NEW.to_date, '\'', ',', '\'', NEW.repayments_rescheduled_to, '\'', ',', '\'', NEW.status_enum, '\'', ',', '\'', NEW.processed, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.rescheduling_type, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'from_date', NEW.from_date, NULL);
@@ -4049,7 +4049,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_holiday');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_holiday', CONCAT('UPDATE m_holiday SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', from_date = ', 'NEW.from_date', ', to_date = ', 'NEW.to_date', ', repayments_rescheduled_to = ', 'NEW.repayments_rescheduled_to', ', status_enum = ', 'NEW.status_enum', ', processed = ', 'NEW.processed', ', description = ', 'NEW.description', ', rescheduling_type = ', 'NEW.rescheduling_type', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_date', OLD.from_date, NEW.from_date);
@@ -4069,7 +4069,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_holiday_office');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_holiday_office', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'holiday_id', OLD.holiday_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NULL);
   END;
@@ -4082,7 +4082,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_holiday_office');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_holiday_office', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'holiday_id', NEW.holiday_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'office_id', NEW.office_id, NULL);
   END;
@@ -4095,7 +4095,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_holiday_office');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_holiday_office', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'holiday_id', OLD.holiday_id, NEW.holiday_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NEW.office_id);
   END;
@@ -4108,7 +4108,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_hook');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_hook', CONCAT('DELETE FROM m_hook WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'template_id', OLD.template_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'is_active', OLD.is_active, NULL);
@@ -4128,7 +4128,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_hook');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_hook', CONCAT('INSERT INTO m_hook(id, template_id, is_active, name, createdby_id, created_date, lastmodifiedby_id, lastmodified_date, ugd_template_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.template_id, '\'', ',', '\'', NEW.is_active, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.lastmodified_date, '\'', ',', '\'', NEW.ugd_template_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'template_id', NEW.template_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'is_active', NEW.is_active, NULL);
@@ -4148,7 +4148,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_hook');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_hook', CONCAT('UPDATE m_hook SET id = ', 'NEW.id', ', template_id = ', 'NEW.template_id', ', is_active = ', 'NEW.is_active', ', name = ', 'NEW.name', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', lastmodified_date = ', 'NEW.lastmodified_date', ', ugd_template_id = ', 'NEW.ugd_template_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'template_id', OLD.template_id, NEW.template_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'is_active', OLD.is_active, NEW.is_active);
@@ -4168,7 +4168,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_hook_configuration');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_hook_configuration', CONCAT('DELETE FROM m_hook_configuration WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'hook_id', OLD.hook_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'field_type', OLD.field_type, NULL);
@@ -4184,7 +4184,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_hook_configuration');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_hook_configuration', CONCAT('INSERT INTO m_hook_configuration(id, hook_id, field_type, field_name, field_value) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.hook_id, '\'', ',', '\'', NEW.field_type, '\'', ',', '\'', NEW.field_name, '\'', ',', '\'', NEW.field_value, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'hook_id', NEW.hook_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'field_type', NEW.field_type, NULL);
@@ -4200,7 +4200,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_hook_configuration');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_hook_configuration', CONCAT('UPDATE m_hook_configuration SET id = ', 'NEW.id', ', hook_id = ', 'NEW.hook_id', ', field_type = ', 'NEW.field_type', ', field_name = ', 'NEW.field_name', ', field_value = ', 'NEW.field_value', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'hook_id', OLD.hook_id, NEW.hook_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'field_type', OLD.field_type, NEW.field_type);
@@ -4216,7 +4216,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_hook_registered_events');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_hook_registered_events', CONCAT('DELETE FROM m_hook_registered_events WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'hook_id', OLD.hook_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entity_name', OLD.entity_name, NULL);
@@ -4231,7 +4231,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_hook_registered_events');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_hook_registered_events', CONCAT('INSERT INTO m_hook_registered_events(id, hook_id, entity_name, action_name) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.hook_id, '\'', ',', '\'', NEW.entity_name, '\'', ',', '\'', NEW.action_name, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'hook_id', NEW.hook_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'entity_name', NEW.entity_name, NULL);
@@ -4246,7 +4246,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_hook_registered_events');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_hook_registered_events', CONCAT('UPDATE m_hook_registered_events SET id = ', 'NEW.id', ', hook_id = ', 'NEW.hook_id', ', entity_name = ', 'NEW.entity_name', ', action_name = ', 'NEW.action_name', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'hook_id', OLD.hook_id, NEW.hook_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entity_name', OLD.entity_name, NEW.entity_name);
@@ -4261,7 +4261,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_hook_schema');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_hook_schema', CONCAT('DELETE FROM m_hook_schema WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'hook_template_id', OLD.hook_template_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'field_type', OLD.field_type, NULL);
@@ -4278,7 +4278,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_hook_schema');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_hook_schema', CONCAT('INSERT INTO m_hook_schema(id, hook_template_id, field_type, field_name, placeholder, optional) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.hook_template_id, '\'', ',', '\'', NEW.field_type, '\'', ',', '\'', NEW.field_name, '\'', ',', '\'', NEW.placeholder, '\'', ',', '\'', NEW.optional, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'hook_template_id', NEW.hook_template_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'field_type', NEW.field_type, NULL);
@@ -4295,7 +4295,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_hook_schema');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_hook_schema', CONCAT('UPDATE m_hook_schema SET id = ', 'NEW.id', ', hook_template_id = ', 'NEW.hook_template_id', ', field_type = ', 'NEW.field_type', ', field_name = ', 'NEW.field_name', ', placeholder = ', 'NEW.placeholder', ', optional = ', 'NEW.optional', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'hook_template_id', OLD.hook_template_id, NEW.hook_template_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'field_type', OLD.field_type, NEW.field_type);
@@ -4312,7 +4312,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_hook_templates');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_hook_templates', CONCAT('DELETE FROM m_hook_templates WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
   END;
@@ -4325,7 +4325,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_hook_templates');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_hook_templates', CONCAT('INSERT INTO m_hook_templates(id, name) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
   END;
@@ -4338,7 +4338,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_hook_templates');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_hook_templates', CONCAT('UPDATE m_hook_templates SET id = ', 'NEW.id', ', name = ', 'NEW.name', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
   END;
@@ -4351,7 +4351,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_image');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_image', CONCAT('DELETE FROM m_image WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'location', OLD.location, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'storage_type_enum', OLD.storage_type_enum, NULL);
@@ -4365,7 +4365,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_image');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_image', CONCAT('INSERT INTO m_image(id, location, storage_type_enum) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.location, '\'', ',', '\'', NEW.storage_type_enum, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'location', NEW.location, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'storage_type_enum', NEW.storage_type_enum, NULL);
@@ -4379,7 +4379,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_image');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_image', CONCAT('UPDATE m_image SET id = ', 'NEW.id', ', location = ', 'NEW.location', ', storage_type_enum = ', 'NEW.storage_type_enum', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'location', OLD.location, NEW.location);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'storage_type_enum', OLD.storage_type_enum, NEW.storage_type_enum);
@@ -4393,7 +4393,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_interest_incentives');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_interest_incentives', CONCAT('DELETE FROM m_interest_incentives WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'interest_rate_slab_id', OLD.interest_rate_slab_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entiry_type', OLD.entiry_type, NULL);
@@ -4412,7 +4412,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_interest_incentives');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_interest_incentives', CONCAT('INSERT INTO m_interest_incentives(id, interest_rate_slab_id, entiry_type, attribute_name, condition_type, attribute_value, incentive_type, amount) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.interest_rate_slab_id, '\'', ',', '\'', NEW.entiry_type, '\'', ',', '\'', NEW.attribute_name, '\'', ',', '\'', NEW.condition_type, '\'', ',', '\'', NEW.attribute_value, '\'', ',', '\'', NEW.incentive_type, '\'', ',', '\'', NEW.amount, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'interest_rate_slab_id', NEW.interest_rate_slab_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'entiry_type', NEW.entiry_type, NULL);
@@ -4431,7 +4431,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_interest_incentives');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_interest_incentives', CONCAT('UPDATE m_interest_incentives SET id = ', 'NEW.id', ', interest_rate_slab_id = ', 'NEW.interest_rate_slab_id', ', entiry_type = ', 'NEW.entiry_type', ', attribute_name = ', 'NEW.attribute_name', ', condition_type = ', 'NEW.condition_type', ', attribute_value = ', 'NEW.attribute_value', ', incentive_type = ', 'NEW.incentive_type', ', amount = ', 'NEW.amount', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'interest_rate_slab_id', OLD.interest_rate_slab_id, NEW.interest_rate_slab_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entiry_type', OLD.entiry_type, NEW.entiry_type);
@@ -4450,7 +4450,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_interest_rate_chart');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_interest_rate_chart', CONCAT('DELETE FROM m_interest_rate_chart WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NULL);
@@ -4467,7 +4467,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_interest_rate_chart');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_interest_rate_chart', CONCAT('INSERT INTO m_interest_rate_chart(id, name, description, from_date, end_date, is_primary_grouping_by_amount) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.from_date, '\'', ',', '\'', NEW.end_date, '\'', ',', '\'', NEW.is_primary_grouping_by_amount, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'description', NEW.description, NULL);
@@ -4484,7 +4484,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_interest_rate_chart');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_interest_rate_chart', CONCAT('UPDATE m_interest_rate_chart SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', description = ', 'NEW.description', ', from_date = ', 'NEW.from_date', ', end_date = ', 'NEW.end_date', ', is_primary_grouping_by_amount = ', 'NEW.is_primary_grouping_by_amount', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NEW.description);
@@ -4501,7 +4501,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_interest_rate_slab');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_interest_rate_slab', CONCAT('DELETE FROM m_interest_rate_slab WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'interest_rate_chart_id', OLD.interest_rate_chart_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NULL);
@@ -4522,7 +4522,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_interest_rate_slab');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_interest_rate_slab', CONCAT('INSERT INTO m_interest_rate_slab(id, interest_rate_chart_id, description, period_type_enum, from_period, to_period, amount_range_from, amount_range_to, annual_interest_rate, currency_code) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.interest_rate_chart_id, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.period_type_enum, '\'', ',', '\'', NEW.from_period, '\'', ',', '\'', NEW.to_period, '\'', ',', '\'', NEW.amount_range_from, '\'', ',', '\'', NEW.amount_range_to, '\'', ',', '\'', NEW.annual_interest_rate, '\'', ',', '\'', NEW.currency_code, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'interest_rate_chart_id', NEW.interest_rate_chart_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'description', NEW.description, NULL);
@@ -4543,7 +4543,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_interest_rate_slab');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_interest_rate_slab', CONCAT('UPDATE m_interest_rate_slab SET id = ', 'NEW.id', ', interest_rate_chart_id = ', 'NEW.interest_rate_chart_id', ', description = ', 'NEW.description', ', period_type_enum = ', 'NEW.period_type_enum', ', from_period = ', 'NEW.from_period', ', to_period = ', 'NEW.to_period', ', amount_range_from = ', 'NEW.amount_range_from', ', amount_range_to = ', 'NEW.amount_range_to', ', annual_interest_rate = ', 'NEW.annual_interest_rate', ', currency_code = ', 'NEW.currency_code', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'interest_rate_chart_id', OLD.interest_rate_chart_id, NEW.interest_rate_chart_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NEW.description);
@@ -4564,7 +4564,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan', CONCAT('DELETE FROM m_loan WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_no', OLD.account_no, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'external_id', OLD.external_id, NULL);
@@ -4679,7 +4679,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan', CONCAT('INSERT INTO m_loan(id, account_no, external_id, client_id, group_id, product_id, fund_id, loan_officer_id, loanpurpose_cv_id, loan_status_id, loan_type_enum, currency_code, currency_digits, currency_multiplesof, principal_amount_proposed, principal_amount, approved_principal, arrearstolerance_amount, is_floating_interest_rate, interest_rate_differential, nominal_interest_rate_per_period, interest_period_frequency_enum, annual_nominal_interest_rate, interest_method_enum, interest_calculated_in_period_enum, allow_partial_period_interest_calcualtion, term_frequency, term_period_frequency_enum, repay_every, repayment_period_frequency_enum, number_of_repayments, grace_on_principal_periods, recurring_moratorium_principal_periods, grace_on_interest_periods, grace_interest_free_periods, amortization_method_enum, submittedon_date, submittedon_userid, approvedon_date, approvedon_userid, expected_disbursedon_date, expected_firstrepaymenton_date, interest_calculated_from_date, disbursedon_date, disbursedon_userid, expected_maturedon_date, maturedon_date, closedon_date, closedon_userid, total_charges_due_at_disbursement_derived, principal_disbursed_derived, principal_repaid_derived, principal_writtenoff_derived, principal_outstanding_derived, interest_charged_derived, interest_repaid_derived, interest_waived_derived, interest_writtenoff_derived, interest_outstanding_derived, fee_charges_charged_derived, fee_charges_repaid_derived, fee_charges_waived_derived, fee_charges_writtenoff_derived, fee_charges_outstanding_derived, penalty_charges_charged_derived, penalty_charges_repaid_derived, penalty_charges_waived_derived, penalty_charges_writtenoff_derived, penalty_charges_outstanding_derived, total_expected_repayment_derived, total_repayment_derived, total_expected_costofloan_derived, total_costofloan_derived, total_waived_derived, total_writtenoff_derived, total_outstanding_derived, total_overpaid_derived, rejectedon_date, rejectedon_userid, rescheduledon_date, rescheduledon_userid, withdrawnon_date, withdrawnon_userid, writtenoffon_date, loan_transaction_strategy_id, sync_disbursement_with_meeting, loan_counter, loan_product_counter, fixed_emi_amount, max_outstanding_loan_balance, grace_on_arrears_ageing, is_npa, total_recovered_derived, accrued_till, interest_recalcualated_on, days_in_month_enum, days_in_year_enum, interest_recalculation_enabled, guarantee_amount_derived, create_standing_instruction_at_disbursement, version, writeoff_reason_cv_id, loan_sub_status_id, is_topup) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.account_no, '\'', ',', '\'', NEW.external_id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.group_id, '\'', ',', '\'', NEW.product_id, '\'', ',', '\'', NEW.fund_id, '\'', ',', '\'', NEW.loan_officer_id, '\'', ',', '\'', NEW.loanpurpose_cv_id, '\'', ',', '\'', NEW.loan_status_id, '\'', ',', '\'', NEW.loan_type_enum, '\'', ',', '\'', NEW.currency_code, '\'', ',', '\'', NEW.currency_digits, '\'', ',', '\'', NEW.currency_multiplesof, '\'', ',', '\'', NEW.principal_amount_proposed, '\'', ',', '\'', NEW.principal_amount, '\'', ',', '\'', NEW.approved_principal, '\'', ',', '\'', NEW.arrearstolerance_amount, '\'', ',', '\'', NEW.is_floating_interest_rate, '\'', ',', '\'', NEW.interest_rate_differential, '\'', ',', '\'', NEW.nominal_interest_rate_per_period, '\'', ',', '\'', NEW.interest_period_frequency_enum, '\'', ',', '\'', NEW.annual_nominal_interest_rate, '\'', ',', '\'', NEW.interest_method_enum, '\'', ',', '\'', NEW.interest_calculated_in_period_enum, '\'', ',', '\'', NEW.allow_partial_period_interest_calcualtion, '\'', ',', '\'', NEW.term_frequency, '\'', ',', '\'', NEW.term_period_frequency_enum, '\'', ',', '\'', NEW.repay_every, '\'', ',', '\'', NEW.repayment_period_frequency_enum, '\'', ',', '\'', NEW.number_of_repayments, '\'', ',', '\'', NEW.grace_on_principal_periods, '\'', ',', '\'', NEW.recurring_moratorium_principal_periods, '\'', ',', '\'', NEW.grace_on_interest_periods, '\'', ',', '\'', NEW.grace_interest_free_periods, '\'', ',', '\'', NEW.amortization_method_enum, '\'', ',', '\'', NEW.submittedon_date, '\'', ',', '\'', NEW.submittedon_userid, '\'', ',', '\'', NEW.approvedon_date, '\'', ',', '\'', NEW.approvedon_userid, '\'', ',', '\'', NEW.expected_disbursedon_date, '\'', ',', '\'', NEW.expected_firstrepaymenton_date, '\'', ',', '\'', NEW.interest_calculated_from_date, '\'', ',', '\'', NEW.disbursedon_date, '\'', ',', '\'', NEW.disbursedon_userid, '\'', ',', '\'', NEW.expected_maturedon_date, '\'', ',', '\'', NEW.maturedon_date, '\'', ',', '\'', NEW.closedon_date, '\'', ',', '\'', NEW.closedon_userid, '\'', ',', '\'', NEW.total_charges_due_at_disbursement_derived, '\'', ',', '\'', NEW.principal_disbursed_derived, '\'', ',', '\'', NEW.principal_repaid_derived, '\'', ',', '\'', NEW.principal_writtenoff_derived, '\'', ',', '\'', NEW.principal_outstanding_derived, '\'', ',', '\'', NEW.interest_charged_derived, '\'', ',', '\'', NEW.interest_repaid_derived, '\'', ',', '\'', NEW.interest_waived_derived, '\'', ',', '\'', NEW.interest_writtenoff_derived, '\'', ',', '\'', NEW.interest_outstanding_derived, '\'', ',', '\'', NEW.fee_charges_charged_derived, '\'', ',', '\'', NEW.fee_charges_repaid_derived, '\'', ',', '\'', NEW.fee_charges_waived_derived, '\'', ',', '\'', NEW.fee_charges_writtenoff_derived, '\'', ',', '\'', NEW.fee_charges_outstanding_derived, '\'', ',', '\'', NEW.penalty_charges_charged_derived, '\'', ',', '\'', NEW.penalty_charges_repaid_derived, '\'', ',', '\'', NEW.penalty_charges_waived_derived, '\'', ',', '\'', NEW.penalty_charges_writtenoff_derived, '\'', ',', '\'', NEW.penalty_charges_outstanding_derived, '\'', ',', '\'', NEW.total_expected_repayment_derived, '\'', ',', '\'', NEW.total_repayment_derived, '\'', ',', '\'', NEW.total_expected_costofloan_derived, '\'', ',', '\'', NEW.total_costofloan_derived, '\'', ',', '\'', NEW.total_waived_derived, '\'', ',', '\'', NEW.total_writtenoff_derived, '\'', ',', '\'', NEW.total_outstanding_derived, '\'', ',', '\'', NEW.total_overpaid_derived, '\'', ',', '\'', NEW.rejectedon_date, '\'', ',', '\'', NEW.rejectedon_userid, '\'', ',', '\'', NEW.rescheduledon_date, '\'', ',', '\'', NEW.rescheduledon_userid, '\'', ',', '\'', NEW.withdrawnon_date, '\'', ',', '\'', NEW.withdrawnon_userid, '\'', ',', '\'', NEW.writtenoffon_date, '\'', ',', '\'', NEW.loan_transaction_strategy_id, '\'', ',', '\'', NEW.sync_disbursement_with_meeting, '\'', ',', '\'', NEW.loan_counter, '\'', ',', '\'', NEW.loan_product_counter, '\'', ',', '\'', NEW.fixed_emi_amount, '\'', ',', '\'', NEW.max_outstanding_loan_balance, '\'', ',', '\'', NEW.grace_on_arrears_ageing, '\'', ',', '\'', NEW.is_npa, '\'', ',', '\'', NEW.total_recovered_derived, '\'', ',', '\'', NEW.accrued_till, '\'', ',', '\'', NEW.interest_recalcualated_on, '\'', ',', '\'', NEW.days_in_month_enum, '\'', ',', '\'', NEW.days_in_year_enum, '\'', ',', '\'', NEW.interest_recalculation_enabled, '\'', ',', '\'', NEW.guarantee_amount_derived, '\'', ',', '\'', NEW.create_standing_instruction_at_disbursement, '\'', ',', '\'', NEW.version, '\'', ',', '\'', NEW.writeoff_reason_cv_id, '\'', ',', '\'', NEW.loan_sub_status_id, '\'', ',', '\'', NEW.is_topup, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'account_no', NEW.account_no, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'external_id', NEW.external_id, NULL);
@@ -4794,7 +4794,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan', CONCAT('UPDATE m_loan SET id = ', 'NEW.id', ', account_no = ', 'NEW.account_no', ', external_id = ', 'NEW.external_id', ', client_id = ', 'NEW.client_id', ', group_id = ', 'NEW.group_id', ', product_id = ', 'NEW.product_id', ', fund_id = ', 'NEW.fund_id', ', loan_officer_id = ', 'NEW.loan_officer_id', ', loanpurpose_cv_id = ', 'NEW.loanpurpose_cv_id', ', loan_status_id = ', 'NEW.loan_status_id', ', loan_type_enum = ', 'NEW.loan_type_enum', ', currency_code = ', 'NEW.currency_code', ', currency_digits = ', 'NEW.currency_digits', ', currency_multiplesof = ', 'NEW.currency_multiplesof', ', principal_amount_proposed = ', 'NEW.principal_amount_proposed', ', principal_amount = ', 'NEW.principal_amount', ', approved_principal = ', 'NEW.approved_principal', ', arrearstolerance_amount = ', 'NEW.arrearstolerance_amount', ', is_floating_interest_rate = ', 'NEW.is_floating_interest_rate', ', interest_rate_differential = ', 'NEW.interest_rate_differential', ', nominal_interest_rate_per_period = ', 'NEW.nominal_interest_rate_per_period', ', interest_period_frequency_enum = ', 'NEW.interest_period_frequency_enum', ', annual_nominal_interest_rate = ', 'NEW.annual_nominal_interest_rate', ', interest_method_enum = ', 'NEW.interest_method_enum', ', interest_calculated_in_period_enum = ', 'NEW.interest_calculated_in_period_enum', ', allow_partial_period_interest_calcualtion = ', 'NEW.allow_partial_period_interest_calcualtion', ', term_frequency = ', 'NEW.term_frequency', ', term_period_frequency_enum = ', 'NEW.term_period_frequency_enum', ', repay_every = ', 'NEW.repay_every', ', repayment_period_frequency_enum = ', 'NEW.repayment_period_frequency_enum', ', number_of_repayments = ', 'NEW.number_of_repayments', ', grace_on_principal_periods = ', 'NEW.grace_on_principal_periods', ', recurring_moratorium_principal_periods = ', 'NEW.recurring_moratorium_principal_periods', ', grace_on_interest_periods = ', 'NEW.grace_on_interest_periods', ', grace_interest_free_periods = ', 'NEW.grace_interest_free_periods', ', amortization_method_enum = ', 'NEW.amortization_method_enum', ', submittedon_date = ', 'NEW.submittedon_date', ', submittedon_userid = ', 'NEW.submittedon_userid', ', approvedon_date = ', 'NEW.approvedon_date', ', approvedon_userid = ', 'NEW.approvedon_userid', ', expected_disbursedon_date = ', 'NEW.expected_disbursedon_date', ', expected_firstrepaymenton_date = ', 'NEW.expected_firstrepaymenton_date', ', interest_calculated_from_date = ', 'NEW.interest_calculated_from_date', ', disbursedon_date = ', 'NEW.disbursedon_date', ', disbursedon_userid = ', 'NEW.disbursedon_userid', ', expected_maturedon_date = ', 'NEW.expected_maturedon_date', ', maturedon_date = ', 'NEW.maturedon_date', ', closedon_date = ', 'NEW.closedon_date', ', closedon_userid = ', 'NEW.closedon_userid', ', total_charges_due_at_disbursement_derived = ', 'NEW.total_charges_due_at_disbursement_derived', ', principal_disbursed_derived = ', 'NEW.principal_disbursed_derived', ', principal_repaid_derived = ', 'NEW.principal_repaid_derived', ', principal_writtenoff_derived = ', 'NEW.principal_writtenoff_derived', ', principal_outstanding_derived = ', 'NEW.principal_outstanding_derived', ', interest_charged_derived = ', 'NEW.interest_charged_derived', ', interest_repaid_derived = ', 'NEW.interest_repaid_derived', ', interest_waived_derived = ', 'NEW.interest_waived_derived', ', interest_writtenoff_derived = ', 'NEW.interest_writtenoff_derived', ', interest_outstanding_derived = ', 'NEW.interest_outstanding_derived', ', fee_charges_charged_derived = ', 'NEW.fee_charges_charged_derived', ', fee_charges_repaid_derived = ', 'NEW.fee_charges_repaid_derived', ', fee_charges_waived_derived = ', 'NEW.fee_charges_waived_derived', ', fee_charges_writtenoff_derived = ', 'NEW.fee_charges_writtenoff_derived', ', fee_charges_outstanding_derived = ', 'NEW.fee_charges_outstanding_derived', ', penalty_charges_charged_derived = ', 'NEW.penalty_charges_charged_derived', ', penalty_charges_repaid_derived = ', 'NEW.penalty_charges_repaid_derived', ', penalty_charges_waived_derived = ', 'NEW.penalty_charges_waived_derived', ', penalty_charges_writtenoff_derived = ', 'NEW.penalty_charges_writtenoff_derived', ', penalty_charges_outstanding_derived = ', 'NEW.penalty_charges_outstanding_derived', ', total_expected_repayment_derived = ', 'NEW.total_expected_repayment_derived', ', total_repayment_derived = ', 'NEW.total_repayment_derived', ', total_expected_costofloan_derived = ', 'NEW.total_expected_costofloan_derived', ', total_costofloan_derived = ', 'NEW.total_costofloan_derived', ', total_waived_derived = ', 'NEW.total_waived_derived', ', total_writtenoff_derived = ', 'NEW.total_writtenoff_derived', ', total_outstanding_derived = ', 'NEW.total_outstanding_derived', ', total_overpaid_derived = ', 'NEW.total_overpaid_derived', ', rejectedon_date = ', 'NEW.rejectedon_date', ', rejectedon_userid = ', 'NEW.rejectedon_userid', ', rescheduledon_date = ', 'NEW.rescheduledon_date', ', rescheduledon_userid = ', 'NEW.rescheduledon_userid', ', withdrawnon_date = ', 'NEW.withdrawnon_date', ', withdrawnon_userid = ', 'NEW.withdrawnon_userid', ', writtenoffon_date = ', 'NEW.writtenoffon_date', ', loan_transaction_strategy_id = ', 'NEW.loan_transaction_strategy_id', ', sync_disbursement_with_meeting = ', 'NEW.sync_disbursement_with_meeting', ', loan_counter = ', 'NEW.loan_counter', ', loan_product_counter = ', 'NEW.loan_product_counter', ', fixed_emi_amount = ', 'NEW.fixed_emi_amount', ', max_outstanding_loan_balance = ', 'NEW.max_outstanding_loan_balance', ', grace_on_arrears_ageing = ', 'NEW.grace_on_arrears_ageing', ', is_npa = ', 'NEW.is_npa', ', total_recovered_derived = ', 'NEW.total_recovered_derived', ', accrued_till = ', 'NEW.accrued_till', ', interest_recalcualated_on = ', 'NEW.interest_recalcualated_on', ', days_in_month_enum = ', 'NEW.days_in_month_enum', ', days_in_year_enum = ', 'NEW.days_in_year_enum', ', interest_recalculation_enabled = ', 'NEW.interest_recalculation_enabled', ', guarantee_amount_derived = ', 'NEW.guarantee_amount_derived', ', create_standing_instruction_at_disbursement = ', 'NEW.create_standing_instruction_at_disbursement', ', version = ', 'NEW.version', ', writeoff_reason_cv_id = ', 'NEW.writeoff_reason_cv_id', ', loan_sub_status_id = ', 'NEW.loan_sub_status_id', ', is_topup = ', 'NEW.is_topup', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_no', OLD.account_no, NEW.account_no);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'external_id', OLD.external_id, NEW.external_id);
@@ -4909,7 +4909,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_arrears_aging');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_arrears_aging', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'principal_overdue_derived', OLD.principal_overdue_derived, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'interest_overdue_derived', OLD.interest_overdue_derived, NULL);
@@ -4927,7 +4927,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_arrears_aging');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_arrears_aging', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_id', NEW.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'principal_overdue_derived', NEW.principal_overdue_derived, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'interest_overdue_derived', NEW.interest_overdue_derived, NULL);
@@ -4945,7 +4945,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_arrears_aging');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_arrears_aging', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NEW.loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'principal_overdue_derived', OLD.principal_overdue_derived, NEW.principal_overdue_derived);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'interest_overdue_derived', OLD.interest_overdue_derived, NEW.interest_overdue_derived);
@@ -4963,7 +4963,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_charge', CONCAT('DELETE FROM m_loan_charge WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NULL);
@@ -4995,7 +4995,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_charge', CONCAT('INSERT INTO m_loan_charge(id, loan_id, charge_id, is_penalty, charge_time_enum, due_for_collection_as_of_date, charge_calculation_enum, charge_payment_mode_enum, calculation_percentage, calculation_on_amount, charge_amount_or_percentage, amount, amount_paid_derived, amount_waived_derived, amount_writtenoff_derived, amount_outstanding_derived, is_paid_derived, waived, min_cap, max_cap, is_active) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_id, '\'', ',', '\'', NEW.charge_id, '\'', ',', '\'', NEW.is_penalty, '\'', ',', '\'', NEW.charge_time_enum, '\'', ',', '\'', NEW.due_for_collection_as_of_date, '\'', ',', '\'', NEW.charge_calculation_enum, '\'', ',', '\'', NEW.charge_payment_mode_enum, '\'', ',', '\'', NEW.calculation_percentage, '\'', ',', '\'', NEW.calculation_on_amount, '\'', ',', '\'', NEW.charge_amount_or_percentage, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.amount_paid_derived, '\'', ',', '\'', NEW.amount_waived_derived, '\'', ',', '\'', NEW.amount_writtenoff_derived, '\'', ',', '\'', NEW.amount_outstanding_derived, '\'', ',', '\'', NEW.is_paid_derived, '\'', ',', '\'', NEW.waived, '\'', ',', '\'', NEW.min_cap, '\'', ',', '\'', NEW.max_cap, '\'', ',', '\'', NEW.is_active, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_id', NEW.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'charge_id', NEW.charge_id, NULL);
@@ -5027,7 +5027,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_charge', CONCAT('UPDATE m_loan_charge SET id = ', 'NEW.id', ', loan_id = ', 'NEW.loan_id', ', charge_id = ', 'NEW.charge_id', ', is_penalty = ', 'NEW.is_penalty', ', charge_time_enum = ', 'NEW.charge_time_enum', ', due_for_collection_as_of_date = ', 'NEW.due_for_collection_as_of_date', ', charge_calculation_enum = ', 'NEW.charge_calculation_enum', ', charge_payment_mode_enum = ', 'NEW.charge_payment_mode_enum', ', calculation_percentage = ', 'NEW.calculation_percentage', ', calculation_on_amount = ', 'NEW.calculation_on_amount', ', charge_amount_or_percentage = ', 'NEW.charge_amount_or_percentage', ', amount = ', 'NEW.amount', ', amount_paid_derived = ', 'NEW.amount_paid_derived', ', amount_waived_derived = ', 'NEW.amount_waived_derived', ', amount_writtenoff_derived = ', 'NEW.amount_writtenoff_derived', ', amount_outstanding_derived = ', 'NEW.amount_outstanding_derived', ', is_paid_derived = ', 'NEW.is_paid_derived', ', waived = ', 'NEW.waived', ', min_cap = ', 'NEW.min_cap', ', max_cap = ', 'NEW.max_cap', ', is_active = ', 'NEW.is_active', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NEW.loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NEW.charge_id);
@@ -5059,7 +5059,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_charge_paid_by');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_charge_paid_by', CONCAT('DELETE FROM m_loan_charge_paid_by WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_transaction_id', OLD.loan_transaction_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_charge_id', OLD.loan_charge_id, NULL);
@@ -5075,7 +5075,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_charge_paid_by');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_charge_paid_by', CONCAT('INSERT INTO m_loan_charge_paid_by(id, loan_transaction_id, loan_charge_id, amount, installment_number) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_transaction_id, '\'', ',', '\'', NEW.loan_charge_id, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.installment_number, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_transaction_id', NEW.loan_transaction_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_charge_id', NEW.loan_charge_id, NULL);
@@ -5091,7 +5091,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_charge_paid_by');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_charge_paid_by', CONCAT('UPDATE m_loan_charge_paid_by SET id = ', 'NEW.id', ', loan_transaction_id = ', 'NEW.loan_transaction_id', ', loan_charge_id = ', 'NEW.loan_charge_id', ', amount = ', 'NEW.amount', ', installment_number = ', 'NEW.installment_number', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_transaction_id', OLD.loan_transaction_id, NEW.loan_transaction_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_charge_id', OLD.loan_charge_id, NEW.loan_charge_id);
@@ -5107,7 +5107,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_collateral');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_collateral', CONCAT('DELETE FROM m_loan_collateral WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'type_cv_id', OLD.type_cv_id, NULL);
@@ -5123,7 +5123,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_collateral');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_collateral', CONCAT('INSERT INTO m_loan_collateral(id, loan_id, type_cv_id, value, description) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_id, '\'', ',', '\'', NEW.type_cv_id, '\'', ',', '\'', NEW.value, '\'', ',', '\'', NEW.description, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_id', NEW.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'type_cv_id', NEW.type_cv_id, NULL);
@@ -5139,7 +5139,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_collateral');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_collateral', CONCAT('UPDATE m_loan_collateral SET id = ', 'NEW.id', ', loan_id = ', 'NEW.loan_id', ', type_cv_id = ', 'NEW.type_cv_id', ', value = ', 'NEW.value', ', description = ', 'NEW.description', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NEW.loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'type_cv_id', OLD.type_cv_id, NEW.type_cv_id);
@@ -5155,7 +5155,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_disbursement_detail');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_disbursement_detail', CONCAT('DELETE FROM m_loan_disbursement_detail WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'expected_disburse_date', OLD.expected_disburse_date, NULL);
@@ -5171,7 +5171,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_disbursement_detail');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_disbursement_detail', CONCAT('INSERT INTO m_loan_disbursement_detail(id, loan_id, expected_disburse_date, disbursedon_date, principal) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_id, '\'', ',', '\'', NEW.expected_disburse_date, '\'', ',', '\'', NEW.disbursedon_date, '\'', ',', '\'', NEW.principal, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_id', NEW.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'expected_disburse_date', NEW.expected_disburse_date, NULL);
@@ -5187,7 +5187,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_disbursement_detail');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_disbursement_detail', CONCAT('UPDATE m_loan_disbursement_detail SET id = ', 'NEW.id', ', loan_id = ', 'NEW.loan_id', ', expected_disburse_date = ', 'NEW.expected_disburse_date', ', disbursedon_date = ', 'NEW.disbursedon_date', ', principal = ', 'NEW.principal', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NEW.loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'expected_disburse_date', OLD.expected_disburse_date, NEW.expected_disburse_date);
@@ -5203,7 +5203,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_installment_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_installment_charge', CONCAT('DELETE FROM m_loan_installment_charge WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_charge_id', OLD.loan_charge_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_schedule_id', OLD.loan_schedule_id, NULL);
@@ -5226,7 +5226,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_installment_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_installment_charge', CONCAT('INSERT INTO m_loan_installment_charge(id, loan_charge_id, loan_schedule_id, due_date, amount, amount_paid_derived, amount_waived_derived, amount_writtenoff_derived, amount_outstanding_derived, is_paid_derived, waived, amount_through_charge_payment) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_charge_id, '\'', ',', '\'', NEW.loan_schedule_id, '\'', ',', '\'', NEW.due_date, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.amount_paid_derived, '\'', ',', '\'', NEW.amount_waived_derived, '\'', ',', '\'', NEW.amount_writtenoff_derived, '\'', ',', '\'', NEW.amount_outstanding_derived, '\'', ',', '\'', NEW.is_paid_derived, '\'', ',', '\'', NEW.waived, '\'', ',', '\'', NEW.amount_through_charge_payment, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_charge_id', NEW.loan_charge_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_schedule_id', NEW.loan_schedule_id, NULL);
@@ -5249,7 +5249,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_installment_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_installment_charge', CONCAT('UPDATE m_loan_installment_charge SET id = ', 'NEW.id', ', loan_charge_id = ', 'NEW.loan_charge_id', ', loan_schedule_id = ', 'NEW.loan_schedule_id', ', due_date = ', 'NEW.due_date', ', amount = ', 'NEW.amount', ', amount_paid_derived = ', 'NEW.amount_paid_derived', ', amount_waived_derived = ', 'NEW.amount_waived_derived', ', amount_writtenoff_derived = ', 'NEW.amount_writtenoff_derived', ', amount_outstanding_derived = ', 'NEW.amount_outstanding_derived', ', is_paid_derived = ', 'NEW.is_paid_derived', ', waived = ', 'NEW.waived', ', amount_through_charge_payment = ', 'NEW.amount_through_charge_payment', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_charge_id', OLD.loan_charge_id, NEW.loan_charge_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_schedule_id', OLD.loan_schedule_id, NEW.loan_schedule_id);
@@ -5272,7 +5272,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_interest_recalculation_additional_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_interest_recalculation_additional_details', CONCAT('DELETE FROM m_loan_interest_recalculation_additional_details WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_repayment_schedule_id', OLD.loan_repayment_schedule_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'effective_date', OLD.effective_date, NULL);
@@ -5287,7 +5287,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_interest_recalculation_additional_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_interest_recalculation_additional_details', CONCAT('INSERT INTO m_loan_interest_recalculation_additional_details(id, loan_repayment_schedule_id, effective_date, amount) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_repayment_schedule_id, '\'', ',', '\'', NEW.effective_date, '\'', ',', '\'', NEW.amount, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_repayment_schedule_id', NEW.loan_repayment_schedule_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'effective_date', NEW.effective_date, NULL);
@@ -5302,7 +5302,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_interest_recalculation_additional_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_interest_recalculation_additional_details', CONCAT('UPDATE m_loan_interest_recalculation_additional_details SET id = ', 'NEW.id', ', loan_repayment_schedule_id = ', 'NEW.loan_repayment_schedule_id', ', effective_date = ', 'NEW.effective_date', ', amount = ', 'NEW.amount', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_repayment_schedule_id', OLD.loan_repayment_schedule_id, NEW.loan_repayment_schedule_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'effective_date', OLD.effective_date, NEW.effective_date);
@@ -5317,7 +5317,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_officer_assignment_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_officer_assignment_history', CONCAT('DELETE FROM m_loan_officer_assignment_history WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_officer_id', OLD.loan_officer_id, NULL);
@@ -5337,7 +5337,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_officer_assignment_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_officer_assignment_history', CONCAT('INSERT INTO m_loan_officer_assignment_history(id, loan_id, loan_officer_id, start_date, end_date, createdby_id, created_date, lastmodified_date, lastmodifiedby_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_id, '\'', ',', '\'', NEW.loan_officer_id, '\'', ',', '\'', NEW.start_date, '\'', ',', '\'', NEW.end_date, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodified_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_id', NEW.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_officer_id', NEW.loan_officer_id, NULL);
@@ -5357,7 +5357,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_officer_assignment_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_officer_assignment_history', CONCAT('UPDATE m_loan_officer_assignment_history SET id = ', 'NEW.id', ', loan_id = ', 'NEW.loan_id', ', loan_officer_id = ', 'NEW.loan_officer_id', ', start_date = ', 'NEW.start_date', ', end_date = ', 'NEW.end_date', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodified_date = ', 'NEW.lastmodified_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NEW.loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_officer_id', OLD.loan_officer_id, NEW.loan_officer_id);
@@ -5377,7 +5377,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_overdue_installment_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_overdue_installment_charge', CONCAT('DELETE FROM m_loan_overdue_installment_charge WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_charge_id', OLD.loan_charge_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_schedule_id', OLD.loan_schedule_id, NULL);
@@ -5392,7 +5392,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_overdue_installment_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_overdue_installment_charge', CONCAT('INSERT INTO m_loan_overdue_installment_charge(id, loan_charge_id, loan_schedule_id, frequency_number) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_charge_id, '\'', ',', '\'', NEW.loan_schedule_id, '\'', ',', '\'', NEW.frequency_number, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_charge_id', NEW.loan_charge_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_schedule_id', NEW.loan_schedule_id, NULL);
@@ -5407,7 +5407,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_overdue_installment_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_overdue_installment_charge', CONCAT('UPDATE m_loan_overdue_installment_charge SET id = ', 'NEW.id', ', loan_charge_id = ', 'NEW.loan_charge_id', ', loan_schedule_id = ', 'NEW.loan_schedule_id', ', frequency_number = ', 'NEW.frequency_number', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_charge_id', OLD.loan_charge_id, NEW.loan_charge_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_schedule_id', OLD.loan_schedule_id, NEW.loan_schedule_id);
@@ -5422,7 +5422,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_paid_in_advance');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_paid_in_advance', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'principal_in_advance_derived', OLD.principal_in_advance_derived, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'interest_in_advance_derived', OLD.interest_in_advance_derived, NULL);
@@ -5439,7 +5439,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_paid_in_advance');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_paid_in_advance', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_id', NEW.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'principal_in_advance_derived', NEW.principal_in_advance_derived, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'interest_in_advance_derived', NEW.interest_in_advance_derived, NULL);
@@ -5456,7 +5456,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_paid_in_advance');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_paid_in_advance', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NEW.loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'principal_in_advance_derived', OLD.principal_in_advance_derived, NEW.principal_in_advance_derived);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'interest_in_advance_derived', OLD.interest_in_advance_derived, NEW.interest_in_advance_derived);
@@ -5473,7 +5473,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_recalculation_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_recalculation_details', CONCAT('DELETE FROM m_loan_recalculation_details WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'compound_type_enum', OLD.compound_type_enum, NULL);
@@ -5500,7 +5500,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_recalculation_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_recalculation_details', CONCAT('INSERT INTO m_loan_recalculation_details(id, loan_id, compound_type_enum, reschedule_strategy_enum, rest_frequency_type_enum, rest_frequency_interval, compounding_frequency_type_enum, compounding_frequency_interval, rest_frequency_nth_day_enum, rest_frequency_on_day, rest_frequency_weekday_enum, compounding_frequency_nth_day_enum, compounding_frequency_on_day, is_compounding_to_be_posted_as_transaction, compounding_frequency_weekday_enum, allow_compounding_on_eod) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_id, '\'', ',', '\'', NEW.compound_type_enum, '\'', ',', '\'', NEW.reschedule_strategy_enum, '\'', ',', '\'', NEW.rest_frequency_type_enum, '\'', ',', '\'', NEW.rest_frequency_interval, '\'', ',', '\'', NEW.compounding_frequency_type_enum, '\'', ',', '\'', NEW.compounding_frequency_interval, '\'', ',', '\'', NEW.rest_frequency_nth_day_enum, '\'', ',', '\'', NEW.rest_frequency_on_day, '\'', ',', '\'', NEW.rest_frequency_weekday_enum, '\'', ',', '\'', NEW.compounding_frequency_nth_day_enum, '\'', ',', '\'', NEW.compounding_frequency_on_day, '\'', ',', '\'', NEW.is_compounding_to_be_posted_as_transaction, '\'', ',', '\'', NEW.compounding_frequency_weekday_enum, '\'', ',', '\'', NEW.allow_compounding_on_eod, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_id', NEW.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'compound_type_enum', NEW.compound_type_enum, NULL);
@@ -5527,7 +5527,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_recalculation_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_recalculation_details', CONCAT('UPDATE m_loan_recalculation_details SET id = ', 'NEW.id', ', loan_id = ', 'NEW.loan_id', ', compound_type_enum = ', 'NEW.compound_type_enum', ', reschedule_strategy_enum = ', 'NEW.reschedule_strategy_enum', ', rest_frequency_type_enum = ', 'NEW.rest_frequency_type_enum', ', rest_frequency_interval = ', 'NEW.rest_frequency_interval', ', compounding_frequency_type_enum = ', 'NEW.compounding_frequency_type_enum', ', compounding_frequency_interval = ', 'NEW.compounding_frequency_interval', ', rest_frequency_nth_day_enum = ', 'NEW.rest_frequency_nth_day_enum', ', rest_frequency_on_day = ', 'NEW.rest_frequency_on_day', ', rest_frequency_weekday_enum = ', 'NEW.rest_frequency_weekday_enum', ', compounding_frequency_nth_day_enum = ', 'NEW.compounding_frequency_nth_day_enum', ', compounding_frequency_on_day = ', 'NEW.compounding_frequency_on_day', ', is_compounding_to_be_posted_as_transaction = ', 'NEW.is_compounding_to_be_posted_as_transaction', ', compounding_frequency_weekday_enum = ', 'NEW.compounding_frequency_weekday_enum', ', allow_compounding_on_eod = ', 'NEW.allow_compounding_on_eod', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NEW.loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'compound_type_enum', OLD.compound_type_enum, NEW.compound_type_enum);
@@ -5554,7 +5554,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_repayment_schedule');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_repayment_schedule', CONCAT('DELETE FROM m_loan_repayment_schedule WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'fromdate', OLD.fromdate, NULL);
@@ -5597,7 +5597,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_repayment_schedule');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_repayment_schedule', CONCAT('INSERT INTO m_loan_repayment_schedule(id, loan_id, fromdate, duedate, installment, principal_amount, principal_completed_derived, principal_writtenoff_derived, interest_amount, interest_completed_derived, interest_writtenoff_derived, interest_waived_derived, accrual_interest_derived, fee_charges_amount, fee_charges_completed_derived, fee_charges_writtenoff_derived, fee_charges_waived_derived, accrual_fee_charges_derived, penalty_charges_amount, penalty_charges_completed_derived, penalty_charges_writtenoff_derived, penalty_charges_waived_derived, accrual_penalty_charges_derived, total_paid_in_advance_derived, total_paid_late_derived, completed_derived, obligations_met_on_date, createdby_id, created_date, lastmodified_date, lastmodifiedby_id, recalculated_interest_component) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_id, '\'', ',', '\'', NEW.fromdate, '\'', ',', '\'', NEW.duedate, '\'', ',', '\'', NEW.installment, '\'', ',', '\'', NEW.principal_amount, '\'', ',', '\'', NEW.principal_completed_derived, '\'', ',', '\'', NEW.principal_writtenoff_derived, '\'', ',', '\'', NEW.interest_amount, '\'', ',', '\'', NEW.interest_completed_derived, '\'', ',', '\'', NEW.interest_writtenoff_derived, '\'', ',', '\'', NEW.interest_waived_derived, '\'', ',', '\'', NEW.accrual_interest_derived, '\'', ',', '\'', NEW.fee_charges_amount, '\'', ',', '\'', NEW.fee_charges_completed_derived, '\'', ',', '\'', NEW.fee_charges_writtenoff_derived, '\'', ',', '\'', NEW.fee_charges_waived_derived, '\'', ',', '\'', NEW.accrual_fee_charges_derived, '\'', ',', '\'', NEW.penalty_charges_amount, '\'', ',', '\'', NEW.penalty_charges_completed_derived, '\'', ',', '\'', NEW.penalty_charges_writtenoff_derived, '\'', ',', '\'', NEW.penalty_charges_waived_derived, '\'', ',', '\'', NEW.accrual_penalty_charges_derived, '\'', ',', '\'', NEW.total_paid_in_advance_derived, '\'', ',', '\'', NEW.total_paid_late_derived, '\'', ',', '\'', NEW.completed_derived, '\'', ',', '\'', NEW.obligations_met_on_date, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodified_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.recalculated_interest_component, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_id', NEW.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'fromdate', NEW.fromdate, NULL);
@@ -5640,7 +5640,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_repayment_schedule');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_repayment_schedule', CONCAT('UPDATE m_loan_repayment_schedule SET id = ', 'NEW.id', ', loan_id = ', 'NEW.loan_id', ', fromdate = ', 'NEW.fromdate', ', duedate = ', 'NEW.duedate', ', installment = ', 'NEW.installment', ', principal_amount = ', 'NEW.principal_amount', ', principal_completed_derived = ', 'NEW.principal_completed_derived', ', principal_writtenoff_derived = ', 'NEW.principal_writtenoff_derived', ', interest_amount = ', 'NEW.interest_amount', ', interest_completed_derived = ', 'NEW.interest_completed_derived', ', interest_writtenoff_derived = ', 'NEW.interest_writtenoff_derived', ', interest_waived_derived = ', 'NEW.interest_waived_derived', ', accrual_interest_derived = ', 'NEW.accrual_interest_derived', ', fee_charges_amount = ', 'NEW.fee_charges_amount', ', fee_charges_completed_derived = ', 'NEW.fee_charges_completed_derived', ', fee_charges_writtenoff_derived = ', 'NEW.fee_charges_writtenoff_derived', ', fee_charges_waived_derived = ', 'NEW.fee_charges_waived_derived', ', accrual_fee_charges_derived = ', 'NEW.accrual_fee_charges_derived', ', penalty_charges_amount = ', 'NEW.penalty_charges_amount', ', penalty_charges_completed_derived = ', 'NEW.penalty_charges_completed_derived', ', penalty_charges_writtenoff_derived = ', 'NEW.penalty_charges_writtenoff_derived', ', penalty_charges_waived_derived = ', 'NEW.penalty_charges_waived_derived', ', accrual_penalty_charges_derived = ', 'NEW.accrual_penalty_charges_derived', ', total_paid_in_advance_derived = ', 'NEW.total_paid_in_advance_derived', ', total_paid_late_derived = ', 'NEW.total_paid_late_derived', ', completed_derived = ', 'NEW.completed_derived', ', obligations_met_on_date = ', 'NEW.obligations_met_on_date', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodified_date = ', 'NEW.lastmodified_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', recalculated_interest_component = ', 'NEW.recalculated_interest_component', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NEW.loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'fromdate', OLD.fromdate, NEW.fromdate);
@@ -5683,7 +5683,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_repayment_schedule_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_repayment_schedule_history', CONCAT('DELETE FROM m_loan_repayment_schedule_history WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_reschedule_request_id', OLD.loan_reschedule_request_id, NULL);
@@ -5709,7 +5709,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_repayment_schedule_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_repayment_schedule_history', CONCAT('INSERT INTO m_loan_repayment_schedule_history(id, loan_id, loan_reschedule_request_id, fromdate, duedate, installment, principal_amount, interest_amount, fee_charges_amount, penalty_charges_amount, createdby_id, created_date, lastmodified_date, lastmodifiedby_id, version) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_id, '\'', ',', '\'', NEW.loan_reschedule_request_id, '\'', ',', '\'', NEW.fromdate, '\'', ',', '\'', NEW.duedate, '\'', ',', '\'', NEW.installment, '\'', ',', '\'', NEW.principal_amount, '\'', ',', '\'', NEW.interest_amount, '\'', ',', '\'', NEW.fee_charges_amount, '\'', ',', '\'', NEW.penalty_charges_amount, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodified_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.version, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_id', NEW.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_reschedule_request_id', NEW.loan_reschedule_request_id, NULL);
@@ -5735,7 +5735,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_repayment_schedule_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_repayment_schedule_history', CONCAT('UPDATE m_loan_repayment_schedule_history SET id = ', 'NEW.id', ', loan_id = ', 'NEW.loan_id', ', loan_reschedule_request_id = ', 'NEW.loan_reschedule_request_id', ', fromdate = ', 'NEW.fromdate', ', duedate = ', 'NEW.duedate', ', installment = ', 'NEW.installment', ', principal_amount = ', 'NEW.principal_amount', ', interest_amount = ', 'NEW.interest_amount', ', fee_charges_amount = ', 'NEW.fee_charges_amount', ', penalty_charges_amount = ', 'NEW.penalty_charges_amount', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodified_date = ', 'NEW.lastmodified_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', version = ', 'NEW.version', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NEW.loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_reschedule_request_id', OLD.loan_reschedule_request_id, NEW.loan_reschedule_request_id);
@@ -5761,7 +5761,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_reschedule_request');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_reschedule_request', CONCAT('DELETE FROM m_loan_reschedule_request WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'status_enum', OLD.status_enum, NULL);
@@ -5786,7 +5786,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_reschedule_request');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_reschedule_request', CONCAT('INSERT INTO m_loan_reschedule_request(id, loan_id, status_enum, reschedule_from_installment, reschedule_from_date, recalculate_interest, reschedule_reason_cv_id, reschedule_reason_comment, submitted_on_date, submitted_by_user_id, approved_on_date, approved_by_user_id, rejected_on_date, rejected_by_user_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_id, '\'', ',', '\'', NEW.status_enum, '\'', ',', '\'', NEW.reschedule_from_installment, '\'', ',', '\'', NEW.reschedule_from_date, '\'', ',', '\'', NEW.recalculate_interest, '\'', ',', '\'', NEW.reschedule_reason_cv_id, '\'', ',', '\'', NEW.reschedule_reason_comment, '\'', ',', '\'', NEW.submitted_on_date, '\'', ',', '\'', NEW.submitted_by_user_id, '\'', ',', '\'', NEW.approved_on_date, '\'', ',', '\'', NEW.approved_by_user_id, '\'', ',', '\'', NEW.rejected_on_date, '\'', ',', '\'', NEW.rejected_by_user_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_id', NEW.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'status_enum', NEW.status_enum, NULL);
@@ -5811,7 +5811,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_reschedule_request');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_reschedule_request', CONCAT('UPDATE m_loan_reschedule_request SET id = ', 'NEW.id', ', loan_id = ', 'NEW.loan_id', ', status_enum = ', 'NEW.status_enum', ', reschedule_from_installment = ', 'NEW.reschedule_from_installment', ', reschedule_from_date = ', 'NEW.reschedule_from_date', ', recalculate_interest = ', 'NEW.recalculate_interest', ', reschedule_reason_cv_id = ', 'NEW.reschedule_reason_cv_id', ', reschedule_reason_comment = ', 'NEW.reschedule_reason_comment', ', submitted_on_date = ', 'NEW.submitted_on_date', ', submitted_by_user_id = ', 'NEW.submitted_by_user_id', ', approved_on_date = ', 'NEW.approved_on_date', ', approved_by_user_id = ', 'NEW.approved_by_user_id', ', rejected_on_date = ', 'NEW.rejected_on_date', ', rejected_by_user_id = ', 'NEW.rejected_by_user_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NEW.loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'status_enum', OLD.status_enum, NEW.status_enum);
@@ -5836,7 +5836,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_reschedule_request_term_variations_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_reschedule_request_term_variations_mapping', CONCAT('DELETE FROM m_loan_reschedule_request_term_variations_mapping WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_reschedule_request_id', OLD.loan_reschedule_request_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_term_variations_id', OLD.loan_term_variations_id, NULL);
@@ -5850,7 +5850,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_reschedule_request_term_variations_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_reschedule_request_term_variations_mapping', CONCAT('INSERT INTO m_loan_reschedule_request_term_variations_mapping(id, loan_reschedule_request_id, loan_term_variations_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_reschedule_request_id, '\'', ',', '\'', NEW.loan_term_variations_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_reschedule_request_id', NEW.loan_reschedule_request_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_term_variations_id', NEW.loan_term_variations_id, NULL);
@@ -5864,7 +5864,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_reschedule_request_term_variations_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_reschedule_request_term_variations_mapping', CONCAT('UPDATE m_loan_reschedule_request_term_variations_mapping SET id = ', 'NEW.id', ', loan_reschedule_request_id = ', 'NEW.loan_reschedule_request_id', ', loan_term_variations_id = ', 'NEW.loan_term_variations_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_reschedule_request_id', OLD.loan_reschedule_request_id, NEW.loan_reschedule_request_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_term_variations_id', OLD.loan_term_variations_id, NEW.loan_term_variations_id);
@@ -5878,7 +5878,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_term_variations');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_term_variations', CONCAT('DELETE FROM m_loan_term_variations WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'term_type', OLD.term_type, NULL);
@@ -5899,7 +5899,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_term_variations');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_term_variations', CONCAT('INSERT INTO m_loan_term_variations(id, loan_id, term_type, applicable_date, decimal_value, date_value, is_specific_to_installment, applied_on_loan_status, is_active, parent_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_id, '\'', ',', '\'', NEW.term_type, '\'', ',', '\'', NEW.applicable_date, '\'', ',', '\'', NEW.decimal_value, '\'', ',', '\'', NEW.date_value, '\'', ',', '\'', NEW.is_specific_to_installment, '\'', ',', '\'', NEW.applied_on_loan_status, '\'', ',', '\'', NEW.is_active, '\'', ',', '\'', NEW.parent_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_id', NEW.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'term_type', NEW.term_type, NULL);
@@ -5920,7 +5920,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_term_variations');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_term_variations', CONCAT('UPDATE m_loan_term_variations SET id = ', 'NEW.id', ', loan_id = ', 'NEW.loan_id', ', term_type = ', 'NEW.term_type', ', applicable_date = ', 'NEW.applicable_date', ', decimal_value = ', 'NEW.decimal_value', ', date_value = ', 'NEW.date_value', ', is_specific_to_installment = ', 'NEW.is_specific_to_installment', ', applied_on_loan_status = ', 'NEW.applied_on_loan_status', ', is_active = ', 'NEW.is_active', ', parent_id = ', 'NEW.parent_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NEW.loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'term_type', OLD.term_type, NEW.term_type);
@@ -5941,7 +5941,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_topup');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_topup', CONCAT('DELETE FROM m_loan_topup WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'closure_loan_id', OLD.closure_loan_id, NULL);
@@ -5957,7 +5957,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_topup');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_topup', CONCAT('INSERT INTO m_loan_topup(id, loan_id, closure_loan_id, account_transfer_details_id, topup_amount) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_id, '\'', ',', '\'', NEW.closure_loan_id, '\'', ',', '\'', NEW.account_transfer_details_id, '\'', ',', '\'', NEW.topup_amount, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_id', NEW.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'closure_loan_id', NEW.closure_loan_id, NULL);
@@ -5973,7 +5973,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_topup');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_topup', CONCAT('UPDATE m_loan_topup SET id = ', 'NEW.id', ', loan_id = ', 'NEW.loan_id', ', closure_loan_id = ', 'NEW.closure_loan_id', ', account_transfer_details_id = ', 'NEW.account_transfer_details_id', ', topup_amount = ', 'NEW.topup_amount', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NEW.loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'closure_loan_id', OLD.closure_loan_id, NEW.closure_loan_id);
@@ -5989,7 +5989,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_tranche_charges');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_tranche_charges', CONCAT('DELETE FROM m_loan_tranche_charges WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NULL);
@@ -6003,7 +6003,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_tranche_charges');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_tranche_charges', CONCAT('INSERT INTO m_loan_tranche_charges(id, loan_id, charge_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_id, '\'', ',', '\'', NEW.charge_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_id', NEW.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'charge_id', NEW.charge_id, NULL);
@@ -6017,7 +6017,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_tranche_charges');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_tranche_charges', CONCAT('UPDATE m_loan_tranche_charges SET id = ', 'NEW.id', ', loan_id = ', 'NEW.loan_id', ', charge_id = ', 'NEW.charge_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NEW.loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NEW.charge_id);
@@ -6031,7 +6031,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_tranche_disbursement_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_tranche_disbursement_charge', CONCAT('DELETE FROM m_loan_tranche_disbursement_charge WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_charge_id', OLD.loan_charge_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'disbursement_detail_id', OLD.disbursement_detail_id, NULL);
@@ -6045,7 +6045,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_tranche_disbursement_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_tranche_disbursement_charge', CONCAT('INSERT INTO m_loan_tranche_disbursement_charge(id, loan_charge_id, disbursement_detail_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_charge_id, '\'', ',', '\'', NEW.disbursement_detail_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_charge_id', NEW.loan_charge_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'disbursement_detail_id', NEW.disbursement_detail_id, NULL);
@@ -6059,7 +6059,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_tranche_disbursement_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_tranche_disbursement_charge', CONCAT('UPDATE m_loan_tranche_disbursement_charge SET id = ', 'NEW.id', ', loan_charge_id = ', 'NEW.loan_charge_id', ', disbursement_detail_id = ', 'NEW.disbursement_detail_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_charge_id', OLD.loan_charge_id, NEW.loan_charge_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'disbursement_detail_id', OLD.disbursement_detail_id, NEW.disbursement_detail_id);
@@ -6073,7 +6073,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_transaction', CONCAT('DELETE FROM m_loan_transaction WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NULL);
@@ -6104,7 +6104,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_transaction', CONCAT('INSERT INTO m_loan_transaction(id, loan_id, office_id, payment_detail_id, is_reversed, external_id, transaction_type_enum, transaction_date, amount, principal_portion_derived, interest_portion_derived, fee_charges_portion_derived, penalty_charges_portion_derived, overpayment_portion_derived, unrecognized_income_portion, outstanding_loan_balance_derived, submitted_on_date, manually_adjusted_or_reversed, created_date, appuser_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_id, '\'', ',', '\'', NEW.office_id, '\'', ',', '\'', NEW.payment_detail_id, '\'', ',', '\'', NEW.is_reversed, '\'', ',', '\'', NEW.external_id, '\'', ',', '\'', NEW.transaction_type_enum, '\'', ',', '\'', NEW.transaction_date, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.principal_portion_derived, '\'', ',', '\'', NEW.interest_portion_derived, '\'', ',', '\'', NEW.fee_charges_portion_derived, '\'', ',', '\'', NEW.penalty_charges_portion_derived, '\'', ',', '\'', NEW.overpayment_portion_derived, '\'', ',', '\'', NEW.unrecognized_income_portion, '\'', ',', '\'', NEW.outstanding_loan_balance_derived, '\'', ',', '\'', NEW.submitted_on_date, '\'', ',', '\'', NEW.manually_adjusted_or_reversed, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.appuser_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_id', NEW.loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'office_id', NEW.office_id, NULL);
@@ -6135,7 +6135,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_transaction', CONCAT('UPDATE m_loan_transaction SET id = ', 'NEW.id', ', loan_id = ', 'NEW.loan_id', ', office_id = ', 'NEW.office_id', ', payment_detail_id = ', 'NEW.payment_detail_id', ', is_reversed = ', 'NEW.is_reversed', ', external_id = ', 'NEW.external_id', ', transaction_type_enum = ', 'NEW.transaction_type_enum', ', transaction_date = ', 'NEW.transaction_date', ', amount = ', 'NEW.amount', ', principal_portion_derived = ', 'NEW.principal_portion_derived', ', interest_portion_derived = ', 'NEW.interest_portion_derived', ', fee_charges_portion_derived = ', 'NEW.fee_charges_portion_derived', ', penalty_charges_portion_derived = ', 'NEW.penalty_charges_portion_derived', ', overpayment_portion_derived = ', 'NEW.overpayment_portion_derived', ', unrecognized_income_portion = ', 'NEW.unrecognized_income_portion', ', outstanding_loan_balance_derived = ', 'NEW.outstanding_loan_balance_derived', ', submitted_on_date = ', 'NEW.submitted_on_date', ', manually_adjusted_or_reversed = ', 'NEW.manually_adjusted_or_reversed', ', created_date = ', 'NEW.created_date', ', appuser_id = ', 'NEW.appuser_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_id', OLD.loan_id, NEW.loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NEW.office_id);
@@ -6166,7 +6166,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loan_transaction_repayment_schedule_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loan_transaction_repayment_schedule_mapping', CONCAT('DELETE FROM m_loan_transaction_repayment_schedule_mapping WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_transaction_id', OLD.loan_transaction_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_repayment_schedule_id', OLD.loan_repayment_schedule_id, NULL);
@@ -6185,7 +6185,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loan_transaction_repayment_schedule_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loan_transaction_repayment_schedule_mapping', CONCAT('INSERT INTO m_loan_transaction_repayment_schedule_mapping(id, loan_transaction_id, loan_repayment_schedule_id, amount, principal_portion_derived, interest_portion_derived, fee_charges_portion_derived, penalty_charges_portion_derived) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_transaction_id, '\'', ',', '\'', NEW.loan_repayment_schedule_id, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.principal_portion_derived, '\'', ',', '\'', NEW.interest_portion_derived, '\'', ',', '\'', NEW.fee_charges_portion_derived, '\'', ',', '\'', NEW.penalty_charges_portion_derived, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_transaction_id', NEW.loan_transaction_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_repayment_schedule_id', NEW.loan_repayment_schedule_id, NULL);
@@ -6204,7 +6204,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loan_transaction_repayment_schedule_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loan_transaction_repayment_schedule_mapping', CONCAT('UPDATE m_loan_transaction_repayment_schedule_mapping SET id = ', 'NEW.id', ', loan_transaction_id = ', 'NEW.loan_transaction_id', ', loan_repayment_schedule_id = ', 'NEW.loan_repayment_schedule_id', ', amount = ', 'NEW.amount', ', principal_portion_derived = ', 'NEW.principal_portion_derived', ', interest_portion_derived = ', 'NEW.interest_portion_derived', ', fee_charges_portion_derived = ', 'NEW.fee_charges_portion_derived', ', penalty_charges_portion_derived = ', 'NEW.penalty_charges_portion_derived', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_transaction_id', OLD.loan_transaction_id, NEW.loan_transaction_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_repayment_schedule_id', OLD.loan_repayment_schedule_id, NEW.loan_repayment_schedule_id);
@@ -6223,7 +6223,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loanproduct_provisioning_entry');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loanproduct_provisioning_entry', CONCAT('DELETE FROM m_loanproduct_provisioning_entry WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'history_id', OLD.history_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'criteria_id', OLD.criteria_id, NULL);
@@ -6245,7 +6245,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loanproduct_provisioning_entry');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loanproduct_provisioning_entry', CONCAT('INSERT INTO m_loanproduct_provisioning_entry(id, history_id, criteria_id, currency_code, office_id, product_id, category_id, overdue_in_days, reseve_amount, liability_account, expense_account) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.history_id, '\'', ',', '\'', NEW.criteria_id, '\'', ',', '\'', NEW.currency_code, '\'', ',', '\'', NEW.office_id, '\'', ',', '\'', NEW.product_id, '\'', ',', '\'', NEW.category_id, '\'', ',', '\'', NEW.overdue_in_days, '\'', ',', '\'', NEW.reseve_amount, '\'', ',', '\'', NEW.liability_account, '\'', ',', '\'', NEW.expense_account, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'history_id', NEW.history_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'criteria_id', NEW.criteria_id, NULL);
@@ -6267,7 +6267,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loanproduct_provisioning_entry');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loanproduct_provisioning_entry', CONCAT('UPDATE m_loanproduct_provisioning_entry SET id = ', 'NEW.id', ', history_id = ', 'NEW.history_id', ', criteria_id = ', 'NEW.criteria_id', ', currency_code = ', 'NEW.currency_code', ', office_id = ', 'NEW.office_id', ', product_id = ', 'NEW.product_id', ', category_id = ', 'NEW.category_id', ', overdue_in_days = ', 'NEW.overdue_in_days', ', reseve_amount = ', 'NEW.reseve_amount', ', liability_account = ', 'NEW.liability_account', ', expense_account = ', 'NEW.expense_account', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'history_id', OLD.history_id, NEW.history_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'criteria_id', OLD.criteria_id, NEW.criteria_id);
@@ -6289,7 +6289,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_loanproduct_provisioning_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_loanproduct_provisioning_mapping', CONCAT('DELETE FROM m_loanproduct_provisioning_mapping WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'criteria_id', OLD.criteria_id, NULL);
@@ -6303,7 +6303,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_loanproduct_provisioning_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_loanproduct_provisioning_mapping', CONCAT('INSERT INTO m_loanproduct_provisioning_mapping(id, product_id, criteria_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.product_id, '\'', ',', '\'', NEW.criteria_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'product_id', NEW.product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'criteria_id', NEW.criteria_id, NULL);
@@ -6317,7 +6317,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_loanproduct_provisioning_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_loanproduct_provisioning_mapping', CONCAT('UPDATE m_loanproduct_provisioning_mapping SET id = ', 'NEW.id', ', product_id = ', 'NEW.product_id', ', criteria_id = ', 'NEW.criteria_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NEW.product_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'criteria_id', OLD.criteria_id, NEW.criteria_id);
@@ -6331,7 +6331,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_mandatory_savings_schedule');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_mandatory_savings_schedule', CONCAT('DELETE FROM m_mandatory_savings_schedule WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'fromdate', OLD.fromdate, NULL);
@@ -6357,7 +6357,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_mandatory_savings_schedule');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_mandatory_savings_schedule', CONCAT('INSERT INTO m_mandatory_savings_schedule(id, savings_account_id, fromdate, duedate, installment, deposit_amount, deposit_amount_completed_derived, total_paid_in_advance_derived, total_paid_late_derived, completed_derived, obligations_met_on_date, createdby_id, created_date, lastmodified_date, lastmodifiedby_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.savings_account_id, '\'', ',', '\'', NEW.fromdate, '\'', ',', '\'', NEW.duedate, '\'', ',', '\'', NEW.installment, '\'', ',', '\'', NEW.deposit_amount, '\'', ',', '\'', NEW.deposit_amount_completed_derived, '\'', ',', '\'', NEW.total_paid_in_advance_derived, '\'', ',', '\'', NEW.total_paid_late_derived, '\'', ',', '\'', NEW.completed_derived, '\'', ',', '\'', NEW.obligations_met_on_date, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodified_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_account_id', NEW.savings_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'fromdate', NEW.fromdate, NULL);
@@ -6383,7 +6383,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_mandatory_savings_schedule');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_mandatory_savings_schedule', CONCAT('UPDATE m_mandatory_savings_schedule SET id = ', 'NEW.id', ', savings_account_id = ', 'NEW.savings_account_id', ', fromdate = ', 'NEW.fromdate', ', duedate = ', 'NEW.duedate', ', installment = ', 'NEW.installment', ', deposit_amount = ', 'NEW.deposit_amount', ', deposit_amount_completed_derived = ', 'NEW.deposit_amount_completed_derived', ', total_paid_in_advance_derived = ', 'NEW.total_paid_in_advance_derived', ', total_paid_late_derived = ', 'NEW.total_paid_late_derived', ', completed_derived = ', 'NEW.completed_derived', ', obligations_met_on_date = ', 'NEW.obligations_met_on_date', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodified_date = ', 'NEW.lastmodified_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NEW.savings_account_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'fromdate', OLD.fromdate, NEW.fromdate);
@@ -6409,7 +6409,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_meeting');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_meeting', CONCAT('DELETE FROM m_meeting WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'calendar_instance_id', OLD.calendar_instance_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'meeting_date', OLD.meeting_date, NULL);
@@ -6423,7 +6423,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_meeting');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_meeting', CONCAT('INSERT INTO m_meeting(id, calendar_instance_id, meeting_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.calendar_instance_id, '\'', ',', '\'', NEW.meeting_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'calendar_instance_id', NEW.calendar_instance_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'meeting_date', NEW.meeting_date, NULL);
@@ -6437,7 +6437,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_meeting');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_meeting', CONCAT('UPDATE m_meeting SET id = ', 'NEW.id', ', calendar_instance_id = ', 'NEW.calendar_instance_id', ', meeting_date = ', 'NEW.meeting_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'calendar_instance_id', OLD.calendar_instance_id, NEW.calendar_instance_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'meeting_date', OLD.meeting_date, NEW.meeting_date);
@@ -6451,7 +6451,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_note');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_note', CONCAT('DELETE FROM m_note WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'group_id', OLD.group_id, NULL);
@@ -6476,7 +6476,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_note');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_note', CONCAT('INSERT INTO m_note(id, client_id, group_id, loan_id, loan_transaction_id, savings_account_id, savings_account_transaction_id, share_account_id, note_type_enum, note, created_date, createdby_id, lastmodified_date, lastmodifiedby_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.group_id, '\'', ',', '\'', NEW.loan_id, '\'', ',', '\'', NEW.loan_transaction_id, '\'', ',', '\'', NEW.savings_account_id, '\'', ',', '\'', NEW.savings_account_transaction_id, '\'', ',', '\'', NEW.share_account_id, '\'', ',', '\'', NEW.note_type_enum, '\'', ',', '\'', NEW.note, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.lastmodified_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_id', NEW.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'group_id', NEW.group_id, NULL);
@@ -6501,7 +6501,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_note');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_note', CONCAT('UPDATE m_note SET id = ', 'NEW.id', ', client_id = ', 'NEW.client_id', ', group_id = ', 'NEW.group_id', ', loan_id = ', 'NEW.loan_id', ', loan_transaction_id = ', 'NEW.loan_transaction_id', ', savings_account_id = ', 'NEW.savings_account_id', ', savings_account_transaction_id = ', 'NEW.savings_account_transaction_id', ', share_account_id = ', 'NEW.share_account_id', ', note_type_enum = ', 'NEW.note_type_enum', ', note = ', 'NEW.note', ', created_date = ', 'NEW.created_date', ', createdby_id = ', 'NEW.createdby_id', ', lastmodified_date = ', 'NEW.lastmodified_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NEW.client_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'group_id', OLD.group_id, NEW.group_id);
@@ -6526,7 +6526,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_office');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_office', CONCAT('DELETE FROM m_office WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parent_id', OLD.parent_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'hierarchy', OLD.hierarchy, NULL);
@@ -6543,7 +6543,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_office');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_office', CONCAT('INSERT INTO m_office(id, parent_id, hierarchy, external_id, name, opening_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.parent_id, '\'', ',', '\'', NEW.hierarchy, '\'', ',', '\'', NEW.external_id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.opening_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'parent_id', NEW.parent_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'hierarchy', NEW.hierarchy, NULL);
@@ -6560,7 +6560,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_office');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_office', CONCAT('UPDATE m_office SET id = ', 'NEW.id', ', parent_id = ', 'NEW.parent_id', ', hierarchy = ', 'NEW.hierarchy', ', external_id = ', 'NEW.external_id', ', name = ', 'NEW.name', ', opening_date = ', 'NEW.opening_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parent_id', OLD.parent_id, NEW.parent_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'hierarchy', OLD.hierarchy, NEW.hierarchy);
@@ -6577,7 +6577,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_office_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_office_transaction', CONCAT('DELETE FROM m_office_transaction WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_office_id', OLD.from_office_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'to_office_id', OLD.to_office_id, NULL);
@@ -6596,7 +6596,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_office_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_office_transaction', CONCAT('INSERT INTO m_office_transaction(id, from_office_id, to_office_id, currency_code, currency_digits, transaction_amount, transaction_date, description) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.from_office_id, '\'', ',', '\'', NEW.to_office_id, '\'', ',', '\'', NEW.currency_code, '\'', ',', '\'', NEW.currency_digits, '\'', ',', '\'', NEW.transaction_amount, '\'', ',', '\'', NEW.transaction_date, '\'', ',', '\'', NEW.description, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'from_office_id', NEW.from_office_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'to_office_id', NEW.to_office_id, NULL);
@@ -6615,7 +6615,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_office_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_office_transaction', CONCAT('UPDATE m_office_transaction SET id = ', 'NEW.id', ', from_office_id = ', 'NEW.from_office_id', ', to_office_id = ', 'NEW.to_office_id', ', currency_code = ', 'NEW.currency_code', ', currency_digits = ', 'NEW.currency_digits', ', transaction_amount = ', 'NEW.transaction_amount', ', transaction_date = ', 'NEW.transaction_date', ', description = ', 'NEW.description', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_office_id', OLD.from_office_id, NEW.from_office_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'to_office_id', OLD.to_office_id, NEW.to_office_id);
@@ -6634,7 +6634,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_organisation_creditbureau');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_organisation_creditbureau', CONCAT('DELETE FROM m_organisation_creditbureau WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'alias', OLD.alias, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'creditbureau_id', OLD.creditbureau_id, NULL);
@@ -6649,7 +6649,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_organisation_creditbureau');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_organisation_creditbureau', CONCAT('INSERT INTO m_organisation_creditbureau(id, alias, creditbureau_id, is_active) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.alias, '\'', ',', '\'', NEW.creditbureau_id, '\'', ',', '\'', NEW.is_active, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'alias', NEW.alias, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'creditbureau_id', NEW.creditbureau_id, NULL);
@@ -6664,7 +6664,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_organisation_creditbureau');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_organisation_creditbureau', CONCAT('UPDATE m_organisation_creditbureau SET id = ', 'NEW.id', ', alias = ', 'NEW.alias', ', creditbureau_id = ', 'NEW.creditbureau_id', ', is_active = ', 'NEW.is_active', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'alias', OLD.alias, NEW.alias);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'creditbureau_id', OLD.creditbureau_id, NEW.creditbureau_id);
@@ -6679,7 +6679,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_organisation_currency');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_organisation_currency', CONCAT('DELETE FROM m_organisation_currency WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code', OLD.code, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'decimal_places', OLD.decimal_places, NULL);
@@ -6697,7 +6697,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_organisation_currency');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_organisation_currency', CONCAT('INSERT INTO m_organisation_currency(id, code, decimal_places, currency_multiplesof, name, display_symbol, internationalized_name_code) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.code, '\'', ',', '\'', NEW.decimal_places, '\'', ',', '\'', NEW.currency_multiplesof, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.display_symbol, '\'', ',', '\'', NEW.internationalized_name_code, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'code', NEW.code, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'decimal_places', NEW.decimal_places, NULL);
@@ -6715,7 +6715,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_organisation_currency');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_organisation_currency', CONCAT('UPDATE m_organisation_currency SET id = ', 'NEW.id', ', code = ', 'NEW.code', ', decimal_places = ', 'NEW.decimal_places', ', currency_multiplesof = ', 'NEW.currency_multiplesof', ', name = ', 'NEW.name', ', display_symbol = ', 'NEW.display_symbol', ', internationalized_name_code = ', 'NEW.internationalized_name_code', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code', OLD.code, NEW.code);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'decimal_places', OLD.decimal_places, NEW.decimal_places);
@@ -6733,7 +6733,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_password_validation_policy');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_password_validation_policy', CONCAT('DELETE FROM m_password_validation_policy WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'regex', OLD.regex, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NULL);
@@ -6749,7 +6749,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_password_validation_policy');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_password_validation_policy', CONCAT('INSERT INTO m_password_validation_policy(id, regex, description, active, key) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.regex, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.active, '\'', ',', '\'', NEW.key, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'regex', NEW.regex, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'description', NEW.description, NULL);
@@ -6765,7 +6765,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_password_validation_policy');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_password_validation_policy', CONCAT('UPDATE m_password_validation_policy SET id = ', 'NEW.id', ', regex = ', 'NEW.regex', ', description = ', 'NEW.description', ', active = ', 'NEW.active', ', key = ', 'NEW.key', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'regex', OLD.regex, NEW.regex);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NEW.description);
@@ -6781,7 +6781,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_payment_detail');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_payment_detail', CONCAT('DELETE FROM m_payment_detail WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'payment_type_id', OLD.payment_type_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_number', OLD.account_number, NULL);
@@ -6799,7 +6799,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_payment_detail');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_payment_detail', CONCAT('INSERT INTO m_payment_detail(id, payment_type_id, account_number, check_number, receipt_number, bank_number, routing_code) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.payment_type_id, '\'', ',', '\'', NEW.account_number, '\'', ',', '\'', NEW.check_number, '\'', ',', '\'', NEW.receipt_number, '\'', ',', '\'', NEW.bank_number, '\'', ',', '\'', NEW.routing_code, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'payment_type_id', NEW.payment_type_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'account_number', NEW.account_number, NULL);
@@ -6817,7 +6817,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_payment_detail');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_payment_detail', CONCAT('UPDATE m_payment_detail SET id = ', 'NEW.id', ', payment_type_id = ', 'NEW.payment_type_id', ', account_number = ', 'NEW.account_number', ', check_number = ', 'NEW.check_number', ', receipt_number = ', 'NEW.receipt_number', ', bank_number = ', 'NEW.bank_number', ', routing_code = ', 'NEW.routing_code', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'payment_type_id', OLD.payment_type_id, NEW.payment_type_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_number', OLD.account_number, NEW.account_number);
@@ -6835,7 +6835,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_payment_type');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_payment_type', CONCAT('DELETE FROM m_payment_type WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'value', OLD.value, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NULL);
@@ -6851,7 +6851,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_payment_type');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_payment_type', CONCAT('INSERT INTO m_payment_type(id, value, description, is_cash_payment, order_position) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.value, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.is_cash_payment, '\'', ',', '\'', NEW.order_position, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'value', NEW.value, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'description', NEW.description, NULL);
@@ -6867,7 +6867,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_payment_type');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_payment_type', CONCAT('UPDATE m_payment_type SET id = ', 'NEW.id', ', value = ', 'NEW.value', ', description = ', 'NEW.description', ', is_cash_payment = ', 'NEW.is_cash_payment', ', order_position = ', 'NEW.order_position', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'value', OLD.value, NEW.value);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NEW.description);
@@ -6883,7 +6883,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_permission');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_permission', CONCAT('DELETE FROM m_permission WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'grouping', OLD.grouping, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code', OLD.code, NULL);
@@ -6900,7 +6900,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_permission');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_permission', CONCAT('INSERT INTO m_permission(id, grouping, code, entity_name, action_name, can_maker_checker) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.grouping, '\'', ',', '\'', NEW.code, '\'', ',', '\'', NEW.entity_name, '\'', ',', '\'', NEW.action_name, '\'', ',', '\'', NEW.can_maker_checker, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'grouping', NEW.grouping, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'code', NEW.code, NULL);
@@ -6917,7 +6917,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_permission');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_permission', CONCAT('UPDATE m_permission SET id = ', 'NEW.id', ', grouping = ', 'NEW.grouping', ', code = ', 'NEW.code', ', entity_name = ', 'NEW.entity_name', ', action_name = ', 'NEW.action_name', ', can_maker_checker = ', 'NEW.can_maker_checker', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'grouping', OLD.grouping, NEW.grouping);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code', OLD.code, NEW.code);
@@ -6934,7 +6934,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_portfolio_account_associations');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_portfolio_account_associations', CONCAT('DELETE FROM m_portfolio_account_associations WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_account_id', OLD.loan_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NULL);
@@ -6952,7 +6952,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_portfolio_account_associations');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_portfolio_account_associations', CONCAT('INSERT INTO m_portfolio_account_associations(id, loan_account_id, savings_account_id, linked_loan_account_id, linked_savings_account_id, association_type_enum, is_active) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_account_id, '\'', ',', '\'', NEW.savings_account_id, '\'', ',', '\'', NEW.linked_loan_account_id, '\'', ',', '\'', NEW.linked_savings_account_id, '\'', ',', '\'', NEW.association_type_enum, '\'', ',', '\'', NEW.is_active, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_account_id', NEW.loan_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_account_id', NEW.savings_account_id, NULL);
@@ -6970,7 +6970,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_portfolio_account_associations');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_portfolio_account_associations', CONCAT('UPDATE m_portfolio_account_associations SET id = ', 'NEW.id', ', loan_account_id = ', 'NEW.loan_account_id', ', savings_account_id = ', 'NEW.savings_account_id', ', linked_loan_account_id = ', 'NEW.linked_loan_account_id', ', linked_savings_account_id = ', 'NEW.linked_savings_account_id', ', association_type_enum = ', 'NEW.association_type_enum', ', is_active = ', 'NEW.is_active', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_account_id', OLD.loan_account_id, NEW.loan_account_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NEW.savings_account_id);
@@ -6988,7 +6988,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_portfolio_command_source');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_portfolio_command_source', CONCAT('DELETE FROM m_portfolio_command_source WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'action_name', OLD.action_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entity_name', OLD.entity_name, NULL);
@@ -7020,7 +7020,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_portfolio_command_source');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_portfolio_command_source', CONCAT('INSERT INTO m_portfolio_command_source(id, action_name, entity_name, office_id, group_id, client_id, loan_id, savings_account_id, api_get_url, resource_id, subresource_id, command_as_json, maker_id, made_on_date, checker_id, checked_on_date, processing_result_enum, product_id, transaction_id, creditbureau_id, organisation_creditbureau_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.action_name, '\'', ',', '\'', NEW.entity_name, '\'', ',', '\'', NEW.office_id, '\'', ',', '\'', NEW.group_id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.loan_id, '\'', ',', '\'', NEW.savings_account_id, '\'', ',', '\'', NEW.api_get_url, '\'', ',', '\'', NEW.resource_id, '\'', ',', '\'', NEW.subresource_id, '\'', ',', '\'', NEW.command_as_json, '\'', ',', '\'', NEW.maker_id, '\'', ',', '\'', NEW.made_on_date, '\'', ',', '\'', NEW.checker_id, '\'', ',', '\'', NEW.checked_on_date, '\'', ',', '\'', NEW.processing_result_enum, '\'', ',', '\'', NEW.product_id, '\'', ',', '\'', NEW.transaction_id, '\'', ',', '\'', NEW.creditbureau_id, '\'', ',', '\'', NEW.organisation_creditbureau_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'action_name', NEW.action_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'entity_name', NEW.entity_name, NULL);
@@ -7052,7 +7052,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_portfolio_command_source');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_portfolio_command_source', CONCAT('UPDATE m_portfolio_command_source SET id = ', 'NEW.id', ', action_name = ', 'NEW.action_name', ', entity_name = ', 'NEW.entity_name', ', office_id = ', 'NEW.office_id', ', group_id = ', 'NEW.group_id', ', client_id = ', 'NEW.client_id', ', loan_id = ', 'NEW.loan_id', ', savings_account_id = ', 'NEW.savings_account_id', ', api_get_url = ', 'NEW.api_get_url', ', resource_id = ', 'NEW.resource_id', ', subresource_id = ', 'NEW.subresource_id', ', command_as_json = ', 'NEW.command_as_json', ', maker_id = ', 'NEW.maker_id', ', made_on_date = ', 'NEW.made_on_date', ', checker_id = ', 'NEW.checker_id', ', checked_on_date = ', 'NEW.checked_on_date', ', processing_result_enum = ', 'NEW.processing_result_enum', ', product_id = ', 'NEW.product_id', ', transaction_id = ', 'NEW.transaction_id', ', creditbureau_id = ', 'NEW.creditbureau_id', ', organisation_creditbureau_id = ', 'NEW.organisation_creditbureau_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'action_name', OLD.action_name, NEW.action_name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entity_name', OLD.entity_name, NEW.entity_name);
@@ -7084,7 +7084,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_product_loan');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_product_loan', CONCAT('DELETE FROM m_product_loan WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'short_name', OLD.short_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'currency_code', OLD.currency_code, NULL);
@@ -7150,7 +7150,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_product_loan');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_product_loan', CONCAT('INSERT INTO m_product_loan(id, short_name, currency_code, currency_digits, currency_multiplesof, principal_amount, min_principal_amount, max_principal_amount, arrearstolerance_amount, name, description, fund_id, is_linked_to_floating_interest_rates, allow_variabe_installments, nominal_interest_rate_per_period, min_nominal_interest_rate_per_period, max_nominal_interest_rate_per_period, interest_period_frequency_enum, annual_nominal_interest_rate, interest_method_enum, interest_calculated_in_period_enum, allow_partial_period_interest_calcualtion, repay_every, repayment_period_frequency_enum, number_of_repayments, min_number_of_repayments, max_number_of_repayments, grace_on_principal_periods, recurring_moratorium_principal_periods, grace_on_interest_periods, grace_interest_free_periods, amortization_method_enum, accounting_type, loan_transaction_strategy_id, external_id, include_in_borrower_cycle, use_borrower_cycle, start_date, close_date, allow_multiple_disbursals, max_disbursals, max_outstanding_loan_balance, grace_on_arrears_ageing, overdue_days_for_npa, days_in_month_enum, days_in_year_enum, interest_recalculation_enabled, min_days_between_disbursal_and_first_repayment, hold_guarantee_funds, principal_threshold_for_last_installment, account_moves_out_of_npa_only_on_arrears_completion, can_define_fixed_emi_amount, instalment_amount_in_multiples_of, can_use_for_topup, sync_expected_with_disbursement_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.short_name, '\'', ',', '\'', NEW.currency_code, '\'', ',', '\'', NEW.currency_digits, '\'', ',', '\'', NEW.currency_multiplesof, '\'', ',', '\'', NEW.principal_amount, '\'', ',', '\'', NEW.min_principal_amount, '\'', ',', '\'', NEW.max_principal_amount, '\'', ',', '\'', NEW.arrearstolerance_amount, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.fund_id, '\'', ',', '\'', NEW.is_linked_to_floating_interest_rates, '\'', ',', '\'', NEW.allow_variabe_installments, '\'', ',', '\'', NEW.nominal_interest_rate_per_period, '\'', ',', '\'', NEW.min_nominal_interest_rate_per_period, '\'', ',', '\'', NEW.max_nominal_interest_rate_per_period, '\'', ',', '\'', NEW.interest_period_frequency_enum, '\'', ',', '\'', NEW.annual_nominal_interest_rate, '\'', ',', '\'', NEW.interest_method_enum, '\'', ',', '\'', NEW.interest_calculated_in_period_enum, '\'', ',', '\'', NEW.allow_partial_period_interest_calcualtion, '\'', ',', '\'', NEW.repay_every, '\'', ',', '\'', NEW.repayment_period_frequency_enum, '\'', ',', '\'', NEW.number_of_repayments, '\'', ',', '\'', NEW.min_number_of_repayments, '\'', ',', '\'', NEW.max_number_of_repayments, '\'', ',', '\'', NEW.grace_on_principal_periods, '\'', ',', '\'', NEW.recurring_moratorium_principal_periods, '\'', ',', '\'', NEW.grace_on_interest_periods, '\'', ',', '\'', NEW.grace_interest_free_periods, '\'', ',', '\'', NEW.amortization_method_enum, '\'', ',', '\'', NEW.accounting_type, '\'', ',', '\'', NEW.loan_transaction_strategy_id, '\'', ',', '\'', NEW.external_id, '\'', ',', '\'', NEW.include_in_borrower_cycle, '\'', ',', '\'', NEW.use_borrower_cycle, '\'', ',', '\'', NEW.start_date, '\'', ',', '\'', NEW.close_date, '\'', ',', '\'', NEW.allow_multiple_disbursals, '\'', ',', '\'', NEW.max_disbursals, '\'', ',', '\'', NEW.max_outstanding_loan_balance, '\'', ',', '\'', NEW.grace_on_arrears_ageing, '\'', ',', '\'', NEW.overdue_days_for_npa, '\'', ',', '\'', NEW.days_in_month_enum, '\'', ',', '\'', NEW.days_in_year_enum, '\'', ',', '\'', NEW.interest_recalculation_enabled, '\'', ',', '\'', NEW.min_days_between_disbursal_and_first_repayment, '\'', ',', '\'', NEW.hold_guarantee_funds, '\'', ',', '\'', NEW.principal_threshold_for_last_installment, '\'', ',', '\'', NEW.account_moves_out_of_npa_only_on_arrears_completion, '\'', ',', '\'', NEW.can_define_fixed_emi_amount, '\'', ',', '\'', NEW.instalment_amount_in_multiples_of, '\'', ',', '\'', NEW.can_use_for_topup, '\'', ',', '\'', NEW.sync_expected_with_disbursement_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'short_name', NEW.short_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'currency_code', NEW.currency_code, NULL);
@@ -7216,7 +7216,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_product_loan');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_product_loan', CONCAT('UPDATE m_product_loan SET id = ', 'NEW.id', ', short_name = ', 'NEW.short_name', ', currency_code = ', 'NEW.currency_code', ', currency_digits = ', 'NEW.currency_digits', ', currency_multiplesof = ', 'NEW.currency_multiplesof', ', principal_amount = ', 'NEW.principal_amount', ', min_principal_amount = ', 'NEW.min_principal_amount', ', max_principal_amount = ', 'NEW.max_principal_amount', ', arrearstolerance_amount = ', 'NEW.arrearstolerance_amount', ', name = ', 'NEW.name', ', description = ', 'NEW.description', ', fund_id = ', 'NEW.fund_id', ', is_linked_to_floating_interest_rates = ', 'NEW.is_linked_to_floating_interest_rates', ', allow_variabe_installments = ', 'NEW.allow_variabe_installments', ', nominal_interest_rate_per_period = ', 'NEW.nominal_interest_rate_per_period', ', min_nominal_interest_rate_per_period = ', 'NEW.min_nominal_interest_rate_per_period', ', max_nominal_interest_rate_per_period = ', 'NEW.max_nominal_interest_rate_per_period', ', interest_period_frequency_enum = ', 'NEW.interest_period_frequency_enum', ', annual_nominal_interest_rate = ', 'NEW.annual_nominal_interest_rate', ', interest_method_enum = ', 'NEW.interest_method_enum', ', interest_calculated_in_period_enum = ', 'NEW.interest_calculated_in_period_enum', ', allow_partial_period_interest_calcualtion = ', 'NEW.allow_partial_period_interest_calcualtion', ', repay_every = ', 'NEW.repay_every', ', repayment_period_frequency_enum = ', 'NEW.repayment_period_frequency_enum', ', number_of_repayments = ', 'NEW.number_of_repayments', ', min_number_of_repayments = ', 'NEW.min_number_of_repayments', ', max_number_of_repayments = ', 'NEW.max_number_of_repayments', ', grace_on_principal_periods = ', 'NEW.grace_on_principal_periods', ', recurring_moratorium_principal_periods = ', 'NEW.recurring_moratorium_principal_periods', ', grace_on_interest_periods = ', 'NEW.grace_on_interest_periods', ', grace_interest_free_periods = ', 'NEW.grace_interest_free_periods', ', amortization_method_enum = ', 'NEW.amortization_method_enum', ', accounting_type = ', 'NEW.accounting_type', ', loan_transaction_strategy_id = ', 'NEW.loan_transaction_strategy_id', ', external_id = ', 'NEW.external_id', ', include_in_borrower_cycle = ', 'NEW.include_in_borrower_cycle', ', use_borrower_cycle = ', 'NEW.use_borrower_cycle', ', start_date = ', 'NEW.start_date', ', close_date = ', 'NEW.close_date', ', allow_multiple_disbursals = ', 'NEW.allow_multiple_disbursals', ', max_disbursals = ', 'NEW.max_disbursals', ', max_outstanding_loan_balance = ', 'NEW.max_outstanding_loan_balance', ', grace_on_arrears_ageing = ', 'NEW.grace_on_arrears_ageing', ', overdue_days_for_npa = ', 'NEW.overdue_days_for_npa', ', days_in_month_enum = ', 'NEW.days_in_month_enum', ', days_in_year_enum = ', 'NEW.days_in_year_enum', ', interest_recalculation_enabled = ', 'NEW.interest_recalculation_enabled', ', min_days_between_disbursal_and_first_repayment = ', 'NEW.min_days_between_disbursal_and_first_repayment', ', hold_guarantee_funds = ', 'NEW.hold_guarantee_funds', ', principal_threshold_for_last_installment = ', 'NEW.principal_threshold_for_last_installment', ', account_moves_out_of_npa_only_on_arrears_completion = ', 'NEW.account_moves_out_of_npa_only_on_arrears_completion', ', can_define_fixed_emi_amount = ', 'NEW.can_define_fixed_emi_amount', ', instalment_amount_in_multiples_of = ', 'NEW.instalment_amount_in_multiples_of', ', can_use_for_topup = ', 'NEW.can_use_for_topup', ', sync_expected_with_disbursement_date = ', 'NEW.sync_expected_with_disbursement_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'short_name', OLD.short_name, NEW.short_name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'currency_code', OLD.currency_code, NEW.currency_code);
@@ -7282,7 +7282,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_product_loan_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_product_loan_charge', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_loan_id', OLD.product_loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NULL);
   END;
@@ -7295,7 +7295,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_product_loan_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_product_loan_charge', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'product_loan_id', NEW.product_loan_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'charge_id', NEW.charge_id, NULL);
   END;
@@ -7308,7 +7308,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_product_loan_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_product_loan_charge', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_loan_id', OLD.product_loan_id, NEW.product_loan_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NEW.charge_id);
   END;
@@ -7321,7 +7321,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_product_loan_configurable_attributes');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_product_loan_configurable_attributes', CONCAT('DELETE FROM m_product_loan_configurable_attributes WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_product_id', OLD.loan_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'amortization_method_enum', OLD.amortization_method_enum, NULL);
@@ -7342,7 +7342,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_product_loan_configurable_attributes');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_product_loan_configurable_attributes', CONCAT('INSERT INTO m_product_loan_configurable_attributes(id, loan_product_id, amortization_method_enum, interest_method_enum, loan_transaction_strategy_id, interest_calculated_in_period_enum, arrearstolerance_amount, repay_every, moratorium, grace_on_arrears_ageing) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_product_id, '\'', ',', '\'', NEW.amortization_method_enum, '\'', ',', '\'', NEW.interest_method_enum, '\'', ',', '\'', NEW.loan_transaction_strategy_id, '\'', ',', '\'', NEW.interest_calculated_in_period_enum, '\'', ',', '\'', NEW.arrearstolerance_amount, '\'', ',', '\'', NEW.repay_every, '\'', ',', '\'', NEW.moratorium, '\'', ',', '\'', NEW.grace_on_arrears_ageing, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_product_id', NEW.loan_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'amortization_method_enum', NEW.amortization_method_enum, NULL);
@@ -7363,7 +7363,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_product_loan_configurable_attributes');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_product_loan_configurable_attributes', CONCAT('UPDATE m_product_loan_configurable_attributes SET id = ', 'NEW.id', ', loan_product_id = ', 'NEW.loan_product_id', ', amortization_method_enum = ', 'NEW.amortization_method_enum', ', interest_method_enum = ', 'NEW.interest_method_enum', ', loan_transaction_strategy_id = ', 'NEW.loan_transaction_strategy_id', ', interest_calculated_in_period_enum = ', 'NEW.interest_calculated_in_period_enum', ', arrearstolerance_amount = ', 'NEW.arrearstolerance_amount', ', repay_every = ', 'NEW.repay_every', ', moratorium = ', 'NEW.moratorium', ', grace_on_arrears_ageing = ', 'NEW.grace_on_arrears_ageing', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_product_id', OLD.loan_product_id, NEW.loan_product_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'amortization_method_enum', OLD.amortization_method_enum, NEW.amortization_method_enum);
@@ -7384,7 +7384,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_product_loan_floating_rates');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_product_loan_floating_rates', CONCAT('DELETE FROM m_product_loan_floating_rates WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_product_id', OLD.loan_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'floating_rates_id', OLD.floating_rates_id, NULL);
@@ -7403,7 +7403,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_product_loan_floating_rates');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_product_loan_floating_rates', CONCAT('INSERT INTO m_product_loan_floating_rates(id, loan_product_id, floating_rates_id, interest_rate_differential, min_differential_lending_rate, default_differential_lending_rate, max_differential_lending_rate, is_floating_interest_rate_calculation_allowed) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_product_id, '\'', ',', '\'', NEW.floating_rates_id, '\'', ',', '\'', NEW.interest_rate_differential, '\'', ',', '\'', NEW.min_differential_lending_rate, '\'', ',', '\'', NEW.default_differential_lending_rate, '\'', ',', '\'', NEW.max_differential_lending_rate, '\'', ',', '\'', NEW.is_floating_interest_rate_calculation_allowed, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_product_id', NEW.loan_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'floating_rates_id', NEW.floating_rates_id, NULL);
@@ -7422,7 +7422,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_product_loan_floating_rates');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_product_loan_floating_rates', CONCAT('UPDATE m_product_loan_floating_rates SET id = ', 'NEW.id', ', loan_product_id = ', 'NEW.loan_product_id', ', floating_rates_id = ', 'NEW.floating_rates_id', ', interest_rate_differential = ', 'NEW.interest_rate_differential', ', min_differential_lending_rate = ', 'NEW.min_differential_lending_rate', ', default_differential_lending_rate = ', 'NEW.default_differential_lending_rate', ', max_differential_lending_rate = ', 'NEW.max_differential_lending_rate', ', is_floating_interest_rate_calculation_allowed = ', 'NEW.is_floating_interest_rate_calculation_allowed', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_product_id', OLD.loan_product_id, NEW.loan_product_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'floating_rates_id', OLD.floating_rates_id, NEW.floating_rates_id);
@@ -7441,7 +7441,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_product_loan_guarantee_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_product_loan_guarantee_details', CONCAT('DELETE FROM m_product_loan_guarantee_details WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_product_id', OLD.loan_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'mandatory_guarantee', OLD.mandatory_guarantee, NULL);
@@ -7457,7 +7457,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_product_loan_guarantee_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_product_loan_guarantee_details', CONCAT('INSERT INTO m_product_loan_guarantee_details(id, loan_product_id, mandatory_guarantee, minimum_guarantee_from_own_funds, minimum_guarantee_from_guarantor_funds) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_product_id, '\'', ',', '\'', NEW.mandatory_guarantee, '\'', ',', '\'', NEW.minimum_guarantee_from_own_funds, '\'', ',', '\'', NEW.minimum_guarantee_from_guarantor_funds, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_product_id', NEW.loan_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'mandatory_guarantee', NEW.mandatory_guarantee, NULL);
@@ -7473,7 +7473,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_product_loan_guarantee_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_product_loan_guarantee_details', CONCAT('UPDATE m_product_loan_guarantee_details SET id = ', 'NEW.id', ', loan_product_id = ', 'NEW.loan_product_id', ', mandatory_guarantee = ', 'NEW.mandatory_guarantee', ', minimum_guarantee_from_own_funds = ', 'NEW.minimum_guarantee_from_own_funds', ', minimum_guarantee_from_guarantor_funds = ', 'NEW.minimum_guarantee_from_guarantor_funds', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_product_id', OLD.loan_product_id, NEW.loan_product_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'mandatory_guarantee', OLD.mandatory_guarantee, NEW.mandatory_guarantee);
@@ -7489,7 +7489,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_product_loan_recalculation_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_product_loan_recalculation_details', CONCAT('DELETE FROM m_product_loan_recalculation_details WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'compound_type_enum', OLD.compound_type_enum, NULL);
@@ -7518,7 +7518,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_product_loan_recalculation_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_product_loan_recalculation_details', CONCAT('INSERT INTO m_product_loan_recalculation_details(id, product_id, compound_type_enum, reschedule_strategy_enum, rest_frequency_type_enum, rest_frequency_interval, arrears_based_on_original_schedule, pre_close_interest_calculation_strategy, compounding_frequency_type_enum, compounding_frequency_interval, rest_frequency_nth_day_enum, rest_frequency_on_day, rest_frequency_weekday_enum, compounding_frequency_nth_day_enum, compounding_frequency_on_day, compounding_frequency_weekday_enum, is_compounding_to_be_posted_as_transaction, allow_compounding_on_eod) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.product_id, '\'', ',', '\'', NEW.compound_type_enum, '\'', ',', '\'', NEW.reschedule_strategy_enum, '\'', ',', '\'', NEW.rest_frequency_type_enum, '\'', ',', '\'', NEW.rest_frequency_interval, '\'', ',', '\'', NEW.arrears_based_on_original_schedule, '\'', ',', '\'', NEW.pre_close_interest_calculation_strategy, '\'', ',', '\'', NEW.compounding_frequency_type_enum, '\'', ',', '\'', NEW.compounding_frequency_interval, '\'', ',', '\'', NEW.rest_frequency_nth_day_enum, '\'', ',', '\'', NEW.rest_frequency_on_day, '\'', ',', '\'', NEW.rest_frequency_weekday_enum, '\'', ',', '\'', NEW.compounding_frequency_nth_day_enum, '\'', ',', '\'', NEW.compounding_frequency_on_day, '\'', ',', '\'', NEW.compounding_frequency_weekday_enum, '\'', ',', '\'', NEW.is_compounding_to_be_posted_as_transaction, '\'', ',', '\'', NEW.allow_compounding_on_eod, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'product_id', NEW.product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'compound_type_enum', NEW.compound_type_enum, NULL);
@@ -7547,7 +7547,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_product_loan_recalculation_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_product_loan_recalculation_details', CONCAT('UPDATE m_product_loan_recalculation_details SET id = ', 'NEW.id', ', product_id = ', 'NEW.product_id', ', compound_type_enum = ', 'NEW.compound_type_enum', ', reschedule_strategy_enum = ', 'NEW.reschedule_strategy_enum', ', rest_frequency_type_enum = ', 'NEW.rest_frequency_type_enum', ', rest_frequency_interval = ', 'NEW.rest_frequency_interval', ', arrears_based_on_original_schedule = ', 'NEW.arrears_based_on_original_schedule', ', pre_close_interest_calculation_strategy = ', 'NEW.pre_close_interest_calculation_strategy', ', compounding_frequency_type_enum = ', 'NEW.compounding_frequency_type_enum', ', compounding_frequency_interval = ', 'NEW.compounding_frequency_interval', ', rest_frequency_nth_day_enum = ', 'NEW.rest_frequency_nth_day_enum', ', rest_frequency_on_day = ', 'NEW.rest_frequency_on_day', ', rest_frequency_weekday_enum = ', 'NEW.rest_frequency_weekday_enum', ', compounding_frequency_nth_day_enum = ', 'NEW.compounding_frequency_nth_day_enum', ', compounding_frequency_on_day = ', 'NEW.compounding_frequency_on_day', ', compounding_frequency_weekday_enum = ', 'NEW.compounding_frequency_weekday_enum', ', is_compounding_to_be_posted_as_transaction = ', 'NEW.is_compounding_to_be_posted_as_transaction', ', allow_compounding_on_eod = ', 'NEW.allow_compounding_on_eod', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NEW.product_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'compound_type_enum', OLD.compound_type_enum, NEW.compound_type_enum);
@@ -7576,7 +7576,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_product_loan_variable_installment_config');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_product_loan_variable_installment_config', CONCAT('DELETE FROM m_product_loan_variable_installment_config WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_product_id', OLD.loan_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'minimum_gap', OLD.minimum_gap, NULL);
@@ -7591,7 +7591,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_product_loan_variable_installment_config');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_product_loan_variable_installment_config', CONCAT('INSERT INTO m_product_loan_variable_installment_config(id, loan_product_id, minimum_gap, maximum_gap) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_product_id, '\'', ',', '\'', NEW.minimum_gap, '\'', ',', '\'', NEW.maximum_gap, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_product_id', NEW.loan_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'minimum_gap', NEW.minimum_gap, NULL);
@@ -7606,7 +7606,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_product_loan_variable_installment_config');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_product_loan_variable_installment_config', CONCAT('UPDATE m_product_loan_variable_installment_config SET id = ', 'NEW.id', ', loan_product_id = ', 'NEW.loan_product_id', ', minimum_gap = ', 'NEW.minimum_gap', ', maximum_gap = ', 'NEW.maximum_gap', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_product_id', OLD.loan_product_id, NEW.loan_product_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'minimum_gap', OLD.minimum_gap, NEW.minimum_gap);
@@ -7621,7 +7621,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_product_loan_variations_borrower_cycle');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_product_loan_variations_borrower_cycle', CONCAT('DELETE FROM m_product_loan_variations_borrower_cycle WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_product_id', OLD.loan_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'borrower_cycle_number', OLD.borrower_cycle_number, NULL);
@@ -7640,7 +7640,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_product_loan_variations_borrower_cycle');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_product_loan_variations_borrower_cycle', CONCAT('INSERT INTO m_product_loan_variations_borrower_cycle(id, loan_product_id, borrower_cycle_number, value_condition, param_type, default_value, max_value, min_value) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.loan_product_id, '\'', ',', '\'', NEW.borrower_cycle_number, '\'', ',', '\'', NEW.value_condition, '\'', ',', '\'', NEW.param_type, '\'', ',', '\'', NEW.default_value, '\'', ',', '\'', NEW.max_value, '\'', ',', '\'', NEW.min_value, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'loan_product_id', NEW.loan_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'borrower_cycle_number', NEW.borrower_cycle_number, NULL);
@@ -7659,7 +7659,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_product_loan_variations_borrower_cycle');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_product_loan_variations_borrower_cycle', CONCAT('UPDATE m_product_loan_variations_borrower_cycle SET id = ', 'NEW.id', ', loan_product_id = ', 'NEW.loan_product_id', ', borrower_cycle_number = ', 'NEW.borrower_cycle_number', ', value_condition = ', 'NEW.value_condition', ', param_type = ', 'NEW.param_type', ', default_value = ', 'NEW.default_value', ', max_value = ', 'NEW.max_value', ', min_value = ', 'NEW.min_value', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'loan_product_id', OLD.loan_product_id, NEW.loan_product_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'borrower_cycle_number', OLD.borrower_cycle_number, NEW.borrower_cycle_number);
@@ -7678,7 +7678,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_product_mix');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_product_mix', CONCAT('DELETE FROM m_product_mix WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'restricted_product_id', OLD.restricted_product_id, NULL);
@@ -7692,7 +7692,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_product_mix');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_product_mix', CONCAT('INSERT INTO m_product_mix(id, product_id, restricted_product_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.product_id, '\'', ',', '\'', NEW.restricted_product_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'product_id', NEW.product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'restricted_product_id', NEW.restricted_product_id, NULL);
@@ -7706,7 +7706,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_product_mix');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_product_mix', CONCAT('UPDATE m_product_mix SET id = ', 'NEW.id', ', product_id = ', 'NEW.product_id', ', restricted_product_id = ', 'NEW.restricted_product_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NEW.product_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'restricted_product_id', OLD.restricted_product_id, NEW.restricted_product_id);
@@ -7720,7 +7720,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_provision_category');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_provision_category', CONCAT('DELETE FROM m_provision_category WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'category_name', OLD.category_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NULL);
@@ -7734,7 +7734,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_provision_category');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_provision_category', CONCAT('INSERT INTO m_provision_category(id, category_name, description) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.category_name, '\'', ',', '\'', NEW.description, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'category_name', NEW.category_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'description', NEW.description, NULL);
@@ -7748,7 +7748,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_provision_category');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_provision_category', CONCAT('UPDATE m_provision_category SET id = ', 'NEW.id', ', category_name = ', 'NEW.category_name', ', description = ', 'NEW.description', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'category_name', OLD.category_name, NEW.category_name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NEW.description);
@@ -7762,7 +7762,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_provisioning_criteria');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_provisioning_criteria', CONCAT('DELETE FROM m_provisioning_criteria WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'criteria_name', OLD.criteria_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'createdby_id', OLD.createdby_id, NULL);
@@ -7779,7 +7779,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_provisioning_criteria');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_provisioning_criteria', CONCAT('INSERT INTO m_provisioning_criteria(id, criteria_name, createdby_id, created_date, lastmodifiedby_id, lastmodified_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.criteria_name, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.lastmodified_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'criteria_name', NEW.criteria_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'createdby_id', NEW.createdby_id, NULL);
@@ -7796,7 +7796,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_provisioning_criteria');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_provisioning_criteria', CONCAT('UPDATE m_provisioning_criteria SET id = ', 'NEW.id', ', criteria_name = ', 'NEW.criteria_name', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', lastmodified_date = ', 'NEW.lastmodified_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'criteria_name', OLD.criteria_name, NEW.criteria_name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'createdby_id', OLD.createdby_id, NEW.createdby_id);
@@ -7813,7 +7813,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_provisioning_criteria_definition');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_provisioning_criteria_definition', CONCAT('DELETE FROM m_provisioning_criteria_definition WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'criteria_id', OLD.criteria_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'category_id', OLD.category_id, NULL);
@@ -7832,7 +7832,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_provisioning_criteria_definition');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_provisioning_criteria_definition', CONCAT('INSERT INTO m_provisioning_criteria_definition(id, criteria_id, category_id, min_age, max_age, provision_percentage, liability_account, expense_account) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.criteria_id, '\'', ',', '\'', NEW.category_id, '\'', ',', '\'', NEW.min_age, '\'', ',', '\'', NEW.max_age, '\'', ',', '\'', NEW.provision_percentage, '\'', ',', '\'', NEW.liability_account, '\'', ',', '\'', NEW.expense_account, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'criteria_id', NEW.criteria_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'category_id', NEW.category_id, NULL);
@@ -7851,7 +7851,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_provisioning_criteria_definition');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_provisioning_criteria_definition', CONCAT('UPDATE m_provisioning_criteria_definition SET id = ', 'NEW.id', ', criteria_id = ', 'NEW.criteria_id', ', category_id = ', 'NEW.category_id', ', min_age = ', 'NEW.min_age', ', max_age = ', 'NEW.max_age', ', provision_percentage = ', 'NEW.provision_percentage', ', liability_account = ', 'NEW.liability_account', ', expense_account = ', 'NEW.expense_account', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'criteria_id', OLD.criteria_id, NEW.criteria_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'category_id', OLD.category_id, NEW.category_id);
@@ -7870,7 +7870,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_provisioning_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_provisioning_history', CONCAT('DELETE FROM m_provisioning_history WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'journal_entry_created', OLD.journal_entry_created, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'createdby_id', OLD.createdby_id, NULL);
@@ -7887,7 +7887,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_provisioning_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_provisioning_history', CONCAT('INSERT INTO m_provisioning_history(id, journal_entry_created, createdby_id, created_date, lastmodifiedby_id, lastmodified_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.journal_entry_created, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.lastmodified_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'journal_entry_created', NEW.journal_entry_created, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'createdby_id', NEW.createdby_id, NULL);
@@ -7904,7 +7904,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_provisioning_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_provisioning_history', CONCAT('UPDATE m_provisioning_history SET id = ', 'NEW.id', ', journal_entry_created = ', 'NEW.journal_entry_created', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', lastmodified_date = ', 'NEW.lastmodified_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'journal_entry_created', OLD.journal_entry_created, NEW.journal_entry_created);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'createdby_id', OLD.createdby_id, NEW.createdby_id);
@@ -7921,7 +7921,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_report_mailing_job');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_report_mailing_job', CONCAT('DELETE FROM m_report_mailing_job WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NULL);
@@ -7956,7 +7956,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_report_mailing_job');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_report_mailing_job', CONCAT('INSERT INTO m_report_mailing_job(id, name, description, start_datetime, recurrence, created_date, createdby_id, lastmodified_date, lastmodifiedby_id, email_recipients, email_subject, email_message, email_attachment_file_format, stretchy_report_id, stretchy_report_param_map, previous_run_datetime, next_run_datetime, previous_run_status, previous_run_error_log, previous_run_error_message, number_of_runs, is_active, is_deleted, run_as_userid) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.start_datetime, '\'', ',', '\'', NEW.recurrence, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.lastmodified_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.email_recipients, '\'', ',', '\'', NEW.email_subject, '\'', ',', '\'', NEW.email_message, '\'', ',', '\'', NEW.email_attachment_file_format, '\'', ',', '\'', NEW.stretchy_report_id, '\'', ',', '\'', NEW.stretchy_report_param_map, '\'', ',', '\'', NEW.previous_run_datetime, '\'', ',', '\'', NEW.next_run_datetime, '\'', ',', '\'', NEW.previous_run_status, '\'', ',', '\'', NEW.previous_run_error_log, '\'', ',', '\'', NEW.previous_run_error_message, '\'', ',', '\'', NEW.number_of_runs, '\'', ',', '\'', NEW.is_active, '\'', ',', '\'', NEW.is_deleted, '\'', ',', '\'', NEW.run_as_userid, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'description', NEW.description, NULL);
@@ -7991,7 +7991,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_report_mailing_job');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_report_mailing_job', CONCAT('UPDATE m_report_mailing_job SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', description = ', 'NEW.description', ', start_datetime = ', 'NEW.start_datetime', ', recurrence = ', 'NEW.recurrence', ', created_date = ', 'NEW.created_date', ', createdby_id = ', 'NEW.createdby_id', ', lastmodified_date = ', 'NEW.lastmodified_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', email_recipients = ', 'NEW.email_recipients', ', email_subject = ', 'NEW.email_subject', ', email_message = ', 'NEW.email_message', ', email_attachment_file_format = ', 'NEW.email_attachment_file_format', ', stretchy_report_id = ', 'NEW.stretchy_report_id', ', stretchy_report_param_map = ', 'NEW.stretchy_report_param_map', ', previous_run_datetime = ', 'NEW.previous_run_datetime', ', next_run_datetime = ', 'NEW.next_run_datetime', ', previous_run_status = ', 'NEW.previous_run_status', ', previous_run_error_log = ', 'NEW.previous_run_error_log', ', previous_run_error_message = ', 'NEW.previous_run_error_message', ', number_of_runs = ', 'NEW.number_of_runs', ', is_active = ', 'NEW.is_active', ', is_deleted = ', 'NEW.is_deleted', ', run_as_userid = ', 'NEW.run_as_userid', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NEW.description);
@@ -8026,7 +8026,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_report_mailing_job_configuration');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_report_mailing_job_configuration', CONCAT('DELETE FROM m_report_mailing_job_configuration WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'value', OLD.value, NULL);
@@ -8040,7 +8040,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_report_mailing_job_configuration');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_report_mailing_job_configuration', CONCAT('INSERT INTO m_report_mailing_job_configuration(id, name, value) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.value, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'value', NEW.value, NULL);
@@ -8054,7 +8054,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_report_mailing_job_configuration');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_report_mailing_job_configuration', CONCAT('UPDATE m_report_mailing_job_configuration SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', value = ', 'NEW.value', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'value', OLD.value, NEW.value);
@@ -8068,7 +8068,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_report_mailing_job_run_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_report_mailing_job_run_history', CONCAT('DELETE FROM m_report_mailing_job_run_history WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'job_id', OLD.job_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'start_datetime', OLD.start_datetime, NULL);
@@ -8086,7 +8086,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_report_mailing_job_run_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_report_mailing_job_run_history', CONCAT('INSERT INTO m_report_mailing_job_run_history(id, job_id, start_datetime, end_datetime, status, error_message, error_log) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.job_id, '\'', ',', '\'', NEW.start_datetime, '\'', ',', '\'', NEW.end_datetime, '\'', ',', '\'', NEW.status, '\'', ',', '\'', NEW.error_message, '\'', ',', '\'', NEW.error_log, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'job_id', NEW.job_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'start_datetime', NEW.start_datetime, NULL);
@@ -8104,7 +8104,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_report_mailing_job_run_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_report_mailing_job_run_history', CONCAT('UPDATE m_report_mailing_job_run_history SET id = ', 'NEW.id', ', job_id = ', 'NEW.job_id', ', start_datetime = ', 'NEW.start_datetime', ', end_datetime = ', 'NEW.end_datetime', ', status = ', 'NEW.status', ', error_message = ', 'NEW.error_message', ', error_log = ', 'NEW.error_log', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'job_id', OLD.job_id, NEW.job_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'start_datetime', OLD.start_datetime, NEW.start_datetime);
@@ -8122,7 +8122,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_role');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_role', CONCAT('DELETE FROM m_role WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NULL);
@@ -8137,7 +8137,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_role');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_role', CONCAT('INSERT INTO m_role(id, name, description, is_disabled) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.is_disabled, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'description', NEW.description, NULL);
@@ -8152,7 +8152,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_role');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_role', CONCAT('UPDATE m_role SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', description = ', 'NEW.description', ', is_disabled = ', 'NEW.is_disabled', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NEW.description);
@@ -8167,7 +8167,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_role_permission');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_role_permission', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'role_id', OLD.role_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'permission_id', OLD.permission_id, NULL);
   END;
@@ -8180,7 +8180,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_role_permission');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_role_permission', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'role_id', NEW.role_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'permission_id', NEW.permission_id, NULL);
   END;
@@ -8193,7 +8193,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_role_permission');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_role_permission', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'role_id', OLD.role_id, NEW.role_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'permission_id', OLD.permission_id, NEW.permission_id);
   END;
@@ -8206,7 +8206,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_savings_account');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_savings_account', CONCAT('DELETE FROM m_savings_account WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_no', OLD.account_no, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'external_id', OLD.external_id, NULL);
@@ -8278,7 +8278,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_savings_account');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_savings_account', CONCAT('INSERT INTO m_savings_account(id, account_no, external_id, client_id, group_id, product_id, field_officer_id, status_enum, sub_status_enum, account_type_enum, deposit_type_enum, submittedon_date, submittedon_userid, approvedon_date, approvedon_userid, rejectedon_date, rejectedon_userid, withdrawnon_date, withdrawnon_userid, activatedon_date, activatedon_userid, closedon_date, closedon_userid, currency_code, currency_digits, currency_multiplesof, nominal_annual_interest_rate, interest_compounding_period_enum, interest_posting_period_enum, interest_calculation_type_enum, interest_calculation_days_in_year_type_enum, min_required_opening_balance, lockin_period_frequency, lockin_period_frequency_enum, withdrawal_fee_for_transfer, allow_overdraft, overdraft_limit, nominal_annual_interest_rate_overdraft, min_overdraft_for_interest_calculation, lockedin_until_date_derived, total_deposits_derived, total_withdrawals_derived, total_withdrawal_fees_derived, total_fees_charge_derived, total_penalty_charge_derived, total_annual_fees_derived, total_interest_earned_derived, total_interest_posted_derived, total_overdraft_interest_derived, total_withhold_tax_derived, account_balance_derived, min_required_balance, enforce_min_required_balance, min_balance_for_interest_calculation, start_interest_calculation_date, on_hold_funds_derived, version, withhold_tax, tax_group_id, last_interest_calculation_date, total_savings_amount_on_hold) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.account_no, '\'', ',', '\'', NEW.external_id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.group_id, '\'', ',', '\'', NEW.product_id, '\'', ',', '\'', NEW.field_officer_id, '\'', ',', '\'', NEW.status_enum, '\'', ',', '\'', NEW.sub_status_enum, '\'', ',', '\'', NEW.account_type_enum, '\'', ',', '\'', NEW.deposit_type_enum, '\'', ',', '\'', NEW.submittedon_date, '\'', ',', '\'', NEW.submittedon_userid, '\'', ',', '\'', NEW.approvedon_date, '\'', ',', '\'', NEW.approvedon_userid, '\'', ',', '\'', NEW.rejectedon_date, '\'', ',', '\'', NEW.rejectedon_userid, '\'', ',', '\'', NEW.withdrawnon_date, '\'', ',', '\'', NEW.withdrawnon_userid, '\'', ',', '\'', NEW.activatedon_date, '\'', ',', '\'', NEW.activatedon_userid, '\'', ',', '\'', NEW.closedon_date, '\'', ',', '\'', NEW.closedon_userid, '\'', ',', '\'', NEW.currency_code, '\'', ',', '\'', NEW.currency_digits, '\'', ',', '\'', NEW.currency_multiplesof, '\'', ',', '\'', NEW.nominal_annual_interest_rate, '\'', ',', '\'', NEW.interest_compounding_period_enum, '\'', ',', '\'', NEW.interest_posting_period_enum, '\'', ',', '\'', NEW.interest_calculation_type_enum, '\'', ',', '\'', NEW.interest_calculation_days_in_year_type_enum, '\'', ',', '\'', NEW.min_required_opening_balance, '\'', ',', '\'', NEW.lockin_period_frequency, '\'', ',', '\'', NEW.lockin_period_frequency_enum, '\'', ',', '\'', NEW.withdrawal_fee_for_transfer, '\'', ',', '\'', NEW.allow_overdraft, '\'', ',', '\'', NEW.overdraft_limit, '\'', ',', '\'', NEW.nominal_annual_interest_rate_overdraft, '\'', ',', '\'', NEW.min_overdraft_for_interest_calculation, '\'', ',', '\'', NEW.lockedin_until_date_derived, '\'', ',', '\'', NEW.total_deposits_derived, '\'', ',', '\'', NEW.total_withdrawals_derived, '\'', ',', '\'', NEW.total_withdrawal_fees_derived, '\'', ',', '\'', NEW.total_fees_charge_derived, '\'', ',', '\'', NEW.total_penalty_charge_derived, '\'', ',', '\'', NEW.total_annual_fees_derived, '\'', ',', '\'', NEW.total_interest_earned_derived, '\'', ',', '\'', NEW.total_interest_posted_derived, '\'', ',', '\'', NEW.total_overdraft_interest_derived, '\'', ',', '\'', NEW.total_withhold_tax_derived, '\'', ',', '\'', NEW.account_balance_derived, '\'', ',', '\'', NEW.min_required_balance, '\'', ',', '\'', NEW.enforce_min_required_balance, '\'', ',', '\'', NEW.min_balance_for_interest_calculation, '\'', ',', '\'', NEW.start_interest_calculation_date, '\'', ',', '\'', NEW.on_hold_funds_derived, '\'', ',', '\'', NEW.version, '\'', ',', '\'', NEW.withhold_tax, '\'', ',', '\'', NEW.tax_group_id, '\'', ',', '\'', NEW.last_interest_calculation_date, '\'', ',', '\'', NEW.total_savings_amount_on_hold, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'account_no', NEW.account_no, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'external_id', NEW.external_id, NULL);
@@ -8350,7 +8350,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_savings_account');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_savings_account', CONCAT('UPDATE m_savings_account SET id = ', 'NEW.id', ', account_no = ', 'NEW.account_no', ', external_id = ', 'NEW.external_id', ', client_id = ', 'NEW.client_id', ', group_id = ', 'NEW.group_id', ', product_id = ', 'NEW.product_id', ', field_officer_id = ', 'NEW.field_officer_id', ', status_enum = ', 'NEW.status_enum', ', sub_status_enum = ', 'NEW.sub_status_enum', ', account_type_enum = ', 'NEW.account_type_enum', ', deposit_type_enum = ', 'NEW.deposit_type_enum', ', submittedon_date = ', 'NEW.submittedon_date', ', submittedon_userid = ', 'NEW.submittedon_userid', ', approvedon_date = ', 'NEW.approvedon_date', ', approvedon_userid = ', 'NEW.approvedon_userid', ', rejectedon_date = ', 'NEW.rejectedon_date', ', rejectedon_userid = ', 'NEW.rejectedon_userid', ', withdrawnon_date = ', 'NEW.withdrawnon_date', ', withdrawnon_userid = ', 'NEW.withdrawnon_userid', ', activatedon_date = ', 'NEW.activatedon_date', ', activatedon_userid = ', 'NEW.activatedon_userid', ', closedon_date = ', 'NEW.closedon_date', ', closedon_userid = ', 'NEW.closedon_userid', ', currency_code = ', 'NEW.currency_code', ', currency_digits = ', 'NEW.currency_digits', ', currency_multiplesof = ', 'NEW.currency_multiplesof', ', nominal_annual_interest_rate = ', 'NEW.nominal_annual_interest_rate', ', interest_compounding_period_enum = ', 'NEW.interest_compounding_period_enum', ', interest_posting_period_enum = ', 'NEW.interest_posting_period_enum', ', interest_calculation_type_enum = ', 'NEW.interest_calculation_type_enum', ', interest_calculation_days_in_year_type_enum = ', 'NEW.interest_calculation_days_in_year_type_enum', ', min_required_opening_balance = ', 'NEW.min_required_opening_balance', ', lockin_period_frequency = ', 'NEW.lockin_period_frequency', ', lockin_period_frequency_enum = ', 'NEW.lockin_period_frequency_enum', ', withdrawal_fee_for_transfer = ', 'NEW.withdrawal_fee_for_transfer', ', allow_overdraft = ', 'NEW.allow_overdraft', ', overdraft_limit = ', 'NEW.overdraft_limit', ', nominal_annual_interest_rate_overdraft = ', 'NEW.nominal_annual_interest_rate_overdraft', ', min_overdraft_for_interest_calculation = ', 'NEW.min_overdraft_for_interest_calculation', ', lockedin_until_date_derived = ', 'NEW.lockedin_until_date_derived', ', total_deposits_derived = ', 'NEW.total_deposits_derived', ', total_withdrawals_derived = ', 'NEW.total_withdrawals_derived', ', total_withdrawal_fees_derived = ', 'NEW.total_withdrawal_fees_derived', ', total_fees_charge_derived = ', 'NEW.total_fees_charge_derived', ', total_penalty_charge_derived = ', 'NEW.total_penalty_charge_derived', ', total_annual_fees_derived = ', 'NEW.total_annual_fees_derived', ', total_interest_earned_derived = ', 'NEW.total_interest_earned_derived', ', total_interest_posted_derived = ', 'NEW.total_interest_posted_derived', ', total_overdraft_interest_derived = ', 'NEW.total_overdraft_interest_derived', ', total_withhold_tax_derived = ', 'NEW.total_withhold_tax_derived', ', account_balance_derived = ', 'NEW.account_balance_derived', ', min_required_balance = ', 'NEW.min_required_balance', ', enforce_min_required_balance = ', 'NEW.enforce_min_required_balance', ', min_balance_for_interest_calculation = ', 'NEW.min_balance_for_interest_calculation', ', start_interest_calculation_date = ', 'NEW.start_interest_calculation_date', ', on_hold_funds_derived = ', 'NEW.on_hold_funds_derived', ', version = ', 'NEW.version', ', withhold_tax = ', 'NEW.withhold_tax', ', tax_group_id = ', 'NEW.tax_group_id', ', last_interest_calculation_date = ', 'NEW.last_interest_calculation_date', ', total_savings_amount_on_hold = ', 'NEW.total_savings_amount_on_hold', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_no', OLD.account_no, NEW.account_no);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'external_id', OLD.external_id, NEW.external_id);
@@ -8422,7 +8422,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_savings_account_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_savings_account_charge', CONCAT('DELETE FROM m_savings_account_charge WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NULL);
@@ -8454,7 +8454,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_savings_account_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_savings_account_charge', CONCAT('INSERT INTO m_savings_account_charge(id, savings_account_id, charge_id, is_penalty, charge_time_enum, charge_due_date, fee_on_month, fee_on_day, fee_interval, charge_calculation_enum, calculation_percentage, calculation_on_amount, amount, amount_paid_derived, amount_waived_derived, amount_writtenoff_derived, amount_outstanding_derived, is_paid_derived, waived, is_active, inactivated_on_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.savings_account_id, '\'', ',', '\'', NEW.charge_id, '\'', ',', '\'', NEW.is_penalty, '\'', ',', '\'', NEW.charge_time_enum, '\'', ',', '\'', NEW.charge_due_date, '\'', ',', '\'', NEW.fee_on_month, '\'', ',', '\'', NEW.fee_on_day, '\'', ',', '\'', NEW.fee_interval, '\'', ',', '\'', NEW.charge_calculation_enum, '\'', ',', '\'', NEW.calculation_percentage, '\'', ',', '\'', NEW.calculation_on_amount, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.amount_paid_derived, '\'', ',', '\'', NEW.amount_waived_derived, '\'', ',', '\'', NEW.amount_writtenoff_derived, '\'', ',', '\'', NEW.amount_outstanding_derived, '\'', ',', '\'', NEW.is_paid_derived, '\'', ',', '\'', NEW.waived, '\'', ',', '\'', NEW.is_active, '\'', ',', '\'', NEW.inactivated_on_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_account_id', NEW.savings_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'charge_id', NEW.charge_id, NULL);
@@ -8486,7 +8486,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_savings_account_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_savings_account_charge', CONCAT('UPDATE m_savings_account_charge SET id = ', 'NEW.id', ', savings_account_id = ', 'NEW.savings_account_id', ', charge_id = ', 'NEW.charge_id', ', is_penalty = ', 'NEW.is_penalty', ', charge_time_enum = ', 'NEW.charge_time_enum', ', charge_due_date = ', 'NEW.charge_due_date', ', fee_on_month = ', 'NEW.fee_on_month', ', fee_on_day = ', 'NEW.fee_on_day', ', fee_interval = ', 'NEW.fee_interval', ', charge_calculation_enum = ', 'NEW.charge_calculation_enum', ', calculation_percentage = ', 'NEW.calculation_percentage', ', calculation_on_amount = ', 'NEW.calculation_on_amount', ', amount = ', 'NEW.amount', ', amount_paid_derived = ', 'NEW.amount_paid_derived', ', amount_waived_derived = ', 'NEW.amount_waived_derived', ', amount_writtenoff_derived = ', 'NEW.amount_writtenoff_derived', ', amount_outstanding_derived = ', 'NEW.amount_outstanding_derived', ', is_paid_derived = ', 'NEW.is_paid_derived', ', waived = ', 'NEW.waived', ', is_active = ', 'NEW.is_active', ', inactivated_on_date = ', 'NEW.inactivated_on_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NEW.savings_account_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NEW.charge_id);
@@ -8518,7 +8518,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_savings_account_charge_paid_by');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_savings_account_charge_paid_by', CONCAT('DELETE FROM m_savings_account_charge_paid_by WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_transaction_id', OLD.savings_account_transaction_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_charge_id', OLD.savings_account_charge_id, NULL);
@@ -8533,7 +8533,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_savings_account_charge_paid_by');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_savings_account_charge_paid_by', CONCAT('INSERT INTO m_savings_account_charge_paid_by(id, savings_account_transaction_id, savings_account_charge_id, amount) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.savings_account_transaction_id, '\'', ',', '\'', NEW.savings_account_charge_id, '\'', ',', '\'', NEW.amount, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_account_transaction_id', NEW.savings_account_transaction_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_account_charge_id', NEW.savings_account_charge_id, NULL);
@@ -8548,7 +8548,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_savings_account_charge_paid_by');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_savings_account_charge_paid_by', CONCAT('UPDATE m_savings_account_charge_paid_by SET id = ', 'NEW.id', ', savings_account_transaction_id = ', 'NEW.savings_account_transaction_id', ', savings_account_charge_id = ', 'NEW.savings_account_charge_id', ', amount = ', 'NEW.amount', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_transaction_id', OLD.savings_account_transaction_id, NEW.savings_account_transaction_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_charge_id', OLD.savings_account_charge_id, NEW.savings_account_charge_id);
@@ -8563,7 +8563,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_savings_account_interest_rate_chart');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_savings_account_interest_rate_chart', CONCAT('DELETE FROM m_savings_account_interest_rate_chart WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
@@ -8581,7 +8581,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_savings_account_interest_rate_chart');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_savings_account_interest_rate_chart', CONCAT('INSERT INTO m_savings_account_interest_rate_chart(id, savings_account_id, name, description, from_date, end_date, is_primary_grouping_by_amount) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.savings_account_id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.from_date, '\'', ',', '\'', NEW.end_date, '\'', ',', '\'', NEW.is_primary_grouping_by_amount, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_account_id', NEW.savings_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
@@ -8599,7 +8599,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_savings_account_interest_rate_chart');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_savings_account_interest_rate_chart', CONCAT('UPDATE m_savings_account_interest_rate_chart SET id = ', 'NEW.id', ', savings_account_id = ', 'NEW.savings_account_id', ', name = ', 'NEW.name', ', description = ', 'NEW.description', ', from_date = ', 'NEW.from_date', ', end_date = ', 'NEW.end_date', ', is_primary_grouping_by_amount = ', 'NEW.is_primary_grouping_by_amount', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NEW.savings_account_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
@@ -8617,7 +8617,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_savings_account_interest_rate_slab');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_savings_account_interest_rate_slab', CONCAT('DELETE FROM m_savings_account_interest_rate_slab WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_interest_rate_chart_id', OLD.savings_account_interest_rate_chart_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NULL);
@@ -8638,7 +8638,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_savings_account_interest_rate_slab');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_savings_account_interest_rate_slab', CONCAT('INSERT INTO m_savings_account_interest_rate_slab(id, savings_account_interest_rate_chart_id, description, period_type_enum, from_period, to_period, amount_range_from, amount_range_to, annual_interest_rate, currency_code) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.savings_account_interest_rate_chart_id, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.period_type_enum, '\'', ',', '\'', NEW.from_period, '\'', ',', '\'', NEW.to_period, '\'', ',', '\'', NEW.amount_range_from, '\'', ',', '\'', NEW.amount_range_to, '\'', ',', '\'', NEW.annual_interest_rate, '\'', ',', '\'', NEW.currency_code, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_account_interest_rate_chart_id', NEW.savings_account_interest_rate_chart_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'description', NEW.description, NULL);
@@ -8659,7 +8659,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_savings_account_interest_rate_slab');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_savings_account_interest_rate_slab', CONCAT('UPDATE m_savings_account_interest_rate_slab SET id = ', 'NEW.id', ', savings_account_interest_rate_chart_id = ', 'NEW.savings_account_interest_rate_chart_id', ', description = ', 'NEW.description', ', period_type_enum = ', 'NEW.period_type_enum', ', from_period = ', 'NEW.from_period', ', to_period = ', 'NEW.to_period', ', amount_range_from = ', 'NEW.amount_range_from', ', amount_range_to = ', 'NEW.amount_range_to', ', annual_interest_rate = ', 'NEW.annual_interest_rate', ', currency_code = ', 'NEW.currency_code', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_interest_rate_chart_id', OLD.savings_account_interest_rate_chart_id, NEW.savings_account_interest_rate_chart_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'description', OLD.description, NEW.description);
@@ -8680,7 +8680,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_savings_account_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_savings_account_transaction', CONCAT('DELETE FROM m_savings_account_transaction WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NULL);
@@ -8708,7 +8708,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_savings_account_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_savings_account_transaction', CONCAT('INSERT INTO m_savings_account_transaction(id, savings_account_id, office_id, payment_detail_id, transaction_type_enum, is_reversed, transaction_date, amount, overdraft_amount_derived, balance_end_date_derived, balance_number_of_days_derived, running_balance_derived, cumulative_balance_derived, created_date, appuser_id, is_manual, release_id_of_hold_amount) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.savings_account_id, '\'', ',', '\'', NEW.office_id, '\'', ',', '\'', NEW.payment_detail_id, '\'', ',', '\'', NEW.transaction_type_enum, '\'', ',', '\'', NEW.is_reversed, '\'', ',', '\'', NEW.transaction_date, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.overdraft_amount_derived, '\'', ',', '\'', NEW.balance_end_date_derived, '\'', ',', '\'', NEW.balance_number_of_days_derived, '\'', ',', '\'', NEW.running_balance_derived, '\'', ',', '\'', NEW.cumulative_balance_derived, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.appuser_id, '\'', ',', '\'', NEW.is_manual, '\'', ',', '\'', NEW.release_id_of_hold_amount, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_account_id', NEW.savings_account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'office_id', NEW.office_id, NULL);
@@ -8736,7 +8736,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_savings_account_transaction');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_savings_account_transaction', CONCAT('UPDATE m_savings_account_transaction SET id = ', 'NEW.id', ', savings_account_id = ', 'NEW.savings_account_id', ', office_id = ', 'NEW.office_id', ', payment_detail_id = ', 'NEW.payment_detail_id', ', transaction_type_enum = ', 'NEW.transaction_type_enum', ', is_reversed = ', 'NEW.is_reversed', ', transaction_date = ', 'NEW.transaction_date', ', amount = ', 'NEW.amount', ', overdraft_amount_derived = ', 'NEW.overdraft_amount_derived', ', balance_end_date_derived = ', 'NEW.balance_end_date_derived', ', balance_number_of_days_derived = ', 'NEW.balance_number_of_days_derived', ', running_balance_derived = ', 'NEW.running_balance_derived', ', cumulative_balance_derived = ', 'NEW.cumulative_balance_derived', ', created_date = ', 'NEW.created_date', ', appuser_id = ', 'NEW.appuser_id', ', is_manual = ', 'NEW.is_manual', ', release_id_of_hold_amount = ', 'NEW.release_id_of_hold_amount', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_account_id', OLD.savings_account_id, NEW.savings_account_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NEW.office_id);
@@ -8764,7 +8764,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_savings_account_transaction_tax_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_savings_account_transaction_tax_details', CONCAT('DELETE FROM m_savings_account_transaction_tax_details WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_transaction_id', OLD.savings_transaction_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'tax_component_id', OLD.tax_component_id, NULL);
@@ -8779,7 +8779,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_savings_account_transaction_tax_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_savings_account_transaction_tax_details', CONCAT('INSERT INTO m_savings_account_transaction_tax_details(id, savings_transaction_id, tax_component_id, amount) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.savings_transaction_id, '\'', ',', '\'', NEW.tax_component_id, '\'', ',', '\'', NEW.amount, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_transaction_id', NEW.savings_transaction_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'tax_component_id', NEW.tax_component_id, NULL);
@@ -8794,7 +8794,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_savings_account_transaction_tax_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_savings_account_transaction_tax_details', CONCAT('UPDATE m_savings_account_transaction_tax_details SET id = ', 'NEW.id', ', savings_transaction_id = ', 'NEW.savings_transaction_id', ', tax_component_id = ', 'NEW.tax_component_id', ', amount = ', 'NEW.amount', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_transaction_id', OLD.savings_transaction_id, NEW.savings_transaction_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'tax_component_id', OLD.tax_component_id, NEW.tax_component_id);
@@ -8809,7 +8809,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_savings_interest_incentives');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_savings_interest_incentives', CONCAT('DELETE FROM m_savings_interest_incentives WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'deposit_account_interest_rate_slab_id', OLD.deposit_account_interest_rate_slab_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entiry_type', OLD.entiry_type, NULL);
@@ -8828,7 +8828,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_savings_interest_incentives');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_savings_interest_incentives', CONCAT('INSERT INTO m_savings_interest_incentives(id, deposit_account_interest_rate_slab_id, entiry_type, attribute_name, condition_type, attribute_value, incentive_type, amount) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.deposit_account_interest_rate_slab_id, '\'', ',', '\'', NEW.entiry_type, '\'', ',', '\'', NEW.attribute_name, '\'', ',', '\'', NEW.condition_type, '\'', ',', '\'', NEW.attribute_value, '\'', ',', '\'', NEW.incentive_type, '\'', ',', '\'', NEW.amount, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'deposit_account_interest_rate_slab_id', NEW.deposit_account_interest_rate_slab_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'entiry_type', NEW.entiry_type, NULL);
@@ -8847,7 +8847,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_savings_interest_incentives');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_savings_interest_incentives', CONCAT('UPDATE m_savings_interest_incentives SET id = ', 'NEW.id', ', deposit_account_interest_rate_slab_id = ', 'NEW.deposit_account_interest_rate_slab_id', ', entiry_type = ', 'NEW.entiry_type', ', attribute_name = ', 'NEW.attribute_name', ', condition_type = ', 'NEW.condition_type', ', attribute_value = ', 'NEW.attribute_value', ', incentive_type = ', 'NEW.incentive_type', ', amount = ', 'NEW.amount', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'deposit_account_interest_rate_slab_id', OLD.deposit_account_interest_rate_slab_id, NEW.deposit_account_interest_rate_slab_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'entiry_type', OLD.entiry_type, NEW.entiry_type);
@@ -8866,7 +8866,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_savings_officer_assignment_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_savings_officer_assignment_history', CONCAT('DELETE FROM m_savings_officer_assignment_history WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_id', OLD.account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_officer_id', OLD.savings_officer_id, NULL);
@@ -8886,7 +8886,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_savings_officer_assignment_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_savings_officer_assignment_history', CONCAT('INSERT INTO m_savings_officer_assignment_history(id, account_id, savings_officer_id, start_date, end_date, createdby_id, created_date, lastmodified_date, lastmodifiedby_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.account_id, '\'', ',', '\'', NEW.savings_officer_id, '\'', ',', '\'', NEW.start_date, '\'', ',', '\'', NEW.end_date, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodified_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'account_id', NEW.account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_officer_id', NEW.savings_officer_id, NULL);
@@ -8906,7 +8906,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_savings_officer_assignment_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_savings_officer_assignment_history', CONCAT('UPDATE m_savings_officer_assignment_history SET id = ', 'NEW.id', ', account_id = ', 'NEW.account_id', ', savings_officer_id = ', 'NEW.savings_officer_id', ', start_date = ', 'NEW.start_date', ', end_date = ', 'NEW.end_date', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodified_date = ', 'NEW.lastmodified_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_id', OLD.account_id, NEW.account_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_officer_id', OLD.savings_officer_id, NEW.savings_officer_id);
@@ -8926,7 +8926,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_savings_product');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_savings_product', CONCAT('DELETE FROM m_savings_product WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'short_name', OLD.short_name, NULL);
@@ -8970,7 +8970,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_savings_product');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_savings_product', CONCAT('INSERT INTO m_savings_product(id, name, short_name, description, deposit_type_enum, currency_code, currency_digits, currency_multiplesof, nominal_annual_interest_rate, interest_compounding_period_enum, interest_posting_period_enum, interest_calculation_type_enum, interest_calculation_days_in_year_type_enum, min_required_opening_balance, lockin_period_frequency, lockin_period_frequency_enum, accounting_type, withdrawal_fee_amount, withdrawal_fee_type_enum, withdrawal_fee_for_transfer, allow_overdraft, overdraft_limit, nominal_annual_interest_rate_overdraft, min_overdraft_for_interest_calculation, min_required_balance, enforce_min_required_balance, min_balance_for_interest_calculation, withhold_tax, tax_group_id, is_dormancy_tracking_active, days_to_inactive, days_to_dormancy, days_to_escheat) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.short_name, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.deposit_type_enum, '\'', ',', '\'', NEW.currency_code, '\'', ',', '\'', NEW.currency_digits, '\'', ',', '\'', NEW.currency_multiplesof, '\'', ',', '\'', NEW.nominal_annual_interest_rate, '\'', ',', '\'', NEW.interest_compounding_period_enum, '\'', ',', '\'', NEW.interest_posting_period_enum, '\'', ',', '\'', NEW.interest_calculation_type_enum, '\'', ',', '\'', NEW.interest_calculation_days_in_year_type_enum, '\'', ',', '\'', NEW.min_required_opening_balance, '\'', ',', '\'', NEW.lockin_period_frequency, '\'', ',', '\'', NEW.lockin_period_frequency_enum, '\'', ',', '\'', NEW.accounting_type, '\'', ',', '\'', NEW.withdrawal_fee_amount, '\'', ',', '\'', NEW.withdrawal_fee_type_enum, '\'', ',', '\'', NEW.withdrawal_fee_for_transfer, '\'', ',', '\'', NEW.allow_overdraft, '\'', ',', '\'', NEW.overdraft_limit, '\'', ',', '\'', NEW.nominal_annual_interest_rate_overdraft, '\'', ',', '\'', NEW.min_overdraft_for_interest_calculation, '\'', ',', '\'', NEW.min_required_balance, '\'', ',', '\'', NEW.enforce_min_required_balance, '\'', ',', '\'', NEW.min_balance_for_interest_calculation, '\'', ',', '\'', NEW.withhold_tax, '\'', ',', '\'', NEW.tax_group_id, '\'', ',', '\'', NEW.is_dormancy_tracking_active, '\'', ',', '\'', NEW.days_to_inactive, '\'', ',', '\'', NEW.days_to_dormancy, '\'', ',', '\'', NEW.days_to_escheat, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'short_name', NEW.short_name, NULL);
@@ -9014,7 +9014,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_savings_product');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_savings_product', CONCAT('UPDATE m_savings_product SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', short_name = ', 'NEW.short_name', ', description = ', 'NEW.description', ', deposit_type_enum = ', 'NEW.deposit_type_enum', ', currency_code = ', 'NEW.currency_code', ', currency_digits = ', 'NEW.currency_digits', ', currency_multiplesof = ', 'NEW.currency_multiplesof', ', nominal_annual_interest_rate = ', 'NEW.nominal_annual_interest_rate', ', interest_compounding_period_enum = ', 'NEW.interest_compounding_period_enum', ', interest_posting_period_enum = ', 'NEW.interest_posting_period_enum', ', interest_calculation_type_enum = ', 'NEW.interest_calculation_type_enum', ', interest_calculation_days_in_year_type_enum = ', 'NEW.interest_calculation_days_in_year_type_enum', ', min_required_opening_balance = ', 'NEW.min_required_opening_balance', ', lockin_period_frequency = ', 'NEW.lockin_period_frequency', ', lockin_period_frequency_enum = ', 'NEW.lockin_period_frequency_enum', ', accounting_type = ', 'NEW.accounting_type', ', withdrawal_fee_amount = ', 'NEW.withdrawal_fee_amount', ', withdrawal_fee_type_enum = ', 'NEW.withdrawal_fee_type_enum', ', withdrawal_fee_for_transfer = ', 'NEW.withdrawal_fee_for_transfer', ', allow_overdraft = ', 'NEW.allow_overdraft', ', overdraft_limit = ', 'NEW.overdraft_limit', ', nominal_annual_interest_rate_overdraft = ', 'NEW.nominal_annual_interest_rate_overdraft', ', min_overdraft_for_interest_calculation = ', 'NEW.min_overdraft_for_interest_calculation', ', min_required_balance = ', 'NEW.min_required_balance', ', enforce_min_required_balance = ', 'NEW.enforce_min_required_balance', ', min_balance_for_interest_calculation = ', 'NEW.min_balance_for_interest_calculation', ', withhold_tax = ', 'NEW.withhold_tax', ', tax_group_id = ', 'NEW.tax_group_id', ', is_dormancy_tracking_active = ', 'NEW.is_dormancy_tracking_active', ', days_to_inactive = ', 'NEW.days_to_inactive', ', days_to_dormancy = ', 'NEW.days_to_dormancy', ', days_to_escheat = ', 'NEW.days_to_escheat', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'short_name', OLD.short_name, NEW.short_name);
@@ -9058,7 +9058,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_savings_product_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_savings_product_charge', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_product_id', OLD.savings_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NULL);
   END;
@@ -9071,7 +9071,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_savings_product_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_savings_product_charge', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'savings_product_id', NEW.savings_product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'charge_id', NEW.charge_id, NULL);
   END;
@@ -9084,7 +9084,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_savings_product_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_savings_product_charge', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'savings_product_id', OLD.savings_product_id, NEW.savings_product_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NEW.charge_id);
   END;
@@ -9097,7 +9097,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_selfservice_beneficiaries_tpt');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_selfservice_beneficiaries_tpt', CONCAT('DELETE FROM m_selfservice_beneficiaries_tpt WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'app_user_id', OLD.app_user_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
@@ -9117,7 +9117,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_selfservice_beneficiaries_tpt');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_selfservice_beneficiaries_tpt', CONCAT('INSERT INTO m_selfservice_beneficiaries_tpt(id, app_user_id, name, office_id, client_id, account_id, account_type, transfer_limit, is_active) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.app_user_id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.office_id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.account_id, '\'', ',', '\'', NEW.account_type, '\'', ',', '\'', NEW.transfer_limit, '\'', ',', '\'', NEW.is_active, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'app_user_id', NEW.app_user_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
@@ -9137,7 +9137,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_selfservice_beneficiaries_tpt');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_selfservice_beneficiaries_tpt', CONCAT('UPDATE m_selfservice_beneficiaries_tpt SET id = ', 'NEW.id', ', app_user_id = ', 'NEW.app_user_id', ', name = ', 'NEW.name', ', office_id = ', 'NEW.office_id', ', client_id = ', 'NEW.client_id', ', account_id = ', 'NEW.account_id', ', account_type = ', 'NEW.account_type', ', transfer_limit = ', 'NEW.transfer_limit', ', is_active = ', 'NEW.is_active', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'app_user_id', OLD.app_user_id, NEW.app_user_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
@@ -9157,7 +9157,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_selfservice_user_client_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_selfservice_user_client_mapping', CONCAT('DELETE FROM m_selfservice_user_client_mapping WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'appuser_id', OLD.appuser_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NULL);
@@ -9171,7 +9171,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_selfservice_user_client_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_selfservice_user_client_mapping', CONCAT('INSERT INTO m_selfservice_user_client_mapping(id, appuser_id, client_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.appuser_id, '\'', ',', '\'', NEW.client_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'appuser_id', NEW.appuser_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_id', NEW.client_id, NULL);
@@ -9185,7 +9185,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_selfservice_user_client_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_selfservice_user_client_mapping', CONCAT('UPDATE m_selfservice_user_client_mapping SET id = ', 'NEW.id', ', appuser_id = ', 'NEW.appuser_id', ', client_id = ', 'NEW.client_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'appuser_id', OLD.appuser_id, NEW.appuser_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NEW.client_id);
@@ -9199,7 +9199,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_share_account');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_share_account', CONCAT('DELETE FROM m_share_account WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_no', OLD.account_no, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NULL);
@@ -9240,7 +9240,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_share_account');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_share_account', CONCAT('INSERT INTO m_share_account(id, account_no, product_id, client_id, external_id, status_enum, total_approved_shares, total_pending_shares, submitted_date, submitted_userid, approved_date, approved_userid, rejected_date, rejected_userid, activated_date, activated_userid, closed_date, closed_userid, currency_code, currency_digits, currency_multiplesof, savings_account_id, minimum_active_period_frequency, minimum_active_period_frequency_enum, lockin_period_frequency, lockin_period_frequency_enum, allow_dividends_inactive_clients, created_date, lastmodifiedby_id, lastmodified_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.account_no, '\'', ',', '\'', NEW.product_id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.external_id, '\'', ',', '\'', NEW.status_enum, '\'', ',', '\'', NEW.total_approved_shares, '\'', ',', '\'', NEW.total_pending_shares, '\'', ',', '\'', NEW.submitted_date, '\'', ',', '\'', NEW.submitted_userid, '\'', ',', '\'', NEW.approved_date, '\'', ',', '\'', NEW.approved_userid, '\'', ',', '\'', NEW.rejected_date, '\'', ',', '\'', NEW.rejected_userid, '\'', ',', '\'', NEW.activated_date, '\'', ',', '\'', NEW.activated_userid, '\'', ',', '\'', NEW.closed_date, '\'', ',', '\'', NEW.closed_userid, '\'', ',', '\'', NEW.currency_code, '\'', ',', '\'', NEW.currency_digits, '\'', ',', '\'', NEW.currency_multiplesof, '\'', ',', '\'', NEW.savings_account_id, '\'', ',', '\'', NEW.minimum_active_period_frequency, '\'', ',', '\'', NEW.minimum_active_period_frequency_enum, '\'', ',', '\'', NEW.lockin_period_frequency, '\'', ',', '\'', NEW.lockin_period_frequency_enum, '\'', ',', '\'', NEW.allow_dividends_inactive_clients, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.lastmodified_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'account_no', NEW.account_no, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'product_id', NEW.product_id, NULL);
@@ -9281,7 +9281,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_share_account');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_share_account', CONCAT('UPDATE m_share_account SET id = ', 'NEW.id', ', account_no = ', 'NEW.account_no', ', product_id = ', 'NEW.product_id', ', client_id = ', 'NEW.client_id', ', external_id = ', 'NEW.external_id', ', status_enum = ', 'NEW.status_enum', ', total_approved_shares = ', 'NEW.total_approved_shares', ', total_pending_shares = ', 'NEW.total_pending_shares', ', submitted_date = ', 'NEW.submitted_date', ', submitted_userid = ', 'NEW.submitted_userid', ', approved_date = ', 'NEW.approved_date', ', approved_userid = ', 'NEW.approved_userid', ', rejected_date = ', 'NEW.rejected_date', ', rejected_userid = ', 'NEW.rejected_userid', ', activated_date = ', 'NEW.activated_date', ', activated_userid = ', 'NEW.activated_userid', ', closed_date = ', 'NEW.closed_date', ', closed_userid = ', 'NEW.closed_userid', ', currency_code = ', 'NEW.currency_code', ', currency_digits = ', 'NEW.currency_digits', ', currency_multiplesof = ', 'NEW.currency_multiplesof', ', savings_account_id = ', 'NEW.savings_account_id', ', minimum_active_period_frequency = ', 'NEW.minimum_active_period_frequency', ', minimum_active_period_frequency_enum = ', 'NEW.minimum_active_period_frequency_enum', ', lockin_period_frequency = ', 'NEW.lockin_period_frequency', ', lockin_period_frequency_enum = ', 'NEW.lockin_period_frequency_enum', ', allow_dividends_inactive_clients = ', 'NEW.allow_dividends_inactive_clients', ', created_date = ', 'NEW.created_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', lastmodified_date = ', 'NEW.lastmodified_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_no', OLD.account_no, NEW.account_no);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NEW.product_id);
@@ -9322,7 +9322,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_share_account_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_share_account_charge', CONCAT('DELETE FROM m_share_account_charge WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_id', OLD.account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NULL);
@@ -9352,7 +9352,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_share_account_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_share_account_charge', CONCAT('INSERT INTO m_share_account_charge(id, account_id, charge_id, charge_time_enum, charge_calculation_enum, charge_payment_mode_enum, calculation_percentage, calculation_on_amount, charge_amount_or_percentage, amount, amount_paid_derived, amount_waived_derived, amount_writtenoff_derived, amount_outstanding_derived, is_paid_derived, waived, min_cap, max_cap, is_active) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.account_id, '\'', ',', '\'', NEW.charge_id, '\'', ',', '\'', NEW.charge_time_enum, '\'', ',', '\'', NEW.charge_calculation_enum, '\'', ',', '\'', NEW.charge_payment_mode_enum, '\'', ',', '\'', NEW.calculation_percentage, '\'', ',', '\'', NEW.calculation_on_amount, '\'', ',', '\'', NEW.charge_amount_or_percentage, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.amount_paid_derived, '\'', ',', '\'', NEW.amount_waived_derived, '\'', ',', '\'', NEW.amount_writtenoff_derived, '\'', ',', '\'', NEW.amount_outstanding_derived, '\'', ',', '\'', NEW.is_paid_derived, '\'', ',', '\'', NEW.waived, '\'', ',', '\'', NEW.min_cap, '\'', ',', '\'', NEW.max_cap, '\'', ',', '\'', NEW.is_active, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'account_id', NEW.account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'charge_id', NEW.charge_id, NULL);
@@ -9382,7 +9382,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_share_account_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_share_account_charge', CONCAT('UPDATE m_share_account_charge SET id = ', 'NEW.id', ', account_id = ', 'NEW.account_id', ', charge_id = ', 'NEW.charge_id', ', charge_time_enum = ', 'NEW.charge_time_enum', ', charge_calculation_enum = ', 'NEW.charge_calculation_enum', ', charge_payment_mode_enum = ', 'NEW.charge_payment_mode_enum', ', calculation_percentage = ', 'NEW.calculation_percentage', ', calculation_on_amount = ', 'NEW.calculation_on_amount', ', charge_amount_or_percentage = ', 'NEW.charge_amount_or_percentage', ', amount = ', 'NEW.amount', ', amount_paid_derived = ', 'NEW.amount_paid_derived', ', amount_waived_derived = ', 'NEW.amount_waived_derived', ', amount_writtenoff_derived = ', 'NEW.amount_writtenoff_derived', ', amount_outstanding_derived = ', 'NEW.amount_outstanding_derived', ', is_paid_derived = ', 'NEW.is_paid_derived', ', waived = ', 'NEW.waived', ', min_cap = ', 'NEW.min_cap', ', max_cap = ', 'NEW.max_cap', ', is_active = ', 'NEW.is_active', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_id', OLD.account_id, NEW.account_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NEW.charge_id);
@@ -9412,7 +9412,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_share_account_charge_paid_by');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_share_account_charge_paid_by', CONCAT('DELETE FROM m_share_account_charge_paid_by WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'share_transaction_id', OLD.share_transaction_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_transaction_id', OLD.charge_transaction_id, NULL);
@@ -9427,7 +9427,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_share_account_charge_paid_by');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_share_account_charge_paid_by', CONCAT('INSERT INTO m_share_account_charge_paid_by(id, share_transaction_id, charge_transaction_id, amount) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.share_transaction_id, '\'', ',', '\'', NEW.charge_transaction_id, '\'', ',', '\'', NEW.amount, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'share_transaction_id', NEW.share_transaction_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'charge_transaction_id', NEW.charge_transaction_id, NULL);
@@ -9442,7 +9442,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_share_account_charge_paid_by');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_share_account_charge_paid_by', CONCAT('UPDATE m_share_account_charge_paid_by SET id = ', 'NEW.id', ', share_transaction_id = ', 'NEW.share_transaction_id', ', charge_transaction_id = ', 'NEW.charge_transaction_id', ', amount = ', 'NEW.amount', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'share_transaction_id', OLD.share_transaction_id, NEW.share_transaction_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_transaction_id', OLD.charge_transaction_id, NEW.charge_transaction_id);
@@ -9457,7 +9457,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_share_account_dividend_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_share_account_dividend_details', CONCAT('DELETE FROM m_share_account_dividend_details WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'dividend_pay_out_id', OLD.dividend_pay_out_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_id', OLD.account_id, NULL);
@@ -9474,7 +9474,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_share_account_dividend_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_share_account_dividend_details', CONCAT('INSERT INTO m_share_account_dividend_details(id, dividend_pay_out_id, account_id, amount, status, savings_transaction_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.dividend_pay_out_id, '\'', ',', '\'', NEW.account_id, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.status, '\'', ',', '\'', NEW.savings_transaction_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'dividend_pay_out_id', NEW.dividend_pay_out_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'account_id', NEW.account_id, NULL);
@@ -9491,7 +9491,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_share_account_dividend_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_share_account_dividend_details', CONCAT('UPDATE m_share_account_dividend_details SET id = ', 'NEW.id', ', dividend_pay_out_id = ', 'NEW.dividend_pay_out_id', ', account_id = ', 'NEW.account_id', ', amount = ', 'NEW.amount', ', status = ', 'NEW.status', ', savings_transaction_id = ', 'NEW.savings_transaction_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'dividend_pay_out_id', OLD.dividend_pay_out_id, NEW.dividend_pay_out_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_id', OLD.account_id, NEW.account_id);
@@ -9508,7 +9508,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_share_account_transactions');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_share_account_transactions', CONCAT('DELETE FROM m_share_account_transactions WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_id', OLD.account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'transaction_date', OLD.transaction_date, NULL);
@@ -9530,7 +9530,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_share_account_transactions');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_share_account_transactions', CONCAT('INSERT INTO m_share_account_transactions(id, account_id, transaction_date, total_shares, unit_price, amount, charge_amount, amount_paid, status_enum, type_enum, is_active) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.account_id, '\'', ',', '\'', NEW.transaction_date, '\'', ',', '\'', NEW.total_shares, '\'', ',', '\'', NEW.unit_price, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.charge_amount, '\'', ',', '\'', NEW.amount_paid, '\'', ',', '\'', NEW.status_enum, '\'', ',', '\'', NEW.type_enum, '\'', ',', '\'', NEW.is_active, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'account_id', NEW.account_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'transaction_date', NEW.transaction_date, NULL);
@@ -9552,7 +9552,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_share_account_transactions');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_share_account_transactions', CONCAT('UPDATE m_share_account_transactions SET id = ', 'NEW.id', ', account_id = ', 'NEW.account_id', ', transaction_date = ', 'NEW.transaction_date', ', total_shares = ', 'NEW.total_shares', ', unit_price = ', 'NEW.unit_price', ', amount = ', 'NEW.amount', ', charge_amount = ', 'NEW.charge_amount', ', amount_paid = ', 'NEW.amount_paid', ', status_enum = ', 'NEW.status_enum', ', type_enum = ', 'NEW.type_enum', ', is_active = ', 'NEW.is_active', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'account_id', OLD.account_id, NEW.account_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'transaction_date', OLD.transaction_date, NEW.transaction_date);
@@ -9574,7 +9574,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_share_product');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_share_product', CONCAT('DELETE FROM m_share_product WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'short_name', OLD.short_name, NULL);
@@ -9613,7 +9613,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_share_product');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_share_product', CONCAT('INSERT INTO m_share_product(id, name, short_name, external_id, description, start_date, end_date, currency_code, currency_digits, currency_multiplesof, total_shares, issued_shares, totalsubscribed_shares, unit_price, capital_amount, minimum_client_shares, nominal_client_shares, maximum_client_shares, minimum_active_period_frequency, minimum_active_period_frequency_enum, lockin_period_frequency, lockin_period_frequency_enum, allow_dividends_inactive_clients, createdby_id, created_date, lastmodifiedby_id, lastmodified_date, accounting_type) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.short_name, '\'', ',', '\'', NEW.external_id, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.start_date, '\'', ',', '\'', NEW.end_date, '\'', ',', '\'', NEW.currency_code, '\'', ',', '\'', NEW.currency_digits, '\'', ',', '\'', NEW.currency_multiplesof, '\'', ',', '\'', NEW.total_shares, '\'', ',', '\'', NEW.issued_shares, '\'', ',', '\'', NEW.totalsubscribed_shares, '\'', ',', '\'', NEW.unit_price, '\'', ',', '\'', NEW.capital_amount, '\'', ',', '\'', NEW.minimum_client_shares, '\'', ',', '\'', NEW.nominal_client_shares, '\'', ',', '\'', NEW.maximum_client_shares, '\'', ',', '\'', NEW.minimum_active_period_frequency, '\'', ',', '\'', NEW.minimum_active_period_frequency_enum, '\'', ',', '\'', NEW.lockin_period_frequency, '\'', ',', '\'', NEW.lockin_period_frequency_enum, '\'', ',', '\'', NEW.allow_dividends_inactive_clients, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.lastmodified_date, '\'', ',', '\'', NEW.accounting_type, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'short_name', NEW.short_name, NULL);
@@ -9652,7 +9652,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_share_product');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_share_product', CONCAT('UPDATE m_share_product SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', short_name = ', 'NEW.short_name', ', external_id = ', 'NEW.external_id', ', description = ', 'NEW.description', ', start_date = ', 'NEW.start_date', ', end_date = ', 'NEW.end_date', ', currency_code = ', 'NEW.currency_code', ', currency_digits = ', 'NEW.currency_digits', ', currency_multiplesof = ', 'NEW.currency_multiplesof', ', total_shares = ', 'NEW.total_shares', ', issued_shares = ', 'NEW.issued_shares', ', totalsubscribed_shares = ', 'NEW.totalsubscribed_shares', ', unit_price = ', 'NEW.unit_price', ', capital_amount = ', 'NEW.capital_amount', ', minimum_client_shares = ', 'NEW.minimum_client_shares', ', nominal_client_shares = ', 'NEW.nominal_client_shares', ', maximum_client_shares = ', 'NEW.maximum_client_shares', ', minimum_active_period_frequency = ', 'NEW.minimum_active_period_frequency', ', minimum_active_period_frequency_enum = ', 'NEW.minimum_active_period_frequency_enum', ', lockin_period_frequency = ', 'NEW.lockin_period_frequency', ', lockin_period_frequency_enum = ', 'NEW.lockin_period_frequency_enum', ', allow_dividends_inactive_clients = ', 'NEW.allow_dividends_inactive_clients', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', lastmodified_date = ', 'NEW.lastmodified_date', ', accounting_type = ', 'NEW.accounting_type', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'short_name', OLD.short_name, NEW.short_name);
@@ -9691,7 +9691,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_share_product_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_share_product_charge', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NULL);
   END;
@@ -9704,7 +9704,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_share_product_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_share_product_charge', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'product_id', NEW.product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'charge_id', NEW.charge_id, NULL);
   END;
@@ -9717,7 +9717,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_share_product_charge');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_share_product_charge', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NEW.product_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'charge_id', OLD.charge_id, NEW.charge_id);
   END;
@@ -9730,7 +9730,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_share_product_dividend_pay_out');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_share_product_dividend_pay_out', CONCAT('DELETE FROM m_share_product_dividend_pay_out WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'amount', OLD.amount, NULL);
@@ -9751,7 +9751,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_share_product_dividend_pay_out');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_share_product_dividend_pay_out', CONCAT('INSERT INTO m_share_product_dividend_pay_out(id, product_id, amount, dividend_period_start_date, dividend_period_end_date, status, createdby_id, created_date, lastmodifiedby_id, lastmodified_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.product_id, '\'', ',', '\'', NEW.amount, '\'', ',', '\'', NEW.dividend_period_start_date, '\'', ',', '\'', NEW.dividend_period_end_date, '\'', ',', '\'', NEW.status, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.lastmodified_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'product_id', NEW.product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'amount', NEW.amount, NULL);
@@ -9772,7 +9772,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_share_product_dividend_pay_out');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_share_product_dividend_pay_out', CONCAT('UPDATE m_share_product_dividend_pay_out SET id = ', 'NEW.id', ', product_id = ', 'NEW.product_id', ', amount = ', 'NEW.amount', ', dividend_period_start_date = ', 'NEW.dividend_period_start_date', ', dividend_period_end_date = ', 'NEW.dividend_period_end_date', ', status = ', 'NEW.status', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', lastmodified_date = ', 'NEW.lastmodified_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NEW.product_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'amount', OLD.amount, NEW.amount);
@@ -9793,7 +9793,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_share_product_market_price');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_share_product_market_price', CONCAT('DELETE FROM m_share_product_market_price WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_date', OLD.from_date, NULL);
@@ -9808,7 +9808,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_share_product_market_price');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_share_product_market_price', CONCAT('INSERT INTO m_share_product_market_price(id, product_id, from_date, share_value) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.product_id, '\'', ',', '\'', NEW.from_date, '\'', ',', '\'', NEW.share_value, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'product_id', NEW.product_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'from_date', NEW.from_date, NULL);
@@ -9823,7 +9823,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_share_product_market_price');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_share_product_market_price', CONCAT('UPDATE m_share_product_market_price SET id = ', 'NEW.id', ', product_id = ', 'NEW.product_id', ', from_date = ', 'NEW.from_date', ', share_value = ', 'NEW.share_value', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'product_id', OLD.product_id, NEW.product_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'from_date', OLD.from_date, NEW.from_date);
@@ -9838,7 +9838,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_staff');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_staff', CONCAT('DELETE FROM m_staff WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'is_loan_officer', OLD.is_loan_officer, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NULL);
@@ -9862,7 +9862,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_staff');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_staff', CONCAT('INSERT INTO m_staff(id, is_loan_officer, office_id, firstname, lastname, display_name, mobile_no, external_id, organisational_role_enum, organisational_role_parent_staff_id, is_active, joining_date, image_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.is_loan_officer, '\'', ',', '\'', NEW.office_id, '\'', ',', '\'', NEW.firstname, '\'', ',', '\'', NEW.lastname, '\'', ',', '\'', NEW.display_name, '\'', ',', '\'', NEW.mobile_no, '\'', ',', '\'', NEW.external_id, '\'', ',', '\'', NEW.organisational_role_enum, '\'', ',', '\'', NEW.organisational_role_parent_staff_id, '\'', ',', '\'', NEW.is_active, '\'', ',', '\'', NEW.joining_date, '\'', ',', '\'', NEW.image_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'is_loan_officer', NEW.is_loan_officer, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'office_id', NEW.office_id, NULL);
@@ -9886,7 +9886,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_staff');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_staff', CONCAT('UPDATE m_staff SET id = ', 'NEW.id', ', is_loan_officer = ', 'NEW.is_loan_officer', ', office_id = ', 'NEW.office_id', ', firstname = ', 'NEW.firstname', ', lastname = ', 'NEW.lastname', ', display_name = ', 'NEW.display_name', ', mobile_no = ', 'NEW.mobile_no', ', external_id = ', 'NEW.external_id', ', organisational_role_enum = ', 'NEW.organisational_role_enum', ', organisational_role_parent_staff_id = ', 'NEW.organisational_role_parent_staff_id', ', is_active = ', 'NEW.is_active', ', joining_date = ', 'NEW.joining_date', ', image_id = ', 'NEW.image_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'is_loan_officer', OLD.is_loan_officer, NEW.is_loan_officer);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NEW.office_id);
@@ -9910,7 +9910,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_staff_assignment_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_staff_assignment_history', CONCAT('DELETE FROM m_staff_assignment_history WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'centre_id', OLD.centre_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'staff_id', OLD.staff_id, NULL);
@@ -9930,7 +9930,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_staff_assignment_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_staff_assignment_history', CONCAT('INSERT INTO m_staff_assignment_history(id, centre_id, staff_id, start_date, end_date, createdby_id, created_date, lastmodified_date, lastmodifiedby_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.centre_id, '\'', ',', '\'', NEW.staff_id, '\'', ',', '\'', NEW.start_date, '\'', ',', '\'', NEW.end_date, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodified_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'centre_id', NEW.centre_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'staff_id', NEW.staff_id, NULL);
@@ -9950,7 +9950,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_staff_assignment_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_staff_assignment_history', CONCAT('UPDATE m_staff_assignment_history SET id = ', 'NEW.id', ', centre_id = ', 'NEW.centre_id', ', staff_id = ', 'NEW.staff_id', ', start_date = ', 'NEW.start_date', ', end_date = ', 'NEW.end_date', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodified_date = ', 'NEW.lastmodified_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'centre_id', OLD.centre_id, NEW.centre_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'staff_id', OLD.staff_id, NEW.staff_id);
@@ -9970,7 +9970,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_survey_components');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_survey_components', CONCAT('DELETE FROM m_survey_components WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'survey_id', OLD.survey_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'a_key', OLD.a_key, NULL);
@@ -9987,7 +9987,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_survey_components');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_survey_components', CONCAT('INSERT INTO m_survey_components(id, survey_id, a_key, a_text, description, sequence_no) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.survey_id, '\'', ',', '\'', NEW.a_key, '\'', ',', '\'', NEW.a_text, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.sequence_no, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'survey_id', NEW.survey_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'a_key', NEW.a_key, NULL);
@@ -10004,7 +10004,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_survey_components');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_survey_components', CONCAT('UPDATE m_survey_components SET id = ', 'NEW.id', ', survey_id = ', 'NEW.survey_id', ', a_key = ', 'NEW.a_key', ', a_text = ', 'NEW.a_text', ', description = ', 'NEW.description', ', sequence_no = ', 'NEW.sequence_no', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'survey_id', OLD.survey_id, NEW.survey_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'a_key', OLD.a_key, NEW.a_key);
@@ -10021,7 +10021,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_survey_lookup_tables');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_survey_lookup_tables', CONCAT('DELETE FROM m_survey_lookup_tables WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'survey_id', OLD.survey_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'a_key', OLD.a_key, NULL);
@@ -10039,7 +10039,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_survey_lookup_tables');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_survey_lookup_tables', CONCAT('INSERT INTO m_survey_lookup_tables(id, survey_id, a_key, description, value_from, value_to, score) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.survey_id, '\'', ',', '\'', NEW.a_key, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.value_from, '\'', ',', '\'', NEW.value_to, '\'', ',', '\'', NEW.score, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'survey_id', NEW.survey_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'a_key', NEW.a_key, NULL);
@@ -10057,7 +10057,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_survey_lookup_tables');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_survey_lookup_tables', CONCAT('UPDATE m_survey_lookup_tables SET id = ', 'NEW.id', ', survey_id = ', 'NEW.survey_id', ', a_key = ', 'NEW.a_key', ', description = ', 'NEW.description', ', value_from = ', 'NEW.value_from', ', value_to = ', 'NEW.value_to', ', score = ', 'NEW.score', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'survey_id', OLD.survey_id, NEW.survey_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'a_key', OLD.a_key, NEW.a_key);
@@ -10075,7 +10075,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_survey_questions');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_survey_questions', CONCAT('DELETE FROM m_survey_questions WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'survey_id', OLD.survey_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'component_key', OLD.component_key, NULL);
@@ -10093,7 +10093,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_survey_questions');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_survey_questions', CONCAT('INSERT INTO m_survey_questions(id, survey_id, component_key, a_key, a_text, description, sequence_no) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.survey_id, '\'', ',', '\'', NEW.component_key, '\'', ',', '\'', NEW.a_key, '\'', ',', '\'', NEW.a_text, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.sequence_no, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'survey_id', NEW.survey_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'component_key', NEW.component_key, NULL);
@@ -10111,7 +10111,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_survey_questions');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_survey_questions', CONCAT('UPDATE m_survey_questions SET id = ', 'NEW.id', ', survey_id = ', 'NEW.survey_id', ', component_key = ', 'NEW.component_key', ', a_key = ', 'NEW.a_key', ', a_text = ', 'NEW.a_text', ', description = ', 'NEW.description', ', sequence_no = ', 'NEW.sequence_no', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'survey_id', OLD.survey_id, NEW.survey_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'component_key', OLD.component_key, NEW.component_key);
@@ -10129,7 +10129,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_survey_responses');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_survey_responses', CONCAT('DELETE FROM m_survey_responses WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'question_id', OLD.question_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'a_text', OLD.a_text, NULL);
@@ -10145,7 +10145,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_survey_responses');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_survey_responses', CONCAT('INSERT INTO m_survey_responses(id, question_id, a_text, a_value, sequence_no) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.question_id, '\'', ',', '\'', NEW.a_text, '\'', ',', '\'', NEW.a_value, '\'', ',', '\'', NEW.sequence_no, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'question_id', NEW.question_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'a_text', NEW.a_text, NULL);
@@ -10161,7 +10161,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_survey_responses');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_survey_responses', CONCAT('UPDATE m_survey_responses SET id = ', 'NEW.id', ', question_id = ', 'NEW.question_id', ', a_text = ', 'NEW.a_text', ', a_value = ', 'NEW.a_value', ', sequence_no = ', 'NEW.sequence_no', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'question_id', OLD.question_id, NEW.question_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'a_text', OLD.a_text, NEW.a_text);
@@ -10177,7 +10177,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_survey_scorecards');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_survey_scorecards', CONCAT('DELETE FROM m_survey_scorecards WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'survey_id', OLD.survey_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'question_id', OLD.question_id, NULL);
@@ -10196,7 +10196,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_survey_scorecards');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_survey_scorecards', CONCAT('INSERT INTO m_survey_scorecards(id, survey_id, question_id, response_id, user_id, client_id, created_on, a_value) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.survey_id, '\'', ',', '\'', NEW.question_id, '\'', ',', '\'', NEW.response_id, '\'', ',', '\'', NEW.user_id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.created_on, '\'', ',', '\'', NEW.a_value, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'survey_id', NEW.survey_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'question_id', NEW.question_id, NULL);
@@ -10215,7 +10215,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_survey_scorecards');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_survey_scorecards', CONCAT('UPDATE m_survey_scorecards SET id = ', 'NEW.id', ', survey_id = ', 'NEW.survey_id', ', question_id = ', 'NEW.question_id', ', response_id = ', 'NEW.response_id', ', user_id = ', 'NEW.user_id', ', client_id = ', 'NEW.client_id', ', created_on = ', 'NEW.created_on', ', a_value = ', 'NEW.a_value', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'survey_id', OLD.survey_id, NEW.survey_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'question_id', OLD.question_id, NEW.question_id);
@@ -10234,7 +10234,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_surveys');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_surveys', CONCAT('DELETE FROM m_surveys WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'a_key', OLD.a_key, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'a_name', OLD.a_name, NULL);
@@ -10252,7 +10252,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_surveys');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_surveys', CONCAT('INSERT INTO m_surveys(id, a_key, a_name, description, country_code, valid_from, valid_to) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.a_key, '\'', ',', '\'', NEW.a_name, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.country_code, '\'', ',', '\'', NEW.valid_from, '\'', ',', '\'', NEW.valid_to, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'a_key', NEW.a_key, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'a_name', NEW.a_name, NULL);
@@ -10270,7 +10270,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_surveys');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_surveys', CONCAT('UPDATE m_surveys SET id = ', 'NEW.id', ', a_key = ', 'NEW.a_key', ', a_name = ', 'NEW.a_name', ', description = ', 'NEW.description', ', country_code = ', 'NEW.country_code', ', valid_from = ', 'NEW.valid_from', ', valid_to = ', 'NEW.valid_to', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'a_key', OLD.a_key, NEW.a_key);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'a_name', OLD.a_name, NEW.a_name);
@@ -10288,7 +10288,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_tax_component');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_tax_component', CONCAT('DELETE FROM m_tax_component WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'percentage', OLD.percentage, NULL);
@@ -10311,7 +10311,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_tax_component');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_tax_component', CONCAT('INSERT INTO m_tax_component(id, name, percentage, debit_account_type_enum, debit_account_id, credit_account_type_enum, credit_account_id, start_date, createdby_id, created_date, lastmodifiedby_id, lastmodified_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.percentage, '\'', ',', '\'', NEW.debit_account_type_enum, '\'', ',', '\'', NEW.debit_account_id, '\'', ',', '\'', NEW.credit_account_type_enum, '\'', ',', '\'', NEW.credit_account_id, '\'', ',', '\'', NEW.start_date, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.lastmodified_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'percentage', NEW.percentage, NULL);
@@ -10334,7 +10334,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_tax_component');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_tax_component', CONCAT('UPDATE m_tax_component SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', percentage = ', 'NEW.percentage', ', debit_account_type_enum = ', 'NEW.debit_account_type_enum', ', debit_account_id = ', 'NEW.debit_account_id', ', credit_account_type_enum = ', 'NEW.credit_account_type_enum', ', credit_account_id = ', 'NEW.credit_account_id', ', start_date = ', 'NEW.start_date', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', lastmodified_date = ', 'NEW.lastmodified_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'percentage', OLD.percentage, NEW.percentage);
@@ -10357,7 +10357,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_tax_component_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_tax_component_history', CONCAT('DELETE FROM m_tax_component_history WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'tax_component_id', OLD.tax_component_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'percentage', OLD.percentage, NULL);
@@ -10377,7 +10377,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_tax_component_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_tax_component_history', CONCAT('INSERT INTO m_tax_component_history(id, tax_component_id, percentage, start_date, end_date, createdby_id, created_date, lastmodifiedby_id, lastmodified_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.tax_component_id, '\'', ',', '\'', NEW.percentage, '\'', ',', '\'', NEW.start_date, '\'', ',', '\'', NEW.end_date, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.lastmodified_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'tax_component_id', NEW.tax_component_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'percentage', NEW.percentage, NULL);
@@ -10397,7 +10397,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_tax_component_history');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_tax_component_history', CONCAT('UPDATE m_tax_component_history SET id = ', 'NEW.id', ', tax_component_id = ', 'NEW.tax_component_id', ', percentage = ', 'NEW.percentage', ', start_date = ', 'NEW.start_date', ', end_date = ', 'NEW.end_date', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', lastmodified_date = ', 'NEW.lastmodified_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'tax_component_id', OLD.tax_component_id, NEW.tax_component_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'percentage', OLD.percentage, NEW.percentage);
@@ -10417,7 +10417,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_tax_group');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_tax_group', CONCAT('DELETE FROM m_tax_group WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'createdby_id', OLD.createdby_id, NULL);
@@ -10434,7 +10434,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_tax_group');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_tax_group', CONCAT('INSERT INTO m_tax_group(id, name, createdby_id, created_date, lastmodifiedby_id, lastmodified_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.lastmodified_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'createdby_id', NEW.createdby_id, NULL);
@@ -10451,7 +10451,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_tax_group');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_tax_group', CONCAT('UPDATE m_tax_group SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', lastmodified_date = ', 'NEW.lastmodified_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'createdby_id', OLD.createdby_id, NEW.createdby_id);
@@ -10468,7 +10468,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_tax_group_mappings');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_tax_group_mappings', CONCAT('DELETE FROM m_tax_group_mappings WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'tax_group_id', OLD.tax_group_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'tax_component_id', OLD.tax_component_id, NULL);
@@ -10488,7 +10488,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_tax_group_mappings');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_tax_group_mappings', CONCAT('INSERT INTO m_tax_group_mappings(id, tax_group_id, tax_component_id, start_date, end_date, createdby_id, created_date, lastmodifiedby_id, lastmodified_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.tax_group_id, '\'', ',', '\'', NEW.tax_component_id, '\'', ',', '\'', NEW.start_date, '\'', ',', '\'', NEW.end_date, '\'', ',', '\'', NEW.createdby_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.lastmodifiedby_id, '\'', ',', '\'', NEW.lastmodified_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'tax_group_id', NEW.tax_group_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'tax_component_id', NEW.tax_component_id, NULL);
@@ -10508,7 +10508,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_tax_group_mappings');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_tax_group_mappings', CONCAT('UPDATE m_tax_group_mappings SET id = ', 'NEW.id', ', tax_group_id = ', 'NEW.tax_group_id', ', tax_component_id = ', 'NEW.tax_component_id', ', start_date = ', 'NEW.start_date', ', end_date = ', 'NEW.end_date', ', createdby_id = ', 'NEW.createdby_id', ', created_date = ', 'NEW.created_date', ', lastmodifiedby_id = ', 'NEW.lastmodifiedby_id', ', lastmodified_date = ', 'NEW.lastmodified_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'tax_group_id', OLD.tax_group_id, NEW.tax_group_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'tax_component_id', OLD.tax_component_id, NEW.tax_component_id);
@@ -10528,7 +10528,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_tellers');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_tellers', CONCAT('DELETE FROM m_tellers WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'debit_account_id', OLD.debit_account_id, NULL);
@@ -10548,7 +10548,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_tellers');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_tellers', CONCAT('INSERT INTO m_tellers(id, office_id, debit_account_id, credit_account_id, name, description, valid_from, valid_to, state) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.office_id, '\'', ',', '\'', NEW.debit_account_id, '\'', ',', '\'', NEW.credit_account_id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.valid_from, '\'', ',', '\'', NEW.valid_to, '\'', ',', '\'', NEW.state, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'office_id', NEW.office_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'debit_account_id', NEW.debit_account_id, NULL);
@@ -10568,7 +10568,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_tellers');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_tellers', CONCAT('UPDATE m_tellers SET id = ', 'NEW.id', ', office_id = ', 'NEW.office_id', ', debit_account_id = ', 'NEW.debit_account_id', ', credit_account_id = ', 'NEW.credit_account_id', ', name = ', 'NEW.name', ', description = ', 'NEW.description', ', valid_from = ', 'NEW.valid_from', ', valid_to = ', 'NEW.valid_to', ', state = ', 'NEW.state', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'office_id', OLD.office_id, NEW.office_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'debit_account_id', OLD.debit_account_id, NEW.debit_account_id);
@@ -10588,7 +10588,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_template');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_template', CONCAT('DELETE FROM m_template WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'text', OLD.text, NULL);
@@ -10604,7 +10604,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_template');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_template', CONCAT('INSERT INTO m_template(id, name, text, entity, type) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.text, '\'', ',', '\'', NEW.entity, '\'', ',', '\'', NEW.type, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'text', NEW.text, NULL);
@@ -10620,7 +10620,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_template');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_template', CONCAT('UPDATE m_template SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', text = ', 'NEW.text', ', entity = ', 'NEW.entity', ', type = ', 'NEW.type', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'text', OLD.text, NEW.text);
@@ -10636,7 +10636,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_template_m_templatemappers');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_template_m_templatemappers', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'm_template_id', OLD.m_template_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'mappers_id', OLD.mappers_id, NULL);
   END;
@@ -10649,7 +10649,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_template_m_templatemappers');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_template_m_templatemappers', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'm_template_id', NEW.m_template_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'mappers_id', NEW.mappers_id, NULL);
   END;
@@ -10662,7 +10662,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_template_m_templatemappers');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_template_m_templatemappers', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'm_template_id', OLD.m_template_id, NEW.m_template_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'mappers_id', OLD.mappers_id, NEW.mappers_id);
   END;
@@ -10675,7 +10675,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_templatemappers');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_templatemappers', CONCAT('DELETE FROM m_templatemappers WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'mapperkey', OLD.mapperkey, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'mapperorder', OLD.mapperorder, NULL);
@@ -10690,7 +10690,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_templatemappers');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_templatemappers', CONCAT('INSERT INTO m_templatemappers(id, mapperkey, mapperorder, mappervalue) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.mapperkey, '\'', ',', '\'', NEW.mapperorder, '\'', ',', '\'', NEW.mappervalue, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'mapperkey', NEW.mapperkey, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'mapperorder', NEW.mapperorder, NULL);
@@ -10705,7 +10705,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_templatemappers');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_templatemappers', CONCAT('UPDATE m_templatemappers SET id = ', 'NEW.id', ', mapperkey = ', 'NEW.mapperkey', ', mapperorder = ', 'NEW.mapperorder', ', mappervalue = ', 'NEW.mappervalue', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'mapperkey', OLD.mapperkey, NEW.mapperkey);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'mapperorder', OLD.mapperorder, NEW.mapperorder);
@@ -10720,7 +10720,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'm_working_days');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'm_working_days', CONCAT('DELETE FROM m_working_days WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'recurrence', OLD.recurrence, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'repayment_rescheduling_enum', OLD.repayment_rescheduling_enum, NULL);
@@ -10736,7 +10736,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'm_working_days');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'm_working_days', CONCAT('INSERT INTO m_working_days(id, recurrence, repayment_rescheduling_enum, extend_term_daily_repayments, extend_term_holiday_repayment) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.recurrence, '\'', ',', '\'', NEW.repayment_rescheduling_enum, '\'', ',', '\'', NEW.extend_term_daily_repayments, '\'', ',', '\'', NEW.extend_term_holiday_repayment, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'recurrence', NEW.recurrence, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'repayment_rescheduling_enum', NEW.repayment_rescheduling_enum, NULL);
@@ -10752,7 +10752,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'm_working_days');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'm_working_days', CONCAT('UPDATE m_working_days SET id = ', 'NEW.id', ', recurrence = ', 'NEW.recurrence', ', repayment_rescheduling_enum = ', 'NEW.repayment_rescheduling_enum', ', extend_term_daily_repayments = ', 'NEW.extend_term_daily_repayments', ', extend_term_holiday_repayment = ', 'NEW.extend_term_holiday_repayment', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'recurrence', OLD.recurrence, NEW.recurrence);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'repayment_rescheduling_enum', OLD.repayment_rescheduling_enum, NEW.repayment_rescheduling_enum);
@@ -10768,7 +10768,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'mix_taxonomy');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'mix_taxonomy', CONCAT('DELETE FROM mix_taxonomy WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'namespace_id', OLD.namespace_id, NULL);
@@ -10786,7 +10786,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'mix_taxonomy');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'mix_taxonomy', CONCAT('INSERT INTO mix_taxonomy(id, name, namespace_id, dimension, type, description, need_mapping) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.namespace_id, '\'', ',', '\'', NEW.dimension, '\'', ',', '\'', NEW.type, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.need_mapping, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'namespace_id', NEW.namespace_id, NULL);
@@ -10804,7 +10804,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'mix_taxonomy');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'mix_taxonomy', CONCAT('UPDATE mix_taxonomy SET id = ', 'NEW.id', ', name = ', 'NEW.name', ', namespace_id = ', 'NEW.namespace_id', ', dimension = ', 'NEW.dimension', ', type = ', 'NEW.type', ', description = ', 'NEW.description', ', need_mapping = ', 'NEW.need_mapping', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'namespace_id', OLD.namespace_id, NEW.namespace_id);
@@ -10822,7 +10822,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'mix_taxonomy_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'mix_taxonomy_mapping', CONCAT('DELETE FROM mix_taxonomy_mapping WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'identifier', OLD.identifier, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'config', OLD.config, NULL);
@@ -10838,7 +10838,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'mix_taxonomy_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'mix_taxonomy_mapping', CONCAT('INSERT INTO mix_taxonomy_mapping(id, identifier, config, last_update_date, currency) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.identifier, '\'', ',', '\'', NEW.config, '\'', ',', '\'', NEW.last_update_date, '\'', ',', '\'', NEW.currency, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'identifier', NEW.identifier, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'config', NEW.config, NULL);
@@ -10854,7 +10854,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'mix_taxonomy_mapping');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'mix_taxonomy_mapping', CONCAT('UPDATE mix_taxonomy_mapping SET id = ', 'NEW.id', ', identifier = ', 'NEW.identifier', ', config = ', 'NEW.config', ', last_update_date = ', 'NEW.last_update_date', ', currency = ', 'NEW.currency', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'identifier', OLD.identifier, NEW.identifier);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'config', OLD.config, NEW.config);
@@ -10870,7 +10870,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'mix_xbrl_namespace');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'mix_xbrl_namespace', CONCAT('DELETE FROM mix_xbrl_namespace WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'prefix', OLD.prefix, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'url', OLD.url, NULL);
@@ -10884,7 +10884,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'mix_xbrl_namespace');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'mix_xbrl_namespace', CONCAT('INSERT INTO mix_xbrl_namespace(id, prefix, url) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.prefix, '\'', ',', '\'', NEW.url, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'prefix', NEW.prefix, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'url', NEW.url, NULL);
@@ -10898,7 +10898,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'mix_xbrl_namespace');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'mix_xbrl_namespace', CONCAT('UPDATE mix_xbrl_namespace SET id = ', 'NEW.id', ', prefix = ', 'NEW.prefix', ', url = ', 'NEW.url', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'prefix', OLD.prefix, NEW.prefix);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'url', OLD.url, NEW.url);
@@ -10912,7 +10912,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'notification_generator');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'notification_generator', CONCAT('DELETE FROM notification_generator WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'object_type', OLD.object_type, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'object_identifier', OLD.object_identifier, NULL);
@@ -10931,7 +10931,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'notification_generator');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'notification_generator', CONCAT('INSERT INTO notification_generator(id, object_type, object_identifier, action, actor, is_system_generated, notification_content, created_at) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.object_type, '\'', ',', '\'', NEW.object_identifier, '\'', ',', '\'', NEW.action, '\'', ',', '\'', NEW.actor, '\'', ',', '\'', NEW.is_system_generated, '\'', ',', '\'', NEW.notification_content, '\'', ',', '\'', NEW.created_at, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'object_type', NEW.object_type, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'object_identifier', NEW.object_identifier, NULL);
@@ -10950,7 +10950,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'notification_generator');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'notification_generator', CONCAT('UPDATE notification_generator SET id = ', 'NEW.id', ', object_type = ', 'NEW.object_type', ', object_identifier = ', 'NEW.object_identifier', ', action = ', 'NEW.action', ', actor = ', 'NEW.actor', ', is_system_generated = ', 'NEW.is_system_generated', ', notification_content = ', 'NEW.notification_content', ', created_at = ', 'NEW.created_at', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'object_type', OLD.object_type, NEW.object_type);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'object_identifier', OLD.object_identifier, NEW.object_identifier);
@@ -10969,7 +10969,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'notification_mapper');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'notification_mapper', CONCAT('DELETE FROM notification_mapper WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'notification_id', OLD.notification_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'user_id', OLD.user_id, NULL);
@@ -10985,7 +10985,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'notification_mapper');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'notification_mapper', CONCAT('INSERT INTO notification_mapper(id, notification_id, user_id, is_read, created_at) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.notification_id, '\'', ',', '\'', NEW.user_id, '\'', ',', '\'', NEW.is_read, '\'', ',', '\'', NEW.created_at, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'notification_id', NEW.notification_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'user_id', NEW.user_id, NULL);
@@ -11001,7 +11001,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'notification_mapper');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'notification_mapper', CONCAT('UPDATE notification_mapper SET id = ', 'NEW.id', ', notification_id = ', 'NEW.notification_id', ', user_id = ', 'NEW.user_id', ', is_read = ', 'NEW.is_read', ', created_at = ', 'NEW.created_at', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'notification_id', OLD.notification_id, NEW.notification_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'user_id', OLD.user_id, NEW.user_id);
@@ -11017,7 +11017,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'oauth_access_token');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'oauth_access_token', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'token_id', OLD.token_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'token', OLD.token, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'authentication_id', OLD.authentication_id, NULL);
@@ -11035,7 +11035,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'oauth_access_token');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'oauth_access_token', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'token_id', NEW.token_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'token', NEW.token, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'authentication_id', NEW.authentication_id, NULL);
@@ -11053,7 +11053,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'oauth_access_token');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'oauth_access_token', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'token_id', OLD.token_id, NEW.token_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'token', OLD.token, NEW.token);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'authentication_id', OLD.authentication_id, NEW.authentication_id);
@@ -11071,7 +11071,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'oauth_client_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'oauth_client_details', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'resource_ids', OLD.resource_ids, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_secret', OLD.client_secret, NULL);
@@ -11093,7 +11093,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'oauth_client_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'oauth_client_details', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_id', NEW.client_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'resource_ids', NEW.resource_ids, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_secret', NEW.client_secret, NULL);
@@ -11115,7 +11115,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'oauth_client_details');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'oauth_client_details', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NEW.client_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'resource_ids', OLD.resource_ids, NEW.resource_ids);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_secret', OLD.client_secret, NEW.client_secret);
@@ -11137,7 +11137,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'oauth_refresh_token');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'oauth_refresh_token', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'token_id', OLD.token_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'token', OLD.token, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'authentication', OLD.authentication, NULL);
@@ -11151,7 +11151,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'oauth_refresh_token');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'oauth_refresh_token', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'token_id', NEW.token_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'token', NEW.token, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'authentication', NEW.authentication, NULL);
@@ -11165,7 +11165,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'oauth_refresh_token');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'oauth_refresh_token', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'token_id', OLD.token_id, NEW.token_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'token', OLD.token, NEW.token);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'authentication', OLD.authentication, NEW.authentication);
@@ -11179,7 +11179,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'ppi_likelihoods');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'ppi_likelihoods', CONCAT('DELETE FROM ppi_likelihoods WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code', OLD.code, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
@@ -11193,7 +11193,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'ppi_likelihoods');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'ppi_likelihoods', CONCAT('INSERT INTO ppi_likelihoods(id, code, name) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.code, '\'', ',', '\'', NEW.name, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'code', NEW.code, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
@@ -11207,7 +11207,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'ppi_likelihoods');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'ppi_likelihoods', CONCAT('UPDATE ppi_likelihoods SET id = ', 'NEW.id', ', code = ', 'NEW.code', ', name = ', 'NEW.name', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code', OLD.code, NEW.code);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
@@ -11221,7 +11221,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'ppi_likelihoods_ppi');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'ppi_likelihoods_ppi', CONCAT('DELETE FROM ppi_likelihoods_ppi WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'likelihood_id', OLD.likelihood_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'ppi_name', OLD.ppi_name, NULL);
@@ -11236,7 +11236,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'ppi_likelihoods_ppi');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'ppi_likelihoods_ppi', CONCAT('INSERT INTO ppi_likelihoods_ppi(id, likelihood_id, ppi_name, enabled) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.likelihood_id, '\'', ',', '\'', NEW.ppi_name, '\'', ',', '\'', NEW.enabled, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'likelihood_id', NEW.likelihood_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'ppi_name', NEW.ppi_name, NULL);
@@ -11251,7 +11251,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'ppi_likelihoods_ppi');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'ppi_likelihoods_ppi', CONCAT('UPDATE ppi_likelihoods_ppi SET id = ', 'NEW.id', ', likelihood_id = ', 'NEW.likelihood_id', ', ppi_name = ', 'NEW.ppi_name', ', enabled = ', 'NEW.enabled', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'likelihood_id', OLD.likelihood_id, NEW.likelihood_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'ppi_name', OLD.ppi_name, NEW.ppi_name);
@@ -11266,7 +11266,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'ppi_scores');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'ppi_scores', CONCAT('DELETE FROM ppi_scores WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'score_from', OLD.score_from, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'score_to', OLD.score_to, NULL);
@@ -11280,7 +11280,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'ppi_scores');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'ppi_scores', CONCAT('INSERT INTO ppi_scores(id, score_from, score_to) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.score_from, '\'', ',', '\'', NEW.score_to, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'score_from', NEW.score_from, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'score_to', NEW.score_to, NULL);
@@ -11294,7 +11294,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'ppi_scores');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'ppi_scores', CONCAT('UPDATE ppi_scores SET id = ', 'NEW.id', ', score_from = ', 'NEW.score_from', ', score_to = ', 'NEW.score_to', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'score_from', OLD.score_from, NEW.score_from);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'score_to', OLD.score_to, NEW.score_to);
@@ -11308,7 +11308,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'r_enum_value');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'r_enum_value', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'enum_name', OLD.enum_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'enum_id', OLD.enum_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'enum_message_property', OLD.enum_message_property, NULL);
@@ -11324,7 +11324,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'r_enum_value');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'r_enum_value', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'enum_name', NEW.enum_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'enum_id', NEW.enum_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'enum_message_property', NEW.enum_message_property, NULL);
@@ -11340,7 +11340,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'r_enum_value');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'r_enum_value', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'enum_name', OLD.enum_name, NEW.enum_name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'enum_id', OLD.enum_id, NEW.enum_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'enum_message_property', OLD.enum_message_property, NEW.enum_message_property);
@@ -11356,7 +11356,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'ref_loan_transaction_processing_strategy');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'ref_loan_transaction_processing_strategy', CONCAT('DELETE FROM ref_loan_transaction_processing_strategy WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code', OLD.code, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NULL);
@@ -11371,7 +11371,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'ref_loan_transaction_processing_strategy');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'ref_loan_transaction_processing_strategy', CONCAT('INSERT INTO ref_loan_transaction_processing_strategy(id, code, name, sort_order) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.code, '\'', ',', '\'', NEW.name, '\'', ',', '\'', NEW.sort_order, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'code', NEW.code, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'name', NEW.name, NULL);
@@ -11386,7 +11386,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'ref_loan_transaction_processing_strategy');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'ref_loan_transaction_processing_strategy', CONCAT('UPDATE ref_loan_transaction_processing_strategy SET id = ', 'NEW.id', ', code = ', 'NEW.code', ', name = ', 'NEW.name', ', sort_order = ', 'NEW.sort_order', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code', OLD.code, NEW.code);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'name', OLD.name, NEW.name);
@@ -11401,7 +11401,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'request_audit_table');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'request_audit_table', CONCAT('DELETE FROM request_audit_table WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'lastname', OLD.lastname, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'username', OLD.username, NULL);
@@ -11423,7 +11423,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'request_audit_table');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'request_audit_table', CONCAT('INSERT INTO request_audit_table(id, lastname, username, mobile_number, firstname, authentication_token, password, email, client_id, created_date, account_number) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.lastname, '\'', ',', '\'', NEW.username, '\'', ',', '\'', NEW.mobile_number, '\'', ',', '\'', NEW.firstname, '\'', ',', '\'', NEW.authentication_token, '\'', ',', '\'', NEW.password, '\'', ',', '\'', NEW.email, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.created_date, '\'', ',', '\'', NEW.account_number, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'lastname', NEW.lastname, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'username', NEW.username, NULL);
@@ -11445,7 +11445,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'request_audit_table');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'request_audit_table', CONCAT('UPDATE request_audit_table SET id = ', 'NEW.id', ', lastname = ', 'NEW.lastname', ', username = ', 'NEW.username', ', mobile_number = ', 'NEW.mobile_number', ', firstname = ', 'NEW.firstname', ', authentication_token = ', 'NEW.authentication_token', ', password = ', 'NEW.password', ', email = ', 'NEW.email', ', client_id = ', 'NEW.client_id', ', created_date = ', 'NEW.created_date', ', account_number = ', 'NEW.account_number', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'lastname', OLD.lastname, NEW.lastname);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'username', OLD.username, NEW.username);
@@ -11467,7 +11467,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'rpt_sequence');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'rpt_sequence', CONCAT('DELETE FROM rpt_sequence WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
   END;
 DROP TRIGGER IF EXISTS rpt_sequence_i;
@@ -11479,7 +11479,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'rpt_sequence');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'rpt_sequence', CONCAT('INSERT INTO rpt_sequence(id) VALUES(', '\'', NEW.id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
   END;
 DROP TRIGGER IF EXISTS rpt_sequence_u;
@@ -11491,7 +11491,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'rpt_sequence');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'rpt_sequence', CONCAT('UPDATE rpt_sequence SET id = ', 'NEW.id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
   END;
 DROP TRIGGER IF EXISTS scheduler_detail_d;
@@ -11503,7 +11503,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'scheduler_detail');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'scheduler_detail', CONCAT('DELETE FROM scheduler_detail WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'is_suspended', OLD.is_suspended, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'execute_misfired_jobs', OLD.execute_misfired_jobs, NULL);
@@ -11518,7 +11518,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'scheduler_detail');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'scheduler_detail', CONCAT('INSERT INTO scheduler_detail(id, is_suspended, execute_misfired_jobs, reset_scheduler_on_bootup) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.is_suspended, '\'', ',', '\'', NEW.execute_misfired_jobs, '\'', ',', '\'', NEW.reset_scheduler_on_bootup, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'is_suspended', NEW.is_suspended, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'execute_misfired_jobs', NEW.execute_misfired_jobs, NULL);
@@ -11533,7 +11533,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'scheduler_detail');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'scheduler_detail', CONCAT('UPDATE scheduler_detail SET id = ', 'NEW.id', ', is_suspended = ', 'NEW.is_suspended', ', execute_misfired_jobs = ', 'NEW.execute_misfired_jobs', ', reset_scheduler_on_bootup = ', 'NEW.reset_scheduler_on_bootup', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'is_suspended', OLD.is_suspended, NEW.is_suspended);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'execute_misfired_jobs', OLD.execute_misfired_jobs, NEW.execute_misfired_jobs);
@@ -11548,7 +11548,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'schema_version');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'schema_version', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'version_rank', OLD.version_rank, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'installed_rank', OLD.installed_rank, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'version', OLD.version, NULL);
@@ -11570,7 +11570,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'schema_version');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'schema_version', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'version_rank', NEW.version_rank, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'installed_rank', NEW.installed_rank, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'version', NEW.version, NULL);
@@ -11592,7 +11592,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'schema_version');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'schema_version', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'version_rank', OLD.version_rank, NEW.version_rank);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'installed_rank', OLD.installed_rank, NEW.installed_rank);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'version', OLD.version, NEW.version);
@@ -11614,7 +11614,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'sms_campaign');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'sms_campaign', CONCAT('DELETE FROM sms_campaign WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'campaign_name', OLD.campaign_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'campaign_type', OLD.campaign_type, NULL);
@@ -11645,7 +11645,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'sms_campaign');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'sms_campaign', CONCAT('INSERT INTO sms_campaign(id, campaign_name, campaign_type, campaign_trigger_type, report_id, provider_id, param_value, status_enum, message, submittedon_date, submittedon_userid, approvedon_date, approvedon_userid, closedon_date, closedon_userid, recurrence, next_trigger_date, last_trigger_date, recurrence_start_date, is_visible) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.campaign_name, '\'', ',', '\'', NEW.campaign_type, '\'', ',', '\'', NEW.campaign_trigger_type, '\'', ',', '\'', NEW.report_id, '\'', ',', '\'', NEW.provider_id, '\'', ',', '\'', NEW.param_value, '\'', ',', '\'', NEW.status_enum, '\'', ',', '\'', NEW.message, '\'', ',', '\'', NEW.submittedon_date, '\'', ',', '\'', NEW.submittedon_userid, '\'', ',', '\'', NEW.approvedon_date, '\'', ',', '\'', NEW.approvedon_userid, '\'', ',', '\'', NEW.closedon_date, '\'', ',', '\'', NEW.closedon_userid, '\'', ',', '\'', NEW.recurrence, '\'', ',', '\'', NEW.next_trigger_date, '\'', ',', '\'', NEW.last_trigger_date, '\'', ',', '\'', NEW.recurrence_start_date, '\'', ',', '\'', NEW.is_visible, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'campaign_name', NEW.campaign_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'campaign_type', NEW.campaign_type, NULL);
@@ -11676,7 +11676,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'sms_campaign');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'sms_campaign', CONCAT('UPDATE sms_campaign SET id = ', 'NEW.id', ', campaign_name = ', 'NEW.campaign_name', ', campaign_type = ', 'NEW.campaign_type', ', campaign_trigger_type = ', 'NEW.campaign_trigger_type', ', report_id = ', 'NEW.report_id', ', provider_id = ', 'NEW.provider_id', ', param_value = ', 'NEW.param_value', ', status_enum = ', 'NEW.status_enum', ', message = ', 'NEW.message', ', submittedon_date = ', 'NEW.submittedon_date', ', submittedon_userid = ', 'NEW.submittedon_userid', ', approvedon_date = ', 'NEW.approvedon_date', ', approvedon_userid = ', 'NEW.approvedon_userid', ', closedon_date = ', 'NEW.closedon_date', ', closedon_userid = ', 'NEW.closedon_userid', ', recurrence = ', 'NEW.recurrence', ', next_trigger_date = ', 'NEW.next_trigger_date', ', last_trigger_date = ', 'NEW.last_trigger_date', ', recurrence_start_date = ', 'NEW.recurrence_start_date', ', is_visible = ', 'NEW.is_visible', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'campaign_name', OLD.campaign_name, NEW.campaign_name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'campaign_type', OLD.campaign_type, NEW.campaign_type);
@@ -11707,7 +11707,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'sms_messages_outbound');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'sms_messages_outbound', CONCAT('DELETE FROM sms_messages_outbound WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'group_id', OLD.group_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NULL);
@@ -11729,7 +11729,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'sms_messages_outbound');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'sms_messages_outbound', CONCAT('INSERT INTO sms_messages_outbound(id, group_id, client_id, staff_id, status_enum, mobile_no, message, campaign_id, external_id, submittedon_date, delivered_on_date) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.group_id, '\'', ',', '\'', NEW.client_id, '\'', ',', '\'', NEW.staff_id, '\'', ',', '\'', NEW.status_enum, '\'', ',', '\'', NEW.mobile_no, '\'', ',', '\'', NEW.message, '\'', ',', '\'', NEW.campaign_id, '\'', ',', '\'', NEW.external_id, '\'', ',', '\'', NEW.submittedon_date, '\'', ',', '\'', NEW.delivered_on_date, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'group_id', NEW.group_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'client_id', NEW.client_id, NULL);
@@ -11751,7 +11751,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'sms_messages_outbound');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'sms_messages_outbound', CONCAT('UPDATE sms_messages_outbound SET id = ', 'NEW.id', ', group_id = ', 'NEW.group_id', ', client_id = ', 'NEW.client_id', ', staff_id = ', 'NEW.staff_id', ', status_enum = ', 'NEW.status_enum', ', mobile_no = ', 'NEW.mobile_no', ', message = ', 'NEW.message', ', campaign_id = ', 'NEW.campaign_id', ', external_id = ', 'NEW.external_id', ', submittedon_date = ', 'NEW.submittedon_date', ', delivered_on_date = ', 'NEW.delivered_on_date', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'group_id', OLD.group_id, NEW.group_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'client_id', OLD.client_id, NEW.client_id);
@@ -11773,7 +11773,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'stretchy_parameter');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'stretchy_parameter', CONCAT('DELETE FROM stretchy_parameter WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parameter_name', OLD.parameter_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parameter_variable', OLD.parameter_variable, NULL);
@@ -11796,7 +11796,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'stretchy_parameter');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'stretchy_parameter', CONCAT('INSERT INTO stretchy_parameter(id, parameter_name, parameter_variable, parameter_label, parameter_displayType, parameter_FormatType, parameter_default, special, selectOne, selectAll, parameter_sql, parent_id) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.parameter_name, '\'', ',', '\'', NEW.parameter_variable, '\'', ',', '\'', NEW.parameter_label, '\'', ',', '\'', NEW.parameter_displayType, '\'', ',', '\'', NEW.parameter_FormatType, '\'', ',', '\'', NEW.parameter_default, '\'', ',', '\'', NEW.special, '\'', ',', '\'', NEW.selectOne, '\'', ',', '\'', NEW.selectAll, '\'', ',', '\'', NEW.parameter_sql, '\'', ',', '\'', NEW.parent_id, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'parameter_name', NEW.parameter_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'parameter_variable', NEW.parameter_variable, NULL);
@@ -11819,7 +11819,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'stretchy_parameter');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'stretchy_parameter', CONCAT('UPDATE stretchy_parameter SET id = ', 'NEW.id', ', parameter_name = ', 'NEW.parameter_name', ', parameter_variable = ', 'NEW.parameter_variable', ', parameter_label = ', 'NEW.parameter_label', ', parameter_displayType = ', 'NEW.parameter_displayType', ', parameter_FormatType = ', 'NEW.parameter_FormatType', ', parameter_default = ', 'NEW.parameter_default', ', special = ', 'NEW.special', ', selectOne = ', 'NEW.selectOne', ', selectAll = ', 'NEW.selectAll', ', parameter_sql = ', 'NEW.parameter_sql', ', parent_id = ', 'NEW.parent_id', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parameter_name', OLD.parameter_name, NEW.parameter_name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parameter_variable', OLD.parameter_variable, NEW.parameter_variable);
@@ -11842,7 +11842,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'stretchy_report');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'stretchy_report', CONCAT('DELETE FROM stretchy_report WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'report_name', OLD.report_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'report_type', OLD.report_type, NULL);
@@ -11862,7 +11862,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'stretchy_report');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'stretchy_report', CONCAT('INSERT INTO stretchy_report(id, report_name, report_type, report_subtype, report_category, report_sql, description, core_report, use_report) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.report_name, '\'', ',', '\'', NEW.report_type, '\'', ',', '\'', NEW.report_subtype, '\'', ',', '\'', NEW.report_category, '\'', ',', '\'', NEW.report_sql, '\'', ',', '\'', NEW.description, '\'', ',', '\'', NEW.core_report, '\'', ',', '\'', NEW.use_report, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'report_name', NEW.report_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'report_type', NEW.report_type, NULL);
@@ -11882,7 +11882,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'stretchy_report');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'stretchy_report', CONCAT('UPDATE stretchy_report SET id = ', 'NEW.id', ', report_name = ', 'NEW.report_name', ', report_type = ', 'NEW.report_type', ', report_subtype = ', 'NEW.report_subtype', ', report_category = ', 'NEW.report_category', ', report_sql = ', 'NEW.report_sql', ', description = ', 'NEW.description', ', core_report = ', 'NEW.core_report', ', use_report = ', 'NEW.use_report', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'report_name', OLD.report_name, NEW.report_name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'report_type', OLD.report_type, NEW.report_type);
@@ -11902,7 +11902,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'stretchy_report_parameter');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'stretchy_report_parameter', CONCAT('DELETE FROM stretchy_report_parameter WHERE id = ', OLD.id));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'report_id', OLD.report_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parameter_id', OLD.parameter_id, NULL);
@@ -11917,7 +11917,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'stretchy_report_parameter');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'stretchy_report_parameter', CONCAT('INSERT INTO stretchy_report_parameter(id, report_id, parameter_id, report_parameter_name) VALUES(', '\'', NEW.id, '\'', ',', '\'', NEW.report_id, '\'', ',', '\'', NEW.parameter_id, '\'', ',', '\'', NEW.report_parameter_name, '\'', ')'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'id', NEW.id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'report_id', NEW.report_id, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'parameter_id', NEW.parameter_id, NULL);
@@ -11932,7 +11932,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'stretchy_report_parameter');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'stretchy_report_parameter', CONCAT('UPDATE stretchy_report_parameter SET id = ', 'NEW.id', ', report_id = ', 'NEW.report_id', ', parameter_id = ', 'NEW.parameter_id', ', report_parameter_name = ', 'NEW.report_parameter_name', ' WHERE id = NEW.id'));
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'id', OLD.id, NEW.id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'report_id', OLD.report_id, NEW.report_id);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'parameter_id', OLD.parameter_id, NEW.parameter_id);
@@ -11947,7 +11947,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'x_registered_table');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'x_registered_table', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'registered_table_name', OLD.registered_table_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'application_table_name', OLD.application_table_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'category', OLD.category, NULL);
@@ -11961,7 +11961,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'x_registered_table');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'x_registered_table', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'registered_table_name', NEW.registered_table_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'application_table_name', NEW.application_table_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'category', NEW.category, NULL);
@@ -11975,7 +11975,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'x_registered_table');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'x_registered_table', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'registered_table_name', OLD.registered_table_name, NEW.registered_table_name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'application_table_name', OLD.application_table_name, NEW.application_table_name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'category', OLD.category, NEW.category);
@@ -11989,7 +11989,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'DELETE', 'x_table_column_code_mappings');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', 'x_table_column_code_mappings', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'column_alias_name', OLD.column_alias_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code_id', OLD.code_id, NULL);
   END;
@@ -12002,7 +12002,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'INSERT', 'x_table_column_code_mappings');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'INSERT', 'x_table_column_code_mappings', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'column_alias_name', NEW.column_alias_name, NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, after_value, before_value) VALUES (uuid(), _id, 'code_id', NEW.code_id, NULL);
   END;
@@ -12015,7 +12015,7 @@ EACH ROW
   BEGIN
     DECLARE _id VARCHAR(100);
     SELECT uuid() INTO _id FROM dual;
-    INSERT INTO tbl_audit (id, log_date, log_event, log_table) VALUES (_id, now(), 'UPDATE', 'x_table_column_code_mappings');
+    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', 'x_table_column_code_mappings', NULL);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'column_alias_name', OLD.column_alias_name, NEW.column_alias_name);
     INSERT INTO tbl_audit_value (id, audit_id, field_name, before_value, after_value) VALUES (uuid(), _id, 'code_id', OLD.code_id, NEW.code_id);
   END;

@@ -1,8 +1,9 @@
 CREATE TABLE `tbl_audit` (
   `id` varchar(100) NOT NULL,
-  `log_date` datetime DEFAULT NULL,
-  `log_event` varchar(20) DEFAULT NULL,
-  `log_table` varchar(100) DEFAULT NULL,
+  `log_date` datetime NOT NULL,
+  `log_event` varchar(20) NOT NULL,
+  `log_table` varchar(100) NOT NULL,
+  `log_script` TEXT,
   PRIMARY KEY (`id`),
   KEY `tbl_audit_001` (`log_date`),
   KEY `tbl_audit_002` (`log_event`),
