@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
@@ -30,6 +31,7 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
@@ -54,52 +56,56 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class DataTableCreatePage extends Page {
 
-    private Form<Void> tableForm;
-    private Button createButton;
+    protected Form<Void> tableForm;
+    protected Button createButton;
 
-    private String dataTableValue;
-    private TextField<String> dataTableField;
-    private TextFeedbackPanel dataTableFeedback;
+    protected String dataTableValue;
+    protected TextField<String> dataTableField;
+    protected TextFeedbackPanel dataTableFeedback;
 
-    private Boolean multiRowValue;
-    private CheckBox multiRowField;
-    private TextFeedbackPanel multiRowFeedback;
+    protected Boolean multiRowValue;
+    protected CheckBox multiRowField;
+    protected TextFeedbackPanel multiRowFeedback;
 
-    private AppTableOptionProvider appTableProvider;
-    private Option appTableValue;
-    private Select2SingleChoice<Option> appTableField;
-    private TextFeedbackPanel appTableFeedback;
+    protected AppTableOptionProvider appTableProvider;
+    protected Option appTableValue;
+    protected Select2SingleChoice<Option> appTableField;
+    protected TextFeedbackPanel appTableFeedback;
 
-    private Form<Void> columnForm;
-    private AjaxButton addButton;
+    protected Form<Void> columnForm;
+    protected AjaxButton addButton;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private Integer lengthValue;
-    private TextField<Integer> lengthField;
-    private TextFeedbackPanel lengthFeedback;
+    protected WebMarkupContainer lengthBlock;
+    protected WebMarkupContainer lengthContainer;
+    protected Integer lengthValue;
+    protected TextField<Integer> lengthField;
+    protected TextFeedbackPanel lengthFeedback;
 
-    private Boolean mandatoryValue;
-    private CheckBox mandatoryField;
-    private TextFeedbackPanel mandatoryFeedback;
+    protected Boolean mandatoryValue;
+    protected CheckBox mandatoryField;
+    protected TextFeedbackPanel mandatoryFeedback;
 
-    private ColumnTypeOptionProvider typeProvider;
-    private Option typeValue;
-    private Select2SingleChoice<Option> typeField;
-    private TextFeedbackPanel typeFeedback;
+    protected WebMarkupContainer codeBlock;
+    protected WebMarkupContainer codeContainer;
+    protected ColumnTypeOptionProvider typeProvider;
+    protected Option typeValue;
+    protected Select2SingleChoice<Option> typeField;
+    protected TextFeedbackPanel typeFeedback;
 
-    private SingleChoiceProvider codeProvider;
-    private Option codeValue;
-    private Select2SingleChoice<Option> codeField;
-    private TextFeedbackPanel codeFeedback;
+    protected SingleChoiceProvider codeProvider;
+    protected Option codeValue;
+    protected Select2SingleChoice<Option> codeField;
+    protected TextFeedbackPanel codeFeedback;
 
-    private List<Map<String, Object>> columnValue;
-    private DataTable<Map<String, Object>, String> columnTable;
-    private ListDataProvider columnProvider;
+    protected List<Map<String, Object>> columnValue;
+    protected DataTable<Map<String, Object>, String> columnTable;
+    protected ListDataProvider columnProvider;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -145,10 +151,15 @@ public class DataTableCreatePage extends Page {
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
         this.columnForm.add(this.nameFeedback);
 
+        this.lengthBlock = new WebMarkupContainer("lengthBlock");
+        this.lengthBlock.setOutputMarkupId(true);
+        this.columnForm.add(this.lengthBlock);
+        this.lengthContainer = new WebMarkupContainer("lengthContainer");
+        this.lengthBlock.add(this.lengthContainer);
         this.lengthField = new TextField<>("lengthField", new PropertyModel<>(this, "lengthValue"));
-        this.columnForm.add(this.lengthField);
+        this.lengthContainer.add(this.lengthField);
         this.lengthFeedback = new TextFeedbackPanel("lengthFeedback", this.lengthField);
-        this.columnForm.add(this.lengthFeedback);
+        this.lengthContainer.add(this.lengthFeedback);
 
         this.mandatoryField = new CheckBox("mandatoryField", new PropertyModel<>(this, "mandatoryValue"));
         this.mandatoryField.setRequired(true);
@@ -158,16 +169,22 @@ public class DataTableCreatePage extends Page {
 
         this.typeProvider = new ColumnTypeOptionProvider();
         this.typeField = new Select2SingleChoice<>("typeField", 0, new PropertyModel<>(this, "typeValue"), this.typeProvider);
+        this.typeField.add(new OnChangeAjaxBehavior(this::typeFieldUpdate));
         this.typeField.setRequired(true);
         this.columnForm.add(this.typeField);
         this.typeFeedback = new TextFeedbackPanel("typeFeedback", this.typeField);
         this.columnForm.add(this.typeFeedback);
 
+        this.codeBlock = new WebMarkupContainer("codeBlock");
+        this.codeBlock.setOutputMarkupId(true);
+        this.columnForm.add(this.codeBlock);
+        this.codeContainer = new WebMarkupContainer("codeContainer");
+        this.codeBlock.add(this.codeContainer);
         this.codeProvider = new SingleChoiceProvider("m_code", "code_name", "code_name");
         this.codeField = new Select2SingleChoice<>("codeField", 0, new PropertyModel<>(this, "codeValue"), this.codeProvider);
-        this.columnForm.add(this.codeField);
+        this.codeContainer.add(this.codeField);
         this.codeFeedback = new TextFeedbackPanel("codeFeedback", this.codeField);
-        this.columnForm.add(this.codeFeedback);
+        this.codeContainer.add(this.codeFeedback);
 
         this.addButton = new AjaxButton("addButton");
         this.addButton.setOnSubmit(this::addButtonSubmit);
@@ -213,9 +230,36 @@ public class DataTableCreatePage extends Page {
         this.tableForm.add(this.appTableField);
         this.appTableFeedback = new TextFeedbackPanel("appTableFeedback", this.appTableField);
         this.tableForm.add(this.appTableFeedback);
+
+        initDefault();
     }
 
-    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void initDefault() {
+        typeFieldUpdate(null);
+    }
+
+    protected boolean typeFieldUpdate(AjaxRequestTarget target) {
+        ColumnType columnType = null;
+        if (this.typeValue != null) {
+            columnType = ColumnType.valueOf(this.typeValue.getId());
+        }
+        boolean codeVisible = false;
+        boolean lengthVisible = false;
+        if (columnType != null) {
+            codeVisible = columnType == ColumnType.DropDown;
+            lengthVisible = columnType == ColumnType.String;
+        }
+
+        this.codeContainer.setVisible(codeVisible);
+        this.lengthContainer.setVisible(lengthVisible);
+        if (target != null) {
+            target.add(this.codeBlock);
+            target.add(this.lengthBlock);
+        }
+        return false;
+    }
+
+    protected void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.columnValue.size(); i++) {
             Map<String, Object> column = this.columnValue.get(i);
@@ -230,11 +274,11 @@ public class DataTableCreatePage extends Page {
         target.add(this.columnTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> actionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    private void createButtonSubmit(Button button) {
+    protected void createButtonSubmit(Button button) {
         DataTableBuilder builder = new DataTableBuilder();
         builder.withAppTableName(TableType.valueOf(this.appTableValue.getId()));
         builder.withDataTableName(this.dataTableValue);
@@ -297,27 +341,27 @@ public class DataTableCreatePage extends Page {
         return false;
     }
 
-    private ItemPanel codeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel codeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel typeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel typeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel lengthColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel lengthColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel mandatoryColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel mandatoryColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Boolean mandatory = (Boolean) model.get(jdbcColumn);
         if (mandatory != null && mandatory) {
             return new BadgeCell(BadgeType.Success, Model.of("Yes"));

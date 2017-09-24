@@ -27,16 +27,20 @@
                 </div>
                 <div class="clearfix"></div>
                 <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="lengthField">Length</label>
-                    <input wicket:id="lengthField" type="text" class="form-control"/>
-                    <span wicket:id="lengthFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="codeField">Code</label>
-                    <select wicket:id="codeField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="codeFeedback" class="help-block"></span>
-                </div>
+                <div wicket:id="lengthBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <wicket:container wicket:id="lengthContainer">
+	                    <label wicket:for="lengthField">Length</label>
+	                    <input wicket:id="lengthField" type="text" class="form-control"/>
+	                    <span wicket:id="lengthFeedback" class="help-block"></span>
+		            </wicket:container>
+		        </div>
+                <div wicket:id="codeBlock" class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <wicket:container wicket:id="codeContainer">
+	                    <label wicket:for="codeField">Code</label>
+	                    <select wicket:id="codeField" class="form-control select2" style="width: 100%;"></select>
+	                    <span wicket:id="codeFeedback" class="help-block"></span>
+	                </wicket:container>
+	            </div>
                 <div class="clearfix"></div>
                 <!-- Row -->
                 <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
