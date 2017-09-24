@@ -190,7 +190,7 @@ public class Trigger {
                         logScript = logScript + fieldName + " = ', " + fieldValue + ", '" + ", ";
                     }
                 }
-                logScript = logScript + "WHERE id = NEW.id')";
+                logScript = logScript + "WHERE id = ', NEW.id)";
                 if (hasId) {
                     update.append("    SELECT " + logScript + " INTO _log_script FROM dual;").append(newline);
                     update.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', '" + table + "', _log_script);").append(newline);
