@@ -1,29 +1,48 @@
 package com.angkorteam.fintech.installation;
 
-import com.angkorteam.framework.spring.JdbcTemplate;
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
-import java.io.IOException;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Properties;
+
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.io.FileUtils;
+
+import com.angkorteam.fintech.MifosDataSourceManager;
+import com.angkorteam.framework.spring.JdbcTemplate;
 
 /**
  * Created by socheatkhauv on 6/21/17.
  */
 public class Trigger {
 
-    public static void main(String[] args) throws SQLException, IOException {
+    public static void main(String[] args) throws Exception {
 
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUsername("root");
-        dataSource.setPassword("password");
-        dataSource.setUrl("jdbc:mysql://172.16.1.6:3306/mifostenant_default?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&serverTimezone=UTC");
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        File fintechFile = new File(FileUtils.getUserDirectory(), ".xml/fintech.properties.xml");
+
+        Properties properties = new Properties();
+        try (FileInputStream inputStream = FileUtils.openInputStream(fintechFile)) {
+            properties.loadFromXML(inputStream);
+        }
+        BasicDataSource platformDataSource = new BasicDataSource();
+        platformDataSource.setUsername(properties.getProperty("app.jdbc.username"));
+        platformDataSource.setPassword(properties.getProperty("app.jdbc.password"));
+        platformDataSource.setUrl(properties.getProperty("app.jdbc.url"));
+        platformDataSource.setDriverClassName(properties.getProperty("app.jdbc.driver"));
+
+        String mifosUrl = properties.getProperty("mifos.url");
+
+        MifosDataSourceManager dataSourceManager = new MifosDataSourceManager();
+        dataSourceManager.setDelegate(platformDataSource);
+        dataSourceManager.setMifosUrl(mifosUrl);
+        dataSourceManager.afterPropertiesSet();
+
+        DataSource dataSource = dataSourceManager.getDataSource("default");
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         Connection connection = dataSource.getConnection();
@@ -99,6 +118,6 @@ public class Trigger {
             resultSet.close();
         }
 
-        FileUtils.write(new File("/Users/socheatkhauv/Documents/adminlte/src/main/resources/trigger.sql"), sql.toString(), "UTF-8");
+        FileUtils.write(new File("src/test/resources/trigger.sql"), sql.toString(), "UTF-8");
     }
 }
