@@ -28,8 +28,8 @@ public class TellerStateProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (TellerState tellerState : TellerState.values()) {
-            options.add(new Option(tellerState.name(), tellerState.getDescription()));
+        for (TellerState value : TellerState.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

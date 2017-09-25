@@ -25,8 +25,8 @@ public class ChargeFrequencyProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (ChargeFrequency option : ChargeFrequency.values()) {
-            options.add(new Option(option.name(), option.getDescription()));
+        for (ChargeFrequency value : ChargeFrequency.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

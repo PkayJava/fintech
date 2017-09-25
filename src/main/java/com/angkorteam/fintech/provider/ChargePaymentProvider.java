@@ -25,8 +25,8 @@ public class ChargePaymentProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (ChargePayment option : ChargePayment.values()) {
-            options.add(new Option(option.name(), option.getDescription()));
+        for (ChargePayment value : ChargePayment.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

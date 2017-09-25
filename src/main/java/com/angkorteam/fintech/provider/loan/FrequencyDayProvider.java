@@ -28,8 +28,8 @@ public class FrequencyDayProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (FrequencyDay a : FrequencyDay.values()) {
-            options.add(new Option(a.name(), a.getDescription()));
+        for (FrequencyDay value : FrequencyDay.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

@@ -25,8 +25,8 @@ public class MinimumActivePeriodProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (MinimumActivePeriod a : MinimumActivePeriod.values()) {
-            options.add(new Option(a.name(), a.getDescription()));
+        for (MinimumActivePeriod value : MinimumActivePeriod.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

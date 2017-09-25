@@ -28,8 +28,8 @@ public class NominalInterestRateTypeProvider extends SingleChoiceProvider<Option
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (NominalInterestRateScheduleType a : NominalInterestRateScheduleType.values()) {
-            options.add(new Option(a.name(), a.getDescription()));
+        for (NominalInterestRateScheduleType value : NominalInterestRateScheduleType.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

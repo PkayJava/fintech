@@ -28,8 +28,8 @@ public class RepaidTypeProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (RepaidType a : RepaidType.values()) {
-            options.add(new Option(a.name(), a.getDescription()));
+        for (RepaidType value : RepaidType.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

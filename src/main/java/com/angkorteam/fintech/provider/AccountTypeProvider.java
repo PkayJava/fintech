@@ -28,8 +28,8 @@ public class AccountTypeProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (AccountType a : AccountType.values()) {
-            options.add(new Option(a.name(), a.getDescription()));
+        for (AccountType value : AccountType.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

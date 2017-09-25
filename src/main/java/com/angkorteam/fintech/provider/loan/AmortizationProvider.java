@@ -28,8 +28,8 @@ public class AmortizationProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (Amortization a : Amortization.values()) {
-            options.add(new Option(a.name(), a.getDescription()));
+        for (Amortization value : Amortization.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

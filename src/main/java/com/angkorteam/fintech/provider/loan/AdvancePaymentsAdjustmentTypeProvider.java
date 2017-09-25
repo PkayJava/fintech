@@ -28,8 +28,8 @@ public class AdvancePaymentsAdjustmentTypeProvider extends SingleChoiceProvider<
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (AdvancePaymentsAdjustmentType a : AdvancePaymentsAdjustmentType.values()) {
-            options.add(new Option(a.name(), a.getDescription()));
+        for (AdvancePaymentsAdjustmentType value : AdvancePaymentsAdjustmentType.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

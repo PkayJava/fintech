@@ -1,18 +1,15 @@
 package com.angkorteam.fintech.dto;
 
-/**
- * Created by socheatkhauv on 7/13/17.
- */
-public enum JournalEntry {
+public enum LegalForm {
 
-    Manual("1", "Manual Entries"),
-    System("2", "System Entries");
+    Person("1", "Person"),
+    Entity("2", "Entity");
 
     private String literal;
 
     private String description;
 
-    JournalEntry(String literal, String description) {
+    LegalForm(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }

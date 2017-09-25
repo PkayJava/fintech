@@ -28,8 +28,8 @@ public class ManualEntryProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (JournalEntry journalEntry : JournalEntry.values()) {
-            options.add(new Option(journalEntry.name(), journalEntry.getDescription()));
+        for (JournalEntry value : JournalEntry.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

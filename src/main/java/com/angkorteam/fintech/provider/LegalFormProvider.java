@@ -4,14 +4,13 @@ import java.util.List;
 
 import org.apache.wicket.model.IModel;
 
+import com.angkorteam.fintech.dto.JournalEntry;
+import com.angkorteam.fintech.dto.LegalForm;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
 
-/**
- * Created by socheatkhauv on 6/17/17.
- */
-public class LaminationProvider extends SingleChoiceProvider<Option> {
+public class LegalFormProvider extends SingleChoiceProvider<Option> {
 
     @Override
     public Option toChoice(String id) {
@@ -27,9 +26,9 @@ public class LaminationProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        options.add(new Option("None", "None"));
-        options.add(new Option("Matt", "Matt"));
-        options.add(new Option("Glossy", "Glossy"));
+        for (LegalForm value : LegalForm.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
+        }
         return options;
     }
 
@@ -57,4 +56,5 @@ public class LaminationProvider extends SingleChoiceProvider<Option> {
         }
         return null;
     }
+
 }

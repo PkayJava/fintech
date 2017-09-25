@@ -28,8 +28,8 @@ public class AppTableOptionProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (TableType type : TableType.values()) {
-            options.add(new Option(type.name(), type.getDescription()));
+        for (TableType value : TableType.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

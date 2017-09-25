@@ -28,8 +28,8 @@ public class WhenProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (WhenType a : WhenType.values()) {
-            options.add(new Option(a.name(), a.getDescription()));
+        for (WhenType value : WhenType.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

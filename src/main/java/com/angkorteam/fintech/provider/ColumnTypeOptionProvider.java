@@ -28,8 +28,8 @@ public class ColumnTypeOptionProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (ColumnType columnType : ColumnType.values()) {
-            options.add(new Option(columnType.name(), columnType.getDescription()));
+        for (ColumnType value : ColumnType.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

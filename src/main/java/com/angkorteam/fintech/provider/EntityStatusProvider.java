@@ -32,8 +32,8 @@ public class EntityStatusProvider extends SingleChoiceProvider<Option> {
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
         if (this.type != null) {
-            for (EntityStatus status : this.type.getStatus()) {
-                options.add(new Option(status.name(), status.getDescription()));
+            for (EntityStatus value : this.type.getStatus()) {
+                options.add(new Option(value.name(), value.getDescription()));
             }
         }
         return options;

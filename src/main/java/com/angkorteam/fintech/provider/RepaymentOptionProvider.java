@@ -28,8 +28,8 @@ public class RepaymentOptionProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (RepaymentOption repayment : RepaymentOption.values()) {
-            options.add(new Option(repayment.name(), repayment.getDescription()));
+        for (RepaymentOption value : RepaymentOption.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

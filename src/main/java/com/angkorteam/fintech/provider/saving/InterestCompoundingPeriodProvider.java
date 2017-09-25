@@ -27,8 +27,8 @@ public class InterestCompoundingPeriodProvider extends SingleChoiceProvider<Opti
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (InterestCompoundingPeriod a : InterestCompoundingPeriod.values()) {
-            options.add(new Option(a.name(), a.getDescription()));
+        for (InterestCompoundingPeriod value : InterestCompoundingPeriod.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

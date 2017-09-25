@@ -28,8 +28,8 @@ public class FinancialActivityProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (FinancialActivityType a : FinancialActivityType.values()) {
-            options.add(new Option(a.name(), a.getDescription()));
+        for (FinancialActivityType value : FinancialActivityType.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

@@ -25,8 +25,8 @@ public class InterestPostingPeriodProvider extends SingleChoiceProvider<Option> 
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (InterestPostingPeriod a : InterestPostingPeriod.values()) {
-            options.add(new Option(a.name(), a.getDescription()));
+        for (InterestPostingPeriod value : InterestPostingPeriod.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

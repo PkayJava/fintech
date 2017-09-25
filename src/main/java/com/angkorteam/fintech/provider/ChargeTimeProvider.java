@@ -28,8 +28,8 @@ public class ChargeTimeProvider extends SingleChoiceProvider<Option> {
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
         if (this.values != null && this.values.length > 0) {
-            for (ChargeTime option : this.values) {
-                options.add(new Option(option.name(), option.getDescription()));
+            for (ChargeTime value : this.values) {
+                options.add(new Option(value.name(), value.getDescription()));
             }
         }
         return options;

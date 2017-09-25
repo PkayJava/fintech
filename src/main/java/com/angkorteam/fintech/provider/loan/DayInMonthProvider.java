@@ -28,8 +28,8 @@ public class DayInMonthProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (DayInMonth a : DayInMonth.values()) {
-            options.add(new Option(a.name(), a.getDescription()));
+        for (DayInMonth value : DayInMonth.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

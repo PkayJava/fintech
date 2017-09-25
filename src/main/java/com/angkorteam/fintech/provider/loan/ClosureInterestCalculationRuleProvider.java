@@ -28,8 +28,8 @@ public class ClosureInterestCalculationRuleProvider extends SingleChoiceProvider
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (ClosureInterestCalculationRule a : ClosureInterestCalculationRule.values()) {
-            options.add(new Option(a.name(), a.getDescription()));
+        for (ClosureInterestCalculationRule value : ClosureInterestCalculationRule.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }

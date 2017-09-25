@@ -31,19 +31,19 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FundCreatePage extends Page {
 
-    private String externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
-    private TextField<String> externalIdField;
-    private TextFeedbackPanel externalIdFeedback;
+    protected String externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
+    protected TextField<String> externalIdField;
+    protected TextFeedbackPanel externalIdFeedback;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -103,7 +103,7 @@ public class FundCreatePage extends Page {
         this.form.add(this.nameFeedback);
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         FundBuilder builder = new FundBuilder();
         builder.withName(this.nameValue);
         builder.withExternalId(this.externalIdValue);

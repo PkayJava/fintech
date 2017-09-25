@@ -25,8 +25,8 @@ public class OperatorProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
 	List<Option> options = Lists.newArrayList();
-	for (Operator a : Operator.values()) {
-	    options.add(new Option(a.name(), a.getDescription()));
+	for (Operator value : Operator.values()) {
+	    options.add(new Option(value.name(), value.getDescription()));
 	}
 	return options;
     }

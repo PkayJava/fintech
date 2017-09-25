@@ -28,8 +28,8 @@ public class EntityTypeProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (EntityType type : EntityType.values()) {
-            options.add(new Option(type.name(), type.getDescription()));
+        for (EntityType value : EntityType.values()) {
+            options.add(new Option(value.name(), value.getDescription()));
         }
         return options;
     }
