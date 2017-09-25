@@ -5,7 +5,9 @@ package com.angkorteam.fintech.dto;
  */
 public enum TellerState {
 
-    Active("300", "Active"), Inactive("400", "Inactive");
+    Active("300", "Active"), 
+    Inactive("400", "Inactive"),
+    Closed("600", "Closed");
 
     private String literal;
 

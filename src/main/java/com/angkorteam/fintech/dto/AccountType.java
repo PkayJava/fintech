@@ -34,4 +34,5 @@ public enum AccountType {
     public String getTag() {
         return tag;
     }
+    
 }

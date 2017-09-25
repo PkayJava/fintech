@@ -19,6 +19,9 @@ import com.angkorteam.fintech.pages.LogoutPage;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
+import com.angkorteam.fintech.pages.client.CenterBrowsePage;
+import com.angkorteam.fintech.pages.client.ClientBrowsePage;
+import com.angkorteam.fintech.pages.client.GroupBrowsePage;
 import com.angkorteam.fintech.pages.staff.UserBrowsePage;
 import com.angkorteam.framework.Emoji;
 import com.angkorteam.framework.models.NavBarMenu;
@@ -171,15 +174,58 @@ public class Page extends DashboardPage {
     @Override
     public IModel<List<NavBarMenu>> buildNavBarMenu() {
 
-        NavBarMenu clientsMenu = new NavBarMenu().buildTypeIcon(Emoji.fa_dashboard, "Clients", null, new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "Clients"), new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "Groups"), new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "Centers"));
+        NavBarMenu clientsMenu = new NavBarMenu()
+                .buildTypeIcon(
+                        Emoji.fa_dashboard, 
+                        "Clients", 
+                        null, 
+                        new NavBarMenuItem().buildTypeIcon(ClientBrowsePage.class, null, Emoji.fa_dashboard, "Clients"), 
+                        new NavBarMenuItem().buildTypeIcon(GroupBrowsePage.class, null, Emoji.fa_dashboard, "Groups"), 
+                        new NavBarMenuItem().buildTypeIcon(CenterBrowsePage.class, null, Emoji.fa_dashboard, "Centers")
+                );
 
-        NavBarMenu accountingMenu = new NavBarMenu().buildTypeIcon(AccountingPage.class, null, Emoji.fa_dashboard, "Accounting", null);
+        NavBarMenu accountingMenu = new NavBarMenu()
+                .buildTypeIcon(
+                        AccountingPage.class, 
+                        null, 
+                        Emoji.fa_dashboard, 
+                        "Accounting", 
+                        null
+                );
 
-        NavBarMenu reportsMenu = new NavBarMenu().buildTypeIcon(Emoji.fa_dashboard, "Reports", null, new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "All"), new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "Clients"), new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "Loans"), new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "Savings"), new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "Funds"), new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "Accounting"), new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "XBRL"));
+        NavBarMenu reportsMenu = new NavBarMenu()
+                .buildTypeIcon(
+                        Emoji.fa_dashboard, 
+                        "Reports", 
+                        null, 
+                        new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "All"), 
+                        new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "Clients"), 
+                        new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "Loans"), 
+                        new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "Savings"), 
+                        new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "Funds"), 
+                        new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "Accounting"), 
+                        new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "XBRL")
+                );
 
-        NavBarMenu adminMenu = new NavBarMenu().buildTypeIcon(Emoji.fa_dashboard, "Admin", null, new NavBarMenuItem().buildTypeIcon(UserBrowsePage.class, null, Emoji.fa_dashboard, "Users"), new NavBarMenuItem().buildTypeIcon(OrganizationDashboardPage.class, null, Emoji.fa_dashboard, "Organization"), new NavBarMenuItem().buildTypeIcon(SystemDashboardPage.class, null, Emoji.fa_dashboard, "System"), new NavBarMenuItem().buildTypeIcon(ProductDashboardPage.class, null, Emoji.fa_dashboard, "Products"), new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "Templates"));
+        NavBarMenu adminMenu = new NavBarMenu()
+                .buildTypeIcon(
+                        Emoji.fa_dashboard, 
+                        "Admin", 
+                        null, 
+                        new NavBarMenuItem().buildTypeIcon(UserBrowsePage.class, null, Emoji.fa_dashboard, "Users"), 
+                        new NavBarMenuItem().buildTypeIcon(OrganizationDashboardPage.class, null, Emoji.fa_dashboard, "Organization"), 
+                        new NavBarMenuItem().buildTypeIcon(SystemDashboardPage.class, null, Emoji.fa_dashboard, "System"), 
+                        new NavBarMenuItem().buildTypeIcon(ProductDashboardPage.class, null, Emoji.fa_dashboard, "Products"), 
+                        new NavBarMenuItem().buildTypeIcon(LoginPage.class, null, Emoji.fa_dashboard, "Templates")
+                );
 
-        NavBarMenu profileMenu = new NavBarMenu().buildTypeIcon(Emoji.fa_dashboard, "Profile", null, new NavBarMenuItem().buildTypeIcon(LogoutPage.class, null, Emoji.fa_sign_out, "Logout"));
+        NavBarMenu profileMenu = new NavBarMenu()
+                .buildTypeIcon(
+                        Emoji.fa_dashboard, 
+                        "Profile", 
+                        null, 
+                        new NavBarMenuItem().buildTypeIcon(LogoutPage.class, null, Emoji.fa_sign_out, "Logout")
+                );
 
         List<NavBarMenu> menus = Lists.newArrayList(clientsMenu, accountingMenu, reportsMenu, adminMenu, profileMenu);
         return Model.ofList(menus);

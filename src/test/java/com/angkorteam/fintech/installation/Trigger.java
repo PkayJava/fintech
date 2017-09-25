@@ -71,7 +71,7 @@ public class Trigger {
         dataSourceManager.setMifosUrl(mifosUrl);
         dataSourceManager.afterPropertiesSet();
 
-        boolean fileout = true;
+        boolean fileout = false;
 
         String delimiter = "";
         String newline = " ";
