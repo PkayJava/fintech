@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS `tbl_audit`;
 CREATE TABLE `tbl_audit` (
   `id` varchar(100) NOT NULL,
   `log_date` datetime NOT NULL,
@@ -10,6 +11,7 @@ CREATE TABLE `tbl_audit` (
   KEY `tbl_audit_003` (`log_table`)
 );
 
+DROP TABLE IF EXISTS `tbl_audit_value`;
 CREATE TABLE `tbl_audit_value` (
   `id` varchar(100) NOT NULL,
   `audit_id` varchar(100) DEFAULT NULL,

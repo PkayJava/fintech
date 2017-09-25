@@ -6,7 +6,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -16,11 +19,36 @@ import org.apache.commons.io.FileUtils;
 
 import com.angkorteam.fintech.MifosDataSourceManager;
 import com.angkorteam.framework.spring.JdbcTemplate;
+import com.google.common.collect.Lists;
 
 /**
  * Created by socheatkhauv on 6/21/17.
  */
 public class Trigger {
+
+    private final static Map<String, List<String>> IDS;
+
+    static {
+        IDS = new HashMap<>();
+        IDS.put("c_external_service_properties", Lists.newArrayList("name", "external_service_id"));
+        IDS.put("m_appuser_role", Lists.newArrayList("appuser_id", "role_id"));
+        IDS.put("m_deposit_product_interest_rate_chart", Lists.newArrayList("deposit_product_id", "interest_rate_chart_id"));
+        IDS.put("m_group_client", Lists.newArrayList("group_id", "client_id"));
+        IDS.put("m_holiday_office", Lists.newArrayList("office_id", "holiday_id"));
+        IDS.put("m_loan_arrears_aging", Lists.newArrayList("loan_id"));
+        IDS.put("m_loan_paid_in_advance", Lists.newArrayList("loan_id"));
+        IDS.put("m_product_loan_charge", Lists.newArrayList("product_loan_id", "charge_id"));
+        IDS.put("m_role_permission", Lists.newArrayList("role_id", "permission_id"));
+        IDS.put("m_savings_product_charge", Lists.newArrayList("savings_product_id", "charge_id"));
+        IDS.put("m_share_product_charge", Lists.newArrayList("product_id", "charge_id"));
+        IDS.put("m_template_m_templatemappers", Lists.newArrayList("m_template_id", "mappers_id"));
+        // IDS.put("oauth_access_token", Lists.newArrayList("token_id",
+        // "authentication_id", "client_id"));
+        // IDS.put("oauth_client_details", Lists.newArrayList("client_id"));
+        // IDS.put("oauth_refresh_token", Lists.newArrayList("token_id"));
+        IDS.put("x_registered_table", Lists.newArrayList("registered_table_name"));
+        IDS.put("x_table_column_code_mappings", Lists.newArrayList("column_alias_name"));
+    }
 
     public static void main(String[] args) throws Exception {
 
@@ -43,20 +71,34 @@ public class Trigger {
         dataSourceManager.setMifosUrl(mifosUrl);
         dataSourceManager.afterPropertiesSet();
 
+        boolean fileout = true;
+
         String delimiter = "";
         String newline = " ";
+
+        if (fileout) {
+            delimiter = "%%";
+            newline = "\n";
+        }
 
         DataSource dataSource = dataSourceManager.getDataSource("default");
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         Connection connection = dataSource.getConnection();
         List<String> tables = jdbcTemplate.queryForList("show tables", String.class);
+        List<String> customTable = jdbcTemplate.queryForList("SELECT registered_table_name FROM x_registered_table", String.class);
         StringBuffer sql = new StringBuffer();
+        sql.append("delimiter %%").append(newline);
         for (String table : tables) {
-            System.out.println(table);
             if ("tbl_audit".equals(table) || "tbl_audit_value".equals(table)) {
                 continue;
             }
+
+            if (customTable.contains(table)) {
+                continue;
+            }
+
+            System.out.println(table);
 
             ResultSet resultSet = connection.createStatement().executeQuery("select * from " + table);
             ResultSetMetaData metaData = resultSet.getMetaData();
@@ -70,13 +112,29 @@ public class Trigger {
                 }
             }
 
+            List<String> idFields = null;
+            if (!hasId) {
+                hasId = IDS.containsKey(table);
+                idFields = IDS.get(table);
+                if (idFields == null) {
+                    idFields = Arrays.asList("id");
+                }
+            } else {
+                idFields = Lists.newArrayList("id");
+            }
+
+            if (!hasId) {
+                System.out.println(table);
+            }
+
             {
                 StringBuffer delete = new StringBuffer();
-                // delete.append("delimiter ").append(delimiter).append(newline);
                 delete.append("DROP TRIGGER IF EXISTS " + table + "_d").append(delimiter).append(newline);
-                try (Statement statement = connection.createStatement()) {
-                    statement.execute(delete.toString());
-                    delete.delete(0, delete.length());
+                if (!fileout) {
+                    try (Statement statement = connection.createStatement()) {
+                        statement.execute(delete.toString());
+                        delete.delete(0, delete.length());
+                    }
                 }
                 delete.append("CREATE TRIGGER `" + table + "_d`").append(newline);
                 delete.append("BEFORE DELETE").append(newline);
@@ -87,7 +145,14 @@ public class Trigger {
                 delete.append("    DECLARE _id VARCHAR(100);").append(newline);
                 delete.append("    DECLARE _log_script TEXT;").append(newline);
                 delete.append("    SELECT uuid() INTO _id FROM dual;").append(newline);
-                String logScript = "CONCAT('DELETE FROM " + table + " WHERE id = ', OLD.id)";
+                String field = idFields.get(0);
+                String logScript = "CONCAT('DELETE FROM " + table + " WHERE " + field + " = \"', OLD." + field + ", '\"'";
+                for (int i = 1; i < idFields.size(); i++) {
+                    String f = idFields.get(i);
+                    logScript = logScript + ", ' AND " + f + " = \"', OLD." + f + ", '\"'";
+                }
+                logScript = logScript + ")";
+
                 if (hasId) {
                     delete.append("    SELECT " + logScript + " INTO _log_script FROM dual;").append(newline);
                     delete.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'DELETE', '" + table + "', _log_script);").append(newline);
@@ -100,17 +165,21 @@ public class Trigger {
                 }
                 delete.append("  END").append(delimiter).append(newline);
                 sql.append(delete);
-                try (Statement statement = connection.createStatement()) {
-                    statement.execute(delete.toString());
+                if (!fileout) {
+                    try (Statement statement = connection.createStatement()) {
+                        statement.execute(delete.toString());
+                    }
                 }
             }
 
             {
                 StringBuffer insert = new StringBuffer();
                 insert.append("DROP TRIGGER IF EXISTS " + table + "_i").append(delimiter).append(newline);
-                try (Statement statement = connection.createStatement()) {
-                    statement.execute(insert.toString());
-                    insert.delete(0, insert.length());
+                if (!fileout) {
+                    try (Statement statement = connection.createStatement()) {
+                        statement.execute(insert.toString());
+                        insert.delete(0, insert.length());
+                    }
                 }
                 insert.append("CREATE TRIGGER `" + table + "_i`").append(newline);
                 insert.append("AFTER INSERT").append(newline);
@@ -157,18 +226,21 @@ public class Trigger {
                 }
                 insert.append("  END").append(delimiter).append(newline);
                 sql.append(insert);
-
-                try (Statement statement = connection.createStatement()) {
-                    statement.execute(insert.toString());
+                if (!fileout) {
+                    try (Statement statement = connection.createStatement()) {
+                        statement.execute(insert.toString());
+                    }
                 }
             }
 
             {
                 StringBuffer update = new StringBuffer();
                 update.append("DROP TRIGGER IF EXISTS " + table + "_u").append(delimiter).append(newline);
-                try (Statement statement = connection.createStatement()) {
-                    statement.execute(update.toString());
-                    update.delete(0, update.length());
+                if (!fileout) {
+                    try (Statement statement = connection.createStatement()) {
+                        statement.execute(update.toString());
+                        update.delete(0, update.length());
+                    }
                 }
                 update.append("CREATE TRIGGER `" + table + "_u`").append(newline);
                 update.append("AFTER UPDATE").append(newline);
@@ -190,7 +262,14 @@ public class Trigger {
                         logScript = logScript + fieldName + " = ', " + fieldValue + ", '" + ", ";
                     }
                 }
-                logScript = logScript + "WHERE id = ', NEW.id)";
+
+                String field = idFields.get(0);
+                logScript = logScript + "WHERE " + field + " = \"', NEW." + field + ", '\"'";
+                for (int i = 1; i < idFields.size(); i++) {
+                    String f = idFields.get(i);
+                    logScript = logScript + ", ' AND " + f + " = \"', OLD." + f + ", '\"'";
+                }
+                logScript = logScript + ")";
                 if (hasId) {
                     update.append("    SELECT " + logScript + " INTO _log_script FROM dual;").append(newline);
                     update.append("    INSERT INTO tbl_audit (id, log_date, log_event, log_table, log_script) VALUES (_id, now(), 'UPDATE', '" + table + "', _log_script);").append(newline);
@@ -203,14 +282,17 @@ public class Trigger {
                 }
                 update.append("  END").append(delimiter).append(newline);
                 sql.append(update);
-
-                try (Statement statement = connection.createStatement()) {
-                    statement.execute(update.toString());
+                if (!fileout) {
+                    try (Statement statement = connection.createStatement()) {
+                        statement.execute(update.toString());
+                    }
                 }
             }
+            sql.append("\n\n");
             resultSet.close();
         }
-
-        FileUtils.write(new File("src/test/resources/trigger.sql"), sql.toString(), "UTF-8");
+        if (fileout) {
+            FileUtils.write(new File("src/test/resources/trigger.sql"), sql.toString(), "UTF-8");
+        }
     }
 }
