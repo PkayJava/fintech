@@ -17,4 +17,5 @@ public class OfficeHelper {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPut(session, "/api/v1/offices/" + id, object);
     }
+
 }

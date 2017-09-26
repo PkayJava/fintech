@@ -1,11 +1,12 @@
 package com.angkorteam.fintech.dto.request;
 
-import com.angkorteam.fintech.dto.TellerState;
-import com.mashape.unirest.http.JsonNode;
-import org.apache.commons.lang3.time.DateFormatUtils;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import org.apache.commons.lang3.time.DateFormatUtils;
+
+import com.angkorteam.fintech.dto.constant.TellerStatus;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 7/14/17.
@@ -27,7 +28,7 @@ public class TellerBuilder implements Serializable {
     private Date endDate;
     private boolean hasEndDate;
 
-    private TellerState status;
+    private TellerStatus status;
     private boolean hasStatus;
 
     private String locale = "en";
@@ -89,7 +90,7 @@ public class TellerBuilder implements Serializable {
         return this;
     }
 
-    public TellerBuilder withStatus(TellerState status) {
+    public TellerBuilder withStatus(TellerStatus status) {
         this.status = status;
         this.hasStatus = true;
         return this;

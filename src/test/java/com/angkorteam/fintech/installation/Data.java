@@ -11,26 +11,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.sql.DataSource;
-
-import com.angkorteam.fintech.helper.*;
-import com.mashape.unirest.http.JsonNode;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLPropertiesConfiguration;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import com.angkorteam.fintech.IMifos;
-import com.angkorteam.fintech.dto.RepaymentOption;
 import com.angkorteam.fintech.dto.request.CodeValueBuilder;
-import com.angkorteam.fintech.dto.request.FundBuilder;
 import com.angkorteam.fintech.dto.request.HolidayBuilder;
-import com.angkorteam.fintech.dto.request.OfficeBuilder;
 import com.angkorteam.fintech.dto.request.PaymentTypeBuilder;
 import com.angkorteam.fintech.dto.request.StaffBuilder;
-import com.angkorteam.fintech.dto.request.TellerBuilder;
-import com.angkorteam.fintech.dto.request.WorkingDayBuilder;
+import com.angkorteam.fintech.helper.CodeHelper;
+import com.angkorteam.fintech.helper.HolidayHelper;
+import com.angkorteam.fintech.helper.LoginHelper;
+import com.angkorteam.fintech.helper.PaymentTypeHelper;
+import com.angkorteam.fintech.helper.StaffHelper;
 import com.angkorteam.framework.spring.JdbcTemplate;
+import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class Data {
@@ -65,11 +62,6 @@ public class Data {
             }
         };
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        setupOffice(session, jdbcTemplate);
-        setupWorkingDay(session, jdbcTemplate);
-        setupCurrency(session, jdbcTemplate);
-        setupFund(session, jdbcTemplate);
-        setupTeller(session, jdbcTemplate);
         setupPaymentType(session, jdbcTemplate);
         setupHoliday(session, jdbcTemplate);
         setupEmployee(session, jdbcTemplate);
@@ -88,8 +80,7 @@ public class Data {
 
     }
 
-    protected static void setupEmployee(IMifos session, JdbcTemplate jdbcTemplate)
-            throws ParseException, UnirestException {
+    protected static void setupEmployee(IMifos session, JdbcTemplate jdbcTemplate) throws ParseException, UnirestException {
         for (Employee employee : Employee.values()) {
             StaffBuilder builder = new StaffBuilder();
             builder.withExternalId(UUID.randomUUID().toString());
@@ -103,8 +94,7 @@ public class Data {
         }
     }
 
-    protected static void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate)
-            throws ParseException, UnirestException {
+    protected static void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate) throws ParseException, UnirestException {
         List<Integer> years = new ArrayList<>();
         years.add(2017);
         years.add(2018);
@@ -165,72 +155,6 @@ public class Data {
         }
     }
 
-    protected static void setupOffice(IMifos session, JdbcTemplate jdbcTemplate)
-            throws ParseException, UnirestException {
-        for (Office office : Office.values()) {
-            OfficeBuilder builder = new OfficeBuilder();
-            builder.withExternalId(UUID.randomUUID().toString());
-            builder.withOpeningDate(DATE_FORMAT.parse("2017-01-01"));
-            builder.withName(office.getName());
-            OfficeHelper.create(session, builder.build());
-        }
-    }
 
-    protected static void setupTeller(IMifos session, JdbcTemplate jdbcTemplate)
-            throws UnirestException, ParseException {
-        for (Teller teller : Teller.values()) {
-            TellerBuilder builder = new TellerBuilder();
-            builder.withDescription(teller.getName());
-            builder.withName(teller.getName());
-            builder.withStatus(teller.getStatus());
-            String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class,
-                    teller.getOffice().getName());
-            builder.withOfficeId(officeId);
-            builder.withStartDate(DATE_FORMAT.parse("2019-12-31"));
-            TellerHelper.create(session, builder.build());
-        }
-    }
-
-    protected static void setupFund(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
-        for (Fund fund : Fund.values()) {
-            FundBuilder builder = new FundBuilder();
-            builder.withExternalId(UUID.randomUUID().toString());
-            builder.withName(fund.getName());
-            FundHelper.create(session, builder.build());
-        }
-    }
-
-    protected static void setupCurrency(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
-        List<String> codes = new ArrayList<>();
-        for (Currency currency : Currency.values()) {
-            codes.add(currency.getLiteral());
-        }
-        CurrencyHelper.update(session, codes);
-    }
-
-    protected static void setupPaymentType(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
-        for (PaymentType paymentType : PaymentType.values()) {
-            PaymentTypeBuilder builder = new PaymentTypeBuilder();
-            builder.withDescription(paymentType.getName());
-            builder.withName(paymentType.getName());
-            builder.withCashPayment(paymentType.isCash());
-            builder.withPosition(paymentType.getPosition());
-            PaymentTypeHelper.create(session, builder.build());
-        }
-    }
-
-    protected static void setupWorkingDay(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
-        WorkingDayBuilder builder = new WorkingDayBuilder();
-        builder.withMonday(true);
-        builder.withTuesday(true);
-        builder.withWednesday(true);
-        builder.withThursday(true);
-        builder.withFriday(true);
-        builder.withSaturday(false);
-        builder.withSunday(false);
-        builder.withExtendTermForDailyRepayments(false);
-        builder.withRepaymentRescheduleType(RepaymentOption.MoveToPreviousWorkingDay);
-        WorkingDayHelper.update(session, builder.build());
-    }
 
 }
