@@ -62,7 +62,7 @@ public class Data {
             }
         };
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        setupPaymentType(session, jdbcTemplate);
+//        setupPaymentType(session, jdbcTemplate);
         setupHoliday(session, jdbcTemplate);
         setupEmployee(session, jdbcTemplate);
         setupSystemParameters(session, jdbcTemplate);

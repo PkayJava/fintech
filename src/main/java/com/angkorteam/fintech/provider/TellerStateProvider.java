@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.wicket.model.IModel;
 
-import com.angkorteam.fintech.dto.TellerState;
+import com.angkorteam.fintech.dto.constant.TellerStatus;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
@@ -28,7 +28,7 @@ public class TellerStateProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (TellerState value : TellerState.values()) {
+        for (TellerStatus value : TellerStatus.values()) {
             options.add(new Option(value.name(), value.getDescription()));
         }
         return options;

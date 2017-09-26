@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.Before;
@@ -45,7 +46,7 @@ public class SampleData implements IMifos {
     private static final List<String> OFFICES = Lists.newArrayList();
     private static final List<String> CURRENCIES = Lists.newArrayList();
     private static final List<String> FUNDS = Lists.newArrayList();
-    private static final Map<String, Boolean> PAYMENT = Maps.newHashMap();
+    private static final Map<String, Boolean> PAYMENTS = Maps.newHashMap();
 
     static {
         OFFICES.add("ការិយាល័យ ខេត្តបន្ទាយមានជ័យ");
@@ -89,10 +90,12 @@ public class SampleData implements IMifos {
         FUNDS.add("Education Fund");
         FUNDS.add("Housing Fund");
 
-        PAYMENT.put("Cash", true);
-        PAYMENT.put("VISA", false);
-        PAYMENT.put("Mastercard", false);
-        PAYMENT.put("Cheque", false);
+        PAYMENTS.put("Cash", true);
+        PAYMENTS.put("VISA", false);
+        PAYMENTS.put("Mastercard", false);
+        PAYMENTS.put("Cheque", false);
+        PAYMENTS.put("American Express", false);
+        PAYMENTS.put("JCB", false);
     }
 
     @Before
@@ -113,21 +116,15 @@ public class SampleData implements IMifos {
     }
 
     protected void setupPaymentType(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
-        if (!jdbcTemplate.queryForObject("select count(*) from m_payment_type where value = ?", Boolean.class, PAYMENT)) {
-            PaymentTypeBuilder builder = new PaymentTypeBuilder();
-            builder.withDescription(PAYMENT);
-            builder.withName(PAYMENT);
-            builder.withCashPayment(false);
-            builder.withPosition(1);
-            PaymentTypeHelper.create(session, builder.build());
-        }
-        if (!jdbcTemplate.queryForObject("select count(*) from m_payment_type where value = ?", Boolean.class, PAYMENT_CASH)) {
-            PaymentTypeBuilder builder = new PaymentTypeBuilder();
-            builder.withDescription(PAYMENT_CASH);
-            builder.withName(PAYMENT_CASH);
-            builder.withCashPayment(true);
-            builder.withPosition(1);
-            PaymentTypeHelper.create(session, builder.build());
+        for (Entry<String, Boolean> payment : PAYMENTS.entrySet()) {
+            if (!jdbcTemplate.queryForObject("select count(*) from m_payment_type where value = ?", Boolean.class, payment.getKey())) {
+                PaymentTypeBuilder builder = new PaymentTypeBuilder();
+                builder.withDescription(payment.getKey());
+                builder.withName(payment.getKey());
+                builder.withCashPayment(payment.getValue());
+                builder.withPosition(1);
+                PaymentTypeHelper.create(session, builder.build());
+            }
         }
     }
 

@@ -1,24 +1,8 @@
 package com.angkorteam.fintech.pages.teller;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.TellerState;
-import com.angkorteam.fintech.dto.request.TellerBuilder;
-import com.angkorteam.fintech.helper.TellerHelper;
-import com.angkorteam.fintech.pages.OrganizationDashboardPage;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.provider.TellerStateProvider;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
@@ -27,8 +11,25 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import java.util.Date;
-import java.util.List;
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.constant.TellerStatus;
+import com.angkorteam.fintech.dto.request.TellerBuilder;
+import com.angkorteam.fintech.helper.TellerHelper;
+import com.angkorteam.fintech.pages.OrganizationDashboardPage;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.provider.TellerStateProvider;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 7/13/17.
@@ -157,7 +158,7 @@ public class TellerCreatePage extends Page {
         builder.withName(this.nameValue);
         builder.withEndDate(this.endDateValue);
         builder.withStartDate(this.startDateValue);
-        builder.withStatus(TellerState.valueOf(this.statusValue.getId()));
+        builder.withStatus(TellerStatus.valueOf(this.statusValue.getId()));
         if (this.officeValue != null) {
             builder.withOfficeId(this.officeValue.getId());
         }
