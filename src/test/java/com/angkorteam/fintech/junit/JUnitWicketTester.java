@@ -47,11 +47,14 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 
 public class JUnitWicketTester extends WicketTester {
 
-    private RandomStringGenerator generator;
+    private RandomStringGenerator stringGenerator;
+
+    private RandomStringGenerator numberGenerator;
 
     public JUnitWicketTester() {
         super(JUnit.getApplication(), JUnit.getServletContext());
-        this.generator = new RandomStringGenerator.Builder().withinRange('0', 'z').filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS).build();
+        this.stringGenerator = new RandomStringGenerator.Builder().withinRange('0', 'z').filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS).build();
+        this.numberGenerator = new RandomStringGenerator.Builder().withinRange('0', '9').filteredBy(CharacterPredicates.DIGITS).build();
     }
 
     @Override
@@ -166,7 +169,11 @@ public class JUnitWicketTester extends WicketTester {
     }
 
     public RandomStringGenerator getStringGenerator() {
-        return generator;
+        return stringGenerator;
+    }
+
+    public RandomStringGenerator getNumberGenerator() {
+        return numberGenerator;
     }
 
     public JdbcTemplate getJdbcTemplate() {

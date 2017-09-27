@@ -7,7 +7,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,12 +17,12 @@ import org.junit.Test;
 import com.angkorteam.fintech.Constants;
 import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.dto.constant.TellerStatus;
-import com.angkorteam.fintech.dto.request.HolidayBuilder;
 import com.angkorteam.fintech.dto.request.PaymentTypeBuilder;
+import com.angkorteam.fintech.dto.request.StaffBuilder;
 import com.angkorteam.fintech.dto.request.TellerBuilder;
-import com.angkorteam.fintech.helper.HolidayHelper;
 import com.angkorteam.fintech.helper.LoginHelper;
 import com.angkorteam.fintech.helper.PaymentTypeHelper;
+import com.angkorteam.fintech.helper.StaffHelper;
 import com.angkorteam.fintech.helper.TellerHelper;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
@@ -46,11 +48,13 @@ public class JUnitData implements IMifos {
     public static final String TELLER = "JUNIT_TELLER_300";
     public static final String PAYMENT = "JUNIT_PAYMENT";
     public static final String PAYMENT_CASH = "JUNIT_PAYMENT_CASH";
+    public static final String EMPLOYEE = "JUNIT_EMP";
 
     private static final List<String> OFFICES = Lists.newArrayList();
     private static final List<String> CURRENCIES = Lists.newArrayList();
     private static final List<String> FUNDS = Lists.newArrayList();
     private static final List<Map<String, Object>> HOLIDAYS = Lists.newArrayList();
+    private static final List<String> EMPLOYEES = Lists.newArrayList();
 
     static {
         OFFICES.add(OFFICE);
@@ -77,6 +81,8 @@ public class JUnitData implements IMifos {
             day.put("rescheduled", DateTime.now().plusMonths(5).plusDays(5).toDate());
             HOLIDAYS.add(day);
         }
+
+        EMPLOYEES.add(EMPLOYEE);
     }
 
     @Before
@@ -94,18 +100,22 @@ public class JUnitData implements IMifos {
         setupFund();
         setupTeller(this, this.wicket.getJdbcTemplate());
         setupPaymentType(this, this.wicket.getJdbcTemplate());
+        Function.setupHoliday(this, this.wicket.getJdbcTemplate(), HOLIDAYS);
+        setupEmployee(this, this.wicket.getJdbcTemplate());
+
     }
 
-    protected void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate, List<Map<String, Object>> days) throws UnirestException {
-        for (Map<String, Object> day : days) {
-            String name = (String) day.get("name");
-            if (!jdbcTemplate.queryForObject("select count(*) from m_holiday where name = ?", Boolean.class, name)) {
-                HolidayBuilder builder = new HolidayBuilder();
-                builder.withName(name);
-                builder.withFromDate((Date) day.get("from"));
-                builder.withToDate((Date) day.get("to"));
-                builder.withRepaymentsRescheduledTo((Date) day.get("rescheduled"));
-                HolidayHelper.create(session, builder.build());
+    protected void setupEmployee(IMifos session, JdbcTemplate jdbcTemplate) throws ParseException, UnirestException {
+        for (String employee : EMPLOYEES) {
+            if (!jdbcTemplate.queryForObject("select count(*) from m_staff where firstname = ?", Boolean.class, employee)) {
+                StaffBuilder builder = new StaffBuilder();
+                builder.withExternalId(StringUtils.upperCase(UUID.randomUUID().toString()));
+                builder.withJoiningDate(DATE_FORMAT.parse("2017-01-01"));
+                builder.withMobileNo(this.wicket.getNumberGenerator().generate(10));
+                builder.withLoanOfficer(true);
+                builder.withFirstName(employee);
+                builder.withLastName(employee);
+                StaffHelper.create(session, builder.build());
             }
         }
     }

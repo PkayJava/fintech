@@ -13,7 +13,7 @@ public interface Dropdown {
     String EquityAccountTags = "EquityAccountTags";
     String IncomeAccountTags = "IncomeAccountTags";
     String ExpenseAccountTags = "ExpenseAccountTags";
-    String GROUPROLE = "GROUPROLE";
+    String GroupRole = "GROUPROLE";
     String ClientClosureReason = "ClientClosureReason";
     String GroupClosureReason = "GroupClosureReason";
     String ClientType = "ClientType";
@@ -21,17 +21,17 @@ public interface Dropdown {
     String ClientSubStatus = "ClientSubStatus";
     String ClientRejectReason = "ClientRejectReason";
     String ClientWithdrawReason = "ClientWithdrawReason";
-    String Entity_To_Entity_Access_Types = "Entity to Entity Access Types";
+    String EntityToEntityAccessTypes = "Entity to Entity Access Types";
     String CenterClosureReason = "CenterClosureReason";
     String LoanRescheduleReason = "LoanRescheduleReason";
     String Constitution = "Constitution";
-    String Main_Business_Line = "Main Business Line";
+    String MainBusinessLine = "Main Business Line";
     String WriteOffReasons = "WriteOffReasons";
-    String STATE = "STATE";
-    String COUNTRY = "COUNTRY";
-    String ADDRESS_TYPE = "ADDRESS_TYPE";
-    String MARITAL_STATUS = "MARITAL STATUS";
-    String RELATIONSHIP = "RELATIONSHIP";
-    String PROFESSION = "PROFESSION";
+    String State = "STATE";
+    String Country = "COUNTRY";
+    String AddressType = "ADDRESS_TYPE";
+    String MaritalStatus = "MARITAL STATUS";
+    String Relationship = "RELATIONSHIP";
+    String Profession = "PROFESSION";
 
 }
