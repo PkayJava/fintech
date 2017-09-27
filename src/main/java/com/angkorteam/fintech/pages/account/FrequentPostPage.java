@@ -24,6 +24,7 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.GLEntryBuilder;
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.pages.AccountingPage;
+import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -93,7 +94,7 @@ public class FrequentPostPage extends Page {
     private Select2SingleChoice<Option> officeField;
     private TextFeedbackPanel officeFeedback;
 
-    private SingleChoiceProvider currencyProvider;
+    private CurrencyProvider currencyProvider;
     private Option currencyValue;
     private Select2SingleChoice<Option> currencyField;
     private TextFeedbackPanel currencyFeedback;
@@ -269,7 +270,7 @@ public class FrequentPostPage extends Page {
             this.officeProvider.applyWhere("id", "id = " + ruleObject.get("office_id"));
         }
 
-        this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.currencyProvider = new CurrencyProvider();
         this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
         this.currencyField.setRequired(true);
         this.form.add(this.currencyField);

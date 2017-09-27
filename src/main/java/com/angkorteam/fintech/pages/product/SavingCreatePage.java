@@ -38,6 +38,7 @@ import com.angkorteam.fintech.popup.PaymentTypePopup;
 import com.angkorteam.fintech.popup.saving.ChargePopup;
 import com.angkorteam.fintech.popup.saving.FeeChargePopup;
 import com.angkorteam.fintech.popup.saving.PenaltyChargePopup;
+import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.provider.saving.DayInYearProvider;
 import com.angkorteam.fintech.provider.saving.InterestCalculatedUsingProvider;
@@ -105,7 +106,7 @@ public class SavingCreatePage extends Page {
 
     protected WebMarkupContainer currencyCodeBlock;
     protected WebMarkupContainer currencyCodeContainer;
-    protected SingleChoiceProvider currencyCodeProvider;
+    protected CurrencyProvider currencyCodeProvider;
     protected Option currencyCodeValue;
     protected Select2SingleChoice<Option> currencyCodeField;
     protected TextFeedbackPanel currencyCodeFeedback;
@@ -1202,7 +1203,7 @@ public class SavingCreatePage extends Page {
         this.form.add(this.currencyCodeBlock);
         this.currencyCodeContainer = new WebMarkupContainer("currencyCodeContainer");
         this.currencyCodeBlock.add(this.currencyCodeContainer);
-        this.currencyCodeProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.currencyCodeProvider = new CurrencyProvider();
         this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", 0, new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
         this.currencyCodeField.setLabel(Model.of("Currency"));
         this.currencyCodeField.add(new OnChangeAjaxBehavior());

@@ -29,6 +29,7 @@ import com.angkorteam.fintech.helper.ChargeHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.provider.ChargeCalculationProvider;
 import com.angkorteam.fintech.provider.ChargeTimeProvider;
+import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
@@ -60,7 +61,7 @@ public class SavingDepositChargeModifyPage extends Page {
     private TextField<String> nameField;
     private TextFeedbackPanel nameFeedback;
 
-    private SingleChoiceProvider currencyProvider;
+    private CurrencyProvider currencyProvider;
     private Option currencyValue;
     private Select2SingleChoice<Option> currencyField;
     private TextFeedbackPanel currencyFeedback;
@@ -162,7 +163,7 @@ public class SavingDepositChargeModifyPage extends Page {
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
         this.form.add(this.nameFeedback);
 
-        this.currencyProvider = new SingleChoiceProvider("m_organisation_currency", "code", "name", "concat(name,' [', code,']')");
+        this.currencyProvider = new CurrencyProvider();
         this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
         this.currencyField.setLabel(Model.of("Currency"));
         this.currencyField.setRequired(true);
