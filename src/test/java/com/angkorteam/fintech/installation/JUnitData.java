@@ -16,18 +16,23 @@ import org.junit.Test;
 
 import com.angkorteam.fintech.Constants;
 import com.angkorteam.fintech.IMifos;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Dropdown;
 import com.angkorteam.fintech.dto.constant.TellerStatus;
+import com.angkorteam.fintech.dto.request.AccountRuleBuilder;
 import com.angkorteam.fintech.dto.request.PaymentTypeBuilder;
 import com.angkorteam.fintech.dto.request.StaffBuilder;
 import com.angkorteam.fintech.dto.request.TellerBuilder;
+import com.angkorteam.fintech.helper.AccountingRuleHelper;
 import com.angkorteam.fintech.helper.LoginHelper;
 import com.angkorteam.fintech.helper.PaymentTypeHelper;
 import com.angkorteam.fintech.helper.StaffHelper;
 import com.angkorteam.fintech.helper.TellerHelper;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
+import com.angkorteam.fintech.pages.account.RuleBrowsePage;
 import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
@@ -105,6 +110,45 @@ public class JUnitData implements IMifos {
         setupEmployee(this, this.wicket.getJdbcTemplate());
         setupDropdown(this, this.wicket.getJdbcTemplate());
 
+    }
+    
+    protected void setupAccountingRule() {
+//        AccountRuleBuilder builder = new AccountRuleBuilder();
+//        builder.withName(this.ruleNameValue);
+//        builder.withDescription(this.descriptionValue);
+//        if (this.officeValue != null) {
+//            builder.withOfficeId(this.officeValue.getId());
+//        }
+//        if (this.debitAccountValue != null) {
+//            builder.withAccountToDebit(this.debitAccountValue.getId());
+//        }
+//        if (this.debitTagValue != null && !this.debitTagValue.isEmpty()) {
+//            for (Option tag : this.debitTagValue) {
+//                builder.withDebitTags(tag.getId());
+//            }
+//            builder.withAllowMultipleDebitEntries(this.multipleDebitValue);
+//        }
+//        if (this.creditAccountValue != null) {
+//            builder.withAccountToCredit(this.creditAccountValue.getId());
+//        }
+//        if (this.creditTagValue != null && !this.creditTagValue.isEmpty()) {
+//            for (Option tag : this.creditTagValue) {
+//                builder.withCreditTags(tag.getId());
+//            }
+//            builder.withAllowMultipleCreditEntries(this.multipleCreditValue);
+//        }
+//
+//        JsonNode node = null;
+//        try {
+//            node = AccountingRuleHelper.create((Session) getSession(), builder.build());
+//        } catch (UnirestException e) {
+//            error(e.getMessage());
+//            return;
+//        }
+//        if (reportError(node)) {
+//            return;
+//        }
+//        setResponsePage(RuleBrowsePage.class);
     }
 
     protected void setupDropdown(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
