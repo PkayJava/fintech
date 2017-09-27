@@ -6,15 +6,19 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.angkorteam.fintech.Constants;
 import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.dto.constant.TellerStatus;
+import com.angkorteam.fintech.dto.request.HolidayBuilder;
 import com.angkorteam.fintech.dto.request.PaymentTypeBuilder;
 import com.angkorteam.fintech.dto.request.TellerBuilder;
+import com.angkorteam.fintech.helper.HolidayHelper;
 import com.angkorteam.fintech.helper.LoginHelper;
 import com.angkorteam.fintech.helper.PaymentTypeHelper;
 import com.angkorteam.fintech.helper.TellerHelper;
@@ -22,6 +26,7 @@ import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -45,6 +50,7 @@ public class JUnitData implements IMifos {
     private static final List<String> OFFICES = Lists.newArrayList();
     private static final List<String> CURRENCIES = Lists.newArrayList();
     private static final List<String> FUNDS = Lists.newArrayList();
+    private static final List<Map<String, Object>> HOLIDAYS = Lists.newArrayList();
 
     static {
         OFFICES.add(OFFICE);
@@ -55,6 +61,22 @@ public class JUnitData implements IMifos {
         CURRENCIES.add("SGD");
         CURRENCIES.add("THB");
         FUNDS.add(FUND);
+        {
+            Map<String, Object> day = Maps.newHashMap();
+            day.put("name", "JUNIT_HOLIDAY_P_" + DateTime.now().getYear());
+            day.put("from", DateTime.now().minusMonths(5).toDate());
+            day.put("to", DateTime.now().minusMonths(5).plusDays(4).toDate());
+            day.put("rescheduled", DateTime.now().minusMonths(5).plusDays(5).toDate());
+            HOLIDAYS.add(day);
+        }
+        {
+            Map<String, Object> day = Maps.newHashMap();
+            day.put("name", "JUNIT_HOLIDAY_F_" + DateTime.now().getYear());
+            day.put("from", DateTime.now().plusMonths(5).toDate());
+            day.put("to", DateTime.now().plusMonths(5).plusDays(4).toDate());
+            day.put("rescheduled", DateTime.now().plusMonths(5).plusDays(5).toDate());
+            HOLIDAYS.add(day);
+        }
     }
 
     @Before
@@ -72,6 +94,20 @@ public class JUnitData implements IMifos {
         setupFund();
         setupTeller(this, this.wicket.getJdbcTemplate());
         setupPaymentType(this, this.wicket.getJdbcTemplate());
+    }
+
+    protected void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate, List<Map<String, Object>> days) throws UnirestException {
+        for (Map<String, Object> day : days) {
+            String name = (String) day.get("name");
+            if (!jdbcTemplate.queryForObject("select count(*) from m_holiday where name = ?", Boolean.class, name)) {
+                HolidayBuilder builder = new HolidayBuilder();
+                builder.withName(name);
+                builder.withFromDate((Date) day.get("from"));
+                builder.withToDate((Date) day.get("to"));
+                builder.withRepaymentsRescheduledTo((Date) day.get("rescheduled"));
+                HolidayHelper.create(session, builder.build());
+            }
+        }
     }
 
     protected void setupPaymentType(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {

@@ -15,6 +15,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLPropertiesConfiguration;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.dto.request.CodeValueBuilder;
@@ -62,7 +63,6 @@ public class Data {
             }
         };
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-//        setupPaymentType(session, jdbcTemplate);
         setupHoliday(session, jdbcTemplate);
         setupEmployee(session, jdbcTemplate);
         setupSystemParameters(session, jdbcTemplate);
@@ -104,6 +104,7 @@ public class Data {
                 Date fromDate = null;
                 Date toDate = null;
 
+                // DateTime.now().mo
                 builder.withName(holiday.getName());
                 if (holiday.isMovable()) {
                     if (year == 2017) {
