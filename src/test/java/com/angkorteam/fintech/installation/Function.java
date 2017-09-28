@@ -92,8 +92,7 @@ public class Function {
                 String dateForm = day.substring(p1 + 2, p2);
                 int p3 = day.indexOf("=>", p2 + 2);
                 String dateTo = day.substring(p2 + 2, p3);
-                int p4 = day.indexOf("=>", p3 + 2);
-                String rescheduled = day.substring(p3 + 2, p4);
+                String rescheduled = day.substring(p3 + 2);
                 HolidayBuilder builder = new HolidayBuilder();
                 builder.withName(name);
                 builder.withFromDate(DATE_FORMAT.parse(dateForm));
@@ -123,8 +122,7 @@ public class Function {
             int p1 = account.indexOf("=>");
             String name = account.substring(0, p1);
             if (!jdbcTemplate.queryForObject("select count(*) from acc_gl_account where name = ?", Boolean.class, name)) {
-                int p2 = account.indexOf("=>", p1 + 2);
-                String tag = account.substring(p1 + 2, p2);
+                String tag = account.substring(p1 + 2);
                 String tagId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code.id = m_code_value.code_id where m_code.code_name = ? limit 1", String.class, tag);
                 GLAccountBuilder builder = new GLAccountBuilder();
                 builder.withName(name);
