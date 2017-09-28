@@ -600,11 +600,16 @@ public class SampleData implements IMifos {
         setupFund();
         setupTeller(this, this.wicket.getJdbcTemplate(), this.wicket.getJdbcNamed());
         setupPaymentType(this, this.wicket.getJdbcTemplate());
-        Function.setupHoliday(this, this.wicket.getJdbcTemplate(), HOLIDAYS);
+        setupHoliday(this, this.wicket.getJdbcTemplate());
         setupEmployee(this, this.wicket.getJdbcTemplate());
         setupDropdown(this, this.wicket.getJdbcTemplate());
         Function.setupGLAccount(this, this.wicket.getJdbcTemplate(), ACCOUNTS, this.wicket.getStringGenerator());
         Function.setupGLAccount(this, this.wicket.getJdbcTemplate(), ACCOUNTS, this.wicket.getStringGenerator());
+    }
+
+    protected void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException, ParseException {
+        String officeId = this.wicket.getJdbcTemplate().queryForObject("select id from m_office where name = ?", String.class, "Head Office");
+        Function.setupHoliday(this, this.wicket.getJdbcTemplate(), officeId, HOLIDAYS);
     }
 
     protected void setupAccountingRule() throws UnirestException {

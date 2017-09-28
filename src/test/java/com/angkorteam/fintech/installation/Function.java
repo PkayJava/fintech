@@ -13,7 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
 
 import com.angkorteam.fintech.IMifos;
+import com.angkorteam.fintech.dto.AccountType;
 import com.angkorteam.fintech.dto.AccountUsage;
+import com.angkorteam.fintech.dto.Dropdown;
 import com.angkorteam.fintech.dto.RepaymentOption;
 import com.angkorteam.fintech.dto.request.AccountRuleBuilder;
 import com.angkorteam.fintech.dto.request.CodeValueBuilder;
@@ -83,7 +85,8 @@ public class Function {
         }
     }
 
-    public static void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate, List<String> holidays) throws UnirestException, ParseException {
+    public static void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate, String officeId, List<String> holidays) throws UnirestException, ParseException {
+
         for (String day : holidays) {
             int p1 = day.indexOf("=>");
             String name = day.substring(0, p1);
@@ -95,6 +98,7 @@ public class Function {
                 String rescheduled = day.substring(p3 + 2);
                 HolidayBuilder builder = new HolidayBuilder();
                 builder.withName(name);
+                builder.withOffice(officeId);
                 builder.withFromDate(DATE_FORMAT.parse(dateForm));
                 builder.withToDate(DATE_FORMAT.parse(dateTo));
                 builder.withRepaymentsRescheduledTo(DATE_FORMAT.parse(rescheduled));
@@ -131,6 +135,17 @@ public class Function {
                 builder.withManualEntriesAllowed(true);
                 builder.withTagId(tagId);
                 builder.withUsage(AccountUsage.Detail);
+                if (Dropdown.AssetAccountTags.equals(tagId)) {
+                    builder.withType(AccountType.Asset);
+                } else if (Dropdown.EquityAccountTags.equals(tagId)) {
+                    builder.withType(AccountType.Equity);
+                } else if (Dropdown.LiabilityAccountTags.equals(tagId)) {
+                    builder.withType(AccountType.Liability);
+                } else if (Dropdown.IncomeAccountTags.equals(tagId)) {
+                    builder.withType(AccountType.Income);
+                } else if (Dropdown.ExpenseAccountTags.equals(tagId)) {
+                    builder.withType(AccountType.Expense);
+                }
                 GLAccountHelper.create(session, builder.build());
             }
         }

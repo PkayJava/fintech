@@ -80,8 +80,8 @@ public class JUnitData implements IMifos {
 
         String year = String.valueOf(DateTime.now().getYear());
         // NAME->FROM->TO->RESCHEDULED
-        HOLIDAYS.add("JUNIT_HOLIDAY_P_" + year + "=>" + DateTime.now().minusMonths(5).toString("yyyy-MM-dd") + "=>" + DateTime.now().minusMonths(5).plusDays(4).toString("yyyy-MM-dd") + "=>" + DateTime.now().minusMonths(5).plusDays(5).toString("yyyy-MM-dd"));
-        HOLIDAYS.add("JUNIT_HOLIDAY_P_" + year + "=>" + DateTime.now().plusMonths(5).toString("yyyy-MM-dd") + "=>" + DateTime.now().plusMonths(5).plusDays(4).toString("yyyy-MM-dd") + "=>" + DateTime.now().plusMonths(5).plusDays(5).toString("yyyy-MM-dd"));
+        HOLIDAYS.add("JUNIT_HOLIDAY_P1_" + year + "=>" + DateTime.now().minusMonths(5).toString("yyyy-MM-dd") + "=>" + DateTime.now().minusMonths(5).plusDays(4).toString("yyyy-MM-dd") + "=>" + DateTime.now().minusMonths(5).plusDays(5).toString("yyyy-MM-dd"));
+        HOLIDAYS.add("JUNIT_HOLIDAY_P2_" + year + "=>" + DateTime.now().plusMonths(5).toString("yyyy-MM-dd") + "=>" + DateTime.now().plusMonths(5).plusDays(4).toString("yyyy-MM-dd") + "=>" + DateTime.now().plusMonths(5).plusDays(5).toString("yyyy-MM-dd"));
 
         EMPLOYEES.add(EMPLOYEE);
 
@@ -115,10 +115,15 @@ public class JUnitData implements IMifos {
         setupFund();
         setupTeller(this, this.wicket.getJdbcTemplate());
         setupPaymentType(this, this.wicket.getJdbcTemplate());
-        Function.setupHoliday(this, this.wicket.getJdbcTemplate(), HOLIDAYS);
+        setupHoliday(this, this.wicket.getJdbcTemplate());
         setupEmployee(this, this.wicket.getJdbcTemplate());
         setupDropdown(this, this.wicket.getJdbcTemplate());
         Function.setupGLAccount(this, this.wicket.getJdbcTemplate(), ACCOUNTS, this.wicket.getStringGenerator());
+    }
+
+    protected void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException, ParseException {
+        String officeId = this.wicket.getJdbcTemplate().queryForObject("select id from m_office where name = ?", String.class, OFFICE);
+        Function.setupHoliday(this, this.wicket.getJdbcTemplate(), officeId, HOLIDAYS);
     }
 
     protected void setupAccountingRule() throws UnirestException {
@@ -226,6 +231,7 @@ public class JUnitData implements IMifos {
     }
 
     protected void setupEmployee(IMifos session, JdbcTemplate jdbcTemplate) throws ParseException, UnirestException {
+        String officeId = this.wicket.getJdbcTemplate().queryForObject("select id from m_office where name = ?", String.class, OFFICE);
         for (String employee : EMPLOYEES) {
             if (!jdbcTemplate.queryForObject("select count(*) from m_staff where firstname = ?", Boolean.class, employee)) {
                 StaffBuilder builder = new StaffBuilder();
@@ -235,6 +241,7 @@ public class JUnitData implements IMifos {
                 builder.withLoanOfficer(true);
                 builder.withFirstName(employee);
                 builder.withLastName(employee);
+                builder.withOfficeId(officeId);
                 StaffHelper.create(session, builder.build());
             }
         }
