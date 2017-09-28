@@ -1,7 +1,5 @@
 package com.angkorteam.fintech.pages.account;
 
-import java.util.Date;
-
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -28,7 +26,8 @@ public class AccrualAccountingPageTest {
 
         JUnitFormTester form = this.wicket.newFormTester("form");
 
-        form.setValue("tillDateField", DateFormatUtils.format(new Date(), "dd/MM/yyyy"));
+        DateTime dateTime = DateTime.now().minusDays(1);
+        form.setValue("tillDateField", DateFormatUtils.format(dateTime.toDate(), "dd/MM/yyyy"));
 
         form.submit("saveButton");
 
@@ -43,7 +42,7 @@ public class AccrualAccountingPageTest {
 
         JUnitFormTester form = this.wicket.newFormTester("form");
 
-        DateTime dateTime = DateTime.now().plusDays(1);
+        DateTime dateTime = DateTime.now();
         form.setValue("tillDateField", DateFormatUtils.format(dateTime.toDate(), "dd/MM/yyyy"));
 
         form.submit("saveButton");
