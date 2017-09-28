@@ -119,6 +119,7 @@ public class JUnitData implements IMifos {
         setupEmployee(this, this.wicket.getJdbcTemplate());
         setupDropdown(this, this.wicket.getJdbcTemplate());
         Function.setupGLAccount(this, this.wicket.getJdbcTemplate(), ACCOUNTS, this.wicket.getStringGenerator());
+        setupAccountingRule();
     }
 
     protected void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException, ParseException {

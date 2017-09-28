@@ -51,31 +51,31 @@ public class SampleData implements IMifos {
     private static final List<String> ACCOUNT_RULES = Lists.newArrayList();
 
     static {
-        OFFICES.add("ការិយាល័យ ខេត្តបន្ទាយមានជ័យ");
-        OFFICES.add("ការិយាល័យ ខេត្តបាត់ដំបង");
-        OFFICES.add("ការិយាល័យ ខេត្តកំពង់ចាម");
-        OFFICES.add("ការិយាល័យ ខេត្តកំពង់ឆ្នាំង");
-        OFFICES.add("ការិយាល័យ ខេត្តកំពង់ស្ពឺ");
-        OFFICES.add("ការិយាល័យ ខេត្តកំពង់ធំ");
-        OFFICES.add("ការិយាល័យ ខេត្តកំពត");
-        OFFICES.add("ការិយាល័យ ខេត្តកណ្តាល");
-        OFFICES.add("ការិយាល័យ ខេត្តកោះកុង");
-        OFFICES.add("ការិយាល័យ ខេត្តក្រចេះ");
-        OFFICES.add("ការិយាល័យ ខេត្តមណ្ឌលគីរី");
-        OFFICES.add("ការិយាល័យ ខេត្តឧត្តរមានជ័យ");
-        OFFICES.add("ការិយាល័យ ខេត្តព្រះវិហារ");
-        OFFICES.add("ការិយាល័យ ខេត្តពោធិ៍សាត់");
-        OFFICES.add("ការិយាល័យ ខេត្តព្រៃវែង");
-        OFFICES.add("ការិយាល័យ ខេត្តរតនគីរី");
-        OFFICES.add("ការិយាល័យ ខេត្តសៀមរាប");
-        OFFICES.add("ការិយាល័យ ខេត្តស្ទឹងត្រែង");
-        OFFICES.add("ការិយាល័យ ខេត្តស្វាយរៀង");
-        OFFICES.add("ការិយាល័យ ខេត្តតាកែវ");
-        OFFICES.add("ការិយាល័យ ក្រុងកែប");
-        OFFICES.add("ការិយាល័យ ខេត្តបៃលិន");
-        OFFICES.add("ការិយាល័យ ក្រុងភ្នំពេញ");
-        OFFICES.add("ការិយាល័យ ខេត្តកំពង់សោម");
-        OFFICES.add("ការិយាល័យ ខេត្តត្បូងឃ្មុំ");
+        OFFICES.add("Banteay Meanchey");
+        OFFICES.add("Battambang");
+        OFFICES.add("Kampong Cham");
+        OFFICES.add("Kampong Chhnang");
+        OFFICES.add("Kampong Speu");
+        OFFICES.add("Tboung Khmum");
+        OFFICES.add("Preah Sihanouk");
+        OFFICES.add("Phnom Penh");
+        OFFICES.add("Pailin");
+        OFFICES.add("Kep");
+        OFFICES.add("Takéo");
+        OFFICES.add("Svay Rieng");
+        OFFICES.add("Stung Treng");
+        OFFICES.add("Siem Reap");
+        OFFICES.add("Ratanakiri");
+        OFFICES.add("Prey Veng");
+        OFFICES.add("Pursat");
+        OFFICES.add("Preah Vihear");
+        OFFICES.add("Oddar Meanchey");
+        OFFICES.add("Mondulkiri");
+        OFFICES.add("Kratié");
+        OFFICES.add("Koh Kong");
+        OFFICES.add("Kandal");
+        OFFICES.add("Kampot");
+        OFFICES.add("Kampong Thom");
 
         CURRENCIES.add("USD");
         CURRENCIES.add("VND");
@@ -604,7 +604,7 @@ public class SampleData implements IMifos {
         setupEmployee(this, this.wicket.getJdbcTemplate());
         setupDropdown(this, this.wicket.getJdbcTemplate());
         Function.setupGLAccount(this, this.wicket.getJdbcTemplate(), ACCOUNTS, this.wicket.getStringGenerator());
-        Function.setupGLAccount(this, this.wicket.getJdbcTemplate(), ACCOUNTS, this.wicket.getStringGenerator());
+        setupAccountingRule();
     }
 
     protected void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException, ParseException {
@@ -780,11 +780,14 @@ public class SampleData implements IMifos {
             String lastName = employee.substring(index + 1, employee.length());
             if (!jdbcTemplate.queryForObject("select count(*) from m_staff where firstname = ? and lastname = ?", Boolean.class, firstName, lastName)) {
                 StaffBuilder builder = new StaffBuilder();
+                String office = OFFICES.get(RandomUtils.nextInt(0, OFFICES.size()));
+                String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, office);
                 builder.withExternalId(StringUtils.upperCase(UUID.randomUUID().toString()));
                 builder.withJoiningDate(Function.DATE_FORMAT.parse("2017-01-01"));
                 builder.withMobileNo(this.wicket.getNumberGenerator().generate(10));
                 builder.withLoanOfficer(Integer.valueOf(this.wicket.getNumberGenerator().generate(3)) % 2 == 0);
                 builder.withFirstName(firstName);
+                builder.withOfficeId(officeId);
                 builder.withLastName(lastName);
                 StaffHelper.create(session, builder.build());
             }

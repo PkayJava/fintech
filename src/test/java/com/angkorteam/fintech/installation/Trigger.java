@@ -146,10 +146,10 @@ public class Trigger {
                 delete.append("    DECLARE _log_script TEXT;").append(newline);
                 delete.append("    SELECT uuid() INTO _id FROM dual;").append(newline);
                 String field = idFields.get(0);
-                String logScript = "CONCAT('DELETE FROM " + table + " WHERE " + field + " = \"', OLD." + field + ", '\"'";
+                String logScript = "CONCAT('DELETE FROM " + table + " WHERE " + field + " = ''', OLD." + field + ", ''''";
                 for (int i = 1; i < idFields.size(); i++) {
                     String f = idFields.get(i);
-                    logScript = logScript + ", ' AND " + f + " = \"', OLD." + f + ", '\"'";
+                    logScript = logScript + ", ' AND " + f + " = ''', OLD." + f + ", ''''";
                 }
                 logScript = logScript + ")";
 
@@ -205,10 +205,10 @@ public class Trigger {
                     String fieldName = metaData.getColumnName(i);
                     String value = "NEW." + fieldName;
                     if (i == metaData.getColumnCount()) {
-                        String fieldValue = "IF(" + value + " IS NULL, 'NULL', CONCAT('\"', " + value + ", '\"'))";
+                        String fieldValue = "IF(" + value + " IS NULL, 'NULL', CONCAT('''', " + value + ", ''''))";
                         logScript = logScript + fieldValue + ", ";
                     } else {
-                        String fieldValue = "IF(" + value + " IS NULL, 'NULL, ', CONCAT('\"', " + value + ", '\", '))";
+                        String fieldValue = "IF(" + value + " IS NULL, 'NULL, ', CONCAT('''', " + value + ", ''', '))";
                         logScript = logScript + fieldValue + ", ";
                     }
                 }
@@ -255,7 +255,7 @@ public class Trigger {
                 for (int i = 1; i <= metaData.getColumnCount(); i++) {
                     String fieldName = metaData.getColumnName(i);
                     String value = "NEW." + fieldName;
-                    String fieldValue = "IF(" + value + " IS NULL, 'NULL', CONCAT('\"', " + value + ", '\"'))";
+                    String fieldValue = "IF(" + value + " IS NULL, 'NULL', CONCAT('''', " + value + ", ''''))";
                     if (i == metaData.getColumnCount()) {
                         logScript = logScript + fieldName + " = ', " + fieldValue + ", ' ";
                     } else {
@@ -264,10 +264,10 @@ public class Trigger {
                 }
 
                 String field = idFields.get(0);
-                logScript = logScript + "WHERE " + field + " = \"', NEW." + field + ", '\"'";
+                logScript = logScript + "WHERE " + field + " = ''', NEW." + field + ", ''''";
                 for (int i = 1; i < idFields.size(); i++) {
                     String f = idFields.get(i);
-                    logScript = logScript + ", ' AND " + f + " = \"', OLD." + f + ", '\"'";
+                    logScript = logScript + ", ' AND " + f + " = ''', OLD." + f + ", ''''";
                 }
                 logScript = logScript + ")";
                 if (hasId) {

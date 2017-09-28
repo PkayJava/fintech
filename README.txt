@@ -29,7 +29,7 @@
   * /etc/mysql/conf.d/mysql.cnf *******************************************************************
   *************************************************************************************************
   [mysql]
-  default-character-set=utf8
+  default-character-set = utf8
 
 
 
@@ -47,7 +47,7 @@
   *************************************************************************************************
   [mysqld]
   sql_mode = ''
-  init-connect ='SET NAMES utf8'
+  init-connect = 'SET NAMES utf8'
   character-set-server = utf8
   collation-server = utf8_bin
   

@@ -1,15 +1,17 @@
 package com.angkorteam.fintech.dto.request;
 
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.angkorteam.fintech.dto.ReschedulingType;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -37,16 +39,38 @@ public class HolidayBuilder implements Serializable {
     private Date repaymentsRescheduledTo;
     private boolean hasRepaymentsRescheduledTo;
 
+    private ReschedulingType reschedulingType;
+    private boolean hasReschedulingType;
+
     private String description;
     private boolean hasDescription;
 
     private List<String> offices = Lists.newArrayList();
     private boolean hasOffices;
 
+    public HolidayBuilder withDescription(String description) {
+        this.description = description;
+        this.hasDescription = true;
+        return this;
+    }
+
+    public HolidayBuilder withReschedulingType(ReschedulingType reschedulingType) {
+        this.reschedulingType = reschedulingType;
+        this.hasReschedulingType = true;
+        return this;
+    }
+
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode(new JSONObject());
         if (this.hasId) {
             object.getObject().put("id", this.id);
+        }
+        if (this.hasReschedulingType) {
+            if (this.reschedulingType != null) {
+                object.getObject().put("reschedulingType", this.reschedulingType.getLiteral());
+            } else {
+                object.getObject().put("reschedulingType", (String) null);
+            }
         }
         if (this.hasLocale) {
             object.getObject().put("locale", this.locale);
