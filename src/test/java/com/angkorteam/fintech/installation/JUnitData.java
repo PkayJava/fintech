@@ -1,12 +1,8 @@
 package com.angkorteam.fintech.installation;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
@@ -16,51 +12,61 @@ import org.junit.Test;
 
 import com.angkorteam.fintech.Constants;
 import com.angkorteam.fintech.IMifos;
-import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Dropdown;
 import com.angkorteam.fintech.dto.constant.TellerStatus;
-import com.angkorteam.fintech.dto.request.AccountRuleBuilder;
 import com.angkorteam.fintech.dto.request.PaymentTypeBuilder;
 import com.angkorteam.fintech.dto.request.StaffBuilder;
 import com.angkorteam.fintech.dto.request.TellerBuilder;
-import com.angkorteam.fintech.helper.AccountingRuleHelper;
 import com.angkorteam.fintech.helper.LoginHelper;
 import com.angkorteam.fintech.helper.PaymentTypeHelper;
 import com.angkorteam.fintech.helper.StaffHelper;
 import com.angkorteam.fintech.helper.TellerHelper;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
-import com.angkorteam.fintech.pages.account.RuleBrowsePage;
 import com.angkorteam.framework.spring.JdbcTemplate;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class JUnitData implements IMifos {
-
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    private static final DateFormat DATE_FORMAT_1 = new SimpleDateFormat("dd MMM yyyy");
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd MMM yyyy");
 
     private String token;
 
     private JUnitWicketTester wicket;
 
     public static final String CURRENCY = "USD";
-    public static final String OFFICE = "JUNIT_OFFICE";
-    public static final String FUND = "JUNIT_FUND";
-    public static final String TELLER = "JUNIT_TELLER_300";
-    public static final String PAYMENT = "JUNIT_PAYMENT";
-    public static final String PAYMENT_CASH = "JUNIT_PAYMENT_CASH";
-    public static final String EMPLOYEE = "JUNIT_EMP";
+
+    public static final String OFFICE = "JUnit Office";
+
+    public static final String FUND = "JUnit Fund";
+
+    public static final String TELLER = "JUnit Teller 300";
+
+    public static final String PAYMENT = "JUnit Payment";
+    public static final String PAYMENT_CASH = "JUnit Payment Cash";
+
+    public static final String EMPLOYEE = "JUnit Emp";
+
+    public static final String ACCOUNT_ASSET_DEBIT = "JUnit Account Asset/Debit";
+    public static final String ACCOUNT_ASSET_CREDIT = "JUnit Account Asset/Credit";
+    public static final String ACCOUNT_LIABILITY_DEBIT = "JUnit Account Liability/Debit";
+    public static final String ACCOUNT_LIABILITY_CREDIT = "JUnit Account Liability/Credit";
+    public static final String ACCOUNT_EQUITY_DEBIT = "JUnit Account Equity/Debit";
+    public static final String ACCOUNT_EQUITY_CREDIT = "JUnit Account Equity/Credit";
+    public static final String ACCOUNT_INCOME_DEBIT = "JUnit Account Income/Debit";
+    public static final String ACCOUNT_INCOME_CREDIT = "JUnit Account Income/Credit";
+    public static final String ACCOUNT_EXPENSE_DEBIT = "JUnit Account Expense/Debit";
+    public static final String ACCOUNT_EXPENSE_CREDIT = "JUnit Account Expense/Credit";
+
+    public static final String ACCOUNT_RULE = "JUnit AccountRule";
 
     private static final List<String> OFFICES = Lists.newArrayList();
     private static final List<String> CURRENCIES = Lists.newArrayList();
     private static final List<String> FUNDS = Lists.newArrayList();
-    private static final List<Map<String, Object>> HOLIDAYS = Lists.newArrayList();
+    private static final List<String> HOLIDAYS = Lists.newArrayList();
     private static final List<String> EMPLOYEES = Lists.newArrayList();
+    private static final List<String> ACCOUNTS = Lists.newArrayList();
+    private static final List<String> ACCOUNT_RULES = Lists.newArrayList();
 
     static {
         OFFICES.add(OFFICE);
@@ -71,24 +77,27 @@ public class JUnitData implements IMifos {
         CURRENCIES.add("SGD");
         CURRENCIES.add("THB");
         FUNDS.add(FUND);
-        {
-            Map<String, Object> day = Maps.newHashMap();
-            day.put("name", "JUNIT_HOLIDAY_P_" + DateTime.now().getYear());
-            day.put("from", DateTime.now().minusMonths(5).toDate());
-            day.put("to", DateTime.now().minusMonths(5).plusDays(4).toDate());
-            day.put("rescheduled", DateTime.now().minusMonths(5).plusDays(5).toDate());
-            HOLIDAYS.add(day);
-        }
-        {
-            Map<String, Object> day = Maps.newHashMap();
-            day.put("name", "JUNIT_HOLIDAY_F_" + DateTime.now().getYear());
-            day.put("from", DateTime.now().plusMonths(5).toDate());
-            day.put("to", DateTime.now().plusMonths(5).plusDays(4).toDate());
-            day.put("rescheduled", DateTime.now().plusMonths(5).plusDays(5).toDate());
-            HOLIDAYS.add(day);
-        }
+
+        String year = String.valueOf(DateTime.now().getYear());
+        // NAME->FROM->TO->RESCHEDULED
+        HOLIDAYS.add("JUNIT_HOLIDAY_P_" + year + "=>" + DateTime.now().minusMonths(5).toString("yyyy-MM-dd") + "=>" + DateTime.now().minusMonths(5).plusDays(4).toString("yyyy-MM-dd") + "=>" + DateTime.now().minusMonths(5).plusDays(5).toString("yyyy-MM-dd"));
+        HOLIDAYS.add("JUNIT_HOLIDAY_P_" + year + "=>" + DateTime.now().plusMonths(5).toString("yyyy-MM-dd") + "=>" + DateTime.now().plusMonths(5).plusDays(4).toString("yyyy-MM-dd") + "=>" + DateTime.now().plusMonths(5).plusDays(5).toString("yyyy-MM-dd"));
 
         EMPLOYEES.add(EMPLOYEE);
+
+        // NAME=>TAG
+        ACCOUNTS.add(ACCOUNT_ASSET_DEBIT + "=>" + Dropdown.AssetAccountTags);
+        ACCOUNTS.add(ACCOUNT_ASSET_CREDIT + "=>" + Dropdown.AssetAccountTags);
+        ACCOUNTS.add(ACCOUNT_LIABILITY_DEBIT + "=>" + Dropdown.LiabilityAccountTags);
+        ACCOUNTS.add(ACCOUNT_LIABILITY_CREDIT + "=>" + Dropdown.LiabilityAccountTags);
+        ACCOUNTS.add(ACCOUNT_EQUITY_DEBIT + "=>" + Dropdown.EquityAccountTags);
+        ACCOUNTS.add(ACCOUNT_EQUITY_CREDIT + "=>" + Dropdown.EquityAccountTags);
+        ACCOUNTS.add(ACCOUNT_INCOME_DEBIT + "=>" + Dropdown.IncomeAccountTags);
+        ACCOUNTS.add(ACCOUNT_INCOME_CREDIT + "=>" + Dropdown.IncomeAccountTags);
+        ACCOUNTS.add(ACCOUNT_EXPENSE_DEBIT + "=>" + Dropdown.ExpenseAccountTags);
+        ACCOUNTS.add(ACCOUNT_EXPENSE_CREDIT + "=>" + Dropdown.ExpenseAccountTags);
+
+        ACCOUNT_RULES.add(ACCOUNT_RULE);
     }
 
     @Before
@@ -109,46 +118,14 @@ public class JUnitData implements IMifos {
         Function.setupHoliday(this, this.wicket.getJdbcTemplate(), HOLIDAYS);
         setupEmployee(this, this.wicket.getJdbcTemplate());
         setupDropdown(this, this.wicket.getJdbcTemplate());
-
+        Function.setupGLAccount(this, this.wicket.getJdbcTemplate(), ACCOUNTS, this.wicket.getStringGenerator());
     }
-    
-    protected void setupAccountingRule() {
-//        AccountRuleBuilder builder = new AccountRuleBuilder();
-//        builder.withName(this.ruleNameValue);
-//        builder.withDescription(this.descriptionValue);
-//        if (this.officeValue != null) {
-//            builder.withOfficeId(this.officeValue.getId());
-//        }
-//        if (this.debitAccountValue != null) {
-//            builder.withAccountToDebit(this.debitAccountValue.getId());
-//        }
-//        if (this.debitTagValue != null && !this.debitTagValue.isEmpty()) {
-//            for (Option tag : this.debitTagValue) {
-//                builder.withDebitTags(tag.getId());
-//            }
-//            builder.withAllowMultipleDebitEntries(this.multipleDebitValue);
-//        }
-//        if (this.creditAccountValue != null) {
-//            builder.withAccountToCredit(this.creditAccountValue.getId());
-//        }
-//        if (this.creditTagValue != null && !this.creditTagValue.isEmpty()) {
-//            for (Option tag : this.creditTagValue) {
-//                builder.withCreditTags(tag.getId());
-//            }
-//            builder.withAllowMultipleCreditEntries(this.multipleCreditValue);
-//        }
-//
-//        JsonNode node = null;
-//        try {
-//            node = AccountingRuleHelper.create((Session) getSession(), builder.build());
-//        } catch (UnirestException e) {
-//            error(e.getMessage());
-//            return;
-//        }
-//        if (reportError(node)) {
-//            return;
-//        }
-//        setResponsePage(RuleBrowsePage.class);
+
+    protected void setupAccountingRule() throws UnirestException {
+        String officeId = this.wicket.getJdbcTemplate().queryForObject("select id from m_office where name = ?", String.class, OFFICE);
+        String creditId = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where name = ?", String.class, ACCOUNT_ASSET_CREDIT);
+        String debitId = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where name = ?", String.class, ACCOUNT_ASSET_DEBIT);
+        Function.setupAccountingRule(this, this.wicket.getJdbcTemplate(), officeId, debitId, creditId, ACCOUNT_RULES);
     }
 
     protected void setupDropdown(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
@@ -253,7 +230,7 @@ public class JUnitData implements IMifos {
             if (!jdbcTemplate.queryForObject("select count(*) from m_staff where firstname = ?", Boolean.class, employee)) {
                 StaffBuilder builder = new StaffBuilder();
                 builder.withExternalId(StringUtils.upperCase(UUID.randomUUID().toString()));
-                builder.withJoiningDate(DATE_FORMAT.parse("2017-01-01"));
+                builder.withJoiningDate(Function.DATE_FORMAT.parse("2017-01-01"));
                 builder.withMobileNo(this.wicket.getNumberGenerator().generate(10));
                 builder.withLoanOfficer(true);
                 builder.withFirstName(employee);
@@ -286,7 +263,7 @@ public class JUnitData implements IMifos {
         final String TELLER_INACTIVE = "JUNIT_TELLER_400";
         final String TELLER_CLOSED = "JUNIT_TELLER_600";
         String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, OFFICE);
-        Date startDate = DATE_FORMAT.parse("2017-01-01");
+        Date startDate = Function.DATE_FORMAT.parse("2017-01-01");
         if (!jdbcTemplate.queryForObject("select count(*) from m_tellers where name = ?", Boolean.class, TELLER)) {
             TellerBuilder builder = new TellerBuilder();
             builder.withDescription(TELLER);
@@ -321,7 +298,7 @@ public class JUnitData implements IMifos {
     }
 
     protected void setupOffice() throws ParseException, UnirestException {
-        Date openingDate = DATE_FORMAT.parse("2017-01-01");
+        Date openingDate = Function.DATE_FORMAT.parse("2017-01-01");
         Function.setupOffice(this, this.wicket.getJdbcTemplate(), openingDate, OFFICES);
     }
 
