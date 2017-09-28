@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.wicket.model.IModel;
 
-import com.angkorteam.fintech.dto.FinancialActivityType;
+import com.angkorteam.fintech.dto.constant.FinancialActivityTypeEnum;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
@@ -28,7 +28,7 @@ public class FinancialActivityProvider extends SingleChoiceProvider<Option> {
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (FinancialActivityType value : FinancialActivityType.values()) {
+        for (FinancialActivityTypeEnum value : FinancialActivityTypeEnum.values()) {
             options.add(new Option(value.name(), value.getDescription()));
         }
         return options;

@@ -14,8 +14,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.FinancialActivityType;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.constant.FinancialActivityTypeEnum;
 import com.angkorteam.fintech.helper.FinancialActivityHelper;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -122,20 +122,20 @@ public class FinancialActivityBrowsePage extends Page {
     private ItemPanel typeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
         String text = null;
-        if (FinancialActivityType.AssetTransfer.getLiteral().equals(String.valueOf(value))) {
-            text = value + "." + FinancialActivityType.AssetTransfer.getDescription();
-        } else if (FinancialActivityType.CashAtTellersCashiers.getLiteral().equals(String.valueOf(value))) {
-            text = value + "." + FinancialActivityType.CashAtTellersCashiers.getDescription();
-        } else if (FinancialActivityType.FundSource.getLiteral().equals(String.valueOf(value))) {
-            text = value + "." + FinancialActivityType.FundSource.getDescription();
-        } else if (FinancialActivityType.MainCashAccountOrCashAtVault.getLiteral().equals(String.valueOf(value))) {
-            text = value + "." + FinancialActivityType.MainCashAccountOrCashAtVault.getDescription();
-        } else if (FinancialActivityType.OpeningBalancesTransferContra.getLiteral().equals(String.valueOf(value))) {
-            text = value + "." + FinancialActivityType.OpeningBalancesTransferContra.getDescription();
-        } else if (FinancialActivityType.PayableDividends.getLiteral().equals(String.valueOf(value))) {
-            text = value + "." + FinancialActivityType.PayableDividends.getDescription();
-        } else if (FinancialActivityType.LiabilityTransfer.getLiteral().equals(String.valueOf(value))) {
-            text = value + "." + FinancialActivityType.LiabilityTransfer.getDescription();
+        if (FinancialActivityTypeEnum.AssetTransfer.getLiteral().equals(String.valueOf(value))) {
+            text = value + "." + FinancialActivityTypeEnum.AssetTransfer.getDescription();
+        } else if (FinancialActivityTypeEnum.CashAtTeller.getLiteral().equals(String.valueOf(value))) {
+            text = value + "." + FinancialActivityTypeEnum.CashAtTeller.getDescription();
+        } else if (FinancialActivityTypeEnum.AssetFundSource.getLiteral().equals(String.valueOf(value))) {
+            text = value + "." + FinancialActivityTypeEnum.AssetFundSource.getDescription();
+        } else if (FinancialActivityTypeEnum.CashAtMainvault.getLiteral().equals(String.valueOf(value))) {
+            text = value + "." + FinancialActivityTypeEnum.CashAtMainvault.getDescription();
+        } else if (FinancialActivityTypeEnum.OpeningBalancesTransferContra.getLiteral().equals(String.valueOf(value))) {
+            text = value + "." + FinancialActivityTypeEnum.OpeningBalancesTransferContra.getDescription();
+        } else if (FinancialActivityTypeEnum.PayableDividends.getLiteral().equals(String.valueOf(value))) {
+            text = value + "." + FinancialActivityTypeEnum.PayableDividends.getDescription();
+        } else if (FinancialActivityTypeEnum.LiabilityTransfer.getLiteral().equals(String.valueOf(value))) {
+            text = value + "." + FinancialActivityTypeEnum.LiabilityTransfer.getDescription();
         }
         return new TextCell(text);
     }

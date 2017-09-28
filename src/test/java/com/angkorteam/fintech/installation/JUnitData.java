@@ -13,6 +13,7 @@ import org.junit.Test;
 import com.angkorteam.fintech.Constants;
 import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.dto.Dropdown;
+import com.angkorteam.fintech.dto.constant.FinancialActivityTypeEnum;
 import com.angkorteam.fintech.dto.constant.TellerStatus;
 import com.angkorteam.fintech.dto.request.PaymentTypeBuilder;
 import com.angkorteam.fintech.dto.request.StaffBuilder;
@@ -67,6 +68,7 @@ public class JUnitData implements IMifos {
     private static final List<String> EMPLOYEES = Lists.newArrayList();
     private static final List<String> ACCOUNTS = Lists.newArrayList();
     private static final List<String> ACCOUNT_RULES = Lists.newArrayList();
+    private static final List<String> FINANCIAL_ACTIVITIES = Lists.newArrayList();
 
     static {
         OFFICES.add(OFFICE);
@@ -98,6 +100,8 @@ public class JUnitData implements IMifos {
         ACCOUNTS.add(ACCOUNT_EXPENSE_CREDIT + "=>" + Dropdown.ExpenseAccountTags);
 
         ACCOUNT_RULES.add(ACCOUNT_RULE);
+
+        FINANCIAL_ACTIVITIES.add(FinancialActivityTypeEnum.AssetFundSource.name() + "=>" + ACCOUNT_ASSET_CREDIT);
     }
 
     @Before
@@ -120,6 +124,7 @@ public class JUnitData implements IMifos {
         setupDropdown(this, this.wicket.getJdbcTemplate());
         Function.setupGLAccount(this, this.wicket.getJdbcTemplate(), ACCOUNTS, this.wicket.getStringGenerator());
         setupAccountingRule();
+        Function.setupFinancialActivity(this, this.wicket.getJdbcTemplate(), FINANCIAL_ACTIVITIES);
     }
 
     protected void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException, ParseException {

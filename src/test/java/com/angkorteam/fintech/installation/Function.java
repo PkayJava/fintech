@@ -18,8 +18,10 @@ import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.fintech.dto.Dropdown;
 import com.angkorteam.fintech.dto.RepaymentOption;
 import com.angkorteam.fintech.dto.ReschedulingType;
+import com.angkorteam.fintech.dto.constant.FinancialActivityTypeEnum;
 import com.angkorteam.fintech.dto.request.AccountRuleBuilder;
 import com.angkorteam.fintech.dto.request.CodeValueBuilder;
+import com.angkorteam.fintech.dto.request.FinancialActivityBuilder;
 import com.angkorteam.fintech.dto.request.FundBuilder;
 import com.angkorteam.fintech.dto.request.GLAccountBuilder;
 import com.angkorteam.fintech.dto.request.HolidayBuilder;
@@ -28,6 +30,7 @@ import com.angkorteam.fintech.dto.request.WorkingDayBuilder;
 import com.angkorteam.fintech.helper.AccountingRuleHelper;
 import com.angkorteam.fintech.helper.CodeHelper;
 import com.angkorteam.fintech.helper.CurrencyHelper;
+import com.angkorteam.fintech.helper.FinancialActivityHelper;
 import com.angkorteam.fintech.helper.FundHelper;
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.helper.HolidayHelper;
@@ -106,6 +109,21 @@ public class Function {
                 builder.withToDate(DATE_FORMAT.parse(dateTo));
                 builder.withRepaymentsRescheduledTo(DATE_FORMAT.parse(rescheduled));
                 HolidayHelper.create(session, builder.build());
+            }
+        }
+    }
+
+    public static void setupFinancialActivity(IMifos session, JdbcTemplate jdbcTemplate, List<String> activities) throws UnirestException, ParseException {
+        for (String activity : activities) {
+            int p1 = activity.indexOf("=>");
+            FinancialActivityTypeEnum type = FinancialActivityTypeEnum.valueOf(activity.substring(0, p1));
+            String account = activity.substring(p1 + 2);
+            String accountId = jdbcTemplate.queryForObject("select id from acc_gl_account where name = ?", String.class, account);
+            if (!jdbcTemplate.queryForObject("select count(*) from acc_gl_financial_activity_account where financial_activity_type = ? and gl_account_id = ?", Boolean.class, type.getLiteral(), accountId)) {
+                FinancialActivityBuilder builder = new FinancialActivityBuilder();
+                builder.withFinancialActivityId(type);
+                builder.withGlAccountId(accountId);
+                FinancialActivityHelper.create(session, builder.build());
             }
         }
     }

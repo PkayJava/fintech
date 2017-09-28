@@ -1,8 +1,9 @@
 package com.angkorteam.fintech.dto.request;
 
-import com.mashape.unirest.http.JsonNode;
-
 import java.io.Serializable;
+
+import com.angkorteam.fintech.dto.constant.FinancialActivityTypeEnum;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 7/12/17.
@@ -12,7 +13,7 @@ public class FinancialActivityBuilder implements Serializable {
     private String id;
     private boolean hasId;
 
-    private String financialActivityId;
+    private FinancialActivityTypeEnum financialActivityId;
     private boolean hasFinancialActivityId;
 
     private String glAccountId;
@@ -24,7 +25,11 @@ public class FinancialActivityBuilder implements Serializable {
             object.getObject().put("id", this.id);
         }
         if (this.hasFinancialActivityId) {
-            object.getObject().put("financialActivityId", Integer.valueOf(this.financialActivityId));
+            if (this.financialActivityId != null) {
+                object.getObject().put("financialActivityId", this.financialActivityId.getLiteral());
+            } else {
+                object.getObject().put("financialActivityId", (String) null);
+            }
         }
         if (this.hasGlAccountId) {
             object.getObject().put("glAccountId", this.glAccountId);
@@ -38,7 +43,7 @@ public class FinancialActivityBuilder implements Serializable {
         return this;
     }
 
-    public FinancialActivityBuilder withFinancialActivity(String financialActivityId) {
+    public FinancialActivityBuilder withFinancialActivityId(FinancialActivityTypeEnum financialActivityId) {
         this.hasFinancialActivityId = true;
         this.financialActivityId = financialActivityId;
         return this;
