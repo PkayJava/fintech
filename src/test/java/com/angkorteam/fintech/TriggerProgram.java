@@ -36,7 +36,7 @@ public class TriggerProgram {
 
         boolean fileout = false;
 
-        DataSource dataSource = dataSourceManager.getDataSource("default");
+        DataSource dataSource = dataSourceManager.getDataSource(Constants.AID);
 
         Function.triggerData(fileout, dataSource);
     }
