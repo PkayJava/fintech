@@ -69,15 +69,82 @@ public class JUnitData implements IMifos {
     private static final List<String> ACCOUNTS = Lists.newArrayList();
     private static final List<String> ACCOUNT_RULES = Lists.newArrayList();
     private static final List<String> FINANCIAL_ACTIVITIES = Lists.newArrayList();
+    private static final List<String> PARAMS = Lists.newArrayList();
 
     static {
+        PARAMS.add(Dropdown.Customer_Identifier + "=>" + "Mr." + "=>" + "Mr.");
+        PARAMS.add(Dropdown.Customer_Identifier + "=>" + "Miss." + "=>" + "Miss");
+        PARAMS.add(Dropdown.Customer_Identifier + "=>" + "Mrs." + "=>" + "Mrs.");
+        PARAMS.add(Dropdown.LoanCollateral + "=>" + "LoanCollateral01" + "=>" + "LoanCollateral01");
+        PARAMS.add(Dropdown.LoanCollateral + "=>" + "LoanCollateral02" + "=>" + "LoanCollateral02");
+        PARAMS.add(Dropdown.LoanPurpose + "=>" + "LoanPurpose01" + "=>" + "LoanPurpose01");
+        PARAMS.add(Dropdown.LoanPurpose + "=>" + "LoanPurpose02" + "=>" + "LoanPurpose02");
+        PARAMS.add(Dropdown.Gender + "=>" + "M" + "=>" + "Male");
+        PARAMS.add(Dropdown.Gender + "=>" + "F" + "=>" + "Female");
+        PARAMS.add(Dropdown.YesNo + "=>" + "Y" + "=>" + "Yes");
+        PARAMS.add(Dropdown.YesNo + "=>" + "N" + "=>" + "No");
+        PARAMS.add(Dropdown.GuarantorRelationship + "=>" + "GuarantorRelationship01" + "=>" + "GuarantorRelationship01");
+        PARAMS.add(Dropdown.GuarantorRelationship + "=>" + "GuarantorRelationship02" + "=>" + "GuarantorRelationship02");
+        PARAMS.add(Dropdown.AssetAccountTags + "=>" + "AssetAccountTags01" + "=>" + "AssetAccountTags01");
+        PARAMS.add(Dropdown.AssetAccountTags + "=>" + "AssetAccountTags02" + "=>" + "AssetAccountTags02");
+        PARAMS.add(Dropdown.LiabilityAccountTags + "=>" + "LiabilityAccountTags01" + "=>" + "LiabilityAccountTags01");
+        PARAMS.add(Dropdown.LiabilityAccountTags + "=>" + "LiabilityAccountTags02" + "=>" + "LiabilityAccountTags02");
+        PARAMS.add(Dropdown.EquityAccountTags + "=>" + "EquityAccountTags01" + "=>" + "EquityAccountTags01");
+        PARAMS.add(Dropdown.EquityAccountTags + "=>" + "EquityAccountTags02" + "=>" + "EquityAccountTags02");
+        PARAMS.add(Dropdown.IncomeAccountTags + "=>" + "IncomeAccountTags01" + "=>" + "IncomeAccountTags01");
+        PARAMS.add(Dropdown.IncomeAccountTags + "=>" + "IncomeAccountTags02" + "=>" + "IncomeAccountTags02");
+        PARAMS.add(Dropdown.ExpenseAccountTags + "=>" + "ExpenseAccountTags01" + "=>" + "ExpenseAccountTags01");
+        PARAMS.add(Dropdown.ExpenseAccountTags + "=>" + "ExpenseAccountTags02" + "=>" + "ExpenseAccountTags02");
+        PARAMS.add(Dropdown.GroupRole + "=>" + "GroupRole01" + "=>" + "GroupRole01");
+        PARAMS.add(Dropdown.GroupRole + "=>" + "GroupRole02" + "=>" + "GroupRole02");
+        PARAMS.add(Dropdown.ClientClosureReason + "=>" + "ClientClosureReason01" + "=>" + "ClientClosureReason01");
+        PARAMS.add(Dropdown.ClientClosureReason + "=>" + "ClientClosureReason02" + "=>" + "ClientClosureReason02");
+        PARAMS.add(Dropdown.GroupClosureReason + "=>" + "GroupClosureReason01" + "=>" + "GroupClosureReason01");
+        PARAMS.add(Dropdown.GroupClosureReason + "=>" + "GroupClosureReason02" + "=>" + "GroupClosureReason02");
+        PARAMS.add(Dropdown.ClientType + "=>" + "ClientType01" + "=>" + "ClientType01");
+        PARAMS.add(Dropdown.ClientType + "=>" + "ClientType02" + "=>" + "ClientType02");
+        PARAMS.add(Dropdown.ClientClassification + "=>" + "ClientClassification01" + "=>" + "ClientClassification01");
+        PARAMS.add(Dropdown.ClientClassification + "=>" + "ClientClassification02" + "=>" + "ClientClassification02");
+        PARAMS.add(Dropdown.ClientSubStatus + "=>" + "ClientSubStatus01" + "=>" + "ClientSubStatus01");
+        PARAMS.add(Dropdown.ClientSubStatus + "=>" + "ClientSubStatus02" + "=>" + "ClientSubStatus02");
+        PARAMS.add(Dropdown.ClientRejectReason + "=>" + "ClientRejectReason01" + "=>" + "ClientRejectReason01");
+        PARAMS.add(Dropdown.ClientRejectReason + "=>" + "ClientRejectReason02" + "=>" + "ClientRejectReason02");
+        PARAMS.add(Dropdown.ClientWithdrawReason + "=>" + "ClientWithdrawReason01" + "=>" + "ClientWithdrawReason01");
+        PARAMS.add(Dropdown.ClientWithdrawReason + "=>" + "ClientWithdrawReason02" + "=>" + "ClientWithdrawReason02");
+        PARAMS.add(Dropdown.EntityToEntityAccessTypes + "=>" + "EntityToEntityAccessTypes01" + "=>" + "EntityToEntityAccessTypes01");
+        PARAMS.add(Dropdown.EntityToEntityAccessTypes + "=>" + "EntityToEntityAccessTypes02" + "=>" + "EntityToEntityAccessTypes02");
+        PARAMS.add(Dropdown.CenterClosureReason + "=>" + "CenterClosureReason01" + "=>" + "CenterClosureReason01");
+        PARAMS.add(Dropdown.CenterClosureReason + "=>" + "CenterClosureReason02" + "=>" + "CenterClosureReason02");
+        PARAMS.add(Dropdown.LoanRescheduleReason + "=>" + "LoanRescheduleReason01" + "=>" + "LoanRescheduleReason01");
+        PARAMS.add(Dropdown.LoanRescheduleReason + "=>" + "LoanRescheduleReason02" + "=>" + "LoanRescheduleReason02");
+        PARAMS.add(Dropdown.Constitution + "=>" + "Constitution01" + "=>" + "Constitution01");
+        PARAMS.add(Dropdown.Constitution + "=>" + "Constitution02" + "=>" + "Constitution02");
+        PARAMS.add(Dropdown.MainBusinessLine + "=>" + "MainBusinessLine01" + "=>" + "MainBusinessLine01");
+        PARAMS.add(Dropdown.MainBusinessLine + "=>" + "MainBusinessLine02" + "=>" + "MainBusinessLine02");
+        PARAMS.add(Dropdown.WriteOffReasons + "=>" + "WriteOffReasons01" + "=>" + "WriteOffReasons01");
+        PARAMS.add(Dropdown.WriteOffReasons + "=>" + "WriteOffReasons02" + "=>" + "WriteOffReasons02");
+        PARAMS.add(Dropdown.State + "=>" + "State01" + "=>" + "State01");
+        PARAMS.add(Dropdown.State + "=>" + "State02" + "=>" + "State02");
+        PARAMS.add(Dropdown.Country + "=>" + "Country01" + "=>" + "Country01");
+        PARAMS.add(Dropdown.Country + "=>" + "Country02" + "=>" + "Country02");
+        PARAMS.add(Dropdown.AddressType + "=>" + "AddressType01" + "=>" + "AddressType01");
+        PARAMS.add(Dropdown.AddressType + "=>" + "AddressType02" + "=>" + "AddressType02");
+        PARAMS.add(Dropdown.MaritalStatus + "=>" + "MaritalStatus01" + "=>" + "MaritalStatus01");
+        PARAMS.add(Dropdown.MaritalStatus + "=>" + "MaritalStatus02" + "=>" + "MaritalStatus02");
+        PARAMS.add(Dropdown.Profession + "=>" + "Profession01" + "=>" + "Profession01");
+        PARAMS.add(Dropdown.Profession + "=>" + "Profession02" + "=>" + "Profession02");
+        PARAMS.add(Dropdown.Relationship + "=>" + "Relationship01" + "=>" + "Relationship01");
+        PARAMS.add(Dropdown.Relationship + "=>" + "Relationship02" + "=>" + "Relationship02");
+
         OFFICES.add(OFFICE);
+
         CURRENCIES.add("USD");
         CURRENCIES.add("VND");
         CURRENCIES.add("KHR");
         CURRENCIES.add("MYR");
         CURRENCIES.add("SGD");
         CURRENCIES.add("THB");
+
         FUNDS.add(FUND);
 
         String year = String.valueOf(DateTime.now().getYear());
@@ -113,6 +180,7 @@ public class JUnitData implements IMifos {
 
     @Test
     public void initJUnitData() throws ParseException, UnirestException {
+        Function.setupSystemParameter(this, this.wicket.getJdbcTemplate(), PARAMS);
         setupOffice();
         Function.setupWorkingDay(this);
         setupCurrency();
@@ -121,7 +189,6 @@ public class JUnitData implements IMifos {
         setupPaymentType(this, this.wicket.getJdbcTemplate());
         setupHoliday(this, this.wicket.getJdbcTemplate());
         setupEmployee(this, this.wicket.getJdbcTemplate());
-        setupDropdown(this, this.wicket.getJdbcTemplate());
         Function.setupGLAccount(this, this.wicket.getJdbcTemplate(), ACCOUNTS, this.wicket.getStringGenerator());
         setupAccountingRule();
         Function.setupFinancialActivity(this, this.wicket.getJdbcTemplate(), FINANCIAL_ACTIVITIES);
@@ -137,103 +204,6 @@ public class JUnitData implements IMifos {
         String creditId = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where name = ?", String.class, ACCOUNT_ASSET_CREDIT);
         String debitId = this.wicket.getJdbcTemplate().queryForObject("select id from acc_gl_account where name = ?", String.class, ACCOUNT_ASSET_DEBIT);
         Function.setupAccountingRule(this, this.wicket.getJdbcTemplate(), officeId, debitId, creditId, ACCOUNT_RULES);
-    }
-
-    protected void setupDropdown(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.Customer_Identifier, "Mr.", "Mr.");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.Customer_Identifier, "Miss.", "Miss");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.Customer_Identifier, "Mrs.", "Mrs.");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.LoanCollateral, "LoanCollateral01", "LoanCollateral01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.LoanCollateral, "LoanCollateral02", "LoanCollateral02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.LoanPurpose, "LoanPurpose01", "LoanPurpose01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.LoanPurpose, "LoanPurpose02", "LoanPurpose02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.Gender, "M", "Male");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.Gender, "F", "Female");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.YesNo, "Y", "Yes");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.YesNo, "N", "No");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.GuarantorRelationship, "GuarantorRelationship01", "GuarantorRelationship01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.GuarantorRelationship, "GuarantorRelationship02", "GuarantorRelationship02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.AssetAccountTags, "AssetAccountTags01", "AssetAccountTags01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.AssetAccountTags, "AssetAccountTags02", "AssetAccountTags02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.LiabilityAccountTags, "LiabilityAccountTags01", "LiabilityAccountTags01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.LiabilityAccountTags, "LiabilityAccountTags02", "LiabilityAccountTags02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.EquityAccountTags, "EquityAccountTags01", "EquityAccountTags01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.EquityAccountTags, "EquityAccountTags02", "EquityAccountTags02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.IncomeAccountTags, "IncomeAccountTags01", "IncomeAccountTags01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.IncomeAccountTags, "IncomeAccountTags02", "IncomeAccountTags02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.ExpenseAccountTags, "ExpenseAccountTags01", "ExpenseAccountTags01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.ExpenseAccountTags, "ExpenseAccountTags02", "ExpenseAccountTags02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.GroupRole, "GroupRole01", "GroupRole01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.GroupRole, "GroupRole02", "GroupRole02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.ClientClosureReason, "ClientClosureReason01", "ClientClosureReason01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.ClientClosureReason, "ClientClosureReason02", "ClientClosureReason02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.GroupClosureReason, "GroupClosureReason01", "GroupClosureReason01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.GroupClosureReason, "GroupClosureReason02", "GroupClosureReason02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.ClientType, "ClientType01", "ClientType01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.ClientType, "ClientType02", "ClientType02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.ClientClassification, "ClientClassification01", "ClientClassification01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.ClientClassification, "ClientClassification02", "ClientClassification02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.ClientSubStatus, "ClientSubStatus01", "ClientSubStatus01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.ClientSubStatus, "ClientSubStatus02", "ClientSubStatus02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.ClientRejectReason, "ClientRejectReason01", "ClientRejectReason01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.ClientRejectReason, "ClientRejectReason02", "ClientRejectReason02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.ClientWithdrawReason, "ClientWithdrawReason01", "ClientWithdrawReason01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.ClientWithdrawReason, "ClientWithdrawReason02", "ClientWithdrawReason02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.EntityToEntityAccessTypes, "EntityToEntityAccessTypes01", "EntityToEntityAccessTypes01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.EntityToEntityAccessTypes, "EntityToEntityAccessTypes02", "EntityToEntityAccessTypes02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.CenterClosureReason, "CenterClosureReason01", "CenterClosureReason01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.CenterClosureReason, "CenterClosureReason02", "CenterClosureReason02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.LoanRescheduleReason, "LoanRescheduleReason01", "LoanRescheduleReason01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.LoanRescheduleReason, "LoanRescheduleReason02", "LoanRescheduleReason02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.Constitution, "Constitution01", "Constitution01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.Constitution, "Constitution02", "Constitution02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.MainBusinessLine, "MainBusinessLine01", "MainBusinessLine01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.MainBusinessLine, "MainBusinessLine02", "MainBusinessLine02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.WriteOffReasons, "WriteOffReasons01", "WriteOffReasons01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.WriteOffReasons, "WriteOffReasons02", "WriteOffReasons02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.State, "State01", "State01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.State, "State02", "State02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.Country, "Country01", "Country01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.Country, "Country02", "Country02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.AddressType, "AddressType01", "AddressType01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.AddressType, "AddressType02", "AddressType02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.MaritalStatus, "MaritalStatus01", "MaritalStatus01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.MaritalStatus, "MaritalStatus02", "MaritalStatus02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.Profession, "Profession01", "Profession01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.Profession, "Profession02", "Profession02");
-
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.Relationship, "Relationship01", "Relationship01");
-        Function.setupSystemParameter(session, jdbcTemplate, Dropdown.Relationship, "Relationship02", "Relationship02");
     }
 
     protected void setupEmployee(IMifos session, JdbcTemplate jdbcTemplate) throws ParseException, UnirestException {

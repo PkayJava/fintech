@@ -173,15 +173,22 @@ public class Function {
 
     }
 
-    public static void setupSystemParameter(IMifos session, JdbcTemplate jdbcTemplate, String code, String value, String description) throws UnirestException {
-        String codeId = jdbcTemplate.queryForObject("select id from m_code where code_name = ?", String.class, code);
-        if (!jdbcTemplate.queryForObject("select count(*) from m_code_value where code_id = ? and code_value = ?", Boolean.class, codeId, value)) {
-            CodeValueBuilder builder = new CodeValueBuilder();
-            builder.withCodeId(codeId);
-            builder.withName(value);
-            builder.withDescription(description);
-            builder.withActive(true);
-            CodeHelper.createValue(session, builder.build());
+    public static void setupSystemParameter(IMifos session, JdbcTemplate jdbcTemplate, List<String> params) throws UnirestException {
+        for (String param : params) {
+            int p1 = param.indexOf("=>");
+            int p2 = param.indexOf("=>", p1 + 2);
+            String code = param.substring(0, p1);
+            String value = param.substring(p1 + 2, p2);
+            String codeId = jdbcTemplate.queryForObject("select id from m_code where code_name = ?", String.class, code);
+            if (!jdbcTemplate.queryForObject("select count(*) from m_code_value where code_id = ? and code_value = ?", Boolean.class, codeId, value)) {
+                String description = param.substring(p2 + 2);
+                CodeValueBuilder builder = new CodeValueBuilder();
+                builder.withCodeId(codeId);
+                builder.withName(value);
+                builder.withDescription(description);
+                builder.withActive(true);
+                CodeHelper.createValue(session, builder.build());
+            }
         }
     }
 
