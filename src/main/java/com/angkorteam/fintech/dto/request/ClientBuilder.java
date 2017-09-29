@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.json.JSONObject;
 
 import com.angkorteam.fintech.dto.LegalForm;
 import com.google.common.collect.Lists;
@@ -165,8 +166,27 @@ public class ClientBuilder implements Serializable {
         return this;
     }
 
+    public ClientBuilder withClientNonPersonDetails(String mainBusinessLineId) {
+        this.clientNonPersonDetails.put("mainBusinessLineId", mainBusinessLineId);
+        this.hasClientNonPersonDetails = true;
+        return this;
+    }
+
+    private List<JSONObject> familyMembers = Lists.newArrayList();
+    private boolean hasFamilyMembers;
+
+    public ClientBuilder withFamilyMembers(JSONObject familyMember) {
+        this.familyMembers.add(familyMember);
+        this.hasFamilyMembers = true;
+        return this;
+    }
+
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
+
+        if (this.hasFamilyMembers) {
+            object.getObject().put("familyMembers", this.familyMembers);
+        }
 
         if (this.hasFullName) {
             object.getObject().put("fullname", this.fullName);

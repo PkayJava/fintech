@@ -6,8 +6,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class ClientHelper {
 
-    public JsonNode create(IMifos session, JsonNode object) throws UnirestException {
-        return null;
+    public static JsonNode create(IMifos session, JsonNode object) throws UnirestException {
+        return Helper.performServerPost(session, "/api/v1/clients", object);
     }
 
     public JsonNode update(JsonNode object) throws UnirestException {
