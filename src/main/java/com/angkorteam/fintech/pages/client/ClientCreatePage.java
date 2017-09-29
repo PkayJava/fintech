@@ -574,6 +574,11 @@ public class ClientCreatePage extends Page {
             boolean entityVisible = legalForm == LegalForm.Entity;
             builder.withFullName(this.nameValue);
             builder.withDateOfBirth(this.incorporationDateValue);
+            String mainBusinessLineId = this.mainBusinessLineValue == null ? null : this.mainBusinessLineValue.getId();
+            String incorpNumber = this.incorporationNumberValue;
+            String constitutionId = this.constitutionValue;
+            String remarks = this.remarkValue;
+            Date incorpValidityTillDate = this.incorporationValidityTillDateValue;
             builder.withClientNonPersonDetails(mainBusinessLineId, incorpNumber, constitutionId, remarks, incorpValidityTillDate);
             this.incorporationValidityTillDateContainer.setVisible(entityVisible);
             this.incorporationNumberContainer.setVisible(entityVisible);
@@ -581,7 +586,6 @@ public class ClientCreatePage extends Page {
             this.constitutionContainer.setVisible(entityVisible);
             this.remarkContainer.setVisible(entityVisible);
         } else if (legalForm == LegalForm.Person) {
-
             boolean peopleVisible = legalForm == LegalForm.Person;
             this.firstNameContainer.setVisible(peopleVisible);
             this.middleNameContainer.setVisible(peopleVisible);
