@@ -2,9 +2,11 @@ package com.angkorteam.fintech.pages.client;
 
 import java.util.Date;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
@@ -12,13 +14,16 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.DepositType;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.request.FundBuilder;
+import com.angkorteam.fintech.dto.LegalForm;
+import com.angkorteam.fintech.dto.request.ClientBuilder;
 import com.angkorteam.fintech.helper.FundHelper;
 import com.angkorteam.fintech.provider.ClientClassificationProvider;
 import com.angkorteam.fintech.provider.ClientTypeProvider;
 import com.angkorteam.fintech.provider.GenderProvider;
 import com.angkorteam.fintech.provider.LegalFormProvider;
+import com.angkorteam.fintech.provider.MainBusinessLineProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -82,6 +87,12 @@ public class ClientCreatePage extends Page {
     protected TextField<String> lastNameField;
     protected TextFeedbackPanel lastNameFeedback;
 
+    protected WebMarkupContainer nameBlock;
+    protected WebMarkupContainer nameContainer;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
+
     protected WebMarkupContainer mobileNumberBlock;
     protected WebMarkupContainer mobileNumberContainer;
     protected String mobileNumberValue;
@@ -101,6 +112,18 @@ public class ClientCreatePage extends Page {
     protected Select2SingleChoice<Option> genderField;
     protected TextFeedbackPanel genderFeedback;
 
+    protected WebMarkupContainer incorporationDateBlock;
+    protected WebMarkupContainer incorporationDateContainer;
+    protected Date incorporationDateValue;
+    protected DateTextField incorporationDateField;
+    protected TextFeedbackPanel incorporationDateFeedback;
+
+    protected WebMarkupContainer incorporationValidityTillDateBlock;
+    protected WebMarkupContainer incorporationValidityTillDateContainer;
+    protected Date incorporationValidityTillDateValue;
+    protected DateTextField incorporationValidityTillDateField;
+    protected TextFeedbackPanel incorporationValidityTillDateFeedback;
+
     protected WebMarkupContainer clientTypeBlock;
     protected WebMarkupContainer clientTypeContainer;
     protected ClientTypeProvider clientTypeProvider;
@@ -114,6 +137,31 @@ public class ClientCreatePage extends Page {
     protected Option clientClassificationValue;
     protected Select2SingleChoice<Option> clientClassificationField;
     protected TextFeedbackPanel clientClassificationFeedback;
+
+    protected WebMarkupContainer incorporationNumberBlock;
+    protected WebMarkupContainer incorporationNumberContainer;
+    protected String incorporationNumberValue;
+    protected TextField<String> incorporationNumberField;
+    protected TextFeedbackPanel incorporationNumberFeedback;
+
+    protected WebMarkupContainer mainBusinessLineBlock;
+    protected WebMarkupContainer mainBusinessLineContainer;
+    protected MainBusinessLineProvider mainBusinessLineProvider;
+    protected Option mainBusinessLineValue;
+    protected Select2SingleChoice<Option> mainBusinessLineField;
+    protected TextFeedbackPanel mainBusinessLineFeedback;
+
+    protected WebMarkupContainer constitutionBlock;
+    protected WebMarkupContainer constitutionContainer;
+    protected String constitutionValue;
+    protected TextField<String> constitutionField;
+    protected TextFeedbackPanel constitutionFeedback;
+
+    protected WebMarkupContainer remarkBlock;
+    protected WebMarkupContainer remarkContainer;
+    protected String remarkValue;
+    protected TextArea<String> remarkField;
+    protected TextFeedbackPanel remarkFeedback;
 
     protected WebMarkupContainer externalIdBlock;
     protected WebMarkupContainer externalIdContainer;
@@ -200,7 +248,7 @@ public class ClientCreatePage extends Page {
         this.legalFormProvider = new LegalFormProvider();
         this.legalFormField = new Select2SingleChoice<>("legalFormField", 0, new PropertyModel<>(this, "legalFormValue"), this.legalFormProvider);
         this.legalFormField.setLabel(Model.of("Legal Form"));
-        this.legalFormField.add(new OnChangeAjaxBehavior());
+        this.legalFormField.add(new OnChangeAjaxBehavior(this::legalFormFieldUpdate));
         this.legalFormContainer.add(this.legalFormField);
         this.legalFormFeedback = new TextFeedbackPanel("legalFormFeedback", this.legalFormField);
         this.legalFormContainer.add(this.legalFormFeedback);
@@ -252,6 +300,18 @@ public class ClientCreatePage extends Page {
         this.lastNameFeedback = new TextFeedbackPanel("lastNameFeedback", this.lastNameField);
         this.lastNameContainer.add(this.lastNameFeedback);
 
+        this.nameBlock = new WebMarkupContainer("nameBlock");
+        this.nameBlock.setOutputMarkupId(true);
+        this.form.add(this.nameBlock);
+        this.nameContainer = new WebMarkupContainer("nameContainer");
+        this.nameBlock.add(this.nameContainer);
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setLabel(Model.of("Name"));
+        this.nameField.add(new OnChangeAjaxBehavior());
+        this.nameContainer.add(this.nameField);
+        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+        this.nameContainer.add(this.nameFeedback);
+
         this.mobileNumberBlock = new WebMarkupContainer("mobileNumberBlock");
         this.mobileNumberBlock.setOutputMarkupId(true);
         this.form.add(this.mobileNumberBlock);
@@ -289,6 +349,30 @@ public class ClientCreatePage extends Page {
         this.genderFeedback = new TextFeedbackPanel("genderFeedback", this.genderField);
         this.genderContainer.add(this.genderFeedback);
 
+        this.incorporationDateBlock = new WebMarkupContainer("incorporationDateBlock");
+        this.incorporationDateBlock.setOutputMarkupId(true);
+        this.form.add(this.incorporationDateBlock);
+        this.incorporationDateContainer = new WebMarkupContainer("incorporationDateContainer");
+        this.incorporationDateBlock.add(this.incorporationDateContainer);
+        this.incorporationDateField = new DateTextField("incorporationDateField", new PropertyModel<>(this, "incorporationDateValue"));
+        this.incorporationDateField.setLabel(Model.of("Incorporation Date"));
+        this.incorporationDateField.add(new OnChangeAjaxBehavior());
+        this.incorporationDateContainer.add(this.incorporationDateField);
+        this.incorporationDateFeedback = new TextFeedbackPanel("incorporationDateFeedback", this.incorporationDateField);
+        this.incorporationDateContainer.add(this.incorporationDateFeedback);
+
+        this.incorporationValidityTillDateBlock = new WebMarkupContainer("incorporationValidityTillDateBlock");
+        this.incorporationValidityTillDateBlock.setOutputMarkupId(true);
+        this.form.add(this.incorporationValidityTillDateBlock);
+        this.incorporationValidityTillDateContainer = new WebMarkupContainer("incorporationValidityTillDateContainer");
+        this.incorporationValidityTillDateBlock.add(this.incorporationValidityTillDateContainer);
+        this.incorporationValidityTillDateField = new DateTextField("incorporationValidityTillDateField", new PropertyModel<>(this, "incorporationValidityTillDateValue"));
+        this.incorporationValidityTillDateField.setLabel(Model.of("Incorporation Validity Till Date"));
+        this.incorporationValidityTillDateField.add(new OnChangeAjaxBehavior());
+        this.incorporationValidityTillDateContainer.add(this.incorporationValidityTillDateField);
+        this.incorporationValidityTillDateFeedback = new TextFeedbackPanel("incorporationValidityTillDateFeedback", this.incorporationValidityTillDateField);
+        this.incorporationValidityTillDateContainer.add(this.incorporationValidityTillDateFeedback);
+
         this.clientTypeBlock = new WebMarkupContainer("clientTypeBlock");
         this.clientTypeBlock.setOutputMarkupId(true);
         this.form.add(this.clientTypeBlock);
@@ -314,6 +398,55 @@ public class ClientCreatePage extends Page {
         this.clientClassificationContainer.add(this.clientClassificationField);
         this.clientClassificationFeedback = new TextFeedbackPanel("clientClassificationFeedback", this.clientClassificationField);
         this.clientClassificationContainer.add(this.clientClassificationFeedback);
+
+        this.incorporationNumberBlock = new WebMarkupContainer("incorporationNumberBlock");
+        this.incorporationNumberBlock.setOutputMarkupId(true);
+        this.form.add(this.incorporationNumberBlock);
+        this.incorporationNumberContainer = new WebMarkupContainer("incorporationNumberContainer");
+        this.incorporationNumberBlock.add(this.incorporationNumberContainer);
+        this.incorporationNumberField = new TextField<>("incorporationNumberField", new PropertyModel<>(this, "incorporationNumberValue"));
+        this.incorporationNumberField.setLabel(Model.of("Incorporation Number"));
+        this.incorporationNumberField.add(new OnChangeAjaxBehavior());
+        this.incorporationNumberContainer.add(this.incorporationNumberField);
+        this.incorporationNumberFeedback = new TextFeedbackPanel("incorporationNumberFeedback", this.incorporationNumberField);
+        this.incorporationNumberContainer.add(this.incorporationNumberFeedback);
+
+        this.mainBusinessLineBlock = new WebMarkupContainer("mainBusinessLineBlock");
+        this.mainBusinessLineBlock.setOutputMarkupId(true);
+        this.form.add(this.mainBusinessLineBlock);
+        this.mainBusinessLineContainer = new WebMarkupContainer("mainBusinessLineContainer");
+        this.mainBusinessLineBlock.add(this.mainBusinessLineContainer);
+        this.mainBusinessLineProvider = new MainBusinessLineProvider();
+        this.mainBusinessLineField = new Select2SingleChoice<>("mainBusinessLineField", 0, new PropertyModel<>(this, "mainBusinessLineValue"), this.mainBusinessLineProvider);
+        this.mainBusinessLineField.setLabel(Model.of("Client Classification"));
+        this.mainBusinessLineField.add(new OnChangeAjaxBehavior());
+        this.mainBusinessLineContainer.add(this.mainBusinessLineField);
+        this.mainBusinessLineFeedback = new TextFeedbackPanel("mainBusinessLineFeedback", this.mainBusinessLineField);
+        this.mainBusinessLineContainer.add(this.mainBusinessLineFeedback);
+
+        this.constitutionBlock = new WebMarkupContainer("constitutionBlock");
+        this.constitutionBlock.setOutputMarkupId(true);
+        this.form.add(this.constitutionBlock);
+        this.constitutionContainer = new WebMarkupContainer("constitutionContainer");
+        this.constitutionBlock.add(this.constitutionContainer);
+        this.constitutionField = new TextField<>("constitutionField", new PropertyModel<>(this, "constitutionValue"));
+        this.constitutionField.setLabel(Model.of("Constitution"));
+        this.constitutionField.add(new OnChangeAjaxBehavior());
+        this.constitutionContainer.add(this.constitutionField);
+        this.constitutionFeedback = new TextFeedbackPanel("constitutionFeedback", this.constitutionField);
+        this.constitutionContainer.add(this.constitutionFeedback);
+
+        this.remarkBlock = new WebMarkupContainer("remarkBlock");
+        this.remarkBlock.setOutputMarkupId(true);
+        this.form.add(this.remarkBlock);
+        this.remarkContainer = new WebMarkupContainer("remarkContainer");
+        this.remarkBlock.add(this.remarkContainer);
+        this.remarkField = new TextArea<>("remarkField", new PropertyModel<>(this, "remarkValue"));
+        this.remarkField.setLabel(Model.of("Remark"));
+        this.remarkField.add(new OnChangeAjaxBehavior());
+        this.remarkContainer.add(this.remarkField);
+        this.remarkFeedback = new TextFeedbackPanel("remarkFeedback", this.remarkField);
+        this.remarkContainer.add(this.remarkFeedback);
 
         this.externalIdBlock = new WebMarkupContainer("externalIdBlock");
         this.externalIdBlock.setOutputMarkupId(true);
@@ -378,7 +511,8 @@ public class ClientCreatePage extends Page {
         this.form.add(this.savingsAccountBlock);
         this.savingsAccountContainer = new WebMarkupContainer("savingsAccountContainer");
         this.savingsAccountBlock.add(this.savingsAccountContainer);
-        this.savingsAccountProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.savingsAccountProvider = new SingleChoiceProvider("m_savings_product", "id", "name");
+        this.savingsAccountProvider.applyWhere("deposit_type_enum", "deposit_type_enum = " + DepositType.Saving.getLiteral());
         this.savingsAccountField = new Select2SingleChoice<>("savingsAccountField", 0, new PropertyModel<>(this, "savingsAccountValue"), this.savingsAccountProvider);
         this.savingsAccountField.setLabel(Model.of("Savings Account"));
         this.savingsAccountField.add(new OnChangeAjaxBehavior());
@@ -388,8 +522,74 @@ public class ClientCreatePage extends Page {
 
     }
 
+    protected boolean legalFormFieldUpdate(AjaxRequestTarget target) {
+        LegalForm legalForm = null;
+        if (this.legalFormValue != null) {
+            legalForm = LegalForm.valueOf(this.legalFormValue.getId());
+        }
+        boolean peopleVisible = legalForm == LegalForm.Person;
+        this.firstNameContainer.setVisible(peopleVisible);
+        this.middleNameContainer.setVisible(peopleVisible);
+        this.staffApplicationContainer.setVisible(peopleVisible);
+        this.lastNameContainer.setVisible(peopleVisible);
+        this.dateOfBirthContainer.setVisible(peopleVisible);
+        this.genderContainer.setVisible(peopleVisible);
+
+        boolean entityVisible = legalForm == LegalForm.Entity;
+        this.nameContainer.setVisible(entityVisible);
+        this.incorporationDateContainer.setVisible(entityVisible);
+        this.incorporationValidityTillDateContainer.setVisible(entityVisible);
+        this.incorporationNumberContainer.setVisible(entityVisible);
+        this.mainBusinessLineContainer.setVisible(entityVisible);
+        this.constitutionContainer.setVisible(entityVisible);
+        this.remarkContainer.setVisible(entityVisible);
+
+        if (target != null) {
+            target.add(this.firstNameBlock);
+            target.add(this.middleNameBlock);
+            target.add(this.staffApplicationBlock);
+            target.add(this.lastNameBlock);
+            target.add(this.dateOfBirthBlock);
+            target.add(this.genderBlock);
+            target.add(this.nameBlock);
+            target.add(this.incorporationDateBlock);
+            target.add(this.incorporationValidityTillDateBlock);
+            target.add(this.incorporationNumberBlock);
+            target.add(this.mainBusinessLineBlock);
+            target.add(this.constitutionBlock);
+            target.add(this.remarkBlock);
+        }
+        return false;
+    }
+
     protected void saveButtonSubmit(Button button) {
-        FundBuilder builder = new FundBuilder();
+        LegalForm legalForm = null;
+        if (this.legalFormValue != null) {
+            legalForm = LegalForm.valueOf(this.legalFormValue.getId());
+        }
+
+        ClientBuilder builder = new ClientBuilder();
+        builder.withLegalFormId(legalForm);
+        if (legalForm == LegalForm.Entity) {
+            boolean entityVisible = legalForm == LegalForm.Entity;
+            builder.withFullName(this.nameValue);
+            builder.withDateOfBirth(this.incorporationDateValue);
+            builder.withClientNonPersonDetails(mainBusinessLineId, incorpNumber, constitutionId, remarks, incorpValidityTillDate);
+            this.incorporationValidityTillDateContainer.setVisible(entityVisible);
+            this.incorporationNumberContainer.setVisible(entityVisible);
+            this.mainBusinessLineContainer.setVisible(entityVisible);
+            this.constitutionContainer.setVisible(entityVisible);
+            this.remarkContainer.setVisible(entityVisible);
+        } else if (legalForm == LegalForm.Person) {
+
+            boolean peopleVisible = legalForm == LegalForm.Person;
+            this.firstNameContainer.setVisible(peopleVisible);
+            this.middleNameContainer.setVisible(peopleVisible);
+            this.staffApplicationContainer.setVisible(peopleVisible);
+            this.lastNameContainer.setVisible(peopleVisible);
+            this.dateOfBirthContainer.setVisible(peopleVisible);
+            this.genderContainer.setVisible(peopleVisible);
+        }
 
         JsonNode node = null;
         try {

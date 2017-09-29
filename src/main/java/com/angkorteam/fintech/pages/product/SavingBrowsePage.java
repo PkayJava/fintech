@@ -70,7 +70,7 @@ public class SavingBrowsePage extends Page {
     protected void onInitialize() {
         super.onInitialize();
         this.provider = new JdbcProvider("m_savings_product");
-        this.provider.applyWhere("DepositType", "deposit_type_enum = " + DepositType.Saving.getLiteral());
+        this.provider.applyWhere("deposit_type_enum", "deposit_type_enum = " + DepositType.Saving.getLiteral());
         this.provider.boardField("id", "id", Long.class);
         this.provider.boardField("name", "name", String.class);
         this.provider.boardField("short_name", "shortName", String.class);

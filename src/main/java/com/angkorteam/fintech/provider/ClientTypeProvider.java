@@ -1,25 +1,14 @@
 package com.angkorteam.fintech.provider;
 
 import com.angkorteam.fintech.dto.Dropdown;
-import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.spring.JdbcNamed;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionSingleChoiceProvider;
 
-public class ClientTypeProvider extends OptionSingleChoiceProvider {
+public class ClientTypeProvider extends SingleChoiceProvider {
 
     public ClientTypeProvider() {
         super("m_code_value", "m_code_value.id", "m_code_value.code_value");
         addJoin("inner join m_code ON m_code_value.code_id = m_code.id");
         applyWhere("code_name", "m_code.code_name = '" + Dropdown.ClientType + "'");
-    }
-
-    public ClientTypeProvider(String table, String idField, String queryField, String labelField) {
-        super(table, idField, queryField, labelField);
-    }
-
-    @Override
-    protected JdbcNamed getNamed() {
-        return SpringBean.getBean(JdbcNamed.class);
+        applyWhere("is_active", "m_code_value.is_active = 1");
     }
 
 }

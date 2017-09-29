@@ -1,11 +1,12 @@
 package com.angkorteam.fintech.helper;
 
+import com.angkorteam.fintech.IMifos;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class ClientHelper {
 
-    public JsonNode create(JsonNode object) throws UnirestException {
+    public JsonNode create(IMifos session, JsonNode object) throws UnirestException {
         return null;
     }
 

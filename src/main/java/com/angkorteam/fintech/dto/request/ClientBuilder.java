@@ -8,7 +8,9 @@ import java.util.Map;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
+import com.angkorteam.fintech.dto.LegalForm;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 
 public class ClientBuilder implements Serializable {
@@ -58,10 +60,10 @@ public class ClientBuilder implements Serializable {
         return this;
     }
 
-    private String legalFormId;
+    private LegalForm legalFormId;
     private boolean hasLegalFormId;
 
-    public ClientBuilder withLegalFormId(String legalFormId) {
+    public ClientBuilder withLegalFormId(LegalForm legalFormId) {
         this.legalFormId = legalFormId;
         this.hasLegalFormId = true;
         return this;
@@ -131,18 +133,50 @@ public class ClientBuilder implements Serializable {
     }
 
     private Date dateOfBirth;
-    private boolean hasdateOfBirth;
+    private boolean hasDateOfBirth;
 
-    public ClientBuilder withdateOfBirth(Date dateOfBirth) {
+    public ClientBuilder withDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-        this.hasdateOfBirth = true;
+        this.hasDateOfBirth = true;
+        return this;
+    }
+
+    private String fullName;
+    private boolean hasFullName;
+
+    public ClientBuilder withFullName(String fullName) {
+        this.fullName = fullName;
+        this.hasFullName = true;
+        return this;
+    }
+
+    private Map<String, Object> clientNonPersonDetails = Maps.newHashMap();
+    private boolean hasClientNonPersonDetails;
+
+    public ClientBuilder withClientNonPersonDetails(String mainBusinessLineId, String incorpNumber, String constitutionId, String remarks, Date incorpValidityTillDate) {
+        this.clientNonPersonDetails.put("mainBusinessLineId", mainBusinessLineId);
+        this.clientNonPersonDetails.put("incorpNumber", incorpNumber);
+        this.clientNonPersonDetails.put("constitutionId", constitutionId);
+        this.clientNonPersonDetails.put("remarks", remarks);
+        this.clientNonPersonDetails.put("incorpValidityTillDate", incorpValidityTillDate == null ? null : DateFormatUtils.format(incorpValidityTillDate, this.dateFormat));
+        this.clientNonPersonDetails.put("dateFormat", this.dateFormat);
+        this.clientNonPersonDetails.put("locale", this.locale);
+        this.hasClientNonPersonDetails = true;
         return this;
     }
 
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
 
-        if (this.hasdateOfBirth) {
+        if (this.hasFullName) {
+            object.getObject().put("fullname", this.fullName);
+        }
+
+        if (this.hasClientNonPersonDetails) {
+            object.getObject().put("clientNonPersonDetails", this.clientNonPersonDetails);
+        }
+
+        if (this.hasDateOfBirth) {
             if (this.dateOfBirth != null) {
                 object.getObject().put("dateOfBirth", DateFormatUtils.format(this.dateOfBirth, this.dateFormat));
             } else {
@@ -179,7 +213,11 @@ public class ClientBuilder implements Serializable {
         }
 
         if (this.hasLegalFormId) {
-            object.getObject().put("legalFormId", this.legalFormId);
+            if (this.legalFormId != null) {
+                object.getObject().put("legalFormId", this.legalFormId.getLiteral());
+            } else {
+                object.getObject().put("legalFormId", (String) null);
+            }
         }
 
         if (this.hasAddress) {
