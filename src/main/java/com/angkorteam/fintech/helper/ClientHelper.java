@@ -9,9 +9,13 @@ public class ClientHelper {
     public static JsonNode createClient(IMifos session, JsonNode object) throws UnirestException {
         return Helper.performServerPost(session, "/api/v1/clients", object);
     }
-    
+
     public static JsonNode createGroup(IMifos session, JsonNode object) throws UnirestException {
         return Helper.performServerPost(session, "/api/v1/groups", object);
+    }
+
+    public static JsonNode createCenter(IMifos session, JsonNode object) throws UnirestException {
+        return Helper.performServerPost(session, "/api/v1/centers", object);
     }
 
 }

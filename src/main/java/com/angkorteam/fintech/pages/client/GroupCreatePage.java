@@ -321,20 +321,22 @@ public class GroupCreatePage extends Page {
     }
 
     protected void clientPopupOnClose(String elementId, AjaxRequestTarget target) {
-        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
-        SelectQuery query = new SelectQuery("m_client");
-        query.addJoin("LEFT JOIN m_code_value gender_code on m_client.gender_cv_id = gender_code.id");
-        query.addJoin("LEFT JOIN r_enum_value status on status.enum_id = m_client.status_enum and status.enum_name = 'status_enum'");
-        query.addField("concat(m_client.id,'') uuid");
-        query.addField("m_client.display_name displayName");
-        query.addField("m_client.mobile_no mobileNumber");
-        query.addField("gender_code.code_description gender");
-        query.addField("m_client.account_no account");
-        query.addField("status.enum_value status");
-        query.addWhere("m_client.id = :id", this.itemClientValue.getId());
-        Map<String, Object> client = named.queryForMap(query.toSQL(), query.getParam());
-        this.clientValue.add(client);
-        target.add(this.clientTable);
+        if (this.itemClientValue != null) {
+            JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+            SelectQuery query = new SelectQuery("m_client");
+            query.addJoin("LEFT JOIN m_code_value gender_code on m_client.gender_cv_id = gender_code.id");
+            query.addJoin("LEFT JOIN r_enum_value status on status.enum_id = m_client.status_enum and status.enum_name = 'status_enum'");
+            query.addField("concat(m_client.id,'') uuid");
+            query.addField("m_client.display_name displayName");
+            query.addField("m_client.mobile_no mobileNumber");
+            query.addField("gender_code.code_description gender");
+            query.addField("m_client.account_no account");
+            query.addField("status.enum_value status");
+            query.addWhere("m_client.id = :id", this.itemClientValue.getId());
+            Map<String, Object> client = named.queryForMap(query.toSQL(), query.getParam());
+            this.clientValue.add(client);
+            target.add(this.clientTable);
+        }
     }
 
     protected boolean activeFieldUpdate(AjaxRequestTarget target) {
