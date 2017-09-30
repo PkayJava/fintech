@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -191,7 +192,7 @@ public class ClientCreatePage extends Page {
 
     protected WebMarkupContainer externalIdBlock;
     protected WebMarkupContainer externalIdContainer;
-    protected String externalIdValue;
+    protected String externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
     protected TextField<String> externalIdField;
     protected TextFeedbackPanel externalIdFeedback;
 
@@ -883,7 +884,7 @@ public class ClientCreatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = ClientHelper.create((Session) getSession(), builder.build());
+            node = ClientHelper.createClient((Session) getSession(), builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

@@ -1,11 +1,14 @@
 package com.angkorteam.fintech.dto.request;
 
-import com.mashape.unirest.http.JsonNode;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.json.JSONObject;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -15,27 +18,65 @@ public class GroupBuilder implements Serializable {
     private String id;
     private boolean hasId;
 
+    public GroupBuilder withId(String id) {
+        this.id = id;
+        this.hasId = true;
+        return this;
+    }
+
     private String officeId;
     private boolean hasOfficeId;
 
-    private String name;
-    private boolean hasName;
+    public GroupBuilder withOfficeId(String officeId) {
+        this.officeId = officeId;
+        this.hasOfficeId = true;
+        return this;
+    }
 
     private String externalId;
     private boolean hasExternalId;
 
-    private String dateFormat = "yyyy-MM-dd";
-    private boolean hasDateFormat = true;
+    public GroupBuilder withExternalId(String externalId) {
+        this.externalId = externalId;
+        this.hasExternalId = true;
+        return this;
+    }
 
-    private String locale = "en";
-    private boolean hasLocale = true;
+    private String name;
+    private boolean hasName;
+
+    public GroupBuilder withName(String name) {
+        this.name = name;
+        this.hasName = true;
+        return this;
+    }
 
     private boolean active;
     private boolean hasActive;
 
+    public GroupBuilder withActive(boolean active) {
+        this.active = active;
+        this.hasActive = true;
+        return this;
+    }
+
     private Date activationDate;
+    private boolean hasActivationDate;
+
+    public GroupBuilder withActivationDate(Date activationDate) {
+        this.activationDate = activationDate;
+        this.hasActivationDate = true;
+        return this;
+    }
 
     private Date submittedOnDate;
+    private boolean hasSubmittedOnDate;
+
+    public GroupBuilder withSubmittedOnDate(Date submittedOnDate) {
+        this.submittedOnDate = submittedOnDate;
+        this.hasSubmittedOnDate = true;
+        return this;
+    }
 
     private String parentId;
     private boolean hasParentId;
@@ -46,48 +87,53 @@ public class GroupBuilder implements Serializable {
         return this;
     }
 
-    public GroupBuilder withActive(boolean active) {
-        this.active = active;
-        this.hasActive = true;
+    private List<String> clientMembers = Lists.newArrayList();
+    private boolean hasClientMembers;
+
+    public GroupBuilder withClientMember(String clientMember) {
+        this.clientMembers.add(clientMember);
+        this.hasClientMembers = true;
         return this;
     }
 
-    public GroupBuilder withActivationDate(Date activationDate) {
-        this.activationDate = activationDate;
+    private String dateFormat = "yyyy-MM-dd";
+    private boolean hasDateFormat = true;
+
+    public GroupBuilder withDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat;
+        this.hasDateFormat = true;
         return this;
     }
 
-    public GroupBuilder withSubmittedOnDate(Date submittedOnDate) {
-        this.submittedOnDate = submittedOnDate;
+    private String locale = "en";
+    private boolean hasLocale = true;
+
+    public GroupBuilder withLocale(String locale) {
+        this.locale = locale;
+        this.hasLocale = true;
         return this;
     }
 
-    public GroupBuilder withExternalId(String externalId) {
-        this.externalId = externalId;
-        this.hasExternalId = true;
-        return this;
-    }
+    private String staffId;
+    private boolean hasStaffId;
 
-    public GroupBuilder withId(String id) {
-        this.id = id;
-        this.hasId = true;
-        return this;
-    }
-
-    public GroupBuilder withOfficeId(String officeId) {
-        this.officeId = officeId;
-        this.hasOfficeId = true;
-        return this;
-    }
-
-    public GroupBuilder withName(String name) {
-        this.name = name;
-        this.hasName = true;
+    public GroupBuilder withStaffId(String staffId) {
+        this.staffId = staffId;
+        this.hasStaffId = true;
         return this;
     }
 
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode(new JSONObject());
+
+        if (this.hasStaffId) {
+            object.getObject().put("staffId", this.staffId);
+        }
+
+        if (this.hasClientMembers) {
+            object.getObject().put("clientMembers", this.clientMembers);
+        }
+
         if (this.hasOfficeId) {
             object.getObject().put("officeId", this.officeId);
         }
@@ -111,18 +157,19 @@ public class GroupBuilder implements Serializable {
         }
         if (this.hasActive) {
             object.getObject().put("active", this.active);
-            if (this.active) {
-                if (this.activationDate == null) {
-                    object.getObject().put("activationDate", DateFormatUtils.format(new Date(), this.dateFormat));
-                } else {
-                    object.getObject().put("activationDate", DateFormatUtils.format(this.activationDate, this.dateFormat));
-                }
+        }
+        if (this.hasActivationDate) {
+            if (this.activationDate == null) {
+                object.getObject().put("activationDate", (String) null);
             } else {
-                if (this.submittedOnDate == null) {
-                    object.getObject().put("submittedOnDate", DateFormatUtils.format(new Date(), this.dateFormat));
-                } else {
-                    object.getObject().put("submittedOnDate", DateFormatUtils.format(this.submittedOnDate, this.dateFormat));
-                }
+                object.getObject().put("activationDate", DateFormatUtils.format(this.activationDate, this.dateFormat));
+            }
+        }
+        if (this.hasSubmittedOnDate) {
+            if (this.submittedOnDate == null) {
+                object.getObject().put("submittedOnDate", (String) null);
+            } else {
+                object.getObject().put("submittedOnDate", DateFormatUtils.format(this.submittedOnDate, this.dateFormat));
             }
         }
         return object;
