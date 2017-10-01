@@ -1,98 +1,113 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <html xmlns:wicket="http://wicket.apache.org">
 <body>
-<wicket:panel>
-    <form role="form" wicket:id="form">
-        <div class="box box-primary">
-            <div class="box-body">
+	<wicket:panel>
+		<form role="form" wicket:id="form">
+			<div class="box box-primary">
+				<div class="box-body">
 
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="relationshipField">Relationship</label>
-                    <select wicket:id="relationshipField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="relationshipFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="firstNameField">First Name</label>
-                    <input wicket:id="firstNameField" type="text" class="form-control"/>
-                    <span wicket:id="firstNameFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="middleNameField">Middle Name</label>
-                    <input wicket:id="middleNameField" type="text" class="form-control"/>
-                    <span wicket:id="middleNameFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="lastNameField">Last Name</label>
-                    <input wicket:id="lastNameField" type="text" class="form-control"/>
-                    <span wicket:id="lastNameFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="qualificationField">Qualification</label>
-                    <input wicket:id="qualificationField" type="text" class="form-control"/>
-                    <span wicket:id="qualificationFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="mobileNumberField">Mobile Number</label>
-                    <input wicket:id="mobileNumberField" type="text" class="form-control"/>
-                    <span wicket:id="mobileNumberFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                	<label>&nbsp;</label>
-	                <span style="display: block">
-	                <label>
-                    	<input type="checkbox" wicket:id="dependentField"/> Is Dependent ?
-                    </label>
-          		 	</span>
-                    <span wicket:id="dependentFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="genderField">Gender</label>
-                    <select wicket:id="genderField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="genderFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="professionField">Profession</label>
-                    <select wicket:id="professionField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="professionFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="maritalStatusField">Marital Status</label>
-                    <select wicket:id="maritalStatusField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="maritalStatusFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="dateOfBirthField">Date Of Birth</label>
-                    <input wicket:id="dateOfBirthField" type="text" class="form-control"/>
-                    <span wicket:id="dateOfBirthFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-                
-            </div>
-            <div class="box-footer">
-                <button wicket:id="okayButton" type="submit" class="btn btn-info">Okay</button>
-            </div>
-        </div>
-    </form>
-</wicket:panel>
+					<!-- Row -->
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label wicket:for="relationshipField">Relationship</label> <select
+							wicket:id="relationshipField" class="form-control select2"
+							style="width: 100%;"></select> <span
+							wicket:id="relationshipFeedback" class="help-block"></span>
+					</div>
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div
+						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						<label wicket:for="firstNameField">First Name</label> <input
+							wicket:id="firstNameField" type="text" class="form-control" /> <span
+							wicket:id="firstNameFeedback" class="help-block"></span>
+					</div>
+					<div
+						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						<label wicket:for="middleNameField">Middle Name</label> <input
+							wicket:id="middleNameField" type="text" class="form-control" /> <span
+							wicket:id="middleNameFeedback" class="help-block"></span>
+					</div>
+					<div
+						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						<label wicket:for="lastNameField">Last Name</label> <input
+							wicket:id="lastNameField" type="text" class="form-control" /> <span
+							wicket:id="lastNameFeedback" class="help-block"></span>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label wicket:for="qualificationField">Qualification</label> <input
+							wicket:id="qualificationField" type="text" class="form-control" />
+						<span wicket:id="qualificationFeedback" class="help-block"></span>
+					</div>
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label wicket:for="mobileNumberField">Mobile Number</label> <input
+							wicket:id="mobileNumberField" type="text" class="form-control" />
+						<span wicket:id="mobileNumberFeedback" class="help-block"></span>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label>&nbsp;</label> <span style="display: block"> <label>
+								<input type="checkbox" wicket:id="dependentField" /> Is
+								Dependent ?
+						</label>
+						</span> <span wicket:id="dependentFeedback" class="help-block"></span>
+					</div>
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label wicket:for="genderField">Gender</label> <select
+							wicket:id="genderField" class="form-control select2"
+							style="width: 100%;"></select> <span wicket:id="genderFeedback"
+							class="help-block"></span>
+					</div>
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label wicket:for="professionField">Profession</label> <select
+							wicket:id="professionField" class="form-control select2"
+							style="width: 100%;"></select> <span
+							wicket:id="professionFeedback" class="help-block"></span>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label wicket:for="maritalStatusField">Marital Status</label> <select
+							wicket:id="maritalStatusField" class="form-control select2"
+							style="width: 100%;"></select> <span
+							wicket:id="maritalStatusFeedback" class="help-block"></span>
+					</div>
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label wicket:for="dateOfBirthField">Date Of Birth</label> <input
+							wicket:id="dateOfBirthField" type="text" class="form-control" />
+						<span wicket:id="dateOfBirthFeedback" class="help-block"></span>
+					</div>
+					<div class="clearfix"></div>
+
+				</div>
+				<div class="box-footer">
+					<button wicket:id="okayButton" type="submit" class="btn btn-info">Okay</button>
+				</div>
+			</div>
+		</form>
+	</wicket:panel>
 </body>
 </html>

@@ -1,33 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <html xmlns:wicket="http://wicket.apache.org">
 <body>
-<wicket:panel>
-    <form role="form" wicket:id="form">
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">Tax Group Modify</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label>Start Date</label>
-                    <div class="form-control" disabled="disabled" wicket:id="startDateField"></div>
-                </div>
-                <div class="clearfix"></div>
+	<wicket:panel>
+		<form role="form" wicket:id="form">
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title">Tax Group Modify</h3>
+				</div>
+				<div class="box-body">
+					<!-- Row -->
+					<div
+						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<label>Start Date</label>
+						<div class="form-control" disabled="disabled"
+							wicket:id="startDateField"></div>
+					</div>
+					<div class="clearfix"></div>
 
-                <!-- Row -->
-                <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <label wicket:for="endDateField">End Date</label>
-                    <input wicket:id="endDateField" type="text" class="form-control"/>
-                    <span wicket:id="endDateFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="box-footer">
-                <button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
-            </div>
-        </div>
-    </form>
-</wicket:panel>
+					<!-- Row -->
+					<div
+						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<label wicket:for="endDateField">End Date</label> <input
+							wicket:id="endDateField" type="text" class="form-control" /> <span
+							wicket:id="endDateFeedback" class="help-block"></span>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="box-footer">
+					<button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+				</div>
+			</div>
+		</form>
+	</wicket:panel>
 </body>
 </html>

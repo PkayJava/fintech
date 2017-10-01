@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.pages.client;
+package com.angkorteam.fintech.pages.client.center;
 
 import java.util.Date;
 import java.util.List;
@@ -22,6 +22,8 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.CenterBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
+import com.angkorteam.fintech.pages.client.ClientBrowsePage;
+import com.angkorteam.fintech.pages.client.GroupBrowsePage;
 import com.angkorteam.fintech.popup.GroupPopup;
 import com.angkorteam.fintech.popup.OfficePopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -127,8 +129,8 @@ public class CenterCreatePage extends Page {
         }
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Groups");
-            breadcrumb.setPage(GroupBrowsePage.class);
+            breadcrumb.setLabel("Centers");
+            breadcrumb.setPage(CenterBrowsePage.class);
             BREADCRUMB.add(breadcrumb);
         }
         {

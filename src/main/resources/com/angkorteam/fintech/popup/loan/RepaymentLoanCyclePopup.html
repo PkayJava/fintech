@@ -1,49 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <html xmlns:wicket="http://wicket.apache.org">
 <body>
-<wicket:panel>
-    <form role="form" wicket:id="form">
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">Number of repayment by loan cycle</h3>
-            </div>
-            <div class="box-body">
-                <!-- Row -->
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="whenField">When</label>
-                    <select wicket:id="whenField" class="form-control select2" style="width: 100%;"></select>
-                    <span wicket:id="whenFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <label wicket:for="loanCycleField">Loan Cycle</label>
-                    <input wicket:id="loanCycleField" class="form-control" type="text"/>
-                    <span wicket:id="loanCycleFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
+	<wicket:panel>
+		<form role="form" wicket:id="form">
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title">Number of repayment by loan cycle</h3>
+				</div>
+				<div class="box-body">
+					<!-- Row -->
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label wicket:for="whenField">When</label> <select
+							wicket:id="whenField" class="form-control select2"
+							style="width: 100%;"></select> <span wicket:id="whenFeedback"
+							class="help-block"></span>
+					</div>
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label wicket:for="loanCycleField">Loan Cycle</label> <input
+							wicket:id="loanCycleField" class="form-control" type="text" /> <span
+							wicket:id="loanCycleFeedback" class="help-block"></span>
+					</div>
+					<div class="clearfix"></div>
 
-                <!-- Row -->
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="minimumField">Minimum</label>
-                    <input wicket:id="minimumField" class="form-control" type="text"/>
-                    <span wicket:id="minimumFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="defaultField">Default</label>
-                    <input wicket:id="defaultField" class="form-control" type="text"/>
-                    <span wicket:id="defaultFeedback" class="help-block"></span>
-                </div>
-                <div class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label wicket:for="maximumField">Maximum</label>
-                    <input wicket:id="maximumField" class="form-control" type="text"/>
-                    <span wicket:id="maximumFeedback" class="help-block"></span>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="box-footer">
-                <button wicket:id="okayButton" type="submit" class="btn btn-info">Okay</button>
-            </div>
-        </div>
-    </form>
-</wicket:panel>
+					<!-- Row -->
+					<div
+						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						<label wicket:for="minimumField">Minimum</label> <input
+							wicket:id="minimumField" class="form-control" type="text" /> <span
+							wicket:id="minimumFeedback" class="help-block"></span>
+					</div>
+					<div
+						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						<label wicket:for="defaultField">Default</label> <input
+							wicket:id="defaultField" class="form-control" type="text" /> <span
+							wicket:id="defaultFeedback" class="help-block"></span>
+					</div>
+					<div
+						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						<label wicket:for="maximumField">Maximum</label> <input
+							wicket:id="maximumField" class="form-control" type="text" /> <span
+							wicket:id="maximumFeedback" class="help-block"></span>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="box-footer">
+					<button wicket:id="okayButton" type="submit" class="btn btn-info">Okay</button>
+				</div>
+			</div>
+		</form>
+	</wicket:panel>
 </body>
 </html>
