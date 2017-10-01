@@ -4,12 +4,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.pages.client.center.CenterModifyPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -27,6 +30,8 @@ public class CenterGeneralPanel extends Panel {
     private JdbcProvider groupProvider;
 
     private PropertyModel<String> centerId;
+
+    private BookmarkablePageLink<Void> editLink;
 
     public CenterGeneralPanel(String id, Page itemPage) {
         super(id);
@@ -58,6 +63,11 @@ public class CenterGeneralPanel extends Panel {
 
         this.groupTable = new DefaultDataTable<>("groupTable", groupColumns, this.groupProvider, 20);
         add(this.groupTable);
+
+        PageParameters parameters = new PageParameters();
+        parameters.add("centerId", this.centerId.getObject());
+        this.editLink = new BookmarkablePageLink<>("editLink", CenterModifyPage.class, parameters);
+        add(editLink);
 
     }
 
