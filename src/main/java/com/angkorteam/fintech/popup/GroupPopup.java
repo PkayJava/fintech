@@ -49,6 +49,7 @@ public class GroupPopup extends Panel {
 
         this.groupProvider = new SingleChoiceProvider("m_group", "id", "display_name");
         this.groupProvider.applyWhere("office_id", "office_id = " + this.officeId);
+        this.groupProvider.applyWhere("level_id", "level_id = " + 2);
         this.groupField = new Select2SingleChoice<>("groupField", 0, new PropertyModel<>(this.model, "itemGroupValue"), this.groupProvider);
         this.groupField.setLabel(Model.of("Group"));
         this.form.add(this.groupField);

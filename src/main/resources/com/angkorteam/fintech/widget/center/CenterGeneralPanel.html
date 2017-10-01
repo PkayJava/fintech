@@ -4,35 +4,72 @@
 </head>
 <body>
 	<wicket:panel>
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="pull-right">
+					<div class="btn-group">
+						<div class="btn-group">
+							<button type="button" class="btn btn-info dropdown-toggle"
+								data-toggle="dropdown" aria-expanded="false">
+								More &nbsp;&nbsp;<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li><a href="#">Unassign Staff</a></li>
+								<li><a href="#">Close</a></li>
+								<li><a href="#">Attach Meeting</a></li>
+								<li><a href="#">Staff Assignment History</a></li>
+							</ul>
+						</div>
+						<button type="button" class="btn btn-info">Edit</button>
+						<button type="button" class="btn btn-info">Add Group</button>
+						<button type="button" class="btn btn-info">Manage Groups</button>
+						<button type="button" class="btn btn-info">Center Saving
+							Application</button>
 
-		<div class="pull-right">
-			<div class="btn-group">
-				<div class="btn-group">
-					<button type="button" class="btn btn-info dropdown-toggle"
-						data-toggle="dropdown" aria-expanded="false">
-						<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu">
-						<li><a href="#">Unassign Staff</a></li>
-						<li><a href="#">Close</a></li>
-						<li><a href="#">Attach Meeting</a></li>
-						<li><a href="#">Staff Assignment History</a></li>
-					</ul>
+					</div>
 				</div>
-				<button type="button" class="btn btn-info">Edit</button>
-				<button type="button" class="btn btn-info">Add Group</button>
-				<button type="button" class="btn btn-info">Manage Groups</button>
-				<button type="button" class="btn btn-info">Center Saving
-					Application</button>
-
 			</div>
 		</div>
-		<div class="clearfix"></div>
+
+		<br />
 
 		<div class="row">
-			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
-			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
-			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6"></div>
+			<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title">Groups</h3>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+						<table wicket:id="groupTable" />
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+			<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+				<div class="info-box">
+					<!-- Apply any bg-* class to to the icon to color it -->
+					<span class="info-box-icon bg-red"><i class="fa fa-star-o"></i></span>
+					<div class="info-box-content">
+						<span class="info-box-text">Next Meeting on</span> <span
+							class="info-box-number">Unassigned</span>
+					</div>
+					<!-- /.info-box-content -->
+				</div>
+				<!-- /.info-box -->
+			</div>
+			<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title">Detail</h3>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">The body of the box</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
 		</div>
 
 	</wicket:panel>

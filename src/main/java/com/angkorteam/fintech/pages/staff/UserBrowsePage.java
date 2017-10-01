@@ -28,13 +28,13 @@ import com.google.common.collect.Lists;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class UserBrowsePage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected DataTable<Map<String, Object>, String> dataTable;
 
-    private JdbcProvider provider;
+    protected JdbcProvider provider;
 
-    private BookmarkablePageLink<Void> createLink;
+    protected BookmarkablePageLink<Void> createLink;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     static {
         BREADCRUMB = Lists.newArrayList();
@@ -87,27 +87,27 @@ public class UserBrowsePage extends Page {
         add(this.createLink);
     }
 
-    private ItemPanel firstNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel firstNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel lastNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel lastNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel officeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel officeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel emailColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel emailColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel loginColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel loginColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String login = (String) model.get(jdbcColumn);
         PageParameters parameters = new PageParameters();
         parameters.add("userId", model.get("id"));

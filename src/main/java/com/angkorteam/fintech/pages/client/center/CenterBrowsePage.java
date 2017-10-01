@@ -10,6 +10,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.Filte
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
@@ -99,7 +100,9 @@ public class CenterBrowsePage extends Page {
 
     protected ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new LinkCell(CenterPreviewPage.class, null, value);
+        PageParameters parameters = new PageParameters();
+        parameters.add("centerId", model.get("id"));
+        return new LinkCell(CenterPreviewPage.class, parameters, value);
     }
 
     protected ItemPanel officeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
