@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.widget.center;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -27,20 +28,23 @@ import com.google.common.collect.Lists;
 
 public class CenterGeneralPanel extends Panel {
 
-    private Page itemPage;
+    protected String centerId;
 
-    private DataTable<Map<String, Object>, String> groupTable;
-    private JdbcProvider groupProvider;
+    protected Page itemPage;
 
-    private PropertyModel<String> centerId;
+    protected DataTable<Map<String, Object>, String> groupTable;
+    protected JdbcProvider groupProvider;
 
-    private BookmarkablePageLink<Void> editLink;
+    protected DataTable<Map<String, Object>, String> accountTable;
+    protected JdbcProvider accountProvider;
 
-    private BookmarkablePageLink<Void> addGroupLink;
+    protected BookmarkablePageLink<Void> editLink;
 
-    private BookmarkablePageLink<Void> manageGroupLink;
+    protected BookmarkablePageLink<Void> addGroupLink;
 
-    private BookmarkablePageLink<Void> centerSavingApplicationLink;
+    protected BookmarkablePageLink<Void> manageGroupLink;
+
+    protected BookmarkablePageLink<Void> centerSavingApplicationLink;
 
     public CenterGeneralPanel(String id, Page itemPage) {
         super(id);
@@ -52,7 +56,7 @@ public class CenterGeneralPanel extends Panel {
     protected void onInitialize() {
         super.onInitialize();
 
-        this.centerId = new PropertyModel<>(this.itemPage, "centerId");
+        this.centerId = new PropertyModel<String>(this.itemPage, "centerId").getObject();
 
         this.groupProvider = new JdbcProvider("m_group");
         this.groupProvider.addJoin("LEFT JOIN r_enum_value ON m_group.status_enum = r_enum_value.enum_id AND r_enum_value.enum_name = 'status_enum'");
@@ -61,7 +65,7 @@ public class CenterGeneralPanel extends Panel {
         this.groupProvider.boardField("m_group.account_no", "account", String.class);
         this.groupProvider.boardField("r_enum_value.enum_value", "status", String.class);
         this.groupProvider.applyWhere("level_id", "m_group.level_id = 2");
-        this.groupProvider.applyWhere("parent_id", "m_group.parent_id = " + this.centerId.getObject());
+        this.groupProvider.applyWhere("parent_id", "m_group.parent_id = " + this.centerId);
 
         this.groupProvider.selectField("id", Long.class);
 
@@ -74,7 +78,7 @@ public class CenterGeneralPanel extends Panel {
         add(this.groupTable);
 
         PageParameters parameters = new PageParameters();
-        parameters.add("centerId", this.centerId.getObject());
+        parameters.add("centerId", this.centerId);
 
         this.editLink = new BookmarkablePageLink<>("editLink", CenterModifyPage.class, parameters);
         add(this.editLink);
@@ -87,6 +91,40 @@ public class CenterGeneralPanel extends Panel {
 
         this.centerSavingApplicationLink = new BookmarkablePageLink<>("centerSavingApplicationLink", CenterProductPage.class, parameters);
         add(this.centerSavingApplicationLink);
+
+        this.accountProvider = new JdbcProvider("m_savings_account");
+        this.accountProvider.addJoin("LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
+        this.accountProvider.boardField("m_savings_account.id", "id", Long.class);
+        this.accountProvider.boardField("m_savings_account.account_no", "account", String.class);
+        this.accountProvider.boardField("m_savings_product.name", "product", String.class);
+        this.accountProvider.boardField("m_savings_account.account_balance_derived", "balance", Double.class);
+        this.accountProvider.applyWhere("group_id", "m_savings_account.group_id = " + this.centerId);
+
+        this.accountProvider.selectField("id", Long.class);
+
+        List<IColumn<Map<String, Object>, String>> accountColumns = Lists.newArrayList();
+        accountColumns.add(new TextFilterColumn(this.accountProvider, ItemClass.String, Model.of("Account"), "account", "account", this::accountAccountColumn));
+        accountColumns.add(new TextFilterColumn(this.accountProvider, ItemClass.String, Model.of("Product"), "product", "product", this::productAccountColumn));
+        accountColumns.add(new TextFilterColumn(this.accountProvider, ItemClass.Double, Model.of("Balance"), "balance", "balance", this::balanceAccountColumn));
+
+        this.accountTable = new DefaultDataTable<>("accountTable", accountColumns, this.accountProvider, 20);
+        add(this.accountTable);
+
+    }
+
+    protected ItemPanel accountAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
+    }
+
+    protected ItemPanel balanceAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        BigDecimal value = (BigDecimal) model.get(jdbcColumn);
+        return new TextCell(value);
+    }
+
+    protected ItemPanel productAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
     }
 
     protected ItemPanel displayNameGroupColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

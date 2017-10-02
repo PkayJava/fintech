@@ -4,7 +4,10 @@ public enum StatusEnum {
 
     Invalid("0", "Invalid"),
     Pending("100", "Pending"),
+    Approved("200", "Approved"),
     Active("300", "Active"), 
+    WithdrawnByClient("400", "Withdrawn by client"),
+    Rejected("500", "Rejected"),
     Closed("600", "Closed");
     
     public static final String ID = "status_enum";
