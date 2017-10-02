@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -20,9 +21,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.GroupBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.pages.client.ClientBrowsePage;
 import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
 import com.angkorteam.fintech.popup.ClientPopup;
 import com.angkorteam.fintech.popup.OfficePopup;
@@ -55,6 +56,7 @@ import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class GroupCreatePage extends Page {
 
     private String centerId;
@@ -147,6 +149,9 @@ public class GroupCreatePage extends Page {
 
         initData();
 
+        PageParameters parameters = new PageParameters();
+        parameters.add("centerId", this.centerId);
+
         this.form = new Form<>("form");
         add(this.form);
 
@@ -154,7 +159,7 @@ public class GroupCreatePage extends Page {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", ClientBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
         this.officeBlock = new WebMarkupContainer("officeBlock");
@@ -171,7 +176,7 @@ public class GroupCreatePage extends Page {
         this.staffContainer = new WebMarkupContainer("staffContainer");
         this.staffBlock.add(this.staffContainer);
         this.staffProvider = new SingleChoiceProvider("m_staff", "m_staff.id", "m_staff.display_name");
-        this.staffProvider.addJoin("inner join m_office on m_staff.office_id = m_office.id");
+        this.staffProvider.applyWhere("office_id", "m_staff.office_id = " + this.officeId);
         this.staffField = new Select2SingleChoice<>("staffField", 0, new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
@@ -267,7 +272,7 @@ public class GroupCreatePage extends Page {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         this.centerId = getPageParameters().get("centerId").toString();
         this.officeId = jdbcTemplate.queryForObject("select office_id from m_group where id = ?", String.class, this.centerId);
-        this.officeValue = jdbcTemplate.queryForObject("select name from m_office where office_id = ?", String.class, this.officeId);
+        this.officeValue = jdbcTemplate.queryForObject("select name from m_office where id = ?", String.class, this.officeId);
     }
 
     protected boolean clientAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
@@ -359,6 +364,7 @@ public class GroupCreatePage extends Page {
         if (this.officeValue != null) {
             builder.withOfficeId(this.officeId);
         }
+        builder.withCenterId(this.centerId);
         builder.withExternalId(this.externalIdValue);
         builder.withName(this.nameValue);
         builder.withSubmittedOnDate(this.submittedOnValue);

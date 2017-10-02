@@ -13,6 +13,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.pages.client.center.CenterModifyPage;
+import com.angkorteam.fintech.pages.client.center.CenterProductPage;
 import com.angkorteam.fintech.pages.client.center.GroupCreatePage;
 import com.angkorteam.fintech.pages.client.center.GroupManagePage;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -38,6 +39,8 @@ public class CenterGeneralPanel extends Panel {
     private BookmarkablePageLink<Void> addGroupLink;
 
     private BookmarkablePageLink<Void> manageGroupLink;
+
+    private BookmarkablePageLink<Void> centerSavingApplicationLink;
 
     public CenterGeneralPanel(String id, Page itemPage) {
         super(id);
@@ -74,14 +77,16 @@ public class CenterGeneralPanel extends Panel {
         parameters.add("centerId", this.centerId.getObject());
 
         this.editLink = new BookmarkablePageLink<>("editLink", CenterModifyPage.class, parameters);
-        add(editLink);
+        add(this.editLink);
 
         this.addGroupLink = new BookmarkablePageLink<>("addGroupLink", GroupCreatePage.class, parameters);
-        add(addGroupLink);
+        add(this.addGroupLink);
 
         this.manageGroupLink = new BookmarkablePageLink<>("manageGroupLink", GroupManagePage.class, parameters);
-        add(manageGroupLink);
+        add(this.manageGroupLink);
 
+        this.centerSavingApplicationLink = new BookmarkablePageLink<>("centerSavingApplicationLink", CenterProductPage.class, parameters);
+        add(this.centerSavingApplicationLink);
     }
 
     protected ItemPanel displayNameGroupColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

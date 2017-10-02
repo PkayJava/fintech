@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.client.center;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -11,6 +12,10 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.request.CenterBuilder;
+import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
@@ -22,7 +27,10 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class CenterModifyPage extends Page {
 
     private String centerId;
@@ -63,6 +71,9 @@ public class CenterModifyPage extends Page {
 
         initData();
 
+        PageParameters parameters = new PageParameters();
+        parameters.add("centerId", this.centerId);
+
         this.form = new Form<>("form");
         add(this.form);
 
@@ -70,7 +81,7 @@ public class CenterModifyPage extends Page {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", CenterBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
         this.nameBlock = new WebMarkupContainer("nameBlock");
@@ -138,6 +149,26 @@ public class CenterModifyPage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
+        CenterBuilder builder = new CenterBuilder();
+        builder.withId(this.centerId);
+        builder.withExternalId(this.externalIdValue);
+        builder.withName(this.nameValue);
+        if (this.staffValue != null) {
+            builder.withStaffId(this.staffValue.getId());
+        }
+        builder.withActivationDate(this.activationDateValue);
+
+        JsonNode node = null;
+        try {
+            node = ClientHelper.updateCenter((Session) getSession(), builder.build());
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+
         PageParameters parameters = new PageParameters();
         parameters.add("centerId", this.centerId);
         setResponsePage(CenterPreviewPage.class, parameters);

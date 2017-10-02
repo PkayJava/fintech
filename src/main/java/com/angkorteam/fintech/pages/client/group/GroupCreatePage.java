@@ -22,7 +22,7 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.GroupBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.pages.client.ClientBrowsePage;
+import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.fintech.popup.ClientPopup;
 import com.angkorteam.fintech.popup.OfficePopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;

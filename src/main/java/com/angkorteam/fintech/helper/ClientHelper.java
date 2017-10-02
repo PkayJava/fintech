@@ -18,4 +18,9 @@ public class ClientHelper {
         return Helper.performServerPost(session, "/api/v1/centers", object);
     }
 
+    public static JsonNode updateCenter(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPut(session, "/api/v1/centers/" + id, object);
+    }
+
 }

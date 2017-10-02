@@ -123,8 +123,21 @@ public class GroupBuilder implements Serializable {
         return this;
     }
 
+    private String centerId;
+    private boolean hasCenterId;
+
+    public GroupBuilder withCenterId(String centerId) {
+        this.centerId = centerId;
+        this.hasCenterId = true;
+        return this;
+    }
+
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode(new JSONObject());
+
+        if (this.hasCenterId) {
+            object.getObject().put("centerId", this.centerId);
+        }
 
         if (this.hasStaffId) {
             object.getObject().put("staffId", this.staffId);

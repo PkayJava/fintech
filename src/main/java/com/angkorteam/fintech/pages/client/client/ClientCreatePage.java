@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.pages.client;
+package com.angkorteam.fintech.pages.client.client;
 
 import java.util.Date;
 import java.util.List;

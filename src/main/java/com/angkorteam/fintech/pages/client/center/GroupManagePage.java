@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
@@ -12,12 +13,11 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.spring.JdbcTemplate;
@@ -36,6 +36,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class GroupManagePage extends Page {
 
     protected String centerId;
@@ -113,13 +114,12 @@ public class GroupManagePage extends Page {
         this.associatedGroupProvider.selectField("id", Integer.class);
 
         List<IColumn<Map<String, Object>, String>> associatedGroupColumns = Lists.newArrayList();
-        associatedGroupColumns.add(new TextFilterColumn(this.associatedGroupProvider, ItemClass.String, Model.of("Name"), "code_value", "code_value", this::nameColumn));
-        associatedGroupColumns.add(new TextFilterColumn(this.associatedGroupProvider, ItemClass.String, Model.of("Description"), "code_description", "code_description", this::descriptionColumn));
-        associatedGroupColumns.add(new TextFilterColumn(this.associatedGroupProvider, ItemClass.Integer, Model.of("Position"), "order_position", "order_position", this::positionColumn));
-        associatedGroupColumns.add(new TextFilterColumn(this.associatedGroupProvider, ItemClass.Boolean, Model.of("Is Active ?"), "active", "active", this::activeColumn));
-        associatedGroupColumns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
+        associatedGroupColumns.add(new TextFilterColumn(this.associatedGroupProvider, ItemClass.String, Model.of("Name"), "name", "name", this::associatedGroupNameColumn));
+        associatedGroupColumns.add(new TextFilterColumn(this.associatedGroupProvider, ItemClass.String, Model.of("Account"), "account", "account", this::associatedGroupAccountColumn));
+        associatedGroupColumns.add(new TextFilterColumn(this.associatedGroupProvider, ItemClass.String, Model.of("Status"), "status", "status", this::associatedGroupStatusColumn));
+        associatedGroupColumns.add(new ActionFilterColumn<>(Model.of("Action"), this::associatedGroupActionItem, this::actionClick));
 
-        this.associatedGroupTable = new DefaultDataTable<>("groupTable", associatedGroupColumns, this.associatedGroupProvider, 20);
+        this.associatedGroupTable = new DefaultDataTable<>("associatedGroupTable", associatedGroupColumns, this.associatedGroupProvider, 20);
         add(this.associatedGroupTable);
 
         this.form = new Form<>("form");
@@ -131,7 +131,7 @@ public class GroupManagePage extends Page {
 
         this.groupProvider = new SingleChoiceProvider("m_group", "id", "display_name");
         this.groupProvider.applyWhere("level_id", "level_id = 2");
-        this.groupProvider.applyWhere("parent_id", "parent_id != " + this.centerId);
+        this.groupProvider.applyWhere("parent_id", "(parent_id is NULL or parent_id != " + this.centerId + ")");
         this.groupField = new Select2SingleChoice<>("groupField", 0, new PropertyModel<>(this, "groupValue"), this.groupProvider);
         this.groupField.setLabel(Model.of("Group"));
         this.groupField.add(new OnChangeAjaxBehavior());
@@ -162,39 +162,25 @@ public class GroupManagePage extends Page {
 
     }
 
-    protected List<ActionItem> actionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> associatedGroupActionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
-        Boolean active = (Boolean) model.get("active");
-        if (active != null && active) {
-            actions.add(new ActionItem("disable", Model.of("Disable"), ItemCss.INFO));
-        } else {
-            actions.add(new ActionItem("enable", Model.of("Enable"), ItemCss.INFO));
-        }
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         return actions;
     }
 
-    protected ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel associatedGroupNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    protected ItemPanel descriptionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel associatedGroupAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    protected ItemPanel positionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer value = (Integer) model.get(jdbcColumn);
+    protected ItemPanel associatedGroupStatusColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
-    }
-
-    protected ItemPanel activeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean active = (Boolean) model.get(jdbcColumn);
-        if (active != null && active) {
-            return new BadgeCell(BadgeType.Success, Model.of("Yes"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("No"));
-        }
     }
 
 }
