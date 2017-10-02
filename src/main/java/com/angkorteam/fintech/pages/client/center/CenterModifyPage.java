@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -137,5 +138,8 @@ public class CenterModifyPage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
+        PageParameters parameters = new PageParameters();
+        parameters.add("centerId", this.centerId);
+        setResponsePage(CenterPreviewPage.class, parameters);
     }
 }

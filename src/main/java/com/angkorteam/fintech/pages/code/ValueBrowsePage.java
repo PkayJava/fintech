@@ -50,32 +50,32 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ValueBrowsePage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected DataTable<Map<String, Object>, String> dataTable;
 
-    private String codeId;
+    protected String codeId;
 
-    private JdbcProvider provider;
+    protected JdbcProvider provider;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private String descriptionValue;
-    private TextField<String> descriptionField;
-    private TextFeedbackPanel descriptionFeedback;
+    protected String descriptionValue;
+    protected TextField<String> descriptionField;
+    protected TextFeedbackPanel descriptionFeedback;
 
-    private Integer positionValue;
-    private TextField<Integer> positionField;
-    private TextFeedbackPanel positionFeedback;
+    protected Integer positionValue;
+    protected TextField<Integer> positionField;
+    protected TextFeedbackPanel positionFeedback;
 
-    private Boolean activeValue;
-    private CheckBox activeField;
-    private TextFeedbackPanel activeFeedback;
+    protected Boolean activeValue;
+    protected CheckBox activeField;
+    protected TextFeedbackPanel activeFeedback;
 
-    private Form<Void> form;
-    private Button addButton;
+    protected Form<Void> form;
+    protected Button addButton;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -182,7 +182,7 @@ public class ValueBrowsePage extends Page {
         this.form.add(this.activeFeedback);
     }
 
-    private void addButtonSubmit(Button button) {
+    protected void addButtonSubmit(Button button) {
         CodeValueBuilder builder = new CodeValueBuilder();
         builder.withCodeId(this.codeId);
         builder.withDescription(this.descriptionValue);
@@ -207,7 +207,7 @@ public class ValueBrowsePage extends Page {
         setResponsePage(ValueBrowsePage.class, parameters);
     }
 
-    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         Integer id = (Integer) model.get("id");
         try {
             if ("disable".equals(s)) {
@@ -228,7 +228,7 @@ public class ValueBrowsePage extends Page {
         target.add(this.dataTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> actionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         Boolean active = (Boolean) model.get("active");
         if (active != null && active) {
@@ -239,22 +239,22 @@ public class ValueBrowsePage extends Page {
         return actions;
     }
 
-    private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel descriptionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel descriptionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel positionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel positionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Integer value = (Integer) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel activeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel activeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Boolean active = (Boolean) model.get(jdbcColumn);
         if (active != null && active) {
             return new BadgeCell(BadgeType.Success, Model.of("Yes"));

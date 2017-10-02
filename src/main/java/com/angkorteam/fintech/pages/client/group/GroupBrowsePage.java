@@ -1,9 +1,8 @@
-package com.angkorteam.fintech.pages.client;
+package com.angkorteam.fintech.pages.client.group;
 
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
@@ -13,7 +12,6 @@ import org.apache.wicket.model.Model;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.constant.StatusEnum;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -59,20 +57,15 @@ public class GroupBrowsePage extends Page {
     protected void onInitialize() {
         super.onInitialize();
 
-        List<String> status = Lists.newArrayList();
-        for (StatusEnum t : StatusEnum.values()) {
-            status.add("when " + t.getLiteral() + " then '" + t.getDescription() + "'");
-        }
-        status.add("else '" + StatusEnum.Invalid.getDescription() + "'");
-
         this.provider = new JdbcProvider("m_group");
         this.provider.addJoin("left join m_office on m_group.office_id = m_office.id ");
+        this.provider.addJoin("LEFT JOIN r_enum_value ON  m_group.status_enum = r_enum_value.enum_id AND r_enum_value.enum_name = 'status_enum'");
         this.provider.boardField("m_group.id", "id", Long.class);
         this.provider.boardField("m_group.account_no", "account", String.class);
         this.provider.boardField("m_group.display_name", "name", String.class);
         this.provider.boardField("m_office.name", "office", String.class);
         this.provider.boardField("m_group.external_id", "externalId", String.class);
-        this.provider.boardField("case m_group.status_enum " + StringUtils.join(status, " ") + " end", "status", String.class);
+        this.provider.boardField("r_enum_value.enum_value", "status", String.class);
 
         this.provider.applyWhere("level_id", "m_group.level_id = 2");
 
