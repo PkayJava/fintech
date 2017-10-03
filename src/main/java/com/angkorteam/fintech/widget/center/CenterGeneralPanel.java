@@ -14,6 +14,9 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.pages.client.center.CenterAccountActivatePage;
+import com.angkorteam.fintech.pages.client.center.CenterAccountApprovePage;
+import com.angkorteam.fintech.pages.client.center.CenterAccountUndoApprovePage;
 import com.angkorteam.fintech.pages.client.center.CenterModifyPage;
 import com.angkorteam.fintech.pages.client.center.CenterProductPage;
 import com.angkorteam.fintech.pages.client.center.GroupCreatePage;
@@ -97,14 +100,14 @@ public class CenterGeneralPanel extends Panel {
 
         this.accountProvider = new JdbcProvider("m_savings_account");
         this.accountProvider.addJoin("LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
-        this.accountProvider.boardField("m_savings_account.id", "id", Long.class);
+        this.accountProvider.boardField("concat(m_savings_account.id,'')", "id", String.class);
         this.accountProvider.boardField("m_savings_account.account_no", "account", String.class);
         this.accountProvider.boardField("m_savings_product.name", "product", String.class);
         this.accountProvider.boardField("m_savings_account.status_enum", "status", String.class);
         this.accountProvider.boardField("m_savings_account.account_balance_derived", "balance", Double.class);
         this.accountProvider.applyWhere("group_id", "m_savings_account.group_id = " + this.centerId);
 
-        this.accountProvider.selectField("id", Long.class);
+        this.accountProvider.selectField("id", String.class);
         this.accountProvider.selectField("status", String.class);
 
         List<IColumn<Map<String, Object>, String>> accountColumns = Lists.newArrayList();
@@ -122,19 +125,37 @@ public class CenterGeneralPanel extends Panel {
         List<ActionItem> actions = Lists.newArrayList();
         Integer status = (Integer) model.get("status");
         if (100 == status) {
-            actions.add(new ActionItem("approve", Model.of("Approve"), ItemCss.PRIMARY));
+            actions.add(new ActionItem("Approve", Model.of("Approve"), ItemCss.PRIMARY));
         } else if (200 == status) {
-            actions.add(new ActionItem("undo_approve", Model.of("Undo Approve"), ItemCss.PRIMARY));
-            actions.add(new ActionItem("activate", Model.of("Activate"), ItemCss.PRIMARY));
+            actions.add(new ActionItem("Undo Approve", Model.of("Undo Approve"), ItemCss.PRIMARY));
+            actions.add(new ActionItem("Activate", Model.of("Activate"), ItemCss.PRIMARY));
         } else if (300 == status) {
-            actions.add(new ActionItem("deposit", Model.of("Deposit"), ItemCss.PRIMARY));
-            actions.add(new ActionItem("withdraw", Model.of("Withdraw"), ItemCss.PRIMARY));
+            actions.add(new ActionItem("Deposit", Model.of("Deposit"), ItemCss.PRIMARY));
+            actions.add(new ActionItem("Withdraw", Model.of("Withdraw"), ItemCss.PRIMARY));
         }
         return actions;
     }
 
-    protected void accountActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
-
+    protected void accountActionClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
+        if ("Approve".equals(column)) {
+            String accountId = (String) model.get("id");
+            PageParameters parameters = new PageParameters();
+            parameters.add("centerId", this.centerId);
+            parameters.add("accountId", accountId);
+            setResponsePage(CenterAccountApprovePage.class, parameters);
+        } else if ("Undo Approve".equals(column)) {
+            String accountId = (String) model.get("id");
+            PageParameters parameters = new PageParameters();
+            parameters.add("centerId", this.centerId);
+            parameters.add("accountId", accountId);
+            setResponsePage(CenterAccountUndoApprovePage.class, parameters);
+        } else if ("Activate".equals(column)) {
+            String accountId = (String) model.get("id");
+            PageParameters parameters = new PageParameters();
+            parameters.add("centerId", this.centerId);
+            parameters.add("accountId", accountId);
+            setResponsePage(CenterAccountActivatePage.class, parameters);
+        }
     }
 
     protected ItemPanel accountAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

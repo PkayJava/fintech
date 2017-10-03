@@ -33,4 +33,19 @@ public class ClientHelper {
         return Helper.performServerPost(session, "/api/v1/groups/" + id + "/notes", object);
     }
 
+    public static JsonNode approveCenterAccount(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "?command=approve", object);
+    }
+
+    public static JsonNode undoApproveCenterAccount(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "?command=undoapproval", object);
+    }
+
+    public static JsonNode activateCenterAccount(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "?command=activate", object);
+    }
+
 }

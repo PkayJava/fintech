@@ -26,8 +26,7 @@ public class AccrualAccountingPageTest {
 
         JUnitFormTester form = this.wicket.newFormTester("form");
 
-        // DateTime dateTime = DateTime.now().minusDays(1);
-        DateTime dateTime = DateTime.now();
+        DateTime dateTime = DateTime.now().minusDays(2);
         form.setValue("tillDateField", DateFormatUtils.format(dateTime.toDate(), "dd/MM/yyyy"));
 
         form.submit("saveButton");
@@ -43,8 +42,7 @@ public class AccrualAccountingPageTest {
 
         JUnitFormTester form = this.wicket.newFormTester("form");
 
-        // DateTime dateTime = DateTime.now();
-        DateTime dateTime = DateTime.now().plusDays(1);
+        DateTime dateTime = DateTime.now().plusDays(2);
         form.setValue("tillDateField", DateFormatUtils.format(dateTime.toDate(), "dd/MM/yyyy"));
 
         form.submit("saveButton");
