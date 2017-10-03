@@ -76,7 +76,7 @@ public class Page extends DashboardPage {
         return false;
     }
 
-    protected boolean reportError(JsonNode node) {
+    public boolean reportError(JsonNode node) {
         if (node.getObject().has("errors")) {
             JSONArray array = (JSONArray) node.getObject().get("errors");
             for (Object object : array) {

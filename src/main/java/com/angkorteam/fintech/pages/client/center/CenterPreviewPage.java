@@ -27,7 +27,7 @@ public class CenterPreviewPage extends Page {
 
         this.centerId = parameters.get("centerId").toString();
 
-        this.tab = new AjaxTabbedPanel<>("tab", Arrays.asList(new CenterGeneral(this), new CenterNote()));
+        this.tab = new AjaxTabbedPanel<>("tab", Arrays.asList(new CenterGeneral(this), new CenterNote(this)));
 
         add(this.tab);
     }

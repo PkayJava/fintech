@@ -5,7 +5,15 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import com.angkorteam.fintech.Page;
+
 public class CenterNote implements ITab {
+
+    private Page itemPage;
+
+    public CenterNote(Page itemPage) {
+        this.itemPage = itemPage;
+    }
 
     @Override
     public IModel<String> getTitle() {
@@ -14,7 +22,7 @@ public class CenterNote implements ITab {
 
     @Override
     public WebMarkupContainer getPanel(String containerId) {
-        return new CenterNotePanel(containerId, null);
+        return new CenterNotePanel(containerId, itemPage);
     }
 
     @Override

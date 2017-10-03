@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -21,7 +22,10 @@ import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
@@ -48,7 +52,6 @@ public class CenterGeneralPanel extends Panel {
 
     public CenterGeneralPanel(String id, Page itemPage) {
         super(id);
-
         this.itemPage = itemPage;
     }
 
@@ -97,18 +100,40 @@ public class CenterGeneralPanel extends Panel {
         this.accountProvider.boardField("m_savings_account.id", "id", Long.class);
         this.accountProvider.boardField("m_savings_account.account_no", "account", String.class);
         this.accountProvider.boardField("m_savings_product.name", "product", String.class);
+        this.accountProvider.boardField("m_savings_account.status_enum", "status", String.class);
         this.accountProvider.boardField("m_savings_account.account_balance_derived", "balance", Double.class);
         this.accountProvider.applyWhere("group_id", "m_savings_account.group_id = " + this.centerId);
 
         this.accountProvider.selectField("id", Long.class);
+        this.accountProvider.selectField("status", String.class);
 
         List<IColumn<Map<String, Object>, String>> accountColumns = Lists.newArrayList();
         accountColumns.add(new TextFilterColumn(this.accountProvider, ItemClass.String, Model.of("Account"), "account", "account", this::accountAccountColumn));
         accountColumns.add(new TextFilterColumn(this.accountProvider, ItemClass.String, Model.of("Product"), "product", "product", this::productAccountColumn));
         accountColumns.add(new TextFilterColumn(this.accountProvider, ItemClass.Double, Model.of("Balance"), "balance", "balance", this::balanceAccountColumn));
+        accountColumns.add(new ActionFilterColumn<>(Model.of("Action"), this::accountActionItem, this::accountActionClick));
 
         this.accountTable = new DefaultDataTable<>("accountTable", accountColumns, this.accountProvider, 20);
         add(this.accountTable);
+
+    }
+
+    protected List<ActionItem> accountActionItem(String s, Map<String, Object> model) {
+        List<ActionItem> actions = Lists.newArrayList();
+        Integer status = (Integer) model.get("status");
+        if (100 == status) {
+            actions.add(new ActionItem("approve", Model.of("Approve"), ItemCss.PRIMARY));
+        } else if (200 == status) {
+            actions.add(new ActionItem("undo_approve", Model.of("Undo Approve"), ItemCss.PRIMARY));
+            actions.add(new ActionItem("activate", Model.of("Activate"), ItemCss.PRIMARY));
+        } else if (300 == status) {
+            actions.add(new ActionItem("deposit", Model.of("Deposit"), ItemCss.PRIMARY));
+            actions.add(new ActionItem("withdraw", Model.of("Withdraw"), ItemCss.PRIMARY));
+        }
+        return actions;
+    }
+
+    protected void accountActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
 
     }
 

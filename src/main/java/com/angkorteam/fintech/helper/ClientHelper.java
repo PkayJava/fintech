@@ -23,4 +23,14 @@ public class ClientHelper {
         return Helper.performServerPut(session, "/api/v1/centers/" + id, object);
     }
 
+    public static JsonNode postCenterNote(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("centerId");
+        return Helper.performServerPost(session, "/api/v1/groups/" + id + "/notes", object);
+    }
+
+    public static JsonNode postGroupNote(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("groupId");
+        return Helper.performServerPost(session, "/api/v1/groups/" + id + "/notes", object);
+    }
+
 }

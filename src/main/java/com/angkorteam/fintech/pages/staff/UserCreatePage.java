@@ -34,54 +34,54 @@ import java.util.List;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class UserCreatePage extends Page {
 
-    private String firstNameValue;
-    private TextField<String> firstNameField;
-    private TextFeedbackPanel firstNameFeedback;
+    protected String firstNameValue;
+    protected TextField<String> firstNameField;
+    protected TextFeedbackPanel firstNameFeedback;
 
-    private String emailValue;
-    private TextField<String> emailField;
-    private TextFeedbackPanel emailFeedback;
+    protected String emailValue;
+    protected TextField<String> emailField;
+    protected TextFeedbackPanel emailFeedback;
 
-    private String lastNameValue;
-    private TextField<String> lastNameField;
-    private TextFeedbackPanel lastNameFeedback;
+    protected String lastNameValue;
+    protected TextField<String> lastNameField;
+    protected TextFeedbackPanel lastNameFeedback;
 
-    private String loginValue;
-    private TextField<String> loginField;
-    private TextFeedbackPanel loginFeedback;
+    protected String loginValue;
+    protected TextField<String> loginField;
+    protected TextFeedbackPanel loginFeedback;
 
-    private String passwordValue;
-    private PasswordTextField passwordField;
-    private TextFeedbackPanel passwordFeedback;
+    protected String passwordValue;
+    protected PasswordTextField passwordField;
+    protected TextFeedbackPanel passwordFeedback;
 
-    private String repeatPasswordValue;
-    private PasswordTextField repeatPasswordField;
-    private TextFeedbackPanel repeatPasswordFeedback;
+    protected String repeatPasswordValue;
+    protected PasswordTextField repeatPasswordField;
+    protected TextFeedbackPanel repeatPasswordFeedback;
 
-    private SingleChoiceProvider officeProvider;
-    private Option officeValue;
-    private Select2SingleChoice<Option> officeField;
-    private TextFeedbackPanel officeFeedback;
+    protected SingleChoiceProvider officeProvider;
+    protected Option officeValue;
+    protected Select2SingleChoice<Option> officeField;
+    protected TextFeedbackPanel officeFeedback;
 
-    private SingleChoiceProvider staffProvider;
-    private Option staffValue;
-    private Select2SingleChoice<Option> staffField;
-    private TextFeedbackPanel staffFeedback;
+    protected SingleChoiceProvider staffProvider;
+    protected Option staffValue;
+    protected Select2SingleChoice<Option> staffField;
+    protected TextFeedbackPanel staffFeedback;
 
-    private MultipleChoiceProvider permissionProvider;
-    private List<Option> permissionValue;
-    private Select2MultipleChoice<Option> permissionField;
-    private TextFeedbackPanel permissionFeedback;
+    protected MultipleChoiceProvider permissionProvider;
+    protected List<Option> permissionValue;
+    protected Select2MultipleChoice<Option> permissionField;
+    protected TextFeedbackPanel permissionFeedback;
 
-    private Boolean overridePasswordExpiryPolicyValue;
-    private CheckBox overridePasswordExpiryPolicyField;
-    private TextFeedbackPanel overridePasswordExpiryPolicyFeedback;
+    protected Boolean overridePasswordExpiryPolicyValue;
+    protected CheckBox overridePasswordExpiryPolicyField;
+    protected TextFeedbackPanel overridePasswordExpiryPolicyFeedback;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     static {
         BREADCRUMB = Lists.newArrayList();
@@ -208,7 +208,7 @@ public class UserCreatePage extends Page {
         return false;
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         AppUserBuilder builder = new AppUserBuilder();
         builder.withFirstname(this.firstNameValue);
         builder.withLastname(this.lastNameValue);
