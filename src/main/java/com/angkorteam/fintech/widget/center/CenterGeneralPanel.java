@@ -16,7 +16,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.pages.client.center.CenterAccountActivatePage;
 import com.angkorteam.fintech.pages.client.center.CenterAccountApprovePage;
+import com.angkorteam.fintech.pages.client.center.CenterAccountClosePage;
 import com.angkorteam.fintech.pages.client.center.CenterAccountUndoApprovePage;
+import com.angkorteam.fintech.pages.client.center.CenterClosePage;
 import com.angkorteam.fintech.pages.client.center.CenterModifyPage;
 import com.angkorteam.fintech.pages.client.center.CenterProductPage;
 import com.angkorteam.fintech.pages.client.center.GroupCreatePage;
@@ -52,6 +54,8 @@ public class CenterGeneralPanel extends Panel {
     protected BookmarkablePageLink<Void> manageGroupLink;
 
     protected BookmarkablePageLink<Void> centerSavingApplicationLink;
+
+    protected BookmarkablePageLink<Void> closeLink;
 
     public CenterGeneralPanel(String id, Page itemPage) {
         super(id);
@@ -98,6 +102,9 @@ public class CenterGeneralPanel extends Panel {
         this.centerSavingApplicationLink = new BookmarkablePageLink<>("centerSavingApplicationLink", CenterProductPage.class, parameters);
         add(this.centerSavingApplicationLink);
 
+        this.closeLink = new BookmarkablePageLink<>("closeLink", CenterClosePage.class, parameters);
+        add(this.closeLink);
+
         this.accountProvider = new JdbcProvider("m_savings_account");
         this.accountProvider.addJoin("LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
         this.accountProvider.boardField("concat(m_savings_account.id,'')", "id", String.class);
@@ -132,6 +139,7 @@ public class CenterGeneralPanel extends Panel {
         } else if (300 == status) {
             actions.add(new ActionItem("Deposit", Model.of("Deposit"), ItemCss.PRIMARY));
             actions.add(new ActionItem("Withdraw", Model.of("Withdraw"), ItemCss.PRIMARY));
+            actions.add(new ActionItem("Close", Model.of("Close"), ItemCss.DANGER));
         }
         return actions;
     }
@@ -155,6 +163,12 @@ public class CenterGeneralPanel extends Panel {
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
             setResponsePage(CenterAccountActivatePage.class, parameters);
+        } else {
+            String accountId = (String) model.get("id");
+            PageParameters parameters = new PageParameters();
+            parameters.add("centerId", this.centerId);
+            parameters.add("accountId", accountId);
+            setResponsePage(CenterAccountClosePage.class, parameters);
         }
     }
 

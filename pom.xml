@@ -48,8 +48,15 @@
 		<unirest.version>1.4.9</unirest.version>
 		<lang3.version>3.6</lang3.version>
 		<text.version>1.1</text.version>
+		<joda-time.version>2.9.9</joda-time.version>
 	</properties>
 	<dependencies>
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${joda-time.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.mashape.unirest</groupId>
