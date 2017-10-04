@@ -14,16 +14,17 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.pages.client.center.CenterAccountActivatePage;
-import com.angkorteam.fintech.pages.client.center.CenterAccountApprovePage;
-import com.angkorteam.fintech.pages.client.center.CenterAccountClosePage;
-import com.angkorteam.fintech.pages.client.center.CenterAccountUndoApprovePage;
+import com.angkorteam.fintech.pages.client.center.AccountActivatePage;
+import com.angkorteam.fintech.pages.client.center.AccountApprovePage;
+import com.angkorteam.fintech.pages.client.center.AccountPreviewPage;
+import com.angkorteam.fintech.pages.client.center.AccountUndoApprovePage;
 import com.angkorteam.fintech.pages.client.center.CenterClosePage;
 import com.angkorteam.fintech.pages.client.center.CenterModifyPage;
 import com.angkorteam.fintech.pages.client.center.CenterProductPage;
 import com.angkorteam.fintech.pages.client.center.GroupCreatePage;
 import com.angkorteam.fintech.pages.client.center.GroupManagePage;
 import com.angkorteam.fintech.provider.JdbcProvider;
+import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -139,7 +140,6 @@ public class CenterGeneralPanel extends Panel {
         } else if (300 == status) {
             actions.add(new ActionItem("Deposit", Model.of("Deposit"), ItemCss.PRIMARY));
             actions.add(new ActionItem("Withdraw", Model.of("Withdraw"), ItemCss.PRIMARY));
-            actions.add(new ActionItem("Close", Model.of("Close"), ItemCss.DANGER));
         }
         return actions;
     }
@@ -150,25 +150,19 @@ public class CenterGeneralPanel extends Panel {
             PageParameters parameters = new PageParameters();
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
-            setResponsePage(CenterAccountApprovePage.class, parameters);
+            setResponsePage(AccountApprovePage.class, parameters);
         } else if ("Undo Approve".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
-            setResponsePage(CenterAccountUndoApprovePage.class, parameters);
+            setResponsePage(AccountUndoApprovePage.class, parameters);
         } else if ("Activate".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
-            setResponsePage(CenterAccountActivatePage.class, parameters);
-        } else {
-            String accountId = (String) model.get("id");
-            PageParameters parameters = new PageParameters();
-            parameters.add("centerId", this.centerId);
-            parameters.add("accountId", accountId);
-            setResponsePage(CenterAccountClosePage.class, parameters);
+            setResponsePage(AccountActivatePage.class, parameters);
         }
     }
 
@@ -194,7 +188,10 @@ public class CenterGeneralPanel extends Panel {
 
     protected ItemPanel accountGroupColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+        PageParameters parameters = new PageParameters();
+        parameters.add("centerId", this.centerId);
+        parameters.add("accountId", model.get("id"));
+        return new LinkCell(AccountPreviewPage.class, parameters, value);
     }
 
     protected ItemPanel statusGroupColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

@@ -25,7 +25,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class CenterAccountClosePage extends Page {
+public class AccountClosePage extends Page {
 
     private String centerId;
     private String accountId;

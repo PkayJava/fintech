@@ -24,7 +24,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class CenterAccountApprovePage extends Page {
+public class AccountApprovePage extends Page {
 
     private String centerId;
     private String accountId;

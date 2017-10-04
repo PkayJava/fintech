@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+	<wicket:extend>
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="pull-right">
+					<div class="btn-group">
+						<div class="btn-group">
+							<button type="button" class="btn btn-info dropdown-toggle"
+								data-toggle="dropdown" aria-expanded="false">
+								More &nbsp;&nbsp;<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li><a href="#">Post Interest</a></li>
+								<li><a href="#">Add Charge</a></li>
+								<li><a href="#">Close</a></li>
+							</ul>
+						</div>
+						<a class="btn btn-info">Post Interest As On</a> <a
+							class="btn btn-info">Deposit</a> <a class="btn btn-info">Withdraw</a>
+						<a class="btn btn-info">Calculate Interest</a> <a
+							class="btn btn-info">Assign Staff</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<br />
+
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<h2>Current Balance: $ 6,000</h2>
+				<h2>Available Balance: $ 6,000</h2>
+			</div>
+		</div>
+
+		<br />
+
+		<div class="row">
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				<div class="box box-primary">
+
+					<div class="box-body">
+
+						<!-- Row -->
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>Interest earned</label>
+							<div wicket:id="interestEarnedField" readonly="readonly"
+								class="form-control"></div>
+						</div>
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>Earned interest not posted</label>
+							<div wicket:id="interestField" readonly="readonly"
+								class="form-control"></div>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>Nominal interest rate</label>
+							<div wicket:id="nominalInterestRateField" readonly="readonly"
+								class="form-control"></div>
+						</div>
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>Interest compounding period</label>
+							<div wicket:id="interestCompoundingPeriodField"
+								readonly="readonly" class="form-control"></div>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>Interest posting period</label>
+							<div wicket:id="interestPostingPeriodField" readonly="readonly"
+								class="form-control"></div>
+						</div>
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>Interest calculated using</label>
+							<div wicket:id="interestCalculatedUsingField" readonly="readonly"
+								class="form-control"></div>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>Days in Year</label>
+							<div wicket:id="daysInYearField" readonly="readonly"
+								class="form-control"></div>
+						</div>
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>Last Active Transaction Date</label>
+							<div wicket:id="lastActiveTransactionDateField"
+								readonly="readonly" class="form-control"></div>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>Interest Recalculation Date</label>
+							<div wicket:id="interestRecalculationDateField"
+								readonly="readonly" class="form-control"></div>
+						</div>
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						</div>
+						<div class="clearfix"></div>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title">Savings Details</h3>
+					</div>
+					<div class="box-body">
+
+						<!-- Row -->
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>Activation Date</label>
+							<div wicket:id="activationDateField" readonly="readonly"
+								class="form-control"></div>
+						</div>
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>Field Officer</label>
+							<div wicket:id="officerField" readonly="readonly"
+								class="form-control"></div>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>External ID</label>
+							<div wicket:id="externalIdField" readonly="readonly"
+								class="form-control"></div>
+						</div>
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>Currency</label>
+							<div wicket:id="currencyField" readonly="readonly"
+								class="form-control"></div>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>Nominal interest rate</label>
+							<div wicket:id="nominalInterestRateField" readonly="readonly"
+								class="form-control"></div>
+						</div>
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						</div>
+						<div class="clearfix"></div>
+
+					</div>
+				</div>
+
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title">Performance History</h3>
+					</div>
+					<div class="box-body">
+
+						<!-- Row -->
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>Total Deposits</label>
+							<div wicket:id="totalDepositField" readonly="readonly"
+								class="form-control"></div>
+						</div>
+						<div
+							class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<label>Interest earned</label>
+							<div wicket:id="totalInterestEarnedField" readonly="readonly"
+								class="form-control"></div>
+						</div>
+						<div class="clearfix"></div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<br />
+
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div wicket:id="tab"></div>
+			</div>
+		</div>
+
+	</wicket:extend>
+</body>
+
+</html>
