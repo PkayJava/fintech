@@ -4,7 +4,7 @@ public interface Constants {
 
     String AID = "default";
 
-    String UID = "mifos";
+    String UID = "admin";
 
     String PWD = "password";
 }

@@ -168,7 +168,10 @@ public class CenterPreviewGeneralPanel extends Panel {
 
     protected ItemPanel accountAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+        PageParameters parameters = new PageParameters();
+        parameters.add("centerId", this.centerId);
+        parameters.add("accountId", model.get("id"));
+        return new LinkCell(AccountPreviewPage.class, parameters, value);
     }
 
     protected ItemPanel balanceAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -188,10 +191,7 @@ public class CenterPreviewGeneralPanel extends Panel {
 
     protected ItemPanel accountGroupColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
-        PageParameters parameters = new PageParameters();
-        parameters.add("centerId", this.centerId);
-        parameters.add("accountId", model.get("id"));
-        return new LinkCell(AccountPreviewPage.class, parameters, value);
+        return new TextCell(value);
     }
 
     protected ItemPanel statusGroupColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

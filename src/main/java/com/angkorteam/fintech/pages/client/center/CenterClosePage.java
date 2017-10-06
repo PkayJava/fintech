@@ -1,7 +1,11 @@
 package com.angkorteam.fintech.pages.client.center;
 
-import com.angkorteam.fintech.Page;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 
-public class CenterClosePage extends Page{
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.Function;
+
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
+public class CenterClosePage extends Page {
 
 }

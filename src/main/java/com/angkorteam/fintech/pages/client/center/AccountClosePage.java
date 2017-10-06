@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.client.center;
 
 import java.util.Date;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -18,6 +19,7 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -27,8 +29,8 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class AccountClosePage extends Page {
 
-    private String centerId;
-    private String accountId;
+    protected String centerId;
+    protected String accountId;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -141,6 +143,7 @@ public class AccountClosePage extends Page {
         this.withdrawBalanceContainer = new WebMarkupContainer("withdrawBalanceContainer");
         this.withdrawBalanceBlock.add(this.withdrawBalanceContainer);
         this.withdrawBalanceField = new CheckBox("withdrawBalanceField", new PropertyModel<>(this, "withdrawBalanceValue"));
+        this.withdrawBalanceField.add(new OnChangeAjaxBehavior(this::withdrawBalanceFieldUpdate));
         this.withdrawBalanceContainer.add(this.withdrawBalanceField);
         this.withdrawBalanceFeedback = new TextFeedbackPanel("withdrawBalanceFeedback", this.withdrawBalanceField);
         this.withdrawBalanceContainer.add(this.withdrawBalanceFeedback);
@@ -180,6 +183,7 @@ public class AccountClosePage extends Page {
         this.paymentDetailContainer = new WebMarkupContainer("paymentDetailContainer");
         this.paymentDetailBlock.add(this.paymentDetailContainer);
         this.paymentDetailField = new CheckBox("paymentDetailField", new PropertyModel<>(this, "paymentDetailValue"));
+        this.paymentDetailField.add(new OnChangeAjaxBehavior(this::paymentDetailFieldUpdate));
         this.paymentDetailContainer.add(this.paymentDetailField);
         this.paymentDetailFeedback = new TextFeedbackPanel("paymentDetailFeedback", this.paymentDetailField);
         this.paymentDetailContainer.add(this.paymentDetailFeedback);
@@ -249,12 +253,44 @@ public class AccountClosePage extends Page {
         this.noteContainer.add(this.noteField);
         this.noteFeedback = new TextFeedbackPanel("noteFeedback", this.noteField);
         this.noteContainer.add(this.noteFeedback);
+
+        withdrawBalanceFieldUpdate(null);
     }
 
     protected void initData() {
         this.centerId = getPageParameters().get("centerId").toString();
         this.accountId = getPageParameters().get("accountId").toString();
         this.closedOnValue = DateTime.now().toDate();
+        this.postInterestValue = true;
+    }
+
+    protected boolean withdrawBalanceFieldUpdate(AjaxRequestTarget target) {
+        boolean visible = this.withdrawBalanceValue == null ? false : this.withdrawBalanceValue;
+        this.transactionAmountContainer.setVisible(visible);
+        this.paymentTypeContainer.setVisible(visible);
+        if (target != null) {
+            target.add(this.transactionAmountBlock);
+            target.add(this.paymentTypeBlock);
+        }
+        paymentDetailFieldUpdate(target);
+        return false;
+    }
+
+    protected boolean paymentDetailFieldUpdate(AjaxRequestTarget target) {
+        boolean visible = this.paymentDetailValue == null ? false : this.paymentDetailValue;
+        this.accountContainer.setVisible(visible);
+        this.chequeContainer.setVisible(visible);
+        this.routingContainer.setVisible(visible);
+        this.receiptContainer.setVisible(visible);
+        this.bankContainer.setVisible(visible);
+        if (target != null) {
+            target.add(this.accountBlock);
+            target.add(this.chequeBlock);
+            target.add(this.routingBlock);
+            target.add(this.receiptBlock);
+            target.add(this.bankBlock);
+        }
+        return false;
     }
 
     protected void saveButtonSubmit(Button button) {

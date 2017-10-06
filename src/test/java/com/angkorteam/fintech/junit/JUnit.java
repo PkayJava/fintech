@@ -7,6 +7,8 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.RunListener;
 import org.springframework.web.context.ContextLoaderListener;
 
+import com.angkorteam.fintech.Constants;
+
 public class JUnit extends RunListener {
 
     private static JUnitApplication application;
@@ -25,6 +27,7 @@ public class JUnit extends RunListener {
         ContextLoaderListener listener = new ContextLoaderListener();
         listener.initWebApplicationContext(servletContext);
         wicket = new JUnitWicketTester();
+        wicket.getJdbcTemplate().update("update m_appuser set username = ? where id = ?", Constants.UID, "1");
     }
 
     public void testRunFinished(Result result) throws Exception {
