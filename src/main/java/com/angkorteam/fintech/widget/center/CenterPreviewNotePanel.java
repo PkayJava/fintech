@@ -31,7 +31,7 @@ import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-public class CenterNotePanel extends Panel {
+public class CenterPreviewNotePanel extends Panel {
 
     protected String centerId;
 
@@ -47,7 +47,7 @@ public class CenterNotePanel extends Panel {
     protected DataTable<Map<String, Object>, String> noteTable;
     protected JdbcProvider noteProvider;
 
-    public CenterNotePanel(String id, Page itemPage) {
+    public CenterPreviewNotePanel(String id, Page itemPage) {
         super(id);
         this.itemPage = itemPage;
     }

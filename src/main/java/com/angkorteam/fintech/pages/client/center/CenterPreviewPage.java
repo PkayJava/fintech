@@ -8,8 +8,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.widget.center.CenterGeneral;
-import com.angkorteam.fintech.widget.center.CenterNote;
+import com.angkorteam.fintech.widget.center.CenterPreviewGeneral;
+import com.angkorteam.fintech.widget.center.CenterPreviewNote;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -27,7 +27,7 @@ public class CenterPreviewPage extends Page {
 
         this.centerId = parameters.get("centerId").toString();
 
-        this.tab = new AjaxTabbedPanel<>("tab", Arrays.asList(new CenterGeneral(this), new CenterNote(this)));
+        this.tab = new AjaxTabbedPanel<>("tab", Arrays.asList(new CenterPreviewGeneral(this), new CenterPreviewNote(this)));
 
         add(this.tab);
     }

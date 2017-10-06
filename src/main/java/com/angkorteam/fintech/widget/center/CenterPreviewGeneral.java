@@ -7,22 +7,22 @@ import org.apache.wicket.model.Model;
 
 import com.angkorteam.fintech.Page;
 
-public class CenterNote implements ITab {
+public class CenterPreviewGeneral implements ITab {
 
     private Page itemPage;
 
-    public CenterNote(Page itemPage) {
+    public CenterPreviewGeneral(Page itemPage) {
         this.itemPage = itemPage;
     }
 
     @Override
     public IModel<String> getTitle() {
-        return Model.of("Notes");
+        return Model.of("General");
     }
 
     @Override
     public WebMarkupContainer getPanel(String containerId) {
-        return new CenterNotePanel(containerId, itemPage);
+        return new CenterPreviewGeneralPanel(containerId, this.itemPage);
     }
 
     @Override

@@ -36,7 +36,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
 
-public class CenterGeneralPanel extends Panel {
+public class CenterPreviewGeneralPanel extends Panel {
 
     protected String centerId;
 
@@ -58,7 +58,7 @@ public class CenterGeneralPanel extends Panel {
 
     protected BookmarkablePageLink<Void> closeLink;
 
-    public CenterGeneralPanel(String id, Page itemPage) {
+    public CenterPreviewGeneralPanel(String id, Page itemPage) {
         super(id);
         this.itemPage = itemPage;
     }
