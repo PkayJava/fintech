@@ -19,6 +19,7 @@ import com.angkorteam.fintech.pages.client.center.AccountApprovePage;
 import com.angkorteam.fintech.pages.client.center.AccountDepositPage;
 import com.angkorteam.fintech.pages.client.center.AccountPreviewPage;
 import com.angkorteam.fintech.pages.client.center.AccountUndoApprovePage;
+import com.angkorteam.fintech.pages.client.center.AccountWithdrawPage;
 import com.angkorteam.fintech.pages.client.center.CenterClosePage;
 import com.angkorteam.fintech.pages.client.center.CenterModifyPage;
 import com.angkorteam.fintech.pages.client.center.CenterProductPage;
@@ -170,6 +171,12 @@ public class CenterPreviewGeneralPanel extends Panel {
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
             setResponsePage(AccountDepositPage.class, parameters);
+        } else if ("Withdraw".equals(column)) {
+            String accountId = (String) model.get("id");
+            PageParameters parameters = new PageParameters();
+            parameters.add("centerId", this.centerId);
+            parameters.add("accountId", accountId);
+            setResponsePage(AccountWithdrawPage.class, parameters);
         }
     }
 

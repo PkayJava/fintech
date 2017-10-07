@@ -17,7 +17,7 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.acount.DepositBuilder;
+import com.angkorteam.fintech.helper.acount.WithdrawBuilder;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -30,7 +30,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class AccountDepositPage extends Page {
+public class AccountWithdrawPage extends Page {
 
     protected String centerId;
     protected String accountId;
@@ -241,7 +241,7 @@ public class AccountDepositPage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        DepositBuilder builder = new DepositBuilder();
+        WithdrawBuilder builder = new WithdrawBuilder();
         builder.withId(this.accountId);
         builder.withTransactionDate(this.transactionDateValue);
         builder.withTransactionAmount(this.transactionAmountValue);
@@ -258,7 +258,7 @@ public class AccountDepositPage extends Page {
 
         JsonNode node = null;
         try {
-            node = ClientHelper.depositCenterAccount((Session) getSession(), builder.build());
+            node = ClientHelper.withdrawCenterAccount((Session) getSession(), builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

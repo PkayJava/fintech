@@ -72,6 +72,8 @@ public class AccountPreviewPage extends Page {
     protected AjaxTabbedPanel<ITab> tab;
 
     protected BookmarkablePageLink<Void> closeLink;
+    protected BookmarkablePageLink<Void> depositLink;
+    protected BookmarkablePageLink<Void> withdrawLink;
 
     @Override
     protected void onInitialize() {
@@ -133,8 +135,15 @@ public class AccountPreviewPage extends Page {
         PageParameters parameters = new PageParameters();
         parameters.add("centerId", this.centerId);
         parameters.add("accountId", this.accountId);
+
         this.closeLink = new BookmarkablePageLink<>("closeLink", AccountClosePage.class, parameters);
         add(this.closeLink);
+
+        this.depositLink = new BookmarkablePageLink<>("depositLink", AccountDepositPage.class, parameters);
+        add(this.depositLink);
+
+        this.withdrawLink = new BookmarkablePageLink<>("withdrawLink", AccountWithdrawPage.class, parameters);
+        add(this.withdrawLink);
     }
 
     protected void initData() {
