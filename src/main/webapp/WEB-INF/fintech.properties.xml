@@ -6,8 +6,8 @@
 
     <entry key="maintenance">false</entry>
 
-    <!-- Container || Local -->
-    <entry key="app.jdbc.type">LOCAL</entry>
+    <!-- jndi || local -->
+    <entry key="app.jdbc.type">local</entry>
     <entry key="app.jdbc.jndi">jdbc/fintech</entry>
 
     <entry key="app.jdbc.driver">com.mysql.jdbc.Driver</entry>
