@@ -35,7 +35,7 @@ public class FixedDepositBrowsePage extends Page {
 
     private DataTable<Map<String, Object>, String> dataTable;
 
-    private JdbcProvider provider;
+    private JdbcProvider dataProvider;
 
     private BookmarkablePageLink<Void> createLink;
 
@@ -69,22 +69,22 @@ public class FixedDepositBrowsePage extends Page {
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        this.provider = new JdbcProvider("m_savings_product");
-        this.provider.applyWhere("DepositType", "deposit_type_enum = " + DepositType.Fixed.getLiteral());
-        this.provider.boardField("id", "id", Long.class);
-        this.provider.boardField("name", "name", String.class);
-        this.provider.boardField("short_name", "shortName", String.class);
+        this.dataProvider = new JdbcProvider("m_savings_product");
+        this.dataProvider.applyWhere("DepositType", "deposit_type_enum = " + DepositType.Fixed.getLiteral());
+        this.dataProvider.boardField("id", "id", Long.class);
+        this.dataProvider.boardField("name", "name", String.class);
+        this.dataProvider.boardField("short_name", "shortName", String.class);
 
-        this.provider.selectField("id", Long.class);
+        this.dataProvider.selectField("id", Long.class);
 
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Short Name"), "shortName", "shortName", this::shortNameColumn));
+        List<IColumn<Map<String, Object>, String>> dataColumns = Lists.newArrayList();
+        dataColumns.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
+        dataColumns.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Short Name"), "shortName", "shortName", this::shortNameColumn));
 
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
+        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.dataProvider);
         add(filterForm);
 
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
+        this.dataTable = new DefaultDataTable<>("table", dataColumns, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
         filterForm.add(this.dataTable);
 

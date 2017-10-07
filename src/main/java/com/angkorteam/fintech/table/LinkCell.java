@@ -2,7 +2,10 @@ package com.angkorteam.fintech.table;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Date;
+import java.util.Map;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.Page;
@@ -14,11 +17,20 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.google.common.collect.Maps;
 
 /**
  * Created by socheatkhauv on 6/17/17.
  */
 public class LinkCell extends ItemPanel {
+
+    private static Map<String, NumberFormat> FORMATS;
+
+    static {
+        FORMATS = Maps.newHashMap();
+        FORMATS.put("#,###.00", new DecimalFormat("#,###.00"));
+        FORMATS.put("#.00", new DecimalFormat("#.00"));
+    }
 
     private Class<? extends Page> page;
 
@@ -30,8 +42,16 @@ public class LinkCell extends ItemPanel {
         this(page, parameters, Model.of(String.valueOf(v)));
     }
 
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, byte v, String pattern) {
+        this(page, parameters, Model.of(FORMATS.get(pattern).format(v)));
+    }
+
     public LinkCell(Class<? extends Page> page, PageParameters parameters, Byte v) {
         this(page, parameters, v != null ? Model.of(String.valueOf(v)) : Model.of(""));
+    }
+
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, Byte v, String pattern) {
+        this(page, parameters, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public LinkCell(Class<? extends Page> page, PageParameters parameters, boolean v) {
@@ -46,40 +66,80 @@ public class LinkCell extends ItemPanel {
         this(page, parameters, Model.of(String.valueOf(v)));
     }
 
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, short v, String pattern) {
+        this(page, parameters, Model.of(FORMATS.get(pattern).format(v)));
+    }
+
     public LinkCell(Class<? extends Page> page, PageParameters parameters, Short v) {
         this(page, parameters, v != null ? Model.of(String.valueOf(v)) : Model.of(""));
+    }
+
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, Short v, String pattern) {
+        this(page, parameters, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public LinkCell(Class<? extends Page> page, PageParameters parameters, int v) {
         this(page, parameters, Model.of(String.valueOf(v)));
     }
 
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, int v, String pattern) {
+        this(page, parameters, Model.of(FORMATS.get(pattern).format(v)));
+    }
+
     public LinkCell(Class<? extends Page> page, PageParameters parameters, Integer v) {
         this(page, parameters, v != null ? Model.of(String.valueOf(v)) : Model.of(""));
+    }
+
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, Integer v, String pattern) {
+        this(page, parameters, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public LinkCell(Class<? extends Page> page, PageParameters parameters, long v) {
         this(page, parameters, Model.of(String.valueOf(v)));
     }
 
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, long v, String pattern) {
+        this(page, parameters, Model.of(FORMATS.get(pattern).format(v)));
+    }
+
     public LinkCell(Class<? extends Page> page, PageParameters parameters, Long v) {
         this(page, parameters, v != null ? Model.of(String.valueOf(v)) : Model.of(""));
+    }
+
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, Long v, String pattern) {
+        this(page, parameters, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public LinkCell(Class<? extends Page> page, PageParameters parameters, double v) {
         this(page, parameters, Model.of(String.valueOf(v)));
     }
 
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, double v, String pattern) {
+        this(page, parameters, Model.of(FORMATS.get(pattern).format(v)));
+    }
+
     public LinkCell(Class<? extends Page> page, PageParameters parameters, Double v) {
         this(page, parameters, v != null ? Model.of(String.valueOf(v)) : Model.of(""));
+    }
+
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, Double v, String pattern) {
+        this(page, parameters, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public LinkCell(Class<? extends Page> page, PageParameters parameters, float v) {
         this(page, parameters, Model.of(String.valueOf(v)));
     }
 
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, float v, String pattern) {
+        this(page, parameters, Model.of(FORMATS.get(pattern).format(v)));
+    }
+
     public LinkCell(Class<? extends Page> page, PageParameters parameters, Float v) {
         this(page, parameters, v != null ? Model.of(String.valueOf(v)) : Model.of(""));
+    }
+
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, Float v, String pattern) {
+        this(page, parameters, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public LinkCell(Class<? extends Page> page, PageParameters parameters, String v) {
@@ -94,8 +154,16 @@ public class LinkCell extends ItemPanel {
         this(page, parameters, v != null ? Model.of(String.valueOf(v)) : Model.of(""));
     }
 
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, BigDecimal v, String pattern) {
+        this(page, parameters, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+    }
+
     public LinkCell(Class<? extends Page> page, PageParameters parameters, BigInteger v) {
         this(page, parameters, v != null ? Model.of(String.valueOf(v)) : Model.of(""));
+    }
+
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, BigInteger v, String pattern) {
+        this(page, parameters, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public LinkCell(Class<? extends Page> page, PageParameters parameters, Character v) {
@@ -104,6 +172,10 @@ public class LinkCell extends ItemPanel {
 
     public LinkCell(Class<? extends Page> page, PageParameters parameters, Number v) {
         this(page, parameters, v != null ? Model.of(String.valueOf(v.doubleValue())) : Model.of(""));
+    }
+
+    public LinkCell(Class<? extends Page> page, PageParameters parameters, Number v, String pattern) {
+        this(page, parameters, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public LinkCell(Class<? extends Page> page, PageParameters parameters, char v) {
