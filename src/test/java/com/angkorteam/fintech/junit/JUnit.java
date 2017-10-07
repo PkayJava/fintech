@@ -27,7 +27,8 @@ public class JUnit extends RunListener {
         ContextLoaderListener listener = new ContextLoaderListener();
         listener.initWebApplicationContext(servletContext);
         wicket = new JUnitWicketTester();
-        wicket.getJdbcTemplate().update("update m_appuser set username = ? where id = ?", Constants.UID, "1");
+        wicket.getJdbcTemplate().update("update m_appuser set username = ?, email = ? where id = ?", Constants.UID, "pkayjava@gmail.com", "1");
+        wicket.getJdbcTemplate().update("update m_appuser set email = ? where id = ?", "system@angkorteam.com", "2");
     }
 
     public void testRunFinished(Result result) throws Exception {

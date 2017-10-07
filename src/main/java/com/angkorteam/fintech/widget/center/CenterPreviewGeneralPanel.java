@@ -16,6 +16,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.pages.client.center.AccountActivatePage;
 import com.angkorteam.fintech.pages.client.center.AccountApprovePage;
+import com.angkorteam.fintech.pages.client.center.AccountDepositPage;
 import com.angkorteam.fintech.pages.client.center.AccountPreviewPage;
 import com.angkorteam.fintech.pages.client.center.AccountUndoApprovePage;
 import com.angkorteam.fintech.pages.client.center.CenterClosePage;
@@ -163,6 +164,12 @@ public class CenterPreviewGeneralPanel extends Panel {
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
             setResponsePage(AccountActivatePage.class, parameters);
+        } else if ("Deposit".equals(column)) {
+            String accountId = (String) model.get("id");
+            PageParameters parameters = new PageParameters();
+            parameters.add("centerId", this.centerId);
+            parameters.add("accountId", accountId);
+            setResponsePage(AccountDepositPage.class, parameters);
         }
     }
 

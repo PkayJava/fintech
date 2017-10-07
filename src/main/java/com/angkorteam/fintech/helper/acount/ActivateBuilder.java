@@ -51,20 +51,20 @@ public class ActivateBuilder {
             object.getObject().put("id", this.id);
         }
 
-        if (this.hasActivatedOnDate) {
-            if (this.activatedOnDate != null) {
-                object.getObject().put("activatedOnDate", DateFormatUtils.format(this.activatedOnDate, this.dateFormat));
-            } else {
-                object.getObject().put("activatedOnDate", (String) null);
-            }
-        }
-
         if (this.hasLocale) {
             object.getObject().put("locale", this.locale);
         }
 
         if (this.hasDateFormat) {
             object.getObject().put("dateFormat", this.dateFormat);
+        }
+
+        if (this.hasActivatedOnDate) {
+            if (this.activatedOnDate != null) {
+                object.getObject().put("activatedOnDate", DateFormatUtils.format(this.activatedOnDate, this.dateFormat));
+            } else {
+                object.getObject().put("activatedOnDate", (String) null);
+            }
         }
 
         return object;
