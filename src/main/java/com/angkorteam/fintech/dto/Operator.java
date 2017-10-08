@@ -1,14 +1,17 @@
-package com.angkorteam.fintech.dto.loan;
+package com.angkorteam.fintech.dto;
 
-public enum Amortization {
-    Installment("1", "Equal Installments"), 
-    PrincipalPayment("0", "Equal Principal Payments");
+public enum Operator {
+    
+    LessThan("1", "Less Than"),
+    Equal("2", "Equal"),
+    GreaterThan("3","Greater Than"),
+    NotEqual("4","Not Equal");
 
     private String literal;
 
     private String description;
 
-    Amortization(String literal, String description) {
+    Operator(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }

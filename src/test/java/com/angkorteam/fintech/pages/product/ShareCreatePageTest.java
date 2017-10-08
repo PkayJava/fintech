@@ -14,8 +14,8 @@ import org.junit.Test;
 import com.angkorteam.fintech.dto.AccountType;
 import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.fintech.dto.ChargeType;
-import com.angkorteam.fintech.dto.share.LockInPeriod;
-import com.angkorteam.fintech.dto.share.MinimumActivePeriod;
+import com.angkorteam.fintech.dto.LockInType;
+import com.angkorteam.fintech.dto.MinimumActivePeriod;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitFormTester;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
@@ -107,7 +107,7 @@ public class ShareCreatePageTest {
         int settingMinimumActivePeriodValue = 1;
         MinimumActivePeriod settingMinimumActiveTypeValue = MinimumActivePeriod.Day;
         int settingLockInPeriodValue = 1;
-        LockInPeriod settingLockInTypeValue = LockInPeriod.Day;
+        LockInType settingLockInTypeValue = LockInType.Day;
         boolean settingAllowDividendForInactiveClientValue = true;
 
         String chargeValue = this.wicket.getJdbcTemplate().queryForObject("select id from m_charge where currency_code = ? and charge_applies_to_enum = ? and is_penalty = ? and is_active = 1 limit 1", String.class, currencyCodeValue, ChargeType.Share.getLiteral(), 0);

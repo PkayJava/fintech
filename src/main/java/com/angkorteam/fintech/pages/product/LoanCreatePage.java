@@ -30,7 +30,7 @@ import com.angkorteam.fintech.dto.loan.AdvancePaymentsAdjustmentType;
 import com.angkorteam.fintech.dto.loan.Amortization;
 import com.angkorteam.fintech.dto.loan.ClosureInterestCalculationRule;
 import com.angkorteam.fintech.dto.loan.DayInMonth;
-import com.angkorteam.fintech.dto.loan.DayInYear;
+import com.angkorteam.fintech.dto.DayInYear;
 import com.angkorteam.fintech.dto.loan.Frequency;
 import com.angkorteam.fintech.dto.loan.FrequencyDay;
 import com.angkorteam.fintech.dto.loan.FrequencyType;
@@ -38,7 +38,7 @@ import com.angkorteam.fintech.dto.loan.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.loan.InterestMethod;
 import com.angkorteam.fintech.dto.loan.InterestRecalculationCompound;
 import com.angkorteam.fintech.dto.loan.NominalInterestRateScheduleType;
-import com.angkorteam.fintech.dto.loan.RepaidType;
+import com.angkorteam.fintech.dto.LockInType;
 import com.angkorteam.fintech.dto.loan.RepaymentStrategy;
 import com.angkorteam.fintech.dto.loan.WhenType;
 import com.angkorteam.fintech.dto.request.AllowAttributeOverrideBuilder;
@@ -56,13 +56,13 @@ import com.angkorteam.fintech.popup.loan.PrincipalLoanCyclePopup;
 import com.angkorteam.fintech.popup.loan.RepaymentLoanCyclePopup;
 import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.provider.NominalInterestRateTypeProvider;
-import com.angkorteam.fintech.provider.RepaidTypeProvider;
+import com.angkorteam.fintech.provider.LockInTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.provider.loan.AdvancePaymentsAdjustmentTypeProvider;
 import com.angkorteam.fintech.provider.loan.AmortizationProvider;
 import com.angkorteam.fintech.provider.loan.ClosureInterestCalculationRuleProvider;
 import com.angkorteam.fintech.provider.loan.DayInMonthProvider;
-import com.angkorteam.fintech.provider.loan.DayInYearProvider;
+import com.angkorteam.fintech.provider.DayInYearProvider;
 import com.angkorteam.fintech.provider.loan.FrequencyDayProvider;
 import com.angkorteam.fintech.provider.loan.FrequencyProvider;
 import com.angkorteam.fintech.provider.loan.FrequencyTypeProvider;
@@ -334,7 +334,7 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupContainer termRepaidTypeBlock;
     protected WebMarkupContainer termRepaidTypeContainer;
-    protected RepaidTypeProvider termRepaidTypeProvider;
+    protected LockInTypeProvider termRepaidTypeProvider;
     protected Option termRepaidTypeValue;
     protected Select2SingleChoice<Option> termRepaidTypeField;
     protected TextFeedbackPanel termRepaidTypeFeedback;
@@ -3062,7 +3062,7 @@ public class LoanCreatePage extends Page {
 
         this.termRepaidTypeBlock = new WebMarkupContainer("termRepaidTypeBlock");
         this.termRepaidTypeBlock.setOutputMarkupId(true);
-        this.termRepaidTypeProvider = new RepaidTypeProvider();
+        this.termRepaidTypeProvider = new LockInTypeProvider(LockInType.Day, LockInType.Week, LockInType.Month);
         this.form.add(this.termRepaidTypeBlock);
         this.termRepaidTypeContainer = new WebMarkupContainer("termRepaidTypeContainer");
         this.termRepaidTypeBlock.add(this.termRepaidTypeContainer);
@@ -3548,7 +3548,7 @@ public class LoanCreatePage extends Page {
 
         builder.withRepaymentEvery(this.termRepaidEveryValue);
         if (this.termRepaidTypeValue != null) {
-            builder.withRepaymentFrequencyType(RepaidType.valueOf(this.termRepaidTypeValue.getId()));
+            builder.withRepaymentFrequencyType(LockInType.valueOf(this.termRepaidTypeValue.getId()));
         }
         builder.withMinimumDaysBetweenDisbursalAndFirstRepayment(this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue);
 

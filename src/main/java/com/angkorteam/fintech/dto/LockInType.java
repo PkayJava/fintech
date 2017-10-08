@@ -1,14 +1,17 @@
-package com.angkorteam.fintech.dto.loan;
+package com.angkorteam.fintech.dto;
 
-public enum Amortization {
-    Installment("1", "Equal Installments"), 
-    PrincipalPayment("0", "Equal Principal Payments");
+public enum LockInType {
+
+    Day("0", "Days"),
+    Week("1", "Weeks"),
+    Month("2", "Months"),
+    Year("3", "Years");
 
     private String literal;
 
     private String description;
 
-    Amortization(String literal, String description) {
+    LockInType(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
@@ -20,4 +23,5 @@ public enum Amortization {
     public String getDescription() {
         return description;
     }
+
 }

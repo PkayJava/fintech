@@ -2,7 +2,8 @@ package com.angkorteam.fintech.dto.loan;
 
 public enum InterestCalculationPeriod {
 
-    Daily("0", "Daily"), SameAsPayment("1", "Same as payment");
+    Daily("0", "Daily"), 
+    SameAsPayment("1", "Same as payment");
 
     private String literal;
 

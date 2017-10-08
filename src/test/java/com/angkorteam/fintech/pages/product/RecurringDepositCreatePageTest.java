@@ -15,17 +15,17 @@ import org.junit.Test;
 
 import com.angkorteam.fintech.dto.AccountType;
 import com.angkorteam.fintech.dto.AccountUsage;
+import com.angkorteam.fintech.dto.ApplyPenalOn;
+import com.angkorteam.fintech.dto.Attribute;
 import com.angkorteam.fintech.dto.ChargeType;
 import com.angkorteam.fintech.dto.DepositType;
-import com.angkorteam.fintech.dto.fixed.ApplyPenalOn;
-import com.angkorteam.fintech.dto.fixed.Attribute;
-import com.angkorteam.fintech.dto.fixed.DayInYear;
-import com.angkorteam.fintech.dto.fixed.InterestCalculatedUsing;
-import com.angkorteam.fintech.dto.fixed.InterestCompoundingPeriod;
-import com.angkorteam.fintech.dto.fixed.InterestPostingPeriod;
-import com.angkorteam.fintech.dto.fixed.LockInPeriod;
-import com.angkorteam.fintech.dto.fixed.OperandType;
-import com.angkorteam.fintech.dto.fixed.Operator;
+import com.angkorteam.fintech.dto.InterestCalculatedUsing;
+import com.angkorteam.fintech.dto.InterestCompoundingPeriod;
+import com.angkorteam.fintech.dto.InterestPostingPeriod;
+import com.angkorteam.fintech.dto.DayInYear;
+import com.angkorteam.fintech.dto.LockInType;
+import com.angkorteam.fintech.dto.OperandType;
+import com.angkorteam.fintech.dto.Operator;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitFormTester;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
@@ -67,13 +67,13 @@ public class RecurringDepositCreatePageTest {
         DayInYear termDayInYearValue = DayInYear.D365;
 
         int settingLockInPeriodValue = 1;
-        LockInPeriod settingLockInTypeValue = LockInPeriod.Month;
+        LockInType settingLockInTypeValue = LockInType.Month;
         int settingMinimumDepositTermValue = 12;
-        LockInPeriod settingMinimumDepositTypeValue = LockInPeriod.Month;
+        LockInType settingMinimumDepositTypeValue = LockInType.Month;
         int settingInMultiplesOfValue = 1;
-        LockInPeriod settingInMultiplesTypeValue = LockInPeriod.Month;
+        LockInType settingInMultiplesTypeValue = LockInType.Month;
         int settingMaximumDepositTermValue = 240;
-        LockInPeriod settingMaximumDepositTypeValue = LockInPeriod.Month;
+        LockInType settingMaximumDepositTypeValue = LockInType.Month;
         double settingApplyPenalInterestValue = 1.99;
         ApplyPenalOn settingApplyPenalOnValue = ApplyPenalOn.WholeTerm;
         double settingBalanceRequiredForInterestCalculationValue = 10.99;
@@ -160,13 +160,13 @@ public class RecurringDepositCreatePageTest {
         String settingTaxGroupValue = this.wicket.getJdbcTemplate().queryForObject("SELECT id FROM m_tax_group LIMIT 1", String.class);
         Boolean settingWithholdTaxApplicableValue = true;
         int settingLockInPeriodValue = 1;
-        LockInPeriod settingLockInTypeValue = LockInPeriod.Month;
+        LockInType settingLockInTypeValue = LockInType.Month;
         int settingMinimumDepositTermValue = 12;
-        LockInPeriod settingMinimumDepositTypeValue = LockInPeriod.Month;
+        LockInType settingMinimumDepositTypeValue = LockInType.Month;
         int settingInMultiplesOfValue = 1;
-        LockInPeriod settingInMultiplesTypeValue = LockInPeriod.Month;
+        LockInType settingInMultiplesTypeValue = LockInType.Month;
         int settingMaximumDepositTermValue = 240;
-        LockInPeriod settingMaximumDepositTypeValue = LockInPeriod.Month;
+        LockInType settingMaximumDepositTypeValue = LockInType.Month;
         double settingApplyPenalInterestValue = 1.99;
         ApplyPenalOn settingApplyPenalOnValue = ApplyPenalOn.WholeTerm;
         boolean settingForPreMatureClosureValue = true;
@@ -244,7 +244,7 @@ public class RecurringDepositCreatePageTest {
         form.setValue("interestRatePrimaryGroupingByAmountBlock:interestRatePrimaryGroupingByAmountContainer:interestRatePrimaryGroupingByAmountField", true);
 
         {
-            Option periodType = new Option(LockInPeriod.Month.name(), LockInPeriod.Month.getDescription());
+            Option periodType = new Option(LockInType.Month.name(), LockInType.Month.getDescription());
             int periodFrom = 1;
             int periodTo = 10;
             int amountRangeFrom = 0;
@@ -269,7 +269,7 @@ public class RecurringDepositCreatePageTest {
             page.interestRateChartValue.add(item);
         }
         {
-            Option periodType = new Option(LockInPeriod.Month.name(), LockInPeriod.Month.getDescription());
+            Option periodType = new Option(LockInType.Month.name(), LockInType.Month.getDescription());
             int periodFrom = 11;
             int amountRangeFrom = 0;
             double interest = 10.99;
@@ -378,13 +378,13 @@ public class RecurringDepositCreatePageTest {
         DayInYear termDayInYearValue = DayInYear.D365;
 
         int settingLockInPeriodValue = 1;
-        LockInPeriod settingLockInTypeValue = LockInPeriod.Month;
+        LockInType settingLockInTypeValue = LockInType.Month;
         int settingMinimumDepositTermValue = 12;
-        LockInPeriod settingMinimumDepositTypeValue = LockInPeriod.Month;
+        LockInType settingMinimumDepositTypeValue = LockInType.Month;
         int settingInMultiplesOfValue = 1;
-        LockInPeriod settingInMultiplesTypeValue = LockInPeriod.Month;
+        LockInType settingInMultiplesTypeValue = LockInType.Month;
         int settingMaximumDepositTermValue = 240;
-        LockInPeriod settingMaximumDepositTypeValue = LockInPeriod.Month;
+        LockInType settingMaximumDepositTypeValue = LockInType.Month;
         double settingApplyPenalInterestValue = 1.99;
         ApplyPenalOn settingApplyPenalOnValue = ApplyPenalOn.WholeTerm;
         boolean settingForPreMatureClosureValue = true;
@@ -466,7 +466,7 @@ public class RecurringDepositCreatePageTest {
 
         {
             Map<String, Object> item = Maps.newHashMap();
-            item.put("periodType", new Option(LockInPeriod.Month.name(), LockInPeriod.Month.getDescription()));
+            item.put("periodType", new Option(LockInType.Month.name(), LockInType.Month.getDescription()));
             item.put("periodFrom", 1);
             // item.put("periodTo", 10);
             item.put("amountRangeFrom", 0);
@@ -486,7 +486,7 @@ public class RecurringDepositCreatePageTest {
         }
         {
             Map<String, Object> item = Maps.newHashMap();
-            item.put("periodType", new Option(LockInPeriod.Month.name(), LockInPeriod.Month.getDescription()));
+            item.put("periodType", new Option(LockInType.Month.name(), LockInType.Month.getDescription()));
             item.put("periodFrom", 1);
             // item.put("periodTo", 10);
             item.put("amountRangeFrom", 501);
@@ -677,7 +677,7 @@ public class RecurringDepositCreatePageTest {
         this.wicket.executeAjaxLink(chargeAddLink);
 
         JUnitFormTester popupForm = this.wicket.newFormTester("interestRateChartPopup:content:form");
-        popupForm.setValue("periodTypeField", LockInPeriod.Month);
+        popupForm.setValue("periodTypeField", LockInType.Month);
         popupForm.setValue("periodFromField", "1");
         popupForm.setValue("periodToField", "90");
         popupForm.setValue("amountRangeFromField", "0.99");

@@ -1,14 +1,15 @@
-package com.angkorteam.fintech.dto.loan;
+package com.angkorteam.fintech.dto;
 
-public enum Amortization {
-    Installment("1", "Equal Installments"), 
-    PrincipalPayment("0", "Equal Principal Payments");
+public enum OperandType {
+    
+    Fixed("2", "Fixed"),
+    Incentive("3","Incentive");
 
     private String literal;
 
     private String description;
 
-    Amortization(String literal, String description) {
+    OperandType(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
@@ -20,4 +21,5 @@ public enum Amortization {
     public String getDescription() {
         return description;
     }
+    
 }

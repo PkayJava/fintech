@@ -8,15 +8,15 @@ import java.util.Map;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.json.JSONObject;
 
-import com.angkorteam.fintech.dto.recurring.ApplyPenalOn;
-import com.angkorteam.fintech.dto.recurring.Attribute;
-import com.angkorteam.fintech.dto.recurring.DayInYear;
-import com.angkorteam.fintech.dto.recurring.InterestCalculatedUsing;
-import com.angkorteam.fintech.dto.recurring.InterestCompoundingPeriod;
-import com.angkorteam.fintech.dto.recurring.InterestPostingPeriod;
-import com.angkorteam.fintech.dto.recurring.LockInPeriod;
-import com.angkorteam.fintech.dto.recurring.OperandType;
-import com.angkorteam.fintech.dto.recurring.Operator;
+import com.angkorteam.fintech.dto.ApplyPenalOn;
+import com.angkorteam.fintech.dto.Attribute;
+import com.angkorteam.fintech.dto.DayInYear;
+import com.angkorteam.fintech.dto.InterestCalculatedUsing;
+import com.angkorteam.fintech.dto.InterestCompoundingPeriod;
+import com.angkorteam.fintech.dto.InterestPostingPeriod;
+import com.angkorteam.fintech.dto.LockInType;
+import com.angkorteam.fintech.dto.OperandType;
+import com.angkorteam.fintech.dto.Operator;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
@@ -332,7 +332,7 @@ public class RecurringBuilder implements Serializable {
     private List<Map<String, Object>> chartSlabs = Lists.newArrayList();
     private boolean hasChartSlabs;
 
-    public RecurringBuilder withChartSlab(LockInPeriod periodType, Integer fromPeriod, Integer toPeriod, Integer amountRangeFrom, Integer amountRangeTo, Double annualInterestRate, String description, List<JSONObject> incentives) {
+    public RecurringBuilder withChartSlab(LockInType periodType, Integer fromPeriod, Integer toPeriod, Integer amountRangeFrom, Integer amountRangeTo, Double annualInterestRate, String description, List<JSONObject> incentives) {
         Map<String, Object> chartSlab = Maps.newHashMap();
         chartSlab.put("periodType", periodType == null ? null : periodType.getLiteral());
         chartSlab.put("fromPeriod", fromPeriod == null ? null : fromPeriod);
@@ -362,10 +362,10 @@ public class RecurringBuilder implements Serializable {
         return this;
     }
 
-    private LockInPeriod lockInPeriodFrequencyType;
+    private LockInType lockInPeriodFrequencyType;
     private boolean hasLockInPeriodFrequencyType;
 
-    public RecurringBuilder withLockinPeriodFrequencyType(LockInPeriod lockInPeriodFrequencyType) {
+    public RecurringBuilder withLockinPeriodFrequencyType(LockInType lockInPeriodFrequencyType) {
         this.lockInPeriodFrequencyType = lockInPeriodFrequencyType;
         this.hasLockInPeriodFrequencyType = true;
         return this;
@@ -380,10 +380,10 @@ public class RecurringBuilder implements Serializable {
         return this;
     }
 
-    private LockInPeriod minDepositTermTypeId;
+    private LockInType minDepositTermTypeId;
     private boolean hasMinDepositTermTypeId;
 
-    public RecurringBuilder withMinDepositTermTypeId(LockInPeriod minDepositTermTypeId) {
+    public RecurringBuilder withMinDepositTermTypeId(LockInType minDepositTermTypeId) {
         this.minDepositTermTypeId = minDepositTermTypeId;
         this.hasMinDepositTermTypeId = true;
         return this;
@@ -398,10 +398,10 @@ public class RecurringBuilder implements Serializable {
         return this;
     }
 
-    private LockInPeriod inMultiplesOfDepositTermTypeId;
+    private LockInType inMultiplesOfDepositTermTypeId;
     private boolean hasInMultiplesOfDepositTermTypeId;
 
-    public RecurringBuilder withInMultiplesOfDepositTermTypeId(LockInPeriod inMultiplesOfDepositTermTypeId) {
+    public RecurringBuilder withInMultiplesOfDepositTermTypeId(LockInType inMultiplesOfDepositTermTypeId) {
         this.inMultiplesOfDepositTermTypeId = inMultiplesOfDepositTermTypeId;
         this.hasInMultiplesOfDepositTermTypeId = true;
         return this;
@@ -416,10 +416,10 @@ public class RecurringBuilder implements Serializable {
         return this;
     }
 
-    private LockInPeriod maxDepositTermTypeId;
+    private LockInType maxDepositTermTypeId;
     private boolean hasMaxDepositTermTypeId;
 
-    public RecurringBuilder withMaxDepositTermTypeId(LockInPeriod maxDepositTermTypeId) {
+    public RecurringBuilder withMaxDepositTermTypeId(LockInType maxDepositTermTypeId) {
         this.maxDepositTermTypeId = maxDepositTermTypeId;
         this.hasMaxDepositTermTypeId = true;
         return this;

@@ -1,14 +1,14 @@
-package com.angkorteam.fintech.dto.loan;
+package com.angkorteam.fintech.dto;
 
-public enum Amortization {
-    Installment("1", "Equal Installments"), 
-    PrincipalPayment("0", "Equal Principal Payments");
+public enum ApplyPenalOn {
+    WholeTerm("1", "Whole term"),
+    TillPrematureWithdrawal("2", "Till Premature Withdrawal");
 
     private String literal;
 
     private String description;
 
-    Amortization(String literal, String description) {
+    ApplyPenalOn(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }

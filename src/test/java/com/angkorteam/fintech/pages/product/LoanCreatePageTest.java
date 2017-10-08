@@ -19,7 +19,7 @@ import com.angkorteam.fintech.dto.loan.AdvancePaymentsAdjustmentType;
 import com.angkorteam.fintech.dto.loan.Amortization;
 import com.angkorteam.fintech.dto.loan.ClosureInterestCalculationRule;
 import com.angkorteam.fintech.dto.loan.DayInMonth;
-import com.angkorteam.fintech.dto.loan.DayInYear;
+import com.angkorteam.fintech.dto.DayInYear;
 import com.angkorteam.fintech.dto.loan.Frequency;
 import com.angkorteam.fintech.dto.loan.FrequencyDay;
 import com.angkorteam.fintech.dto.loan.FrequencyType;
@@ -27,7 +27,7 @@ import com.angkorteam.fintech.dto.loan.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.loan.InterestMethod;
 import com.angkorteam.fintech.dto.loan.InterestRecalculationCompound;
 import com.angkorteam.fintech.dto.loan.NominalInterestRateScheduleType;
-import com.angkorteam.fintech.dto.loan.RepaidType;
+import com.angkorteam.fintech.dto.LockInType;
 import com.angkorteam.fintech.dto.loan.RepaymentStrategy;
 import com.angkorteam.fintech.dto.loan.WhenType;
 import com.angkorteam.fintech.junit.JUnit;
@@ -82,7 +82,7 @@ public class LoanCreatePageTest {
         double termFloatingInterestDefaultValue = 100.99;
         double termFloatingInterestMaximumValue = 500.99;
         int termRepaidEveryValue = 1;
-        RepaidType termRepaidTypeValue = RepaidType.Week;
+        LockInType termRepaidTypeValue = LockInType.Week;
         int termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue = 12;
 
         Amortization settingAmortizationValue = Amortization.Installment;
@@ -566,7 +566,7 @@ public class LoanCreatePageTest {
         NominalInterestRateScheduleType termNominalInterestRateTypeValue = NominalInterestRateScheduleType.Month;
 
         int termRepaidEveryValue = 1;
-        RepaidType termRepaidTypeValue = RepaidType.Day;
+        LockInType termRepaidTypeValue = LockInType.Day;
         int termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue = 12;
 
         Amortization settingAmortizationValue = Amortization.Installment;
@@ -935,7 +935,7 @@ public class LoanCreatePageTest {
         NominalInterestRateScheduleType termNominalInterestRateTypeValue = NominalInterestRateScheduleType.Month;
 
         int termRepaidEveryValue = 1;
-        RepaidType termRepaidTypeValue = RepaidType.Month;
+        LockInType termRepaidTypeValue = LockInType.Month;
         int termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue = 12;
 
         Amortization settingAmortizationValue = Amortization.Installment;
@@ -1300,7 +1300,7 @@ public class LoanCreatePageTest {
         form.setValue("termNominalInterestRateDefaultBlock:termNominalInterestRateDefaultContainer:termNominalInterestRateDefaultField", termNominalInterestRateDefaultValue);
         form.setValue("termNominalInterestRateTypeBlock:termNominalInterestRateTypeContainer:termNominalInterestRateTypeField", NominalInterestRateScheduleType.Month);
         form.setValue("termRepaidEveryBlock:termRepaidEveryContainer:termRepaidEveryField", termRepaidEveryValue);
-        form.setValue("termRepaidTypeBlock:termRepaidTypeContainer:termRepaidTypeField", RepaidType.Month);
+        form.setValue("termRepaidTypeBlock:termRepaidTypeContainer:termRepaidTypeField", LockInType.Month);
 
         // Settings
         form.setValue("settingAmortizationBlock:settingAmortizationContainer:settingAmortizationField", Amortization.Installment);

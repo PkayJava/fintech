@@ -1,15 +1,14 @@
 package com.angkorteam.fintech.dto.request;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.dto.saving.DayInYear;
-import com.angkorteam.fintech.dto.saving.InterestCalculatedUsing;
-import com.angkorteam.fintech.dto.saving.InterestCompoundingPeriod;
-import com.angkorteam.fintech.dto.saving.InterestPostingPeriod;
-import com.angkorteam.fintech.dto.saving.LockInType;
+import com.angkorteam.fintech.dto.InterestCompoundingPeriod;
+import com.angkorteam.fintech.dto.DayInYear;
+import com.angkorteam.fintech.dto.InterestCalculatedUsing;
+import com.angkorteam.fintech.dto.InterestPostingPeriod;
+import com.angkorteam.fintech.dto.LockInType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;

@@ -12,7 +12,7 @@ import com.angkorteam.fintech.dto.loan.AdvancePaymentsAdjustmentType;
 import com.angkorteam.fintech.dto.loan.Amortization;
 import com.angkorteam.fintech.dto.loan.ClosureInterestCalculationRule;
 import com.angkorteam.fintech.dto.loan.DayInMonth;
-import com.angkorteam.fintech.dto.loan.DayInYear;
+import com.angkorteam.fintech.dto.DayInYear;
 import com.angkorteam.fintech.dto.loan.Frequency;
 import com.angkorteam.fintech.dto.loan.FrequencyDay;
 import com.angkorteam.fintech.dto.loan.FrequencyType;
@@ -20,7 +20,7 @@ import com.angkorteam.fintech.dto.loan.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.loan.InterestMethod;
 import com.angkorteam.fintech.dto.loan.InterestRecalculationCompound;
 import com.angkorteam.fintech.dto.loan.NominalInterestRateScheduleType;
-import com.angkorteam.fintech.dto.loan.RepaidType;
+import com.angkorteam.fintech.dto.LockInType;
 import com.angkorteam.fintech.dto.loan.RepaymentStrategy;
 import com.angkorteam.fintech.dto.loan.WhenType;
 import com.google.common.collect.Lists;
@@ -299,10 +299,10 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private RepaidType repaymentFrequencyType;
+    private LockInType repaymentFrequencyType;
     private boolean hasRepaymentFrequencyType;
 
-    public LoanBuilder withRepaymentFrequencyType(RepaidType repaymentFrequencyType) {
+    public LoanBuilder withRepaymentFrequencyType(LockInType repaymentFrequencyType) {
         this.repaymentFrequencyType = repaymentFrequencyType;
         this.hasRepaymentFrequencyType = true;
         return this;
@@ -734,7 +734,7 @@ public class LoanBuilder implements Serializable {
     private Integer maxTrancheCount;
     private boolean hasMaxTrancheCount;
 
-    public LoanBuilder withMaxTrancheCount(Integer maxTrancheCount) {   
+    public LoanBuilder withMaxTrancheCount(Integer maxTrancheCount) {
         this.maxTrancheCount = maxTrancheCount;
         this.hasMaxTrancheCount = true;
         return this;

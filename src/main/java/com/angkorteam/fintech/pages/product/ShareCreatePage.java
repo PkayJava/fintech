@@ -27,8 +27,8 @@ import com.angkorteam.fintech.dto.ChargeCalculation;
 import com.angkorteam.fintech.dto.ChargeTime;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.request.ShareBuilder;
-import com.angkorteam.fintech.dto.share.LockInPeriod;
-import com.angkorteam.fintech.dto.share.MinimumActivePeriod;
+import com.angkorteam.fintech.dto.LockInType;
+import com.angkorteam.fintech.dto.MinimumActivePeriod;
 import com.angkorteam.fintech.helper.ShareHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.popup.CurrencyPopup;
@@ -36,8 +36,8 @@ import com.angkorteam.fintech.popup.share.ChargePopup;
 import com.angkorteam.fintech.popup.share.MarketPricePopup;
 import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.provider.share.LockInPeriodProvider;
-import com.angkorteam.fintech.provider.share.MinimumActivePeriodProvider;
+import com.angkorteam.fintech.provider.LockInTypeProvider;
+import com.angkorteam.fintech.provider.MinimumActivePeriodProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
@@ -183,7 +183,7 @@ public class ShareCreatePage extends Page {
 
     protected WebMarkupContainer settingLockInTypeBlock;
     protected WebMarkupContainer settingLockInTypeContainer;
-    protected LockInPeriodProvider settingLockInTypeProvider;
+    protected LockInTypeProvider settingLockInTypeProvider;
     protected Option settingLockInTypeValue;
     protected Select2SingleChoice<Option> settingLockInTypeField;
     protected TextFeedbackPanel settingLockInTypeFeedback;
@@ -653,7 +653,7 @@ public class ShareCreatePage extends Page {
         this.form.add(this.settingLockInTypeBlock);
         this.settingLockInTypeContainer = new WebMarkupContainer("settingLockInTypeContainer");
         this.settingLockInTypeBlock.add(this.settingLockInTypeContainer);
-        this.settingLockInTypeProvider = new LockInPeriodProvider();
+        this.settingLockInTypeProvider = new LockInTypeProvider();
         this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", 0, new PropertyModel<>(this, "settingLockInTypeValue"), this.settingLockInTypeProvider);
         this.settingLockInTypeField.setLabel(Model.of("Type"));
         this.settingLockInTypeField.setRequired(false);
@@ -842,7 +842,7 @@ public class ShareCreatePage extends Page {
         }
         builder.withLockinPeriodFrequency(this.settingLockInPeriodValue);
         if (this.settingLockInTypeValue != null) {
-            builder.withLockinPeriodFrequencyType(LockInPeriod.valueOf(this.settingLockInTypeValue.getId()));
+            builder.withLockinPeriodFrequencyType(LockInType.valueOf(this.settingLockInTypeValue.getId()));
         }
         builder.withAllowDividendCalculationForInactiveClients(this.settingAllowDividendForInactiveClientValue == null ? false : this.settingAllowDividendForInactiveClientValue);
 

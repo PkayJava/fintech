@@ -7,8 +7,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import com.angkorteam.fintech.dto.share.LockInPeriod;
-import com.angkorteam.fintech.dto.share.MinimumActivePeriod;
+import com.angkorteam.fintech.dto.LockInType;
+import com.angkorteam.fintech.dto.MinimumActivePeriod;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
@@ -202,10 +202,10 @@ public class ShareBuilder implements Serializable {
         return this;
     }
 
-    private LockInPeriod lockinPeriodFrequencyType;
+    private LockInType lockinPeriodFrequencyType;
     private boolean hasLockinPeriodFrequencyType;
 
-    public ShareBuilder withLockinPeriodFrequencyType(LockInPeriod lockinPeriodFrequencyType) {
+    public ShareBuilder withLockinPeriodFrequencyType(LockInType lockinPeriodFrequencyType) {
         this.lockinPeriodFrequencyType = lockinPeriodFrequencyType;
         this.hasLockinPeriodFrequencyType = true;
         return this;

@@ -26,18 +26,18 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.AccountType;
 import com.angkorteam.fintech.dto.AccountUsage;
+import com.angkorteam.fintech.dto.ApplyPenalOn;
+import com.angkorteam.fintech.dto.Attribute;
 import com.angkorteam.fintech.dto.ChargeCalculation;
 import com.angkorteam.fintech.dto.ChargeTime;
+import com.angkorteam.fintech.dto.DayInYear;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.fixed.ApplyPenalOn;
-import com.angkorteam.fintech.dto.fixed.Attribute;
-import com.angkorteam.fintech.dto.fixed.DayInYear;
-import com.angkorteam.fintech.dto.fixed.InterestCalculatedUsing;
-import com.angkorteam.fintech.dto.fixed.InterestCompoundingPeriod;
-import com.angkorteam.fintech.dto.fixed.InterestPostingPeriod;
-import com.angkorteam.fintech.dto.fixed.LockInPeriod;
-import com.angkorteam.fintech.dto.fixed.OperandType;
-import com.angkorteam.fintech.dto.fixed.Operator;
+import com.angkorteam.fintech.dto.InterestCalculatedUsing;
+import com.angkorteam.fintech.dto.InterestCompoundingPeriod;
+import com.angkorteam.fintech.dto.InterestPostingPeriod;
+import com.angkorteam.fintech.dto.LockInType;
+import com.angkorteam.fintech.dto.OperandType;
+import com.angkorteam.fintech.dto.Operator;
 import com.angkorteam.fintech.dto.request.FixedBuilder;
 import com.angkorteam.fintech.dto.request.FixedBuilder.IncentiveBuilder;
 import com.angkorteam.fintech.helper.FixedHelper;
@@ -49,14 +49,14 @@ import com.angkorteam.fintech.popup.fixed.ChargePopup;
 import com.angkorteam.fintech.popup.fixed.FeeChargePopup;
 import com.angkorteam.fintech.popup.fixed.IncentivePopup;
 import com.angkorteam.fintech.popup.fixed.PenaltyChargePopup;
+import com.angkorteam.fintech.provider.ApplyPenalOnProvider;
 import com.angkorteam.fintech.provider.CurrencyProvider;
+import com.angkorteam.fintech.provider.DayInYearProvider;
+import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
+import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
+import com.angkorteam.fintech.provider.InterestPostingPeriodProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.provider.fixed.ApplyPenalOnProvider;
-import com.angkorteam.fintech.provider.fixed.DayInYearProvider;
-import com.angkorteam.fintech.provider.fixed.InterestCalculatedUsingProvider;
-import com.angkorteam.fintech.provider.fixed.InterestCompoundingPeriodProvider;
-import com.angkorteam.fintech.provider.fixed.InterestPostingPeriodProvider;
-import com.angkorteam.fintech.provider.fixed.LockInPeriodProvider;
+import com.angkorteam.fintech.provider.LockInTypeProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
@@ -196,7 +196,7 @@ public class FixedDepositCreatePage extends Page {
 
     protected WebMarkupContainer settingLockInTypeBlock;
     protected WebMarkupContainer settingLockInTypeContainer;
-    protected LockInPeriodProvider settingLockInTypeProvider;
+    protected LockInTypeProvider settingLockInTypeProvider;
     protected Option settingLockInTypeValue;
     protected Select2SingleChoice<Option> settingLockInTypeField;
     protected TextFeedbackPanel settingLockInTypeFeedback;
@@ -209,7 +209,7 @@ public class FixedDepositCreatePage extends Page {
 
     protected WebMarkupContainer settingMinimumDepositTypeBlock;
     protected WebMarkupContainer settingMinimumDepositTypeContainer;
-    protected LockInPeriodProvider settingMinimumDepositTypeProvider;
+    protected LockInTypeProvider settingMinimumDepositTypeProvider;
     protected Option settingMinimumDepositTypeValue;
     protected Select2SingleChoice<Option> settingMinimumDepositTypeField;
     protected TextFeedbackPanel settingMinimumDepositTypeFeedback;
@@ -222,7 +222,7 @@ public class FixedDepositCreatePage extends Page {
 
     protected WebMarkupContainer settingInMultiplesTypeBlock;
     protected WebMarkupContainer settingInMultiplesTypeContainer;
-    protected LockInPeriodProvider settingInMultiplesTypeProvider;
+    protected LockInTypeProvider settingInMultiplesTypeProvider;
     protected Option settingInMultiplesTypeValue;
     protected Select2SingleChoice<Option> settingInMultiplesTypeField;
     protected TextFeedbackPanel settingInMultiplesTypeFeedback;
@@ -235,7 +235,7 @@ public class FixedDepositCreatePage extends Page {
 
     protected WebMarkupContainer settingMaximumDepositTypeBlock;
     protected WebMarkupContainer settingMaximumDepositTypeContainer;
-    protected LockInPeriodProvider settingMaximumDepositTypeProvider;
+    protected LockInTypeProvider settingMaximumDepositTypeProvider;
     protected Option settingMaximumDepositTypeValue;
     protected Select2SingleChoice<Option> settingMaximumDepositTypeField;
     protected TextFeedbackPanel settingMaximumDepositTypeFeedback;
@@ -1084,7 +1084,7 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.settingLockInTypeBlock);
         this.settingLockInTypeContainer = new WebMarkupContainer("settingLockInTypeContainer");
         this.settingLockInTypeBlock.add(this.settingLockInTypeContainer);
-        this.settingLockInTypeProvider = new LockInPeriodProvider();
+        this.settingLockInTypeProvider = new LockInTypeProvider();
         this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", 0, new PropertyModel<>(this, "settingLockInTypeValue"), this.settingLockInTypeProvider);
         this.settingLockInTypeField.setLabel(Model.of("Type"));
         this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
@@ -1109,7 +1109,7 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.settingMinimumDepositTypeBlock);
         this.settingMinimumDepositTypeContainer = new WebMarkupContainer("settingMinimumDepositTypeContainer");
         this.settingMinimumDepositTypeBlock.add(this.settingMinimumDepositTypeContainer);
-        this.settingMinimumDepositTypeProvider = new LockInPeriodProvider();
+        this.settingMinimumDepositTypeProvider = new LockInTypeProvider();
         this.settingMinimumDepositTypeField = new Select2SingleChoice<>("settingMinimumDepositTypeField", 0, new PropertyModel<>(this, "settingMinimumDepositTypeValue"), this.settingMinimumDepositTypeProvider);
         this.settingMinimumDepositTypeField.setLabel(Model.of("Type"));
         this.settingMinimumDepositTypeField.add(new OnChangeAjaxBehavior());
@@ -1134,7 +1134,7 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.settingInMultiplesTypeBlock);
         this.settingInMultiplesTypeContainer = new WebMarkupContainer("settingInMultiplesTypeContainer");
         this.settingInMultiplesTypeBlock.add(this.settingInMultiplesTypeContainer);
-        this.settingInMultiplesTypeProvider = new LockInPeriodProvider();
+        this.settingInMultiplesTypeProvider = new LockInTypeProvider();
         this.settingInMultiplesTypeField = new Select2SingleChoice<>("settingInMultiplesTypeField", 0, new PropertyModel<>(this, "settingInMultiplesTypeValue"), this.settingInMultiplesTypeProvider);
         this.settingInMultiplesTypeField.setLabel(Model.of("Type"));
         this.settingInMultiplesTypeField.add(new OnChangeAjaxBehavior());
@@ -1159,7 +1159,7 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.settingMaximumDepositTypeBlock);
         this.settingMaximumDepositTypeContainer = new WebMarkupContainer("settingMaximumDepositTypeContainer");
         this.settingMaximumDepositTypeBlock.add(this.settingMaximumDepositTypeContainer);
-        this.settingMaximumDepositTypeProvider = new LockInPeriodProvider();
+        this.settingMaximumDepositTypeProvider = new LockInTypeProvider();
         this.settingMaximumDepositTypeField = new Select2SingleChoice<>("settingMaximumDepositTypeField", 0, new PropertyModel<>(this, "settingMaximumDepositTypeValue"), this.settingMaximumDepositTypeProvider);
         this.settingMaximumDepositTypeField.setLabel(Model.of("Type"));
         this.settingMaximumDepositTypeField.add(new OnChangeAjaxBehavior());
@@ -1321,7 +1321,7 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.termDayInYearBlock);
         this.termDayInYearContainer = new WebMarkupContainer("termDayInYearContainer");
         this.termDayInYearBlock.add(this.termDayInYearContainer);
-        this.termDayInYearProvider = new DayInYearProvider();
+        this.termDayInYearProvider = new DayInYearProvider(DayInYear.D365, DayInYear.D360);
         this.termDayInYearField = new Select2SingleChoice<>("termDayInYearField", 0, new PropertyModel<>(this, "termDayInYearValue"), this.termDayInYearProvider);
         this.termDayInYearField.setLabel(Model.of("Days in year"));
         this.termDayInYearField.add(new OnChangeAjaxBehavior());
@@ -1453,25 +1453,25 @@ public class FixedDepositCreatePage extends Page {
 
         builder.withLockInPeriodFrequency(this.settingLockInPeriodValue);
         if (this.settingLockInTypeValue != null) {
-            builder.withLockinPeriodFrequencyType(LockInPeriod.valueOf(this.settingLockInTypeValue.getId()));
+            builder.withLockinPeriodFrequencyType(LockInType.valueOf(this.settingLockInTypeValue.getId()));
         }
 
         builder.withMinDepositTerm(this.settingMinimumDepositTermValue);
 
         if (this.settingMinimumDepositTypeValue != null) {
-            builder.withMinDepositTermTypeId(LockInPeriod.valueOf(this.settingMinimumDepositTypeValue.getId()));
+            builder.withMinDepositTermTypeId(LockInType.valueOf(this.settingMinimumDepositTypeValue.getId()));
         }
 
         builder.withInMultiplesOfDepositTerm(this.settingInMultiplesOfValue);
 
         if (this.settingInMultiplesTypeValue != null) {
-            builder.withInMultiplesOfDepositTermTypeId(LockInPeriod.valueOf(this.settingInMultiplesTypeValue.getId()));
+            builder.withInMultiplesOfDepositTermTypeId(LockInType.valueOf(this.settingInMultiplesTypeValue.getId()));
         }
 
         builder.withMaxDepositTerm(this.settingMaximumDepositTermValue);
 
         if (this.settingMaximumDepositTypeValue != null) {
-            builder.withMaxDepositTermTypeId(LockInPeriod.valueOf(this.settingMaximumDepositTypeValue.getId()));
+            builder.withMaxDepositTermTypeId(LockInType.valueOf(this.settingMaximumDepositTypeValue.getId()));
         }
 
         builder.withPreClosurePenalApplicable(this.settingForPreMatureClosureValue == null ? false : this.settingForPreMatureClosureValue);
@@ -1499,7 +1499,7 @@ public class FixedDepositCreatePage extends Page {
 
         for (Map<String, Object> interestRateChart : this.interestRateChartValue) {
             Option periodTypeOption = (Option) interestRateChart.get("periodType");
-            LockInPeriod periodType = periodTypeOption == null ? null : LockInPeriod.valueOf(periodTypeOption.getId());
+            LockInType periodType = periodTypeOption == null ? null : LockInType.valueOf(periodTypeOption.getId());
             Integer fromPeriod = (Integer) interestRateChart.get("periodFrom");
             Integer toPeriod = (Integer) interestRateChart.get("periodTo");
             Integer amountRangeFrom = (Integer) interestRateChart.get("amountRangeFrom");

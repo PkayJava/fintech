@@ -2,7 +2,8 @@ package com.angkorteam.fintech.dto.loan;
 
 public enum WhenType {
 
-    Equals("2", "Equals"), GreaterThen("3", "Greater Then");
+    Equals("2", "Equals"), 
+    GreaterThen("3", "Greater Then");
 
     private String literal;
 

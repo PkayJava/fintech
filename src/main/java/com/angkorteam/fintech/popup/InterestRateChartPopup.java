@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.provider.fixed.LockInPeriodProvider;
+import com.angkorteam.fintech.provider.LockInTypeProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -21,7 +21,7 @@ public class InterestRateChartPopup extends Panel {
     private Form<Void> form;
     private AjaxButton okayButton;
 
-    private LockInPeriodProvider periodTypeProvider;
+    private LockInTypeProvider periodTypeProvider;
     private Select2SingleChoice<Option> periodTypeField;
     private TextFeedbackPanel periodTypeFeedback;
 
@@ -63,7 +63,7 @@ public class InterestRateChartPopup extends Panel {
         this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
-        this.periodTypeProvider = new LockInPeriodProvider();
+        this.periodTypeProvider = new LockInTypeProvider();
         this.periodTypeField = new Select2SingleChoice<>("periodTypeField", 0, new PropertyModel<>(this.model, "itemPeriodTypeValue"), this.periodTypeProvider);
         this.periodTypeField.setLabel(Model.of("Period Type"));
         this.form.add(this.periodTypeField);

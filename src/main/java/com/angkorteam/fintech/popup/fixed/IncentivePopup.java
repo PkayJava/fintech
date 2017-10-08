@@ -12,9 +12,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.provider.fixed.AttributeProvider;
-import com.angkorteam.fintech.provider.fixed.OperandTypeProvider;
-import com.angkorteam.fintech.provider.fixed.OperatorProvider;
+import com.angkorteam.fintech.provider.AttributeProvider;
+import com.angkorteam.fintech.provider.OperandTypeProvider;
+import com.angkorteam.fintech.provider.OperatorProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.share.provider.ListDataProvider;

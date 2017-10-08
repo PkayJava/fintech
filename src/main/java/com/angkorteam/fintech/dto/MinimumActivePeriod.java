@@ -1,14 +1,14 @@
-package com.angkorteam.fintech.dto.loan;
+package com.angkorteam.fintech.dto;
 
-public enum Amortization {
-    Installment("1", "Equal Installments"), 
-    PrincipalPayment("0", "Equal Principal Payments");
+public enum MinimumActivePeriod {
+
+    Day("0", "Days");
 
     private String literal;
 
     private String description;
 
-    Amortization(String literal, String description) {
+    MinimumActivePeriod(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
@@ -20,4 +20,5 @@ public enum Amortization {
     public String getDescription() {
         return description;
     }
+
 }
