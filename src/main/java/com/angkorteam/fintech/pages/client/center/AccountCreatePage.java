@@ -3,7 +3,10 @@ package com.angkorteam.fintech.pages.client.center;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -13,14 +16,15 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.DayInYear;
+import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
 import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
 import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
 import com.angkorteam.fintech.dto.enums.LockInType;
-import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
 import com.angkorteam.fintech.provider.DayInYearProvider;
 import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
 import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
@@ -30,6 +34,7 @@ import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -72,7 +77,7 @@ public class AccountCreatePage extends Page {
     protected String currencyValue;
     protected Label currencyField;
 
-    protected String decimalPlacesValue;
+    protected Integer decimalPlacesValue;
     protected Label decimalPlacesField;
 
     protected WebMarkupContainer nominalAnnualInterestBlock;
@@ -88,7 +93,7 @@ public class AccountCreatePage extends Page {
     protected Select2SingleChoice<Option> interestCompoundingPeriodField;
     protected TextFeedbackPanel interestCompoundingPeriodFeedback;
 
-    protected String currencyInMultiplesOfValue;
+    protected Integer currencyInMultiplesOfValue;
     protected Label currencyInMultiplesOfField;
 
     protected InterestPostingPeriodProvider interestPostingPeriodProvider;
@@ -172,6 +177,9 @@ public class AccountCreatePage extends Page {
     protected Double minimumBalanceValue;
     protected TextField<Double> minimumBalanceField;
     protected TextFeedbackPanel minimumBalanceFeedback;
+
+    protected Double balanceRequiredForInterestCalculationValue;
+    protected Label balanceRequiredForInterestCalculationField;
 
     // protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
     // protected DataTable<Map<String, Object>, String> chargeTable;
@@ -366,6 +374,7 @@ public class AccountCreatePage extends Page {
         this.overdraftAllowedContainer = new WebMarkupContainer("overdraftAllowedContainer");
         this.overdraftAllowedBlock.add(this.overdraftAllowedContainer);
         this.overdraftAllowedField = new CheckBox("overdraftAllowedField", new PropertyModel<>(this, "overdraftAllowedValue"));
+        this.overdraftAllowedField.add(new OnChangeAjaxBehavior(this::overdraftAllowedFieldUpdate));
         this.overdraftAllowedField.setRequired(false);
         this.overdraftAllowedContainer.add(this.overdraftAllowedField);
         this.overdraftAllowedFeedback = new TextFeedbackPanel("overdraftAllowedFeedback", this.overdraftAllowedField);
@@ -430,10 +439,35 @@ public class AccountCreatePage extends Page {
         this.minimumBalanceFeedback = new TextFeedbackPanel("minimumBalanceFeedback", this.minimumBalanceField);
         this.minimumBalanceContainer.add(this.minimumBalanceFeedback);
 
+        this.balanceRequiredForInterestCalculationField = new Label("balanceRequiredForInterestCalculationField", new PropertyModel<>(this, "balanceRequiredForInterestCalculationValue"));
+        form.add(this.balanceRequiredForInterestCalculationField);
+
+        overdraftAllowedFieldUpdate(null);
+
+    }
+
+    protected boolean overdraftAllowedFieldUpdate(AjaxRequestTarget target) {
+        boolean visible = this.overdraftAllowedValue == null ? false : this.overdraftAllowedValue;
+        this.maximumOverdraftAmountLimitContainer.setVisible(visible);
+        this.nominalAnnualInterestForOverdraftContainer.setVisible(visible);
+        this.minOverdraftRequiredForInterestCalculationContainer.setVisible(visible);
+        this.enforceMinimumBalanceContainer.setVisible(!visible);
+        this.minimumBalanceContainer.setVisible(!visible);
+        if (target != null) {
+            target.add(this.maximumOverdraftAmountLimitBlock);
+            target.add(this.nominalAnnualInterestForOverdraftBlock);
+            target.add(this.minOverdraftRequiredForInterestCalculationBlock);
+            target.add(this.enforceMinimumBalanceBlock);
+            target.add(this.minimumBalanceBlock);
+        }
+        return false;
     }
 
     protected void initData() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+
+        this.submittedOnValue = DateTime.now().toDate();
+        this.externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
 
         this.centerId = getPageParameters().get("centerId").toString();
         this.productId = getPageParameters().get("productId").toString();
@@ -443,16 +477,22 @@ public class AccountCreatePage extends Page {
         Map<String, Object> productObject = jdbcTemplate.queryForMap("select * from m_savings_product where id = ?", this.productId);
         this.productValue = (String) productObject.get("name");
         this.currencyValue = (String) productObject.get("currency_code");
-        this.decimalPlacesValue = String.valueOf(productObject.get("currency_digits"));
+        this.decimalPlacesValue = (Integer) productObject.get("currency_digits");
+
+        this.currencyInMultiplesOfValue = (Integer) productObject.get("currency_multiplesof");
 
         BigDecimal nominalAnnualInterestValue = (BigDecimal) productObject.get("nominal_annual_interest_rate");
         this.nominalAnnualInterestValue = nominalAnnualInterestValue == null ? null : nominalAnnualInterestValue.doubleValue();
 
+        BigDecimal nominalAnnualInterestForOverdraftValue = (BigDecimal) productObject.get("nominal_annual_interest_rate_overdraft");
+        this.nominalAnnualInterestForOverdraftValue = nominalAnnualInterestForOverdraftValue == null ? null : nominalAnnualInterestForOverdraftValue.doubleValue();
+
         this.interestCompoundingPeriodValue = InterestCompoundingPeriod.optionLiteral(String.valueOf(productObject.get("interest_compounding_period_enum")));
         this.interestPostingPeriodValue = InterestPostingPeriod.optionLiteral(String.valueOf(productObject.get("interest_posting_period_enum")));
-        this.interestCalculatedUsingValue = InterestCalculationPeriod.optionLiteral(String.valueOf(productObject.get("interest_calculation_type_enum")));
+        this.interestCalculatedUsingValue = InterestCalculatedUsing.optionLiteral(String.valueOf(productObject.get("interest_calculation_type_enum")));
         this.dayInYearValue = DayInYear.optionLiteral(String.valueOf(productObject.get("interest_calculation_days_in_year_type_enum")));
-        this.lockInPeriodValue = (Integer) productObject.get("lockin_period_frequency");
+        BigDecimal lockInPeriodValue = (BigDecimal) productObject.get("lockin_period_frequency");
+        this.lockInPeriodValue = lockInPeriodValue == null ? null : lockInPeriodValue.intValue();
         this.lockInTypeValue = LockInType.optionLiteral(String.valueOf(productObject.get("lockin_period_frequency_enum")));
 
         Integer applyWithdrawalFeeForTransferValue = (Integer) productObject.get("withdrawal_fee_for_transfer");
@@ -462,7 +502,9 @@ public class AccountCreatePage extends Page {
         this.minimumOpeningBalanceValue = minimumOpeningBalanceValue == null ? null : minimumOpeningBalanceValue.doubleValue();
 
         this.overdraftAllowedValue = (Boolean) productObject.get("allow_overdraft");
-        this.maximumOverdraftAmountLimitValue = (Double) productObject.get("overdraft_limit");
+
+        BigDecimal maximumOverdraftAmountLimitValue = (BigDecimal) productObject.get("overdraft_limit");
+        this.maximumOverdraftAmountLimitValue = maximumOverdraftAmountLimitValue == null ? null : maximumOverdraftAmountLimitValue.doubleValue();
 
         BigDecimal minOverdraftRequiredForInterestCalculationValue = (BigDecimal) productObject.get("min_overdraft_for_interest_calculation");
         this.minOverdraftRequiredForInterestCalculationValue = minOverdraftRequiredForInterestCalculationValue == null ? null : minOverdraftRequiredForInterestCalculationValue.doubleValue();
@@ -470,6 +512,9 @@ public class AccountCreatePage extends Page {
 
         BigDecimal minimumBalanceValue = (BigDecimal) productObject.get("min_required_balance");
         this.minimumBalanceValue = minimumBalanceValue == null ? null : minimumBalanceValue.doubleValue();
+
+        BigDecimal balanceRequiredForInterestCalculationValue = (BigDecimal) productObject.get("min_balance_for_interest_calculation");
+        this.balanceRequiredForInterestCalculationValue = balanceRequiredForInterestCalculationValue == null ? null : balanceRequiredForInterestCalculationValue.doubleValue();
 
         // select * from m_charge where currency_code = 'USD' and charge_applies_to_enum
         // = 2 and is_active = 1;
