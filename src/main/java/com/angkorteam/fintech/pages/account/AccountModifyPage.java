@@ -16,10 +16,10 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.AccountType;
-import com.angkorteam.fintech.dto.AccountUsage;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.request.GLAccountBuilder;
+import com.angkorteam.fintech.dto.builder.GLAccountBuilder;
+import com.angkorteam.fintech.dto.enums.AccountType;
+import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.AccountTypeProvider;

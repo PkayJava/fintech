@@ -1,6 +1,6 @@
 package com.angkorteam.fintech.dto.constant;
 
-import com.angkorteam.fintech.dto.AccountType;
+import com.angkorteam.fintech.dto.enums.AccountType;
 
 public enum FinancialActivityTypeEnum {
 

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+	<wicket:extend>
+		<form role="form" wicket:id="form">
+			<div class="box box-primary">
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Account Create</h3>
+				</div>
+
+				<div class="box-body">
+
+					<!-- Row -->
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label>Product</label>
+						<div wicket:id="productField" readonly="readonly"
+							class="form-control"></div>
+					</div>
+					<div wicket:id="submittedOnBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container wicket:id="submittedOnContainer">
+							<label wicket:for="submittedOnField">Submitted On</label>
+							<input wicket:id="submittedOnField" type="text"
+								class="form-control" />
+							<span wicket:id="submittedOnFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="officerBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container wicket:id="officerContainer">
+							<label wicket:for="officerField">Field Officer</label>
+							<select wicket:id="officerField" class="form-control select2"
+								style="width: 100%;"></select>
+							<span wicket:id="officerFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="externalIdBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container wicket:id="externalIdContainer">
+							<label wicket:for="externalIdField">External ID</label>
+							<input wicket:id="externalIdField" type="text"
+								class="form-control" />
+							<span wicket:id="externalIdFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Terms</h3>
+				</div>
+
+				<div class="box-body">
+					<!-- Row -->
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label>Currency</label>
+						<div wicket:id="currencyField" readonly="readonly"
+							class="form-control"></div>
+					</div>
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label>Decimal Places</label>
+						<div wicket:id="decimalPlacesField" readonly="readonly"
+							class="form-control"></div>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="nominalAnnualInterestBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container wicket:id="nominalAnnualInterestContainer">
+							<label wicket:for="nominalAnnualInterestField">Nominal
+								Annual Interest</label>
+							<input wicket:id="nominalAnnualInterestField" type="text"
+								class="form-control" />
+							<span wicket:id="nominalAnnualInterestFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="interestCompoundingPeriodBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container wicket:id="interestCompoundingPeriodContainer">
+							<label wicket:for="interestCompoundingPeriodField">Interest
+								Compounding Period</label>
+							<select wicket:id="interestCompoundingPeriodField"
+								class="form-control select2" style="width: 100%;"></select>
+							<span wicket:id="interestCompoundingPeriodFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label>Currency In Multiples Of</label>
+						<div wicket:id="currencyInMultiplesOfField" readonly="readonly"
+							class="form-control"></div>
+					</div>
+					<div wicket:id="interestPostingPeriodBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container wicket:id="interestPostingPeriodContainer">
+							<label wicket:for="interestPostingPeriodField">Interest
+								Posting Period</label>
+							<select wicket:id="interestPostingPeriodField"
+								class="form-control select2" style="width: 100%;"></select>
+							<span wicket:id="interestPostingPeriodFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="interestCalculatedUsingBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container wicket:id="interestCalculatedUsingContainer">
+							<label wicket:for="interestCalculatedUsingField">Interest
+								Calculated Using</label>
+							<select wicket:id="interestCalculatedUsingField"
+								class="form-control select2" style="width: 100%;"></select>
+							<span wicket:id="interestCalculatedUsingFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="dayInYearBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container wicket:id="dayInYearContainer">
+							<label wicket:for="dayInYearField">Day In Year</label>
+							<select wicket:id="dayInYearField" class="form-control select2"
+								style="width: 100%;"></select>
+							<span wicket:id="dayInYearFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="minimumOpeningBalanceBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container wicket:id="minimumOpeningBalanceContainer">
+							<label wicket:for="minimumOpeningBalanceField">Minimum
+								Opening Balance</label>
+							<input wicket:id="minimumOpeningBalanceField"
+								class="form-control" type="text" />
+							<span wicket:id="minimumOpeningBalanceFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="lockInPeriodBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container wicket:id="lockInPeriodContainer">
+							<label wicket:for="lockInPeriodField">Lock-in Period</label>
+							<input wicket:id="lockInPeriodField" type="text"
+								class="form-control" />
+							<span wicket:id="lockInPeriodFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="lockInTypeBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container wicket:id="lockInTypeContainer">
+							<label wicket:for="lockInTypeField">Lock-in Type</label>
+							<select wicket:id="lockInTypeField" class="form-control select2"
+								style="width: 100%;"></select>
+							<span wicket:id="lockInTypeFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="applyWithdrawalFeeForTransferBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container
+							wicket:id="applyWithdrawalFeeForTransferContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="applyWithdrawalFeeForTransferField">
+									Is apply withdrawal fee for transfers?
+							</label>
+							</span>
+							<span wicket:id="applyWithdrawalFeeForTransferFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="overdraftAllowedBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container wicket:id="overdraftAllowedContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="overdraftAllowedField"> Is
+									Overdraft Allowed?
+							</label>
+							</span>
+							<span wicket:id="overdraftAllowedFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="maximumOverdraftAmountLimitBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container wicket:id="maximumOverdraftAmountLimitContainer">
+							<label wicket:for="maximumOverdraftAmountLimitField">Maximum
+								Overdraft Amount Limit</label>
+							<input wicket:id="maximumOverdraftAmountLimitField" type="text"
+								class="form-control" />
+							<span wicket:id="maximumOverdraftAmountLimitFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="nominalAnnualInterestForOverdraftBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container
+							wicket:id="nominalAnnualInterestForOverdraftContainer">
+							<label wicket:for="nominalAnnualInterestForOverdraftField">Nominal
+								Annual Interest For Overdraft</label>
+							<input wicket:id="nominalAnnualInterestForOverdraftField"
+								type="text" class="form-control" />
+							<span wicket:id="nominalAnnualInterestForOverdraftFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="minOverdraftRequiredForInterestCalculationBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container
+							wicket:id="minOverdraftRequiredForInterestCalculationContainer">
+							<label
+								wicket:for="minOverdraftRequiredForInterestCalculationField">Min
+								Overdraft Required For Interest Calculation</label>
+							<input
+								wicket:id="minOverdraftRequiredForInterestCalculationField"
+								type="text" class="form-control" />
+							<span
+								wicket:id="minOverdraftRequiredForInterestCalculationFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="enforceMinimumBalanceBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container wicket:id="enforceMinimumBalanceContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="enforceMinimumBalanceField">
+									Is Enforce minimum balance ?
+							</label>
+							</span>
+							<span wicket:id="enforceMinimumBalanceFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="minimumBalanceBlock"
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<wicket:container wicket:id="minimumBalanceContainer">
+							<label wicket:for="minimumBalanceField">Minimum Balance</label>
+							<input wicket:id="minimumBalanceField" type="text"
+								class="form-control" />
+							<span wicket:id="minimumBalanceFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+				</div>
+
+				<div class="box-footer">
+					<button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+					<a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
+				</div>
+			</div>
+		</form>
+	</wicket:extend>
+</body>
+
+</html>

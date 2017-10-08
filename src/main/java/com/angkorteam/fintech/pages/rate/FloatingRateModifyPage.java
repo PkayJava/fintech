@@ -21,7 +21,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.request.FloatingRateBuilder;
+import com.angkorteam.fintech.dto.builder.FloatingRateBuilder;
 import com.angkorteam.fintech.helper.FloatingRateHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.popup.RateModifyPopup;

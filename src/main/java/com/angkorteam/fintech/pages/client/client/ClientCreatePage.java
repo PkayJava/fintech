@@ -22,11 +22,11 @@ import org.joda.time.Years;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.DepositType;
-import com.angkorteam.fintech.dto.FamilyMemberBuilder;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.LegalForm;
-import com.angkorteam.fintech.dto.request.ClientBuilder;
+import com.angkorteam.fintech.dto.builder.ClientBuilder;
+import com.angkorteam.fintech.dto.builder.FamilyMemberBuilder;
+import com.angkorteam.fintech.dto.enums.DepositType;
+import com.angkorteam.fintech.dto.enums.LegalForm;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.popup.FamilyMemberPopup;
 import com.angkorteam.fintech.provider.ClientClassificationProvider;

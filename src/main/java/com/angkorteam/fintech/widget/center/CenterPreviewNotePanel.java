@@ -14,7 +14,7 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.request.NoteBuilder;
+import com.angkorteam.fintech.dto.builder.NoteBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.pages.staff.UserBrowsePage;
 import com.angkorteam.fintech.provider.JdbcProvider;

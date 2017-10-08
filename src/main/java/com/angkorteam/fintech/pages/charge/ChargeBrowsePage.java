@@ -1,8 +1,8 @@
 package com.angkorteam.fintech.pages.charge;
 
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.dto.ChargeType;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.enums.ChargeType;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.BadgeCell;

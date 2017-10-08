@@ -11,11 +11,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.angkorteam.fintech.dto.AccountType;
-import com.angkorteam.fintech.dto.AccountUsage;
-import com.angkorteam.fintech.dto.ChargeType;
-import com.angkorteam.fintech.dto.LockInType;
-import com.angkorteam.fintech.dto.MinimumActivePeriod;
+import com.angkorteam.fintech.dto.enums.AccountType;
+import com.angkorteam.fintech.dto.enums.AccountUsage;
+import com.angkorteam.fintech.dto.enums.ChargeType;
+import com.angkorteam.fintech.dto.enums.LockInType;
+import com.angkorteam.fintech.dto.enums.MinimumActivePeriod;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitFormTester;
 import com.angkorteam.fintech.junit.JUnitWicketTester;

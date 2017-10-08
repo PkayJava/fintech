@@ -3,7 +3,7 @@ package com.angkorteam.fintech.pages.staff;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.request.AppUserBuilder;
+import com.angkorteam.fintech.dto.builder.AppUserBuilder;
 import com.angkorteam.fintech.helper.AppUserHelper;
 import com.angkorteam.fintech.provider.MultipleChoiceProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;

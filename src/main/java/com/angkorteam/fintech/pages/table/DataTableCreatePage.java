@@ -16,10 +16,10 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.ColumnType;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.TableType;
-import com.angkorteam.fintech.dto.request.DataTableBuilder;
+import com.angkorteam.fintech.dto.builder.DataTableBuilder;
+import com.angkorteam.fintech.dto.enums.ColumnType;
+import com.angkorteam.fintech.dto.enums.TableType;
 import com.angkorteam.fintech.helper.DataTableHelper;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.provider.AppTableOptionProvider;

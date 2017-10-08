@@ -8,8 +8,8 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.dto.DepositType;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.enums.DepositType;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -75,7 +75,10 @@ public class CenterProductPage extends Page {
     }
 
     protected void okayButtonSubmit(Button button) {
-
+        PageParameters parameters = new PageParameters();
+        parameters.add("centerId", this.centerId);
+        parameters.add("productId", this.productValue.getId());
+        setResponsePage(AccountCreatePage.class, parameters);
     }
 
 }

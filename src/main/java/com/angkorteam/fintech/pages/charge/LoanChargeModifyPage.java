@@ -17,12 +17,12 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.ChargeCalculation;
-import com.angkorteam.fintech.dto.ChargeFrequency;
-import com.angkorteam.fintech.dto.ChargePayment;
-import com.angkorteam.fintech.dto.ChargeTime;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.request.ChargeBuilder;
+import com.angkorteam.fintech.dto.builder.ChargeBuilder;
+import com.angkorteam.fintech.dto.enums.ChargeCalculation;
+import com.angkorteam.fintech.dto.enums.ChargeFrequency;
+import com.angkorteam.fintech.dto.enums.ChargePayment;
+import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.helper.ChargeHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.provider.ChargeCalculationProvider;

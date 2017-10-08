@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.wicket.model.IModel;
 
-import com.angkorteam.fintech.dto.ApplyPenalOn;
+import com.angkorteam.fintech.dto.enums.ApplyPenalOn;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;

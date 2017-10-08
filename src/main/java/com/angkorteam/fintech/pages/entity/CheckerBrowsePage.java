@@ -2,9 +2,9 @@ package com.angkorteam.fintech.pages.entity;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.EntityStatus;
-import com.angkorteam.fintech.dto.EntityType;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.enums.EntityStatus;
+import com.angkorteam.fintech.dto.enums.EntityType;
 import com.angkorteam.fintech.helper.EntityCheckHelper;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;

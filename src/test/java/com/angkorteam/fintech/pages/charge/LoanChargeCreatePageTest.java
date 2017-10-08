@@ -8,10 +8,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.angkorteam.fintech.dto.ChargeCalculation;
-import com.angkorteam.fintech.dto.ChargeFrequency;
-import com.angkorteam.fintech.dto.ChargePayment;
-import com.angkorteam.fintech.dto.ChargeTime;
+import com.angkorteam.fintech.dto.enums.ChargeCalculation;
+import com.angkorteam.fintech.dto.enums.ChargeFrequency;
+import com.angkorteam.fintech.dto.enums.ChargePayment;
+import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitFormTester;
 import com.angkorteam.fintech.junit.JUnitWicketTester;

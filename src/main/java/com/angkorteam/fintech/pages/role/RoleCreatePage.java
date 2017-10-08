@@ -3,7 +3,7 @@ package com.angkorteam.fintech.pages.role;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.request.RoleBuilder;
+import com.angkorteam.fintech.dto.builder.RoleBuilder;
 import com.angkorteam.fintech.helper.RoleHelper;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.framework.models.PageBreadcrumb;

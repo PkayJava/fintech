@@ -12,7 +12,7 @@ import org.apache.wicket.model.PropertyModel;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.request.MixedBuilder;
+import com.angkorteam.fintech.dto.builder.MixedBuilder;
 import com.angkorteam.fintech.helper.MixedHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.provider.MultipleChoiceProvider;

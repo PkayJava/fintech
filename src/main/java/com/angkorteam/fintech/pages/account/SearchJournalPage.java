@@ -18,7 +18,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.JournalEntry;
+import com.angkorteam.fintech.dto.enums.JournalEntry;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.provider.ManualEntryProvider;

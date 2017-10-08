@@ -13,7 +13,7 @@ import org.apache.wicket.model.PropertyModel;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.request.AccountClosureBuilder;
+import com.angkorteam.fintech.dto.builder.AccountClosureBuilder;
 import com.angkorteam.fintech.helper.AccountingClosureHelper;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;

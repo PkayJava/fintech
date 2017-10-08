@@ -10,8 +10,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.angkorteam.fintech.dto.AccountType;
-import com.angkorteam.fintech.dto.AccountUsage;
+import com.angkorteam.fintech.dto.enums.AccountType;
+import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitFormTester;
 import com.angkorteam.fintech.junit.JUnitWicketTester;

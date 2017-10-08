@@ -1,9 +1,10 @@
 package com.angkorteam.fintech.pages.client.center;
 
+import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -14,22 +15,28 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.enums.DayInYear;
+import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
+import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
+import com.angkorteam.fintech.dto.enums.LockInType;
+import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
+import com.angkorteam.fintech.provider.DayInYearProvider;
+import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
 import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
+import com.angkorteam.fintech.provider.InterestPostingPeriodProvider;
+import com.angkorteam.fintech.provider.LockInTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
-import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.google.common.collect.Lists;
 
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class AccountCreatePage extends Page {
 
     protected String centerId;
@@ -84,21 +91,21 @@ public class AccountCreatePage extends Page {
     protected String currencyInMultiplesOfValue;
     protected Label currencyInMultiplesOfField;
 
-    protected SingleChoiceProvider interestPostingPeriodProvider;
+    protected InterestPostingPeriodProvider interestPostingPeriodProvider;
     protected WebMarkupContainer interestPostingPeriodBlock;
     protected WebMarkupContainer interestPostingPeriodContainer;
     protected Option interestPostingPeriodValue;
     protected Select2SingleChoice<Option> interestPostingPeriodField;
     protected TextFeedbackPanel interestPostingPeriodFeedback;
 
-    protected SingleChoiceProvider interestCalculatedUsingProvider;
+    protected InterestCalculatedUsingProvider interestCalculatedUsingProvider;
     protected WebMarkupContainer interestCalculatedUsingBlock;
     protected WebMarkupContainer interestCalculatedUsingContainer;
     protected Option interestCalculatedUsingValue;
     protected Select2SingleChoice<Option> interestCalculatedUsingField;
     protected TextFeedbackPanel interestCalculatedUsingFeedback;
 
-    protected SingleChoiceProvider dayInYearProvider;
+    protected DayInYearProvider dayInYearProvider;
     protected WebMarkupContainer dayInYearBlock;
     protected WebMarkupContainer dayInYearContainer;
     protected Option dayInYearValue;
@@ -117,7 +124,7 @@ public class AccountCreatePage extends Page {
     protected TextField<Integer> lockInPeriodField;
     protected TextFeedbackPanel lockInPeriodFeedback;
 
-    protected SingleChoiceProvider lockInTypeProvider;
+    protected LockInTypeProvider lockInTypeProvider;
     protected WebMarkupContainer lockInTypeBlock;
     protected WebMarkupContainer lockInTypeContainer;
     protected Option lockInTypeValue;
@@ -166,11 +173,11 @@ public class AccountCreatePage extends Page {
     protected TextField<Double> minimumBalanceField;
     protected TextFeedbackPanel minimumBalanceFeedback;
 
-    protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
-    protected DataTable<Map<String, Object>, String> chargeTable;
-    protected ListDataProvider chargeProvider;
-    protected ModalWindow chargePopup;
-    protected AjaxLink<Void> chargeAddLink;
+    // protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
+    // protected DataTable<Map<String, Object>, String> chargeTable;
+    // protected ListDataProvider chargeProvider;
+    // protected ModalWindow chargePopup;
+    // protected AjaxLink<Void> chargeAddLink;
 
     @Override
     protected void onInitialize() {
@@ -179,6 +186,9 @@ public class AccountCreatePage extends Page {
 
         PageParameters parameters = new PageParameters();
         parameters.add("centerId", this.centerId);
+
+        this.form = new Form<>("form");
+        add(this.form);
 
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
@@ -260,33 +270,206 @@ public class AccountCreatePage extends Page {
         this.interestCompoundingPeriodFeedback = new TextFeedbackPanel("interestCompoundingPeriodFeedback", this.interestCompoundingPeriodField);
         this.interestCompoundingPeriodContainer.add(this.interestCompoundingPeriodFeedback);
 
+        this.currencyInMultiplesOfField = new Label("currencyInMultiplesOfField", new PropertyModel<>(this, "currencyInMultiplesOfValue"));
+        this.form.add(this.currencyInMultiplesOfField);
+
+        this.interestPostingPeriodProvider = new InterestPostingPeriodProvider();
+        this.interestPostingPeriodBlock = new WebMarkupContainer("interestPostingPeriodBlock");
+        this.interestPostingPeriodBlock.setOutputMarkupId(true);
+        this.form.add(this.interestPostingPeriodBlock);
+        this.interestPostingPeriodContainer = new WebMarkupContainer("interestPostingPeriodContainer");
+        this.interestPostingPeriodBlock.add(this.interestPostingPeriodContainer);
+        this.interestPostingPeriodField = new Select2SingleChoice<>("interestPostingPeriodField", new PropertyModel<>(this, "interestPostingPeriodValue"), this.interestPostingPeriodProvider);
+        this.interestPostingPeriodField.setLabel(Model.of("Interest Posting Period"));
+        this.interestPostingPeriodField.setRequired(false);
+        this.interestPostingPeriodContainer.add(this.interestPostingPeriodField);
+        this.interestPostingPeriodFeedback = new TextFeedbackPanel("interestPostingPeriodFeedback", this.interestPostingPeriodField);
+        this.interestPostingPeriodContainer.add(this.interestPostingPeriodFeedback);
+
+        this.interestCalculatedUsingProvider = new InterestCalculatedUsingProvider();
+        this.interestCalculatedUsingBlock = new WebMarkupContainer("interestCalculatedUsingBlock");
+        this.interestCalculatedUsingBlock.setOutputMarkupId(true);
+        this.form.add(this.interestCalculatedUsingBlock);
+        this.interestCalculatedUsingContainer = new WebMarkupContainer("interestCalculatedUsingContainer");
+        this.interestCalculatedUsingBlock.add(this.interestCalculatedUsingContainer);
+        this.interestCalculatedUsingField = new Select2SingleChoice<>("interestCalculatedUsingField", new PropertyModel<>(this, "interestCalculatedUsingValue"), this.interestCalculatedUsingProvider);
+        this.interestCalculatedUsingField.setLabel(Model.of("Interest Calculated Using"));
+        this.interestCalculatedUsingField.setRequired(false);
+        this.interestCalculatedUsingContainer.add(this.interestCalculatedUsingField);
+        this.interestCalculatedUsingFeedback = new TextFeedbackPanel("interestCalculatedUsingFeedback", this.interestCalculatedUsingField);
+        this.interestCalculatedUsingContainer.add(this.interestCalculatedUsingFeedback);
+
+        this.dayInYearProvider = new DayInYearProvider(DayInYear.D365, DayInYear.D360);
+        this.dayInYearBlock = new WebMarkupContainer("dayInYearBlock");
+        this.dayInYearBlock.setOutputMarkupId(true);
+        this.form.add(this.dayInYearBlock);
+        this.dayInYearContainer = new WebMarkupContainer("dayInYearContainer");
+        this.dayInYearBlock.add(this.dayInYearContainer);
+        this.dayInYearField = new Select2SingleChoice<>("dayInYearField", new PropertyModel<>(this, "dayInYearValue"), this.dayInYearProvider);
+        this.dayInYearField.setLabel(Model.of("Days In Year"));
+        this.dayInYearField.setRequired(false);
+        this.dayInYearContainer.add(this.dayInYearField);
+        this.dayInYearFeedback = new TextFeedbackPanel("dayInYearFeedback", this.dayInYearField);
+        this.dayInYearContainer.add(this.dayInYearFeedback);
+
+        this.minimumOpeningBalanceBlock = new WebMarkupContainer("minimumOpeningBalanceBlock");
+        this.minimumOpeningBalanceBlock.setOutputMarkupId(true);
+        this.form.add(this.minimumOpeningBalanceBlock);
+        this.minimumOpeningBalanceContainer = new WebMarkupContainer("minimumOpeningBalanceContainer");
+        this.minimumOpeningBalanceBlock.add(this.minimumOpeningBalanceContainer);
+        this.minimumOpeningBalanceField = new TextField<>("minimumOpeningBalanceField", new PropertyModel<>(this, "minimumOpeningBalanceValue"));
+        this.minimumOpeningBalanceField.setLabel(Model.of("Minimum Opening Balance"));
+        this.minimumOpeningBalanceField.setRequired(false);
+        this.minimumOpeningBalanceContainer.add(this.minimumOpeningBalanceField);
+        this.minimumOpeningBalanceFeedback = new TextFeedbackPanel("minimumOpeningBalanceFeedback", this.minimumOpeningBalanceField);
+        this.minimumOpeningBalanceContainer.add(this.minimumOpeningBalanceFeedback);
+
+        this.lockInPeriodBlock = new WebMarkupContainer("lockInPeriodBlock");
+        this.lockInPeriodBlock.setOutputMarkupId(true);
+        this.form.add(this.lockInPeriodBlock);
+        this.lockInPeriodContainer = new WebMarkupContainer("lockInPeriodContainer");
+        this.lockInPeriodBlock.add(this.lockInPeriodContainer);
+        this.lockInPeriodField = new TextField<>("lockInPeriodField", new PropertyModel<>(this, "lockInPeriodValue"));
+        this.lockInPeriodField.setLabel(Model.of("Lock In Period"));
+        this.lockInPeriodField.setRequired(false);
+        this.lockInPeriodContainer.add(this.lockInPeriodField);
+        this.lockInPeriodFeedback = new TextFeedbackPanel("lockInPeriodFeedback", this.lockInPeriodField);
+        this.lockInPeriodContainer.add(this.lockInPeriodFeedback);
+
+        this.lockInTypeProvider = new LockInTypeProvider();
+        this.lockInTypeBlock = new WebMarkupContainer("lockInTypeBlock");
+        this.lockInTypeBlock.setOutputMarkupId(true);
+        this.form.add(this.lockInTypeBlock);
+        this.lockInTypeContainer = new WebMarkupContainer("lockInTypeContainer");
+        this.lockInTypeBlock.add(this.lockInTypeContainer);
+        this.lockInTypeField = new Select2SingleChoice<>("lockInTypeField", new PropertyModel<>(this, "lockInTypeValue"), this.lockInTypeProvider);
+        this.lockInTypeField.setLabel(Model.of("Lock In Period"));
+        this.lockInTypeField.setRequired(false);
+        this.lockInTypeContainer.add(this.lockInTypeField);
+        this.lockInTypeFeedback = new TextFeedbackPanel("lockInTypeFeedback", this.lockInTypeField);
+        this.lockInTypeContainer.add(this.lockInTypeFeedback);
+
+        this.applyWithdrawalFeeForTransferBlock = new WebMarkupContainer("applyWithdrawalFeeForTransferBlock");
+        this.applyWithdrawalFeeForTransferBlock.setOutputMarkupId(true);
+        this.form.add(this.applyWithdrawalFeeForTransferBlock);
+        this.applyWithdrawalFeeForTransferContainer = new WebMarkupContainer("applyWithdrawalFeeForTransferContainer");
+        this.applyWithdrawalFeeForTransferBlock.add(this.applyWithdrawalFeeForTransferContainer);
+        this.applyWithdrawalFeeForTransferField = new CheckBox("applyWithdrawalFeeForTransferField", new PropertyModel<>(this, "applyWithdrawalFeeForTransferValue"));
+        this.applyWithdrawalFeeForTransferField.setRequired(false);
+        this.applyWithdrawalFeeForTransferContainer.add(this.applyWithdrawalFeeForTransferField);
+        this.applyWithdrawalFeeForTransferFeedback = new TextFeedbackPanel("applyWithdrawalFeeForTransferFeedback", this.applyWithdrawalFeeForTransferField);
+        this.applyWithdrawalFeeForTransferContainer.add(this.applyWithdrawalFeeForTransferFeedback);
+
+        this.overdraftAllowedBlock = new WebMarkupContainer("overdraftAllowedBlock");
+        this.overdraftAllowedBlock.setOutputMarkupId(true);
+        this.form.add(this.overdraftAllowedBlock);
+        this.overdraftAllowedContainer = new WebMarkupContainer("overdraftAllowedContainer");
+        this.overdraftAllowedBlock.add(this.overdraftAllowedContainer);
+        this.overdraftAllowedField = new CheckBox("overdraftAllowedField", new PropertyModel<>(this, "overdraftAllowedValue"));
+        this.overdraftAllowedField.setRequired(false);
+        this.overdraftAllowedContainer.add(this.overdraftAllowedField);
+        this.overdraftAllowedFeedback = new TextFeedbackPanel("overdraftAllowedFeedback", this.overdraftAllowedField);
+        this.overdraftAllowedContainer.add(this.overdraftAllowedFeedback);
+
+        this.maximumOverdraftAmountLimitBlock = new WebMarkupContainer("maximumOverdraftAmountLimitBlock");
+        this.maximumOverdraftAmountLimitBlock.setOutputMarkupId(true);
+        this.form.add(this.maximumOverdraftAmountLimitBlock);
+        this.maximumOverdraftAmountLimitContainer = new WebMarkupContainer("maximumOverdraftAmountLimitContainer");
+        this.maximumOverdraftAmountLimitBlock.add(this.maximumOverdraftAmountLimitContainer);
+        this.maximumOverdraftAmountLimitField = new TextField<>("maximumOverdraftAmountLimitField", new PropertyModel<>(this, "maximumOverdraftAmountLimitValue"));
+        this.maximumOverdraftAmountLimitField.setLabel(Model.of("Maximum Overdraft Amount Limit"));
+        this.maximumOverdraftAmountLimitField.setRequired(false);
+        this.maximumOverdraftAmountLimitContainer.add(this.maximumOverdraftAmountLimitField);
+        this.maximumOverdraftAmountLimitFeedback = new TextFeedbackPanel("maximumOverdraftAmountLimitFeedback", this.maximumOverdraftAmountLimitField);
+        this.maximumOverdraftAmountLimitContainer.add(this.maximumOverdraftAmountLimitFeedback);
+
+        this.nominalAnnualInterestForOverdraftBlock = new WebMarkupContainer("nominalAnnualInterestForOverdraftBlock");
+        this.nominalAnnualInterestForOverdraftBlock.setOutputMarkupId(true);
+        this.form.add(this.nominalAnnualInterestForOverdraftBlock);
+        this.nominalAnnualInterestForOverdraftContainer = new WebMarkupContainer("nominalAnnualInterestForOverdraftContainer");
+        this.nominalAnnualInterestForOverdraftBlock.add(this.nominalAnnualInterestForOverdraftContainer);
+        this.nominalAnnualInterestForOverdraftField = new TextField<>("nominalAnnualInterestForOverdraftField", new PropertyModel<>(this, "nominalAnnualInterestForOverdraftValue"));
+        this.nominalAnnualInterestForOverdraftField.setLabel(Model.of("Nominal Annual Interest For Overdraft"));
+        this.nominalAnnualInterestForOverdraftField.setRequired(false);
+        this.nominalAnnualInterestForOverdraftContainer.add(this.nominalAnnualInterestForOverdraftField);
+        this.nominalAnnualInterestForOverdraftFeedback = new TextFeedbackPanel("nominalAnnualInterestForOverdraftFeedback", this.nominalAnnualInterestForOverdraftField);
+        this.nominalAnnualInterestForOverdraftContainer.add(this.nominalAnnualInterestForOverdraftFeedback);
+
+        this.minOverdraftRequiredForInterestCalculationBlock = new WebMarkupContainer("minOverdraftRequiredForInterestCalculationBlock");
+        this.minOverdraftRequiredForInterestCalculationBlock.setOutputMarkupId(true);
+        this.form.add(this.minOverdraftRequiredForInterestCalculationBlock);
+        this.minOverdraftRequiredForInterestCalculationContainer = new WebMarkupContainer("minOverdraftRequiredForInterestCalculationContainer");
+        this.minOverdraftRequiredForInterestCalculationBlock.add(this.minOverdraftRequiredForInterestCalculationContainer);
+        this.minOverdraftRequiredForInterestCalculationField = new TextField<>("minOverdraftRequiredForInterestCalculationField", new PropertyModel<>(this, "minOverdraftRequiredForInterestCalculationValue"));
+        this.minOverdraftRequiredForInterestCalculationField.setLabel(Model.of("Min Overdraft Required For Interest Calculation"));
+        this.minOverdraftRequiredForInterestCalculationField.setRequired(false);
+        this.minOverdraftRequiredForInterestCalculationContainer.add(this.minOverdraftRequiredForInterestCalculationField);
+        this.minOverdraftRequiredForInterestCalculationFeedback = new TextFeedbackPanel("minOverdraftRequiredForInterestCalculationFeedback", this.minOverdraftRequiredForInterestCalculationField);
+        this.minOverdraftRequiredForInterestCalculationContainer.add(this.minOverdraftRequiredForInterestCalculationFeedback);
+
+        this.enforceMinimumBalanceBlock = new WebMarkupContainer("enforceMinimumBalanceBlock");
+        this.enforceMinimumBalanceBlock.setOutputMarkupId(true);
+        this.form.add(this.enforceMinimumBalanceBlock);
+        this.enforceMinimumBalanceContainer = new WebMarkupContainer("enforceMinimumBalanceContainer");
+        this.enforceMinimumBalanceBlock.add(this.enforceMinimumBalanceContainer);
+        this.enforceMinimumBalanceField = new CheckBox("enforceMinimumBalanceField", new PropertyModel<>(this, "enforceMinimumBalanceValue"));
+        this.enforceMinimumBalanceField.setRequired(false);
+        this.enforceMinimumBalanceContainer.add(this.enforceMinimumBalanceField);
+        this.enforceMinimumBalanceFeedback = new TextFeedbackPanel("enforceMinimumBalanceFeedback", this.enforceMinimumBalanceField);
+        this.enforceMinimumBalanceContainer.add(this.enforceMinimumBalanceFeedback);
+
+        this.minimumBalanceBlock = new WebMarkupContainer("minimumBalanceBlock");
+        this.minimumBalanceBlock.setOutputMarkupId(true);
+        this.form.add(this.minimumBalanceBlock);
+        this.minimumBalanceContainer = new WebMarkupContainer("minimumBalanceContainer");
+        this.minimumBalanceBlock.add(this.minimumBalanceContainer);
+        this.minimumBalanceField = new TextField<>("minimumBalanceField", new PropertyModel<>(this, "minimumBalanceValue"));
+        this.minimumBalanceField.setLabel(Model.of("Minimum Balance"));
+        this.minimumBalanceField.setRequired(false);
+        this.minimumBalanceContainer.add(this.minimumBalanceField);
+        this.minimumBalanceFeedback = new TextFeedbackPanel("minimumBalanceFeedback", this.minimumBalanceField);
+        this.minimumBalanceContainer.add(this.minimumBalanceFeedback);
+
     }
 
     protected void initData() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+
         this.centerId = getPageParameters().get("centerId").toString();
+        this.productId = getPageParameters().get("productId").toString();
+
         Map<String, Object> centerObject = jdbcTemplate.queryForMap("select * from m_group where id = ?", this.centerId);
         this.officeId = String.valueOf(centerObject.get("office_id"));
-        this.productId = getPageParameters().get("productId").toString();
         Map<String, Object> productObject = jdbcTemplate.queryForMap("select * from m_savings_product where id = ?", this.productId);
         this.productValue = (String) productObject.get("name");
         this.currencyValue = (String) productObject.get("currency_code");
         this.decimalPlacesValue = String.valueOf(productObject.get("currency_digits"));
-        this.nominalAnnualInterestValue = (Double) productObject.get("nominal_annual_interest_rate");
-        this.interestCompoundingPeriodValue = (Option) productObject.get("interest_compounding_period_enum");
-        this.interestPostingPeriodValue = (Option) productObject.get("interest_posting_period_enum");
-        this.interestCalculatedUsingValue = (Option) productObject.get("interest_calculation_type_enum");
-        this.dayInYearValue = (Option) productObject.get("interest_calculation_days_in_year_type_enum");
+
+        BigDecimal nominalAnnualInterestValue = (BigDecimal) productObject.get("nominal_annual_interest_rate");
+        this.nominalAnnualInterestValue = nominalAnnualInterestValue == null ? null : nominalAnnualInterestValue.doubleValue();
+
+        this.interestCompoundingPeriodValue = InterestCompoundingPeriod.optionLiteral(String.valueOf(productObject.get("interest_compounding_period_enum")));
+        this.interestPostingPeriodValue = InterestPostingPeriod.optionLiteral(String.valueOf(productObject.get("interest_posting_period_enum")));
+        this.interestCalculatedUsingValue = InterestCalculationPeriod.optionLiteral(String.valueOf(productObject.get("interest_calculation_type_enum")));
+        this.dayInYearValue = DayInYear.optionLiteral(String.valueOf(productObject.get("interest_calculation_days_in_year_type_enum")));
         this.lockInPeriodValue = (Integer) productObject.get("lockin_period_frequency");
-        this.lockInTypeValue = (Option) productObject.get("lockin_period_frequency_enum");
-        this.applyWithdrawalFeeForTransferValue = (Boolean) productObject.get("withdrawal_fee_for_transfer");
-        this.minimumOpeningBalanceValue = (Double) productObject.get("min_required_opening_balance");
+        this.lockInTypeValue = LockInType.optionLiteral(String.valueOf(productObject.get("lockin_period_frequency_enum")));
+
+        Integer applyWithdrawalFeeForTransferValue = (Integer) productObject.get("withdrawal_fee_for_transfer");
+        this.applyWithdrawalFeeForTransferValue = applyWithdrawalFeeForTransferValue == null ? false : applyWithdrawalFeeForTransferValue == 1;
+
+        BigDecimal minimumOpeningBalanceValue = (BigDecimal) productObject.get("min_required_opening_balance");
+        this.minimumOpeningBalanceValue = minimumOpeningBalanceValue == null ? null : minimumOpeningBalanceValue.doubleValue();
+
         this.overdraftAllowedValue = (Boolean) productObject.get("allow_overdraft");
         this.maximumOverdraftAmountLimitValue = (Double) productObject.get("overdraft_limit");
-        this.nominalAnnualInterestValue = (Double) productObject.get("nominal_annual_interest_rate");
-        this.minOverdraftRequiredForInterestCalculationValue = (Double) productObject.get("min_overdraft_for_interest_calculation");
+
+        BigDecimal minOverdraftRequiredForInterestCalculationValue = (BigDecimal) productObject.get("min_overdraft_for_interest_calculation");
+        this.minOverdraftRequiredForInterestCalculationValue = minOverdraftRequiredForInterestCalculationValue == null ? null : minOverdraftRequiredForInterestCalculationValue.doubleValue();
         this.enforceMinimumBalanceValue = (Boolean) productObject.get("enforce_min_required_balance");
-        this.minimumBalanceValue = (Double) productObject.get("min_required_balance");
+
+        BigDecimal minimumBalanceValue = (BigDecimal) productObject.get("min_required_balance");
+        this.minimumBalanceValue = minimumBalanceValue == null ? null : minimumBalanceValue.doubleValue();
 
         // select * from m_charge where currency_code = 'USD' and charge_applies_to_enum
         // = 2 and is_active = 1;

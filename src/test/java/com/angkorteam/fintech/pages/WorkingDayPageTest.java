@@ -3,7 +3,7 @@ package com.angkorteam.fintech.pages;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.angkorteam.fintech.dto.RepaymentOption;
+import com.angkorteam.fintech.dto.enums.RepaymentOption;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitFormTester;
 import com.angkorteam.fintech.junit.JUnitWicketTester;

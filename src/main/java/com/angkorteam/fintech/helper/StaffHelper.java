@@ -1,7 +1,7 @@
 package com.angkorteam.fintech.helper;
 
 import com.angkorteam.fintech.IMifos;
-import com.angkorteam.fintech.dto.request.StaffBuilder;
+import com.angkorteam.fintech.dto.builder.StaffBuilder;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 

@@ -15,8 +15,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.AccountType;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.JdbcProvider;

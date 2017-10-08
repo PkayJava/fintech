@@ -4,7 +4,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.angkorteam.fintech.dto.ChargeType;
+import com.angkorteam.fintech.dto.enums.ChargeType;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 
