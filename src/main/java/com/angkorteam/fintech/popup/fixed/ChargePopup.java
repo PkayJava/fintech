@@ -16,18 +16,19 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 
 public class ChargePopup extends Panel {
 
-    private ModalWindow window;
+    protected ModalWindow window;
 
-    private Form<Void> form;
-    private AjaxButton okayButton;
+    protected Form<Void> form;
+    protected AjaxButton okayButton;
 
-    private SingleChoiceProvider chargeProvider;
-    private Select2SingleChoice<Option> chargeField;
-    private TextFeedbackPanel chargeFeedback;
+    protected PropertyModel<Option> chargeValue;
+    protected SingleChoiceProvider chargeProvider;
+    protected Select2SingleChoice<Option> chargeField;
+    protected TextFeedbackPanel chargeFeedback;
 
-    private String currencyCode;
+    protected String currencyCode;
 
-    private Object model;
+    protected Object model;
 
     public ChargePopup(String id, ModalWindow window, Object model, String currencyCode) {
         super(id);
@@ -48,12 +49,13 @@ public class ChargePopup extends Panel {
         this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
+        this.chargeValue = new PropertyModel<>(this.model, "itemChargeValue");
         this.chargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
         this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.SavingDeposit.getLiteral());
         this.chargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
         this.chargeProvider.applyWhere("is_penalty", "is_penalty = 0");
         this.chargeProvider.applyWhere("is_active", "is_active = 1");
-        this.chargeField = new Select2SingleChoice<>("chargeField", 0, new PropertyModel<>(this.model, "itemChargeValue"), this.chargeProvider);
+        this.chargeField = new Select2SingleChoice<>("chargeField", 0, this.chargeValue, this.chargeProvider);
         this.chargeField.setLabel(Model.of("Charge"));
         this.form.add(this.chargeField);
         this.chargeFeedback = new TextFeedbackPanel("chargeFeedback", this.chargeField);

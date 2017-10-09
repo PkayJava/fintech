@@ -16,18 +16,19 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 
 public class OverdueChargePopup extends Panel {
 
-    private ModalWindow window;
+    protected ModalWindow window;
 
-    private Form<Void> form;
-    private AjaxButton okayButton;
+    protected Form<Void> form;
+    protected AjaxButton okayButton;
 
-    private SingleChoiceProvider overdueChargeProvider;
-    private Select2SingleChoice<Option> overdueChargeField;
-    private TextFeedbackPanel overdueChargeFeedback;
+    protected PropertyModel<Option> overdueChargeValue;
+    protected SingleChoiceProvider overdueChargeProvider;
+    protected Select2SingleChoice<Option> overdueChargeField;
+    protected TextFeedbackPanel overdueChargeFeedback;
 
-    private String currencyCode;
+    protected String currencyCode;
 
-    private Object model;
+    protected Object model;
 
     public OverdueChargePopup(String id, ModalWindow window, Object model, String currencyCode) {
         super(id);
@@ -48,12 +49,13 @@ public class OverdueChargePopup extends Panel {
         this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
+        this.overdueChargeValue = new PropertyModel<>(this.model, "itemOverdueChargeValue");
         this.overdueChargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
         this.overdueChargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.Loan.getLiteral());
         this.overdueChargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
         this.overdueChargeProvider.applyWhere("is_penalty", "is_penalty = 1");
         this.overdueChargeProvider.applyWhere("is_active", "is_active = 1");
-        this.overdueChargeField = new Select2SingleChoice<>("overdueChargeField", 0, new PropertyModel<>(this.model, "itemOverdueChargeValue"), this.overdueChargeProvider);
+        this.overdueChargeField = new Select2SingleChoice<>("overdueChargeField", 0, this.overdueChargeValue, this.overdueChargeProvider);
         this.overdueChargeField.setLabel(Model.of("Overdue Charge"));
         this.form.add(this.overdueChargeField);
         this.overdueChargeFeedback = new TextFeedbackPanel("overdueChargeFeedback", this.overdueChargeField);
