@@ -8,23 +8,12 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.io.FileUtils;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.angkorteam.fintech.Constants;
 import com.angkorteam.fintech.MifosDataSourceManager;
-import com.angkorteam.fintech.junit.JUnit;
-import com.angkorteam.fintech.junit.JUnitWicketTester;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class TriggerData {
-
-    private JUnitWicketTester wicket;
-
-    @Before
-    public void before() throws UnirestException {
-        this.wicket = JUnit.getWicket();
-    }
 
     @Test
     public void initTriggerData() throws Exception {
