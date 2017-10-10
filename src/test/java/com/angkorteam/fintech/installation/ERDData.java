@@ -3,9 +3,12 @@ package com.angkorteam.fintech.installation;
 import java.io.File;
 import java.io.FileInputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -27,7 +30,8 @@ import org.w3c.dom.Element;
 import com.angkorteam.fintech.Constants;
 import com.angkorteam.fintech.MifosDataSourceManager;
 import com.angkorteam.framework.spring.JdbcTemplate;
-import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class ERDData {
 
@@ -37,8 +41,6 @@ public class ERDData {
 
     @Test
     public void initERDData() throws Exception {
-
-        Map<String, String> tableDictionary = Maps.newHashMap();
 
         File fintechFile = new File(FileUtils.getUserDirectory(), ".xml/fintech.properties.xml");
 
@@ -60,8 +62,10 @@ public class ERDData {
         dataSourceManager.afterPropertiesSet();
 
         DataSource dataSource = dataSourceManager.getDataSource(Constants.AID);
+
+        Map<String, String> tableDictionary = new HashMap<>();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        List<String> tables = jdbcTemplate.queryForList("show tables", String.class);
+        List<String> tables = queryForTables(jdbcTemplate);
 
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -171,9 +175,37 @@ public class ERDData {
         dataD0Element.setAttribute("key", "d0");
         graphElement.appendChild(dataD0Element);
 
+        List<String> process = new ArrayList<>();
+        process.add("m_office");
+        process.add("m_appuser");
+        process.add("m_staff");
+
+        String json = FileUtils.readFileToString(new File("src/main/resources/erd.json"), "UTF-8");
+        Gson gson = new Gson();
+
+        Map<String, List<ErdVO>> erds = gson.fromJson(json, new TypeToken<Map<String, List<ErdVO>>>() {
+        }.getType());
+
+        for (Entry<String, List<ErdVO>> erd : erds.entrySet()) {
+            if (!process.contains(erd.getKey())) {
+                process.add(erd.getKey());
+            }
+            for (ErdVO vo : erd.getValue()) {
+                for (Entry<String, String> i : vo.getReferenceBy().entrySet()) {
+                    if (!process.contains(i.getKey())) {
+                        process.add(i.getKey());
+                    }
+                }
+            }
+        }
+
         int index = 0;
+
         for (String table : tables) {
-            List<Map<String, Object>> fields = jdbcTemplate.queryForList("DESC " + table);
+            if (!process.contains(table)) {
+                continue;
+            }
+            List<Map<String, Object>> fields = queryForFields(jdbcTemplate, table);
             int maxWidth = 0;
             maxWidth = Math.max(maxWidth, table.length() * CHAR_WIDTH);
             List<String> lines = new LinkedList<>();
@@ -181,32 +213,7 @@ public class ERDData {
                 String name = (String) field.get("field");
                 String type = (String) field.get("type");
                 String key = (String) field.get("key");
-                String commonType = null;
-                if ("tinyint(1)".equals(type) || "bit(1)".equals(type)) {
-                    commonType = "boolean";
-                } else if ("int(11) unsigned".equals(type) || "smallint(4)".equals(type) || "int(4)".equals(type) || "int(2)".equals(type) || "int(3)".equals(type) || "int(15)".equals(type) || "tinyint(3)".equals(type) || "smallint(3)".equals(type) || "bigint(10)".equals(type) || "smallint(11)".equals(type) || "tinyint(2)".equals(type) || "int(20)".equals(type) || "smallint(5)".equals(type) || "smallint(2)".equals(type) || "int(10)".equals(type) || "bigint(20) unsigned".equals(type) || "tinyint(4)".equals(type) || "int(11)".equals(type) || "bigint(20)".equals(type) || "int(5)".equals(type)) {
-                    commonType = "number";
-                } else if ("smallint(1)".equals(type) || "int(1)".equals(type)) {
-                    if (name.contains("allow") || name.startsWith("is_") || name.startsWith("can_")) {
-                        commonType = "boolean";
-                    } else {
-                        commonType = "number";
-                    }
-                } else if ("timestamp".equals(type) || "datetime".equals(type)) {
-                    commonType = "datetime";
-                } else if ("decimal(10,2)".equals(type) || "decimal(20,2)".equals(type) || "decimal(19,5)".equals(type) || "decimal(5,2)".equals(type) || "decimal(20,6)".equals(type) || "decimal(10,8) unsigned".equals(type) || "decimal(19,6)".equals(type)) {
-                    commonType = "decimal";
-                } else if ("date".equals(type)) {
-                    commonType = "date";
-                } else if ("time".equals(type)) {
-                    commonType = "time";
-                } else if ("blob".equals(type) || "longtext".equals(type)) {
-                    commonType = "binary";
-                } else if ("varchar(1)".equals(type) || "varchar(4096)".equals(type) || "varchar(128)".equals(type) || "varchar(256)".equals(type) || "varchar(11)".equals(type) || "varchar(2)".equals(type) || "varchar(4000)".equals(type) || "varchar(32)".equals(type) || "varchar(102)".equals(type) || "varchar(4)".equals(type) || "varchar(70)".equals(type) || "varchar(2000)".equals(type) || "varchar(25)".equals(type) || "smallint(6)".equals(type) || "varchar(150)".equals(type) || "varchar(300)".equals(type) || "varchar(3)".equals(type) || "varchar(250)".equals(type) || "varchar(200)".equals(type) || "text".equals(type) || "varchar(1000)".equals(type) || "varchar(10)".equals(type) || "varchar(45)".equals(type) || "varchar(50)".equals(type) || "varchar(20)".equals(type) || "varchar(255)".equals(type) || "varchar(100)".equals(type) || "varchar(500)".equals(type)) {
-                    commonType = "text";
-                } else {
-                    commonType = type;
-                }
+                String commonType = parseType(name, type);
                 String prefix = "  -";
                 String suffix = "";
                 if ("PRI".equals(key)) {
@@ -315,91 +322,106 @@ public class ERDData {
         }
 
         int edge = 0;
-        for (int i = 0; i <= 0; i++) {
-            Element edgeElement = document.createElement("edge");
-            edgeElement.setAttribute("id", "e" + edge);
-            edgeElement.setAttribute("source", "n" + (i));
-            edgeElement.setAttribute("target", "n" + (i + 1));
-            graphElement.appendChild(edgeElement);
+        for (Entry<String, List<ErdVO>> erd : erds.entrySet()) {
+            List<ErdVO> values = erd.getValue();
+            String sourceTable = erd.getKey();
+            for (ErdVO value : values) {
+                String sourceField = value.getMasterField();
+                String source = tableDictionary.get(erd.getKey());
+                Map<String, String> references = value.getReferenceBy();
+                for (Entry<String, String> reference : references.entrySet()) {
+                    String target = tableDictionary.get(reference.getKey());
+                    String targetTable = reference.getKey();
+                    String targetField = reference.getValue();
+                    String linked = sourceTable + "." + sourceField + " <=> " + targetTable + "." + targetField;
+                    Element edgeElement = document.createElement("edge");
+                    edgeElement.setAttribute("id", "e" + edge);
+                    edgeElement.setAttribute("source", source);
+                    edgeElement.setAttribute("target", target);
+                    graphElement.appendChild(edgeElement);
 
-            Element dataD10Element = document.createElement("data");
-            dataD10Element.setAttribute("key", "d10");
-            edgeElement.appendChild(dataD10Element);
+                    Element dataD10Element = document.createElement("data");
+                    dataD10Element.setAttribute("key", "d10");
+                    edgeElement.appendChild(dataD10Element);
 
-            Element polyLineEdgeElement = document.createElement("y:PolyLineEdge");
-            dataD10Element.appendChild(polyLineEdgeElement);
+                    Element polyLineEdgeElement = document.createElement("y:PolyLineEdge");
+                    dataD10Element.appendChild(polyLineEdgeElement);
 
-            Element pathElement = document.createElement("y:Path");
-            pathElement.setAttribute("sx", "0.0");
-            pathElement.setAttribute("sy", "0.0");
-            pathElement.setAttribute("tx", "0.0");
-            pathElement.setAttribute("ty", "0.0");
-            polyLineEdgeElement.appendChild(pathElement);
+                    Element pathElement = document.createElement("y:Path");
+                    pathElement.setAttribute("sx", "0.0");
+                    pathElement.setAttribute("sy", "0.0");
+                    pathElement.setAttribute("tx", "0.0");
+                    pathElement.setAttribute("ty", "0.0");
+                    polyLineEdgeElement.appendChild(pathElement);
 
-            Element lineStyleElement = document.createElement("y:LineStyle");
-            lineStyleElement.setAttribute("color", "#000000");
-            lineStyleElement.setAttribute("type", "line");
-            lineStyleElement.setAttribute("width", "1.0");
-            polyLineEdgeElement.appendChild(lineStyleElement);
+                    Element lineStyleElement = document.createElement("y:LineStyle");
+                    lineStyleElement.setAttribute("color", "#000000");
+                    lineStyleElement.setAttribute("type", "line");
+                    lineStyleElement.setAttribute("width", "1.0");
+                    polyLineEdgeElement.appendChild(lineStyleElement);
 
-            Element arrowsElement = document.createElement("y:Arrows");
-            arrowsElement.setAttribute("source", "none");
-            arrowsElement.setAttribute("target", "none");
-            polyLineEdgeElement.appendChild(arrowsElement);
+                    Element arrowsElement = document.createElement("y:Arrows");
+                    arrowsElement.setAttribute("source", "none");
+                    arrowsElement.setAttribute("target", "none");
+                    polyLineEdgeElement.appendChild(arrowsElement);
 
-            Element edgeLabelElement = document.createElement("y:EdgeLabel");
-            edgeLabelElement.setAttribute("alignment", "center");
-            edgeLabelElement.setAttribute("configuration", "AutoFlippingLabel");
-            edgeLabelElement.setAttribute("distance", "2.0");
-            edgeLabelElement.setAttribute("fontFamily", "Dialog");
-            edgeLabelElement.setAttribute("fontSize", "12");
-            edgeLabelElement.setAttribute("fontStyle", "plain");
-            edgeLabelElement.setAttribute("hasBackgroundColor", "false");
-            edgeLabelElement.setAttribute("hasLineColor", "false");
-            edgeLabelElement.setAttribute("horizontalTextPosition", "center");
-            edgeLabelElement.setAttribute("iconTextGap", "4");
-            edgeLabelElement.setAttribute("modelName", "custom");
-            edgeLabelElement.setAttribute("preferredPlacement", "anywhere");
-            edgeLabelElement.setAttribute("ratio", "0.5");
-            edgeLabelElement.setAttribute("textColor", "#000000");
-            edgeLabelElement.setAttribute("verticalTextPosition", "bottom");
-            edgeLabelElement.setAttribute("visible", "true");
-            edgeLabelElement.setTextContent("Label");
-            polyLineEdgeElement.appendChild(edgeLabelElement);
+                    Element edgeLabelElement = document.createElement("y:EdgeLabel");
+                    edgeLabelElement.setAttribute("alignment", "center");
+                    edgeLabelElement.setAttribute("configuration", "AutoFlippingLabel");
+                    edgeLabelElement.setAttribute("distance", "2.0");
+                    edgeLabelElement.setAttribute("fontFamily", "Dialog");
+                    edgeLabelElement.setAttribute("fontSize", "12");
+                    edgeLabelElement.setAttribute("fontStyle", "plain");
+                    edgeLabelElement.setAttribute("hasBackgroundColor", "false");
+                    edgeLabelElement.setAttribute("hasLineColor", "false");
+                    edgeLabelElement.setAttribute("horizontalTextPosition", "center");
+                    edgeLabelElement.setAttribute("iconTextGap", "4");
+                    edgeLabelElement.setAttribute("modelName", "custom");
+                    edgeLabelElement.setAttribute("preferredPlacement", "anywhere");
+                    edgeLabelElement.setAttribute("ratio", "0.5");
+                    edgeLabelElement.setAttribute("textColor", "#000000");
+                    edgeLabelElement.setAttribute("verticalTextPosition", "bottom");
+                    edgeLabelElement.setAttribute("visible", "true");
+                    edgeLabelElement.setTextContent(linked);
+                    polyLineEdgeElement.appendChild(edgeLabelElement);
 
-            Element labelModelElement = document.createElement("y:LabelModel");
-            edgeLabelElement.appendChild(labelModelElement);
+                    Element labelModelElement = document.createElement("y:LabelModel");
+                    edgeLabelElement.appendChild(labelModelElement);
 
-            Element rotatedDiscreteEdgeLabelModelElement = document.createElement("y:RotatedDiscreteEdgeLabelModel");
-            rotatedDiscreteEdgeLabelModelElement.setAttribute("angle", "0.0");
-            rotatedDiscreteEdgeLabelModelElement.setAttribute("autoRotationEnabled", "true");
-            rotatedDiscreteEdgeLabelModelElement.setAttribute("candidateMask", "18");
-            rotatedDiscreteEdgeLabelModelElement.setAttribute("distance", "2.0");
-            rotatedDiscreteEdgeLabelModelElement.setAttribute("positionRelativeToSegment", "false");
-            labelModelElement.appendChild(rotatedDiscreteEdgeLabelModelElement);
+                    Element rotatedDiscreteEdgeLabelModelElement = document.createElement("y:RotatedDiscreteEdgeLabelModel");
+                    rotatedDiscreteEdgeLabelModelElement.setAttribute("angle", "0.0");
+                    rotatedDiscreteEdgeLabelModelElement.setAttribute("autoRotationEnabled", "true");
+                    rotatedDiscreteEdgeLabelModelElement.setAttribute("candidateMask", "18");
+                    rotatedDiscreteEdgeLabelModelElement.setAttribute("distance", "2.0");
+                    rotatedDiscreteEdgeLabelModelElement.setAttribute("positionRelativeToSegment", "false");
+                    labelModelElement.appendChild(rotatedDiscreteEdgeLabelModelElement);
 
-            Element modelParameterElement = document.createElement("y:ModelParameter");
-            edgeLabelElement.appendChild(modelParameterElement);
+                    Element modelParameterElement = document.createElement("y:ModelParameter");
+                    edgeLabelElement.appendChild(modelParameterElement);
 
-            Element rotatedDiscreteEdgeLabelModelParameterElement = document.createElement("y:RotatedDiscreteEdgeLabelModelParameter");
-            rotatedDiscreteEdgeLabelModelParameterElement.setAttribute("position", "head");
-            modelParameterElement.appendChild(rotatedDiscreteEdgeLabelModelParameterElement);
+                    Element rotatedDiscreteEdgeLabelModelParameterElement = document.createElement("y:RotatedDiscreteEdgeLabelModelParameter");
+                    rotatedDiscreteEdgeLabelModelParameterElement.setAttribute("position", "head");
+                    modelParameterElement.appendChild(rotatedDiscreteEdgeLabelModelParameterElement);
 
-            Element preferredPlacementDescriptorElement = document.createElement("y:PreferredPlacementDescriptor");
-            preferredPlacementDescriptorElement.setAttribute("angle", "0.0");
-            preferredPlacementDescriptorElement.setAttribute("angleOffsetOnRightSide", "0");
-            preferredPlacementDescriptorElement.setAttribute("angleReference", "absolute");
-            preferredPlacementDescriptorElement.setAttribute("angleRotationOnRightSide", "co");
-            preferredPlacementDescriptorElement.setAttribute("distance", "-1.0");
-            preferredPlacementDescriptorElement.setAttribute("frozen", "true");
-            preferredPlacementDescriptorElement.setAttribute("placement", "anywhere");
-            preferredPlacementDescriptorElement.setAttribute("side", "anywhere");
-            preferredPlacementDescriptorElement.setAttribute("sideReference", "relative_to_edge_flow");
-            edgeLabelElement.appendChild(preferredPlacementDescriptorElement);
+                    Element preferredPlacementDescriptorElement = document.createElement("y:PreferredPlacementDescriptor");
+                    preferredPlacementDescriptorElement.setAttribute("angle", "0.0");
+                    preferredPlacementDescriptorElement.setAttribute("angleOffsetOnRightSide", "0");
+                    preferredPlacementDescriptorElement.setAttribute("angleReference", "absolute");
+                    preferredPlacementDescriptorElement.setAttribute("angleRotationOnRightSide", "co");
+                    preferredPlacementDescriptorElement.setAttribute("distance", "-1.0");
+                    preferredPlacementDescriptorElement.setAttribute("frozen", "true");
+                    preferredPlacementDescriptorElement.setAttribute("placement", "anywhere");
+                    preferredPlacementDescriptorElement.setAttribute("side", "anywhere");
+                    preferredPlacementDescriptorElement.setAttribute("sideReference", "relative_to_edge_flow");
+                    edgeLabelElement.appendChild(preferredPlacementDescriptorElement);
 
-            Element bendStyleElement = document.createElement("y:BendStyle");
-            bendStyleElement.setAttribute("smoothed", "true");
-            polyLineEdgeElement.appendChild(bendStyleElement);
+                    Element bendStyleElement = document.createElement("y:BendStyle");
+                    bendStyleElement.setAttribute("smoothed", "true");
+                    polyLineEdgeElement.appendChild(bendStyleElement);
+
+                    edge++;
+                }
+            }
         }
 
         Element dataD7Element = document.createElement("data");
@@ -415,10 +437,48 @@ public class ERDData {
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
         DOMSource source = new DOMSource(document);
-        File outputFile = new File(FileUtils.getTempDirectory(), "fintech-erd.graphml");
+        File outputFile = new File("target/erd.graphml");
         StreamResult result = new StreamResult(outputFile);
         transformer.transform(source, result);
         System.out.println("[INFO] ERD is generated to " + outputFile.getAbsolutePath());
+    }
+
+    public String parseType(String name, String type) {
+        String commonType = "";
+        if ("tinyint(1)".equals(type) || "bit(1)".equals(type)) {
+            commonType = "boolean";
+        } else if ("int(11) unsigned".equals(type) || "smallint(4)".equals(type) || "int(4)".equals(type) || "int(2)".equals(type) || "int(3)".equals(type) || "int(15)".equals(type) || "tinyint(3)".equals(type) || "smallint(3)".equals(type) || "bigint(10)".equals(type) || "smallint(11)".equals(type) || "tinyint(2)".equals(type) || "int(20)".equals(type) || "smallint(5)".equals(type) || "smallint(2)".equals(type) || "int(10)".equals(type) || "bigint(20) unsigned".equals(type) || "tinyint(4)".equals(type) || "int(11)".equals(type) || "bigint(20)".equals(type) || "int(5)".equals(type)) {
+            commonType = "number";
+        } else if ("smallint(1)".equals(type) || "int(1)".equals(type)) {
+            if (name.contains("allow") || name.startsWith("is_") || name.startsWith("can_")) {
+                commonType = "boolean";
+            } else {
+                commonType = "number";
+            }
+        } else if ("timestamp".equals(type) || "datetime".equals(type)) {
+            commonType = "datetime";
+        } else if ("decimal(10,2)".equals(type) || "decimal(20,2)".equals(type) || "decimal(19,5)".equals(type) || "decimal(5,2)".equals(type) || "decimal(20,6)".equals(type) || "decimal(10,8) unsigned".equals(type) || "decimal(19,6)".equals(type)) {
+            commonType = "decimal";
+        } else if ("date".equals(type)) {
+            commonType = "date";
+        } else if ("time".equals(type)) {
+            commonType = "time";
+        } else if ("blob".equals(type) || "longtext".equals(type)) {
+            commonType = "binary";
+        } else if ("varchar(1)".equals(type) || "varchar(4096)".equals(type) || "varchar(128)".equals(type) || "varchar(256)".equals(type) || "varchar(11)".equals(type) || "varchar(2)".equals(type) || "varchar(4000)".equals(type) || "varchar(32)".equals(type) || "varchar(102)".equals(type) || "varchar(4)".equals(type) || "varchar(70)".equals(type) || "varchar(2000)".equals(type) || "varchar(25)".equals(type) || "smallint(6)".equals(type) || "varchar(150)".equals(type) || "varchar(300)".equals(type) || "varchar(3)".equals(type) || "varchar(250)".equals(type) || "varchar(200)".equals(type) || "text".equals(type) || "varchar(1000)".equals(type) || "varchar(10)".equals(type) || "varchar(45)".equals(type) || "varchar(50)".equals(type) || "varchar(20)".equals(type) || "varchar(255)".equals(type) || "varchar(100)".equals(type) || "varchar(500)".equals(type)) {
+            commonType = "text";
+        } else {
+            commonType = type;
+        }
+        return commonType;
+    }
+
+    public List<Map<String, Object>> queryForFields(JdbcTemplate jdbcTemplate, String table) {
+        return jdbcTemplate.queryForList("DESC " + table);
+    }
+
+    public List<String> queryForTables(JdbcTemplate jdbcTemplate) {
+        return jdbcTemplate.queryForList("show tables", String.class);
     }
 
 }

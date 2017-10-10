@@ -1,0 +1,36 @@
+{
+  "m_office": [
+    {
+      "masterField": "id",
+      "referenceBy": {
+        "m_staff": "office_id",
+        "m_appuser": "office_id"
+      }
+    }
+  ],
+  "m_image": [
+    {
+      "masterField": "id",
+      "referenceBy": {
+        "m_staff": "image_id"
+      }
+    }
+  ],
+  "m_staff": [
+    {
+      "masterField": "id",
+      "referenceBy": {
+        "m_appuser": "staff_id"
+      }
+    }
+  ],
+  "m_code_value": [
+    {
+      "masterField": "id",
+      "referenceBy": {
+        "acc_gl_account": "tag_id"
+      }
+    }
+  ]
+}
+
