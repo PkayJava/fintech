@@ -177,9 +177,20 @@ public class ERDData {
         graphElement.appendChild(dataD0Element);
 
         List<String> process = new ArrayList<>();
-        process.add("m_office");
-        process.add("m_appuser");
-        process.add("m_staff");
+        List<String> filters = new ArrayList<>();
+        boolean hasFilter = false;
+        if (System.getProperty("tables") != null && !"".equals(System.getProperty("tables"))) {
+            hasFilter = true;
+            String temp = (String) System.getProperty("tables");
+            for (String filter : temp.split(",")) {
+                filter = StringUtils.trimToEmpty(filter);
+                if (!"".equals(filter)) {
+                    if (!filters.contains(filter)) {
+                        filters.add(filter);
+                    }
+                }
+            }
+        }
 
         String json = FileUtils.readFileToString(new File("src/main/resources/erd.json"), "UTF-8");
         Gson gson = new Gson();
@@ -187,13 +198,40 @@ public class ERDData {
         Map<String, List<ErdVO>> erds = gson.fromJson(json, new TypeToken<Map<String, List<ErdVO>>>() {
         }.getType());
 
-        for (Entry<String, List<ErdVO>> erd : erds.entrySet()) {
-            if (!process.contains(erd.getKey())) {
-                process.add(erd.getKey());
+        if (hasFilter) {
+            for (Entry<String, List<ErdVO>> erd : erds.entrySet()) {
+                if (filters.contains(erd.getKey())) {
+                    if (!process.contains(erd.getKey())) {
+                        process.add(erd.getKey());
+                    }
+                    for (ErdVO vo : erd.getValue()) {
+                        if (!process.contains(vo.getReferenceTo().getTableName())) {
+                            process.add(vo.getReferenceTo().getTableName());
+                        }
+                    }
+                } else {
+                    for (ErdVO vo : erd.getValue()) {
+                        if (filters.contains(vo.getReferenceTo().getTableName())) {
+                            if (!process.contains(erd.getKey())) {
+                                process.add(erd.getKey());
+                            }
+                            // if (!process.contains(vo.getReferenceTo().getTableName())) {
+                            // process.add(vo.getReferenceTo().getTableName());
+                            // }
+                        }
+                    }
+                }
+
             }
-            for (ErdVO vo : erd.getValue()) {
-                if (!process.contains(vo.getReferenceTo().getTableName())) {
-                    process.add(vo.getReferenceTo().getTableName());
+        } else {
+            for (Entry<String, List<ErdVO>> erd : erds.entrySet()) {
+                if (!process.contains(erd.getKey())) {
+                    process.add(erd.getKey());
+                }
+                for (ErdVO vo : erd.getValue()) {
+                    if (!process.contains(vo.getReferenceTo().getTableName())) {
+                        process.add(vo.getReferenceTo().getTableName());
+                    }
                 }
             }
         }
@@ -201,7 +239,7 @@ public class ERDData {
         int index = 0;
 
         for (String table : tables) {
-            if (!process.contains(table)) {
+            if (hasFilter && !process.contains(table)) {
                 continue;
             }
             List<Map<String, Object>> fields = queryForFields(jdbcTemplate, table);
@@ -336,14 +374,23 @@ public class ERDData {
                     sourceField = "(" + StringUtils.join(value.getFieldName(), "/") + ")";
                 }
                 String source = tableDictionary.get(sourceTable);
-                if (source == null) {
-                    throw new RuntimeException("could not find " + sourceTable + " table in data dictionary");
-                }
+
                 String targetTable = value.getReferenceTo().getTableName();
                 String targetField = value.getReferenceTo().getFieldName();
                 String target = tableDictionary.get(targetTable);
-                if (target == null) {
-                    throw new RuntimeException("could not find " + targetTable + " table in data dictionary");
+
+                if (hasFilter) {
+                    if (target == null || source == null) {
+                        continue;
+                    }
+                } else {
+                    if (target == null) {
+                        throw new RuntimeException("could not find " + targetTable + " table in data dictionary");
+                    }
+                    if (source == null) {
+                        throw new RuntimeException("could not find " + sourceTable + " table in data dictionary");
+
+                    }
                 }
                 String linked = sourceTable + "." + sourceField + " <=> " + targetTable + "." + targetField;
                 Element edgeElement = document.createElement("edge");
