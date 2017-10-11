@@ -1,11 +1,11 @@
 package com.angkorteam.fintech.installation;
 
 import java.io.Serializable;
-import java.util.Map;
+import java.util.List;
 
 public class ErdVO implements Serializable {
 
-    private String fieldName;
+    private List<String> fieldName;
 
     private ErdRef referenceTo;
 
@@ -13,11 +13,11 @@ public class ErdVO implements Serializable {
 
     private boolean uq = false;
 
-    public String getFieldName() {
+    public List<String> getFieldName() {
         return fieldName;
     }
 
-    public void setFieldName(String fieldName) {
+    public void setFieldName(List<String> fieldName) {
         this.fieldName = fieldName;
     }
 

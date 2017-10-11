@@ -1,7 +1,7 @@
 {
   "m_staff": [
     {
-      "fieldName": "office_id",
+      "fieldName": ["office_id"],
       "pk": false,
       "uq": false,
       "referenceTo": {
@@ -14,20 +14,7 @@
   ],
   "m_tellers": [
     {
-      "fieldName": "office_id",
-      "pk": false,
-      "uq": false,
-      "referenceTo": {
-        "tableName": "m_office",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
-      }
-    }
-  ],
-  "m_group": [
-    {
-      "fieldName": "office_id",
+      "fieldName": ["office_id"],
       "pk": false,
       "uq": false,
       "referenceTo": {
@@ -38,7 +25,31 @@
       }
     },
     {
-      "fieldName": "staff_id",
+      "fieldName": ["debit_account_id", "credit_account_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "acc_gl_account",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "m_group": [
+    {
+      "fieldName": ["office_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    },
+    {
+      "fieldName": ["staff_id"],
       "pk": false,
       "uq": false,
       "referenceTo": {
@@ -47,6 +58,401 @@
         "pk": true,
         "uq": false
       }
+    }
+  ],
+  "m_staff_assignment_history": [
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    },
+    {
+      "fieldName": ["staff_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_staff",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    },
+    {
+      "fieldName": ["centre_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_group",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "acc_accounting_rule": [
+    {
+      "fieldName": ["office_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    },
+    {
+      "fieldName": ["debit_account_id", "credit_account_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "acc_gl_account",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "acc_gl_account": [
+    {
+      "fieldName": ["tag_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_code_value",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "acc_gl_closure": [
+    {
+      "fieldName": ["office_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    },
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "acc_gl_financial_activity_account": [
+    {
+      "fieldName": ["gl_account_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "acc_gl_account",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "c_external_service_properties": [
+    {
+      "fieldName": ["external_service_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "c_external_service",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "job_run_history": [
+    {
+      "fieldName": ["job_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "job",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "notification_mapper": [
+    {
+      "fieldName": ["notification_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "notification_generator",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    },
+    {
+      "fieldName": ["user_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "m_charge": [
+    {
+      "fieldName": ["currency_code"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_organisation_currency",
+        "fieldName": "code",
+        "pk": true,
+        "uq": false
+      }
+    },
+    {
+      "fieldName": ["income_or_liability_account_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "acc_gl_account",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    },
+    {
+      "fieldName": ["tax_group_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_tax_group",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "m_tax_group": [
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "m_calendar": [
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "m_appuser": [
+    {
+      "fieldName": ["office_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    },
+    {
+      "fieldName": ["staff_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_staff",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "m_appuser_previous_password": [
+    {
+      "fieldName": ["user_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "m_appuser_role": [
+    {
+      "fieldName": ["appuser_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    },
+    {
+      "fieldName": ["role_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_role",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "m_calendar_history": [
+    {
+      "fieldName": ["calendar_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_calendar",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "m_calendar_instance": [
+    {
+      "fieldName": ["calendar_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_calendar",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "m_cashier_transactions": [
+    {
+      "fieldName": ["currency_code"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_organisation_currency",
+        "fieldName": "code",
+        "pk": true,
+        "uq": false
+      }
+    },
+    {
+      "fieldName": ["cashier_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_cashiers",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "m_cashiers": [
+    {
+      "fieldName": ["staff_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_staff",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    },
+    {
+      "fieldName": ["teller_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_tellers",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "m_code_value": [
+    {
+      "fieldName": ["code_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_code",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "m_floating_rates": [
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "m_floating_rates_periods": [
+    {
+      "fieldName": ["floating_rates_id"],
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_floating_rates",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+   
     }
   ]
 }

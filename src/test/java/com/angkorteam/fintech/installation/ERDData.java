@@ -22,6 +22,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
@@ -328,11 +329,22 @@ public class ERDData {
             List<ErdVO> values = erd.getValue();
             String sourceTable = erd.getKey();
             for (ErdVO value : values) {
-                String sourceField = value.getFieldName();
+                String sourceField = "";
+                if (value.getFieldName().size() == 1) {
+                    sourceField = value.getFieldName().get(0);
+                } else {
+                    sourceField = "(" + StringUtils.join(value.getFieldName(), "/") + ")";
+                }
                 String source = tableDictionary.get(sourceTable);
+                if (source == null) {
+                    throw new RuntimeException("could not find " + sourceTable + " table in data dictionary");
+                }
                 String targetTable = value.getReferenceTo().getTableName();
                 String targetField = value.getReferenceTo().getFieldName();
                 String target = tableDictionary.get(targetTable);
+                if (target == null) {
+                    throw new RuntimeException("could not find " + targetTable + " table in data dictionary");
+                }
                 String linked = sourceTable + "." + sourceField + " <=> " + targetTable + "." + targetField;
                 Element edgeElement = document.createElement("edge");
                 edgeElement.setAttribute("id", "e" + edge);
