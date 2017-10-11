@@ -191,10 +191,8 @@ public class ERDData {
                 process.add(erd.getKey());
             }
             for (ErdVO vo : erd.getValue()) {
-                for (Entry<String, String> i : vo.getReferenceBy().entrySet()) {
-                    if (!process.contains(i.getKey())) {
-                        process.add(i.getKey());
-                    }
+                if (!process.contains(vo.getReferenceTo().getTableName())) {
+                    process.add(vo.getReferenceTo().getTableName());
                 }
             }
         }
@@ -219,6 +217,10 @@ public class ERDData {
                 if ("PRI".equals(key)) {
                     prefix = " *";
                     suffix = "(PK)";
+                }
+                if ("UNI".equals(key)) {
+                    prefix = " -";
+                    suffix = "(UQ)";
                 }
                 String line = prefix + " " + name + suffix + " :: " + commonType;
                 maxWidth = Math.max(maxWidth, (line.length() * CHAR_WIDTH) + 20);
@@ -326,101 +328,98 @@ public class ERDData {
             List<ErdVO> values = erd.getValue();
             String sourceTable = erd.getKey();
             for (ErdVO value : values) {
-                String sourceField = value.getMasterField();
-                String source = tableDictionary.get(erd.getKey());
-                Map<String, String> references = value.getReferenceBy();
-                for (Entry<String, String> reference : references.entrySet()) {
-                    String target = tableDictionary.get(reference.getKey());
-                    String targetTable = reference.getKey();
-                    String targetField = reference.getValue();
-                    String linked = sourceTable + "." + sourceField + " <=> " + targetTable + "." + targetField;
-                    Element edgeElement = document.createElement("edge");
-                    edgeElement.setAttribute("id", "e" + edge);
-                    edgeElement.setAttribute("source", source);
-                    edgeElement.setAttribute("target", target);
-                    graphElement.appendChild(edgeElement);
+                String sourceField = value.getFieldName();
+                String source = tableDictionary.get(sourceTable);
+                String targetTable = value.getReferenceTo().getTableName();
+                String targetField = value.getReferenceTo().getFieldName();
+                String target = tableDictionary.get(targetTable);
+                String linked = sourceTable + "." + sourceField + " <=> " + targetTable + "." + targetField;
+                Element edgeElement = document.createElement("edge");
+                edgeElement.setAttribute("id", "e" + edge);
+                edgeElement.setAttribute("source", source);
+                edgeElement.setAttribute("target", target);
+                graphElement.appendChild(edgeElement);
 
-                    Element dataD10Element = document.createElement("data");
-                    dataD10Element.setAttribute("key", "d10");
-                    edgeElement.appendChild(dataD10Element);
+                Element dataD10Element = document.createElement("data");
+                dataD10Element.setAttribute("key", "d10");
+                edgeElement.appendChild(dataD10Element);
 
-                    Element polyLineEdgeElement = document.createElement("y:PolyLineEdge");
-                    dataD10Element.appendChild(polyLineEdgeElement);
+                Element polyLineEdgeElement = document.createElement("y:PolyLineEdge");
+                dataD10Element.appendChild(polyLineEdgeElement);
 
-                    Element pathElement = document.createElement("y:Path");
-                    pathElement.setAttribute("sx", "0.0");
-                    pathElement.setAttribute("sy", "0.0");
-                    pathElement.setAttribute("tx", "0.0");
-                    pathElement.setAttribute("ty", "0.0");
-                    polyLineEdgeElement.appendChild(pathElement);
+                Element pathElement = document.createElement("y:Path");
+                pathElement.setAttribute("sx", "0.0");
+                pathElement.setAttribute("sy", "0.0");
+                pathElement.setAttribute("tx", "0.0");
+                pathElement.setAttribute("ty", "0.0");
+                polyLineEdgeElement.appendChild(pathElement);
 
-                    Element lineStyleElement = document.createElement("y:LineStyle");
-                    lineStyleElement.setAttribute("color", "#000000");
-                    lineStyleElement.setAttribute("type", "line");
-                    lineStyleElement.setAttribute("width", "1.0");
-                    polyLineEdgeElement.appendChild(lineStyleElement);
+                Element lineStyleElement = document.createElement("y:LineStyle");
+                lineStyleElement.setAttribute("color", "#000000");
+                lineStyleElement.setAttribute("type", "line");
+                lineStyleElement.setAttribute("width", "1.0");
+                polyLineEdgeElement.appendChild(lineStyleElement);
 
-                    Element arrowsElement = document.createElement("y:Arrows");
-                    arrowsElement.setAttribute("source", "none");
-                    arrowsElement.setAttribute("target", "none");
-                    polyLineEdgeElement.appendChild(arrowsElement);
+                Element arrowsElement = document.createElement("y:Arrows");
+                arrowsElement.setAttribute("source", "none");
+                arrowsElement.setAttribute("target", "none");
+                polyLineEdgeElement.appendChild(arrowsElement);
 
-                    Element edgeLabelElement = document.createElement("y:EdgeLabel");
-                    edgeLabelElement.setAttribute("alignment", "center");
-                    edgeLabelElement.setAttribute("configuration", "AutoFlippingLabel");
-                    edgeLabelElement.setAttribute("distance", "2.0");
-                    edgeLabelElement.setAttribute("fontFamily", "Dialog");
-                    edgeLabelElement.setAttribute("fontSize", "12");
-                    edgeLabelElement.setAttribute("fontStyle", "plain");
-                    edgeLabelElement.setAttribute("hasBackgroundColor", "false");
-                    edgeLabelElement.setAttribute("hasLineColor", "false");
-                    edgeLabelElement.setAttribute("horizontalTextPosition", "center");
-                    edgeLabelElement.setAttribute("iconTextGap", "4");
-                    edgeLabelElement.setAttribute("modelName", "custom");
-                    edgeLabelElement.setAttribute("preferredPlacement", "anywhere");
-                    edgeLabelElement.setAttribute("ratio", "0.5");
-                    edgeLabelElement.setAttribute("textColor", "#000000");
-                    edgeLabelElement.setAttribute("verticalTextPosition", "bottom");
-                    edgeLabelElement.setAttribute("visible", "true");
-                    edgeLabelElement.setTextContent(linked);
-                    polyLineEdgeElement.appendChild(edgeLabelElement);
+                Element edgeLabelElement = document.createElement("y:EdgeLabel");
+                edgeLabelElement.setAttribute("alignment", "center");
+                edgeLabelElement.setAttribute("configuration", "AutoFlippingLabel");
+                edgeLabelElement.setAttribute("distance", "2.0");
+                edgeLabelElement.setAttribute("fontFamily", "Dialog");
+                edgeLabelElement.setAttribute("fontSize", "12");
+                edgeLabelElement.setAttribute("fontStyle", "plain");
+                edgeLabelElement.setAttribute("hasBackgroundColor", "false");
+                edgeLabelElement.setAttribute("hasLineColor", "false");
+                edgeLabelElement.setAttribute("horizontalTextPosition", "center");
+                edgeLabelElement.setAttribute("iconTextGap", "4");
+                edgeLabelElement.setAttribute("modelName", "custom");
+                edgeLabelElement.setAttribute("preferredPlacement", "anywhere");
+                edgeLabelElement.setAttribute("ratio", "0.5");
+                edgeLabelElement.setAttribute("textColor", "#000000");
+                edgeLabelElement.setAttribute("verticalTextPosition", "bottom");
+                edgeLabelElement.setAttribute("visible", "true");
+                edgeLabelElement.setTextContent(linked);
+                polyLineEdgeElement.appendChild(edgeLabelElement);
 
-                    Element labelModelElement = document.createElement("y:LabelModel");
-                    edgeLabelElement.appendChild(labelModelElement);
+                Element labelModelElement = document.createElement("y:LabelModel");
+                edgeLabelElement.appendChild(labelModelElement);
 
-                    Element rotatedDiscreteEdgeLabelModelElement = document.createElement("y:RotatedDiscreteEdgeLabelModel");
-                    rotatedDiscreteEdgeLabelModelElement.setAttribute("angle", "0.0");
-                    rotatedDiscreteEdgeLabelModelElement.setAttribute("autoRotationEnabled", "true");
-                    rotatedDiscreteEdgeLabelModelElement.setAttribute("candidateMask", "18");
-                    rotatedDiscreteEdgeLabelModelElement.setAttribute("distance", "2.0");
-                    rotatedDiscreteEdgeLabelModelElement.setAttribute("positionRelativeToSegment", "false");
-                    labelModelElement.appendChild(rotatedDiscreteEdgeLabelModelElement);
+                Element rotatedDiscreteEdgeLabelModelElement = document.createElement("y:RotatedDiscreteEdgeLabelModel");
+                rotatedDiscreteEdgeLabelModelElement.setAttribute("angle", "0.0");
+                rotatedDiscreteEdgeLabelModelElement.setAttribute("autoRotationEnabled", "true");
+                rotatedDiscreteEdgeLabelModelElement.setAttribute("candidateMask", "18");
+                rotatedDiscreteEdgeLabelModelElement.setAttribute("distance", "2.0");
+                rotatedDiscreteEdgeLabelModelElement.setAttribute("positionRelativeToSegment", "false");
+                labelModelElement.appendChild(rotatedDiscreteEdgeLabelModelElement);
 
-                    Element modelParameterElement = document.createElement("y:ModelParameter");
-                    edgeLabelElement.appendChild(modelParameterElement);
+                Element modelParameterElement = document.createElement("y:ModelParameter");
+                edgeLabelElement.appendChild(modelParameterElement);
 
-                    Element rotatedDiscreteEdgeLabelModelParameterElement = document.createElement("y:RotatedDiscreteEdgeLabelModelParameter");
-                    rotatedDiscreteEdgeLabelModelParameterElement.setAttribute("position", "head");
-                    modelParameterElement.appendChild(rotatedDiscreteEdgeLabelModelParameterElement);
+                Element rotatedDiscreteEdgeLabelModelParameterElement = document.createElement("y:RotatedDiscreteEdgeLabelModelParameter");
+                rotatedDiscreteEdgeLabelModelParameterElement.setAttribute("position", "head");
+                modelParameterElement.appendChild(rotatedDiscreteEdgeLabelModelParameterElement);
 
-                    Element preferredPlacementDescriptorElement = document.createElement("y:PreferredPlacementDescriptor");
-                    preferredPlacementDescriptorElement.setAttribute("angle", "0.0");
-                    preferredPlacementDescriptorElement.setAttribute("angleOffsetOnRightSide", "0");
-                    preferredPlacementDescriptorElement.setAttribute("angleReference", "absolute");
-                    preferredPlacementDescriptorElement.setAttribute("angleRotationOnRightSide", "co");
-                    preferredPlacementDescriptorElement.setAttribute("distance", "-1.0");
-                    preferredPlacementDescriptorElement.setAttribute("frozen", "true");
-                    preferredPlacementDescriptorElement.setAttribute("placement", "anywhere");
-                    preferredPlacementDescriptorElement.setAttribute("side", "anywhere");
-                    preferredPlacementDescriptorElement.setAttribute("sideReference", "relative_to_edge_flow");
-                    edgeLabelElement.appendChild(preferredPlacementDescriptorElement);
+                Element preferredPlacementDescriptorElement = document.createElement("y:PreferredPlacementDescriptor");
+                preferredPlacementDescriptorElement.setAttribute("angle", "0.0");
+                preferredPlacementDescriptorElement.setAttribute("angleOffsetOnRightSide", "0");
+                preferredPlacementDescriptorElement.setAttribute("angleReference", "absolute");
+                preferredPlacementDescriptorElement.setAttribute("angleRotationOnRightSide", "co");
+                preferredPlacementDescriptorElement.setAttribute("distance", "-1.0");
+                preferredPlacementDescriptorElement.setAttribute("frozen", "true");
+                preferredPlacementDescriptorElement.setAttribute("placement", "anywhere");
+                preferredPlacementDescriptorElement.setAttribute("side", "anywhere");
+                preferredPlacementDescriptorElement.setAttribute("sideReference", "relative_to_edge_flow");
+                edgeLabelElement.appendChild(preferredPlacementDescriptorElement);
 
-                    Element bendStyleElement = document.createElement("y:BendStyle");
-                    bendStyleElement.setAttribute("smoothed", "true");
-                    polyLineEdgeElement.appendChild(bendStyleElement);
+                Element bendStyleElement = document.createElement("y:BendStyle");
+                bendStyleElement.setAttribute("smoothed", "true");
+                polyLineEdgeElement.appendChild(bendStyleElement);
 
-                    edge++;
-                }
+                edge++;
             }
         }
 

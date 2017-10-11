@@ -1,34 +1,51 @@
 {
-  "m_office": [
-    {
-      "masterField": "id",
-      "referenceBy": {
-        "m_staff": "office_id",
-        "m_appuser": "office_id"
-      }
-    }
-  ],
-  "m_image": [
-    {
-      "masterField": "id",
-      "referenceBy": {
-        "m_staff": "image_id"
-      }
-    }
-  ],
   "m_staff": [
     {
-      "masterField": "id",
-      "referenceBy": {
-        "m_appuser": "staff_id"
+      "fieldName": "office_id",
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
       }
     }
   ],
-  "m_code_value": [
+  "m_tellers": [
     {
-      "masterField": "id",
-      "referenceBy": {
-        "acc_gl_account": "tag_id"
+      "fieldName": "office_id",
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    }
+  ],
+  "m_group": [
+    {
+      "fieldName": "office_id",
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
+      }
+    },
+    {
+      "fieldName": "staff_id",
+      "pk": false,
+      "uq": false,
+      "referenceTo": {
+        "tableName": "m_staff",
+        "fieldName": "id",
+        "pk": true,
+        "uq": false
       }
     }
   ]

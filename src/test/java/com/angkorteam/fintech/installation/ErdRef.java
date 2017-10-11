@@ -1,13 +1,12 @@
 package com.angkorteam.fintech.installation;
 
 import java.io.Serializable;
-import java.util.Map;
 
-public class ErdVO implements Serializable {
+public class ErdRef implements Serializable {
+
+    private String tableName;
 
     private String fieldName;
-
-    private ErdRef referenceTo;
 
     private boolean pk = false;
 
@@ -19,6 +18,14 @@ public class ErdVO implements Serializable {
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
     public boolean isPk() {
@@ -35,14 +42,6 @@ public class ErdVO implements Serializable {
 
     public void setUq(boolean uq) {
         this.uq = uq;
-    }
-
-    public ErdRef getReferenceTo() {
-        return referenceTo;
-    }
-
-    public void setReferenceTo(ErdRef referenceTo) {
-        this.referenceTo = referenceTo;
     }
 
 }
