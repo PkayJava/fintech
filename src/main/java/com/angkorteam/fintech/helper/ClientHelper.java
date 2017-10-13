@@ -52,10 +52,14 @@ public class ClientHelper {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "/transactions?command=deposit", object);
     }
-    
+
     public static JsonNode withdrawCenterAccount(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "/transactions?command=withdrawal", object);
+    }
+
+    public static JsonNode createCenterAccount(IMifos session, JsonNode object) throws UnirestException {
+        return Helper.performServerPost(session, "/api/v1/savingsaccounts", object);
     }
 
     // http://fineract:8080/fineract-provider/api/v1/savingsaccounts/7?command=close

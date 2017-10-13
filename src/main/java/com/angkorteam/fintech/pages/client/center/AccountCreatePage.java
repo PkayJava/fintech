@@ -2,44 +2,67 @@ package com.angkorteam.fintech.pages.client.center;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.AccountBuilder;
 import com.angkorteam.fintech.dto.enums.DayInYear;
 import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
 import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
 import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
 import com.angkorteam.fintech.dto.enums.LockInType;
+import com.angkorteam.fintech.helper.ClientHelper;
+import com.angkorteam.fintech.popup.CenterAccountChargePopup;
 import com.angkorteam.fintech.provider.DayInYearProvider;
 import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
 import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
 import com.angkorteam.fintech.provider.InterestPostingPeriodProvider;
 import com.angkorteam.fintech.provider.LockInTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
+import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.TextColumn;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class AccountCreatePage extends Page {
@@ -181,11 +204,18 @@ public class AccountCreatePage extends Page {
     protected Double balanceRequiredForInterestCalculationValue;
     protected Label balanceRequiredForInterestCalculationField;
 
-    // protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
-    // protected DataTable<Map<String, Object>, String> chargeTable;
-    // protected ListDataProvider chargeProvider;
-    // protected ModalWindow chargePopup;
-    // protected AjaxLink<Void> chargeAddLink;
+    protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
+    protected DataTable<Map<String, Object>, String> chargeTable;
+    protected ListDataProvider chargeProvider;
+    protected AjaxLink<Void> chargeAddLink;
+    protected ModalWindow chargePopup;
+
+    protected Option itemChargeValue;
+    protected String itemChargeTypeValue;
+    protected Double itemAmountValue;
+    protected String itemCollectedOnValue;
+    protected Date itemDateValue;
+    protected Integer itemRepaymentEveryValue;
 
     @Override
     protected void onInitialize() {
@@ -442,8 +472,92 @@ public class AccountCreatePage extends Page {
         this.balanceRequiredForInterestCalculationField = new Label("balanceRequiredForInterestCalculationField", new PropertyModel<>(this, "balanceRequiredForInterestCalculationValue"));
         form.add(this.balanceRequiredForInterestCalculationField);
 
+        // Table
+        this.chargePopup = new ModalWindow("chargePopup");
+        add(this.chargePopup);
+        this.chargePopup.setOnClose(this::chargePopupOnClose);
+
+        List<IColumn<Map<String, Object>, String>> chargeColumn = Lists.newLinkedList();
+        chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeNameColumn));
+        chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeTypeColumn));
+        chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeAmountColumn));
+        chargeColumn.add(new TextColumn(Model.of("Collected On"), "collectedOn", "collectedOn", this::chargeCollectedOnColumn));
+        chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeDateColumn));
+        chargeColumn.add(new TextColumn(Model.of("Repayments Every"), "repaymentEvery", "repaymentEvery", this::chargeRepaymentEveryColumn));
+        chargeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::chargeActionItem, this::chargeActionClick));
+        this.chargeProvider = new ListDataProvider(this.chargeValue);
+        this.chargeTable = new DataTable<>("chargeTable", chargeColumn, this.chargeProvider, 20);
+        this.form.add(this.chargeTable);
+        this.chargeTable.addTopToolbar(new HeadersToolbar<>(this.chargeTable, this.chargeProvider));
+        this.chargeTable.addBottomToolbar(new NoRecordsToolbar(this.chargeTable));
+
+        this.chargeAddLink = new AjaxLink<>("chargeAddLink");
+        this.chargeAddLink.setOnClick(this::chargeAddLinkClick);
+        this.form.add(this.chargeAddLink);
+
         overdraftAllowedFieldUpdate(null);
 
+    }
+
+    protected ItemPanel chargeCollectedOnColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
+    }
+
+    protected ItemPanel chargeDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Date value = (Date) model.get(jdbcColumn);
+        return new TextCell(value, "dd MMMM");
+    }
+
+    protected ItemPanel chargeNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
+    }
+
+    protected ItemPanel chargeTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        String value = (String) model.get(jdbcColumn);
+        return new TextCell(value);
+    }
+
+    protected ItemPanel chargeAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Double value = (Double) model.get(jdbcColumn);
+        return new TextCell(value, "#,###.00");
+    }
+
+    protected ItemPanel chargeRepaymentEveryColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        Integer value = (Integer) model.get(jdbcColumn);
+        return new TextCell(value);
+    }
+
+    protected void chargeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+        int index = -1;
+        for (int i = 0; i < this.chargeValue.size(); i++) {
+            Map<String, Object> column = this.chargeValue.get(i);
+            if (model.get("uuid").equals(column.get("uuid"))) {
+                index = i;
+                break;
+            }
+        }
+        if (index >= 0) {
+            this.chargeValue.remove(index);
+        }
+        target.add(this.chargeTable);
+    }
+
+    protected List<ActionItem> chargeActionItem(String s, Map<String, Object> model) {
+        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+    }
+
+    protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.itemChargeValue = null;
+        this.itemChargeTypeValue = null;
+        this.itemAmountValue = null;
+        this.itemCollectedOnValue = null;
+        this.itemDateValue = null;
+        this.itemRepaymentEveryValue = null;
+        this.chargePopup.setContent(new CenterAccountChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyValue));
+        this.chargePopup.show(target);
+        return false;
     }
 
     protected boolean overdraftAllowedFieldUpdate(AjaxRequestTarget target) {
@@ -451,16 +565,26 @@ public class AccountCreatePage extends Page {
         this.maximumOverdraftAmountLimitContainer.setVisible(visible);
         this.nominalAnnualInterestForOverdraftContainer.setVisible(visible);
         this.minOverdraftRequiredForInterestCalculationContainer.setVisible(visible);
-        this.enforceMinimumBalanceContainer.setVisible(!visible);
-        this.minimumBalanceContainer.setVisible(!visible);
         if (target != null) {
             target.add(this.maximumOverdraftAmountLimitBlock);
             target.add(this.nominalAnnualInterestForOverdraftBlock);
             target.add(this.minOverdraftRequiredForInterestCalculationBlock);
-            target.add(this.enforceMinimumBalanceBlock);
-            target.add(this.minimumBalanceBlock);
         }
         return false;
+    }
+
+    protected void chargePopupOnClose(String elementId, AjaxRequestTarget target) {
+        Map<String, Object> item = Maps.newHashMap();
+        item.put("uuid", UUID.randomUUID().toString());
+        item.put("chargeId", this.itemChargeValue.getId());
+        item.put("amount", this.itemAmountValue);
+        item.put("date", this.itemDateValue);
+        item.put("repaymentEvery", this.itemRepaymentEveryValue);
+        item.put("type", this.itemChargeTypeValue);
+        item.put("name", this.itemChargeValue.getText());
+        item.put("collectedOn", this.itemCollectedOnValue);
+        this.chargeValue.add(item);
+        target.add(this.chargeTable);
     }
 
     protected void initData() {
@@ -516,11 +640,72 @@ public class AccountCreatePage extends Page {
         BigDecimal balanceRequiredForInterestCalculationValue = (BigDecimal) productObject.get("min_balance_for_interest_calculation");
         this.balanceRequiredForInterestCalculationValue = balanceRequiredForInterestCalculationValue == null ? null : balanceRequiredForInterestCalculationValue.doubleValue();
 
-        // select * from m_charge where currency_code = 'USD' and charge_applies_to_enum
-        // = 2 and is_active = 1;
     }
 
     protected void saveButtonSubmit(Button button) {
+        AccountBuilder builder = new AccountBuilder();
+
+        builder.withProductId(this.productId);
+        builder.withNominalAnnualInterestRate(this.nominalAnnualInterestValue);
+
+        builder.withMinRequiredOpeningBalance(this.minimumOpeningBalanceValue);
+
+        builder.withWithdrawalFeeForTransfers(this.applyWithdrawalFeeForTransferValue == null ? false : this.applyWithdrawalFeeForTransferValue);
+
+        boolean allowOverdraft = this.overdraftAllowedValue == null ? false : this.overdraftAllowedValue;
+        builder.withAllowOverdraft(allowOverdraft);
+
+        if (allowOverdraft) {
+            builder.withOverdraftLimit(this.maximumOverdraftAmountLimitValue);
+            builder.withNominalAnnualInterestRateOverdraft(this.nominalAnnualInterestForOverdraftValue);
+            builder.withMinOverdraftForInterestCalculation(this.minOverdraftRequiredForInterestCalculationValue);
+        }
+
+        builder.withEnforceMinRequiredBalance(this.enforceMinimumBalanceValue == null ? false : this.enforceMinimumBalanceValue);
+        builder.withMinRequiredBalance(this.minimumBalanceValue);
+        builder.withHoldTax(false);
+        if (this.interestCompoundingPeriodValue != null) {
+            builder.withInterestCompoundingPeriodType(InterestCompoundingPeriod.valueOf(this.interestCompoundingPeriodValue.getId()));
+        }
+        if (this.interestPostingPeriodValue != null) {
+            builder.withInterestPostingPeriodType(InterestPostingPeriod.valueOf(this.interestPostingPeriodValue.getId()));
+        }
+        if (this.interestCalculatedUsingValue != null) {
+            builder.withInterestCalculationType(InterestCalculatedUsing.valueOf(this.interestCalculatedUsingValue.getId()));
+        }
+        if (this.dayInYearValue != null) {
+            builder.withInterestCalculationDaysInYearType(DayInYear.valueOf(this.dayInYearValue.getId()));
+        }
+        builder.withLockinPeriodFrequency(this.lockInPeriodValue);
+        if (this.lockInTypeValue != null) {
+            builder.withLockinPeriodFrequencyType(LockInType.valueOf(this.lockInTypeValue.getId()));
+        }
+        if (this.officerValue != null) {
+            builder.withFieldOfficerId(this.officerValue.getId());
+        }
+        builder.withExternalId(this.externalIdValue);
+        builder.withSubmittedOnDate(this.submittedOnValue);
+
+        for (Map<String, Object> charge : this.chargeValue) {
+            builder.withCharge((String) charge.get("chargeId"), (Double) charge.get("amount"), (Date) charge.get("date"), (Integer) charge.get("repaymentEvery"));
+        }
+
+        builder.withGroupId(this.centerId);
+
+        JsonNode node = null;
+        JsonNode request = builder.build();
+        try {
+            node = ClientHelper.createCenterAccount((Session) getSession(), request);
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+        PageParameters parameters = new PageParameters();
+        parameters.add("centerId", this.centerId);
+        setResponsePage(CenterPreviewPage.class, parameters);
 
     }
 
