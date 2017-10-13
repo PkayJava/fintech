@@ -1,5 +1,9 @@
 package com.angkorteam.fintech;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Map;
+
 import org.apache.commons.configuration.XMLPropertiesConfiguration;
 import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
@@ -14,11 +18,21 @@ import com.angkorteam.fintech.pages.LoginPage;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.staff.UserBrowsePage;
 import com.angkorteam.framework.ResourceScope;
+import com.google.common.collect.Maps;
 
 /**
  * Created by socheatkhauv on 6/11/17.
  */
 public class Application extends AuthenticatedWebApplication {
+
+    public static Map<String, NumberFormat> FORMATS;
+
+    static {
+        FORMATS = Maps.newHashMap();
+        FORMATS.put("#,###.00", new DecimalFormat("#,###.00"));
+        FORMATS.put("#.00", new DecimalFormat("#.00"));
+        FORMATS.put("#,###,##0.00", new DecimalFormat("#,###,##0.00"));
+    }
 
     @Override
     protected void init() {

@@ -14,6 +14,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import com.angkorteam.fintech.Application;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -24,14 +25,6 @@ import com.google.common.collect.Maps;
  */
 public class BadgeCell extends ItemPanel {
 
-    private static Map<String, NumberFormat> FORMATS;
-
-    static {
-        FORMATS = Maps.newHashMap();
-        FORMATS.put("#,###.00", new DecimalFormat("#,###.00"));
-        FORMATS.put("#.00", new DecimalFormat("#.00"));
-    }
-
     private BadgeType type;
 
     private IModel<?> model;
@@ -41,7 +34,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, byte v, String pattern) {
-        this(type, Model.of(FORMATS.get(pattern).format(v)));
+        this(type, Model.of(Application.FORMATS.get(pattern).format(v)));
     }
 
     public BadgeCell(BadgeType type, Byte v) {
@@ -49,7 +42,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, Byte v, String pattern) {
-        this(type, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(type, v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public BadgeCell(BadgeType type, boolean v) {
@@ -65,7 +58,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, short v, String pattern) {
-        this(type, Model.of(FORMATS.get(pattern).format(v)));
+        this(type, Model.of(Application.FORMATS.get(pattern).format(v)));
     }
 
     public BadgeCell(BadgeType type, Short v) {
@@ -73,7 +66,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, Short v, String pattern) {
-        this(type, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(type, v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public BadgeCell(BadgeType type, int v) {
@@ -81,7 +74,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, int v, String pattern) {
-        this(type, Model.of(FORMATS.get(pattern).format(v)));
+        this(type, Model.of(Application.FORMATS.get(pattern).format(v)));
     }
 
     public BadgeCell(BadgeType type, Integer v) {
@@ -89,7 +82,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, Integer v, String pattern) {
-        this(type, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(type, v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public BadgeCell(BadgeType type, long v) {
@@ -97,7 +90,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, long v, String pattern) {
-        this(type, Model.of(FORMATS.get(pattern).format(v)));
+        this(type, Model.of(Application.FORMATS.get(pattern).format(v)));
     }
 
     public BadgeCell(BadgeType type, Long v) {
@@ -105,7 +98,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, Long v, String pattern) {
-        this(type, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(type, v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public BadgeCell(BadgeType type, double v) {
@@ -113,7 +106,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, double v, String pattern) {
-        this(type, Model.of(FORMATS.get(pattern).format(v)));
+        this(type, Model.of(Application.FORMATS.get(pattern).format(v)));
     }
 
     public BadgeCell(BadgeType type, Double v) {
@@ -121,7 +114,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, Double v, String pattern) {
-        this(type, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(type, v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public BadgeCell(BadgeType type, float v) {
@@ -129,7 +122,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, float v, String pattern) {
-        this(type, Model.of(FORMATS.get(pattern).format(v)));
+        this(type, Model.of(Application.FORMATS.get(pattern).format(v)));
     }
 
     public BadgeCell(BadgeType type, Float v) {
@@ -137,7 +130,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, Float v, String pattern) {
-        this(type, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(type, v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public BadgeCell(BadgeType type, String v) {
@@ -153,7 +146,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, BigDecimal v, String pattern) {
-        this(type, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(type, v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public BadgeCell(BadgeType type, BigInteger v) {
@@ -161,7 +154,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, BigInteger v, String pattern) {
-        this(type, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(type, v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public BadgeCell(BadgeType type, Character v) {
@@ -173,7 +166,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, Number v, String pattern) {
-        this(type, v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(type, v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public BadgeCell(BadgeType type, char v) {

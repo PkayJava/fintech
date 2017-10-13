@@ -190,7 +190,7 @@ public class CenterPreviewGeneralPanel extends Panel {
 
     protected ItemPanel balanceAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         BigDecimal value = (BigDecimal) model.get(jdbcColumn);
-        return new TextCell(value);
+        return new TextCell(value, "#,###,##0.00");
     }
 
     protected ItemPanel productAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {

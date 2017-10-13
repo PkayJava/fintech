@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import com.angkorteam.fintech.Application;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Maps;
@@ -21,14 +22,6 @@ import com.google.common.collect.Maps;
  */
 public class TextCell extends ItemPanel {
 
-    private static Map<String, NumberFormat> FORMATS;
-
-    static {
-        FORMATS = Maps.newHashMap();
-        FORMATS.put("#,###.00", new DecimalFormat("#,###.00"));
-        FORMATS.put("#.00", new DecimalFormat("#.00"));
-    }
-
     private IModel<?> model;
 
     public TextCell(byte v) {
@@ -36,7 +29,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(byte v, String pattern) {
-        this(Model.of(FORMATS.get(pattern).format(v)));
+        this(Model.of(Application.FORMATS.get(pattern).format(v)));
     }
 
     public TextCell(Byte v) {
@@ -44,7 +37,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(Byte v, String pattern) {
-        this(v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public TextCell(boolean v) {
@@ -60,7 +53,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(short v, String pattern) {
-        this(Model.of(FORMATS.get(pattern).format(v)));
+        this(Model.of(Application.FORMATS.get(pattern).format(v)));
     }
 
     public TextCell(Short v) {
@@ -68,7 +61,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(Short v, String pattern) {
-        this(v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public TextCell(int v) {
@@ -76,7 +69,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(int v, String pattern) {
-        this(Model.of(FORMATS.get(pattern).format(v)));
+        this(Model.of(Application.FORMATS.get(pattern).format(v)));
     }
 
     public TextCell(Integer v) {
@@ -84,7 +77,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(Integer v, String pattern) {
-        this(v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public TextCell(long v) {
@@ -92,7 +85,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(long v, String pattern) {
-        this(Model.of(FORMATS.get(pattern).format(v)));
+        this(Model.of(Application.FORMATS.get(pattern).format(v)));
     }
 
     public TextCell(Long v) {
@@ -100,7 +93,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(Long v, String pattern) {
-        this(v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public TextCell(double v) {
@@ -108,7 +101,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(double v, String pattern) {
-        this(Model.of(FORMATS.get(pattern).format(v)));
+        this(Model.of(Application.FORMATS.get(pattern).format(v)));
     }
 
     public TextCell(Double v) {
@@ -116,7 +109,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(Double v, String pattern) {
-        this(v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public TextCell(float v) {
@@ -124,7 +117,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(float v, String pattern) {
-        this(Model.of(FORMATS.get(pattern).format(v)));
+        this(Model.of(Application.FORMATS.get(pattern).format(v)));
     }
 
     public TextCell(Float v) {
@@ -132,7 +125,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(Float v, String pattern) {
-        this(v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public TextCell(String v) {
@@ -148,7 +141,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(BigDecimal v, String pattern) {
-        this(v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public TextCell(BigInteger v) {
@@ -156,7 +149,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(BigInteger v, String pattern) {
-        this(v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public TextCell(Character v) {
@@ -176,7 +169,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(Number v, String pattern) {
-        this(v != null ? Model.of(FORMATS.get(pattern).format(v)) : Model.of(""));
+        this(v != null ? Model.of(Application.FORMATS.get(pattern).format(v)) : Model.of(""));
     }
 
     public TextCell(IModel<?> model) {
