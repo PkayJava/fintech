@@ -14,17 +14,17 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.pages.client.center.AccountActivatePage;
-import com.angkorteam.fintech.pages.client.center.AccountApprovePage;
-import com.angkorteam.fintech.pages.client.center.AccountDepositPage;
-import com.angkorteam.fintech.pages.client.center.AccountPreviewPage;
-import com.angkorteam.fintech.pages.client.center.AccountUndoApprovePage;
-import com.angkorteam.fintech.pages.client.center.AccountWithdrawPage;
 import com.angkorteam.fintech.pages.client.center.CenterClosePage;
 import com.angkorteam.fintech.pages.client.center.CenterModifyPage;
-import com.angkorteam.fintech.pages.client.center.CenterProductPage;
+import com.angkorteam.fintech.pages.client.center.CenterSavingAccountPage;
 import com.angkorteam.fintech.pages.client.center.GroupCreatePage;
 import com.angkorteam.fintech.pages.client.center.GroupManagePage;
+import com.angkorteam.fintech.pages.client.center.SavingAccountActivatePage;
+import com.angkorteam.fintech.pages.client.center.SavingAccountApprovePage;
+import com.angkorteam.fintech.pages.client.center.SavingAccountDepositPage;
+import com.angkorteam.fintech.pages.client.center.SavingAccountPreviewPage;
+import com.angkorteam.fintech.pages.client.center.SavingAccountUndoApprovePage;
+import com.angkorteam.fintech.pages.client.center.SavingAccountWithdrawPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
@@ -47,8 +47,8 @@ public class CenterPreviewGeneralPanel extends Panel {
     protected DataTable<Map<String, Object>, String> groupTable;
     protected JdbcProvider groupProvider;
 
-    protected DataTable<Map<String, Object>, String> accountTable;
-    protected JdbcProvider accountProvider;
+    protected DataTable<Map<String, Object>, String> savingAccountTable;
+    protected JdbcProvider savingAccountProvider;
 
     protected BookmarkablePageLink<Void> editLink;
 
@@ -83,9 +83,9 @@ public class CenterPreviewGeneralPanel extends Panel {
         this.groupProvider.selectField("id", Long.class);
 
         List<IColumn<Map<String, Object>, String>> groupColumns = Lists.newArrayList();
-        groupColumns.add(new TextFilterColumn(this.groupProvider, ItemClass.String, Model.of("Name"), "displayName", "displayName", this::displayNameGroupColumn));
-        groupColumns.add(new TextFilterColumn(this.groupProvider, ItemClass.String, Model.of("Account"), "account", "account", this::accountGroupColumn));
-        groupColumns.add(new TextFilterColumn(this.groupProvider, ItemClass.String, Model.of("Status"), "status", "status", this::statusGroupColumn));
+        groupColumns.add(new TextFilterColumn(this.groupProvider, ItemClass.String, Model.of("Name"), "displayName", "displayName", this::groupDisplayNameColumn));
+        groupColumns.add(new TextFilterColumn(this.groupProvider, ItemClass.String, Model.of("Account"), "account", "account", this::groupAccountColumn));
+        groupColumns.add(new TextFilterColumn(this.groupProvider, ItemClass.String, Model.of("Status"), "status", "status", this::groupStatusColumn));
 
         this.groupTable = new DefaultDataTable<>("groupTable", groupColumns, this.groupProvider, 20);
         add(this.groupTable);
@@ -102,36 +102,36 @@ public class CenterPreviewGeneralPanel extends Panel {
         this.manageGroupLink = new BookmarkablePageLink<>("manageGroupLink", GroupManagePage.class, parameters);
         add(this.manageGroupLink);
 
-        this.centerSavingApplicationLink = new BookmarkablePageLink<>("centerSavingApplicationLink", CenterProductPage.class, parameters);
+        this.centerSavingApplicationLink = new BookmarkablePageLink<>("centerSavingApplicationLink", CenterSavingAccountPage.class, parameters);
         add(this.centerSavingApplicationLink);
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", CenterClosePage.class, parameters);
         add(this.closeLink);
 
-        this.accountProvider = new JdbcProvider("m_savings_account");
-        this.accountProvider.addJoin("LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
-        this.accountProvider.boardField("concat(m_savings_account.id,'')", "id", String.class);
-        this.accountProvider.boardField("m_savings_account.account_no", "account", String.class);
-        this.accountProvider.boardField("m_savings_product.name", "product", String.class);
-        this.accountProvider.boardField("m_savings_account.status_enum", "status", String.class);
-        this.accountProvider.boardField("m_savings_account.account_balance_derived", "balance", Double.class);
-        this.accountProvider.applyWhere("group_id", "m_savings_account.group_id = " + this.centerId);
+        this.savingAccountProvider = new JdbcProvider("m_savings_account");
+        this.savingAccountProvider.addJoin("LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
+        this.savingAccountProvider.boardField("concat(m_savings_account.id,'')", "id", String.class);
+        this.savingAccountProvider.boardField("m_savings_account.account_no", "account", String.class);
+        this.savingAccountProvider.boardField("m_savings_product.name", "product", String.class);
+        this.savingAccountProvider.boardField("m_savings_account.status_enum", "status", String.class);
+        this.savingAccountProvider.boardField("m_savings_account.account_balance_derived", "balance", Double.class);
+        this.savingAccountProvider.applyWhere("group_id", "m_savings_account.group_id = " + this.centerId);
 
-        this.accountProvider.selectField("id", String.class);
-        this.accountProvider.selectField("status", String.class);
+        this.savingAccountProvider.selectField("id", String.class);
+        this.savingAccountProvider.selectField("status", String.class);
 
-        List<IColumn<Map<String, Object>, String>> accountColumns = Lists.newArrayList();
-        accountColumns.add(new TextFilterColumn(this.accountProvider, ItemClass.String, Model.of("Account"), "account", "account", this::accountAccountColumn));
-        accountColumns.add(new TextFilterColumn(this.accountProvider, ItemClass.String, Model.of("Product"), "product", "product", this::productAccountColumn));
-        accountColumns.add(new TextFilterColumn(this.accountProvider, ItemClass.Double, Model.of("Balance"), "balance", "balance", this::balanceAccountColumn));
-        accountColumns.add(new ActionFilterColumn<>(Model.of("Action"), this::accountActionItem, this::accountActionClick));
+        List<IColumn<Map<String, Object>, String>> savingAccountColumns = Lists.newArrayList();
+        savingAccountColumns.add(new TextFilterColumn(this.savingAccountProvider, ItemClass.String, Model.of("Account"), "account", "account", this::savingAccountAccountColumn));
+        savingAccountColumns.add(new TextFilterColumn(this.savingAccountProvider, ItemClass.String, Model.of("Product"), "product", "product", this::savingAccountProductColumn));
+        savingAccountColumns.add(new TextFilterColumn(this.savingAccountProvider, ItemClass.Double, Model.of("Balance"), "balance", "balance", this::savingAccountBalanceColumn));
+        savingAccountColumns.add(new ActionFilterColumn<>(Model.of("Action"), this::savingAccountActionItem, this::savingAccountActionClick));
 
-        this.accountTable = new DefaultDataTable<>("accountTable", accountColumns, this.accountProvider, 20);
-        add(this.accountTable);
+        this.savingAccountTable = new DefaultDataTable<>("savingAccountTable", savingAccountColumns, this.savingAccountProvider, 20);
+        add(this.savingAccountTable);
 
     }
 
-    protected List<ActionItem> accountActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> savingAccountActionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         Integer status = (Integer) model.get("status");
         if (100 == status) {
@@ -146,69 +146,69 @@ public class CenterPreviewGeneralPanel extends Panel {
         return actions;
     }
 
-    protected void accountActionClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void savingAccountActionClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
         if ("Approve".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
-            setResponsePage(AccountApprovePage.class, parameters);
+            setResponsePage(SavingAccountApprovePage.class, parameters);
         } else if ("Undo Approve".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
-            setResponsePage(AccountUndoApprovePage.class, parameters);
+            setResponsePage(SavingAccountUndoApprovePage.class, parameters);
         } else if ("Activate".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
-            setResponsePage(AccountActivatePage.class, parameters);
+            setResponsePage(SavingAccountActivatePage.class, parameters);
         } else if ("Deposit".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
-            setResponsePage(AccountDepositPage.class, parameters);
+            setResponsePage(SavingAccountDepositPage.class, parameters);
         } else if ("Withdraw".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
-            setResponsePage(AccountWithdrawPage.class, parameters);
+            setResponsePage(SavingAccountWithdrawPage.class, parameters);
         }
     }
 
-    protected ItemPanel accountAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel savingAccountAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         PageParameters parameters = new PageParameters();
         parameters.add("centerId", this.centerId);
         parameters.add("accountId", model.get("id"));
-        return new LinkCell(AccountPreviewPage.class, parameters, value);
+        return new LinkCell(SavingAccountPreviewPage.class, parameters, value);
     }
 
-    protected ItemPanel balanceAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel savingAccountBalanceColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         BigDecimal value = (BigDecimal) model.get(jdbcColumn);
         return new TextCell(value, "#,###,##0.00");
     }
 
-    protected ItemPanel productAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel savingAccountProductColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    protected ItemPanel displayNameGroupColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel groupDisplayNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    protected ItemPanel accountGroupColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel groupAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    protected ItemPanel statusGroupColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel groupStatusColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }

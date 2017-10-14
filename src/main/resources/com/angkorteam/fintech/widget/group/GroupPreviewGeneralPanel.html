@@ -18,9 +18,10 @@
 								<li><a href="#">Close</a></li>
 							</ul>
 						</div>
-						<a href="#" class="btn btn-info">Edit</a> <a href="#"
-							class="btn btn-info">Group Saving Application</a> <a href="#"
-							class="btn btn-info">Group Loan Application</a>
+						<a href="#" class="btn btn-info">Edit</a> <a
+							wicket:id="groupSavingApplicationLink" class="btn btn-info">Group
+							Saving Application</a> <a href="#" class="btn btn-info">Group
+							Loan Application</a>
 					</div>
 				</div>
 			</div>
@@ -74,7 +75,9 @@
 								<h3 class="box-title">Savings Account Overview</h3>
 							</div>
 							<!-- /.box-header -->
-							<div class="box-body"></div>
+							<div class="box-body">
+								<table wicket:id="savingAccountTable" />
+							</div>
 							<!-- /.box-body -->
 						</div>
 						<!-- /.box -->

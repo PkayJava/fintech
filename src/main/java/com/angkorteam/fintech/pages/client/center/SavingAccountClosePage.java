@@ -5,7 +5,9 @@ import java.util.Date;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
@@ -17,7 +19,7 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.acount.WithdrawBuilder;
+import com.angkorteam.fintech.helper.acount.CloseBuilder;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -30,7 +32,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class AccountWithdrawPage extends Page {
+public class SavingAccountClosePage extends Page {
 
     protected String centerId;
     protected String accountId;
@@ -39,21 +41,32 @@ public class AccountWithdrawPage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupContainer transactionDateBlock;
-    protected WebMarkupContainer transactionDateContainer;
-    protected Date transactionDateValue;
-    protected DateTextField transactionDateField;
-    protected TextFeedbackPanel transactionDateFeedback;
+    protected WebMarkupContainer closedOnBlock;
+    protected WebMarkupContainer closedOnContainer;
+    protected Date closedOnValue;
+    protected DateTextField closedOnField;
+    protected TextFeedbackPanel closedOnFeedback;
+
+    protected WebMarkupContainer withdrawBalanceBlock;
+    protected WebMarkupContainer withdrawBalanceContainer;
+    protected Boolean withdrawBalanceValue;
+    protected CheckBox withdrawBalanceField;
+    protected TextFeedbackPanel withdrawBalanceFeedback;
+
+    protected WebMarkupContainer postInterestBlock;
+    protected WebMarkupContainer postInterestContainer;
+    protected Boolean postInterestValue;
+    protected CheckBox postInterestField;
+    protected TextFeedbackPanel postInterestFeedback;
 
     protected WebMarkupContainer transactionAmountBlock;
     protected WebMarkupContainer transactionAmountContainer;
-    protected Double transactionAmountValue;
-    protected TextField<Double> transactionAmountField;
-    protected TextFeedbackPanel transactionAmountFeedback;
+    protected String transactionAmountValue;
+    protected Label transactionAmountField;
 
-    protected SingleChoiceProvider paymentTypeProvider;
     protected WebMarkupContainer paymentTypeBlock;
     protected WebMarkupContainer paymentTypeContainer;
+    protected SingleChoiceProvider paymentTypeProvider;
     protected Option paymentTypeValue;
     protected Select2SingleChoice<Option> paymentTypeField;
     protected TextFeedbackPanel paymentTypeFeedback;
@@ -94,11 +107,19 @@ public class AccountWithdrawPage extends Page {
     protected TextField<String> bankField;
     protected TextFeedbackPanel bankFeedback;
 
+    protected WebMarkupContainer noteBlock;
+    protected WebMarkupContainer noteContainer;
+    protected String noteValue;
+    protected TextArea<String> noteField;
+    protected TextFeedbackPanel noteFeedback;
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
-
         initData();
+
+        PageParameters parameters = new PageParameters();
+        parameters.add("centerId", this.centerId);
 
         this.form = new Form<>("form");
         add(this.form);
@@ -107,32 +128,48 @@ public class AccountWithdrawPage extends Page {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.transactionDateBlock = new WebMarkupContainer("transactionDateBlock");
-        this.transactionDateBlock.setOutputMarkupId(true);
-        this.form.add(this.transactionDateBlock);
-        this.transactionDateContainer = new WebMarkupContainer("transactionDateContainer");
-        this.transactionDateBlock.add(this.transactionDateContainer);
-        this.transactionDateField = new DateTextField("transactionDateField", new PropertyModel<>(this, "transactionDateValue"));
-        this.transactionDateField.setLabel(Model.of("Transaction Date"));
-        this.transactionDateField.setRequired(false);
-        this.transactionDateContainer.add(this.transactionDateField);
-        this.transactionDateFeedback = new TextFeedbackPanel("transactionDateFeedback", this.transactionDateField);
-        this.transactionDateContainer.add(this.transactionDateFeedback);
+        this.closedOnBlock = new WebMarkupContainer("closedOnBlock");
+        this.closedOnBlock.setOutputMarkupId(true);
+        this.form.add(this.closedOnBlock);
+        this.closedOnContainer = new WebMarkupContainer("closedOnContainer");
+        this.closedOnBlock.add(this.closedOnContainer);
+        this.closedOnField = new DateTextField("closedOnField", new PropertyModel<>(this, "closedOnValue"));
+        this.closedOnField.setLabel(Model.of("Closed On"));
+        this.closedOnContainer.add(this.closedOnField);
+        this.closedOnFeedback = new TextFeedbackPanel("closedOnFeedback", this.closedOnField);
+        this.closedOnContainer.add(this.closedOnFeedback);
+
+        this.withdrawBalanceBlock = new WebMarkupContainer("withdrawBalanceBlock");
+        this.withdrawBalanceBlock.setOutputMarkupId(true);
+        this.form.add(this.withdrawBalanceBlock);
+        this.withdrawBalanceContainer = new WebMarkupContainer("withdrawBalanceContainer");
+        this.withdrawBalanceBlock.add(this.withdrawBalanceContainer);
+        this.withdrawBalanceField = new CheckBox("withdrawBalanceField", new PropertyModel<>(this, "withdrawBalanceValue"));
+        this.withdrawBalanceField.add(new OnChangeAjaxBehavior(this::withdrawBalanceFieldUpdate));
+        this.withdrawBalanceContainer.add(this.withdrawBalanceField);
+        this.withdrawBalanceFeedback = new TextFeedbackPanel("withdrawBalanceFeedback", this.withdrawBalanceField);
+        this.withdrawBalanceContainer.add(this.withdrawBalanceFeedback);
+
+        this.postInterestBlock = new WebMarkupContainer("postInterestBlock");
+        this.postInterestBlock.setOutputMarkupId(true);
+        this.form.add(this.postInterestBlock);
+        this.postInterestContainer = new WebMarkupContainer("postInterestContainer");
+        this.postInterestBlock.add(this.postInterestContainer);
+        this.postInterestField = new CheckBox("postInterestField", new PropertyModel<>(this, "postInterestValue"));
+        this.postInterestContainer.add(this.postInterestField);
+        this.postInterestFeedback = new TextFeedbackPanel("postInterestFeedback", this.postInterestField);
+        this.postInterestContainer.add(this.postInterestFeedback);
 
         this.transactionAmountBlock = new WebMarkupContainer("transactionAmountBlock");
         this.transactionAmountBlock.setOutputMarkupId(true);
         this.form.add(this.transactionAmountBlock);
         this.transactionAmountContainer = new WebMarkupContainer("transactionAmountContainer");
         this.transactionAmountBlock.add(this.transactionAmountContainer);
-        this.transactionAmountField = new TextField<>("transactionAmountField", new PropertyModel<>(this, "transactionAmountValue"));
-        this.transactionAmountField.setLabel(Model.of("Transaction Amount"));
-        this.transactionAmountField.setRequired(false);
+        this.transactionAmountField = new Label("transactionAmountField", new PropertyModel<>(this, "transactionAmountValue"));
         this.transactionAmountContainer.add(this.transactionAmountField);
-        this.transactionAmountFeedback = new TextFeedbackPanel("transactionAmountFeedback", this.transactionAmountField);
-        this.transactionAmountContainer.add(this.transactionAmountFeedback);
 
         this.paymentTypeProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
         this.paymentTypeBlock = new WebMarkupContainer("paymentTypeBlock");
@@ -141,8 +178,6 @@ public class AccountWithdrawPage extends Page {
         this.paymentTypeContainer = new WebMarkupContainer("paymentTypeContainer");
         this.paymentTypeBlock.add(this.paymentTypeContainer);
         this.paymentTypeField = new Select2SingleChoice<>("paymentTypeField", new PropertyModel<>(this, "paymentTypeValue"), this.paymentTypeProvider);
-        this.paymentTypeField.setLabel(Model.of("Payment Type"));
-        this.paymentTypeField.setRequired(false);
         this.paymentTypeContainer.add(this.paymentTypeField);
         this.paymentTypeFeedback = new TextFeedbackPanel("paymentTypeFeedback", this.paymentTypeField);
         this.paymentTypeContainer.add(this.paymentTypeFeedback);
@@ -213,14 +248,37 @@ public class AccountWithdrawPage extends Page {
         this.bankFeedback = new TextFeedbackPanel("bankFeedback", this.bankField);
         this.bankContainer.add(this.bankFeedback);
 
-        paymentDetailFieldUpdate(null);
+        this.noteBlock = new WebMarkupContainer("noteBlock");
+        this.noteBlock.setOutputMarkupId(true);
+        this.form.add(this.noteBlock);
+        this.noteContainer = new WebMarkupContainer("noteContainer");
+        this.noteBlock.add(this.noteContainer);
+        this.noteField = new TextArea<>("noteField", new PropertyModel<>(this, "noteValue"));
+        this.noteField.setLabel(Model.of("Note"));
+        this.noteContainer.add(this.noteField);
+        this.noteFeedback = new TextFeedbackPanel("noteFeedback", this.noteField);
+        this.noteContainer.add(this.noteFeedback);
 
+        withdrawBalanceFieldUpdate(null);
     }
 
     protected void initData() {
         this.centerId = getPageParameters().get("centerId").toString();
         this.accountId = getPageParameters().get("accountId").toString();
-        this.transactionDateValue = DateTime.now().toDate();
+        this.closedOnValue = DateTime.now().toDate();
+        this.postInterestValue = true;
+    }
+
+    protected boolean withdrawBalanceFieldUpdate(AjaxRequestTarget target) {
+        boolean visible = this.withdrawBalanceValue == null ? false : this.withdrawBalanceValue;
+        this.transactionAmountContainer.setVisible(visible);
+        this.paymentTypeContainer.setVisible(visible);
+        if (target != null) {
+            target.add(this.transactionAmountBlock);
+            target.add(this.paymentTypeBlock);
+        }
+        paymentDetailFieldUpdate(target);
+        return false;
     }
 
     protected boolean paymentDetailFieldUpdate(AjaxRequestTarget target) {
@@ -241,13 +299,17 @@ public class AccountWithdrawPage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        WithdrawBuilder builder = new WithdrawBuilder();
+        CloseBuilder builder = new CloseBuilder();
+
         builder.withId(this.accountId);
-        builder.withTransactionDate(this.transactionDateValue);
-        builder.withTransactionAmount(this.transactionAmountValue);
+
+        builder.withPostInterestValidationOnClosure(this.postInterestValue == null ? false : this.postInterestValue);
+        builder.withClosedOnDate(this.closedOnValue);
+        builder.withWithdrawBalance(this.withdrawBalanceValue == null ? false : this.withdrawBalanceValue);
         if (this.paymentTypeValue != null) {
             builder.withPaymentTypeId(this.paymentTypeValue.getId());
         }
+
         if (this.paymentDetailValue != null && this.paymentDetailValue) {
             builder.withAccountNumber(this.accountValue);
             builder.withCheckNumber(this.chequeValue);
@@ -256,9 +318,12 @@ public class AccountWithdrawPage extends Page {
             builder.withBankNumber(this.bankValue);
         }
 
+        builder.withNote(this.noteValue);
+
         JsonNode node = null;
+        JsonNode request = builder.build();
         try {
-            node = ClientHelper.withdrawCenterAccount((Session) getSession(), builder.build());
+            node = ClientHelper.closeCenterAccount((Session) getSession(), request);
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

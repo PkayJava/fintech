@@ -30,7 +30,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class AccountDepositPage extends Page {
+public class SavingAccountDepositPage extends Page {
 
     protected String centerId;
     protected String accountId;

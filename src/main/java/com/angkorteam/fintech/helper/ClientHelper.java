@@ -58,7 +58,7 @@ public class ClientHelper {
         return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "/transactions?command=withdrawal", object);
     }
 
-    public static JsonNode createCenterAccount(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode createSavingAccount(IMifos session, JsonNode object) throws UnirestException {
         return Helper.performServerPost(session, "/api/v1/savingsaccounts", object);
     }
 

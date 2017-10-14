@@ -16,7 +16,7 @@ import com.angkorteam.fintech.widget.center.AccountPreviewTransaction;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class AccountPreviewPage extends Page {
+public class SavingAccountPreviewPage extends Page {
 
     protected String centerId;
     protected String accountId;
@@ -136,13 +136,13 @@ public class AccountPreviewPage extends Page {
         parameters.add("centerId", this.centerId);
         parameters.add("accountId", this.accountId);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", AccountClosePage.class, parameters);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", SavingAccountClosePage.class, parameters);
         add(this.closeLink);
 
-        this.depositLink = new BookmarkablePageLink<>("depositLink", AccountDepositPage.class, parameters);
+        this.depositLink = new BookmarkablePageLink<>("depositLink", SavingAccountDepositPage.class, parameters);
         add(this.depositLink);
 
-        this.withdrawLink = new BookmarkablePageLink<>("withdrawLink", AccountWithdrawPage.class, parameters);
+        this.withdrawLink = new BookmarkablePageLink<>("withdrawLink", SavingAccountWithdrawPage.class, parameters);
         add(this.withdrawLink);
     }
 

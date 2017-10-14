@@ -19,7 +19,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class CenterProductPage extends Page {
+public class CenterSavingAccountPage extends Page {
 
     protected String centerId;
 
@@ -78,7 +78,7 @@ public class CenterProductPage extends Page {
         PageParameters parameters = new PageParameters();
         parameters.add("centerId", this.centerId);
         parameters.add("productId", this.productValue.getId());
-        setResponsePage(AccountCreatePage.class, parameters);
+        setResponsePage(SavingAccountCreatePage.class, parameters);
     }
 
 }
