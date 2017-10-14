@@ -16,7 +16,10 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.helper.ClientHelper;
+import com.angkorteam.fintech.helper.acount.CloseBuilder;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -25,6 +28,8 @@ import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class AccountClosePage extends Page {
@@ -166,7 +171,7 @@ public class AccountClosePage extends Page {
         this.transactionAmountField = new Label("transactionAmountField", new PropertyModel<>(this, "transactionAmountValue"));
         this.transactionAmountContainer.add(this.transactionAmountField);
 
-        this.paymentTypeProvider = new SingleChoiceProvider("", "", "");
+        this.paymentTypeProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
         this.paymentTypeBlock = new WebMarkupContainer("paymentTypeBlock");
         this.paymentTypeBlock.setOutputMarkupId(true);
         this.form.add(this.paymentTypeBlock);
@@ -294,6 +299,39 @@ public class AccountClosePage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
+        CloseBuilder builder = new CloseBuilder();
+
+        builder.withId(this.accountId);
+
+        builder.withPostInterestValidationOnClosure(this.postInterestValue == null ? false : this.postInterestValue);
+        builder.withClosedOnDate(this.closedOnValue);
+        builder.withWithdrawBalance(this.withdrawBalanceValue == null ? false : this.withdrawBalanceValue);
+        if (this.paymentTypeValue != null) {
+            builder.withPaymentTypeId(this.paymentTypeValue.getId());
+        }
+
+        if (this.paymentDetailValue != null && this.paymentDetailValue) {
+            builder.withAccountNumber(this.accountValue);
+            builder.withCheckNumber(this.chequeValue);
+            builder.withRoutingCode(this.routingValue);
+            builder.withReceiptNumber(this.receiptValue);
+            builder.withBankNumber(this.bankValue);
+        }
+
+        builder.withNote(this.noteValue);
+
+        JsonNode node = null;
+        JsonNode request = builder.build();
+        try {
+            node = ClientHelper.closeCenterAccount((Session) getSession(), request);
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+
         PageParameters parameters = new PageParameters();
         parameters.add("centerId", this.centerId);
         setResponsePage(CenterPreviewPage.class, parameters);

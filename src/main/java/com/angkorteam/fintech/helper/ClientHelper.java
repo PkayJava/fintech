@@ -62,6 +62,8 @@ public class ClientHelper {
         return Helper.performServerPost(session, "/api/v1/savingsaccounts", object);
     }
 
-    // http://fineract:8080/fineract-provider/api/v1/savingsaccounts/7?command=close
-
+    public static JsonNode closeCenterAccount(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "?command=close", object);
+    }
 }
