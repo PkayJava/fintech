@@ -179,9 +179,11 @@ public class ERDData {
         List<String> process = new ArrayList<>();
         List<String> filters = new ArrayList<>();
         boolean hasFilter = false;
-        if (System.getProperty("tables") != null && !"".equals(System.getProperty("tables"))) {
+        String temps = System.getProperty("tables");
+        temps = "m_office";
+        if (temps != null && !"".equals(temps)) {
             hasFilter = true;
-            String temp = (String) System.getProperty("tables");
+            String temp = (String) temps;
             for (String filter : temp.split(",")) {
                 filter = StringUtils.trimToEmpty(filter);
                 if (!"".equals(filter)) {
@@ -215,13 +217,14 @@ public class ERDData {
                             if (!process.contains(erd.getKey())) {
                                 process.add(erd.getKey());
                             }
-                            // if (!process.contains(vo.getReferenceTo().getTableName())) {
-                            // process.add(vo.getReferenceTo().getTableName());
-                            // }
                         }
                     }
                 }
-
+            }
+            for (String f : filters) {
+                if (!process.contains(f)) {
+                    process.add(f);
+                }
             }
         } else {
             for (Entry<String, List<ErdVO>> erd : erds.entrySet()) {
@@ -258,7 +261,7 @@ public class ERDData {
                     suffix = "(PK)";
                 }
                 if ("UNI".equals(key)) {
-                    prefix = " -";
+                    prefix = "  -";
                     suffix = "(UQ)";
                 }
                 String line = prefix + " " + name + suffix + " :: " + commonType;
@@ -532,7 +535,7 @@ public class ERDData {
     }
 
     public List<Map<String, Object>> queryForFields(JdbcTemplate jdbcTemplate, String table) {
-        return jdbcTemplate.queryForList("DESC " + table);
+        return jdbcTemplate.queryForList("DESC `" + table + "`");
     }
 
     public List<String> queryForTables(JdbcTemplate jdbcTemplate) {
