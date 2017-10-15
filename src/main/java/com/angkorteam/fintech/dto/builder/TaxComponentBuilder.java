@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.dto.builder;
 
+import com.angkorteam.fintech.dto.enums.AccountType;
 import com.mashape.unirest.http.JsonNode;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -14,7 +15,7 @@ public class TaxComponentBuilder implements Serializable {
     private String id;
     private boolean hasId;
 
-    private String creditAccountType;
+    private AccountType creditAccountType;
     private boolean hasCreditAccountType;
 
     private String creditAccountId;
@@ -41,7 +42,11 @@ public class TaxComponentBuilder implements Serializable {
             object.getObject().put("creditAcountId", this.creditAccountId);
         }
         if (this.hasCreditAccountType) {
-            object.getObject().put("creditAccountType", this.creditAccountType);
+            if (this.creditAccountType != null) {
+                object.getObject().put("creditAccountType", this.creditAccountType.getLiteral());
+            } else {
+                object.getObject().put("creditAccountType", (String) null);
+            }
         }
         if (this.hasPercentage) {
             object.getObject().put("percentage", this.percentage);
@@ -110,7 +115,7 @@ public class TaxComponentBuilder implements Serializable {
         return this;
     }
 
-    public TaxComponentBuilder withCreditAccountType(String creditAccountType) {
+    public TaxComponentBuilder withCreditAccountType(AccountType creditAccountType) {
         this.creditAccountType = creditAccountType;
         this.hasCreditAccountType = true;
         return this;

@@ -21,6 +21,7 @@ import com.angkorteam.fintech.dto.builder.PaymentTypeBuilder;
 import com.angkorteam.fintech.dto.builder.StaffBuilder;
 import com.angkorteam.fintech.dto.builder.TellerBuilder;
 import com.angkorteam.fintech.dto.constant.TellerStatus;
+import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.helper.LoginHelper;
 import com.angkorteam.fintech.helper.PaymentTypeHelper;
 import com.angkorteam.fintech.helper.StaffHelper;
@@ -48,6 +49,9 @@ public class SampleData implements IMifos {
     private static final List<String> ACCOUNTS = Lists.newArrayList();
     private static final List<String> ACCOUNT_RULES = Lists.newArrayList();
     private static final List<String> PARAMS = Lists.newArrayList();
+    private static final List<String> TAX_COMPONENTS = Lists.newArrayList();
+    private static final List<String> TAX_GROUPS = Lists.newArrayList();
+    private static final List<String> FLOATING_RATES = Lists.newArrayList();
 
     static {
 
@@ -647,6 +651,23 @@ public class SampleData implements IMifos {
         ACCOUNTS.add("Account Expense/Credit" + "=>" + Dropdown.ExpenseAccountTags);
 
         ACCOUNT_RULES.add("Account Rule 01");
+
+        TAX_COMPONENTS.add("T.C. Asset/Debit=>5=>" + AccountType.Asset.name() + "=>" + "Account Asset/Debit");
+        TAX_COMPONENTS.add("T.C. Asset/Credit=>5=>" + AccountType.Asset.name() + "=>" + "Account Asset/Credit");
+        TAX_COMPONENTS.add("T.C. Liability/Debit=>5=>" + AccountType.Liability.name() + "=>" + "Account Liability/Debit");
+        TAX_COMPONENTS.add("T.C. Liability/Credit=>5=>" + AccountType.Liability.name() + "=>" + "Account Liability/Credit");
+        TAX_COMPONENTS.add("T.C. Equity/Debit=>5=>" + AccountType.Equity.name() + "=>" + "Account Equity/Debit");
+        TAX_COMPONENTS.add("T.C. Equity/Credit=>5=>" + AccountType.Equity.name() + "=>" + "Account Equity/Credit");
+        TAX_COMPONENTS.add("T.C. Income/Debit=>5=>" + AccountType.Income.name() + "=>" + "Account Income/Debit");
+        TAX_COMPONENTS.add("T.C. Income/Credit=>5=>" + AccountType.Income.name() + "=>" + "Account Income/Credit");
+        TAX_COMPONENTS.add("T.C. Expense/Debit=>5=>" + AccountType.Expense.name() + "=>" + "Account Expense/Debit");
+        TAX_COMPONENTS.add("T.C. Expense/Credit=>5=>" + AccountType.Expense.name() + "=>" + "Account Expense/Credit");
+
+        TAX_GROUPS.add("T.G. 01");
+
+        FLOATING_RATES.add("Floating Rate 01=>false=>false=>5");
+        FLOATING_RATES.add("Floating Rate 03 B=>true=>false=>5");
+        FLOATING_RATES.add("Floating Rate 04 D=>false=>true=>5");
     }
 
     @Before
@@ -669,6 +690,10 @@ public class SampleData implements IMifos {
         setupEmployee(this, this.wicket.getJdbcTemplate());
         Function.setupGLAccount(this, this.wicket.getJdbcTemplate(), ACCOUNTS, this.wicket.getStringGenerator());
         setupAccountingRule();
+        Function.setupTaxComponent(this, this.wicket.getJdbcTemplate(), TAX_COMPONENTS, this.wicket.getStringGenerator());
+        Function.setupTaxGroup(this, this.wicket.getJdbcTemplate(), TAX_GROUPS, this.wicket.getStringGenerator());
+        Function.setupFloatingRate(this, this.wicket.getJdbcTemplate(), FLOATING_RATES, this.wicket.getStringGenerator());
+
     }
 
     protected void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException, ParseException {
@@ -684,11 +709,11 @@ public class SampleData implements IMifos {
     }
 
     protected void setupPaymentType(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
-        for (String payment : PAYMENTS) {
-            int p1 = payment.indexOf("=>");
-            String name = payment.substring(0, p1);
+        for (String temps : PAYMENTS) {
+            String temp[] = StringUtils.split(temps, "=>");
+            String name = temp[0];
             if (!jdbcTemplate.queryForObject("select count(*) from m_payment_type where value = ?", Boolean.class, name)) {
-                boolean cashPayment = Boolean.valueOf(payment.substring(p1 + 2));
+                boolean cashPayment = Boolean.valueOf(temp[1]);
                 PaymentTypeBuilder builder = new PaymentTypeBuilder();
                 builder.withDescription(name);
                 builder.withName(name);

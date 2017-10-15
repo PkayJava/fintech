@@ -23,16 +23,19 @@ import javax.sql.DataSource;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
+import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.dto.Dropdown;
 import com.angkorteam.fintech.dto.builder.AccountRuleBuilder;
 import com.angkorteam.fintech.dto.builder.CodeValueBuilder;
 import com.angkorteam.fintech.dto.builder.FinancialActivityBuilder;
+import com.angkorteam.fintech.dto.builder.FloatingRateBuilder;
 import com.angkorteam.fintech.dto.builder.FundBuilder;
 import com.angkorteam.fintech.dto.builder.GLAccountBuilder;
 import com.angkorteam.fintech.dto.builder.HolidayBuilder;
 import com.angkorteam.fintech.dto.builder.OfficeBuilder;
+import com.angkorteam.fintech.dto.builder.TaxComponentBuilder;
 import com.angkorteam.fintech.dto.builder.WorkingDayBuilder;
 import com.angkorteam.fintech.dto.constant.FinancialActivityTypeEnum;
 import com.angkorteam.fintech.dto.enums.AccountType;
@@ -43,10 +46,12 @@ import com.angkorteam.fintech.helper.AccountingRuleHelper;
 import com.angkorteam.fintech.helper.CodeHelper;
 import com.angkorteam.fintech.helper.CurrencyHelper;
 import com.angkorteam.fintech.helper.FinancialActivityHelper;
+import com.angkorteam.fintech.helper.FloatingRateHelper;
 import com.angkorteam.fintech.helper.FundHelper;
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.helper.HolidayHelper;
 import com.angkorteam.fintech.helper.OfficeHelper;
+import com.angkorteam.fintech.helper.TaxComponentHelper;
 import com.angkorteam.fintech.helper.WorkingDayHelper;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.google.common.collect.Lists;
@@ -126,17 +131,14 @@ public class Function {
         }
     }
 
-    public static void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate, String officeId, List<String> holidays) throws UnirestException, ParseException {
-
-        for (String day : holidays) {
-            int p1 = day.indexOf("=>");
-            String name = day.substring(0, p1);
+    public static void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate, String officeId, List<String> values) throws UnirestException, ParseException {
+        for (String temps : values) {
+            String temp[] = StringUtils.split(temps, "=>");
+            String name = temp[0];
             if (!jdbcTemplate.queryForObject("select count(*) from m_holiday where name = ?", Boolean.class, name)) {
-                int p2 = day.indexOf("=>", p1 + 2);
-                String dateForm = day.substring(p1 + 2, p2);
-                int p3 = day.indexOf("=>", p2 + 2);
-                String dateTo = day.substring(p2 + 2, p3);
-                String rescheduled = day.substring(p3 + 2);
+                String dateForm = temp[1];
+                String dateTo = temp[2];
+                String rescheduled = temp[3];
                 HolidayBuilder builder = new HolidayBuilder();
                 builder.withName(name);
                 builder.withDescription(name);
@@ -150,11 +152,11 @@ public class Function {
         }
     }
 
-    public static void setupFinancialActivity(IMifos session, JdbcTemplate jdbcTemplate, List<String> activities) throws UnirestException, ParseException {
-        for (String activity : activities) {
-            int p1 = activity.indexOf("=>");
-            FinancialActivityTypeEnum type = FinancialActivityTypeEnum.valueOf(activity.substring(0, p1));
-            String account = activity.substring(p1 + 2);
+    public static void setupFinancialActivity(IMifos session, JdbcTemplate jdbcTemplate, List<String> values) throws UnirestException, ParseException {
+        for (String temps : values) {
+            String temp[] = StringUtils.split(temps, "=>");
+            FinancialActivityTypeEnum type = FinancialActivityTypeEnum.valueOf(temp[0]);
+            String account = temp[1];
             String accountId = jdbcTemplate.queryForObject("select id from acc_gl_account where name = ?", String.class, account);
             if (!jdbcTemplate.queryForObject("select count(*) from acc_gl_financial_activity_account where financial_activity_type = ? and gl_account_id = ?", Boolean.class, type.getLiteral(), accountId)) {
                 FinancialActivityBuilder builder = new FinancialActivityBuilder();
@@ -179,12 +181,12 @@ public class Function {
         }
     }
 
-    public static void setupGLAccount(IMifos session, JdbcTemplate jdbcTemplate, List<String> accounts, RandomStringGenerator stringGenerator) throws UnirestException {
-        for (String account : accounts) {
-            int p1 = account.indexOf("=>");
-            String name = account.substring(0, p1);
+    public static void setupGLAccount(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, RandomStringGenerator stringGenerator) throws UnirestException {
+        for (String temps : values) {
+            String temp[] = StringUtils.split(temps, "=>");
+            String name = temp[0];
             if (!jdbcTemplate.queryForObject("select count(*) from acc_gl_account where name = ?", Boolean.class, name)) {
-                String tag = account.substring(p1 + 2);
+                String tag = temp[1];
                 String tagId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code.id = m_code_value.code_id where m_code.code_name = ? limit 1", String.class, tag);
                 GLAccountBuilder builder = new GLAccountBuilder();
                 builder.withName(name);
@@ -210,15 +212,55 @@ public class Function {
 
     }
 
-    public static void setupSystemParameter(IMifos session, JdbcTemplate jdbcTemplate, List<String> params) throws UnirestException {
-        for (String param : params) {
-            int p1 = param.indexOf("=>");
-            int p2 = param.indexOf("=>", p1 + 2);
-            String code = param.substring(0, p1);
-            String value = param.substring(p1 + 2, p2);
+    public static void setupTaxComponent(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, RandomStringGenerator stringGenerator) throws UnirestException {
+        for (String temps : values) {
+            String temp[] = StringUtils.split(temps, "=>");
+            String name = temp[0];
+            boolean has = jdbcTemplate.queryForObject("select count(*) from m_tax_component where name = ?", boolean.class, name);
+            if (!has) {
+                TaxComponentBuilder builder = new TaxComponentBuilder();
+                builder.withName(name);
+                builder.withPercentage(Double.valueOf(temp[1]));
+                builder.withCreditAccountType(AccountType.valueOf(temp[2]));
+                String creditAccountId = jdbcTemplate.queryForObject("select id from acc_gl_account where name = ?", String.class, temp[3]);
+                builder.withCreditAccountId(creditAccountId);
+                builder.withStartDate(DateTime.now().toDate());
+                TaxComponentHelper.create(session, builder.build());
+            }
+        }
+    }
+
+    public static void setupFloatingRate(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, RandomStringGenerator stringGenerator) throws UnirestException {
+        for (String temps : values) {
+            String temp[] = StringUtils.split(temps, "=>");
+            String name = temp[0];
+            boolean has = jdbcTemplate.queryForObject("select count(*) from m_floating_rates WHERE name = ?", boolean.class, name);
+            if (!has) {
+                boolean base = Boolean.valueOf(temp[1]);
+                boolean differential = Boolean.valueOf(temp[2]);
+                Double rate = Double.valueOf(temp[3]);
+                FloatingRateBuilder builder = new FloatingRateBuilder();
+                builder.withName(name);
+                builder.withActive(true);
+                builder.withBaseLendingRate(base);
+                builder.withRatePeriod(DateTime.now().plusDays(1).toDate(), rate, differential);
+                FloatingRateHelper.create(session, builder.build());
+            }
+        }
+    }
+
+    public static void setupTaxGroup(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, RandomStringGenerator stringGenerator) throws UnirestException {
+
+    }
+
+    public static void setupSystemParameter(IMifos session, JdbcTemplate jdbcTemplate, List<String> values) throws UnirestException {
+        for (String temps : values) {
+            String temp[] = StringUtils.split(temps, "=>");
+            String code = temp[0];
+            String value = temp[1];
             String codeId = jdbcTemplate.queryForObject("select id from m_code where code_name = ?", String.class, code);
             if (!jdbcTemplate.queryForObject("select count(*) from m_code_value where code_id = ? and code_value = ?", Boolean.class, codeId, value)) {
-                String description = param.substring(p2 + 2);
+                String description = temp[3];
                 CodeValueBuilder builder = new CodeValueBuilder();
                 builder.withCodeId(codeId);
                 builder.withName(value);

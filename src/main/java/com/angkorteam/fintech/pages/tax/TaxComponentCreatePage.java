@@ -170,7 +170,7 @@ public class TaxComponentCreatePage extends Page {
             builder.withCreditAccountId(this.accountValue.getId());
         }
         if (this.accountTypeValue != null) {
-            builder.withCreditAccountType(AccountType.valueOf(this.accountTypeValue.getId()).getLiteral());
+            builder.withCreditAccountType(AccountType.valueOf(this.accountTypeValue.getId()));
         }
         builder.withPercentage(this.percentageValue);
         builder.withStartDate(this.startDateValue);

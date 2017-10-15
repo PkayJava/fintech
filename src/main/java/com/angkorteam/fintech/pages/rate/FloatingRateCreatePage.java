@@ -48,42 +48,42 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FloatingRateCreatePage extends Page {
 
-    private Form<Void> rateForm;
-    private AjaxButton addButton;
+    protected Form<Void> rateForm;
+    protected AjaxButton addButton;
 
-    private Date fromDateValue;
-    private DateTextField fromDateField;
-    private TextFeedbackPanel fromDateFeedback;
+    protected Date fromDateValue;
+    protected DateTextField fromDateField;
+    protected TextFeedbackPanel fromDateFeedback;
 
-    private Double interestRateValue;
-    private TextField<Double> interestRateField;
-    private TextFeedbackPanel interestRateFeedback;
+    protected Double interestRateValue;
+    protected TextField<Double> interestRateField;
+    protected TextFeedbackPanel interestRateFeedback;
 
-    private Boolean differentialValue;
-    private CheckBox differentialField;
-    private TextFeedbackPanel differentialFeedback;
+    protected Boolean differentialValue;
+    protected CheckBox differentialField;
+    protected TextFeedbackPanel differentialFeedback;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private Boolean activeValue;
-    private CheckBox activeField;
-    private TextFeedbackPanel activeFeedback;
+    protected Boolean activeValue;
+    protected CheckBox activeField;
+    protected TextFeedbackPanel activeFeedback;
 
-    private Boolean baseLendingValue;
-    private CheckBox baseLendingField;
-    private TextFeedbackPanel baseLendingFeedback;
+    protected Boolean baseLendingValue;
+    protected CheckBox baseLendingField;
+    protected TextFeedbackPanel baseLendingFeedback;
 
-    private List<Map<String, Object>> rateValue = Lists.newArrayList();
-    private DataTable<Map<String, Object>, String> rateTable;
-    private ListDataProvider rateProvider;
+    protected List<Map<String, Object>> rateValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> rateTable;
+    protected ListDataProvider rateProvider;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -185,7 +185,7 @@ public class FloatingRateCreatePage extends Page {
         this.rateTable.addBottomToolbar(new NoRecordsToolbar(this.rateTable));
     }
 
-    private void rateActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void rateActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         if ("delete".equals(s)) {
             int index = -1;
             for (int i = 0; i < this.rateValue.size(); i++) {
@@ -202,23 +202,23 @@ public class FloatingRateCreatePage extends Page {
         }
     }
 
-    private List<ActionItem> rateActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> rateActionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         return actions;
     }
 
-    private ItemPanel rateInterestRateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel rateInterestRateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel rateFromDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel rateFromDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Date value = (Date) model.get(jdbcColumn);
         return new TextCell(value, "dd/MM/yyyy");
     }
 
-    private ItemPanel rateDifferentialColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel rateDifferentialColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Boolean differential = (Boolean) model.get(jdbcColumn);
         if (differential != null && differential) {
             return new BadgeCell(BadgeType.Success, Model.of("Yes"));
@@ -242,7 +242,7 @@ public class FloatingRateCreatePage extends Page {
         return false;
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         FloatingRateBuilder builder = new FloatingRateBuilder();
         builder.withActive(this.activeValue);
         builder.withBaseLendingRate(this.baseLendingValue);
