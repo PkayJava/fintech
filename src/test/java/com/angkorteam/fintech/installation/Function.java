@@ -36,6 +36,7 @@ import com.angkorteam.fintech.dto.builder.GLAccountBuilder;
 import com.angkorteam.fintech.dto.builder.HolidayBuilder;
 import com.angkorteam.fintech.dto.builder.OfficeBuilder;
 import com.angkorteam.fintech.dto.builder.TaxComponentBuilder;
+import com.angkorteam.fintech.dto.builder.TaxGroupBuilder;
 import com.angkorteam.fintech.dto.builder.WorkingDayBuilder;
 import com.angkorteam.fintech.dto.constant.FinancialActivityTypeEnum;
 import com.angkorteam.fintech.dto.enums.AccountType;
@@ -250,7 +251,18 @@ public class Function {
     }
 
     public static void setupTaxGroup(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, RandomStringGenerator stringGenerator) throws UnirestException {
-
+        for (String temps : values) {
+            String name = temps;
+            boolean has = jdbcTemplate.queryForObject("select count(*) from m_tax_group where name = ?", boolean.class, name);
+            if (!has) {
+                TaxGroupBuilder builder = new TaxGroupBuilder();
+                builder.withName(name);
+                List<String> ids = jdbcTemplate.queryForList("select id from m_tax_component", String.class);
+                for (String id : ids) {
+                    builder.withTaxComponent(null, id, DateTime.now().plusDays(1).toDate(), null);
+                }
+            }
+        }
     }
 
     public static void setupSystemParameter(IMifos session, JdbcTemplate jdbcTemplate, List<String> values) throws UnirestException {

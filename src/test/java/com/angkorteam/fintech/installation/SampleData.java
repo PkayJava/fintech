@@ -11,17 +11,25 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.angkorteam.fintech.Constants;
 import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.dto.Dropdown;
+import com.angkorteam.fintech.dto.builder.ChargeBuilder;
 import com.angkorteam.fintech.dto.builder.PaymentTypeBuilder;
 import com.angkorteam.fintech.dto.builder.StaffBuilder;
 import com.angkorteam.fintech.dto.builder.TellerBuilder;
 import com.angkorteam.fintech.dto.constant.TellerStatus;
 import com.angkorteam.fintech.dto.enums.AccountType;
+import com.angkorteam.fintech.dto.enums.ChargeCalculation;
+import com.angkorteam.fintech.dto.enums.ChargeFrequency;
+import com.angkorteam.fintech.dto.enums.ChargePayment;
+import com.angkorteam.fintech.dto.enums.ChargeTime;
+import com.angkorteam.fintech.dto.enums.ChargeType;
+import com.angkorteam.fintech.helper.ChargeHelper;
 import com.angkorteam.fintech.helper.LoginHelper;
 import com.angkorteam.fintech.helper.PaymentTypeHelper;
 import com.angkorteam.fintech.helper.StaffHelper;
@@ -169,21 +177,21 @@ public class SampleData implements IMifos {
 
         // NAME->FROM->TO->RESCHEDULED
         HOLIDAYS.add("International New Year Day (2007)=>2017-01-01=>2017-01-01=>2017-01-02");
-        HOLIDAYS.add("Victory over Genocide Day (2007)=>2017-01-07=>2017-01-07=>2017-01-08");
-        HOLIDAYS.add("Meak Bochea Day (2007)=>2017-02-11=>2017-02-11=>2017-02-12");
+        HOLIDAYS.add("Victory over Genocide Day (2007)=>2017-01-07=>2017-01-07=>2017-01-09");
+        HOLIDAYS.add("Meak Bochea Day (2007)=>2017-02-11=>2017-02-11=>2017-02-13");
         HOLIDAYS.add("International Women's Day (2007)=>2017-03-08=>2017-03-08=>2017-03-09");
         HOLIDAYS.add("Khmer New Year Day (2007)=>2017-04-14=>2017-04-16=>2017-04-17");
         HOLIDAYS.add("International Labor Day (2007)=>2017-05-01=>2017-05-01=>2017-05-02");
         HOLIDAYS.add("Visak Bochea Day (2007)=>2017-05-10=>2017-05-10=>2017-05-11");
         HOLIDAYS.add("King's Birthday, Norodom Sihamoni (2007)=>2017-05-13=>2017-05-15=>2017-05-16");
-        HOLIDAYS.add("International Children Day (2007)=>2017-07-01=>2017-07-01=>2017-07-02");
+        HOLIDAYS.add("International Children Day (2007)=>2017-07-01=>2017-07-01=>2017-07-03");
         HOLIDAYS.add("King's Mother Birthday, Norodom Monineath Sihanouk (2007)=>2017-07-18=>2017-07-18=>2017-07-19");
         HOLIDAYS.add("Pchum Ben Day (2007)=>2017-09-19=>2017-09-21=>2017-09-22");
         HOLIDAYS.add("Constitutional Day (2007)=>2017-09-24=>2017-09-24=>2017-09-25");
         HOLIDAYS.add("Commemoration Day of King's Father, Norodom Sihanouk (2007)=>2017-10-15=>2017-10-15=>2017-10-16");
         HOLIDAYS.add("Anniversary of the Paris Peace Accord (2007)=>2017-10-23=>2017-10-23=>2017-10-24");
         HOLIDAYS.add("King's Coronation Day, Norodom Sihamoni (2007)=>2017-10-29=>2017-10-29=>2017-10-30");
-        HOLIDAYS.add("Water Festival Ceremony (2007)=>2017-11-02=>2017-11-04=>2017-11-05");
+        HOLIDAYS.add("Water Festival Ceremony (2007)=>2017-11-02=>2017-11-04=>2017-11-06");
         HOLIDAYS.add("Independence Day (2007)=>2017-11-09=>2017-11-09=>2017-11-10");
         HOLIDAYS.add("International Human Rights Day (2007)=>2017-12-10=>2017-12-10=>2017-12-11");
 
@@ -649,6 +657,7 @@ public class SampleData implements IMifos {
         ACCOUNTS.add("Account Income/Credit" + "=>" + Dropdown.IncomeAccountTags);
         ACCOUNTS.add("Account Expense/Debit" + "=>" + Dropdown.ExpenseAccountTags);
         ACCOUNTS.add("Account Expense/Credit" + "=>" + Dropdown.ExpenseAccountTags);
+        ACCOUNTS.add("Account Charge" + "=>" + Dropdown.IncomeAccountTags);
 
         ACCOUNT_RULES.add("Account Rule 01");
 
@@ -693,7 +702,113 @@ public class SampleData implements IMifos {
         Function.setupTaxComponent(this, this.wicket.getJdbcTemplate(), TAX_COMPONENTS, this.wicket.getStringGenerator());
         Function.setupTaxGroup(this, this.wicket.getJdbcTemplate(), TAX_GROUPS, this.wicket.getStringGenerator());
         Function.setupFloatingRate(this, this.wicket.getJdbcTemplate(), FLOATING_RATES, this.wicket.getStringGenerator());
+        setupCharge(this, this.wicket.getJdbcTemplate());
+    }
 
+    protected void setupCharge(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
+        List<String> currencies = jdbcTemplate.queryForList("select code from m_organisation_currency", String.class);
+        String taxGroupId = jdbcTemplate.queryForObject("select id from m_tax_group where name = ?", String.class, "T.G. 01");
+        String accountId = jdbcTemplate.queryForObject("select id from acc_gl_account where name = ?", String.class, "Account Charge");
+        for (String currency : currencies) {
+            // Loan
+            for (boolean penalty : new boolean[] { true, false }) {
+                for (ChargeTime chargeTime : new ChargeTime[] { ChargeTime.Disbursement, ChargeTime.SpecifiedDueDate, ChargeTime.InstallmentFee, ChargeTime.OverdueFees, ChargeTime.TrancheDisbursement }) {
+                    for (ChargePayment chargePayment : new ChargePayment[] { ChargePayment.RegularMode, ChargePayment.AccountTransferMode }) {
+                        if ((chargeTime == ChargeTime.Disbursement || chargeTime == ChargeTime.TrancheDisbursement) && penalty) {
+                            continue;
+
+                        }
+                        if ((chargeTime == ChargeTime.OverdueFees) && !penalty) {
+                            continue;
+                        }
+                        String name = "[LOAN] Charge [" + currency + "] " + chargeTime.getDescription() + " Flat " + chargePayment.getDescription() + " " + (penalty ? "Penalty" : "");
+                        boolean has = jdbcTemplate.queryForObject("select count(*) from m_charge where name = ?", boolean.class, name);
+                        if (!has) {
+                            ChargeBuilder builder = new ChargeBuilder();
+                            builder.withChargeAppliesTo(ChargeType.Loan);
+                            if (chargeTime == ChargeTime.OverdueFees) {
+                                builder.withFeeInterval(1);
+                                builder.withFeeFrequency(ChargeFrequency.Day);
+                            }
+                            builder.withName(name);
+                            builder.withCurrencyCode(currency);
+                            builder.withChargeTimeType(chargeTime);
+                            builder.withChargeCalculationType(ChargeCalculation.Flat);
+                            builder.withChargePaymentMode(chargePayment);
+                            builder.withPenalty(penalty);
+                            builder.withAmount(1d);
+                            builder.withActive(true);
+                            builder.withTaxGroupId(taxGroupId);
+                            ChargeHelper.create(session, builder.build());
+                        }
+                    }
+                }
+            }
+            // Saving & Deposit
+            for (boolean penalty : new boolean[] { true, false }) {
+                for (ChargeTime chargeTime : new ChargeTime[] { ChargeTime.SpecifiedDueDate, ChargeTime.SavingsActivation, ChargeTime.WithdrawalFee, ChargeTime.AnnualFee, ChargeTime.MonthlyFee, ChargeTime.WeeklyFee, ChargeTime.OverdraftFee, ChargeTime.SavingNoActivityFee }) {
+                    String name = "[S.D] Charge [" + currency + "] " + chargeTime.getDescription() + " Flat " + (penalty ? "Penalty" : "");
+                    boolean has = jdbcTemplate.queryForObject("select count(*) from m_charge where name = ?", boolean.class, name);
+                    if (!has) {
+                        ChargeBuilder builder = new ChargeBuilder();
+                        builder.withChargeAppliesTo(ChargeType.SavingDeposit);
+                        if (chargeTime == ChargeTime.AnnualFee) {
+                            builder.withFeeOnMonthDay(DateTime.now().toDate());
+                        } else if (chargeTime == ChargeTime.MonthlyFee) {
+                            builder.withFeeOnMonthDay(DateTime.now().toDate());
+                            builder.withFeeInterval(1);
+                        } else if (chargeTime == ChargeTime.WeeklyFee) {
+                            builder.withFeeInterval(1);
+                        }
+                        builder.withName(name);
+                        builder.withCurrencyCode(currency);
+                        builder.withChargeTimeType(chargeTime);
+                        builder.withChargeCalculationType(ChargeCalculation.Flat);
+                        builder.withPenalty(penalty);
+                        builder.withAmount(1d);
+                        builder.withActive(true);
+                        builder.withTaxGroupId(taxGroupId);
+                        ChargeHelper.create(session, builder.build());
+                    }
+                }
+            }
+            // Client
+            for (boolean penalty : new boolean[] { true, false }) {
+                String name = "[Client] Charge [" + currency + "] " + ChargeTime.SpecifiedDueDate.getDescription() + " Flat " + (penalty ? "Penalty" : "");
+                boolean has = jdbcTemplate.queryForObject("select count(*) from m_charge where name = ?", boolean.class, name);
+                if (!has) {
+                    ChargeBuilder builder = new ChargeBuilder();
+                    builder.withChargeAppliesTo(ChargeType.Client);
+                    builder.withName(name);
+                    builder.withCurrencyCode(currency);
+                    builder.withChargeTimeType(ChargeTime.SpecifiedDueDate);
+                    builder.withChargeCalculationType(ChargeCalculation.Flat);
+                    builder.withPenalty(penalty);
+                    builder.withAmount(1d);
+                    builder.withActive(true);
+                    builder.withIncomeAccountId(accountId);
+                    builder.withTaxGroupId(taxGroupId);
+                    ChargeHelper.create(session, builder.build());
+                }
+            }
+            // Share
+            for (ChargeTime chargeTime : new ChargeTime[] { ChargeTime.ShareAccountActivate, ChargeTime.SharePurchase, ChargeTime.ShareRedeem }) {
+                String name = "[Client] Charge [" + currency + "] " + chargeTime.getDescription() + " Flat";
+                boolean has = jdbcTemplate.queryForObject("select count(*) from m_charge where name = ?", boolean.class, name);
+                if (!has) {
+                    ChargeBuilder builder = new ChargeBuilder();
+                    builder.withChargeAppliesTo(ChargeType.Share);
+                    builder.withName(name);
+                    builder.withCurrencyCode(currency);
+                    builder.withChargeTimeType(chargeTime);
+                    builder.withChargeCalculationType(ChargeCalculation.Flat);
+                    builder.withAmount(1d);
+                    builder.withActive(true);
+                    builder.withTaxGroupId(taxGroupId);
+                    ChargeHelper.create(session, builder.build());
+                }
+            }
+        }
     }
 
     protected void setupHoliday(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException, ParseException {
