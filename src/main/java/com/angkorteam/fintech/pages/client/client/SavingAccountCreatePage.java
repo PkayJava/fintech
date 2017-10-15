@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.pages.client.group;
+package com.angkorteam.fintech.pages.client.client;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -31,6 +31,7 @@ import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
 import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
 import com.angkorteam.fintech.dto.enums.LockInType;
 import com.angkorteam.fintech.helper.ClientHelper;
+import com.angkorteam.fintech.pages.client.center.SavingAccountPreviewPage;
 import com.angkorteam.fintech.popup.CenterAccountChargePopup;
 import com.angkorteam.fintech.provider.DayInYearProvider;
 import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
@@ -67,7 +68,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingAccountCreatePage extends Page {
 
-    protected String groupId;
+    protected String clientId;
     protected String productId;
     protected String officeId;
 
@@ -223,7 +224,7 @@ public class SavingAccountCreatePage extends Page {
         initData();
 
         PageParameters parameters = new PageParameters();
-        parameters.add("groupId", this.groupId);
+        parameters.add("clientId", this.clientId);
 
         this.form = new Form<>("form");
         add(this.form);
@@ -232,7 +233,7 @@ public class SavingAccountCreatePage extends Page {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", GroupPreviewPage.class, parameters);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
         this.productField = new Label("productField", new PropertyModel<>(this, "productValue"));
@@ -593,11 +594,11 @@ public class SavingAccountCreatePage extends Page {
         this.submittedOnValue = DateTime.now().toDate();
         this.externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
 
-        this.groupId = getPageParameters().get("groupId").toString();
+        this.clientId = getPageParameters().get("clientId").toString();
         this.productId = getPageParameters().get("productId").toString();
 
-        Map<String, Object> groupObject = jdbcTemplate.queryForMap("select * from m_group where id = ?", this.groupId);
-        this.officeId = String.valueOf(groupObject.get("office_id"));
+        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select * from m_client where id = ?", this.clientId);
+        this.officeId = String.valueOf(clientObject.get("office_id"));
         Map<String, Object> productObject = jdbcTemplate.queryForMap("select * from m_savings_product where id = ?", this.productId);
         this.productValue = (String) productObject.get("name");
         this.currencyValue = (String) productObject.get("currency_code");
@@ -690,7 +691,7 @@ public class SavingAccountCreatePage extends Page {
             builder.withCharge((String) charge.get("chargeId"), (Double) charge.get("amount"), (Date) charge.get("date"), (Integer) charge.get("repaymentEvery"));
         }
 
-        builder.withGroupId(this.groupId);
+        builder.withClientId(this.clientId);
 
         JsonNode node = null;
         JsonNode request = builder.build();
@@ -704,8 +705,8 @@ public class SavingAccountCreatePage extends Page {
             return;
         }
         PageParameters parameters = new PageParameters();
-        parameters.add("groupId", this.groupId);
-        setResponsePage(GroupPreviewPage.class, parameters);
+        parameters.add("clientId", this.clientId);
+        setResponsePage(ClientPreviewPage.class, parameters);
 
     }
 }

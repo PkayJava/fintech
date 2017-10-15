@@ -19,6 +19,15 @@ import com.mashape.unirest.http.JsonNode;
 
 public class AccountBuilder implements Serializable {
 
+    private String clientId;
+    private boolean hasClientId;
+
+    public AccountBuilder withClientId(String clientId) {
+        this.clientId = clientId;
+        this.hasClientId = true;
+        return this;
+    }
+
     private String productId;
     private boolean hasProductId;
 
@@ -251,6 +260,10 @@ public class AccountBuilder implements Serializable {
 
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode(new JSONObject());
+
+        if (this.hasClientId) {
+            object.getObject().put("clientId", this.clientId);
+        }
 
         if (this.hasCharges) {
             object.getObject().put("charges", this.charges);

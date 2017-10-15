@@ -16,6 +16,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.angkorteam.fintech.pages.LoginPage;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
+import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.fintech.pages.staff.UserBrowsePage;
 import com.angkorteam.framework.ResourceScope;
 import com.google.common.collect.Maps;
@@ -42,7 +43,7 @@ public class Application extends AuthenticatedWebApplication {
 
     @Override
     public Class<? extends Page> getHomePage() {
-        return CenterBrowsePage.class;
+        return ClientBrowsePage.class;
     }
 
     @Override

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<wicket:panel>
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="pull-right">
+					<div class="btn-group">
+						<div class="btn-group">
+							<button type="button" class="btn btn-info dropdown-toggle"
+								data-toggle="dropdown" aria-expanded="false">
+								More &nbsp;&nbsp;<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li><a href="#">Client Screen Report</a></li>
+								<li><a href="#">Client Upload Signature</a></li>
+								<li><a href="#">View Standing Instruction</a></li>
+								<li><a href="#">Create Standing Instruction</a></li>
+								<li><a href="#">New Fixed Deposit</a></li>
+								<li><a href="#">New Recurring Deposit</a></li>
+								<li><a href="#">Charge Overview</a></li>
+								<li><a href="#">Survey</a></li>
+							</ul>
+						</div>
+						<a href="#" class="btn btn-info">Edit</a> <a href="#"
+							class="btn btn-info">New Loan</a> <a wicket:id="newSavingLink"
+							class="btn btn-info">New Saving</a> <a href="#"
+							class="btn btn-info">New Share Account</a> <a href="#"
+							class="btn btn-info">Add Charge</a> <a href="#"
+							class="btn btn-info">Transfer Client</a> <a href="#"
+							class="btn btn-info">Close</a> <a href="#" class="btn btn-info">Assign
+							Staff</a> <a href="#" class="btn btn-info">Update Default Savings</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<br />
+
+		<div class="row">
+			<div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+				<div class="row">
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="box box-primary">
+							<div class="box-header with-border">
+								<h3 class="box-title">Loan Account Overview</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body"></div>
+							<!-- /.box-body -->
+						</div>
+						<!-- /.box -->
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="box box-primary">
+							<div class="box-header with-border">
+								<h3 class="box-title">Savings Account Overview</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<table wicket:id="savingAccountTable"></table>
+							</div>
+							<!-- /.box-body -->
+						</div>
+						<!-- /.box -->
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="box box-primary">
+							<div class="box-header with-border">
+								<h3 class="box-title">Shares Account Overview</h3>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body"></div>
+							<!-- /.box-body -->
+						</div>
+						<!-- /.box -->
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title">Details</h3>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+						<div class="form-group">
+							<label>Active Clients</label>
+							<div class="form-control" readonly="readonly">Hello</div>
+						</div>
+						<div class="form-group">
+							<label>Active Group Loans</label>
+							<div class="form-control" readonly="readonly">Hello</div>
+						</div>
+						<div class="form-group">
+							<label>Active Client Loans</label>
+							<div class="form-control" readonly="readonly">Hello</div>
+						</div>
+						<div class="form-group">
+							<label>Active Group Borrowers</label>
+							<div class="form-control" readonly="readonly">Hello</div>
+						</div>
+						<div class="form-group">
+							<label>Active Client Borrowers</label>
+							<div class="form-control" readonly="readonly">Hello</div>
+						</div>
+						<div class="form-group">
+							<label>Active Overdue Group Loans</label>
+							<div class="form-control" readonly="readonly">Hello</div>
+						</div>
+						<div class="form-group">
+							<label>Active Overdue Client Loans</label>
+							<div class="form-control" readonly="readonly">Hello</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+				</div>
+				<!-- /.box -->
+			</div>
+		</div>
+
+	</wicket:panel>
+</body>
+</html>
