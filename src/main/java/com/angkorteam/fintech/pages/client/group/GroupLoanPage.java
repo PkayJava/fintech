@@ -1,6 +1,5 @@
 package com.angkorteam.fintech.pages.client.group;
 
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
@@ -8,8 +7,9 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.DepositType;
+import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
+import com.angkorteam.fintech.pages.client.center.SavingAccountCreatePage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -18,8 +18,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
-@AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class GroupSavingAccountPage extends Page {
+public class GroupLoanPage extends Page {
 
     protected String groupId;
 
@@ -51,7 +50,7 @@ public class GroupSavingAccountPage extends Page {
         this.okayButton.setOnSubmit(this::okayButtonSubmit);
         this.form.add(this.okayButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", GroupPreviewPage.class, parameters);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
         this.productBlock = new WebMarkupContainer("productBlock");

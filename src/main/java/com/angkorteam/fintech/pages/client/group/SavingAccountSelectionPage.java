@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.pages.client.center;
+package com.angkorteam.fintech.pages.client.group;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -19,9 +19,9 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class CenterSavingAccountPage extends Page {
+public class SavingAccountSelectionPage extends Page {
 
-    protected String centerId;
+    protected String groupId;
 
     protected Form<Void> form;
     protected Button okayButton;
@@ -42,7 +42,7 @@ public class CenterSavingAccountPage extends Page {
         initData();
 
         PageParameters parameters = new PageParameters();
-        parameters.add("centerId", this.centerId);
+        parameters.add("groupId", this.groupId);
 
         this.form = new Form<>("form");
         add(this.form);
@@ -51,7 +51,7 @@ public class CenterSavingAccountPage extends Page {
         this.okayButton.setOnSubmit(this::okayButtonSubmit);
         this.form.add(this.okayButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", GroupPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
         this.productBlock = new WebMarkupContainer("productBlock");
@@ -71,12 +71,12 @@ public class CenterSavingAccountPage extends Page {
     }
 
     protected void initData() {
-        this.centerId = getPageParameters().get("centerId").toString();
+        this.groupId = getPageParameters().get("groupId").toString();
     }
 
     protected void okayButtonSubmit(Button button) {
         PageParameters parameters = new PageParameters();
-        parameters.add("centerId", this.centerId);
+        parameters.add("groupId", this.groupId);
         parameters.add("productId", this.productValue.getId());
         setResponsePage(SavingAccountCreatePage.class, parameters);
     }

@@ -16,7 +16,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.pages.client.center.CenterClosePage;
 import com.angkorteam.fintech.pages.client.center.CenterModifyPage;
-import com.angkorteam.fintech.pages.client.center.CenterSavingAccountPage;
+import com.angkorteam.fintech.pages.client.center.SavingAccountSelectionPage;
 import com.angkorteam.fintech.pages.client.center.GroupCreatePage;
 import com.angkorteam.fintech.pages.client.center.GroupManagePage;
 import com.angkorteam.fintech.pages.client.center.SavingAccountActivatePage;
@@ -102,7 +102,7 @@ public class CenterPreviewGeneralPanel extends Panel {
         this.manageGroupLink = new BookmarkablePageLink<>("manageGroupLink", GroupManagePage.class, parameters);
         add(this.manageGroupLink);
 
-        this.centerSavingApplicationLink = new BookmarkablePageLink<>("centerSavingApplicationLink", CenterSavingAccountPage.class, parameters);
+        this.centerSavingApplicationLink = new BookmarkablePageLink<>("centerSavingApplicationLink", SavingAccountSelectionPage.class, parameters);
         add(this.centerSavingApplicationLink);
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", CenterClosePage.class, parameters);

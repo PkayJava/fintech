@@ -15,7 +15,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.pages.client.center.SavingAccountPreviewPage;
-import com.angkorteam.fintech.pages.client.group.GroupSavingAccountPage;
+import com.angkorteam.fintech.pages.client.group.SavingAccountSelectionPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
@@ -54,7 +54,7 @@ public class GroupPreviewGeneralPanel extends Panel {
         PageParameters parameters = new PageParameters();
         parameters.add("groupId", this.groupId);
 
-        this.groupSavingApplicationLink = new BookmarkablePageLink<>("groupSavingApplicationLink", GroupSavingAccountPage.class, parameters);
+        this.groupSavingApplicationLink = new BookmarkablePageLink<>("groupSavingApplicationLink", SavingAccountSelectionPage.class, parameters);
         add(this.groupSavingApplicationLink);
 
         this.savingAccountProvider = new JdbcProvider("m_savings_account");
