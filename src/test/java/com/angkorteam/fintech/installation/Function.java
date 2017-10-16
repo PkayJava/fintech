@@ -272,7 +272,7 @@ public class Function {
             String value = temp[1];
             String codeId = jdbcTemplate.queryForObject("select id from m_code where code_name = ?", String.class, code);
             if (!jdbcTemplate.queryForObject("select count(*) from m_code_value where code_id = ? and code_value = ?", Boolean.class, codeId, value)) {
-                String description = temp[3];
+                String description = temp[2];
                 CodeValueBuilder builder = new CodeValueBuilder();
                 builder.withCodeId(codeId);
                 builder.withName(value);
