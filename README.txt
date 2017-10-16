@@ -17,7 +17,7 @@
   :/>sudo apt-get install nodejs-legacy npm mysql-server wget openjdk-8-jdk
   :/>sudo npm install -g bower
   :/>sudo npm install -g grunt-cli
-  :/>wget http://www-eu.apache.org/dist/tomcat/tomcat-8/v8.5.20/bin/apache-tomcat-8.5.20.tar.gz
+  :/>wget http://www-eu.apache.org/dist/tomcat/tomcat-8/v8.5.20/bin/apache-tomcat-8.5.23.tar.gz
   :/>wget http://www-eu.apache.org/dist//activemq/5.15.0/apache-activemq-5.15.0-bin.tar.gz
   :/>wget http://www-us.apache.org/dist/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.tar.gz 
 
@@ -98,9 +98,8 @@
   
   *************************************************************************************************
   * V1__mifos-platform-shared-tenants.sql *********************************************************
-  *************************************************************************************************
-  append the follow sql script to bottom of the file 
-  
+  *************************************************************************************************  
+  update tenants set name = 'Demo Bank' where identifier = 'default';
   update tenants set schema_name = 'mifostenant_default', schema_server = 'localhost', schema_username = 'root', schema_password = 'password' where identifier = 'default';
   
 ===================================================================================================
