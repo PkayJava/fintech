@@ -1,458 +1,2269 @@
 {
+  "acc_gl_journal_entry": [
+    {
+      "fieldName": ["share_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_share_account_transactions",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["account_id"],
+      "referenceTo": {
+        "tableName": "acc_gl_account",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["office_id"],
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_loan_transaction",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["savings_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account_transaction",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["client_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_client_transaction",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["payment_details_id"],
+      "referenceTo": {
+        "tableName": "m_payment_detail",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_account_transfer_details": [
+    {
+      "fieldName": ["from_office_id", "to_office_id"],
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["from_loan_account_id", "to_loan_account_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["from_client_id", "to_client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["from_savings_account_id", "to_savings_account_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_account_transfer_transaction": [
+    {
+      "fieldName": ["from_loan_transaction_id", "to_loan_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_loan_transaction",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["account_transfer_details_id"],
+      "referenceTo": {
+        "tableName": "m_account_transfer_details",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["from_savings_transaction_id", "to_savings_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account_transaction",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_address": [
+    {
+      "fieldName": ["state_province_id", "country_id"],
+      "referenceTo": {
+        "tableName": "m_code_value",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_client_attendance": [
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["meeting_id"],
+      "referenceTo": {
+        "tableName": "m_meeting",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_client_charge": [
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["charge_id"],
+      "referenceTo": {
+        "tableName": "m_charge",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_client_charge_paid_by": [
+    {
+      "fieldName": ["client_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_client_transaction",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["client_charge_id"],
+      "referenceTo": {
+        "tableName": "m_client_charge",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_client_identifier": [
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["document_type_id"],
+      "referenceTo": {
+        "tableName": "m_code_value",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_client_non_person": [
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_client_transaction": [
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["appuser_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_creditbureau_configuration": [
+    {
+      "fieldName": ["organisation_creditbureau_id"],
+      "referenceTo": {
+        "tableName": "m_organisation_creditbureau",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_creditbureau_loanproduct_mapping": [
+    {
+      "fieldName": ["organisation_creditbureau_id"],
+      "referenceTo": {
+        "tableName": "m_organisation_creditbureau",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_product_id"],
+      "referenceTo": {
+        "tableName": "m_product_loan",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_deposit_product_interest_rate_chart": [
+    {
+      "fieldName": ["deposit_product_id"],
+      "referenceTo": {
+        "tableName": "m_savings_product",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["interest_rate_chart_id"],
+      "referenceTo": {
+        "tableName": "m_interest_rate_chart",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_entity_to_entity_mapping": [
+    {
+      "fieldName": ["rel_id"],
+      "referenceTo": {
+        "tableName": "m_entity_relation",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_group_client": [
+    {
+      "fieldName": ["group_id"],
+      "referenceTo": {
+        "tableName": "m_group",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_group_roles": [
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["group_id"],
+      "referenceTo": {
+        "tableName": "m_group",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["role_cv_id"],
+      "referenceTo": {
+        "tableName": "m_code_value",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_guarantor_funding_details": [
+    {
+      "fieldName": ["guarantor_id"],
+      "referenceTo": {
+        "tableName": "m_guarantor",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["account_associations_id"],
+      "referenceTo": {
+        "tableName": "m_portfolio_account_associations",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_guarantor_transaction": [
+    {
+      "fieldName": ["guarantor_fund_detail_id"],
+      "referenceTo": {
+        "tableName": "m_guarantor_funding_details",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_loan_transaction",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["deposit_on_hold_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_deposit_account_on_hold_transaction",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_hook": [
+    {
+      "fieldName": ["template_id"],
+      "referenceTo": {
+        "tableName": "m_hook_templates",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["ugd_template_id"],
+      "referenceTo": {
+        "tableName": "m_template",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_interest_incentives": [
+    {
+      "fieldName": ["interest_rate_slab_id"],
+      "referenceTo": {
+        "tableName": "m_interest_rate_slab",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_interest_rate_slab": [
+    {
+      "fieldName": ["interest_rate_chart_id"],
+      "referenceTo": {
+        "tableName": "m_interest_rate_chart",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_charge": [
+    {
+      "fieldName": ["loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["charge_id"],
+      "referenceTo": {
+        "tableName": "m_charge",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_charge_paid_by": [
+    {
+      "fieldName": ["loan_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_loan_transaction",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_charge_id"],
+      "referenceTo": {
+        "tableName": "m_loan_charge",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_collateral": [
+    {
+      "fieldName": ["loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["type_cv_id"],
+      "referenceTo": {
+        "tableName": "m_code_value",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_disbursement_detail": [
+    {
+      "fieldName": ["loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_installment_charge": [
+    {
+      "fieldName": ["loan_charge_id"],
+      "referenceTo": {
+        "tableName": "m_loan_charge",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_schedule_id"],
+      "referenceTo": {
+        "tableName": "m_loan_repayment_schedule",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_interest_recalculation_additional_details": [
+    {
+      "fieldName": ["loan_repayment_schedule_id"],
+      "referenceTo": {
+        "tableName": "m_loan_repayment_schedule",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_officer_assignment_history": [
+    {
+      "fieldName": ["loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_officer_id"],
+      "referenceTo": {
+        "tableName": "m_staff",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_paid_in_advance": [
+    {
+      "fieldName": ["loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_recalculation_details": [
+    {
+      "fieldName": ["loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_repayment_schedule": [
+    {
+      "fieldName": ["loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_repayment_schedule_history": [
+    {
+      "fieldName": ["loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_reschedule_request_id"],
+      "referenceTo": {
+        "tableName": "m_loan_reschedule_request",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_reschedule_request": [
+    {
+      "fieldName": ["loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["submitted_by_user_id", "approved_by_user_id", "rejected_by_user_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["reschedule_reason_cv_id"],
+      "referenceTo": {
+        "tableName": "m_code_value",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_term_variations": [
+    {
+      "fieldName": ["loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_topup": [
+    {
+      "fieldName": ["loan_id", "closure_loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["account_transfer_details_id"],
+      "referenceTo": {
+        "tableName": "m_account_transfer_details",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_tranche_charges": [
+    {
+      "fieldName": ["loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["charge_id"],
+      "referenceTo": {
+        "tableName": "m_charge",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_tranche_disbursement_charge": [
+    {
+      "fieldName": ["loan_charge_id"],
+      "referenceTo": {
+        "tableName": "m_loan_charge",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["disbursement_detail_id"],
+      "referenceTo": {
+        "tableName": "m_loan_disbursement_detail",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_transaction": [
+    {
+      "fieldName": ["loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["payment_detail_id"],
+      "referenceTo": {
+        "tableName": "m_payment_detail",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["office_id"],
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_transaction_repayment_schedule_mapping": [
+    {
+      "fieldName": ["loan_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_loan_transaction",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_repayment_schedule_id"],
+      "referenceTo": {
+        "tableName": "m_loan_repayment_schedule",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loanproduct_provisioning_entry": [
+    {
+      "fieldName": ["history_id"],
+      "referenceTo": {
+        "tableName": "m_provisioning_history",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["liability_account", "expense_account"],
+      "referenceTo": {
+        "tableName": "acc_gl_account",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["category_id"],
+      "referenceTo": {
+        "tableName": "m_provision_category",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["product_id"],
+      "referenceTo": {
+        "tableName": "m_product_loan",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["office_id"],
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["criteria_id"],
+      "referenceTo": {
+        "tableName": "m_provisioning_criteria",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loanproduct_provisioning_mapping": [
+    {
+      "fieldName": ["product_id"],
+      "referenceTo": {
+        "tableName": "m_product_loan",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["criteria_id"],
+      "referenceTo": {
+        "tableName": "m_provisioning_criteria",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_mandatory_savings_schedule": [
+    {
+      "fieldName": ["savings_account_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_meeting": [
+    {
+      "fieldName": ["calendar_instance_id"],
+      "referenceTo": {
+        "tableName": "m_calendar_instance",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_note": [
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["savings_account_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_loan_transaction",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["group_id"],
+      "referenceTo": {
+        "tableName": "m_group",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_organisation_creditbureau": [
+    {
+      "fieldName": ["creditbureau_id"],
+      "referenceTo": {
+        "tableName": "m_creditbureau",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_portfolio_account_associations": [
+    {
+      "fieldName": ["savings_account_id", "linked_savings_account_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_account_id", "linked_loan_account_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_portfolio_command_source": [
+    {
+      "fieldName": ["office_id"],
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["maker_id", "checker_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_product_loan_charge": [
+    {
+      "fieldName": ["product_loan_id"],
+      "referenceTo": {
+        "tableName": "m_product_loan",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["charge_id"],
+      "referenceTo": {
+        "tableName": "m_charge",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_product_loan_floating_rates": [
+    {
+      "fieldName": ["loan_product_id"],
+      "referenceTo": {
+        "tableName": "m_product_loan",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["floating_rates_id"],
+      "referenceTo": {
+        "tableName": "m_floating_rates",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_product_loan_guarantee_details": [
+    {
+      "fieldName": ["loan_product_id"],
+      "referenceTo": {
+        "tableName": "m_product_loan",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_product_loan_recalculation_details": [
+    {
+      "fieldName": ["product_id"],
+      "referenceTo": {
+        "tableName": "m_product_loan",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_product_loan_variable_installment_config": [
+    {
+      "fieldName": ["loan_product_id"],
+      "referenceTo": {
+        "tableName": "m_product_loan",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_product_loan_variations_borrower_cycle": [
+    {
+      "fieldName": ["loan_product_id"],
+      "referenceTo": {
+        "tableName": "m_product_loan",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_product_mix": [
+    {
+      "fieldName": ["product_id", "restricted_product_id"],
+      "referenceTo": {
+        "tableName": "m_product_loan",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_provisioning_criteria": [
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_provisioning_criteria_definition": [
+    {
+      "fieldName": ["liability_account", "expense_account"],
+      "referenceTo": {
+        "tableName": "acc_gl_account",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["category_id"],
+      "referenceTo": {
+        "tableName": "m_provision_category",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["criteria_id"],
+      "referenceTo": {
+        "tableName": "m_provisioning_criteria",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_provisioning_history": [
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_report_mailing_job": [
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id", "run_as_userid"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["stretchy_report_id"],
+      "referenceTo": {
+        "tableName": "stretchy_report",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_report_mailing_job_run_history": [
+    {
+      "fieldName": ["job_id"],
+      "referenceTo": {
+        "tableName": "job",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_savings_account_charge": [
+    {
+      "fieldName": ["savings_account_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["charge_id"],
+      "referenceTo": {
+        "tableName": "m_charge",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_savings_account_charge_paid_by": [
+    {
+      "fieldName": ["savings_account_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account_transaction",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["savings_account_charge_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account_charge",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_savings_account_interest_rate_chart": [
+    {
+      "fieldName": ["savings_account_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_savings_account_transaction": [
+    {
+      "fieldName": ["savings_account_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["office_id"],
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["payment_detail_id"],
+      "referenceTo": {
+        "tableName": "m_payment_detail",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_savings_account_transaction_tax_details": [
+    {
+      "fieldName": ["savings_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account_transaction",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["tax_component_id"],
+      "referenceTo": {
+        "tableName": "m_tax_component",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_savings_interest_incentives": [
+    {
+      "fieldName": ["deposit_account_interest_rate_slab_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account_interest_rate_slab",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_savings_officer_assignment_history": [
+    {
+      "fieldName": ["account_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["savings_officer_id"],
+      "referenceTo": {
+        "tableName": "m_staff",
+        "fieldName": "id"
+      }
+    }
+  ],
   "m_staff": [
     {
       "fieldName": ["office_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_office",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["image_id"],
+      "referenceTo": {
+        "tableName": "m_image",
+        "fieldName": "id"
       }
     }
   ],
   "m_tellers": [
     {
       "fieldName": ["office_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_office",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     },
     {
       "fieldName": ["debit_account_id", "credit_account_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "acc_gl_account",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "m_group": [
     {
       "fieldName": ["office_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_office",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     },
     {
       "fieldName": ["staff_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_staff",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["closure_reason_cv_id"],
+      "referenceTo": {
+        "tableName": "m_code_value",
+        "fieldName": "id"
       }
     }
   ],
   "m_staff_assignment_history": [
     {
       "fieldName": ["createdby_id", "lastmodifiedby_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_appuser",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     },
     {
       "fieldName": ["staff_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_staff",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     },
     {
       "fieldName": ["centre_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_group",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "acc_accounting_rule": [
     {
       "fieldName": ["office_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_office",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     },
     {
       "fieldName": ["debit_account_id", "credit_account_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "acc_gl_account",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "acc_gl_account": [
     {
       "fieldName": ["tag_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_code_value",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "acc_gl_closure": [
     {
       "fieldName": ["office_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_office",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     },
     {
       "fieldName": ["createdby_id", "lastmodifiedby_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_appuser",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "acc_gl_financial_activity_account": [
     {
       "fieldName": ["gl_account_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "acc_gl_account",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "c_external_service_properties": [
     {
       "fieldName": ["external_service_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "c_external_service",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "job_run_history": [
     {
       "fieldName": ["job_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "job",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "notification_mapper": [
     {
       "fieldName": ["notification_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "notification_generator",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     },
     {
       "fieldName": ["user_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_appuser",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "m_charge": [
     {
       "fieldName": ["currency_code"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_organisation_currency",
-        "fieldName": "code",
-        "pk": true,
-        "uq": false
+        "fieldName": "code"
       }
     },
     {
       "fieldName": ["income_or_liability_account_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "acc_gl_account",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     },
     {
       "fieldName": ["tax_group_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_tax_group",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "m_tax_group": [
     {
       "fieldName": ["createdby_id", "lastmodifiedby_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_appuser",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "m_calendar": [
     {
       "fieldName": ["createdby_id", "lastmodifiedby_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_appuser",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "m_appuser": [
     {
       "fieldName": ["office_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_office",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     },
     {
       "fieldName": ["staff_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_staff",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "m_appuser_previous_password": [
     {
       "fieldName": ["user_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_appuser",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "m_appuser_role": [
     {
       "fieldName": ["appuser_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_appuser",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     },
     {
       "fieldName": ["role_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_role",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "m_calendar_history": [
     {
       "fieldName": ["calendar_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_calendar",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "m_calendar_instance": [
     {
       "fieldName": ["calendar_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_calendar",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "m_cashier_transactions": [
     {
       "fieldName": ["currency_code"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_organisation_currency",
-        "fieldName": "code",
-        "pk": true,
-        "uq": false
+        "fieldName": "code"
       }
     },
     {
       "fieldName": ["cashier_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_cashiers",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "m_cashiers": [
     {
       "fieldName": ["staff_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_staff",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     },
     {
       "fieldName": ["teller_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_tellers",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "m_code_value": [
     {
       "fieldName": ["code_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_code",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "m_floating_rates": [
     {
       "fieldName": ["createdby_id", "lastmodifiedby_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_appuser",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
       }
     }
   ],
   "m_floating_rates_periods": [
     {
       "fieldName": ["floating_rates_id"],
-      "pk": false,
-      "uq": false,
       "referenceTo": {
         "tableName": "m_floating_rates",
-        "fieldName": "id",
-        "pk": true,
-        "uq": false
+        "fieldName": "id"
+      }   
+    }
+  ],
+  "m_tax_component_history": [
+    {
+      "fieldName": ["tax_component_id"],
+      "referenceTo": {
+        "tableName": "m_tax_component",
+        "fieldName": "id"
       }
-   
+    },
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_tax_group_mappings": [
+    {
+      "fieldName": ["tax_component_id"],
+      "referenceTo": {
+        "tableName": "m_tax_component",
+        "fieldName": "id"
+      }
+    },
+	{
+      "fieldName": ["tax_group_id"],
+      "referenceTo": {
+        "tableName": "m_tax_group",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_office_transaction": [
+    {
+      "fieldName": ["currency_code"],
+      "referenceTo": {
+        "tableName": "m_organisation_currency",
+        "fieldName": "code"
+      }
+    },
+    {
+      "fieldName": ["from_office_id", "to_office_id"],
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "stretchy_report_parameter": [
+    {
+      "fieldName": ["report_id"],
+      "referenceTo": {
+        "tableName": "stretchy_report",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["parameter_id"],
+      "referenceTo": {
+        "tableName": "stretchy_parameter",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "sms_campaign": [
+    {
+      "fieldName": ["report_id"],
+      "referenceTo": {
+        "tableName": "stretchy_report",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "sms_messages_outbound": [
+    {
+      "fieldName": ["group_id"],
+      "referenceTo": {
+        "tableName": "m_group",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["staff_id"],
+      "referenceTo": {
+        "tableName": "m_staff",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["campaign_id"],
+      "referenceTo": {
+        "tableName": "sms_campaign",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_tax_component": [
+    {
+      "fieldName": ["debit_account_id", "credit_account_id"],
+      "referenceTo": {
+        "tableName": "acc_gl_account",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "acc_rule_tags": [
+    {
+      "fieldName": ["acc_rule_id"],
+      "referenceTo": {
+        "tableName": "acc_accounting_rule",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["tag_id"],
+      "referenceTo": {
+        "tableName": "m_code_value",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_adhoc": [
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_holiday_office": [
+    {
+      "fieldName": ["holiday_id"],
+      "referenceTo": {
+        "tableName": "m_holiday",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["office_id"],
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_payment_detail": [
+    {
+      "fieldName": ["payment_type_id"],
+      "referenceTo": {
+        "tableName": "m_payment_type",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_client_address": [
+    {
+      "fieldName": ["address_type_id"],
+      "referenceTo": {
+        "tableName": "m_code_value",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["address_id"],
+      "referenceTo": {
+        "tableName": "m_address",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "acc_product_mapping": [
+    {
+      "fieldName": ["payment_type"],
+      "referenceTo": {
+        "tableName": "m_payment_type",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["charge_id"],
+      "referenceTo": {
+        "tableName": "m_charge",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_survey_components": [
+    {
+      "fieldName": ["survey_id"],
+      "referenceTo": {
+        "tableName": "m_surveys",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_survey_lookup_tables": [
+    {
+      "fieldName": ["survey_id"],
+      "referenceTo": {
+        "tableName": "m_surveys",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_survey_questions": [
+    {
+      "fieldName": ["survey_id"],
+      "referenceTo": {
+        "tableName": "m_surveys",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_survey_responses": [
+    {
+      "fieldName": ["question_id"],
+      "referenceTo": {
+        "tableName": "m_survey_questions",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_reschedule_request_term_variations_mapping": [
+    {
+      "fieldName": ["loan_reschedule_request_id"],
+      "referenceTo": {
+        "tableName": "m_loan_reschedule_request",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_term_variations_id"],
+      "referenceTo": {
+        "tableName": "m_loan_term_variations",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_client": [
+    {
+      "fieldName": ["client_classification_cv_id", "client_type_cv_id", "sub_status", "closure_reason_cv_id", "gender_cv_id", "reject_reason_cv_id", "withdraw_reason_cv_id"],
+      "referenceTo": {
+        "tableName": "m_code_value",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["image_id"],
+      "referenceTo": {
+        "tableName": "m_image",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["staff_id"],
+      "referenceTo": {
+        "tableName": "m_staff",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["office_id", "transfer_to_office_id"],
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["default_savings_account"],
+      "referenceTo": {
+        "tableName": "m_savings_account",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["default_savings_product"],
+      "referenceTo": {
+        "tableName": "m_savings_product",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_hook_configuration": [
+    {
+      "fieldName": ["hook_id"],
+      "referenceTo": {
+        "tableName": "m_hook",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_hook_registered_events": [
+    {
+      "fieldName": ["hook_id"],
+      "referenceTo": {
+        "tableName": "m_hook",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_hook_schema": [
+    {
+      "fieldName": ["hook_template_id"],
+      "referenceTo": {
+        "tableName": "m_hook_templates",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_guarantor": [
+    {
+      "fieldName": ["client_reln_cv_id"],
+      "referenceTo": {
+        "tableName": "m_code_value",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_role_permission": [
+    {
+      "fieldName": ["role_id"],
+      "referenceTo": {
+        "tableName": "m_role",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["permission_id"],
+      "referenceTo": {
+        "tableName": "m_permission",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_product_loan": [
+    {
+      "fieldName": ["fund_id"],
+      "referenceTo": {
+        "tableName": "m_fund",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_transaction_strategy_id"],
+      "referenceTo": {
+        "tableName": "ref_loan_transaction_processing_strategy",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_family_members": [
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["relationship_cv_id", "marital_status_cv_id", "gender_cv_id", "profession_cv_id"],
+      "referenceTo": {
+        "tableName": "m_code_value",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan": [
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["group_id"],
+      "referenceTo": {
+        "tableName": "m_group",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["product_id"],
+      "referenceTo": {
+        "tableName": "m_product_loan",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["fund_id"],
+      "referenceTo": {
+        "tableName": "m_fund",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_officer_id"],
+      "referenceTo": {
+        "tableName": "m_staff",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loanpurpose_cv_id", "writeoff_reason_cv_id"],
+      "referenceTo": {
+        "tableName": "m_code_value",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_transaction_strategy_id"],
+      "referenceTo": {
+        "tableName": "ref_loan_transaction_processing_strategy",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["submittedon_userid", "approvedon_userid", "disbursedon_userid", "closedon_userid", "rejectedon_userid", "withdrawnon_userid"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_savings_account_interest_rate_slab": [
+    {
+      "fieldName": ["savings_account_interest_rate_chart_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account_interest_rate_chart",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_product_loan_configurable_attributes": [
+    {
+      "fieldName": ["loan_product_id"],
+      "referenceTo": {
+        "tableName": "m_product_loan",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_savings_product_charge": [
+    {
+      "fieldName": ["savings_product_id"],
+      "referenceTo": {
+        "tableName": "m_savings_product",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["charge_id"],
+      "referenceTo": {
+        "tableName": "m_charge",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "x_table_column_code_mappings": [
+    {
+      "fieldName": ["code_id"],
+      "referenceTo": {
+        "tableName": "m_code",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_entity_datatable_check": [
+    {
+      "fieldName": ["x_registered_table_name"],
+      "referenceTo": {
+        "tableName": "x_registered_table",
+        "fieldName": "registered_table_name"
+      }
+    }
+  ],
+  "m_savings_account": [
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["group_id"],
+      "referenceTo": {
+        "tableName": "m_group",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["tax_group_id"],
+      "referenceTo": {
+        "tableName": "m_tax_group",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["product_id"],
+      "referenceTo": {
+        "tableName": "m_savings_product",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "request_audit_table": [
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_arrears_aging": [
+    {
+      "fieldName": ["loan_id"],
+      "referenceTo": {
+        "tableName": "m_loan",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_deposit_account_on_hold_transaction": [
+    {
+      "fieldName": ["savings_account_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_deposit_account_recurring_detail": [
+    {
+      "fieldName": ["savings_account_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_deposit_account_term_and_preclosure": [
+    {
+      "fieldName": ["savings_account_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_account_transfer_standing_instructions": [
+    {
+      "fieldName": ["account_transfer_details_id"],
+      "referenceTo": {
+        "tableName": "m_account_transfer_details",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_account_transfer_standing_instructions_history": [
+    {
+      "fieldName": ["standing_instruction_id"],
+      "referenceTo": {
+        "tableName": "m_account_transfer_standing_instructions",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_deposit_product_recurring_detail": [
+    {
+      "fieldName": ["savings_product_id"],
+      "referenceTo": {
+        "tableName": "m_savings_product",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_deposit_product_term_and_preclosure": [
+    {
+      "fieldName": ["savings_product_id"],
+      "referenceTo": {
+        "tableName": "m_savings_product",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_organisation_currency": [
+    {
+      "fieldName": ["code"],
+      "referenceTo": {
+        "tableName": "m_currency",
+        "fieldName": "code"
+      }
+    }
+  ],
+  "m_template_m_templatemappers": [
+    {
+      "fieldName": ["m_template_id"],
+      "referenceTo": {
+        "tableName": "m_template",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["mappers_id"],
+      "referenceTo": {
+        "tableName": "m_templatemappers",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_survey_scorecards": [
+    {
+      "fieldName": ["survey_id"],
+      "referenceTo": {
+        "tableName": "m_surveys",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["question_id"],
+      "referenceTo": {
+        "tableName": "m_survey_questions",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["response_id"],
+      "referenceTo": {
+        "tableName": "m_survey_responses",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["user_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_share_product_market_price": [
+    {
+      "fieldName": ["product_id"],
+      "referenceTo": {
+        "tableName": "m_share_product",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_share_product_dividend_pay_out": [
+    {
+      "fieldName": ["product_id"],
+      "referenceTo": {
+        "tableName": "m_share_product",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_share_product_charge": [
+    {
+      "fieldName": ["product_id"],
+      "referenceTo": {
+        "tableName": "m_share_product",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["charge_id"],
+      "referenceTo": {
+        "tableName": "m_charge",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_share_product": [
+    {
+      "fieldName": ["createdby_id", "lastmodifiedby_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_share_account_transactions": [
+    {
+      "fieldName": ["account_id"],
+      "referenceTo": {
+        "tableName": "m_share_account",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_share_account_dividend_details": [
+    {
+      "fieldName": ["dividend_pay_out_id"],
+      "referenceTo": {
+        "tableName": "m_share_product_dividend_pay_out",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["account_id"],
+      "referenceTo": {
+        "tableName": "m_share_account",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_share_account_charge_paid_by": [
+    {
+      "fieldName": ["charge_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_share_account_charge",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["share_transaction_id"],
+      "referenceTo": {
+        "tableName": "m_share_account_transactions",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_share_account_charge": [
+    {
+      "fieldName": ["account_id"],
+      "referenceTo": {
+        "tableName": "m_share_account",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["charge_id"],
+      "referenceTo": {
+        "tableName": "m_charge",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_share_account": [
+    {
+      "fieldName": ["product_id"],
+      "referenceTo": {
+        "tableName": "m_share_product",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["savings_account_id"],
+      "referenceTo": {
+        "tableName": "m_savings_account",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["submitted_userid", "approved_userid", "rejected_userid", "activated_userid", "closed_userid", "lastmodifiedby_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_savings_product": [
+    {
+      "fieldName": ["tax_group_id"],
+      "referenceTo": {
+        "tableName": "m_tax_group",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_entity_to_entity_access": [
+    {
+      "fieldName": ["access_type_code_value_id"],
+      "referenceTo": {
+        "tableName": "m_code_value",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_selfservice_user_client_mapping": [
+    {
+      "fieldName": ["appuser_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_loan_overdue_installment_charge": [
+    {
+      "fieldName": ["loan_charge_id"],
+      "referenceTo": {
+        "tableName": "m_loan_charge",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["loan_schedule_id"],
+      "referenceTo": {
+        "tableName": "m_loan_repayment_schedule",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "m_selfservice_beneficiaries_tpt": [
+    {
+      "fieldName": ["app_user_id"],
+      "referenceTo": {
+        "tableName": "m_appuser",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["office_id"],
+      "referenceTo": {
+        "tableName": "m_office",
+        "fieldName": "id"
+      }
+    },
+    {
+      "fieldName": ["client_id"],
+      "referenceTo": {
+        "tableName": "m_client",
+        "fieldName": "id"
+      }
+    }
+  ],
+  "ppi_likelihoods_ppi": [
+    {
+      "fieldName": ["likelihood_id"],
+      "referenceTo": {
+        "tableName": "ppi_likelihoods",
+        "fieldName": "id"
+      }
     }
   ]
 }

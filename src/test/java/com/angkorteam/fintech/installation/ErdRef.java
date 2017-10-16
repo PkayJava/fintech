@@ -8,10 +8,6 @@ public class ErdRef implements Serializable {
 
     private String fieldName;
 
-    private boolean pk = false;
-
-    private boolean uq = false;
-
     public String getFieldName() {
         return fieldName;
     }
@@ -26,22 +22,6 @@ public class ErdRef implements Serializable {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
-    }
-
-    public boolean isPk() {
-        return pk;
-    }
-
-    public void setPk(boolean pk) {
-        this.pk = pk;
-    }
-
-    public boolean isUq() {
-        return uq;
-    }
-
-    public void setUq(boolean uq) {
-        this.uq = uq;
     }
 
 }

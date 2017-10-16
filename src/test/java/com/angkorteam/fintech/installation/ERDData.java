@@ -64,6 +64,12 @@ public class ERDData {
 
         DataSource dataSource = dataSourceManager.getDataSource(Constants.AID);
 
+        String json = FileUtils.readFileToString(new File("src/main/resources/erd.json"), "UTF-8");
+        Gson gson = new Gson();
+
+        Map<String, List<ErdVO>> erds = gson.fromJson(json, new TypeToken<Map<String, List<ErdVO>>>() {
+        }.getType());
+
         Map<String, String> tableDictionary = new HashMap<>();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         List<String> tables = queryForTables(jdbcTemplate);
@@ -180,7 +186,6 @@ public class ERDData {
         List<String> filters = new ArrayList<>();
         boolean hasFilter = false;
         String temps = System.getProperty("tables");
-        temps = "m_office";
         if (temps != null && !"".equals(temps)) {
             hasFilter = true;
             String temp = (String) temps;
@@ -193,12 +198,6 @@ public class ERDData {
                 }
             }
         }
-
-        String json = FileUtils.readFileToString(new File("src/main/resources/erd.json"), "UTF-8");
-        Gson gson = new Gson();
-
-        Map<String, List<ErdVO>> erds = gson.fromJson(json, new TypeToken<Map<String, List<ErdVO>>>() {
-        }.getType());
 
         if (hasFilter) {
             for (Entry<String, List<ErdVO>> erd : erds.entrySet()) {
