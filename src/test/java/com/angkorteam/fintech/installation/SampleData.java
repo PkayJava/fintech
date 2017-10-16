@@ -721,7 +721,7 @@ public class SampleData implements IMifos {
                         if ((chargeTime == ChargeTime.OverdueFees) && !penalty) {
                             continue;
                         }
-                        String name = "[LOAN] Charge [" + currency + "] " + chargeTime.getDescription() + " Flat " + chargePayment.getDescription() + " " + (penalty ? "Penalty" : "");
+                        String name = "Charge [LOAN] [" + currency + "] " + chargeTime.getDescription() + " Flat " + chargePayment.getDescription() + " " + (penalty ? "Penalty" : "");
                         boolean has = jdbcTemplate.queryForObject("select count(*) from m_charge where name = ?", boolean.class, name);
                         if (!has) {
                             ChargeBuilder builder = new ChargeBuilder();
@@ -747,7 +747,7 @@ public class SampleData implements IMifos {
             // Saving & Deposit
             for (boolean penalty : new boolean[] { true, false }) {
                 for (ChargeTime chargeTime : new ChargeTime[] { ChargeTime.SpecifiedDueDate, ChargeTime.SavingsActivation, ChargeTime.WithdrawalFee, ChargeTime.AnnualFee, ChargeTime.MonthlyFee, ChargeTime.WeeklyFee, ChargeTime.OverdraftFee, ChargeTime.SavingNoActivityFee }) {
-                    String name = "[S.D] Charge [" + currency + "] " + chargeTime.getDescription() + " Flat " + (penalty ? "Penalty" : "");
+                    String name = "Charge [S.D.] [" + currency + "] " + chargeTime.getDescription() + " Flat " + (penalty ? "Penalty" : "");
                     boolean has = jdbcTemplate.queryForObject("select count(*) from m_charge where name = ?", boolean.class, name);
                     if (!has) {
                         ChargeBuilder builder = new ChargeBuilder();
@@ -774,7 +774,7 @@ public class SampleData implements IMifos {
             }
             // Client
             for (boolean penalty : new boolean[] { true, false }) {
-                String name = "[Client] Charge [" + currency + "] " + ChargeTime.SpecifiedDueDate.getDescription() + " Flat " + (penalty ? "Penalty" : "");
+                String name = "Charge [Client] [" + currency + "] " + ChargeTime.SpecifiedDueDate.getDescription() + " Flat " + (penalty ? "Penalty" : "");
                 boolean has = jdbcTemplate.queryForObject("select count(*) from m_charge where name = ?", boolean.class, name);
                 if (!has) {
                     ChargeBuilder builder = new ChargeBuilder();
@@ -793,7 +793,7 @@ public class SampleData implements IMifos {
             }
             // Share
             for (ChargeTime chargeTime : new ChargeTime[] { ChargeTime.ShareAccountActivate, ChargeTime.SharePurchase, ChargeTime.ShareRedeem }) {
-                String name = "[Client] Charge [" + currency + "] " + chargeTime.getDescription() + " Flat";
+                String name = "Charge [Share] [" + currency + "] " + chargeTime.getDescription() + " Flat";
                 boolean has = jdbcTemplate.queryForObject("select count(*) from m_charge where name = ?", boolean.class, name);
                 if (!has) {
                     ChargeBuilder builder = new ChargeBuilder();
