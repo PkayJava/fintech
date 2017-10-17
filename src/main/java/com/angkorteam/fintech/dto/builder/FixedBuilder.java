@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.json.JSONObject;
 
@@ -445,6 +446,80 @@ public class FixedBuilder implements Serializable {
 
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
+
+        List<String> errors = Lists.newArrayList();
+        if (this.name == null || "".equals(this.name)) {
+            errors.add("name is required");
+        }
+
+        if (this.shortName == null || "".equals(this.shortName)) {
+            errors.add("shortName is required");
+        }
+
+        if (this.description == null || "".equals(this.description)) {
+            errors.add("description is required");
+        }
+
+        if (this.currencyCode == null || "".equals(this.currencyCode)) {
+            errors.add("currencyCode is required");
+        }
+
+        if (this.digitsAfterDecimal == null) {
+            errors.add("digitsAfterDecimal is required");
+        }
+
+        if (this.inMultiplesOf == null) {
+            errors.add("inMultiplesOf is required");
+        }
+
+        if (this.interestCompoundingPeriodType == null) {
+            errors.add("interestCompoundingPeriodType is required");
+        }
+
+        if (this.interestCalculationType == null) {
+            errors.add("interestCalculationType is required");
+        }
+
+        if (this.interestCalculationDaysInYearType == null) {
+            errors.add("interestCalculationDaysInYearType is required");
+        }
+
+        if (this.minDepositTerm == null) {
+            errors.add("minDepositTerm is required");
+        }
+
+        if (this.minDepositTermTypeId == null) {
+            errors.add("minDepositTermTypeId is required");
+        }
+
+        if (this.accountingRule == null) {
+            errors.add("accountingRule is required");
+        } else {
+            if (this.accountingRule == 2) {
+                if (this.savingsReferenceAccountId == null || "".equals(this.savingsReferenceAccountId)) {
+                    errors.add("savingsReferenceAccountId is required");
+                }
+                if (this.savingsControlAccountId == null || "".equals(this.savingsControlAccountId)) {
+                    errors.add("savingsControlAccountId is required");
+                }
+                if (this.interestOnSavingsAccountId == null || "".equals(this.interestOnSavingsAccountId)) {
+                    errors.add("interestOnSavingsAccountId is required");
+                }
+                if (this.incomeFromFeeAccountId == null || "".equals(this.incomeFromFeeAccountId)) {
+                    errors.add("incomeFromFeeAccountId is required");
+                }
+                if (this.transfersInSuspenseAccountId == null || "".equals(this.transfersInSuspenseAccountId)) {
+                    errors.add("transfersInSuspenseAccountId is required");
+                }
+                if (this.incomeFromPenaltyAccountId == null || "".equals(this.incomeFromPenaltyAccountId)) {
+                    errors.add("incomeFromPenaltyAccountId is required");
+                }
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            throw new IllegalArgumentException("invalid builder :: " + StringUtils.join(errors, ","));
+        }
 
         if (this.hasPreClosurePenalInterest) {
             object.getObject().put("preClosurePenalInterest", this.preClosurePenalInterest);

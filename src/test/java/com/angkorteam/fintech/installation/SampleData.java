@@ -744,6 +744,7 @@ public class SampleData implements IMifos {
         Function.setupTaxGroup(this, this.wicket.getJdbcTemplate(), TAX_GROUPS, this.wicket.getStringGenerator());
         Function.setupFloatingRate(this, this.wicket.getJdbcTemplate(), FLOATING_RATES, this.wicket.getStringGenerator());
         setupCharge(this, this.wicket.getJdbcTemplate());
+//        setupFixedDepositProduct();
     }
 
     protected void setupCharge(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
