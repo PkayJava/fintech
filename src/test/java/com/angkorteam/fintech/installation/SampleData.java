@@ -691,6 +691,14 @@ public class SampleData implements IMifos {
 
         ACCOUNTS.add("Account Share Equity/Equity" + "=>" + Dropdown.EquityAccountTags);
 
+        ACCOUNTS.add("Account Asset/F.A. Asset Transfer" + "=>" + Dropdown.AssetAccountTags);
+        ACCOUNTS.add("Account Asset/F.A. Main Cash Account" + "=>" + Dropdown.AssetAccountTags);
+        ACCOUNTS.add("Account Asset/F.A. Cash Teller" + "=>" + Dropdown.AssetAccountTags);
+        ACCOUNTS.add("Account Asset/F.A. Fund Source" + "=>" + Dropdown.AssetAccountTags);
+        ACCOUNTS.add("Account Liability/F.A. Liability Transfer" + "=>" + Dropdown.LiabilityAccountTags);
+        ACCOUNTS.add("Account Liability/F.A. Payable Dividends" + "=>" + Dropdown.LiabilityAccountTags);
+        ACCOUNTS.add("Account Equity/F.A. Opening Balance Transfer" + "=>" + Dropdown.EquityAccountTags);
+
         ACCOUNT_RULES.add("Account Rule 01");
 
         TAX_COMPONENTS.add("T.C. Asset/Debit=>5=>" + AccountType.Asset.name() + "=>" + "Account Asset/Debit");
