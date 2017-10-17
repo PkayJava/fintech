@@ -657,7 +657,39 @@ public class SampleData implements IMifos {
         ACCOUNTS.add("Account Income/Credit" + "=>" + Dropdown.IncomeAccountTags);
         ACCOUNTS.add("Account Expense/Debit" + "=>" + Dropdown.ExpenseAccountTags);
         ACCOUNTS.add("Account Expense/Credit" + "=>" + Dropdown.ExpenseAccountTags);
+
         ACCOUNTS.add("Account Charge" + "=>" + Dropdown.IncomeAccountTags);
+
+        ACCOUNTS.add("Account Asset/Fund Source" + "=>" + Dropdown.AssetAccountTags);
+        ACCOUNTS.add("Account Asset/Saving Reference" + "=>" + Dropdown.AssetAccountTags);
+        ACCOUNTS.add("Account Asset/Interest Receivable" + "=>" + Dropdown.AssetAccountTags);
+        ACCOUNTS.add("Account Asset/Fee Receivable" + "=>" + Dropdown.AssetAccountTags);
+        ACCOUNTS.add("Account Asset/Penalty Receivable" + "=>" + Dropdown.AssetAccountTags);
+        ACCOUNTS.add("Account Asset/Loan Portfolio" + "=>" + Dropdown.AssetAccountTags);
+        ACCOUNTS.add("Account Asset/Overdraft Portfolio" + "=>" + Dropdown.AssetAccountTags);
+        ACCOUNTS.add("Account Asset/Transfer In Suspense" + "=>" + Dropdown.AssetAccountTags);
+
+        ACCOUNTS.add("Account Income/Income From Interest" + "=>" + Dropdown.IncomeAccountTags);
+        ACCOUNTS.add("Account Income/Income From Penalty" + "=>" + Dropdown.IncomeAccountTags);
+        ACCOUNTS.add("Account Income/Income From Fee" + "=>" + Dropdown.IncomeAccountTags);
+        ACCOUNTS.add("Account Income/Income From Recovery Repayment" + "=>" + Dropdown.IncomeAccountTags);
+        ACCOUNTS.add("Account Income/Overdraft Interest Income" + "=>" + Dropdown.IncomeAccountTags);
+
+        ACCOUNTS.add("Account Income/Penalty Income Account" + "=>" + Dropdown.IncomeAccountTags);
+        ACCOUNTS.add("Account Income/Fee Income Account" + "=>" + Dropdown.IncomeAccountTags);
+
+        ACCOUNTS.add("Account Expense/Losses Written Off" + "=>" + Dropdown.ExpenseAccountTags);
+        ACCOUNTS.add("Account Expense/Interest On Saving" + "=>" + Dropdown.ExpenseAccountTags);
+        ACCOUNTS.add("Account Expense/Write-Off" + "=>" + Dropdown.ExpenseAccountTags);
+
+        ACCOUNTS.add("Account Liability/Over Payment Liability" + "=>" + Dropdown.LiabilityAccountTags);
+        ACCOUNTS.add("Account Liability/Saving Control" + "=>" + Dropdown.LiabilityAccountTags);
+        ACCOUNTS.add("Account Liability/Saving Transfer In Suspense" + "=>" + Dropdown.LiabilityAccountTags);
+        ACCOUNTS.add("Account Liability/Share Suspense Control" + "=>" + Dropdown.LiabilityAccountTags);
+
+        ACCOUNTS.add("Account Liability/Fee Income Account" + "=>" + Dropdown.LiabilityAccountTags);
+
+        ACCOUNTS.add("Account Share Equity/Equity" + "=>" + Dropdown.EquityAccountTags);
 
         ACCOUNT_RULES.add("Account Rule 01");
 
