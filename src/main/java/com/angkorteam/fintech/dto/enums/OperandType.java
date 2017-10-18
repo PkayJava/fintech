@@ -3,9 +3,9 @@ package com.angkorteam.fintech.dto.enums;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum OperandType {
-    
-    Fixed("2", "Fixed"),
-    Incentive("3","Incentive");
+
+    Fixed("2", "Fixed"), 
+    Incentive("3", "Incentive");
 
     private String literal;
 
@@ -23,7 +23,11 @@ public enum OperandType {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static OperandType parseLiteral(String literal) {
         for (OperandType value : OperandType.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -32,7 +36,7 @@ public enum OperandType {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         OperandType value = parseLiteral(literal);
         if (value == null) {
@@ -40,5 +44,5 @@ public enum OperandType {
         }
         return new Option(value.name(), value.getDescription());
     }
-    
+
 }

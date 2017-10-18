@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.RandomStringGenerator;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +19,10 @@ import org.junit.Test;
 import com.angkorteam.fintech.Constants;
 import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.dto.Dropdown;
+import com.angkorteam.fintech.dto.builder.CenterBuilder;
 import com.angkorteam.fintech.dto.builder.ChargeBuilder;
+import com.angkorteam.fintech.dto.builder.ClientBuilder;
+import com.angkorteam.fintech.dto.builder.GroupBuilder;
 import com.angkorteam.fintech.dto.builder.PaymentTypeBuilder;
 import com.angkorteam.fintech.dto.builder.StaffBuilder;
 import com.angkorteam.fintech.dto.builder.TellerBuilder;
@@ -29,7 +33,9 @@ import com.angkorteam.fintech.dto.enums.ChargeFrequency;
 import com.angkorteam.fintech.dto.enums.ChargePayment;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.ChargeType;
+import com.angkorteam.fintech.dto.enums.LegalForm;
 import com.angkorteam.fintech.helper.ChargeHelper;
+import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.helper.LoginHelper;
 import com.angkorteam.fintech.helper.PaymentTypeHelper;
 import com.angkorteam.fintech.helper.StaffHelper;
@@ -744,7 +750,133 @@ public class SampleData implements IMifos {
         Function.setupTaxGroup(this, this.wicket.getJdbcTemplate(), TAX_GROUPS, this.wicket.getStringGenerator());
         Function.setupFloatingRate(this, this.wicket.getJdbcTemplate(), FLOATING_RATES, this.wicket.getStringGenerator());
         setupCharge(this, this.wicket.getJdbcTemplate());
-//        setupFixedDepositProduct();
+        setupFixedDepositProduct(this, this.wicket.getJdbcTemplate());
+        setupClient(this, this.wicket.getJdbcTemplate(), this.wicket.getStringGenerator());
+        setupGroup(this, this.wicket.getJdbcTemplate());
+        setupCenter(this, this.wicket.getJdbcTemplate());
+    }
+
+    protected void setupCenter(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
+        if (jdbcTemplate.queryForObject("select count(*) from m_group where display_name = ?", boolean.class, "Weekend Startup")) {
+            return;
+        }
+
+        String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, "Phnom Penh");
+        String staffId = jdbcTemplate.queryForObject("select id from m_staff where office_id = ? limit 1", String.class, officeId);
+        String groupId = jdbcTemplate.queryForObject("select id from m_group where display_name = ?", String.class, "IT Group");
+
+        CenterBuilder builder = new CenterBuilder();
+        builder.withOfficeId(officeId);
+
+        builder.withExternalId(StringUtils.upperCase(UUID.randomUUID().toString()));
+        builder.withName("Weekend Startup");
+        builder.withSubmittedOnDate(DateTime.now().toDate());
+        builder.withStaffId(staffId);
+
+        builder.withActive(true);
+        builder.withActivationDate(DateTime.now().toDate());
+        builder.withGroupMember(groupId);
+
+        ClientHelper.createCenter(session, builder.build());
+    }
+
+    protected void setupGroup(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
+        if (jdbcTemplate.queryForObject("select count(*) from m_group where display_name = ?", boolean.class, "IT Group")) {
+            return;
+        }
+
+        String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, "Phnom Penh");
+        String staffId = jdbcTemplate.queryForObject("select id from m_staff where office_id = ? limit 1", String.class, officeId);
+        String clientId = jdbcTemplate.queryForObject("select id from m_client where fullname = ?", String.class, "Angkor Team");
+
+        GroupBuilder builder = new GroupBuilder();
+        builder.withOfficeId(officeId);
+        builder.withExternalId(StringUtils.upperCase(UUID.randomUUID().toString()));
+        builder.withName("IT Group");
+        builder.withSubmittedOnDate(DateTime.now().toDate());
+        builder.withStaffId(staffId);
+        builder.withActive(true);
+        builder.withActivationDate(DateTime.now().toDate());
+
+        builder.withClientMember(clientId);
+
+        ClientHelper.createGroup(session, builder.build());
+
+    }
+
+    protected void setupClient(IMifos session, JdbcTemplate jdbcTemplate, RandomStringGenerator stringGenerator) throws UnirestException {
+        setupClientSocheatKHAUV(session, jdbcTemplate, stringGenerator);
+        setupClientAngkorTeam(session, jdbcTemplate, stringGenerator);
+    }
+
+    protected void setupClientAngkorTeam(IMifos session, JdbcTemplate jdbcTemplate, RandomStringGenerator stringGenerator) throws UnirestException {
+        if (jdbcTemplate.queryForObject("select count(*) from m_client where firstname = ? and lastname = ?", boolean.class, "Socheat", "KHAUV")) {
+            return;
+        }
+        String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, "Phnom Penh");
+        String staffId = jdbcTemplate.queryForObject("select id from m_staff where office_id = ? limit 1", String.class, officeId);
+        String clientTypeId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? and m_code_value.code_value = ? limit 1", String.class, "ClientType");
+        String clientClassificationId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? and m_code_value.code_value = ? limit 1", String.class, "ClientClassification");
+        String mainBusinessLineId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? and m_code_value.code_value = ? limit 1", String.class, "MainBusinessLine");
+        String constitutionId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? and m_code_value.code_value = ? limit 1", String.class, "Constitution");
+
+        ClientBuilder builder = new ClientBuilder();
+        builder.withLegalFormId(LegalForm.Person);
+
+        builder.withFullName("Angkor Team");
+        builder.withDateOfBirth(DateTime.now().toDate());
+        String incorpNumber = StringUtils.upperCase(stringGenerator.generate(5));
+        String remarks = "Remarks";
+        Date incorpValidityTillDate = DateTime.now().plusYears(10).toDate();
+        builder.withClientNonPersonDetails(mainBusinessLineId, incorpNumber, constitutionId, remarks, incorpValidityTillDate);
+
+        builder.withOfficeId(officeId);
+        builder.withClientClassificationId(clientClassificationId);
+        builder.withStaffId(staffId);
+        builder.withMobileNo("+85593777091");
+        builder.withClientTypeId(clientTypeId);
+        builder.withExternalId(StringUtils.upperCase(UUID.randomUUID().toString()));
+        builder.withActive(true);
+        builder.withActivationDate(DateTime.now().toDate());
+        builder.withSubmittedOnDate(DateTime.now().toDate());
+
+        ClientHelper.createClient(session, builder.build());
+
+    }
+
+    protected void setupClientSocheatKHAUV(IMifos session, JdbcTemplate jdbcTemplate, RandomStringGenerator stringGenerator) throws UnirestException {
+        if (jdbcTemplate.queryForObject("select count(*) from m_client where fullname = ?", boolean.class, "Angkor Team")) {
+            return;
+        }
+        String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, "Phnom Penh");
+        String staffId = jdbcTemplate.queryForObject("select id from m_staff where office_id = ? limit 1", String.class, officeId);
+        String genderId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? and m_code_value.code_value = ?", String.class, "Gender", "M");
+        String clientTypeId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? and m_code_value.code_value = ? limit 1", String.class, "ClientType");
+        String clientClassificationId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? and m_code_value.code_value = ? limit 1", String.class, "ClientClassification");
+
+        ClientBuilder builder = new ClientBuilder();
+        builder.withLegalFormId(LegalForm.Person);
+        builder.withFirstName("Socheat");
+        builder.withStaff(false);
+        builder.withLastName("KHAUV");
+        builder.withDateOfBirth(DateTime.now().minusYears(20).toDate());
+        builder.withGenderId(genderId);
+        builder.withOfficeId(officeId);
+        builder.withClientClassificationId(clientClassificationId);
+        builder.withStaffId(staffId);
+        builder.withMobileNo("+85577777091");
+        builder.withClientTypeId(clientTypeId);
+        builder.withExternalId(StringUtils.upperCase(UUID.randomUUID().toString()));
+        builder.withActive(true);
+        builder.withActivationDate(DateTime.now().toDate());
+        builder.withSubmittedOnDate(DateTime.now().toDate());
+
+        ClientHelper.createClient(session, builder.build());
+
+    }
+
+    protected void setupFixedDepositProduct(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
+
     }
 
     protected void setupCharge(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {

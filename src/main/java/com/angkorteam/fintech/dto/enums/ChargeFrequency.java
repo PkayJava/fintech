@@ -4,9 +4,9 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum ChargeFrequency {
 
-    Day("0", "Days"),
-    Week("1", "Weeks"),
-    Month("2", "Months"),
+    Day("0", "Days"), 
+    Week("1", "Weeks"), 
+    Month("2", "Months"), 
     Year("3", "Years");
 
     private String literal;
@@ -25,7 +25,11 @@ public enum ChargeFrequency {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static ChargeFrequency parseLiteral(String literal) {
         for (ChargeFrequency value : ChargeFrequency.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -34,7 +38,7 @@ public enum ChargeFrequency {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         ChargeFrequency value = parseLiteral(literal);
         if (value == null) {
@@ -42,5 +46,5 @@ public enum ChargeFrequency {
         }
         return new Option(value.name(), value.getDescription());
     }
-    
+
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.json.JSONObject;
 
@@ -20,7 +21,7 @@ import com.angkorteam.fintech.dto.enums.loan.FrequencyType;
 import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.enums.loan.InterestMethod;
 import com.angkorteam.fintech.dto.enums.loan.InterestRecalculationCompound;
-import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateScheduleType;
+import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateType;
 import com.angkorteam.fintech.dto.enums.loan.RepaymentStrategy;
 import com.angkorteam.fintech.dto.enums.loan.WhenType;
 import com.google.common.collect.Lists;
@@ -92,10 +93,10 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private boolean interestRecalculationEnabled;
+    private Boolean interestRecalculationEnabled;
     private boolean hasInterestRecalculationEnabled;
 
-    public LoanBuilder withInterestRecalculationEnabled(boolean interestRecalculationEnabled) {
+    public LoanBuilder withInterestRecalculationEnabled(Boolean interestRecalculationEnabled) {
         this.interestRecalculationEnabled = interestRecalculationEnabled;
         this.hasInterestRecalculationEnabled = true;
         return this;
@@ -164,10 +165,10 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private boolean includeInBorrowerCycle;
+    private Boolean includeInBorrowerCycle;
     private boolean hasIncludeInBorrowerCycle;
 
-    public LoanBuilder withIncludeInBorrowerCycle(boolean includeInBorrowerCycle) {
+    public LoanBuilder withIncludeInBorrowerCycle(Boolean includeInBorrowerCycle) {
         this.includeInBorrowerCycle = includeInBorrowerCycle;
         this.hasIncludeInBorrowerCycle = true;
         return this;
@@ -218,37 +219,37 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private boolean useBorrowerCycle;
+    private Boolean useBorrowerCycle;
     private boolean hasUseBorrowerCycle;
 
-    public LoanBuilder withUseBorrowerCycle(boolean useBorrowerCycle) {
+    public LoanBuilder withUseBorrowerCycle(Boolean useBorrowerCycle) {
         this.useBorrowerCycle = useBorrowerCycle;
         this.hasUseBorrowerCycle = true;
         return this;
     }
 
-    private Double minNumberOfRepayments;
+    private Integer minNumberOfRepayments;
     private boolean hasMinNumberOfRepayments;
 
-    public LoanBuilder withMinNumberOfRepayments(Double minNumberOfRepayments) {
+    public LoanBuilder withMinNumberOfRepayments(Integer minNumberOfRepayments) {
         this.minNumberOfRepayments = minNumberOfRepayments;
         this.hasMinNumberOfRepayments = true;
         return this;
     }
 
-    private Double numberOfRepayments;
+    private Integer numberOfRepayments;
     private boolean hasNumberOfRepayments;
 
-    public LoanBuilder withNumberOfRepayments(Double numberOfRepayments) {
+    public LoanBuilder withNumberOfRepayments(Integer numberOfRepayments) {
         this.numberOfRepayments = numberOfRepayments;
         this.hasNumberOfRepayments = true;
         return this;
     }
 
-    private Double maxNumberOfRepayments;
+    private Integer maxNumberOfRepayments;
     private boolean hasMaxNumberOfRepayments;
 
-    public LoanBuilder withMaxNumberOfRepayments(Double maxNumberOfRepayments) {
+    public LoanBuilder withMaxNumberOfRepayments(Integer maxNumberOfRepayments) {
         this.maxNumberOfRepayments = maxNumberOfRepayments;
         this.hasMaxNumberOfRepayments = true;
         return this;
@@ -281,10 +282,10 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private NominalInterestRateScheduleType interestRateFrequencyType;
+    private NominalInterestRateType interestRateFrequencyType;
     private boolean hasInterestRateFrequencyType;
 
-    public LoanBuilder withInterestRateFrequencyType(NominalInterestRateScheduleType interestRateFrequencyType) {
+    public LoanBuilder withInterestRateFrequencyType(NominalInterestRateType interestRateFrequencyType) {
         this.interestRateFrequencyType = interestRateFrequencyType;
         this.hasInterestRateFrequencyType = true;
         return this;
@@ -308,19 +309,19 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private boolean linkedToFloatingInterestRates;
+    private Boolean linkedToFloatingInterestRates;
     private boolean hasLinkedToFloatingInterestRates;
 
-    public LoanBuilder withLinkedToFloatingInterestRates(boolean linkedToFloatingInterestRates) {
+    public LoanBuilder withLinkedToFloatingInterestRates(Boolean linkedToFloatingInterestRates) {
         this.linkedToFloatingInterestRates = linkedToFloatingInterestRates;
         this.hasLinkedToFloatingInterestRates = true;
         return this;
     }
 
-    private boolean floatingInterestRateCalculationAllowed;
+    private Boolean floatingInterestRateCalculationAllowed;
     private boolean hasFloatingInterestRateCalculationAllowed;
 
-    public LoanBuilder withFloatingInterestRateCalculationAllowed(boolean floatingInterestRateCalculationAllowed) {
+    public LoanBuilder withFloatingInterestRateCalculationAllowed(Boolean floatingInterestRateCalculationAllowed) {
         this.floatingInterestRateCalculationAllowed = floatingInterestRateCalculationAllowed;
         this.hasFloatingInterestRateCalculationAllowed = true;
         return this;
@@ -434,10 +435,10 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private boolean allowPartialPeriodInterestCalcualtion;
+    private Boolean allowPartialPeriodInterestCalcualtion;
     private boolean hasAllowPartialPeriodInterestCalcualtion;
 
-    public LoanBuilder withAllowPartialPeriodInterestCalcualtion(boolean allowPartialPeriodInterestCalcualtion) {
+    public LoanBuilder withAllowPartialPeriodInterestCalcualtion(Boolean allowPartialPeriodInterestCalcualtion) {
         this.allowPartialPeriodInterestCalcualtion = allowPartialPeriodInterestCalcualtion;
         this.hasAllowPartialPeriodInterestCalcualtion = true;
         return this;
@@ -497,10 +498,10 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private boolean canDefineInstallmentAmount;
+    private Boolean canDefineInstallmentAmount;
     private boolean hasCanDefineInstallmentAmount;
 
-    public LoanBuilder withCanDefineInstallmentAmount(boolean canDefineInstallmentAmount) {
+    public LoanBuilder withCanDefineInstallmentAmount(Boolean canDefineInstallmentAmount) {
         this.canDefineInstallmentAmount = canDefineInstallmentAmount;
         this.hasCanDefineInstallmentAmount = true;
         return this;
@@ -551,28 +552,28 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private boolean accountMovesOutOfNPAOnlyOnArrearsCompletion;
+    private Boolean accountMovesOutOfNPAOnlyOnArrearsCompletion;
     private boolean hasAccountMovesOutOfNPAOnlyOnArrearsCompletion;
 
-    public LoanBuilder withAccountMovesOutOfNPAOnlyOnArrearsCompletion(boolean accountMovesOutOfNPAOnlyOnArrearsCompletion) {
+    public LoanBuilder withAccountMovesOutOfNPAOnlyOnArrearsCompletion(Boolean accountMovesOutOfNPAOnlyOnArrearsCompletion) {
         this.accountMovesOutOfNPAOnlyOnArrearsCompletion = accountMovesOutOfNPAOnlyOnArrearsCompletion;
         this.hasAccountMovesOutOfNPAOnlyOnArrearsCompletion = true;
         return this;
     }
 
-    private boolean allowVariableInstallments;
+    private Boolean allowVariableInstallments;
     private boolean hasAllowVariableInstallments;
 
-    public LoanBuilder withAllowVariableInstallments(boolean allowVariableInstallments) {
+    public LoanBuilder withAllowVariableInstallments(Boolean allowVariableInstallments) {
         this.allowVariableInstallments = allowVariableInstallments;
         this.hasAllowVariableInstallments = true;
         return this;
     }
 
-    private boolean canUseForTopup;
+    private Boolean canUseForTopup;
     private boolean hasCanUseForTopup;
 
-    public LoanBuilder withCanUseForTopup(boolean canUseForTopup) {
+    public LoanBuilder withCanUseForTopup(Boolean canUseForTopup) {
         this.canUseForTopup = canUseForTopup;
         this.hasCanUseForTopup = true;
         return this;
@@ -641,10 +642,10 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private boolean arrearsBasedOnOriginalSchedule;
+    private Boolean arrearsBasedOnOriginalSchedule;
     private boolean hasArrearsBasedOnOriginalSchedule;
 
-    public LoanBuilder withArrearsBasedOnOriginalSchedule(boolean arrearsBasedOnOriginalSchedule) {
+    public LoanBuilder withArrearsBasedOnOriginalSchedule(Boolean arrearsBasedOnOriginalSchedule) {
         this.arrearsBasedOnOriginalSchedule = arrearsBasedOnOriginalSchedule;
         this.hasArrearsBasedOnOriginalSchedule = true;
         return this;
@@ -686,10 +687,10 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private boolean holdGuaranteeFunds;
+    private Boolean holdGuaranteeFunds;
     private boolean hasHoldGuaranteeFunds;
 
-    public LoanBuilder withHoldGuaranteeFunds(boolean holdGuaranteeFunds) {
+    public LoanBuilder withHoldGuaranteeFunds(Boolean holdGuaranteeFunds) {
         this.holdGuaranteeFunds = holdGuaranteeFunds;
         this.hasHoldGuaranteeFunds = true;
         return this;
@@ -722,10 +723,10 @@ public class LoanBuilder implements Serializable {
         return this;
     }
 
-    private boolean multiDisburseLoan;
+    private Boolean multiDisburseLoan;
     private boolean hasMultiDisburseLoan;
 
-    public LoanBuilder withMultiDisburseLoan(boolean multiDisburseLoan) {
+    public LoanBuilder withMultiDisburseLoan(Boolean multiDisburseLoan) {
         this.multiDisburseLoan = multiDisburseLoan;
         this.hasMultiDisburseLoan = true;
         return this;
@@ -914,7 +915,168 @@ public class LoanBuilder implements Serializable {
     }
 
     public JsonNode build() {
+
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
+
+        List<String> errors = Lists.newArrayList();
+        if (this.name == null || "".equals(this.name)) {
+            errors.add("name is required");
+        }
+
+        if (this.shortName == null || "".equals(this.shortName)) {
+            errors.add("shortName is required");
+        }
+
+        if (this.currencyCode == null || "".equals(this.currencyCode)) {
+            errors.add("currencyCode is required");
+        }
+
+        if (this.digitsAfterDecimal == null) {
+            errors.add("digitsAfterDecimal is required");
+        }
+
+        if (this.inMultiplesOf == null) {
+            errors.add("inMultiplesOf is required");
+        }
+
+        if (this.numberOfRepayments == null) {
+            errors.add("numberOfRepayments is required");
+        }
+
+        if (this.principal == null) {
+            errors.add("principal is required");
+        }
+
+        if (this.repaymentEvery == null) {
+            errors.add("repaymentEvery is required");
+        }
+
+        if (this.repaymentFrequencyType == null) {
+            errors.add("repaymentFrequencyType is required");
+        }
+
+        if (this.interestRatePerPeriod == null) {
+            errors.add("interestRatePerPeriod is required");
+        }
+
+        if (this.interestRateFrequencyType == null) {
+            errors.add("interestRateFrequencyType is required");
+        }
+
+        if (this.amortizationType == null) {
+            errors.add("amortizationType is required");
+        }
+
+        if (this.interestType == null) {
+            errors.add("interestType is required");
+        }
+
+        if (this.interestCalculationPeriodType == null) {
+            errors.add("interestCalculationPeriodType is required");
+        }
+
+        if (this.transactionProcessingStrategyId == null) {
+            errors.add("transactionProcessingStrategyId is required");
+        }
+
+        if (this.interestRecalculationEnabled == null) {
+            errors.add("isInterestRecalculationEnabled is required");
+        }
+
+        if (this.daysInYearType == null) {
+            errors.add("daysInYearType is required");
+        }
+
+        if (this.daysInMonthType == null) {
+            errors.add("daysInMonthType is required");
+        }
+
+        if (this.accountingRule == null) {
+            errors.add("accountingRule is required");
+        } else {
+            if (this.accountingRule == 2) {
+                if (this.fundSourceAccountId == null || "".equals(this.fundSourceAccountId)) {
+                    errors.add("fundSourceAccountId is required");
+                }
+                if (this.loanPortfolioAccountId == null || "".equals(this.loanPortfolioAccountId)) {
+                    errors.add("loanPortfolioAccountId is required");
+                }
+                if (this.interestOnLoanAccountId == null || "".equals(this.interestOnLoanAccountId)) {
+                    errors.add("interestOnLoanAccountId is required");
+                }
+                if (this.incomeFromFeeAccountId == null || "".equals(this.incomeFromFeeAccountId)) {
+                    errors.add("incomeFromFeeAccountId is required");
+                }
+                if (this.incomeFromPenaltyAccountId == null || "".equals(this.incomeFromPenaltyAccountId)) {
+                    errors.add("incomeFromPenaltyAccountId is required");
+                }
+                if (this.writeOffAccountId == null || "".equals(this.writeOffAccountId)) {
+                    errors.add("writeOffAccountId is required");
+                }
+                if (this.transfersInSuspenseAccountId == null || "".equals(this.transfersInSuspenseAccountId)) {
+                    errors.add("transfersInSuspenseAccountId is required");
+                }
+                if (this.overpaymentLiabilityAccountId == null || "".equals(this.overpaymentLiabilityAccountId)) {
+                    errors.add("overpaymentLiabilityAccountId is required");
+                }
+            } else if (this.accountingRule == 3 || this.accountingRule == 4) {
+                if (this.fundSourceAccountId == null || "".equals(this.fundSourceAccountId)) {
+                    errors.add("fundSourceAccountId is required");
+                }
+                if (this.loanPortfolioAccountId == null || "".equals(this.loanPortfolioAccountId)) {
+                    errors.add("loanPortfolioAccountId is required");
+                }
+                if (this.interestOnLoanAccountId == null || "".equals(this.interestOnLoanAccountId)) {
+                    errors.add("interestOnLoanAccountId is required");
+                }
+                if (this.incomeFromFeeAccountId == null || "".equals(this.incomeFromFeeAccountId)) {
+                    errors.add("incomeFromFeeAccountId is required");
+                }
+                if (this.incomeFromPenaltyAccountId == null || "".equals(this.incomeFromPenaltyAccountId)) {
+                    errors.add("incomeFromPenaltyAccountId is required");
+                }
+                if (this.writeOffAccountId == null || "".equals(this.writeOffAccountId)) {
+                    errors.add("writeOffAccountId is required");
+                }
+                if (this.receivableInterestAccountId == null || "".equals(this.receivableInterestAccountId)) {
+                    errors.add("receivableInterestAccountId is required");
+                }
+                if (this.receivableFeeAccountId == null || "".equals(this.receivableFeeAccountId)) {
+                    errors.add("receivableFeeAccountId is required");
+                }
+                if (this.receivablePenaltyAccountId == null || "".equals(this.receivablePenaltyAccountId)) {
+                    errors.add("receivablePenaltyAccountId is required");
+                }
+                if (this.transfersInSuspenseAccountId == null || "".equals(this.transfersInSuspenseAccountId)) {
+                    errors.add("transfersInSuspenseAccountId is required");
+                }
+                if (this.overpaymentLiabilityAccountId == null || "".equals(this.overpaymentLiabilityAccountId)) {
+                    errors.add("overpaymentLiabilityAccountId is required");
+                }
+            }
+        }
+
+        if (this.interestRecalculationEnabled != null && this.interestRecalculationEnabled) {
+            if (this.interestRecalculationCompoundingMethod == null) {
+                errors.add("interestRecalculationCompoundingMethod is required");
+            }
+            if (this.rescheduleStrategyMethod == null) {
+                errors.add("rescheduleStrategyMethod is required");
+            }
+            if (this.recalculationRestFrequencyType == null) {
+                errors.add("recalculationRestFrequencyType is required");
+            }
+        }
+
+        if (this.holdGuaranteeFunds != null && this.holdGuaranteeFunds) {
+            if (this.mandatoryGuarantee == null) {
+                errors.add("mandatoryGuarantee is required");
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            throw new IllegalArgumentException("invalid builder :: " + StringUtils.join(errors, ","));
+        }
 
         if (this.hasCharges) {
             object.getObject().put("charges", this.charges);

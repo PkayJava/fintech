@@ -1,10 +1,14 @@
 package com.angkorteam.fintech.dto.builder;
 
-import com.mashape.unirest.http.JsonNode;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 7/12/17.
@@ -27,6 +31,16 @@ public class AccountClosureBuilder implements Serializable {
     private boolean hasDateFormat = true;
 
     public JsonNode build() {
+        List<String> errors = new ArrayList<>();
+        if (this.officeId == null || "".equals(this.officeId)) {
+            errors.add("officeId is required");
+        }
+        if (this.closingDate == null) {
+            errors.add("closingDate is required");
+        }
+        if (!errors.isEmpty()) {
+            throw new IllegalArgumentException("invalid builder :: " + StringUtils.join(errors, ","));
+        }
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
         if (this.hasOfficeId) {
             object.getObject().put("officeId", this.officeId);

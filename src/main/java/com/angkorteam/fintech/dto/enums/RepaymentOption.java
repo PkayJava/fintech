@@ -7,9 +7,9 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum RepaymentOption {
 
-    SameDay("1", "Same Day"),
-    MoveToNextWorkingDay("2", "Move To Next Working Day"),
-    MoveToNextRepaymentMeetingDay("3", "Move To Next Repayment Meeting Day"),
+    SameDay("1", "Same Day"), 
+    MoveToNextWorkingDay("2", "Move To Next Working Day"), 
+    MoveToNextRepaymentMeetingDay("3", "Move To Next Repayment Meeting Day"), 
     MoveToPreviousWorkingDay("4", "Move To Previous Working Day");
 
     private String literal;
@@ -28,7 +28,11 @@ public enum RepaymentOption {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static RepaymentOption parseLiteral(String literal) {
         for (RepaymentOption value : RepaymentOption.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -37,7 +41,7 @@ public enum RepaymentOption {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         RepaymentOption value = parseLiteral(literal);
         if (value == null) {

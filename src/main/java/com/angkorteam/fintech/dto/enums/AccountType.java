@@ -7,10 +7,10 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum AccountType {
 
-    Asset("1", "Asset", "AssetAccountTags"),
-    Liability("2", "Liability", "LiabilityAccountTags"),
-    Equity("3", "Equity", "EquityAccountTags"),
-    Income("4", "Income", "IncomeAccountTags"),
+    Asset("1", "Asset", "AssetAccountTags"), 
+    Liability("2", "Liability", "LiabilityAccountTags"), 
+    Equity("3", "Equity", "EquityAccountTags"), 
+    Income("4", "Income", "IncomeAccountTags"), 
     Expense("5", "Expense", "ExpenseAccountTags");
 
     private String literal;
@@ -36,7 +36,11 @@ public enum AccountType {
     public String getTag() {
         return tag;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static AccountType parseLiteral(String literal) {
         for (AccountType value : AccountType.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -45,7 +49,7 @@ public enum AccountType {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         AccountType value = parseLiteral(literal);
         if (value == null) {
@@ -53,5 +57,5 @@ public enum AccountType {
         }
         return new Option(value.name(), value.getDescription());
     }
-    
+
 }

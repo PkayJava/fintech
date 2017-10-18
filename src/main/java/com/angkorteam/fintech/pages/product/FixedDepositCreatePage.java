@@ -18,6 +18,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.RangeValidator;
+import org.apache.wicket.validation.validator.StringValidator;
+import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,8 +57,9 @@ import com.angkorteam.fintech.provider.DayInYearProvider;
 import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
 import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
 import com.angkorteam.fintech.provider.InterestPostingPeriodProvider;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.provider.LockInTypeProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
@@ -420,6 +423,8 @@ public class FixedDepositCreatePage extends Page {
     protected void onInitialize() {
         super.onInitialize();
 
+        initData();
+
         this.form = new Form<>("form");
         add(this.form);
 
@@ -448,13 +453,56 @@ public class FixedDepositCreatePage extends Page {
         initAccounting();
 
         initDefault();
+
+        initValidationRule();
+    }
+
+    protected void initData() {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
+        this.detailShortNameValue = generator.generate(4);
+        this.currencyDecimalPlaceValue = 2;
+        this.currencyMultipleOfValue = 1;
+
+        this.termDefaultDepositAmountValue = 100d;
+        this.termInterestCompoundingPeriodValue = InterestCompoundingPeriod.Daily.toOption();
+        this.termInterestCalculatedUsingValue = InterestCalculatedUsing.DailyBalance.toOption();
+        this.termInterestPostingPeriodValue = InterestPostingPeriod.Monthly.toOption();
+        this.termDayInYearValue = DayInYear.D365.toOption();
+        this.settingMinimumDepositTermValue = 1;
+        this.settingMinimumDepositTypeValue = LockInType.Month.toOption();
+        this.accountingValue = ACC_NONE;
+        this.interestRateValidFromDateValue = DateTime.now().toDate();
+    }
+
+    protected void initValidationRule() {
+        this.detailProductNameField.setRequired(true);
+        this.detailShortNameField.setRequired(true);
+        this.detailShortNameField.add(StringValidator.exactLength(4));
+        this.detailDescriptionField.setRequired(true);
+
+        this.currencyDecimalPlaceField.setRequired(true);
+        this.currencyCodeField.setRequired(true);
+        this.currencyMultipleOfField.setRequired(true);
+
+        this.termInterestCompoundingPeriodField.setRequired(true);
+        this.termInterestPostingPeriodField.setRequired(true);
+        this.termInterestCalculatedUsingField.setRequired(true);
+        this.termDayInYearField.setRequired(true);
+
+        this.settingMinimumDepositTermField.setRequired(true);
+        this.settingMinimumDepositTypeField.setRequired(true);
+        this.interestRateValidFromDateField.setRequired(true);
+
+        this.termDefaultDepositAmountField.setRequired(true);
+
+        this.accountingField.setRequired(true);
     }
 
     protected void initDefault() {
 
         settingWithholdTaxApplicableFieldUpdate(null);
-
         accountingFieldUpdate(null);
+
     }
 
     protected void initAccounting() {
@@ -481,7 +529,6 @@ public class FixedDepositCreatePage extends Page {
         this.cashSavingReferenceProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.cashSavingReferenceField = new Select2SingleChoice<>("cashSavingReferenceField", new PropertyModel<>(this, "cashSavingReferenceValue"), this.cashSavingReferenceProvider);
         this.cashSavingReferenceField.setLabel(Model.of("Saving reference"));
-        this.cashSavingReferenceField.setRequired(false);
         this.cashSavingReferenceField.add(new OnChangeAjaxBehavior());
         this.cashContainer.add(this.cashSavingReferenceField);
         this.cashSavingReferenceFeedback = new TextFeedbackPanel("cashSavingReferenceFeedback", this.cashSavingReferenceField);
@@ -492,7 +539,6 @@ public class FixedDepositCreatePage extends Page {
         this.cashSavingControlProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
         this.cashSavingControlField = new Select2SingleChoice<>("cashSavingControlField", new PropertyModel<>(this, "cashSavingControlValue"), this.cashSavingControlProvider);
         this.cashSavingControlField.setLabel(Model.of("Saving control"));
-        this.cashSavingControlField.setRequired(false);
         this.cashSavingControlField.add(new OnChangeAjaxBehavior());
         this.cashContainer.add(this.cashSavingControlField);
         this.cashSavingControlFeedback = new TextFeedbackPanel("cashSavingControlFeedback", this.cashSavingControlField);
@@ -503,7 +549,6 @@ public class FixedDepositCreatePage extends Page {
         this.cashSavingsTransfersInSuspenseProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
         this.cashSavingsTransfersInSuspenseField = new Select2SingleChoice<>("cashSavingsTransfersInSuspenseField", new PropertyModel<>(this, "cashSavingsTransfersInSuspenseValue"), this.cashSavingsTransfersInSuspenseProvider);
         this.cashSavingsTransfersInSuspenseField.setLabel(Model.of("Savings transfers in suspense"));
-        this.cashSavingsTransfersInSuspenseField.setRequired(false);
         this.cashSavingsTransfersInSuspenseField.add(new OnChangeAjaxBehavior());
         this.cashContainer.add(this.cashSavingsTransfersInSuspenseField);
         this.cashSavingsTransfersInSuspenseFeedback = new TextFeedbackPanel("cashSavingsTransfersInSuspenseFeedback", this.cashSavingsTransfersInSuspenseField);
@@ -514,7 +559,6 @@ public class FixedDepositCreatePage extends Page {
         this.cashInterestOnSavingsProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Expense.getLiteral());
         this.cashInterestOnSavingsField = new Select2SingleChoice<>("cashInterestOnSavingsField", new PropertyModel<>(this, "cashInterestOnSavingsValue"), this.cashInterestOnSavingsProvider);
         this.cashInterestOnSavingsField.setLabel(Model.of("Interest on savings"));
-        this.cashInterestOnSavingsField.setRequired(false);
         this.cashInterestOnSavingsField.add(new OnChangeAjaxBehavior());
         this.cashContainer.add(this.cashInterestOnSavingsField);
         this.cashInterestOnSavingsFeedback = new TextFeedbackPanel("cashInterestOnSavingsFeedback", this.cashInterestOnSavingsField);
@@ -525,7 +569,6 @@ public class FixedDepositCreatePage extends Page {
         this.cashIncomeFromFeesProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.cashIncomeFromFeesField = new Select2SingleChoice<>("cashIncomeFromFeesField", new PropertyModel<>(this, "cashIncomeFromFeesValue"), this.cashIncomeFromFeesProvider);
         this.cashIncomeFromFeesField.setLabel(Model.of("Income from fees"));
-        this.cashIncomeFromFeesField.setRequired(false);
         this.cashIncomeFromFeesField.add(new OnChangeAjaxBehavior());
         this.cashContainer.add(this.cashIncomeFromFeesField);
         this.cashIncomeFromFeesFeedback = new TextFeedbackPanel("cashIncomeFromFeesFeedback", this.cashIncomeFromFeesField);
@@ -536,7 +579,6 @@ public class FixedDepositCreatePage extends Page {
         this.cashIncomeFromPenaltiesProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.cashIncomeFromPenaltiesField = new Select2SingleChoice<>("cashIncomeFromPenaltiesField", new PropertyModel<>(this, "cashIncomeFromPenaltiesValue"), this.cashIncomeFromPenaltiesProvider);
         this.cashIncomeFromPenaltiesField.setLabel(Model.of("Income from penalties"));
-        this.cashIncomeFromPenaltiesField.setRequired(false);
         this.cashIncomeFromPenaltiesField.add(new OnChangeAjaxBehavior());
         this.cashContainer.add(this.cashIncomeFromPenaltiesField);
         this.cashIncomeFromPenaltiesFeedback = new TextFeedbackPanel("cashIncomeFromPenaltiesFeedback", this.cashIncomeFromPenaltiesField);
@@ -907,7 +949,6 @@ public class FixedDepositCreatePage extends Page {
         this.interestRateValidFromDateBlock.add(this.interestRateValidFromDateContainer);
         this.interestRateValidFromDateField = new DateTextField("interestRateValidFromDateField", new PropertyModel<>(this, "interestRateValidFromDateValue"));
         this.interestRateValidFromDateField.setLabel(Model.of("Valid From Date"));
-        this.interestRateValidFromDateField.setRequired(false);
         this.interestRateValidFromDateContainer.add(this.interestRateValidFromDateField);
         this.interestRateValidFromDateFeedback = new TextFeedbackPanel("interestRateValidFromDateFeedback", this.interestRateValidFromDateField);
         this.interestRateValidFromDateContainer.add(this.interestRateValidFromDateFeedback);
@@ -919,7 +960,6 @@ public class FixedDepositCreatePage extends Page {
         this.interestRateValidEndDateBlock.add(this.interestRateValidEndDateContainer);
         this.interestRateValidEndDateField = new DateTextField("interestRateValidEndDateField", new PropertyModel<>(this, "interestRateValidEndDateValue"));
         this.interestRateValidEndDateField.setLabel(Model.of("End Date"));
-        this.interestRateValidEndDateField.setRequired(false);
         this.interestRateValidEndDateContainer.add(this.interestRateValidEndDateField);
         this.interestRateValidEndDateFeedback = new TextFeedbackPanel("interestRateValidEndDateFeedback", this.interestRateValidEndDateField);
         this.interestRateValidEndDateContainer.add(this.interestRateValidEndDateFeedback);
@@ -929,7 +969,6 @@ public class FixedDepositCreatePage extends Page {
         this.interestRatePrimaryGroupingByAmountContainer = new WebMarkupContainer("interestRatePrimaryGroupingByAmountContainer");
         this.interestRatePrimaryGroupingByAmountBlock.add(this.interestRatePrimaryGroupingByAmountContainer);
         this.interestRatePrimaryGroupingByAmountField = new CheckBox("interestRatePrimaryGroupingByAmountField", new PropertyModel<>(this, "interestRatePrimaryGroupingByAmountValue"));
-        this.interestRatePrimaryGroupingByAmountField.setRequired(false);
         this.interestRatePrimaryGroupingByAmountField.add(new OnChangeAjaxBehavior());
         this.interestRatePrimaryGroupingByAmountContainer.add(this.interestRatePrimaryGroupingByAmountField);
         this.interestRatePrimaryGroupingByAmountFeedback = new TextFeedbackPanel("interestRatePrimaryGroupingByAmountFeedback", this.interestRatePrimaryGroupingByAmountField);
@@ -1075,7 +1114,6 @@ public class FixedDepositCreatePage extends Page {
         this.settingLockInPeriodBlock.add(this.settingLockInPeriodContainer);
         this.settingLockInPeriodField = new TextField<>("settingLockInPeriodField", new PropertyModel<>(this, "settingLockInPeriodValue"));
         this.settingLockInPeriodField.setLabel(Model.of("Lock-in period"));
-        this.settingLockInPeriodField.setRequired(true);
         this.settingLockInPeriodContainer.add(this.settingLockInPeriodField);
         this.settingLockInPeriodFeedback = new TextFeedbackPanel("settingLockInPeriodFeedback", this.settingLockInPeriodField);
         this.settingLockInPeriodContainer.add(this.settingLockInPeriodFeedback);
@@ -1088,7 +1126,6 @@ public class FixedDepositCreatePage extends Page {
         this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", 0, new PropertyModel<>(this, "settingLockInTypeValue"), this.settingLockInTypeProvider);
         this.settingLockInTypeField.setLabel(Model.of("Type"));
         this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
-        this.settingLockInTypeField.setRequired(true);
         this.settingLockInTypeContainer.add(this.settingLockInTypeField);
         this.settingLockInTypeFeedback = new TextFeedbackPanel("settingLockInTypeFeedback", this.settingLockInTypeField);
         this.settingLockInTypeContainer.add(this.settingLockInTypeFeedback);
@@ -1100,7 +1137,7 @@ public class FixedDepositCreatePage extends Page {
         this.settingMinimumDepositTermBlock.add(this.settingMinimumDepositTermContainer);
         this.settingMinimumDepositTermField = new TextField<>("settingMinimumDepositTermField", new PropertyModel<>(this, "settingMinimumDepositTermValue"));
         this.settingMinimumDepositTermField.setLabel(Model.of("Minimum Deposit Term"));
-        this.settingMinimumDepositTermField.setRequired(true);
+
         this.settingMinimumDepositTermContainer.add(this.settingMinimumDepositTermField);
         this.settingMinimumDepositTermFeedback = new TextFeedbackPanel("settingMinimumDepositTermFeedback", this.settingMinimumDepositTermField);
         this.settingMinimumDepositTermContainer.add(this.settingMinimumDepositTermFeedback);
@@ -1113,7 +1150,6 @@ public class FixedDepositCreatePage extends Page {
         this.settingMinimumDepositTypeField = new Select2SingleChoice<>("settingMinimumDepositTypeField", 0, new PropertyModel<>(this, "settingMinimumDepositTypeValue"), this.settingMinimumDepositTypeProvider);
         this.settingMinimumDepositTypeField.setLabel(Model.of("Type"));
         this.settingMinimumDepositTypeField.add(new OnChangeAjaxBehavior());
-        this.settingMinimumDepositTypeField.setRequired(true);
         this.settingMinimumDepositTypeContainer.add(this.settingMinimumDepositTypeField);
         this.settingMinimumDepositTypeFeedback = new TextFeedbackPanel("settingMinimumDepositTypeFeedback", this.settingMinimumDepositTypeField);
         this.settingMinimumDepositTypeContainer.add(this.settingMinimumDepositTypeFeedback);
@@ -1125,7 +1161,6 @@ public class FixedDepositCreatePage extends Page {
         this.settingInMultiplesOfBlock.add(this.settingInMultiplesOfContainer);
         this.settingInMultiplesOfField = new TextField<>("settingInMultiplesOfField", new PropertyModel<>(this, "settingInMultiplesOfValue"));
         this.settingInMultiplesOfField.setLabel(Model.of("And thereafter, In Multiples of"));
-        this.settingInMultiplesOfField.setRequired(true);
         this.settingInMultiplesOfContainer.add(this.settingInMultiplesOfField);
         this.settingInMultiplesOfFeedback = new TextFeedbackPanel("settingInMultiplesOfFeedback", this.settingInMultiplesOfField);
         this.settingInMultiplesOfContainer.add(this.settingInMultiplesOfFeedback);
@@ -1138,7 +1173,6 @@ public class FixedDepositCreatePage extends Page {
         this.settingInMultiplesTypeField = new Select2SingleChoice<>("settingInMultiplesTypeField", 0, new PropertyModel<>(this, "settingInMultiplesTypeValue"), this.settingInMultiplesTypeProvider);
         this.settingInMultiplesTypeField.setLabel(Model.of("Type"));
         this.settingInMultiplesTypeField.add(new OnChangeAjaxBehavior());
-        this.settingInMultiplesTypeField.setRequired(true);
         this.settingInMultiplesTypeContainer.add(this.settingInMultiplesTypeField);
         this.settingInMultiplesTypeFeedback = new TextFeedbackPanel("settingInMultiplesTypeFeedback", this.settingInMultiplesTypeField);
         this.settingInMultiplesTypeContainer.add(this.settingInMultiplesTypeFeedback);
@@ -1150,7 +1184,6 @@ public class FixedDepositCreatePage extends Page {
         this.settingMaximumDepositTermBlock.add(this.settingMaximumDepositTermContainer);
         this.settingMaximumDepositTermField = new TextField<>("settingMaximumDepositTermField", new PropertyModel<>(this, "settingMaximumDepositTermValue"));
         this.settingMaximumDepositTermField.setLabel(Model.of("Maximum Deposit Term"));
-        this.settingMaximumDepositTermField.setRequired(true);
         this.settingMaximumDepositTermContainer.add(this.settingMaximumDepositTermField);
         this.settingMaximumDepositTermFeedback = new TextFeedbackPanel("settingMaximumDepositTermFeedback", this.settingMaximumDepositTermField);
         this.settingMaximumDepositTermContainer.add(this.settingMaximumDepositTermFeedback);
@@ -1163,7 +1196,6 @@ public class FixedDepositCreatePage extends Page {
         this.settingMaximumDepositTypeField = new Select2SingleChoice<>("settingMaximumDepositTypeField", 0, new PropertyModel<>(this, "settingMaximumDepositTypeValue"), this.settingMaximumDepositTypeProvider);
         this.settingMaximumDepositTypeField.setLabel(Model.of("Type"));
         this.settingMaximumDepositTypeField.add(new OnChangeAjaxBehavior());
-        this.settingMaximumDepositTypeField.setRequired(true);
         this.settingMaximumDepositTypeContainer.add(this.settingMaximumDepositTypeField);
         this.settingMaximumDepositTypeFeedback = new TextFeedbackPanel("settingMaximumDepositTypeFeedback", this.settingMaximumDepositTypeField);
         this.settingMaximumDepositTypeContainer.add(this.settingMaximumDepositTypeFeedback);
@@ -1173,7 +1205,6 @@ public class FixedDepositCreatePage extends Page {
         this.settingForPreMatureClosureContainer = new WebMarkupContainer("settingForPreMatureClosureContainer");
         this.settingForPreMatureClosureBlock.add(this.settingForPreMatureClosureContainer);
         this.settingForPreMatureClosureField = new CheckBox("settingForPreMatureClosureField", new PropertyModel<>(this, "settingForPreMatureClosureValue"));
-        this.settingForPreMatureClosureField.setRequired(false);
         this.settingForPreMatureClosureField.add(new OnChangeAjaxBehavior());
         this.settingForPreMatureClosureContainer.add(this.settingForPreMatureClosureField);
         this.settingForPreMatureClosureFeedback = new TextFeedbackPanel("settingForPreMatureClosureFeedback", this.settingForPreMatureClosureField);
@@ -1186,7 +1217,6 @@ public class FixedDepositCreatePage extends Page {
         this.settingApplyPenalInterestBlock.add(this.settingApplyPenalInterestContainer);
         this.settingApplyPenalInterestField = new TextField<>("settingApplyPenalInterestField", new PropertyModel<>(this, "settingApplyPenalInterestValue"));
         this.settingApplyPenalInterestField.setLabel(Model.of("Apply penal interest"));
-        this.settingApplyPenalInterestField.setRequired(true);
         this.settingApplyPenalInterestContainer.add(this.settingApplyPenalInterestField);
         this.settingApplyPenalInterestFeedback = new TextFeedbackPanel("settingApplyPenalInterestFeedback", this.settingApplyPenalInterestField);
         this.settingApplyPenalInterestContainer.add(this.settingApplyPenalInterestFeedback);
@@ -1199,7 +1229,6 @@ public class FixedDepositCreatePage extends Page {
         this.settingApplyPenalOnField = new Select2SingleChoice<>("settingApplyPenalOnField", 0, new PropertyModel<>(this, "settingApplyPenalOnValue"), this.settingApplyPenalOnProvider);
         this.settingApplyPenalOnField.setLabel(Model.of("On"));
         this.settingApplyPenalOnField.add(new OnChangeAjaxBehavior());
-        this.settingApplyPenalOnField.setRequired(true);
         this.settingApplyPenalOnContainer.add(this.settingApplyPenalOnField);
         this.settingApplyPenalOnFeedback = new TextFeedbackPanel("settingApplyPenalOnFeedback", this.settingApplyPenalOnField);
         this.settingApplyPenalOnContainer.add(this.settingApplyPenalOnFeedback);
@@ -1209,7 +1238,6 @@ public class FixedDepositCreatePage extends Page {
         this.settingWithholdTaxApplicableContainer = new WebMarkupContainer("settingWithholdTaxApplicableContainer");
         this.settingWithholdTaxApplicableBlock.add(this.settingWithholdTaxApplicableContainer);
         this.settingWithholdTaxApplicableField = new CheckBox("settingWithholdTaxApplicableField", new PropertyModel<>(this, "settingWithholdTaxApplicableValue"));
-        this.settingWithholdTaxApplicableField.setRequired(false);
         this.settingWithholdTaxApplicableField.add(new OnChangeAjaxBehavior(this::settingWithholdTaxApplicableFieldUpdate));
         this.settingWithholdTaxApplicableContainer.add(this.settingWithholdTaxApplicableField);
         this.settingWithholdTaxApplicableFeedback = new TextFeedbackPanel("settingWithholdTaxApplicableFeedback", this.settingWithholdTaxApplicableField);
@@ -1224,7 +1252,6 @@ public class FixedDepositCreatePage extends Page {
         this.settingTaxGroupField = new Select2SingleChoice<>("settingTaxGroupField", 0, new PropertyModel<>(this, "settingTaxGroupValue"), this.settingTaxGroupProvider);
         this.settingTaxGroupField.setLabel(Model.of("Tax Group"));
         this.settingTaxGroupField.add(new OnChangeAjaxBehavior());
-        this.settingTaxGroupField.setRequired(true);
         this.settingTaxGroupContainer.add(this.settingTaxGroupField);
         this.settingTaxGroupFeedback = new TextFeedbackPanel("settingTaxGroupFeedback", this.settingTaxGroupField);
         this.settingTaxGroupContainer.add(this.settingTaxGroupFeedback);
@@ -1249,7 +1276,6 @@ public class FixedDepositCreatePage extends Page {
         this.termDefaultDepositAmountBlock.add(this.termDefaultDepositAmountContainer);
         this.termDefaultDepositAmountField = new TextField<>("termDefaultDepositAmountField", new PropertyModel<>(this, "termDefaultDepositAmountValue"));
         this.termDefaultDepositAmountField.setLabel(Model.of("Default Deposit Amount"));
-        this.termDefaultDepositAmountField.setRequired(true);
         this.termDefaultDepositAmountContainer.add(this.termDefaultDepositAmountField);
         this.termDefaultDepositAmountFeedback = new TextFeedbackPanel("termDefaultDepositAmountFeedback", this.termDefaultDepositAmountField);
         this.termDefaultDepositAmountContainer.add(this.termDefaultDepositAmountFeedback);
@@ -1261,7 +1287,6 @@ public class FixedDepositCreatePage extends Page {
         this.termMinimumDepositAmountBlock.add(this.termMinimumDepositAmountContainer);
         this.termMinimumDepositAmountField = new TextField<>("termMinimumDepositAmountField", new PropertyModel<>(this, "termMinimumDepositAmountValue"));
         this.termMinimumDepositAmountField.setLabel(Model.of("Minimum Deposit Amount"));
-        this.termMinimumDepositAmountField.setRequired(true);
         this.termMinimumDepositAmountContainer.add(this.termMinimumDepositAmountField);
         this.termMinimumDepositAmountFeedback = new TextFeedbackPanel("termMinimumDepositAmountFeedback", this.termMinimumDepositAmountField);
         this.termMinimumDepositAmountContainer.add(this.termMinimumDepositAmountFeedback);
@@ -1273,7 +1298,6 @@ public class FixedDepositCreatePage extends Page {
         this.termMaximumDepositAmountBlock.add(this.termMaximumDepositAmountContainer);
         this.termMaximumDepositAmountField = new TextField<>("termMaximumDepositAmountField", new PropertyModel<>(this, "termMaximumDepositAmountValue"));
         this.termMaximumDepositAmountField.setLabel(Model.of("Maximum Deposit Amount"));
-        this.termMaximumDepositAmountField.setRequired(true);
         this.termMaximumDepositAmountContainer.add(this.termMaximumDepositAmountField);
         this.termMaximumDepositAmountFeedback = new TextFeedbackPanel("termMaximumDepositAmountFeedback", this.termMaximumDepositAmountField);
         this.termMaximumDepositAmountContainer.add(this.termMaximumDepositAmountFeedback);
@@ -1286,7 +1310,6 @@ public class FixedDepositCreatePage extends Page {
         this.termInterestCompoundingPeriodField = new Select2SingleChoice<>("termInterestCompoundingPeriodField", 0, new PropertyModel<>(this, "termInterestCompoundingPeriodValue"), this.termInterestCompoundingPeriodProvider);
         this.termInterestCompoundingPeriodField.setLabel(Model.of("Interest compounding period"));
         this.termInterestCompoundingPeriodField.add(new OnChangeAjaxBehavior());
-        this.termInterestCompoundingPeriodField.setRequired(true);
         this.termInterestCompoundingPeriodContainer.add(this.termInterestCompoundingPeriodField);
         this.termInterestCompoundingPeriodFeedback = new TextFeedbackPanel("termInterestCompoundingPeriodFeedback", this.termInterestCompoundingPeriodField);
         this.termInterestCompoundingPeriodContainer.add(this.termInterestCompoundingPeriodFeedback);
@@ -1299,7 +1322,6 @@ public class FixedDepositCreatePage extends Page {
         this.termInterestPostingPeriodField = new Select2SingleChoice<>("termInterestPostingPeriodField", 0, new PropertyModel<>(this, "termInterestPostingPeriodValue"), this.termInterestPostingPeriodProvider);
         this.termInterestPostingPeriodField.setLabel(Model.of("Interest posting period"));
         this.termInterestPostingPeriodField.add(new OnChangeAjaxBehavior());
-        this.termInterestPostingPeriodField.setRequired(true);
         this.termInterestPostingPeriodContainer.add(this.termInterestPostingPeriodField);
         this.termInterestPostingPeriodFeedback = new TextFeedbackPanel("termInterestPostingPeriodFeedback", this.termInterestPostingPeriodField);
         this.termInterestPostingPeriodContainer.add(this.termInterestPostingPeriodFeedback);
@@ -1312,7 +1334,6 @@ public class FixedDepositCreatePage extends Page {
         this.termInterestCalculatedUsingField = new Select2SingleChoice<>("termInterestCalculatedUsingField", 0, new PropertyModel<>(this, "termInterestCalculatedUsingValue"), this.termInterestCalculatedUsingProvider);
         this.termInterestCalculatedUsingField.setLabel(Model.of("Interest calculated using"));
         this.termInterestCalculatedUsingField.add(new OnChangeAjaxBehavior());
-        this.termInterestCalculatedUsingField.setRequired(true);
         this.termInterestCalculatedUsingContainer.add(this.termInterestCalculatedUsingField);
         this.termInterestCalculatedUsingFeedback = new TextFeedbackPanel("termInterestCalculatedUsingFeedback", this.termInterestCalculatedUsingField);
         this.termInterestCalculatedUsingContainer.add(this.termInterestCalculatedUsingFeedback);
@@ -1325,7 +1346,6 @@ public class FixedDepositCreatePage extends Page {
         this.termDayInYearField = new Select2SingleChoice<>("termDayInYearField", 0, new PropertyModel<>(this, "termDayInYearValue"), this.termDayInYearProvider);
         this.termDayInYearField.setLabel(Model.of("Days in year"));
         this.termDayInYearField.add(new OnChangeAjaxBehavior());
-        this.termDayInYearField.setRequired(true);
         this.termDayInYearContainer.add(this.termDayInYearField);
         this.termDayInYearFeedback = new TextFeedbackPanel("termDayInYearFeedback", this.termDayInYearField);
         this.termDayInYearContainer.add(this.termDayInYearFeedback);
@@ -1342,7 +1362,6 @@ public class FixedDepositCreatePage extends Page {
         this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", 0, new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
         this.currencyCodeField.setLabel(Model.of("Currency"));
         this.currencyCodeField.add(new OnChangeAjaxBehavior());
-        this.currencyCodeField.setRequired(true);
         this.currencyCodeContainer.add(this.currencyCodeField);
         this.currencyCodeFeedback = new TextFeedbackPanel("currencyCodeFeedback", this.currencyCodeField);
         this.currencyCodeContainer.add(this.currencyCodeFeedback);
@@ -1353,7 +1372,6 @@ public class FixedDepositCreatePage extends Page {
         this.currencyDecimalPlaceBlock.add(this.currencyDecimalPlaceContainer);
         this.currencyDecimalPlaceField = new TextField<>("currencyDecimalPlaceField", new PropertyModel<>(this, "currencyDecimalPlaceValue"));
         this.currencyDecimalPlaceField.setLabel(Model.of("Decimal places"));
-        this.currencyDecimalPlaceField.setRequired(true);
         this.currencyDecimalPlaceField.add(new OnChangeAjaxBehavior());
         this.currencyDecimalPlaceField.add(RangeValidator.range((int) 0, (int) 6));
         this.currencyDecimalPlaceContainer.add(this.currencyDecimalPlaceField);
@@ -1366,7 +1384,6 @@ public class FixedDepositCreatePage extends Page {
         this.currencyMultipleOfBlock.add(this.currencyMultipleOfContainer);
         this.currencyMultipleOfField = new TextField<>("currencyMultipleOfField", new PropertyModel<>(this, "currencyMultipleOfValue"));
         this.currencyMultipleOfField.setLabel(Model.of("Multiples of"));
-        this.currencyMultipleOfField.setRequired(false);
         this.currencyMultipleOfField.add(new OnChangeAjaxBehavior());
         this.currencyMultipleOfField.add(RangeValidator.minimum((int) 1));
         this.currencyMultipleOfContainer.add(this.currencyMultipleOfField);
@@ -1382,7 +1399,6 @@ public class FixedDepositCreatePage extends Page {
         this.detailProductNameBlock.add(this.detailProductNameContainer);
         this.detailProductNameField = new TextField<>("detailProductNameField", new PropertyModel<>(this, "detailProductNameValue"));
         this.detailProductNameField.setLabel(Model.of("Product Name"));
-        this.detailProductNameField.setRequired(true);
         this.detailProductNameContainer.add(this.detailProductNameField);
         this.detailProductNameFeedback = new TextFeedbackPanel("detailProductNameFeedback", this.detailProductNameField);
         this.detailProductNameContainer.add(this.detailProductNameFeedback);
@@ -1394,7 +1410,6 @@ public class FixedDepositCreatePage extends Page {
         this.detailShortNameBlock.add(this.detailShortNameContainer);
         this.detailShortNameField = new TextField<>("detailShortNameField", new PropertyModel<>(this, "detailShortNameValue"));
         this.detailShortNameField.setLabel(Model.of("Short Name"));
-        this.detailShortNameField.setRequired(true);
         this.detailShortNameContainer.add(this.detailShortNameField);
         this.detailShortNameFeedback = new TextFeedbackPanel("detailShortNameFeedback", this.detailShortNameField);
         this.detailShortNameContainer.add(this.detailShortNameFeedback);
@@ -1406,7 +1421,6 @@ public class FixedDepositCreatePage extends Page {
         this.detailDescriptionBlock.add(this.detailDescriptionContainer);
         this.detailDescriptionField = new TextField<>("detailDescriptionField", new PropertyModel<>(this, "detailDescriptionValue"));
         this.detailDescriptionField.setLabel(Model.of("Description"));
-        this.detailDescriptionField.setRequired(true);
         this.detailDescriptionContainer.add(this.detailDescriptionField);
         this.detailDescriptionFeedback = new TextFeedbackPanel("detailDescriptionFeedback", this.detailDescriptionField);
         this.detailDescriptionContainer.add(this.detailDescriptionFeedback);

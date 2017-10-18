@@ -25,6 +25,10 @@ public enum ServiceType {
         return description;
     }
 
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static ServiceType parseLiteral(String literal) {
         for (ServiceType value : ServiceType.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -33,7 +37,7 @@ public enum ServiceType {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         ServiceType value = parseLiteral(literal);
         if (value == null) {

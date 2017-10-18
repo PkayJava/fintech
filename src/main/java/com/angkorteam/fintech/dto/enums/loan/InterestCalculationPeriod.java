@@ -23,7 +23,11 @@ public enum InterestCalculationPeriod {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static InterestCalculationPeriod parseLiteral(String literal) {
         for (InterestCalculationPeriod value : InterestCalculationPeriod.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -32,7 +36,7 @@ public enum InterestCalculationPeriod {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         InterestCalculationPeriod value = parseLiteral(literal);
         if (value == null) {

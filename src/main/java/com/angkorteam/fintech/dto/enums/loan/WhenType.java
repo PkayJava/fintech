@@ -23,7 +23,11 @@ public enum WhenType {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static WhenType parseLiteral(String literal) {
         for (WhenType value : WhenType.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -32,7 +36,7 @@ public enum WhenType {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         WhenType value = parseLiteral(literal);
         if (value == null) {

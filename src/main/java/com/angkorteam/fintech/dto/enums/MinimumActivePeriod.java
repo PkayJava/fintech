@@ -22,7 +22,11 @@ public enum MinimumActivePeriod {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static MinimumActivePeriod parseLiteral(String literal) {
         for (MinimumActivePeriod value : MinimumActivePeriod.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -31,7 +35,7 @@ public enum MinimumActivePeriod {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         MinimumActivePeriod value = parseLiteral(literal);
         if (value == null) {

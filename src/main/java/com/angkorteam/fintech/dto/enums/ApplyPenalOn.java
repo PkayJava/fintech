@@ -3,7 +3,8 @@ package com.angkorteam.fintech.dto.enums;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum ApplyPenalOn {
-    WholeTerm("1", "Whole term"),
+    
+    WholeTerm("1", "Whole term"), 
     TillPrematureWithdrawal("2", "Till Premature Withdrawal");
 
     private String literal;
@@ -22,7 +23,11 @@ public enum ApplyPenalOn {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static ApplyPenalOn parseLiteral(String literal) {
         for (ApplyPenalOn value : ApplyPenalOn.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -31,7 +36,7 @@ public enum ApplyPenalOn {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         ApplyPenalOn value = parseLiteral(literal);
         if (value == null) {

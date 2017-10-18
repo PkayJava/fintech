@@ -3,8 +3,9 @@ package com.angkorteam.fintech.dto.enums.loan;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum Amortization {
-    Installment("1", "Equal Installments"), 
-    PrincipalPayment("0", "Equal Principal Payments");
+    
+    EqualInstallment("1", "Equal Installments"), 
+    EqualPrincipalPayment("0", "Equal Principal Payments");
 
     private String literal;
 
@@ -22,7 +23,11 @@ public enum Amortization {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static Amortization parseLiteral(String literal) {
         for (Amortization value : Amortization.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -31,7 +36,7 @@ public enum Amortization {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         Amortization value = parseLiteral(literal);
         if (value == null) {

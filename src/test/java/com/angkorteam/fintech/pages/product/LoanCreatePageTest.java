@@ -27,7 +27,7 @@ import com.angkorteam.fintech.dto.enums.loan.FrequencyType;
 import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.enums.loan.InterestMethod;
 import com.angkorteam.fintech.dto.enums.loan.InterestRecalculationCompound;
-import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateScheduleType;
+import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateType;
 import com.angkorteam.fintech.dto.enums.loan.RepaymentStrategy;
 import com.angkorteam.fintech.dto.enums.loan.WhenType;
 import com.angkorteam.fintech.junit.JUnit;
@@ -85,7 +85,7 @@ public class LoanCreatePageTest {
         LockInType termRepaidTypeValue = LockInType.Week;
         int termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue = 12;
 
-        Amortization settingAmortizationValue = Amortization.Installment;
+        Amortization settingAmortizationValue = Amortization.EqualInstallment;
         InterestMethod settingInterestMethodValue = InterestMethod.DecliningBalance;
         InterestCalculationPeriod settingInterestCalculationPeriodValue = InterestCalculationPeriod.SameAsPayment;
         boolean settingCalculateInterestForExactDaysInPartialPeriodValue = true;
@@ -563,13 +563,13 @@ public class LoanCreatePageTest {
         double termNominalInterestRateMinimumValue = 10.99;
         double termNominalInterestRateDefaultValue = 30.99;
         double termNominalInterestRateMaximumValue = 50.99;
-        NominalInterestRateScheduleType termNominalInterestRateTypeValue = NominalInterestRateScheduleType.Month;
+        NominalInterestRateType termNominalInterestRateTypeValue = NominalInterestRateType.Month;
 
         int termRepaidEveryValue = 1;
         LockInType termRepaidTypeValue = LockInType.Day;
         int termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue = 12;
 
-        Amortization settingAmortizationValue = Amortization.Installment;
+        Amortization settingAmortizationValue = Amortization.EqualInstallment;
         InterestMethod settingInterestMethodValue = InterestMethod.DecliningBalance;
         InterestCalculationPeriod settingInterestCalculationPeriodValue = InterestCalculationPeriod.SameAsPayment;
         boolean settingCalculateInterestForExactDaysInPartialPeriodValue = true;
@@ -932,13 +932,13 @@ public class LoanCreatePageTest {
         double termNominalInterestRateMinimumValue = 10.99;
         double termNominalInterestRateDefaultValue = 30.99;
         double termNominalInterestRateMaximumValue = 50.99;
-        NominalInterestRateScheduleType termNominalInterestRateTypeValue = NominalInterestRateScheduleType.Month;
+        NominalInterestRateType termNominalInterestRateTypeValue = NominalInterestRateType.Month;
 
         int termRepaidEveryValue = 1;
         LockInType termRepaidTypeValue = LockInType.Month;
         int termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue = 12;
 
-        Amortization settingAmortizationValue = Amortization.Installment;
+        Amortization settingAmortizationValue = Amortization.EqualInstallment;
         InterestMethod settingInterestMethodValue = InterestMethod.DecliningBalance;
         InterestCalculationPeriod settingInterestCalculationPeriodValue = InterestCalculationPeriod.SameAsPayment;
         boolean settingCalculateInterestForExactDaysInPartialPeriodValue = true;
@@ -1298,12 +1298,12 @@ public class LoanCreatePageTest {
         // Terms
         form.setValue("termNumberOfRepaymentDefaultBlock:termNumberOfRepaymentDefaultContainer:termNumberOfRepaymentDefaultField", termNumberOfRepaymentDefaultValue);
         form.setValue("termNominalInterestRateDefaultBlock:termNominalInterestRateDefaultContainer:termNominalInterestRateDefaultField", termNominalInterestRateDefaultValue);
-        form.setValue("termNominalInterestRateTypeBlock:termNominalInterestRateTypeContainer:termNominalInterestRateTypeField", NominalInterestRateScheduleType.Month);
+        form.setValue("termNominalInterestRateTypeBlock:termNominalInterestRateTypeContainer:termNominalInterestRateTypeField", NominalInterestRateType.Month);
         form.setValue("termRepaidEveryBlock:termRepaidEveryContainer:termRepaidEveryField", termRepaidEveryValue);
         form.setValue("termRepaidTypeBlock:termRepaidTypeContainer:termRepaidTypeField", LockInType.Month);
 
         // Settings
-        form.setValue("settingAmortizationBlock:settingAmortizationContainer:settingAmortizationField", Amortization.Installment);
+        form.setValue("settingAmortizationBlock:settingAmortizationContainer:settingAmortizationField", Amortization.EqualInstallment);
         form.setValue("settingInterestMethodBlock:settingInterestMethodContainer:settingInterestMethodField", InterestMethod.Flat);
         form.setValue("settingInterestCalculationPeriodBlock:settingInterestCalculationPeriodContainer:settingInterestCalculationPeriodField", InterestCalculationPeriod.Daily);
         form.setValue("settingRepaymentStrategyBlock:settingRepaymentStrategyContainer:settingRepaymentStrategyField", RepaymentStrategy.Interest);

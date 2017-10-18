@@ -5,7 +5,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 public enum AdvancePaymentsAdjustmentType {
 
     ReduceEMIAmount("3", "Reduce EMI amount"), 
-    ReduceNumberOfInstallments("2", "Reduce number of installments"),
+    ReduceNumberOfInstallments("2", "Reduce number of installments"), 
     RescheduleNextRepayments("1", "Reschedule next repayments");
 
     private String literal;
@@ -24,7 +24,11 @@ public enum AdvancePaymentsAdjustmentType {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static AdvancePaymentsAdjustmentType parseLiteral(String literal) {
         for (AdvancePaymentsAdjustmentType value : AdvancePaymentsAdjustmentType.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -33,7 +37,7 @@ public enum AdvancePaymentsAdjustmentType {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         AdvancePaymentsAdjustmentType value = parseLiteral(literal);
         if (value == null) {
@@ -41,5 +45,5 @@ public enum AdvancePaymentsAdjustmentType {
         }
         return new Option(value.name(), value.getDescription());
     }
-    
+
 }

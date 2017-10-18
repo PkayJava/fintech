@@ -23,7 +23,11 @@ public enum ChargePayment {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static ChargePayment parseLiteral(String literal) {
         for (ChargePayment value : ChargePayment.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -32,7 +36,7 @@ public enum ChargePayment {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         ChargePayment value = parseLiteral(literal);
         if (value == null) {

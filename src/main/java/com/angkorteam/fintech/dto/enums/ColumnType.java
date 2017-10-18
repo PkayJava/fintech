@@ -7,13 +7,13 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum ColumnType {
 
-    String("String", "String"),
-    Number("Number", "Number"),
-    Decimal("Decimal", "Decimal"),
-    Boolean("Boolean", "Boolean"),
-    Date("Date", "Date"),
-    DateTime("DateTime", "Date & Time"),
-    Text("Text", "Text"),
+    String("String", "String"), 
+    Number("Number", "Number"), 
+    Decimal("Decimal", "Decimal"), 
+    Boolean("Boolean", "Boolean"), 
+    Date("Date", "Date"), 
+    DateTime("DateTime", "Date & Time"), 
+    Text("Text", "Text"), 
     DropDown("DropDown", "Drop Down");
 
     private String literal;
@@ -32,7 +32,11 @@ public enum ColumnType {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static ColumnType parseLiteral(String literal) {
         for (ColumnType value : ColumnType.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -41,7 +45,7 @@ public enum ColumnType {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         ColumnType value = parseLiteral(literal);
         if (value == null) {

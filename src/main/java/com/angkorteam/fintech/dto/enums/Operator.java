@@ -3,11 +3,11 @@ package com.angkorteam.fintech.dto.enums;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum Operator {
-    
-    LessThan("1", "Less Than"),
-    Equal("2", "Equal"),
-    GreaterThan("3","Greater Than"),
-    NotEqual("4","Not Equal");
+
+    LessThan("1", "Less Than"), 
+    Equal("2", "Equal"), 
+    GreaterThan("3", "Greater Than"), 
+    NotEqual("4", "Not Equal");
 
     private String literal;
 
@@ -25,7 +25,11 @@ public enum Operator {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static Operator parseLiteral(String literal) {
         for (Operator value : Operator.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -34,7 +38,7 @@ public enum Operator {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         Operator value = parseLiteral(literal);
         if (value == null) {

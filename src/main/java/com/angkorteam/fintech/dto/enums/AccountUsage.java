@@ -7,7 +7,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum AccountUsage {
 
-    Detail("1", "Detail"),
+    Detail("1", "Detail"), 
     Header("2", "Header");
 
     private String literal;
@@ -26,7 +26,11 @@ public enum AccountUsage {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static AccountUsage parseLiteral(String literal) {
         for (AccountUsage value : AccountUsage.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -35,7 +39,7 @@ public enum AccountUsage {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         AccountUsage value = parseLiteral(literal);
         if (value == null) {

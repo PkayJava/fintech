@@ -24,7 +24,7 @@ public enum DepositType {
     public String getDescription() {
         return description;
     }
-    
+
     public static DepositType parseLiteral(String literal) {
         for (DepositType value : DepositType.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -33,7 +33,11 @@ public enum DepositType {
         }
         return null;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static Option optionLiteral(String literal) {
         DepositType value = parseLiteral(literal);
         if (value == null) {

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.wicket.model.IModel;
 
-import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateScheduleType;
+import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateType;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
@@ -28,7 +28,7 @@ public class NominalInterestRateTypeProvider extends SingleChoiceProvider<Option
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (NominalInterestRateScheduleType value : NominalInterestRateScheduleType.values()) {
+        for (NominalInterestRateType value : NominalInterestRateType.values()) {
             options.add(new Option(value.name(), value.getDescription()));
         }
         return options;

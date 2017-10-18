@@ -7,7 +7,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum JournalEntry {
 
-    Manual("1", "Manual Entries"),
+    Manual("1", "Manual Entries"), 
     System("2", "System Entries");
 
     private String literal;
@@ -26,7 +26,11 @@ public enum JournalEntry {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static JournalEntry parseLiteral(String literal) {
         for (JournalEntry value : JournalEntry.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -35,7 +39,7 @@ public enum JournalEntry {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         JournalEntry value = parseLiteral(literal);
         if (value == null) {
@@ -43,5 +47,5 @@ public enum JournalEntry {
         }
         return new Option(value.name(), value.getDescription());
     }
-    
+
 }

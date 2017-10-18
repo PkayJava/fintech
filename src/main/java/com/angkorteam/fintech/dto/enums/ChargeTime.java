@@ -36,7 +36,11 @@ public enum ChargeTime {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static ChargeTime parseLiteral(String literal) {
         for (ChargeTime value : ChargeTime.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -45,7 +49,7 @@ public enum ChargeTime {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         ChargeTime value = parseLiteral(literal);
         if (value == null) {

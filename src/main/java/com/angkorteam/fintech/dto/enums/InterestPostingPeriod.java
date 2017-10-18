@@ -4,9 +4,9 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum InterestPostingPeriod {
 
-    Monthly("4", "Monthly"),
-    Quarterly("5", "Quarterly"),
-    BiAnnual("6", "BiAnnual"),
+    Monthly("4", "Monthly"), 
+    Quarterly("5", "Quarterly"), 
+    BiAnnual("6", "BiAnnual"), 
     Annually("7", "Annually");
 
     private String literal;
@@ -25,7 +25,11 @@ public enum InterestPostingPeriod {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static InterestPostingPeriod parseLiteral(String literal) {
         for (InterestPostingPeriod value : InterestPostingPeriod.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -34,7 +38,7 @@ public enum InterestPostingPeriod {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         InterestPostingPeriod value = parseLiteral(literal);
         if (value == null) {

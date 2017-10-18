@@ -7,9 +7,9 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum EntityType {
 
-    Client("m_client", "Client", EntityStatus.Create, EntityStatus.Approve, EntityStatus.Close),
-    Group("m_group", "Group", EntityStatus.Create, EntityStatus.Approve, EntityStatus.Close),
-    Loan("m_loan", "Loan", EntityStatus.Create, EntityStatus.Approve, EntityStatus.Disburse, EntityStatus.Withdrawn, EntityStatus.Rejected, EntityStatus.WriteOff),
+    Client("m_client", "Client", EntityStatus.Create, EntityStatus.Approve, EntityStatus.Close), 
+    Group("m_group", "Group", EntityStatus.Create, EntityStatus.Approve, EntityStatus.Close), 
+    Loan("m_loan", "Loan", EntityStatus.Create, EntityStatus.Approve, EntityStatus.Disburse, EntityStatus.Withdrawn, EntityStatus.Rejected, EntityStatus.WriteOff), 
     SavingsAccount("m_savings_account", "Savings Account", EntityStatus.Create, EntityStatus.Approve, EntityStatus.Activate, EntityStatus.Withdrawn, EntityStatus.Rejected, EntityStatus.Close);
 
     private String literal;
@@ -32,10 +32,14 @@ public enum EntityType {
         return description;
     }
 
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public EntityStatus[] getStatus() {
         return status;
     }
-    
+
     public static EntityType parseLiteral(String literal) {
         for (EntityType value : EntityType.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -44,7 +48,7 @@ public enum EntityType {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         EntityType value = parseLiteral(literal);
         if (value == null) {

@@ -23,7 +23,11 @@ public enum InterestMethod {
     public String getDescription() {
         return description;
     }
-    
+
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
     public static InterestMethod parseLiteral(String literal) {
         for (InterestMethod value : InterestMethod.values()) {
             if (value.getLiteral().equals(literal)) {
@@ -32,7 +36,7 @@ public enum InterestMethod {
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
         InterestMethod value = parseLiteral(literal);
         if (value == null) {

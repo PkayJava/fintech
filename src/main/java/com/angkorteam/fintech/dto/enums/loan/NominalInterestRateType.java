@@ -2,7 +2,7 @@ package com.angkorteam.fintech.dto.enums.loan;
 
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
-public enum NominalInterestRateScheduleType {
+public enum NominalInterestRateType {
 
     Month("2", "Per month"), 
     Year("3", "Per year");
@@ -11,7 +11,7 @@ public enum NominalInterestRateScheduleType {
 
     private String description;
 
-    NominalInterestRateScheduleType(String literal, String description) {
+    NominalInterestRateType(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
@@ -24,17 +24,21 @@ public enum NominalInterestRateScheduleType {
         return description;
     }
 
-    public static NominalInterestRateScheduleType parseLiteral(String literal) {
-        for (NominalInterestRateScheduleType value : NominalInterestRateScheduleType.values()) {
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
+    public static NominalInterestRateType parseLiteral(String literal) {
+        for (NominalInterestRateType value : NominalInterestRateType.values()) {
             if (value.getLiteral().equals(literal)) {
                 return value;
             }
         }
         return null;
     }
-    
+
     public static Option optionLiteral(String literal) {
-        NominalInterestRateScheduleType value = parseLiteral(literal);
+        NominalInterestRateType value = parseLiteral(literal);
         if (value == null) {
             return null;
         }

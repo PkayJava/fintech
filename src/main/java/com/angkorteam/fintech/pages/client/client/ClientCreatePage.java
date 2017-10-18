@@ -818,8 +818,6 @@ public class ClientCreatePage extends Page {
             if (this.genderValue != null) {
                 builder.withGenderId(this.genderValue.getId());
             }
-            String mainBusinessLineId = this.mainBusinessLineValue == null ? null : this.mainBusinessLineValue.getId();
-            builder.withClientNonPersonDetails(mainBusinessLineId);
         }
 
         if (this.officeValue != null) {
