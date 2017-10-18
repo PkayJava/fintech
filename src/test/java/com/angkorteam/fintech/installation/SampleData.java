@@ -810,7 +810,7 @@ public class SampleData implements IMifos {
     }
 
     protected void setupClientAngkorTeam(IMifos session, JdbcTemplate jdbcTemplate, RandomStringGenerator stringGenerator) throws UnirestException {
-        if (jdbcTemplate.queryForObject("select count(*) from m_client where firstname = ? and lastname = ?", boolean.class, "Socheat", "KHAUV")) {
+        if (jdbcTemplate.queryForObject("select count(*) from m_client where fullname = ?", boolean.class, "Angkor Team")) {
             return;
         }
         String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, "Phnom Penh");
@@ -845,7 +845,7 @@ public class SampleData implements IMifos {
     }
 
     protected void setupClientSocheatKHAUV(IMifos session, JdbcTemplate jdbcTemplate, RandomStringGenerator stringGenerator) throws UnirestException {
-        if (jdbcTemplate.queryForObject("select count(*) from m_client where fullname = ?", boolean.class, "Angkor Team")) {
+        if (jdbcTemplate.queryForObject("select count(*) from m_client where firstname = ? and lastname = ?", boolean.class, "Socheat", "KHAUV")) {
             return;
         }
         String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, "Phnom Penh");
