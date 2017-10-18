@@ -693,6 +693,7 @@ public class SampleData implements IMifos {
         ACCOUNTS.add("Account Liability/Saving Control" + "=>" + Dropdown.LiabilityAccountTags);
         ACCOUNTS.add("Account Liability/Saving Transfer In Suspense" + "=>" + Dropdown.LiabilityAccountTags);
         ACCOUNTS.add("Account Liability/Share Suspense Control" + "=>" + Dropdown.LiabilityAccountTags);
+        ACCOUNTS.add("Account Liability/Escheat Liability" + "=>" + Dropdown.LiabilityAccountTags);
 
         ACCOUNTS.add("Account Liability/Fee Income Account" + "=>" + Dropdown.LiabilityAccountTags);
 
