@@ -979,7 +979,7 @@ public class LoanCreatePage extends Page {
         this.detailShortNameValue = generator.generate(4);
         this.currencyDecimalPlaceValue = 2;
         this.currencyInMultipleOfValue = 1;
-        this.termPrincipalDefaultValue = 1d;
+        this.termPrincipalDefaultValue = 100d;
         this.termNumberOfRepaymentDefaultValue = 12;
         this.termRepaidEveryValue = 1;
         this.termRepaidTypeValue = LockInType.Month.toOption();

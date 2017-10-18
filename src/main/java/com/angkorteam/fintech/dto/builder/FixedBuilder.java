@@ -492,6 +492,14 @@ public class FixedBuilder implements Serializable {
             errors.add("minDepositTermTypeId is required");
         }
 
+        if (this.depositAmount == null) {
+            errors.add("depositAmount is required");
+        }
+
+        if (this.fromDate == null) {
+            errors.add("fromDate is required");
+        }
+
         if (this.accountingRule == null) {
             errors.add("accountingRule is required");
         } else {
