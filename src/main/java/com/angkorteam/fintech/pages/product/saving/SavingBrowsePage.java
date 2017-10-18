@@ -101,7 +101,7 @@ public class SavingBrowsePage extends Page {
         String name = (String) model.get(jdbcColumn);
         PageParameters parameters = new PageParameters();
         parameters.add("savingId", model.get("id"));
-        return new LinkCell(SavingCreatePage.class, parameters, Model.of(name));
+        return new LinkCell(SavingPreviewPage.class, parameters, Model.of(name));
     }
 
 }
