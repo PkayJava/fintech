@@ -2657,7 +2657,6 @@ public class LoanCreatePage extends Page {
         this.currencyDecimalPlaceField = new TextField<>("currencyDecimalPlaceField", new PropertyModel<>(this, "currencyDecimalPlaceValue"));
         this.currencyDecimalPlaceField.setLabel(Model.of("Decimal Places"));
         this.currencyDecimalPlaceField.add(new OnChangeAjaxBehavior());
-        this.currencyDecimalPlaceField.add(RangeValidator.range((int) 0, (int) 6));
         this.currencyDecimalPlaceContainer.add(this.currencyDecimalPlaceField);
         this.currencyDecimalPlaceFeedback = new TextFeedbackPanel("currencyDecimalPlaceFeedback", this.currencyDecimalPlaceField);
         this.currencyDecimalPlaceContainer.add(this.currencyDecimalPlaceFeedback);
@@ -2670,7 +2669,6 @@ public class LoanCreatePage extends Page {
         this.currencyInMultipleOfField = new TextField<>("currencyInMultipleOfField", new PropertyModel<>(this, "currencyInMultipleOfValue"));
         this.currencyInMultipleOfField.setLabel(Model.of("Currency in multiple of"));
         this.currencyInMultipleOfField.add(new OnChangeAjaxBehavior());
-        this.currencyInMultipleOfField.add(RangeValidator.minimum((int) 1));
         this.currencyInMultipleOfContainer.add(this.currencyInMultipleOfField);
         this.currencyInMultipleOfFeedback = new TextFeedbackPanel("currencyInMultipleOfFeedback", this.currencyInMultipleOfField);
         this.currencyInMultipleOfContainer.add(this.currencyInMultipleOfFeedback);

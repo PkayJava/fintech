@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.json.JSONObject;
 
@@ -131,10 +132,10 @@ public class RecurringBuilder implements Serializable {
         return this;
     }
 
-    private boolean holdTax;
+    private Boolean holdTax;
     private boolean hasHoldTax;
 
-    public RecurringBuilder withHoldTax(boolean holdTax) {
+    public RecurringBuilder withHoldTax(Boolean holdTax) {
         this.holdTax = holdTax;
         this.hasHoldTax = true;
         return this;
@@ -286,8 +287,8 @@ public class RecurringBuilder implements Serializable {
         return this;
     }
 
-    private boolean hasCharts;
     private List<Map<String, Object>> charts = Lists.newArrayList();
+    private boolean hasCharts;
 
     private Date fromDate;
     private boolean hasFromDate;
@@ -309,11 +310,11 @@ public class RecurringBuilder implements Serializable {
         return this;
     }
 
-    private boolean isPrimaryGroupingByAmount;
+    private Boolean primaryGroupingByAmount;
     private boolean hasPrimaryGroupingByAmount;
 
-    public RecurringBuilder withPrimaryGroupingByAmount(boolean isPrimaryGroupingByAmount) {
-        this.isPrimaryGroupingByAmount = isPrimaryGroupingByAmount;
+    public RecurringBuilder withPrimaryGroupingByAmount(Boolean primaryGroupingByAmount) {
+        this.primaryGroupingByAmount = primaryGroupingByAmount;
         this.hasPrimaryGroupingByAmount = true;
         this.hasCharts = true;
         return this;
@@ -425,10 +426,10 @@ public class RecurringBuilder implements Serializable {
         return this;
     }
 
-    private boolean preClosurePenalApplicable;
+    private Boolean preClosurePenalApplicable;
     private boolean hasPreClosurePenalApplicable;
 
-    public RecurringBuilder withPreClosurePenalApplicable(boolean preClosurePenalApplicable) {
+    public RecurringBuilder withPreClosurePenalApplicable(Boolean preClosurePenalApplicable) {
         this.preClosurePenalApplicable = preClosurePenalApplicable;
         this.hasPreClosurePenalApplicable = true;
         return this;
@@ -452,41 +453,122 @@ public class RecurringBuilder implements Serializable {
         return this;
     }
 
-    private boolean mandatoryDeposit;
+    private Boolean mandatoryDeposit;
     private boolean hasMandatoryDeposit;
 
-    public RecurringBuilder withMandatoryDeposit(boolean mandatoryDeposit) {
+    public RecurringBuilder withMandatoryDeposit(Boolean mandatoryDeposit) {
         this.mandatoryDeposit = mandatoryDeposit;
         this.hasMandatoryDeposit = true;
         return this;
     }
 
-    private boolean adjustAdvanceTowardsFuturePayments;
+    private Boolean adjustAdvanceTowardsFuturePayments;
     private boolean hasAdjustAdvanceTowardsFuturePayments;
 
-    public RecurringBuilder withAdjustAdvanceTowardsFuturePayments(boolean adjustAdvanceTowardsFuturePayments) {
+    public RecurringBuilder withAdjustAdvanceTowardsFuturePayments(Boolean adjustAdvanceTowardsFuturePayments) {
         this.adjustAdvanceTowardsFuturePayments = adjustAdvanceTowardsFuturePayments;
         this.hasAdjustAdvanceTowardsFuturePayments = true;
         return this;
     }
 
-    private boolean allowWithdrawal;
+    private Boolean allowWithdrawal;
     private boolean hasAllowWithdrawal;
 
-    public RecurringBuilder withAllowWithdrawal(boolean allowWithdrawal) {
+    public RecurringBuilder withAllowWithdrawal(Boolean allowWithdrawal) {
         this.allowWithdrawal = allowWithdrawal;
         this.hasAllowWithdrawal = true;
         return this;
     }
 
     public JsonNode build() {
-        
-        
-//        name, shortName, description, currencyCode, digitsAfterDecimal,inMultiplesOf, interestCompoundingPeriodType, interestCalculationType, interestCalculationDaysInYearType, minDepositTerm, minDepositTermTypeId, recurringDepositFrequency, recurringDepositFrequencyTypeId, accountingRule, depositAmount
-//
-//        Mandatory Fields for Cash based accounting (accountingRule = 2)
-//        savingsReferenceAccountId, savingsControlAccountId, interestOnSavingsAccountId, incomeFromFeeAccountId, transfersInSuspenseAccountId, incomeFromPenaltyAccountId
-        
+
+        List<String> errors = Lists.newArrayList();
+
+        if (this.name == null || "".equals(this.name)) {
+            errors.add("name is required");
+        }
+
+        if (this.shortName == null || "".equals(this.shortName)) {
+            errors.add("shortName is required");
+        }
+
+        if (this.description == null || "".equals(this.description)) {
+            errors.add("description is required");
+        }
+
+        if (this.currencyCode == null || "".equals(this.currencyCode)) {
+            errors.add("currencyCode is required");
+        }
+
+        if (this.digitsAfterDecimal == null) {
+            errors.add("digitsAfterDecimal is required");
+        }
+
+        if (this.inMultiplesOf == null) {
+            errors.add("inMultiplesOf is required");
+        }
+
+        if (this.interestCompoundingPeriodType == null) {
+            errors.add("interestCompoundingPeriodType is required");
+        }
+
+        if (this.interestCalculationType == null) {
+            errors.add("interestCalculationType is required");
+        }
+
+        if (this.interestCalculationDaysInYearType == null) {
+            errors.add("interestCalculationDaysInYearType is required");
+        }
+
+        if (this.minDepositTerm == null) {
+            errors.add("minDepositTerm is required");
+        }
+
+        if (this.minDepositTermTypeId == null) {
+            errors.add("minDepositTermTypeId is required");
+        }
+
+        if (this.depositAmount == null) {
+            errors.add("depositAmount is required");
+        }
+
+        // if (this.recurringDepositFrequency == null) {
+        // errors.add("recurringDepositFrequency is required");
+        // }
+
+        // if (this.recurringDepositFrequencyTypeId == null) {
+        // errors.add("recurringDepositFrequencyTypeId is required");
+        // }
+
+        if (this.accountingRule == null) {
+            errors.add("accountingRule is required");
+        } else {
+            if (this.accountingRule == 2) {
+                if (this.savingsReferenceAccountId == null || "".equals(this.savingsReferenceAccountId)) {
+                    errors.add("savingsReferenceAccountId is required");
+                }
+                if (this.savingsControlAccountId == null || "".equals(this.savingsControlAccountId)) {
+                    errors.add("savingsControlAccountId is required");
+                }
+                if (this.interestOnSavingsAccountId == null || "".equals(this.interestOnSavingsAccountId)) {
+                    errors.add("interestOnSavingsAccountId is required");
+                }
+                if (this.incomeFromFeeAccountId == null || "".equals(this.incomeFromFeeAccountId)) {
+                    errors.add("incomeFromFeeAccountId is required");
+                }
+                if (this.transfersInSuspenseAccountId == null || "".equals(this.transfersInSuspenseAccountId)) {
+                    errors.add("transfersInSuspenseAccountId is required");
+                }
+                if (this.incomeFromPenaltyAccountId == null || "".equals(this.incomeFromPenaltyAccountId)) {
+                    errors.add("incomeFromPenaltyAccountId is required");
+                }
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            throw new IllegalArgumentException("invalid builder :: " + StringUtils.join(errors, ","));
+        }
+
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
 
         if (this.hasAllowWithdrawal) {
@@ -577,7 +659,7 @@ public class RecurringBuilder implements Serializable {
                 chart.put("locale", this.locale);
             }
             if (this.hasPrimaryGroupingByAmount) {
-                chart.put("isPrimaryGroupingByAmount", this.isPrimaryGroupingByAmount);
+                chart.put("isPrimaryGroupingByAmount", this.primaryGroupingByAmount);
             }
             if (this.hasEndDate) {
                 if (this.endDate != null) {

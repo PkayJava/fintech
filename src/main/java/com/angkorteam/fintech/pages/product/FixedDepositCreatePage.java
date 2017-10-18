@@ -17,9 +17,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.validation.validator.RangeValidator;
 import org.apache.wicket.validation.validator.StringValidator;
-import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1371,7 +1369,6 @@ public class FixedDepositCreatePage extends Page {
         this.currencyDecimalPlaceField = new TextField<>("currencyDecimalPlaceField", new PropertyModel<>(this, "currencyDecimalPlaceValue"));
         this.currencyDecimalPlaceField.setLabel(Model.of("Decimal places"));
         this.currencyDecimalPlaceField.add(new OnChangeAjaxBehavior());
-        this.currencyDecimalPlaceField.add(RangeValidator.range((int) 0, (int) 6));
         this.currencyDecimalPlaceContainer.add(this.currencyDecimalPlaceField);
         this.currencyDecimalPlaceFeedback = new TextFeedbackPanel("currencyDecimalPlaceFeedback", this.currencyDecimalPlaceField);
         this.currencyDecimalPlaceContainer.add(this.currencyDecimalPlaceFeedback);
@@ -1383,7 +1380,6 @@ public class FixedDepositCreatePage extends Page {
         this.currencyMultipleOfField = new TextField<>("currencyMultipleOfField", new PropertyModel<>(this, "currencyMultipleOfValue"));
         this.currencyMultipleOfField.setLabel(Model.of("Multiples of"));
         this.currencyMultipleOfField.add(new OnChangeAjaxBehavior());
-        this.currencyMultipleOfField.add(RangeValidator.minimum((int) 1));
         this.currencyMultipleOfContainer.add(this.currencyMultipleOfField);
         this.currencyMultipleOfFeedback = new TextFeedbackPanel("currencyMultipleOfFeedback", this.currencyMultipleOfField);
         this.currencyMultipleOfContainer.add(this.currencyMultipleOfFeedback);
