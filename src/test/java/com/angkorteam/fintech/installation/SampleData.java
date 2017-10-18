@@ -815,10 +815,10 @@ public class SampleData implements IMifos {
         }
         String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, "Phnom Penh");
         String staffId = jdbcTemplate.queryForObject("select id from m_staff where office_id = ? limit 1", String.class, officeId);
-        String clientTypeId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? and m_code_value.code_value = ? limit 1", String.class, "ClientType");
-        String clientClassificationId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? and m_code_value.code_value = ? limit 1", String.class, "ClientClassification");
-        String mainBusinessLineId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? and m_code_value.code_value = ? limit 1", String.class, "MainBusinessLine");
-        String constitutionId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? and m_code_value.code_value = ? limit 1", String.class, "Constitution");
+        String clientTypeId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? limit 1", String.class, "ClientType");
+        String clientClassificationId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? limit 1", String.class, "ClientClassification");
+        String mainBusinessLineId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? limit 1", String.class, "MainBusinessLine");
+        String constitutionId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? limit 1", String.class, "Constitution");
 
         ClientBuilder builder = new ClientBuilder();
         builder.withLegalFormId(LegalForm.Person);
@@ -851,8 +851,8 @@ public class SampleData implements IMifos {
         String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, "Phnom Penh");
         String staffId = jdbcTemplate.queryForObject("select id from m_staff where office_id = ? limit 1", String.class, officeId);
         String genderId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? and m_code_value.code_value = ?", String.class, "Gender", "M");
-        String clientTypeId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? and m_code_value.code_value = ? limit 1", String.class, "ClientType");
-        String clientClassificationId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? and m_code_value.code_value = ? limit 1", String.class, "ClientClassification");
+        String clientTypeId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? limit 1", String.class, "ClientType");
+        String clientClassificationId = jdbcTemplate.queryForObject("select m_code_value.id from m_code_value inner join m_code on m_code_value.code_id = m_code.id where m_code.code_name = ? limit 1", String.class, "ClientClassification");
 
         ClientBuilder builder = new ClientBuilder();
         builder.withLegalFormId(LegalForm.Person);
