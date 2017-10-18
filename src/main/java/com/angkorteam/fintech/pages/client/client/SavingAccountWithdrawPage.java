@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.pages.client.center;
+package com.angkorteam.fintech.pages.client.client;
 
 import java.util.Date;
 
@@ -17,7 +17,7 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.acount.DepositBuilder;
+import com.angkorteam.fintech.helper.acount.WithdrawBuilder;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -30,9 +30,9 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingAccountDepositPage extends Page {
+public class SavingAccountWithdrawPage extends Page {
 
-    protected String centerId;
+    protected String clientId;
     protected String accountId;
 
     protected Form<Void> form;
@@ -101,7 +101,7 @@ public class SavingAccountDepositPage extends Page {
         initData();
 
         PageParameters parameters = new PageParameters();
-        parameters.add("centerId", this.centerId);
+        parameters.add("clientId", this.clientId);
 
         this.form = new Form<>("form");
         add(this.form);
@@ -110,7 +110,7 @@ public class SavingAccountDepositPage extends Page {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
         this.transactionDateBlock = new WebMarkupContainer("transactionDateBlock");
@@ -221,7 +221,7 @@ public class SavingAccountDepositPage extends Page {
     }
 
     protected void initData() {
-        this.centerId = getPageParameters().get("centerId").toString();
+        this.clientId = getPageParameters().get("clientId").toString();
         this.accountId = getPageParameters().get("accountId").toString();
         this.transactionDateValue = DateTime.now().toDate();
     }
@@ -244,7 +244,7 @@ public class SavingAccountDepositPage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        DepositBuilder builder = new DepositBuilder();
+        WithdrawBuilder builder = new WithdrawBuilder();
         builder.withId(this.accountId);
         builder.withTransactionDate(this.transactionDateValue);
         builder.withTransactionAmount(this.transactionAmountValue);
@@ -261,7 +261,7 @@ public class SavingAccountDepositPage extends Page {
 
         JsonNode node = null;
         try {
-            node = ClientHelper.depositSavingAccount((Session) getSession(), builder.build());
+            node = ClientHelper.withdrawSavingAccount((Session) getSession(), builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;
@@ -271,8 +271,8 @@ public class SavingAccountDepositPage extends Page {
         }
 
         PageParameters parameters = new PageParameters();
-        parameters.add("centerId", this.centerId);
-        setResponsePage(CenterPreviewPage.class, parameters);
+        parameters.add("clientId", this.clientId);
+        setResponsePage(ClientPreviewPage.class, parameters);
     }
 
 }

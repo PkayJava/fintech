@@ -323,7 +323,7 @@ public class SavingAccountClosePage extends Page {
         JsonNode node = null;
         JsonNode request = builder.build();
         try {
-            node = ClientHelper.closeCenterAccount((Session) getSession(), request);
+            node = ClientHelper.closeSavingAccount((Session) getSession(), request);
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

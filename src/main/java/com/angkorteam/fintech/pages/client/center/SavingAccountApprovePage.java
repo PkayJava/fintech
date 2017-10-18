@@ -100,7 +100,7 @@ public class SavingAccountApprovePage extends Page {
 
         JsonNode node = null;
         try {
-            node = ClientHelper.approveCenterAccount((Session) getSession(), builder.build());
+            node = ClientHelper.approveSavingAccount((Session) getSession(), builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

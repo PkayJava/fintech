@@ -14,8 +14,13 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.pages.client.center.SavingAccountPreviewPage;
+import com.angkorteam.fintech.pages.client.client.SavingAccountActivatePage;
+import com.angkorteam.fintech.pages.client.client.SavingAccountApprovePage;
+import com.angkorteam.fintech.pages.client.client.SavingAccountDepositPage;
+import com.angkorteam.fintech.pages.client.client.SavingAccountPreviewPage;
 import com.angkorteam.fintech.pages.client.client.SavingAccountSelectionPage;
+import com.angkorteam.fintech.pages.client.client.SavingAccountUndoApprovePage;
+import com.angkorteam.fintech.pages.client.client.SavingAccountWithdrawPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
@@ -36,7 +41,7 @@ public class ClientPreviewGeneralPanel extends Panel {
     protected BookmarkablePageLink<Void> newSavingLink;
 
     protected String clientId;
-    
+
     protected DataTable<Map<String, Object>, String> savingAccountTable;
     protected JdbcProvider savingAccountProvider;
 
@@ -56,7 +61,7 @@ public class ClientPreviewGeneralPanel extends Panel {
 
         this.newSavingLink = new BookmarkablePageLink<>("newSavingLink", SavingAccountSelectionPage.class, parameters);
         add(this.newSavingLink);
-        
+
         this.savingAccountProvider = new JdbcProvider("m_savings_account");
         this.savingAccountProvider.addJoin("LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
         this.savingAccountProvider.boardField("concat(m_savings_account.id,'')", "id", String.class);
@@ -78,7 +83,7 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.savingAccountTable = new DefaultDataTable<>("savingAccountTable", savingAccountColumns, this.savingAccountProvider, 20);
         add(this.savingAccountTable);
     }
-    
+
     protected List<ActionItem> savingAccountActionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         Integer status = (Integer) model.get("status");
@@ -100,31 +105,31 @@ public class ClientPreviewGeneralPanel extends Panel {
             PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
             parameters.add("accountId", accountId);
-            // setResponsePage(SavingAccountApprovePage.class, parameters);
+            setResponsePage(SavingAccountApprovePage.class, parameters);
         } else if ("Undo Approve".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
             parameters.add("accountId", accountId);
-            // setResponsePage(SavingAccountUndoApprovePage.class, parameters);
+            setResponsePage(SavingAccountUndoApprovePage.class, parameters);
         } else if ("Activate".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
             parameters.add("accountId", accountId);
-            // setResponsePage(SavingAccountActivatePage.class, parameters);
+            setResponsePage(SavingAccountActivatePage.class, parameters);
         } else if ("Deposit".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
             parameters.add("accountId", accountId);
-            // setResponsePage(SavingAccountDepositPage.class, parameters);
+            setResponsePage(SavingAccountDepositPage.class, parameters);
         } else if ("Withdraw".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
             parameters.add("accountId", accountId);
-            // setResponsePage(SavingAccountWithdrawPage.class, parameters);
+            setResponsePage(SavingAccountWithdrawPage.class, parameters);
         }
     }
 

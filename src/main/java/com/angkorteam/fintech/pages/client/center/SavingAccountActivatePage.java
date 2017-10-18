@@ -81,7 +81,7 @@ public class SavingAccountActivatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = ClientHelper.activateCenterAccount((Session) getSession(), builder.build());
+            node = ClientHelper.activateSavingAccount((Session) getSession(), builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

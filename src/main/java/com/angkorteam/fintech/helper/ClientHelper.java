@@ -33,27 +33,27 @@ public class ClientHelper {
         return Helper.performServerPost(session, "/api/v1/groups/" + id + "/notes", object);
     }
 
-    public static JsonNode approveCenterAccount(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode approveSavingAccount(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "?command=approve", object);
     }
 
-    public static JsonNode undoApproveCenterAccount(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode undoApproveSavingAccount(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "?command=undoapproval", object);
     }
 
-    public static JsonNode activateCenterAccount(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode activateSavingAccount(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "?command=activate", object);
     }
 
-    public static JsonNode depositCenterAccount(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode depositSavingAccount(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "/transactions?command=deposit", object);
     }
 
-    public static JsonNode withdrawCenterAccount(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode withdrawSavingAccount(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "/transactions?command=withdrawal", object);
     }
@@ -62,7 +62,7 @@ public class ClientHelper {
         return Helper.performServerPost(session, "/api/v1/savingsaccounts", object);
     }
 
-    public static JsonNode closeCenterAccount(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode closeSavingAccount(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "?command=close", object);
     }

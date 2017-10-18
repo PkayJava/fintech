@@ -7,22 +7,22 @@ import org.apache.wicket.model.Model;
 
 import com.angkorteam.fintech.Page;
 
-public class ClientPreviewGeneral implements ITab {
+public class AccountPreviewTransaction implements ITab {
 
     private Page itemPage;
 
-    public ClientPreviewGeneral(Page itemPage) {
+    public AccountPreviewTransaction(Page itemPage) {
         this.itemPage = itemPage;
     }
 
     @Override
     public IModel<String> getTitle() {
-        return Model.of("General");
+        return Model.of("Transaction");
     }
 
     @Override
     public WebMarkupContainer getPanel(String containerId) {
-        return new ClientPreviewGeneralPanel(containerId, this.itemPage);
+        return new AccountPreviewTransactionPanel(containerId, this.itemPage);
     }
 
     @Override

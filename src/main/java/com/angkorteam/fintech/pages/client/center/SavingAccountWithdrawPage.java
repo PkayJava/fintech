@@ -100,6 +100,9 @@ public class SavingAccountWithdrawPage extends Page {
 
         initData();
 
+        PageParameters parameters = new PageParameters();
+        parameters.add("centerId", this.centerId);
+
         this.form = new Form<>("form");
         add(this.form);
 
@@ -107,7 +110,7 @@ public class SavingAccountWithdrawPage extends Page {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
         this.transactionDateBlock = new WebMarkupContainer("transactionDateBlock");
@@ -258,7 +261,7 @@ public class SavingAccountWithdrawPage extends Page {
 
         JsonNode node = null;
         try {
-            node = ClientHelper.withdrawCenterAccount((Session) getSession(), builder.build());
+            node = ClientHelper.withdrawSavingAccount((Session) getSession(), builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.pages.client.center;
+package com.angkorteam.fintech.pages.client.client;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -23,7 +23,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingAccountUndoApprovePage extends Page {
 
-    private String centerId;
+    private String clientId;
     private String accountId;
 
     protected Form<Void> form;
@@ -42,7 +42,7 @@ public class SavingAccountUndoApprovePage extends Page {
         initData();
 
         PageParameters parameters = new PageParameters();
-        parameters.add("centerId", this.centerId);
+        parameters.add("clientId", this.clientId);
 
         this.form = new Form<>("form");
         add(this.form);
@@ -51,7 +51,7 @@ public class SavingAccountUndoApprovePage extends Page {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
         this.noteBlock = new WebMarkupContainer("noteBlock");
@@ -67,7 +67,7 @@ public class SavingAccountUndoApprovePage extends Page {
     }
 
     protected void initData() {
-        this.centerId = getPageParameters().get("centerId").toString();
+        this.clientId = getPageParameters().get("clientId").toString();
         this.accountId = getPageParameters().get("accountId").toString();
     }
 
@@ -88,8 +88,8 @@ public class SavingAccountUndoApprovePage extends Page {
         }
 
         PageParameters parameters = new PageParameters();
-        parameters.add("centerId", this.centerId);
-        setResponsePage(CenterPreviewPage.class, parameters);
+        parameters.add("clientId", this.clientId);
+        setResponsePage(ClientPreviewPage.class, parameters);
     }
 
 }
