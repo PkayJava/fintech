@@ -471,7 +471,6 @@ public class FixedDepositCreatePage extends Page {
         this.settingMinimumDepositTermValue = 1;
         this.settingMinimumDepositTypeValue = LockInType.Month.toOption();
         this.accountingValue = ACC_NONE;
-        this.interestRateValidFromDateValue = DateTime.now().toDate();
     }
 
     protected void initValidationRule() {
@@ -491,7 +490,6 @@ public class FixedDepositCreatePage extends Page {
 
         this.settingMinimumDepositTermField.setRequired(true);
         this.settingMinimumDepositTypeField.setRequired(true);
-        this.interestRateValidFromDateField.setRequired(true);
 
         this.termDefaultDepositAmountField.setRequired(true);
 
@@ -1506,50 +1504,52 @@ public class FixedDepositCreatePage extends Page {
 
         // Interest Rate Chart
 
-        builder.withFromDate(this.interestRateValidFromDateValue);
-        builder.withEndDate(this.interestRateValidEndDateValue);
+        if ((this.interestRatePrimaryGroupingByAmountValue != null && this.interestRatePrimaryGroupingByAmountValue) || this.interestRateValidFromDateValue != null || this.interestRateValidEndDateValue != null || !this.interestRateChartValue.isEmpty()) {
+            builder.withFromDate(this.interestRateValidFromDateValue);
+            builder.withEndDate(this.interestRateValidEndDateValue);
 
-        builder.withPrimaryGroupingByAmount(this.interestRatePrimaryGroupingByAmountValue == null ? false : this.interestRatePrimaryGroupingByAmountValue);
+            builder.withPrimaryGroupingByAmount(this.interestRatePrimaryGroupingByAmountValue == null ? false : this.interestRatePrimaryGroupingByAmountValue);
 
-        for (Map<String, Object> interestRateChart : this.interestRateChartValue) {
-            Option periodTypeOption = (Option) interestRateChart.get("periodType");
-            LockInType periodType = periodTypeOption == null ? null : LockInType.valueOf(periodTypeOption.getId());
-            Integer fromPeriod = (Integer) interestRateChart.get("periodFrom");
-            Integer toPeriod = (Integer) interestRateChart.get("periodTo");
-            Integer amountRangeFrom = (Integer) interestRateChart.get("amountRangeFrom");
-            Integer amountRangeTo = (Integer) interestRateChart.get("amountRangeTo");
-            Double annualInterestRate = (Double) interestRateChart.get("interest");
-            String description = (String) interestRateChart.get("description");
-            List<Map<String, Object>> interestRate = (List<Map<String, Object>>) interestRateChart.get("interestRate");
-            List<JSONObject> incentives = null;
-            if (interestRate != null && !interestRate.isEmpty()) {
-                incentives = Lists.newLinkedList();
-                for (Map<String, Object> rate : interestRate) {
+            for (Map<String, Object> interestRateChart : this.interestRateChartValue) {
+                Option periodTypeOption = (Option) interestRateChart.get("periodType");
+                LockInType periodType = periodTypeOption == null ? null : LockInType.valueOf(periodTypeOption.getId());
+                Integer fromPeriod = (Integer) interestRateChart.get("periodFrom");
+                Integer toPeriod = (Integer) interestRateChart.get("periodTo");
+                Integer amountRangeFrom = (Integer) interestRateChart.get("amountRangeFrom");
+                Integer amountRangeTo = (Integer) interestRateChart.get("amountRangeTo");
+                Double annualInterestRate = (Double) interestRateChart.get("interest");
+                String description = (String) interestRateChart.get("description");
+                List<Map<String, Object>> interestRate = (List<Map<String, Object>>) interestRateChart.get("interestRate");
+                List<JSONObject> incentives = null;
+                if (interestRate != null && !interestRate.isEmpty()) {
+                    incentives = Lists.newLinkedList();
+                    for (Map<String, Object> rate : interestRate) {
 
-                    IncentiveBuilder incentiveBuilder = new IncentiveBuilder();
+                        IncentiveBuilder incentiveBuilder = new IncentiveBuilder();
 
-                    Option attributeOption = (Option) rate.get("attribute");
-                    Attribute attribute = attributeOption == null ? null : Attribute.valueOf(attributeOption.getId());
-                    incentiveBuilder.withAttributeName(attribute);
+                        Option attributeOption = (Option) rate.get("attribute");
+                        Attribute attribute = attributeOption == null ? null : Attribute.valueOf(attributeOption.getId());
+                        incentiveBuilder.withAttributeName(attribute);
 
-                    Option operatorOption = (Option) rate.get("operator");
-                    Operator operator = operatorOption == null ? null : Operator.valueOf(operatorOption.getId());
-                    incentiveBuilder.withConditionType(operator);
+                        Option operatorOption = (Option) rate.get("operator");
+                        Operator operator = operatorOption == null ? null : Operator.valueOf(operatorOption.getId());
+                        incentiveBuilder.withConditionType(operator);
 
-                    String operand = (String) rate.get("operand");
-                    incentiveBuilder.withAttributeValue(operand);
+                        String operand = (String) rate.get("operand");
+                        incentiveBuilder.withAttributeValue(operand);
 
-                    Option operandTypeOption = (Option) rate.get("operandType");
-                    OperandType operandType = operandTypeOption == null ? null : OperandType.valueOf(operandTypeOption.getId());
-                    incentiveBuilder.withIncentiveType(operandType);
+                        Option operandTypeOption = (Option) rate.get("operandType");
+                        OperandType operandType = operandTypeOption == null ? null : OperandType.valueOf(operandTypeOption.getId());
+                        incentiveBuilder.withIncentiveType(operandType);
 
-                    Double rateInterest = (Double) rate.get("interest");
-                    incentiveBuilder.withAmount(rateInterest);
+                        Double rateInterest = (Double) rate.get("interest");
+                        incentiveBuilder.withAmount(rateInterest);
 
-                    incentives.add(incentiveBuilder.build().getObject());
+                        incentives.add(incentiveBuilder.build().getObject());
+                    }
                 }
+                builder.withChartSlab(periodType, fromPeriod, toPeriod, amountRangeFrom, amountRangeTo, annualInterestRate, description, incentives);
             }
-            builder.withChartSlab(periodType, fromPeriod, toPeriod, amountRangeFrom, amountRangeTo, annualInterestRate, description, incentives);
         }
 
         // Charge

@@ -480,6 +480,13 @@ public class RecurringBuilder implements Serializable {
     }
 
     public JsonNode build() {
+        
+        
+//        name, shortName, description, currencyCode, digitsAfterDecimal,inMultiplesOf, interestCompoundingPeriodType, interestCalculationType, interestCalculationDaysInYearType, minDepositTerm, minDepositTermTypeId, recurringDepositFrequency, recurringDepositFrequencyTypeId, accountingRule, depositAmount
+//
+//        Mandatory Fields for Cash based accounting (accountingRule = 2)
+//        savingsReferenceAccountId, savingsControlAccountId, interestOnSavingsAccountId, incomeFromFeeAccountId, transfersInSuspenseAccountId, incomeFromPenaltyAccountId
+        
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
 
         if (this.hasAllowWithdrawal) {
