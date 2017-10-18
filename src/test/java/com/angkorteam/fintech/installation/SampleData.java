@@ -666,6 +666,7 @@ public class SampleData implements IMifos {
 
         ACCOUNTS.add("Account Charge" + "=>" + Dropdown.IncomeAccountTags);
 
+        ACCOUNTS.add("Account Asset/Payment Type Fund Source" + "=>" + Dropdown.AssetAccountTags);
         ACCOUNTS.add("Account Asset/Fund Source" + "=>" + Dropdown.AssetAccountTags);
         ACCOUNTS.add("Account Asset/Saving Reference" + "=>" + Dropdown.AssetAccountTags);
         ACCOUNTS.add("Account Asset/Share Reference" + "=>" + Dropdown.AssetAccountTags);
