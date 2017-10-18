@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.angkorteam.fintech.dto.enums.LockInType;
@@ -211,10 +212,10 @@ public class ShareBuilder implements Serializable {
         return this;
     }
 
-    private boolean allowDividendCalculationForInactiveClients;
+    private Boolean allowDividendCalculationForInactiveClients;
     private boolean hasAllowDividendCalculationForInactiveClients;
 
-    public ShareBuilder withAllowDividendCalculationForInactiveClients(boolean allowDividendCalculationForInactiveClients) {
+    public ShareBuilder withAllowDividendCalculationForInactiveClients(Boolean allowDividendCalculationForInactiveClients) {
         this.allowDividendCalculationForInactiveClients = allowDividendCalculationForInactiveClients;
         this.hasAllowDividendCalculationForInactiveClients = true;
         return this;
@@ -257,6 +258,72 @@ public class ShareBuilder implements Serializable {
     }
 
     public JsonNode build() {
+
+        List<String> errors = Lists.newArrayList();
+
+        if (this.name == null || "".equals(this.name)) {
+            errors.add("name is required");
+        }
+
+        if (this.shortName == null || "".equals(this.shortName)) {
+            errors.add("shortName is required");
+        }
+
+        if (this.description == null || "".equals(this.description)) {
+            errors.add("description is required");
+        }
+
+        if (this.currencyCode == null || "".equals(this.currencyCode)) {
+            errors.add("currencyCode is required");
+        }
+
+        if (this.digitsAfterDecimal == null) {
+            errors.add("digitsAfterDecimal is required");
+        }
+
+        if (this.totalShares == null) {
+            errors.add("totalShares is required");
+        }
+
+        if (this.unitPrice == null) {
+            errors.add("unitPrice is required");
+        }
+
+        if (this.nominalShares == null) {
+            errors.add("nominalShares is required");
+        }
+
+        if (this.allowDividendCalculationForInactiveClients == null) {
+            errors.add("allowDividendCalculationForInactiveClients is required");
+        }
+
+        if (this.sharesIssued == null) {
+            errors.add("sharesIssued is required");
+        }
+
+        if (this.accountingRule == null) {
+            errors.add("accountingRule is required");
+        } else {
+            if (this.accountingRule == 2) {
+                if (this.shareReferenceId == null || "".equals(this.shareReferenceId)) {
+                    errors.add("shareReferenceId is required");
+                }
+                if (this.shareSuspenseId == null || "".equals(this.shareSuspenseId)) {
+                    errors.add("shareSuspenseId is required");
+                }
+                if (this.shareEquityId == null || "".equals(this.shareEquityId)) {
+                    errors.add("shareEquityId is required");
+                }
+                if (this.incomeFromFeeAccountId == null || "".equals(this.incomeFromFeeAccountId)) {
+                    errors.add("incomeFromFeeAccountId is required");
+                }
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            throw new IllegalArgumentException("invalid builder :: " + StringUtils.join(errors, ","));
+        }
+
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
 
         if (this.hasIncomeFromFeeAccountId) {
