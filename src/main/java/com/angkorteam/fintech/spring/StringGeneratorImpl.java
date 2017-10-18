@@ -1,5 +1,7 @@
 package com.angkorteam.fintech.spring;
 
+import java.util.UUID;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
@@ -16,6 +18,11 @@ public class StringGeneratorImpl implements StringGenerator {
     @Override
     public String generate(int length) {
         return StringUtils.upperCase(this.generator.generate(length));
+    }
+
+    @Override
+    public String externalId() {
+        return StringUtils.upperCase(UUID.randomUUID().toString());
     }
 
 }

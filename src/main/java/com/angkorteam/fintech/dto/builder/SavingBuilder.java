@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.angkorteam.fintech.dto.enums.DayInYear;
 import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
 import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
@@ -206,46 +208,46 @@ public class SavingBuilder implements Serializable {
         return this;
     }
 
-    private boolean withdrawalFeeForTransfers;
+    private Boolean withdrawalFeeForTransfers;
     private boolean hasWithdrawalFeeForTransfers;
 
-    public SavingBuilder withWithdrawalFeeForTransfers(boolean withdrawalFeeForTransfers) {
+    public SavingBuilder withWithdrawalFeeForTransfers(Boolean withdrawalFeeForTransfers) {
         this.withdrawalFeeForTransfers = withdrawalFeeForTransfers;
         this.hasWithdrawalFeeForTransfers = true;
         return this;
     }
 
-    private boolean enforceMinRequiredBalance;
+    private Boolean enforceMinRequiredBalance;
     private boolean hasEnforceMinRequiredBalance;
 
-    public SavingBuilder withEnforceMinRequiredBalance(boolean enforceMinRequiredBalance) {
+    public SavingBuilder withEnforceMinRequiredBalance(Boolean enforceMinRequiredBalance) {
         this.enforceMinRequiredBalance = enforceMinRequiredBalance;
         this.hasEnforceMinRequiredBalance = true;
         return this;
     }
 
-    private boolean allowOverdraft;
+    private Boolean allowOverdraft;
     private boolean hasAllowOverdraft;
 
-    public SavingBuilder withAllowOverdraft(boolean allowOverdraft) {
+    public SavingBuilder withAllowOverdraft(Boolean allowOverdraft) {
         this.allowOverdraft = allowOverdraft;
         this.hasAllowOverdraft = true;
         return this;
     }
 
-    private boolean holdTax;
+    private Boolean holdTax;
     private boolean hasHoldTax;
 
-    public SavingBuilder withHoldTax(boolean holdTax) {
+    public SavingBuilder withHoldTax(Boolean holdTax) {
         this.holdTax = holdTax;
         this.hasHoldTax = true;
         return this;
     }
 
-    private boolean dormancyTrackingActive;
+    private Boolean dormancyTrackingActive;
     private boolean hasDormancyTrackingActive;
 
-    public SavingBuilder withDormancyTrackingActive(boolean dormancyTrackingActive) {
+    public SavingBuilder withDormancyTrackingActive(Boolean dormancyTrackingActive) {
         this.dormancyTrackingActive = dormancyTrackingActive;
         this.hasDormancyTrackingActive = true;
         return this;
@@ -423,6 +425,82 @@ public class SavingBuilder implements Serializable {
     }
 
     public JsonNode build() {
+
+        List<String> errors = Lists.newArrayList();
+
+        if (this.name == null || "".equals(this.name)) {
+            errors.add("name is required");
+        }
+
+        if (this.interestPostingPeriodType == null) {
+            errors.add("interestPostingPeriodType is required");
+        }
+
+        if (this.shortName == null || "".equals(this.shortName)) {
+            errors.add("shortName is required");
+        }
+
+        if (this.description == null || "".equals(this.description)) {
+            errors.add("description is required");
+        }
+
+        if (this.currencyCode == null || "".equals(this.currencyCode)) {
+            errors.add("currencyCode is required");
+        }
+
+        if (this.digitsAfterDecimal == null) {
+            errors.add("digitsAfterDecimal is required");
+        }
+
+        if (this.inMultiplesOf == null) {
+            errors.add("inMultiplesOf is required");
+        }
+
+        if (this.nominalAnnualInterestRate == null) {
+            errors.add("nominalAnnualInterestRate is required");
+        }
+
+        if (this.interestCompoundingPeriodType == null) {
+            errors.add("interestCompoundingPeriodType is required");
+        }
+
+        if (this.interestCalculationDaysInYearType == null) {
+            errors.add("interestCalculationDaysInYearType is required");
+        }
+
+        if (this.interestCalculationType == null) {
+            errors.add("interestCalculationType is required");
+        }
+
+        if (this.accountingRule == null) {
+            errors.add("accountingRule is required");
+        } else {
+            if (this.accountingRule == 2) {
+                if (this.savingsReferenceAccountId == null || "".equals(this.savingsReferenceAccountId)) {
+                    errors.add("savingsReferenceAccountId is required");
+                }
+                if (this.savingsControlAccountId == null || "".equals(this.savingsControlAccountId)) {
+                    errors.add("savingsControlAccountId is required");
+                }
+                if (this.interestOnSavingsAccountId == null || "".equals(this.interestOnSavingsAccountId)) {
+                    errors.add("interestOnSavingsAccountId is required");
+                }
+                if (this.incomeFromFeeAccountId == null || "".equals(this.incomeFromFeeAccountId)) {
+                    errors.add("incomeFromFeeAccountId is required");
+                }
+                if (this.transfersInSuspenseAccountId == null || "".equals(this.transfersInSuspenseAccountId)) {
+                    errors.add("transfersInSuspenseAccountId is required");
+                }
+                if (this.incomeFromPenaltyAccountId == null || "".equals(this.incomeFromPenaltyAccountId)) {
+                    errors.add("incomeFromPenaltyAccountId is required");
+                }
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            throw new IllegalArgumentException("invalid builder :: " + StringUtils.join(errors, ","));
+        }
+
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
 
         if (this.hasIncomeFromInterestId) {
