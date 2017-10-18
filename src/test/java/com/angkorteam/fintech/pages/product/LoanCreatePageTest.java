@@ -89,7 +89,7 @@ public class LoanCreatePageTest {
         InterestMethod settingInterestMethodValue = InterestMethod.DecliningBalance;
         InterestCalculationPeriod settingInterestCalculationPeriodValue = InterestCalculationPeriod.SameAsPayment;
         boolean settingCalculateInterestForExactDaysInPartialPeriodValue = true;
-        RepaymentStrategy settingRepaymentStrategyValue = RepaymentStrategy.Overdue;
+        RepaymentStrategy settingRepaymentStrategyValue = RepaymentStrategy.Overdue_DueFee_Interest_Principal;
         int settingMoratoriumPrincipalValue = 1;
         int settingMoratoriumInterestValue = 14;
         int settingInterestFreePeriodValue = 15;
@@ -573,7 +573,7 @@ public class LoanCreatePageTest {
         InterestMethod settingInterestMethodValue = InterestMethod.DecliningBalance;
         InterestCalculationPeriod settingInterestCalculationPeriodValue = InterestCalculationPeriod.SameAsPayment;
         boolean settingCalculateInterestForExactDaysInPartialPeriodValue = true;
-        RepaymentStrategy settingRepaymentStrategyValue = RepaymentStrategy.Overdue;
+        RepaymentStrategy settingRepaymentStrategyValue = RepaymentStrategy.Overdue_DueFee_Interest_Principal;
         int settingMoratoriumPrincipalValue = 1;
         int settingMoratoriumInterestValue = 14;
         int settingInterestFreePeriodValue = 15;
@@ -942,7 +942,7 @@ public class LoanCreatePageTest {
         InterestMethod settingInterestMethodValue = InterestMethod.DecliningBalance;
         InterestCalculationPeriod settingInterestCalculationPeriodValue = InterestCalculationPeriod.SameAsPayment;
         boolean settingCalculateInterestForExactDaysInPartialPeriodValue = true;
-        RepaymentStrategy settingRepaymentStrategyValue = RepaymentStrategy.Overdue;
+        RepaymentStrategy settingRepaymentStrategyValue = RepaymentStrategy.Overdue_DueFee_Interest_Principal;
         int settingMoratoriumPrincipalValue = 1;
         int settingMoratoriumInterestValue = 14;
         int settingInterestFreePeriodValue = 15;
@@ -1306,7 +1306,7 @@ public class LoanCreatePageTest {
         form.setValue("settingAmortizationBlock:settingAmortizationContainer:settingAmortizationField", Amortization.EqualInstallment);
         form.setValue("settingInterestMethodBlock:settingInterestMethodContainer:settingInterestMethodField", InterestMethod.Flat);
         form.setValue("settingInterestCalculationPeriodBlock:settingInterestCalculationPeriodContainer:settingInterestCalculationPeriodField", InterestCalculationPeriod.Daily);
-        form.setValue("settingRepaymentStrategyBlock:settingRepaymentStrategyContainer:settingRepaymentStrategyField", RepaymentStrategy.Interest);
+        form.setValue("settingRepaymentStrategyBlock:settingRepaymentStrategyContainer:settingRepaymentStrategyField", RepaymentStrategy.Interest_Principal_Penalty_Fee);
         form.setValue("settingDayInYearBlock:settingDayInYearContainer:settingDayInYearField", DayInYear.Actual);
         form.setValue("settingDayInMonthBlock:settingDayInMonthContainer:settingDayInMonthField", DayInMonth.Actual);
 

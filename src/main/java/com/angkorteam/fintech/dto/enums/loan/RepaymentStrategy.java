@@ -4,13 +4,13 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum RepaymentStrategy {
 
-    Penalties("1", "Penalties, Fees, Interest, Principal order"), 
-    Overdue("4", "Overdue/Due Fee/Interest, Principal"), 
-    Principal("5", "Principal, Interest, Penalties, Fees Order"), 
-    Interest("6", "Interest, Principal, Penalties, Fees Order"), 
-    Early("7", "Early Repayment Strategy"), 
-    HeavensFamily("2", "HeavensFamily Unique"), 
-    Creocore("3", "Creocore Unique");
+    Penalty_Fee_Interest_Principal("1", "Penalty, Fee, Interest, Principal"), 
+    Overdue_DueFee_Interest_Principal("4", "Overdue, Due Fee Interest, Principal"), 
+    Principal_Interest_Penalty_Fee("5", "Principal, Interest, Penalty, Fee"), 
+    Interest_Principal_Penalty_Fee("6", "Interest, Principal, Penalty, Fee"), 
+    Early_Repayment_Strategy("7", "Early Repayment Strategy"), 
+    Heaven_Family_Unique("2", "Heaven Family Unique"), 
+    Creocore_Unique("3", "Creocore Unique");
 
     private String literal;
 

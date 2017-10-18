@@ -988,7 +988,7 @@ public class LoanCreatePage extends Page {
         this.settingAmortizationValue = Amortization.EqualInstallment.toOption();
         this.settingInterestMethodValue = InterestMethod.DecliningBalance.toOption();
         this.settingInterestCalculationPeriodValue = InterestCalculationPeriod.SameAsPayment.toOption();
-        this.settingRepaymentStrategyValue = RepaymentStrategy.Interest.toOption();
+        this.settingRepaymentStrategyValue = RepaymentStrategy.Interest_Principal_Penalty_Fee.toOption();
         this.accountingValue = ACC_NONE;
         this.interestRecalculationRecalculateInterestValue = false;
         this.settingDayInYearValue = DayInYear.Actual.toOption();
