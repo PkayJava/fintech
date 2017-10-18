@@ -26,6 +26,7 @@ import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.fintech.popup.ClientPopup;
 import com.angkorteam.fintech.popup.OfficePopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
@@ -82,7 +83,7 @@ public class GroupCreatePage extends Page {
 
     protected WebMarkupContainer externalIdBlock;
     protected WebMarkupContainer externalIdContainer;
-    protected String externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
+    protected String externalIdValue;
     protected TextField<String> externalIdField;
     protected TextFeedbackPanel externalIdFeedback;
 
@@ -139,9 +140,16 @@ public class GroupCreatePage extends Page {
         }
     }
 
+    protected void initData() {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
+        this.externalIdValue = generator.externalId();
+    }
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
+
+        initData();
 
         this.form = new Form<>("form");
         add(this.form);

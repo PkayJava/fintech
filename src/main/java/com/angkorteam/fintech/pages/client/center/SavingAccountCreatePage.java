@@ -38,6 +38,7 @@ import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
 import com.angkorteam.fintech.provider.InterestPostingPeriodProvider;
 import com.angkorteam.fintech.provider.LockInTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
@@ -574,8 +575,9 @@ public class SavingAccountCreatePage extends Page {
     }
 
     protected void chargePopupOnClose(String elementId, AjaxRequestTarget target) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
-        item.put("uuid", UUID.randomUUID().toString());
+        item.put("uuid", generator.externalId());
         item.put("chargeId", this.itemChargeValue.getId());
         item.put("amount", this.itemAmountValue);
         item.put("date", this.itemDateValue);
@@ -589,9 +591,10 @@ public class SavingAccountCreatePage extends Page {
 
     protected void initData() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
+        
         this.submittedOnValue = DateTime.now().toDate();
-        this.externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
+        this.externalIdValue = generator.externalId();
 
         this.centerId = getPageParameters().get("centerId").toString();
         this.productId = getPageParameters().get("productId").toString();

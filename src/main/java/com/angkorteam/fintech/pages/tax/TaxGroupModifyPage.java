@@ -25,6 +25,7 @@ import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.pages.TaxDashboardPage;
 import com.angkorteam.fintech.popup.TaxGroupModifyPopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
@@ -165,8 +166,9 @@ public class TaxGroupModifyPage extends Page {
     }
 
     protected boolean addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> tax = Maps.newHashMap();
-        tax.put("uuid", UUID.randomUUID().toString());
+        tax.put("uuid", generator.externalId());
         tax.put("taxComponentId", this.taxValue.getId());
         tax.put("tax", this.taxValue.getText());
         tax.put("startDate", this.startDateValue);

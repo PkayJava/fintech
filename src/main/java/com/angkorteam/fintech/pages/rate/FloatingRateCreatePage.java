@@ -22,10 +22,12 @@ import com.angkorteam.fintech.dto.builder.FloatingRateBuilder;
 import com.angkorteam.fintech.helper.FloatingRateHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.pages.staff.StaffBrowsePage;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.BadgeType;
+import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
@@ -228,8 +230,9 @@ public class FloatingRateCreatePage extends Page {
     }
 
     protected boolean addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> rate = Maps.newHashMap();
-        rate.put("uuid", UUID.randomUUID().toString());
+        rate.put("uuid", generator.externalId());
         rate.put("fromDate", this.fromDateValue);
         rate.put("interestRate", this.interestRateValue);
         rate.put("differential", this.differentialValue);

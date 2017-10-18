@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.text.CharacterPredicates;
-import org.apache.commons.text.RandomStringGenerator;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -37,6 +35,10 @@ import com.angkorteam.fintech.Constants;
 import com.angkorteam.fintech.MifosDataSourceManager;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.pages.LoginPage;
+import com.angkorteam.fintech.spring.NumberGenerator;
+import com.angkorteam.fintech.spring.NumberGeneratorImpl;
+import com.angkorteam.fintech.spring.StringGenerator;
+import com.angkorteam.fintech.spring.StringGeneratorImpl;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.spring.JdbcTemplate;
@@ -47,14 +49,14 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 
 public class JUnitWicketTester extends WicketTester {
 
-    private RandomStringGenerator stringGenerator;
+    private StringGenerator stringGenerator;
 
-    private RandomStringGenerator numberGenerator;
+    private NumberGenerator numberGenerator;
 
     public JUnitWicketTester() {
         super(JUnit.getApplication(), JUnit.getServletContext());
-        this.stringGenerator = new RandomStringGenerator.Builder().withinRange('0', 'z').filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS).build();
-        this.numberGenerator = new RandomStringGenerator.Builder().withinRange('0', '9').filteredBy(CharacterPredicates.DIGITS).build();
+        this.stringGenerator = new StringGeneratorImpl();
+        this.numberGenerator = new NumberGeneratorImpl();
     }
 
     @Override
@@ -168,11 +170,11 @@ public class JUnitWicketTester extends WicketTester {
         processRequest(getRequest(), null);
     }
 
-    public RandomStringGenerator getStringGenerator() {
+    public StringGenerator getStringGenerator() {
         return stringGenerator;
     }
 
-    public RandomStringGenerator getNumberGenerator() {
+    public NumberGenerator getNumberGenerator() {
         return numberGenerator;
     }
 

@@ -1415,7 +1415,7 @@ public class LoanCreatePageTest {
         this.wicket.startPage(page);
 
         Map<String, Object> item = Maps.newHashMap();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = this.wicket.getStringGenerator().externalId();
         item.put("uuid", uuid);
         page.advancedAccountingRuleFundSourceValue.add(item);
 
@@ -1446,7 +1446,7 @@ public class LoanCreatePageTest {
         this.wicket.startPage(page);
 
         Map<String, Object> item = Maps.newHashMap();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = this.wicket.getStringGenerator().externalId();
         item.put("uuid", uuid);
         page.advancedAccountingRulePenaltyIncomeValue.add(item);
 
@@ -1477,7 +1477,7 @@ public class LoanCreatePageTest {
         this.wicket.startPage(page);
 
         Map<String, Object> item = Maps.newHashMap();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = this.wicket.getStringGenerator().externalId();
         item.put("uuid", uuid);
         page.advancedAccountingRuleFeeIncomeValue.add(item);
 
@@ -1515,7 +1515,7 @@ public class LoanCreatePageTest {
         this.wicket.startPage(page);
 
         Map<String, Object> item = Maps.newHashMap();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = this.wicket.getStringGenerator().externalId();
         item.put("uuid", uuid);
         page.overdueChargeValue.add(item);
 
@@ -1541,7 +1541,7 @@ public class LoanCreatePageTest {
         this.wicket.startPage(page);
 
         Map<String, Object> item = Maps.newHashMap();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = this.wicket.getStringGenerator().externalId();
         item.put("uuid", uuid);
         page.chargeValue.add(item);
 
@@ -1637,7 +1637,7 @@ public class LoanCreatePageTest {
         this.wicket.startPage(page);
 
         Map<String, Object> item = Maps.newHashMap();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = this.wicket.getStringGenerator().externalId();
         item.put("uuid", uuid);
         page.termNominalInterestRateByLoanCycleValue.add(item);
 
@@ -1672,7 +1672,7 @@ public class LoanCreatePageTest {
         this.wicket.startPage(page);
 
         Map<String, Object> item = Maps.newHashMap();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = this.wicket.getStringGenerator().externalId();
         item.put("uuid", uuid);
         page.termNumberOfRepaymentByLoanCycleValue.add(item);
 
@@ -1707,7 +1707,7 @@ public class LoanCreatePageTest {
         this.wicket.startPage(page);
 
         Map<String, Object> item = Maps.newHashMap();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = this.wicket.getStringGenerator().externalId();
         item.put("uuid", uuid);
         page.termPrincipalByLoanCycleValue.add(item);
 

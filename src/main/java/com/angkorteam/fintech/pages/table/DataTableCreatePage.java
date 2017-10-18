@@ -25,10 +25,12 @@ import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.provider.AppTableOptionProvider;
 import com.angkorteam.fintech.provider.ColumnTypeOptionProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.BadgeType;
+import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -323,8 +325,9 @@ public class DataTableCreatePage extends Page {
     }
 
     protected boolean addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> column = Maps.newHashMap();
-        column.put("uuid", UUID.randomUUID().toString());
+        column.put("uuid", generator.externalId());
         column.put("name", this.nameValue);
         if (this.typeValue != null) {
             column.put("type", ColumnType.valueOf(this.typeValue.getId()).getLiteral());

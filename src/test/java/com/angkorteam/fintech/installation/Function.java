@@ -54,6 +54,7 @@ import com.angkorteam.fintech.helper.HolidayHelper;
 import com.angkorteam.fintech.helper.OfficeHelper;
 import com.angkorteam.fintech.helper.TaxComponentHelper;
 import com.angkorteam.fintech.helper.WorkingDayHelper;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -88,12 +89,12 @@ public class Function {
         IDS.put("x_table_column_code_mappings", Lists.newArrayList("column_alias_name"));
     }
 
-    public static void setupOffice(IMifos mifos, JdbcTemplate jdbcTemplate, Date openingDate, List<String> offices) throws ParseException, UnirestException {
+    public static void setupOffice(IMifos mifos, JdbcTemplate jdbcTemplate, Date openingDate, List<String> offices, StringGenerator generator) throws ParseException, UnirestException {
         for (String office : offices) {
             boolean hasOffice = jdbcTemplate.queryForObject("select count(*) from m_office where name = ?", Boolean.class, office);
             if (!hasOffice) {
                 OfficeBuilder builder = new OfficeBuilder();
-                builder.withExternalId(StringUtils.upperCase(UUID.randomUUID().toString()));
+                builder.withExternalId(generator.externalId());
                 builder.withOpeningDate(openingDate);
                 builder.withName(office);
                 OfficeHelper.create(mifos, builder.build());
@@ -182,7 +183,7 @@ public class Function {
         }
     }
 
-    public static void setupGLAccount(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, RandomStringGenerator stringGenerator) throws UnirestException {
+    public static void setupGLAccount(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, StringGenerator generator) throws UnirestException {
         for (String temps : values) {
             String temp[] = StringUtils.split(temps, "=>");
             String name = temp[0];
@@ -192,7 +193,7 @@ public class Function {
                 GLAccountBuilder builder = new GLAccountBuilder();
                 builder.withName(name);
                 builder.withDescription(name);
-                builder.withGlCode(StringUtils.upperCase(stringGenerator.generate(5)));
+                builder.withGlCode(StringUtils.upperCase(generator.generate(5)));
                 builder.withManualEntriesAllowed(true);
                 builder.withTagId(tagId);
                 builder.withUsage(AccountUsage.Detail);
@@ -213,7 +214,7 @@ public class Function {
 
     }
 
-    public static void setupTaxComponent(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, RandomStringGenerator stringGenerator) throws UnirestException {
+    public static void setupTaxComponent(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, StringGenerator generator) throws UnirestException {
         for (String temps : values) {
             String temp[] = StringUtils.split(temps, "=>");
             String name = temp[0];
@@ -231,7 +232,7 @@ public class Function {
         }
     }
 
-    public static void setupFloatingRate(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, RandomStringGenerator stringGenerator) throws UnirestException {
+    public static void setupFloatingRate(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, StringGenerator generator) throws UnirestException {
         for (String temps : values) {
             String temp[] = StringUtils.split(temps, "=>");
             String name = temp[0];
@@ -250,7 +251,7 @@ public class Function {
         }
     }
 
-    public static void setupTaxGroup(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, RandomStringGenerator stringGenerator) throws UnirestException {
+    public static void setupTaxGroup(IMifos session, JdbcTemplate jdbcTemplate, List<String> values, StringGenerator generator) throws UnirestException {
         for (String temps : values) {
             String name = temps;
             boolean has = jdbcTemplate.queryForObject("select count(*) from m_tax_group where name = ?", boolean.class, name);
@@ -283,12 +284,12 @@ public class Function {
         }
     }
 
-    public static void setupFund(IMifos session, JdbcTemplate jdbcTemplate, List<String> funds) throws UnirestException {
+    public static void setupFund(IMifos session, JdbcTemplate jdbcTemplate, List<String> funds, StringGenerator generator) throws UnirestException {
         for (String fund : funds) {
             boolean hasFund = jdbcTemplate.queryForObject("select count(*) from m_fund where name = ?", Boolean.class, fund);
             if (!hasFund) {
                 FundBuilder builder = new FundBuilder();
-                builder.withExternalId(StringUtils.upperCase(UUID.randomUUID().toString()));
+                builder.withExternalId(generator.externalId());
                 builder.withName(fund);
                 FundHelper.create(session, builder.build());
             }

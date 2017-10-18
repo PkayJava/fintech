@@ -24,6 +24,7 @@ import com.angkorteam.fintech.helper.StaffHelper;
 import com.angkorteam.fintech.helper.TellerHelper;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
@@ -188,7 +189,7 @@ public class JUnitData implements IMifos {
         setupTeller(this, this.wicket.getJdbcTemplate());
         setupPaymentType(this, this.wicket.getJdbcTemplate());
         setupHoliday(this, this.wicket.getJdbcTemplate());
-        setupEmployee(this, this.wicket.getJdbcTemplate());
+        setupEmployee(this, this.wicket.getJdbcTemplate(), this.wicket.getStringGenerator());
         Function.setupGLAccount(this, this.wicket.getJdbcTemplate(), ACCOUNTS, this.wicket.getStringGenerator());
         setupAccountingRule();
         Function.setupFinancialActivity(this, this.wicket.getJdbcTemplate(), FINANCIAL_ACTIVITIES);
@@ -206,12 +207,12 @@ public class JUnitData implements IMifos {
         Function.setupAccountingRule(this, this.wicket.getJdbcTemplate(), officeId, debitId, creditId, ACCOUNT_RULES);
     }
 
-    protected void setupEmployee(IMifos session, JdbcTemplate jdbcTemplate) throws ParseException, UnirestException {
+    protected void setupEmployee(IMifos session, JdbcTemplate jdbcTemplate, StringGenerator generator) throws ParseException, UnirestException {
         String officeId = this.wicket.getJdbcTemplate().queryForObject("select id from m_office where name = ?", String.class, OFFICE);
         for (String employee : EMPLOYEES) {
             if (!jdbcTemplate.queryForObject("select count(*) from m_staff where firstname = ?", Boolean.class, employee)) {
                 StaffBuilder builder = new StaffBuilder();
-                builder.withExternalId(StringUtils.upperCase(UUID.randomUUID().toString()));
+                builder.withExternalId(generator.externalId());
                 builder.withJoiningDate(Function.DATE_FORMAT.parse("2017-01-01"));
                 builder.withMobileNo(this.wicket.getNumberGenerator().generate(10));
                 builder.withLoanOfficer(true);
@@ -277,12 +278,12 @@ public class JUnitData implements IMifos {
     }
 
     protected void setupFund() throws UnirestException {
-        Function.setupFund(this, this.wicket.getJdbcTemplate(), FUNDS);
+        Function.setupFund(this, this.wicket.getJdbcTemplate(), FUNDS, this.wicket.getStringGenerator());
     }
 
     protected void setupOffice() throws ParseException, UnirestException {
         Date openingDate = Function.DATE_FORMAT.parse("2017-01-01");
-        Function.setupOffice(this, this.wicket.getJdbcTemplate(), openingDate, OFFICES);
+        Function.setupOffice(this, this.wicket.getJdbcTemplate(), openingDate, OFFICES, this.wicket.getStringGenerator());
     }
 
     protected void setupCurrency() throws UnirestException {

@@ -261,7 +261,7 @@ public class ShareCreatePageTest {
         this.wicket.startPage(page);
 
         Map<String, Object> item = Maps.newHashMap();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = this.wicket.getStringGenerator().externalId();
         item.put("uuid", uuid);
         page.chargeValue.add(item);
 
@@ -287,7 +287,7 @@ public class ShareCreatePageTest {
         this.wicket.startPage(page);
 
         Map<String, Object> item = Maps.newHashMap();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = this.wicket.getStringGenerator().externalId();
         item.put("uuid", uuid);
         page.marketPriceValue.add(item);
 

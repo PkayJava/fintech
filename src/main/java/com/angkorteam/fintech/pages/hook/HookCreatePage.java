@@ -23,6 +23,7 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.HookBuilder;
 import com.angkorteam.fintech.helper.HookHelper;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.HookFieldWidget;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -294,8 +295,9 @@ public class HookCreatePage extends Page {
     }
 
     protected boolean addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> event = Maps.newHashMap();
-        event.put("uuid", UUID.randomUUID().toString());
+        event.put("uuid", generator.externalId());
         if (this.entityNameValue != null) {
             event.put("entity_name", this.entityNameValue.getId());
         }

@@ -9,7 +9,6 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.io.FileUtils;
 
-import com.angkorteam.fintech.MifosDataSourceManager;
 import com.angkorteam.fintech.installation.Function;
 
 public class TriggerProgram {

@@ -442,8 +442,9 @@ public class ShareCreatePage extends Page {
     }
 
     protected void marketPricePopupOnClose(String elementId, AjaxRequestTarget target) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
-        item.put("uuid", UUID.randomUUID().toString());
+        item.put("uuid", generator.externalId());
         item.put("unitPrice", this.itemUnitPriceValue);
         item.put("fromDate", this.itemFromDateValue);
         this.marketPriceValue.add(item);

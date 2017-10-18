@@ -472,8 +472,9 @@ public class SavingCreatePage extends Page {
     }
 
     protected void feeIncomePopupOnClose(String elementId, AjaxRequestTarget target) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
-        item.put("uuid", UUID.randomUUID().toString());
+        item.put("uuid", generator.externalId());
         item.put("chargeId", this.itemChargeValue.getId());
         item.put("charge", this.itemChargeValue.getText());
         item.put("accountId", this.itemAccountValue.getId());
@@ -483,8 +484,9 @@ public class SavingCreatePage extends Page {
     }
 
     protected void penaltyIncomePopupOnClose(String elementId, AjaxRequestTarget target) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
-        item.put("uuid", UUID.randomUUID().toString());
+        item.put("uuid", generator.externalId());
         item.put("chargeId", this.itemChargeValue.getId());
         item.put("charge", this.itemChargeValue.getText());
         item.put("accountId", this.itemAccountValue.getId());
@@ -494,8 +496,9 @@ public class SavingCreatePage extends Page {
     }
 
     protected void fundSourcePopupOnClose(String elementId, AjaxRequestTarget target) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
-        item.put("uuid", UUID.randomUUID().toString());
+        item.put("uuid", generator.externalId());
         item.put("paymentId", this.itemPaymentValue.getId());
         item.put("payment", this.itemPaymentValue.getText());
         item.put("accountId", this.itemAccountValue.getId());

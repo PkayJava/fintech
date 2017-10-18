@@ -36,8 +36,10 @@ import com.angkorteam.fintech.provider.GenderProvider;
 import com.angkorteam.fintech.provider.LegalFormProvider;
 import com.angkorteam.fintech.provider.MainBusinessLineProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -192,7 +194,7 @@ public class ClientCreatePage extends Page {
 
     protected WebMarkupContainer externalIdBlock;
     protected WebMarkupContainer externalIdContainer;
-    protected String externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
+    protected String externalIdValue;
     protected TextField<String> externalIdField;
     protected TextFeedbackPanel externalIdFeedback;
 
@@ -271,10 +273,17 @@ public class ClientCreatePage extends Page {
             BREADCRUMB.add(breadcrumb);
         }
     }
+    
+    protected void initData() {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
+        this.externalIdValue = generator.externalId();
+    }
 
     @Override
     protected void onInitialize() {
         super.onInitialize();
+        
+        initData();
 
         this.form = new Form<>("form");
         add(this.form);
@@ -698,8 +707,9 @@ public class ClientCreatePage extends Page {
     }
 
     protected void familyMemberPopupOnClose(String elementId, AjaxRequestTarget target) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
-        item.put("uuid", UUID.randomUUID().toString());
+        item.put("uuid", generator.externalId());
         item.put("relationship", this.itemRelationshipValue);
         item.put("firstName", this.itemFirstNameValue);
         item.put("middleName", this.itemMiddleNameValue);

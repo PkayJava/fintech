@@ -17,7 +17,9 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.FundBuilder;
 import com.angkorteam.fintech.helper.FundHelper;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -31,7 +33,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FundCreatePage extends Page {
 
-    protected String externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
+    protected String externalIdValue;
     protected TextField<String> externalIdField;
     protected TextFeedbackPanel externalIdFeedback;
 
@@ -76,9 +78,16 @@ public class FundCreatePage extends Page {
         }
     }
 
+    protected void initData() {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
+        this.externalIdValue = generator.externalId();
+    }
+
     @Override
     protected void onInitialize() {
         super.onInitialize();
+
+        initData();
 
         this.form = new Form<>("form");
         add(this.form);

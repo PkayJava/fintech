@@ -556,7 +556,7 @@ public class FixedDepositCreatePageTest {
         this.wicket.executeBehavior(currencyCodeField);
 
         Map<String, Object> item = Maps.newHashMap();
-        item.put("uuid", UUID.randomUUID().toString());
+        item.put("uuid", this.wicket.getStringGenerator().externalId());
         page.chargeValue.add(item);
 
         this.wicket.startPage(page);
@@ -685,7 +685,7 @@ public class FixedDepositCreatePageTest {
         FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
 
         Map<String, Object> item = Maps.newHashMap();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = this.wicket.getStringGenerator().externalId();
         item.put("uuid", uuid);
         item.put("interestRate", Lists.newArrayList());
         page.interestRateChartValue.add(item);
@@ -704,7 +704,7 @@ public class FixedDepositCreatePageTest {
         FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
 
         Map<String, Object> item = Maps.newHashMap();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = this.wicket.getStringGenerator().externalId();
         item.put("uuid", uuid);
         item.put("interestRate", Lists.newArrayList());
         page.interestRateChartValue.add(item);
@@ -933,7 +933,7 @@ public class FixedDepositCreatePageTest {
         this.wicket.startPage(page);
 
         Map<String, Object> item = Maps.newHashMap();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = this.wicket.getStringGenerator().externalId();
         item.put("uuid", uuid);
         page.advancedAccountingRuleFundSourceValue.add(item);
 
@@ -964,7 +964,7 @@ public class FixedDepositCreatePageTest {
         this.wicket.startPage(page);
 
         Map<String, Object> item = Maps.newHashMap();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = this.wicket.getStringGenerator().externalId();
         item.put("uuid", uuid);
         page.advancedAccountingRuleFeeIncomeValue.add(item);
 
@@ -995,7 +995,7 @@ public class FixedDepositCreatePageTest {
         this.wicket.startPage(page);
 
         Map<String, Object> item = Maps.newHashMap();
-        String uuid = UUID.randomUUID().toString();
+        String uuid = this.wicket.getStringGenerator().externalId();
         item.put("uuid", uuid);
         page.advancedAccountingRulePenaltyIncomeValue.add(item);
 

@@ -28,6 +28,7 @@ import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
 import com.angkorteam.fintech.popup.ClientPopup;
 import com.angkorteam.fintech.popup.OfficePopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
@@ -86,7 +87,7 @@ public class GroupCreatePage extends Page {
 
     protected WebMarkupContainer externalIdBlock;
     protected WebMarkupContainer externalIdContainer;
-    protected String externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
+    protected String externalIdValue;
     protected TextField<String> externalIdField;
     protected TextFeedbackPanel externalIdFeedback;
 
@@ -270,6 +271,8 @@ public class GroupCreatePage extends Page {
 
     protected void initData() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
+        this.externalIdValue = generator.externalId();
         this.centerId = getPageParameters().get("centerId").toString();
         this.officeId = jdbcTemplate.queryForObject("select office_id from m_group where id = ?", String.class, this.centerId);
         this.officeValue = jdbcTemplate.queryForObject("select name from m_office where id = ?", String.class, this.officeId);

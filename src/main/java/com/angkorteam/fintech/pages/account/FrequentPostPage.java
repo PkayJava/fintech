@@ -26,6 +26,7 @@ import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
@@ -464,8 +465,9 @@ public class FrequentPostPage extends Page {
     }
 
     protected boolean debitButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> debit = Maps.newHashMap();
-        debit.put("uuid", UUID.randomUUID().toString());
+        debit.put("uuid", generator.externalId());
         debit.put("id", this.debitAccountNameValue.getId());
         debit.put("name", this.debitAccountNameValue.getText());
         debit.put("amount", this.debitAmountValue);
@@ -487,8 +489,9 @@ public class FrequentPostPage extends Page {
     }
 
     protected boolean creditButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> credit = Maps.newHashMap();
-        credit.put("uuid", UUID.randomUUID().toString());
+        credit.put("uuid", generator.externalId());
         credit.put("id", this.creditAccountNameValue.getId());
         credit.put("name", this.creditAccountNameValue.getText());
         credit.put("amount", this.creditAmountValue);

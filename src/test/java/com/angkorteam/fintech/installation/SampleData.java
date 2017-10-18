@@ -42,6 +42,7 @@ import com.angkorteam.fintech.helper.StaffHelper;
 import com.angkorteam.fintech.helper.TellerHelper;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.google.common.collect.Lists;
@@ -745,7 +746,7 @@ public class SampleData implements IMifos {
         setupTeller(this, this.wicket.getJdbcTemplate(), this.wicket.getJdbcNamed());
         setupPaymentType(this, this.wicket.getJdbcTemplate());
         setupHoliday(this, this.wicket.getJdbcTemplate());
-        setupEmployee(this, this.wicket.getJdbcTemplate());
+        setupEmployee(this, this.wicket.getJdbcTemplate(), this.wicket.getStringGenerator());
         Function.setupGLAccount(this, this.wicket.getJdbcTemplate(), ACCOUNTS, this.wicket.getStringGenerator());
         setupAccountingRule();
         Function.setupTaxComponent(this, this.wicket.getJdbcTemplate(), TAX_COMPONENTS, this.wicket.getStringGenerator());
@@ -754,11 +755,11 @@ public class SampleData implements IMifos {
         setupCharge(this, this.wicket.getJdbcTemplate());
         setupFixedDepositProduct(this, this.wicket.getJdbcTemplate());
         setupClient(this, this.wicket.getJdbcTemplate(), this.wicket.getStringGenerator());
-        setupGroup(this, this.wicket.getJdbcTemplate());
-        setupCenter(this, this.wicket.getJdbcTemplate());
+        setupGroup(this, this.wicket.getJdbcTemplate(), this.wicket.getStringGenerator());
+        setupCenter(this, this.wicket.getJdbcTemplate(), this.wicket.getStringGenerator());
     }
 
-    protected void setupCenter(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
+    protected void setupCenter(IMifos session, JdbcTemplate jdbcTemplate, StringGenerator generator) throws UnirestException {
         if (jdbcTemplate.queryForObject("select count(*) from m_group where display_name = ?", boolean.class, "Weekend Startup")) {
             return;
         }
@@ -770,7 +771,7 @@ public class SampleData implements IMifos {
         CenterBuilder builder = new CenterBuilder();
         builder.withOfficeId(officeId);
 
-        builder.withExternalId(StringUtils.upperCase(UUID.randomUUID().toString()));
+        builder.withExternalId(generator.externalId());
         builder.withName("Weekend Startup");
         builder.withSubmittedOnDate(DateTime.now().toDate());
         builder.withStaffId(staffId);
@@ -782,7 +783,7 @@ public class SampleData implements IMifos {
         ClientHelper.createCenter(session, builder.build());
     }
 
-    protected void setupGroup(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException {
+    protected void setupGroup(IMifos session, JdbcTemplate jdbcTemplate, StringGenerator generator) throws UnirestException {
         if (jdbcTemplate.queryForObject("select count(*) from m_group where display_name = ?", boolean.class, "IT Group")) {
             return;
         }
@@ -793,7 +794,7 @@ public class SampleData implements IMifos {
 
         GroupBuilder builder = new GroupBuilder();
         builder.withOfficeId(officeId);
-        builder.withExternalId(StringUtils.upperCase(UUID.randomUUID().toString()));
+        builder.withExternalId(generator.externalId());
         builder.withName("IT Group");
         builder.withSubmittedOnDate(DateTime.now().toDate());
         builder.withStaffId(staffId);
@@ -806,12 +807,12 @@ public class SampleData implements IMifos {
 
     }
 
-    protected void setupClient(IMifos session, JdbcTemplate jdbcTemplate, RandomStringGenerator stringGenerator) throws UnirestException {
-        setupClientSocheatKHAUV(session, jdbcTemplate, stringGenerator);
-        setupClientAngkorTeam(session, jdbcTemplate, stringGenerator);
+    protected void setupClient(IMifos session, JdbcTemplate jdbcTemplate, StringGenerator generator) throws UnirestException {
+        setupClientSocheatKHAUV(session, jdbcTemplate, generator);
+        setupClientAngkorTeam(session, jdbcTemplate, generator);
     }
 
-    protected void setupClientAngkorTeam(IMifos session, JdbcTemplate jdbcTemplate, RandomStringGenerator stringGenerator) throws UnirestException {
+    protected void setupClientAngkorTeam(IMifos session, JdbcTemplate jdbcTemplate, StringGenerator generator) throws UnirestException {
         if (jdbcTemplate.queryForObject("select count(*) from m_client where fullname = ?", boolean.class, "Angkor Team")) {
             return;
         }
@@ -827,7 +828,7 @@ public class SampleData implements IMifos {
 
         builder.withFullName("Angkor Team");
         builder.withDateOfBirth(DateTime.now().toDate());
-        String incorpNumber = StringUtils.upperCase(stringGenerator.generate(5));
+        String incorpNumber = generator.generate(5);
         String remarks = "Remarks";
         Date incorpValidityTillDate = DateTime.now().plusYears(10).toDate();
         builder.withClientNonPersonDetails(mainBusinessLineId, incorpNumber, constitutionId, remarks, incorpValidityTillDate);
@@ -837,7 +838,7 @@ public class SampleData implements IMifos {
         builder.withStaffId(staffId);
         builder.withMobileNo("+85593777091");
         builder.withClientTypeId(clientTypeId);
-        builder.withExternalId(StringUtils.upperCase(UUID.randomUUID().toString()));
+        builder.withExternalId(generator.externalId());
         builder.withActive(true);
         builder.withActivationDate(DateTime.now().toDate());
         builder.withSubmittedOnDate(DateTime.now().toDate());
@@ -846,7 +847,7 @@ public class SampleData implements IMifos {
 
     }
 
-    protected void setupClientSocheatKHAUV(IMifos session, JdbcTemplate jdbcTemplate, RandomStringGenerator stringGenerator) throws UnirestException {
+    protected void setupClientSocheatKHAUV(IMifos session, JdbcTemplate jdbcTemplate, StringGenerator generator) throws UnirestException {
         if (jdbcTemplate.queryForObject("select count(*) from m_client where firstname = ? and lastname = ?", boolean.class, "Socheat", "KHAUV")) {
             return;
         }
@@ -868,7 +869,7 @@ public class SampleData implements IMifos {
         builder.withStaffId(staffId);
         builder.withMobileNo("+85577777091");
         builder.withClientTypeId(clientTypeId);
-        builder.withExternalId(StringUtils.upperCase(UUID.randomUUID().toString()));
+        builder.withExternalId(generator.externalId());
         builder.withActive(true);
         builder.withActivationDate(DateTime.now().toDate());
         builder.withSubmittedOnDate(DateTime.now().toDate());
@@ -1037,12 +1038,12 @@ public class SampleData implements IMifos {
     }
 
     protected void setupFund() throws UnirestException {
-        Function.setupFund(this, this.wicket.getJdbcTemplate(), FUNDS);
+        Function.setupFund(this, this.wicket.getJdbcTemplate(), FUNDS, this.wicket.getStringGenerator());
     }
 
     protected void setupOffice() throws ParseException, UnirestException {
         Date openingDate = Function.DATE_FORMAT.parse("2017-01-01");
-        Function.setupOffice(this, this.wicket.getJdbcTemplate(), openingDate, OFFICES);
+        Function.setupOffice(this, this.wicket.getJdbcTemplate(), openingDate, OFFICES, this.wicket.getStringGenerator());
     }
 
     protected void setupCurrency() throws UnirestException {
@@ -1059,7 +1060,7 @@ public class SampleData implements IMifos {
         return this.token;
     }
 
-    protected void setupEmployee(IMifos session, JdbcTemplate jdbcTemplate) throws ParseException, UnirestException {
+    protected void setupEmployee(IMifos session, JdbcTemplate jdbcTemplate, StringGenerator generator) throws ParseException, UnirestException {
         for (String employee : EMPLOYEES) {
             int index = employee.indexOf(" ");
             String firstName = employee.substring(0, index);
@@ -1068,7 +1069,7 @@ public class SampleData implements IMifos {
                 StaffBuilder builder = new StaffBuilder();
                 String office = OFFICES.get(RandomUtils.nextInt(0, OFFICES.size()));
                 String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, office);
-                builder.withExternalId(StringUtils.upperCase(UUID.randomUUID().toString()));
+                builder.withExternalId(generator.externalId());
                 builder.withJoiningDate(Function.DATE_FORMAT.parse("2017-01-01"));
                 builder.withMobileNo(this.wicket.getNumberGenerator().generate(10));
                 builder.withLoanOfficer(Integer.valueOf(this.wicket.getNumberGenerator().generate(3)) % 2 == 0);

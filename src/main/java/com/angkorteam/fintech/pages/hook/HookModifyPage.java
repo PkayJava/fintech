@@ -23,6 +23,7 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.HookBuilder;
 import com.angkorteam.fintech.helper.HookHelper;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.HookFieldWidget;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -155,8 +156,9 @@ public class HookModifyPage extends Page {
 
         List<Map<String, Object>> events = jdbcTemplate.queryForList("select * from m_hook_registered_events where hook_id = ?", this.hookId);
         for (Map<String, Object> event : events) {
+            StringGenerator generator = SpringBean.getBean(StringGenerator.class);
             Map<String, Object> temp = Maps.newHashMap();
-            temp.put("uuid", UUID.randomUUID().toString());
+            temp.put("uuid", generator.externalId());
             temp.put("entity_name", event.get("entity_name"));
             temp.put("action_name", event.get("action_name"));
             this.events.add(temp);
@@ -317,8 +319,9 @@ public class HookModifyPage extends Page {
     }
 
     protected boolean addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> event = Maps.newHashMap();
-        event.put("uuid", UUID.randomUUID().toString());
+        event.put("uuid", generator.externalId());
         if (this.entityNameValue != null) {
             event.put("entity_name", this.entityNameValue.getId());
         }
