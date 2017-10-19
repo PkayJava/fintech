@@ -7,7 +7,7 @@
 		<div class="row">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="pull-right">
-					<div class="btn-group">
+					<div class="btn-group" wicket:id="buttonGroups">
 						<div class="btn-group">
 							<button type="button" class="btn btn-info dropdown-toggle"
 								data-toggle="dropdown" aria-expanded="false">
@@ -30,9 +30,10 @@
 							class="btn btn-info">New Share Account</a> <a href="#"
 							class="btn btn-info">Add Charge</a> <a href="#"
 							class="btn btn-info">Transfer Client</a> <a href="#"
-							class="btn btn-info">Close</a> <a wicket:id="assignStaffLink" class="btn btn-info">Assign
-							Staff</a> <a href="#" class="btn btn-info">UnAssign Staff</a> <a
-							href="#" class="btn btn-info">Update Default Savings</a>
+							class="btn btn-info">Close</a> <a wicket:id="assignStaffLink"
+							class="btn btn-info">Assign Staff</a> <a wicket:id="unassignStaffLink"
+							class="btn btn-info">Unassign Staff</a> <a href="#"
+							class="btn btn-info">Update Default Savings</a>
 					</div>
 				</div>
 			</div>
@@ -125,7 +126,7 @@
 				<!-- /.box -->
 			</div>
 		</div>
-
+		<div wicket:id="clientUnassignStaffPopup"></div>
 	</wicket:panel>
 </body>
 </html>

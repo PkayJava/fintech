@@ -72,7 +72,7 @@ public class ClientHelper {
         return Helper.performServerPost(session, "/api/v1/clients/" + id + "?command=assignStaff", object);
     }
 
-    public static JsonNode UnassignStaffClient(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode unassignStaffClient(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/clients/" + id + "?command=unassignstaff", object);
     }

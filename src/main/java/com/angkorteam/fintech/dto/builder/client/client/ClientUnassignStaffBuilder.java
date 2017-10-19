@@ -6,12 +6,12 @@ import org.json.JSONObject;
 
 import com.mashape.unirest.http.JsonNode;
 
-public class ClientAssignStaffBuilder implements Serializable {
+public class ClientUnassignStaffBuilder implements Serializable {
 
     private String id;
     private boolean hasId;
 
-    public ClientAssignStaffBuilder withId(String id) {
+    public ClientUnassignStaffBuilder withId(String id) {
         this.id = id;
         this.hasId = true;
         return this;
@@ -20,7 +20,7 @@ public class ClientAssignStaffBuilder implements Serializable {
     private String staffId;
     private boolean hasStaffId;
 
-    public ClientAssignStaffBuilder withStaffId(String staffId) {
+    public ClientUnassignStaffBuilder withStaffId(String staffId) {
         this.staffId = staffId;
         this.hasStaffId = true;
         return this;

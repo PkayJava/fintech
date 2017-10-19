@@ -35,6 +35,7 @@ public class CenterAccountChargePopup extends Panel {
     private static final Logger LOGGER = LoggerFactory.getLogger(CenterAccountChargePopup.class);
 
     protected ModalWindow window;
+    protected Object model;
 
     protected Form<Void> form;
     protected AjaxButton okayButton;
@@ -76,7 +77,7 @@ public class CenterAccountChargePopup extends Panel {
 
     protected String currencyCode;
 
-    protected Object model;
+
 
     public CenterAccountChargePopup(String id, ModalWindow window, Object model, String currencyCode) {
         super(id);
