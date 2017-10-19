@@ -1,23 +1,7 @@
 package com.angkorteam.fintech.pages.staff;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.builder.AppUserBuilder;
-import com.angkorteam.fintech.helper.AppUserHelper;
-import com.angkorteam.fintech.provider.MultipleChoiceProvider;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.List;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -29,7 +13,24 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import java.util.List;
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.AppUserBuilder;
+import com.angkorteam.fintech.helper.AppUserHelper;
+import com.angkorteam.fintech.provider.MultipleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class UserCreatePage extends Page {

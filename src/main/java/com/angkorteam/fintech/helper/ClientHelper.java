@@ -66,4 +66,24 @@ public class ClientHelper {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "?command=close", object);
     }
+
+    public static JsonNode assignStaffClient(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPost(session, "/api/v1/clients/" + id + "?command=assignStaff", object);
+    }
+
+    public static JsonNode UnassignStaffClient(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPost(session, "/api/v1/clients/" + id + "?command=unassignstaff", object);
+    }
+
+    public static JsonNode assignStaffSavingAccount(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "?command=assignSavingsOfficer", object);
+    }
+
+    public static JsonNode unassignStaffSavingAccount(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "?command=unassignSavingsOfficer", object);
+    }
 }

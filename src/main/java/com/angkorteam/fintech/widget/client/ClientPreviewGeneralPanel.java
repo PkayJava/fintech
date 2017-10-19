@@ -16,6 +16,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.pages.client.client.SavingAccountActivatePage;
 import com.angkorteam.fintech.pages.client.client.SavingAccountApprovePage;
+import com.angkorteam.fintech.pages.client.client.SavingAccountAssignStaffPage;
 import com.angkorteam.fintech.pages.client.client.SavingAccountDepositPage;
 import com.angkorteam.fintech.pages.client.client.SavingAccountPreviewPage;
 import com.angkorteam.fintech.pages.client.client.SavingAccountSelectionPage;
@@ -40,6 +41,8 @@ public class ClientPreviewGeneralPanel extends Panel {
 
     protected BookmarkablePageLink<Void> newSavingLink;
 
+    protected BookmarkablePageLink<Void> assignStaffLink;
+
     protected String clientId;
 
     protected DataTable<Map<String, Object>, String> savingAccountTable;
@@ -61,6 +64,9 @@ public class ClientPreviewGeneralPanel extends Panel {
 
         this.newSavingLink = new BookmarkablePageLink<>("newSavingLink", SavingAccountSelectionPage.class, parameters);
         add(this.newSavingLink);
+
+        this.assignStaffLink = new BookmarkablePageLink<>("assignStaffLink", SavingAccountAssignStaffPage.class, parameters);
+        add(this.assignStaffLink);
 
         this.savingAccountProvider = new JdbcProvider("m_savings_account");
         this.savingAccountProvider.addJoin("LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
