@@ -34,28 +34,28 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class OfficeCreatePage extends Page {
 
-    private String externalIdValue;
-    private TextField<String> externalIdField;
-    private TextFeedbackPanel externalIdFeedback;
+    protected String externalIdValue;
+    protected TextField<String> externalIdField;
+    protected TextFeedbackPanel externalIdFeedback;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private SingleChoiceProvider parentProvider;
-    private Option parentValue;
-    private Select2SingleChoice<Option> parentField;
-    private TextFeedbackPanel parentFeedback;
+    protected SingleChoiceProvider parentProvider;
+    protected Option parentValue;
+    protected Select2SingleChoice<Option> parentField;
+    protected TextFeedbackPanel parentFeedback;
 
-    private Date openingDateValue;
-    private DateTextField openingDateField;
-    private TextFeedbackPanel openingDateFeedback;
+    protected Date openingDateValue;
+    protected DateTextField openingDateField;
+    protected TextFeedbackPanel openingDateFeedback;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -128,7 +128,7 @@ public class OfficeCreatePage extends Page {
         this.form.add(this.parentFeedback);
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         OfficeBuilder builder = new OfficeBuilder();
         builder.withName(this.nameValue);
         if (this.parentValue != null) {

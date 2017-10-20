@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
+	<wicket:panel>
+		<form role="form" wicket:id="form">
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title">Preview</h3>
+				</div>
+				<div class="box-body">
+					<!-- Row -->
+					<div
+						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div id="my_camera" style="width: 320px; height: 240px;"></div>
+						<script type="text/javascript">
+							Webcam.attach('#my_camera');
+
+							function take_snapshot() {
+								Webcam
+										.snap(function(data_uri) {
+											document
+													.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
+										});
+							}
+						</script>
+						
+						<a href="javascript:void(take_snapshot())">Take Snapshot</a>s
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</form>
+	</wicket:panel>
+</body>
+</html>
