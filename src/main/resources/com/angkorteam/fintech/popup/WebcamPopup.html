@@ -5,28 +5,37 @@
 		<form role="form" wicket:id="form">
 			<div class="box box-primary">
 				<div class="box-header with-border">
-					<h3 class="box-title">Preview</h3>
+					<h3 class="box-title">Webcam Taking Picture</h3>
 				</div>
 				<div class="box-body">
+
 					<!-- Row -->
 					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<div id="my_camera" style="width: 320px; height: 240px;"></div>
-						<script type="text/javascript">
-							Webcam.attach('#my_camera');
-
-							function take_snapshot() {
-								Webcam
-										.snap(function(data_uri) {
-											document
-													.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
-										});
-							}
-						</script>
-						
-						<a href="javascript:void(take_snapshot())">Take Snapshot</a>s
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label>Live Preview</label>
+						<div wicket:id="webcamPreview"
+							style="width: 240px; height: 320px;">
+							<div class="placeholder">Your browser does not support
+								camera access.</div>
+						</div>
+					</div>
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<label>Snap Preview</label> <input type="hidden"
+							wicket:id="snapDataField" />
+						<div style="width: 240px; height: 320px;">
+							<img wicket:id="snapPreview" style="width: 240px; height: 320px;" />
+						</div>
+						<span wicket:id="snapDataFeedback" class="help-block"></span>
 					</div>
 					<div class="clearfix"></div>
+
+					<div class="box-footer">
+						<button type="button" wicket:id="takeButton" class="btn btn-info">Take
+							Picture</button>
+						<button class="btn btn-info">Okay</button>
+						<a href="#" class="btn btn-default pull-right">Close</a>
+					</div>
 				</div>
 			</div>
 		</form>
