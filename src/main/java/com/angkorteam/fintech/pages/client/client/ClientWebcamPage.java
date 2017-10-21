@@ -1,46 +1,50 @@
-package com.angkorteam.fintech.popup;
+package com.angkorteam.fintech.pages.client.client;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.HiddenField;
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.util.lang.Bytes;
 
+import com.angkorteam.fintech.Application;
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.Webcam;
 import com.angkorteam.framework.ReferenceUtilities;
-import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
-public class WebcamPopup extends Panel {
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
+public class ClientWebcamPage extends Page {
 
-    protected ModalWindow window;
-    protected Object model;
+    protected String clientId;
 
     protected Form<Void> form;
-    protected AjaxButton okayButton;
+    protected Button okayButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
     protected WebMarkupContainer webcamPreview;
 
     protected WebMarkupContainer snapPreview;
 
     protected HiddenField<String> snapDataField;
-    protected PropertyModel<String> snapDataValue;
+    protected String snapDataValue;
     protected TextFeedbackPanel snapDataFeedback;
 
     protected WebMarkupContainer takeButton;
-
-    public WebcamPopup(String id, ModalWindow window, Object model) {
-        super(id);
-        this.model = model;
-        this.window = window;
-    }
 
     @Override
     public void renderHead(IHeaderResponse response) {
@@ -52,9 +56,15 @@ public class WebcamPopup extends Panel {
         String takeButton = this.takeButton.getMarkupId();
         String snapPreview = this.snapPreview.getMarkupId();
         String snapDataField = this.snapDataField.getMarkupId();
+
+        String shutter_ogg = RequestCycle.get().urlFor(new PackageResourceReference(Webcam.class, "webcam/shutter.ogg"), null).toString();
+        String shutter_mp3 = RequestCycle.get().urlFor(new PackageResourceReference(Webcam.class, "webcam/shutter.mp3"), null).toString();
+        String jpeg_camera = RequestCycle.get().urlFor(new PackageResourceReference(Webcam.class, "webcam/jpeg_camera.swf"), null).toString();
+
         StringBuffer jsFunction = new StringBuffer("");
-        jsFunction.append("var " + varCamera + " = new JpegCamera('#" + camera + "', { shutter_ogg_url: 'shutter.ogg', shutter_mp3_url: 'shutter.mp3', swf_url: 'jpeg_camera.swf'});");
-        // jsFunction.append("var " + varCamera + " = new JpegCamera('#" + camera + "');");
+        jsFunction.append("var " + varCamera + " = new JpegCamera('#" + camera + "', { shutter_ogg_url: '" + shutter_ogg + "', shutter_mp3_url: '" + shutter_mp3 + "', swf_url: '" + jpeg_camera + "'});");
+        // jsFunction.append("var " + varCamera + " = new JpegCamera('#" + camera +
+        // "');");
         jsFunction.append("$('#" + takeButton + "').click(");
         jsFunction.append("function(){");
         jsFunction.append("var snapshot = " + varCamera + ".capture();");
@@ -73,12 +83,21 @@ public class WebcamPopup extends Panel {
     protected void onInitialize() {
         super.onInitialize();
 
+        initData();
+
         this.form = new Form<>("form");
+        this.form.setMaxSize(Bytes.megabytes(10));
         add(this.form);
 
-        this.okayButton = new AjaxButton("okayButton");
+        this.okayButton = new Button("okayButton");
         this.okayButton.setOnSubmit(this::okayButtonSubmit);
         this.form.add(this.okayButton);
+
+        PageParameters parameters = new PageParameters();
+        parameters.add("clientId", this.clientId);
+
+        this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
+        this.form.add(closeLink);
 
         this.webcamPreview = new WebMarkupContainer("webcamPreview");
         this.webcamPreview.setOutputMarkupId(true);
@@ -88,8 +107,7 @@ public class WebcamPopup extends Panel {
         this.snapPreview.setOutputMarkupId(true);
         this.form.add(this.snapPreview);
 
-        this.snapDataValue = new PropertyModel<>(this.model, "itemSnapDataValue");
-        this.snapDataField = new HiddenField<>("snapDataField", this.snapDataValue);
+        this.snapDataField = new HiddenField<>("snapDataField", new PropertyModel<>(this, "snapDataValue"));
         this.snapDataField.setOutputMarkupId(true);
         this.snapDataField.setRequired(true);
         this.snapDataField.setLabel(Model.of("Picture"));
@@ -102,11 +120,24 @@ public class WebcamPopup extends Panel {
         this.form.add(this.takeButton);
     }
 
-    protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
-        if (this.window != null) {
-            this.window.setElementId(ajaxButton.getId());
-            this.window.close(target);
-        }
-        return true;
+    protected void initData() {
+        this.clientId = getPageParameters().get("clientId").toString();
     }
+
+    protected void okayButtonSubmit(Button ajaxButton) {
+        JsonNode node = null;
+        try {
+            node = ClientHelper.uploadClientImage((Session) getSession(), this.clientId, this.snapDataValue);
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+        PageParameters parameters = new PageParameters();
+        parameters.add("clientId", this.clientId);
+        setResponsePage(ClientPreviewPage.class, parameters);
+    }
+
 }

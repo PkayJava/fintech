@@ -1,26 +1,35 @@
 package com.angkorteam.fintech.widget.client;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.angkorteam.fintech.Application;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.builder.client.client.ClientUnassignStaffBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.pages.client.client.ClientAssignStaffPage;
+import com.angkorteam.fintech.pages.client.client.ClientWebcamPage;
 import com.angkorteam.fintech.pages.client.client.SavingAccountActivatePage;
 import com.angkorteam.fintech.pages.client.client.SavingAccountApprovePage;
 import com.angkorteam.fintech.pages.client.client.SavingAccountDepositPage;
@@ -45,6 +54,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
+import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class ClientPreviewGeneralPanel extends Panel {
@@ -61,10 +71,18 @@ public class ClientPreviewGeneralPanel extends Panel {
 
     protected AjaxLink<Void> unassignStaffLink;
 
+    protected BookmarkablePageLink<Void> takePictureLink;
+
     protected String clientId;
 
     protected DataTable<Map<String, Object>, String> savingAccountTable;
     protected JdbcProvider savingAccountProvider;
+
+    protected Label clientNameField;
+    protected String clientNameValue;
+
+    protected WebMarkupContainer clientImageField;
+    protected String clientImageValue;
 
     protected ModalWindow clientUnassignStaffPopup;
 
@@ -121,6 +139,17 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.savingAccountTable = new DefaultDataTable<>("savingAccountTable", savingAccountColumns, this.savingAccountProvider, 20);
         add(this.savingAccountTable);
 
+        this.clientNameField = new Label("clientNameField", new PropertyModel<>(this, "clientNameValue"));
+        add(this.clientNameField);
+
+        this.clientImageField = new WebMarkupContainer("clientImageField");
+        this.clientImageField.setOutputMarkupId(true);
+        this.clientImageField.add(AttributeModifier.replace("src", new PropertyModel<>(this, "clientImageValue")));
+        add(this.clientImageField);
+
+        this.takePictureLink = new BookmarkablePageLink<Void>("takePictureLink", ClientWebcamPage.class, parameters);
+        add(this.takePictureLink);
+
         initDefault();
     }
 
@@ -154,10 +183,25 @@ public class ClientPreviewGeneralPanel extends Panel {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         Map<String, Object> clientObject = jdbcTemplate.queryForMap("select * from m_client where id = ?", this.clientId);
         this.assignStaffLink.setVisible(clientObject.get("staff_id") == null);
+        this.unassignStaffLink.setVisible(clientObject.get("staff_id") != null);
     }
 
     protected void initData() {
         this.clientId = new PropertyModel<String>(this.itemPage, "clientId").getObject();
+        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select * from m_client where id = ?", this.clientId);
+        this.clientNameValue = (String) clientObject.get("display_name");
+        if (clientObject.get("image_id") != null) {
+            try {
+                HttpResponse<InputStream> response = ClientHelper.retrieveClientImage((Session) getSession(), this.clientId);
+                this.clientImageValue = IOUtils.toString(response.getBody(), "UTF-8");
+                IOUtils.closeQuietly(response.getBody());
+            } catch (UnirestException | IOException e) {
+                LOGGER.info(e.getMessage(), e);
+            }
+        } else {
+            this.clientImageValue = RequestCycle.get().urlFor(new PackageResourceReference(Application.class, "resource/client-image-placeholder.png"), null).toString();
+        }
     }
 
     protected List<ActionItem> savingAccountActionItem(String s, Map<String, Object> model) {

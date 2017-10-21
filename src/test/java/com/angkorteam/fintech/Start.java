@@ -31,7 +31,7 @@ public class Start {
         System.setProperty("wicket.configuration", "development");
 
         Server server = new Server();
-
+        server.setAttribute("org.eclipse.jetty.server.Request.maxFormContentSize", -1);
         int httpPort = 9080;
         int httpSecurePort = 9443;
 

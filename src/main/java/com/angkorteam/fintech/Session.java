@@ -10,6 +10,8 @@ import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.request.Request;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.LoginHelper;
@@ -17,6 +19,8 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class Session extends AbstractAuthenticatedWebSession implements IMifos {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Session.class);
 
     private Roles roles;
 
@@ -54,6 +58,7 @@ public class Session extends AbstractAuthenticatedWebSession implements IMifos {
                 session.setAttribute("mifos_identifier", this.identifier);
                 session.setAttribute("mifos_token", this.token);
                 this.roles.add(Function.ALL_FUNCTION);
+                LOGGER.info("identifier {} token {}", this.identifier, this.token);
                 return true;
             } else {
                 return false;

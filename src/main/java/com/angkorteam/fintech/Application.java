@@ -9,12 +9,13 @@ import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
+import org.apache.wicket.markup.html.IPackageResourceGuard;
+import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.angkorteam.fintech.pages.IndexPage;
 import com.angkorteam.fintech.pages.LoginPage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.framework.ResourceScope;
@@ -37,12 +38,18 @@ public class Application extends AuthenticatedWebApplication {
     @Override
     protected void init() {
         super.init();
+        IPackageResourceGuard packageResourceGuard = this.getResourceSettings().getPackageResourceGuard();
+        if (packageResourceGuard instanceof SecurePackageResourceGuard) {
+            SecurePackageResourceGuard guard = (SecurePackageResourceGuard) packageResourceGuard;
+            guard.addPattern("+*.ogg");
+            guard.addPattern("+*.mp3");
+        }
         getJavaScriptLibrarySettings().setJQueryReference(new PackageResourceReference(ResourceScope.class, "AdminLTE/plugins/jQuery/jquery-3.1.1.min.js"));
     }
 
     @Override
     public Class<? extends Page> getHomePage() {
-        return IndexPage.class;
+        return ClientBrowsePage.class;
     }
 
     @Override

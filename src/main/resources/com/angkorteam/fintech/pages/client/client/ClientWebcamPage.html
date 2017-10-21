@@ -1,7 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<html xmlns:wicket="http://wicket.apache.org">
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
 <body>
-	<wicket:panel>
+	<wicket:extend>
 		<form role="form" wicket:id="form">
 			<div class="box box-primary">
 				<div class="box-header with-border">
@@ -34,10 +38,12 @@
 						<button wicket:id="takeButton" type="button" class="btn btn-info">Take
 							Picture</button>
 						<button wicket:id="okayButton" type="submit" class="btn btn-info">Okay</button>
+						<a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
 					</div>
 				</div>
 			</div>
 		</form>
-	</wicket:panel>
+	</wicket:extend>
 </body>
+
 </html>

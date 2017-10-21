@@ -31,9 +31,9 @@
 							class="btn btn-info">Add Charge</a> <a href="#"
 							class="btn btn-info">Transfer Client</a> <a href="#"
 							class="btn btn-info">Close</a> <a wicket:id="assignStaffLink"
-							class="btn btn-info">Assign Staff</a> <a wicket:id="unassignStaffLink"
-							class="btn btn-info">Unassign Staff</a> <a href="#"
-							class="btn btn-info">Update Default Savings</a>
+							class="btn btn-info">Assign Staff</a> <a
+							wicket:id="unassignStaffLink" class="btn btn-info">Unassign
+							Staff</a> <a href="#" class="btn btn-info">Update Default Savings</a>
 					</div>
 				</div>
 			</div>
@@ -87,41 +87,76 @@
 			</div>
 			<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
 				<div class="box box-primary">
-					<div class="box-header with-border">
-						<h3 class="box-title">Details</h3>
-					</div>
-					<!-- /.box-header -->
-					<div class="box-body">
+					<div class="box-body box-profile">
+						<img wicket:id="clientImageField"
+							class="profile-user-img img-responsive img-circle"
+							style="width: 240px" alt="User profile picture">
+
+						<h3 wicket:id="clientNameField"
+							class="profile-username text-center"></h3>
+
+						<div class="row" style="padding: 10px">
+							<div class="col-xs-4 text-center">
+								<a href="#">Upload</a>
+							</div>
+							<div class="col-xs-4 text-center">
+								<a wicket:id="takePictureLink">Take</a>
+							</div>
+							<div class="col-xs-4 text-center">
+								<a href="#">Delete</a>
+							</div>
+						</div>
+
 						<div class="form-group">
-							<label>Active Clients</label>
-							<div class="form-control" readonly="readonly">Hello</div>
+							<label>Activation date</label>
+							<div class="form-control" readonly="readonly">17 October
+								2017</div>
 						</div>
 						<div class="form-group">
-							<label>Active Group Loans</label>
-							<div class="form-control" readonly="readonly">Hello</div>
+							<label>Member Of</label>
+							<div class="form-control" readonly="readonly"></div>
 						</div>
 						<div class="form-group">
-							<label>Active Client Loans</label>
-							<div class="form-control" readonly="readonly">Hello</div>
+							<label>Is Staff?</label>
+							<div class="form-control" readonly="readonly">No</div>
 						</div>
 						<div class="form-group">
-							<label>Active Group Borrowers</label>
-							<div class="form-control" readonly="readonly">Hello</div>
+							<label>Mobile number</label>
+							<div class="form-control" readonly="readonly">+85577777091</div>
 						</div>
 						<div class="form-group">
-							<label>Active Client Borrowers</label>
-							<div class="form-control" readonly="readonly">Hello</div>
+							<label>Gender</label>
+							<div class="form-control" readonly="readonly">Male</div>
 						</div>
 						<div class="form-group">
-							<label>Active Overdue Group Loans</label>
-							<div class="form-control" readonly="readonly">Hello</div>
+							<label>Client Type</label>
+							<div class="form-control" readonly="readonly">ClientType01</div>
 						</div>
 						<div class="form-group">
-							<label>Active Overdue Client Loans</label>
-							<div class="form-control" readonly="readonly">Hello</div>
+							<label>Client Classification</label>
+							<div class="form-control" readonly="readonly">ClientClassification01</div>
+						</div>
+						<div class="form-group">
+							<label>Date of Birth</label>
+							<div class="form-control" readonly="readonly">27 April 1984</div>
 						</div>
 					</div>
 					<!-- /.box-body -->
+					<div class="box-header">
+						<h3 class="box-title">Performance History</h3>
+					</div>
+					<div class="box-body box-profile">
+						<ul class="list-group list-group-unbordered">
+							<li class="list-group-item"><b># of Loan Cycle</b> <a
+								class="pull-right">0</a></li>
+							<li class="list-group-item"><b>Last loan amount</b> <a
+								class="pull-right">0</a></li>
+							<li class="list-group-item"><b># of active loans</b> <a
+								class="pull-right">0</a></li>
+							<li class="list-group-item"><b># of active savings</b> <a
+								class="pull-right">0</a></li>
+						</ul>
+					</div>
 				</div>
 				<!-- /.box -->
 			</div>

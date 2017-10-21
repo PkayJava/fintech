@@ -1,6 +1,9 @@
 package com.angkorteam.fintech.helper;
 
+import java.io.InputStream;
+
 import com.angkorteam.fintech.IMifos;
+import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -85,5 +88,13 @@ public class ClientHelper {
     public static JsonNode unassignStaffSavingAccount(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/savingsaccounts/" + id + "?command=unassignSavingsOfficer", object);
+    }
+
+    public static HttpResponse<InputStream> retrieveClientImage(IMifos session, String clientId) throws UnirestException {
+        return Helper.performServerGet(session, "/api/v1/clients/" + clientId + "/images?maxHeight=150");
+    }
+
+    public static JsonNode uploadClientImage(IMifos session, String clientId, String image) throws UnirestException {
+        return Helper.performServerPost(session, "/api/v1/clients/" + clientId + "/images", image);
     }
 }
