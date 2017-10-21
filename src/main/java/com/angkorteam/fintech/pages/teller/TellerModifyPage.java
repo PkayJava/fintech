@@ -30,7 +30,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
@@ -42,39 +41,39 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class TellerModifyPage extends Page {
 
-    private String tellerId;
+    protected String tellerId;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private SingleChoiceProvider officeProvider;
-    private Option officeValue;
-    private Select2SingleChoice<Option> officeField;
-    private TextFeedbackPanel officeFeedback;
+    protected SingleChoiceProvider officeProvider;
+    protected Option officeValue;
+    protected Select2SingleChoice<Option> officeField;
+    protected TextFeedbackPanel officeFeedback;
 
-    private TellerStateProvider statusProvider;
-    private Option statusValue;
-    private Select2SingleChoice<Option> statusField;
-    private TextFeedbackPanel statusFeedback;
+    protected TellerStateProvider statusProvider;
+    protected Option statusValue;
+    protected Select2SingleChoice<Option> statusField;
+    protected TextFeedbackPanel statusFeedback;
 
-    private Date startDateValue;
-    private DateTextField startDateField;
-    private TextFeedbackPanel startDateFeedback;
+    protected Date startDateValue;
+    protected DateTextField startDateField;
+    protected TextFeedbackPanel startDateFeedback;
 
-    private Date endDateValue;
-    private DateTextField endDateField;
-    private TextFeedbackPanel endDateFeedback;
+    protected Date endDateValue;
+    protected DateTextField endDateField;
+    protected TextFeedbackPanel endDateFeedback;
 
-    private String descriptionValue;
-    private TextArea<String> descriptionField;
-    private TextFeedbackPanel descriptionFeedback;
+    protected String descriptionValue;
+    protected TextArea<String> descriptionField;
+    protected TextFeedbackPanel descriptionFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -128,7 +127,7 @@ public class TellerModifyPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", TellerBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", new OptionMapper(), tellerObject.get("office_id"));
+        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", Option.MAPPER, tellerObject.get("office_id"));
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
         this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
@@ -176,7 +175,7 @@ public class TellerModifyPage extends Page {
         this.form.add(this.descriptionFeedback);
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         TellerBuilder builder = new TellerBuilder();
         builder.withId(this.tellerId);
         builder.withDescription(this.descriptionValue);

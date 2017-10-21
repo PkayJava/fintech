@@ -39,7 +39,6 @@ import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
@@ -48,75 +47,75 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanChargeModifyPage extends Page {
 
-    private String chargeId;
+    protected String chargeId;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private CurrencyProvider currencyProvider;
-    private Option currencyValue;
-    private Select2SingleChoice<Option> currencyField;
-    private TextFeedbackPanel currencyFeedback;
+    protected CurrencyProvider currencyProvider;
+    protected Option currencyValue;
+    protected Select2SingleChoice<Option> currencyField;
+    protected TextFeedbackPanel currencyFeedback;
 
-    private ChargeTimeProvider chargeTimeProvider;
-    private Option chargeTimeValue;
-    private Select2SingleChoice<Option> chargeTimeField;
-    private TextFeedbackPanel chargeTimeFeedback;
+    protected ChargeTimeProvider chargeTimeProvider;
+    protected Option chargeTimeValue;
+    protected Select2SingleChoice<Option> chargeTimeField;
+    protected TextFeedbackPanel chargeTimeFeedback;
 
-    private WebMarkupContainer chargeCalculationBlock;
-    private WebMarkupContainer chargeCalculationContainer;
-    private ChargeCalculationProvider chargeCalculationProvider;
-    private Option chargeCalculationValue;
-    private Select2SingleChoice<Option> chargeCalculationField;
-    private TextFeedbackPanel chargeCalculationFeedback;
+    protected WebMarkupContainer chargeCalculationBlock;
+    protected WebMarkupContainer chargeCalculationContainer;
+    protected ChargeCalculationProvider chargeCalculationProvider;
+    protected Option chargeCalculationValue;
+    protected Select2SingleChoice<Option> chargeCalculationField;
+    protected TextFeedbackPanel chargeCalculationFeedback;
 
-    private ChargePaymentProvider chargePaymentProvider;
-    private Option chargePaymentValue;
-    private Select2SingleChoice<Option> chargePaymentField;
-    private TextFeedbackPanel chargePaymentFeedback;
+    protected ChargePaymentProvider chargePaymentProvider;
+    protected Option chargePaymentValue;
+    protected Select2SingleChoice<Option> chargePaymentField;
+    protected TextFeedbackPanel chargePaymentFeedback;
 
-    private WebMarkupContainer feeFrequencyBlock;
-    private WebMarkupContainer feeFrequencyContainer;
-    private Boolean feeFrequencyValue;
-    private CheckBox feeFrequencyField;
-    private TextFeedbackPanel feeFrequencyFeedback;
+    protected WebMarkupContainer feeFrequencyBlock;
+    protected WebMarkupContainer feeFrequencyContainer;
+    protected Boolean feeFrequencyValue;
+    protected CheckBox feeFrequencyField;
+    protected TextFeedbackPanel feeFrequencyFeedback;
 
-    private WebMarkupContainer chargeFrequencyBlock;
-    private WebMarkupContainer chargeFrequencyContainer;
-    private ChargeFrequencyProvider chargeFrequencyProvider;
-    private Option chargeFrequencyValue;
-    private Select2SingleChoice<Option> chargeFrequencyField;
-    private TextFeedbackPanel chargeFrequencyFeedback;
+    protected WebMarkupContainer chargeFrequencyBlock;
+    protected WebMarkupContainer chargeFrequencyContainer;
+    protected ChargeFrequencyProvider chargeFrequencyProvider;
+    protected Option chargeFrequencyValue;
+    protected Select2SingleChoice<Option> chargeFrequencyField;
+    protected TextFeedbackPanel chargeFrequencyFeedback;
 
-    private WebMarkupContainer frequencyIntervalBlock;
-    private WebMarkupContainer frequencyIntervalContainer;
-    private Integer frequencyIntervalValue;
-    private TextField<Integer> frequencyIntervalField;
-    private TextFeedbackPanel frequencyIntervalFeedback;
+    protected WebMarkupContainer frequencyIntervalBlock;
+    protected WebMarkupContainer frequencyIntervalContainer;
+    protected Integer frequencyIntervalValue;
+    protected TextField<Integer> frequencyIntervalField;
+    protected TextFeedbackPanel frequencyIntervalFeedback;
 
-    private Double amountValue;
-    private TextField<Double> amountField;
-    private TextFeedbackPanel amountFeedback;
+    protected Double amountValue;
+    protected TextField<Double> amountField;
+    protected TextFeedbackPanel amountFeedback;
 
-    private boolean activeValue;
-    private CheckBox activeField;
-    private TextFeedbackPanel activeFeedback;
+    protected boolean activeValue;
+    protected CheckBox activeField;
+    protected TextFeedbackPanel activeFeedback;
 
-    private boolean penaltyValue;
-    private CheckBox penaltyField;
-    private TextFeedbackPanel penaltyFeedback;
+    protected boolean penaltyValue;
+    protected CheckBox penaltyField;
+    protected TextFeedbackPanel penaltyFeedback;
 
-    private SingleChoiceProvider taxGroupProvider;
-    private Option taxGroupValue;
-    private Select2SingleChoice<Option> taxGroupField;
-    private TextFeedbackPanel taxGroupFeedback;
+    protected SingleChoiceProvider taxGroupProvider;
+    protected Option taxGroupValue;
+    protected Select2SingleChoice<Option> taxGroupField;
+    protected TextFeedbackPanel taxGroupFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -158,31 +157,16 @@ public class LoanChargeModifyPage extends Page {
         Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select * from m_charge where id = ?", this.chargeId);
 
         this.nameValue = (String) chargeObject.get("name");
-        this.currencyValue = jdbcTemplate.queryForObject("select code id, concat(name,' [', code,']') text from m_organisation_currency where code = ?", new OptionMapper(), chargeObject.get("currency_code"));
+        this.currencyValue = jdbcTemplate.queryForObject("select code id, concat(name,' [', code,']') text from m_organisation_currency where code = ?", Option.MAPPER, chargeObject.get("currency_code"));
 
         String charge_time_enum = String.valueOf(chargeObject.get("charge_time_enum"));
-        for (ChargeTime time : ChargeTime.values()) {
-            if (time.getLiteral().equals(charge_time_enum)) {
-                this.chargeTimeValue = new Option(time.name(), time.getDescription());
-                break;
-            }
-        }
+        this.chargeTimeValue = ChargeTime.optionLiteral(charge_time_enum);
 
         String charge_calculation_enum = String.valueOf(chargeObject.get("charge_calculation_enum"));
-        for (ChargeCalculation calculation : ChargeCalculation.values()) {
-            if (calculation.getLiteral().equals(charge_calculation_enum)) {
-                this.chargeCalculationValue = new Option(calculation.name(), calculation.getDescription());
-                break;
-            }
-        }
+        this.chargeCalculationValue = ChargeCalculation.optionLiteral(charge_calculation_enum);
 
         String charge_payment_mode_enum = String.valueOf(chargeObject.get("charge_payment_mode_enum"));
-        for (ChargePayment payment : ChargePayment.values()) {
-            if (payment.getLiteral().equals(charge_payment_mode_enum)) {
-                this.chargePaymentValue = new Option(payment.name(), payment.getDescription());
-                break;
-            }
-        }
+        this.chargePaymentValue = ChargePayment.optionLiteral(charge_payment_mode_enum);
 
         if (chargeObject.get("amount") instanceof BigDecimal) {
             this.amountValue = ((BigDecimal) chargeObject.get("amount")).doubleValue();
@@ -194,15 +178,10 @@ public class LoanChargeModifyPage extends Page {
 
         this.penaltyValue = (Boolean) chargeObject.get("is_penalty");
 
-        this.taxGroupValue = jdbcTemplate.queryForObject("select id, name text from m_tax_group where id = ?", new OptionMapper(), chargeObject.get("tax_group_id"));
+        this.taxGroupValue = jdbcTemplate.queryForObject("select id, name text from m_tax_group where id = ?", Option.MAPPER, chargeObject.get("tax_group_id"));
 
         String fee_frequency = String.valueOf(chargeObject.get("fee_frequency"));
-        for (ChargeFrequency frequency : ChargeFrequency.values()) {
-            if (frequency.getLiteral().equals(fee_frequency)) {
-                this.chargeFrequencyValue = new Option(frequency.name(), frequency.getDescription());
-                break;
-            }
-        }
+        this.chargeFrequencyValue = ChargeFrequency.optionLiteral(fee_frequency);
 
         this.frequencyIntervalValue = (Integer) chargeObject.get("fee_interval");
     }

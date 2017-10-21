@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.dto.constant;
 
 import com.angkorteam.fintech.dto.enums.AccountType;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum FinancialActivityTypeEnum {
 
@@ -47,5 +48,26 @@ public enum FinancialActivityTypeEnum {
     
     public AccountType getAccountType() {
         return accountType;
+    }
+    
+    public Option toOption() {
+        return new Option(this.name(), this.description);
+    }
+
+    public static FinancialActivityTypeEnum parseLiteral(String literal) {
+        for (FinancialActivityTypeEnum value : FinancialActivityTypeEnum.values()) {
+            if (value.getLiteral().equals(literal)) {
+                return value;
+            }
+        }
+        return null;
+    }
+
+    public static Option optionLiteral(String literal) {
+        FinancialActivityTypeEnum value = parseLiteral(literal);
+        if (value == null) {
+            return null;
+        }
+        return new Option(value.name(), value.getDescription());
     }
 }

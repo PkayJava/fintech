@@ -28,7 +28,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
@@ -40,38 +39,38 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class StaffModifyPage extends Page {
 
-    private String staffId;
+    protected String staffId;
 
-    private String firstNameValue;
-    private TextField<String> firstNameField;
-    private TextFeedbackPanel firstNameFeedback;
+    protected String firstNameValue;
+    protected TextField<String> firstNameField;
+    protected TextFeedbackPanel firstNameFeedback;
 
-    private String lastNameValue;
-    private TextField<String> lastNameField;
-    private TextFeedbackPanel lastNameFeedback;
+    protected String lastNameValue;
+    protected TextField<String> lastNameField;
+    protected TextFeedbackPanel lastNameFeedback;
 
-    private String mobileNoValue;
-    private TextField<String> mobileNoField;
-    private TextFeedbackPanel mobileNoFeedback;
+    protected String mobileNoValue;
+    protected TextField<String> mobileNoField;
+    protected TextFeedbackPanel mobileNoFeedback;
 
-    private SingleChoiceProvider officeProvider;
-    private Option officeValue;
-    private Select2SingleChoice<Option> officeField;
-    private TextFeedbackPanel officeFeedback;
+    protected SingleChoiceProvider officeProvider;
+    protected Option officeValue;
+    protected Select2SingleChoice<Option> officeField;
+    protected TextFeedbackPanel officeFeedback;
 
-    private Date joinedDateValue;
-    private DateTextField joinedDateField;
-    private TextFeedbackPanel joinedDateFeedback;
+    protected Date joinedDateValue;
+    protected DateTextField joinedDateField;
+    protected TextFeedbackPanel joinedDateFeedback;
 
-    private Boolean loanOfficerValue;
-    private CheckBox loanOfficerField;
-    private TextFeedbackPanel loanOfficerFeedback;
+    protected Boolean loanOfficerValue;
+    protected CheckBox loanOfficerField;
+    protected TextFeedbackPanel loanOfficerFeedback;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -147,7 +146,7 @@ public class StaffModifyPage extends Page {
         this.joinedDateFeedback = new TextFeedbackPanel("joinedDateFeedback", this.joinedDateField);
         this.form.add(this.joinedDateFeedback);
 
-        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", new OptionMapper(), object.get("office_id"));
+        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", Option.MAPPER, object.get("office_id"));
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
         this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
@@ -170,7 +169,7 @@ public class StaffModifyPage extends Page {
         this.form.add(this.loanOfficerFeedback);
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         StaffBuilder builder = new StaffBuilder();
         builder.withId(this.staffId);
         builder.withFirstName(this.firstNameValue);

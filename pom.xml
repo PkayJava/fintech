@@ -36,7 +36,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<!-- allowed values: R7, 1.0, 1.5, 2.0 or none -->
 		<wtp.version>none</wtp.version>
-		<frmk.version>1.7.1</frmk.version>
+		<frmk.version>1.7.2</frmk.version>
 		<guava.version>23.0</guava.version>
 		<spring.version>4.3.11.RELEASE</spring.version>
 		<mysql.version>5.1.44</mysql.version>

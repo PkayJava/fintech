@@ -29,6 +29,7 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.builder.client.client.ClientUnassignStaffBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.pages.client.client.ClientAssignStaffPage;
+import com.angkorteam.fintech.pages.client.client.ClientTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientWebcamPage;
 import com.angkorteam.fintech.pages.client.client.SavingAccountActivatePage;
 import com.angkorteam.fintech.pages.client.client.SavingAccountApprovePage;
@@ -70,6 +71,8 @@ public class ClientPreviewGeneralPanel extends Panel {
     protected BookmarkablePageLink<Void> assignStaffLink;
 
     protected AjaxLink<Void> unassignStaffLink;
+    
+    protected BookmarkablePageLink<Void> transferClientLink;
 
     protected BookmarkablePageLink<Void> takePictureLink;
 
@@ -113,6 +116,9 @@ public class ClientPreviewGeneralPanel extends Panel {
 
         this.assignStaffLink = new BookmarkablePageLink<>("assignStaffLink", ClientAssignStaffPage.class, parameters);
         this.buttonGroups.add(this.assignStaffLink);
+
+        this.transferClientLink = new BookmarkablePageLink<>("transferClientLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.transferClientLink);
 
         this.unassignStaffLink = new AjaxLink<>("unassignStaffLink");
         this.unassignStaffLink.setOnClick(this::unassignStaffLinkClick);

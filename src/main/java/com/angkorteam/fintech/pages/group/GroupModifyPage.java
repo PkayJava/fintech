@@ -20,7 +20,6 @@ import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -31,29 +30,29 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class GroupModifyPage extends Page {
 
-    private String groupId;
+    protected String groupId;
 
-    private String externalIdValue;
-    private TextField<String> externalIdField;
-    private TextFeedbackPanel externalIdFeedback;
+    protected String externalIdValue;
+    protected TextField<String> externalIdField;
+    protected TextFeedbackPanel externalIdFeedback;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private SingleChoiceProvider parentProvider;
-    private Option parentValue;
-    private Select2SingleChoice<Option> parentField;
-    private TextFeedbackPanel parentFeedback;
+    protected SingleChoiceProvider parentProvider;
+    protected Option parentValue;
+    protected Select2SingleChoice<Option> parentField;
+    protected TextFeedbackPanel parentFeedback;
 
-    private SingleChoiceProvider officeProvider;
-    private Option officeValue;
-    private Select2SingleChoice<Option> officeField;
-    private TextFeedbackPanel officeFeedback;
+    protected SingleChoiceProvider officeProvider;
+    protected Option officeValue;
+    protected Select2SingleChoice<Option> officeField;
+    protected TextFeedbackPanel officeFeedback;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
     @Override
     protected void onInitialize() {
@@ -90,7 +89,7 @@ public class GroupModifyPage extends Page {
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
         this.form.add(this.nameFeedback);
 
-        this.parentValue = jdbcTemplate.queryForObject("select id, display_name as text from m_group where id = ?", new OptionMapper(), object.get("parent_id"));
+        this.parentValue = jdbcTemplate.queryForObject("select id, display_name as text from m_group where id = ?", Option.MAPPER, object.get("parent_id"));
         this.parentProvider = new SingleChoiceProvider("m_group", "id", "display_name");
         this.parentField = new Select2SingleChoice<>("parentField", 0, new PropertyModel<>(this, "parentValue"), this.parentProvider);
         this.parentField.setRequired(true);
@@ -98,7 +97,7 @@ public class GroupModifyPage extends Page {
         this.parentFeedback = new TextFeedbackPanel("parentFeedback", this.parentField);
         this.form.add(this.parentFeedback);
 
-        this.officeValue = jdbcTemplate.queryForObject("select id, name as text from m_office where id = ?", new OptionMapper(), object.get("office_id"));
+        this.officeValue = jdbcTemplate.queryForObject("select id, name as text from m_office where id = ?", Option.MAPPER, object.get("office_id"));
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
         this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
@@ -107,7 +106,7 @@ public class GroupModifyPage extends Page {
         this.form.add(this.officeFeedback);
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         GroupBuilder builder = new GroupBuilder();
         builder.withName(this.nameValue);
         builder.withExternalId(this.externalIdValue);

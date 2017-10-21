@@ -30,7 +30,6 @@ import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
@@ -40,47 +39,47 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class UserModifyPage extends Page {
 
-    private String userId;
+    protected String userId;
 
-    private String firstNameValue;
-    private Label firstNameField;
+    protected String firstNameValue;
+    protected Label firstNameField;
 
-    private String emailValue;
-    private Label emailField;
+    protected String emailValue;
+    protected Label emailField;
 
-    private String lastNameValue;
-    private Label lastNameField;
+    protected String lastNameValue;
+    protected Label lastNameField;
 
-    private String loginValue;
-    private Label loginField;
+    protected String loginValue;
+    protected Label loginField;
 
-    private SingleChoiceProvider officeProvider;
-    private Option officeValue;
-    private Select2SingleChoice<Option> officeField;
-    private TextFeedbackPanel officeFeedback;
+    protected SingleChoiceProvider officeProvider;
+    protected Option officeValue;
+    protected Select2SingleChoice<Option> officeField;
+    protected TextFeedbackPanel officeFeedback;
 
-    private SingleChoiceProvider staffProvider;
-    private Option staffValue;
-    private Select2SingleChoice<Option> staffField;
-    private TextFeedbackPanel staffFeedback;
+    protected SingleChoiceProvider staffProvider;
+    protected Option staffValue;
+    protected Select2SingleChoice<Option> staffField;
+    protected TextFeedbackPanel staffFeedback;
 
-    private MultipleChoiceProvider permissionProvider;
-    private List<Option> permissionValue;
-    private Select2MultipleChoice<Option> permissionField;
-    private TextFeedbackPanel permissionFeedback;
+    protected MultipleChoiceProvider permissionProvider;
+    protected List<Option> permissionValue;
+    protected Select2MultipleChoice<Option> permissionField;
+    protected TextFeedbackPanel permissionFeedback;
 
-    private Boolean overridePasswordExpiryPolicyValue;
-    private CheckBox overridePasswordExpiryPolicyField;
-    private TextFeedbackPanel overridePasswordExpiryPolicyFeedback;
+    protected Boolean overridePasswordExpiryPolicyValue;
+    protected CheckBox overridePasswordExpiryPolicyField;
+    protected TextFeedbackPanel overridePasswordExpiryPolicyFeedback;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private String passwordValue;
-    private String repeatPasswordValue;
+    protected String passwordValue;
+    protected String repeatPasswordValue;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     static {
         BREADCRUMB = Lists.newArrayList();
@@ -177,7 +176,7 @@ public class UserModifyPage extends Page {
         this.lastNameField = new Label("lastNameField", new PropertyModel<>(this, "lastNameValue"));
         this.form.add(this.lastNameField);
 
-        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", new OptionMapper(), userObject.get("office_id"));
+        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", Option.MAPPER, userObject.get("office_id"));
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
         this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.add(new OnChangeAjaxBehavior(this::officeFieldUpdate));
@@ -186,7 +185,7 @@ public class UserModifyPage extends Page {
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
         this.form.add(this.officeFeedback);
 
-        this.permissionValue = jdbcTemplate.query("select m_role.id, m_role.name text from m_appuser_role inner join m_role on m_appuser_role.role_id = m_role.id where m_appuser_role.appuser_id = ?", new OptionMapper(), userObject.get("id"));
+        this.permissionValue = jdbcTemplate.query("select m_role.id, m_role.name text from m_appuser_role inner join m_role on m_appuser_role.role_id = m_role.id where m_appuser_role.appuser_id = ?", Option.MAPPER, userObject.get("id"));
         this.permissionProvider = new MultipleChoiceProvider("m_role", "id", "name");
         this.permissionField = new Select2MultipleChoice<>("permissionField", 0, new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
         this.permissionField.add(new OnChangeAjaxBehavior());
@@ -195,7 +194,7 @@ public class UserModifyPage extends Page {
         this.permissionFeedback = new TextFeedbackPanel("permissionFeedback", this.permissionField);
         this.form.add(this.permissionFeedback);
 
-        this.staffValue = jdbcTemplate.queryForObject("select id, display_name text from m_staff where id = ?", new OptionMapper(), userObject.get("staff_id"));
+        this.staffValue = jdbcTemplate.queryForObject("select id, display_name text from m_staff where id = ?", Option.MAPPER, userObject.get("staff_id"));
         this.staffProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
         this.staffField = new Select2SingleChoice<>("staffField", 0, new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.add(new OnChangeAjaxBehavior());
@@ -225,7 +224,7 @@ public class UserModifyPage extends Page {
         return false;
     }
 
-    private void updateButtonSubmit(Button button) {
+    protected void updateButtonSubmit(Button button) {
         AppUserBuilder builder = new AppUserBuilder();
         builder.withId(this.userId);
         builder.withPassword(this.passwordValue);
@@ -244,7 +243,7 @@ public class UserModifyPage extends Page {
         setResponsePage(UserBrowsePage.class);
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         AppUserBuilder builder = new AppUserBuilder();
         builder.withId(this.userId);
         builder.withPasswordNeverExpires(this.overridePasswordExpiryPolicyValue);

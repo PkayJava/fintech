@@ -33,7 +33,6 @@ import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
@@ -197,23 +196,13 @@ public class ShareChargeModifyPage extends Page {
 
         this.nameValue = (String) chargeObject.get("name");
 
-        this.currencyValue = jdbcTemplate.queryForObject("select code id, concat(name,' [', code,']') text from m_organisation_currency where code = ?", new OptionMapper(), chargeObject.get("currency_code"));
+        this.currencyValue = jdbcTemplate.queryForObject("select code id, concat(name,' [', code,']') text from m_organisation_currency where code = ?", Option.MAPPER, chargeObject.get("currency_code"));
 
         String charge_time_enum = String.valueOf(chargeObject.get("charge_time_enum"));
-        for (ChargeTime time : ChargeTime.values()) {
-            if (time.getLiteral().equals(charge_time_enum)) {
-                this.chargeTimeValue = new Option(time.name(), time.getDescription());
-                break;
-            }
-        }
+        this.chargeTimeValue = ChargeTime.optionLiteral(charge_time_enum);
 
         String charge_calculation_enum = String.valueOf(chargeObject.get("charge_calculation_enum"));
-        for (ChargeCalculation calculation : ChargeCalculation.values()) {
-            if (calculation.getLiteral().equals(charge_calculation_enum)) {
-                this.chargeCalculationValue = new Option(calculation.name(), calculation.getDescription());
-                break;
-            }
-        }
+        this.chargeCalculationValue = ChargeCalculation.optionLiteral(charge_calculation_enum);
 
         if (chargeObject.get("amount") instanceof BigDecimal) {
             this.amountValue = ((BigDecimal) chargeObject.get("amount")).doubleValue();
@@ -223,7 +212,7 @@ public class ShareChargeModifyPage extends Page {
 
         this.activeValue = (Boolean) chargeObject.get("is_active");
 
-        this.taxGroupValue = jdbcTemplate.queryForObject("select id, name text from m_tax_group where id = ?", new OptionMapper(), chargeObject.get("tax_group_id"));
+        this.taxGroupValue = jdbcTemplate.queryForObject("select id, name text from m_tax_group where id = ?", Option.MAPPER, chargeObject.get("tax_group_id"));
 
     }
 

@@ -30,7 +30,6 @@ import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
@@ -42,23 +41,23 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FinancialActivityModifyPage extends Page {
 
-    private String financialActivityId;
+    protected String financialActivityId;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private FinancialActivityProvider financialActivityProvider;
-    private Option financialActivityValue;
-    private Select2SingleChoice<Option> financialActivityField;
-    private TextFeedbackPanel financialActivityFeedback;
+    protected FinancialActivityProvider financialActivityProvider;
+    protected Option financialActivityValue;
+    protected Select2SingleChoice<Option> financialActivityField;
+    protected TextFeedbackPanel financialActivityFeedback;
 
-    private SingleChoiceProvider accountProvider;
-    private Option accountValue;
-    private Select2SingleChoice<Option> accountField;
-    private TextFeedbackPanel accountFeedback;
+    protected SingleChoiceProvider accountProvider;
+    protected Option accountValue;
+    protected Select2SingleChoice<Option> accountField;
+    protected TextFeedbackPanel accountFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -111,19 +110,12 @@ public class FinancialActivityModifyPage extends Page {
         this.form.add(this.financialActivityField);
         this.financialActivityFeedback = new TextFeedbackPanel("financialActivityFeedback", this.financialActivityField);
         this.form.add(this.financialActivityFeedback);
-        if (financialActivityObject.get("financial_activity_type") != null) {
-            String type = String.valueOf(financialActivityObject.get("financial_activity_type"));
-            for (FinancialActivityTypeEnum p : FinancialActivityTypeEnum.values()) {
-                if (p.getLiteral().equals(type)) {
-                    this.financialActivityValue = new Option(p.name(), p.getDescription());
-                    break;
-                }
-            }
-        }
+        this.financialActivityValue = FinancialActivityTypeEnum.optionLiteral(String.valueOf(financialActivityObject.get("financial_activity_type")));
+
         this.financialActivityField.add(new OnChangeAjaxBehavior(this::financialActivityFieldUpdate, this::financialActivityFieldError));
 
         if (financialActivityObject.get("gl_account_id") != null) {
-            this.accountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", new OptionMapper(), financialActivityObject.get("gl_account_id"));
+            this.accountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, financialActivityObject.get("gl_account_id"));
         }
         this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.accountProvider.applyWhere("usage", AccountUsage.Detail.getLiteral());

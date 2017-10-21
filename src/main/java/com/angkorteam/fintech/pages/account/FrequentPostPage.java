@@ -45,7 +45,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -202,7 +201,7 @@ public class FrequentPostPage extends Page {
         this.debitAccountNameFeedback = new TextFeedbackPanel("debitAccountNameFeedback", this.debitAccountNameField);
         this.debitForm.add(this.debitAccountNameFeedback);
         if (ruleObject.get("debit_account_id") != null) {
-            this.debitAccountNameValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", new OptionMapper(), ruleObject.get("debit_account_id"));
+            this.debitAccountNameValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, ruleObject.get("debit_account_id"));
             this.debitAccountNameProvider.applyWhere("id", "id = " + ruleObject.get("debit_account_id"));
         } else {
             List<String> tags = jdbcTemplate.queryForList("SELECT tag_id FROM acc_rule_tags WHERE acc_type_enum = " + RuleBrowsePage.DEBIT + " and acc_rule_id = ?", String.class, this.ruleId);
@@ -234,7 +233,7 @@ public class FrequentPostPage extends Page {
         this.creditAccountNameFeedback = new TextFeedbackPanel("creditAccountNameFeedback", this.creditAccountNameField);
         this.creditForm.add(this.creditAccountNameFeedback);
         if (ruleObject.get("credit_account_id") != null) {
-            this.creditAccountNameValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", new OptionMapper(), ruleObject.get("credit_account_id"));
+            this.creditAccountNameValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, ruleObject.get("credit_account_id"));
             this.creditAccountNameProvider.applyWhere("id", "id = " + ruleObject.get("credit_account_id"));
         } else {
             List<String> tags = jdbcTemplate.queryForList("SELECT tag_id FROM acc_rule_tags WHERE acc_type_enum = " + RuleBrowsePage.CREDIT + " and acc_rule_id = ?", String.class, this.ruleId);
@@ -266,7 +265,7 @@ public class FrequentPostPage extends Page {
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
         this.form.add(this.officeFeedback);
         if (ruleObject.get("office_id") != null) {
-            this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", new OptionMapper(), ruleObject.get("office_id"));
+            this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", Option.MAPPER, ruleObject.get("office_id"));
             this.officeProvider.applyWhere("id", "id = " + ruleObject.get("office_id"));
         }
 

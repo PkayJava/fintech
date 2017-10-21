@@ -40,7 +40,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DayMonthTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
@@ -49,63 +48,63 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingDepositChargeModifyPage extends Page {
 
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/M");
+    protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/M");
 
-    private String chargeId;
+    protected String chargeId;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private CurrencyProvider currencyProvider;
-    private Option currencyValue;
-    private Select2SingleChoice<Option> currencyField;
-    private TextFeedbackPanel currencyFeedback;
+    protected CurrencyProvider currencyProvider;
+    protected Option currencyValue;
+    protected Select2SingleChoice<Option> currencyField;
+    protected TextFeedbackPanel currencyFeedback;
 
-    private ChargeTimeProvider chargeTimeProvider;
-    private Option chargeTimeValue;
-    private Select2SingleChoice<Option> chargeTimeField;
-    private TextFeedbackPanel chargeTimeFeedback;
+    protected ChargeTimeProvider chargeTimeProvider;
+    protected Option chargeTimeValue;
+    protected Select2SingleChoice<Option> chargeTimeField;
+    protected TextFeedbackPanel chargeTimeFeedback;
 
-    private ChargeCalculationProvider chargeCalculationProvider;
-    private Option chargeCalculationValue;
-    private Select2SingleChoice<Option> chargeCalculationField;
-    private TextFeedbackPanel chargeCalculationFeedback;
+    protected ChargeCalculationProvider chargeCalculationProvider;
+    protected Option chargeCalculationValue;
+    protected Select2SingleChoice<Option> chargeCalculationField;
+    protected TextFeedbackPanel chargeCalculationFeedback;
 
-    private WebMarkupContainer dueDateBlock;
-    private WebMarkupContainer dueDateContainer;
-    private Date dueDateValue;
-    private DayMonthTextField dueDateField;
-    private TextFeedbackPanel dueDateFeedback;
+    protected WebMarkupContainer dueDateBlock;
+    protected WebMarkupContainer dueDateContainer;
+    protected Date dueDateValue;
+    protected DayMonthTextField dueDateField;
+    protected TextFeedbackPanel dueDateFeedback;
 
-    private WebMarkupContainer repeatEveryBlock;
-    private WebMarkupContainer repeatEveryContainer;
-    private Integer repeatEveryValue;
-    private TextField<Integer> repeatEveryField;
-    private TextFeedbackPanel repeatEveryFeedback;
+    protected WebMarkupContainer repeatEveryBlock;
+    protected WebMarkupContainer repeatEveryContainer;
+    protected Integer repeatEveryValue;
+    protected TextField<Integer> repeatEveryField;
+    protected TextFeedbackPanel repeatEveryFeedback;
 
-    private Double amountValue;
-    private TextField<Double> amountField;
-    private TextFeedbackPanel amountFeedback;
+    protected Double amountValue;
+    protected TextField<Double> amountField;
+    protected TextFeedbackPanel amountFeedback;
 
-    private boolean activeValue;
-    private CheckBox activeField;
-    private TextFeedbackPanel activeFeedback;
+    protected boolean activeValue;
+    protected CheckBox activeField;
+    protected TextFeedbackPanel activeFeedback;
 
-    private boolean penaltyValue;
-    private CheckBox penaltyField;
-    private TextFeedbackPanel penaltyFeedback;
+    protected boolean penaltyValue;
+    protected CheckBox penaltyField;
+    protected TextFeedbackPanel penaltyFeedback;
 
-    private SingleChoiceProvider taxGroupProvider;
-    private Option taxGroupValue;
-    private Select2SingleChoice<Option> taxGroupField;
-    private TextFeedbackPanel taxGroupFeedback;
+    protected SingleChoiceProvider taxGroupProvider;
+    protected Option taxGroupValue;
+    protected Select2SingleChoice<Option> taxGroupField;
+    protected TextFeedbackPanel taxGroupFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -260,23 +259,13 @@ public class SavingDepositChargeModifyPage extends Page {
 
         this.nameValue = (String) chargeObject.get("name");
 
-        this.currencyValue = jdbcTemplate.queryForObject("select code id, concat(name,' [', code,']') text from m_organisation_currency where code = ?", new OptionMapper(), chargeObject.get("currency_code"));
+        this.currencyValue = jdbcTemplate.queryForObject("select code id, concat(name,' [', code,']') text from m_organisation_currency where code = ?", Option.MAPPER, chargeObject.get("currency_code"));
 
         String charge_time_enum = String.valueOf(chargeObject.get("charge_time_enum"));
-        for (ChargeTime time : ChargeTime.values()) {
-            if (time.getLiteral().equals(charge_time_enum)) {
-                this.chargeTimeValue = new Option(time.name(), time.getDescription());
-                break;
-            }
-        }
+        this.chargeTimeValue = ChargeTime.optionLiteral(charge_time_enum);
 
         String charge_calculation_enum = String.valueOf(chargeObject.get("charge_calculation_enum"));
-        for (ChargeCalculation calculation : ChargeCalculation.values()) {
-            if (calculation.getLiteral().equals(charge_calculation_enum)) {
-                this.chargeCalculationValue = new Option(calculation.name(), calculation.getDescription());
-                break;
-            }
-        }
+        this.chargeCalculationValue = ChargeCalculation.optionLiteral(charge_calculation_enum);
 
         try {
             this.dueDateValue = DATE_FORMAT.parse(String.valueOf(chargeObject.get("fee_on_day")) + "/" + String.valueOf(chargeObject.get("fee_on_month")));
@@ -295,7 +284,7 @@ public class SavingDepositChargeModifyPage extends Page {
 
         this.penaltyValue = (Boolean) chargeObject.get("is_penalty");
 
-        this.taxGroupValue = jdbcTemplate.queryForObject("select id, name text from m_tax_group where id = ?", new OptionMapper(), chargeObject.get("tax_group_id"));
+        this.taxGroupValue = jdbcTemplate.queryForObject("select id, name text from m_tax_group where id = ?", Option.MAPPER, chargeObject.get("tax_group_id"));
     }
 
     protected boolean chargeTimeFieldUpdate(AjaxRequestTarget target) {

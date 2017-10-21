@@ -25,7 +25,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -33,8 +32,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class CenterModifyPage extends Page {
 
-    private String centerId;
-    private String officeId;
+    protected String centerId;
+    protected String officeId;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -143,7 +142,7 @@ public class CenterModifyPage extends Page {
         Map<String, Object> centerObject = jdbcTemplate.queryForMap("select * from m_group where id = ?", this.centerId);
         this.officeId = String.valueOf(centerObject.get("office_id"));
         this.nameValue = (String) centerObject.get("display_name");
-        this.staffValue = jdbcTemplate.queryForObject("select id, display_name as text from m_staff where id = ?", new OptionMapper(), centerObject.get("staff_id"));
+        this.staffValue = jdbcTemplate.queryForObject("select id, display_name as text from m_staff where id = ?", Option.MAPPER, centerObject.get("staff_id"));
         this.externalIdValue = (String) centerObject.get("external_id");
         this.activationDateValue = (Date) centerObject.get("activation_date");
     }

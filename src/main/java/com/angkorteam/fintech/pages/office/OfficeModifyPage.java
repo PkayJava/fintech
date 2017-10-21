@@ -27,7 +27,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
@@ -143,7 +142,7 @@ public class OfficeModifyPage extends Page {
         this.externalIdValue = (String) object.get("external_id");
         this.nameValue = (String) object.get("name");
         this.openingDateValue = (Date) object.get("opening_date");
-        this.parentValue = jdbcTemplate.queryForObject("select id, name as text from m_office where id = ?", new OptionMapper(), object.get("parent_id"));
+        this.parentValue = jdbcTemplate.queryForObject("select id, name as text from m_office where id = ?", Option.MAPPER, object.get("parent_id"));
     }
 
     protected void saveButtonSubmit(Button button) {

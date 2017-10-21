@@ -191,14 +191,7 @@ public class WorkingDayPage extends Page {
         this.fridayValue = days.contains("FR");
         this.saturdayValue = days.contains("ST");
         this.sundayValue = days.contains("SU");
-        if (object.get("repayment_rescheduling_enum") != null) {
-            for (RepaymentOption repayment : RepaymentOption.values()) {
-                if (repayment.getLiteral().equals(object.get("repayment_rescheduling_enum"))) {
-                    this.repaymentOptionValue = new Option(repayment.name(), repayment.getDescription());
-                }
-            }
-
-        }
+        this.repaymentOptionValue = RepaymentOption.optionLiteral(String.valueOf(object.get("repayment_rescheduling_enum")));
         this.repaymentExtendTermValue = (Boolean) object.get("extend_term_daily_repayments");
     }
 

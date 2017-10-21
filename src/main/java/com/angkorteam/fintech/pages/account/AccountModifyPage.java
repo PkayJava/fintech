@@ -33,7 +33,6 @@ import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
@@ -45,49 +44,49 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class AccountModifyPage extends Page {
 
-    private String accountId;
+    protected String accountId;
 
-    private AccountTypeProvider accountTypeProvider;
-    private Option accountTypeValue;
-    private Select2SingleChoice<Option> accountTypeField;
-    private TextFeedbackPanel accountTypeFeedback;
+    protected AccountTypeProvider accountTypeProvider;
+    protected Option accountTypeValue;
+    protected Select2SingleChoice<Option> accountTypeField;
+    protected TextFeedbackPanel accountTypeFeedback;
 
-    private SingleChoiceProvider parentProvider;
-    private Option parentValue;
-    private Select2SingleChoice<Option> parentField;
-    private TextFeedbackPanel parentFeedback;
+    protected SingleChoiceProvider parentProvider;
+    protected Option parentValue;
+    protected Select2SingleChoice<Option> parentField;
+    protected TextFeedbackPanel parentFeedback;
 
-    private String glCodeValue;
-    private TextField<String> glCodeField;
-    private TextFeedbackPanel glCodeFeedback;
+    protected String glCodeValue;
+    protected TextField<String> glCodeField;
+    protected TextFeedbackPanel glCodeFeedback;
 
-    private String accountNameValue;
-    private TextField<String> accountNameField;
-    private TextFeedbackPanel accountNameFeedback;
+    protected String accountNameValue;
+    protected TextField<String> accountNameField;
+    protected TextFeedbackPanel accountNameFeedback;
 
-    private AccountUsageProvider accountUsageProvider;
-    private Option accountUsageValue;
-    private Select2SingleChoice<Option> accountUsageField;
-    private TextFeedbackPanel accountUsageFeedback;
+    protected AccountUsageProvider accountUsageProvider;
+    protected Option accountUsageValue;
+    protected Select2SingleChoice<Option> accountUsageField;
+    protected TextFeedbackPanel accountUsageFeedback;
 
-    private SingleChoiceProvider tagProvider;
-    private Option tagValue;
-    private Select2SingleChoice<Option> tagField;
-    private TextFeedbackPanel tagFeedback;
+    protected SingleChoiceProvider tagProvider;
+    protected Option tagValue;
+    protected Select2SingleChoice<Option> tagField;
+    protected TextFeedbackPanel tagFeedback;
 
-    private Boolean manualAllowValue;
-    private CheckBox manualAllowField;
-    private TextFeedbackPanel manualAllowFeedback;
+    protected Boolean manualAllowValue;
+    protected CheckBox manualAllowField;
+    protected TextFeedbackPanel manualAllowFeedback;
 
-    private String descriptionValue;
-    private TextArea<String> descriptionField;
-    private TextFeedbackPanel descriptionFeedback;
+    protected String descriptionValue;
+    protected TextArea<String> descriptionField;
+    protected TextFeedbackPanel descriptionFeedback;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
-    
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
+
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -123,9 +122,7 @@ public class AccountModifyPage extends Page {
         this.accountId = parameters.get("accountId").toString("");
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> account = jdbcTemplate.queryForMap(
-                "select id,name,parent_id,gl_code, manual_journal_entries_allowed, concat(account_usage,'') account_usage, classification_enum, tag_id,description from acc_gl_account where id = ?",
-                accountId);
+        Map<String, Object> account = jdbcTemplate.queryForMap("select id,name,parent_id,gl_code, manual_journal_entries_allowed, concat(account_usage,'') account_usage, classification_enum, tag_id,description from acc_gl_account where id = ?", accountId);
 
         this.form = new Form<>("form");
         add(this.form);
@@ -137,29 +134,21 @@ public class AccountModifyPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", AccountBrowsePage.class);
         this.form.add(this.closeLink);
 
-        for (AccountType a : AccountType.values()) {
-            if (a.getLiteral().equals(String.valueOf(account.get("classification_enum")))) {
-                this.accountTypeValue = new Option(a.name(), a.getDescription());
-                break;
-            }
-        }
+        this.accountTypeValue = AccountType.optionLiteral(String.valueOf(account.get("classification_enum")));
         this.accountTypeProvider = new AccountTypeProvider();
-        this.accountTypeField = new Select2SingleChoice<>("accountTypeField", 0,
-                new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
+        this.accountTypeField = new Select2SingleChoice<>("accountTypeField", 0, new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
         this.accountTypeField.setRequired(true);
         this.accountTypeField.add(new OnChangeAjaxBehavior(this::accountTypeFieldUpdate, this::accountTypeFieldError));
         this.form.add(this.accountTypeField);
         this.accountTypeFeedback = new TextFeedbackPanel("accountTypeFeedback", this.accountTypeField);
         this.form.add(this.accountTypeFeedback);
 
-        this.parentValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?",
-                new OptionMapper(), account.get("parent_id"));
+        this.parentValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, account.get("parent_id"));
         this.parentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.parentProvider.applyWhere("classification_enum", "classification_enum = " + accountTypeValue.getId());
         this.parentProvider.applyWhere("check", "id != " + this.accountId);
         this.parentProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Header.getLiteral());
-        this.parentField = new Select2SingleChoice<>("parentField", 0, new PropertyModel<>(this, "parentValue"),
-                this.parentProvider);
+        this.parentField = new Select2SingleChoice<>("parentField", 0, new PropertyModel<>(this, "parentValue"), this.parentProvider);
         this.form.add(this.parentField);
         this.parentFeedback = new TextFeedbackPanel("parentFeedback", this.parentField);
         this.form.add(this.parentFeedback);
@@ -178,27 +167,18 @@ public class AccountModifyPage extends Page {
         this.accountNameFeedback = new TextFeedbackPanel("accountNameFeedback", this.accountNameField);
         this.form.add(this.accountNameFeedback);
 
-        for (AccountUsage a : AccountUsage.values()) {
-            if (a.getLiteral().equals(account.get("account_usage"))) {
-                this.accountUsageValue = new Option(a.name(), a.getDescription());
-                break;
-            }
-        }
+        this.accountUsageValue = AccountUsage.optionLiteral(String.valueOf(account.get("account_usage")));
         this.accountUsageProvider = new AccountUsageProvider();
-        this.accountUsageField = new Select2SingleChoice<>("accountUsageField", 0,
-                new PropertyModel<>(this, "accountUsageValue"), this.accountUsageProvider);
+        this.accountUsageField = new Select2SingleChoice<>("accountUsageField", 0, new PropertyModel<>(this, "accountUsageValue"), this.accountUsageProvider);
         this.form.add(this.accountUsageField);
         this.accountUsageFeedback = new TextFeedbackPanel("accountUsageFeedback", this.accountUsageField);
         this.form.add(this.accountUsageFeedback);
 
-        this.tagValue = jdbcTemplate.queryForObject("select id, code_value text from m_code_value where id = ?",
-                new OptionMapper(), account.get("tag_id"));
+        this.tagValue = jdbcTemplate.queryForObject("select id, code_value text from m_code_value where id = ?", Option.MAPPER, account.get("tag_id"));
         this.tagProvider = new SingleChoiceProvider("m_code_value", "id", "code_value");
         AccountType temp = AccountType.valueOf(accountTypeValue.getId());
-        this.tagProvider.applyWhere("code",
-                "code_id in (select id from m_code where code_name = '" + temp.getTag() + "')");
-        this.tagField = new Select2SingleChoice<>("tagField", 0, new PropertyModel<>(this, "tagValue"),
-                this.tagProvider);
+        this.tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + temp.getTag() + "')");
+        this.tagField = new Select2SingleChoice<>("tagField", 0, new PropertyModel<>(this, "tagValue"), this.tagProvider);
         this.tagField.setRequired(true);
         this.form.add(this.tagField);
         this.tagFeedback = new TextFeedbackPanel("tagFeedback", this.tagField);
@@ -228,12 +208,10 @@ public class AccountModifyPage extends Page {
             AccountType temp = AccountType.valueOf(this.accountTypeValue.getId());
             this.tagValue = null;
             this.parentValue = null;
-            this.tagProvider.applyWhere("code",
-                    "code_id in (select id from m_code where code_name = '" + temp.getTag() + "')");
+            this.tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + temp.getTag() + "')");
             this.tagProvider.setDisabled(false);
             this.parentProvider.setDisabled(false);
-            this.parentProvider.applyWhere("classification_enum",
-                    "classification_enum = " + this.accountTypeValue.getId());
+            this.parentProvider.applyWhere("classification_enum", "classification_enum = " + this.accountTypeValue.getId());
         }
         target.add(this.form);
         return false;

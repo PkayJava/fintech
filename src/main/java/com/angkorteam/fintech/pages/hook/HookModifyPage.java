@@ -44,7 +44,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.OptionChoiceRenderer;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.OptionMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
@@ -56,49 +55,49 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class HookModifyPage extends Page {
 
-    private String hookId;
+    protected String hookId;
 
-    private List<Option> groupingProvider;
-    private Option groupingValue;
-    private DropDownChoice<Option> groupingField;
-    private TextFeedbackPanel groupingFeedback;
+    protected List<Option> groupingProvider;
+    protected Option groupingValue;
+    protected DropDownChoice<Option> groupingField;
+    protected TextFeedbackPanel groupingFeedback;
 
-    private List<Option> entityNameProvider;
-    private Option entityNameValue;
-    private DropDownChoice<Option> entityNameField;
-    private TextFeedbackPanel entityNameFeedback;
+    protected List<Option> entityNameProvider;
+    protected Option entityNameValue;
+    protected DropDownChoice<Option> entityNameField;
+    protected TextFeedbackPanel entityNameFeedback;
 
-    private List<Option> actionNameProvider;
-    private Option actionNameValue;
-    private DropDownChoice<Option> actionNameField;
-    private TextFeedbackPanel actionNameFeedback;
+    protected List<Option> actionNameProvider;
+    protected Option actionNameValue;
+    protected DropDownChoice<Option> actionNameField;
+    protected TextFeedbackPanel actionNameFeedback;
 
-    private Form<Void> eventForm;
-    private AjaxButton addButton;
+    protected Form<Void> eventForm;
+    protected AjaxButton addButton;
 
-    private String templateId;
-    private String templateValue;
-    private Label templateField;
+    protected String templateId;
+    protected String templateValue;
+    protected Label templateField;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private Boolean activeValue;
-    private CheckBox activeField;
-    private TextFeedbackPanel activeFeedback;
+    protected Boolean activeValue;
+    protected CheckBox activeField;
+    protected TextFeedbackPanel activeFeedback;
 
-    private Map<String, String> configValue;
-    private RepeatingView configField;
+    protected Map<String, String> configValue;
+    protected RepeatingView configField;
 
-    private ListDataProvider provider;
-    private DataTable<Map<String, Object>, String> dataTable;
-    private List<Map<String, Object>> events;
+    protected ListDataProvider provider;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected List<Map<String, Object>> events;
 
-    private Form<Void> hookForm;
-    private Button saveButton;
+    protected Form<Void> hookForm;
+    protected Button saveButton;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -171,7 +170,7 @@ public class HookModifyPage extends Page {
         this.eventForm = new Form<>("eventForm");
         add(this.eventForm);
 
-        this.groupingProvider = jdbcTemplate.query("select max(grouping) id, max(grouping) text from m_permission GROUP BY grouping", new OptionMapper());
+        this.groupingProvider = jdbcTemplate.query("select max(grouping) id, max(grouping) text from m_permission GROUP BY grouping", Option.MAPPER);
         this.groupingField = new DropDownChoice<>("groupingField", new PropertyModel<>(this, "groupingValue"), new PropertyModel<>(this, "groupingProvider"), new OptionChoiceRenderer());
         this.groupingField.setRequired(true);
         this.groupingField.add(new OnChangeAjaxBehavior(this::groupingFieldUpdate));
@@ -242,7 +241,7 @@ public class HookModifyPage extends Page {
     protected boolean groupingFieldUpdate(AjaxRequestTarget target) {
         if (this.groupingValue != null) {
             JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-            this.entityNameProvider = jdbcTemplate.query("select max(entity_name) id, max(entity_name) text from m_permission WHERE  grouping = ? GROUP BY entity_name", new OptionMapper(), this.groupingValue.getId());
+            this.entityNameProvider = jdbcTemplate.query("select max(entity_name) id, max(entity_name) text from m_permission WHERE  grouping = ? GROUP BY entity_name", Option.MAPPER, this.groupingValue.getId());
         } else {
             if (this.entityNameProvider != null) {
                 this.entityNameProvider.clear();
@@ -258,7 +257,7 @@ public class HookModifyPage extends Page {
     protected boolean entityNameFieldUpdate(AjaxRequestTarget target) {
         if (this.entityNameValue != null) {
             JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-            this.actionNameProvider = jdbcTemplate.query("select max(action_name) id, max(action_name) text from m_permission WHERE  entity_name = ? GROUP BY action_name", new OptionMapper(), this.entityNameValue.getId());
+            this.actionNameProvider = jdbcTemplate.query("select max(action_name) id, max(action_name) text from m_permission WHERE  entity_name = ? GROUP BY action_name", Option.MAPPER, this.entityNameValue.getId());
         } else {
             if (this.actionNameProvider != null) {
                 this.actionNameProvider.clear();
@@ -268,7 +267,7 @@ public class HookModifyPage extends Page {
         return false;
     }
 
-    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.events.size(); i++) {
             Map<String, Object> column = this.events.get(i);
@@ -283,11 +282,11 @@ public class HookModifyPage extends Page {
         target.add(this.dataTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> actionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         HookBuilder builder = new HookBuilder();
         builder.withId(this.hookId);
         builder.withName(this.nameValue);
@@ -335,12 +334,12 @@ public class HookModifyPage extends Page {
         return false;
     }
 
-    private ItemPanel entityNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel entityNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel actionNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel actionNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
