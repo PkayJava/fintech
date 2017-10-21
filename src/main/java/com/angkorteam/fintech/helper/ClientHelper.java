@@ -97,4 +97,10 @@ public class ClientHelper {
     public static JsonNode uploadClientImage(IMifos session, String clientId, String image) throws UnirestException {
         return Helper.performServerPost(session, "/api/v1/clients/" + clientId + "/images", image);
     }
+
+    public static JsonNode transferClient(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPost(session, "/api/v1/clients/" + id + "?command=proposeTransfer", object);
+    }
+
 }

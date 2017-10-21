@@ -11,7 +11,10 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.client.client.ClientTransferBuilder;
+import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
@@ -20,6 +23,8 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ClientTransferPage extends Page {
@@ -93,5 +98,27 @@ public class ClientTransferPage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
+
+        ClientTransferBuilder builder = new ClientTransferBuilder();
+        builder.withId(this.clientId);
+        if (this.officeValue != null) {
+            builder.withDestinationOfficeId(this.officeValue.getId());
+        }
+        builder.withNote(this.noteValue);
+
+        JsonNode node = null;
+        try {
+            node = ClientHelper.transferClient((Session) getSession(), builder.build());
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+        PageParameters parameters = new PageParameters();
+        parameters.add("clientId", this.clientId);
+        setResponsePage(ClientPreviewPage.class, parameters);
+
     }
 }

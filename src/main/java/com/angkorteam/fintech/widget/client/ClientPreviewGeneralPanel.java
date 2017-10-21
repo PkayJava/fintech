@@ -67,12 +67,26 @@ public class ClientPreviewGeneralPanel extends Panel {
     protected WebMarkupContainer buttonGroups;
 
     protected BookmarkablePageLink<Void> newSavingLink;
-
     protected BookmarkablePageLink<Void> assignStaffLink;
-
     protected AjaxLink<Void> unassignStaffLink;
-    
     protected BookmarkablePageLink<Void> transferClientLink;
+    protected BookmarkablePageLink<Void> editLink;
+    protected BookmarkablePageLink<Void> newLoanLink;
+    protected BookmarkablePageLink<Void> newShareLink;
+    protected BookmarkablePageLink<Void> newChargeLink;
+    protected BookmarkablePageLink<Void> closeLink;
+    protected BookmarkablePageLink<Void> defaultSavingLink;
+    protected BookmarkablePageLink<Void> clientScreenReportLink;
+    protected BookmarkablePageLink<Void> clientUploadSignatureLink;
+    protected BookmarkablePageLink<Void> viewStandingInstructionLink;
+    protected BookmarkablePageLink<Void> createStandingInstructionLink;
+    protected BookmarkablePageLink<Void> newFixedLink;
+    protected BookmarkablePageLink<Void> newRecurringLink;
+    protected BookmarkablePageLink<Void> chargeOverviewLink;
+    protected BookmarkablePageLink<Void> surveyLink;
+    protected BookmarkablePageLink<Void> acceptTransferLink;
+    protected BookmarkablePageLink<Void> rejectTransferLink;
+    protected BookmarkablePageLink<Void> undoTransferLink;
 
     protected BookmarkablePageLink<Void> takePictureLink;
 
@@ -123,6 +137,57 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.unassignStaffLink = new AjaxLink<>("unassignStaffLink");
         this.unassignStaffLink.setOnClick(this::unassignStaffLinkClick);
         this.buttonGroups.add(this.unassignStaffLink);
+
+        this.editLink = new BookmarkablePageLink<Void>("editLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.editLink);
+
+        this.newLoanLink = new BookmarkablePageLink<Void>("newLoanLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.newLoanLink);
+
+        this.newShareLink = new BookmarkablePageLink<Void>("newShareLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.newShareLink);
+
+        this.newChargeLink = new BookmarkablePageLink<Void>("newChargeLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.newChargeLink);
+
+        this.closeLink = new BookmarkablePageLink<Void>("closeLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.closeLink);
+
+        this.defaultSavingLink = new BookmarkablePageLink<Void>("defaultSavingLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.defaultSavingLink);
+
+        this.clientScreenReportLink = new BookmarkablePageLink<Void>("clientScreenReportLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.clientScreenReportLink);
+
+        this.clientUploadSignatureLink = new BookmarkablePageLink<Void>("clientUploadSignatureLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.clientUploadSignatureLink);
+
+        this.viewStandingInstructionLink = new BookmarkablePageLink<Void>("viewStandingInstructionLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.viewStandingInstructionLink);
+
+        this.createStandingInstructionLink = new BookmarkablePageLink<Void>("createStandingInstructionLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.createStandingInstructionLink);
+
+        this.newFixedLink = new BookmarkablePageLink<Void>("newFixedLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.newFixedLink);
+
+        this.newRecurringLink = new BookmarkablePageLink<Void>("newRecurringLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.newRecurringLink);
+
+        this.chargeOverviewLink = new BookmarkablePageLink<Void>("chargeOverviewLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.chargeOverviewLink);
+
+        this.surveyLink = new BookmarkablePageLink<Void>("surveyLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.surveyLink);
+
+        this.acceptTransferLink = new BookmarkablePageLink<Void>("acceptTransferLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.acceptTransferLink);
+
+        this.rejectTransferLink = new BookmarkablePageLink<Void>("rejectTransferLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.rejectTransferLink);
+
+        this.undoTransferLink = new BookmarkablePageLink<Void>("undoTransferLink", ClientTransferPage.class, parameters);
+        this.buttonGroups.add(this.undoTransferLink);
 
         this.savingAccountProvider = new JdbcProvider("m_savings_account");
         this.savingAccountProvider.addJoin("LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
@@ -188,8 +253,49 @@ public class ClientPreviewGeneralPanel extends Panel {
     protected void initDefault() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         Map<String, Object> clientObject = jdbcTemplate.queryForMap("select * from m_client where id = ?", this.clientId);
+        Integer statusEnum = (Integer) clientObject.get("status_enum");
+
+        if (statusEnum == 300) {
+            this.transferClientLink.setVisible(true);
+            this.newSavingLink.setVisible(true);
+            this.editLink.setVisible(true);
+            this.newLoanLink.setVisible(true);
+            this.newShareLink.setVisible(true);
+            this.newChargeLink.setVisible(true);
+            this.closeLink.setVisible(true);
+            this.defaultSavingLink.setVisible(true);
+            this.viewStandingInstructionLink.setVisible(true);
+            this.createStandingInstructionLink.setVisible(true);
+            this.newFixedLink.setVisible(true);
+            this.newRecurringLink.setVisible(true);
+            this.acceptTransferLink.setVisible(false);
+            this.rejectTransferLink.setVisible(false);
+            this.undoTransferLink.setVisible(false);
+        } else if (statusEnum == 303) {
+            this.transferClientLink.setVisible(false);
+            this.newSavingLink.setVisible(false);
+            this.editLink.setVisible(false);
+            this.newLoanLink.setVisible(false);
+            this.newShareLink.setVisible(false);
+            this.newChargeLink.setVisible(false);
+            this.closeLink.setVisible(false);
+            this.defaultSavingLink.setVisible(false);
+            this.viewStandingInstructionLink.setVisible(false);
+            this.createStandingInstructionLink.setVisible(false);
+            this.newFixedLink.setVisible(false);
+            this.newRecurringLink.setVisible(false);
+            this.acceptTransferLink.setVisible(true);
+            this.rejectTransferLink.setVisible(true);
+            this.undoTransferLink.setVisible(true);
+        }
+
+        this.chargeOverviewLink.setVisible(true);
+        this.surveyLink.setVisible(true);
+        this.clientUploadSignatureLink.setVisible(true);
+        this.clientScreenReportLink.setVisible(true);
         this.assignStaffLink.setVisible(clientObject.get("staff_id") == null);
         this.unassignStaffLink.setVisible(clientObject.get("staff_id") != null);
+
     }
 
     protected void initData() {
