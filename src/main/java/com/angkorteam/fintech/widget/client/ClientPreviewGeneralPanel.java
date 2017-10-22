@@ -30,6 +30,7 @@ import com.angkorteam.fintech.dto.builder.client.client.ClientUnassignStaffBuild
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.pages.client.client.ClientAcceptTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientAssignStaffPage;
+import com.angkorteam.fintech.pages.client.client.ClientDefaultSavingAccountPage;
 import com.angkorteam.fintech.pages.client.client.ClientRejectTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientUndoTransferPage;
@@ -156,7 +157,7 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.closeLink = new BookmarkablePageLink<Void>("closeLink", ClientTransferPage.class, parameters);
         this.buttonGroups.add(this.closeLink);
 
-        this.defaultSavingLink = new BookmarkablePageLink<Void>("defaultSavingLink", ClientTransferPage.class, parameters);
+        this.defaultSavingLink = new BookmarkablePageLink<Void>("defaultSavingLink", ClientDefaultSavingAccountPage.class, parameters);
         this.buttonGroups.add(this.defaultSavingLink);
 
         this.clientScreenReportLink = new BookmarkablePageLink<Void>("clientScreenReportLink", ClientTransferPage.class, parameters);

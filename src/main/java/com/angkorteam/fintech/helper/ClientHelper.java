@@ -118,4 +118,9 @@ public class ClientHelper {
         return Helper.performServerPost(session, "/api/v1/clients/" + id + "?command=withdrawTransfer", object);
     }
 
+    public static JsonNode defaultSavingAccountClient(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPost(session, "/api/v1/clients/" + id + "?command=updateSavingsAccount", object);
+    }
+
 }

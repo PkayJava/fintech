@@ -1,20 +1,29 @@
 package com.angkorteam.fintech.pages.client.client;
 
+import java.util.Map;
+
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.client.client.ClientDefaulSavingAccountBuilder;
+import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ClientDefaultSavingAccountPage extends Page {
@@ -38,12 +47,18 @@ public class ClientDefaultSavingAccountPage extends Page {
 
         initData();
 
+        PageParameters parameters = new PageParameters();
+        parameters.add("clientId", this.clientId);
+
         this.form = new Form<>("form");
         add(this.form);
 
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
+
+        this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
+        this.form.add(this.closeLink);
 
         this.savingBlock = new WebMarkupContainer("savingBlock");
         this.form.add(this.savingBlock);
@@ -62,9 +77,31 @@ public class ClientDefaultSavingAccountPage extends Page {
     }
 
     protected void initData() {
+        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         this.clientId = getPageParameters().get("clientId").toString();
+        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select * from m_client where id = ?", this.clientId);
+        this.savingValue = jdbcTemplate.queryForObject("select m_savings_account.id id, concat(m_savings_account.account_no, ' => ', m_savings_product.name) text from m_savings_account INNER JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id where m_savings_account.id = ?", Option.MAPPER, clientObject.get("default_savings_account"));
     }
 
     protected void saveButtonSubmit(Button button) {
+        ClientDefaulSavingAccountBuilder builder = new ClientDefaulSavingAccountBuilder();
+        builder.withId(this.clientId);
+        if (this.savingValue != null) {
+            builder.withSavingsAccountId(this.savingValue.getId());
+        }
+
+        JsonNode node = null;
+        try {
+            node = ClientHelper.defaultSavingAccountClient((Session) getSession(), builder.build());
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+        PageParameters parameters = new PageParameters();
+        parameters.add("clientId", this.clientId);
+        setResponsePage(ClientPreviewPage.class, parameters);
     }
 }
