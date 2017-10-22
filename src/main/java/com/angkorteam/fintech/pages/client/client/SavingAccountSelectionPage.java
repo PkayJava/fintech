@@ -28,12 +28,12 @@ public class SavingAccountSelectionPage extends Page {
 
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupContainer productBlock;
-    protected WebMarkupContainer productContainer;
-    protected SingleChoiceProvider productProvider;
-    protected Option productValue;
-    protected Select2SingleChoice<Option> productField;
-    protected TextFeedbackPanel productFeedback;
+    protected WebMarkupContainer savingBlock;
+    protected WebMarkupContainer savingContainer;
+    protected SingleChoiceProvider savingProvider;
+    protected Option savingValue;
+    protected Select2SingleChoice<Option> savingField;
+    protected TextFeedbackPanel savingFeedback;
 
     @Override
     protected void onInitialize() {
@@ -54,20 +54,19 @@ public class SavingAccountSelectionPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.productBlock = new WebMarkupContainer("productBlock");
-        this.form.add(this.productBlock);
-        this.productContainer = new WebMarkupContainer("productContainer");
-        this.productBlock.add(this.productContainer);
-
-        this.productProvider = new SingleChoiceProvider("m_savings_product", "id", "name");
-        this.productProvider.applyWhere("deposit_type_enum", "deposit_type_enum = " + DepositType.Saving.getLiteral());
-        this.productField = new Select2SingleChoice<>("productField", new PropertyModel<>(this, "productValue"), this.productProvider);
-        this.productField.setLabel(Model.of("Product"));
-        this.productField.add(new OnChangeAjaxBehavior());
-        this.productField.setRequired(true);
-        this.productContainer.add(this.productField);
-        this.productFeedback = new TextFeedbackPanel("productFeedback", this.productField);
-        this.productContainer.add(this.productFeedback);
+        this.savingBlock = new WebMarkupContainer("savingBlock");
+        this.form.add(this.savingBlock);
+        this.savingContainer = new WebMarkupContainer("savingContainer");
+        this.savingBlock.add(this.savingContainer);
+        this.savingProvider = new SingleChoiceProvider("m_savings_product", "id", "name");
+        this.savingProvider.applyWhere("deposit_type_enum", "deposit_type_enum = " + DepositType.Saving.getLiteral());
+        this.savingField = new Select2SingleChoice<>("savingField", new PropertyModel<>(this, "savingValue"), this.savingProvider);
+        this.savingField.setLabel(Model.of("Product"));
+        this.savingField.add(new OnChangeAjaxBehavior());
+        this.savingField.setRequired(true);
+        this.savingContainer.add(this.savingField);
+        this.savingFeedback = new TextFeedbackPanel("savingFeedback", this.savingField);
+        this.savingContainer.add(this.savingFeedback);
     }
 
     protected void initData() {
@@ -77,7 +76,7 @@ public class SavingAccountSelectionPage extends Page {
     protected void okayButtonSubmit(Button button) {
         PageParameters parameters = new PageParameters();
         parameters.add("clientId", this.clientId);
-        parameters.add("productId", this.productValue.getId());
+        parameters.add("savingId", this.savingValue.getId());
         setResponsePage(SavingAccountCreatePage.class, parameters);
     }
 
