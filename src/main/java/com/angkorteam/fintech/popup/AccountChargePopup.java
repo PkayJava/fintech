@@ -30,9 +30,9 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
-public class CenterAccountChargePopup extends Panel {
+public class AccountChargePopup extends Panel {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CenterAccountChargePopup.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountChargePopup.class);
 
     protected ModalWindow window;
     protected Object model;
@@ -77,7 +77,7 @@ public class CenterAccountChargePopup extends Panel {
 
     protected String currencyCode;
 
-    public CenterAccountChargePopup(String id, ModalWindow window, Object model, String currencyCode) {
+    public AccountChargePopup(String id, ModalWindow window, Object model, String currencyCode) {
         super(id);
         this.model = model;
         this.window = window;

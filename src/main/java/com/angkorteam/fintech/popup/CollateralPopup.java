@@ -6,8 +6,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.angkorteam.fintech.provider.LoanCollateralProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -18,8 +16,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 public class CollateralPopup extends Panel {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CollateralPopup.class);
 
     protected ModalWindow window;
     protected Object model;
@@ -46,13 +42,10 @@ public class CollateralPopup extends Panel {
     protected TextFeedbackPanel descriptionFeedback;
     protected PropertyModel<String> descriptionValue;
 
-    protected String currencyCode;
-
-    public CollateralPopup(String id, ModalWindow window, Object model, String currencyCode) {
+    public CollateralPopup(String id, ModalWindow window, Object model) {
         super(id);
         this.model = model;
         this.window = window;
-        this.currencyCode = currencyCode;
     }
 
     @Override

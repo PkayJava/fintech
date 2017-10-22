@@ -396,6 +396,25 @@
 					<div class="clearfix"></div>
 				</div>
 
+				<div class="box-header with-border">
+					<h3 class="box-title">Collateral</h3>
+				</div>
+				<div class="box-body">
+					<!-- Row -->
+					<div
+						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="box box-primary">
+							<div class="box-body">
+								<table wicket:id="collateralTable"></table>
+							</div>
+							<div class="box-footer">
+								<a wicket:id="collateralAddLink" class="btn btn-default">Add</a>
+							</div>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+
 				<div class="box-footer">
 					<button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
 					<a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
@@ -403,6 +422,7 @@
 			</div>
 		</form>
 		<div wicket:id="chargePopup" />
+		<div wicket:id="collateralPopup" />
 	</wicket:extend>
 </body>
 

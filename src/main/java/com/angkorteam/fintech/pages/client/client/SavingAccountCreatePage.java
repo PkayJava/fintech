@@ -31,7 +31,7 @@ import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
 import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
 import com.angkorteam.fintech.dto.enums.LockInType;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.popup.CenterAccountChargePopup;
+import com.angkorteam.fintech.popup.AccountChargePopup;
 import com.angkorteam.fintech.provider.DayInYearProvider;
 import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
 import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
@@ -555,7 +555,7 @@ public class SavingAccountCreatePage extends Page {
         this.itemCollectedOnValue = null;
         this.itemDateValue = null;
         this.itemRepaymentEveryValue = null;
-        this.chargePopup.setContent(new CenterAccountChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyValue));
+        this.chargePopup.setContent(new AccountChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyValue));
         this.chargePopup.show(target);
         return false;
     }
