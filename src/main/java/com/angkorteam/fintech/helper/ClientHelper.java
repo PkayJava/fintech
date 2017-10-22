@@ -103,4 +103,19 @@ public class ClientHelper {
         return Helper.performServerPost(session, "/api/v1/clients/" + id + "?command=proposeTransfer", object);
     }
 
+    public static JsonNode acceptTransferClient(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPost(session, "/api/v1/clients/" + id + "?command=acceptTransfer", object);
+    }
+
+    public static JsonNode rejectTransferClient(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPost(session, "/api/v1/clients/" + id + "?command=rejectTransfer", object);
+    }
+
+    public static JsonNode undoTransferClient(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPost(session, "/api/v1/clients/" + id + "?command=withdrawTransfer", object);
+    }
+
 }

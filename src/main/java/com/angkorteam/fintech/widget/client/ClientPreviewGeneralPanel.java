@@ -28,8 +28,11 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.builder.client.client.ClientUnassignStaffBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
+import com.angkorteam.fintech.pages.client.client.ClientAcceptTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientAssignStaffPage;
+import com.angkorteam.fintech.pages.client.client.ClientRejectTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientTransferPage;
+import com.angkorteam.fintech.pages.client.client.ClientUndoTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientWebcamPage;
 import com.angkorteam.fintech.pages.client.client.SavingAccountActivatePage;
 import com.angkorteam.fintech.pages.client.client.SavingAccountApprovePage;
@@ -180,13 +183,13 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.surveyLink = new BookmarkablePageLink<Void>("surveyLink", ClientTransferPage.class, parameters);
         this.buttonGroups.add(this.surveyLink);
 
-        this.acceptTransferLink = new BookmarkablePageLink<Void>("acceptTransferLink", ClientTransferPage.class, parameters);
+        this.acceptTransferLink = new BookmarkablePageLink<Void>("acceptTransferLink", ClientAcceptTransferPage.class, parameters);
         this.buttonGroups.add(this.acceptTransferLink);
 
-        this.rejectTransferLink = new BookmarkablePageLink<Void>("rejectTransferLink", ClientTransferPage.class, parameters);
+        this.rejectTransferLink = new BookmarkablePageLink<Void>("rejectTransferLink", ClientRejectTransferPage.class, parameters);
         this.buttonGroups.add(this.rejectTransferLink);
 
-        this.undoTransferLink = new BookmarkablePageLink<Void>("undoTransferLink", ClientTransferPage.class, parameters);
+        this.undoTransferLink = new BookmarkablePageLink<Void>("undoTransferLink", ClientUndoTransferPage.class, parameters);
         this.buttonGroups.add(this.undoTransferLink);
 
         this.savingAccountProvider = new JdbcProvider("m_savings_account");
@@ -255,6 +258,10 @@ public class ClientPreviewGeneralPanel extends Panel {
         Map<String, Object> clientObject = jdbcTemplate.queryForMap("select * from m_client where id = ?", this.clientId);
         Integer statusEnum = (Integer) clientObject.get("status_enum");
 
+        // status enum
+        // 300 : active
+        // 303 : active but transferring office
+        // 304 : active but rejecting transferring office
         if (statusEnum == 300) {
             this.transferClientLink.setVisible(true);
             this.newSavingLink.setVisible(true);
@@ -286,6 +293,22 @@ public class ClientPreviewGeneralPanel extends Panel {
             this.newRecurringLink.setVisible(false);
             this.acceptTransferLink.setVisible(true);
             this.rejectTransferLink.setVisible(true);
+            this.undoTransferLink.setVisible(true);
+        } else if (statusEnum == 304) {
+            this.transferClientLink.setVisible(false);
+            this.newSavingLink.setVisible(false);
+            this.editLink.setVisible(false);
+            this.newLoanLink.setVisible(false);
+            this.newShareLink.setVisible(false);
+            this.newChargeLink.setVisible(false);
+            this.closeLink.setVisible(false);
+            this.defaultSavingLink.setVisible(false);
+            this.viewStandingInstructionLink.setVisible(false);
+            this.createStandingInstructionLink.setVisible(false);
+            this.newFixedLink.setVisible(false);
+            this.newRecurringLink.setVisible(false);
+            this.acceptTransferLink.setVisible(false);
+            this.rejectTransferLink.setVisible(false);
             this.undoTransferLink.setVisible(true);
         }
 
