@@ -29,7 +29,7 @@ public class NominalInterestRateTypeProvider extends SingleChoiceProvider<Option
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
         for (NominalInterestRateType value : NominalInterestRateType.values()) {
-            options.add(new Option(value.name(), value.getDescription()));
+            options.add(value.toOption());
         }
         return options;
     }

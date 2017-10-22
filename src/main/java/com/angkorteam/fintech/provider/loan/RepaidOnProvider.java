@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.wicket.model.IModel;
 
-import com.angkorteam.fintech.dto.enums.loan.ClosureInterestCalculationRule;
+import com.angkorteam.fintech.dto.enums.loan.RepaidOn;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.SingleChoiceProvider;
 import com.google.common.collect.Lists;
@@ -12,7 +12,7 @@ import com.google.common.collect.Lists;
 /**
  * Created by socheatkhauv on 7/2/17.
  */
-public class ClosureInterestCalculationRuleProvider extends SingleChoiceProvider<Option> {
+public class RepaidOnProvider extends SingleChoiceProvider<Option> {
 
     @Override
     public Option toChoice(String id) {
@@ -28,7 +28,7 @@ public class ClosureInterestCalculationRuleProvider extends SingleChoiceProvider
     @Override
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
-        for (ClosureInterestCalculationRule value : ClosureInterestCalculationRule.values()) {
+        for (RepaidOn value : RepaidOn.values()) {
             options.add(value.toOption());
         }
         return options;

@@ -29,7 +29,7 @@ public class InterestCalculationPeriodProvider extends SingleChoiceProvider<Opti
     public List<Option> query(String term, int page) {
         List<Option> options = Lists.newArrayList();
         for (InterestCalculationPeriod value : InterestCalculationPeriod.values()) {
-            options.add(new Option(value.name(), value.getDescription()));
+            options.add(value.toOption());
         }
         return options;
     }

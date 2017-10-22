@@ -35,6 +35,7 @@ import com.angkorteam.fintech.pages.client.client.ClientRejectTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientUndoTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientWebcamPage;
+import com.angkorteam.fintech.pages.client.client.LoanSelectionPage;
 import com.angkorteam.fintech.pages.client.client.SavingAccountActivatePage;
 import com.angkorteam.fintech.pages.client.client.SavingAccountApprovePage;
 import com.angkorteam.fintech.pages.client.client.SavingAccountDepositPage;
@@ -145,7 +146,7 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.editLink = new BookmarkablePageLink<Void>("editLink", ClientTransferPage.class, parameters);
         this.buttonGroups.add(this.editLink);
 
-        this.newLoanLink = new BookmarkablePageLink<Void>("newLoanLink", ClientTransferPage.class, parameters);
+        this.newLoanLink = new BookmarkablePageLink<Void>("newLoanLink", LoanSelectionPage.class, parameters);
         this.buttonGroups.add(this.newLoanLink);
 
         this.newShareLink = new BookmarkablePageLink<Void>("newShareLink", ClientTransferPage.class, parameters);

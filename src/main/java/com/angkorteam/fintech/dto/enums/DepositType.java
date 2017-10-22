@@ -43,7 +43,7 @@ public enum DepositType {
         if (value == null) {
             return null;
         }
-        return new Option(value.name(), value.getDescription());
+        return value.toOption();
     }
 
 }

@@ -1,20 +1,20 @@
-package com.angkorteam.fintech.dto.enums;
+package com.angkorteam.fintech.dto.enums.loan;
 
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
-public enum ChargeCalculation {
+public enum RepaidOn {
 
-    Flat("1", "Flat"), 
-    ApprovedAmount("2", "% Approved Amount"), 
-    LoanAmountInterest("3", "% Loan Amount + Interest"), 
-    Interest("4", "% Interest"), 
-    DisbursementAmount("5", "% Disbursement Amount");
+    First("1", "First"), 
+    Second("2", "Second"), 
+    Third("3", "Third"), 
+    Fourth("4", "Fourth"), 
+    Last("-1", "Last");
 
     private String literal;
 
     private String description;
 
-    ChargeCalculation(String literal, String description) {
+    RepaidOn(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
@@ -31,8 +31,8 @@ public enum ChargeCalculation {
         return new Option(this.name(), this.description);
     }
 
-    public static ChargeCalculation parseLiteral(String literal) {
-        for (ChargeCalculation value : ChargeCalculation.values()) {
+    public static RepaidOn parseLiteral(String literal) {
+        for (RepaidOn value : RepaidOn.values()) {
             if (value.getLiteral().equals(literal)) {
                 return value;
             }
@@ -41,11 +41,10 @@ public enum ChargeCalculation {
     }
 
     public static Option optionLiteral(String literal) {
-        ChargeCalculation value = parseLiteral(literal);
+        RepaidOn value = parseLiteral(literal);
         if (value == null) {
             return null;
         }
         return value.toOption();
     }
-
 }

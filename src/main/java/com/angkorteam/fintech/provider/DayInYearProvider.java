@@ -43,7 +43,7 @@ public class DayInYearProvider extends SingleChoiceProvider<Option> {
         }
         List<Option> options = Lists.newArrayList();
         for (DayInYear value : this.values) {
-            options.add(new Option(value.name(), value.getDescription()));
+            options.add(value.toOption());
         }
         return options;
     }

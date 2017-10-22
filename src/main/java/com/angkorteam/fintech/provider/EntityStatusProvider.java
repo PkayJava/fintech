@@ -33,7 +33,7 @@ public class EntityStatusProvider extends SingleChoiceProvider<Option> {
         List<Option> options = Lists.newArrayList();
         if (this.type != null) {
             for (EntityStatus value : this.type.getStatus()) {
-                options.add(new Option(value.name(), value.getDescription()));
+                options.add(value.toOption());
             }
         }
         return options;

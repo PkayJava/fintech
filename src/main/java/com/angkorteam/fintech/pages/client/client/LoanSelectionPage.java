@@ -27,12 +27,12 @@ public class LoanSelectionPage extends Page {
 
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupContainer productBlock;
-    protected WebMarkupContainer productContainer;
-    protected SingleChoiceProvider productProvider;
-    protected Option productValue;
-    protected Select2SingleChoice<Option> productField;
-    protected TextFeedbackPanel productFeedback;
+    protected WebMarkupContainer loanBlock;
+    protected WebMarkupContainer loanContainer;
+    protected SingleChoiceProvider loanProvider;
+    protected Option loanValue;
+    protected Select2SingleChoice<Option> loanField;
+    protected TextFeedbackPanel loanFeedback;
 
     @Override
     protected void onInitialize() {
@@ -53,19 +53,18 @@ public class LoanSelectionPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.productBlock = new WebMarkupContainer("productBlock");
-        this.form.add(this.productBlock);
-        this.productContainer = new WebMarkupContainer("productContainer");
-        this.productBlock.add(this.productContainer);
-
-        this.productProvider = new SingleChoiceProvider("m_product_loan", "id", "name");
-        this.productField = new Select2SingleChoice<>("productField", new PropertyModel<>(this, "productValue"), this.productProvider);
-        this.productField.setLabel(Model.of("Product"));
-        this.productField.add(new OnChangeAjaxBehavior());
-        this.productField.setRequired(true);
-        this.productContainer.add(this.productField);
-        this.productFeedback = new TextFeedbackPanel("productFeedback", this.productField);
-        this.productContainer.add(this.productFeedback);
+        this.loanBlock = new WebMarkupContainer("loanBlock");
+        this.form.add(this.loanBlock);
+        this.loanContainer = new WebMarkupContainer("loanContainer");
+        this.loanBlock.add(this.loanContainer);
+        this.loanProvider = new SingleChoiceProvider("m_product_loan", "id", "name");
+        this.loanField = new Select2SingleChoice<>("loanField", new PropertyModel<>(this, "loanValue"), this.loanProvider);
+        this.loanField.setLabel(Model.of("Product"));
+        this.loanField.add(new OnChangeAjaxBehavior());
+        this.loanField.setRequired(true);
+        this.loanContainer.add(this.loanField);
+        this.loanFeedback = new TextFeedbackPanel("loanFeedback", this.loanField);
+        this.loanContainer.add(this.loanFeedback);
     }
 
     protected void initData() {
@@ -75,8 +74,8 @@ public class LoanSelectionPage extends Page {
     protected void okayButtonSubmit(Button button) {
         PageParameters parameters = new PageParameters();
         parameters.add("clientId", this.clientId);
-        parameters.add("productId", this.productValue.getId());
-        setResponsePage(SavingAccountCreatePage.class, parameters);
+        parameters.add("loanId", this.loanValue.getId());
+        setResponsePage(LoanCreatePage.class, parameters);
     }
 
 }

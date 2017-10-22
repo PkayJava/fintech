@@ -56,6 +56,7 @@ import com.angkorteam.fintech.popup.loan.PrincipalLoanCyclePopup;
 import com.angkorteam.fintech.popup.loan.RepaymentLoanCyclePopup;
 import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.provider.DayInYearProvider;
+import com.angkorteam.fintech.provider.FundProvider;
 import com.angkorteam.fintech.provider.LockInTypeProvider;
 import com.angkorteam.fintech.provider.NominalInterestRateTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -133,7 +134,7 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupContainer detailFundBlock;
     protected WebMarkupContainer detailFundContainer;
-    protected SingleChoiceProvider detailFundProvider;
+    protected FundProvider detailFundProvider;
     protected Option detailFundValue;
     protected Select2SingleChoice<Option> detailFundField;
     protected TextFeedbackPanel detailFundFeedback;
@@ -2588,7 +2589,7 @@ public class LoanCreatePage extends Page {
         this.detailDescriptionFeedback = new TextFeedbackPanel("detailDescriptionFeedback", this.detailDescriptionField);
         this.detailDescriptionContainer.add(this.detailDescriptionFeedback);
 
-        this.detailFundProvider = new SingleChoiceProvider("m_fund", "id", "name");
+        this.detailFundProvider = new FundProvider();
         this.detailFundBlock = new WebMarkupContainer("detailFundBlock");
         this.detailFundBlock.setOutputMarkupId(true);
         this.form.add(this.detailFundBlock);
