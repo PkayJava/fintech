@@ -1,6 +1,5 @@
 package com.angkorteam.fintech.pages.client.client;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -22,25 +21,14 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.builder.AccountBuilder;
-import com.angkorteam.fintech.dto.enums.DayInYear;
-import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
-import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
-import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
-import com.angkorteam.fintech.dto.enums.LockInType;
-import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.popup.CenterAccountChargePopup;
 import com.angkorteam.fintech.provider.ChargeFrequencyProvider;
-import com.angkorteam.fintech.provider.DayInYearProvider;
 import com.angkorteam.fintech.provider.FundProvider;
-import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
-import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
-import com.angkorteam.fintech.provider.InterestPostingPeriodProvider;
 import com.angkorteam.fintech.provider.LoanPurposeProvider;
-import com.angkorteam.fintech.provider.LockInTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.provider.loan.FrequencyDayProvider;
+import com.angkorteam.fintech.provider.loan.RepaidOnProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
@@ -64,8 +52,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanCreatePage extends Page {
@@ -176,112 +162,75 @@ public class LoanCreatePage extends Page {
     protected String repaidTypeValue;
     protected Label repaidTypeField;
 
+    protected RepaidOnProvider repaidOnProvider;
+    protected WebMarkupContainer repaidOnBlock;
+    protected WebMarkupContainer repaidOnContainer;
+    protected Option repaidOnValue;
+    protected Select2SingleChoice<Option> repaidOnField;
+    protected TextFeedbackPanel repaidOnFeedback;
+
+    protected FrequencyDayProvider repaidDayProvider;
+    protected WebMarkupContainer repaidDayBlock;
+    protected WebMarkupContainer repaidDayContainer;
+    protected Option repaidDayValue;
+    protected Select2SingleChoice<Option> repaidDayField;
+    protected TextFeedbackPanel repaidDayFeedback;
+
+    protected WebMarkupContainer firstRepaymentOnBlock;
+    protected WebMarkupContainer firstRepaymentOnContainer;
+    protected Date firstRepaymentOnValue;
+    protected DateTextField firstRepaymentOnField;
+    protected TextFeedbackPanel firstRepaymentOnFeedback;
+
+    protected WebMarkupContainer interestChargedFromBlock;
+    protected WebMarkupContainer interestChargedFromContainer;
+    protected Date interestChargedFromValue;
+    protected DateTextField interestChargedFromField;
+    protected TextFeedbackPanel interestChargedFromFeedback;
+
+    protected WebMarkupContainer nominalInterestRateBlock;
+    protected WebMarkupContainer nominalInterestRateContainer;
+    protected Double nominalInterestRateValue;
+    protected TextField<Double> nominalInterestRateField;
+    protected TextFeedbackPanel nominalInterestRateFeedback;
+
+    protected String nominalInterestTypeValue;
+    protected Label nominalInterestTypeField;
+
+    protected String interestMethodValue;
+    protected Label interestMethodField;
+
+    protected String amortizationValue;
+    protected Label amortizationField;
+
+    protected String interestCalculationPeriodValue;
+    protected Label interestCalculationPeriodField;
+
+    protected String calculateInterestForExactDayInPartialPeriodValue;
+    protected Label calculateInterestForExactDayInPartialPeriodField;
+
+    protected String arrearsToleranceValue;
+    protected Label arrearsToleranceField;
+
+    protected WebMarkupContainer interestFreePeriodBlock;
+    protected WebMarkupContainer interestFreePeriodContainer;
+    protected Double interestFreePeriodValue;
+    protected TextField<Double> interestFreePeriodField;
+    protected TextFeedbackPanel interestFreePeriodFeedback;
+
+    protected String repaymentStrategyValue;
+    protected Label repaymentStrategyField;
+
+    protected String onPrincipalPaymentValue;
+    protected Label onPrincipalPaymentField;
+
+    protected String onInterestPaymentValue;
+    protected Label onInterestPaymentField;
+
+    protected String onArrearsAgingValue;
+    protected Label onArrearsAgingField;
+
     // TODO
-
-    protected SingleChoiceProvider officerProvider;
-    protected WebMarkupContainer officerBlock;
-    protected WebMarkupContainer officerContainer;
-    protected Option officerValue;
-    protected Select2SingleChoice<Option> officerField;
-    protected TextFeedbackPanel officerFeedback;
-
-    protected WebMarkupContainer nominalAnnualInterestBlock;
-    protected WebMarkupContainer nominalAnnualInterestContainer;
-    protected Double nominalAnnualInterestValue;
-    protected TextField<Double> nominalAnnualInterestField;
-    protected TextFeedbackPanel nominalAnnualInterestFeedback;
-
-    protected InterestCompoundingPeriodProvider interestCompoundingPeriodProvider;
-    protected WebMarkupContainer interestCompoundingPeriodBlock;
-    protected WebMarkupContainer interestCompoundingPeriodContainer;
-    protected Option interestCompoundingPeriodValue;
-    protected Select2SingleChoice<Option> interestCompoundingPeriodField;
-    protected TextFeedbackPanel interestCompoundingPeriodFeedback;
-
-    protected InterestPostingPeriodProvider interestPostingPeriodProvider;
-    protected WebMarkupContainer interestPostingPeriodBlock;
-    protected WebMarkupContainer interestPostingPeriodContainer;
-    protected Option interestPostingPeriodValue;
-    protected Select2SingleChoice<Option> interestPostingPeriodField;
-    protected TextFeedbackPanel interestPostingPeriodFeedback;
-
-    protected InterestCalculatedUsingProvider interestCalculatedUsingProvider;
-    protected WebMarkupContainer interestCalculatedUsingBlock;
-    protected WebMarkupContainer interestCalculatedUsingContainer;
-    protected Option interestCalculatedUsingValue;
-    protected Select2SingleChoice<Option> interestCalculatedUsingField;
-    protected TextFeedbackPanel interestCalculatedUsingFeedback;
-
-    protected DayInYearProvider dayInYearProvider;
-    protected WebMarkupContainer dayInYearBlock;
-    protected WebMarkupContainer dayInYearContainer;
-    protected Option dayInYearValue;
-    protected Select2SingleChoice<Option> dayInYearField;
-    protected TextFeedbackPanel dayInYearFeedback;
-
-    protected WebMarkupContainer minimumOpeningBalanceBlock;
-    protected WebMarkupContainer minimumOpeningBalanceContainer;
-    protected Double minimumOpeningBalanceValue;
-    protected TextField<Double> minimumOpeningBalanceField;
-    protected TextFeedbackPanel minimumOpeningBalanceFeedback;
-
-    protected WebMarkupContainer lockInPeriodBlock;
-    protected WebMarkupContainer lockInPeriodContainer;
-    protected Integer lockInPeriodValue;
-    protected TextField<Integer> lockInPeriodField;
-    protected TextFeedbackPanel lockInPeriodFeedback;
-
-    protected LockInTypeProvider lockInTypeProvider;
-    protected WebMarkupContainer lockInTypeBlock;
-    protected WebMarkupContainer lockInTypeContainer;
-    protected Option lockInTypeValue;
-    protected Select2SingleChoice<Option> lockInTypeField;
-    protected TextFeedbackPanel lockInTypeFeedback;
-
-    protected WebMarkupContainer applyWithdrawalFeeForTransferBlock;
-    protected WebMarkupContainer applyWithdrawalFeeForTransferContainer;
-    protected Boolean applyWithdrawalFeeForTransferValue;
-    protected CheckBox applyWithdrawalFeeForTransferField;
-    protected TextFeedbackPanel applyWithdrawalFeeForTransferFeedback;
-
-    protected WebMarkupContainer overdraftAllowedBlock;
-    protected WebMarkupContainer overdraftAllowedContainer;
-    protected Boolean overdraftAllowedValue;
-    protected CheckBox overdraftAllowedField;
-    protected TextFeedbackPanel overdraftAllowedFeedback;
-
-    protected WebMarkupContainer maximumOverdraftAmountLimitBlock;
-    protected WebMarkupContainer maximumOverdraftAmountLimitContainer;
-    protected Double maximumOverdraftAmountLimitValue;
-    protected TextField<Double> maximumOverdraftAmountLimitField;
-    protected TextFeedbackPanel maximumOverdraftAmountLimitFeedback;
-
-    protected WebMarkupContainer nominalAnnualInterestForOverdraftBlock;
-    protected WebMarkupContainer nominalAnnualInterestForOverdraftContainer;
-    protected Double nominalAnnualInterestForOverdraftValue;
-    protected TextField<Double> nominalAnnualInterestForOverdraftField;
-    protected TextFeedbackPanel nominalAnnualInterestForOverdraftFeedback;
-
-    protected WebMarkupContainer minOverdraftRequiredForInterestCalculationBlock;
-    protected WebMarkupContainer minOverdraftRequiredForInterestCalculationContainer;
-    protected Double minOverdraftRequiredForInterestCalculationValue;
-    protected TextField<Double> minOverdraftRequiredForInterestCalculationField;
-    protected TextFeedbackPanel minOverdraftRequiredForInterestCalculationFeedback;
-
-    protected WebMarkupContainer enforceMinimumBalanceBlock;
-    protected WebMarkupContainer enforceMinimumBalanceContainer;
-    protected Boolean enforceMinimumBalanceValue;
-    protected CheckBox enforceMinimumBalanceField;
-    protected TextFeedbackPanel enforceMinimumBalanceFeedback;
-
-    protected WebMarkupContainer minimumBalanceBlock;
-    protected WebMarkupContainer minimumBalanceContainer;
-    protected Double minimumBalanceValue;
-    protected TextField<Double> minimumBalanceField;
-    protected TextFeedbackPanel minimumBalanceFeedback;
-
-    protected Double balanceRequiredForInterestCalculationValue;
-    protected Label balanceRequiredForInterestCalculationField;
 
     protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> chargeTable;
@@ -335,8 +284,6 @@ public class LoanCreatePage extends Page {
         this.loanOfficerContainer.add(this.loanOfficerFeedback);
 
         this.loanPurposeProvider = new LoanPurposeProvider();
-        this.loanPurposeProvider.applyWhere("is_active", "is_active = 1");
-        this.loanPurposeProvider.applyWhere("office_id", "office_id = " + this.officeId);
         this.loanPurposeBlock = new WebMarkupContainer("loanPurposeBlock");
         this.loanPurposeBlock.setOutputMarkupId(true);
         this.form.add(this.loanPurposeBlock);
@@ -492,209 +439,109 @@ public class LoanCreatePage extends Page {
         this.repaidTypeField = new Label("repaidTypeField", new PropertyModel<>(this, "repaidTypeValue"));
         this.form.add(this.repaidTypeField);
 
-//        repaidOn
-        // TODO
+        this.repaidOnProvider = new RepaidOnProvider();
+        this.repaidOnBlock = new WebMarkupContainer("repaidOnBlock");
+        this.repaidOnBlock.setOutputMarkupId(true);
+        this.form.add(this.repaidOnBlock);
+        this.repaidOnContainer = new WebMarkupContainer("repaidOnContainer");
+        this.repaidOnBlock.add(this.repaidOnContainer);
+        this.repaidOnField = new Select2SingleChoice<>("repaidOnField", new PropertyModel<>(this, "repaidOnValue"), this.repaidOnProvider);
+        this.repaidOnField.setLabel(Model.of("On"));
+        this.repaidOnField.setRequired(false);
+        this.repaidOnContainer.add(this.repaidOnField);
+        this.repaidOnFeedback = new TextFeedbackPanel("repaidOnFeedback", this.repaidOnField);
+        this.repaidOnContainer.add(this.repaidOnFeedback);
 
-        this.officerProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
-        this.officerProvider.applyWhere("is_active", "is_active = 1");
-        this.officerProvider.applyWhere("office_id", "office_id = " + this.officeId);
-        this.officerBlock = new WebMarkupContainer("officerBlock");
-        this.officerBlock.setOutputMarkupId(true);
-        this.form.add(this.officerBlock);
-        this.officerContainer = new WebMarkupContainer("officerContainer");
-        this.officerBlock.add(this.officerContainer);
-        this.officerField = new Select2SingleChoice<>("officerField", new PropertyModel<>(this, "officerValue"), this.officerProvider);
-        this.officerField.setLabel(Model.of("Officer"));
-        this.officerField.setRequired(false);
-        this.officerContainer.add(this.officerField);
-        this.officerFeedback = new TextFeedbackPanel("officerFeedback", this.officerField);
-        this.officerContainer.add(this.officerFeedback);
+        this.repaidDayProvider = new FrequencyDayProvider();
+        this.repaidDayBlock = new WebMarkupContainer("repaidDayBlock");
+        this.repaidDayBlock.setOutputMarkupId(true);
+        this.form.add(this.repaidDayBlock);
+        this.repaidDayContainer = new WebMarkupContainer("repaidDayContainer");
+        this.repaidDayBlock.add(this.repaidDayContainer);
+        this.repaidDayField = new Select2SingleChoice<>("repaidDayField", new PropertyModel<>(this, "repaidDayValue"), this.repaidDayProvider);
+        this.repaidDayField.setLabel(Model.of("Day"));
+        this.repaidDayField.setRequired(false);
+        this.repaidDayContainer.add(this.repaidDayField);
+        this.repaidDayFeedback = new TextFeedbackPanel("repaidDayFeedback", this.repaidDayField);
+        this.repaidDayContainer.add(this.repaidDayFeedback);
 
-        this.nominalAnnualInterestBlock = new WebMarkupContainer("nominalAnnualInterestBlock");
-        this.nominalAnnualInterestBlock.setOutputMarkupId(true);
-        this.form.add(this.nominalAnnualInterestBlock);
-        this.nominalAnnualInterestContainer = new WebMarkupContainer("nominalAnnualInterestContainer");
-        this.nominalAnnualInterestBlock.add(this.nominalAnnualInterestContainer);
-        this.nominalAnnualInterestField = new TextField<>("nominalAnnualInterestField", new PropertyModel<>(this, "nominalAnnualInterestValue"));
-        this.nominalAnnualInterestField.setLabel(Model.of("Nominal Annual Interest"));
-        this.nominalAnnualInterestField.setRequired(false);
-        this.nominalAnnualInterestContainer.add(this.nominalAnnualInterestField);
-        this.nominalAnnualInterestFeedback = new TextFeedbackPanel("nominalAnnualInterestFeedback", this.nominalAnnualInterestField);
-        this.nominalAnnualInterestContainer.add(this.nominalAnnualInterestFeedback);
+        this.firstRepaymentOnBlock = new WebMarkupContainer("firstRepaymentOnBlock");
+        this.firstRepaymentOnBlock.setOutputMarkupId(true);
+        this.form.add(this.firstRepaymentOnBlock);
+        this.firstRepaymentOnContainer = new WebMarkupContainer("firstRepaymentOnContainer");
+        this.firstRepaymentOnBlock.add(this.firstRepaymentOnContainer);
+        this.firstRepaymentOnField = new DateTextField("firstRepaymentOnField", new PropertyModel<>(this, "firstRepaymentOnValue"));
+        this.firstRepaymentOnField.setLabel(Model.of("First Repayment On"));
+        this.firstRepaymentOnField.setRequired(false);
+        this.firstRepaymentOnContainer.add(this.firstRepaymentOnField);
+        this.firstRepaymentOnFeedback = new TextFeedbackPanel("firstRepaymentOnFeedback", this.firstRepaymentOnField);
+        this.firstRepaymentOnContainer.add(this.firstRepaymentOnFeedback);
 
-        this.interestCompoundingPeriodProvider = new InterestCompoundingPeriodProvider();
-        this.interestCompoundingPeriodBlock = new WebMarkupContainer("interestCompoundingPeriodBlock");
-        this.interestCompoundingPeriodBlock.setOutputMarkupId(true);
-        this.form.add(this.interestCompoundingPeriodBlock);
-        this.interestCompoundingPeriodContainer = new WebMarkupContainer("interestCompoundingPeriodContainer");
-        this.interestCompoundingPeriodBlock.add(this.interestCompoundingPeriodContainer);
-        this.interestCompoundingPeriodField = new Select2SingleChoice<>("interestCompoundingPeriodField", new PropertyModel<>(this, "interestCompoundingPeriodValue"), this.interestCompoundingPeriodProvider);
-        this.interestCompoundingPeriodField.setLabel(Model.of("Interest Compounding Period"));
-        this.interestCompoundingPeriodField.setRequired(false);
-        this.interestCompoundingPeriodContainer.add(this.interestCompoundingPeriodField);
-        this.interestCompoundingPeriodFeedback = new TextFeedbackPanel("interestCompoundingPeriodFeedback", this.interestCompoundingPeriodField);
-        this.interestCompoundingPeriodContainer.add(this.interestCompoundingPeriodFeedback);
+        this.interestChargedFromBlock = new WebMarkupContainer("interestChargedFromBlock");
+        this.interestChargedFromBlock.setOutputMarkupId(true);
+        this.form.add(this.interestChargedFromBlock);
+        this.interestChargedFromContainer = new WebMarkupContainer("interestChargedFromContainer");
+        this.interestChargedFromBlock.add(this.interestChargedFromContainer);
+        this.interestChargedFromField = new DateTextField("interestChargedFromField", new PropertyModel<>(this, "interestChargedFromValue"));
+        this.interestChargedFromField.setLabel(Model.of("Interest Charged From"));
+        this.interestChargedFromField.setRequired(false);
+        this.interestChargedFromContainer.add(this.interestChargedFromField);
+        this.interestChargedFromFeedback = new TextFeedbackPanel("interestChargedFromFeedback", this.interestChargedFromField);
+        this.interestChargedFromContainer.add(this.interestChargedFromFeedback);
 
-        this.interestPostingPeriodProvider = new InterestPostingPeriodProvider();
-        this.interestPostingPeriodBlock = new WebMarkupContainer("interestPostingPeriodBlock");
-        this.interestPostingPeriodBlock.setOutputMarkupId(true);
-        this.form.add(this.interestPostingPeriodBlock);
-        this.interestPostingPeriodContainer = new WebMarkupContainer("interestPostingPeriodContainer");
-        this.interestPostingPeriodBlock.add(this.interestPostingPeriodContainer);
-        this.interestPostingPeriodField = new Select2SingleChoice<>("interestPostingPeriodField", new PropertyModel<>(this, "interestPostingPeriodValue"), this.interestPostingPeriodProvider);
-        this.interestPostingPeriodField.setLabel(Model.of("Interest Posting Period"));
-        this.interestPostingPeriodField.setRequired(false);
-        this.interestPostingPeriodContainer.add(this.interestPostingPeriodField);
-        this.interestPostingPeriodFeedback = new TextFeedbackPanel("interestPostingPeriodFeedback", this.interestPostingPeriodField);
-        this.interestPostingPeriodContainer.add(this.interestPostingPeriodFeedback);
+        this.nominalInterestRateBlock = new WebMarkupContainer("nominalInterestRateBlock");
+        this.nominalInterestRateBlock.setOutputMarkupId(true);
+        this.form.add(this.nominalInterestRateBlock);
+        this.nominalInterestRateContainer = new WebMarkupContainer("nominalInterestRateContainer");
+        this.nominalInterestRateBlock.add(this.nominalInterestRateContainer);
+        this.nominalInterestRateField = new TextField<>("nominalInterestRateField", new PropertyModel<>(this, "nominalInterestRateValue"));
+        this.nominalInterestRateField.setLabel(Model.of("Nominal Interest Rate"));
+        this.nominalInterestRateField.setRequired(false);
+        this.nominalInterestRateContainer.add(this.nominalInterestRateField);
+        this.nominalInterestRateFeedback = new TextFeedbackPanel("nominalInterestRateFeedback", this.nominalInterestRateField);
+        this.nominalInterestRateContainer.add(this.nominalInterestRateFeedback);
 
-        this.interestCalculatedUsingProvider = new InterestCalculatedUsingProvider();
-        this.interestCalculatedUsingBlock = new WebMarkupContainer("interestCalculatedUsingBlock");
-        this.interestCalculatedUsingBlock.setOutputMarkupId(true);
-        this.form.add(this.interestCalculatedUsingBlock);
-        this.interestCalculatedUsingContainer = new WebMarkupContainer("interestCalculatedUsingContainer");
-        this.interestCalculatedUsingBlock.add(this.interestCalculatedUsingContainer);
-        this.interestCalculatedUsingField = new Select2SingleChoice<>("interestCalculatedUsingField", new PropertyModel<>(this, "interestCalculatedUsingValue"), this.interestCalculatedUsingProvider);
-        this.interestCalculatedUsingField.setLabel(Model.of("Interest Calculated Using"));
-        this.interestCalculatedUsingField.setRequired(false);
-        this.interestCalculatedUsingContainer.add(this.interestCalculatedUsingField);
-        this.interestCalculatedUsingFeedback = new TextFeedbackPanel("interestCalculatedUsingFeedback", this.interestCalculatedUsingField);
-        this.interestCalculatedUsingContainer.add(this.interestCalculatedUsingFeedback);
+        this.nominalInterestTypeField = new Label("nominalInterestTypeField", new PropertyModel<>(this, "nominalInterestTypeValue"));
+        this.form.add(this.nominalInterestTypeField);
 
-        this.dayInYearProvider = new DayInYearProvider(DayInYear.D365, DayInYear.D360);
-        this.dayInYearBlock = new WebMarkupContainer("dayInYearBlock");
-        this.dayInYearBlock.setOutputMarkupId(true);
-        this.form.add(this.dayInYearBlock);
-        this.dayInYearContainer = new WebMarkupContainer("dayInYearContainer");
-        this.dayInYearBlock.add(this.dayInYearContainer);
-        this.dayInYearField = new Select2SingleChoice<>("dayInYearField", new PropertyModel<>(this, "dayInYearValue"), this.dayInYearProvider);
-        this.dayInYearField.setLabel(Model.of("Days In Year"));
-        this.dayInYearField.setRequired(false);
-        this.dayInYearContainer.add(this.dayInYearField);
-        this.dayInYearFeedback = new TextFeedbackPanel("dayInYearFeedback", this.dayInYearField);
-        this.dayInYearContainer.add(this.dayInYearFeedback);
+        this.interestMethodField = new Label("interestMethodField", new PropertyModel<>(this, "interestMethodValue"));
+        this.form.add(this.interestMethodField);
 
-        this.minimumOpeningBalanceBlock = new WebMarkupContainer("minimumOpeningBalanceBlock");
-        this.minimumOpeningBalanceBlock.setOutputMarkupId(true);
-        this.form.add(this.minimumOpeningBalanceBlock);
-        this.minimumOpeningBalanceContainer = new WebMarkupContainer("minimumOpeningBalanceContainer");
-        this.minimumOpeningBalanceBlock.add(this.minimumOpeningBalanceContainer);
-        this.minimumOpeningBalanceField = new TextField<>("minimumOpeningBalanceField", new PropertyModel<>(this, "minimumOpeningBalanceValue"));
-        this.minimumOpeningBalanceField.setLabel(Model.of("Minimum Opening Balance"));
-        this.minimumOpeningBalanceField.setRequired(false);
-        this.minimumOpeningBalanceContainer.add(this.minimumOpeningBalanceField);
-        this.minimumOpeningBalanceFeedback = new TextFeedbackPanel("minimumOpeningBalanceFeedback", this.minimumOpeningBalanceField);
-        this.minimumOpeningBalanceContainer.add(this.minimumOpeningBalanceFeedback);
+        this.amortizationField = new Label("amortizationField", new PropertyModel<>(this, "amortizationValue"));
+        this.form.add(this.amortizationField);
 
-        this.lockInPeriodBlock = new WebMarkupContainer("lockInPeriodBlock");
-        this.lockInPeriodBlock.setOutputMarkupId(true);
-        this.form.add(this.lockInPeriodBlock);
-        this.lockInPeriodContainer = new WebMarkupContainer("lockInPeriodContainer");
-        this.lockInPeriodBlock.add(this.lockInPeriodContainer);
-        this.lockInPeriodField = new TextField<>("lockInPeriodField", new PropertyModel<>(this, "lockInPeriodValue"));
-        this.lockInPeriodField.setLabel(Model.of("Lock In Period"));
-        this.lockInPeriodField.setRequired(false);
-        this.lockInPeriodContainer.add(this.lockInPeriodField);
-        this.lockInPeriodFeedback = new TextFeedbackPanel("lockInPeriodFeedback", this.lockInPeriodField);
-        this.lockInPeriodContainer.add(this.lockInPeriodFeedback);
+        this.interestCalculationPeriodField = new Label("interestCalculationPeriodField", new PropertyModel<>(this, "interestCalculationPeriodValue"));
+        this.form.add(this.interestCalculationPeriodField);
 
-        this.lockInTypeProvider = new LockInTypeProvider();
-        this.lockInTypeBlock = new WebMarkupContainer("lockInTypeBlock");
-        this.lockInTypeBlock.setOutputMarkupId(true);
-        this.form.add(this.lockInTypeBlock);
-        this.lockInTypeContainer = new WebMarkupContainer("lockInTypeContainer");
-        this.lockInTypeBlock.add(this.lockInTypeContainer);
-        this.lockInTypeField = new Select2SingleChoice<>("lockInTypeField", new PropertyModel<>(this, "lockInTypeValue"), this.lockInTypeProvider);
-        this.lockInTypeField.setLabel(Model.of("Lock In Period"));
-        this.lockInTypeField.setRequired(false);
-        this.lockInTypeContainer.add(this.lockInTypeField);
-        this.lockInTypeFeedback = new TextFeedbackPanel("lockInTypeFeedback", this.lockInTypeField);
-        this.lockInTypeContainer.add(this.lockInTypeFeedback);
+        this.calculateInterestForExactDayInPartialPeriodField = new Label("calculateInterestForExactDayInPartialPeriodField", new PropertyModel<>(this, "calculateInterestForExactDayInPartialPeriodValue"));
+        this.form.add(this.calculateInterestForExactDayInPartialPeriodField);
 
-        this.applyWithdrawalFeeForTransferBlock = new WebMarkupContainer("applyWithdrawalFeeForTransferBlock");
-        this.applyWithdrawalFeeForTransferBlock.setOutputMarkupId(true);
-        this.form.add(this.applyWithdrawalFeeForTransferBlock);
-        this.applyWithdrawalFeeForTransferContainer = new WebMarkupContainer("applyWithdrawalFeeForTransferContainer");
-        this.applyWithdrawalFeeForTransferBlock.add(this.applyWithdrawalFeeForTransferContainer);
-        this.applyWithdrawalFeeForTransferField = new CheckBox("applyWithdrawalFeeForTransferField", new PropertyModel<>(this, "applyWithdrawalFeeForTransferValue"));
-        this.applyWithdrawalFeeForTransferField.setRequired(false);
-        this.applyWithdrawalFeeForTransferContainer.add(this.applyWithdrawalFeeForTransferField);
-        this.applyWithdrawalFeeForTransferFeedback = new TextFeedbackPanel("applyWithdrawalFeeForTransferFeedback", this.applyWithdrawalFeeForTransferField);
-        this.applyWithdrawalFeeForTransferContainer.add(this.applyWithdrawalFeeForTransferFeedback);
+        this.arrearsToleranceField = new Label("arrearsToleranceField", new PropertyModel<>(this, "arrearsToleranceValue"));
+        this.form.add(this.arrearsToleranceField);
 
-        this.overdraftAllowedBlock = new WebMarkupContainer("overdraftAllowedBlock");
-        this.overdraftAllowedBlock.setOutputMarkupId(true);
-        this.form.add(this.overdraftAllowedBlock);
-        this.overdraftAllowedContainer = new WebMarkupContainer("overdraftAllowedContainer");
-        this.overdraftAllowedBlock.add(this.overdraftAllowedContainer);
-        this.overdraftAllowedField = new CheckBox("overdraftAllowedField", new PropertyModel<>(this, "overdraftAllowedValue"));
-        this.overdraftAllowedField.add(new OnChangeAjaxBehavior(this::overdraftAllowedFieldUpdate));
-        this.overdraftAllowedField.setRequired(false);
-        this.overdraftAllowedContainer.add(this.overdraftAllowedField);
-        this.overdraftAllowedFeedback = new TextFeedbackPanel("overdraftAllowedFeedback", this.overdraftAllowedField);
-        this.overdraftAllowedContainer.add(this.overdraftAllowedFeedback);
+        this.interestFreePeriodBlock = new WebMarkupContainer("interestFreePeriodBlock");
+        this.interestFreePeriodBlock.setOutputMarkupId(true);
+        this.form.add(this.interestFreePeriodBlock);
+        this.interestFreePeriodContainer = new WebMarkupContainer("interestFreePeriodContainer");
+        this.interestFreePeriodBlock.add(this.interestFreePeriodContainer);
+        this.interestFreePeriodField = new TextField<>("interestFreePeriodField", new PropertyModel<>(this, "interestFreePeriodValue"));
+        this.interestFreePeriodField.setLabel(Model.of("Interest Free Period"));
+        this.interestFreePeriodField.setRequired(false);
+        this.interestFreePeriodContainer.add(this.interestFreePeriodField);
+        this.interestFreePeriodFeedback = new TextFeedbackPanel("interestFreePeriodFeedback", this.interestFreePeriodField);
+        this.interestFreePeriodContainer.add(this.interestFreePeriodFeedback);
 
-        this.maximumOverdraftAmountLimitBlock = new WebMarkupContainer("maximumOverdraftAmountLimitBlock");
-        this.maximumOverdraftAmountLimitBlock.setOutputMarkupId(true);
-        this.form.add(this.maximumOverdraftAmountLimitBlock);
-        this.maximumOverdraftAmountLimitContainer = new WebMarkupContainer("maximumOverdraftAmountLimitContainer");
-        this.maximumOverdraftAmountLimitBlock.add(this.maximumOverdraftAmountLimitContainer);
-        this.maximumOverdraftAmountLimitField = new TextField<>("maximumOverdraftAmountLimitField", new PropertyModel<>(this, "maximumOverdraftAmountLimitValue"));
-        this.maximumOverdraftAmountLimitField.setLabel(Model.of("Maximum Overdraft Amount Limit"));
-        this.maximumOverdraftAmountLimitField.setRequired(false);
-        this.maximumOverdraftAmountLimitContainer.add(this.maximumOverdraftAmountLimitField);
-        this.maximumOverdraftAmountLimitFeedback = new TextFeedbackPanel("maximumOverdraftAmountLimitFeedback", this.maximumOverdraftAmountLimitField);
-        this.maximumOverdraftAmountLimitContainer.add(this.maximumOverdraftAmountLimitFeedback);
+        this.repaymentStrategyField = new Label("repaymentStrategyField", new PropertyModel<>(this, "repaymentStrategyValue"));
+        this.form.add(this.repaymentStrategyField);
 
-        this.nominalAnnualInterestForOverdraftBlock = new WebMarkupContainer("nominalAnnualInterestForOverdraftBlock");
-        this.nominalAnnualInterestForOverdraftBlock.setOutputMarkupId(true);
-        this.form.add(this.nominalAnnualInterestForOverdraftBlock);
-        this.nominalAnnualInterestForOverdraftContainer = new WebMarkupContainer("nominalAnnualInterestForOverdraftContainer");
-        this.nominalAnnualInterestForOverdraftBlock.add(this.nominalAnnualInterestForOverdraftContainer);
-        this.nominalAnnualInterestForOverdraftField = new TextField<>("nominalAnnualInterestForOverdraftField", new PropertyModel<>(this, "nominalAnnualInterestForOverdraftValue"));
-        this.nominalAnnualInterestForOverdraftField.setLabel(Model.of("Nominal Annual Interest For Overdraft"));
-        this.nominalAnnualInterestForOverdraftField.setRequired(false);
-        this.nominalAnnualInterestForOverdraftContainer.add(this.nominalAnnualInterestForOverdraftField);
-        this.nominalAnnualInterestForOverdraftFeedback = new TextFeedbackPanel("nominalAnnualInterestForOverdraftFeedback", this.nominalAnnualInterestForOverdraftField);
-        this.nominalAnnualInterestForOverdraftContainer.add(this.nominalAnnualInterestForOverdraftFeedback);
+        this.onPrincipalPaymentField = new Label("onPrincipalPaymentField", new PropertyModel<>(this, "onPrincipalPaymentValue"));
+        this.form.add(this.onPrincipalPaymentField);
 
-        this.minOverdraftRequiredForInterestCalculationBlock = new WebMarkupContainer("minOverdraftRequiredForInterestCalculationBlock");
-        this.minOverdraftRequiredForInterestCalculationBlock.setOutputMarkupId(true);
-        this.form.add(this.minOverdraftRequiredForInterestCalculationBlock);
-        this.minOverdraftRequiredForInterestCalculationContainer = new WebMarkupContainer("minOverdraftRequiredForInterestCalculationContainer");
-        this.minOverdraftRequiredForInterestCalculationBlock.add(this.minOverdraftRequiredForInterestCalculationContainer);
-        this.minOverdraftRequiredForInterestCalculationField = new TextField<>("minOverdraftRequiredForInterestCalculationField", new PropertyModel<>(this, "minOverdraftRequiredForInterestCalculationValue"));
-        this.minOverdraftRequiredForInterestCalculationField.setLabel(Model.of("Min Overdraft Required For Interest Calculation"));
-        this.minOverdraftRequiredForInterestCalculationField.setRequired(false);
-        this.minOverdraftRequiredForInterestCalculationContainer.add(this.minOverdraftRequiredForInterestCalculationField);
-        this.minOverdraftRequiredForInterestCalculationFeedback = new TextFeedbackPanel("minOverdraftRequiredForInterestCalculationFeedback", this.minOverdraftRequiredForInterestCalculationField);
-        this.minOverdraftRequiredForInterestCalculationContainer.add(this.minOverdraftRequiredForInterestCalculationFeedback);
+        this.onInterestPaymentField = new Label("onInterestPaymentField", new PropertyModel<>(this, "onInterestPaymentValue"));
+        this.form.add(this.onInterestPaymentField);
 
-        this.enforceMinimumBalanceBlock = new WebMarkupContainer("enforceMinimumBalanceBlock");
-        this.enforceMinimumBalanceBlock.setOutputMarkupId(true);
-        this.form.add(this.enforceMinimumBalanceBlock);
-        this.enforceMinimumBalanceContainer = new WebMarkupContainer("enforceMinimumBalanceContainer");
-        this.enforceMinimumBalanceBlock.add(this.enforceMinimumBalanceContainer);
-        this.enforceMinimumBalanceField = new CheckBox("enforceMinimumBalanceField", new PropertyModel<>(this, "enforceMinimumBalanceValue"));
-        this.enforceMinimumBalanceField.setRequired(false);
-        this.enforceMinimumBalanceContainer.add(this.enforceMinimumBalanceField);
-        this.enforceMinimumBalanceFeedback = new TextFeedbackPanel("enforceMinimumBalanceFeedback", this.enforceMinimumBalanceField);
-        this.enforceMinimumBalanceContainer.add(this.enforceMinimumBalanceFeedback);
-
-        this.minimumBalanceBlock = new WebMarkupContainer("minimumBalanceBlock");
-        this.minimumBalanceBlock.setOutputMarkupId(true);
-        this.form.add(this.minimumBalanceBlock);
-        this.minimumBalanceContainer = new WebMarkupContainer("minimumBalanceContainer");
-        this.minimumBalanceBlock.add(this.minimumBalanceContainer);
-        this.minimumBalanceField = new TextField<>("minimumBalanceField", new PropertyModel<>(this, "minimumBalanceValue"));
-        this.minimumBalanceField.setLabel(Model.of("Minimum Balance"));
-        this.minimumBalanceField.setRequired(false);
-        this.minimumBalanceContainer.add(this.minimumBalanceField);
-        this.minimumBalanceFeedback = new TextFeedbackPanel("minimumBalanceFeedback", this.minimumBalanceField);
-        this.minimumBalanceContainer.add(this.minimumBalanceFeedback);
-
-        this.balanceRequiredForInterestCalculationField = new Label("balanceRequiredForInterestCalculationField", new PropertyModel<>(this, "balanceRequiredForInterestCalculationValue"));
-        form.add(this.balanceRequiredForInterestCalculationField);
+        this.onArrearsAgingField = new Label("onArrearsAgingField", new PropertyModel<>(this, "onArrearsAgingValue"));
+        this.form.add(this.onArrearsAgingField);
 
         // Table
         this.chargePopup = new ModalWindow("chargePopup");
@@ -718,8 +565,6 @@ public class LoanCreatePage extends Page {
         this.chargeAddLink = new AjaxLink<>("chargeAddLink");
         this.chargeAddLink.setOnClick(this::chargeAddLinkClick);
         this.form.add(this.chargeAddLink);
-
-        overdraftAllowedFieldUpdate(null);
 
     }
 
@@ -784,19 +629,6 @@ public class LoanCreatePage extends Page {
         return false;
     }
 
-    protected boolean overdraftAllowedFieldUpdate(AjaxRequestTarget target) {
-        boolean visible = this.overdraftAllowedValue == null ? false : this.overdraftAllowedValue;
-        this.maximumOverdraftAmountLimitContainer.setVisible(visible);
-        this.nominalAnnualInterestForOverdraftContainer.setVisible(visible);
-        this.minOverdraftRequiredForInterestCalculationContainer.setVisible(visible);
-        if (target != null) {
-            target.add(this.maximumOverdraftAmountLimitBlock);
-            target.add(this.nominalAnnualInterestForOverdraftBlock);
-            target.add(this.minOverdraftRequiredForInterestCalculationBlock);
-        }
-        return false;
-    }
-
     protected void chargePopupOnClose(String elementId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", UUID.randomUUID().toString());
@@ -829,104 +661,10 @@ public class LoanCreatePage extends Page {
 
         this.currencyInMultiplesOfValue = (Integer) loanObject.get("currency_multiplesof");
 
-        BigDecimal nominalAnnualInterestValue = (BigDecimal) loanObject.get("nominal_annual_interest_rate");
-        this.nominalAnnualInterestValue = nominalAnnualInterestValue == null ? null : nominalAnnualInterestValue.doubleValue();
-
-        BigDecimal nominalAnnualInterestForOverdraftValue = (BigDecimal) loanObject.get("nominal_annual_interest_rate_overdraft");
-        this.nominalAnnualInterestForOverdraftValue = nominalAnnualInterestForOverdraftValue == null ? null : nominalAnnualInterestForOverdraftValue.doubleValue();
-
-        this.interestCompoundingPeriodValue = InterestCompoundingPeriod.optionLiteral(String.valueOf(loanObject.get("interest_compounding_period_enum")));
-        this.interestPostingPeriodValue = InterestPostingPeriod.optionLiteral(String.valueOf(loanObject.get("interest_posting_period_enum")));
-        this.interestCalculatedUsingValue = InterestCalculatedUsing.optionLiteral(String.valueOf(loanObject.get("interest_calculation_type_enum")));
-        this.dayInYearValue = DayInYear.optionLiteral(String.valueOf(loanObject.get("interest_calculation_days_in_year_type_enum")));
-        BigDecimal lockInPeriodValue = (BigDecimal) loanObject.get("lockin_period_frequency");
-        this.lockInPeriodValue = lockInPeriodValue == null ? null : lockInPeriodValue.intValue();
-        this.lockInTypeValue = LockInType.optionLiteral(String.valueOf(loanObject.get("lockin_period_frequency_enum")));
-
-        Integer applyWithdrawalFeeForTransferValue = (Integer) loanObject.get("withdrawal_fee_for_transfer");
-        this.applyWithdrawalFeeForTransferValue = applyWithdrawalFeeForTransferValue == null ? false : applyWithdrawalFeeForTransferValue == 1;
-
-        BigDecimal minimumOpeningBalanceValue = (BigDecimal) loanObject.get("min_required_opening_balance");
-        this.minimumOpeningBalanceValue = minimumOpeningBalanceValue == null ? null : minimumOpeningBalanceValue.doubleValue();
-
-        this.overdraftAllowedValue = (Boolean) loanObject.get("allow_overdraft");
-
-        BigDecimal maximumOverdraftAmountLimitValue = (BigDecimal) loanObject.get("overdraft_limit");
-        this.maximumOverdraftAmountLimitValue = maximumOverdraftAmountLimitValue == null ? null : maximumOverdraftAmountLimitValue.doubleValue();
-
-        BigDecimal minOverdraftRequiredForInterestCalculationValue = (BigDecimal) loanObject.get("min_overdraft_for_interest_calculation");
-        this.minOverdraftRequiredForInterestCalculationValue = minOverdraftRequiredForInterestCalculationValue == null ? null : minOverdraftRequiredForInterestCalculationValue.doubleValue();
-        this.enforceMinimumBalanceValue = (Boolean) loanObject.get("enforce_min_required_balance");
-
-        BigDecimal minimumBalanceValue = (BigDecimal) loanObject.get("min_required_balance");
-        this.minimumBalanceValue = minimumBalanceValue == null ? null : minimumBalanceValue.doubleValue();
-
-        BigDecimal balanceRequiredForInterestCalculationValue = (BigDecimal) loanObject.get("min_balance_for_interest_calculation");
-        this.balanceRequiredForInterestCalculationValue = balanceRequiredForInterestCalculationValue == null ? null : balanceRequiredForInterestCalculationValue.doubleValue();
-
     }
 
     protected void saveButtonSubmit(Button button) {
-        AccountBuilder builder = new AccountBuilder();
 
-        builder.withProductId(this.loanId);
-        builder.withNominalAnnualInterestRate(this.nominalAnnualInterestValue);
-
-        builder.withMinRequiredOpeningBalance(this.minimumOpeningBalanceValue);
-
-        builder.withWithdrawalFeeForTransfers(this.applyWithdrawalFeeForTransferValue == null ? false : this.applyWithdrawalFeeForTransferValue);
-
-        boolean allowOverdraft = this.overdraftAllowedValue == null ? false : this.overdraftAllowedValue;
-        builder.withAllowOverdraft(allowOverdraft);
-
-        if (allowOverdraft) {
-            builder.withOverdraftLimit(this.maximumOverdraftAmountLimitValue);
-            builder.withNominalAnnualInterestRateOverdraft(this.nominalAnnualInterestForOverdraftValue);
-            builder.withMinOverdraftForInterestCalculation(this.minOverdraftRequiredForInterestCalculationValue);
-        }
-
-        builder.withEnforceMinRequiredBalance(this.enforceMinimumBalanceValue == null ? false : this.enforceMinimumBalanceValue);
-        builder.withMinRequiredBalance(this.minimumBalanceValue);
-        builder.withHoldTax(false);
-        if (this.interestCompoundingPeriodValue != null) {
-            builder.withInterestCompoundingPeriodType(InterestCompoundingPeriod.valueOf(this.interestCompoundingPeriodValue.getId()));
-        }
-        if (this.interestPostingPeriodValue != null) {
-            builder.withInterestPostingPeriodType(InterestPostingPeriod.valueOf(this.interestPostingPeriodValue.getId()));
-        }
-        if (this.interestCalculatedUsingValue != null) {
-            builder.withInterestCalculationType(InterestCalculatedUsing.valueOf(this.interestCalculatedUsingValue.getId()));
-        }
-        if (this.dayInYearValue != null) {
-            builder.withInterestCalculationDaysInYearType(DayInYear.valueOf(this.dayInYearValue.getId()));
-        }
-        builder.withLockinPeriodFrequency(this.lockInPeriodValue);
-        if (this.lockInTypeValue != null) {
-            builder.withLockinPeriodFrequencyType(LockInType.valueOf(this.lockInTypeValue.getId()));
-        }
-        if (this.officerValue != null) {
-            builder.withFieldOfficerId(this.officerValue.getId());
-        }
-        builder.withExternalId(this.externalIdValue);
-        builder.withSubmittedOnDate(this.submittedOnValue);
-
-        for (Map<String, Object> charge : this.chargeValue) {
-            builder.withCharge((String) charge.get("chargeId"), (Double) charge.get("amount"), (Date) charge.get("date"), (Integer) charge.get("repaymentEvery"));
-        }
-
-        builder.withClientId(this.clientId);
-
-        JsonNode node = null;
-        JsonNode request = builder.build();
-        try {
-            node = ClientHelper.createSavingAccount((Session) getSession(), request);
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
-        if (reportError(node)) {
-            return;
-        }
         PageParameters parameters = new PageParameters();
         parameters.add("clientId", this.clientId);
         setResponsePage(ClientPreviewPage.class, parameters);
