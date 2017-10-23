@@ -1020,6 +1020,18 @@ public class LoanCreatePage extends Page {
         this.settingDayInYearField.setRequired(true);
         this.settingDayInMonthField.setRequired(true);
 
+        {
+            InterestCalculationPeriod interestCalculationPeriod = null;
+            if (this.settingInterestCalculationPeriodValue != null) {
+                interestCalculationPeriod = InterestCalculationPeriod.valueOf(this.settingInterestCalculationPeriodValue.getId());
+            }
+
+            boolean required = interestCalculationPeriod == InterestCalculationPeriod.Daily && this.interestRecalculationRecalculateInterestValue != null && this.interestRecalculationRecalculateInterestValue;
+            this.interestRecalculationCompoundingOnField.setRequired(required);
+            this.interestRecalculationAdvancePaymentsAdjustmentTypeField.setRequired(required);
+            this.interestRecalculationRecalculateField.setRequired(required);
+        }
+
     }
 
     protected void initOverdueCharge() {
@@ -2028,7 +2040,13 @@ public class LoanCreatePage extends Page {
     }
 
     protected boolean interestRecalculationRecalculateInterestFieldUpdate(AjaxRequestTarget target) {
-        boolean visible = this.interestRecalculationRecalculateInterestValue != null && this.interestRecalculationRecalculateInterestValue;
+        InterestCalculationPeriod interestCalculationPeriod = null;
+        if (this.settingInterestCalculationPeriodValue != null) {
+            interestCalculationPeriod = InterestCalculationPeriod.valueOf(this.settingInterestCalculationPeriodValue.getId());
+        }
+
+        boolean visible = interestCalculationPeriod == InterestCalculationPeriod.Daily && this.interestRecalculationRecalculateInterestValue != null && this.interestRecalculationRecalculateInterestValue;
+
         this.interestRecalculationPreClosureInterestCalculationRuleContainer.setVisible(visible);
         this.interestRecalculationAdvancePaymentsAdjustmentTypeContainer.setVisible(visible);
         this.interestRecalculationCompoundingOnContainer.setVisible(visible);
@@ -2059,6 +2077,8 @@ public class LoanCreatePage extends Page {
             target.add(this.interestRecalculationRecalculateIntervalBlock);
             target.add(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock);
         }
+
+        initValidationRule();
         return false;
     }
 
@@ -3245,10 +3265,29 @@ public class LoanCreatePage extends Page {
     }
 
     protected boolean settingInterestCalculationPeriodFieldUpdate(AjaxRequestTarget target) {
-        this.settingCalculateInterestForExactDaysInPartialPeriodContainer.setVisible(this.settingInterestCalculationPeriodValue != null && InterestCalculationPeriod.valueOf(this.settingInterestCalculationPeriodValue.getId()) == InterestCalculationPeriod.SameAsPayment);
+        InterestCalculationPeriod interestCalculationPeriod = null;
+        if (this.settingInterestCalculationPeriodValue != null) {
+            interestCalculationPeriod = InterestCalculationPeriod.valueOf(this.settingInterestCalculationPeriodValue.getId());
+        }
+
+        boolean visible = interestCalculationPeriod == InterestCalculationPeriod.SameAsPayment;
+
+        if (interestCalculationPeriod == InterestCalculationPeriod.Daily) {
+            this.interestRecalculationRecalculateInterestContainer.setVisible(true);
+        } else if (interestCalculationPeriod == InterestCalculationPeriod.SameAsPayment) {
+            this.interestRecalculationRecalculateInterestContainer.setVisible(false);
+        }
+
+        this.settingCalculateInterestForExactDaysInPartialPeriodContainer.setVisible(visible);
         if (target != null) {
             target.add(this.settingCalculateInterestForExactDaysInPartialPeriodBlock);
+            target.add(this.interestRecalculationRecalculateInterestBlock);
         }
+
+        interestRecalculationRecalculateInterestFieldUpdate(target);
+
+        initValidationRule();
+
         return false;
     }
 
@@ -3516,6 +3555,71 @@ public class LoanCreatePage extends Page {
             if (settingInterestCalculationPeriod == InterestCalculationPeriod.SameAsPayment) {
                 builder.withAllowPartialPeriodInterestCalcualtion(this.settingCalculateInterestForExactDaysInPartialPeriodValue == null ? false : this.settingCalculateInterestForExactDaysInPartialPeriodValue);
             }
+            if (settingInterestCalculationPeriod == InterestCalculationPeriod.Daily) {
+                // Interest Recalculation
+
+                boolean interestRecalculationEnabled = this.interestRecalculationRecalculateInterestValue == null ? false : this.interestRecalculationRecalculateInterestValue;
+                builder.withInterestRecalculationEnabled(interestRecalculationEnabled);
+                if (interestRecalculationEnabled) {
+                    if (this.interestRecalculationPreClosureInterestCalculationRuleValue != null) {
+                        builder.withPreClosureInterestCalculationStrategy(ClosureInterestCalculationRule.valueOf(this.interestRecalculationPreClosureInterestCalculationRuleValue.getId()));
+                    }
+                    if (this.interestRecalculationAdvancePaymentsAdjustmentTypeValue != null) {
+                        builder.withRescheduleStrategyMethod(AdvancePaymentsAdjustmentType.valueOf(this.interestRecalculationAdvancePaymentsAdjustmentTypeValue.getId()));
+                    }
+
+                    if (this.interestRecalculationCompoundingOnValue != null) {
+                        InterestRecalculationCompound interestRecalculationCompound = InterestRecalculationCompound.valueOf(this.interestRecalculationCompoundingOnValue.getId());
+                        builder.withInterestRecalculationCompoundingMethod(interestRecalculationCompound);
+
+                        if (interestRecalculationCompound == InterestRecalculationCompound.Fee || interestRecalculationCompound == InterestRecalculationCompound.Interest || interestRecalculationCompound == InterestRecalculationCompound.FeeAndInterest) {
+                            if (this.interestRecalculationCompoundingValue != null) {
+                                Frequency compoundingValue = Frequency.valueOf(this.interestRecalculationCompoundingValue.getId());
+                                builder.withRecalculationCompoundingFrequencyType(compoundingValue);
+                                if (compoundingValue == Frequency.Daily) {
+                                    builder.withRecalculationCompoundingFrequencyInterval(this.interestRecalculationCompoundingIntervalValue);
+                                } else if (compoundingValue == Frequency.Weekly) {
+                                    builder.withRecalculationCompoundingFrequencyInterval(this.interestRecalculationCompoundingIntervalValue);
+                                    if (this.interestRecalculationCompoundingDayValue != null) {
+                                        builder.withRecalculationCompoundingFrequencyDayOfWeekType(FrequencyDay.valueOf(this.interestRecalculationCompoundingDayValue.getId()));
+                                    }
+                                } else if (compoundingValue == Frequency.Monthly) {
+                                    builder.withRecalculationCompoundingFrequencyInterval(this.interestRecalculationCompoundingIntervalValue);
+                                    if (this.interestRecalculationCompoundingTypeValue != null) {
+                                        builder.withRecalculationCompoundingFrequencyNthDayType(FrequencyType.valueOf(this.interestRecalculationCompoundingTypeValue.getId()));
+                                    }
+                                    if (this.interestRecalculationCompoundingDayValue != null) {
+                                        builder.withRecalculationCompoundingFrequencyDayOfWeekType(FrequencyDay.valueOf(this.interestRecalculationCompoundingDayValue.getId()));
+                                    }
+                                }
+                            }
+                        }
+
+                        if (this.interestRecalculationRecalculateValue != null) {
+                            Frequency recalculateValue = Frequency.valueOf(this.interestRecalculationRecalculateValue.getId());
+                            builder.withRecalculationRestFrequencyType(recalculateValue);
+                            if (recalculateValue == Frequency.Daily) {
+                                builder.withRecalculationRestFrequencyInterval(this.interestRecalculationRecalculateIntervalValue);
+                            } else if (recalculateValue == Frequency.Weekly) {
+                                if (this.interestRecalculationRecalculateDayValue != null) {
+                                    builder.withRecalculationRestFrequencyDayOfWeekType(FrequencyDay.valueOf(this.interestRecalculationRecalculateDayValue.getId()));
+                                }
+                                builder.withRecalculationRestFrequencyInterval(this.interestRecalculationRecalculateIntervalValue);
+                            } else if (recalculateValue == Frequency.Monthly) {
+                                if (this.interestRecalculationRecalculateTypeValue != null) {
+                                    builder.withRecalculationRestFrequencyNthDayType(FrequencyType.valueOf(this.interestRecalculationRecalculateTypeValue.getId()));
+                                }
+                                if (this.interestRecalculationRecalculateDayValue != null) {
+                                    builder.withRecalculationRestFrequencyDayOfWeekType(FrequencyDay.valueOf(this.interestRecalculationRecalculateDayValue.getId()));
+                                }
+                                builder.withRecalculationRestFrequencyInterval(this.interestRecalculationRecalculateIntervalValue);
+                            }
+                        }
+                        builder.withArrearsBasedOnOriginalSchedule(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue == null ? false : this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue);
+                    }
+
+                }
+            }
         }
         builder.withGraceOnPrincipalPayment(this.settingMoratoriumPrincipalValue);
         builder.withGraceOnInterestPayment(this.settingMoratoriumInterestValue);
@@ -3547,70 +3651,6 @@ public class LoanCreatePage extends Page {
         }
 
         builder.withPrincipalThresholdForLastInstallment(this.settingPrincipalThresholdForLastInstalmentValue);
-
-        // Interest Recalculation
-
-        boolean interestRecalculationEnabled = this.interestRecalculationRecalculateInterestValue == null ? false : this.interestRecalculationRecalculateInterestValue;
-        builder.withInterestRecalculationEnabled(interestRecalculationEnabled);
-        if (interestRecalculationEnabled) {
-            if (this.interestRecalculationPreClosureInterestCalculationRuleValue != null) {
-                builder.withPreClosureInterestCalculationStrategy(ClosureInterestCalculationRule.valueOf(this.interestRecalculationPreClosureInterestCalculationRuleValue.getId()));
-            }
-            if (this.interestRecalculationAdvancePaymentsAdjustmentTypeValue != null) {
-                builder.withRescheduleStrategyMethod(AdvancePaymentsAdjustmentType.valueOf(this.interestRecalculationAdvancePaymentsAdjustmentTypeValue.getId()));
-            }
-
-            if (this.interestRecalculationCompoundingOnValue != null) {
-                InterestRecalculationCompound interestRecalculationCompound = InterestRecalculationCompound.valueOf(this.interestRecalculationCompoundingOnValue.getId());
-                builder.withInterestRecalculationCompoundingMethod(interestRecalculationCompound);
-
-                if (interestRecalculationCompound == InterestRecalculationCompound.Fee || interestRecalculationCompound == InterestRecalculationCompound.Interest || interestRecalculationCompound == InterestRecalculationCompound.FeeAndInterest) {
-                    if (this.interestRecalculationCompoundingValue != null) {
-                        Frequency compoundingValue = Frequency.valueOf(this.interestRecalculationCompoundingValue.getId());
-                        builder.withRecalculationCompoundingFrequencyType(compoundingValue);
-                        if (compoundingValue == Frequency.Daily) {
-                            builder.withRecalculationCompoundingFrequencyInterval(this.interestRecalculationCompoundingIntervalValue);
-                        } else if (compoundingValue == Frequency.Weekly) {
-                            builder.withRecalculationCompoundingFrequencyInterval(this.interestRecalculationCompoundingIntervalValue);
-                            if (this.interestRecalculationCompoundingDayValue != null) {
-                                builder.withRecalculationCompoundingFrequencyDayOfWeekType(FrequencyDay.valueOf(this.interestRecalculationCompoundingDayValue.getId()));
-                            }
-                        } else if (compoundingValue == Frequency.Monthly) {
-                            builder.withRecalculationCompoundingFrequencyInterval(this.interestRecalculationCompoundingIntervalValue);
-                            if (this.interestRecalculationCompoundingTypeValue != null) {
-                                builder.withRecalculationCompoundingFrequencyNthDayType(FrequencyType.valueOf(this.interestRecalculationCompoundingTypeValue.getId()));
-                            }
-                            if (this.interestRecalculationCompoundingDayValue != null) {
-                                builder.withRecalculationCompoundingFrequencyDayOfWeekType(FrequencyDay.valueOf(this.interestRecalculationCompoundingDayValue.getId()));
-                            }
-                        }
-                    }
-                }
-
-                if (this.interestRecalculationRecalculateValue != null) {
-                    Frequency recalculateValue = Frequency.valueOf(this.interestRecalculationRecalculateValue.getId());
-                    builder.withRecalculationRestFrequencyType(recalculateValue);
-                    if (recalculateValue == Frequency.Daily) {
-                        builder.withRecalculationRestFrequencyInterval(this.interestRecalculationRecalculateIntervalValue);
-                    } else if (recalculateValue == Frequency.Weekly) {
-                        if (this.interestRecalculationRecalculateDayValue != null) {
-                            builder.withRecalculationRestFrequencyDayOfWeekType(FrequencyDay.valueOf(this.interestRecalculationRecalculateDayValue.getId()));
-                        }
-                        builder.withRecalculationRestFrequencyInterval(this.interestRecalculationRecalculateIntervalValue);
-                    } else if (recalculateValue == Frequency.Monthly) {
-                        if (this.interestRecalculationRecalculateTypeValue != null) {
-                            builder.withRecalculationRestFrequencyNthDayType(FrequencyType.valueOf(this.interestRecalculationRecalculateTypeValue.getId()));
-                        }
-                        if (this.interestRecalculationRecalculateDayValue != null) {
-                            builder.withRecalculationRestFrequencyDayOfWeekType(FrequencyDay.valueOf(this.interestRecalculationRecalculateDayValue.getId()));
-                        }
-                        builder.withRecalculationRestFrequencyInterval(this.interestRecalculationRecalculateIntervalValue);
-                    }
-                }
-                builder.withArrearsBasedOnOriginalSchedule(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue == null ? false : this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue);
-            }
-
-        }
 
         // Guarantee Requirements
 

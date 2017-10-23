@@ -955,12 +955,14 @@ public class LoanBuilder implements Serializable {
             errors.add("repaymentFrequencyType is required");
         }
 
-        if (this.interestRatePerPeriod == null) {
-            errors.add("interestRatePerPeriod is required");
-        }
+        if (this.linkedToFloatingInterestRates == null || !this.linkedToFloatingInterestRates) {
+            if (this.interestRateFrequencyType == null) {
+                errors.add("interestRateFrequencyType is required");
+            }
 
-        if (this.interestRateFrequencyType == null) {
-            errors.add("interestRateFrequencyType is required");
+            if (this.interestRatePerPeriod == null) {
+                errors.add("interestRatePerPeriod is required");
+            }
         }
 
         if (this.amortizationType == null) {
@@ -1075,7 +1077,9 @@ public class LoanBuilder implements Serializable {
         }
 
         if (!errors.isEmpty()) {
-            throw new IllegalArgumentException("invalid builder :: " + StringUtils.join(errors, ","));
+            // throw new IllegalArgumentException("invalid builder :: " +
+            // StringUtils.join(errors, ","));
+            System.out.println("invalid builder :: " + StringUtils.join(errors, ","));
         }
 
         if (this.hasCharges) {

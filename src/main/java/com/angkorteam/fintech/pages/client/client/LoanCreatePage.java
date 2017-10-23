@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.pages.client.client;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,12 @@ import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.enums.ChargeFrequency;
+import com.angkorteam.fintech.dto.enums.loan.Amortization;
+import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
+import com.angkorteam.fintech.dto.enums.loan.InterestMethod;
+import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateType;
+import com.angkorteam.fintech.dto.enums.loan.RepaymentStrategy;
 import com.angkorteam.fintech.popup.AccountChargePopup;
 import com.angkorteam.fintech.popup.CollateralPopup;
 import com.angkorteam.fintech.provider.ChargeFrequencyProvider;
@@ -30,6 +37,7 @@ import com.angkorteam.fintech.provider.LoanPurposeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.provider.loan.FrequencyDayProvider;
 import com.angkorteam.fintech.provider.loan.RepaidOnProvider;
+import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
@@ -129,7 +137,7 @@ public class LoanCreatePage extends Page {
     protected Integer currencyInMultiplesOfValue;
     protected Label currencyInMultiplesOfField;
 
-    protected Integer installmentInMultiplesOfValue;
+    protected Double installmentInMultiplesOfValue;
     protected Label installmentInMultiplesOfField;
 
     protected WebMarkupContainer principalBlock;
@@ -140,8 +148,8 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupContainer loanTermBlock;
     protected WebMarkupContainer loanTermContainer;
-    protected Double loanTermValue;
-    protected TextField<Double> loanTermField;
+    protected Integer loanTermValue;
+    protected TextField<Integer> loanTermField;
     protected TextFeedbackPanel loanTermFeedback;
 
     protected ChargeFrequencyProvider loanTypeProvider;
@@ -210,25 +218,25 @@ public class LoanCreatePage extends Page {
     protected String calculateInterestForExactDayInPartialPeriodValue;
     protected Label calculateInterestForExactDayInPartialPeriodField;
 
-    protected String arrearsToleranceValue;
+    protected Double arrearsToleranceValue;
     protected Label arrearsToleranceField;
 
     protected WebMarkupContainer interestFreePeriodBlock;
     protected WebMarkupContainer interestFreePeriodContainer;
-    protected Double interestFreePeriodValue;
-    protected TextField<Double> interestFreePeriodField;
+    protected Integer interestFreePeriodValue;
+    protected TextField<Integer> interestFreePeriodField;
     protected TextFeedbackPanel interestFreePeriodFeedback;
 
     protected String repaymentStrategyValue;
     protected Label repaymentStrategyField;
 
-    protected String onPrincipalPaymentValue;
+    protected Integer onPrincipalPaymentValue;
     protected Label onPrincipalPaymentField;
 
-    protected String onInterestPaymentValue;
+    protected Integer onInterestPaymentValue;
     protected Label onInterestPaymentField;
 
-    protected String onArrearsAgingValue;
+    protected Integer onArrearsAgingValue;
     protected Label onArrearsAgingField;
 
     protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
@@ -591,6 +599,19 @@ public class LoanCreatePage extends Page {
         this.collateralAddLink.setOnClick(this::collateralAddLinkClick);
         this.form.add(this.collateralAddLink);
 
+        initDefault();
+
+    }
+
+    protected void initDefault() {
+        if (ChargeFrequency.Month.getDescription().equals(this.repaidTypeValue)) {
+            this.repaidOnContainer.setVisible(true);
+            this.repaidDayContainer.setVisible(true);
+        } else {
+            this.repaidOnContainer.setVisible(false);
+            this.repaidDayContainer.setVisible(false);
+        }
+
     }
 
     protected ItemPanel collateralNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -738,6 +759,7 @@ public class LoanCreatePage extends Page {
 
     protected void initData() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
 
         this.submittedOnValue = DateTime.now().toDate();
         this.externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
@@ -746,13 +768,82 @@ public class LoanCreatePage extends Page {
         this.loanId = getPageParameters().get("loanId").toString();
 
         Map<String, Object> clientObject = jdbcTemplate.queryForMap("select * from m_client where id = ?", this.clientId);
-        this.officeId = String.valueOf(clientObject.get("office_id"));
         Map<String, Object> loanObject = jdbcTemplate.queryForMap("select * from m_product_loan where id = ?", this.loanId);
+
+        this.officeId = String.valueOf(clientObject.get("office_id"));
+
         this.productValue = (String) loanObject.get("name");
+
+        this.fundValue = jdbcTemplate.queryForObject("select id, name text from m_fund where id = ?", Option.MAPPER, loanObject.get("fund_id"));
+
+        this.submittedOnValue = DateTime.now().toDate();
+        this.disbursementOnValue = DateTime.now().toDate();
+
+        this.externalIdValue = generator.externalId();
+
         this.currencyValue = (String) loanObject.get("currency_code");
         this.decimalPlacesValue = (Integer) loanObject.get("currency_digits");
 
         this.currencyInMultiplesOfValue = (Integer) loanObject.get("currency_multiplesof");
+        if (loanObject.get("instalment_amount_in_multiples_of") != null) {
+            this.installmentInMultiplesOfValue = ((BigDecimal) loanObject.get("instalment_amount_in_multiples_of")).doubleValue();
+        }
+
+        if (loanObject.get("principal_amount") != null) {
+            this.principalValue = ((BigDecimal) loanObject.get("principal_amount")).doubleValue();
+        }
+
+        this.numberOfRepaymentValue = (Integer) loanObject.get("number_of_repayments");
+        this.repaidEveryValue = (Integer) loanObject.get("repay_every");
+
+        if (this.numberOfRepaymentValue != null && this.repaidEveryValue != null) {
+            this.loanTermValue = this.numberOfRepaymentValue * this.repaidEveryValue;
+        }
+
+        ChargeFrequency chargeFrequency = ChargeFrequency.parseLiteral(String.valueOf(loanObject.get("repayment_period_frequency_enum")));
+
+        this.loanTypeValue = chargeFrequency == null ? null : chargeFrequency.toOption();
+
+        this.repaidTypeValue = chargeFrequency == null ? "" : chargeFrequency.getDescription();
+
+        this.firstRepaymentOnValue = DateTime.now().toDate();
+        this.interestChargedFromValue = DateTime.now().toDate();
+
+        if (loanObject.get("nominal_interest_rate_per_period") != null) {
+            this.nominalInterestRateValue = ((BigDecimal) loanObject.get("nominal_interest_rate_per_period")).doubleValue();
+        }
+
+        NominalInterestRateType nominalInterestTypeValue = NominalInterestRateType.parseLiteral(String.valueOf(loanObject.get("interest_period_frequency_enum")));
+        this.nominalInterestTypeValue = nominalInterestTypeValue == null ? "" : nominalInterestTypeValue.getDescription();
+
+        InterestMethod interestMethodValue = InterestMethod.parseLiteral(String.valueOf(loanObject.get("interest_method_enum")));
+        this.interestMethodValue = interestMethodValue == null ? "" : interestMethodValue.getDescription();
+
+        Amortization amortizationValue = Amortization.parseLiteral(String.valueOf(loanObject.get("amortization_method_enum")));
+        this.amortizationValue = amortizationValue == null ? "" : amortizationValue.getDescription();
+
+        InterestCalculationPeriod interestCalculationPeriodValue = InterestCalculationPeriod.parseLiteral(String.valueOf(loanObject.get("interest_calculated_in_period_enum")));
+        this.interestCalculationPeriodValue = interestCalculationPeriodValue == null ? "" : interestCalculationPeriodValue.getDescription();
+
+        Boolean calculateInterestForExactDayInPartialPeriodValue = (Boolean) loanObject.get("allow_partial_period_interest_calcualtion");
+        if (calculateInterestForExactDayInPartialPeriodValue != null && calculateInterestForExactDayInPartialPeriodValue) {
+            this.calculateInterestForExactDayInPartialPeriodValue = "Yes";
+        } else {
+            this.calculateInterestForExactDayInPartialPeriodValue = "No";
+        }
+
+        RepaymentStrategy repaymentStrategyValue = RepaymentStrategy.parseLiteral(String.valueOf(loanObject.get("loan_transaction_strategy_id")));
+        this.repaymentStrategyValue = repaymentStrategyValue == null ? "" : repaymentStrategyValue.getDescription();
+
+        if (loanObject.get("arrearstolerance_amount") != null) {
+            this.arrearsToleranceValue = ((BigDecimal) loanObject.get("arrearstolerance_amount")).doubleValue();
+        }
+
+        this.interestFreePeriodValue = (Integer) loanObject.get("grace_interest_free_periods");
+
+        this.onArrearsAgingValue = (Integer) loanObject.get("grace_on_arrears_ageing");
+        this.onInterestPaymentValue = (Integer) loanObject.get("grace_on_interest_periods");
+        this.onPrincipalPaymentValue = (Integer) loanObject.get("grace_on_principal_periods");
 
     }
 

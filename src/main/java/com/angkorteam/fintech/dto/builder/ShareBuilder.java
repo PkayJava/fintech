@@ -321,7 +321,9 @@ public class ShareBuilder implements Serializable {
         }
 
         if (!errors.isEmpty()) {
-            throw new IllegalArgumentException("invalid builder :: " + StringUtils.join(errors, ","));
+            // throw new IllegalArgumentException("invalid builder :: " +
+            // StringUtils.join(errors, ","));
+            System.out.println("invalid builder :: " + StringUtils.join(errors, ","));
         }
 
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
