@@ -22,52 +22,52 @@ public class SavingAccountPreviewPage extends Page {
     protected String accountId;
 
     protected String interestEarnedValue;
-    protected Label interestEarnedField;
+    protected Label interestEarnedView;
 
     protected String interestValue;
-    protected Label interestField;
+    protected Label interestView;
 
     protected String nominalInterestRateValue;
-    protected Label nominalInterestRateField;
+    protected Label nominalInterestRateView;
 
     protected String interestCompoundingPeriodValue;
-    protected Label interestCompoundingPeriodField;
+    protected Label interestCompoundingPeriodView;
 
     protected String interestPostingPeriodValue;
-    protected Label interestPostingPeriodField;
+    protected Label interestPostingPeriodView;
 
     protected String interestCalculatedUsingValue;
-    protected Label interestCalculatedUsingField;
+    protected Label interestCalculatedUsingView;
 
     protected String lastActiveTransactionDateValue;
-    protected Label lastActiveTransactionDateField;
+    protected Label lastActiveTransactionDateView;
 
     protected String interestRecalculationDateValue;
-    protected Label interestRecalculationDateField;
+    protected Label interestRecalculationDateView;
 
     protected String activationDateValue;
-    protected Label activationDateField;
+    protected Label activationDateView;
 
     protected String officerValue;
-    protected Label officerField;
+    protected Label officerView;
 
     protected String externalIdValue;
-    protected Label externalIdField;
+    protected Label externalIdView;
 
     protected String currencyValue;
-    protected Label currencyField;
+    protected Label currencyView;
 
     protected String detailNominalInterestRateValue;
-    protected Label detailNominalInterestRateField;
+    protected Label detailnominalInterestRateView;
 
     protected String totalDepositValue;
-    protected Label totalDepositField;
+    protected Label totalDepositView;
 
     protected String daysInYearValue;
-    protected Label daysInYearField;
+    protected Label daysInYearView;
 
     protected String totalInterestEarnedValue;
-    protected Label totalInterestEarnedField;
+    protected Label totalinterestEarnedView;
 
     protected AjaxTabbedPanel<ITab> tab;
 
@@ -81,53 +81,53 @@ public class SavingAccountPreviewPage extends Page {
 
         initData();
 
-        this.interestEarnedField = new Label("interestEarnedField", new PropertyModel<>(this, "interestEarnedValue"));
-        add(this.interestEarnedField);
+        this.interestEarnedView = new Label("interestEarnedView", new PropertyModel<>(this, "interestEarnedValue"));
+        add(this.interestEarnedView);
 
-        this.interestField = new Label("interestField", new PropertyModel<>(this, "interestValue"));
-        add(this.interestField);
+        this.interestView = new Label("interestView", new PropertyModel<>(this, "interestValue"));
+        add(this.interestView);
 
-        this.nominalInterestRateField = new Label("nominalInterestRateField", new PropertyModel<>(this, "nominalInterestRateValue"));
-        add(this.nominalInterestRateField);
+        this.nominalInterestRateView = new Label("nominalInterestRateView", new PropertyModel<>(this, "nominalInterestRateValue"));
+        add(this.nominalInterestRateView);
 
-        this.interestCompoundingPeriodField = new Label("interestCompoundingPeriodField", new PropertyModel<>(this, "interestCompoundingPeriodValue"));
-        add(this.interestCompoundingPeriodField);
+        this.interestCompoundingPeriodView = new Label("interestCompoundingPeriodView", new PropertyModel<>(this, "interestCompoundingPeriodValue"));
+        add(this.interestCompoundingPeriodView);
 
-        this.interestPostingPeriodField = new Label("interestPostingPeriodField", new PropertyModel<>(this, "interestPostingPeriodValue"));
-        add(this.interestPostingPeriodField);
+        this.interestPostingPeriodView = new Label("interestPostingPeriodView", new PropertyModel<>(this, "interestPostingPeriodValue"));
+        add(this.interestPostingPeriodView);
 
-        this.interestCalculatedUsingField = new Label("interestCalculatedUsingField", new PropertyModel<>(this, "interestCalculatedUsingValue"));
-        add(this.interestCalculatedUsingField);
+        this.interestCalculatedUsingView = new Label("interestCalculatedUsingView", new PropertyModel<>(this, "interestCalculatedUsingValue"));
+        add(this.interestCalculatedUsingView);
 
-        this.lastActiveTransactionDateField = new Label("lastActiveTransactionDateField", new PropertyModel<>(this, "lastActiveTransactionDateValue"));
-        add(this.lastActiveTransactionDateField);
+        this.lastActiveTransactionDateView = new Label("lastActiveTransactionDateView", new PropertyModel<>(this, "lastActiveTransactionDateValue"));
+        add(this.lastActiveTransactionDateView);
 
-        this.interestRecalculationDateField = new Label("interestRecalculationDateField", new PropertyModel<>(this, "interestRecalculationDateValue"));
-        add(this.interestRecalculationDateField);
+        this.interestRecalculationDateView = new Label("interestRecalculationDateView", new PropertyModel<>(this, "interestRecalculationDateValue"));
+        add(this.interestRecalculationDateView);
 
-        this.activationDateField = new Label("activationDateField", new PropertyModel<>(this, "activationDateValue"));
-        add(this.activationDateField);
+        this.activationDateView = new Label("activationDateView", new PropertyModel<>(this, "activationDateValue"));
+        add(this.activationDateView);
 
-        this.officerField = new Label("officerField", new PropertyModel<>(this, "officerValue"));
-        add(this.officerField);
+        this.officerView = new Label("officerView", new PropertyModel<>(this, "officerValue"));
+        add(this.officerView);
 
-        this.externalIdField = new Label("externalIdField", new PropertyModel<>(this, "externalIdValue"));
-        add(this.externalIdField);
+        this.externalIdView = new Label("externalIdView", new PropertyModel<>(this, "externalIdValue"));
+        add(this.externalIdView);
 
-        this.currencyField = new Label("currencyField", new PropertyModel<>(this, "currencyValue"));
-        add(this.currencyField);
+        this.currencyView = new Label("currencyView", new PropertyModel<>(this, "currencyValue"));
+        add(this.currencyView);
 
-        this.detailNominalInterestRateField = new Label("detailNominalInterestRateField", new PropertyModel<>(this, "detailNominalInterestRateValue"));
-        add(this.detailNominalInterestRateField);
+        this.detailnominalInterestRateView = new Label("detailnominalInterestRateView", new PropertyModel<>(this, "detailNominalInterestRateValue"));
+        add(this.detailnominalInterestRateView);
 
-        this.totalDepositField = new Label("totalDepositField", new PropertyModel<>(this, "totalDepositValue"));
-        add(this.totalDepositField);
+        this.totalDepositView = new Label("totalDepositView", new PropertyModel<>(this, "totalDepositValue"));
+        add(this.totalDepositView);
 
-        this.daysInYearField = new Label("daysInYearField", new PropertyModel<>(this, "daysInYearValue"));
-        add(this.daysInYearField);
+        this.daysInYearView = new Label("daysInYearView", new PropertyModel<>(this, "daysInYearValue"));
+        add(this.daysInYearView);
 
-        this.totalInterestEarnedField = new Label("totalInterestEarnedField", new PropertyModel<>(this, "totalInterestEarnedValue"));
-        add(this.totalInterestEarnedField);
+        this.totalinterestEarnedView = new Label("totalinterestEarnedView", new PropertyModel<>(this, "totalInterestEarnedValue"));
+        add(this.totalinterestEarnedView);
 
         this.tab = new AjaxTabbedPanel<>("tab", Arrays.asList(new AccountPreviewTransaction(this), new AccountPreviewCharge(this)));
         add(this.tab);

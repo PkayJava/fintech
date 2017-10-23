@@ -49,7 +49,7 @@ public class AccountChargePopup extends Panel {
 
     protected WebMarkupContainer chargeTypeBlock;
     protected WebMarkupContainer chargeTypeContainer;
-    protected Label chargeTypeField;
+    protected Label chargeTypeView;
     protected PropertyModel<String> chargeTypeValue;
 
     protected WebMarkupContainer amountBlock;
@@ -60,7 +60,7 @@ public class AccountChargePopup extends Panel {
 
     protected WebMarkupContainer collectedOnBlock;
     protected WebMarkupContainer collectedOnContainer;
-    protected Label collectedOnField;
+    protected Label collectedOnView;
     protected PropertyModel<String> collectedOnValue;
 
     protected WebMarkupContainer dateBlock;
@@ -119,8 +119,8 @@ public class AccountChargePopup extends Panel {
         this.form.add(this.chargeTypeBlock);
         this.chargeTypeContainer = new WebMarkupContainer("chargeTypeContainer");
         this.chargeTypeBlock.add(this.chargeTypeContainer);
-        this.chargeTypeField = new Label("chargeTypeField", this.chargeTypeValue);
-        this.chargeTypeContainer.add(this.chargeTypeField);
+        this.chargeTypeView = new Label("chargeTypeView", this.chargeTypeValue);
+        this.chargeTypeContainer.add(this.chargeTypeView);
 
         this.amountValue = new PropertyModel<>(this.model, "itemAmountValue");
         this.amountBlock = new WebMarkupContainer("amountBlock");
@@ -140,8 +140,8 @@ public class AccountChargePopup extends Panel {
         this.form.add(this.collectedOnBlock);
         this.collectedOnContainer = new WebMarkupContainer("collectedOnContainer");
         this.collectedOnBlock.add(this.collectedOnContainer);
-        this.collectedOnField = new Label("collectedOnField", this.collectedOnValue);
-        this.collectedOnContainer.add(this.collectedOnField);
+        this.collectedOnView = new Label("collectedOnView", this.collectedOnValue);
+        this.collectedOnContainer.add(this.collectedOnView);
 
         this.dateValue = new PropertyModel<>(this.model, "itemDateValue");
         this.dateBlock = new WebMarkupContainer("dateBlock");

@@ -76,7 +76,7 @@ public class SavingAccountCreatePage extends Page {
     protected BookmarkablePageLink<Void> closeLink;
 
     protected String productValue;
-    protected Label productField;
+    protected Label productView;
 
     protected WebMarkupContainer submittedOnBlock;
     protected WebMarkupContainer submittedOnContainer;
@@ -98,10 +98,10 @@ public class SavingAccountCreatePage extends Page {
     protected TextFeedbackPanel externalIdFeedback;
 
     protected String currencyValue;
-    protected Label currencyField;
+    protected Label currencyView;
 
     protected Integer decimalPlacesValue;
-    protected Label decimalPlacesField;
+    protected Label decimalPlacesView;
 
     protected WebMarkupContainer nominalAnnualInterestBlock;
     protected WebMarkupContainer nominalAnnualInterestContainer;
@@ -117,7 +117,7 @@ public class SavingAccountCreatePage extends Page {
     protected TextFeedbackPanel interestCompoundingPeriodFeedback;
 
     protected Integer currencyInMultiplesOfValue;
-    protected Label currencyInMultiplesOfField;
+    protected Label currencyInMultiplesOfView;
 
     protected InterestPostingPeriodProvider interestPostingPeriodProvider;
     protected WebMarkupContainer interestPostingPeriodBlock;
@@ -202,7 +202,7 @@ public class SavingAccountCreatePage extends Page {
     protected TextFeedbackPanel minimumBalanceFeedback;
 
     protected Double balanceRequiredForInterestCalculationValue;
-    protected Label balanceRequiredForInterestCalculationField;
+    protected Label balanceRequiredForInterestCalculationView;
 
     protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> chargeTable;
@@ -235,8 +235,8 @@ public class SavingAccountCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.productField = new Label("productField", new PropertyModel<>(this, "productValue"));
-        this.form.add(this.productField);
+        this.productView = new Label("productView", new PropertyModel<>(this, "productValue"));
+        this.form.add(this.productView);
 
         this.submittedOnBlock = new WebMarkupContainer("submittedOnBlock");
         this.submittedOnBlock.setOutputMarkupId(true);
@@ -277,11 +277,11 @@ public class SavingAccountCreatePage extends Page {
         this.externalIdFeedback = new TextFeedbackPanel("externalIdFeedback", this.externalIdField);
         this.externalIdContainer.add(this.externalIdFeedback);
 
-        this.currencyField = new Label("currencyField", new PropertyModel<>(this, "currencyValue"));
-        this.form.add(this.currencyField);
+        this.currencyView = new Label("currencyView", new PropertyModel<>(this, "currencyValue"));
+        this.form.add(this.currencyView);
 
-        this.decimalPlacesField = new Label("decimalPlacesField", new PropertyModel<>(this, "decimalPlacesValue"));
-        this.form.add(this.decimalPlacesField);
+        this.decimalPlacesView = new Label("decimalPlacesView", new PropertyModel<>(this, "decimalPlacesValue"));
+        this.form.add(this.decimalPlacesView);
 
         this.nominalAnnualInterestBlock = new WebMarkupContainer("nominalAnnualInterestBlock");
         this.nominalAnnualInterestBlock.setOutputMarkupId(true);
@@ -308,8 +308,8 @@ public class SavingAccountCreatePage extends Page {
         this.interestCompoundingPeriodFeedback = new TextFeedbackPanel("interestCompoundingPeriodFeedback", this.interestCompoundingPeriodField);
         this.interestCompoundingPeriodContainer.add(this.interestCompoundingPeriodFeedback);
 
-        this.currencyInMultiplesOfField = new Label("currencyInMultiplesOfField", new PropertyModel<>(this, "currencyInMultiplesOfValue"));
-        this.form.add(this.currencyInMultiplesOfField);
+        this.currencyInMultiplesOfView = new Label("currencyInMultiplesOfView", new PropertyModel<>(this, "currencyInMultiplesOfValue"));
+        this.form.add(this.currencyInMultiplesOfView);
 
         this.interestPostingPeriodProvider = new InterestPostingPeriodProvider();
         this.interestPostingPeriodBlock = new WebMarkupContainer("interestPostingPeriodBlock");
@@ -469,8 +469,8 @@ public class SavingAccountCreatePage extends Page {
         this.minimumBalanceFeedback = new TextFeedbackPanel("minimumBalanceFeedback", this.minimumBalanceField);
         this.minimumBalanceContainer.add(this.minimumBalanceFeedback);
 
-        this.balanceRequiredForInterestCalculationField = new Label("balanceRequiredForInterestCalculationField", new PropertyModel<>(this, "balanceRequiredForInterestCalculationValue"));
-        form.add(this.balanceRequiredForInterestCalculationField);
+        this.balanceRequiredForInterestCalculationView = new Label("balanceRequiredForInterestCalculationView", new PropertyModel<>(this, "balanceRequiredForInterestCalculationValue"));
+        form.add(this.balanceRequiredForInterestCalculationView);
 
         // Table
         this.chargePopup = new ModalWindow("chargePopup");

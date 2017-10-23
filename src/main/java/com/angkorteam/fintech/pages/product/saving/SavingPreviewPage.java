@@ -22,17 +22,17 @@ public class SavingPreviewPage extends Page {
     protected WebMarkupContainer detailProductNameBlock;
     protected WebMarkupContainer detailProductNameContainer;
     protected String detailProductNameValue;
-    protected Label detailProductNameField;
+    protected Label detailProductNameView;
 
     protected WebMarkupContainer detailShortNameBlock;
     protected WebMarkupContainer detailShortNameContainer;
     protected String detailShortNameValue;
-    protected Label detailShortNameField;
+    protected Label detailShortNameView;
 
     protected WebMarkupContainer detailDescriptionBlock;
     protected WebMarkupContainer detailDescriptionContainer;
     protected String detailDescriptionValue;
-    protected Label detailDescriptionField;
+    protected Label detailDescriptionView;
 
     @Override
     protected void onInitialize() {
@@ -44,22 +44,22 @@ public class SavingPreviewPage extends Page {
         add(this.detailProductNameBlock);
         this.detailProductNameContainer = new WebMarkupContainer("detailProductNameContainer");
         this.detailProductNameBlock.add(this.detailProductNameContainer);
-        this.detailProductNameField = new Label("detailProductNameField", new PropertyModel<>(this, "detailProductNameValue"));
-        this.detailProductNameContainer.add(this.detailProductNameField);
+        this.detailProductNameView = new Label("detailProductNameView", new PropertyModel<>(this, "detailProductNameValue"));
+        this.detailProductNameContainer.add(this.detailProductNameView);
 
         this.detailShortNameBlock = new WebMarkupContainer("detailShortNameBlock");
         add(this.detailShortNameBlock);
         this.detailShortNameContainer = new WebMarkupContainer("detailShortNameContainer");
         this.detailShortNameBlock.add(this.detailShortNameContainer);
-        this.detailShortNameField = new Label("detailShortNameField", new PropertyModel<>(this, "detailShortNameValue"));
-        this.detailShortNameContainer.add(this.detailShortNameField);
+        this.detailShortNameView = new Label("detailShortNameView", new PropertyModel<>(this, "detailShortNameValue"));
+        this.detailShortNameContainer.add(this.detailShortNameView);
 
         this.detailDescriptionBlock = new WebMarkupContainer("detailDescriptionBlock");
         add(this.detailDescriptionBlock);
         this.detailDescriptionContainer = new WebMarkupContainer("detailDescriptionContainer");
         this.detailDescriptionBlock.add(this.detailDescriptionContainer);
-        this.detailDescriptionField = new Label("detailDescriptionField", new PropertyModel<>(this, "detailDescriptionValue"));
-        this.detailDescriptionContainer.add(this.detailDescriptionField);
+        this.detailDescriptionView = new Label("detailDescriptionView", new PropertyModel<>(this, "detailDescriptionValue"));
+        this.detailDescriptionContainer.add(this.detailDescriptionView);
     }
 
     protected void initData() {

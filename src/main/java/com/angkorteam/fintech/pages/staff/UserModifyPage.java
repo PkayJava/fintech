@@ -42,16 +42,16 @@ public class UserModifyPage extends Page {
     protected String userId;
 
     protected String firstNameValue;
-    protected Label firstNameField;
+    protected Label firstNameView;
 
     protected String emailValue;
-    protected Label emailField;
+    protected Label emailView;
 
     protected String lastNameValue;
-    protected Label lastNameField;
+    protected Label lastNameView;
 
     protected String loginValue;
-    protected Label loginField;
+    protected Label loginView;
 
     protected SingleChoiceProvider officeProvider;
     protected Option officeValue;
@@ -165,16 +165,16 @@ public class UserModifyPage extends Page {
         this.form.add(this.closeLink);
 
         this.firstNameValue = (String) userObject.get("firstname");
-        this.firstNameField = new Label("firstNameField", new PropertyModel<>(this, "firstNameValue"));
-        this.form.add(this.firstNameField);
+        this.firstNameView = new Label("firstNameView", new PropertyModel<>(this, "firstNameValue"));
+        this.form.add(this.firstNameView);
 
         this.emailValue = (String) userObject.get("email");
-        this.emailField = new Label("emailField", new PropertyModel<>(this, "emailValue"));
-        this.form.add(this.emailField);
+        this.emailView = new Label("emailView", new PropertyModel<>(this, "emailValue"));
+        this.form.add(this.emailView);
 
         this.lastNameValue = (String) userObject.get("lastname");
-        this.lastNameField = new Label("lastNameField", new PropertyModel<>(this, "lastNameValue"));
-        this.form.add(this.lastNameField);
+        this.lastNameView = new Label("lastNameView", new PropertyModel<>(this, "lastNameValue"));
+        this.form.add(this.lastNameView);
 
         this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", Option.MAPPER, userObject.get("office_id"));
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
@@ -203,8 +203,8 @@ public class UserModifyPage extends Page {
         this.form.add(this.staffFeedback);
 
         this.loginValue = (String) userObject.get("username");
-        this.loginField = new Label("loginField", new PropertyModel<>(this, "loginValue"));
-        this.form.add(this.loginField);
+        this.loginView = new Label("loginView", new PropertyModel<>(this, "loginValue"));
+        this.form.add(this.loginView);
 
         this.overridePasswordExpiryPolicyField = new CheckBox("overridePasswordExpiryPolicyField", new PropertyModel<>(this, "overridePasswordExpiryPolicyValue"));
         this.overridePasswordExpiryPolicyField.setRequired(true);

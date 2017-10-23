@@ -19,7 +19,7 @@
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 						<label>Product</label>
-						<div wicket:id="productField" readonly="readonly"
+						<div wicket:id="productView" readonly="readonly"
 							class="form-control"></div>
 					</div>
 					<div wicket:id="loanOfficerBlock"
@@ -138,13 +138,13 @@
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 						<label>Currency</label>
-						<div wicket:id="currencyField" readonly="readonly"
+						<div wicket:id="currencyView" readonly="readonly"
 							class="form-control"></div>
 					</div>
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 						<label>Decimal Places</label>
-						<div wicket:id="decimalPlacesField" readonly="readonly"
+						<div wicket:id="decimalPlacesView" readonly="readonly"
 							class="form-control"></div>
 					</div>
 					<div class="clearfix"></div>
@@ -153,13 +153,13 @@
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 						<label>Currency In Multiples Of</label>
-						<div wicket:id="currencyInMultiplesOfField" readonly="readonly"
+						<div wicket:id="currencyInMultiplesOfView" readonly="readonly"
 							class="form-control"></div>
 					</div>
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 						<label>Installment In Multiples Of</label>
-						<div wicket:id="installmentInMultiplesOfField" readonly="readonly"
+						<div wicket:id="installmentInMultiplesOfView" readonly="readonly"
 							class="form-control"></div>
 					</div>
 					<div class="clearfix"></div>
@@ -207,13 +207,13 @@
 					<div
 						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
 						<label>Repaid Every</label>
-						<div wicket:id="repaidEveryField" readonly="readonly"
+						<div wicket:id="repaidEveryView" readonly="readonly"
 							class="form-control"></div>
 					</div>
 					<div
 						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
 						<label>Type</label>
-						<div wicket:id="repaidTypeField" readonly="readonly"
+						<div wicket:id="repaidTypeView" readonly="readonly"
 							class="form-control"></div>
 					</div>
 					<div class="clearfix"></div>
@@ -279,13 +279,13 @@
 					<div
 						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
 						<label>Type</label>
-						<div wicket:id="nominalInterestTypeField" readonly="readonly"
+						<div wicket:id="nominalInterestTypeView" readonly="readonly"
 							class="form-control"></div>
 					</div>
 					<div
 						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
 						<label>Interest Method</label>
-						<div wicket:id="interestMethodField" readonly="readonly"
+						<div wicket:id="interestMethodView" readonly="readonly"
 							class="form-control"></div>
 					</div>
 					<div class="clearfix"></div>
@@ -294,7 +294,7 @@
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 						<label>Amortization</label>
-						<div wicket:id="amortizationField" readonly="readonly"
+						<div wicket:id="amortizationView" readonly="readonly"
 							class="form-control"></div>
 					</div>
 					<div
@@ -306,13 +306,13 @@
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 						<label>Interest Calculation Period</label>
-						<div wicket:id="interestCalculationPeriodField"
+						<div wicket:id="interestCalculationPeriodView"
 							readonly="readonly" class="form-control"></div>
 					</div>
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 						<label>Calculate interest for exact days in partial period</label>
-						<div wicket:id="calculateInterestForExactDayInPartialPeriodField"
+						<div wicket:id="calculateInterestForExactDayInPartialPeriodView"
 							readonly="readonly" class="form-control"></div>
 					</div>
 					<div class="clearfix"></div>
@@ -321,7 +321,7 @@
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 						<label>Arrears Tolerance</label>
-						<div wicket:id="arrearsToleranceField" readonly="readonly"
+						<div wicket:id="arrearsToleranceView" readonly="readonly"
 							class="form-control"></div>
 					</div>
 					<div wicket:id="interestFreePeriodBlock"
@@ -340,7 +340,7 @@
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 						<label>Repayment Strategy</label>
-						<div wicket:id="repaymentStrategyField" readonly="readonly"
+						<div wicket:id="repaymentStrategyView" readonly="readonly"
 							class="form-control"></div>
 					</div>
 					<div
@@ -359,19 +359,19 @@
 					<div
 						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
 						<label>On principal payment</label>
-						<div wicket:id="onPrincipalPaymentField" readonly="readonly"
+						<div wicket:id="onPrincipalPaymentView" readonly="readonly"
 							class="form-control"></div>
 					</div>
 					<div
 						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
 						<label>On interest payment</label>
-						<div wicket:id="onInterestPaymentField" readonly="readonly"
+						<div wicket:id="onInterestPaymentView" readonly="readonly"
 							class="form-control"></div>
 					</div>
 					<div
 						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
 						<label>On Arrears Aging</label>
-						<div wicket:id="onArrearsAgingField" readonly="readonly"
+						<div wicket:id="onArrearsAgingView" readonly="readonly"
 							class="form-control"></div>
 					</div>
 					<div class="clearfix"></div>

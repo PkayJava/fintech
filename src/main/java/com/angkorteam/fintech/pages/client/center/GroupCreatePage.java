@@ -68,7 +68,7 @@ public class GroupCreatePage extends Page {
     protected WebMarkupContainer officeBlock;
     protected WebMarkupContainer officeContainer;
     protected String officeValue;
-    protected Label officeField;
+    protected Label officeView;
 
     protected WebMarkupContainer staffBlock;
     protected WebMarkupContainer staffContainer;
@@ -166,8 +166,8 @@ public class GroupCreatePage extends Page {
         this.form.add(this.officeBlock);
         this.officeContainer = new WebMarkupContainer("officeContainer");
         this.officeBlock.add(this.officeContainer);
-        this.officeField = new Label("officeField", new PropertyModel<>(this, "officeValue"));
-        this.officeContainer.add(this.officeField);
+        this.officeView = new Label("officeView", new PropertyModel<>(this, "officeValue"));
+        this.officeContainer.add(this.officeView);
 
         this.staffBlock = new WebMarkupContainer("staffBlock");
         this.staffBlock.setOutputMarkupId(true);

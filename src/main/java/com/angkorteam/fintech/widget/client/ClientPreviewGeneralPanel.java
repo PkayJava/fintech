@@ -100,7 +100,7 @@ public class ClientPreviewGeneralPanel extends Panel {
     protected DataTable<Map<String, Object>, String> savingAccountTable;
     protected JdbcProvider savingAccountProvider;
 
-    protected Label clientNameField;
+    protected Label clientNameView;
     protected String clientNameValue;
 
     protected WebMarkupContainer clientImageField;
@@ -215,8 +215,8 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.savingAccountTable = new DefaultDataTable<>("savingAccountTable", savingAccountColumns, this.savingAccountProvider, 20);
         add(this.savingAccountTable);
 
-        this.clientNameField = new Label("clientNameField", new PropertyModel<>(this, "clientNameValue"));
-        add(this.clientNameField);
+        this.clientNameView = new Label("clientNameView", new PropertyModel<>(this, "clientNameValue"));
+        add(this.clientNameView);
 
         this.clientImageField = new WebMarkupContainer("clientImageField");
         this.clientImageField.setOutputMarkupId(true);

@@ -74,7 +74,7 @@ public class LoanCreatePage extends Page {
     protected BookmarkablePageLink<Void> closeLink;
 
     protected String productValue;
-    protected Label productField;
+    protected Label productView;
 
     protected SingleChoiceProvider loanOfficerProvider;
     protected WebMarkupContainer loanOfficerBlock;
@@ -129,16 +129,16 @@ public class LoanCreatePage extends Page {
     protected TextFeedbackPanel createStandingInstructionAtDisbursementFeedback;
 
     protected String currencyValue;
-    protected Label currencyField;
+    protected Label currencyView;
 
     protected Integer decimalPlacesValue;
-    protected Label decimalPlacesField;
+    protected Label decimalPlacesView;
 
     protected Integer currencyInMultiplesOfValue;
-    protected Label currencyInMultiplesOfField;
+    protected Label currencyInMultiplesOfView;
 
     protected Double installmentInMultiplesOfValue;
-    protected Label installmentInMultiplesOfField;
+    protected Label installmentInMultiplesOfView;
 
     protected WebMarkupContainer principalBlock;
     protected WebMarkupContainer principalContainer;
@@ -166,10 +166,10 @@ public class LoanCreatePage extends Page {
     protected TextFeedbackPanel numberOfRepaymentFeedback;
 
     protected Integer repaidEveryValue;
-    protected Label repaidEveryField;
+    protected Label repaidEveryView;
 
     protected String repaidTypeValue;
-    protected Label repaidTypeField;
+    protected Label repaidTypeView;
 
     protected RepaidOnProvider repaidOnProvider;
     protected WebMarkupContainer repaidOnBlock;
@@ -204,22 +204,22 @@ public class LoanCreatePage extends Page {
     protected TextFeedbackPanel nominalInterestRateFeedback;
 
     protected String nominalInterestTypeValue;
-    protected Label nominalInterestTypeField;
+    protected Label nominalInterestTypeView;
 
     protected String interestMethodValue;
-    protected Label interestMethodField;
+    protected Label interestMethodView;
 
     protected String amortizationValue;
-    protected Label amortizationField;
+    protected Label amortizationView;
 
     protected String interestCalculationPeriodValue;
-    protected Label interestCalculationPeriodField;
+    protected Label interestCalculationPeriodView;
 
     protected String calculateInterestForExactDayInPartialPeriodValue;
-    protected Label calculateInterestForExactDayInPartialPeriodField;
+    protected Label calculateInterestForExactDayInPartialPeriodView;
 
     protected Double arrearsToleranceValue;
-    protected Label arrearsToleranceField;
+    protected Label arrearsToleranceView;
 
     protected WebMarkupContainer interestFreePeriodBlock;
     protected WebMarkupContainer interestFreePeriodContainer;
@@ -228,16 +228,16 @@ public class LoanCreatePage extends Page {
     protected TextFeedbackPanel interestFreePeriodFeedback;
 
     protected String repaymentStrategyValue;
-    protected Label repaymentStrategyField;
+    protected Label repaymentStrategyView;
 
     protected Integer onPrincipalPaymentValue;
-    protected Label onPrincipalPaymentField;
+    protected Label onPrincipalPaymentView;
 
     protected Integer onInterestPaymentValue;
-    protected Label onInterestPaymentField;
+    protected Label onInterestPaymentView;
 
     protected Integer onArrearsAgingValue;
-    protected Label onArrearsAgingField;
+    protected Label onArrearsAgingView;
 
     protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> chargeTable;
@@ -278,8 +278,8 @@ public class LoanCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.productField = new Label("productField", new PropertyModel<>(this, "productValue"));
-        this.form.add(this.productField);
+        this.productView = new Label("productView", new PropertyModel<>(this, "productValue"));
+        this.form.add(this.productView);
 
         this.loanOfficerProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
         this.loanOfficerProvider.applyWhere("is_active", "is_active = 1");
@@ -385,17 +385,17 @@ public class LoanCreatePage extends Page {
         this.createStandingInstructionAtDisbursementFeedback = new TextFeedbackPanel("createStandingInstructionAtDisbursementFeedback", this.createStandingInstructionAtDisbursementField);
         this.createStandingInstructionAtDisbursementContainer.add(this.createStandingInstructionAtDisbursementFeedback);
 
-        this.currencyField = new Label("currencyField", new PropertyModel<>(this, "currencyValue"));
-        this.form.add(this.currencyField);
+        this.currencyView = new Label("currencyView", new PropertyModel<>(this, "currencyValue"));
+        this.form.add(this.currencyView);
 
-        this.decimalPlacesField = new Label("decimalPlacesField", new PropertyModel<>(this, "decimalPlacesValue"));
-        this.form.add(this.decimalPlacesField);
+        this.decimalPlacesView = new Label("decimalPlacesView", new PropertyModel<>(this, "decimalPlacesValue"));
+        this.form.add(this.decimalPlacesView);
 
-        this.currencyInMultiplesOfField = new Label("currencyInMultiplesOfField", new PropertyModel<>(this, "currencyInMultiplesOfValue"));
-        this.form.add(this.currencyInMultiplesOfField);
+        this.currencyInMultiplesOfView = new Label("currencyInMultiplesOfView", new PropertyModel<>(this, "currencyInMultiplesOfValue"));
+        this.form.add(this.currencyInMultiplesOfView);
 
-        this.installmentInMultiplesOfField = new Label("installmentInMultiplesOfField", new PropertyModel<>(this, "installmentInMultiplesOfValue"));
-        this.form.add(this.installmentInMultiplesOfField);
+        this.installmentInMultiplesOfView = new Label("installmentInMultiplesOfView", new PropertyModel<>(this, "installmentInMultiplesOfValue"));
+        this.form.add(this.installmentInMultiplesOfView);
 
         this.principalBlock = new WebMarkupContainer("principalBlock");
         this.principalBlock.setOutputMarkupId(true);
@@ -446,11 +446,11 @@ public class LoanCreatePage extends Page {
         this.numberOfRepaymentFeedback = new TextFeedbackPanel("numberOfRepaymentFeedback", this.numberOfRepaymentField);
         this.numberOfRepaymentContainer.add(this.numberOfRepaymentFeedback);
 
-        this.repaidEveryField = new Label("repaidEveryField", new PropertyModel<>(this, "repaidEveryValue"));
-        this.form.add(this.repaidEveryField);
+        this.repaidEveryView = new Label("repaidEveryView", new PropertyModel<>(this, "repaidEveryValue"));
+        this.form.add(this.repaidEveryView);
 
-        this.repaidTypeField = new Label("repaidTypeField", new PropertyModel<>(this, "repaidTypeValue"));
-        this.form.add(this.repaidTypeField);
+        this.repaidTypeView = new Label("repaidTypeView", new PropertyModel<>(this, "repaidTypeValue"));
+        this.form.add(this.repaidTypeView);
 
         this.repaidOnProvider = new RepaidOnProvider();
         this.repaidOnBlock = new WebMarkupContainer("repaidOnBlock");
@@ -514,23 +514,23 @@ public class LoanCreatePage extends Page {
         this.nominalInterestRateFeedback = new TextFeedbackPanel("nominalInterestRateFeedback", this.nominalInterestRateField);
         this.nominalInterestRateContainer.add(this.nominalInterestRateFeedback);
 
-        this.nominalInterestTypeField = new Label("nominalInterestTypeField", new PropertyModel<>(this, "nominalInterestTypeValue"));
-        this.form.add(this.nominalInterestTypeField);
+        this.nominalInterestTypeView = new Label("nominalInterestTypeView", new PropertyModel<>(this, "nominalInterestTypeValue"));
+        this.form.add(this.nominalInterestTypeView);
 
-        this.interestMethodField = new Label("interestMethodField", new PropertyModel<>(this, "interestMethodValue"));
-        this.form.add(this.interestMethodField);
+        this.interestMethodView = new Label("interestMethodView", new PropertyModel<>(this, "interestMethodValue"));
+        this.form.add(this.interestMethodView);
 
-        this.amortizationField = new Label("amortizationField", new PropertyModel<>(this, "amortizationValue"));
-        this.form.add(this.amortizationField);
+        this.amortizationView = new Label("amortizationView", new PropertyModel<>(this, "amortizationValue"));
+        this.form.add(this.amortizationView);
 
-        this.interestCalculationPeriodField = new Label("interestCalculationPeriodField", new PropertyModel<>(this, "interestCalculationPeriodValue"));
-        this.form.add(this.interestCalculationPeriodField);
+        this.interestCalculationPeriodView = new Label("interestCalculationPeriodView", new PropertyModel<>(this, "interestCalculationPeriodValue"));
+        this.form.add(this.interestCalculationPeriodView);
 
-        this.calculateInterestForExactDayInPartialPeriodField = new Label("calculateInterestForExactDayInPartialPeriodField", new PropertyModel<>(this, "calculateInterestForExactDayInPartialPeriodValue"));
-        this.form.add(this.calculateInterestForExactDayInPartialPeriodField);
+        this.calculateInterestForExactDayInPartialPeriodView = new Label("calculateInterestForExactDayInPartialPeriodView", new PropertyModel<>(this, "calculateInterestForExactDayInPartialPeriodValue"));
+        this.form.add(this.calculateInterestForExactDayInPartialPeriodView);
 
-        this.arrearsToleranceField = new Label("arrearsToleranceField", new PropertyModel<>(this, "arrearsToleranceValue"));
-        this.form.add(this.arrearsToleranceField);
+        this.arrearsToleranceView = new Label("arrearsToleranceView", new PropertyModel<>(this, "arrearsToleranceValue"));
+        this.form.add(this.arrearsToleranceView);
 
         this.interestFreePeriodBlock = new WebMarkupContainer("interestFreePeriodBlock");
         this.interestFreePeriodBlock.setOutputMarkupId(true);
@@ -544,17 +544,17 @@ public class LoanCreatePage extends Page {
         this.interestFreePeriodFeedback = new TextFeedbackPanel("interestFreePeriodFeedback", this.interestFreePeriodField);
         this.interestFreePeriodContainer.add(this.interestFreePeriodFeedback);
 
-        this.repaymentStrategyField = new Label("repaymentStrategyField", new PropertyModel<>(this, "repaymentStrategyValue"));
-        this.form.add(this.repaymentStrategyField);
+        this.repaymentStrategyView = new Label("repaymentStrategyView", new PropertyModel<>(this, "repaymentStrategyValue"));
+        this.form.add(this.repaymentStrategyView);
 
-        this.onPrincipalPaymentField = new Label("onPrincipalPaymentField", new PropertyModel<>(this, "onPrincipalPaymentValue"));
-        this.form.add(this.onPrincipalPaymentField);
+        this.onPrincipalPaymentView = new Label("onPrincipalPaymentView", new PropertyModel<>(this, "onPrincipalPaymentValue"));
+        this.form.add(this.onPrincipalPaymentView);
 
-        this.onInterestPaymentField = new Label("onInterestPaymentField", new PropertyModel<>(this, "onInterestPaymentValue"));
-        this.form.add(this.onInterestPaymentField);
+        this.onInterestPaymentView = new Label("onInterestPaymentView", new PropertyModel<>(this, "onInterestPaymentValue"));
+        this.form.add(this.onInterestPaymentView);
 
-        this.onArrearsAgingField = new Label("onArrearsAgingField", new PropertyModel<>(this, "onArrearsAgingValue"));
-        this.form.add(this.onArrearsAgingField);
+        this.onArrearsAgingView = new Label("onArrearsAgingView", new PropertyModel<>(this, "onArrearsAgingValue"));
+        this.form.add(this.onArrearsAgingView);
 
         // Table
         this.chargePopup = new ModalWindow("chargePopup");

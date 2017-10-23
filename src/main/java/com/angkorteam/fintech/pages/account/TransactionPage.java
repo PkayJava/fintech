@@ -43,33 +43,33 @@ import com.google.common.collect.Lists;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class TransactionPage extends Page {
 
-    private static final DecimalFormat FORMAT = new DecimalFormat("#,###.000");
+    protected static final DecimalFormat FORMAT = new DecimalFormat("#,###.000");
 
-    private String transactionId;
+    protected String transactionId;
 
-    private AjaxLink<Void> reverseButton;
+    protected AjaxLink<Void> reverseButton;
 
-    private String officeValue;
-    private Label officeField;
+    protected String officeValue;
+    protected Label officeView;
 
-    private String transactionNumberValue;
-    private Label transactionNumberField;
+    protected String transactionNumberValue;
+    protected Label transactionNumberView;
 
-    private String transactionDateValue;
-    private Label transactionDateField;
+    protected String transactionDateValue;
+    protected Label transactionDateView;
 
-    private String createdOnValue;
-    private Label createdOnField;
+    protected String createdOnValue;
+    protected Label createdOnView;
 
-    private String createdByValue;
-    private Label createdByField;
+    protected String createdByValue;
+    protected Label createdByView;
 
-    private DataTable<Map<String, Object>, String> entryTable;
-    private JdbcProvider entryProvider;
+    protected DataTable<Map<String, Object>, String> entryTable;
+    protected JdbcProvider entryProvider;
 
-    private ModalWindow commentPopup;
+    protected ModalWindow commentPopup;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -126,26 +126,26 @@ public class TransactionPage extends Page {
         this.add(this.reverseButton);
 
         this.officeValue = (String) entry.get("office");
-        this.officeField = new Label("officeField", new PropertyModel<>(this, "officeValue"));
-        this.add(this.officeField);
+        this.officeView = new Label("officeView", new PropertyModel<>(this, "officeValue"));
+        this.add(this.officeView);
 
         this.createdByValue = (String) entry.get("created_by");
-        this.createdByField = new Label("createdByField", new PropertyModel<>(this, "createdByValue"));
-        this.add(this.createdByField);
+        this.createdByView = new Label("createdByView", new PropertyModel<>(this, "createdByValue"));
+        this.add(this.createdByView);
 
         Date transactionDate = (Date) entry.get("transaction_date");
         this.transactionDateValue = transactionDate == null ? "" : DateFormatUtils.format(transactionDate, "yyyy-MM-dd");
-        this.transactionDateField = new Label("transactionDateField", new PropertyModel<>(this, "transactionDateValue"));
-        this.add(this.transactionDateField);
+        this.transactionDateView = new Label("transactionDateView", new PropertyModel<>(this, "transactionDateValue"));
+        this.add(this.transactionDateView);
 
         Date createdOn = (Date) entry.get("created_date");
         this.createdOnValue = createdOn == null ? "" : DateFormatUtils.format(createdOn, "yyyy-MM-dd");
-        this.createdOnField = new Label("createdOnField", new PropertyModel<>(this, "createdOnValue"));
-        this.add(this.createdOnField);
+        this.createdOnView = new Label("createdOnView", new PropertyModel<>(this, "createdOnValue"));
+        this.add(this.createdOnView);
 
         this.transactionNumberValue = (String) entry.get("transaction_id");
-        this.transactionNumberField = new Label("transactionNumberField", new PropertyModel<>(this, "transactionNumberValue"));
-        this.add(this.transactionNumberField);
+        this.transactionNumberView = new Label("transactionNumberView", new PropertyModel<>(this, "transactionNumberValue"));
+        this.add(this.transactionNumberView);
 
         this.entryProvider = new JdbcProvider("acc_gl_journal_entry");
         this.entryProvider.addJoin("LEFT JOIN acc_gl_account ON acc_gl_journal_entry.account_id = acc_gl_account.id");
@@ -184,31 +184,31 @@ public class TransactionPage extends Page {
 
     }
 
-    private void commentPopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void commentPopupOnClose(String elementId, AjaxRequestTarget target) {
         setResponsePage(SearchJournalPage.class);
     }
 
-    private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Long value = (Long) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel accountTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel accountTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel accountNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel accountNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel debitAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel debitAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         BigDecimal value = (BigDecimal) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel creditAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel creditAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         BigDecimal value = (BigDecimal) model.get(jdbcColumn);
         return new TextCell(value);
     }

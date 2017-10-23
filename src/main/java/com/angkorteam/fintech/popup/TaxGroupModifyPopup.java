@@ -14,17 +14,17 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 
 public class TaxGroupModifyPopup extends Panel {
 
-    private ModalWindow window;
+    protected ModalWindow window;
 
-    private Form<Void> form;
-    private AjaxButton saveButton;
+    protected Form<Void> form;
+    protected AjaxButton saveButton;
 
-    private Label startDateField;
+    protected Label startDateView;
 
-    private DateTextField endDateField;
-    private TextFeedbackPanel endDateFeedback;
+    protected DateTextField endDateField;
+    protected TextFeedbackPanel endDateFeedback;
 
-    private Object model;
+    protected Object model;
 
     public TaxGroupModifyPopup(String id, ModalWindow window, Object model) {
         super(id);
@@ -44,8 +44,8 @@ public class TaxGroupModifyPopup extends Panel {
         this.saveButton.setOnError(this::saveButtonError);
         this.form.add(this.saveButton);
 
-        this.startDateField = new Label("startDateField", new PropertyModel<>(this.model, "itemStartDateValue"));
-        this.form.add(this.startDateField);
+        this.startDateView = new Label("startDateView", new PropertyModel<>(this.model, "itemStartDateValue"));
+        this.form.add(this.startDateView);
 
         this.endDateField = new DateTextField("endDateField", new PropertyModel<>(this.model, "itemEndDateValue"));
         this.endDateField.setLabel(Model.of("End Date"));

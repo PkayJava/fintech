@@ -53,10 +53,10 @@ public class TaxComponentModifyPage extends Page {
     private TextFeedbackPanel percentageFeedback;
 
     private String accountTypeValue;
-    private Label accountTypeField;
+    private Label accountTypeView;
 
     private String accountValue;
-    private Label accountField;
+    private Label accountView;
 
     private Date startDateValue;
     private DateTextField startDateField;
@@ -148,12 +148,12 @@ public class TaxComponentModifyPage extends Page {
                 }
             }
         }
-        this.accountTypeField = new Label("accountTypeField", new PropertyModel<>(this, "accountTypeValue"));
-        this.form.add(this.accountTypeField);
+        this.accountTypeView = new Label("accountTypeView", new PropertyModel<>(this, "accountTypeValue"));
+        this.form.add(this.accountTypeView);
 
         this.accountValue = jdbcTemplate.queryForObject("select name from acc_gl_account WHERE id = ?", String.class, taxObject.get("credit_account_id"));
-        this.accountField = new Label("accountField", new PropertyModel<>(this, "accountValue"));
-        this.form.add(this.accountField);
+        this.accountView = new Label("accountView", new PropertyModel<>(this, "accountValue"));
+        this.form.add(this.accountView);
 
         this.startDateValue = (Date) taxObject.get("start_date");
         this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));

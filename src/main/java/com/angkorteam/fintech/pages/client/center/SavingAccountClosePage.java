@@ -62,7 +62,7 @@ public class SavingAccountClosePage extends Page {
     protected WebMarkupContainer transactionAmountBlock;
     protected WebMarkupContainer transactionAmountContainer;
     protected String transactionAmountValue;
-    protected Label transactionAmountField;
+    protected Label transactionAmountView;
 
     protected WebMarkupContainer paymentTypeBlock;
     protected WebMarkupContainer paymentTypeContainer;
@@ -168,8 +168,8 @@ public class SavingAccountClosePage extends Page {
         this.form.add(this.transactionAmountBlock);
         this.transactionAmountContainer = new WebMarkupContainer("transactionAmountContainer");
         this.transactionAmountBlock.add(this.transactionAmountContainer);
-        this.transactionAmountField = new Label("transactionAmountField", new PropertyModel<>(this, "transactionAmountValue"));
-        this.transactionAmountContainer.add(this.transactionAmountField);
+        this.transactionAmountView = new Label("transactionAmountView", new PropertyModel<>(this, "transactionAmountValue"));
+        this.transactionAmountContainer.add(this.transactionAmountView);
 
         this.paymentTypeProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
         this.paymentTypeBlock = new WebMarkupContainer("paymentTypeBlock");

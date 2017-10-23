@@ -77,7 +77,7 @@ public class HookModifyPage extends Page {
 
     protected String templateId;
     protected String templateValue;
-    protected Label templateField;
+    protected Label templateView;
 
     protected String nameValue;
     protected TextField<String> nameField;
@@ -225,8 +225,8 @@ public class HookModifyPage extends Page {
         this.hookForm.add(this.activeFeedback);
 
         this.templateValue = jdbcTemplate.queryForObject("SELECT name from m_hook_templates where id = ?", String.class, this.templateId);
-        this.templateField = new Label("templateField", new PropertyModel<>(this, "templateValue"));
-        this.hookForm.add(this.templateField);
+        this.templateView = new Label("templateView", new PropertyModel<>(this, "templateValue"));
+        this.hookForm.add(this.templateView);
 
         this.configField = new RepeatingView("configField");
         this.hookForm.add(this.configField);

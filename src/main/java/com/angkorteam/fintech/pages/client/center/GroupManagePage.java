@@ -46,7 +46,7 @@ public class GroupManagePage extends Page {
     protected JdbcProvider associatedGroupProvider;
 
     protected String officeValue;
-    protected Label officeField;
+    protected Label officeView;
 
     private SingleChoiceProvider groupProvider;
     private Option groupValue;
@@ -140,8 +140,8 @@ public class GroupManagePage extends Page {
         this.groupFeedback = new TextFeedbackPanel("groupFeedback", this.groupField);
         this.form.add(this.groupFeedback);
 
-        this.officeField = new Label("officeField", new PropertyModel<>(this, "officeValue"));
-        this.form.add(this.officeField);
+        this.officeView = new Label("officeView", new PropertyModel<>(this, "officeValue"));
+        this.form.add(this.officeView);
 
     }
 
