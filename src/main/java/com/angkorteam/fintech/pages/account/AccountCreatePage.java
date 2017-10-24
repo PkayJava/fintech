@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
@@ -24,6 +25,7 @@ import com.angkorteam.fintech.provider.AccountTypeProvider;
 import com.angkorteam.fintech.provider.AccountUsageProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -40,47 +42,63 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class AccountCreatePage extends Page {
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private AccountTypeProvider accountTypeProvider;
-    private Option accountTypeValue;
-    private Select2SingleChoice<Option> accountTypeField;
-    private TextFeedbackPanel accountTypeFeedback;
+    protected WebMarkupBlock accountTypeBlock;
+    protected WebMarkupContainer accountTypeIContainer;
+    protected AccountTypeProvider accountTypeProvider;
+    protected Option accountTypeValue;
+    protected Select2SingleChoice<Option> accountTypeField;
+    protected TextFeedbackPanel accountTypeFeedback;
 
-    private SingleChoiceProvider parentProvider;
-    private Option parentValue;
-    private Select2SingleChoice<Option> parentField;
-    private TextFeedbackPanel parentFeedback;
+    protected WebMarkupBlock parentBlock;
+    protected WebMarkupContainer parentIContainer;
+    protected SingleChoiceProvider parentProvider;
+    protected Option parentValue;
+    protected Select2SingleChoice<Option> parentField;
+    protected TextFeedbackPanel parentFeedback;
 
-    private String glCodeValue;
-    private TextField<String> glCodeField;
-    private TextFeedbackPanel glCodeFeedback;
+    protected WebMarkupBlock glCodeBlock;
+    protected WebMarkupContainer glCodeIContainer;
+    protected String glCodeValue;
+    protected TextField<String> glCodeField;
+    protected TextFeedbackPanel glCodeFeedback;
 
-    private String accountNameValue;
-    private TextField<String> accountNameField;
-    private TextFeedbackPanel accountNameFeedback;
+    protected WebMarkupBlock accountNameBlock;
+    protected WebMarkupContainer accountNameIContainer;
+    protected String accountNameValue;
+    protected TextField<String> accountNameField;
+    protected TextFeedbackPanel accountNameFeedback;
 
-    private AccountUsageProvider accountUsageProvider;
-    private Option accountUsageValue;
-    private Select2SingleChoice<Option> accountUsageField;
-    private TextFeedbackPanel accountUsageFeedback;
+    protected WebMarkupBlock accountUsageBlock;
+    protected WebMarkupContainer accountUsageIContainer;
+    protected AccountUsageProvider accountUsageProvider;
+    protected Option accountUsageValue;
+    protected Select2SingleChoice<Option> accountUsageField;
+    protected TextFeedbackPanel accountUsageFeedback;
 
-    private SingleChoiceProvider tagProvider;
-    private Option tagValue;
-    private Select2SingleChoice<Option> tagField;
-    private TextFeedbackPanel tagFeedback;
+    protected WebMarkupBlock tagBlock;
+    protected WebMarkupContainer tagIContainer;
+    protected SingleChoiceProvider tagProvider;
+    protected Option tagValue;
+    protected Select2SingleChoice<Option> tagField;
+    protected TextFeedbackPanel tagFeedback;
 
-    private Boolean manualAllowValue;
-    private CheckBox manualAllowField;
-    private TextFeedbackPanel manualAllowFeedback;
+    protected WebMarkupBlock manualAllowBlock;
+    protected WebMarkupContainer manualAllowIContainer;
+    protected Boolean manualAllowValue;
+    protected CheckBox manualAllowField;
+    protected TextFeedbackPanel manualAllowFeedback;
 
-    private String descriptionValue;
-    private TextArea<String> descriptionField;
-    private TextFeedbackPanel descriptionFeedback;
+    protected WebMarkupBlock descriptionBlock;
+    protected WebMarkupContainer descriptionIContainer;
+    protected String descriptionValue;
+    protected TextArea<String> descriptionField;
+    protected TextFeedbackPanel descriptionFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -109,83 +127,22 @@ public class AccountCreatePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
-        this.form = new Form<>("form");
-        add(this.form);
-
-        this.saveButton = new Button("saveButton");
-        this.saveButton.setOnSubmit(this::saveButtonSubmit);
-        this.form.add(this.saveButton);
-
-        this.closeLink = new BookmarkablePageLink<>("closeLink", AccountBrowsePage.class);
-        this.form.add(this.closeLink);
-
-        this.accountTypeProvider = new AccountTypeProvider();
-        this.accountTypeField = new Select2SingleChoice<>("accountTypeField", 0, new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
-        this.accountTypeField.setLabel(Model.of("Account Type"));
-        this.accountTypeField.setRequired(true);
-        this.accountTypeField.add(new OnChangeAjaxBehavior(this::accountTypeFieldUpdate));
-        this.form.add(this.accountTypeField);
-        this.accountTypeFeedback = new TextFeedbackPanel("accountTypeFeedback", this.accountTypeField);
-        this.form.add(this.accountTypeFeedback);
-
-        this.parentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.parentProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Header.getLiteral());
-        this.parentProvider.setDisabled(true);
-        this.parentField = new Select2SingleChoice<>("parentField", 0, new PropertyModel<>(this, "parentValue"), this.parentProvider);
-        this.parentField.setLabel(Model.of("Parent Account"));
-        this.form.add(this.parentField);
-        this.parentFeedback = new TextFeedbackPanel("parentFeedback", this.parentField);
-        this.form.add(this.parentFeedback);
-
-        this.glCodeField = new TextField<>("glCodeField", new PropertyModel<>(this, "glCodeValue"));
-        this.glCodeField.setRequired(true);
-        this.glCodeField.setLabel(Model.of("GL Code"));
-        this.form.add(this.glCodeField);
-        this.glCodeFeedback = new TextFeedbackPanel("glCodeFeedback", this.glCodeField);
-        this.form.add(this.glCodeFeedback);
-
-        this.accountNameField = new TextField<>("accountNameField", new PropertyModel<>(this, "accountNameValue"));
-        this.accountNameField.setRequired(true);
-        this.accountNameField.setLabel(Model.of("Account Name"));
-        this.form.add(this.accountNameField);
-        this.accountNameFeedback = new TextFeedbackPanel("accountNameFeedback", this.accountNameField);
-        this.form.add(this.accountNameFeedback);
-
-        this.accountUsageProvider = new AccountUsageProvider();
-        this.accountUsageField = new Select2SingleChoice<>("accountUsageField", 0, new PropertyModel<>(this, "accountUsageValue"), this.accountUsageProvider);
-        this.accountUsageField.setRequired(true);
-        this.accountUsageField.setLabel(Model.of("Account Usage"));
-        this.form.add(this.accountUsageField);
-        this.accountUsageFeedback = new TextFeedbackPanel("accountUsageFeedback", this.accountUsageField);
-        this.form.add(this.accountUsageFeedback);
-
-        this.tagProvider = new SingleChoiceProvider("m_code_value", "id", "code_value");
-        this.tagProvider.setDisabled(true);
-        this.tagField = new Select2SingleChoice<>("tagField", 0, new PropertyModel<>(this, "tagValue"), this.tagProvider);
-        this.tagField.setLabel(Model.of("Tag"));
-        this.tagField.setRequired(true);
-        this.form.add(this.tagField);
-        this.tagFeedback = new TextFeedbackPanel("tagFeedback", this.tagField);
-        this.form.add(this.tagFeedback);
-
-        this.manualAllowField = new CheckBox("manualAllowField", new PropertyModel<>(this, "manualAllowValue"));
-        this.manualAllowField.setRequired(true);
-        this.form.add(this.manualAllowField);
-        this.manualAllowFeedback = new TextFeedbackPanel("manualAllowFeedback", this.manualAllowField);
-        this.form.add(this.manualAllowFeedback);
-
-        this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
-        this.descriptionField.setRequired(true);
-        this.descriptionField.setLabel(Model.of("Description"));
-        this.form.add(this.descriptionField);
-        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-        this.form.add(this.descriptionFeedback);
+    protected void initData() {
     }
 
-    protected boolean accountTypeFieldUpdate(AjaxRequestTarget target) {
+    @Override
+    protected void configureRequiredValidation() {
+        this.accountTypeField.setRequired(true);
+        this.glCodeField.setRequired(true);
+        this.accountNameField.setRequired(true);
+        this.descriptionField.setRequired(true);
+        this.manualAllowField.setRequired(true);
+        this.tagField.setRequired(true);
+        this.accountUsageField.setRequired(true);
+    }
+
+    @Override
+    protected void configureMetaData() {
         if (this.accountTypeValue == null) {
             this.tagValue = null;
             this.parentValue = null;
@@ -199,6 +156,141 @@ public class AccountCreatePage extends Page {
             this.parentProvider.setDisabled(false);
             this.parentProvider.applyWhere("classification_enum", "classification_enum = " + accountType.getLiteral());
         }
+    }
+
+    @Override
+    protected void initComponent() {
+        this.form = new Form<>("form");
+        add(this.form);
+
+        this.saveButton = new Button("saveButton");
+        this.saveButton.setOnSubmit(this::saveButtonSubmit);
+        this.form.add(this.saveButton);
+
+        this.closeLink = new BookmarkablePageLink<>("closeLink", AccountBrowsePage.class);
+        this.form.add(this.closeLink);
+
+        initAccountTypeBlock();
+
+        initParentBlock();
+
+        initGlCodeBlock();
+
+        initAccountNameBlock();
+
+        initAccountUsageBlock();
+
+        initManualAllowBlock();
+
+        initDescriptionBlock();
+
+    }
+
+    protected void initAccountTypeBlock() {
+        this.accountTypeBlock = new WebMarkupBlock("accountTypeBlock");
+        this.form.add(this.accountTypeBlock);
+        this.accountTypeIContainer = new WebMarkupContainer("accountTypeIContainer");
+        this.accountTypeBlock.add(this.accountTypeIContainer);
+        this.accountTypeProvider = new AccountTypeProvider();
+        this.accountTypeField = new Select2SingleChoice<>("accountTypeField", new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
+        this.accountTypeField.setLabel(Model.of("Account Type"));
+        this.accountTypeField.add(new OnChangeAjaxBehavior(this::accountTypeFieldUpdate));
+        this.accountTypeIContainer.add(this.accountTypeField);
+        this.accountTypeFeedback = new TextFeedbackPanel("accountTypeFeedback", this.accountTypeField);
+        this.accountTypeIContainer.add(this.accountTypeFeedback);
+    }
+
+    protected void initDescriptionBlock() {
+        this.manualAllowBlock = new WebMarkupBlock("manualAllowBlock");
+        this.form.add(this.manualAllowBlock);
+        this.manualAllowIContainer = new WebMarkupContainer("manualAllowIContainer");
+        this.manualAllowBlock.add(this.manualAllowIContainer);
+        this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
+        this.descriptionField.setLabel(Model.of("Description"));
+        this.form.add(this.descriptionField);
+        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
+        this.form.add(this.descriptionFeedback);
+    }
+
+    protected void initManualAllowBlock() {
+        this.manualAllowBlock = new WebMarkupBlock("manualAllowBlock");
+        this.form.add(this.manualAllowBlock);
+        this.manualAllowIContainer = new WebMarkupContainer("manualAllowIContainer");
+        this.manualAllowBlock.add(this.manualAllowIContainer);
+        this.manualAllowField = new CheckBox("manualAllowField", new PropertyModel<>(this, "manualAllowValue"));
+        this.manualAllowIContainer.add(this.manualAllowField);
+        this.manualAllowFeedback = new TextFeedbackPanel("manualAllowFeedback", this.manualAllowField);
+        this.manualAllowIContainer.add(this.manualAllowFeedback);
+    }
+
+    protected void initTagBlock() {
+        this.tagBlock = new WebMarkupBlock("tagBlock");
+        this.form.add(this.tagBlock);
+        this.tagIContainer = new WebMarkupContainer("tagIContainer");
+        this.tagBlock.add(this.tagIContainer);
+        this.tagProvider = new SingleChoiceProvider("m_code_value", "id", "code_value");
+        this.tagProvider.setDisabled(true);
+        this.tagField = new Select2SingleChoice<>("tagField", new PropertyModel<>(this, "tagValue"), this.tagProvider);
+        this.tagField.setLabel(Model.of("Tag"));
+        this.form.add(this.tagField);
+        this.tagFeedback = new TextFeedbackPanel("tagFeedback", this.tagField);
+        this.form.add(this.tagFeedback);
+    }
+
+    protected void initAccountUsageBlock() {
+        this.accountUsageBlock = new WebMarkupBlock("accountUsageBlock");
+        this.form.add(this.accountUsageBlock);
+        this.accountUsageIContainer = new WebMarkupContainer("accountUsageIContainer");
+        this.accountUsageBlock.add(this.accountUsageIContainer);
+        this.accountUsageProvider = new AccountUsageProvider();
+        this.accountUsageField = new Select2SingleChoice<>("accountUsageField", new PropertyModel<>(this, "accountUsageValue"), this.accountUsageProvider);
+        this.accountUsageField.setLabel(Model.of("Account Usage"));
+        this.form.add(this.accountUsageField);
+        this.accountUsageFeedback = new TextFeedbackPanel("accountUsageFeedback", this.accountUsageField);
+        this.form.add(this.accountUsageFeedback);
+    }
+
+    protected void initAccountNameBlock() {
+        this.accountNameBlock = new WebMarkupBlock("accountNameBlock");
+        this.form.add(this.accountNameBlock);
+        this.accountNameIContainer = new WebMarkupContainer("accountNameIContainer");
+        this.accountNameBlock.add(this.accountNameIContainer);
+        this.accountNameField = new TextField<>("accountNameField", new PropertyModel<>(this, "accountNameValue"));
+        this.accountNameField.setLabel(Model.of("Account Name"));
+        this.accountNameIContainer.add(this.accountNameField);
+        this.accountNameFeedback = new TextFeedbackPanel("accountNameFeedback", this.accountNameField);
+        this.accountNameIContainer.add(this.accountNameFeedback);
+    }
+
+    protected void initGlCodeBlock() {
+        this.glCodeBlock = new WebMarkupBlock("glCodeBlock");
+        this.form.add(this.glCodeBlock);
+        this.glCodeIContainer = new WebMarkupContainer("glCodeIContainer");
+        this.glCodeBlock.add(this.glCodeIContainer);
+        this.glCodeField = new TextField<>("glCodeField", new PropertyModel<>(this, "glCodeValue"));
+        this.glCodeField.setLabel(Model.of("GL Code"));
+        this.glCodeIContainer.add(this.glCodeField);
+        this.glCodeFeedback = new TextFeedbackPanel("glCodeFeedback", this.glCodeField);
+        this.glCodeIContainer.add(this.glCodeFeedback);
+    }
+
+    protected void initParentBlock() {
+        this.parentBlock = new WebMarkupBlock("parentBlock");
+        this.form.add(this.parentBlock);
+        this.parentIContainer = new WebMarkupContainer("parentIContainer");
+        this.parentBlock.add(this.parentIContainer);
+        this.parentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.parentProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Header.getLiteral());
+        this.parentProvider.setDisabled(true);
+        this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"), this.parentProvider);
+        this.parentField.setLabel(Model.of("Parent Account"));
+        this.parentIContainer.add(this.parentField);
+        this.parentFeedback = new TextFeedbackPanel("parentFeedback", this.parentField);
+        this.parentIContainer.add(this.parentFeedback);
+    }
+
+    protected boolean accountTypeFieldUpdate(AjaxRequestTarget target) {
+        configureMetaData();
         if (target != null) {
             target.add(this.form);
         }

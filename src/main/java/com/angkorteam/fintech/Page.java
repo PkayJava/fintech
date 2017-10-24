@@ -40,7 +40,7 @@ import com.mashape.unirest.http.JsonNode;
 /**
  * Created by socheatkhauv on 6/17/17.
  */
-public class Page extends DashboardPage {
+public abstract class Page extends DashboardPage {
 
     private FeedbackPanel feedbackPanel;
 
@@ -62,12 +62,24 @@ public class Page extends DashboardPage {
     }
 
     @Override
-    protected void onInitialize() {
+    protected final void onInitialize() {
         super.onInitialize();
         this.feedbackPanel = new FeedbackPanel("feedbackPanel", this::report);
         this.add(this.feedbackPanel);
         this.setOutputMarkupId(true);
+        initData();
+        initComponent();
+        configureRequiredValidation();
+        configureMetaData();
     }
+    
+    protected abstract void initData();
+    
+    protected abstract void initComponent();
+    
+    protected abstract void configureRequiredValidation();
+    
+    protected abstract void configureMetaData();
 
     private boolean report(FeedbackMessage feedbackMessage) {
         if (feedbackMessage.getReporter() instanceof org.apache.wicket.Page) {

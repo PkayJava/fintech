@@ -26,9 +26,8 @@ import com.google.common.collect.Lists;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class AccountHierarchyPage extends Page {
 
-    private NestedTree<Map<String, Object>> tree;
-
-    private AccountHierarchyProvider provider;
+    private NestedTree<Map<String, Object>> accountTree;
+    private AccountHierarchyProvider accountProvider;
 
     private BookmarkablePageLink<Void> browseLink;
 
@@ -63,13 +62,15 @@ public class AccountHierarchyPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
-        this.provider = new AccountHierarchyProvider();
+    @Override
+    protected void initComponent() {
+        this.accountProvider = new AccountHierarchyProvider();
 
-        this.tree = new NestedTree<>("tree", this.provider, this::newLabel, this::newLink);
-        add(this.tree);
+        this.accountTree = new NestedTree<>("accountTree", this.accountProvider, this::accountCreateLabel, this::accountCreateLink);
+        add(this.accountTree);
 
         this.browseLink = new BookmarkablePageLink<>("browseLink", AccountBrowsePage.class);
         add(this.browseLink);
@@ -78,7 +79,15 @@ public class AccountHierarchyPage extends Page {
         add(this.createLink);
     }
 
-    private MarkupContainer newLink(String s, IModel<Map<String, Object>> model) {
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    private MarkupContainer accountCreateLink(String s, IModel<Map<String, Object>> model) {
         if (Boolean.TRUE.equals(model.getObject().get("memory"))) {
             return null;
         } else {
@@ -90,7 +99,7 @@ public class AccountHierarchyPage extends Page {
         }
     }
 
-    private Component newLabel(String s, IModel<Map<String, Object>> mapIModel) {
+    private Component accountCreateLabel(String s, IModel<Map<String, Object>> mapIModel) {
         return new Label(s, (String) mapIModel.getObject().get("name"));
     }
 

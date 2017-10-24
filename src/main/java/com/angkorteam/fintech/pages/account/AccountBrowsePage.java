@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -44,15 +45,16 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class AccountBrowsePage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected FilterForm<Map<String, String>> dataFilterForm;
 
-    private JdbcProvider provider;
+    protected BookmarkablePageLink<Void> hierarchyLink;
 
-    private BookmarkablePageLink<Void> hierarchyLink;
+    protected BookmarkablePageLink<Void> createLink;
 
-    private BookmarkablePageLink<Void> createLink;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -75,37 +77,13 @@ public class AccountBrowsePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("acc_gl_account");
-        this.provider.boardField("id", "id", Long.class);
-        this.provider.boardField("name", "name", String.class);
-        this.provider.boardField("gl_code", "gl_code", String.class);
-        List<String> classification_enum = Lists.newArrayList();
-        for (AccountType accountType : AccountType.values()) {
-            classification_enum.add("when " + accountType.getLiteral() + " then '" + accountType.getDescription() + "'");
-        }
-        this.provider.boardField("case classification_enum " + StringUtils.join(classification_enum, " ") + " end", "classification_enum", String.class);
-        this.provider.boardField("account_usage", "account_usage", Integer.class);
-        this.provider.boardField("disabled", "disabled", Boolean.class);
-        this.provider.boardField("manual_journal_entries_allowed", "manual_journal_entries_allowed", Boolean.class);
+    protected void initData() {
 
-        this.provider.selectField("id", Long.class);
+    }
 
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("Account"), "name", "name", this::accountColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("GL Code"), "gl_code", "gl_code", this::glCodeColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Account Type"), "classification_enum", "classification_enum", this::accountTypeColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Is Disabled ?"), "disabled", "disabled", this::disabledColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Is Manual Entries Allowed ?"), "manual_journal_entries_allowed", "manual_journal_entries_allowed", this::manualEntryColumn));
-        columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
-
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
-
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+    @Override
+    protected void initComponent() {
+        initDataTable();
 
         this.hierarchyLink = new BookmarkablePageLink<>("hierarchyLink", AccountHierarchyPage.class);
         add(this.hierarchyLink);
@@ -114,7 +92,49 @@ public class AccountBrowsePage extends Page {
         add(this.createLink);
     }
 
-    private void actionClick(String link, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void initDataTable() {
+        this.dataProvider = new JdbcProvider("acc_gl_account");
+        this.dataProvider.boardField("id", "id", Long.class);
+        this.dataProvider.boardField("name", "name", String.class);
+        this.dataProvider.boardField("gl_code", "gl_code", String.class);
+        List<String> classification_enum = Lists.newArrayList();
+        for (AccountType accountType : AccountType.values()) {
+            classification_enum.add("when " + accountType.getLiteral() + " then '" + accountType.getDescription() + "'");
+        }
+        this.dataProvider.boardField("case classification_enum " + StringUtils.join(classification_enum, " ") + " end", "classification_enum", String.class);
+        this.dataProvider.boardField("account_usage", "account_usage", Integer.class);
+        this.dataProvider.boardField("disabled", "disabled", Boolean.class);
+        this.dataProvider.boardField("manual_journal_entries_allowed", "manual_journal_entries_allowed", Boolean.class);
+
+        this.dataProvider.selectField("id", Long.class);
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Account"), "name", "name", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("GL Code"), "gl_code", "gl_code", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Account Type"), "classification_enum", "classification_enum", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Is Disabled ?"), "disabled", "disabled", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Is Manual Entries Allowed ?"), "manual_journal_entries_allowed", "manual_journal_entries_allowed", this::dataColumn));
+        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
+
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        add(this.dataFilterForm);
+
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+
+    }
+
+    @Override
+    protected void configureMetaData() {
+
+    }
+
+    protected void dataClick(String link, Map<String, Object> model, AjaxRequestTarget target) {
         Long id = (Long) model.get("id");
         if ("delete".equals(link)) {
             JsonNode node = null;
@@ -143,7 +163,7 @@ public class AccountBrowsePage extends Page {
         }
     }
 
-    private List<ActionItem> actionItem(String link, Map<String, Object> model) {
+    protected List<ActionItem> dataAction(String link, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         Boolean disabled = (Boolean) model.get("disabled");
         if (disabled == null || disabled) {
@@ -155,39 +175,32 @@ public class AccountBrowsePage extends Page {
         return actions;
     }
 
-    private ItemPanel accountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel glCodeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        PageParameters parameters = new PageParameters();
-        parameters.add("accountId", model.get("id"));
-        return new LinkCell(AccountModifyPage.class, parameters, Model.of(value));
-    }
-
-    private ItemPanel disabledColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean value = (Boolean) model.get(jdbcColumn);
-        if (value == null || value) {
-            return new BadgeCell(BadgeType.Danger, Model.of("Yes"));
+    protected ItemPanel dataColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(jdbcColumn) || "classification_enum".equals(jdbcColumn)) {
+            String value = (String) model.get(jdbcColumn);
+            return new TextCell(value);
+        } else if ("gl_code".equals(jdbcColumn)) {
+            String value = (String) model.get(jdbcColumn);
+            PageParameters parameters = new PageParameters();
+            parameters.add("accountId", model.get("id"));
+            return new LinkCell(AccountModifyPage.class, parameters, value);
+        } else if ("disabled".equals(jdbcColumn)) {
+            Boolean value = (Boolean) model.get(jdbcColumn);
+            if (value == null || value) {
+                return new BadgeCell(BadgeType.Danger, Model.of("Yes"));
+            } else {
+                return new BadgeCell(BadgeType.Success, Model.of("No"));
+            }
+        } else if ("manual_journal_entries_allowed".equals(jdbcColumn)) {
+            Boolean manualEntry = (Boolean) model.get(jdbcColumn);
+            if (manualEntry != null && manualEntry) {
+                return new BadgeCell(BadgeType.Success, Model.of("Yes"));
+            } else {
+                return new BadgeCell(BadgeType.Danger, Model.of("No"));
+            }
         } else {
-            return new BadgeCell(BadgeType.Success, Model.of("No"));
+            throw new WicketRuntimeException("unknow " + jdbcColumn);
         }
-    }
-
-    private ItemPanel manualEntryColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean manualEntry = (Boolean) model.get(jdbcColumn);
-        if (manualEntry != null && manualEntry) {
-            return new BadgeCell(BadgeType.Success, Model.of("Yes"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("No"));
-        }
-    }
-
-    private ItemPanel accountTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
     }
 
 }
