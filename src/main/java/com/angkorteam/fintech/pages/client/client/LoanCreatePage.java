@@ -1,12 +1,15 @@
 package com.angkorteam.fintech.pages.client.client;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -245,11 +248,12 @@ public class LoanCreatePage extends Page {
     protected AjaxLink<Void> chargeAddLink;
     protected ModalWindow chargePopup;
 
-    protected List<Map<String, Object>> collateralValue = Lists.newLinkedList();
+    protected List<Map<String, Object>> collateralValue;
     protected DataTable<Map<String, Object>, String> collateralTable;
     protected ListDataProvider collateralProvider;
     protected AjaxLink<Void> collateralAddLink;
     protected ModalWindow collateralPopup;
+    protected List<IColumn<Map<String, Object>, String>> collateralColumn;
 
     protected Option itemChargeValue;
     protected String itemChargeTypeValue;
@@ -580,17 +584,19 @@ public class LoanCreatePage extends Page {
         this.form.add(this.chargeAddLink);
 
         // Table
+
         this.collateralPopup = new ModalWindow("collateralPopup");
         add(this.collateralPopup);
-        this.collateralPopup.setOnClose(this::collateralPopupOnClose);
+        this.collateralPopup.setOnClose(this::collateralPopupClose);
 
-        List<IColumn<Map<String, Object>, String>> collateralColumn = Lists.newLinkedList();
-        collateralColumn.add(new TextColumn(Model.of("Collateral"), "collateral", "collateral", this::collateralNameColumn));
-        collateralColumn.add(new TextColumn(Model.of("Value"), "value", "value", this::collateralValueColumn));
-        collateralColumn.add(new TextColumn(Model.of("Description"), "description", "description", this::collateralDescriptionColumn));
-        collateralColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::collateralActionItem, this::collateralActionClick));
+        this.collateralValue = new ArrayList<>();
+        this.collateralColumn = new LinkedList<>();
+        this.collateralColumn.add(new TextColumn(Model.of("Collateral"), "collateral", "collateral", this::collateralColumn));
+        this.collateralColumn.add(new TextColumn(Model.of("Value"), "value", "value", this::collateralColumn));
+        this.collateralColumn.add(new TextColumn(Model.of("Description"), "description", "description", this::collateralColumn));
+        this.collateralColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::collateralAction, this::collateralClick));
         this.collateralProvider = new ListDataProvider(this.collateralValue);
-        this.collateralTable = new DataTable<>("collateralTable", collateralColumn, this.collateralProvider, 20);
+        this.collateralTable = new DataTable<>("collateralTable", this.collateralColumn, this.collateralProvider, 20);
         this.form.add(this.collateralTable);
         this.collateralTable.addTopToolbar(new HeadersToolbar<>(this.collateralTable, this.collateralProvider));
         this.collateralTable.addBottomToolbar(new NoRecordsToolbar(this.collateralTable));
@@ -601,6 +607,59 @@ public class LoanCreatePage extends Page {
 
         initDefault();
 
+    }
+
+    protected void collateralClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+        int index = -1;
+        for (int i = 0; i < this.collateralValue.size(); i++) {
+            Map<String, Object> column = this.collateralValue.get(i);
+            if (model.get("uuid").equals(column.get("uuid"))) {
+                index = i;
+                break;
+            }
+        }
+        if (index >= 0) {
+            this.collateralValue.remove(index);
+        }
+        target.add(this.collateralTable);
+    }
+
+    protected List<ActionItem> collateralAction(String s, Map<String, Object> model) {
+        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+    }
+
+    protected void collateralPopupClose(String elementId, AjaxRequestTarget target) {
+        Map<String, Object> item = null;
+        for (Map<String, Object> temp : this.collateralValue) {
+            if (this.itemCollateralValue.getId().equals(temp.get("uuid"))) {
+                item = temp;
+                break;
+            }
+        }
+        if (item == null) {
+            item = Maps.newHashMap();
+            item.put("uuid", this.itemCollateralValue.getId());
+            item.put("collateral", this.itemCollateralValue);
+            item.put("value", this.itemAmountValue);
+            item.put("description", this.itemDescriptionValue);
+            this.collateralValue.add(item);
+        } else {
+            item.put("uuid", this.itemCollateralValue.getId());
+            item.put("collateral", this.itemCollateralValue);
+            item.put("value", this.itemAmountValue);
+            item.put("description", this.itemDescriptionValue);
+        }
+
+        target.add(this.collateralTable);
+    }
+
+    protected boolean collateralAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.itemCollateralValue = null;
+        this.itemAmountValue = null;
+        this.itemDescriptionValue = null;
+        this.collateralPopup.setContent(new CollateralPopup(this.collateralPopup.getContentId(), this.collateralPopup, this));
+        this.collateralPopup.show(target);
+        return false;
     }
 
     protected void initDefault() {
@@ -614,19 +673,18 @@ public class LoanCreatePage extends Page {
 
     }
 
-    protected ItemPanel collateralNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Option value = (Option) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel collateralValueColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double value = (Double) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel collateralDescriptionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel collateralColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("collateral".equals(column)) {
+            Option value = (Option) model.get(column);
+            return new TextCell(value);
+        } else if ("value".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value);
+        } else if ("description".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
     protected ItemPanel chargeCollectedOnColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -678,25 +736,6 @@ public class LoanCreatePage extends Page {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void collateralActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
-        int index = -1;
-        for (int i = 0; i < this.collateralValue.size(); i++) {
-            Map<String, Object> column = this.collateralValue.get(i);
-            if (model.get("uuid").equals(column.get("uuid"))) {
-                index = i;
-                break;
-            }
-        }
-        if (index >= 0) {
-            this.collateralValue.remove(index);
-        }
-        target.add(this.collateralTable);
-    }
-
-    protected List<ActionItem> collateralActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
-    }
-
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemChargeValue = null;
         this.itemChargeTypeValue = null;
@@ -706,15 +745,6 @@ public class LoanCreatePage extends Page {
         this.itemRepaymentEveryValue = null;
         this.chargePopup.setContent(new AccountChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyValue));
         this.chargePopup.show(target);
-        return false;
-    }
-
-    protected boolean collateralAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemCollateralValue = null;
-        this.itemAmountValue = null;
-        this.itemDescriptionValue = null;
-        this.collateralPopup.setContent(new CollateralPopup(this.collateralPopup.getContentId(), this.collateralPopup, this));
-        this.collateralPopup.show(target);
         return false;
     }
 
@@ -730,31 +760,6 @@ public class LoanCreatePage extends Page {
         item.put("collectedOn", this.itemCollectedOnValue);
         this.chargeValue.add(item);
         target.add(this.chargeTable);
-    }
-
-    protected void collateralPopupOnClose(String elementId, AjaxRequestTarget target) {
-        Map<String, Object> item = null;
-        for (Map<String, Object> temp : this.collateralValue) {
-            if (this.itemCollateralValue.getId().equals(temp.get("uuid"))) {
-                item = temp;
-                break;
-            }
-        }
-        if (item == null) {
-            item = Maps.newHashMap();
-            item.put("uuid", this.itemCollateralValue.getId());
-            item.put("collateral", this.itemCollateralValue);
-            item.put("value", this.itemAmountValue);
-            item.put("description", this.itemDescriptionValue);
-            this.collateralValue.add(item);
-        } else {
-            item.put("uuid", this.itemCollateralValue.getId());
-            item.put("collateral", this.itemCollateralValue);
-            item.put("value", this.itemAmountValue);
-            item.put("description", this.itemDescriptionValue);
-        }
-
-        target.add(this.collateralTable);
     }
 
     protected void initData() {
