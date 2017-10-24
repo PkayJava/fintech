@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -18,6 +19,8 @@ import com.angkorteam.fintech.helper.AccountingClosureHelper;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
@@ -34,24 +37,30 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ClosureCreatePage extends Page {
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private SingleChoiceProvider officeProvider;
-    private Option officeValue;
-    private Select2SingleChoice<Option> officeField;
-    private TextFeedbackPanel officeFeedback;
+    protected WebMarkupBlock officeBlock;
+    protected WebMarkupContainer officeIContainer;
+    protected SingleChoiceProvider officeProvider;
+    protected Option officeValue;
+    protected Select2SingleChoice<Option> officeField;
+    protected TextFeedbackPanel officeFeedback;
 
-    private Date closingDateValue;
-    private DateTextField closingDateField;
-    private TextFeedbackPanel closingDateFeedback;
+    protected WebMarkupBlock closingDateBlock;
+    protected WebMarkupContainer closingDateIContainer;
+    protected Date closingDateValue;
+    protected DateTextField closingDateField;
+    protected TextFeedbackPanel closingDateFeedback;
 
-    private String commentValue;
-    private TextArea<String> commentField;
-    private TextFeedbackPanel commentFeedback;
+    protected WebMarkupBlock commentBlock;
+    protected WebMarkupContainer commentIContainer;
+    protected String commentValue;
+    protected TextArea<String> commentField;
+    protected TextFeedbackPanel commentFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -80,9 +89,11 @@ public class ClosureCreatePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -93,26 +104,58 @@ public class ClosureCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClosureBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
-        this.form.add(this.officeField);
-        this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
-        this.form.add(this.officeFeedback);
+        initOfficeBlock();
 
-        this.closingDateField = new DateTextField("closingDateField", new PropertyModel<>(this, "closingDateValue"));
-        this.closingDateField.setRequired(true);
-        this.form.add(this.closingDateField);
-        this.closingDateFeedback = new TextFeedbackPanel("closingDateFeedback", this.closingDateField);
-        this.form.add(this.closingDateFeedback);
+        initClosingDateBlock();
 
-        this.commentField = new TextArea<>("commentField", new PropertyModel<>(this, "commentValue"));
-        this.commentField.setRequired(true);
-        this.form.add(this.commentField);
-        this.commentFeedback = new TextFeedbackPanel("commentFeedback", this.commentField);
-        this.form.add(this.commentFeedback);
+        initCommentBlock();
     }
 
-    private void saveButtonSubmit(Button button) {
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initCommentBlock() {
+        this.commentBlock = new WebMarkupBlock("commentBlock", Size.Twelve_12);
+        this.form.add(this.commentBlock);
+        this.commentIContainer = new WebMarkupContainer("commentIContainer");
+        this.commentBlock.add(this.commentIContainer);
+        this.commentField = new TextArea<>("commentField", new PropertyModel<>(this, "commentValue"));
+        this.commentField.setRequired(true);
+        this.commentIContainer.add(this.commentField);
+        this.commentFeedback = new TextFeedbackPanel("commentFeedback", this.commentField);
+        this.commentIContainer.add(this.commentFeedback);
+    }
+
+    protected void initClosingDateBlock() {
+        this.closingDateBlock = new WebMarkupBlock("closingDateBlock", Size.Twelve_12);
+        this.form.add(this.closingDateBlock);
+        this.closingDateIContainer = new WebMarkupContainer("closingDateIContainer");
+        this.closingDateBlock.add(this.closingDateIContainer);
+        this.closingDateField = new DateTextField("closingDateField", new PropertyModel<>(this, "closingDateValue"));
+        this.closingDateField.setRequired(true);
+        this.closingDateIContainer.add(this.closingDateField);
+        this.closingDateFeedback = new TextFeedbackPanel("closingDateFeedback", this.closingDateField);
+        this.closingDateIContainer.add(this.closingDateFeedback);
+    }
+
+    protected void initOfficeBlock() {
+        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Twelve_12);
+        this.form.add(this.officeBlock);
+        this.officeIContainer = new WebMarkupContainer("officeIContainer");
+        this.officeBlock.add(this.officeIContainer);
+        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
+        this.officeIContainer.add(this.officeField);
+        this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
+        this.officeIContainer.add(this.officeFeedback);
+    }
+
+    protected void saveButtonSubmit(Button button) {
         AccountClosureBuilder builder = new AccountClosureBuilder();
         if (this.officeValue != null) {
             builder.withOfficeId(this.officeValue.getId());

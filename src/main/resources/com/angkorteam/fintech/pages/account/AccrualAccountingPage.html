@@ -11,11 +11,12 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div wicket:id="tillDateBlock"
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="tillDateField">Accrue Till</label> <input
-							wicket:id="tillDateField" type="text" class="form-control" /> <span
-							wicket:id="tillDateFeedback" class="help-block"></span>
+					<div wicket:id="tillDateBlock" class="form-group">
+						<wicket:container wicket:id="tillDateIContainer">
+							<label wicket:for="tillDateField">Accrue Till</label>
+							<input wicket:id="tillDateField" type="text" class="form-control" />
+							<span wicket:id="tillDateFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>

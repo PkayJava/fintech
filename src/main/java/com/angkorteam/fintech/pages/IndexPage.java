@@ -22,8 +22,7 @@ public class IndexPage extends Page {
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        this.test = new Option("ss", "sssssssssssa");
-        this.pp = new Label("pp", new PropertyModel<>(this.test, "text"));
+        this.pp = new Label("pp", new PropertyModel<>(this, "test.text"));
         this.pp.setOutputMarkupId(true);
         add(this.pp);
 
@@ -33,8 +32,7 @@ public class IndexPage extends Page {
     }
 
     protected boolean ssOnClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        // this.test = new Option("ss", "vvvvvvvvvvv");
-        this.test.setText("ssssssssssssssss");
+        this.test = new Option("ss", "vvvvvvvvvvv");
         target.add(this.pp);
         return false;
     }

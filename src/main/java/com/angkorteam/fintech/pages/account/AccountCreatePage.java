@@ -26,6 +26,7 @@ import com.angkorteam.fintech.provider.AccountUsageProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -187,7 +188,7 @@ public class AccountCreatePage extends Page {
     }
 
     protected void initAccountTypeBlock() {
-        this.accountTypeBlock = new WebMarkupBlock("accountTypeBlock");
+        this.accountTypeBlock = new WebMarkupBlock("accountTypeBlock", Size.Six_6);
         this.form.add(this.accountTypeBlock);
         this.accountTypeIContainer = new WebMarkupContainer("accountTypeIContainer");
         this.accountTypeBlock.add(this.accountTypeIContainer);
@@ -201,7 +202,7 @@ public class AccountCreatePage extends Page {
     }
 
     protected void initDescriptionBlock() {
-        this.manualAllowBlock = new WebMarkupBlock("manualAllowBlock");
+        this.manualAllowBlock = new WebMarkupBlock("manualAllowBlock", Size.Twelve_12);
         this.form.add(this.manualAllowBlock);
         this.manualAllowIContainer = new WebMarkupContainer("manualAllowIContainer");
         this.manualAllowBlock.add(this.manualAllowIContainer);
@@ -213,7 +214,7 @@ public class AccountCreatePage extends Page {
     }
 
     protected void initManualAllowBlock() {
-        this.manualAllowBlock = new WebMarkupBlock("manualAllowBlock");
+        this.manualAllowBlock = new WebMarkupBlock("manualAllowBlock", Size.Twelve_12);
         this.form.add(this.manualAllowBlock);
         this.manualAllowIContainer = new WebMarkupContainer("manualAllowIContainer");
         this.manualAllowBlock.add(this.manualAllowIContainer);
@@ -224,7 +225,7 @@ public class AccountCreatePage extends Page {
     }
 
     protected void initTagBlock() {
-        this.tagBlock = new WebMarkupBlock("tagBlock");
+        this.tagBlock = new WebMarkupBlock("tagBlock", Size.Six_6);
         this.form.add(this.tagBlock);
         this.tagIContainer = new WebMarkupContainer("tagIContainer");
         this.tagBlock.add(this.tagIContainer);
@@ -238,7 +239,7 @@ public class AccountCreatePage extends Page {
     }
 
     protected void initAccountUsageBlock() {
-        this.accountUsageBlock = new WebMarkupBlock("accountUsageBlock");
+        this.accountUsageBlock = new WebMarkupBlock("accountUsageBlock", Size.Six_6);
         this.form.add(this.accountUsageBlock);
         this.accountUsageIContainer = new WebMarkupContainer("accountUsageIContainer");
         this.accountUsageBlock.add(this.accountUsageIContainer);
@@ -251,7 +252,7 @@ public class AccountCreatePage extends Page {
     }
 
     protected void initAccountNameBlock() {
-        this.accountNameBlock = new WebMarkupBlock("accountNameBlock");
+        this.accountNameBlock = new WebMarkupBlock("accountNameBlock", Size.Six_6);
         this.form.add(this.accountNameBlock);
         this.accountNameIContainer = new WebMarkupContainer("accountNameIContainer");
         this.accountNameBlock.add(this.accountNameIContainer);
@@ -263,7 +264,7 @@ public class AccountCreatePage extends Page {
     }
 
     protected void initGlCodeBlock() {
-        this.glCodeBlock = new WebMarkupBlock("glCodeBlock");
+        this.glCodeBlock = new WebMarkupBlock("glCodeBlock", Size.Six_6);
         this.form.add(this.glCodeBlock);
         this.glCodeIContainer = new WebMarkupContainer("glCodeIContainer");
         this.glCodeBlock.add(this.glCodeIContainer);
@@ -275,7 +276,7 @@ public class AccountCreatePage extends Page {
     }
 
     protected void initParentBlock() {
-        this.parentBlock = new WebMarkupBlock("parentBlock");
+        this.parentBlock = new WebMarkupBlock("parentBlock", Size.Six_6);
         this.form.add(this.parentBlock);
         this.parentIContainer = new WebMarkupContainer("parentIContainer");
         this.parentBlock.add(this.parentIContainer);

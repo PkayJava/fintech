@@ -1,9 +1,11 @@
 package com.angkorteam.fintech.pages.account;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -39,13 +41,14 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ClosureBrowsePage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected FilterForm<Map<String, String>> dataFilterForm;
 
-    private JdbcProvider provider;
+    protected BookmarkablePageLink<Void> createLink;
 
-    private BookmarkablePageLink<Void> createLink;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -68,38 +71,49 @@ public class ClosureBrowsePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("acc_gl_closure");
-        this.provider.addJoin("LEFT JOIN m_office ON acc_gl_closure.office_id = m_office.id");
-        this.provider.addJoin("LEFT JOIN m_appuser on acc_gl_closure.createdby_id = m_appuser.id");
-        this.provider.boardField("acc_gl_closure.id", "id", Long.class);
-        this.provider.boardField("m_office.name", "office", String.class);
-        this.provider.boardField("acc_gl_closure.closing_date", "closing_date", Date.class);
-        this.provider.boardField("acc_gl_closure.comments", "comment", String.class);
-        this.provider.boardField("m_appuser.username", "created_by", String.class);
+    protected void initData() {
+    }
 
-        this.provider.selectField("id", Long.class);
+    @Override
+    protected void initComponent() {
+        this.dataProvider = new JdbcProvider("acc_gl_closure");
+        this.dataProvider.addJoin("LEFT JOIN m_office ON acc_gl_closure.office_id = m_office.id");
+        this.dataProvider.addJoin("LEFT JOIN m_appuser on acc_gl_closure.createdby_id = m_appuser.id");
+        this.dataProvider.boardField("acc_gl_closure.id", "id", Long.class);
+        this.dataProvider.boardField("m_office.name", "office", String.class);
+        this.dataProvider.boardField("acc_gl_closure.closing_date", "closing_date", Date.class);
+        this.dataProvider.boardField("acc_gl_closure.comments", "comment", String.class);
+        this.dataProvider.boardField("m_appuser.username", "created_by", String.class);
 
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Office"), "office", "office", this::officeColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Accounting Closure Date"), "closing_date", "closing_date", this::closingDateColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Comments"), "comment", "comment", this::commentColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Created By"), "created_by", "created_by", this::createdByColumn));
-        columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
+        this.dataProvider.selectField("id", Long.class);
 
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
+        this.dataColumn = new ArrayList<>();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Office"), "office", "office", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Accounting Closure Date"), "closing_date", "closing_date", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Comments"), "comment", "comment", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Created By"), "created_by", "created_by", this::dataColumn));
+        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        add(this.dataFilterForm);
+
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
 
         this.createLink = new BookmarkablePageLink<>("createLink", ClosureCreatePage.class);
         add(this.createLink);
     }
 
-    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void dataClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
         Long value = (Long) model.get("id");
         JsonNode node = null;
         try {
@@ -110,30 +124,21 @@ public class ClosureBrowsePage extends Page {
         target.add(this.dataTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> dataAction(String column, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         return actions;
     }
 
-    private ItemPanel createdByColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel officeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel commentColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel closingDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date value = (Date) model.get(jdbcColumn);
-        return new TextCell(value, "dd/MM/yyyy");
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("office".equals(column) || "comment".equals(column) || "created_by".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("closing_date".equals(column)) {
+            Date value = (Date) model.get(column);
+            return new TextCell(value, "dd/MM/yyyy");
+        }
+        throw new WicketRuntimeException("Unknown" + column);
     }
 
 }

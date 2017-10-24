@@ -1,8 +1,10 @@
 package com.angkorteam.fintech.pages.account;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -40,13 +42,14 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FinancialActivityBrowsePage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected FilterForm<Map<String, String>> dataFilterForm;
 
-    private JdbcProvider provider;
+    protected BookmarkablePageLink<Void> createLink;
 
-    private BookmarkablePageLink<Void> createLink;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -69,42 +72,53 @@ public class FinancialActivityBrowsePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("acc_gl_financial_activity_account");
-        this.provider.addJoin("LEFT JOIN acc_gl_account ON acc_gl_financial_activity_account.gl_account_id = acc_gl_account.id");
-        this.provider.boardField("acc_gl_financial_activity_account.id", "id", Long.class);
-        this.provider.boardField("acc_gl_account.name", "account", String.class);
-        this.provider.boardField("acc_gl_financial_activity_account.financial_activity_type", "type", Integer.class);
+    protected void initData() {
+    }
 
-        this.provider.selectField("id", Long.class);
+    @Override
+    protected void initComponent() {
+        this.dataProvider = new JdbcProvider("acc_gl_financial_activity_account");
+        this.dataProvider.addJoin("LEFT JOIN acc_gl_account ON acc_gl_financial_activity_account.gl_account_id = acc_gl_account.id");
+        this.dataProvider.boardField("acc_gl_financial_activity_account.id", "id", Long.class);
+        this.dataProvider.boardField("acc_gl_account.name", "account", String.class);
+        this.dataProvider.boardField("acc_gl_financial_activity_account.financial_activity_type", "type", Integer.class);
 
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Integer, Model.of("Financial Activity"), "type", "type", this::typeColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Account Name"), "account", "account", this::accountColumn));
-        columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
+        this.dataProvider.selectField("id", Long.class);
 
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
+        this.dataColumn = new ArrayList<>();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Integer, Model.of("Financial Activity"), "type", "type", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Account Name"), "account", "account", this::dataColumn));
+        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        add(this.dataFilterForm);
+
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
 
         this.createLink = new BookmarkablePageLink<>("createLink", FinancialActivityCreatePage.class);
         add(this.createLink);
     }
 
-    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
-        Long id = (Long) model.get("id");
-        if ("modify".equals(s)) {
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void dataClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
+        Long value = (Long) model.get("id");
+        if ("modify".equals(column)) {
             PageParameters parameters = new PageParameters();
-            parameters.add("financialActivityId", id);
+            parameters.add("financialActivityId", value);
             setResponsePage(FinancialActivityModifyPage.class, parameters);
-        } else if ("delete".equals(s)) {
+        } else if ("delete".equals(column)) {
             JsonNode node = null;
             try {
-                FinancialActivityHelper.delete((Session) getSession(), String.valueOf(id));
+                FinancialActivityHelper.delete((Session) getSession(), String.valueOf(value));
             } catch (UnirestException e) {
             }
             reportError(node, target);
@@ -112,37 +126,38 @@ public class FinancialActivityBrowsePage extends Page {
         }
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> dataAction(String column, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         actions.add(new ActionItem("modify", Model.of("Modify"), ItemCss.INFO));
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         return actions;
     }
 
-    private ItemPanel typeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer value = (Integer) model.get(jdbcColumn);
-        String text = null;
-        if (FinancialActivityTypeEnum.AssetTransfer.getLiteral().equals(String.valueOf(value))) {
-            text = value + "." + FinancialActivityTypeEnum.AssetTransfer.getDescription();
-        } else if (FinancialActivityTypeEnum.CashAtTeller.getLiteral().equals(String.valueOf(value))) {
-            text = value + "." + FinancialActivityTypeEnum.CashAtTeller.getDescription();
-        } else if (FinancialActivityTypeEnum.AssetFundSource.getLiteral().equals(String.valueOf(value))) {
-            text = value + "." + FinancialActivityTypeEnum.AssetFundSource.getDescription();
-        } else if (FinancialActivityTypeEnum.CashAtMainvault.getLiteral().equals(String.valueOf(value))) {
-            text = value + "." + FinancialActivityTypeEnum.CashAtMainvault.getDescription();
-        } else if (FinancialActivityTypeEnum.OpeningBalancesTransferContra.getLiteral().equals(String.valueOf(value))) {
-            text = value + "." + FinancialActivityTypeEnum.OpeningBalancesTransferContra.getDescription();
-        } else if (FinancialActivityTypeEnum.PayableDividends.getLiteral().equals(String.valueOf(value))) {
-            text = value + "." + FinancialActivityTypeEnum.PayableDividends.getDescription();
-        } else if (FinancialActivityTypeEnum.LiabilityTransfer.getLiteral().equals(String.valueOf(value))) {
-            text = value + "." + FinancialActivityTypeEnum.LiabilityTransfer.getDescription();
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("type".equals(column)) {
+            Integer value = (Integer) model.get(column);
+            String text = null;
+            if (FinancialActivityTypeEnum.AssetTransfer.getLiteral().equals(String.valueOf(value))) {
+                text = value + "." + FinancialActivityTypeEnum.AssetTransfer.getDescription();
+            } else if (FinancialActivityTypeEnum.CashAtTeller.getLiteral().equals(String.valueOf(value))) {
+                text = value + "." + FinancialActivityTypeEnum.CashAtTeller.getDescription();
+            } else if (FinancialActivityTypeEnum.AssetFundSource.getLiteral().equals(String.valueOf(value))) {
+                text = value + "." + FinancialActivityTypeEnum.AssetFundSource.getDescription();
+            } else if (FinancialActivityTypeEnum.CashAtMainvault.getLiteral().equals(String.valueOf(value))) {
+                text = value + "." + FinancialActivityTypeEnum.CashAtMainvault.getDescription();
+            } else if (FinancialActivityTypeEnum.OpeningBalancesTransferContra.getLiteral().equals(String.valueOf(value))) {
+                text = value + "." + FinancialActivityTypeEnum.OpeningBalancesTransferContra.getDescription();
+            } else if (FinancialActivityTypeEnum.PayableDividends.getLiteral().equals(String.valueOf(value))) {
+                text = value + "." + FinancialActivityTypeEnum.PayableDividends.getDescription();
+            } else if (FinancialActivityTypeEnum.LiabilityTransfer.getLiteral().equals(String.valueOf(value))) {
+                text = value + "." + FinancialActivityTypeEnum.LiabilityTransfer.getDescription();
+            }
+            return new TextCell(text);
+        } else if ("account".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
         }
-        return new TextCell(text);
-    }
-
-    private ItemPanel accountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }

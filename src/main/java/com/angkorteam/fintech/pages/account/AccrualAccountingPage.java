@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -16,6 +17,8 @@ import com.angkorteam.fintech.dto.builder.AccrualBuilder;
 import com.angkorteam.fintech.helper.AccrualHelper;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
@@ -34,6 +37,8 @@ public class AccrualAccountingPage extends Page {
     private Button saveButton;
     private BookmarkablePageLink<Void> closeLink;
 
+    protected WebMarkupBlock tillDateBlock;
+    protected WebMarkupContainer tillDateIContainer;
     private Date tillDateValue;
     private DateTextField tillDateField;
     private TextFeedbackPanel tillDateFeedback;
@@ -61,9 +66,11 @@ public class AccrualAccountingPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -74,13 +81,28 @@ public class AccrualAccountingPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClosureBrowsePage.class);
         this.form.add(this.closeLink);
 
+        initTillDateBlock();
+    }
+
+    protected void initTillDateBlock() {
+        this.tillDateBlock = new WebMarkupBlock("tillDateBlock", Size.Twelve_12);
+        this.form.add(this.tillDateBlock);
+        this.tillDateIContainer = new WebMarkupContainer("tillDateIContainer");
+        this.tillDateBlock.add(this.tillDateIContainer);
         this.tillDateValue = new Date();
         this.tillDateField = new DateTextField("tillDateField", new PropertyModel<>(this, "tillDateValue"));
-        this.tillDateField.setRequired(true);
-        this.form.add(this.tillDateField);
+        this.tillDateIContainer.add(this.tillDateField);
         this.tillDateFeedback = new TextFeedbackPanel("tillDateFeedback", this.tillDateField);
-        this.form.add(this.tillDateFeedback);
+        this.tillDateIContainer.add(this.tillDateFeedback);
+    }
 
+    @Override
+    protected void configureRequiredValidation() {
+        this.tillDateField.setRequired(true);
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
     private void saveButtonSubmit(Button button) {
