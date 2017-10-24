@@ -76,6 +76,13 @@ public class ClosureBrowsePage extends Page {
 
     @Override
     protected void initComponent() {
+        initDataTable();
+
+        this.createLink = new BookmarkablePageLink<>("createLink", ClosureCreatePage.class);
+        add(this.createLink);
+    }
+
+    protected void initDataTable() {
         this.dataProvider = new JdbcProvider("acc_gl_closure");
         this.dataProvider.addJoin("LEFT JOIN m_office ON acc_gl_closure.office_id = m_office.id");
         this.dataProvider.addJoin("LEFT JOIN m_appuser on acc_gl_closure.createdby_id = m_appuser.id");
@@ -100,9 +107,6 @@ public class ClosureBrowsePage extends Page {
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
         this.dataFilterForm.add(this.dataTable);
-
-        this.createLink = new BookmarkablePageLink<>("createLink", ClosureCreatePage.class);
-        add(this.createLink);
     }
 
     @Override

@@ -77,6 +77,13 @@ public class FinancialActivityBrowsePage extends Page {
 
     @Override
     protected void initComponent() {
+        initDataTable();
+
+        this.createLink = new BookmarkablePageLink<>("createLink", FinancialActivityCreatePage.class);
+        add(this.createLink);
+    }
+
+    protected void initDataTable() {
         this.dataProvider = new JdbcProvider("acc_gl_financial_activity_account");
         this.dataProvider.addJoin("LEFT JOIN acc_gl_account ON acc_gl_financial_activity_account.gl_account_id = acc_gl_account.id");
         this.dataProvider.boardField("acc_gl_financial_activity_account.id", "id", Long.class);
@@ -96,9 +103,6 @@ public class FinancialActivityBrowsePage extends Page {
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
         this.dataFilterForm.add(this.dataTable);
-
-        this.createLink = new BookmarkablePageLink<>("createLink", FinancialActivityCreatePage.class);
-        add(this.createLink);
     }
 
     @Override

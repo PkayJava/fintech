@@ -175,31 +175,31 @@ public class AccountBrowsePage extends Page {
         return actions;
     }
 
-    protected ItemPanel dataColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        if ("name".equals(jdbcColumn) || "classification_enum".equals(jdbcColumn)) {
-            String value = (String) model.get(jdbcColumn);
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column) || "classification_enum".equals(column)) {
+            String value = (String) model.get(column);
             return new TextCell(value);
-        } else if ("gl_code".equals(jdbcColumn)) {
-            String value = (String) model.get(jdbcColumn);
+        } else if ("gl_code".equals(column)) {
+            String value = (String) model.get(column);
             PageParameters parameters = new PageParameters();
             parameters.add("accountId", model.get("id"));
             return new LinkCell(AccountModifyPage.class, parameters, value);
-        } else if ("disabled".equals(jdbcColumn)) {
-            Boolean value = (Boolean) model.get(jdbcColumn);
+        } else if ("disabled".equals(column)) {
+            Boolean value = (Boolean) model.get(column);
             if (value == null || value) {
                 return new BadgeCell(BadgeType.Danger, Model.of("Yes"));
             } else {
                 return new BadgeCell(BadgeType.Success, Model.of("No"));
             }
-        } else if ("manual_journal_entries_allowed".equals(jdbcColumn)) {
-            Boolean manualEntry = (Boolean) model.get(jdbcColumn);
+        } else if ("manual_journal_entries_allowed".equals(column)) {
+            Boolean manualEntry = (Boolean) model.get(column);
             if (manualEntry != null && manualEntry) {
                 return new BadgeCell(BadgeType.Success, Model.of("Yes"));
             } else {
                 return new BadgeCell(BadgeType.Danger, Model.of("No"));
             }
         } else {
-            throw new WicketRuntimeException("unknow " + jdbcColumn);
+            throw new WicketRuntimeException("unknow " + column);
         }
     }
 

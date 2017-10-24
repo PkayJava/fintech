@@ -11,87 +11,109 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="firstNameField">First Name</label> <input
-							wicket:id="firstNameField" type="text" class="form-control" /> <span
-							wicket:id="firstNameFeedback" class="help-block"></span>
+					<div wicket:id="firstNameBlock" class="form-group">
+						<wicket:container wicket:id="firstNameIContainer">
+							<label wicket:for="firstNameField">First Name</label>
+							<input wicket:id="firstNameField" type="text"
+								class="form-control" />
+							<span wicket:id="firstNameFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="lastNameField">Last Name</label> <input
-							wicket:id="lastNameField" type="text" class="form-control" /> <span
-							wicket:id="lastNameFeedback" class="help-block"></span>
-					</div>
-					<div class="clearfix"></div>
-					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="emailField">Email</label> <input
-							wicket:id="emailField" type="text" class="form-control" /> <span
-							wicket:id="emailFeedback" class="help-block"></span>
+					<div wicket:id="lastNameBlock" class="form-group">
+						<wicket:container wicket:id="lastNameIContainer">
+							<label wicket:for="lastNameField">Last Name</label>
+							<input wicket:id="lastNameField" type="text" class="form-control" />
+							<span wicket:id="lastNameFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="loginField">Login</label> <input
-							wicket:id="loginField" type="text" class="form-control" /> <span
-							wicket:id="loginFeedback" class="help-block"></span>
+					<div wicket:id="emailBlock" class="form-group">
+						<wicket:container wicket:id="emailIContainer">
+							<label wicket:for="emailField">Email</label>
+							<input wicket:id="emailField" type="text" class="form-control" />
+							<span wicket:id="emailFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="passwordField">Password</label> <input
-							wicket:id="passwordField" type="password" class="form-control" />
-						<span wicket:id="passwordFeedback" class="help-block"></span>
-					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="repeatPasswordField">Repeat Password</label> <input
-							wicket:id="repeatPasswordField" type="password"
-							class="form-control" /> <span wicket:id="repeatPasswordFeedback"
-							class="help-block"></span>
+					<div wicket:id="loginBlock" class="form-group">
+						<wicket:container wicket:id="loginIContainer">
+							<label wicket:for="loginField">Login</label>
+							<input wicket:id="loginField" type="text" class="form-control" />
+							<span wicket:id="loginFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label>&nbsp;</label> <span style="display: block"> <label>
-								<input type="checkbox"
-								wicket:id="overridePasswordExpiryPolicyField"> Override
-								password expiry policy ?
-						</label>
-						</span> <span wicket:id="overridePasswordExpiryPolicyFeedback"
-							class="help-block"></span>
+					<div wicket:id="passwordBlock" class="form-group">
+						<wicket:container wicket:id="passwordIContainer">
+							<label wicket:for="passwordField">Password</label>
+							<input wicket:id="passwordField" type="password"
+								class="form-control" />
+							<span wicket:id="passwordFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="repeatPasswordBlock" class="form-group">
+						<wicket:container wicket:id="repeatPasswordIContainer">
+							<label wicket:for="repeatPasswordField">Repeat Password</label>
+							<input wicket:id="repeatPasswordField" type="password"
+								class="form-control" />
+							<span wicket:id="repeatPasswordFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="officeField">Office</label> <select
-							wicket:id="officeField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="officeFeedback"
-							class="help-block"></span>
+					<div wicket:id="overridePasswordExpiryPolicyBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="overridePasswordExpiryPolicyIContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="overridePasswordExpiryPolicyField">
+									Is Override password expiry policy ?
+							</label>
+							</span>
+							<span wicket:id="overridePasswordExpiryPolicyFeedback"
+								class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="staffField">Staff</label> <select
-							wicket:id="staffField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="staffFeedback"
-							class="help-block"></span>
+					<div wicket:id="officeBlock" class="form-group">
+						<wicket:container wicket:id="officeIContainer">
+							<label wicket:for="officeField">Office</label>
+							<select wicket:id="officeField" class="form-control select2"
+								style="width: 100%;"></select>
+							<span wicket:id="officeFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="permissionField">Permission</label> <select
-							wicket:id="permissionField" class="form-control select2"
-							style="width: 100%;"></select> <span
-							wicket:id="permissionFeedback" class="help-block"></span>
+					<div wicket:id="staffBlock" class="form-group">
+						<wicket:container wicket:id="staffIContainer">
+							<label wicket:for="staffField">Staff</label>
+							<select wicket:id="staffField" class="form-control select2"
+								style="width: 100%;"></select>
+							<span wicket:id="staffFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="permissionBlock" class="form-group">
+						<wicket:container wicket:id="permissionIContainer">
+							<label wicket:for="permissionField">Permission</label>
+							<select wicket:id="permissionField" class="form-control select2"
+								style="width: 100%;"></select>
+							<span wicket:id="permissionFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>
