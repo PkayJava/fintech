@@ -1,7 +1,5 @@
 package com.angkorteam.fintech.pages.account;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -123,9 +121,11 @@ public class SearchJournalPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -142,6 +142,24 @@ public class SearchJournalPage extends Page {
 
         initManualBlock();
 
+        initFromDateBlock();
+
+        initToDateBlock();
+
+        initTransactionNumberBlock();
+
+        initEntryTable();
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initFromDateBlock() {
         this.fromDateBlock = new WebMarkupBlock("fromDateBlock", Size.Four_4);
         this.form.add(this.fromDateBlock);
         this.fromDateIContainer = new WebMarkupContainer("fromDateIContainer");
@@ -150,7 +168,9 @@ public class SearchJournalPage extends Page {
         this.fromDateIContainer.add(this.fromDateField);
         this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
         this.fromDateIContainer.add(this.fromDateFeedback);
+    }
 
+    protected void initToDateBlock() {
         this.toDateBlock = new WebMarkupBlock("toDateBlock", Size.Four_4);
         this.form.add(this.toDateBlock);
         this.toDateIContainer = new WebMarkupContainer("toDateIContainer");
@@ -159,7 +179,9 @@ public class SearchJournalPage extends Page {
         this.toDateIContainer.add(this.toDateField);
         this.toDateFeedback = new TextFeedbackPanel("toDateFeedback", this.toDateField);
         this.toDateIContainer.add(this.toDateFeedback);
+    }
 
+    protected void initTransactionNumberBlock() {
         this.transactionNumberBlock = new WebMarkupBlock("transactionNumberBlock", Size.Four_4);
         this.form.add(this.transactionNumberBlock);
         this.transactionNumberIContainer = new WebMarkupContainer("transactionNumberIContainer");
@@ -168,7 +190,9 @@ public class SearchJournalPage extends Page {
         this.transactionNumberIContainer.add(this.transactionNumberField);
         this.transactionNumberFeedback = new TextFeedbackPanel("transactionNumberFeedback", this.transactionNumberField);
         this.transactionNumberIContainer.add(this.transactionNumberFeedback);
+    }
 
+    protected void initEntryTable() {
         this.entryProvider = new JdbcProvider("acc_gl_journal_entry");
         this.entryProvider.addJoin("LEFT JOIN acc_gl_account ON acc_gl_journal_entry.account_id = acc_gl_account.id");
         this.entryProvider.addJoin("LEFT JOIN m_office ON acc_gl_journal_entry.office_id = m_office.id");
@@ -200,7 +224,6 @@ public class SearchJournalPage extends Page {
         this.entryTable.addTopToolbar(new HeadersToolbar<>(this.entryTable, this.entryProvider));
         this.entryTable.addBottomToolbar(new NoRecordsToolbar(this.entryTable));
         this.entryTable.addBottomToolbar(new NavigationToolbar(this.entryTable));
-
     }
 
     protected void initManualBlock() {

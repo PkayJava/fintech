@@ -9,30 +9,41 @@
 				<h3 class="box-title">Transaction Detail</h3>
 			</div>
 			<div class="box-body">
+
 				<!-- Row -->
-				<div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-					<label>Office</label>
-					<div wicket:id="officeView" class="form-control"></div>
+				<div wicket:id="{logic}Block" class="form-group">
+					<wicket:container wicket:id="{logic}VContainer">
+						<label>Office</label>
+						<div wicket:id="officeView" class="form-control"></div>
+					</wicket:container>
 				</div>
-				<div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-					<label>Transaction Date</label>
-					<div wicket:id="transactionDateView" class="form-control"></div>
+				<div wicket:id="{logic}Block" class="form-group">
+					<wicket:container wicket:id="{logic}VContainer">
+						<label>Transaction Date</label>
+						<div wicket:id="transactionDateView" class="form-control"></div>
+					</wicket:container>
 				</div>
 				<div class="clearfix"></div>
+
 				<!-- Row -->
-				<div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-					<label>Created By</label>
-					<div wicket:id="createdByView" class="form-control"></div>
+				<div wicket:id="{logic}Block" class="form-group">
+					<wicket:container wicket:id="{logic}VContainer">
+						<label>Created By</label>
+						<div wicket:id="createdByView" class="form-control"></div>
+					</wicket:container>
 				</div>
-				<div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-					<label>Created On</label>
-					<div wicket:id="createdOnView" class="form-control"></div>
+				<div wicket:id="{logic}Block" class="form-group">
+					<wicket:container wicket:id="{logic}VContainer">
+						<label>Created On</label>
+						<div wicket:id="createdOnView" class="form-control"></div>
+					</wicket:container>
 				</div>
 				<div class="clearfix"></div>
+
 				<!-- Row -->
 				<div
 					class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<table wicket:id="entryTable" />
+					<table wicket:id="entryTable"></table>
 				</div>
 				<div class="clearfix"></div>
 			</div>

@@ -1,16 +1,16 @@
 package com.angkorteam.fintech.pages.account;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -22,6 +22,9 @@ import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.popup.ReversePopup;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.ReadOnlyView;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.JoinType;
 import com.angkorteam.framework.jdbc.SelectQuery;
@@ -49,23 +52,34 @@ public class TransactionPage extends Page {
 
     protected AjaxLink<Void> reverseButton;
 
+    protected WebMarkupBlock officeBlock;
+    protected WebMarkupContainer officeVContainer;
     protected String officeValue;
-    protected Label officeView;
+    protected ReadOnlyView officeView;
 
+    protected WebMarkupBlock transactionNumberBlock;
+    protected WebMarkupContainer transactionNumberVContainer;
     protected String transactionNumberValue;
-    protected Label transactionNumberView;
+    protected ReadOnlyView transactionNumberView;
 
+    protected WebMarkupBlock transactionDateBlock;
+    protected WebMarkupContainer transactionDateVContainer;
     protected String transactionDateValue;
-    protected Label transactionDateView;
+    protected ReadOnlyView transactionDateView;
 
+    protected WebMarkupBlock createdOnBlock;
+    protected WebMarkupContainer createdOnVContainer;
     protected String createdOnValue;
-    protected Label createdOnView;
+    protected ReadOnlyView createdOnView;
 
+    protected WebMarkupBlock createdByBlock;
+    protected WebMarkupContainer createdByVContainer;
     protected String createdByValue;
-    protected Label createdByView;
+    protected ReadOnlyView createdByView;
 
     protected DataTable<Map<String, Object>, String> entryTable;
     protected JdbcProvider entryProvider;
+    protected List<IColumn<Map<String, Object>, String>> entryColumn;
 
     protected ModalWindow commentPopup;
 
@@ -98,14 +112,11 @@ public class TransactionPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
+    protected void initData() {
         PageParameters parameters = getPageParameters();
         this.transactionId = parameters.get("transactionId").toString("");
 
         JdbcNamed jdbcNamed = SpringBean.getBean(JdbcNamed.class);
-
         SelectQuery selectQuery = new SelectQuery("acc_gl_journal_entry");
         selectQuery.addJoin(JoinType.LeftJoin, "acc_gl_account", "acc_gl_journal_entry.account_id = acc_gl_account.id");
         selectQuery.addJoin(JoinType.LeftJoin, "m_office", "acc_gl_journal_entry.office_id = m_office.id");
@@ -121,32 +132,49 @@ public class TransactionPage extends Page {
 
         Map<String, Object> entry = jdbcNamed.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
+        this.officeValue = (String) entry.get("office");
+        this.createdByValue = (String) entry.get("created_by");
+        Date transactionDate = (Date) entry.get("transaction_date");
+        this.transactionDateValue = transactionDate == null ? "" : DateFormatUtils.format(transactionDate, "yyyy-MM-dd");
+        Date createdOn = (Date) entry.get("created_date");
+        this.createdOnValue = createdOn == null ? "" : DateFormatUtils.format(createdOn, "yyyy-MM-dd");
+        this.transactionNumberValue = (String) entry.get("transaction_id");
+    }
+
+    @Override
+    protected void initComponent() {
         this.reverseButton = new AjaxLink<>("reverseButton");
         this.reverseButton.setOnClick(this::reverseButtonClick);
         this.add(this.reverseButton);
 
-        this.officeValue = (String) entry.get("office");
-        this.officeView = new Label("officeView", new PropertyModel<>(this, "officeValue"));
-        this.add(this.officeView);
+        initOfficeBlock();
 
-        this.createdByValue = (String) entry.get("created_by");
-        this.createdByView = new Label("createdByView", new PropertyModel<>(this, "createdByValue"));
-        this.add(this.createdByView);
+        initCreatedByBlock();
 
-        Date transactionDate = (Date) entry.get("transaction_date");
-        this.transactionDateValue = transactionDate == null ? "" : DateFormatUtils.format(transactionDate, "yyyy-MM-dd");
-        this.transactionDateView = new Label("transactionDateView", new PropertyModel<>(this, "transactionDateValue"));
-        this.add(this.transactionDateView);
+        initTransactionDateBlock();
 
-        Date createdOn = (Date) entry.get("created_date");
-        this.createdOnValue = createdOn == null ? "" : DateFormatUtils.format(createdOn, "yyyy-MM-dd");
-        this.createdOnView = new Label("createdOnView", new PropertyModel<>(this, "createdOnValue"));
-        this.add(this.createdOnView);
+        initCreatedOnBlock();
 
-        this.transactionNumberValue = (String) entry.get("transaction_id");
-        this.transactionNumberView = new Label("transactionNumberView", new PropertyModel<>(this, "transactionNumberValue"));
-        this.add(this.transactionNumberView);
+        initTransactionNumberBlock();
 
+        initEntryTable();
+
+        this.commentPopup = new ModalWindow("commentPopup");
+        add(this.commentPopup);
+        this.commentPopup.setOnClose(this::commentPopupClose);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+
+    }
+
+    @Override
+    protected void configureMetaData() {
+
+    }
+
+    protected void initEntryTable() {
         this.entryProvider = new JdbcProvider("acc_gl_journal_entry");
         this.entryProvider.addJoin("LEFT JOIN acc_gl_account ON acc_gl_journal_entry.account_id = acc_gl_account.id");
         this.entryProvider.addJoin("LEFT JOIN m_office ON acc_gl_journal_entry.office_id = m_office.id");
@@ -164,56 +192,81 @@ public class TransactionPage extends Page {
 
         this.entryProvider.applyWhere("transaction_id", "acc_gl_journal_entry.transaction_id = '" + this.transactionId + "'");
 
-        List<IColumn<Map<String, Object>, String>> debitColumn = Lists.newArrayList();
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Entry ID"), "id", "id", this::idColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Type"), "account_type", "account_type", this::accountTypeColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Account"), "account_name", "account_name", this::accountNameColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Debit"), "debit_amount", "debit_amount", this::debitAmountColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Credit"), "credit_amount", "credit_amount", this::creditAmountColumn));
+        this.entryColumn = Lists.newArrayList();
+        this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Entry ID"), "id", "id", this::entryColumn));
+        this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Type"), "account_type", "account_type", this::entryColumn));
+        this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Account"), "account_name", "account_name", this::entryColumn));
+        this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Debit"), "debit_amount", "debit_amount", this::entryColumn));
+        this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Credit"), "credit_amount", "credit_amount", this::entryColumn));
 
-        this.entryTable = new DataTable<>("entryTable", debitColumn, this.entryProvider, 20);
-        this.add(this.entryTable);
+        this.entryTable = new DataTable<>("entryTable", this.entryColumn, this.entryProvider, 20);
+        add(this.entryTable);
         this.entryTable.addTopToolbar(new HeadersToolbar<>(this.entryTable, this.entryProvider));
         this.entryTable.addBottomToolbar(new NoRecordsToolbar(this.entryTable));
-
-        this.commentPopup = new ModalWindow("commentPopup");
-        add(this.commentPopup);
-
-        this.commentPopup.setContent(new ReversePopup(this.commentPopup.getContentId(), this.commentPopup, this, this.transactionId));
-        this.commentPopup.setOnClose(this::commentPopupOnClose);
-
     }
 
-    protected void commentPopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void initTransactionNumberBlock() {
+        this.transactionNumberBlock = new WebMarkupBlock("transactionNumberBlock", Size.Six_6);
+        add(this.transactionNumberBlock);
+        this.transactionNumberVContainer = new WebMarkupContainer("transactionNumberVContainer");
+        this.transactionNumberBlock.add(this.transactionNumberVContainer);
+        this.transactionNumberView = new ReadOnlyView("transactionNumberView", new PropertyModel<>(this, "transactionNumberValue"));
+        this.transactionNumberVContainer.add(this.transactionNumberView);
+    }
+
+    protected void initCreatedOnBlock() {
+        this.createdOnBlock = new WebMarkupBlock("createdOnBlock", Size.Six_6);
+        this.add(this.createdOnBlock);
+        this.createdOnVContainer = new WebMarkupContainer("createdOnVContainer");
+        this.createdOnBlock.add(this.createdOnVContainer);
+        this.createdOnView = new ReadOnlyView("createdOnView", new PropertyModel<>(this, "createdOnValue"));
+        this.createdOnVContainer.add(this.createdOnView);
+    }
+
+    protected void initTransactionDateBlock() {
+        this.transactionDateBlock = new WebMarkupBlock("transactionDateBlock", Size.Six_6);
+        add(this.transactionDateBlock);
+        this.transactionDateVContainer = new WebMarkupContainer("transactionDateVContainer");
+        this.transactionDateBlock.add(this.transactionDateVContainer);
+        this.transactionDateView = new ReadOnlyView("transactionDateView", new PropertyModel<>(this, "transactionDateValue"));
+        this.transactionDateVContainer.add(this.transactionDateView);
+    }
+
+    protected void initCreatedByBlock() {
+        this.createdByBlock = new WebMarkupBlock("createdByBlock", Size.Six_6);
+        add(this.createdByBlock);
+        this.createdByVContainer = new WebMarkupContainer("createdByVContainer");
+        this.createdByBlock.add(this.createdByVContainer);
+        this.createdByView = new ReadOnlyView("createdByView", new PropertyModel<>(this, "createdByValue"));
+        this.createdByVContainer.add(this.createdByView);
+    }
+
+    protected void initOfficeBlock() {
+        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Six_6);
+        add(this.officeBlock);
+        this.officeVContainer = new WebMarkupContainer("officeVContainer");
+        this.officeBlock.add(this.officeVContainer);
+        this.officeView = new ReadOnlyView("officeView", new PropertyModel<>(this, "officeValue"));
+        this.officeVContainer.add(this.officeView);
+    }
+
+    protected void commentPopupClose(String elementId, AjaxRequestTarget target) {
         setResponsePage(SearchJournalPage.class);
     }
 
-    protected ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long value = (Long) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel accountTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel accountNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel debitAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        BigDecimal value = (BigDecimal) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel creditAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        BigDecimal value = (BigDecimal) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel entryColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("id".equals(column) || "account_type".equals(column) || "account_name".equals(column)) {
+            Long value = (Long) model.get(column);
+            return new TextCell(value);
+        } else if ("debit_amount".equals(column) || "credit_amount".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value, "#,###,##0.00");
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
     protected boolean reverseButtonClick(AjaxLink<Void> button, AjaxRequestTarget target) {
+        this.commentPopup.setContent(new ReversePopup(this.commentPopup.getContentId(), this.commentPopup, this, this.transactionId));
         this.commentPopup.show(target);
         return false;
     }
