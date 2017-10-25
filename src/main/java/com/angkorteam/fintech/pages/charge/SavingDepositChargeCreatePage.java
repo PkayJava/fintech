@@ -27,6 +27,8 @@ import com.angkorteam.fintech.provider.ChargeTimeProvider;
 import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -41,59 +43,75 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingDepositChargeCreatePage extends Page {
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected WebMarkupBlock nameBlock;
+    protected WebMarkupContainer nameIContainer;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private CurrencyProvider currencyProvider;
-    private Option currencyValue;
-    private Select2SingleChoice<Option> currencyField;
-    private TextFeedbackPanel currencyFeedback;
+    protected WebMarkupBlock currencyBlock;
+    protected WebMarkupContainer currencyIContainer;
+    protected CurrencyProvider currencyProvider;
+    protected Option currencyValue;
+    protected Select2SingleChoice<Option> currencyField;
+    protected TextFeedbackPanel currencyFeedback;
 
-    private ChargeTimeProvider chargeTimeProvider;
-    private Option chargeTimeValue;
-    private Select2SingleChoice<Option> chargeTimeField;
-    private TextFeedbackPanel chargeTimeFeedback;
+    protected WebMarkupBlock chargeTimeBlock;
+    protected WebMarkupContainer chargeTimeIContainer;
+    protected ChargeTimeProvider chargeTimeProvider;
+    protected Option chargeTimeValue;
+    protected Select2SingleChoice<Option> chargeTimeField;
+    protected TextFeedbackPanel chargeTimeFeedback;
 
-    private ChargeCalculationProvider chargeCalculationProvider;
-    private Option chargeCalculationValue;
-    private Select2SingleChoice<Option> chargeCalculationField;
-    private TextFeedbackPanel chargeCalculationFeedback;
+    protected WebMarkupBlock chargeCalculationBlock;
+    protected WebMarkupContainer chargeCalculationIContainer;
+    protected ChargeCalculationProvider chargeCalculationProvider;
+    protected Option chargeCalculationValue;
+    protected Select2SingleChoice<Option> chargeCalculationField;
+    protected TextFeedbackPanel chargeCalculationFeedback;
 
-    private WebMarkupContainer dueDateBlock;
-    private WebMarkupContainer dueDateContainer;
-    private Date dueDateValue;
-    private DayMonthTextField dueDateField;
-    private TextFeedbackPanel dueDateFeedback;
+    protected WebMarkupBlock dueDateBlock;
+    protected WebMarkupContainer dueDateIContainer;
+    protected Date dueDateValue;
+    protected DayMonthTextField dueDateField;
+    protected TextFeedbackPanel dueDateFeedback;
 
-    private WebMarkupContainer repeatEveryBlock;
-    private WebMarkupContainer repeatEveryContainer;
-    private Integer repeatEveryValue;
-    private TextField<Integer> repeatEveryField;
-    private TextFeedbackPanel repeatEveryFeedback;
+    protected WebMarkupBlock repeatEveryBlock;
+    protected WebMarkupContainer repeatEveryIContainer;
+    protected Integer repeatEveryValue;
+    protected TextField<Integer> repeatEveryField;
+    protected TextFeedbackPanel repeatEveryFeedback;
 
-    private Double amountValue;
-    private TextField<Double> amountField;
-    private TextFeedbackPanel amountFeedback;
+    protected WebMarkupBlock amountBlock;
+    protected WebMarkupContainer amountIContainer;
+    protected Double amountValue;
+    protected TextField<Double> amountField;
+    protected TextFeedbackPanel amountFeedback;
 
-    private boolean activeValue;
-    private CheckBox activeField;
-    private TextFeedbackPanel activeFeedback;
+    protected WebMarkupBlock activeBlock;
+    protected WebMarkupContainer activeIContainer;
+    protected Boolean activeValue;
+    protected CheckBox activeField;
+    protected TextFeedbackPanel activeFeedback;
 
-    private boolean penaltyValue;
-    private CheckBox penaltyField;
-    private TextFeedbackPanel penaltyFeedback;
+    protected WebMarkupBlock penaltyBlock;
+    protected WebMarkupContainer penaltyIContainer;
+    protected Boolean penaltyValue;
+    protected CheckBox penaltyField;
+    protected TextFeedbackPanel penaltyFeedback;
 
-    private SingleChoiceProvider taxGroupProvider;
-    private Option taxGroupValue;
-    private Select2SingleChoice<Option> taxGroupField;
-    private TextFeedbackPanel taxGroupFeedback;
+    protected WebMarkupBlock taxGroupBlock;
+    protected WebMarkupContainer taxGroupIContainer;
+    protected SingleChoiceProvider taxGroupProvider;
+    protected Option taxGroupValue;
+    protected Select2SingleChoice<Option> taxGroupField;
+    protected TextFeedbackPanel taxGroupFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -128,9 +146,11 @@ public class SavingDepositChargeCreatePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         this.add(this.form);
 
@@ -141,99 +161,177 @@ public class SavingDepositChargeCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ChargeBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setLabel(Model.of("Name"));
-        this.nameField.setRequired(true);
-        this.nameField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.form.add(this.nameFeedback);
+        initNameBlock();
 
-        this.currencyProvider = new CurrencyProvider();
-        this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
-        this.currencyField.setLabel(Model.of("Currency"));
-        this.currencyField.setRequired(true);
-        this.currencyField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.currencyField);
-        this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
-        this.form.add(this.currencyFeedback);
+        initCurrencyBlock();
 
-        this.chargeTimeProvider = new ChargeTimeProvider();
-        this.chargeTimeProvider.setValues(ChargeTime.SpecifiedDueDate, ChargeTime.SavingsActivation, ChargeTime.WithdrawalFee, ChargeTime.AnnualFee, ChargeTime.MonthlyFee, ChargeTime.WeeklyFee, ChargeTime.OverdraftFee, ChargeTime.SavingNoActivityFee);
-        this.chargeTimeField = new Select2SingleChoice<>("chargeTimeField", 0, new PropertyModel<>(this, "chargeTimeValue"), this.chargeTimeProvider);
-        this.chargeTimeField.setLabel(Model.of("Charge time type"));
-        this.chargeTimeField.setRequired(true);
-        this.chargeTimeField.add(new OnChangeAjaxBehavior(this::chargeTimeFieldUpdate));
-        this.form.add(this.chargeTimeField);
-        this.chargeTimeFeedback = new TextFeedbackPanel("chargeTimeFeedback", this.chargeTimeField);
-        this.form.add(this.chargeTimeFeedback);
+        initChargeTimeBlock();
 
-        this.chargeCalculationProvider = new ChargeCalculationProvider();
-        this.chargeCalculationProvider.setValues(ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount);
-        this.chargeCalculationField = new Select2SingleChoice<>("chargeCalculationField", 0, new PropertyModel<>(this, "chargeCalculationValue"), this.chargeCalculationProvider);
-        this.chargeCalculationField.setLabel(Model.of("Charge calculation"));
-        this.chargeCalculationField.setRequired(true);
-        this.chargeCalculationField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.chargeCalculationField);
-        this.chargeCalculationFeedback = new TextFeedbackPanel("chargeCalculationFeedback", this.chargeCalculationField);
-        this.form.add(this.chargeCalculationFeedback);
+        initChargeCalculationBlock();
 
-        this.dueDateBlock = new WebMarkupContainer("dueDateBlock");
-        this.dueDateBlock.setOutputMarkupId(true);
-        this.form.add(this.dueDateBlock);
-        this.dueDateContainer = new WebMarkupContainer("dueDateContainer");
-        this.dueDateBlock.add(this.dueDateContainer);
-        this.dueDateField = new DayMonthTextField("dueDateField", new PropertyModel<>(this, "dueDateValue"));
-        this.dueDateField.setRequired(true);
-        this.dueDateField.setLabel(Model.of("Due date"));
-        this.dueDateField.add(new OnChangeAjaxBehavior());
-        this.dueDateContainer.add(this.dueDateField);
-        this.dueDateFeedback = new TextFeedbackPanel("dueDateFeedback", this.dueDateField);
-        this.dueDateContainer.add(this.dueDateFeedback);
+        initDueDateBlock();
 
-        this.repeatEveryBlock = new WebMarkupContainer("repeatEveryBlock");
-        this.repeatEveryBlock.setOutputMarkupId(true);
-        this.form.add(this.repeatEveryBlock);
-        this.repeatEveryContainer = new WebMarkupContainer("repeatEveryContainer");
-        this.repeatEveryBlock.add(this.repeatEveryContainer);
-        this.repeatEveryField = new TextField<>("repeatEveryField", new PropertyModel<>(this, "repeatEveryValue"));
-        this.repeatEveryField.setLabel(Model.of("Repeats every"));
-        this.repeatEveryField.setRequired(true);
-        this.repeatEveryField.add(new OnChangeAjaxBehavior());
-        this.repeatEveryContainer.add(this.repeatEveryField);
-        this.repeatEveryFeedback = new TextFeedbackPanel("repeatEveryFeedback", this.repeatEveryField);
-        this.repeatEveryContainer.add(this.repeatEveryFeedback);
+        initRepeatEveryBlock();
 
+        initAmountBlock();
+
+        initActiveBlock();
+
+        initPenaltyBlock();
+
+        initTaxGroupBlock();
+
+    }
+
+    protected void initTaxGroupBlock() {
+        this.taxGroupBlock = new WebMarkupBlock("taxGroupBlock", Size.Six_6);
+        this.form.add(this.taxGroupBlock);
+        this.taxGroupIContainer = new WebMarkupContainer("taxGroupIContainer");
+        this.taxGroupBlock.add(this.taxGroupIContainer);
+        this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
+        this.taxGroupField = new Select2SingleChoice<>("taxGroupField", new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
+        this.taxGroupField.setLabel(Model.of("Tax Group"));
+        this.taxGroupField.add(new OnChangeAjaxBehavior());
+        this.taxGroupIContainer.add(this.taxGroupField);
+        this.taxGroupFeedback = new TextFeedbackPanel("taxGroupFeedback", this.taxGroupField);
+        this.taxGroupIContainer.add(this.taxGroupFeedback);
+    }
+
+    protected void initPenaltyBlock() {
+        this.penaltyBlock = new WebMarkupBlock("penaltyBlock", Size.Six_6);
+        this.form.add(this.penaltyBlock);
+        this.penaltyIContainer = new WebMarkupContainer("penaltyIContainer");
+        this.penaltyBlock.add(this.penaltyIContainer);
+        this.penaltyField = new CheckBox("penaltyField", new PropertyModel<>(this, "penaltyValue"));
+        this.penaltyField.setRequired(true);
+        this.penaltyField.add(new OnChangeAjaxBehavior());
+        this.penaltyIContainer.add(this.penaltyField);
+        this.penaltyFeedback = new TextFeedbackPanel("penaltyFeedback", this.penaltyField);
+        this.penaltyIContainer.add(this.penaltyFeedback);
+    }
+
+    protected void initActiveBlock() {
+        this.activeBlock = new WebMarkupBlock("activeBlock", Size.Six_6);
+        this.form.add(this.activeBlock);
+        this.activeIContainer = new WebMarkupContainer("activeIContainer");
+        this.activeBlock.add(this.activeIContainer);
+        this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
+        this.activeField.setRequired(true);
+        this.activeField.add(new OnChangeAjaxBehavior());
+        this.activeIContainer.add(this.activeField);
+        this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
+        this.activeIContainer.add(this.activeFeedback);
+    }
+
+    protected void initAmountBlock() {
+        this.amountBlock = new WebMarkupBlock("amountBlock", Size.Six_6);
+        this.form.add(this.amountBlock);
+        this.amountIContainer = new WebMarkupContainer("amountIContainer");
+        this.amountBlock.add(this.amountIContainer);
         this.amountField = new TextField<>("amountField", new PropertyModel<>(this, "amountValue"));
         this.amountField.setRequired(true);
         this.amountField.setLabel(Model.of("Amount"));
         this.amountField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.amountField);
+        this.amountIContainer.add(this.amountField);
         this.amountFeedback = new TextFeedbackPanel("amountFeedback", this.amountField);
-        this.form.add(this.amountFeedback);
+        this.amountIContainer.add(this.amountFeedback);
+    }
 
-        this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
-        this.activeField.setRequired(true);
-        this.activeField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.activeField);
-        this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
-        this.form.add(this.activeFeedback);
+    protected void initRepeatEveryBlock() {
+        this.repeatEveryBlock = new WebMarkupBlock("repeatEveryBlock", Size.Six_6);
+        this.form.add(this.repeatEveryBlock);
+        this.repeatEveryIContainer = new WebMarkupContainer("repeatEveryIContainer");
+        this.repeatEveryBlock.add(this.repeatEveryIContainer);
+        this.repeatEveryField = new TextField<>("repeatEveryField", new PropertyModel<>(this, "repeatEveryValue"));
+        this.repeatEveryField.setLabel(Model.of("Repeats every"));
+        this.repeatEveryField.setRequired(true);
+        this.repeatEveryField.add(new OnChangeAjaxBehavior());
+        this.repeatEveryIContainer.add(this.repeatEveryField);
+        this.repeatEveryFeedback = new TextFeedbackPanel("repeatEveryFeedback", this.repeatEveryField);
+        this.repeatEveryIContainer.add(this.repeatEveryFeedback);
+    }
 
-        this.penaltyField = new CheckBox("penaltyField", new PropertyModel<>(this, "penaltyValue"));
-        this.penaltyField.setRequired(true);
-        this.penaltyField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.penaltyField);
-        this.penaltyFeedback = new TextFeedbackPanel("penaltyFeedback", this.penaltyField);
-        this.form.add(this.penaltyFeedback);
+    protected void initDueDateBlock() {
+        this.dueDateBlock = new WebMarkupBlock("dueDateBlock", Size.Six_6);
+        this.form.add(this.dueDateBlock);
+        this.dueDateIContainer = new WebMarkupContainer("dueDateIContainer");
+        this.dueDateBlock.add(this.dueDateIContainer);
+        this.dueDateField = new DayMonthTextField("dueDateField", new PropertyModel<>(this, "dueDateValue"));
+        this.dueDateField.setRequired(true);
+        this.dueDateField.setLabel(Model.of("Due date"));
+        this.dueDateField.add(new OnChangeAjaxBehavior());
+        this.dueDateIContainer.add(this.dueDateField);
+        this.dueDateFeedback = new TextFeedbackPanel("dueDateFeedback", this.dueDateField);
+        this.dueDateIContainer.add(this.dueDateFeedback);
+    }
 
-        this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
-        this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
-        this.taxGroupField.setLabel(Model.of("Tax Group"));
-        this.taxGroupField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.taxGroupField);
-        this.taxGroupFeedback = new TextFeedbackPanel("taxGroupFeedback", this.taxGroupField);
-        this.form.add(this.taxGroupFeedback);
+    protected void initChargeCalculationBlock() {
+        this.chargeCalculationBlock = new WebMarkupBlock("chargeCalculationBlock", Size.Six_6);
+        this.form.add(this.chargeCalculationBlock);
+        this.chargeCalculationIContainer = new WebMarkupContainer("chargeCalculationIContainer");
+        this.chargeCalculationBlock.add(this.chargeCalculationIContainer);
+        this.chargeCalculationProvider = new ChargeCalculationProvider();
+        this.chargeCalculationProvider.setValues(ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount);
+        this.chargeCalculationField = new Select2SingleChoice<>("chargeCalculationField", new PropertyModel<>(this, "chargeCalculationValue"), this.chargeCalculationProvider);
+        this.chargeCalculationField.setLabel(Model.of("Charge calculation"));
+        this.chargeCalculationField.setRequired(true);
+        this.chargeCalculationField.add(new OnChangeAjaxBehavior());
+        this.chargeCalculationIContainer.add(this.chargeCalculationField);
+        this.chargeCalculationFeedback = new TextFeedbackPanel("chargeCalculationFeedback", this.chargeCalculationField);
+        this.chargeCalculationIContainer.add(this.chargeCalculationFeedback);
+    }
 
+    protected void initChargeTimeBlock() {
+        this.chargeTimeBlock = new WebMarkupBlock("chargeTimeBlock", Size.Six_6);
+        this.form.add(this.chargeTimeBlock);
+        this.chargeTimeIContainer = new WebMarkupContainer("chargeTimeIContainer");
+        this.chargeTimeBlock.add(this.chargeTimeIContainer);
+        this.chargeTimeProvider = new ChargeTimeProvider();
+        this.chargeTimeProvider.setValues(ChargeTime.SpecifiedDueDate, ChargeTime.SavingsActivation, ChargeTime.WithdrawalFee, ChargeTime.AnnualFee, ChargeTime.MonthlyFee, ChargeTime.WeeklyFee, ChargeTime.OverdraftFee, ChargeTime.SavingNoActivityFee);
+        this.chargeTimeField = new Select2SingleChoice<>("chargeTimeField", new PropertyModel<>(this, "chargeTimeValue"), this.chargeTimeProvider);
+        this.chargeTimeField.setLabel(Model.of("Charge time type"));
+        this.chargeTimeField.setRequired(true);
+        this.chargeTimeField.add(new OnChangeAjaxBehavior(this::chargeTimeFieldUpdate));
+        this.chargeTimeIContainer.add(this.chargeTimeField);
+        this.chargeTimeFeedback = new TextFeedbackPanel("chargeTimeFeedback", this.chargeTimeField);
+        this.chargeTimeIContainer.add(this.chargeTimeFeedback);
+    }
+
+    protected void initCurrencyBlock() {
+        this.currencyBlock = new WebMarkupBlock("currencyBlock", Size.Six_6);
+        this.form.add(this.currencyBlock);
+        this.currencyIContainer = new WebMarkupContainer("currencyIContainer");
+        this.currencyBlock.add(this.currencyIContainer);
+        this.currencyProvider = new CurrencyProvider();
+        this.currencyField = new Select2SingleChoice<>("currencyField", new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
+        this.currencyField.setLabel(Model.of("Currency"));
+        this.currencyField.setRequired(true);
+        this.currencyField.add(new OnChangeAjaxBehavior());
+        this.currencyIContainer.add(this.currencyField);
+        this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
+        this.currencyIContainer.add(this.currencyFeedback);
+    }
+
+    protected void initNameBlock() {
+        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
+        this.form.add(this.nameBlock);
+        this.nameIContainer = new WebMarkupContainer("nameIContainer");
+        this.nameBlock.add(this.nameIContainer);
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setLabel(Model.of("Name"));
+        this.nameField.setRequired(true);
+        this.nameField.add(new OnChangeAjaxBehavior());
+        this.nameIContainer.add(this.nameField);
+        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+        this.nameIContainer.add(this.nameFeedback);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
         chargeTimeFieldUpdate(null);
     }
 
@@ -245,8 +343,8 @@ public class SavingDepositChargeCreatePage extends Page {
 
         boolean dueDateVisible = chargeTime == ChargeTime.AnnualFee || chargeTime == ChargeTime.MonthlyFee;
         boolean repeatEveryVisible = chargeTime == ChargeTime.MonthlyFee || chargeTime == ChargeTime.WeeklyFee;
-        this.dueDateContainer.setVisible(dueDateVisible);
-        this.repeatEveryContainer.setVisible(repeatEveryVisible);
+        this.dueDateIContainer.setVisible(dueDateVisible);
+        this.repeatEveryIContainer.setVisible(repeatEveryVisible);
 
         this.dueDateField.setRequired(dueDateVisible);
         this.repeatEveryField.setRequired(repeatEveryVisible);

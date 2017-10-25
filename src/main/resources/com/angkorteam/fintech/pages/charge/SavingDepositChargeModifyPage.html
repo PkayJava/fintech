@@ -12,50 +12,50 @@
 				<div class="box-body">
 
 					<!-- Row -->
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="nameField">Name</label> <input
-							wicket:id="nameField" type="text" class="form-control" /> <span
-							wicket:id="nameFeedback" class="help-block"></span>
+					<div wicket:id="nameBlock" class="form-group">
+						<wicket:container wicket:id="nameIContainer">
+							<label wicket:for="nameField">Name</label>
+							<input wicket:id="nameField" type="text" class="form-control" />
+							<span wicket:id="nameFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="currencyField">Currency</label> <select
-							wicket:id="currencyField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="currencyFeedback"
-							class="help-block"></span>
-					</div>
-					<div class="clearfix"></div>
-
-					<!-- Row -->
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="chargeTimeField">Charge time type</label> <select
-							wicket:id="chargeTimeField" class="form-control select2"
-							style="width: 100%;"></select> <span
-							wicket:id="chargeTimeFeedback" class="help-block"></span>
-					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="chargeCalculationField">Charge
-							calculation</label> <select wicket:id="chargeCalculationField"
-							class="form-control select2" style="width: 100%;"></select> <span
-							wicket:id="chargeCalculationFeedback" class="help-block"></span>
+					<div wicket:id="currencyBlock" class="form-group">
+						<wicket:container wicket:id="currencyIContainer">
+							<label wicket:for="currencyField">Currency</label>
+							<select wicket:id="currencyField" class="form-control"></select>
+							<span wicket:id="currencyFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="dueDateBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="dueDateContainer">
+					<div wicket:id="chargeTimeBlock" class="form-group">
+						<wicket:container wicket:id="chargeTimeIContainer">
+							<label wicket:for="chargeTimeField">Charge time type</label>
+							<select wicket:id="chargeTimeField" class="form-control"></select>
+							<span wicket:id="chargeTimeFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="chargeCalculationBlock" class="form-group">
+						<wicket:container wicket:id="chargeCalculationIContainer">
+							<label wicket:for="chargeCalculationField">Charge
+								calculation</label>
+							<select wicket:id="chargeCalculationField" class="form-control"></select>
+							<span wicket:id="chargeCalculationFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="dueDateBlock" class="form-group">
+						<wicket:container wicket:id="dueDateIContainer">
 							<label wicket:for="dueDateField">Due date</label>
 							<input wicket:id="dueDateField" type="text" class="form-control" />
 							<span wicket:id="dueDateFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
-					<div wicket:id="repeatEveryBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="repeatEveryContainer">
+					<div wicket:id="repeatEveryBlock" class="form-group">
+						<wicket:container wicket:id="repeatEveryIContainer">
 							<label wicket:for="repeatEveryField">Repeats every</label>
 							<input wicket:id="repeatEveryField" type="text"
 								class="form-control" />
@@ -65,11 +65,12 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="amountField">Amount</label> <input
-							wicket:id="amountField" type="text" class="form-control" /> <span
-							wicket:id="amountFeedback" class="help-block"></span>
+					<div wicket:id="amountBlock" class="form-group">
+						<wicket:container wicket:id="amountIContainer">
+							<label wicket:for="amountField">Amount</label>
+							<input wicket:id="amountField" type="text" class="form-control" />
+							<span wicket:id="amountFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -77,31 +78,35 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label>&nbsp;</label> <span style="display: block"> <label>
-								<input type="checkbox" wicket:id="activeField"> Is
-								Active ?
-						</label>
-						</span> <span wicket:id="activeFeedback" class="help-block"></span>
+					<div wicket:id="activeBlock" class="form-group">
+						<wicket:container wicket:id="activeIContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="activeField"> Is Active ?
+							</label>
+							</span>
+							<span wicket:id="activeFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label>&nbsp;</label> <span style="display: block"> <label>
-								<input type="checkbox" wicket:id="penaltyField"> Is
-								Penalty ?
-						</label>
-						</span> <span wicket:id="penaltyFeedback" class="help-block"></span>
+					<div wicket:id="penaltyBlock" class="form-group">
+						<wicket:container wicket:id="penaltyIContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="penaltyField"> Is Penalty ?
+							</label>
+							</span>
+							<span wicket:id="penaltyFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="taxGroupField">Tax Group</label> <select
-							wicket:id="taxGroupField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="taxGroupFeedback"
-							class="help-block"></span>
+					<div wicket:id="taxGroupBlock" class="form-group">
+						<wicket:container wicket:id="taxGroupIContainer">
+							<label wicket:for="taxGroupField">Tax Group</label>
+							<select wicket:id="taxGroupField" class="form-control"></select>
+							<span wicket:id="taxGroupFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
