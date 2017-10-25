@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -23,6 +24,8 @@ import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.FinancialActivityProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.spring.JdbcTemplate;
@@ -47,11 +50,15 @@ public class FinancialActivityModifyPage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
+    protected WebMarkupBlock financialActivityBlock;
+    protected WebMarkupContainer financialActivityIContainer;
     protected FinancialActivityProvider financialActivityProvider;
     protected Option financialActivityValue;
     protected Select2SingleChoice<Option> financialActivityField;
     protected TextFeedbackPanel financialActivityFeedback;
 
+    protected WebMarkupBlock accountBlock;
+    protected WebMarkupContainer accountIContainer;
     protected SingleChoiceProvider accountProvider;
     protected Option accountValue;
     protected Select2SingleChoice<Option> accountField;
@@ -86,14 +93,19 @@ public class FinancialActivityModifyPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
+    protected void initData() {
         PageParameters parameters = getPageParameters();
         this.financialActivityId = parameters.get("financialActivityId").toString("");
-
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         Map<String, Object> financialActivityObject = jdbcTemplate.queryForMap("select * from acc_gl_financial_activity_account where id = ?", financialActivityId);
+        this.financialActivityValue = FinancialActivityTypeEnum.optionLiteral(String.valueOf(financialActivityObject.get("financial_activity_type")));
+        if (financialActivityObject.get("gl_account_id") != null) {
+            this.accountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, financialActivityObject.get("gl_account_id"));
+        }
+    }
+
+    @Override
+    protected void initComponent() {
 
         this.form = new Form<>("form");
         add(this.form);
@@ -105,27 +117,46 @@ public class FinancialActivityModifyPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", FinancialActivityBrowsePage.class);
         this.form.add(this.closeLink);
 
+        initFinancialActivityBlock();
+
+        initAccountBlock();
+
+        financialActivityFieldUpdate(null);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initFinancialActivityBlock() {
+        this.financialActivityBlock = new WebMarkupBlock("financialActivityBlock", Size.Twelve_12);
+        this.form.add(this.financialActivityBlock);
+        this.financialActivityIContainer = new WebMarkupContainer("financialActivityIContainer");
+        this.financialActivityBlock.add(this.financialActivityIContainer);
         this.financialActivityProvider = new FinancialActivityProvider();
-        this.financialActivityField = new Select2SingleChoice<>("financialActivityField", 0, new PropertyModel<>(this, "financialActivityValue"), this.financialActivityProvider);
-        this.form.add(this.financialActivityField);
+        this.financialActivityField = new Select2SingleChoice<>("financialActivityField", new PropertyModel<>(this, "financialActivityValue"), this.financialActivityProvider);
+        this.financialActivityIContainer.add(this.financialActivityField);
         this.financialActivityFeedback = new TextFeedbackPanel("financialActivityFeedback", this.financialActivityField);
-        this.form.add(this.financialActivityFeedback);
-        this.financialActivityValue = FinancialActivityTypeEnum.optionLiteral(String.valueOf(financialActivityObject.get("financial_activity_type")));
+        this.financialActivityIContainer.add(this.financialActivityFeedback);
+        this.financialActivityField.add(new OnChangeAjaxBehavior(this::financialActivityFieldUpdate));
+    }
 
-        this.financialActivityField.add(new OnChangeAjaxBehavior(this::financialActivityFieldUpdate, this::financialActivityFieldError));
-
-        if (financialActivityObject.get("gl_account_id") != null) {
-            this.accountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, financialActivityObject.get("gl_account_id"));
-        }
+    protected void initAccountBlock() {
+        this.accountBlock = new WebMarkupBlock("accountBlock", Size.Twelve_12);
+        this.form.add(this.accountBlock);
+        this.accountIContainer = new WebMarkupContainer("accountIContainer");
+        this.accountBlock.add(this.accountIContainer);
         this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.accountProvider.applyWhere("usage", AccountUsage.Detail.getLiteral());
         this.accountProvider.setDisabled(true);
-        this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this, "accountValue"), this.accountProvider);
-        this.form.add(this.accountField);
+        this.accountField = new Select2SingleChoice<>("accountField", new PropertyModel<>(this, "accountValue"), this.accountProvider);
+        this.accountIContainer.add(this.accountField);
         this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
-        this.form.add(this.accountFeedback);
-
-        financialActivityFieldUpdate(null);
+        this.accountIContainer.add(this.accountFeedback);
     }
 
     protected boolean financialActivityFieldUpdate(AjaxRequestTarget target) {

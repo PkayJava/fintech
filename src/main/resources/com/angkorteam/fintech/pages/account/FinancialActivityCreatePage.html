@@ -11,21 +11,23 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="financialActivityField">Financial
-							Activity</label> <select wicket:id="financialActivityField"
-							class="form-control select2" style="width: 100%;"></select> <span
-							wicket:id="financialActivityFeedback" class="help-block"></span>
+					<div wicket:id="financialActivityBlock">
+						<wicket:container wicket:id="financialActivityIContainer">
+							<label wicket:for="financialActivityField">Financial
+								Activity</label>
+							<select wicket:id="financialActivityField" class="form-control"></select>
+							<span wicket:id="financialActivityFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="accountField">Account</label> <select
-							wicket:id="accountField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="accountFeedback"
-							class="help-block"></span>
+					<div wicket:id="accountBlock">
+						<wicket:container wicket:id="accountIContainer">
+							<label wicket:for="accountField">Account</label>
+							<select wicket:id="accountField" class="form-control"></select>
+							<span wicket:id="accountFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>

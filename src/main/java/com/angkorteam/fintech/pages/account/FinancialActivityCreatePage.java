@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -21,6 +22,8 @@ import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.FinancialActivityProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -37,21 +40,25 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FinancialActivityCreatePage extends Page {
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private FinancialActivityProvider financialActivityProvider;
-    private Option financialActivityValue;
-    private Select2SingleChoice<Option> financialActivityField;
-    private TextFeedbackPanel financialActivityFeedback;
+    protected WebMarkupBlock financialActivityBlock;
+    protected WebMarkupContainer financialActivityIContainer;
+    protected FinancialActivityProvider financialActivityProvider;
+    protected Option financialActivityValue;
+    protected Select2SingleChoice<Option> financialActivityField;
+    protected TextFeedbackPanel financialActivityFeedback;
 
-    private SingleChoiceProvider accountProvider;
-    private Option accountValue;
-    private Select2SingleChoice<Option> accountField;
-    private TextFeedbackPanel accountFeedback;
+    protected WebMarkupBlock accountBlock;
+    protected WebMarkupContainer accountIContainer;
+    protected SingleChoiceProvider accountProvider;
+    protected Option accountValue;
+    protected Select2SingleChoice<Option> accountField;
+    protected TextFeedbackPanel accountFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -80,9 +87,11 @@ public class FinancialActivityCreatePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -93,20 +102,44 @@ public class FinancialActivityCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", FinancialActivityBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.financialActivityProvider = new FinancialActivityProvider();
-        this.financialActivityField = new Select2SingleChoice<>("financialActivityField", 0, new PropertyModel<>(this, "financialActivityValue"), this.financialActivityProvider);
-        this.form.add(this.financialActivityField);
-        this.financialActivityFeedback = new TextFeedbackPanel("financialActivityFeedback", this.financialActivityField);
-        this.form.add(this.financialActivityFeedback);
-        this.financialActivityField.add(new OnChangeAjaxBehavior(this::financialActivityFieldUpdate, this::financialActivityFieldError));
+        initFinancialActivityBlock();
 
+        initAccountBlock();
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initFinancialActivityBlock() {
+        this.financialActivityBlock = new WebMarkupBlock("financialActivityBlock", Size.Twelve_12);
+        this.form.add(this.financialActivityBlock);
+        this.financialActivityIContainer = new WebMarkupContainer("financialActivityIContainer");
+        this.financialActivityBlock.add(this.financialActivityIContainer);
+        this.financialActivityProvider = new FinancialActivityProvider();
+        this.financialActivityField = new Select2SingleChoice<>("financialActivityField", new PropertyModel<>(this, "financialActivityValue"), this.financialActivityProvider);
+        this.financialActivityIContainer.add(this.financialActivityField);
+        this.financialActivityFeedback = new TextFeedbackPanel("financialActivityFeedback", this.financialActivityField);
+        this.financialActivityIContainer.add(this.financialActivityFeedback);
+        this.financialActivityField.add(new OnChangeAjaxBehavior(this::financialActivityFieldUpdate));
+    }
+
+    protected void initAccountBlock() {
+        this.accountBlock = new WebMarkupBlock("accountBlock", Size.Twelve_12);
+        this.form.add(this.accountBlock);
+        this.accountIContainer = new WebMarkupContainer("accountIContainer");
+        this.accountBlock.add(this.accountIContainer);
         this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.accountProvider.applyWhere("usage", AccountUsage.Detail.getLiteral());
         this.accountProvider.setDisabled(true);
-        this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this, "accountValue"), this.accountProvider);
-        this.form.add(this.accountField);
+        this.accountField = new Select2SingleChoice<>("accountField", new PropertyModel<>(this, "accountValue"), this.accountProvider);
+        this.accountIContainer.add(this.accountField);
         this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
-        this.form.add(this.accountFeedback);
+        this.accountIContainer.add(this.accountFeedback);
     }
 
     protected boolean financialActivityFieldUpdate(AjaxRequestTarget target) {
@@ -124,15 +157,9 @@ public class FinancialActivityCreatePage extends Page {
             this.accountProvider.setDisabled(false);
             this.accountProvider.applyWhere("classification_enum", "classification_enum = " + classification_enum.getLiteral());
         }
-        target.add(this.form);
-        return false;
-    }
-
-    protected boolean financialActivityFieldError(AjaxRequestTarget target, RuntimeException e) {
-        if (e != null) {
-            throw e;
+        if (target != null) {
+            target.add(this.form);
         }
-        target.add(this.form);
         return false;
     }
 
