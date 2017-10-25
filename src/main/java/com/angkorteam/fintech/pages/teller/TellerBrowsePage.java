@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -40,13 +41,14 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class TellerBrowsePage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected FilterForm<Map<String, String>> dataFilterForm;
 
-    private JdbcProvider provider;
+    protected BookmarkablePageLink<Void> createLink;
 
-    private BookmarkablePageLink<Void> createLink;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -74,39 +76,54 @@ public class TellerBrowsePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("m_tellers");
-        this.provider.addJoin("LEFT JOIN m_office on m_tellers.office_id = m_office.id");
-        this.provider.boardField("m_tellers.id", "id", Long.class);
-        this.provider.boardField("m_office.name", "branch", String.class);
-        this.provider.boardField("m_tellers.name", "name", String.class);
-        this.provider.boardField("case m_tellers.state when 300 then 'Active' when 400 then 'Inactive' end", "state", Integer.class);
-        this.provider.boardField("m_tellers.valid_from", "valid_from", Date.class);
-        this.provider.boardField("m_tellers.valid_to", "valid_to", Date.class);
+    protected void initData() {
+    }
 
-        this.provider.selectField("id", Long.class);
-
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Branch"), "branch", "branch", this::branchColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("State"), "state", "state", this::stateColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Valid From"), "valid_from", "valid_from", this::validFromColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Valid To"), "valid_to", "valid_to", this::validToColumn));
-        columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
-
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
-
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+    @Override
+    protected void initComponent() {
+        initDataTable();
 
         this.createLink = new BookmarkablePageLink<>("createLink", TellerCreatePage.class);
         add(this.createLink);
     }
 
-    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initDataTable() {
+        this.dataProvider = new JdbcProvider("m_tellers");
+        this.dataProvider.addJoin("LEFT JOIN m_office on m_tellers.office_id = m_office.id");
+        this.dataProvider.boardField("m_tellers.id", "id", Long.class);
+        this.dataProvider.boardField("m_office.name", "branch", String.class);
+        this.dataProvider.boardField("m_tellers.name", "name", String.class);
+        this.dataProvider.boardField("case m_tellers.state when 300 then 'Active' when 400 then 'Inactive' end", "state", Integer.class);
+        this.dataProvider.boardField("m_tellers.valid_from", "valid_from", Date.class);
+        this.dataProvider.boardField("m_tellers.valid_to", "valid_to", Date.class);
+
+        this.dataProvider.selectField("id", Long.class);
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Branch"), "branch", "branch", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("State"), "state", "state", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Valid From"), "valid_from", "valid_from", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Valid To"), "valid_to", "valid_to", this::dataColumn));
+        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
+
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        add(this.dataFilterForm);
+
+        this.dataTable = new DefaultDataTable<>("table", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
+    }
+
+    protected void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         Long id = (Long) model.get("id");
         try {
             TellerHelper.delete((Session) getSession(), String.valueOf(id));
@@ -115,35 +132,24 @@ public class TellerBrowsePage extends Page {
         target.add(this.dataTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> actionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    private ItemPanel stateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel branchColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel validFromColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date value = (Date) model.get(jdbcColumn);
-        return new TextCell(value, "dd/MM/yyyy");
-    }
-
-    private ItemPanel validToColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date value = (Date) model.get(jdbcColumn);
-        return new TextCell(value, "dd/MM/yyyy");
-    }
-
-    private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        PageParameters parameters = new PageParameters();
-        parameters.add("tellerId", model.get("id"));
-        return new LinkCell(TellerModifyPage.class, parameters, Model.of(name));
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("branch".equals(column) || "state".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("name".equals(column)) {
+            String value = (String) model.get(column);
+            PageParameters parameters = new PageParameters();
+            parameters.add("tellerId", model.get("id"));
+            return new LinkCell(TellerModifyPage.class, parameters, value);
+        } else if ("valid_from".equals(column) || "valid_to".equals(column)) {
+            Date value = (Date) model.get(column);
+            return new TextCell(value, "dd/MM/yyyy");
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }
