@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.charge;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
@@ -32,16 +33,17 @@ import com.google.common.collect.Lists;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ChargeBrowsePage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected FilterForm<Map<String, String>> dataFilterForm;
 
-    private JdbcProvider provider;
+    protected BookmarkablePageLink<Void> createLoanChargeLink;
+    protected BookmarkablePageLink<Void> createClientChargeLink;
+    protected BookmarkablePageLink<Void> createSavingDepositChargeLink;
+    protected BookmarkablePageLink<Void> createShareChargeLink;
 
-    private BookmarkablePageLink<Void> createLoanChargeLink;
-    private BookmarkablePageLink<Void> createClientChargeLink;
-    private BookmarkablePageLink<Void> createSavingDepositChargeLink;
-    private BookmarkablePageLink<Void> createShareChargeLink;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -69,30 +71,12 @@ public class ChargeBrowsePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("m_charge");
-        this.provider.applyWhere("is_deleted", "is_deleted = 0");
-        this.provider.boardField("id", "id", Long.class);
-        this.provider.boardField("name", "name", String.class);
-        this.provider.boardField("case charge_applies_to_enum when " + ChargeType.Client.getLiteral() + " then '" + ChargeType.Client.getDescription() + "' when " + ChargeType.Loan.getLiteral() + " then '" + ChargeType.Loan.getDescription() + "' when " + ChargeType.SavingDeposit.getLiteral() + " then '" + ChargeType.SavingDeposit.getDescription() + "' when " + ChargeType.Share.getLiteral() + " then '" + ChargeType.Share.getDescription() + "' else 'N/A' end", "charge_apply", String.class);
-        this.provider.boardField("is_penalty", "penalty", Boolean.class);
-        this.provider.boardField("is_active", "active", Boolean.class);
+    protected void initData() {
+    }
 
-        this.provider.selectField("id", Long.class);
-
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Charge Applies to"), "charge_apply", "charge_apply", this::chargeApplyColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Is Penalty"), "penalty", "penalty", this::penaltyColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Is Active"), "active", "active", this::activeColumn));
-
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
-
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+    @Override
+    protected void initComponent() {
+        initDataTable();
 
         this.createLoanChargeLink = new BookmarkablePageLink<>("createLoanChargeLink", LoanChargeCreatePage.class);
         add(this.createLoanChargeLink);
@@ -107,44 +91,73 @@ public class ChargeBrowsePage extends Page {
         add(this.createShareChargeLink);
     }
 
-    private ItemPanel penaltyColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean value = (Boolean) model.get(jdbcColumn);
-        if (value != null && value) {
-            return new BadgeCell(BadgeType.Success, Model.of("Yes"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("No"));
-        }
+    @Override
+    protected void configureRequiredValidation() {
     }
 
-    private ItemPanel activeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean value = (Boolean) model.get(jdbcColumn);
-        if (value != null && value) {
-            return new BadgeCell(BadgeType.Success, Model.of("Yes"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("No"));
-        }
+    @Override
+    protected void configureMetaData() {
     }
 
-    private ItemPanel chargeApplyColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected void initDataTable() {
+        this.dataProvider = new JdbcProvider("m_charge");
+        this.dataProvider.applyWhere("is_deleted", "is_deleted = 0");
+        this.dataProvider.boardField("id", "id", Long.class);
+        this.dataProvider.boardField("name", "name", String.class);
+        this.dataProvider.boardField("case charge_applies_to_enum when " + ChargeType.Client.getLiteral() + " then '" + ChargeType.Client.getDescription() + "' when " + ChargeType.Loan.getLiteral() + " then '" + ChargeType.Loan.getDescription() + "' when " + ChargeType.SavingDeposit.getLiteral() + " then '" + ChargeType.SavingDeposit.getDescription() + "' when " + ChargeType.Share.getLiteral() + " then '" + ChargeType.Share.getDescription() + "' else 'N/A' end", "charge_apply", String.class);
+        this.dataProvider.boardField("is_penalty", "penalty", Boolean.class);
+        this.dataProvider.boardField("is_active", "active", Boolean.class);
+
+        this.dataProvider.selectField("id", Long.class);
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Charge Applies to"), "charge_apply", "charge_apply", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Boolean, Model.of("Is Penalty"), "penalty", "penalty", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Boolean, Model.of("Is Active"), "active", "active", this::dataColumn));
+
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        add(this.dataFilterForm);
+
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
     }
 
-    private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        String charge = (String) model.get("charge_apply");
-        PageParameters parameters = new PageParameters();
-        parameters.add("chargeId", model.get("id"));
-        if (ChargeType.Loan.getDescription().equals(charge)) {
-            return new LinkCell(LoanChargeModifyPage.class, parameters, Model.of(name));
-        } else if (ChargeType.Client.getDescription().equals(charge)) {
-            return new LinkCell(ClientChargeModifyPage.class, parameters, Model.of(name));
-        } else if (ChargeType.Share.getDescription().equals(charge)) {
-            return new LinkCell(ShareChargeModifyPage.class, parameters, Model.of(name));
-        } else if (ChargeType.SavingDeposit.getDescription().equals(charge)) {
-            return new LinkCell(SavingDepositChargeModifyPage.class, parameters, Model.of(name));
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column)) {
+            String value = (String) model.get(column);
+            String charge = (String) model.get("charge_apply");
+            PageParameters parameters = new PageParameters();
+            parameters.add("chargeId", model.get("id"));
+            if (ChargeType.Loan.getDescription().equals(charge)) {
+                return new LinkCell(LoanChargeModifyPage.class, parameters, value);
+            } else if (ChargeType.Client.getDescription().equals(charge)) {
+                return new LinkCell(ClientChargeModifyPage.class, parameters, value);
+            } else if (ChargeType.Share.getDescription().equals(charge)) {
+                return new LinkCell(ShareChargeModifyPage.class, parameters, value);
+            } else if (ChargeType.SavingDeposit.getDescription().equals(charge)) {
+                return new LinkCell(SavingDepositChargeModifyPage.class, parameters, value);
+            }
+        } else if ("charge_apply".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("penalty".equals(column)) {
+            Boolean value = (Boolean) model.get(column);
+            if (value != null && value) {
+                return new BadgeCell(BadgeType.Success, Model.of("Yes"));
+            } else {
+                return new BadgeCell(BadgeType.Danger, Model.of("No"));
+            }
+        } else if ("active".equals(column)) {
+            Boolean value = (Boolean) model.get(column);
+            if (value != null && value) {
+                return new BadgeCell(BadgeType.Success, Model.of("Yes"));
+            } else {
+                return new BadgeCell(BadgeType.Danger, Model.of("No"));
+            }
         }
-        return null;
+        throw new WicketRuntimeException("Unknow " + column);
     }
 
 }
