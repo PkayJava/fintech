@@ -17,18 +17,20 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="debitAccountNameField">Account Name</label> <select
-							wicket:id="debitAccountNameField" class="form-control select2"
-							style="width: 100%;"></select> <span
-							wicket:id="debitAccountNameFeedback" class="help-block"></span>
+					<div wicket:id="debitAccountNameBlock" class="form-group">
+						<wicket:container wicket:id="debitAccountNameIContainer">
+							<label wicket:for="debitAccountNameField">Account Name</label>
+							<select wicket:id="debitAccountNameField" class="form-control"></select>
+							<span wicket:id="debitAccountNameFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="debitAmountField">Amount</label> <input
-							wicket:id="debitAmountField" type="text" class="form-control" />
-						<span wicket:id="debitAmountFeedback" class="help-block"></span>
+					<div wicket:id="debitAmountBlock" class="form-group">
+						<wicket:container wicket:id="debitAmountIContainer">
+							<label wicket:for="debitAmountField">Amount</label>
+							<input wicket:id="debitAmountField" type="text"
+								class="form-control" />
+							<span wicket:id="debitAmountFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -51,18 +53,20 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="creditAccountNameField">Account Name</label> <select
-							wicket:id="creditAccountNameField" class="form-control select2"
-							style="width: 100%;"></select> <span
-							wicket:id="creditAccountNameFeedback" class="help-block"></span>
+					<div wicket:id="creditAccountNameBlock" class="form-group">
+						<wicket:container wicket:id="creditAccountNameIContainer">
+							<label wicket:for="creditAccountNameField">Account Name</label>
+							<select wicket:id="creditAccountNameField" class="form-control"></select>
+							<span wicket:id="creditAccountNameFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="creditAmountField">Amount</label> <input
-							wicket:id="creditAmountField" type="text" class="form-control" />
-						<span wicket:id="creditAmountFeedback" class="help-block"></span>
+					<div wicket:id="creditAmountBlock" class="form-group">
+						<wicket:container wicket:id="creditAmountIContainer">
+							<label wicket:for="creditAmountField">Amount</label>
+							<input wicket:id="creditAmountField" type="text"
+								class="form-control" />
+							<span wicket:id="creditAmountFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -79,112 +83,124 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="officeField">Office</label> <select
-							wicket:id="officeField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="officeFeedback"
-							class="help-block"></span>
+					<div wicket:id="officeBlock" class="form-group">
+						<wicket:container wicket:id="officeIContainer">
+							<label wicket:for="officeField">Office</label>
+							<select wicket:id="officeField" class="form-control"></select>
+							<span wicket:id="officeFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="currencyField">Currency</label> <select
-							wicket:id="currencyField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="currencyFeedback"
-							class="help-block"></span>
-					</div>
-					<div class="clearfix"></div>
-					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<div class="box box-primary">
-							<div class="box-header with-border">
-								<h3 class="box-title">Debit Entry</h3>
-							</div>
-							<div class="box-body">
-								<table wicket:id="debitTable" />
-							</div>
-						</div>
+					<div wicket:id="currencyBlock" class="form-group">
+						<wicket:container wicket:id="currencyIContainer">
+							<label wicket:for="currencyField">Currency</label>
+							<select wicket:id="currencyField" class="form-control"></select>
+							<span wicket:id="currencyFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<div class="box box-primary">
-							<div class="box-header with-border">
-								<h3 class="box-title">Credit Entry</h3>
+					<div wicket:id="debitBlock" class="form-group">
+						<wicket:container wicket:id="debitIContainer">
+							<div class="box box-primary">
+								<div class="box-header with-border">
+									<h3 class="box-title">Debit Entry</h3>
+								</div>
+								<div class="box-body">
+									<table wicket:id="debitTable"></table>
+								</div>
 							</div>
-							<div class="box-body">
-								<table wicket:id="creditTable" />
-							</div>
-						</div>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 					<!-- Row -->
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="referenceNumberField">Reference Number</label>
-						<input wicket:id="referenceNumberField" type="text"
-							class="form-control" /> <span wicket:id="referenceNumberFeedback"
-							class="help-block"></span>
-					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="transactionDateField">Transaction Date</label>
-						<input wicket:id="transactionDateField" type="text"
-							class="form-control" /> <span wicket:id="transactionDateFeedback"
-							class="help-block"></span>
+					<div wicket:id="creditBlock" class="form-group">
+						<wicket:container wicket:id="creditIContainer">
+							<div class="box box-primary">
+								<div class="box-header with-border">
+									<h3 class="box-title">Credit Entry</h3>
+								</div>
+								<div class="box-body">
+									<table wicket:id="creditTable"></table>
+								</div>
+							</div>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div wicket:id="referenceNumberBlock" class="form-group">
+						<wicket:container wicket:id="referenceNumberIContainer">
+							<label wicket:for="referenceNumberField">Reference Number</label>
+							<input wicket:id="referenceNumberField" type="text"
+								class="form-control" />
+							<span wicket:id="referenceNumberFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="transactionDateBlock" class="form-group">
+						<wicket:container wicket:id="transactionDateIContainer">
+							<label wicket:for="transactionDateField">Transaction Date</label>
+							<input wicket:id="transactionDateField" type="text"
+								class="form-control" />
+							<span wicket:id="transactionDateFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+					<!-- Row -->
+					<div class="form-group">
 						<div class="box box-primary">
 							<div class="box-header with-border">
 								<h3 class="box-title">Show Payment Details</h3>
 							</div>
 							<div class="box-body">
 								<!-- Row -->
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label wicket:for="paymentTypeField">Payment Type</label> <select
-										wicket:id="paymentTypeField" class="form-control select2"
-										style="width: 100%;"></select> <span
-										wicket:id="paymentTypeFeedback" class="help-block"></span>
+								<div wicket:id="paymentTypeBlock" class="form-group">
+									<wicket:container wicket:id="paymentTypeIContainer">
+										<label wicket:for="paymentTypeField">Payment Type</label>
+										<select wicket:id="paymentTypeField" class="form-control"></select>
+										<span wicket:id="paymentTypeFeedback" class="help-block"></span>
+									</wicket:container>
 								</div>
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label wicket:for="accountField">Account#</label> <input
-										wicket:id="accountField" type="text" class="form-control" /> <span
-										wicket:id="accountFeedback" class="help-block"></span>
-								</div>
-								<div class="clearfix"></div>
-								<!-- Row -->
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label wicket:for="chequeField">Cheque#</label> <input
-										wicket:id="chequeField" type="text" class="form-control" /> <span
-										wicket:id="chequeFeedback" class="help-block"></span>
-								</div>
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label wicket:for="routingCodeField">Routing Code#</label> <input
-										wicket:id="routingCodeField" type="text" class="form-control" />
-									<span wicket:id="routingCodeFeedback" class="help-block"></span>
+								<div wicket:id="accountBlock" class="form-group">
+									<wicket:container wicket:id="accountIContainer">
+										<label wicket:for="accountField">Account#</label>
+										<input wicket:id="accountField" type="text"
+											class="form-control" />
+										<span wicket:id="accountFeedback" class="help-block"></span>
+									</wicket:container>
 								</div>
 								<div class="clearfix"></div>
 								<!-- Row -->
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label wicket:for="receiptField">Receipt#</label> <input
-										wicket:id="receiptField" type="text" class="form-control" /> <span
-										wicket:id="receiptFeedback" class="help-block"></span>
+								<div wicket:id="chequeBlock" class="form-group">
+									<wicket:container wicket:id="chequeIContainer">
+										<label wicket:for="chequeField">Cheque#</label>
+										<input wicket:id="chequeField" type="text"
+											class="form-control" />
+										<span wicket:id="chequeFeedback" class="help-block"></span>
+									</wicket:container>
 								</div>
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label wicket:for="bankField">Bank#</label> <input
-										wicket:id="bankField" type="text" class="form-control" /> <span
-										wicket:id="bankFeedback" class="help-block"></span>
+								<div wicket:id="routingCodeBlock" class="form-group">
+									<wicket:container wicket:id="routingCodeIContainer">
+										<label wicket:for="routingCodeField">Routing Code#</label>
+										<input wicket:id="routingCodeField" type="text"
+											class="form-control" />
+										<span wicket:id="routingCodeFeedback" class="help-block"></span>
+									</wicket:container>
+								</div>
+								<div class="clearfix"></div>
+								<!-- Row -->
+								<div wicket:id="receiptBlock" class="form-group">
+									<wicket:container wicket:id="receiptIContainer">
+										<label wicket:for="receiptField">Receipt#</label>
+										<input wicket:id="receiptField" type="text"
+											class="form-control" />
+										<span wicket:id="receiptFeedback" class="help-block"></span>
+									</wicket:container>
+								</div>
+								<div wicket:id="bankBlock" class="form-group">
+									<wicket:container wicket:id="bankIContainer">
+										<label wicket:for="bankField">Bank#</label>
+										<input wicket:id="bankField" type="text" class="form-control" />
+										<span wicket:id="bankFeedback" class="help-block"></span>
+									</wicket:container>
 								</div>
 								<div class="clearfix"></div>
 							</div>
@@ -192,11 +208,12 @@
 					</div>
 					<div class="clearfix"></div>
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="commentField">Comment</label>
-						<textarea wicket:id="commentField" class="form-control" rows="5"></textarea>
-						<span wicket:id="commentFeedback" class="help-block"></span>
+					<div wicket:id="commentBlock" class="form-group">
+						<wicket:container wicket:id="commentIContainer">
+							<label wicket:for="commentField">Comment</label>
+							<textarea wicket:id="commentField" class="form-control" rows="5"></textarea>
+							<span wicket:id="commentFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>

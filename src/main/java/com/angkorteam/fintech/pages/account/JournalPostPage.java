@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -28,6 +29,7 @@ import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -199,21 +201,15 @@ public class JournalPostPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+        this.transactionDateValue = new Date();
+    }
 
+    @Override
+    protected void initComponent() {
         this.creditValue = Lists.newArrayList();
         this.debitValue = Lists.newArrayList();
 
-        initDebitForm();
-
-        initCreditForm();
-
-        initForm();
-
-    }
-
-    protected void initDebitForm() {
         this.debitForm = new Form<>("debitForm");
         add(this.debitForm);
 
@@ -222,22 +218,10 @@ public class JournalPostPage extends Page {
         this.debitButton.setOnError(this::debitButtonError);
         this.debitForm.add(this.debitButton);
 
-        this.debitAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.debitAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.debitAccountNameField = new Select2SingleChoice<>("debitAccountNameField", new PropertyModel<>(this, "debitAccountNameValue"), this.debitAccountNameProvider);
-        this.debitAccountNameField.setRequired(true);
-        this.debitForm.add(this.debitAccountNameField);
-        this.debitAccountNameFeedback = new TextFeedbackPanel("debitAccountNameFeedback", this.debitAccountNameField);
-        this.debitForm.add(this.debitAccountNameFeedback);
+        initDebitAccountNameBlock();
 
-        this.debitAmountField = new TextField<>("debitAmountField", new PropertyModel<>(this, "debitAmountValue"));
-        this.debitAmountField.setRequired(true);
-        this.debitForm.add(this.debitAmountField);
-        this.debitAmountFeedback = new TextFeedbackPanel("debitAmountFeedback", this.debitAmountField);
-        this.debitForm.add(this.debitAmountFeedback);
-    }
+        initDebitAmountBlock();
 
-    protected void initCreditForm() {
         this.creditForm = new Form<>("creditForm");
         add(this.creditForm);
 
@@ -246,22 +230,10 @@ public class JournalPostPage extends Page {
         this.creditButton.setOnError(this::creditButtonError);
         this.creditForm.add(this.creditButton);
 
-        this.creditAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.creditAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.creditAccountNameField = new Select2SingleChoice<>("creditAccountNameField", new PropertyModel<>(this, "creditAccountNameValue"), this.creditAccountNameProvider);
-        this.creditAccountNameField.setRequired(true);
-        this.creditForm.add(this.creditAccountNameField);
-        this.creditAccountNameFeedback = new TextFeedbackPanel("creditAccountNameFeedback", this.creditAccountNameField);
-        this.creditForm.add(this.creditAccountNameFeedback);
+        initCreditAccountNameBlock();
 
-        this.creditAmountField = new TextField<>("creditAmountField", new PropertyModel<>(this, "creditAmountValue"));
-        this.creditAmountField.setRequired(true);
-        this.creditForm.add(this.creditAmountField);
-        this.creditAmountFeedback = new TextFeedbackPanel("creditAmountFeedback", this.creditAmountField);
-        this.creditForm.add(this.creditAmountFeedback);
-    }
+        initCreditAmountBlock();
 
-    protected void initForm() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -272,101 +244,265 @@ public class JournalPostPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", AccountingPage.class);
         this.form.add(this.closeLink);
 
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
-        this.officeField.setRequired(true);
-        this.form.add(this.officeField);
-        this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
-        this.form.add(this.officeFeedback);
+        initDebitBlock();
 
+        initCreditBlock();
+
+        initOfficeBlock();
+
+        initCurrencyBlock();
+
+        initReferenceNumberBlock();
+
+        initTransactionDateBlock();
+
+        initPaymentTypeBlock();
+
+        initAccountBlock();
+
+        initChequeBlock();
+
+        initRoutingCodeBlock();
+
+        initReceiptBlock();
+
+        initBankBlock();
+
+        initCommentBlock();
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initTransactionDateBlock() {
+        this.transactionDateBlock = new WebMarkupBlock("transactionDateBlock", Size.Six_6);
+        this.form.add(this.transactionDateBlock);
+        this.transactionDateIContainer = new WebMarkupContainer("transactionDateIContainer");
+        this.transactionDateBlock.add(this.transactionDateIContainer);
+        this.transactionDateField = new DateTextField("transactionDateField", new PropertyModel<>(this, "transactionDateValue"));
+        this.transactionDateField.setRequired(true);
+        this.transactionDateIContainer.add(this.transactionDateField);
+        this.transactionDateFeedback = new TextFeedbackPanel("transactionDateFeedback", this.transactionDateField);
+        this.transactionDateIContainer.add(this.transactionDateFeedback);
+    }
+
+    protected void initPaymentTypeBlock() {
+        this.paymentTypeBlock = new WebMarkupBlock("paymentTypeBlock", Size.Six_6);
+        this.form.add(this.paymentTypeBlock);
+        this.paymentTypeIContainer = new WebMarkupContainer("paymentTypeIContainer");
+        this.paymentTypeBlock.add(this.paymentTypeIContainer);
+        this.paymentTypeProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
+        this.paymentTypeField = new Select2SingleChoice<>("paymentTypeField", new PropertyModel<>(this, "paymentTypeValue"), this.paymentTypeProvider);
+        this.paymentTypeIContainer.add(this.paymentTypeField);
+        this.paymentTypeFeedback = new TextFeedbackPanel("paymentTypeFeedback", this.paymentTypeField);
+        this.paymentTypeIContainer.add(this.paymentTypeFeedback);
+    }
+
+    protected void initAccountBlock() {
+        this.accountBlock = new WebMarkupBlock("accountBlock", Size.Six_6);
+        this.form.add(this.accountBlock);
+        this.accountIContainer = new WebMarkupContainer("accountIContainer");
+        this.accountBlock.add(this.accountIContainer);
+        this.accountField = new TextField<>("accountField", new PropertyModel<>(this, "accountValue"));
+        this.accountIContainer.add(this.accountField);
+        this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
+        this.accountIContainer.add(this.accountFeedback);
+    }
+
+    protected void initChequeBlock() {
+        this.chequeBlock = new WebMarkupBlock("chequeBlock", Size.Six_6);
+        this.form.add(this.chequeBlock);
+        this.chequeIContainer = new WebMarkupContainer("chequeIContainer");
+        this.chequeBlock.add(this.chequeIContainer);
+        this.chequeField = new TextField<>("chequeField", new PropertyModel<>(this, "chequeValue"));
+        this.chequeIContainer.add(this.chequeField);
+        this.chequeFeedback = new TextFeedbackPanel("chequeFeedback", this.chequeField);
+        this.chequeIContainer.add(this.chequeFeedback);
+    }
+
+    protected void initRoutingCodeBlock() {
+        this.routingCodeBlock = new WebMarkupBlock("routingCodeBlock", Size.Six_6);
+        this.form.add(this.routingCodeBlock);
+        this.routingCodeIContainer = new WebMarkupContainer("routingCodeIContainer");
+        this.routingCodeBlock.add(this.routingCodeIContainer);
+        this.routingCodeField = new TextField<>("routingCodeField", new PropertyModel<>(this, "routingCodeValue"));
+        this.routingCodeIContainer.add(this.routingCodeField);
+        this.routingCodeFeedback = new TextFeedbackPanel("routingCodeFeedback", this.routingCodeField);
+        this.routingCodeIContainer.add(this.routingCodeFeedback);
+    }
+
+    protected void initReceiptBlock() {
+        this.receiptBlock = new WebMarkupBlock("receiptBlock", Size.Six_6);
+        this.form.add(this.receiptBlock);
+        this.receiptIContainer = new WebMarkupContainer("receiptIContainer");
+        this.receiptBlock.add(this.receiptIContainer);
+        this.receiptField = new TextField<>("receiptField", new PropertyModel<>(this, "receiptValue"));
+        this.receiptIContainer.add(this.receiptField);
+        this.receiptFeedback = new TextFeedbackPanel("receiptFeedback", this.receiptField);
+        this.receiptIContainer.add(this.receiptFeedback);
+    }
+
+    protected void initBankBlock() {
+        this.bankBlock = new WebMarkupBlock("bankBlock", Size.Six_6);
+        this.form.add(this.bankBlock);
+        this.bankIContainer = new WebMarkupContainer("bankIContainer");
+        this.bankBlock.add(this.bankIContainer);
+        this.bankField = new TextField<>("bankField", new PropertyModel<>(this, "bankValue"));
+        this.bankIContainer.add(this.bankField);
+        this.bankFeedback = new TextFeedbackPanel("bankFeedback", this.bankField);
+        this.bankIContainer.add(this.bankFeedback);
+    }
+
+    protected void initReferenceNumberBlock() {
+        this.referenceNumberBlock = new WebMarkupBlock("referenceNumberBlock", Size.Six_6);
+        this.form.add(this.referenceNumberBlock);
+        this.referenceNumberIContainer = new WebMarkupContainer("referenceNumberIContainer");
+        this.referenceNumberBlock.add(this.referenceNumberIContainer);
+        this.referenceNumberField = new TextField<>("referenceNumberField", new PropertyModel<>(this, "referenceNumberValue"));
+        this.referenceNumberField.setRequired(true);
+        this.referenceNumberIContainer.add(this.referenceNumberField);
+        this.referenceNumberFeedback = new TextFeedbackPanel("referenceNumberFeedback", this.referenceNumberField);
+        this.referenceNumberIContainer.add(this.referenceNumberFeedback);
+    }
+
+    protected void initCurrencyBlock() {
+        this.currencyBlock = new WebMarkupBlock("currencyBlock", Size.Six_6);
+        this.form.add(this.currencyBlock);
+        this.currencyIContainer = new WebMarkupContainer("currencyIContainer");
+        this.currencyBlock.add(this.currencyIContainer);
         this.currencyProvider = new CurrencyProvider();
         this.currencyField = new Select2SingleChoice<>("currencyField", new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
         this.currencyField.setRequired(true);
-        this.form.add(this.currencyField);
+        this.currencyIContainer.add(this.currencyField);
         this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
-        this.form.add(this.currencyFeedback);
+        this.currencyIContainer.add(this.currencyFeedback);
+    }
 
-        debitColumn = Lists.newArrayList();
-        debitColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::debitNameColumn));
-        debitColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::debitAmountColumn));
-        debitColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::debitActionItem, this::debitActionClick));
-        this.debitProvider = new ListDataProvider(this.debitValue);
-        this.debitTable = new DataTable<>("debitTable", debitColumn, this.debitProvider, 20);
-        this.form.add(this.debitTable);
-        this.debitTable.addTopToolbar(new HeadersToolbar<>(this.debitTable, this.debitProvider));
-        this.debitTable.addBottomToolbar(new NoRecordsToolbar(this.debitTable));
+    protected void initOfficeBlock() {
+        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Six_6);
+        this.form.add(this.officeBlock);
+        this.officeIContainer = new WebMarkupContainer("officeIContainer");
+        this.officeBlock.add(this.officeIContainer);
+        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
+        this.officeField.setRequired(true);
+        this.officeIContainer.add(this.officeField);
+        this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
+        this.officeIContainer.add(this.officeFeedback);
+    }
 
-        creditColumn = Lists.newArrayList();
-        creditColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::creditNameColumn));
-        creditColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::creditAmountColumn));
-        creditColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::creditActionItem, this::creditActionClick));
+    protected void initCreditBlock() {
+        this.creditBlock = new WebMarkupBlock("creditBlock", Size.Twelve_12);
+        this.form.add(this.creditBlock);
+        this.creditIContainer = new WebMarkupContainer("creditIContainer");
+        this.creditBlock.add(this.creditIContainer);
+        this.creditColumn = Lists.newArrayList();
+        this.creditColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::creditColumn));
+        this.creditColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::creditColumn));
+        this.creditColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::creditAction, this::creditClick));
         this.creditProvider = new ListDataProvider(this.creditValue);
-        this.creditTable = new DataTable<>("creditTable", creditColumn, this.creditProvider, 20);
-        this.form.add(this.creditTable);
+        this.creditTable = new DataTable<>("creditTable", this.creditColumn, this.creditProvider, 20);
+        this.creditIContainer.add(this.creditTable);
         this.creditTable.addTopToolbar(new HeadersToolbar<>(this.creditTable, this.creditProvider));
         this.creditTable.addBottomToolbar(new NoRecordsToolbar(this.creditTable));
+    }
 
-        this.referenceNumberField = new TextField<>("referenceNumberField", new PropertyModel<>(this, "referenceNumberValue"));
-        this.referenceNumberField.setRequired(true);
-        this.form.add(this.referenceNumberField);
-        this.referenceNumberFeedback = new TextFeedbackPanel("referenceNumberFeedback", this.referenceNumberField);
-        this.form.add(this.referenceNumberFeedback);
+    protected void initDebitBlock() {
+        this.debitBlock = new WebMarkupBlock("debitBlock", Size.Twelve_12);
+        this.form.add(this.debitBlock);
+        this.debitIContainer = new WebMarkupContainer("debitIContainer");
+        this.debitBlock.add(this.debitIContainer);
+        this.debitColumn = Lists.newArrayList();
+        this.debitColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::debitColumn));
+        this.debitColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::debitColumn));
+        this.debitColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::debitAction, this::debitClick));
+        this.debitProvider = new ListDataProvider(this.debitValue);
+        this.debitTable = new DataTable<>("debitTable", this.debitColumn, this.debitProvider, 20);
+        this.debitIContainer.add(this.debitTable);
+        this.debitTable.addTopToolbar(new HeadersToolbar<>(this.debitTable, this.debitProvider));
+        this.debitTable.addBottomToolbar(new NoRecordsToolbar(this.debitTable));
+    }
 
-        this.transactionDateValue = new Date();
-        this.transactionDateField = new DateTextField("transactionDateField", new PropertyModel<>(this, "transactionDateValue"));
-        this.transactionDateField.setRequired(true);
-        this.form.add(this.transactionDateField);
-        this.transactionDateFeedback = new TextFeedbackPanel("transactionDateFeedback", this.transactionDateField);
-        this.form.add(this.transactionDateFeedback);
+    protected void initDebitAccountNameBlock() {
+        this.debitAccountNameBlock = new WebMarkupBlock("debitAccountNameBlock", Size.Six_6);
+        this.debitForm.add(this.debitAccountNameBlock);
+        this.debitAccountNameIContainer = new WebMarkupContainer("debitAccountNameIContainer");
+        this.debitAccountNameBlock.add(this.debitAccountNameIContainer);
+        this.debitAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.debitAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.debitAccountNameField = new Select2SingleChoice<>("debitAccountNameField", new PropertyModel<>(this, "debitAccountNameValue"), this.debitAccountNameProvider);
+        this.debitAccountNameField.setRequired(true);
+        this.debitAccountNameIContainer.add(this.debitAccountNameField);
+        this.debitAccountNameFeedback = new TextFeedbackPanel("debitAccountNameFeedback", this.debitAccountNameField);
+        this.debitAccountNameIContainer.add(this.debitAccountNameFeedback);
+    }
 
-        this.paymentTypeProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
-        this.paymentTypeField = new Select2SingleChoice<>("paymentTypeField", new PropertyModel<>(this, "paymentTypeValue"), this.paymentTypeProvider);
-        this.form.add(this.paymentTypeField);
-        this.paymentTypeFeedback = new TextFeedbackPanel("paymentTypeFeedback", this.paymentTypeField);
-        this.form.add(this.paymentTypeFeedback);
+    protected void initDebitAmountBlock() {
+        this.debitAmountBlock = new WebMarkupBlock("debitAmountBlock", Size.Six_6);
+        this.debitForm.add(this.debitAmountBlock);
+        this.debitAmountIContainer = new WebMarkupContainer("debitAmountIContainer");
+        this.debitAmountBlock.add(this.debitAmountIContainer);
+        this.debitAmountField = new TextField<>("debitAmountField", new PropertyModel<>(this, "debitAmountValue"));
+        this.debitAmountField.setRequired(true);
+        this.debitAmountIContainer.add(this.debitAmountField);
+        this.debitAmountFeedback = new TextFeedbackPanel("debitAmountFeedback", this.debitAmountField);
+        this.debitAmountIContainer.add(this.debitAmountFeedback);
+    }
 
-        this.accountField = new TextField<>("accountField", new PropertyModel<>(this, "accountValue"));
-        this.form.add(this.accountField);
-        this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
-        this.form.add(this.accountFeedback);
+    protected void initCreditAccountNameBlock() {
+        this.creditAccountNameBlock = new WebMarkupBlock("creditAccountNameBlock", Size.Six_6);
+        this.creditForm.add(this.creditAccountNameBlock);
+        this.creditAccountNameIContainer = new WebMarkupContainer("creditAccountNameIContainer");
+        this.creditAccountNameBlock.add(this.creditAccountNameIContainer);
+        this.creditAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.creditAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.creditAccountNameField = new Select2SingleChoice<>("creditAccountNameField", new PropertyModel<>(this, "creditAccountNameValue"), this.creditAccountNameProvider);
+        this.creditAccountNameField.setRequired(true);
+        this.creditAccountNameIContainer.add(this.creditAccountNameField);
+        this.creditAccountNameFeedback = new TextFeedbackPanel("creditAccountNameFeedback", this.creditAccountNameField);
+        this.creditAccountNameIContainer.add(this.creditAccountNameFeedback);
+    }
 
-        this.chequeField = new TextField<>("chequeField", new PropertyModel<>(this, "chequeValue"));
-        this.form.add(this.chequeField);
-        this.chequeFeedback = new TextFeedbackPanel("chequeFeedback", this.chequeField);
-        this.form.add(this.chequeFeedback);
+    protected void initCreditAmountBlock() {
+        this.creditAmountBlock = new WebMarkupBlock("creditAmountBlock", Size.Six_6);
+        this.creditForm.add(this.creditAmountBlock);
+        this.creditAmountIContainer = new WebMarkupContainer("creditAmountIContainer");
+        this.creditAmountBlock.add(this.creditAmountIContainer);
+        this.creditAmountField = new TextField<>("creditAmountField", new PropertyModel<>(this, "creditAmountValue"));
+        this.creditAmountField.setRequired(true);
+        this.creditAmountIContainer.add(this.creditAmountField);
+        this.creditAmountFeedback = new TextFeedbackPanel("creditAmountFeedback", this.creditAmountField);
+        this.creditAmountIContainer.add(this.creditAmountFeedback);
+    }
 
-        this.routingCodeField = new TextField<>("routingCodeField", new PropertyModel<>(this, "routingCodeValue"));
-        this.form.add(this.routingCodeField);
-        this.routingCodeFeedback = new TextFeedbackPanel("routingCodeFeedback", this.routingCodeField);
-        this.form.add(this.routingCodeFeedback);
-
-        this.receiptField = new TextField<>("receiptField", new PropertyModel<>(this, "receiptValue"));
-        this.form.add(this.receiptField);
-        this.receiptFeedback = new TextFeedbackPanel("receiptFeedback", this.receiptField);
-        this.form.add(this.receiptFeedback);
-
-        this.bankField = new TextField<>("bankField", new PropertyModel<>(this, "bankValue"));
-        this.form.add(this.bankField);
-        this.bankFeedback = new TextFeedbackPanel("bankFeedback", this.bankField);
-        this.form.add(this.bankFeedback);
-
+    protected void initCommentBlock() {
+        this.commentBlock = new WebMarkupBlock("commentBlock", Size.Twelve_12);
+        this.form.add(this.commentBlock);
+        this.commentIContainer = new WebMarkupContainer("commentIContainer");
+        this.commentBlock.add(this.commentIContainer);
         this.commentField = new TextArea<>("commentField", new PropertyModel<>(this, "commentValue"));
-        this.form.add(this.commentField);
+        this.commentIContainer.add(this.commentField);
         this.commentFeedback = new TextFeedbackPanel("commentFeedback", this.commentField);
-        this.form.add(this.commentFeedback);
+        this.commentIContainer.add(this.commentFeedback);
     }
 
-    protected ItemPanel debitNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel debitColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("amount".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected ItemPanel debitAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double value = (Double) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected void debitActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void debitClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.debitValue.size(); i++) {
             Map<String, Object> column = this.debitValue.get(i);
@@ -381,21 +517,22 @@ public class JournalPostPage extends Page {
         target.add(this.debitTable);
     }
 
-    protected List<ActionItem> debitActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> debitAction(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected ItemPanel creditNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel creditColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("amount".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected ItemPanel creditAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double value = (Double) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected void creditActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void creditClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.creditValue.size(); i++) {
             Map<String, Object> column = this.creditValue.get(i);
@@ -410,7 +547,7 @@ public class JournalPostPage extends Page {
         target.add(this.creditTable);
     }
 
-    protected List<ActionItem> creditActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> creditAction(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 

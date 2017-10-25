@@ -17,47 +17,51 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-						<label wicket:for="accountNameField">Account</label> <select
-							wicket:id="accountNameField" class="form-control select2"
-							style="width: 100%;"></select> <span
-							wicket:id="accountNameFeedback" class="help-block"></span>
+					<div wicket:id="accountNameBlock" class="form-group">
+						<wicket:container wicket:id="accountNameIContainer">
+							<label wicket:for="accountNameField">Account</label>
+							<select wicket:id="accountNameField" class="form-control"></select>
+							<span wicket:id="accountNameFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
-					<div
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-						<label wicket:for="officeField">Office</label> <select
-							wicket:id="officeField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="officeFeedback"
-							class="help-block"></span>
+					<div wicket:id="officeBlock" class="form-group">
+						<wicket:container wicket:id="officeIContainer">
+							<label wicket:for="officeField">Office</label>
+							<select wicket:id="officeField" class="form-control"></select>
+							<span wicket:id="officeFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
-					<div
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-						<label wicket:for="manualField">Manual / System</label> <select
-							wicket:id="manualField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="manualFeedback"
-							class="help-block"></span>
+					<div wicket:id="manualBlock" class="form-group">
+						<wicket:container wicket:id="manualIContainer">
+							<label wicket:for="manualField">Manual / System</label>
+							<select wicket:id="manualField" class="form-control"></select>
+							<span wicket:id="manualFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 					<!-- Row -->
-					<div
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-						<label wicket:for="fromDateField">From Date</label> <input
-							wicket:id="fromDateField" type="text" class="form-control" /> <span
-							wicket:id="fromDateFeedback" class="help-block"></span>
+					<div wicket:id="fromDateBlock" class="form-group">
+						<wicket:container wicket:id="fromDateIContainer">
+							<label wicket:for="fromDateField">From Date</label>
+							<input wicket:id="fromDateField" type="text" class="form-control" />
+							<span wicket:id="fromDateFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
-					<div
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-						<label wicket:for="toDateField">To Date</label> <input
-							wicket:id="toDateField" type="text" class="form-control" /> <span
-							wicket:id="toDateFeedback" class="help-block"></span>
+					<div wicket:id="toDateBlock" class="form-group">
+						<wicket:container wicket:id="toDateIContainer">
+							<label wicket:for="toDateField">To Date</label>
+							<input wicket:id="toDateField" type="text" class="form-control" />
+							<span wicket:id="toDateFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
-					<div
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-						<label wicket:for="transactionNumberField">Transaction
-							Number</label> <input wicket:id="transactionNumberField" type="text"
-							class="form-control" /> <span
-							wicket:id="transactionNumberFeedback" class="help-block"></span>
+					<div wicket:id="transactionNumberBlock" class="form-group">
+						<wicket:container wicket:id="transactionNumberIContainer">
+							<label wicket:for="transactionNumberField">Transaction
+								Number</label>
+							<input wicket:id="transactionNumberField" type="text"
+								class="form-control" />
+							<span wicket:id="transactionNumberFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>

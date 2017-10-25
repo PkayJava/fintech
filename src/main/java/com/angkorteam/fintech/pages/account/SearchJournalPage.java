@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -26,6 +28,8 @@ import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
@@ -47,43 +51,56 @@ import com.google.common.collect.Lists;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SearchJournalPage extends Page {
 
-    private static final DecimalFormat FORMAT = new DecimalFormat("#,###.000");
+    protected Form<Void> form;
+    protected Button searchButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private Form<Void> form;
-    private Button searchButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected WebMarkupBlock accountNameBlock;
+    protected WebMarkupContainer accountNameIContainer;
+    protected SingleChoiceProvider accountNameProvider;
+    protected Option accountNameValue;
+    protected Select2SingleChoice<Option> accountNameField;
+    protected TextFeedbackPanel accountNameFeedback;
 
-    private SingleChoiceProvider accountNameProvider;
-    private Option accountNameValue;
-    private Select2SingleChoice<Option> accountNameField;
-    private TextFeedbackPanel accountNameFeedback;
+    protected WebMarkupBlock officeBlock;
+    protected WebMarkupContainer officeIContainer;
+    protected SingleChoiceProvider officeProvider;
+    protected Option officeValue;
+    protected Select2SingleChoice<Option> officeField;
+    protected TextFeedbackPanel officeFeedback;
 
-    private SingleChoiceProvider officeProvider;
-    private Option officeValue;
-    private Select2SingleChoice<Option> officeField;
-    private TextFeedbackPanel officeFeedback;
+    protected WebMarkupBlock manualBlock;
+    protected WebMarkupContainer manualIContainer;
+    protected ManualEntryProvider manualProvider;
+    protected Option manualValue;
+    protected Select2SingleChoice<Option> manualField;
+    protected TextFeedbackPanel manualFeedback;
 
-    private ManualEntryProvider manualProvider;
-    private Option manualValue;
-    private Select2SingleChoice<Option> manualField;
-    private TextFeedbackPanel manualFeedback;
+    protected WebMarkupBlock fromDateBlock;
+    protected WebMarkupContainer fromDateIContainer;
+    protected Date fromDateValue;
+    protected DateTextField fromDateField;
+    protected TextFeedbackPanel fromDateFeedback;
 
-    private Date fromDateValue;
-    private DateTextField fromDateField;
-    private TextFeedbackPanel fromDateFeedback;
+    protected WebMarkupBlock toDateBlock;
+    protected WebMarkupContainer toDateIContainer;
+    protected Date toDateValue;
+    protected DateTextField toDateField;
+    protected TextFeedbackPanel toDateFeedback;
 
-    private Date toDateValue;
-    private DateTextField toDateField;
-    private TextFeedbackPanel toDateFeedback;
+    protected WebMarkupBlock transactionNumberBlock;
+    protected WebMarkupContainer transactionNumberIContainer;
+    protected String transactionNumberValue;
+    protected TextField<String> transactionNumberField;
+    protected TextFeedbackPanel transactionNumberFeedback;
 
-    private String transactionNumberValue;
-    private TextField<String> transactionNumberField;
-    private TextFeedbackPanel transactionNumberFeedback;
+    protected WebMarkupBlock entryBlock;
+    protected WebMarkupContainer entryIContainer;
+    protected DataTable<Map<String, Object>, String> entryTable;
+    protected JdbcProvider entryProvider;
+    protected List<IColumn<Map<String, Object>, String>> entryColumn;
 
-    private DataTable<Map<String, Object>, String> entryTable;
-    private JdbcProvider entryProvider;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -119,38 +136,38 @@ public class SearchJournalPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", AccountingPage.class);
         this.form.add(this.closeLink);
 
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
-        this.form.add(this.officeField);
-        this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
-        this.form.add(this.officeFeedback);
+        initAccountNameBlock();
 
+        initOfficeBlock();
+
+        initManualBlock();
+
+        this.fromDateBlock = new WebMarkupBlock("fromDateBlock", Size.Four_4);
+        this.form.add(this.fromDateBlock);
+        this.fromDateIContainer = new WebMarkupContainer("fromDateIContainer");
+        this.fromDateBlock.add(this.fromDateIContainer);
         this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this, "fromDateValue"));
-        this.form.add(this.fromDateField);
+        this.fromDateIContainer.add(this.fromDateField);
         this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
-        this.form.add(this.fromDateFeedback);
+        this.fromDateIContainer.add(this.fromDateFeedback);
 
+        this.toDateBlock = new WebMarkupBlock("toDateBlock", Size.Four_4);
+        this.form.add(this.toDateBlock);
+        this.toDateIContainer = new WebMarkupContainer("toDateIContainer");
+        this.toDateBlock.add(this.toDateIContainer);
         this.toDateField = new DateTextField("toDateField", new PropertyModel<>(this, "toDateValue"));
-        this.form.add(this.toDateField);
+        this.toDateIContainer.add(this.toDateField);
         this.toDateFeedback = new TextFeedbackPanel("toDateFeedback", this.toDateField);
-        this.form.add(this.toDateFeedback);
+        this.toDateIContainer.add(this.toDateFeedback);
 
-        this.accountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name", "concat(name,' [', gl_code, ']')");
-        this.accountNameField = new Select2SingleChoice<>("accountNameField", 0, new PropertyModel<>(this, "accountNameValue"), this.accountNameProvider);
-        this.form.add(this.accountNameField);
-        this.accountNameFeedback = new TextFeedbackPanel("accountNameFeedback", this.accountNameField);
-        this.form.add(this.accountNameFeedback);
-
-        this.manualProvider = new ManualEntryProvider();
-        this.manualField = new Select2SingleChoice<>("manualField", 0, new PropertyModel<>(this, "manualValue"), this.manualProvider);
-        this.form.add(this.manualField);
-        this.manualFeedback = new TextFeedbackPanel("manualFeedback", this.manualField);
-        this.form.add(this.manualFeedback);
-
+        this.transactionNumberBlock = new WebMarkupBlock("transactionNumberBlock", Size.Four_4);
+        this.form.add(this.transactionNumberBlock);
+        this.transactionNumberIContainer = new WebMarkupContainer("transactionNumberIContainer");
+        this.transactionNumberBlock.add(this.transactionNumberIContainer);
         this.transactionNumberField = new TextField<>("transactionNumberField", new PropertyModel<>(this, "transactionNumberValue"));
-        this.form.add(this.transactionNumberField);
+        this.transactionNumberIContainer.add(this.transactionNumberField);
         this.transactionNumberFeedback = new TextFeedbackPanel("transactionNumberFeedback", this.transactionNumberField);
-        this.form.add(this.transactionNumberFeedback);
+        this.transactionNumberIContainer.add(this.transactionNumberFeedback);
 
         this.entryProvider = new JdbcProvider("acc_gl_journal_entry");
         this.entryProvider.addJoin("LEFT JOIN acc_gl_account ON acc_gl_journal_entry.account_id = acc_gl_account.id");
@@ -167,18 +184,18 @@ public class SearchJournalPage extends Page {
         this.entryProvider.boardField("if(acc_gl_journal_entry.type_enum = 1, NULL, acc_gl_journal_entry.amount)", "debit_amount", Double.class);
         this.entryProvider.boardField("if(acc_gl_journal_entry.type_enum = 1, acc_gl_journal_entry.amount, NULL)", "credit_amount", Double.class);
 
-        List<IColumn<Map<String, Object>, String>> debitColumn = Lists.newArrayList();
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("ID"), "id", "id", this::idColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.String, Model.of("Office"), "office", "office", this::officeColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Date, Model.of("Transaction Date"), "transaction_date", "transaction_date", this::transactionDateColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.String, Model.of("Transaction ID"), "transaction_id", "transaction_id", this::transactionIdColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Type"), "account_type", "account_type", this::accountTypeColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Created By"), "created_by", "created_by", this::createdByColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Account"), "account_name", "account_name", this::accountNameColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Debit"), "debit_amount", "debit_amount", this::debitAmountColumn));
-        debitColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Credit"), "credit_amount", "credit_amount", this::creditAmountColumn));
+        this.entryColumn = Lists.newArrayList();
+        this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("ID"), "id", "id", this::entryColumn));
+        this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.String, Model.of("Office"), "office", "office", this::entryColumn));
+        this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Date, Model.of("Transaction Date"), "transaction_date", "transaction_date", this::entryColumn));
+        this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.String, Model.of("Transaction ID"), "transaction_id", "transaction_id", this::entryColumn));
+        this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Type"), "account_type", "account_type", this::entryColumn));
+        this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Created By"), "created_by", "created_by", this::entryColumn));
+        this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Account"), "account_name", "account_name", this::entryColumn));
+        this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Debit"), "debit_amount", "debit_amount", this::entryColumn));
+        this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Credit"), "credit_amount", "credit_amount", this::entryColumn));
 
-        this.entryTable = new DataTable<>("entryTable", debitColumn, this.entryProvider, 20);
+        this.entryTable = new DataTable<>("entryTable", this.entryColumn, this.entryProvider, 20);
         this.add(this.entryTable);
         this.entryTable.addTopToolbar(new HeadersToolbar<>(this.entryTable, this.entryProvider));
         this.entryTable.addBottomToolbar(new NoRecordsToolbar(this.entryTable));
@@ -186,51 +203,62 @@ public class SearchJournalPage extends Page {
 
     }
 
-    private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long value = (Long) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected void initManualBlock() {
+        this.manualBlock = new WebMarkupBlock("manualBlock", Size.Four_4);
+        this.form.add(this.manualBlock);
+        this.manualIContainer = new WebMarkupContainer("manualIContainer");
+        this.manualBlock.add(this.manualIContainer);
+        this.manualProvider = new ManualEntryProvider();
+        this.manualField = new Select2SingleChoice<>("manualField", new PropertyModel<>(this, "manualValue"), this.manualProvider);
+        this.manualIContainer.add(this.manualField);
+        this.manualFeedback = new TextFeedbackPanel("manualFeedback", this.manualField);
+        this.manualIContainer.add(this.manualFeedback);
     }
 
-    private ItemPanel transactionIdColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String transactionId = (String) model.get(jdbcColumn);
-        PageParameters parameters = new PageParameters();
-        parameters.add("transactionId", transactionId);
-        return new LinkCell(TransactionPage.class, parameters, Model.of(transactionId));
+    protected void initOfficeBlock() {
+        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Twelve_12);
+        this.form.add(this.officeBlock);
+        this.officeIContainer = new WebMarkupContainer("officeIContainer");
+        this.officeBlock.add(this.officeIContainer);
+        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
+        this.officeIContainer.add(this.officeField);
+        this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
+        this.officeIContainer.add(this.officeFeedback);
     }
 
-    private ItemPanel accountTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected void initAccountNameBlock() {
+        this.accountNameBlock = new WebMarkupBlock("accountNameBlock", Size.Four_4);
+        this.form.add(this.accountNameBlock);
+        this.accountNameIContainer = new WebMarkupContainer("accountNameIContainer");
+        this.accountNameBlock.add(this.accountNameIContainer);
+        this.accountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name", "concat(name,' [', gl_code, ']')");
+        this.accountNameField = new Select2SingleChoice<>("accountNameField", new PropertyModel<>(this, "accountNameValue"), this.accountNameProvider);
+        this.accountNameIContainer.add(this.accountNameField);
+        this.accountNameFeedback = new TextFeedbackPanel("accountNameFeedback", this.accountNameField);
+        this.accountNameIContainer.add(this.accountNameFeedback);
     }
 
-    private ItemPanel createdByColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel accountNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel debitAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        BigDecimal value = (BigDecimal) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel officeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel creditAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        BigDecimal value = (BigDecimal) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel transactionDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date value = (Date) model.get(jdbcColumn);
-        return new TextCell(value, "dd/MM/yyyy");
+    protected ItemPanel entryColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("id".equals(column)) {
+            Long value = (Long) model.get(column);
+            return new TextCell(value);
+        } else if ("office".equals(column) || "account_name".equals(column) || "created_by".equals(column) || "account_type".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("transaction_date".equals(column)) {
+            Date value = (Date) model.get(column);
+            return new TextCell(value, "dd/MM/yyyy");
+        } else if ("transaction_id".equals(column)) {
+            String value = (String) model.get(column);
+            PageParameters parameters = new PageParameters();
+            parameters.add("transactionId", value);
+            return new LinkCell(TransactionPage.class, parameters, value);
+        } else if ("debit_amount".equals(column) || "credit_amount".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value, "#,###,##0.00");
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
     protected void searchButtonSubmit(Button button) {

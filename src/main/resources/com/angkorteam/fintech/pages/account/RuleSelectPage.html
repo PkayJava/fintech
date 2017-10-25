@@ -8,12 +8,12 @@
 			<form role="form" wicket:id="form">
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="ruleField">Accounting Rule Selection</label> <select
-							wicket:id="ruleField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="ruleFeedback"
-							class="help-block"></span>
+					<div wicket:id="ruleBlock" class="form-group">
+						<wicket:container wicket:id="ruleIContainer">
+							<label wicket:for="ruleField">Accounting Rule Selection</label>
+							<select wicket:id="ruleField" class="form-control"></select>
+							<span wicket:id="ruleFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>
