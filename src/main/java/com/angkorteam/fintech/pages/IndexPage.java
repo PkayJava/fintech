@@ -4,6 +4,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.PropertyModel;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.repository.support.ElasticsearchRepositoryFactory;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
@@ -29,6 +31,9 @@ public class IndexPage extends Page {
         this.ss = new AjaxLink<>("ss");
         this.ss.setOnClick(this::ssOnClick);
         this.add(this.ss);
+        
+//        ElasticsearchTemplate template = new ElasticsearchTemplate(client);
+//        ElasticsearchRepositoryFactory factory = new ElasticsearchRepositoryFactory(template);
     }
 
     protected boolean ssOnClick(AjaxLink<Void> link, AjaxRequestTarget target) {
