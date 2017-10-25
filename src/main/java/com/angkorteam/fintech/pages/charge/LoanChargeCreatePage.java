@@ -30,6 +30,8 @@ import com.angkorteam.fintech.provider.ChargeTimeProvider;
 import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -43,73 +45,89 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanChargeCreatePage extends Page {
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected WebMarkupBlock nameBlock;
+    protected WebMarkupContainer nameIContainer;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private CurrencyProvider currencyProvider;
-    private Option currencyValue;
-    private Select2SingleChoice<Option> currencyField;
-    private TextFeedbackPanel currencyFeedback;
+    protected WebMarkupBlock currencyBlock;
+    protected WebMarkupContainer currencyIContainer;
+    protected CurrencyProvider currencyProvider;
+    protected Option currencyValue;
+    protected Select2SingleChoice<Option> currencyField;
+    protected TextFeedbackPanel currencyFeedback;
 
-    private ChargeTimeProvider chargeTimeProvider;
-    private Option chargeTimeValue;
-    private Select2SingleChoice<Option> chargeTimeField;
-    private TextFeedbackPanel chargeTimeFeedback;
+    protected WebMarkupBlock chargeTimeBlock;
+    protected WebMarkupContainer chargeTimeIContainer;
+    protected ChargeTimeProvider chargeTimeProvider;
+    protected Option chargeTimeValue;
+    protected Select2SingleChoice<Option> chargeTimeField;
+    protected TextFeedbackPanel chargeTimeFeedback;
 
-    private WebMarkupContainer chargeCalculationBlock;
-    private WebMarkupContainer chargeCalculationContainer;
-    private ChargeCalculationProvider chargeCalculationProvider;
-    private Option chargeCalculationValue;
-    private Select2SingleChoice<Option> chargeCalculationField;
-    private TextFeedbackPanel chargeCalculationFeedback;
+    protected WebMarkupBlock chargeCalculationBlock;
+    protected WebMarkupContainer chargeCalculationIContainer;
+    protected ChargeCalculationProvider chargeCalculationProvider;
+    protected Option chargeCalculationValue;
+    protected Select2SingleChoice<Option> chargeCalculationField;
+    protected TextFeedbackPanel chargeCalculationFeedback;
 
-    private ChargePaymentProvider chargePaymentProvider;
-    private Option chargePaymentValue;
-    private Select2SingleChoice<Option> chargePaymentField;
-    private TextFeedbackPanel chargePaymentFeedback;
+    protected WebMarkupBlock chargePaymentBlock;
+    protected WebMarkupContainer chargePaymentIContainer;
+    protected ChargePaymentProvider chargePaymentProvider;
+    protected Option chargePaymentValue;
+    protected Select2SingleChoice<Option> chargePaymentField;
+    protected TextFeedbackPanel chargePaymentFeedback;
 
-    private WebMarkupContainer feeFrequencyBlock;
-    private WebMarkupContainer feeFrequencyContainer;
-    private Boolean feeFrequencyValue;
-    private CheckBox feeFrequencyField;
-    private TextFeedbackPanel feeFrequencyFeedback;
+    protected WebMarkupBlock feeFrequencyBlock;
+    protected WebMarkupContainer feeFrequencyIContainer;
+    protected Boolean feeFrequencyValue;
+    protected CheckBox feeFrequencyField;
+    protected TextFeedbackPanel feeFrequencyFeedback;
 
-    private WebMarkupContainer chargeFrequencyBlock;
-    private WebMarkupContainer chargeFrequencyContainer;
-    private ChargeFrequencyProvider chargeFrequencyProvider;
-    private Option chargeFrequencyValue;
-    private Select2SingleChoice<Option> chargeFrequencyField;
-    private TextFeedbackPanel chargeFrequencyFeedback;
+    protected WebMarkupBlock chargeFrequencyBlock;
+    protected WebMarkupContainer chargeFrequencyIContainer;
+    protected ChargeFrequencyProvider chargeFrequencyProvider;
+    protected Option chargeFrequencyValue;
+    protected Select2SingleChoice<Option> chargeFrequencyField;
+    protected TextFeedbackPanel chargeFrequencyFeedback;
 
-    private WebMarkupContainer frequencyIntervalBlock;
-    private WebMarkupContainer frequencyIntervalContainer;
-    private Integer frequencyIntervalValue;
-    private TextField<Integer> frequencyIntervalField;
-    private TextFeedbackPanel frequencyIntervalFeedback;
+    protected WebMarkupBlock frequencyIntervalBlock;
+    protected WebMarkupContainer frequencyIntervalIContainer;
+    protected Integer frequencyIntervalValue;
+    protected TextField<Integer> frequencyIntervalField;
+    protected TextFeedbackPanel frequencyIntervalFeedback;
 
-    private Double amountValue;
-    private TextField<Double> amountField;
-    private TextFeedbackPanel amountFeedback;
+    protected WebMarkupBlock amountBlock;
+    protected WebMarkupContainer amountIContainer;
+    protected Double amountValue;
+    protected TextField<Double> amountField;
+    protected TextFeedbackPanel amountFeedback;
 
-    private boolean activeValue;
-    private CheckBox activeField;
-    private TextFeedbackPanel activeFeedback;
+    protected WebMarkupBlock activeBlock;
+    protected WebMarkupContainer activeIContainer;
+    protected Boolean activeValue;
+    protected CheckBox activeField;
+    protected TextFeedbackPanel activeFeedback;
 
-    private boolean penaltyValue;
-    private CheckBox penaltyField;
-    private TextFeedbackPanel penaltyFeedback;
+    protected WebMarkupBlock penaltyBlock;
+    protected WebMarkupContainer penaltyIContainer;
+    protected Boolean penaltyValue;
+    protected CheckBox penaltyField;
+    protected TextFeedbackPanel penaltyFeedback;
 
-    private SingleChoiceProvider taxGroupProvider;
-    private Option taxGroupValue;
-    private Select2SingleChoice<Option> taxGroupField;
-    private TextFeedbackPanel taxGroupFeedback;
+    protected WebMarkupBlock taxGroupBlock;
+    protected WebMarkupContainer taxGroupIContainer;
+    protected SingleChoiceProvider taxGroupProvider;
+    protected Option taxGroupValue;
+    protected Select2SingleChoice<Option> taxGroupField;
+    protected TextFeedbackPanel taxGroupFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -144,9 +162,11 @@ public class LoanChargeCreatePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         this.add(this.form);
 
@@ -157,133 +177,212 @@ public class LoanChargeCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ChargeBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setLabel(Model.of("Name"));
-        this.nameField.setRequired(true);
-        this.nameField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.form.add(this.nameFeedback);
+        initNameBlock();
 
-        this.currencyProvider = new CurrencyProvider();
-        this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
-        this.currencyField.setLabel(Model.of("Currency"));
-        this.currencyField.add(new OnChangeAjaxBehavior());
-        this.currencyField.setRequired(true);
-        this.form.add(this.currencyField);
-        this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
-        this.form.add(this.currencyFeedback);
+        initCurrencyBlock();
 
-        this.chargeTimeProvider = new ChargeTimeProvider();
-        this.chargeTimeProvider.setValues(ChargeTime.Disbursement, ChargeTime.SpecifiedDueDate, ChargeTime.InstallmentFee, ChargeTime.OverdueFees, ChargeTime.TrancheDisbursement);
-        this.chargeTimeField = new Select2SingleChoice<>("chargeTimeField", 0, new PropertyModel<>(this, "chargeTimeValue"), this.chargeTimeProvider);
-        this.chargeTimeField.setLabel(Model.of("Charge time type"));
-        this.chargeTimeField.setRequired(true);
-        this.chargeTimeField.add(new OnChangeAjaxBehavior(this::chargeTimeFieldUpdate));
-        this.form.add(this.chargeTimeField);
-        this.chargeTimeFeedback = new TextFeedbackPanel("chargeTimeFeedback", this.chargeTimeField);
-        this.form.add(this.chargeTimeFeedback);
+        initChargeTimeBlock();
 
-        this.chargeCalculationBlock = new WebMarkupContainer("chargeCalculationBlock");
-        this.chargeCalculationBlock.setOutputMarkupId(true);
-        this.form.add(this.chargeCalculationBlock);
-        this.chargeCalculationContainer = new WebMarkupContainer("chargeCalculationContainer");
-        this.chargeCalculationBlock.add(this.chargeCalculationContainer);
-        this.chargeCalculationProvider = new ChargeCalculationProvider();
-        this.chargeCalculationField = new Select2SingleChoice<>("chargeCalculationField", 0, new PropertyModel<>(this, "chargeCalculationValue"), this.chargeCalculationProvider);
-        this.chargeCalculationField.setLabel(Model.of("Charge calculation"));
-        this.chargeCalculationField.setRequired(true);
-        this.chargeCalculationField.add(new OnChangeAjaxBehavior());
-        this.chargeCalculationContainer.add(this.chargeCalculationField);
-        this.chargeCalculationFeedback = new TextFeedbackPanel("chargeCalculationFeedback", this.chargeCalculationField);
-        this.chargeCalculationContainer.add(this.chargeCalculationFeedback);
+        initChargeCalculationBlock();
 
-        this.chargePaymentProvider = new ChargePaymentProvider();
-        this.chargePaymentField = new Select2SingleChoice<>("chargePaymentField", 0, new PropertyModel<>(this, "chargePaymentValue"), this.chargePaymentProvider);
-        this.chargePaymentField.setLabel(Model.of("Charge payment by"));
-        this.chargePaymentField.add(new OnChangeAjaxBehavior());
-        this.chargePaymentField.setRequired(true);
-        this.form.add(this.chargePaymentField);
-        this.chargePaymentFeedback = new TextFeedbackPanel("chargePaymentFeedback", this.chargePaymentField);
-        this.form.add(this.chargePaymentFeedback);
+        initChargePaymentBlock();
 
-        this.feeFrequencyBlock = new WebMarkupContainer("feeFrequencyBlock");
-        this.feeFrequencyBlock.setOutputMarkupId(true);
-        this.form.add(this.feeFrequencyBlock);
-        this.feeFrequencyContainer = new WebMarkupContainer("feeFrequencyContainer");
-        this.feeFrequencyBlock.add(this.feeFrequencyContainer);
-        this.feeFrequencyField = new CheckBox("feeFrequencyField", new PropertyModel<>(this, "feeFrequencyValue"));
-        this.feeFrequencyField.add(new OnChangeAjaxBehavior(this::feeFrequencyUpdate));
-        this.feeFrequencyContainer.add(this.feeFrequencyField);
-        this.feeFrequencyFeedback = new TextFeedbackPanel("feeFrequencyFeedback", this.feeFrequencyField);
-        this.feeFrequencyContainer.add(this.feeFrequencyFeedback);
+        initFeeFrequencyBlock();
 
+        initAmountBlock();
+
+        initActiveBlock();
+
+        initPenaltyBlock();
+
+        initTaxGroupBlock();
+
+        initChargeFrequencyBlock();
+
+        initFrequencyIntervalBlock();
+    }
+
+    protected void initFrequencyIntervalBlock() {
+        this.frequencyIntervalBlock = new WebMarkupBlock("frequencyIntervalBlock", Size.Six_6);
+        this.form.add(this.frequencyIntervalBlock);
+        this.frequencyIntervalIContainer = new WebMarkupContainer("frequencyIntervalIContainer");
+        this.frequencyIntervalBlock.add(this.frequencyIntervalIContainer);
+        this.frequencyIntervalField = new TextField<>("frequencyIntervalField", new PropertyModel<>(this, "frequencyIntervalValue"));
+        this.frequencyIntervalField.setLabel(Model.of("Frequency Interval"));
+        this.frequencyIntervalField.add(new OnChangeAjaxBehavior());
+        this.frequencyIntervalIContainer.add(this.frequencyIntervalField);
+        this.frequencyIntervalFeedback = new TextFeedbackPanel("frequencyIntervalFeedback", this.frequencyIntervalField);
+        this.frequencyIntervalIContainer.add(this.frequencyIntervalFeedback);
+    }
+
+    protected void initChargeFrequencyBlock() {
+        this.chargeFrequencyBlock = new WebMarkupBlock("chargeFrequencyBlock", Size.Six_6);
+        this.form.add(this.chargeFrequencyBlock);
+        this.chargeFrequencyIContainer = new WebMarkupContainer("chargeFrequencyIContainer");
+        this.chargeFrequencyBlock.add(this.chargeFrequencyIContainer);
+        this.chargeFrequencyProvider = new ChargeFrequencyProvider();
+        this.chargeFrequencyField = new Select2SingleChoice<>("chargeFrequencyField", new PropertyModel<>(this, "chargeFrequencyValue"), this.chargeFrequencyProvider);
+        this.chargeFrequencyField.setLabel(Model.of("Charge Frequency"));
+        this.chargeFrequencyField.add(new OnChangeAjaxBehavior());
+        this.chargeFrequencyIContainer.add(this.chargeFrequencyField);
+        this.chargeFrequencyFeedback = new TextFeedbackPanel("chargeFrequencyFeedback", this.chargeFrequencyField);
+        this.chargeFrequencyIContainer.add(this.chargeFrequencyFeedback);
+    }
+
+    protected void initTaxGroupBlock() {
+        this.taxGroupBlock = new WebMarkupBlock("taxGroupBlock", Size.Six_6);
+        this.form.add(this.taxGroupBlock);
+        this.taxGroupIContainer = new WebMarkupContainer("taxGroupIContainer");
+        this.taxGroupBlock.add(this.taxGroupIContainer);
+        this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
+        this.taxGroupField = new Select2SingleChoice<>("taxGroupField", new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
+        this.taxGroupField.setLabel(Model.of("Tax Group"));
+        this.taxGroupField.add(new OnChangeAjaxBehavior());
+        this.taxGroupIContainer.add(this.taxGroupField);
+        this.taxGroupFeedback = new TextFeedbackPanel("taxGroupFeedback", this.taxGroupField);
+        this.taxGroupIContainer.add(this.taxGroupFeedback);
+    }
+
+    protected void initPenaltyBlock() {
+        this.penaltyBlock = new WebMarkupBlock("penaltyBlock", Size.Three_3);
+        this.form.add(this.penaltyBlock);
+        this.penaltyIContainer = new WebMarkupContainer("penaltyIContainer");
+        this.penaltyBlock.add(this.penaltyIContainer);
+        this.penaltyField = new CheckBox("penaltyField", new PropertyModel<>(this, "penaltyValue"));
+        this.penaltyField.setRequired(true);
+        this.penaltyField.add(new OnChangeAjaxBehavior());
+        this.penaltyIContainer.add(this.penaltyField);
+        this.penaltyFeedback = new TextFeedbackPanel("penaltyFeedback", this.penaltyField);
+        this.penaltyIContainer.add(this.penaltyFeedback);
+    }
+
+    protected void initActiveBlock() {
+        this.activeBlock = new WebMarkupBlock("activeBlock", Size.Three_3);
+        this.form.add(this.activeBlock);
+        this.activeIContainer = new WebMarkupContainer("activeIContainer");
+        this.activeBlock.add(this.activeIContainer);
+        this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
+        this.activeField.setRequired(true);
+        this.activeField.add(new OnChangeAjaxBehavior());
+        this.activeIContainer.add(this.activeField);
+        this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
+        this.activeIContainer.add(this.activeFeedback);
+    }
+
+    protected void initAmountBlock() {
+        this.amountBlock = new WebMarkupBlock("amountBlock", Size.Six_6);
+        this.form.add(this.amountBlock);
+        this.amountIContainer = new WebMarkupContainer("amountIContainer");
+        this.amountBlock.add(this.amountIContainer);
         this.amountField = new TextField<>("amountField", new PropertyModel<>(this, "amountValue"));
         this.amountField.setLabel(Model.of("Amount"));
         this.amountField.setRequired(true);
         this.amountField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.amountField);
+        this.amountIContainer.add(this.amountField);
         this.amountFeedback = new TextFeedbackPanel("amountFeedback", this.amountField);
-        this.form.add(this.amountFeedback);
-
-        this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
-        this.activeField.setRequired(true);
-        this.activeField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.activeField);
-        this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
-        this.form.add(this.activeFeedback);
-
-        this.penaltyField = new CheckBox("penaltyField", new PropertyModel<>(this, "penaltyValue"));
-        this.penaltyField.setRequired(true);
-        this.penaltyField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.penaltyField);
-        this.penaltyFeedback = new TextFeedbackPanel("penaltyFeedback", this.penaltyField);
-        this.form.add(this.penaltyFeedback);
-
-        this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
-        this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
-        this.taxGroupField.setLabel(Model.of("Tax Group"));
-        this.taxGroupField.add(new OnChangeAjaxBehavior());
-        this.form.add(this.taxGroupField);
-        this.taxGroupFeedback = new TextFeedbackPanel("taxGroupFeedback", this.taxGroupField);
-        this.form.add(this.taxGroupFeedback);
-
-        this.chargeFrequencyBlock = new WebMarkupContainer("chargeFrequencyBlock");
-        this.chargeFrequencyBlock.setOutputMarkupId(true);
-        this.form.add(this.chargeFrequencyBlock);
-        this.chargeFrequencyContainer = new WebMarkupContainer("chargeFrequencyContainer");
-        this.chargeFrequencyBlock.add(this.chargeFrequencyContainer);
-        this.chargeFrequencyProvider = new ChargeFrequencyProvider();
-        this.chargeFrequencyField = new Select2SingleChoice<>("chargeFrequencyField", 0, new PropertyModel<>(this, "chargeFrequencyValue"), this.chargeFrequencyProvider);
-        this.chargeFrequencyField.setLabel(Model.of("Charge Frequency"));
-        this.chargeFrequencyField.add(new OnChangeAjaxBehavior());
-        this.chargeFrequencyContainer.add(this.chargeFrequencyField);
-        this.chargeFrequencyFeedback = new TextFeedbackPanel("chargeFrequencyFeedback", this.chargeFrequencyField);
-        this.chargeFrequencyContainer.add(this.chargeFrequencyFeedback);
-
-        this.frequencyIntervalBlock = new WebMarkupContainer("frequencyIntervalBlock");
-        this.frequencyIntervalBlock.setOutputMarkupId(true);
-        this.form.add(this.frequencyIntervalBlock);
-        this.frequencyIntervalContainer = new WebMarkupContainer("frequencyIntervalContainer");
-        this.frequencyIntervalBlock.add(this.frequencyIntervalContainer);
-        this.frequencyIntervalField = new TextField<>("frequencyIntervalField", new PropertyModel<>(this, "frequencyIntervalValue"));
-        this.frequencyIntervalField.setLabel(Model.of("Frequency Interval"));
-        this.frequencyIntervalField.add(new OnChangeAjaxBehavior());
-        this.frequencyIntervalContainer.add(this.frequencyIntervalField);
-        this.frequencyIntervalFeedback = new TextFeedbackPanel("frequencyIntervalFeedback", this.frequencyIntervalField);
-        this.frequencyIntervalContainer.add(this.frequencyIntervalFeedback);
-
-        initDefault();
+        this.amountIContainer.add(this.amountFeedback);
     }
 
-    protected void initDefault() {
+    protected void initFeeFrequencyBlock() {
+        this.feeFrequencyBlock = new WebMarkupBlock("feeFrequencyBlock", Size.Six_6);
+        this.form.add(this.feeFrequencyBlock);
+        this.feeFrequencyIContainer = new WebMarkupContainer("feeFrequencyIContainer");
+        this.feeFrequencyBlock.add(this.feeFrequencyIContainer);
+        this.feeFrequencyField = new CheckBox("feeFrequencyField", new PropertyModel<>(this, "feeFrequencyValue"));
+        this.feeFrequencyField.add(new OnChangeAjaxBehavior(this::feeFrequencyUpdate));
+        this.feeFrequencyIContainer.add(this.feeFrequencyField);
+        this.feeFrequencyFeedback = new TextFeedbackPanel("feeFrequencyFeedback", this.feeFrequencyField);
+        this.feeFrequencyIContainer.add(this.feeFrequencyFeedback);
+    }
+
+    protected void initChargePaymentBlock() {
+        this.chargePaymentBlock = new WebMarkupBlock("chargePaymentBlock", Size.Six_6);
+        this.form.add(this.chargePaymentBlock);
+        this.chargePaymentIContainer = new WebMarkupContainer("chargePaymentIContainer");
+        this.chargePaymentBlock.add(this.chargePaymentIContainer);
+        this.chargePaymentProvider = new ChargePaymentProvider();
+        this.chargePaymentField = new Select2SingleChoice<>("chargePaymentField", new PropertyModel<>(this, "chargePaymentValue"), this.chargePaymentProvider);
+        this.chargePaymentField.setLabel(Model.of("Charge payment by"));
+        this.chargePaymentField.add(new OnChangeAjaxBehavior());
+        this.chargePaymentField.setRequired(true);
+        this.chargePaymentIContainer.add(this.chargePaymentField);
+        this.chargePaymentFeedback = new TextFeedbackPanel("chargePaymentFeedback", this.chargePaymentField);
+        this.chargePaymentIContainer.add(this.chargePaymentFeedback);
+    }
+
+    protected void initChargeCalculationBlock() {
+        this.chargeCalculationBlock = new WebMarkupBlock("chargeCalculationBlock", Size.Six_6);
+        this.form.add(this.chargeCalculationBlock);
+        this.chargeCalculationIContainer = new WebMarkupContainer("chargeCalculationIContainer");
+        this.chargeCalculationBlock.add(this.chargeCalculationIContainer);
+        this.chargeCalculationProvider = new ChargeCalculationProvider();
+        this.chargeCalculationField = new Select2SingleChoice<>("chargeCalculationField", new PropertyModel<>(this, "chargeCalculationValue"), this.chargeCalculationProvider);
+        this.chargeCalculationField.setLabel(Model.of("Charge calculation"));
+        this.chargeCalculationField.setRequired(true);
+        this.chargeCalculationField.add(new OnChangeAjaxBehavior());
+        this.chargeCalculationIContainer.add(this.chargeCalculationField);
+        this.chargeCalculationFeedback = new TextFeedbackPanel("chargeCalculationFeedback", this.chargeCalculationField);
+        this.chargeCalculationIContainer.add(this.chargeCalculationFeedback);
+    }
+
+    protected void initChargeTimeBlock() {
+        this.chargeTimeBlock = new WebMarkupBlock("chargeTimeBlock", Size.Six_6);
+        this.form.add(this.chargeTimeBlock);
+        this.chargeTimeIContainer = new WebMarkupContainer("chargeTimeIContainer");
+        this.chargeTimeBlock.add(this.chargeTimeIContainer);
+        this.chargeTimeProvider = new ChargeTimeProvider();
+        this.chargeTimeProvider.setValues(ChargeTime.Disbursement, ChargeTime.SpecifiedDueDate, ChargeTime.InstallmentFee, ChargeTime.OverdueFees, ChargeTime.TrancheDisbursement);
+        this.chargeTimeField = new Select2SingleChoice<>("chargeTimeField", new PropertyModel<>(this, "chargeTimeValue"), this.chargeTimeProvider);
+        this.chargeTimeField.setLabel(Model.of("Charge time type"));
+        this.chargeTimeField.setRequired(true);
+        this.chargeTimeField.add(new OnChangeAjaxBehavior(this::chargeTimeFieldUpdate));
+        this.chargeTimeIContainer.add(this.chargeTimeField);
+        this.chargeTimeFeedback = new TextFeedbackPanel("chargeTimeFeedback", this.chargeTimeField);
+        this.chargeTimeIContainer.add(this.chargeTimeFeedback);
+    }
+
+    protected void initCurrencyBlock() {
+        this.currencyBlock = new WebMarkupBlock("currencyBlock", Size.Six_6);
+        this.form.add(this.currencyBlock);
+        this.currencyIContainer = new WebMarkupContainer("currencyIContainer");
+        this.currencyBlock.add(this.currencyIContainer);
+        this.currencyProvider = new CurrencyProvider();
+        this.currencyField = new Select2SingleChoice<>("currencyField", new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
+        this.currencyField.setLabel(Model.of("Currency"));
+        this.currencyField.add(new OnChangeAjaxBehavior());
+        this.currencyField.setRequired(true);
+        this.currencyIContainer.add(this.currencyField);
+        this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
+        this.currencyIContainer.add(this.currencyFeedback);
+    }
+
+    protected void initNameBlock() {
+        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
+        this.form.add(this.nameBlock);
+        this.nameIContainer = new WebMarkupContainer("nameIContainer");
+        this.nameBlock.add(this.nameIContainer);
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setLabel(Model.of("Name"));
+        this.nameField.setRequired(true);
+        this.nameField.add(new OnChangeAjaxBehavior());
+        this.nameIContainer.add(this.nameField);
+        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+        this.nameIContainer.add(this.nameFeedback);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
         chargeTimeFieldUpdate(null);
     }
 
     protected boolean feeFrequencyUpdate(AjaxRequestTarget target) {
         boolean visible = this.feeFrequencyValue == null ? false : this.feeFrequencyValue;
-        this.chargeFrequencyContainer.setVisible(visible);
-        this.frequencyIntervalContainer.setVisible(visible);
+        this.chargeFrequencyIContainer.setVisible(visible);
+        this.frequencyIntervalIContainer.setVisible(visible);
 
         ChargeTime chargeTime = this.chargeTimeValue == null ? null : ChargeTime.valueOf(this.chargeTimeValue.getId());
 
@@ -322,11 +421,11 @@ public class LoanChargeCreatePage extends Page {
             this.chargeCalculationProvider.setValues();
         }
 
-        this.chargeCalculationContainer.setVisible(chargeTime != null);
+        this.chargeCalculationIContainer.setVisible(chargeTime != null);
         this.chargeCalculationField.setRequired(chargeTime != null);
 
         boolean visible = chargeTime == ChargeTime.OverdueFees;
-        this.feeFrequencyContainer.setVisible(visible);
+        this.feeFrequencyIContainer.setVisible(visible);
 
         if (target != null) {
             target.add(this.chargeCalculationBlock);
