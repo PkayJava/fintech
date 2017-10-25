@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -26,6 +27,7 @@ import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -55,90 +57,126 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class JournalPostPage extends Page {
 
-    private Form<Void> debitForm;
-    private AjaxButton debitButton;
+    protected Form<Void> debitForm;
+    protected AjaxButton debitButton;
 
-    private SingleChoiceProvider debitAccountNameProvider;
-    private Option debitAccountNameValue;
-    private Select2SingleChoice<Option> debitAccountNameField;
-    private TextFeedbackPanel debitAccountNameFeedback;
+    protected WebMarkupBlock debitAccountNameBlock;
+    protected WebMarkupContainer debitAccountNameIContainer;
+    protected SingleChoiceProvider debitAccountNameProvider;
+    protected Option debitAccountNameValue;
+    protected Select2SingleChoice<Option> debitAccountNameField;
+    protected TextFeedbackPanel debitAccountNameFeedback;
 
-    private Double debitAmountValue;
-    private TextField<Double> debitAmountField;
-    private TextFeedbackPanel debitAmountFeedback;
+    protected WebMarkupBlock debitAmountBlock;
+    protected WebMarkupContainer debitAmountIContainer;
+    protected Double debitAmountValue;
+    protected TextField<Double> debitAmountField;
+    protected TextFeedbackPanel debitAmountFeedback;
 
-    private Form<Void> creditForm;
-    private AjaxButton creditButton;
+    protected Form<Void> creditForm;
+    protected AjaxButton creditButton;
 
-    private SingleChoiceProvider creditAccountNameProvider;
-    private Option creditAccountNameValue;
-    private Select2SingleChoice<Option> creditAccountNameField;
-    private TextFeedbackPanel creditAccountNameFeedback;
+    protected WebMarkupBlock creditAccountNameBlock;
+    protected WebMarkupContainer creditAccountNameIContainer;
+    protected SingleChoiceProvider creditAccountNameProvider;
+    protected Option creditAccountNameValue;
+    protected Select2SingleChoice<Option> creditAccountNameField;
+    protected TextFeedbackPanel creditAccountNameFeedback;
 
-    private Double creditAmountValue;
-    private TextField<Double> creditAmountField;
-    private TextFeedbackPanel creditAmountFeedback;
+    protected WebMarkupBlock creditAmountBlock;
+    protected WebMarkupContainer creditAmountIContainer;
+    protected Double creditAmountValue;
+    protected TextField<Double> creditAmountField;
+    protected TextFeedbackPanel creditAmountFeedback;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private SingleChoiceProvider officeProvider;
-    private Option officeValue;
-    private Select2SingleChoice<Option> officeField;
-    private TextFeedbackPanel officeFeedback;
+    protected WebMarkupBlock officeBlock;
+    protected WebMarkupContainer officeIContainer;
+    protected SingleChoiceProvider officeProvider;
+    protected Option officeValue;
+    protected Select2SingleChoice<Option> officeField;
+    protected TextFeedbackPanel officeFeedback;
 
-    private CurrencyProvider currencyProvider;
-    private Option currencyValue;
-    private Select2SingleChoice<Option> currencyField;
-    private TextFeedbackPanel currencyFeedback;
+    protected WebMarkupBlock currencyBlock;
+    protected WebMarkupContainer currencyIContainer;
+    protected CurrencyProvider currencyProvider;
+    protected Option currencyValue;
+    protected Select2SingleChoice<Option> currencyField;
+    protected TextFeedbackPanel currencyFeedback;
 
-    private String referenceNumberValue;
-    private TextField<String> referenceNumberField;
-    private TextFeedbackPanel referenceNumberFeedback;
+    protected WebMarkupBlock referenceNumberBlock;
+    protected WebMarkupContainer referenceNumberIContainer;
+    protected String referenceNumberValue;
+    protected TextField<String> referenceNumberField;
+    protected TextFeedbackPanel referenceNumberFeedback;
 
-    private Date transactionDateValue;
-    private DateTextField transactionDateField;
-    private TextFeedbackPanel transactionDateFeedback;
+    protected WebMarkupBlock transactionDateBlock;
+    protected WebMarkupContainer transactionDateIContainer;
+    protected Date transactionDateValue;
+    protected DateTextField transactionDateField;
+    protected TextFeedbackPanel transactionDateFeedback;
 
-    private SingleChoiceProvider paymentTypeProvider;
-    private Option paymentTypeValue;
-    private Select2SingleChoice<Option> paymentTypeField;
-    private TextFeedbackPanel paymentTypeFeedback;
+    protected WebMarkupBlock paymentTypeBlock;
+    protected WebMarkupContainer paymentTypeIContainer;
+    protected SingleChoiceProvider paymentTypeProvider;
+    protected Option paymentTypeValue;
+    protected Select2SingleChoice<Option> paymentTypeField;
+    protected TextFeedbackPanel paymentTypeFeedback;
 
-    private String accountValue;
-    private TextField<String> accountField;
-    private TextFeedbackPanel accountFeedback;
+    protected WebMarkupBlock accountBlock;
+    protected WebMarkupContainer accountIContainer;
+    protected String accountValue;
+    protected TextField<String> accountField;
+    protected TextFeedbackPanel accountFeedback;
 
-    private String chequeValue;
-    private TextField<String> chequeField;
-    private TextFeedbackPanel chequeFeedback;
+    protected WebMarkupBlock chequeBlock;
+    protected WebMarkupContainer chequeIContainer;
+    protected String chequeValue;
+    protected TextField<String> chequeField;
+    protected TextFeedbackPanel chequeFeedback;
 
-    private String routingCodeValue;
-    private TextField<String> routingCodeField;
-    private TextFeedbackPanel routingCodeFeedback;
+    protected WebMarkupBlock routingCodeBlock;
+    protected WebMarkupContainer routingCodeIContainer;
+    protected String routingCodeValue;
+    protected TextField<String> routingCodeField;
+    protected TextFeedbackPanel routingCodeFeedback;
 
-    private String receiptValue;
-    private TextField<String> receiptField;
-    private TextFeedbackPanel receiptFeedback;
+    protected WebMarkupBlock receiptBlock;
+    protected WebMarkupContainer receiptIContainer;
+    protected String receiptValue;
+    protected TextField<String> receiptField;
+    protected TextFeedbackPanel receiptFeedback;
 
-    private String bankValue;
-    private TextField<String> bankField;
-    private TextFeedbackPanel bankFeedback;
+    protected WebMarkupBlock bankBlock;
+    protected WebMarkupContainer bankIContainer;
+    protected String bankValue;
+    protected TextField<String> bankField;
+    protected TextFeedbackPanel bankFeedback;
 
-    private String commentValue;
-    private TextArea<String> commentField;
-    private TextFeedbackPanel commentFeedback;
+    protected WebMarkupBlock commentBlock;
+    protected WebMarkupContainer commentIContainer;
+    protected String commentValue;
+    protected TextArea<String> commentField;
+    protected TextFeedbackPanel commentFeedback;
 
-    private List<Map<String, Object>> creditValue;
-    private DataTable<Map<String, Object>, String> creditTable;
-    private ListDataProvider creditProvider;
+    protected WebMarkupBlock creditBlock;
+    protected WebMarkupContainer creditIContainer;
+    protected List<Map<String, Object>> creditValue;
+    protected DataTable<Map<String, Object>, String> creditTable;
+    protected ListDataProvider creditProvider;
+    protected List<IColumn<Map<String, Object>, String>> creditColumn;
 
-    private List<Map<String, Object>> debitValue;
-    private DataTable<Map<String, Object>, String> debitTable;
-    private ListDataProvider debitProvider;
+    protected WebMarkupBlock debitBlock;
+    protected WebMarkupContainer debitIContainer;
+    protected List<Map<String, Object>> debitValue;
+    protected DataTable<Map<String, Object>, String> debitTable;
+    protected ListDataProvider debitProvider;
+    protected List<IColumn<Map<String, Object>, String>> debitColumn;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -175,7 +213,7 @@ public class JournalPostPage extends Page {
 
     }
 
-    private void initDebitForm() {
+    protected void initDebitForm() {
         this.debitForm = new Form<>("debitForm");
         add(this.debitForm);
 
@@ -186,7 +224,7 @@ public class JournalPostPage extends Page {
 
         this.debitAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.debitAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.debitAccountNameField = new Select2SingleChoice<>("debitAccountNameField", 0, new PropertyModel<>(this, "debitAccountNameValue"), this.debitAccountNameProvider);
+        this.debitAccountNameField = new Select2SingleChoice<>("debitAccountNameField", new PropertyModel<>(this, "debitAccountNameValue"), this.debitAccountNameProvider);
         this.debitAccountNameField.setRequired(true);
         this.debitForm.add(this.debitAccountNameField);
         this.debitAccountNameFeedback = new TextFeedbackPanel("debitAccountNameFeedback", this.debitAccountNameField);
@@ -199,7 +237,7 @@ public class JournalPostPage extends Page {
         this.debitForm.add(this.debitAmountFeedback);
     }
 
-    private void initCreditForm() {
+    protected void initCreditForm() {
         this.creditForm = new Form<>("creditForm");
         add(this.creditForm);
 
@@ -210,7 +248,7 @@ public class JournalPostPage extends Page {
 
         this.creditAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.creditAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.creditAccountNameField = new Select2SingleChoice<>("creditAccountNameField", 0, new PropertyModel<>(this, "creditAccountNameValue"), this.creditAccountNameProvider);
+        this.creditAccountNameField = new Select2SingleChoice<>("creditAccountNameField", new PropertyModel<>(this, "creditAccountNameValue"), this.creditAccountNameProvider);
         this.creditAccountNameField.setRequired(true);
         this.creditForm.add(this.creditAccountNameField);
         this.creditAccountNameFeedback = new TextFeedbackPanel("creditAccountNameFeedback", this.creditAccountNameField);
@@ -223,7 +261,7 @@ public class JournalPostPage extends Page {
         this.creditForm.add(this.creditAmountFeedback);
     }
 
-    private void initForm() {
+    protected void initForm() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -235,35 +273,33 @@ public class JournalPostPage extends Page {
         this.form.add(this.closeLink);
 
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.form.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
         this.form.add(this.officeFeedback);
 
         this.currencyProvider = new CurrencyProvider();
-        this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
+        this.currencyField = new Select2SingleChoice<>("currencyField", new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
         this.currencyField.setRequired(true);
         this.form.add(this.currencyField);
         this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
         this.form.add(this.currencyFeedback);
 
-        List<IColumn<Map<String, Object>, String>> debitColumn = Lists.newArrayList();
+        debitColumn = Lists.newArrayList();
         debitColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::debitNameColumn));
         debitColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::debitAmountColumn));
         debitColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::debitActionItem, this::debitActionClick));
-        this.debitValue = Lists.newArrayList();
         this.debitProvider = new ListDataProvider(this.debitValue);
         this.debitTable = new DataTable<>("debitTable", debitColumn, this.debitProvider, 20);
         this.form.add(this.debitTable);
         this.debitTable.addTopToolbar(new HeadersToolbar<>(this.debitTable, this.debitProvider));
         this.debitTable.addBottomToolbar(new NoRecordsToolbar(this.debitTable));
 
-        List<IColumn<Map<String, Object>, String>> creditColumn = Lists.newArrayList();
+        creditColumn = Lists.newArrayList();
         creditColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::creditNameColumn));
         creditColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::creditAmountColumn));
         creditColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::creditActionItem, this::creditActionClick));
-        this.creditValue = Lists.newArrayList();
         this.creditProvider = new ListDataProvider(this.creditValue);
         this.creditTable = new DataTable<>("creditTable", creditColumn, this.creditProvider, 20);
         this.form.add(this.creditTable);
@@ -284,7 +320,7 @@ public class JournalPostPage extends Page {
         this.form.add(this.transactionDateFeedback);
 
         this.paymentTypeProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
-        this.paymentTypeField = new Select2SingleChoice<>("paymentTypeField", 0, new PropertyModel<>(this, "paymentTypeValue"), this.paymentTypeProvider);
+        this.paymentTypeField = new Select2SingleChoice<>("paymentTypeField", new PropertyModel<>(this, "paymentTypeValue"), this.paymentTypeProvider);
         this.form.add(this.paymentTypeField);
         this.paymentTypeFeedback = new TextFeedbackPanel("paymentTypeFeedback", this.paymentTypeField);
         this.form.add(this.paymentTypeFeedback);
@@ -320,17 +356,17 @@ public class JournalPostPage extends Page {
         this.form.add(this.commentFeedback);
     }
 
-    private ItemPanel debitNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel debitNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel debitAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel debitAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private void debitActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void debitActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.debitValue.size(); i++) {
             Map<String, Object> column = this.debitValue.get(i);
@@ -345,21 +381,21 @@ public class JournalPostPage extends Page {
         target.add(this.debitTable);
     }
 
-    private List<ActionItem> debitActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> debitActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    private ItemPanel creditNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel creditNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         String value = (String) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private ItemPanel creditAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel creditAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
         Double value = (Double) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
-    private void creditActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void creditActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.creditValue.size(); i++) {
             Map<String, Object> column = this.creditValue.get(i);
@@ -374,7 +410,7 @@ public class JournalPostPage extends Page {
         target.add(this.creditTable);
     }
 
-    private List<ActionItem> creditActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> creditActionItem(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
