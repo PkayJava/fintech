@@ -1,17 +1,16 @@
 package com.angkorteam.fintech.installation;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
 
-import javax.sql.DataSource;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -20,19 +19,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import com.angkorteam.fintech.Constants;
-import com.angkorteam.fintech.MifosDataSourceManager;
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class ERDData {
 
@@ -43,36 +34,36 @@ public class ERDData {
     @Test
     public void initERDData() throws Exception {
 
-        File fintechFile = new File(FileUtils.getUserDirectory(), ".xml/fintech.properties.xml");
+        File databaseFile = new File("src/main/resources/database.xml");
 
-        Properties properties = new Properties();
-        try (FileInputStream inputStream = FileUtils.openInputStream(fintechFile)) {
-            properties.loadFromXML(inputStream);
+        JAXBContext jaxbContext = JAXBContext.newInstance(Database.class, Table.class, Field.class);
+
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        Database database = (Database) jaxbUnmarshaller.unmarshal(databaseFile);
+
+        for (Table table : database.getTables()) {
+            for (Field field : table.getFields()) {
+                if (field.isLink()) {
+                    String referenceTable = field.getReferenceTable();
+                    String referenceField = field.getReferenceField();
+                    boolean found = false;
+                    for (Table tempTable : database.getTables()) {
+                        if (tempTable.getName().equals(referenceTable)) {
+                            for (Field tempField : tempTable.getFields()) {
+                                if (tempField.getName().equals(referenceField)) {
+                                    found = true;
+                                }
+                            }
+                        }
+                    }
+                    if (!found) {
+                        throw new RuntimeException("table " + table.getName() + " field " + field.getName() + " is reference link broken");
+                    }
+                }
+            }
         }
-        BasicDataSource platformDataSource = new BasicDataSource();
-        platformDataSource.setUsername(properties.getProperty("app.jdbc.username"));
-        platformDataSource.setPassword(properties.getProperty("app.jdbc.password"));
-        platformDataSource.setUrl(properties.getProperty("app.jdbc.url"));
-        platformDataSource.setDriverClassName(properties.getProperty("app.jdbc.driver"));
-
-        String mifosUrl = properties.getProperty("mifos.url");
-
-        MifosDataSourceManager dataSourceManager = new MifosDataSourceManager();
-        dataSourceManager.setDelegate(platformDataSource);
-        dataSourceManager.setMifosUrl(mifosUrl);
-        dataSourceManager.afterPropertiesSet();
-
-        DataSource dataSource = dataSourceManager.getDataSource(Constants.AID);
-
-        String json = FileUtils.readFileToString(new File("src/main/resources/erd.json"), "UTF-8");
-        Gson gson = new Gson();
-
-        Map<String, List<ErdVO>> erds = gson.fromJson(json, new TypeToken<Map<String, List<ErdVO>>>() {
-        }.getType());
 
         Map<String, String> tableDictionary = new HashMap<>();
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        List<String> tables = queryForTables(jdbcTemplate);
 
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -182,71 +173,66 @@ public class ERDData {
         dataD0Element.setAttribute("key", "d0");
         graphElement.appendChild(dataD0Element);
 
-        List<String> process = new ArrayList<>();
-        List<String> filters = new ArrayList<>();
-        boolean hasFilter = false;
+        Map<String, Table> midTables = new HashMap<>();
         String temps = System.getProperty("tables");
+        temps = "acc_gl_account";
         if (temps != null && !"".equals(temps)) {
-            hasFilter = true;
             String temp = (String) temps;
             for (String filter : temp.split(",")) {
                 filter = StringUtils.trimToEmpty(filter);
                 if (!"".equals(filter)) {
-                    if (!filters.contains(filter)) {
-                        filters.add(filter);
+                    if (!midTables.containsKey(filter)) {
+                        midTables.put(filter, queryForTable(database, filter));
+                    }
+                }
+            }
+        } else {
+            for (Table table : database.getTables()) {
+                midTables.put(table.getName(), table);
+            }
+        }
+
+        Map<String, Table> leftTables = new HashMap<>();
+        for (Table table : database.getTables()) {
+            if (!midTables.containsKey(table.getName())) {
+                for (Field field : table.getFields()) {
+                    if (field.isLink() && midTables.containsKey(field.getReferenceTable())) {
+                        if (!leftTables.containsKey(table.getName())) {
+                            leftTables.put(table.getName(), table);
+                        }
                     }
                 }
             }
         }
 
-        if (hasFilter) {
-            for (Entry<String, List<ErdVO>> erd : erds.entrySet()) {
-                if (filters.contains(erd.getKey())) {
-                    if (!process.contains(erd.getKey())) {
-                        process.add(erd.getKey());
-                    }
-                    for (ErdVO vo : erd.getValue()) {
-                        if (!process.contains(vo.getReferenceTo().getTableName())) {
-                            process.add(vo.getReferenceTo().getTableName());
-                        }
-                    }
-                } else {
-                    for (ErdVO vo : erd.getValue()) {
-                        if (filters.contains(vo.getReferenceTo().getTableName())) {
-                            if (!process.contains(erd.getKey())) {
-                                process.add(erd.getKey());
-                            }
-                        }
+        Map<String, Table> rightTables = new HashMap<>();
+        for (Table table : midTables.values()) {
+            for (Field field : table.getFields()) {
+                if (!midTables.containsKey(field.getReferenceTable())) {
+                    if (field.isLink() && !rightTables.containsKey(field.getReferenceTable())) {
+                        rightTables.put(field.getReferenceTable(), queryForTable(database, field.getReferenceTable()));
                     }
                 }
             }
-            for (String f : filters) {
-                if (!process.contains(f)) {
-                    process.add(f);
-                }
-            }
-        } else {
-            for (Entry<String, List<ErdVO>> erd : erds.entrySet()) {
-                if (!process.contains(erd.getKey())) {
-                    process.add(erd.getKey());
-                }
-                for (ErdVO vo : erd.getValue()) {
-                    if (!process.contains(vo.getReferenceTo().getTableName())) {
-                        process.add(vo.getReferenceTo().getTableName());
-                    }
-                }
-            }
+        }
+
+        Map<String, Long> identifiers = new HashMap<>();
+        Map<String, Table> all = new HashMap<>();
+        all.putAll(leftTables);
+        all.putAll(rightTables);
+        all.putAll(midTables);
+        Long shift = 1l;
+        for (String table : all.keySet()) {
+            identifiers.put(table, shift);
+            shift = shift << 1;
         }
 
         int index = 0;
 
-        for (String table : tables) {
-            if (hasFilter && !process.contains(table)) {
-                continue;
-            }
-            List<Map<String, Object>> fields = queryForFields(jdbcTemplate, table);
+        for (Table table : all.values()) {
+            List<Map<String, Object>> fields = queryForFields(table);
             int maxWidth = 0;
-            maxWidth = Math.max(maxWidth, table.length() * CHAR_WIDTH);
+            maxWidth = Math.max(maxWidth, table.getName().length() * CHAR_WIDTH);
             List<String> lines = new LinkedList<>();
             for (Map<String, Object> field : fields) {
                 String name = (String) field.get("field");
@@ -269,7 +255,7 @@ public class ERDData {
             }
 
             BigDecimal height = LINE_HEIGHT.multiply(new BigDecimal(fields.size() + 1)).add(TOP_PADDING);
-            tableDictionary.put(table, "n" + index);
+            tableDictionary.put(table.getName(), "n" + index);
             Element nodeElement = document.createElement("node");
             nodeElement.setAttribute("id", "n" + index);
             graphElement.appendChild(nodeElement);
@@ -316,7 +302,7 @@ public class ERDData {
                 nodeLabelElement.setAttribute("textColor", "#000000");
                 nodeLabelElement.setAttribute("verticalTextPosition", "bottom");
                 nodeLabelElement.setAttribute("visible", "true");
-                nodeLabelElement.setTextContent(table);
+                nodeLabelElement.setTextContent(table.getName());
                 genericNodeElement.appendChild(nodeLabelElement);
             }
 
@@ -364,124 +350,119 @@ public class ERDData {
             index++;
         }
 
-        int edge = 0;
-        for (Entry<String, List<ErdVO>> erd : erds.entrySet()) {
-            List<ErdVO> values = erd.getValue();
-            String sourceTable = erd.getKey();
-            for (ErdVO value : values) {
-                String sourceField = "";
-                if (value.getFieldName().size() == 1) {
-                    sourceField = value.getFieldName().get(0);
-                } else {
-                    sourceField = "(" + StringUtils.join(value.getFieldName(), "/") + ")";
+        Map<Long, Link> links = new HashMap<>();
+        for (Table table : all.values()) {
+            long aId = identifiers.get(table.getName());
+            for (Field field : table.getFields()) {
+                if (all.containsKey(field.getReferenceTable())) {
+                    long bId = identifiers.get(field.getReferenceTable());
+                    long key = aId | bId;
+                    Link link = null;
+                    if (links.containsKey(key)) {
+                        link = links.get(key);
+                    } else {
+                        link = new Link();
+                        links.put(key, link);
+                    }
+                    link.setFromId(tableDictionary.get(table.getName()));
+                    link.setToId(tableDictionary.get(field.getReferenceTable()));
+                    link.getComments().add(table.getName() + "." + field.getName() + " = " + field.getReferenceTable() + "." + field.getReferenceField());
                 }
-                String source = tableDictionary.get(sourceTable);
-
-                String targetTable = value.getReferenceTo().getTableName();
-                String targetField = value.getReferenceTo().getFieldName();
-                String target = tableDictionary.get(targetTable);
-
-                if (hasFilter) {
-                    if (target == null || source == null) {
-                        continue;
-                    }
-                } else {
-                    if (target == null) {
-                        throw new RuntimeException("could not find " + targetTable + " table in data dictionary");
-                    }
-                    if (source == null) {
-                        throw new RuntimeException("could not find " + sourceTable + " table in data dictionary");
-
-                    }
-                }
-                String linked = sourceTable + "." + sourceField + " <=> " + targetTable + "." + targetField;
-                Element edgeElement = document.createElement("edge");
-                edgeElement.setAttribute("id", "e" + edge);
-                edgeElement.setAttribute("source", source);
-                edgeElement.setAttribute("target", target);
-                graphElement.appendChild(edgeElement);
-
-                Element dataD10Element = document.createElement("data");
-                dataD10Element.setAttribute("key", "d10");
-                edgeElement.appendChild(dataD10Element);
-
-                Element polyLineEdgeElement = document.createElement("y:PolyLineEdge");
-                dataD10Element.appendChild(polyLineEdgeElement);
-
-                Element pathElement = document.createElement("y:Path");
-                pathElement.setAttribute("sx", "0.0");
-                pathElement.setAttribute("sy", "0.0");
-                pathElement.setAttribute("tx", "0.0");
-                pathElement.setAttribute("ty", "0.0");
-                polyLineEdgeElement.appendChild(pathElement);
-
-                Element lineStyleElement = document.createElement("y:LineStyle");
-                lineStyleElement.setAttribute("color", "#000000");
-                lineStyleElement.setAttribute("type", "line");
-                lineStyleElement.setAttribute("width", "1.0");
-                polyLineEdgeElement.appendChild(lineStyleElement);
-
-                Element arrowsElement = document.createElement("y:Arrows");
-                arrowsElement.setAttribute("source", "none");
-                arrowsElement.setAttribute("target", "none");
-                polyLineEdgeElement.appendChild(arrowsElement);
-
-                Element edgeLabelElement = document.createElement("y:EdgeLabel");
-                edgeLabelElement.setAttribute("alignment", "center");
-                edgeLabelElement.setAttribute("configuration", "AutoFlippingLabel");
-                edgeLabelElement.setAttribute("distance", "2.0");
-                edgeLabelElement.setAttribute("fontFamily", "Dialog");
-                edgeLabelElement.setAttribute("fontSize", "12");
-                edgeLabelElement.setAttribute("fontStyle", "plain");
-                edgeLabelElement.setAttribute("hasBackgroundColor", "false");
-                edgeLabelElement.setAttribute("hasLineColor", "false");
-                edgeLabelElement.setAttribute("horizontalTextPosition", "center");
-                edgeLabelElement.setAttribute("iconTextGap", "4");
-                edgeLabelElement.setAttribute("modelName", "custom");
-                edgeLabelElement.setAttribute("preferredPlacement", "anywhere");
-                edgeLabelElement.setAttribute("ratio", "0.5");
-                edgeLabelElement.setAttribute("textColor", "#000000");
-                edgeLabelElement.setAttribute("verticalTextPosition", "bottom");
-                edgeLabelElement.setAttribute("visible", "true");
-                edgeLabelElement.setTextContent(linked);
-                polyLineEdgeElement.appendChild(edgeLabelElement);
-
-                Element labelModelElement = document.createElement("y:LabelModel");
-                edgeLabelElement.appendChild(labelModelElement);
-
-                Element rotatedDiscreteEdgeLabelModelElement = document.createElement("y:RotatedDiscreteEdgeLabelModel");
-                rotatedDiscreteEdgeLabelModelElement.setAttribute("angle", "0.0");
-                rotatedDiscreteEdgeLabelModelElement.setAttribute("autoRotationEnabled", "true");
-                rotatedDiscreteEdgeLabelModelElement.setAttribute("candidateMask", "18");
-                rotatedDiscreteEdgeLabelModelElement.setAttribute("distance", "2.0");
-                rotatedDiscreteEdgeLabelModelElement.setAttribute("positionRelativeToSegment", "false");
-                labelModelElement.appendChild(rotatedDiscreteEdgeLabelModelElement);
-
-                Element modelParameterElement = document.createElement("y:ModelParameter");
-                edgeLabelElement.appendChild(modelParameterElement);
-
-                Element rotatedDiscreteEdgeLabelModelParameterElement = document.createElement("y:RotatedDiscreteEdgeLabelModelParameter");
-                rotatedDiscreteEdgeLabelModelParameterElement.setAttribute("position", "head");
-                modelParameterElement.appendChild(rotatedDiscreteEdgeLabelModelParameterElement);
-
-                Element preferredPlacementDescriptorElement = document.createElement("y:PreferredPlacementDescriptor");
-                preferredPlacementDescriptorElement.setAttribute("angle", "0.0");
-                preferredPlacementDescriptorElement.setAttribute("angleOffsetOnRightSide", "0");
-                preferredPlacementDescriptorElement.setAttribute("angleReference", "absolute");
-                preferredPlacementDescriptorElement.setAttribute("angleRotationOnRightSide", "co");
-                preferredPlacementDescriptorElement.setAttribute("distance", "-1.0");
-                preferredPlacementDescriptorElement.setAttribute("frozen", "true");
-                preferredPlacementDescriptorElement.setAttribute("placement", "anywhere");
-                preferredPlacementDescriptorElement.setAttribute("side", "anywhere");
-                preferredPlacementDescriptorElement.setAttribute("sideReference", "relative_to_edge_flow");
-                edgeLabelElement.appendChild(preferredPlacementDescriptorElement);
-
-                Element bendStyleElement = document.createElement("y:BendStyle");
-                bendStyleElement.setAttribute("smoothed", "true");
-                polyLineEdgeElement.appendChild(bendStyleElement);
-
-                edge++;
             }
+        }
+
+        int edge = 0;
+        for (Link link : links.values()) {
+            String source = link.getFromId();
+            String target = link.getToId();
+
+            String linked = StringUtils.join(link.getComments(), "\n");
+            Element edgeElement = document.createElement("edge");
+            edgeElement.setAttribute("id", "e" + edge);
+            edgeElement.setAttribute("source", source);
+            edgeElement.setAttribute("target", target);
+            graphElement.appendChild(edgeElement);
+
+            Element dataD10Element = document.createElement("data");
+            dataD10Element.setAttribute("key", "d10");
+            edgeElement.appendChild(dataD10Element);
+
+            Element polyLineEdgeElement = document.createElement("y:PolyLineEdge");
+            dataD10Element.appendChild(polyLineEdgeElement);
+
+            Element pathElement = document.createElement("y:Path");
+            pathElement.setAttribute("sx", "0.0");
+            pathElement.setAttribute("sy", "0.0");
+            pathElement.setAttribute("tx", "0.0");
+            pathElement.setAttribute("ty", "0.0");
+            polyLineEdgeElement.appendChild(pathElement);
+
+            Element lineStyleElement = document.createElement("y:LineStyle");
+            lineStyleElement.setAttribute("color", "#000000");
+            lineStyleElement.setAttribute("type", "line");
+            lineStyleElement.setAttribute("width", "1.0");
+            polyLineEdgeElement.appendChild(lineStyleElement);
+
+            Element arrowsElement = document.createElement("y:Arrows");
+            arrowsElement.setAttribute("source", "none");
+            arrowsElement.setAttribute("target", "none");
+            polyLineEdgeElement.appendChild(arrowsElement);
+
+            Element edgeLabelElement = document.createElement("y:EdgeLabel");
+            edgeLabelElement.setAttribute("alignment", "center");
+            edgeLabelElement.setAttribute("configuration", "AutoFlippingLabel");
+            edgeLabelElement.setAttribute("distance", "2.0");
+            edgeLabelElement.setAttribute("fontFamily", "Dialog");
+            edgeLabelElement.setAttribute("fontSize", "12");
+            edgeLabelElement.setAttribute("fontStyle", "plain");
+            edgeLabelElement.setAttribute("hasBackgroundColor", "false");
+            edgeLabelElement.setAttribute("hasLineColor", "false");
+            edgeLabelElement.setAttribute("horizontalTextPosition", "center");
+            edgeLabelElement.setAttribute("iconTextGap", "4");
+            edgeLabelElement.setAttribute("modelName", "custom");
+            edgeLabelElement.setAttribute("preferredPlacement", "anywhere");
+            edgeLabelElement.setAttribute("ratio", "0.5");
+            edgeLabelElement.setAttribute("textColor", "#000000");
+            edgeLabelElement.setAttribute("verticalTextPosition", "bottom");
+            edgeLabelElement.setAttribute("visible", "true");
+            edgeLabelElement.setTextContent(linked);
+            polyLineEdgeElement.appendChild(edgeLabelElement);
+
+            Element labelModelElement = document.createElement("y:LabelModel");
+            edgeLabelElement.appendChild(labelModelElement);
+
+            Element rotatedDiscreteEdgeLabelModelElement = document.createElement("y:RotatedDiscreteEdgeLabelModel");
+            rotatedDiscreteEdgeLabelModelElement.setAttribute("angle", "0.0");
+            rotatedDiscreteEdgeLabelModelElement.setAttribute("autoRotationEnabled", "true");
+            rotatedDiscreteEdgeLabelModelElement.setAttribute("candidateMask", "18");
+            rotatedDiscreteEdgeLabelModelElement.setAttribute("distance", "2.0");
+            rotatedDiscreteEdgeLabelModelElement.setAttribute("positionRelativeToSegment", "false");
+            labelModelElement.appendChild(rotatedDiscreteEdgeLabelModelElement);
+
+            Element modelParameterElement = document.createElement("y:ModelParameter");
+            edgeLabelElement.appendChild(modelParameterElement);
+
+            Element rotatedDiscreteEdgeLabelModelParameterElement = document.createElement("y:RotatedDiscreteEdgeLabelModelParameter");
+            rotatedDiscreteEdgeLabelModelParameterElement.setAttribute("position", "head");
+            modelParameterElement.appendChild(rotatedDiscreteEdgeLabelModelParameterElement);
+
+            Element preferredPlacementDescriptorElement = document.createElement("y:PreferredPlacementDescriptor");
+            preferredPlacementDescriptorElement.setAttribute("angle", "0.0");
+            preferredPlacementDescriptorElement.setAttribute("angleOffsetOnRightSide", "0");
+            preferredPlacementDescriptorElement.setAttribute("angleReference", "absolute");
+            preferredPlacementDescriptorElement.setAttribute("angleRotationOnRightSide", "co");
+            preferredPlacementDescriptorElement.setAttribute("distance", "-1.0");
+            preferredPlacementDescriptorElement.setAttribute("frozen", "true");
+            preferredPlacementDescriptorElement.setAttribute("placement", "anywhere");
+            preferredPlacementDescriptorElement.setAttribute("side", "anywhere");
+            preferredPlacementDescriptorElement.setAttribute("sideReference", "relative_to_edge_flow");
+            edgeLabelElement.appendChild(preferredPlacementDescriptorElement);
+
+            Element bendStyleElement = document.createElement("y:BendStyle");
+            bendStyleElement.setAttribute("smoothed", "true");
+            polyLineEdgeElement.appendChild(bendStyleElement);
+
+            edge++;
         }
 
         Element dataD7Element = document.createElement("data");
@@ -503,7 +484,7 @@ public class ERDData {
         System.out.println("[INFO] ERD is generated to " + outputFile.getAbsolutePath());
     }
 
-    public String parseType(String name, String type) {
+    public static String parseType(String name, String type) {
         String commonType = "";
         if ("tinyint(1)".equals(type) || "bit(1)".equals(type)) {
             commonType = "boolean";
@@ -533,12 +514,25 @@ public class ERDData {
         return commonType;
     }
 
-    public List<Map<String, Object>> queryForFields(JdbcTemplate jdbcTemplate, String table) {
-        return jdbcTemplate.queryForList("DESC `" + table + "`");
+    public static List<Map<String, Object>> queryForFields(Table table) throws IOException {
+        List<Map<String, Object>> fields = new ArrayList<>();
+        for (Field f : table.getFields()) {
+            Map<String, Object> field = new HashMap<>();
+            field.put("field", f.getName());
+            field.put("type", f.getType());
+            field.put("key", f.getKey());
+            fields.add(field);
+        }
+        return fields;
     }
 
-    public List<String> queryForTables(JdbcTemplate jdbcTemplate) {
-        return jdbcTemplate.queryForList("show tables", String.class);
+    public static Table queryForTable(Database database, String name) throws IOException {
+        for (Table table : database.getTables()) {
+            if (table.getName().equals(name)) {
+                return table;
+            }
+        }
+        return null;
     }
 
 }
