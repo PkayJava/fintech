@@ -50,6 +50,7 @@
 		<text.version>1.1</text.version>
 		<joda-time.version>2.9.9</joda-time.version>
 		<spring-data.version>3.0.0.RELEASE</spring-data.version>
+		<io.version>2.6</io.version>
 	</properties>
 	<dependencies>
 
@@ -84,6 +85,12 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-text</artifactId>
 			<version>${text.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${io.version}</version>
 		</dependency>
 
 		<dependency>

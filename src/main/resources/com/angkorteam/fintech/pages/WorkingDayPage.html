@@ -11,88 +11,118 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label>&nbsp;</label> <span style="display: block"> <label>
-								<input type="checkbox" wicket:id="mondayField"> Monday
-						</label>
-						</span> <span wicket:id="mondayFeedback" class="help-block"></span>
+					<div wicket:id="mondayBlock" class="form-group">
+						<wicket:container wicket:id="mondayIContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="mondayField"> Monday
+							</label>
+							</span>
+							<span wicket:id="mondayFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label>&nbsp;</label> <span style="display: block"> <label>
-								<input type="checkbox" wicket:id="tuesdayField"> Tuesday
-						</label>
-						</span> <span wicket:id="tuesdayFeedback" class="help-block"></span>
+					<div wicket:id="tuesdayBlock" class="form-group">
+						<wicket:container wicket:id="tuesdayIContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="tuesdayField"> Tuesday
+							</label>
+							</span>
+							<span wicket:id="tuesdayFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label>&nbsp;</label> <span style="display: block"> <label>
-								<input type="checkbox" wicket:id="wednesdayField">
-								Wednesday
-						</label>
-						</span> <span wicket:id="wednesdayFeedback" class="help-block"></span>
+					<div wicket:id="wednesdayBlock" class="form-group">
+						<wicket:container wicket:id="wednesdayIContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="wednesdayField"> Wednesday
+							</label>
+							</span>
+							<span wicket:id="wednesdayFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label>&nbsp;</label> <span style="display: block"> <label>
-								<input type="checkbox" wicket:id="thursdayField">
-								Thursday
-						</label>
-						</span> <span wicket:id="thursdayFeedback" class="help-block"></span>
+					<div wicket:id="thursdayBlock" class="form-group">
+						<wicket:container wicket:id="thursdayIContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="thursdayField"> Thursday
+							</label>
+							</span>
+							<span wicket:id="thursdayFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label>&nbsp;</label> <span style="display: block"> <label>
-								<input type="checkbox" wicket:id="fridayField"> Friday
-						</label>
-						</span> <span wicket:id="fridayFeedback" class="help-block"></span>
+					<div wicket:id="fridayBlock" class="form-group">
+						<wicket:container wicket:id="fridayIContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="fridayField"> Friday
+							</label>
+							</span>
+							<span wicket:id="fridayFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label>&nbsp;</label> <span style="display: block"> <label>
-								<input type="checkbox" wicket:id="saturdayField">
-								Saturday
-						</label>
-						</span> <span wicket:id="saturdayFeedback" class="help-block"></span>
+					<div wicket:id="saturdayBlock" class="form-group">
+						<wicket:container wicket:id="saturdayIContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="saturdayField"> Saturday
+							</label>
+							</span>
+							<span wicket:id="saturdayFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label>&nbsp;</label> <span style="display: block"> <label>
-								<input type="checkbox" wicket:id="sundayField"> Sunday
-						</label>
-						</span> <span wicket:id="sundayFeedback" class="help-block"></span>
+					<div wicket:id="sundayBlock" class="form-group">
+						<wicket:container wicket:id="sundayIContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="sundayField"> Sunday
+							</label>
+							</span>
+							<span wicket:id="sundayFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="repaymentOptionField">Payments due on
-							non working days</label> <select wicket:id="repaymentOptionField"
-							class="form-control select2" style="width: 100%;"></select> <span
-							wicket:id="repaymentOptionFeedback" class="help-block"></span>
+					<div wicket:id="repaymentOptionBlock" class="form-group">
+						<wicket:container wicket:id="repaymentOptionIContainer">
+							<label wicket:for="repaymentOptionField">Payments due on
+								non working days</label>
+							<select wicket:id="repaymentOptionField" class="form-control"></select>
+							<span wicket:id="repaymentOptionFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label>&nbsp;</label> <span style="display: block"> <label>
-								<input type="checkbox" wicket:id="repaymentExtendTermField">
-								Extend the term for loans following a daily repayment schedule
-						</label>
-						</span> <span wicket:id="repaymentExtendTermFeedback" class="help-block"></span>
+					<div wicket:id="repaymentExtendTermBlock" class="form-group">
+						<wicket:container wicket:id="repaymentExtendTermIContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="repaymentExtendTermField">
+									Extend the term for loans following a daily repayment schedule
+							</label>
+							</span>
+							<span wicket:id="repaymentExtendTermFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>
