@@ -3,11 +3,13 @@ package com.angkorteam.fintech.pages;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -20,6 +22,8 @@ import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.spring.JdbcTemplate;
@@ -46,19 +50,22 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class CurrencyConfigurationPage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected FilterForm<Map<String, String>> dataFilterForm;
 
-    private JdbcProvider provider;
+    protected WebMarkupBlock currencyBlock;
+    protected WebMarkupContainer currencyIContainer;
+    protected SingleChoiceProvider currencyProvider;
+    protected Option currencyValue;
+    protected Select2SingleChoice<Option> currencyField;
+    protected TextFeedbackPanel currencyFeedback;
 
-    private SingleChoiceProvider currencyProvider;
-    private Option currencyValue;
-    private Select2SingleChoice<Option> currencyField;
-    private TextFeedbackPanel currencyFeedback;
+    protected Form<Void> form;
+    protected Button addButton;
 
-    private Form<Void> form;
-    private Button addButton;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -86,28 +93,12 @@ public class CurrencyConfigurationPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("m_organisation_currency");
-        this.provider.boardField("id", "id", Long.class);
-        this.provider.boardField("code", "code", String.class);
-        this.provider.boardField("name", "name", String.class);
-        this.provider.boardField("display_symbol", "symbol", String.class);
-        this.provider.setSort("name", SortOrder.ASCENDING);
+    protected void initData() {
+    }
 
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("ID"), "id", "id", this::idColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Code"), "code", "code", this::codeColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Symbol"), "symbol", "symbol", this::symbolColumn));
-        columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
-
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
-
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+    @Override
+    protected void initComponent() {
+        initDataTable();
 
         this.form = new Form<>("form");
         add(this.form);
@@ -116,16 +107,51 @@ public class CurrencyConfigurationPage extends Page {
         this.addButton.setOnSubmit(this::addButtonSubmit);
         this.form.add(this.addButton);
 
+        this.currencyBlock = new WebMarkupBlock("currencyBlock", Size.Twelve_12);
+        this.form.add(this.currencyBlock);
+        this.currencyIContainer = new WebMarkupContainer("currencyIContainer");
+        this.currencyBlock.add(this.currencyIContainer);
         this.currencyProvider = new SingleChoiceProvider("m_currency", "code", "name", "concat(name,' [', code,']')");
         this.currencyProvider.applyWhere("code", "code not in (select code from m_organisation_currency)");
         this.currencyField = new Select2SingleChoice<>("currencyField", new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
         this.currencyField.setRequired(true);
-        this.form.add(this.currencyField);
+        this.currencyIContainer.add(this.currencyField);
         this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
-        this.form.add(this.currencyFeedback);
+        this.currencyIContainer.add(this.currencyFeedback);
     }
 
-    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void initDataTable() {
+        this.dataProvider = new JdbcProvider("m_organisation_currency");
+        this.dataProvider.boardField("id", "id", Long.class);
+        this.dataProvider.boardField("code", "code", String.class);
+        this.dataProvider.boardField("name", "name", String.class);
+        this.dataProvider.boardField("display_symbol", "symbol", String.class);
+        this.dataProvider.setSort("name", SortOrder.ASCENDING);
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("ID"), "id", "id", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Code"), "code", "code", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Symbol"), "symbol", "symbol", this::dataColumn));
+        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
+
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        add(this.dataFilterForm);
+
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void dataClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         List<String> codes = jdbcTemplate.queryForList("select code from m_organisation_currency where code not in (?)", String.class, model.get("code"));
         try {
@@ -135,11 +161,11 @@ public class CurrencyConfigurationPage extends Page {
         setResponsePage(CurrencyConfigurationPage.class);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> dataAction(String column, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    private void addButtonSubmit(Button button) {
+    protected void addButtonSubmit(Button button) {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         List<String> temp = jdbcTemplate.queryForList("select code from m_organisation_currency", String.class);
         List<String> codes = Lists.newArrayList(temp);
@@ -158,23 +184,15 @@ public class CurrencyConfigurationPage extends Page {
         setResponsePage(CurrencyConfigurationPage.class);
     }
 
-    private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long value = (Long) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("id".equals(column)) {
+            Long value = (Long) model.get(column);
+            return new TextCell(value);
+        } else if ("code".equals(column) || "name".equals(column) || "symbol".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
-    private ItemPanel codeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel symbolColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
 }
