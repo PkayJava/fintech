@@ -49,9 +49,13 @@ public class ServiceDashboardPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+        // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    protected void initComponent() {
         InfoBoxPanel s3Page = new InfoBoxPanel("s3Page", Model.of(new InfoBox().setPage(S3ConfigurationPage.class).setTitle("Amazon S3").setDescription("Simple File Storage").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(s3Page);
 
@@ -60,5 +64,13 @@ public class ServiceDashboardPage extends Page {
 
         InfoBoxPanel smsPage = new InfoBoxPanel("smsPage", Model.of(new InfoBox().setPage(SMSConfigurationPage.class).setTitle("SMS").setDescription("Short Message Service").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(smsPage);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 }

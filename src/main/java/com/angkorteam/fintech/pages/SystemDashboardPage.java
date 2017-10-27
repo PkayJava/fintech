@@ -47,9 +47,11 @@ public class SystemDashboardPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         InfoBoxPanel manageDataTablePage = new InfoBoxPanel("manageDataTablePage", Model.of(new InfoBox().setPage(DataTableBrowsePage.class).setTitle("Manage Data Tables").setDescription("Add new extra fields to any entity in the form of data table").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(manageDataTablePage);
 
@@ -85,6 +87,14 @@ public class SystemDashboardPage extends Page {
 
         InfoBoxPanel externalServicePage = new InfoBoxPanel("externalServicePage", Model.of(new InfoBox().setPage(ServiceDashboardPage.class).setTitle("External Services").setDescription("External Services Configuration").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(externalServicePage);
-
     }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
 }

@@ -51,9 +51,11 @@ public class ProductDashboardPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         InfoBoxPanel loanProductsPage = new InfoBoxPanel("loanProductsPage", Model.of(new InfoBox().setPage(LoanBrowsePage.class).setTitle("Loan Products").setDescription("Add new loan product or modify or inactivate loan product").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(loanProductsPage);
 
@@ -80,7 +82,14 @@ public class ProductDashboardPage extends Page {
 
         InfoBoxPanel floatingRatesPage = new InfoBoxPanel("floatingRatesPage", Model.of(new InfoBox().setPage(FloatingRateBrowsePage.class).setTitle("Floating Rates").setDescription("Define floating rates for loan products").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(floatingRatesPage);
+    }
 
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
 }

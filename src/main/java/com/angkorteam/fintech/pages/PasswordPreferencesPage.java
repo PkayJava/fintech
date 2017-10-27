@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -38,13 +39,14 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class PasswordPreferencesPage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected JdbcProvider dataProvider;
+    protected FilterForm<Map<String, String>> dataFilterForm;
 
-    private JdbcProvider provider;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private BookmarkablePageLink<Void> closeLink;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -72,32 +74,43 @@ public class PasswordPreferencesPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("m_password_validation_policy");
-        this.provider.boardField("id", "id", Long.class);
-        this.provider.boardField("active", "active", Boolean.class);
-        this.provider.boardField("description", "description", String.class);
+    protected void initData() {
+    }
 
-        this.provider.selectField("id", Long.class);
+    @Override
+    protected void initComponent() {
+        this.dataProvider = new JdbcProvider("m_password_validation_policy");
+        this.dataProvider.boardField("id", "id", Long.class);
+        this.dataProvider.boardField("active", "active", Boolean.class);
+        this.dataProvider.boardField("description", "description", String.class);
 
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Active"), "active", "active", this::activeColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Description"), "description", "description", this::descriptionColumn));
-        columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
+        this.dataProvider.selectField("id", Long.class);
 
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Boolean, Model.of("Active"), "active", "active", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Description"), "description", "description", this::dataColumn));
+        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        add(this.dataFilterForm);
+
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", OrganizationDashboardPage.class);
         add(this.closeLink);
     }
 
-    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void dataClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         Integer id = (Integer) model.get("id");
         try {
             PasswordPreferencesHelper.update((Session) getSession(), String.valueOf(id));
@@ -106,7 +119,7 @@ public class PasswordPreferencesPage extends Page {
         target.add(this.dataTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> dataAction(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         Integer active = (Integer) model.get("active");
         if (active == null || active != 1) {
@@ -115,18 +128,19 @@ public class PasswordPreferencesPage extends Page {
         return actions;
     }
 
-    private ItemPanel activeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer value = (Integer) model.get(jdbcColumn);
-        if (value != null && value == 1) {
-            return new BadgeCell(BadgeType.Success, Model.of("Yes"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("No"));
+    protected ItemPanel dataColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
+        if ("active".equals(jdbcColumn)) {
+            Integer value = (Integer) model.get(jdbcColumn);
+            if (value != null && value == 1) {
+                return new BadgeCell(BadgeType.Success, Model.of("Yes"));
+            } else {
+                return new BadgeCell(BadgeType.Danger, Model.of("No"));
+            }
+        } else if ("description".equals(jdbcColumn)) {
+            String value = (String) model.get(jdbcColumn);
+            return new TextCell(value);
         }
-    }
-
-    private ItemPanel descriptionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+        throw new WicketRuntimeException("Unknow " + jdbcColumn);
     }
 
 }
