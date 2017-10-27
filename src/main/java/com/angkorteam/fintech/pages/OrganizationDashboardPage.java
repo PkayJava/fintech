@@ -50,9 +50,11 @@ public class OrganizationDashboardPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         InfoBoxPanel manageOfficePage = new InfoBoxPanel("manageOfficePage", Model.of(new InfoBox().setPage(OfficeBrowsePage.class).setTitle("Manage Offices").setDescription("Add new office or modify or deactivate office or modify office hierarchy").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(manageOfficePage);
 
@@ -97,6 +99,14 @@ public class OrganizationDashboardPage extends Page {
 
         InfoBoxPanel smsCampaignPage = new InfoBoxPanel("smsCampaignPage", Model.of(new InfoBox().setPage(LoginPage.class).setTitle("SMS Campaigns").setDescription("Define SMS Campaigns for Organization").setIcon(Emoji.ion_alert)));
         add(smsCampaignPage);
-
     }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
 }

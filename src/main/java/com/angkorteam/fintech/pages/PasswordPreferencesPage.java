@@ -110,7 +110,7 @@ public class PasswordPreferencesPage extends Page {
     protected void configureMetaData() {
     }
 
-    protected void dataClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void dataClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
         Integer id = (Integer) model.get("id");
         try {
             PasswordPreferencesHelper.update((Session) getSession(), String.valueOf(id));
@@ -119,7 +119,7 @@ public class PasswordPreferencesPage extends Page {
         target.add(this.dataTable);
     }
 
-    protected List<ActionItem> dataAction(String s, Map<String, Object> model) {
+    protected List<ActionItem> dataAction(String column, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         Integer active = (Integer) model.get("active");
         if (active == null || active != 1) {
@@ -128,19 +128,19 @@ public class PasswordPreferencesPage extends Page {
         return actions;
     }
 
-    protected ItemPanel dataColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        if ("active".equals(jdbcColumn)) {
-            Integer value = (Integer) model.get(jdbcColumn);
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("active".equals(column)) {
+            Integer value = (Integer) model.get(column);
             if (value != null && value == 1) {
                 return new BadgeCell(BadgeType.Success, Model.of("Yes"));
             } else {
                 return new BadgeCell(BadgeType.Danger, Model.of("No"));
             }
-        } else if ("description".equals(jdbcColumn)) {
-            String value = (String) model.get(jdbcColumn);
+        } else if ("description".equals(column)) {
+            String value = (String) model.get(column);
             return new TextCell(value);
         }
-        throw new WicketRuntimeException("Unknow " + jdbcColumn);
+        throw new WicketRuntimeException("Unknow " + column);
     }
 
 }
