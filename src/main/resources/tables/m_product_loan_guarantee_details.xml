@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_product_loan_guarantee_details">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_product_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="mandatory_guarantee" type="decimal(19,5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="minimum_guarantee_from_own_funds" type="decimal(19,5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="minimum_guarantee_from_guarantor_funds" type="decimal(19,5)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

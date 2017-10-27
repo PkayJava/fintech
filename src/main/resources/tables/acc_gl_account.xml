@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="acc_gl_account">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" type="varchar(200)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="parent_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="hierarchy" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="gl_code" key="UNI" type="varchar(45)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="disabled" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="manual_journal_entries_allowed" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="account_usage" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="classification_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="tag_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(500)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_portfolio_command_source">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="action_name" key="MUL" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="entity_name" key="MUL" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="office_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="group_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="client_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="savings_account_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="api_get_url" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="resource_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="subresource_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="command_as_json" type="text">
+            <comment>field explaination</comment>
+        </field>
+        <field name="maker_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="made_on_date" key="MUL" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="checker_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="checked_on_date" key="MUL" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="processing_result_enum" key="MUL" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="product_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="transaction_id" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="creditbureau_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="organisation_creditbureau_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

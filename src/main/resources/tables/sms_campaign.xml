@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="sms_campaign">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="campaign_name" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="campaign_type" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="campaign_trigger_type" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="report_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="provider_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="param_value" type="text">
+            <comment>field explaination</comment>
+        </field>
+        <field name="status_enum" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="message" type="text">
+            <comment>field explaination</comment>
+        </field>
+        <field name="submittedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="submittedon_userid" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="approvedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="approvedon_userid" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="closedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="closedon_userid" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="recurrence" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="next_trigger_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="last_trigger_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="recurrence_start_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_visible" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

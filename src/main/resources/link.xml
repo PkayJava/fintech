@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="acc_accounting_rule">
+        <field name="office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="debit_account_id" referenceTable="acc_gl_account" referenceField="id"/>
+        <field name="credit_account_id" referenceTable="acc_gl_account" referenceField="id"/>
+    </table>
+    <table name="acc_gl_account">
+        <field name="tag_id" referenceTable="m_code_value" referenceField="id"/>
+    </table>
+    <table name="acc_gl_closure">
+        <field name="office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="acc_gl_financial_activity_account">
+        <field name="gl_account_id" referenceTable="acc_gl_account" referenceField="id"/>
+    </table>
+    <table name="acc_gl_journal_entry">
+        <field name="account_id" referenceTable="acc_gl_account" referenceField="id"/>
+        <field name="office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="loan_transaction_id" referenceTable="m_loan_transaction" referenceField="id"/>
+        <field name="savings_transaction_id" referenceTable="m_savings_account_transaction" referenceField="id"/>
+        <field name="client_transaction_id" referenceTable="m_client_transaction" referenceField="id"/>
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="payment_details_id" referenceTable="m_payment_detail" referenceField="id"/>
+        <field name="share_transaction_id" referenceTable="m_share_account_transactions" referenceField="id"/>
+    </table>
+    <table name="acc_product_mapping">
+        <field name="payment_type" referenceTable="m_payment_type" referenceField="id"/>
+        <field name="charge_id" referenceTable="m_charge" referenceField="id"/>
+    </table>
+    <table name="acc_rule_tags">
+        <field name="acc_rule_id" referenceTable="acc_accounting_rule" referenceField="id"/>
+        <field name="tag_id" referenceTable="m_code_value" referenceField="id"/>
+    </table>
+    <table name="c_external_service_properties">
+        <field name="external_service_id" referenceTable="c_external_service" referenceField="id"/>
+    </table>
+    <table name="job_run_history">
+        <field name="job_id" referenceTable="job" referenceField="id"/>
+    </table>
+    <table name="m_account_transfer_details">
+        <field name="from_office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="to_office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="from_client_id" referenceTable="m_client" referenceField="id"/>
+        <field name="to_client_id" referenceTable="m_client" referenceField="id"/>
+        <field name="from_savings_account_id" referenceTable="m_savings_account" referenceField="id"/>
+        <field name="to_savings_account_id" referenceTable="m_savings_account" referenceField="id"/>
+        <field name="from_loan_account_id" referenceTable="m_loan" referenceField="id"/>
+        <field name="to_loan_account_id" referenceTable="m_loan" referenceField="id"/>
+    </table>
+    <table name="m_account_transfer_standing_instructions">
+        <field name="account_transfer_details_id" referenceTable="m_account_transfer_details" referenceField="id"/>
+    </table>
+    <table name="m_account_transfer_standing_instructions_history">
+        <field name="standing_instruction_id" referenceTable="m_account_transfer_standing_instructions" referenceField="id"/>
+    </table>
+    <table name="m_account_transfer_transaction">
+        <field name="account_transfer_details_id" referenceTable="m_account_transfer_details" referenceField="id"/>
+        <field name="from_savings_transaction_id" referenceTable="m_savings_account_transaction" referenceField="id"/>
+        <field name="from_loan_transaction_id" referenceTable="m_loan_transaction" referenceField="id"/>
+        <field name="to_savings_transaction_id" referenceTable="m_savings_account_transaction" referenceField="id"/>
+        <field name="to_loan_transaction_id" referenceTable="m_loan_transaction" referenceField="id"/>
+    </table>
+    <table name="m_address">
+        <field name="state_province_id" referenceTable="m_code_value" referenceField="id"/>
+        <field name="country_id" referenceTable="m_code_value" referenceField="id"/>
+    </table>
+    <table name="m_adhoc">
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_appuser">
+        <field name="office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="staff_id" referenceTable="m_staff" referenceField="id"/>
+    </table>
+    <table name="m_appuser_previous_password">
+        <field name="user_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_appuser_role">
+        <field name="appuser_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="role_id" referenceTable="m_role" referenceField="id"/>
+    </table>
+    <table name="m_calendar">
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_calendar_history">
+        <field name="calendar_id" referenceTable="m_calendar" referenceField="id"/>
+    </table>
+    <table name="m_calendar_instance">
+        <field name="calendar_id" referenceTable="m_calendar" referenceField="id"/>
+    </table>
+    <table name="m_cashier_transactions">
+        <field name="cashier_id" referenceTable="m_cashiers" referenceField="id"/>
+        <field name="currency_code" referenceTable="m_organisation_currency" referenceField="code"/>
+    </table>
+    <table name="m_cashiers">
+        <field name="staff_id" referenceTable="m_staff" referenceField="id"/>
+        <field name="teller_id" referenceTable="m_tellers" referenceField="id"/>
+    </table>
+    <table name="m_charge">
+        <field name="currency_code" referenceTable="m_organisation_currency" referenceField="code"/>
+        <field name="income_or_liability_account_id" referenceTable="acc_gl_account" referenceField="id"/>
+        <field name="tax_group_id" referenceTable="m_tax_group" referenceField="id"/>
+    </table>
+    <table name="m_client">
+        <field name="sub_status" referenceTable="m_code_value" referenceField="id"/>
+        <field name="office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="transfer_to_office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="staff_id" referenceTable="m_staff" referenceField="id"/>
+        <field name="gender_cv_id" referenceTable="m_code_value" referenceField="id"/>
+        <field name="image_id" referenceTable="m_image" referenceField="id"/>
+        <field name="closure_reason_cv_id" referenceTable="m_code_value" referenceField="id"/>
+        <field name="default_savings_product" referenceTable="m_savings_product" referenceField="id"/>
+        <field name="default_savings_account" referenceTable="m_savings_account" referenceField="id"/>
+        <field name="client_type_cv_id" referenceTable="m_code_value" referenceField="id"/>
+        <field name="client_classification_cv_id" referenceTable="m_code_value" referenceField="id"/>
+        <field name="reject_reason_cv_id" referenceTable="m_code_value" referenceField="id"/>
+        <field name="withdraw_reason_cv_id" referenceTable="m_code_value" referenceField="id"/>
+    </table>
+    <table name="m_client_address">
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+        <field name="address_id" referenceTable="m_address" referenceField="id"/>
+        <field name="address_type_id" referenceTable="m_code_value" referenceField="id"/>
+    </table>
+    <table name="m_client_attendance">
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+        <field name="meeting_id" referenceTable="m_meeting" referenceField="id"/>
+    </table>
+    <table name="m_client_charge">
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+        <field name="charge_id" referenceTable="m_charge" referenceField="id"/>
+    </table>
+    <table name="m_client_charge_paid_by">
+        <field name="client_transaction_id" referenceTable="m_client_transaction" referenceField="id"/>
+        <field name="client_charge_id" referenceTable="m_client_charge" referenceField="id"/>
+    </table>
+    <table name="m_client_identifier">
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+        <field name="document_type_id" referenceTable="m_code_value" referenceField="id"/>
+    </table>
+    <table name="m_client_non_person">
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+    </table>
+    <table name="m_client_transaction">
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+        <field name="appuser_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_code_value">
+        <field name="code_id" referenceTable="m_code" referenceField="id"/>
+    </table>
+    <table name="m_creditbureau_configuration">
+        <field name="organisation_creditbureau_id" referenceTable="m_organisation_creditbureau" referenceField="id"/>
+    </table>
+    <table name="m_creditbureau_loanproduct_mapping">
+        <field name="organisation_creditbureau_id" referenceTable="m_organisation_creditbureau" referenceField="id"/>
+        <field name="loan_product_id" referenceTable="m_product_loan" referenceField="id"/>
+    </table>
+    <table name="m_deposit_account_on_hold_transaction">
+        <field name="savings_account_id" referenceTable="m_savings_account" referenceField="id"/>
+    </table>
+    <table name="m_deposit_account_recurring_detail">
+        <field name="savings_account_id" referenceTable="m_savings_account" referenceField="id"/>
+    </table>
+    <table name="m_deposit_account_term_and_preclosure">
+        <field name="savings_account_id" referenceTable="m_savings_account" referenceField="id"/>
+    </table>
+    <table name="m_deposit_product_interest_rate_chart">
+        <field name="deposit_product_id" referenceTable="m_savings_product" referenceField="id"/>
+        <field name="interest_rate_chart_id" referenceTable="m_interest_rate_chart" referenceField="id"/>
+    </table>
+    <table name="m_deposit_product_recurring_detail">
+        <field name="savings_product_id" referenceTable="m_savings_product" referenceField="id"/>
+    </table>
+    <table name="m_deposit_product_term_and_preclosure">
+        <field name="savings_product_id" referenceTable="m_savings_product" referenceField="id"/>
+    </table>
+    <table name="m_entity_datatable_check">
+        <field name="x_registered_table_name" referenceTable="x_registered_table" referenceField="registered_table_name"/>
+    </table>
+    <table name="m_entity_to_entity_access">
+        <field name="access_type_code_value_id" referenceTable="m_code_value" referenceField="id"/>
+    </table>
+    <table name="m_entity_to_entity_mapping">
+        <field name="rel_id" referenceTable="m_entity_relation" referenceField="id"/>
+    </table>
+    <table name="m_family_members">
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+        <field name="relationship_cv_id" referenceTable="m_code_value" referenceField="id"/>
+        <field name="marital_status_cv_id" referenceTable="m_code_value" referenceField="id"/>
+        <field name="gender_cv_id" referenceTable="m_code_value" referenceField="id"/>
+        <field name="profession_cv_id" referenceTable="m_code_value" referenceField="id"/>
+    </table>
+    <table name="m_floating_rates">
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_floating_rates_periods">
+        <field name="floating_rates_id" referenceTable="m_floating_rates" referenceField="id"/>
+    </table>
+    <table name="m_group">
+        <field name="office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="staff_id" referenceTable="m_staff" referenceField="id"/>
+        <field name="closure_reason_cv_id" referenceTable="m_code_value" referenceField="id"/>
+    </table>
+    <table name="m_group_client">
+        <field name="group_id" referenceTable="m_group" referenceField="id"/>
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+    </table>
+    <table name="m_group_roles">
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+        <field name="group_id" referenceTable="m_group" referenceField="id"/>
+        <field name="role_cv_id" referenceTable="m_code_value" referenceField="id"/>
+    </table>
+    <table name="m_guarantor">
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+        <field name="client_reln_cv_id" referenceTable="m_code_value" referenceField="id"/>
+    </table>
+    <table name="m_guarantor_funding_details">
+        <field name="guarantor_id" referenceTable="m_guarantor" referenceField="id"/>
+        <field name="account_associations_id" referenceTable="m_portfolio_account_associations" referenceField="id"/>
+    </table>
+    <table name="m_guarantor_transaction">
+        <field name="guarantor_fund_detail_id" referenceTable="m_guarantor_funding_details" referenceField="id"/>
+        <field name="loan_transaction_id" referenceTable="m_loan_transaction" referenceField="id"/>
+        <field name="deposit_on_hold_transaction_id" referenceTable="m_deposit_account_on_hold_transaction" referenceField="id"/>
+    </table>
+    <table name="m_holiday_office">
+        <field name="holiday_id" referenceTable="m_holiday" referenceField="id"/>
+        <field name="office_id" referenceTable="m_office" referenceField="id"/>
+    </table>
+    <table name="m_hook">
+        <field name="template_id" referenceTable="m_hook_templates" referenceField="id"/>
+        <field name="ugd_template_id" referenceTable="m_template" referenceField="id"/>
+    </table>
+    <table name="m_hook_configuration">
+        <field name="hook_id" referenceTable="m_hook" referenceField="id"/>
+    </table>
+    <table name="m_hook_registered_events">
+        <field name="hook_id" referenceTable="m_hook" referenceField="id"/>
+    </table>
+    <table name="m_hook_schema">
+        <field name="hook_template_id" referenceTable="m_hook_templates" referenceField="id"/>
+    </table>
+    <table name="m_interest_incentives">
+        <field name="interest_rate_slab_id" referenceTable="m_interest_rate_slab" referenceField="id"/>
+    </table>
+    <table name="m_interest_rate_slab">
+        <field name="interest_rate_chart_id" referenceTable="m_interest_rate_chart" referenceField="id"/>
+    </table>
+    <table name="m_loan">
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+        <field name="group_id" referenceTable="m_group" referenceField="id"/>
+        <field name="product_id" referenceTable="m_product_loan" referenceField="id"/>
+        <field name="fund_id" referenceTable="m_fund" referenceField="id"/>
+        <field name="loan_officer_id" referenceTable="m_staff" referenceField="id"/>
+        <field name="loanpurpose_cv_id" referenceTable="m_code_value" referenceField="id"/>
+        <field name="submittedon_userid" referenceTable="m_appuser" referenceField="id"/>
+        <field name="approvedon_userid" referenceTable="m_appuser" referenceField="id"/>
+        <field name="disbursedon_userid" referenceTable="m_appuser" referenceField="id"/>
+        <field name="closedon_userid" referenceTable="m_appuser" referenceField="id"/>
+        <field name="rejectedon_userid" referenceTable="m_appuser" referenceField="id"/>
+        <field name="withdrawnon_userid" referenceTable="m_appuser" referenceField="id"/>
+        <field name="loan_transaction_strategy_id" referenceTable="ref_loan_transaction_processing_strategy" referenceField="id"/>
+        <field name="writeoff_reason_cv_id" referenceTable="m_code_value" referenceField="id"/>
+    </table>
+    <table name="m_loan_arrears_aging">
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+    </table>
+    <table name="m_loan_charge">
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+        <field name="charge_id" referenceTable="m_charge" referenceField="id"/>
+    </table>
+    <table name="m_loan_charge_paid_by">
+        <field name="loan_transaction_id" referenceTable="m_loan_transaction" referenceField="id"/>
+        <field name="loan_charge_id" referenceTable="m_loan_charge" referenceField="id"/>
+    </table>
+    <table name="m_loan_collateral">
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+        <field name="type_cv_id" referenceTable="m_code_value" referenceField="id"/>
+    </table>
+    <table name="m_loan_disbursement_detail">
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+    </table>
+    <table name="m_loan_installment_charge">
+        <field name="loan_charge_id" referenceTable="m_loan_charge" referenceField="id"/>
+        <field name="loan_schedule_id" referenceTable="m_loan_repayment_schedule" referenceField="id"/>
+    </table>
+    <table name="m_loan_interest_recalculation_additional_details">
+        <field name="loan_repayment_schedule_id" referenceTable="m_loan_repayment_schedule" referenceField="id"/>
+    </table>
+    <table name="m_loan_officer_assignment_history">
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+        <field name="loan_officer_id" referenceTable="m_staff" referenceField="id"/>
+    </table>
+    <table name="m_loan_overdue_installment_charge">
+        <field name="loan_charge_id" referenceTable="m_loan_charge" referenceField="id"/>
+        <field name="loan_schedule_id" referenceTable="m_loan_repayment_schedule" referenceField="id"/>
+    </table>
+    <table name="m_loan_paid_in_advance">
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+    </table>
+    <table name="m_loan_recalculation_details">
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+    </table>
+    <table name="m_loan_repayment_schedule">
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+    </table>
+    <table name="m_loan_repayment_schedule_history">
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+        <field name="loan_reschedule_request_id" referenceTable="m_loan_reschedule_request" referenceField="id"/>
+    </table>
+    <table name="m_loan_reschedule_request">
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+        <field name="reschedule_reason_cv_id" referenceTable="m_code_value" referenceField="id"/>
+        <field name="submitted_by_user_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="approved_by_user_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="rejected_by_user_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_loan_reschedule_request_term_variations_mapping">
+        <field name="loan_reschedule_request_id" referenceTable="m_loan_reschedule_request" referenceField="id"/>
+        <field name="loan_term_variations_id" referenceTable="m_loan_term_variations" referenceField="id"/>
+    </table>
+    <table name="m_loan_term_variations">
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+    </table>
+    <table name="m_loan_topup">
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+        <field name="closure_loan_id" referenceTable="m_loan" referenceField="id"/>
+        <field name="account_transfer_details_id" referenceTable="m_account_transfer_details" referenceField="id"/>
+    </table>
+    <table name="m_loan_tranche_charges">
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+        <field name="charge_id" referenceTable="m_charge" referenceField="id"/>
+    </table>
+    <table name="m_loan_tranche_disbursement_charge">
+        <field name="loan_charge_id" referenceTable="m_loan_charge" referenceField="id"/>
+        <field name="disbursement_detail_id" referenceTable="m_loan_disbursement_detail" referenceField="id"/>
+    </table>
+    <table name="m_loan_transaction">
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+        <field name="office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="payment_detail_id" referenceTable="m_payment_detail" referenceField="id"/>
+    </table>
+    <table name="m_loan_transaction_repayment_schedule_mapping">
+        <field name="loan_transaction_id" referenceTable="m_loan_transaction" referenceField="id"/>
+        <field name="loan_repayment_schedule_id" referenceTable="m_loan_repayment_schedule" referenceField="id"/>
+    </table>
+    <table name="m_loanproduct_provisioning_entry">
+        <field name="history_id" referenceTable="m_provisioning_history" referenceField="id"/>
+        <field name="criteria_id" referenceTable="m_provisioning_criteria" referenceField="id"/>
+        <field name="office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="product_id" referenceTable="m_product_loan" referenceField="id"/>
+        <field name="category_id" referenceTable="m_provision_category" referenceField="id"/>
+        <field name="liability_account" referenceTable="acc_gl_account" referenceField="id"/>
+        <field name="expense_account" referenceTable="acc_gl_account" referenceField="id"/>
+    </table>
+    <table name="m_loanproduct_provisioning_mapping">
+        <field name="product_id" referenceTable="m_product_loan" referenceField="id"/>
+        <field name="criteria_id" referenceTable="m_provisioning_criteria" referenceField="id"/>
+    </table>
+    <table name="m_mandatory_savings_schedule">
+        <field name="savings_account_id" referenceTable="m_savings_account" referenceField="id"/>
+    </table>
+    <table name="m_meeting">
+        <field name="calendar_instance_id" referenceTable="m_calendar_instance" referenceField="id"/>
+    </table>
+    <table name="m_note">
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+        <field name="group_id" referenceTable="m_group" referenceField="id"/>
+        <field name="loan_id" referenceTable="m_loan" referenceField="id"/>
+        <field name="loan_transaction_id" referenceTable="m_loan_transaction" referenceField="id"/>
+        <field name="savings_account_id" referenceTable="m_savings_account" referenceField="id"/>
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_office_transaction">
+        <field name="from_office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="to_office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="currency_code" referenceTable="m_organisation_currency" referenceField="code"/>
+    </table>
+    <table name="m_organisation_creditbureau">
+        <field name="creditbureau_id" referenceTable="m_creditbureau" referenceField="id"/>
+    </table>
+    <table name="m_organisation_currency">
+        <field name="code" referenceTable="m_currency" referenceField="code"/>
+    </table>
+    <table name="m_payment_detail">
+        <field name="payment_type_id" referenceTable="m_payment_type" referenceField="id"/>
+    </table>
+    <table name="m_portfolio_account_associations">
+        <field name="loan_account_id" referenceTable="m_loan" referenceField="id"/>
+        <field name="savings_account_id" referenceTable="m_savings_account" referenceField="id"/>
+        <field name="linked_loan_account_id" referenceTable="m_loan" referenceField="id"/>
+        <field name="linked_savings_account_id" referenceTable="m_savings_account" referenceField="id"/>
+    </table>
+    <table name="m_portfolio_command_source">
+        <field name="office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="maker_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="checker_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_product_loan">
+        <field name="fund_id" referenceTable="m_fund" referenceField="id"/>
+        <field name="loan_transaction_strategy_id" referenceTable="ref_loan_transaction_processing_strategy" referenceField="id"/>
+    </table>
+    <table name="m_product_loan_charge">
+        <field name="product_loan_id" referenceTable="m_product_loan" referenceField="id"/>
+        <field name="charge_id" referenceTable="m_charge" referenceField="id"/>
+    </table>
+    <table name="m_product_loan_configurable_attributes">
+        <field name="loan_product_id" referenceTable="m_product_loan" referenceField="id"/>
+    </table>
+    <table name="m_product_loan_floating_rates">
+        <field name="loan_product_id" referenceTable="m_product_loan" referenceField="id"/>
+        <field name="floating_rates_id" referenceTable="m_floating_rates" referenceField="id"/>
+    </table>
+    <table name="m_product_loan_guarantee_details">
+        <field name="loan_product_id" referenceTable="m_product_loan" referenceField="id"/>
+    </table>
+    <table name="m_product_loan_recalculation_details">
+        <field name="product_id" referenceTable="m_product_loan" referenceField="id"/>
+    </table>
+    <table name="m_product_loan_variable_installment_config">
+        <field name="loan_product_id" referenceTable="m_product_loan" referenceField="id"/>
+    </table>
+    <table name="m_product_loan_variations_borrower_cycle">
+        <field name="loan_product_id" referenceTable="m_product_loan" referenceField="id"/>
+    </table>
+    <table name="m_product_mix">
+        <field name="product_id" referenceTable="m_product_loan" referenceField="id"/>
+        <field name="restricted_product_id" referenceTable="m_product_loan" referenceField="id"/>
+    </table>
+    <table name="m_provisioning_criteria">
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_provisioning_criteria_definition">
+        <field name="criteria_id" referenceTable="m_provisioning_criteria" referenceField="id"/>
+        <field name="category_id" referenceTable="m_provision_category" referenceField="id"/>
+        <field name="liability_account" referenceTable="acc_gl_account" referenceField="id"/>
+        <field name="expense_account" referenceTable="acc_gl_account" referenceField="id"/>
+    </table>
+    <table name="m_provisioning_history">
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_report_mailing_job">
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="stretchy_report_id" referenceTable="stretchy_report" referenceField="id"/>
+        <field name="run_as_userid" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_report_mailing_job_run_history">
+        <field name="job_id" referenceTable="job" referenceField="id"/>
+    </table>
+    <table name="m_role_permission">
+        <field name="role_id" referenceTable="m_role" referenceField="id"/>
+        <field name="permission_id" referenceTable="m_permission" referenceField="id"/>
+    </table>
+    <table name="m_savings_account">
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+        <field name="group_id" referenceTable="m_group" referenceField="id"/>
+        <field name="product_id" referenceTable="m_savings_product" referenceField="id"/>
+        <field name="tax_group_id" referenceTable="m_tax_group" referenceField="id"/>
+    </table>
+    <table name="m_savings_account_charge">
+        <field name="savings_account_id" referenceTable="m_savings_account" referenceField="id"/>
+        <field name="charge_id" referenceTable="m_charge" referenceField="id"/>
+    </table>
+    <table name="m_savings_account_charge_paid_by">
+        <field name="savings_account_transaction_id" referenceTable="m_savings_account_transaction" referenceField="id"/>
+        <field name="savings_account_charge_id" referenceTable="m_savings_account_charge" referenceField="id"/>
+    </table>
+    <table name="m_savings_account_interest_rate_chart">
+        <field name="savings_account_id" referenceTable="m_savings_account" referenceField="id"/>
+    </table>
+    <table name="m_savings_account_interest_rate_slab">
+        <field name="savings_account_interest_rate_chart_id" referenceTable="m_savings_account_interest_rate_chart" referenceField="id"/>
+    </table>
+    <table name="m_savings_account_transaction">
+        <field name="savings_account_id" referenceTable="m_savings_account" referenceField="id"/>
+        <field name="office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="payment_detail_id" referenceTable="m_payment_detail" referenceField="id"/>
+    </table>
+    <table name="m_savings_account_transaction_tax_details">
+        <field name="savings_transaction_id" referenceTable="m_savings_account_transaction" referenceField="id"/>
+        <field name="tax_component_id" referenceTable="m_tax_component" referenceField="id"/>
+    </table>
+    <table name="m_savings_interest_incentives">
+        <field name="deposit_account_interest_rate_slab_id" referenceTable="m_savings_account_interest_rate_slab" referenceField="id"/>
+    </table>
+    <table name="m_savings_officer_assignment_history">
+        <field name="account_id" referenceTable="m_savings_account" referenceField="id"/>
+        <field name="savings_officer_id" referenceTable="m_staff" referenceField="id"/>
+    </table>
+    <table name="m_savings_product">
+        <field name="tax_group_id" referenceTable="m_tax_group" referenceField="id"/>
+    </table>
+    <table name="m_savings_product_charge">
+        <field name="savings_product_id" referenceTable="m_savings_product" referenceField="id"/>
+        <field name="charge_id" referenceTable="m_charge" referenceField="id"/>
+    </table>
+    <table name="m_selfservice_beneficiaries_tpt">
+        <field name="app_user_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+    </table>
+    <table name="m_selfservice_user_client_mapping">
+        <field name="appuser_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+    </table>
+    <table name="m_share_account">
+        <field name="product_id" referenceTable="m_share_product" referenceField="id"/>
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+        <field name="submitted_userid" referenceTable="m_appuser" referenceField="id"/>
+        <field name="approved_userid" referenceTable="m_appuser" referenceField="id"/>
+        <field name="rejected_userid" referenceTable="m_appuser" referenceField="id"/>
+        <field name="activated_userid" referenceTable="m_appuser" referenceField="id"/>
+        <field name="closed_userid" referenceTable="m_appuser" referenceField="id"/>
+        <field name="savings_account_id" referenceTable="m_savings_account" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_share_account_charge">
+        <field name="account_id" referenceTable="m_share_account" referenceField="id"/>
+        <field name="charge_id" referenceTable="m_charge" referenceField="id"/>
+    </table>
+    <table name="m_share_account_charge_paid_by">
+        <field name="share_transaction_id" referenceTable="m_share_account_transactions" referenceField="id"/>
+        <field name="charge_transaction_id" referenceTable="m_share_account_charge" referenceField="id"/>
+    </table>
+    <table name="m_share_account_dividend_details">
+        <field name="dividend_pay_out_id" referenceTable="m_share_product_dividend_pay_out" referenceField="id"/>
+        <field name="account_id" referenceTable="m_share_account" referenceField="id"/>
+    </table>
+    <table name="m_share_account_transactions">
+        <field name="account_id" referenceTable="m_share_account" referenceField="id"/>
+    </table>
+    <table name="m_share_product">
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_share_product_charge">
+        <field name="product_id" referenceTable="m_share_product" referenceField="id"/>
+        <field name="charge_id" referenceTable="m_charge" referenceField="id"/>
+    </table>
+    <table name="m_share_product_dividend_pay_out">
+        <field name="product_id" referenceTable="m_share_product" referenceField="id"/>
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_share_product_market_price">
+        <field name="product_id" referenceTable="m_share_product" referenceField="id"/>
+    </table>
+    <table name="m_staff">
+        <field name="office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="image_id" referenceTable="m_image" referenceField="id"/>
+    </table>
+    <table name="m_staff_assignment_history">
+        <field name="centre_id" referenceTable="m_group" referenceField="id"/>
+        <field name="staff_id" referenceTable="m_staff" referenceField="id"/>
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_survey_components">
+        <field name="survey_id" referenceTable="m_surveys" referenceField="id"/>
+    </table>
+    <table name="m_survey_lookup_tables">
+        <field name="survey_id" referenceTable="m_surveys" referenceField="id"/>
+    </table>
+    <table name="m_survey_questions">
+        <field name="survey_id" referenceTable="m_surveys" referenceField="id"/>
+    </table>
+    <table name="m_survey_responses">
+        <field name="question_id" referenceTable="m_survey_questions" referenceField="id"/>
+    </table>
+    <table name="m_survey_scorecards">
+        <field name="survey_id" referenceTable="m_surveys" referenceField="id"/>
+        <field name="question_id" referenceTable="m_survey_questions" referenceField="id"/>
+        <field name="response_id" referenceTable="m_survey_responses" referenceField="id"/>
+        <field name="user_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+    </table>
+    <table name="m_tax_component">
+        <field name="debit_account_id" referenceTable="acc_gl_account" referenceField="id"/>
+        <field name="credit_account_id" referenceTable="acc_gl_account" referenceField="id"/>
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_tax_component_history">
+        <field name="tax_component_id" referenceTable="m_tax_component" referenceField="id"/>
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_tax_group">
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_tax_group_mappings">
+        <field name="tax_group_id" referenceTable="m_tax_group" referenceField="id"/>
+        <field name="tax_component_id" referenceTable="m_tax_component" referenceField="id"/>
+        <field name="createdby_id" referenceTable="m_appuser" referenceField="id"/>
+        <field name="lastmodifiedby_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="m_tellers">
+        <field name="office_id" referenceTable="m_office" referenceField="id"/>
+        <field name="debit_account_id" referenceTable="acc_gl_account" referenceField="id"/>
+        <field name="credit_account_id" referenceTable="acc_gl_account" referenceField="id"/>
+    </table>
+    <table name="m_template_m_templatemappers">
+        <field name="m_template_id" referenceTable="m_template" referenceField="id"/>
+        <field name="mappers_id" referenceTable="m_templatemappers" referenceField="id"/>
+    </table>
+    <table name="notification_mapper">
+        <field name="notification_id" referenceTable="notification_generator" referenceField="id"/>
+        <field name="user_id" referenceTable="m_appuser" referenceField="id"/>
+    </table>
+    <table name="ppi_likelihoods_ppi">
+        <field name="likelihood_id" referenceTable="ppi_likelihoods" referenceField="id"/>
+    </table>
+    <table name="request_audit_table">
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+    </table>
+    <table name="sms_campaign">
+        <field name="report_id" referenceTable="stretchy_report" referenceField="id"/>
+    </table>
+    <table name="sms_messages_outbound">
+        <field name="group_id" referenceTable="m_group" referenceField="id"/>
+        <field name="client_id" referenceTable="m_client" referenceField="id"/>
+        <field name="staff_id" referenceTable="m_staff" referenceField="id"/>
+        <field name="campaign_id" referenceTable="sms_campaign" referenceField="id"/>
+    </table>
+    <table name="stretchy_report_parameter">
+        <field name="report_id" referenceTable="stretchy_report" referenceField="id"/>
+        <field name="parameter_id" referenceTable="stretchy_parameter" referenceField="id"/>
+    </table>
+    <table name="x_table_column_code_mappings">
+        <field name="code_id" referenceTable="m_code" referenceField="id"/>
+    </table>
+</database>

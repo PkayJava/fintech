@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="stretchy_report">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="report_name" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="report_type" type="varchar(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="report_subtype" type="varchar(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="report_category" type="varchar(45)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="report_sql" type="text">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="text">
+            <comment>field explaination</comment>
+        </field>
+        <field name="core_report" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="use_report" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

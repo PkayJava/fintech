@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_account_transfer_standing_instructions">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" key="UNI" type="varchar(250)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="account_transfer_details_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="priority" type="tinyint(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="status" type="tinyint(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="instruction_type" type="tinyint(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="valid_from" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="valid_till" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="recurrence_type" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="recurrence_frequency" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="recurrence_interval" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="recurrence_on_day" type="smallint(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="recurrence_on_month" type="smallint(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="last_run_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

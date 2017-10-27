@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_loan">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="account_no" key="UNI" type="varchar(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="external_id" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="client_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="group_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="product_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fund_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_officer_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loanpurpose_cv_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_status_id" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_code" type="varchar(3)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_digits" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_multiplesof" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="principal_amount_proposed" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="principal_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="approved_principal" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="arrearstolerance_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_floating_interest_rate" type="bit(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_rate_differential" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="nominal_interest_rate_per_period" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_period_frequency_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="annual_nominal_interest_rate" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_method_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_calculated_in_period_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="allow_partial_period_interest_calcualtion" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="term_frequency" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="term_period_frequency_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="repay_every" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="repayment_period_frequency_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="number_of_repayments" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="grace_on_principal_periods" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="recurring_moratorium_principal_periods" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="grace_on_interest_periods" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="grace_interest_free_periods" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amortization_method_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="submittedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="submittedon_userid" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="approvedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="approvedon_userid" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="expected_disbursedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="expected_firstrepaymenton_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_calculated_from_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="disbursedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="disbursedon_userid" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="expected_maturedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="maturedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="closedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="closedon_userid" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_charges_due_at_disbursement_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="principal_disbursed_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="principal_repaid_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="principal_writtenoff_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="principal_outstanding_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_charged_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_repaid_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_waived_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_writtenoff_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_outstanding_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_charges_charged_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_charges_repaid_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_charges_waived_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_charges_writtenoff_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_charges_outstanding_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="penalty_charges_charged_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="penalty_charges_repaid_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="penalty_charges_waived_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="penalty_charges_writtenoff_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="penalty_charges_outstanding_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_expected_repayment_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_repayment_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_expected_costofloan_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_costofloan_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_waived_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_writtenoff_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_outstanding_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_overpaid_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rejectedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rejectedon_userid" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rescheduledon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rescheduledon_userid" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="withdrawnon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="withdrawnon_userid" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="writtenoffon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_transaction_strategy_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="sync_disbursement_with_meeting" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_counter" type="smallint(6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_product_counter" type="smallint(6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fixed_emi_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="max_outstanding_loan_balance" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="grace_on_arrears_ageing" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_npa" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_recovered_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="accrued_till" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_recalcualated_on" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="days_in_month_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="days_in_year_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_recalculation_enabled" type="tinyint(4)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="guarantee_amount_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="create_standing_instruction_at_disbursement" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="version" type="int(15)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="writeoff_reason_cv_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_sub_status_id" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_topup" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

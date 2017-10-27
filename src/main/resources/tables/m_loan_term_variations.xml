@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_loan_term_variations">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="term_type" type="smallint(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="applicable_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="decimal_value" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="date_value" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_specific_to_installment" type="tinyint(4)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="applied_on_loan_status" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_active" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="parent_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

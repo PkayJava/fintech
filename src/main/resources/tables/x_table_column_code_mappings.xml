@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="x_table_column_code_mappings">
+        <comment>table explaination</comment>
+        <field name="column_alias_name" key="PRI" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="code_id" key="MUL" type="int(10)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

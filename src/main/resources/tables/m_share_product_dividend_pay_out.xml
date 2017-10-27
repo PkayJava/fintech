@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_share_product_dividend_pay_out">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="product_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="dividend_period_start_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="dividend_period_end_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="status" type="smallint(3)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="createdby_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="created_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodifiedby_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodified_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

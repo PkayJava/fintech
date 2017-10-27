@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_code">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="code_name" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_system_defined" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

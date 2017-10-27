@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_creditbureau">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" key="MUL" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="product" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="country" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="implementationKey" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

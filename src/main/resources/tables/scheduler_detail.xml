@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="scheduler_detail">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="smallint(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_suspended" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="execute_misfired_jobs" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="reset_scheduler_on_bootup" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

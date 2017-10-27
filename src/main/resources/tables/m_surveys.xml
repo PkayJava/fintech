@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_surveys">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="a_key" type="varchar(32)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="a_name" type="varchar(255)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(4000)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="country_code" type="varchar(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="valid_from" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="valid_to" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

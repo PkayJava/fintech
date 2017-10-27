@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="job">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="display_name" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="cron_expression" type="varchar(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="create_time" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="task_priority" type="smallint(6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="group_name" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="previous_run_start_time" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="next_run_time" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="job_key" type="varchar(500)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="initializing_errorlog" type="text">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_active" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currently_running" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="updates_allowed" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="scheduler_group" type="smallint(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_misfired" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

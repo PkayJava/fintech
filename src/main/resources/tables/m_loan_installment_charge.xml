@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_loan_installment_charge">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_charge_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_schedule_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="due_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount_paid_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount_waived_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount_writtenoff_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount_outstanding_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_paid_derived" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="waived" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount_through_charge_payment" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

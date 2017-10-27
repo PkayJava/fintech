@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="job_run_history">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="job_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="version" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="start_time" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="end_time" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="status" type="varchar(10)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="error_message" type="text">
+            <comment>field explaination</comment>
+        </field>
+        <field name="trigger_type" type="varchar(25)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="error_log" type="text">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

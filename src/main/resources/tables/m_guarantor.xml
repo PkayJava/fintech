@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_guarantor">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="client_reln_cv_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="entity_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="firstname" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastname" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="dob" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="address_line_1" type="varchar(500)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="address_line_2" type="varchar(500)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="city" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="state" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="country" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="zip" type="varchar(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="house_phone_number" type="varchar(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="mobile_number" type="varchar(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="comment" type="varchar(500)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_active" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

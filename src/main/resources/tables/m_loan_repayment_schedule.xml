@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_loan_repayment_schedule">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fromdate" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="duedate" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="installment" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="principal_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="principal_completed_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="principal_writtenoff_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_completed_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_writtenoff_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_waived_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="accrual_interest_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_charges_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_charges_completed_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_charges_writtenoff_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_charges_waived_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="accrual_fee_charges_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="penalty_charges_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="penalty_charges_completed_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="penalty_charges_writtenoff_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="penalty_charges_waived_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="accrual_penalty_charges_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_paid_in_advance_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_paid_late_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="completed_derived" type="bit(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="obligations_met_on_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="createdby_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="created_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodified_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodifiedby_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="recalculated_interest_component" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

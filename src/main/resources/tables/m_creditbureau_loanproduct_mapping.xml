@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_creditbureau_loanproduct_mapping">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="organisation_creditbureau_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_product_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_creditcheck_mandatory" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="skip_creditcheck_in_failure" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="stale_period" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_active" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_appuser">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_deleted" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="office_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="staff_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="username" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="firstname" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastname" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="password" type="varchar(255)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="email" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="firsttime_login_remaining" type="bit(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="nonexpired" type="bit(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="nonlocked" type="bit(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="nonexpired_credentials" type="bit(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="enabled" type="bit(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="last_time_password_updated" key="MUL" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="password_never_expires" type="tinyint(4)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_self_service_user" type="bit(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="c_account_number_format">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="account_type_enum" key="UNI" type="smallint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="prefix_type_enum" type="smallint(2)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_savings_product_charge">
+        <comment>table explaination</comment>
+        <field name="savings_product_id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="charge_id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

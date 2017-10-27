@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_deposit_product_interest_rate_chart">
+        <comment>table explaination</comment>
+        <field name="deposit_product_id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_rate_chart_id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

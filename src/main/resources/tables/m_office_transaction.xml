@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_office_transaction">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="from_office_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="to_office_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_code" type="varchar(3)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_digits" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="transaction_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="transaction_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

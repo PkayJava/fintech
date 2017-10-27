@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_share_account_charge">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="account_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="charge_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="charge_time_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="charge_calculation_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="charge_payment_mode_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="calculation_percentage" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="calculation_on_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="charge_amount_or_percentage" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount_paid_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount_waived_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount_writtenoff_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount_outstanding_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_paid_derived" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="waived" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="min_cap" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="max_cap" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_active" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

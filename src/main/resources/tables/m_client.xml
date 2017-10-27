@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_client">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="account_no" key="UNI" type="varchar(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="external_id" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="status_enum" type="int(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="sub_status" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="activation_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="office_joining_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="office_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="transfer_to_office_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="staff_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="firstname" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="middlename" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastname" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fullname" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="display_name" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="mobile_no" key="UNI" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_staff" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="gender_cv_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="date_of_birth" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="image_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="closure_reason_cv_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="closedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="updated_by" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="updated_on" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="submittedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="submittedon_userid" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="activatedon_userid" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="closedon_userid" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="default_savings_product" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="default_savings_account" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="client_type_cv_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="client_classification_cv_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="reject_reason_cv_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rejectedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rejectedon_userid" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="withdraw_reason_cv_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="withdrawn_on_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="withdraw_on_userid" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="reactivated_on_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="reactivated_on_userid" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="legal_form_enum" type="int(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="reopened_on_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="reopened_by_userid" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

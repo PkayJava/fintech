@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_code_value">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="code_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="code_value" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="code_description" type="varchar(500)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="order_position" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="code_score" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_active" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_mandatory" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

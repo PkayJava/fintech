@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="c_external_service">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

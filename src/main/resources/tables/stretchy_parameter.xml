@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="stretchy_parameter">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="parameter_name" key="UNI" type="varchar(45)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="parameter_variable" type="varchar(45)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="parameter_label" type="varchar(45)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="parameter_displayType" type="varchar(45)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="parameter_FormatType" type="varchar(10)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="parameter_default" type="varchar(45)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="special" type="varchar(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="selectOne" type="varchar(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="selectAll" type="varchar(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="parameter_sql" type="text">
+            <comment>field explaination</comment>
+        </field>
+        <field name="parent_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

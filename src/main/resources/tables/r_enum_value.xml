@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="r_enum_value">
+        <comment>table explaination</comment>
+        <field name="enum_name" key="PRI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="enum_id" key="PRI" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="enum_message_property" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="enum_value" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="enum_type" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

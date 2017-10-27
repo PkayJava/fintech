@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_loan_paid_in_advance">
+        <comment>table explaination</comment>
+        <field name="loan_id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="principal_in_advance_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_in_advance_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_charges_in_advance_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="penalty_charges_in_advance_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_in_advance_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

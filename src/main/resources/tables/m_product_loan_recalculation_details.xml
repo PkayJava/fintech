@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_product_loan_recalculation_details">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="product_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="compound_type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="reschedule_strategy_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rest_frequency_type_enum" type="smallint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rest_frequency_interval" type="smallint(3)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="arrears_based_on_original_schedule" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="pre_close_interest_calculation_strategy" type="smallint(3)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="compounding_frequency_type_enum" type="smallint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="compounding_frequency_interval" type="smallint(3)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rest_frequency_nth_day_enum" type="int(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rest_frequency_on_day" type="int(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rest_frequency_weekday_enum" type="int(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="compounding_frequency_nth_day_enum" type="int(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="compounding_frequency_on_day" type="int(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="compounding_frequency_weekday_enum" type="int(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_compounding_to_be_posted_as_transaction" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="allow_compounding_on_eod" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

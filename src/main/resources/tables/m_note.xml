@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_note">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="client_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="group_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_transaction_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="savings_account_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="savings_account_transaction_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="share_account_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="note_type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="note" type="varchar(1000)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="created_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="createdby_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodified_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodifiedby_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

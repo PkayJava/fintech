@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="c_external_service_properties">
+        <comment>table explaination</comment>
+        <field name="name" type="varchar(150)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="value" type="varchar(250)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="external_service_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

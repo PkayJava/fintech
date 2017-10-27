@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_document">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="int(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="parent_entity_type" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="parent_entity_id" type="int(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" type="varchar(250)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="file_name" type="varchar(250)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="size" type="int(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="type" type="varchar(500)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(1000)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="location" type="varchar(500)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="storage_type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

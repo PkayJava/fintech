@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_provisioning_criteria_definition">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="criteria_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="category_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="min_age" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="max_age" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="provision_percentage" type="decimal(5,2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="liability_account" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="expense_account" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

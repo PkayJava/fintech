@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_interest_incentives">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_rate_slab_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="entiry_type" type="smallint(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="attribute_name" type="smallint(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="condition_type" type="smallint(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="attribute_value" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="incentive_type" type="smallint(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

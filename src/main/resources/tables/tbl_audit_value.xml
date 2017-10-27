@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="tbl_audit_value">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="audit_id" key="MUL" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="field_name" key="MUL" type="varchar(255)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="before_value" type="text">
+            <comment>field explaination</comment>
+        </field>
+        <field name="after_value" type="text">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

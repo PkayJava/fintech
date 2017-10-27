@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_group_level">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="parent_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="super_parent" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="level_name" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="recursable" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="can_have_clients" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

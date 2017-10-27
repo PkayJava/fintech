@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_deposit_account_term_and_preclosure">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="savings_account_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="min_deposit_term" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="max_deposit_term" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="min_deposit_term_type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="max_deposit_term_type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="in_multiples_of_deposit_term" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="in_multiples_of_deposit_term_type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="pre_closure_penal_applicable" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="pre_closure_penal_interest" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="pre_closure_penal_interest_on_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="deposit_period" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="deposit_period_frequency_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="deposit_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="maturity_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="maturity_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="on_account_closure_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="expected_firstdepositon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="transfer_interest_to_linked_account" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

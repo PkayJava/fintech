@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_cashier_transactions">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="cashier_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="txn_type" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="txn_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="txn_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="created_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="entity_type" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="entity_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="txn_note" type="varchar(200)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_code" type="varchar(3)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

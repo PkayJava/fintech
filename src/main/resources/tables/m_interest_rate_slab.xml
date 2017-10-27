@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_interest_rate_slab">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_rate_chart_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(200)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="period_type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="from_period" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="to_period" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount_range_from" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount_range_to" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="annual_interest_rate" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_code" type="varchar(3)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

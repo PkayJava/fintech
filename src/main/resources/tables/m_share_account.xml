@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_share_account">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="account_no" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="product_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="client_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="external_id" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="status_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_approved_shares" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_pending_shares" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="submitted_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="submitted_userid" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="approved_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="approved_userid" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rejected_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rejected_userid" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="activated_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="activated_userid" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="closed_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="closed_userid" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_code" type="varchar(3)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_digits" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_multiplesof" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="savings_account_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="minimum_active_period_frequency" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="minimum_active_period_frequency_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lockin_period_frequency" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lockin_period_frequency_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="allow_dividends_inactive_clients" type="smallint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="created_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodifiedby_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodified_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

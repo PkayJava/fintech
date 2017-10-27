@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_tax_component">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="percentage" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="debit_account_type_enum" type="smallint(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="debit_account_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="credit_account_type_enum" type="smallint(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="credit_account_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="start_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="createdby_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="created_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodifiedby_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodified_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

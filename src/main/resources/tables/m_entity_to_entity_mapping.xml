@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_entity_to_entity_mapping">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rel_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="from_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="to_id" type="bigint(20) unsigned">
+            <comment>field explaination</comment>
+        </field>
+        <field name="start_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="end_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

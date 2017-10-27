@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_group_client">
+        <comment>table explaination</comment>
+        <field name="group_id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="client_id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

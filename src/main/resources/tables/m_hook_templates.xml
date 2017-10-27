@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_hook_templates">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="smallint(6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" type="varchar(45)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

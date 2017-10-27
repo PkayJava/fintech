@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_deposit_product_recurring_detail">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="savings_product_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_mandatory" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="allow_withdrawal" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="adjust_advance_towards_future_payments" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

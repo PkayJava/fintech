@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="ref_loan_transaction_processing_strategy">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="code" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" type="varchar(255)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="sort_order" type="int(4)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

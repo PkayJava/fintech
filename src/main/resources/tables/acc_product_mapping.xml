@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="acc_product_mapping">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="gl_account_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="product_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="product_type" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="payment_type" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="charge_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="financial_account_type" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

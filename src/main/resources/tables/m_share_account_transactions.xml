@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_share_account_transactions">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="account_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="transaction_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_shares" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="unit_price" type="decimal(10,2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount" type="decimal(20,2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="charge_amount" type="decimal(20,2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount_paid" type="decimal(20,2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="status_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_active" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

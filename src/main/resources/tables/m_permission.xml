@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_permission">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="grouping" type="varchar(45)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="code" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="entity_name" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="action_name" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="can_maker_checker" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

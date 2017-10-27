@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_loan_reschedule_request">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="status_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="reschedule_from_installment" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="reschedule_from_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="recalculate_interest" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="reschedule_reason_cv_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="reschedule_reason_comment" type="varchar(500)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="submitted_on_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="submitted_by_user_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="approved_on_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="approved_by_user_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rejected_on_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rejected_by_user_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

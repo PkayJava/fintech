@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_savings_product">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="short_name" key="UNI" type="varchar(4)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(500)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="deposit_type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_code" type="varchar(3)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_digits" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_multiplesof" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="nominal_annual_interest_rate" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_compounding_period_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_posting_period_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_calculation_type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_calculation_days_in_year_type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="min_required_opening_balance" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lockin_period_frequency" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lockin_period_frequency_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="accounting_type" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="withdrawal_fee_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="withdrawal_fee_type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="withdrawal_fee_for_transfer" type="tinyint(4)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="allow_overdraft" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="overdraft_limit" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="nominal_annual_interest_rate_overdraft" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="min_overdraft_for_interest_calculation" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="min_required_balance" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="enforce_min_required_balance" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="min_balance_for_interest_calculation" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="withhold_tax" type="tinyint(4)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="tax_group_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_dormancy_tracking_active" type="smallint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="days_to_inactive" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="days_to_dormancy" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="days_to_escheat" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

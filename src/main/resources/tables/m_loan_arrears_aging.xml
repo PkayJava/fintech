@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_loan_arrears_aging">
+        <comment>table explaination</comment>
+        <field name="loan_id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="principal_overdue_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_overdue_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_charges_overdue_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="penalty_charges_overdue_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_overdue_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="overdue_since_date_derived" type="date">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

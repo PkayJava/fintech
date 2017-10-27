@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="schema_version">
+        <comment>table explaination</comment>
+        <field name="version_rank" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="installed_rank" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="version" key="PRI" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(200)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="type" type="varchar(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="script" type="varchar(1000)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="checksum" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="installed_by" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="installed_on" type="timestamp">
+            <comment>field explaination</comment>
+        </field>
+        <field name="execution_time" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="success" key="MUL" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

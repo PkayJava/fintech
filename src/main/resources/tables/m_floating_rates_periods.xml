@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_floating_rates_periods">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="floating_rates_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="from_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_rate" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_differential_to_base_lending_rate" type="bit(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_active" type="bit(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="createdby_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="created_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodifiedby_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodified_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

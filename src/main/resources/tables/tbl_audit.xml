@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="tbl_audit">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="log_date" key="MUL" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="log_event" key="MUL" type="varchar(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="log_table" key="MUL" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="log_script" type="text">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

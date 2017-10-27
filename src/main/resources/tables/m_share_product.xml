@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_share_product">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" key="UNI" type="varchar(200)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="short_name" type="varchar(4)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="external_id" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(500)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="start_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="end_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_code" type="varchar(3)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_digits" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_multiplesof" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="total_shares" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="issued_shares" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="totalsubscribed_shares" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="unit_price" type="decimal(10,2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="capital_amount" type="decimal(20,2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="minimum_client_shares" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="nominal_client_shares" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="maximum_client_shares" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="minimum_active_period_frequency" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="minimum_active_period_frequency_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lockin_period_frequency" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lockin_period_frequency_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="allow_dividends_inactive_clients" type="smallint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="createdby_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="created_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodifiedby_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodified_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="accounting_type" type="smallint(2)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_hook_configuration">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="hook_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="field_type" type="varchar(45)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="field_name" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="field_value" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

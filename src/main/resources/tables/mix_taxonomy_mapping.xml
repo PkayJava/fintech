@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="mix_taxonomy_mapping">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="int(11) unsigned">
+            <comment>field explaination</comment>
+        </field>
+        <field name="identifier" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="config" type="varchar(200)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="last_update_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency" type="varchar(11)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

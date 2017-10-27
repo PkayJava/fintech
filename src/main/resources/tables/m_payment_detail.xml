@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_payment_detail">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="payment_type_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="account_number" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="check_number" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="receipt_number" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="bank_number" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="routing_code" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

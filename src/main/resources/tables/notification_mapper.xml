@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="notification_mapper">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="notification_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="user_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_read" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="created_at" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_report_mailing_job">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="text">
+            <comment>field explaination</comment>
+        </field>
+        <field name="start_datetime" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="recurrence" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="created_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="createdby_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodified_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodifiedby_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="email_recipients" type="text">
+            <comment>field explaination</comment>
+        </field>
+        <field name="email_subject" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="email_message" type="text">
+            <comment>field explaination</comment>
+        </field>
+        <field name="email_attachment_file_format" type="varchar(10)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="stretchy_report_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="stretchy_report_param_map" type="text">
+            <comment>field explaination</comment>
+        </field>
+        <field name="previous_run_datetime" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="next_run_datetime" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="previous_run_status" type="varchar(10)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="previous_run_error_log" type="text">
+            <comment>field explaination</comment>
+        </field>
+        <field name="previous_run_error_message" type="text">
+            <comment>field explaination</comment>
+        </field>
+        <field name="number_of_runs" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_active" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_deleted" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="run_as_userid" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

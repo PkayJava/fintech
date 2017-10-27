@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_share_product_market_price">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="product_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="from_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="share_value" type="decimal(10,2)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

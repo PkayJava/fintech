@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_product_loan_variable_installment_config">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_product_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="minimum_gap" type="int(4)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="maximum_gap" type="int(4)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

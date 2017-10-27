@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_calendar">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="title" type="varchar(70)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="location" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="start_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="end_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="duration" type="smallint(6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="calendar_type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="repeating" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="recurrence" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="remind_by_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="first_reminder" type="smallint(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="second_reminder" type="smallint(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="createdby_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodifiedby_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="created_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastmodified_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="meeting_time" type="time">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_tellers">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="office_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="debit_account_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="credit_account_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" key="UNI" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="valid_from" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="valid_to" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="state" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

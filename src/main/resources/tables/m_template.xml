@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_template">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" key="UNI" type="varchar(255)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="text" type="longtext">
+            <comment>field explaination</comment>
+        </field>
+        <field name="entity" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="type" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

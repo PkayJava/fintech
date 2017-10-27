@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_charge">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_code" type="varchar(3)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="charge_applies_to_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="charge_time_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="charge_calculation_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="charge_payment_mode_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_on_day" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_interval" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_on_month" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_penalty" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_active" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_deleted" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="min_cap" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="max_cap" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_frequency" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="income_or_liability_account_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="tax_group_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

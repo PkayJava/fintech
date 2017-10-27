@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_client_non_person">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="client_id" key="UNI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="constitution_cv_id" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="incorp_no" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="incorp_validity_till" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="main_business_line_cv_id" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="remarks" type="varchar(150)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

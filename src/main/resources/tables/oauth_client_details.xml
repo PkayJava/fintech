@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="oauth_client_details">
+        <comment>table explaination</comment>
+        <field name="client_id" key="PRI" type="varchar(128)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="resource_ids" type="varchar(256)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="client_secret" type="varchar(256)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="scope" type="varchar(256)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="authorized_grant_types" type="varchar(256)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="web_server_redirect_uri" type="varchar(256)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="authorities" type="varchar(256)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="access_token_validity" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="refresh_token_validity" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="additional_information" type="varchar(4096)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="autoapprove" type="bit(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

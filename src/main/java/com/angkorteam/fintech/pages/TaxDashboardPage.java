@@ -51,15 +51,24 @@ public class TaxDashboardPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         InfoBoxPanel manageTaxComponentsPage = new InfoBoxPanel("manageTaxComponentsPage", Model.of(new InfoBox().setPage(TaxComponentBrowsePage.class).setTitle("Manage Tax Components").setDescription("Define Tax components").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(manageTaxComponentsPage);
 
         InfoBoxPanel manageTaxGroupsPage = new InfoBoxPanel("manageTaxGroupsPage", Model.of(new InfoBox().setPage(TaxGroupBrowsePage.class).setTitle("Manage Tax Groups").setDescription("Define Tax Groups").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(manageTaxGroupsPage);
+    }
 
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
 }

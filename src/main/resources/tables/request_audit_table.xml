@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="request_audit_table">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="lastname" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="username" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="mobile_number" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="firstname" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="authentication_token" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="password" type="varchar(250)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="email" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="client_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="created_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="account_number" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

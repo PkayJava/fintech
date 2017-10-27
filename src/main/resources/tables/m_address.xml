@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_address">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="street" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="address_line_1" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="address_line_2" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="address_line_3" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="town_village" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="city" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="county_district" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="state_province_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="country_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="postal_code" type="varchar(10)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="latitude" type="decimal(10,8) unsigned">
+            <comment>field explaination</comment>
+        </field>
+        <field name="longitude" type="decimal(10,8) unsigned">
+            <comment>field explaination</comment>
+        </field>
+        <field name="created_by" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="created_on" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="updated_by" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="updated_on" type="date">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

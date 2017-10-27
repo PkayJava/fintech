@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_entity_to_entity_access">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="entity_type" key="MUL" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="entity_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="access_type_code_value_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="second_entity_type" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="second_entity_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

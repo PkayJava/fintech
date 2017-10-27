@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="acc_rule_tags">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="acc_rule_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="tag_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="acc_type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

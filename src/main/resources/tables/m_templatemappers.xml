@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_templatemappers">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="mapperkey" type="varchar(255)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="mapperorder" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="mappervalue" type="varchar(255)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_group">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="external_id" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="status_enum" type="int(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="activation_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="office_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="staff_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="parent_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="level_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="display_name" key="MUL" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="hierarchy" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="closure_reason_cv_id" key="MUL" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="closedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="activatedon_userid" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="submittedon_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="submittedon_userid" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="closedon_userid" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="account_no" type="varchar(20)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

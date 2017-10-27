@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="acc_accounting_rule">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="office_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="debit_account_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="allow_multiple_debits" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="credit_account_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="allow_multiple_credits" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(500)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="system_defined" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

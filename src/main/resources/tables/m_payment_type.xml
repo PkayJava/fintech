@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_payment_type">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="value" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(500)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_cash_payment" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="order_position" type="int(11)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

@@ -19,6 +19,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.w3c.dom.Comment;
@@ -34,13 +35,49 @@ public class ERDData {
     @Test
     public void initERDData() throws Exception {
 
-        File databaseFile = new File("src/main/resources/database.xml");
+        String output = System.getProperty("outputFile");
+        File inputFile = new File("src/main/resources/link.xml");
 
-        JAXBContext jaxbContext = JAXBContext.newInstance(Database.class, Table.class, Field.class);
+        if (output == null || "".equals(output)) {
+            output = "erd.graphml";
+        } else {
+            if (!FilenameUtils.getExtension(output).equals("graphml")) {
+                output = output + "." + "graphml";
+            }
+        }
+        JAXBContext jaxb = JAXBContext.newInstance(Database.class, Table.class, Field.class);
+        Unmarshaller unmarshaller = jaxb.createUnmarshaller();
 
-        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-        Database database = (Database) jaxbUnmarshaller.unmarshal(databaseFile);
+        Database databaseInput = (Database) unmarshaller.unmarshal(inputFile);
 
+        // get erd info
+        File tablesDirectory = new File("src/main/resources/tables");
+        Database database = new Database();
+        for (File tableFile : tablesDirectory.listFiles()) {
+            if (FilenameUtils.getExtension(tableFile.getName()).equalsIgnoreCase("xml")) {
+                Database temp = (Database) unmarshaller.unmarshal(tableFile);
+                for (Table table : temp.getTables()) {
+                    database.getTables().add(table);
+                }
+            }
+        }
+
+        for (Table tmp : databaseInput.getTables()) {
+            for (Table tmp1 : database.getTables()) {
+                if (tmp.getName().equals(tmp1.getName())) {
+                    for (Field pp : tmp.getFields()) {
+                        for (Field pp1 : tmp1.getFields()) {
+                            if (pp.getName().equals(pp1.getName())) {
+                                pp1.setReferenceTable(pp.getReferenceTable());
+                                pp1.setReferenceField(pp.getReferenceField());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        List<String> errors = new ArrayList<>();
         for (Table table : database.getTables()) {
             for (Field field : table.getFields()) {
                 if (field.isLink()) {
@@ -57,10 +94,17 @@ public class ERDData {
                         }
                     }
                     if (!found) {
-                        throw new RuntimeException("table " + table.getName() + " field " + field.getName() + " is reference link broken");
+                        errors.add("table '" + table.getName() + "' field '" + field.getName() + "' is reference link broken");
                     }
                 }
             }
+        }
+
+        if (!errors.isEmpty()) {
+            for (String error : errors) {
+                System.err.println(error);
+            }
+            return;
         }
 
         Map<String, String> tableDictionary = new HashMap<>();
@@ -174,8 +218,7 @@ public class ERDData {
         graphElement.appendChild(dataD0Element);
 
         Map<String, Table> midTables = new HashMap<>();
-        String temps = System.getProperty("tables");
-        temps = "acc_gl_account";
+        String temps = StringUtils.lowerCase(System.getProperty("table"));
         if (temps != null && !"".equals(temps)) {
             String temp = (String) temps;
             for (String filter : temp.split(",")) {
@@ -476,9 +519,9 @@ public class ERDData {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
         DOMSource source = new DOMSource(document);
-        File outputFile = new File("target/erd.graphml");
+        File outputFile = new File("target", output);
         StreamResult result = new StreamResult(outputFile);
         transformer.transform(source, result);
         System.out.println("[INFO] ERD is generated to " + outputFile.getAbsolutePath());

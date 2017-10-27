@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_product_loan_variations_borrower_cycle">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_product_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="borrower_cycle_number" type="int(3)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="value_condition" type="int(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="param_type" type="int(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="default_value" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="max_value" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="min_value" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

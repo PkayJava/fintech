@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_loan_transaction">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="office_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="payment_detail_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_reversed" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="external_id" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="transaction_type_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="transaction_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="principal_portion_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_portion_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fee_charges_portion_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="penalty_charges_portion_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="overpayment_portion_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="unrecognized_income_portion" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="outstanding_loan_balance_derived" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="submitted_on_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="manually_adjusted_or_reversed" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="created_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="appuser_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

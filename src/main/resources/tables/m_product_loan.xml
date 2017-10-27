@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_product_loan">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="short_name" key="UNI" type="varchar(4)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_code" type="varchar(3)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_digits" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="currency_multiplesof" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="principal_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="min_principal_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="max_principal_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="arrearstolerance_amount" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(500)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="fund_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_linked_to_floating_interest_rates" type="bit(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="allow_variabe_installments" type="bit(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="nominal_interest_rate_per_period" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="min_nominal_interest_rate_per_period" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="max_nominal_interest_rate_per_period" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_period_frequency_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="annual_nominal_interest_rate" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_method_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_calculated_in_period_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="allow_partial_period_interest_calcualtion" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="repay_every" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="repayment_period_frequency_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="number_of_repayments" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="min_number_of_repayments" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="max_number_of_repayments" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="grace_on_principal_periods" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="recurring_moratorium_principal_periods" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="grace_on_interest_periods" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="grace_interest_free_periods" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="amortization_method_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="accounting_type" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="loan_transaction_strategy_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="external_id" key="UNI" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="include_in_borrower_cycle" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="use_borrower_cycle" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="start_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="close_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="allow_multiple_disbursals" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="max_disbursals" type="int(2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="max_outstanding_loan_balance" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="grace_on_arrears_ageing" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="overdue_days_for_npa" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="days_in_month_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="days_in_year_enum" type="smallint(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="interest_recalculation_enabled" type="tinyint(4)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="min_days_between_disbursal_and_first_repayment" type="int(3)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="hold_guarantee_funds" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="principal_threshold_for_last_installment" type="decimal(5,2)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="account_moves_out_of_npa_only_on_arrears_completion" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="can_define_fixed_emi_amount" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="instalment_amount_in_multiples_of" type="decimal(19,6)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="can_use_for_topup" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="sync_expected_with_disbursement_date" type="tinyint(4)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

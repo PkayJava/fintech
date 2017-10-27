@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_survey_questions">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="survey_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="component_key" type="varchar(32)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="a_key" type="varchar(32)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="a_text" type="varchar(255)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(4000)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="sequence_no" type="int(4)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

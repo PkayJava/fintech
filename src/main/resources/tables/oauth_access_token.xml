@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="oauth_access_token">
+        <comment>table explaination</comment>
+        <field name="token_id" type="varchar(256)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="token" type="blob">
+            <comment>field explaination</comment>
+        </field>
+        <field name="authentication_id" type="varchar(256)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="user_name" type="varchar(256)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="client_id" type="varchar(256)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="authentication" type="blob">
+            <comment>field explaination</comment>
+        </field>
+        <field name="refresh_token" type="varchar(256)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

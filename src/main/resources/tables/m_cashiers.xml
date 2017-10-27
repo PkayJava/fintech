@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_cashiers">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="staff_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="teller_id" key="MUL" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="start_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="end_date" type="date">
+            <comment>field explaination</comment>
+        </field>
+        <field name="start_time" type="varchar(10)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="end_time" type="varchar(10)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="full_day" type="tinyint(4)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

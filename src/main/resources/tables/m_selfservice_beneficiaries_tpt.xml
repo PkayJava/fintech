@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_selfservice_beneficiaries_tpt">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="app_user_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" key="MUL" type="varchar(50)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="office_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="client_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="account_id" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="account_type" type="smallint(4)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="transfer_limit" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="is_active" type="bit(1)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>

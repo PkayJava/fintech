@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <table name="m_holiday">
+        <comment>table explaination</comment>
+        <field name="id" key="PRI" type="bigint(20)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="name" key="MUL" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="from_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="to_date" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="repayments_rescheduled_to" type="datetime">
+            <comment>field explaination</comment>
+        </field>
+        <field name="status_enum" type="int(5)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="processed" type="tinyint(1)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="description" type="varchar(100)">
+            <comment>field explaination</comment>
+        </field>
+        <field name="rescheduling_type" type="int(5)">
+            <comment>field explaination</comment>
+        </field>
+    </table>
+</database>
