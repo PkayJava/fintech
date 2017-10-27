@@ -10,11 +10,22 @@ import com.angkorteam.fintech.dto.Function;
 public class LogoutPage extends Page {
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
+
+    @Override
+    protected void initComponent() {
         Session session = (Session) getSession();
         session.signOut();
         setResponsePage(LoginPage.class);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
 }

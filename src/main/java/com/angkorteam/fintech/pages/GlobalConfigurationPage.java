@@ -3,11 +3,13 @@ package com.angkorteam.fintech.pages;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -23,6 +25,8 @@ import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -48,25 +52,30 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class GlobalConfigurationPage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected FilterForm<Map<String, String>> dataFilterForm;
 
-    private JdbcProvider provider;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private BookmarkablePageLink<Void> closeLink;
+    protected WebMarkupBlock nameBlock;
+    protected WebMarkupContainer nameIContainer;
+    protected SingleChoiceProvider nameProvider;
+    protected Option nameValue;
+    protected Select2SingleChoice<Option> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private SingleChoiceProvider nameProvider;
-    private Option nameValue;
-    private Select2SingleChoice<Option> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected WebMarkupBlock valueBlock;
+    protected WebMarkupContainer valueIContainer;
+    protected Integer valueValue;
+    protected TextField<Integer> valueField;
+    protected TextFeedbackPanel valueFeedback;
 
-    private Integer valueValue;
-    private TextField<Integer> valueField;
-    private TextFeedbackPanel valueFeedback;
+    protected Form<Void> form;
+    protected Button saveButton;
 
-    private Form<Void> form;
-    private Button saveButton;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -94,30 +103,12 @@ public class GlobalConfigurationPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("c_configuration");
-        this.provider.boardField("id", "id", Long.class);
-        this.provider.boardField("name", "name", String.class);
-        this.provider.boardField("enabled", "enabled", Boolean.class);
-        this.provider.boardField("value", "value", Integer.class);
+    protected void initData() {
+    }
 
-        this.provider.setSort("name", SortOrder.ASCENDING);
-
-        this.provider.selectField("id", Long.class);
-
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Enabled ?"), "enabled", "enabled", this::enabledColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Integer, Model.of("Value"), "value", "value", this::valueColumn));
-        columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
-
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
-
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+    @Override
+    protected void initComponent() {
+        initDataTable();
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", SystemDashboardPage.class);
         add(this.closeLink);
@@ -129,18 +120,67 @@ public class GlobalConfigurationPage extends Page {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
+        initNameBlock();
+
+        initValueBlock();
+    }
+
+    protected void initValueBlock() {
+        this.valueBlock = new WebMarkupBlock("valueBlock", Size.Twelve_12);
+        this.form.add(this.valueBlock);
+        this.valueIContainer = new WebMarkupContainer("valueIContainer");
+        this.valueBlock.add(this.valueIContainer);
+        this.valueField = new TextField<>("valueField", new PropertyModel<>(this, "valueValue"));
+        this.valueField.setRequired(true);
+        this.valueIContainer.add(this.valueField);
+        this.valueFeedback = new TextFeedbackPanel("valueFeedback", this.valueField);
+        this.valueIContainer.add(this.valueFeedback);
+    }
+
+    protected void initNameBlock() {
+        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Twelve_12);
+        this.form.add(this.nameBlock);
+        this.nameIContainer = new WebMarkupContainer("nameIContainer");
+        this.nameBlock.add(this.nameIContainer);
         this.nameProvider = new SingleChoiceProvider("c_configuration", "id", "name");
         this.nameField = new Select2SingleChoice<>("nameField", 0, new PropertyModel<>(this, "nameValue"), this.nameProvider);
         this.nameField.setRequired(true);
-        this.form.add(this.nameField);
+        this.nameIContainer.add(this.nameField);
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.form.add(this.nameFeedback);
+        this.nameIContainer.add(this.nameFeedback);
+    }
 
-        this.valueField = new TextField<>("valueField", new PropertyModel<>(this, "valueValue"));
-        this.valueField.setRequired(true);
-        this.form.add(this.valueField);
-        this.valueFeedback = new TextFeedbackPanel("valueFeedback", this.valueField);
-        this.form.add(this.valueFeedback);
+    protected void initDataTable() {
+        this.dataProvider = new JdbcProvider("c_configuration");
+        this.dataProvider.boardField("id", "id", Long.class);
+        this.dataProvider.boardField("name", "name", String.class);
+        this.dataProvider.boardField("enabled", "enabled", Boolean.class);
+        this.dataProvider.boardField("value", "value", Integer.class);
+
+        this.dataProvider.setSort("name", SortOrder.ASCENDING);
+
+        this.dataProvider.selectField("id", Long.class);
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Boolean, Model.of("Enabled ?"), "enabled", "enabled", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Integer, Model.of("Value"), "value", "value", this::dataColumn));
+        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
+
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        add(this.dataFilterForm);
+
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
     protected void saveButtonSubmit(Button button) {
@@ -157,7 +197,7 @@ public class GlobalConfigurationPage extends Page {
         setResponsePage(GlobalConfigurationPage.class);
     }
 
-    protected void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void dataClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         try {
             Long id = (Long) model.get("id");
             if ("enable".equals(s)) {
@@ -171,7 +211,7 @@ public class GlobalConfigurationPage extends Page {
         }
     }
 
-    protected List<ActionItem> actionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> dataAction(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         Boolean enabled = (Boolean) model.get("enabled");
         if (enabled != null && enabled) {
@@ -182,23 +222,22 @@ public class GlobalConfigurationPage extends Page {
         return actions;
     }
 
-    protected ItemPanel enabledColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean value = (Boolean) model.get(jdbcColumn);
-        if (value != null && value) {
-            return new BadgeCell(BadgeType.Success, Model.of("Yes"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("No"));
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("enabled".equals(column)) {
+            Boolean value = (Boolean) model.get(column);
+            if (value != null && value) {
+                return new BadgeCell(BadgeType.Success, Model.of("Yes"));
+            } else {
+                return new BadgeCell(BadgeType.Danger, Model.of("No"));
+            }
+        } else if ("value".equals(column)) {
+            Integer value = (Integer) model.get(column);
+            return new TextCell(value);
         }
-    }
-
-    protected ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel valueColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer value = (Integer) model.get(jdbcColumn);
-        return new TextCell(value);
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }
