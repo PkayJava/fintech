@@ -46,9 +46,11 @@ public class AccountingPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         InfoBoxPanel frequentPostingPage = new InfoBoxPanel("frequentPostingPage", Model.of(new InfoBox().setPage(RuleSelectPage.class).setTitle("Frequent Postings").setDescription("These are predefined postings").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(frequentPostingPage);
 
@@ -78,6 +80,14 @@ public class AccountingPage extends Page {
 
         InfoBoxPanel provisionEntryPage = new InfoBoxPanel("provisionEntryPage", Model.of(new InfoBox().setPage(LoginPage.class).setTitle("Provisioning Entries").setDescription("Create Provision Entries").setIcon(Emoji.ion_alert)));
         add(provisionEntryPage);
-
     }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
 }
