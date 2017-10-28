@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -21,13 +22,17 @@ import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.helper.TaxComponentHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.pages.TaxDashboardPage;
+import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -38,31 +43,41 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class TaxComponentModifyPage extends Page {
 
-    private String tagId;
+    protected String tagId;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected WebMarkupBlock nameBlock;
+    protected WebMarkupContainer nameIContainer;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private Double percentageValue;
-    private TextField<Double> percentageField;
-    private TextFeedbackPanel percentageFeedback;
+    protected WebMarkupBlock percentageBlock;
+    protected WebMarkupContainer percentageIContainer;
+    protected Double percentageValue;
+    protected TextField<Double> percentageField;
+    protected TextFeedbackPanel percentageFeedback;
 
-    private String accountTypeValue;
-    private Label accountTypeView;
+    protected WebMarkupBlock accountTypeBlock;
+    protected WebMarkupContainer accountTypeVContainer;
+    protected Option accountTypeValue;
+    protected ReadOnlyView accountTypeView;
 
-    private String accountValue;
-    private Label accountView;
+    protected WebMarkupBlock accountBlock;
+    protected WebMarkupContainer accountVContainer;
+    protected Option accountValue;
+    protected ReadOnlyView accountView;
 
-    private Date startDateValue;
-    private DateTextField startDateField;
-    private TextFeedbackPanel startDateFeedback;
+    protected WebMarkupBlock startDateBlock;
+    protected WebMarkupContainer startDateIContainer;
+    protected Date startDateValue;
+    protected DateTextField startDateField;
+    protected TextFeedbackPanel startDateFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -102,15 +117,20 @@ public class TaxComponentModifyPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
+    protected void initData() {
         PageParameters parameters = getPageParameters();
         this.tagId = parameters.get("taxId").toString("");
-
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-
         Map<String, Object> taxObject = jdbcTemplate.queryForMap("select * from m_tax_component where id = ?", this.tagId);
+        this.nameValue = (String) taxObject.get("name");
+        this.percentageValue = (Double) taxObject.get("percentage");
+        this.accountTypeValue = AccountType.optionLiteral(String.valueOf(taxObject.get("credit_account_type_enum")));
+        this.accountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account WHERE id = ?", Option.MAPPER, taxObject.get("credit_account_id"));
+        this.startDateValue = (Date) taxObject.get("start_date");
+    }
+
+    @Override
+    protected void initComponent() {
 
         this.form = new Form<>("form");
         add(this.form);
@@ -122,49 +142,80 @@ public class TaxComponentModifyPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", TaxComponentBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.nameValue = (String) taxObject.get("name");
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setRequired(true);
-        this.form.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.form.add(this.nameFeedback);
+        initNameBlock();
 
-        if (taxObject.get("percentage") == null) {
-            this.percentageValue = 0d;
-        } else {
-            this.percentageValue = ((Number) taxObject.get("percentage")).doubleValue();
-        }
-        this.percentageField = new TextField<>("percentageField", new PropertyModel<>(this, "percentageValue"));
-        this.percentageField.setRequired(true);
-        this.form.add(this.percentageField);
-        this.percentageFeedback = new TextFeedbackPanel("percentageFeedback", this.percentageField);
-        this.form.add(this.percentageFeedback);
+        initPercentageBlock();
 
-        if (taxObject.get("credit_account_type_enum") != null) {
-            for (AccountType type : AccountType.values()) {
-                if (type.getLiteral().equals(String.valueOf(taxObject.get("credit_account_type_enum")))) {
-                    this.accountTypeValue = type.getDescription();
-                    break;
-                }
-            }
-        }
-        this.accountTypeView = new Label("accountTypeView", new PropertyModel<>(this, "accountTypeValue"));
-        this.form.add(this.accountTypeView);
+        initAccountTypeBlock();
 
-        this.accountValue = jdbcTemplate.queryForObject("select name from acc_gl_account WHERE id = ?", String.class, taxObject.get("credit_account_id"));
-        this.accountView = new Label("accountView", new PropertyModel<>(this, "accountValue"));
-        this.form.add(this.accountView);
+        initAccountBlock();
 
-        this.startDateValue = (Date) taxObject.get("start_date");
-        this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
-        this.startDateField.setRequired(true);
-        this.form.add(this.startDateField);
-        this.startDateFeedback = new TextFeedbackPanel("startDateFeedback", this.startDateField);
-        this.form.add(this.startDateFeedback);
-
+        initStartDateBlock();
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void initNameBlock() {
+        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Twelve_12);
+        this.form.add(this.nameBlock);
+        this.nameIContainer = new WebMarkupContainer("nameIContainer");
+        this.nameBlock.add(this.nameIContainer);
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setRequired(true);
+        this.nameIContainer.add(this.nameField);
+        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+        this.nameIContainer.add(this.nameFeedback);
+    }
+
+    protected void initPercentageBlock() {
+        this.percentageBlock = new WebMarkupBlock("percentageBlock", Size.Twelve_12);
+        this.form.add(this.percentageBlock);
+        this.percentageIContainer = new WebMarkupContainer("percentageIContainer");
+        this.percentageBlock.add(this.percentageIContainer);
+        this.percentageField = new TextField<>("percentageField", new PropertyModel<>(this, "percentageValue"));
+        this.percentageField.setRequired(true);
+        this.percentageIContainer.add(this.percentageField);
+        this.percentageFeedback = new TextFeedbackPanel("percentageFeedback", this.percentageField);
+        this.percentageIContainer.add(this.percentageFeedback);
+    }
+
+    protected void initAccountTypeBlock() {
+        this.accountTypeBlock = new WebMarkupBlock("accountTypeBlock", Size.Twelve_12);
+        this.form.add(this.accountTypeBlock);
+        this.accountTypeVContainer = new WebMarkupContainer("accountTypeVContainer");
+        this.accountTypeBlock.add(this.accountTypeVContainer);
+        this.accountTypeView = new ReadOnlyView("accountTypeView", new PropertyModel<>(this, "accountTypeValue.text"));
+        this.accountTypeVContainer.add(this.accountTypeView);
+    }
+
+    protected void initAccountBlock() {
+        this.accountBlock = new WebMarkupBlock("accountBlock", Size.Twelve_12);
+        this.form.add(this.accountBlock);
+        this.accountVContainer = new WebMarkupContainer("accountVContainer");
+        this.accountBlock.add(this.accountVContainer);
+        this.accountView = new ReadOnlyView("accountView", new PropertyModel<>(this, "accountValue.text"));
+        this.accountVContainer.add(this.accountView);
+    }
+
+    protected void initStartDateBlock() {
+        this.startDateBlock = new WebMarkupBlock("startDateBlock", Size.Twelve_12);
+        this.form.add(this.startDateBlock);
+        this.startDateIContainer = new WebMarkupContainer("startDateIContainer");
+        this.startDateBlock.add(this.startDateIContainer);
+        this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
+        this.startDateField.setRequired(true);
+        this.startDateIContainer.add(this.startDateField);
+        this.startDateFeedback = new TextFeedbackPanel("startDateFeedback", this.startDateField);
+        this.startDateIContainer.add(this.startDateFeedback);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void saveButtonSubmit(Button button) {
         TaxComponentBuilder builder = new TaxComponentBuilder();
         builder.withId(this.tagId);
         builder.withName(this.nameValue);
