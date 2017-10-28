@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.staff;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
@@ -34,13 +35,14 @@ import com.google.common.collect.Lists;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class StaffBrowsePage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected FilterForm<Map<String, String>> dataFilterForm;
 
-    private JdbcProvider provider;
+    protected BookmarkablePageLink<Void> createLink;
 
-    private BookmarkablePageLink<Void> createLink;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -68,74 +70,76 @@ public class StaffBrowsePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("m_staff");
-        this.provider.addJoin("LEFT JOIN m_office ON m_staff.office_id = m_office.id");
-        this.provider.boardField("m_staff.id", "id", Long.class);
-        this.provider.boardField("m_staff.firstname", "firstname", String.class);
-        this.provider.boardField("m_staff.lastname", "lastname", String.class);
-        this.provider.boardField("m_staff.is_loan_officer", "loan_officer", Boolean.class);
-        this.provider.boardField("m_staff.is_active", "active", Boolean.class);
-        this.provider.boardField("m_office.name", "office", String.class);
+    protected void initData() {
+    }
 
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("ID"), "id", "id", this::idColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("First Name"), "firstname", "firstname", this::firstNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Last Name"), "lastname", "lastname", this::lastNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Is Loan Officer"), "loan_officer", "loan_officer", this::loanOfficerColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Active"), "active", "active", this::activeColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Office"), "office", "office", this::officeColumn));
-
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
-
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+    @Override
+    protected void initComponent() {
+        initDataTable();
 
         this.createLink = new BookmarkablePageLink<>("createLink", StaffCreatePage.class);
         add(this.createLink);
     }
 
-    private ItemPanel idColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long id = (Long) model.get(jdbcColumn);
-        PageParameters parameters = new PageParameters();
-        parameters.add("staffId", model.get("id"));
-        return new LinkCell(StaffModifyPage.class, parameters, Model.of(String.valueOf(id)));
+    protected void initDataTable() {
+        this.dataProvider = new JdbcProvider("m_staff");
+        this.dataProvider.addJoin("LEFT JOIN m_office ON m_staff.office_id = m_office.id");
+        this.dataProvider.boardField("m_staff.id", "id", Long.class);
+        this.dataProvider.boardField("m_staff.firstname", "firstname", String.class);
+        this.dataProvider.boardField("m_staff.lastname", "lastname", String.class);
+        this.dataProvider.boardField("m_staff.is_loan_officer", "loan_officer", Boolean.class);
+        this.dataProvider.boardField("m_staff.is_active", "active", Boolean.class);
+        this.dataProvider.boardField("m_office.name", "office", String.class);
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("ID"), "id", "id", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("First Name"), "firstname", "firstname", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Last Name"), "lastname", "lastname", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Boolean, Model.of("Is Loan Officer"), "loan_officer", "loan_officer", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Boolean, Model.of("Active"), "active", "active", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Office"), "office", "office", this::dataColumn));
+
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        add(this.dataFilterForm);
+
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
     }
 
-    private ItemPanel firstNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    @Override
+    protected void configureRequiredValidation() {
     }
 
-    private ItemPanel lastNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    @Override
+    protected void configureMetaData() {
     }
 
-    private ItemPanel officeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel activeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean active = (Boolean) model.get(jdbcColumn);
-        if (active != null && active) {
-            return new BadgeCell(BadgeType.Success, Model.of("Yes"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("No"));
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("id".equals(column)) {
+            Long value = (Long) model.get(column);
+            PageParameters parameters = new PageParameters();
+            parameters.add("staffId", model.get("id"));
+            return new LinkCell(StaffModifyPage.class, parameters, value);
+        } else if ("firstname".equals(column) || "lastname".equals(column) || "office".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("loan_officer".equals(column)) {
+            Boolean loanOfficer = (Boolean) model.get(column);
+            if (loanOfficer != null && loanOfficer) {
+                return new BadgeCell(BadgeType.Success, Model.of("Yes"));
+            } else {
+                return new BadgeCell(BadgeType.Danger, Model.of("No"));
+            }
+        } else if ("active".equals(column)) {
+            Boolean active = (Boolean) model.get(column);
+            if (active != null && active) {
+                return new BadgeCell(BadgeType.Success, Model.of("Yes"));
+            } else {
+                return new BadgeCell(BadgeType.Danger, Model.of("No"));
+            }
         }
-    }
-
-    private ItemPanel loanOfficerColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean loanOfficer = (Boolean) model.get(jdbcColumn);
-        if (loanOfficer != null && loanOfficer) {
-            return new BadgeCell(BadgeType.Success, Model.of("Yes"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("No"));
-        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }
