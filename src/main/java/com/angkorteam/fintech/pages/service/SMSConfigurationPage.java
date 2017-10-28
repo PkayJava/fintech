@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -19,6 +20,8 @@ import com.angkorteam.fintech.helper.ServiceHelper;
 import com.angkorteam.fintech.pages.ServiceDashboardPage;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.spring.JdbcTemplate;
@@ -32,27 +35,35 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SMSConfigurationPage extends Page {
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private String endpointValue;
-    private TextField<String> endpointField;
-    private TextFeedbackPanel endpointFeedback;
+    protected WebMarkupBlock endpointBlock;
+    protected WebMarkupContainer endpointIContainer;
+    protected String endpointValue;
+    protected TextField<String> endpointField;
+    protected TextFeedbackPanel endpointFeedback;
 
-    private String tenantAppKeyValue;
-    private TextField<String> tenantAppKeyField;
-    private TextFeedbackPanel tenantAppKeyFeedback;
+    protected WebMarkupBlock tenantAppKeyBlock;
+    protected WebMarkupContainer tenantAppKeyIContainer;
+    protected String tenantAppKeyValue;
+    protected TextField<String> tenantAppKeyField;
+    protected TextFeedbackPanel tenantAppKeyFeedback;
 
-    private String hostValue;
-    private TextField<String> hostField;
-    private TextFeedbackPanel hostFeedback;
+    protected WebMarkupBlock hostBlock;
+    protected WebMarkupContainer hostIContainer;
+    protected String hostValue;
+    protected TextField<String> hostField;
+    protected TextFeedbackPanel hostFeedback;
 
-    private int portValue = 9191;
-    private TextField<Integer> portField;
-    private TextFeedbackPanel portFeedback;
+    protected WebMarkupBlock portBlock;
+    protected WebMarkupContainer portIContainer;
+    protected Integer portValue = 9191;
+    protected TextField<Integer> portField;
+    protected TextFeedbackPanel portFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -86,15 +97,21 @@ public class SMSConfigurationPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
+    protected void initData() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         List<Map<String, Object>> temps = jdbcTemplate.queryForList("select name, value from c_external_service_properties where external_service_id = ?", ServiceType.SMS.getLiteral());
         Map<String, Object> params = Maps.newHashMap();
         for (Map<String, Object> temp : temps) {
             params.put((String) temp.get("name"), temp.get("value"));
         }
+        this.endpointValue = (String) params.get("end_point");
+        this.tenantAppKeyValue = (String) params.get("tenant_app_key");
+        this.hostValue = (String) params.get("host_name");
+        this.portValue = Integer.valueOf((String) params.get("port_number"));
+    }
+
+    @Override
+    protected void initComponent() {
 
         this.form = new Form<>("form");
         this.add(this.form);
@@ -106,36 +123,72 @@ public class SMSConfigurationPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ServiceDashboardPage.class);
         this.form.add(this.closeLink);
 
-        this.endpointValue = (String) params.get("end_point");
-        this.endpointField = new TextField<>("endpointField", new PropertyModel<>(this, "endpointValue"));
-        this.endpointField.setRequired(true);
-        this.form.add(this.endpointField);
-        this.endpointFeedback = new TextFeedbackPanel("endpointFeedback", this.endpointField);
-        this.form.add(this.endpointFeedback);
+        initEndpointBlock();
 
-        this.tenantAppKeyValue = (String) params.get("tenant_app_key");
-        this.tenantAppKeyField = new TextField<>("tenantAppKeyField", new PropertyModel<>(this, "tenantAppKeyValue"));
-        this.tenantAppKeyField.setRequired(true);
-        this.form.add(this.tenantAppKeyField);
-        this.tenantAppKeyFeedback = new TextFeedbackPanel("tenantAppKeyFeedback", this.tenantAppKeyField);
-        this.form.add(this.tenantAppKeyFeedback);
+        initTenantAppKeyBlock();
 
-        this.hostValue = (String) params.get("host_name");
-        this.hostField = new TextField<>("hostField", new PropertyModel<>(this, "hostValue"));
-        this.hostField.setRequired(true);
-        this.form.add(this.hostField);
-        this.hostFeedback = new TextFeedbackPanel("hostFeedback", this.hostField);
-        this.form.add(this.hostFeedback);
+        initHostBlock();
 
-        this.portValue = Integer.valueOf((String) params.get("port_number"));
-        this.portField = new TextField<>("portField", new PropertyModel<>(this, "portValue"));
-        this.portField.setRequired(true);
-        this.form.add(this.portField);
-        this.portFeedback = new TextFeedbackPanel("portFeedback", this.portField);
-        this.form.add(this.portFeedback);
+        initPortBlock();
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void initPortBlock() {
+        this.portBlock = new WebMarkupBlock("portBlock", Size.Twelve_12);
+        this.form.add(this.portBlock);
+        this.portIContainer = new WebMarkupContainer("portIContainer");
+        this.portBlock.add(this.portIContainer);
+        this.portField = new TextField<>("portField", new PropertyModel<>(this, "portValue"));
+        this.portField.setRequired(true);
+        this.portIContainer.add(this.portField);
+        this.portFeedback = new TextFeedbackPanel("portFeedback", this.portField);
+        this.portIContainer.add(this.portFeedback);
+    }
+
+    protected void initHostBlock() {
+        this.hostBlock = new WebMarkupBlock("hostBlock", Size.Twelve_12);
+        this.form.add(this.hostBlock);
+        this.hostIContainer = new WebMarkupContainer("hostIContainer");
+        this.hostBlock.add(this.hostIContainer);
+        this.hostField = new TextField<>("hostField", new PropertyModel<>(this, "hostValue"));
+        this.hostField.setRequired(true);
+        this.hostIContainer.add(this.hostField);
+        this.hostFeedback = new TextFeedbackPanel("hostFeedback", this.hostField);
+        this.hostIContainer.add(this.hostFeedback);
+    }
+
+    protected void initTenantAppKeyBlock() {
+        this.tenantAppKeyBlock = new WebMarkupBlock("tenantAppKeyBlock", Size.Twelve_12);
+        this.form.add(this.tenantAppKeyBlock);
+        this.tenantAppKeyIContainer = new WebMarkupContainer("tenantAppKeyIContainer");
+        this.tenantAppKeyBlock.add(this.tenantAppKeyIContainer);
+        this.tenantAppKeyField = new TextField<>("tenantAppKeyField", new PropertyModel<>(this, "tenantAppKeyValue"));
+        this.tenantAppKeyField.setRequired(true);
+        this.tenantAppKeyIContainer.add(this.tenantAppKeyField);
+        this.tenantAppKeyFeedback = new TextFeedbackPanel("tenantAppKeyFeedback", this.tenantAppKeyField);
+        this.tenantAppKeyIContainer.add(this.tenantAppKeyFeedback);
+    }
+
+    protected void initEndpointBlock() {
+        this.endpointBlock = new WebMarkupBlock("endpointBlock", Size.Twelve_12);
+        this.form.add(this.endpointBlock);
+        this.endpointIContainer = new WebMarkupContainer("endpointIContainer");
+        this.endpointBlock.add(this.endpointIContainer);
+        this.endpointField = new TextField<>("endpointField", new PropertyModel<>(this, "endpointValue"));
+        this.endpointField.setRequired(true);
+        this.endpointIContainer.add(this.endpointField);
+        this.endpointFeedback = new TextFeedbackPanel("endpointFeedback", this.endpointField);
+        this.endpointIContainer.add(this.endpointFeedback);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void saveButtonSubmit(Button button) {
         ExternalServiceBuilder builder = new ExternalServiceBuilder(ServiceType.SMS);
         builder.withHost(this.hostValue);
         builder.withPort(this.portValue);

@@ -11,27 +11,33 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="s3AccessKeyField">Access Key</label> <input
-							wicket:id="s3AccessKeyField" type="text" class="form-control" />
-						<span wicket:id="s3AccessKeyFeedback" class="help-block"></span>
+					<div wicket:id="s3AccessKeyBlock" class="form-group">
+						<wicket:container wicket:id="s3AccessKeyIContainer">
+							<label wicket:for="s3AccessKeyField">Access Key</label>
+							<input wicket:id="s3AccessKeyField" type="text"
+								class="form-control" />
+							<span wicket:id="s3AccessKeyFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="s3BucketNameField">Bucket Name</label> <input
-							wicket:id="s3BucketNameField" type="text" class="form-control" />
-						<span wicket:id="s3BucketNameFeedback" class="help-block"></span>
+					<div wicket:id="s3BucketNameBlock" class="form-group">
+						<wicket:container wicket:id="s3BucketNameIContainer">
+							<label wicket:for="s3BucketNameField">Bucket Name</label>
+							<input wicket:id="s3BucketNameField" type="text"
+								class="form-control" />
+							<span wicket:id="s3BucketNameFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="s3SecretKeyField">Secret Key</label> <input
-							wicket:id="s3SecretKeyField" type="text" class="form-control" />
-						<span wicket:id="s3SecretKeyFeedback" class="help-block"></span>
+					<div wicket:id="s3SecretKeyBlock" class="form-group">
+						<wicket:container wicket:id="s3SecretKeyIContainer">
+							<label wicket:for="s3SecretKeyField">Secret Key</label>
+							<input wicket:id="s3SecretKeyField" type="text"
+								class="form-control" />
+							<span wicket:id="s3SecretKeyFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>

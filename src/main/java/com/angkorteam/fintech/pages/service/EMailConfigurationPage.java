@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -20,6 +21,8 @@ import com.angkorteam.fintech.helper.ServiceHelper;
 import com.angkorteam.fintech.pages.ServiceDashboardPage;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.spring.JdbcTemplate;
@@ -33,31 +36,41 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class EMailConfigurationPage extends Page {
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private String usernameValue;
-    private TextField<String> usernameField;
-    private TextFeedbackPanel usernameFeedback;
+    protected WebMarkupBlock usernameBlock;
+    protected WebMarkupContainer usernameIContainer;
+    protected String usernameValue;
+    protected TextField<String> usernameField;
+    protected TextFeedbackPanel usernameFeedback;
 
-    private String passwordValue;
-    private TextField<String> passwordField;
-    private TextFeedbackPanel passwordFeedback;
+    protected WebMarkupBlock passwordBlock;
+    protected WebMarkupContainer passwordIContainer;
+    protected String passwordValue;
+    protected TextField<String> passwordField;
+    protected TextFeedbackPanel passwordFeedback;
 
-    private String hostValue;
-    private TextField<String> hostField;
-    private TextFeedbackPanel hostFeedback;
+    protected WebMarkupBlock hostBlock;
+    protected WebMarkupContainer hostIContainer;
+    protected String hostValue;
+    protected TextField<String> hostField;
+    protected TextFeedbackPanel hostFeedback;
 
-    private int portValue = 25;
-    private TextField<Integer> portField;
-    private TextFeedbackPanel portFeedback;
+    protected WebMarkupBlock portBlock;
+    protected WebMarkupContainer portIContainer;
+    protected Integer portValue = 25;
+    protected TextField<Integer> portField;
+    protected TextFeedbackPanel portFeedback;
 
-    private Boolean useTlsValue;
-    private CheckBox useTlsField;
-    private TextFeedbackPanel useTlsFeedback;
+    protected WebMarkupBlock useTlsBlock;
+    protected WebMarkupContainer useTlsIContainer;
+    protected Boolean useTlsValue;
+    protected CheckBox useTlsField;
+    protected TextFeedbackPanel useTlsFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -91,15 +104,22 @@ public class EMailConfigurationPage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
+    protected void initData() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         List<Map<String, Object>> temps = jdbcTemplate.queryForList("select name, value from c_external_service_properties where external_service_id = ?", ServiceType.SMTP.getLiteral());
         Map<String, Object> params = Maps.newHashMap();
         for (Map<String, Object> temp : temps) {
             params.put((String) temp.get("name"), temp.get("value"));
         }
+        this.usernameValue = (String) params.get("username");
+        this.passwordValue = (String) params.get("password");
+        this.hostValue = (String) params.get("host");
+        this.portValue = Integer.valueOf((String) params.get("port"));
+        this.useTlsValue = Boolean.valueOf((String) params.get("useTLS"));
+    }
+
+    @Override
+    protected void initComponent() {
 
         this.form = new Form<>("form");
         this.add(this.form);
@@ -111,43 +131,86 @@ public class EMailConfigurationPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ServiceDashboardPage.class);
         this.form.add(this.closeLink);
 
-        this.usernameValue = (String) params.get("username");
-        this.usernameField = new TextField<>("usernameField", new PropertyModel<>(this, "usernameValue"));
-        this.usernameField.setRequired(true);
-        this.form.add(this.usernameField);
-        this.usernameFeedback = new TextFeedbackPanel("usernameFeedback", this.usernameField);
-        this.form.add(this.usernameFeedback);
+        initUsernameBlock();
 
-        this.passwordValue = (String) params.get("password");
-        this.passwordField = new TextField<>("passwordField", new PropertyModel<>(this, "passwordValue"));
-        this.passwordField.setRequired(true);
-        this.form.add(this.passwordField);
-        this.passwordFeedback = new TextFeedbackPanel("passwordFeedback", this.passwordField);
-        this.form.add(this.passwordFeedback);
+        initPasswordBlock();
 
-        this.hostValue = (String) params.get("host");
-        this.hostField = new TextField<>("hostField", new PropertyModel<>(this, "hostValue"));
-        this.hostField.setRequired(true);
-        this.form.add(this.hostField);
-        this.hostFeedback = new TextFeedbackPanel("hostFeedback", this.hostField);
-        this.form.add(this.hostFeedback);
+        initHostBlock();
 
-        this.portValue = Integer.valueOf((String) params.get("port"));
-        this.portField = new TextField<>("portField", new PropertyModel<>(this, "portValue"));
-        this.portField.setRequired(true);
-        this.form.add(this.portField);
-        this.portFeedback = new TextFeedbackPanel("portFeedback", this.portField);
-        this.form.add(this.portFeedback);
+        initPortBlock();
 
-        this.useTlsValue = Boolean.valueOf((String) params.get("useTLS"));
-        this.useTlsField = new CheckBox("useTlsField", new PropertyModel<>(this, "useTlsValue"));
-        this.useTlsField.setRequired(true);
-        this.form.add(this.useTlsField);
-        this.useTlsFeedback = new TextFeedbackPanel("useTlsFeedback", this.useTlsField);
-        this.form.add(this.useTlsFeedback);
+        initUseTlsBlock();
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void initUseTlsBlock() {
+        this.useTlsBlock = new WebMarkupBlock("useTlsBlock", Size.Twelve_12);
+        this.form.add(this.useTlsBlock);
+        this.useTlsIContainer = new WebMarkupContainer("useTlsIContainer");
+        this.useTlsBlock.add(this.useTlsIContainer);
+        this.useTlsField = new CheckBox("useTlsField", new PropertyModel<>(this, "useTlsValue"));
+        this.useTlsField.setRequired(true);
+        this.useTlsIContainer.add(this.useTlsField);
+        this.useTlsFeedback = new TextFeedbackPanel("useTlsFeedback", this.useTlsField);
+        this.useTlsIContainer.add(this.useTlsFeedback);
+    }
+
+    protected void initPortBlock() {
+        this.portBlock = new WebMarkupBlock("portBlock", Size.Twelve_12);
+        this.form.add(this.portBlock);
+        this.portIContainer = new WebMarkupContainer("portIContainer");
+        this.portBlock.add(this.portIContainer);
+        this.portField = new TextField<>("portField", new PropertyModel<>(this, "portValue"));
+        this.portField.setRequired(true);
+        this.portIContainer.add(this.portField);
+        this.portFeedback = new TextFeedbackPanel("portFeedback", this.portField);
+        this.portIContainer.add(this.portFeedback);
+    }
+
+    protected void initHostBlock() {
+        this.hostBlock = new WebMarkupBlock("hostBlock", Size.Twelve_12);
+        this.form.add(this.hostBlock);
+        this.hostIContainer = new WebMarkupContainer("hostIContainer");
+        this.hostBlock.add(this.hostIContainer);
+        this.hostField = new TextField<>("hostField", new PropertyModel<>(this, "hostValue"));
+        this.hostField.setRequired(true);
+        this.hostIContainer.add(this.hostField);
+        this.hostFeedback = new TextFeedbackPanel("hostFeedback", this.hostField);
+        this.hostIContainer.add(this.hostFeedback);
+    }
+
+    protected void initPasswordBlock() {
+        this.passwordBlock = new WebMarkupBlock("passwordBlock", Size.Twelve_12);
+        this.form.add(this.passwordBlock);
+        this.passwordIContainer = new WebMarkupContainer("passwordIContainer");
+        this.passwordBlock.add(this.passwordIContainer);
+        this.passwordField = new TextField<>("passwordField", new PropertyModel<>(this, "passwordValue"));
+        this.passwordField.setRequired(true);
+        this.passwordIContainer.add(this.passwordField);
+        this.passwordFeedback = new TextFeedbackPanel("passwordFeedback", this.passwordField);
+        this.passwordIContainer.add(this.passwordFeedback);
+    }
+
+    protected void initUsernameBlock() {
+        this.usernameBlock = new WebMarkupBlock("usernameBlock", Size.Twelve_12);
+        this.form.add(this.usernameBlock);
+        this.usernameIContainer = new WebMarkupContainer("usernameIContainer");
+        this.usernameBlock.add(this.usernameIContainer);
+        this.usernameField = new TextField<>("usernameField", new PropertyModel<>(this, "usernameValue"));
+        this.usernameField.setRequired(true);
+        this.usernameIContainer.add(this.usernameField);
+        this.usernameFeedback = new TextFeedbackPanel("usernameFeedback", this.usernameField);
+        this.usernameIContainer.add(this.usernameFeedback);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void saveButtonSubmit(Button button) {
         ExternalServiceBuilder builder = new ExternalServiceBuilder(ServiceType.SMTP);
         builder.withHost(this.hostValue);
         builder.withPassword(this.passwordValue);

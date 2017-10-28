@@ -11,45 +11,51 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="usernameField">Username</label> <input
-							wicket:id="usernameField" type="text" class="form-control" /> <span
-							wicket:id="usernameFeedback" class="help-block"></span>
+					<div wicket:id="usernameBlock" class="form-group">
+						<wicket:container wicket:id="usernameIContainer">
+							<label wicket:for="usernameField">Username</label>
+							<input wicket:id="usernameField" type="text" class="form-control" />
+							<span wicket:id="usernameFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="passwordField">Password</label> <input
-							wicket:id="passwordField" type="text" class="form-control" /> <span
-							wicket:id="passwordFeedback" class="help-block"></span>
+					<div wicket:id="passwordBlock" class="form-group">
+						<wicket:container wicket:id="passwordIContainer">
+							<label wicket:for="passwordField">Password</label>
+							<input wicket:id="passwordField" type="text" class="form-control" />
+							<span wicket:id="passwordFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="hostField">Host</label> <input
-							wicket:id="hostField" type="text" class="form-control" /> <span
-							wicket:id="hostFeedback" class="help-block"></span>
+					<div wicket:id="hostBlock" class="form-group">
+						<wicket:container wicket:id="hostIContainer">
+							<label wicket:for="hostField">Host</label>
+							<input wicket:id="hostField" type="text" class="form-control" />
+							<span wicket:id="hostFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="portField">Port</label> <input
-							wicket:id="portField" type="text" class="form-control" /> <span
-							wicket:id="portFeedback" class="help-block"></span>
+					<div wicket:id="portBlock" class="form-group">
+						<wicket:container wicket:id="portIContainer">
+							<label wicket:for="portField">Port</label>
+							<input wicket:id="portField" type="text" class="form-control" />
+							<span wicket:id="portFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label>&nbsp;</label> <span style="display: block"> <label>
-								<input type="checkbox" wicket:id="useTlsField"> Is Use
-								TLS ?
-						</label>
-						</span> <span wicket:id="useTlsFeedback" class="help-block"></span>
+					<div wicket:id="useTlsBlock" class="form-group">
+						<wicket:container wicket:id="useTlsIContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="useTlsField"> Is Use TLS ?
+							</label>
+							</span>
+							<span wicket:id="useTlsFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>

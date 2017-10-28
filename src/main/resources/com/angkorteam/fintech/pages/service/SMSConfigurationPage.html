@@ -11,35 +11,40 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="hostField">Host Name</label> <input
-							wicket:id="hostField" type="text" class="form-control" /> <span
-							wicket:id="hostFeedback" class="help-block"></span>
+					<div wicket:id="hostBlock" class="form-group">
+						<wicket:container wicket:id="hostIContainer">
+							<label wicket:for="hostField">Host Name</label>
+							<input wicket:id="hostField" type="text" class="form-control" />
+							<span wicket:id="hostFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="portField">Port Number</label> <input
-							wicket:id="portField" type="text" class="form-control" /> <span
-							wicket:id="portFeedback" class="help-block"></span>
+					<div wicket:id="portBlock" class="form-group">
+						<wicket:container wicket:id="portIContainer">
+							<label wicket:for="portField">Port Number</label>
+							<input wicket:id="portField" type="text" class="form-control" />
+							<span wicket:id="portFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="endpointField">Endpoint</label> <input
-							wicket:id="endpointField" type="text" class="form-control" /> <span
-							wicket:id="endpointFeedback" class="help-block"></span>
+					<div wicket:id="endpointBlock" class="form-group">
+						<wicket:container wicket:id="endpointIContainer">
+							<label wicket:for="endpointField">Endpoint</label>
+							<input wicket:id="endpointField" type="text" class="form-control" />
+							<span wicket:id="endpointFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="tenantAppKeyField">Tenant App Key</label> <input
-							wicket:id="tenantAppKeyField" type="text" class="form-control" />
-						<span wicket:id="tenantAppKeyFeedback" class="help-block"></span>
+					<div wicket:id="tenantAppKeyBlock" class="form-group">
+						<wicket:container wicket:id="tenantAppKeyIContainer">
+							<label wicket:for="tenantAppKeyField">Tenant App Key</label>
+							<input wicket:id="tenantAppKeyField" type="text"
+								class="form-control" />
+							<span wicket:id="tenantAppKeyFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>
