@@ -9,20 +9,21 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label>Start Date</label>
-						<div class="form-control" readonly="readonly"
-							wicket:id="startDateView"></div>
+					<div wicket:id="startDateBlock" class="form-group">
+						<wicket:container wicket:id="startDateVContainer">
+							<label>Start Date</label>
+							<div class="form-control" wicket:id="startDateView"></div>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="endDateField">End Date</label> <input
-							wicket:id="endDateField" type="text" class="form-control" /> <span
-							wicket:id="endDateFeedback" class="help-block"></span>
+					<div wicket:id="endDateBlock" class="form-group">
+						<wicket:container wicket:id="endDateIContainer">
+							<label wicket:for="endDateField">End Date</label>
+							<input wicket:id="endDateField" type="text" class="form-control" />
+							<span wicket:id="endDateFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>
