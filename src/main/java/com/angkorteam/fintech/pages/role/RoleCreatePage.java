@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.role;
 import java.util.List;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -16,6 +17,8 @@ import com.angkorteam.fintech.dto.builder.RoleBuilder;
 import com.angkorteam.fintech.helper.RoleHelper;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -29,19 +32,23 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class RoleCreatePage extends Page {
 
-    private String descriptionValue;
-    private TextField<String> descriptionField;
-    private TextFeedbackPanel descriptionFeedback;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected WebMarkupBlock descriptionBlock;
+    protected WebMarkupContainer descriptionIContainer;
+    protected String descriptionValue;
+    protected TextField<String> descriptionField;
+    protected TextFeedbackPanel descriptionFeedback;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected WebMarkupBlock nameBlock;
+    protected WebMarkupContainer nameIContainer;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -75,9 +82,11 @@ public class RoleCreatePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -88,20 +97,44 @@ public class RoleCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", RoleBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.descriptionField = new TextField<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
-        this.descriptionField.setRequired(true);
-        this.form.add(this.descriptionField);
-        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-        this.form.add(this.descriptionFeedback);
+        initDescriptionBlock();
 
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setRequired(true);
-        this.form.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.form.add(this.nameFeedback);
+        initNameBlock();
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void initNameBlock() {
+        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Twelve_12);
+        this.form.add(this.nameBlock);
+        this.nameIContainer = new WebMarkupContainer("nameIContainer");
+        this.nameBlock.add(this.nameIContainer);
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setRequired(true);
+        this.nameIContainer.add(this.nameField);
+        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+        this.nameIContainer.add(this.nameFeedback);
+    }
+
+    protected void initDescriptionBlock() {
+        this.descriptionBlock = new WebMarkupBlock("descriptionBlock", Size.Twelve_12);
+        this.form.add(this.descriptionBlock);
+        this.descriptionIContainer = new WebMarkupContainer("descriptionIContainer");
+        this.descriptionBlock.add(this.descriptionIContainer);
+        this.descriptionField = new TextField<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
+        this.descriptionField.setRequired(true);
+        this.descriptionIContainer.add(this.descriptionField);
+        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
+        this.descriptionIContainer.add(this.descriptionFeedback);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void saveButtonSubmit(Button button) {
         RoleBuilder builder = new RoleBuilder();
         builder.withName(this.nameValue);
         builder.withDescription(this.descriptionValue);
