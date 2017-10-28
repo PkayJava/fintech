@@ -12,11 +12,6 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.repository.support.ElasticsearchRepositoryFactory;
-import org.springframework.data.elasticsearch.repository.support.ElasticsearchRepositoryFactoryBean;
-import org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport;
-import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;

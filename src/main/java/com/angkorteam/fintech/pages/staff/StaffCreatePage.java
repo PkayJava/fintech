@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -19,6 +20,8 @@ import com.angkorteam.fintech.helper.StaffHelper;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
@@ -35,36 +38,48 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class StaffCreatePage extends Page {
 
-    private String firstNameValue;
-    private TextField<String> firstNameField;
-    private TextFeedbackPanel firstNameFeedback;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private String lastNameValue;
-    private TextField<String> lastNameField;
-    private TextFeedbackPanel lastNameFeedback;
+    protected WebMarkupBlock firstNameBlock;
+    protected WebMarkupContainer firstNameIContainer;
+    protected String firstNameValue;
+    protected TextField<String> firstNameField;
+    protected TextFeedbackPanel firstNameFeedback;
 
-    private String mobileNoValue;
-    private TextField<String> mobileNoField;
-    private TextFeedbackPanel mobileNoFeedback;
+    protected WebMarkupBlock lastNameBlock;
+    protected WebMarkupContainer lastNameIContainer;
+    protected String lastNameValue;
+    protected TextField<String> lastNameField;
+    protected TextFeedbackPanel lastNameFeedback;
 
-    private SingleChoiceProvider officeProvider;
-    private Option officeValue;
-    private Select2SingleChoice<Option> officeField;
-    private TextFeedbackPanel officeFeedback;
+    protected WebMarkupBlock mobileNoBlock;
+    protected WebMarkupContainer mobileNoIContainer;
+    protected String mobileNoValue;
+    protected TextField<String> mobileNoField;
+    protected TextFeedbackPanel mobileNoFeedback;
 
-    private Date joinedDateValue;
-    private DateTextField joinedDateField;
-    private TextFeedbackPanel joinedDateFeedback;
+    protected WebMarkupBlock officeBlock;
+    protected WebMarkupContainer officeIContainer;
+    protected SingleChoiceProvider officeProvider;
+    protected Option officeValue;
+    protected Select2SingleChoice<Option> officeField;
+    protected TextFeedbackPanel officeFeedback;
 
-    private Boolean loanOfficerValue;
-    private CheckBox loanOfficerField;
-    private TextFeedbackPanel loanOfficerFeedback;
+    protected WebMarkupBlock joinedDateBlock;
+    protected WebMarkupContainer joinedDateIContainer;
+    protected Date joinedDateValue;
+    protected DateTextField joinedDateField;
+    protected TextFeedbackPanel joinedDateFeedback;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected WebMarkupBlock loanOfficerBlock;
+    protected WebMarkupContainer loanOfficerIContainer;
+    protected Boolean loanOfficerValue;
+    protected CheckBox loanOfficerField;
+    protected TextFeedbackPanel loanOfficerFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -98,9 +113,11 @@ public class StaffCreatePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -111,45 +128,101 @@ public class StaffCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", StaffBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.firstNameField = new TextField<>("firstNameField", new PropertyModel<>(this, "firstNameValue"));
-        this.firstNameField.setRequired(true);
-        this.form.add(this.firstNameField);
-        this.firstNameFeedback = new TextFeedbackPanel("firstNameFeedback", this.firstNameField);
-        this.form.add(this.firstNameFeedback);
+        initFirstNameBlock();
 
-        this.lastNameField = new TextField<>("lastNameField", new PropertyModel<>(this, "lastNameValue"));
-        this.lastNameField.setRequired(true);
-        this.form.add(this.lastNameField);
-        this.lastNameFeedback = new TextFeedbackPanel("lastNameFeedback", this.lastNameField);
-        this.form.add(this.lastNameFeedback);
+        initLastNameBlock();
 
-        this.joinedDateField = new DateTextField("joinedDateField", new PropertyModel<>(this, "joinedDateValue"));
-        this.joinedDateField.setRequired(true);
-        this.form.add(this.joinedDateField);
-        this.joinedDateFeedback = new TextFeedbackPanel("joinedDateFeedback", this.joinedDateField);
-        this.form.add(this.joinedDateFeedback);
+        initJoinedDateBlock();
 
+        initOfficeBlock();
+
+        initMobileNoBlock();
+
+        initLoanOfficerBlock();
+    }
+
+    protected void initLoanOfficerBlock() {
+        this.loanOfficerBlock = new WebMarkupBlock("loanOfficerBlock", Size.Twelve_12);
+        this.form.add(this.loanOfficerBlock);
+        this.loanOfficerIContainer = new WebMarkupContainer("loanOfficerIContainer");
+        this.loanOfficerBlock.add(this.loanOfficerIContainer);
+        this.loanOfficerField = new CheckBox("loanOfficerField", new PropertyModel<>(this, "loanOfficerValue"));
+        this.loanOfficerField.setRequired(true);
+        this.loanOfficerIContainer.add(this.loanOfficerField);
+        this.loanOfficerFeedback = new TextFeedbackPanel("loanOfficerFeedback", this.loanOfficerField);
+        this.loanOfficerIContainer.add(this.loanOfficerFeedback);
+    }
+
+    protected void initMobileNoBlock() {
+        this.mobileNoBlock = new WebMarkupBlock("mobileNoBlock", Size.Twelve_12);
+        this.form.add(this.mobileNoBlock);
+        this.mobileNoIContainer = new WebMarkupContainer("mobileNoIContainer");
+        this.mobileNoBlock.add(this.mobileNoIContainer);
+        this.mobileNoField = new TextField<>("mobileNoField", new PropertyModel<>(this, "mobileNoValue"));
+        this.mobileNoField.setRequired(true);
+        this.mobileNoIContainer.add(this.mobileNoField);
+        this.mobileNoFeedback = new TextFeedbackPanel("mobileNoFeedback", this.mobileNoField);
+        this.mobileNoIContainer.add(this.mobileNoFeedback);
+    }
+
+    protected void initOfficeBlock() {
+        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Twelve_12);
+        this.form.add(this.officeBlock);
+        this.officeIContainer = new WebMarkupContainer("officeIContainer");
+        this.officeBlock.add(this.officeIContainer);
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
         this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
-        this.form.add(this.officeField);
+        this.officeIContainer.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
-        this.form.add(this.officeFeedback);
-
-        this.mobileNoField = new TextField<>("mobileNoField", new PropertyModel<>(this, "mobileNoValue"));
-        this.mobileNoField.setRequired(true);
-        this.form.add(this.mobileNoField);
-        this.mobileNoFeedback = new TextFeedbackPanel("mobileNoFeedback", this.mobileNoField);
-        this.form.add(this.mobileNoFeedback);
-
-        this.loanOfficerField = new CheckBox("loanOfficerField", new PropertyModel<>(this, "loanOfficerValue"));
-        this.loanOfficerField.setRequired(true);
-        this.form.add(this.loanOfficerField);
-        this.loanOfficerFeedback = new TextFeedbackPanel("loanOfficerFeedback", this.loanOfficerField);
-        this.form.add(this.loanOfficerFeedback);
+        this.officeIContainer.add(this.officeFeedback);
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void initJoinedDateBlock() {
+        this.joinedDateBlock = new WebMarkupBlock("joinedDateBlock", Size.Twelve_12);
+        this.form.add(this.joinedDateBlock);
+        this.joinedDateIContainer = new WebMarkupContainer("joinedDateIContainer");
+        this.joinedDateBlock.add(this.joinedDateIContainer);
+        this.joinedDateField = new DateTextField("joinedDateField", new PropertyModel<>(this, "joinedDateValue"));
+        this.joinedDateField.setRequired(true);
+        this.joinedDateIContainer.add(this.joinedDateField);
+        this.joinedDateFeedback = new TextFeedbackPanel("joinedDateFeedback", this.joinedDateField);
+        this.joinedDateIContainer.add(this.joinedDateFeedback);
+    }
+
+    protected void initLastNameBlock() {
+        this.lastNameBlock = new WebMarkupBlock("lastNameBlock", Size.Twelve_12);
+        this.form.add(this.lastNameBlock);
+        this.lastNameIContainer = new WebMarkupContainer("lastNameIContainer");
+        this.lastNameBlock.add(this.lastNameIContainer);
+        this.lastNameField = new TextField<>("lastNameField", new PropertyModel<>(this, "lastNameValue"));
+        this.lastNameField.setRequired(true);
+        this.lastNameIContainer.add(this.lastNameField);
+        this.lastNameFeedback = new TextFeedbackPanel("lastNameFeedback", this.lastNameField);
+        this.lastNameIContainer.add(this.lastNameFeedback);
+    }
+
+    protected void initFirstNameBlock() {
+        this.firstNameBlock = new WebMarkupBlock("firstNameBlock", Size.Twelve_12);
+        this.form.add(this.firstNameBlock);
+        this.firstNameIContainer = new WebMarkupContainer("firstNameIContainer");
+        this.firstNameBlock.add(this.firstNameIContainer);
+        this.firstNameField = new TextField<>("firstNameField", new PropertyModel<>(this, "firstNameValue"));
+        this.firstNameField.setRequired(true);
+        this.firstNameIContainer.add(this.firstNameField);
+        this.firstNameFeedback = new TextFeedbackPanel("firstNameFeedback", this.firstNameField);
+        this.firstNameIContainer.add(this.firstNameFeedback);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void saveButtonSubmit(Button button) {
         StaffBuilder builder = new StaffBuilder();
         builder.withFirstName(this.firstNameValue);
         if (this.officeValue != null) {
