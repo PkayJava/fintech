@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -21,6 +22,8 @@ import com.angkorteam.fintech.pages.OrganizationDashboardPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.provider.TellerStateProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
@@ -37,37 +40,49 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class TellerCreatePage extends Page {
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected WebMarkupBlock nameBlock;
+    protected WebMarkupContainer nameIContainer;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private SingleChoiceProvider officeProvider;
-    private Option officeValue;
-    private Select2SingleChoice<Option> officeField;
-    private TextFeedbackPanel officeFeedback;
+    protected WebMarkupBlock officeBlock;
+    protected WebMarkupContainer officeIContainer;
+    protected SingleChoiceProvider officeProvider;
+    protected Option officeValue;
+    protected Select2SingleChoice<Option> officeField;
+    protected TextFeedbackPanel officeFeedback;
 
-    private TellerStateProvider statusProvider;
-    private Option statusValue;
-    private Select2SingleChoice<Option> statusField;
-    private TextFeedbackPanel statusFeedback;
+    protected WebMarkupBlock statusBlock;
+    protected WebMarkupContainer statusIContainer;
+    protected TellerStateProvider statusProvider;
+    protected Option statusValue;
+    protected Select2SingleChoice<Option> statusField;
+    protected TextFeedbackPanel statusFeedback;
 
-    private Date startDateValue;
-    private DateTextField startDateField;
-    private TextFeedbackPanel startDateFeedback;
+    protected WebMarkupBlock startDateBlock;
+    protected WebMarkupContainer startDateIContainer;
+    protected Date startDateValue;
+    protected DateTextField startDateField;
+    protected TextFeedbackPanel startDateFeedback;
 
-    private Date endDateValue;
-    private DateTextField endDateField;
-    private TextFeedbackPanel endDateFeedback;
+    protected WebMarkupBlock endDateBlock;
+    protected WebMarkupContainer endDateIContainer;
+    protected Date endDateValue;
+    protected DateTextField endDateField;
+    protected TextFeedbackPanel endDateFeedback;
 
-    private String descriptionValue;
-    private TextArea<String> descriptionField;
-    private TextFeedbackPanel descriptionFeedback;
+    protected WebMarkupBlock descriptionBlock;
+    protected WebMarkupContainer descriptionIContainer;
+    protected String descriptionValue;
+    protected TextArea<String> descriptionField;
+    protected TextFeedbackPanel descriptionFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -101,9 +116,11 @@ public class TellerCreatePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -114,45 +131,101 @@ public class TellerCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", TellerBrowsePage.class);
         this.form.add(this.closeLink);
 
+        initOfficeBlock();
+
+        initStatusBlock();
+
+        initNameBlock();
+
+        initStartDateBlock();
+
+        initEndDateBlock();
+
+        initDescriptionBlock();
+    }
+
+    protected void initDescriptionBlock() {
+        this.descriptionBlock = new WebMarkupBlock("descriptionBlock", Size.Twelve_12);
+        this.form.add(this.descriptionBlock);
+        this.descriptionIContainer = new WebMarkupContainer("descriptionIContainer");
+        this.descriptionBlock.add(this.descriptionIContainer);
+        this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
+        this.descriptionField.setRequired(true);
+        this.descriptionIContainer.add(this.descriptionField);
+        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
+        this.descriptionIContainer.add(this.descriptionFeedback);
+    }
+
+    protected void initEndDateBlock() {
+        this.endDateBlock = new WebMarkupBlock("endDateBlock", Size.Twelve_12);
+        this.form.add(this.endDateBlock);
+        this.endDateIContainer = new WebMarkupContainer("endDateIContainer");
+        this.endDateBlock.add(this.endDateIContainer);
+        this.endDateField = new DateTextField("endDateField", new PropertyModel<>(this, "endDateValue"));
+        this.endDateField.setRequired(true);
+        this.endDateIContainer.add(this.endDateField);
+        this.endDateFeedback = new TextFeedbackPanel("endDateFeedback", this.endDateField);
+        this.endDateIContainer.add(this.endDateFeedback);
+    }
+
+    protected void initStartDateBlock() {
+        this.startDateBlock = new WebMarkupBlock("startDateBlock", Size.Twelve_12);
+        this.form.add(this.startDateBlock);
+        this.startDateIContainer = new WebMarkupContainer("startDateIContainer");
+        this.startDateBlock.add(this.startDateIContainer);
+        this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
+        this.startDateField.setRequired(true);
+        this.startDateIContainer.add(this.startDateField);
+        this.startDateFeedback = new TextFeedbackPanel("startDateFeedback", this.startDateField);
+        this.startDateIContainer.add(this.startDateFeedback);
+    }
+
+    protected void initNameBlock() {
+        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Twelve_12);
+        this.form.add(this.nameBlock);
+        this.nameIContainer = new WebMarkupContainer("nameIContainer");
+        this.nameBlock.add(this.nameIContainer);
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setRequired(true);
+        this.nameIContainer.add(this.nameField);
+        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+        this.nameIContainer.add(this.nameFeedback);
+    }
+
+    protected void initStatusBlock() {
+        this.statusBlock = new WebMarkupBlock("statusBlock", Size.Twelve_12);
+        this.form.add(this.statusBlock);
+        this.statusIContainer = new WebMarkupContainer("statusIContainer");
+        this.statusBlock.add(this.statusIContainer);
+        this.statusProvider = new TellerStateProvider();
+        this.statusField = new Select2SingleChoice<>("statusField", 0, new PropertyModel<>(this, "statusValue"), this.statusProvider);
+        this.statusIContainer.add(this.statusField);
+        this.statusFeedback = new TextFeedbackPanel("statusFeedback", this.statusField);
+        this.statusIContainer.add(this.statusFeedback);
+    }
+
+    protected void initOfficeBlock() {
+        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Twelve_12);
+        this.form.add(this.officeBlock);
+        this.officeIContainer = new WebMarkupContainer("officeIContainer");
+        this.officeBlock.add(this.officeIContainer);
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
         this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
-        this.form.add(this.officeField);
+        this.officeIContainer.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
-        this.form.add(this.officeFeedback);
-
-        this.statusProvider = new TellerStateProvider();
-        this.statusField = new Select2SingleChoice<>("statusField", 0, new PropertyModel<>(this, "statusValue"), this.statusProvider);
-        this.form.add(this.statusField);
-        this.statusFeedback = new TextFeedbackPanel("statusFeedback", this.statusField);
-        this.form.add(this.statusFeedback);
-
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setRequired(true);
-        this.form.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.form.add(this.nameFeedback);
-
-        this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
-        this.startDateField.setRequired(true);
-        this.form.add(this.startDateField);
-        this.startDateFeedback = new TextFeedbackPanel("startDateFeedback", this.startDateField);
-        this.form.add(this.startDateFeedback);
-
-        this.endDateField = new DateTextField("endDateField", new PropertyModel<>(this, "endDateValue"));
-        this.endDateField.setRequired(true);
-        this.form.add(this.endDateField);
-        this.endDateFeedback = new TextFeedbackPanel("endDateFeedback", this.endDateField);
-        this.form.add(this.endDateFeedback);
-
-        this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
-        this.descriptionField.setRequired(true);
-        this.form.add(this.descriptionField);
-        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-        this.form.add(this.descriptionFeedback);
+        this.officeIContainer.add(this.officeFeedback);
     }
 
-    private void saveButtonSubmit(Button button) {
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void saveButtonSubmit(Button button) {
         TellerBuilder builder = new TellerBuilder();
         builder.withDescription(this.descriptionValue);
         builder.withName(this.nameValue);
