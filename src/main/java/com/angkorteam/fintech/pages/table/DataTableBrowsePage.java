@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.table;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
@@ -30,13 +31,14 @@ import com.google.common.collect.Lists;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class DataTableBrowsePage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected FilterForm<Map<String, String>> dataFilterForm;
 
-    private JdbcProvider provider;
+    protected BookmarkablePageLink<Void> createLink;
 
-    private BookmarkablePageLink<Void> createLink;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -64,42 +66,53 @@ public class DataTableBrowsePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("x_registered_table");
-        this.provider.boardField("registered_table_name", "table_name", String.class);
-        this.provider.boardField("application_table_name", "associated", String.class);
-        this.provider.boardField("category", "category", Integer.class);
+    protected void initData() {
+    }
 
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Table Name"), "table_name", "table_name", this::tableNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Associated"), "associated", "associated", this::associatedColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Integer, Model.of("Category"), "category", "category", this::categoryColumn));
-
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
-
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+    @Override
+    protected void initComponent() {
+        initDataTable();
 
         this.createLink = new BookmarkablePageLink<>("createLink", DataTableCreatePage.class);
         add(this.createLink);
     }
 
-    private ItemPanel categoryColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer value = (Integer) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected void initDataTable() {
+        this.dataProvider = new JdbcProvider("x_registered_table");
+        this.dataProvider.boardField("registered_table_name", "table_name", String.class);
+        this.dataProvider.boardField("application_table_name", "associated", String.class);
+        this.dataProvider.boardField("category", "category", Integer.class);
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Table Name"), "table_name", "table_name", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Associated"), "associated", "associated", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Integer, Model.of("Category"), "category", "category", this::dataColumn));
+
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        add(this.dataFilterForm);
+
+        this.dataTable = new DefaultDataTable<>("table", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
     }
 
-    private ItemPanel tableNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    @Override
+    protected void configureRequiredValidation() {
     }
 
-    private ItemPanel associatedColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("table_name".equals(column) || "associated".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("category".equals(column)) {
+            Integer value = (Integer) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }

@@ -28,6 +28,8 @@ import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -60,14 +62,20 @@ public class DataTableCreatePage extends Page {
     protected Form<Void> tableForm;
     protected Button createButton;
 
+    protected WebMarkupBlock dataTableBlock;
+    protected WebMarkupContainer dataTableIContainer;
     protected String dataTableValue;
     protected TextField<String> dataTableField;
     protected TextFeedbackPanel dataTableFeedback;
 
+    protected WebMarkupBlock multiRowBlock;
+    protected WebMarkupContainer multiRowIContainer;
     protected Boolean multiRowValue;
     protected CheckBox multiRowField;
     protected TextFeedbackPanel multiRowFeedback;
 
+    protected WebMarkupBlock appTableBlock;
+    protected WebMarkupContainer appTableIContainer;
     protected AppTableOptionProvider appTableProvider;
     protected Option appTableValue;
     protected Select2SingleChoice<Option> appTableField;
@@ -76,35 +84,44 @@ public class DataTableCreatePage extends Page {
     protected Form<Void> columnForm;
     protected AjaxButton addButton;
 
+    protected WebMarkupBlock nameBlock;
+    protected WebMarkupContainer nameIContainer;
     protected String nameValue;
     protected TextField<String> nameField;
     protected TextFeedbackPanel nameFeedback;
 
-    protected WebMarkupContainer lengthBlock;
-    protected WebMarkupContainer lengthContainer;
+    protected WebMarkupBlock lengthBlock;
+    protected WebMarkupContainer lengthIContainer;
     protected Integer lengthValue;
     protected TextField<Integer> lengthField;
     protected TextFeedbackPanel lengthFeedback;
 
+    protected WebMarkupBlock mandatoryBlock;
+    protected WebMarkupContainer mandatoryIContainer;
     protected Boolean mandatoryValue;
     protected CheckBox mandatoryField;
     protected TextFeedbackPanel mandatoryFeedback;
 
-    protected WebMarkupContainer codeBlock;
-    protected WebMarkupContainer codeContainer;
+    protected WebMarkupBlock typeBlock;
+    protected WebMarkupContainer typeIContainer;
     protected ColumnTypeOptionProvider typeProvider;
     protected Option typeValue;
     protected Select2SingleChoice<Option> typeField;
     protected TextFeedbackPanel typeFeedback;
 
+    protected WebMarkupContainer codeBlock;
+    protected WebMarkupContainer codeIContainer;
     protected SingleChoiceProvider codeProvider;
     protected Option codeValue;
     protected Select2SingleChoice<Option> codeField;
     protected TextFeedbackPanel codeFeedback;
 
+    protected WebMarkupBlock columnBlock;
+    protected WebMarkupContainer columnIContainer;
     protected List<Map<String, Object>> columnValue;
     protected DataTable<Map<String, Object>, String> columnTable;
     protected ListDataProvider columnProvider;
+    protected List<IColumn<Map<String, Object>, String>> columnColumn;
 
     protected static final List<PageBreadcrumb> BREADCRUMB;
 
@@ -140,52 +157,23 @@ public class DataTableCreatePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.columnForm = new Form<>("columnForm");
         add(this.columnForm);
 
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setRequired(true);
-        this.columnForm.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.columnForm.add(this.nameFeedback);
+        initNameBlock();
 
-        this.lengthBlock = new WebMarkupContainer("lengthBlock");
-        this.lengthBlock.setOutputMarkupId(true);
-        this.columnForm.add(this.lengthBlock);
-        this.lengthContainer = new WebMarkupContainer("lengthContainer");
-        this.lengthBlock.add(this.lengthContainer);
-        this.lengthField = new TextField<>("lengthField", new PropertyModel<>(this, "lengthValue"));
-        this.lengthContainer.add(this.lengthField);
-        this.lengthFeedback = new TextFeedbackPanel("lengthFeedback", this.lengthField);
-        this.lengthContainer.add(this.lengthFeedback);
+        initLengthBlock();
 
-        this.mandatoryField = new CheckBox("mandatoryField", new PropertyModel<>(this, "mandatoryValue"));
-        this.mandatoryField.setRequired(true);
-        this.columnForm.add(this.mandatoryField);
-        this.mandatoryFeedback = new TextFeedbackPanel("mandatoryFeedback", this.mandatoryField);
-        this.columnForm.add(this.mandatoryFeedback);
+        initMandatoryBlock();
 
-        this.typeProvider = new ColumnTypeOptionProvider();
-        this.typeField = new Select2SingleChoice<>("typeField", 0, new PropertyModel<>(this, "typeValue"), this.typeProvider);
-        this.typeField.add(new OnChangeAjaxBehavior(this::typeFieldUpdate));
-        this.typeField.setRequired(true);
-        this.columnForm.add(this.typeField);
-        this.typeFeedback = new TextFeedbackPanel("typeFeedback", this.typeField);
-        this.columnForm.add(this.typeFeedback);
+        initTypeBlock();
 
-        this.codeBlock = new WebMarkupContainer("codeBlock");
-        this.codeBlock.setOutputMarkupId(true);
-        this.columnForm.add(this.codeBlock);
-        this.codeContainer = new WebMarkupContainer("codeContainer");
-        this.codeBlock.add(this.codeContainer);
-        this.codeProvider = new SingleChoiceProvider("m_code", "code_name", "code_name");
-        this.codeField = new Select2SingleChoice<>("codeField", 0, new PropertyModel<>(this, "codeValue"), this.codeProvider);
-        this.codeContainer.add(this.codeField);
-        this.codeFeedback = new TextFeedbackPanel("codeFeedback", this.codeField);
-        this.codeContainer.add(this.codeFeedback);
+        initCodeBlock();
 
         this.addButton = new AjaxButton("addButton");
         this.addButton.setOnSubmit(this::addButtonSubmit);
@@ -199,43 +187,141 @@ public class DataTableCreatePage extends Page {
         this.createButton.setOnSubmit(this::createButtonSubmit);
         this.tableForm.add(this.createButton);
 
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextColumn(Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextColumn(Model.of("Mandatory"), "mandatory", "mandatory", this::mandatoryColumn));
-        columns.add(new TextColumn(Model.of("Type"), "type", "type", this::typeColumn));
-        columns.add(new TextColumn(Model.of("Length"), "length", "length", this::lengthColumn));
-        columns.add(new TextColumn(Model.of("Code"), "code", "code", this::codeColumn));
-        columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
-        this.columnValue = Lists.newArrayList();
-        this.columnProvider = new ListDataProvider(this.columnValue);
-        this.columnTable = new DataTable<>("columnTable", columns, this.columnProvider, 20);
-        this.tableForm.add(this.columnTable);
-        this.columnTable.addTopToolbar(new HeadersToolbar<>(this.columnTable, this.columnProvider));
-        this.columnTable.addBottomToolbar(new NoRecordsToolbar(this.columnTable));
+        initColumnBlock();
 
-        this.dataTableField = new TextField<>("dataTableField", new PropertyModel<>(this, "dataTableValue"));
-        this.dataTableField.setRequired(true);
-        this.tableForm.add(this.dataTableField);
-        this.dataTableFeedback = new TextFeedbackPanel("dataTableFeedback", this.dataTableField);
-        this.tableForm.add(this.dataTableFeedback);
+        initDataTableBlock();
 
-        this.multiRowField = new CheckBox("multiRowField", new PropertyModel<>(this, "multiRowValue"));
-        this.multiRowField.setRequired(true);
-        this.tableForm.add(this.multiRowField);
-        this.multiRowFeedback = new TextFeedbackPanel("multiRowFeedback", this.multiRowField);
-        this.tableForm.add(this.multiRowFeedback);
+        initMultiRowBlock();
 
+        initAppTableBlock();
+    }
+
+    protected void initAppTableBlock() {
+        this.appTableBlock = new WebMarkupBlock("appTableBlock", Size.Six_6);
+        this.tableForm.add(this.appTableBlock);
+        this.appTableIContainer = new WebMarkupContainer("appTableIContainer");
+        this.appTableBlock.add(this.appTableIContainer);
         this.appTableProvider = new AppTableOptionProvider();
         this.appTableField = new Select2SingleChoice<>("appTableField", 0, new PropertyModel<>(this, "appTableValue"), this.appTableProvider);
         this.appTableField.setRequired(true);
-        this.tableForm.add(this.appTableField);
+        this.appTableIContainer.add(this.appTableField);
         this.appTableFeedback = new TextFeedbackPanel("appTableFeedback", this.appTableField);
-        this.tableForm.add(this.appTableFeedback);
-
-        initDefault();
+        this.appTableIContainer.add(this.appTableFeedback);
     }
 
-    protected void initDefault() {
+    protected void initMultiRowBlock() {
+        this.multiRowBlock = new WebMarkupBlock("multiRowBlock", Size.Twelve_12);
+        this.tableForm.add(this.multiRowBlock);
+        this.multiRowIContainer = new WebMarkupContainer("multiRowIContainer");
+        this.multiRowBlock.add(this.multiRowIContainer);
+        this.multiRowField = new CheckBox("multiRowField", new PropertyModel<>(this, "multiRowValue"));
+        this.multiRowField.setRequired(true);
+        this.multiRowIContainer.add(this.multiRowField);
+        this.multiRowFeedback = new TextFeedbackPanel("multiRowFeedback", this.multiRowField);
+        this.multiRowIContainer.add(this.multiRowFeedback);
+    }
+
+    protected void initDataTableBlock() {
+        this.dataTableBlock = new WebMarkupBlock("dataTableBlock", Size.Six_6);
+        this.tableForm.add(this.dataTableBlock);
+        this.dataTableIContainer = new WebMarkupContainer("dataTableIContainer");
+        this.dataTableBlock.add(this.dataTableIContainer);
+        this.dataTableField = new TextField<>("dataTableField", new PropertyModel<>(this, "dataTableValue"));
+        this.dataTableField.setRequired(true);
+        this.dataTableIContainer.add(this.dataTableField);
+        this.dataTableFeedback = new TextFeedbackPanel("dataTableFeedback", this.dataTableField);
+        this.dataTableIContainer.add(this.dataTableFeedback);
+    }
+
+    protected void initColumnBlock() {
+        this.columnBlock = new WebMarkupBlock("columnBlock", Size.Twelve_12);
+        this.tableForm.add(this.columnBlock);
+        this.columnIContainer = new WebMarkupContainer("columnIContainer");
+        this.columnBlock.add(this.columnIContainer);
+        this.columnColumn = Lists.newArrayList();
+        this.columnColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::nameColumn));
+        this.columnColumn.add(new TextColumn(Model.of("Mandatory"), "mandatory", "mandatory", this::mandatoryColumn));
+        this.columnColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::typeColumn));
+        this.columnColumn.add(new TextColumn(Model.of("Length"), "length", "length", this::lengthColumn));
+        this.columnColumn.add(new TextColumn(Model.of("Code"), "code", "code", this::codeColumn));
+        this.columnColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
+        this.columnValue = Lists.newArrayList();
+        this.columnProvider = new ListDataProvider(this.columnValue);
+        this.columnTable = new DataTable<>("columnTable", this.columnColumn, this.columnProvider, 20);
+        this.columnIContainer.add(this.columnTable);
+        this.columnTable.addTopToolbar(new HeadersToolbar<>(this.columnTable, this.columnProvider));
+        this.columnTable.addBottomToolbar(new NoRecordsToolbar(this.columnTable));
+    }
+
+    protected void initCodeBlock() {
+        this.codeBlock = new WebMarkupBlock("codeBlock", Size.Six_6);
+        this.codeBlock.setOutputMarkupId(true);
+        this.columnForm.add(this.codeBlock);
+        this.codeIContainer = new WebMarkupContainer("codeContainer");
+        this.codeBlock.add(this.codeIContainer);
+        this.codeProvider = new SingleChoiceProvider("m_code", "code_name", "code_name");
+        this.codeField = new Select2SingleChoice<>("codeField", 0, new PropertyModel<>(this, "codeValue"), this.codeProvider);
+        this.codeIContainer.add(this.codeField);
+        this.codeFeedback = new TextFeedbackPanel("codeFeedback", this.codeField);
+        this.codeIContainer.add(this.codeFeedback);
+    }
+
+    protected void initTypeBlock() {
+        this.typeBlock = new WebMarkupBlock("typeBlock", Size.Six_6);
+        this.columnForm.add(this.typeBlock);
+        this.typeIContainer = new WebMarkupContainer("typeIContainer");
+        this.typeBlock.add(this.typeIContainer);
+        this.typeProvider = new ColumnTypeOptionProvider();
+        this.typeField = new Select2SingleChoice<>("typeField", 0, new PropertyModel<>(this, "typeValue"), this.typeProvider);
+        this.typeField.add(new OnChangeAjaxBehavior(this::typeFieldUpdate));
+        this.typeField.setRequired(true);
+        this.typeIContainer.add(this.typeField);
+        this.typeFeedback = new TextFeedbackPanel("typeFeedback", this.typeField);
+        this.typeIContainer.add(this.typeFeedback);
+    }
+
+    protected void initMandatoryBlock() {
+        this.mandatoryBlock = new WebMarkupBlock("mandatoryBlock", Size.Twelve_12);
+        this.columnForm.add(this.mandatoryBlock);
+        this.mandatoryIContainer = new WebMarkupContainer("mandatoryIContainer");
+        this.mandatoryBlock.add(this.mandatoryIContainer);
+        this.mandatoryField = new CheckBox("mandatoryField", new PropertyModel<>(this, "mandatoryValue"));
+        this.mandatoryField.setRequired(true);
+        this.mandatoryIContainer.add(this.mandatoryField);
+        this.mandatoryFeedback = new TextFeedbackPanel("mandatoryFeedback", this.mandatoryField);
+        this.mandatoryIContainer.add(this.mandatoryFeedback);
+    }
+
+    protected void initLengthBlock() {
+        this.lengthBlock = new WebMarkupBlock("lengthBlock", Size.Six_6);
+        this.lengthBlock.setOutputMarkupId(true);
+        this.columnForm.add(this.lengthBlock);
+        this.lengthIContainer = new WebMarkupContainer("lengthContainer");
+        this.lengthBlock.add(this.lengthIContainer);
+        this.lengthField = new TextField<>("lengthField", new PropertyModel<>(this, "lengthValue"));
+        this.lengthIContainer.add(this.lengthField);
+        this.lengthFeedback = new TextFeedbackPanel("lengthFeedback", this.lengthField);
+        this.lengthIContainer.add(this.lengthFeedback);
+    }
+
+    protected void initNameBlock() {
+        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
+        this.columnForm.add(this.nameBlock);
+        this.nameIContainer = new WebMarkupContainer("nameIContainer");
+        this.nameBlock.add(this.nameIContainer);
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setRequired(true);
+        this.nameIContainer.add(this.nameField);
+        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+        this.nameIContainer.add(this.nameFeedback);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
         typeFieldUpdate(null);
     }
 
@@ -251,8 +337,8 @@ public class DataTableCreatePage extends Page {
             lengthVisible = columnType == ColumnType.String;
         }
 
-        this.codeContainer.setVisible(codeVisible);
-        this.lengthContainer.setVisible(lengthVisible);
+        this.codeIContainer.setVisible(codeVisible);
+        this.lengthIContainer.setVisible(lengthVisible);
         if (target != null) {
             target.add(this.codeBlock);
             target.add(this.lengthBlock);
