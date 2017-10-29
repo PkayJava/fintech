@@ -1,6 +1,9 @@
 package com.angkorteam.fintech.popup.share;
 
+import java.util.Date;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
@@ -11,21 +14,29 @@ import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWi
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 
 public class MarketPricePopup extends Panel {
 
-    private ModalWindow window;
+    protected ModalWindow window;
 
-    private Form<Void> form;
-    private AjaxButton okayButton;
+    protected Form<Void> form;
+    protected AjaxButton okayButton;
 
-    private DateTextField fromDateField;
-    private TextFeedbackPanel fromDateFeedback;
+    protected WebMarkupBlock fromDateBlock;
+    protected WebMarkupContainer fromDateIContainer;
+    protected PropertyModel<Date> fromDateValue;
+    protected DateTextField fromDateField;
+    protected TextFeedbackPanel fromDateFeedback;
 
-    private TextField<Double> unitPriceField;
-    private TextFeedbackPanel unitPriceFeedback;
+    protected WebMarkupBlock unitPriceBlock;
+    protected WebMarkupContainer unitPriceIContainer;
+    protected PropertyModel<Double> unitPriceValue;
+    protected TextField<Double> unitPriceField;
+    protected TextFeedbackPanel unitPriceFeedback;
 
-    private Object model;
+    protected Object model;
 
     public MarketPricePopup(String id, ModalWindow window, Object model) {
         super(id);
@@ -45,19 +56,29 @@ public class MarketPricePopup extends Panel {
         this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
-        this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this.model, "itemFromDateValue"));
+        this.fromDateBlock = new WebMarkupBlock("fromDateBlock", Size.Six_6);
+        this.form.add(this.fromDateBlock);
+        this.fromDateIContainer = new WebMarkupContainer("fromDateIContainer");
+        this.fromDateBlock.add(this.fromDateIContainer);
+        this.fromDateValue = new PropertyModel<>(this.model, "marketPriceItemFromDateValue");
+        this.fromDateField = new DateTextField("fromDateField", this.fromDateValue);
         this.fromDateField.setLabel(Model.of("From Date"));
         this.fromDateField.setRequired(true);
-        this.form.add(this.fromDateField);
+        this.fromDateIContainer.add(this.fromDateField);
         this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
-        this.form.add(this.fromDateFeedback);
+        this.fromDateIContainer.add(this.fromDateFeedback);
 
-        this.unitPriceField = new TextField<>("unitPriceField", new PropertyModel<>(this.model, "itemUnitPriceValue"));
+        this.unitPriceBlock = new WebMarkupBlock("unitPriceBlock", Size.Six_6);
+        this.form.add(this.unitPriceBlock);
+        this.unitPriceIContainer = new WebMarkupContainer("unitPriceIContainer");
+        this.unitPriceBlock.add(this.unitPriceIContainer);
+        this.unitPriceValue = new PropertyModel<>(this.model, "marketPriceItemUnitPriceValue");
+        this.unitPriceField = new TextField<>("unitPriceField", this.unitPriceValue);
         this.unitPriceField.setLabel(Model.of("Unit Price"));
         this.unitPriceField.setRequired(true);
-        this.form.add(this.unitPriceField);
+        this.unitPriceIContainer.add(this.unitPriceField);
         this.unitPriceFeedback = new TextFeedbackPanel("unitPriceFeedback", this.unitPriceField);
-        this.form.add(this.unitPriceFeedback);
+        this.unitPriceIContainer.add(this.unitPriceFeedback);
     }
 
     protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {

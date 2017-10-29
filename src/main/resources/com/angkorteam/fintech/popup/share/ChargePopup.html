@@ -9,12 +9,13 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="chargeField">Charge</label> <select
-							wicket:id="chargeField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="chargeFeedback"
-							class="help-block"></span>
+					<div wicket:id="chargeBlock" class="form-group">
+						<wicket:container wicket:id="chargeIContainer">
+							<label wicket:for="chargeField">Charge</label>
+							<select wicket:id="chargeField" class="form-control select2"
+								style="width: 100%;"></select>
+							<span wicket:id="chargeFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">

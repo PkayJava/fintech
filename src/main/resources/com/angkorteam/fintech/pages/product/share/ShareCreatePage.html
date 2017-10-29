@@ -14,18 +14,16 @@
 				<div class="box-body">
 
 					<!-- Row -->
-					<div wicket:id="detailProductNameBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="detailProductNameContainer">
+					<div wicket:id="detailProductNameBlock" class="form-group">
+						<wicket:container wicket:id="detailProductNameIContainer">
 							<label wicket:for="detailProductNameField">Product Name</label>
 							<input wicket:id="detailProductNameField" type="text"
 								class="form-control" />
 							<span wicket:id="detailProductNameFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
-					<div wicket:id="detailShortNameBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="detailShortNameContainer">
+					<div wicket:id="detailShortNameBlock" class="form-group">
+						<wicket:container wicket:id="detailShortNameIContainer">
 							<label wicket:for="detailShortNameField">Short Name</label>
 							<input wicket:id="detailShortNameField" type="text"
 								class="form-control" />
@@ -35,9 +33,8 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="detailDescriptionBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="detailDescriptionContainer">
+					<div wicket:id="detailDescriptionBlock" class="form-group">
+						<wicket:container wicket:id="detailDescriptionIContainer">
 							<label wicket:for="detailDescriptionField">Description</label>
 							<input wicket:id="detailDescriptionField" type="text"
 								class="form-control" />
@@ -55,18 +52,15 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div wicket:id="currencyCodeBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="currencyCodeContainer">
+					<div wicket:id="currencyCodeBlock" class="form-group">
+						<wicket:container wicket:id="currencyCodeIContainer">
 							<label wicket:for="currencyCodeField">Currency</label>
-							<select wicket:id="currencyCodeField"
-								class="form-control select2" style="width: 100%;"></select>
+							<select wicket:id="currencyCodeField" class="form-control"></select>
 							<span wicket:id="currencyCodeFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
-					<div wicket:id="currencyDecimalPlaceBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="currencyDecimalPlaceContainer">
+					<div wicket:id="currencyDecimalPlaceBlock" class="form-group">
+						<wicket:container wicket:id="currencyDecimalPlaceIContainer">
 							<label wicket:for="currencyDecimalPlaceField">Decimal
 								Places</label>
 							<input wicket:id="currencyDecimalPlaceField" type="text"
@@ -77,9 +71,8 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="currencyMultipleOfBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="currencyMultipleOfContainer">
+					<div wicket:id="currencyMultipleOfBlock" class="form-group">
+						<wicket:container wicket:id="currencyMultipleOfIContainer">
 							<label wicket:for="currencyMultipleOfField">Multiple of</label>
 							<input wicket:id="currencyMultipleOfField" type="text"
 								class="form-control" />
@@ -97,9 +90,8 @@
 				<div class="box-body">
 
 					<!-- Row -->
-					<div wicket:id="termTotalNumberOfShareBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="termTotalNumberOfShareContainer">
+					<div wicket:id="termTotalNumberOfShareBlock" class="form-group">
+						<wicket:container wicket:id="termTotalNumberOfShareIContainer">
 							<label wicket:for="termTotalNumberOfShareField">Total
 								Number of Shares</label>
 							<input wicket:id="termTotalNumberOfShareField" type="text"
@@ -108,9 +100,8 @@
 								class="help-block"></span>
 						</wicket:container>
 					</div>
-					<div wicket:id="termShareToBeIssuedBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="termShareToBeIssuedContainer">
+					<div wicket:id="termShareToBeIssuedBlock" class="form-group">
+						<wicket:container wicket:id="termShareToBeIssuedIContainer">
 							<label wicket:for="termShareToBeIssuedField">Shares to be
 								issued</label>
 							<input wicket:id="termShareToBeIssuedField" type="text"
@@ -121,18 +112,16 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="termNominalPriceBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="termNominalPriceContainer">
+					<div wicket:id="termNominalPriceBlock" class="form-group">
+						<wicket:container wicket:id="termNominalPriceIContainer">
 							<label wicket:for="termNominalPriceField">Nominal Price</label>
 							<input wicket:id="termNominalPriceField" type="text"
 								class="form-control" />
 							<span wicket:id="termNominalPriceFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
-					<div wicket:id="termCapitalBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="termCapitalContainer">
+					<div wicket:id="termCapitalBlock" class="form-group">
+						<wicket:container wicket:id="termCapitalIContainer">
 							<label wicket:for="termCapitalField">Capital Value</label>
 							<input wicket:id="termCapitalField" type="text"
 								class="form-control" />
@@ -150,9 +139,9 @@
 
 					<!-- Row -->
 					<div wicket:id="settingSharePerClientMinimumBlock"
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						class="form-group">
 						<wicket:container
-							wicket:id="settingSharePerClientMinimumContainer">
+							wicket:id="settingSharePerClientMinimumIContainer">
 							<label wicket:for="settingSharePerClientMinimumField">Shares
 								per Client Minimum</label>
 							<input wicket:id="settingSharePerClientMinimumField" type="text"
@@ -162,9 +151,9 @@
 						</wicket:container>
 					</div>
 					<div wicket:id="settingSharePerClientDefaultBlock"
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						class="form-group">
 						<wicket:container
-							wicket:id="settingSharePerClientDefaultContainer">
+							wicket:id="settingSharePerClientDefaultIContainer">
 							<label wicket:for="settingSharePerClientDefaultField">Shares
 								per Client Default</label>
 							<input wicket:id="settingSharePerClientDefaultField" type="text"
@@ -174,9 +163,9 @@
 						</wicket:container>
 					</div>
 					<div wicket:id="settingSharePerClientMaximumBlock"
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						class="form-group">
 						<wicket:container
-							wicket:id="settingSharePerClientMaximumContainer">
+							wicket:id="settingSharePerClientMaximumIContainer">
 							<label wicket:for="settingSharePerClientMaximumField">Shares
 								per Client Maximum</label>
 							<input wicket:id="settingSharePerClientMaximumField" type="text"
@@ -188,9 +177,8 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="settingMinimumActivePeriodBlock"
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-						<wicket:container wicket:id="settingMinimumActivePeriodContainer">
+					<div wicket:id="settingMinimumActivePeriodBlock" class="form-group">
+						<wicket:container wicket:id="settingMinimumActivePeriodIContainer">
 							<label wicket:for="settingMinimumActivePeriodField">Minimum
 								Active Period</label>
 							<input wicket:id="settingMinimumActivePeriodField" type="text"
@@ -199,12 +187,11 @@
 								class="help-block"></span>
 						</wicket:container>
 					</div>
-					<div wicket:id="settingMinimumActiveTypeBlock"
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-						<wicket:container wicket:id="settingMinimumActiveTypeContainer">
+					<div wicket:id="settingMinimumActiveTypeBlock" class="form-group">
+						<wicket:container wicket:id="settingMinimumActiveTypeIContainer">
 							<label wicket:for="settingMinimumActiveTypeField">Type</label>
 							<select wicket:id="settingMinimumActiveTypeField"
-								class="form-control select2" style="width: 100%;"></select>
+								class="form-control"></select>
 							<span wicket:id="settingMinimumActiveTypeFeedback"
 								class="help-block"></span>
 						</wicket:container>
@@ -215,9 +202,8 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="settingLockInPeriodBlock"
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-						<wicket:container wicket:id="settingLockInPeriodContainer">
+					<div wicket:id="settingLockInPeriodBlock" class="form-group">
+						<wicket:container wicket:id="settingLockInPeriodIContainer">
 							<label wicket:for="settingLockInPeriodField">Lock-in
 								period</label>
 							<input wicket:id="settingLockInPeriodField" type="text"
@@ -225,12 +211,10 @@
 							<span wicket:id="settingLockInPeriodFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
-					<div wicket:id="settingLockInTypeBlock"
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-						<wicket:container wicket:id="settingLockInTypeContainer">
+					<div wicket:id="settingLockInTypeBlock" class="form-group">
+						<wicket:container wicket:id="settingLockInTypeIContainer">
 							<label wicket:for="settingLockInTypeField">Type</label>
-							<select wicket:id="settingLockInTypeField"
-								class="form-control select2" style="width: 100%;"></select>
+							<select wicket:id="settingLockInTypeField" class="form-control"></select>
 							<span wicket:id="settingLockInTypeFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
@@ -241,9 +225,9 @@
 
 					<!-- Row -->
 					<div wicket:id="settingAllowDividendForInactiveClientBlock"
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						class="form-group">
 						<wicket:container
-							wicket:id="settingAllowDividendForInactiveClientContainer">
+							wicket:id="settingAllowDividendForInactiveClientIContainer">
 							<label>&nbsp;</label>
 							<span style="display: block"> <label> <input
 									type="checkbox"
@@ -270,16 +254,17 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<div class="box box-primary">
-							<div class="box-body">
-								<table wicket:id="marketPriceTable"></table>
+					<div wicket:id="marketPriceBlock" class="form-group">
+						<wicket:container wicket:id="marketPriceIContainer">
+							<div class="box box-primary">
+								<div class="box-body">
+									<table wicket:id="marketPriceTable"></table>
+								</div>
+								<div class="box-footer">
+									<a wicket:id="marketPriceAddLink" class="btn btn-default">Add</a>
+								</div>
 							</div>
-							<div class="box-footer">
-								<a wicket:id="marketPriceAddLink" class="btn btn-default">Add</a>
-							</div>
-						</div>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -289,16 +274,17 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<div class="box box-primary">
-							<div class="box-body">
-								<table wicket:id="chargeTable"></table>
+					<div wicket:id="chargeBlock" class="form-group">
+						<wicket:container wicket:id="chargeIContainer">
+							<div class="box box-primary">
+								<div class="box-body">
+									<table wicket:id="chargeTable"></table>
+								</div>
+								<div class="box-footer">
+									<a wicket:id="chargeAddLink" class="btn btn-default">Add</a>
+								</div>
 							</div>
-							<div class="box-footer">
-								<a wicket:id="chargeAddLink" class="btn btn-default">Add</a>
-							</div>
-						</div>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -314,18 +300,20 @@
 					</span>
 				</div>
 				<div wicket:id="cashBlock">
-					<wicket:container wicket:id="cashContainer">
+					<wicket:container wicket:id="cashIContainer">
 						<div class="box-header with-border">
 							<h3 class="box-title">Assets</h3>
 						</div>
 						<div class="box-body">
 							<!-- Row -->
-							<div
-								class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-								<label wicket:for="cashShareReferenceField">Share
-									reference</label> <select wicket:id="cashShareReferenceField"
-									class="form-control select2" style="width: 100%;"></select> <span
-									wicket:id="cashShareReferenceFeedback" class="help-block"></span>
+							<div wicket:id="cashShareReferenceBlock" class="form-group">
+								<wicket:container wicket:id="cashShareReferenceIContainer">
+									<label wicket:for="cashShareReferenceField">Share
+										reference</label>
+									<select wicket:id="cashShareReferenceField"
+										class="form-control"></select>
+									<span wicket:id="cashShareReferenceFeedback" class="help-block"></span>
+								</wicket:container>
 							</div>
 							<div
 								class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -337,13 +325,15 @@
 						</div>
 						<div class="box-body">
 							<!-- Row -->
-							<div
-								class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-								<label wicket:for="cashShareSuspenseControlField">Share
-									Suspense control</label> <select
-									wicket:id="cashShareSuspenseControlField"
-									class="form-control select2" style="width: 100%;"></select> <span
-									wicket:id="cashShareSuspenseControlFeedback" class="help-block"></span>
+							<div wicket:id="cashShareSuspenseControlBlock" class="form-group">
+								<wicket:container wicket:id="cashShareSuspenseControlIContainer">
+									<label wicket:for="cashShareSuspenseControlField">Share
+										Suspense control</label>
+									<select wicket:id="cashShareSuspenseControlField"
+										class="form-control"></select>
+									<span wicket:id="cashShareSuspenseControlFeedback"
+										class="help-block"></span>
+								</wicket:container>
 							</div>
 							<div
 								class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -355,12 +345,12 @@
 						</div>
 						<div class="box-body">
 							<!-- Row -->
-							<div
-								class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-								<label wicket:for="cashEquityField">Equity</label> <select
-									wicket:id="cashEquityField" class="form-control select2"
-									style="width: 100%;"></select> <span
-									wicket:id="cashEquityFeedback" class="help-block"></span>
+							<div wicket:id="cashEquityBlock" class="form-group">
+								<wicket:container wicket:id="cashEquityIContainer">
+									<label wicket:for="cashEquityField">Equity</label>
+									<select wicket:id="cashEquityField" class="form-control"></select>
+									<span wicket:id="cashEquityFeedback" class="help-block"></span>
+								</wicket:container>
 							</div>
 							<div
 								class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -372,12 +362,13 @@
 						</div>
 						<div class="box-body">
 							<!-- Row -->
-							<div
-								class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-								<label wicket:for="cashIncomeFromFeesField">Income from
-									fees</label> <select wicket:id="cashIncomeFromFeesField"
-									class="form-control select2" style="width: 100%;"></select> <span
-									wicket:id="cashIncomeFromFeesFeedback" class="help-block"></span>
+							<div wicket:id="cashIncomeFromFeeBlock" class="form-group">
+								<wicket:container wicket:id="cashIncomeFromFeeIContainer">
+									<label wicket:for="cashIncomeFromFeeField">Income from
+										fees</label>
+									<select wicket:id="cashIncomeFromFeeField" class="form-control"></select>
+									<span wicket:id="cashIncomeFromFeeFeedback" class="help-block"></span>
+								</wicket:container>
 							</div>
 							<div
 								class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">

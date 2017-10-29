@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -39,6 +40,8 @@ import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -76,138 +79,149 @@ public class ShareCreatePage extends Page {
 
     // Detail
 
-    protected WebMarkupContainer detailProductNameBlock;
-    protected WebMarkupContainer detailProductNameContainer;
+    protected WebMarkupBlock detailProductNameBlock;
+    protected WebMarkupContainer detailProductNameIContainer;
     protected String detailProductNameValue;
     protected TextField<String> detailProductNameField;
     protected TextFeedbackPanel detailProductNameFeedback;
 
-    protected WebMarkupContainer detailShortNameBlock;
-    protected WebMarkupContainer detailShortNameContainer;
+    protected WebMarkupBlock detailShortNameBlock;
+    protected WebMarkupContainer detailShortNameIContainer;
     protected String detailShortNameValue;
     protected TextField<String> detailShortNameField;
     protected TextFeedbackPanel detailShortNameFeedback;
 
-    protected WebMarkupContainer detailDescriptionBlock;
-    protected WebMarkupContainer detailDescriptionContainer;
+    protected WebMarkupBlock detailDescriptionBlock;
+    protected WebMarkupContainer detailDescriptionIContainer;
     protected String detailDescriptionValue;
     protected TextField<String> detailDescriptionField;
     protected TextFeedbackPanel detailDescriptionFeedback;
 
     // Currency
 
-    protected WebMarkupContainer currencyCodeBlock;
-    protected WebMarkupContainer currencyCodeContainer;
+    protected WebMarkupBlock currencyCodeBlock;
+    protected WebMarkupContainer currencyCodeIContainer;
     protected CurrencyProvider currencyCodeProvider;
     protected Option currencyCodeValue;
     protected Select2SingleChoice<Option> currencyCodeField;
     protected TextFeedbackPanel currencyCodeFeedback;
 
-    protected WebMarkupContainer currencyDecimalPlaceBlock;
-    protected WebMarkupContainer currencyDecimalPlaceContainer;
+    protected WebMarkupBlock currencyDecimalPlaceBlock;
+    protected WebMarkupContainer currencyDecimalPlaceIContainer;
     protected Integer currencyDecimalPlaceValue;
     protected TextField<Integer> currencyDecimalPlaceField;
     protected TextFeedbackPanel currencyDecimalPlaceFeedback;
 
-    protected WebMarkupContainer currencyMultipleOfBlock;
-    protected WebMarkupContainer currencyMultipleOfContainer;
+    protected WebMarkupBlock currencyMultipleOfBlock;
+    protected WebMarkupContainer currencyMultipleOfIContainer;
     protected Integer currencyMultipleOfValue;
     protected TextField<Integer> currencyMultipleOfField;
     protected TextFeedbackPanel currencyMultipleOfFeedback;
 
     // Term
 
-    protected WebMarkupContainer termTotalNumberOfShareBlock;
-    protected WebMarkupContainer termTotalNumberOfShareContainer;
+    protected WebMarkupBlock termTotalNumberOfShareBlock;
+    protected WebMarkupContainer termTotalNumberOfShareIContainer;
     protected Integer termTotalNumberOfShareValue;
     protected TextField<Integer> termTotalNumberOfShareField;
     protected TextFeedbackPanel termTotalNumberOfShareFeedback;
 
-    protected WebMarkupContainer termShareToBeIssuedBlock;
-    protected WebMarkupContainer termShareToBeIssuedContainer;
+    protected WebMarkupBlock termShareToBeIssuedBlock;
+    protected WebMarkupContainer termShareToBeIssuedIContainer;
     protected Integer termShareToBeIssuedValue;
     protected TextField<Integer> termShareToBeIssuedField;
     protected TextFeedbackPanel termShareToBeIssuedFeedback;
 
-    protected WebMarkupContainer termNominalPriceBlock;
-    protected WebMarkupContainer termNominalPriceContainer;
+    protected WebMarkupBlock termNominalPriceBlock;
+    protected WebMarkupContainer termNominalPriceIContainer;
     protected Double termNominalPriceValue;
     protected TextField<Double> termNominalPriceField;
     protected TextFeedbackPanel termNominalPriceFeedback;
 
-    protected WebMarkupContainer termCapitalBlock;
-    protected WebMarkupContainer termCapitalContainer;
+    protected WebMarkupBlock termCapitalBlock;
+    protected WebMarkupContainer termCapitalIContainer;
     protected Double termCapitalValue;
     protected TextField<Double> termCapitalField;
     protected TextFeedbackPanel termCapitalFeedback;
 
     // Setting
 
-    protected WebMarkupContainer settingSharePerClientMinimumBlock;
-    protected WebMarkupContainer settingSharePerClientMinimumContainer;
+    protected WebMarkupBlock settingSharePerClientMinimumBlock;
+    protected WebMarkupContainer settingSharePerClientMinimumIContainer;
     protected Integer settingSharePerClientMinimumValue;
     protected TextField<Integer> settingSharePerClientMinimumField;
     protected TextFeedbackPanel settingSharePerClientMinimumFeedback;
 
-    protected WebMarkupContainer settingSharePerClientDefaultBlock;
-    protected WebMarkupContainer settingSharePerClientDefaultContainer;
+    protected WebMarkupBlock settingSharePerClientDefaultBlock;
+    protected WebMarkupContainer settingSharePerClientDefaultIContainer;
     protected Integer settingSharePerClientDefaultValue;
     protected TextField<Integer> settingSharePerClientDefaultField;
     protected TextFeedbackPanel settingSharePerClientDefaultFeedback;
 
-    protected WebMarkupContainer settingSharePerClientMaximumBlock;
-    protected WebMarkupContainer settingSharePerClientMaximumContainer;
+    protected WebMarkupBlock settingSharePerClientMaximumBlock;
+    protected WebMarkupContainer settingSharePerClientMaximumIContainer;
     protected Integer settingSharePerClientMaximumValue;
     protected TextField<Integer> settingSharePerClientMaximumField;
     protected TextFeedbackPanel settingSharePerClientMaximumFeedback;
 
-    protected WebMarkupContainer settingMinimumActivePeriodBlock;
-    protected WebMarkupContainer settingMinimumActivePeriodContainer;
+    protected WebMarkupBlock settingMinimumActivePeriodBlock;
+    protected WebMarkupContainer settingMinimumActivePeriodIContainer;
     protected Integer settingMinimumActivePeriodValue;
     protected TextField<Integer> settingMinimumActivePeriodField;
     protected TextFeedbackPanel settingMinimumActivePeriodFeedback;
 
-    protected WebMarkupContainer settingMinimumActiveTypeBlock;
-    protected WebMarkupContainer settingMinimumActiveTypeContainer;
+    protected WebMarkupBlock settingMinimumActiveTypeBlock;
+    protected WebMarkupContainer settingMinimumActiveTypeIContainer;
     protected MinimumActivePeriodProvider settingMinimumActiveTypeProvider;
     protected Option settingMinimumActiveTypeValue;
     protected Select2SingleChoice<Option> settingMinimumActiveTypeField;
     protected TextFeedbackPanel settingMinimumActiveTypeFeedback;
 
-    protected WebMarkupContainer settingLockInPeriodBlock;
-    protected WebMarkupContainer settingLockInPeriodContainer;
+    protected WebMarkupBlock settingLockInPeriodBlock;
+    protected WebMarkupContainer settingLockInPeriodIContainer;
     protected Integer settingLockInPeriodValue;
     protected TextField<Integer> settingLockInPeriodField;
     protected TextFeedbackPanel settingLockInPeriodFeedback;
 
-    protected WebMarkupContainer settingLockInTypeBlock;
-    protected WebMarkupContainer settingLockInTypeContainer;
+    protected WebMarkupBlock settingLockInTypeBlock;
+    protected WebMarkupContainer settingLockInTypeIContainer;
     protected LockInTypeProvider settingLockInTypeProvider;
     protected Option settingLockInTypeValue;
     protected Select2SingleChoice<Option> settingLockInTypeField;
     protected TextFeedbackPanel settingLockInTypeFeedback;
 
-    protected WebMarkupContainer settingAllowDividendForInactiveClientBlock;
-    protected WebMarkupContainer settingAllowDividendForInactiveClientContainer;
+    protected WebMarkupBlock settingAllowDividendForInactiveClientBlock;
+    protected WebMarkupContainer settingAllowDividendForInactiveClientIContainer;
     protected Boolean settingAllowDividendForInactiveClientValue;
     protected CheckBox settingAllowDividendForInactiveClientField;
     protected TextFeedbackPanel settingAllowDividendForInactiveClientFeedback;
 
     // Market Price
 
+    protected ModalWindow marketPricePopup;
+
+    protected WebMarkupBlock marketPriceBlock;
+    protected WebMarkupContainer marketPriceIContainer;
     protected List<Map<String, Object>> marketPriceValue = Lists.newArrayList();
     protected DataTable<Map<String, Object>, String> marketPriceTable;
     protected ListDataProvider marketPriceProvider;
-    protected ModalWindow marketPricePopup;
+    protected List<IColumn<Map<String, Object>, String>> marketPriceColumn;
     protected AjaxLink<Void> marketPriceAddLink;
+
+    protected Date marketPriceItemFromDateValue;
+    protected Double marketPriceItemUnitPriceValue;
 
     // Charges
 
+    protected WebMarkupBlock chargeBlock;
+    protected WebMarkupContainer chargeIContainer;
     protected List<Map<String, Object>> chargeValue = Lists.newArrayList();
     protected DataTable<Map<String, Object>, String> chargeTable;
     protected ListDataProvider chargeProvider;
     protected ModalWindow chargePopup;
     protected AjaxLink<Void> chargeAddLink;
+    protected List<IColumn<Map<String, Object>, String>> chargeColumn;
+    protected Option chargeItemValue;
 
     // Accounting
 
@@ -215,31 +229,35 @@ public class ShareCreatePage extends Page {
     protected RadioGroup<String> accountingField;
 
     protected WebMarkupContainer cashBlock;
-    protected WebMarkupContainer cashContainer;
+    protected WebMarkupContainer cashIContainer;
 
+    protected WebMarkupBlock cashShareReferenceBlock;
+    protected WebMarkupContainer cashShareReferenceIContainer;
     protected SingleChoiceProvider cashShareReferenceProvider;
     protected Option cashShareReferenceValue;
     protected Select2SingleChoice<Option> cashShareReferenceField;
     protected TextFeedbackPanel cashShareReferenceFeedback;
 
+    protected WebMarkupBlock cashShareSuspenseControlBlock;
+    protected WebMarkupContainer cashShareSuspenseControlIContainer;
     protected SingleChoiceProvider cashShareSuspenseControlProvider;
     protected Option cashShareSuspenseControlValue;
     protected Select2SingleChoice<Option> cashShareSuspenseControlField;
     protected TextFeedbackPanel cashShareSuspenseControlFeedback;
 
+    protected WebMarkupBlock cashEquityBlock;
+    protected WebMarkupContainer cashEquityIContainer;
     protected SingleChoiceProvider cashEquityProvider;
     protected Option cashEquityValue;
     protected Select2SingleChoice<Option> cashEquityField;
     protected TextFeedbackPanel cashEquityFeedback;
 
-    protected SingleChoiceProvider cashIncomeFromFeesProvider;
-    protected Option cashIncomeFromFeesValue;
-    protected Select2SingleChoice<Option> cashIncomeFromFeesField;
-    protected TextFeedbackPanel cashIncomeFromFeesFeedback;
-
-    protected Option itemChargeValue;
-    protected Date itemFromDateValue;
-    protected Double itemUnitPriceValue;
+    protected WebMarkupBlock cashIncomeFromFeeBlock;
+    protected WebMarkupContainer cashIncomeFromFeeIContainer;
+    protected SingleChoiceProvider cashIncomeFromFeeProvider;
+    protected Option cashIncomeFromFeeValue;
+    protected Select2SingleChoice<Option> cashIncomeFromFeeField;
+    protected TextFeedbackPanel cashIncomeFromFeeFeedback;
 
     protected ModalWindow currencyPopup;
 
@@ -278,10 +296,7 @@ public class ShareCreatePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
-        initData();
+    protected void initComponent() {
 
         this.form = new Form<>("form");
         add(this.form);
@@ -296,39 +311,23 @@ public class ShareCreatePage extends Page {
         this.currencyPopup = new ModalWindow("currencyPopup");
         add(this.currencyPopup);
 
-        initDetail();
+        initSectionDetail();
 
-        initCurrency();
+        initSectionCurrency();
 
-        initTerm();
+        initSectionTerm();
 
-        initSetting();
+        initSectionSetting();
 
-        initMarketPrice();
+        initSectionMarketPrice();
 
-        initCharge();
+        initSectionCharge();
 
-        initAccounting();
-
-        initDefault();
-
-        initValidationRule();
+        initSectionAccounting();
     }
 
-    protected void initData() {
-        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
-        this.detailShortNameValue = generator.generate(4);
-        this.currencyDecimalPlaceValue = 2;
-        this.currencyMultipleOfValue = 1;
-        this.termTotalNumberOfShareValue = 10;
-        this.termNominalPriceValue = 10d;
-        this.settingSharePerClientDefaultValue = 10;
-        this.settingAllowDividendForInactiveClientValue = true;
-        this.termShareToBeIssuedValue = 10;
-        this.accountingValue = ACC_NONE;
-    }
-
-    protected void initValidationRule() {
+    @Override
+    protected void configureRequiredValidation() {
         this.detailProductNameField.setRequired(true);
         this.detailShortNameField.setRequired(true);
         this.detailDescriptionField.setRequired(true);
@@ -342,26 +341,41 @@ public class ShareCreatePage extends Page {
         this.accountingField.setRequired(true);
     }
 
-    protected void initDefault() {
+    @Override
+    protected void configureMetaData() {
         accountingFieldUpdate(null);
     }
 
-    protected void initAccounting() {
+    @Override
+    protected void initData() {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
+        this.detailShortNameValue = generator.generate(4);
+        this.currencyDecimalPlaceValue = 2;
+        this.currencyMultipleOfValue = 1;
+        this.termTotalNumberOfShareValue = 10;
+        this.termNominalPriceValue = 10d;
+        this.settingSharePerClientDefaultValue = 10;
+        this.settingAllowDividendForInactiveClientValue = true;
+        this.termShareToBeIssuedValue = 10;
+        this.accountingValue = ACC_NONE;
+    }
+
+    protected void initSectionAccounting() {
         this.accountingField = new RadioGroup<>("accountingField", new PropertyModel<>(this, "accountingValue"));
         this.accountingField.add(new AjaxFormChoiceComponentUpdatingBehavior(this::accountingFieldUpdate));
         this.accountingField.add(new Radio<>("accountingNone", new Model<>(ACC_NONE)));
         this.accountingField.add(new Radio<>("accountingCash", new Model<>(ACC_CASH)));
         this.form.add(this.accountingField);
 
-        initAccountingCash();
+        initSectionAccountingCash();
 
     }
 
     protected boolean accountingFieldUpdate(AjaxRequestTarget target) {
-        this.cashContainer.setVisible(false);
+        this.cashIContainer.setVisible(false);
 
         if ("Cash".equals(this.accountingValue)) {
-            this.cashContainer.setVisible(true);
+            this.cashIContainer.setVisible(true);
         }
 
         if (target != null) {
@@ -370,105 +384,131 @@ public class ShareCreatePage extends Page {
         return false;
     }
 
-    protected void initAccountingCash() {
+    protected void initSectionAccountingCash() {
         this.cashBlock = new WebMarkupContainer("cashBlock");
         this.cashBlock.setOutputMarkupId(true);
-        this.form.add(this.cashBlock);
-        this.cashContainer = new WebMarkupContainer("cashContainer");
-        this.cashBlock.add(this.cashContainer);
+        this.cashIContainer.add(this.cashBlock);
+        this.cashIContainer = new WebMarkupContainer("cashIContainer");
+        this.cashBlock.add(this.cashIContainer);
 
+        this.cashShareReferenceBlock = new WebMarkupBlock("cashShareReferenceBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashShareReferenceBlock);
+        this.cashShareReferenceIContainer = new WebMarkupContainer("cashShareReferenceIContainer");
+        this.cashShareReferenceBlock.add(this.cashShareReferenceIContainer);
         this.cashShareReferenceProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashShareReferenceProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.cashShareReferenceProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.cashShareReferenceField = new Select2SingleChoice<>("cashShareReferenceField", new PropertyModel<>(this, "cashShareReferenceValue"), this.cashShareReferenceProvider);
         this.cashShareReferenceField.setLabel(Model.of("Share reference"));
         this.cashShareReferenceField.add(new OnChangeAjaxBehavior());
-        this.cashContainer.add(this.cashShareReferenceField);
+        this.cashShareReferenceIContainer.add(this.cashShareReferenceField);
         this.cashShareReferenceFeedback = new TextFeedbackPanel("cashShareReferenceFeedback", this.cashShareReferenceField);
-        this.cashContainer.add(this.cashShareReferenceFeedback);
+        this.cashShareReferenceIContainer.add(this.cashShareReferenceFeedback);
 
+        this.cashIncomeFromFeeBlock = new WebMarkupBlock("cashIncomeFromFeeBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashIncomeFromFeeBlock);
+        this.cashIncomeFromFeeIContainer = new WebMarkupContainer("cashIncomeFromFeeIContainer");
+        this.cashIncomeFromFeeBlock.add(this.cashIncomeFromFeeIContainer);
         this.cashShareSuspenseControlProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashShareSuspenseControlProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.cashShareSuspenseControlProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
         this.cashShareSuspenseControlField = new Select2SingleChoice<>("cashShareSuspenseControlField", new PropertyModel<>(this, "cashShareSuspenseControlValue"), this.cashShareSuspenseControlProvider);
         this.cashShareSuspenseControlField.setLabel(Model.of("Share Suspense control"));
         this.cashShareSuspenseControlField.add(new OnChangeAjaxBehavior());
-        this.cashContainer.add(this.cashShareSuspenseControlField);
+        this.cashIncomeFromFeeIContainer.add(this.cashShareSuspenseControlField);
         this.cashShareSuspenseControlFeedback = new TextFeedbackPanel("cashShareSuspenseControlFeedback", this.cashShareSuspenseControlField);
-        this.cashContainer.add(this.cashShareSuspenseControlFeedback);
+        this.cashIncomeFromFeeIContainer.add(this.cashShareSuspenseControlFeedback);
 
+        this.cashEquityBlock = new WebMarkupBlock("cashEquityBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashEquityBlock);
+        this.cashEquityIContainer = new WebMarkupContainer("cashEquityIContainer");
+        this.cashEquityBlock.add(this.cashEquityIContainer);
         this.cashEquityProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashEquityProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.cashEquityProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Equity.getLiteral());
         this.cashEquityField = new Select2SingleChoice<>("cashEquityField", new PropertyModel<>(this, "cashEquityValue"), this.cashEquityProvider);
         this.cashEquityField.setLabel(Model.of("Equity"));
         this.cashEquityField.add(new OnChangeAjaxBehavior());
-        this.cashContainer.add(this.cashEquityField);
+        this.cashEquityIContainer.add(this.cashEquityField);
         this.cashEquityFeedback = new TextFeedbackPanel("cashEquityFeedback", this.cashEquityField);
-        this.cashContainer.add(this.cashEquityFeedback);
+        this.cashEquityIContainer.add(this.cashEquityFeedback);
 
-        this.cashIncomeFromFeesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashIncomeFromFeesProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashIncomeFromFeesProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
-        this.cashIncomeFromFeesField = new Select2SingleChoice<>("cashIncomeFromFeesField", new PropertyModel<>(this, "cashIncomeFromFeesValue"), this.cashIncomeFromFeesProvider);
-        this.cashIncomeFromFeesField.setLabel(Model.of("Income from fees"));
-        this.cashIncomeFromFeesField.add(new OnChangeAjaxBehavior());
-        this.cashContainer.add(this.cashIncomeFromFeesField);
-        this.cashIncomeFromFeesFeedback = new TextFeedbackPanel("cashIncomeFromFeesFeedback", this.cashIncomeFromFeesField);
-        this.cashContainer.add(this.cashIncomeFromFeesFeedback);
+        this.cashIncomeFromFeeBlock = new WebMarkupBlock("cashIncomeFromFeeBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashIncomeFromFeeBlock);
+        this.cashIncomeFromFeeIContainer = new WebMarkupContainer("cashIncomeFromFeeIContainer");
+        this.cashIncomeFromFeeBlock.add(this.cashIncomeFromFeeIContainer);
+        this.cashIncomeFromFeeProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.cashIncomeFromFeeProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromFeeProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
+        this.cashIncomeFromFeeField = new Select2SingleChoice<>("cashIncomeFromFeeField", new PropertyModel<>(this, "cashIncomeFromFeeValue"), this.cashIncomeFromFeeProvider);
+        this.cashIncomeFromFeeField.setLabel(Model.of("Income from fees"));
+        this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
+        this.cashIncomeFromFeeIContainer.add(this.cashIncomeFromFeeField);
+        this.cashIncomeFromFeeFeedback = new TextFeedbackPanel("cashIncomeFromFeeFeedback", this.cashIncomeFromFeeField);
+        this.cashIncomeFromFeeIContainer.add(this.cashIncomeFromFeeFeedback);
     }
 
-    protected void initMarketPrice() {
+    protected void initSectionMarketPrice() {
 
         this.marketPricePopup = new ModalWindow("marketPricePopup");
         add(this.marketPricePopup);
-        this.marketPricePopup.setOnClose(this::marketPricePopupOnClose);
+        this.marketPricePopup.setOnClose(this::marketPricePopupClose);
 
-        List<IColumn<Map<String, Object>, String>> marketPriceColumn = Lists.newArrayList();
-        marketPriceColumn.add(new TextColumn(Model.of("From Date"), "fromDate", "fromDate", this::marketFromDateColumn));
-        marketPriceColumn.add(new TextColumn(Model.of("Nominal/Unit Price"), "unitPrice", "unitPrice", this::marketUnitPriceColumn));
-        marketPriceColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::marketPriceActionItem, this::marketPriceActionClick));
+        initMarketPriceBlock();
+
+    }
+
+    protected void initMarketPriceBlock() {
+        this.marketPriceBlock = new WebMarkupBlock("marketPriceBlock", Size.Twelve_12);
+        this.form.add(this.marketPriceBlock);
+        this.marketPriceIContainer = new WebMarkupContainer("marketPriceIContainer");
+        this.marketPriceBlock.add(this.marketPriceIContainer);
+
+        this.marketPriceColumn = Lists.newArrayList();
+        this.marketPriceColumn.add(new TextColumn(Model.of("From Date"), "fromDate", "fromDate", this::marketPriceColumn));
+        this.marketPriceColumn.add(new TextColumn(Model.of("Nominal/Unit Price"), "unitPrice", "unitPrice", this::marketPriceColumn));
+        this.marketPriceColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::marketPriceAction, this::marketPriceClick));
         this.marketPriceProvider = new ListDataProvider(this.marketPriceValue);
-        this.marketPriceTable = new DataTable<>("marketPriceTable", marketPriceColumn, this.marketPriceProvider, 20);
-        this.form.add(this.marketPriceTable);
+        this.marketPriceTable = new DataTable<>("marketPriceTable", this.marketPriceColumn, this.marketPriceProvider, 20);
+        this.marketPriceIContainer.add(this.marketPriceTable);
         this.marketPriceTable.addTopToolbar(new HeadersToolbar<>(this.marketPriceTable, this.marketPriceProvider));
         this.marketPriceTable.addBottomToolbar(new NoRecordsToolbar(this.marketPriceTable));
 
         this.marketPriceAddLink = new AjaxLink<>("marketPriceAddLink");
         this.marketPriceAddLink.setOnClick(this::marketPriceAddLinkClick);
-        this.form.add(this.marketPriceAddLink);
-
+        this.marketPriceIContainer.add(this.marketPriceAddLink);
     }
 
-    protected void marketPricePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void marketPricePopupClose(String elementId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
-        item.put("unitPrice", this.itemUnitPriceValue);
-        item.put("fromDate", this.itemFromDateValue);
+        item.put("unitPrice", this.marketPriceItemUnitPriceValue);
+        item.put("fromDate", this.marketPriceItemFromDateValue);
         this.marketPriceValue.add(item);
         target.add(this.form);
     }
 
     protected boolean marketPriceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemFromDateValue = null;
-        this.itemUnitPriceValue = null;
+        this.marketPriceItemFromDateValue = null;
+        this.marketPriceItemUnitPriceValue = null;
         this.marketPricePopup.setContent(new MarketPricePopup(this.marketPricePopup.getContentId(), this.marketPricePopup, this));
         this.marketPricePopup.show(target);
         return false;
     }
 
-    protected ItemPanel marketFromDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date value = (Date) model.get(jdbcColumn);
-        return new TextCell(value, "dd/MM/yyyy");
+    protected ItemPanel marketPriceColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("fromDate".equals(column)) {
+            Date value = (Date) model.get(column);
+            return new TextCell(value, "dd/MM/yyyy");
+        } else if ("unitPrice".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected ItemPanel marketUnitPriceColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double value = (Double) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected void marketPriceActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void marketPriceClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.marketPriceValue.size(); i++) {
             Map<String, Object> column = this.marketPriceValue.get(i);
@@ -483,25 +523,33 @@ public class ShareCreatePage extends Page {
         target.add(this.marketPriceTable);
     }
 
-    protected List<ActionItem> marketPriceActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> marketPriceAction(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void initCharge() {
+    protected void initSectionCharge() {
         this.chargePopup = new ModalWindow("chargePopup");
         add(this.chargePopup);
-        this.chargePopup.setOnClose(this::chargePopupOnClose);
+        this.chargePopup.setOnClose(this::chargePopupClose);
 
-        List<IColumn<Map<String, Object>, String>> chargeColumn = Lists.newArrayList();
-        chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeNameColumn));
-        chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeTypeColumn));
-        chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeAmountColumn));
-        chargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::chargeCollectColumn));
-        chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeDateColumn));
-        chargeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::chargeActionItem, this::chargeActionClick));
+        initChargeBlock();
+    }
+
+    protected void initChargeBlock() {
+        this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Twelve_12);
+        this.form.add(this.chargeBlock);
+        this.chargeIContainer = new WebMarkupContainer("chargeIContainer");
+        this.chargeBlock.add(this.chargeIContainer);
+        this.chargeColumn = Lists.newArrayList();
+        this.chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeColumn));
+        this.chargeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::chargeAction, this::chargeClick));
         this.chargeProvider = new ListDataProvider(this.chargeValue);
-        this.chargeTable = new DataTable<>("chargeTable", chargeColumn, this.chargeProvider, 20);
-        this.form.add(this.chargeTable);
+        this.chargeTable = new DataTable<>("chargeTable", this.chargeColumn, this.chargeProvider, 20);
+        this.chargeIContainer.add(this.chargeTable);
         this.chargeTable.addTopToolbar(new HeadersToolbar<>(this.chargeTable, this.chargeProvider));
         this.chargeTable.addBottomToolbar(new NoRecordsToolbar(this.chargeTable));
 
@@ -510,9 +558,9 @@ public class ShareCreatePage extends Page {
         this.form.add(this.chargeAddLink);
     }
 
-    protected void chargePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void chargePopupClose(String elementId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
-        String chargeId = this.itemChargeValue.getId();
+        String chargeId = this.chargeItemValue.getId();
         for (Map<String, Object> temp : this.chargeValue) {
             if (chargeId.equals(temp.get("uuid"))) {
                 return;
@@ -546,7 +594,7 @@ public class ShareCreatePage extends Page {
     }
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemChargeValue = null;
+        this.chargeItemValue = null;
         if (this.currencyCodeValue != null) {
             this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
@@ -557,32 +605,21 @@ public class ShareCreatePage extends Page {
         return false;
     }
 
-    protected ItemPanel chargeNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel chargeColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column) || "collect".equals(column) || "type".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("amount".equals(column)) {
+            Number value = (Number) model.get(column);
+            return new TextCell(value);
+        } else if ("date".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected ItemPanel chargeTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel chargeAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Number value = (Number) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel chargeCollectColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel chargeDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected void chargeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void chargeClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.chargeValue.size(); i++) {
             Map<String, Object> column = this.chargeValue.get(i);
@@ -597,221 +634,293 @@ public class ShareCreatePage extends Page {
         target.add(this.chargeTable);
     }
 
-    protected List<ActionItem> chargeActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> chargeAction(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void initSetting() {
+    protected void initSectionSetting() {
 
-        this.settingSharePerClientMinimumBlock = new WebMarkupContainer("settingSharePerClientMinimumBlock");
-        this.form.add(this.settingSharePerClientMinimumBlock);
-        this.settingSharePerClientMinimumContainer = new WebMarkupContainer("settingSharePerClientMinimumContainer");
-        this.settingSharePerClientMinimumBlock.add(this.settingSharePerClientMinimumContainer);
-        this.settingSharePerClientMinimumField = new TextField<>("settingSharePerClientMinimumField", new PropertyModel<>(this, "settingSharePerClientMinimumValue"));
-        this.settingSharePerClientMinimumField.setLabel(Model.of("Shares per Client Minimum"));
-        this.settingSharePerClientMinimumField.add(new OnChangeAjaxBehavior());
-        this.settingSharePerClientMinimumContainer.add(this.settingSharePerClientMinimumField);
-        this.settingSharePerClientMinimumFeedback = new TextFeedbackPanel("settingSharePerClientMinimumFeedback", this.settingSharePerClientMinimumField);
-        this.settingSharePerClientMinimumContainer.add(this.settingSharePerClientMinimumFeedback);
+        initSettingSharePerClientMinimumBlock();
 
-        this.settingSharePerClientDefaultBlock = new WebMarkupContainer("settingSharePerClientDefaultBlock");
-        this.form.add(this.settingSharePerClientDefaultBlock);
-        this.settingSharePerClientDefaultContainer = new WebMarkupContainer("settingSharePerClientDefaultContainer");
-        this.settingSharePerClientDefaultBlock.add(this.settingSharePerClientDefaultContainer);
-        this.settingSharePerClientDefaultField = new TextField<>("settingSharePerClientDefaultField", new PropertyModel<>(this, "settingSharePerClientDefaultValue"));
-        this.settingSharePerClientDefaultField.setLabel(Model.of("Shares per Client Default"));
-        this.settingSharePerClientDefaultField.add(new OnChangeAjaxBehavior());
-        this.settingSharePerClientDefaultContainer.add(this.settingSharePerClientDefaultField);
-        this.settingSharePerClientDefaultFeedback = new TextFeedbackPanel("settingSharePerClientDefaultFeedback", this.settingSharePerClientDefaultField);
-        this.settingSharePerClientDefaultContainer.add(this.settingSharePerClientDefaultFeedback);
+        initSettingSharePerClientDefaultBlock();
 
-        this.settingSharePerClientMaximumBlock = new WebMarkupContainer("settingSharePerClientMaximumBlock");
-        this.form.add(this.settingSharePerClientMaximumBlock);
-        this.settingSharePerClientMaximumContainer = new WebMarkupContainer("settingSharePerClientMaximumContainer");
-        this.settingSharePerClientMaximumBlock.add(this.settingSharePerClientMaximumContainer);
-        this.settingSharePerClientMaximumField = new TextField<>("settingSharePerClientMaximumField", new PropertyModel<>(this, "settingSharePerClientMaximumValue"));
-        this.settingSharePerClientMaximumField.setLabel(Model.of("Shares per Client Maximum"));
-        this.settingSharePerClientMaximumField.add(new OnChangeAjaxBehavior());
-        this.settingSharePerClientMaximumContainer.add(this.settingSharePerClientMaximumField);
-        this.settingSharePerClientMaximumFeedback = new TextFeedbackPanel("settingSharePerClientMaximumFeedback", this.settingSharePerClientMaximumField);
-        this.settingSharePerClientMaximumContainer.add(this.settingSharePerClientMaximumFeedback);
+        initSettingSharePerClientMaximumBlock();
 
-        this.settingMinimumActivePeriodBlock = new WebMarkupContainer("settingMinimumActivePeriodBlock");
-        this.form.add(this.settingMinimumActivePeriodBlock);
-        this.settingMinimumActivePeriodContainer = new WebMarkupContainer("settingMinimumActivePeriodContainer");
-        this.settingMinimumActivePeriodBlock.add(this.settingMinimumActivePeriodContainer);
-        this.settingMinimumActivePeriodField = new TextField<>("settingMinimumActivePeriodField", new PropertyModel<>(this, "settingMinimumActivePeriodValue"));
-        this.settingMinimumActivePeriodField.setLabel(Model.of("Minimum Active Period"));
-        this.settingMinimumActivePeriodField.add(new OnChangeAjaxBehavior());
-        this.settingMinimumActivePeriodContainer.add(this.settingMinimumActivePeriodField);
-        this.settingMinimumActivePeriodFeedback = new TextFeedbackPanel("settingMinimumActivePeriodFeedback", this.settingMinimumActivePeriodField);
-        this.settingMinimumActivePeriodContainer.add(this.settingMinimumActivePeriodFeedback);
+        initSettingMinimumActivePeriodBlock();
 
-        this.settingMinimumActiveTypeBlock = new WebMarkupContainer("settingMinimumActiveTypeBlock");
-        this.form.add(this.settingMinimumActiveTypeBlock);
-        this.settingMinimumActiveTypeContainer = new WebMarkupContainer("settingMinimumActiveTypeContainer");
-        this.settingMinimumActiveTypeBlock.add(this.settingMinimumActiveTypeContainer);
-        this.settingMinimumActiveTypeProvider = new MinimumActivePeriodProvider();
-        this.settingMinimumActiveTypeField = new Select2SingleChoice<>("settingMinimumActiveTypeField", 0, new PropertyModel<>(this, "settingMinimumActiveTypeValue"), this.settingMinimumActiveTypeProvider);
-        this.settingMinimumActiveTypeField.setLabel(Model.of("Type"));
-        this.settingMinimumActiveTypeField.add(new OnChangeAjaxBehavior());
-        this.settingMinimumActiveTypeContainer.add(this.settingMinimumActiveTypeField);
-        this.settingMinimumActiveTypeFeedback = new TextFeedbackPanel("settingMinimumActiveTypeFeedback", this.settingMinimumActiveTypeField);
-        this.settingMinimumActiveTypeContainer.add(this.settingMinimumActiveTypeFeedback);
+        initSettingMinimumActiveTypeBlock();
 
-        this.settingLockInPeriodBlock = new WebMarkupContainer("settingLockInPeriodBlock");
-        this.form.add(this.settingLockInPeriodBlock);
-        this.settingLockInPeriodContainer = new WebMarkupContainer("settingLockInPeriodContainer");
-        this.settingLockInPeriodBlock.add(this.settingLockInPeriodContainer);
-        this.settingLockInPeriodField = new TextField<>("settingLockInPeriodField", new PropertyModel<>(this, "settingLockInPeriodValue"));
-        this.settingLockInPeriodField.setLabel(Model.of("Lock-in period"));
-        this.settingLockInPeriodField.add(new OnChangeAjaxBehavior());
-        this.settingLockInPeriodContainer.add(this.settingLockInPeriodField);
-        this.settingLockInPeriodFeedback = new TextFeedbackPanel("settingLockInPeriodFeedback", this.settingLockInPeriodField);
-        this.settingLockInPeriodContainer.add(this.settingLockInPeriodFeedback);
+        initSettingLockInPeriodBlock();
 
-        this.settingLockInTypeBlock = new WebMarkupContainer("settingLockInTypeBlock");
+        initSettingLockInTypeBlock();
+
+        initSettingAllowDividendForInactiveClientBlock();
+
+    }
+
+    protected void initSettingAllowDividendForInactiveClientBlock() {
+        this.settingAllowDividendForInactiveClientBlock = new WebMarkupBlock("settingAllowDividendForInactiveClientBlock", Size.Four_4);
+        this.form.add(this.settingAllowDividendForInactiveClientBlock);
+        this.settingAllowDividendForInactiveClientIContainer = new WebMarkupContainer("settingAllowDividendForInactiveClientIContainer");
+        this.settingAllowDividendForInactiveClientBlock.add(this.settingAllowDividendForInactiveClientIContainer);
+        this.settingAllowDividendForInactiveClientField = new CheckBox("settingAllowDividendForInactiveClientField", new PropertyModel<>(this, "settingAllowDividendForInactiveClientValue"));
+        this.settingAllowDividendForInactiveClientField.add(new OnChangeAjaxBehavior());
+        this.settingAllowDividendForInactiveClientIContainer.add(this.settingAllowDividendForInactiveClientField);
+        this.settingAllowDividendForInactiveClientFeedback = new TextFeedbackPanel("settingAllowDividendForInactiveClientFeedback", this.settingAllowDividendForInactiveClientField);
+        this.settingAllowDividendForInactiveClientIContainer.add(this.settingAllowDividendForInactiveClientFeedback);
+    }
+
+    protected void initSettingLockInTypeBlock() {
+        this.settingLockInTypeBlock = new WebMarkupBlock("settingLockInTypeBlock", Size.Four_4);
         this.form.add(this.settingLockInTypeBlock);
-        this.settingLockInTypeContainer = new WebMarkupContainer("settingLockInTypeContainer");
-        this.settingLockInTypeBlock.add(this.settingLockInTypeContainer);
+        this.settingLockInTypeIContainer = new WebMarkupContainer("settingLockInTypeIContainer");
+        this.settingLockInTypeBlock.add(this.settingLockInTypeIContainer);
         this.settingLockInTypeProvider = new LockInTypeProvider();
         this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", 0, new PropertyModel<>(this, "settingLockInTypeValue"), this.settingLockInTypeProvider);
         this.settingLockInTypeField.setLabel(Model.of("Type"));
         this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
-        this.settingLockInTypeContainer.add(this.settingLockInTypeField);
+        this.settingLockInTypeIContainer.add(this.settingLockInTypeField);
         this.settingLockInTypeFeedback = new TextFeedbackPanel("settingLockInTypeFeedback", this.settingLockInTypeField);
-        this.settingLockInTypeContainer.add(this.settingLockInTypeFeedback);
+        this.settingLockInTypeIContainer.add(this.settingLockInTypeFeedback);
+    }
 
-        this.settingAllowDividendForInactiveClientBlock = new WebMarkupContainer("settingAllowDividendForInactiveClientBlock");
-        this.form.add(this.settingAllowDividendForInactiveClientBlock);
-        this.settingAllowDividendForInactiveClientContainer = new WebMarkupContainer("settingAllowDividendForInactiveClientContainer");
-        this.settingAllowDividendForInactiveClientBlock.add(this.settingAllowDividendForInactiveClientContainer);
-        this.settingAllowDividendForInactiveClientField = new CheckBox("settingAllowDividendForInactiveClientField", new PropertyModel<>(this, "settingAllowDividendForInactiveClientValue"));
-        this.settingAllowDividendForInactiveClientField.add(new OnChangeAjaxBehavior());
-        this.settingAllowDividendForInactiveClientContainer.add(this.settingAllowDividendForInactiveClientField);
-        this.settingAllowDividendForInactiveClientFeedback = new TextFeedbackPanel("settingAllowDividendForInactiveClientFeedback", this.settingAllowDividendForInactiveClientField);
-        this.settingAllowDividendForInactiveClientContainer.add(this.settingAllowDividendForInactiveClientFeedback);
+    protected void initSettingLockInPeriodBlock() {
+        this.settingLockInPeriodBlock = new WebMarkupBlock("settingLockInPeriodBlock", Size.Four_4);
+        this.form.add(this.settingLockInPeriodBlock);
+        this.settingLockInPeriodIContainer = new WebMarkupContainer("settingLockInPeriodIContainer");
+        this.settingLockInPeriodBlock.add(this.settingLockInPeriodIContainer);
+        this.settingLockInPeriodField = new TextField<>("settingLockInPeriodField", new PropertyModel<>(this, "settingLockInPeriodValue"));
+        this.settingLockInPeriodField.setLabel(Model.of("Lock-in period"));
+        this.settingLockInPeriodField.add(new OnChangeAjaxBehavior());
+        this.settingLockInPeriodIContainer.add(this.settingLockInPeriodField);
+        this.settingLockInPeriodFeedback = new TextFeedbackPanel("settingLockInPeriodFeedback", this.settingLockInPeriodField);
+        this.settingLockInPeriodIContainer.add(this.settingLockInPeriodFeedback);
+    }
+
+    protected void initSettingMinimumActiveTypeBlock() {
+        this.settingMinimumActiveTypeBlock = new WebMarkupBlock("settingMinimumActiveTypeBlock", Size.Four_4);
+        this.form.add(this.settingMinimumActiveTypeBlock);
+        this.settingMinimumActiveTypeIContainer = new WebMarkupContainer("settingMinimumActiveTypeIContainer");
+        this.settingMinimumActiveTypeBlock.add(this.settingMinimumActiveTypeIContainer);
+        this.settingMinimumActiveTypeProvider = new MinimumActivePeriodProvider();
+        this.settingMinimumActiveTypeField = new Select2SingleChoice<>("settingMinimumActiveTypeField", 0, new PropertyModel<>(this, "settingMinimumActiveTypeValue"), this.settingMinimumActiveTypeProvider);
+        this.settingMinimumActiveTypeField.setLabel(Model.of("Type"));
+        this.settingMinimumActiveTypeField.add(new OnChangeAjaxBehavior());
+        this.settingMinimumActiveTypeIContainer.add(this.settingMinimumActiveTypeField);
+        this.settingMinimumActiveTypeFeedback = new TextFeedbackPanel("settingMinimumActiveTypeFeedback", this.settingMinimumActiveTypeField);
+        this.settingMinimumActiveTypeIContainer.add(this.settingMinimumActiveTypeFeedback);
+    }
+
+    protected void initSettingMinimumActivePeriodBlock() {
+        this.settingMinimumActivePeriodBlock = new WebMarkupBlock("settingMinimumActivePeriodBlock", Size.Four_4);
+        this.form.add(this.settingMinimumActivePeriodBlock);
+        this.settingMinimumActivePeriodIContainer = new WebMarkupContainer("settingMinimumActivePeriodIContainer");
+        this.settingMinimumActivePeriodBlock.add(this.settingMinimumActivePeriodIContainer);
+        this.settingMinimumActivePeriodField = new TextField<>("settingMinimumActivePeriodField", new PropertyModel<>(this, "settingMinimumActivePeriodValue"));
+        this.settingMinimumActivePeriodField.setLabel(Model.of("Minimum Active Period"));
+        this.settingMinimumActivePeriodField.add(new OnChangeAjaxBehavior());
+        this.settingMinimumActivePeriodIContainer.add(this.settingMinimumActivePeriodField);
+        this.settingMinimumActivePeriodFeedback = new TextFeedbackPanel("settingMinimumActivePeriodFeedback", this.settingMinimumActivePeriodField);
+        this.settingMinimumActivePeriodIContainer.add(this.settingMinimumActivePeriodFeedback);
+    }
+
+    protected void initSettingSharePerClientMaximumBlock() {
+        this.settingSharePerClientMaximumBlock = new WebMarkupBlock("settingSharePerClientMaximumBlock", Size.Four_4);
+        this.form.add(this.settingSharePerClientMaximumBlock);
+        this.settingSharePerClientMaximumIContainer = new WebMarkupContainer("settingSharePerClientMaximumIContainer");
+        this.settingSharePerClientMaximumBlock.add(this.settingSharePerClientMaximumIContainer);
+        this.settingSharePerClientMaximumField = new TextField<>("settingSharePerClientMaximumField", new PropertyModel<>(this, "settingSharePerClientMaximumValue"));
+        this.settingSharePerClientMaximumField.setLabel(Model.of("Shares per Client Maximum"));
+        this.settingSharePerClientMaximumField.add(new OnChangeAjaxBehavior());
+        this.settingSharePerClientMaximumIContainer.add(this.settingSharePerClientMaximumField);
+        this.settingSharePerClientMaximumFeedback = new TextFeedbackPanel("settingSharePerClientMaximumFeedback", this.settingSharePerClientMaximumField);
+        this.settingSharePerClientMaximumIContainer.add(this.settingSharePerClientMaximumFeedback);
+    }
+
+    protected void initSettingSharePerClientDefaultBlock() {
+        this.settingSharePerClientDefaultBlock = new WebMarkupBlock("settingSharePerClientDefaultBlock", Size.Four_4);
+        this.form.add(this.settingSharePerClientDefaultBlock);
+        this.settingSharePerClientDefaultIContainer = new WebMarkupContainer("settingSharePerClientDefaultIContainer");
+        this.settingSharePerClientDefaultBlock.add(this.settingSharePerClientDefaultIContainer);
+        this.settingSharePerClientDefaultField = new TextField<>("settingSharePerClientDefaultField", new PropertyModel<>(this, "settingSharePerClientDefaultValue"));
+        this.settingSharePerClientDefaultField.setLabel(Model.of("Shares per Client Default"));
+        this.settingSharePerClientDefaultField.add(new OnChangeAjaxBehavior());
+        this.settingSharePerClientDefaultIContainer.add(this.settingSharePerClientDefaultField);
+        this.settingSharePerClientDefaultFeedback = new TextFeedbackPanel("settingSharePerClientDefaultFeedback", this.settingSharePerClientDefaultField);
+        this.settingSharePerClientDefaultIContainer.add(this.settingSharePerClientDefaultFeedback);
+    }
+
+    protected void initSettingSharePerClientMinimumBlock() {
+        this.settingSharePerClientMinimumBlock = new WebMarkupBlock("settingSharePerClientMinimumBlock", Size.Four_4);
+        this.form.add(this.settingSharePerClientMinimumBlock);
+        this.settingSharePerClientMinimumIContainer = new WebMarkupContainer("settingSharePerClientMinimumIContainer");
+        this.settingSharePerClientMinimumBlock.add(this.settingSharePerClientMinimumIContainer);
+        this.settingSharePerClientMinimumField = new TextField<>("settingSharePerClientMinimumField", new PropertyModel<>(this, "settingSharePerClientMinimumValue"));
+        this.settingSharePerClientMinimumField.setLabel(Model.of("Shares per Client Minimum"));
+        this.settingSharePerClientMinimumField.add(new OnChangeAjaxBehavior());
+        this.settingSharePerClientMinimumIContainer.add(this.settingSharePerClientMinimumField);
+        this.settingSharePerClientMinimumFeedback = new TextFeedbackPanel("settingSharePerClientMinimumFeedback", this.settingSharePerClientMinimumField);
+        this.settingSharePerClientMinimumIContainer.add(this.settingSharePerClientMinimumFeedback);
+    }
+
+    protected void initSectionTerm() {
+
+        initTermTotalNumberOfShareBlock();
+
+        initTermShareToBeIssuedBlock();
+
+        initTermNominalPriceBlock();
+
+        initTermCapitalBlock();
 
     }
 
-    protected void initTerm() {
-
-        this.termTotalNumberOfShareBlock = new WebMarkupContainer("termTotalNumberOfShareBlock");
-        this.form.add(this.termTotalNumberOfShareBlock);
-        this.termTotalNumberOfShareContainer = new WebMarkupContainer("termTotalNumberOfShareContainer");
-        this.termTotalNumberOfShareBlock.add(this.termTotalNumberOfShareContainer);
-        this.termTotalNumberOfShareField = new TextField<>("termTotalNumberOfShareField", new PropertyModel<>(this, "termTotalNumberOfShareValue"));
-        this.termTotalNumberOfShareField.setLabel(Model.of("Total Number of Shares"));
-        this.termTotalNumberOfShareField.add(new OnChangeAjaxBehavior());
-        this.termTotalNumberOfShareContainer.add(this.termTotalNumberOfShareField);
-        this.termTotalNumberOfShareFeedback = new TextFeedbackPanel("termTotalNumberOfShareFeedback", this.termTotalNumberOfShareField);
-        this.termTotalNumberOfShareContainer.add(this.termTotalNumberOfShareFeedback);
-
-        this.termShareToBeIssuedBlock = new WebMarkupContainer("termShareToBeIssuedBlock");
-        this.form.add(this.termShareToBeIssuedBlock);
-        this.termShareToBeIssuedContainer = new WebMarkupContainer("termShareToBeIssuedContainer");
-        this.termShareToBeIssuedBlock.add(this.termShareToBeIssuedContainer);
-        this.termShareToBeIssuedField = new TextField<>("termShareToBeIssuedField", new PropertyModel<>(this, "termShareToBeIssuedValue"));
-        this.termShareToBeIssuedField.setLabel(Model.of("Shares to be issued"));
-        this.termShareToBeIssuedField.add(new OnChangeAjaxBehavior());
-        this.termShareToBeIssuedContainer.add(this.termShareToBeIssuedField);
-        this.termShareToBeIssuedFeedback = new TextFeedbackPanel("termShareToBeIssuedFeedback", this.termShareToBeIssuedField);
-        this.termShareToBeIssuedContainer.add(this.termShareToBeIssuedFeedback);
-
-        this.termNominalPriceBlock = new WebMarkupContainer("termNominalPriceBlock");
-        this.form.add(this.termNominalPriceBlock);
-        this.termNominalPriceContainer = new WebMarkupContainer("termNominalPriceContainer");
-        this.termNominalPriceBlock.add(this.termNominalPriceContainer);
-        this.termNominalPriceField = new TextField<>("termNominalPriceField", new PropertyModel<>(this, "termNominalPriceValue"));
-        this.termNominalPriceField.setLabel(Model.of("Nominal Price"));
-        this.termNominalPriceField.add(new OnChangeAjaxBehavior());
-        this.termNominalPriceContainer.add(this.termNominalPriceField);
-        this.termNominalPriceFeedback = new TextFeedbackPanel("termNominalPriceFeedback", this.termNominalPriceField);
-        this.termNominalPriceContainer.add(this.termNominalPriceFeedback);
-
-        this.termCapitalBlock = new WebMarkupContainer("termCapitalBlock");
+    protected void initTermCapitalBlock() {
+        this.termCapitalBlock = new WebMarkupBlock("termCapitalBlock", Size.Six_6);
         this.form.add(this.termCapitalBlock);
-        this.termCapitalContainer = new WebMarkupContainer("termCapitalContainer");
-        this.termCapitalBlock.add(this.termCapitalContainer);
+        this.termCapitalIContainer = new WebMarkupContainer("termCapitalIContainer");
+        this.termCapitalBlock.add(this.termCapitalIContainer);
         this.termCapitalField = new TextField<>("termCapitalField", new PropertyModel<>(this, "termCapitalValue"));
         this.termCapitalField.setLabel(Model.of("Capital Value"));
         this.termCapitalField.add(new OnChangeAjaxBehavior());
-        this.termCapitalContainer.add(this.termCapitalField);
+        this.termCapitalIContainer.add(this.termCapitalField);
         this.termCapitalFeedback = new TextFeedbackPanel("termCapitalFeedback", this.termCapitalField);
-        this.termCapitalContainer.add(this.termCapitalFeedback);
-
+        this.termCapitalIContainer.add(this.termCapitalFeedback);
     }
 
-    protected void initCurrency() {
+    protected void initTermNominalPriceBlock() {
+        this.termNominalPriceBlock = new WebMarkupBlock("termNominalPriceBlock", Size.Six_6);
+        this.form.add(this.termNominalPriceBlock);
+        this.termNominalPriceIContainer = new WebMarkupContainer("termNominalPriceIContainer");
+        this.termNominalPriceBlock.add(this.termNominalPriceIContainer);
+        this.termNominalPriceField = new TextField<>("termNominalPriceField", new PropertyModel<>(this, "termNominalPriceValue"));
+        this.termNominalPriceField.setLabel(Model.of("Nominal Price"));
+        this.termNominalPriceField.add(new OnChangeAjaxBehavior());
+        this.termNominalPriceIContainer.add(this.termNominalPriceField);
+        this.termNominalPriceFeedback = new TextFeedbackPanel("termNominalPriceFeedback", this.termNominalPriceField);
+        this.termNominalPriceIContainer.add(this.termNominalPriceFeedback);
+    }
 
-        this.currencyCodeBlock = new WebMarkupContainer("currencyCodeBlock");
+    protected void initTermShareToBeIssuedBlock() {
+        this.termShareToBeIssuedBlock = new WebMarkupBlock("termShareToBeIssuedBlock", Size.Six_6);
+        this.form.add(this.termShareToBeIssuedBlock);
+        this.termShareToBeIssuedIContainer = new WebMarkupContainer("termShareToBeIssuedIContainer");
+        this.termShareToBeIssuedBlock.add(this.termShareToBeIssuedIContainer);
+        this.termShareToBeIssuedField = new TextField<>("termShareToBeIssuedField", new PropertyModel<>(this, "termShareToBeIssuedValue"));
+        this.termShareToBeIssuedField.setLabel(Model.of("Shares to be issued"));
+        this.termShareToBeIssuedField.add(new OnChangeAjaxBehavior());
+        this.termShareToBeIssuedIContainer.add(this.termShareToBeIssuedField);
+        this.termShareToBeIssuedFeedback = new TextFeedbackPanel("termShareToBeIssuedFeedback", this.termShareToBeIssuedField);
+        this.termShareToBeIssuedIContainer.add(this.termShareToBeIssuedFeedback);
+    }
+
+    protected void initTermTotalNumberOfShareBlock() {
+        this.termTotalNumberOfShareBlock = new WebMarkupBlock("termTotalNumberOfShareBlock", Size.Six_6);
+        this.form.add(this.termTotalNumberOfShareBlock);
+        this.termTotalNumberOfShareIContainer = new WebMarkupContainer("termTotalNumberOfShareIContainer");
+        this.termTotalNumberOfShareBlock.add(this.termTotalNumberOfShareIContainer);
+        this.termTotalNumberOfShareField = new TextField<>("termTotalNumberOfShareField", new PropertyModel<>(this, "termTotalNumberOfShareValue"));
+        this.termTotalNumberOfShareField.setLabel(Model.of("Total Number of Shares"));
+        this.termTotalNumberOfShareField.add(new OnChangeAjaxBehavior());
+        this.termTotalNumberOfShareIContainer.add(this.termTotalNumberOfShareField);
+        this.termTotalNumberOfShareFeedback = new TextFeedbackPanel("termTotalNumberOfShareFeedback", this.termTotalNumberOfShareField);
+        this.termTotalNumberOfShareIContainer.add(this.termTotalNumberOfShareFeedback);
+    }
+
+    protected void initSectionCurrency() {
+
+        initCurrencyCodeBlock();
+
+        initCurrencyDecimalPlaceBlock();
+
+        initCurrencyMultipleOfBlock();
+    }
+
+    protected void initCurrencyMultipleOfBlock() {
+        this.currencyMultipleOfBlock = new WebMarkupBlock("currencyMultipleOfBlock", Size.Six_6);
+        this.form.add(this.currencyMultipleOfBlock);
+        this.currencyMultipleOfIContainer = new WebMarkupContainer("currencyMultipleOfIContainer");
+        this.currencyMultipleOfBlock.add(this.currencyMultipleOfIContainer);
+        this.currencyMultipleOfField = new TextField<>("currencyMultipleOfField", new PropertyModel<>(this, "currencyMultipleOfValue"));
+        this.currencyMultipleOfField.setLabel(Model.of("Multiples of"));
+        this.currencyMultipleOfField.add(new OnChangeAjaxBehavior());
+        this.currencyMultipleOfIContainer.add(this.currencyMultipleOfField);
+        this.currencyMultipleOfFeedback = new TextFeedbackPanel("currencyMultipleOfFeedback", this.currencyMultipleOfField);
+        this.currencyMultipleOfIContainer.add(this.currencyMultipleOfFeedback);
+    }
+
+    protected void initCurrencyDecimalPlaceBlock() {
+        this.currencyDecimalPlaceBlock = new WebMarkupBlock("currencyDecimalPlaceBlock", Size.Six_6);
+        this.form.add(this.currencyDecimalPlaceBlock);
+        this.currencyDecimalPlaceIContainer = new WebMarkupContainer("currencyDecimalPlaceIContainer");
+        this.currencyDecimalPlaceBlock.add(this.currencyDecimalPlaceIContainer);
+        this.currencyDecimalPlaceField = new TextField<>("currencyDecimalPlaceField", new PropertyModel<>(this, "currencyDecimalPlaceValue"));
+        this.currencyDecimalPlaceField.setLabel(Model.of("Decimal places"));
+        this.currencyDecimalPlaceField.add(new OnChangeAjaxBehavior());
+        this.currencyDecimalPlaceIContainer.add(this.currencyDecimalPlaceField);
+        this.currencyDecimalPlaceFeedback = new TextFeedbackPanel("currencyDecimalPlaceFeedback", this.currencyDecimalPlaceField);
+        this.currencyDecimalPlaceIContainer.add(this.currencyDecimalPlaceFeedback);
+    }
+
+    protected void initCurrencyCodeBlock() {
+        this.currencyCodeBlock = new WebMarkupBlock("currencyCodeBlock", Size.Six_6);
         this.form.add(this.currencyCodeBlock);
-        this.currencyCodeContainer = new WebMarkupContainer("currencyCodeContainer");
-        this.currencyCodeBlock.add(this.currencyCodeContainer);
+        this.currencyCodeIContainer = new WebMarkupContainer("currencyCodeIContainer");
+        this.currencyCodeBlock.add(this.currencyCodeIContainer);
         this.currencyCodeProvider = new CurrencyProvider();
         this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", 0, new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
         this.currencyCodeField.setLabel(Model.of("Currency"));
         this.currencyCodeField.add(new OnChangeAjaxBehavior());
-        this.currencyCodeContainer.add(this.currencyCodeField);
+        this.currencyCodeIContainer.add(this.currencyCodeField);
         this.currencyCodeFeedback = new TextFeedbackPanel("currencyCodeFeedback", this.currencyCodeField);
-        this.currencyCodeContainer.add(this.currencyCodeFeedback);
-
-        this.currencyDecimalPlaceBlock = new WebMarkupContainer("currencyDecimalPlaceBlock");
-        this.form.add(this.currencyDecimalPlaceBlock);
-        this.currencyDecimalPlaceContainer = new WebMarkupContainer("currencyDecimalPlaceContainer");
-        this.currencyDecimalPlaceBlock.add(this.currencyDecimalPlaceContainer);
-        this.currencyDecimalPlaceField = new TextField<>("currencyDecimalPlaceField", new PropertyModel<>(this, "currencyDecimalPlaceValue"));
-        this.currencyDecimalPlaceField.setLabel(Model.of("Decimal places"));
-        this.currencyDecimalPlaceField.add(new OnChangeAjaxBehavior());
-        this.currencyDecimalPlaceContainer.add(this.currencyDecimalPlaceField);
-        this.currencyDecimalPlaceFeedback = new TextFeedbackPanel("currencyDecimalPlaceFeedback", this.currencyDecimalPlaceField);
-        this.currencyDecimalPlaceContainer.add(this.currencyDecimalPlaceFeedback);
-
-        this.currencyMultipleOfBlock = new WebMarkupContainer("currencyMultipleOfBlock");
-        this.form.add(this.currencyMultipleOfBlock);
-        this.currencyMultipleOfContainer = new WebMarkupContainer("currencyMultipleOfContainer");
-        this.currencyMultipleOfBlock.add(this.currencyMultipleOfContainer);
-        this.currencyMultipleOfField = new TextField<>("currencyMultipleOfField", new PropertyModel<>(this, "currencyMultipleOfValue"));
-        this.currencyMultipleOfField.setLabel(Model.of("Multiples of"));
-        this.currencyMultipleOfField.add(new OnChangeAjaxBehavior());
-        this.currencyMultipleOfContainer.add(this.currencyMultipleOfField);
-        this.currencyMultipleOfFeedback = new TextFeedbackPanel("currencyMultipleOfFeedback", this.currencyMultipleOfField);
-        this.currencyMultipleOfContainer.add(this.currencyMultipleOfFeedback);
+        this.currencyCodeIContainer.add(this.currencyCodeFeedback);
     }
 
-    protected void initDetail() {
-        this.detailProductNameBlock = new WebMarkupContainer("detailProductNameBlock");
-        this.detailProductNameBlock.setOutputMarkupId(true);
-        this.form.add(this.detailProductNameBlock);
-        this.detailProductNameContainer = new WebMarkupContainer("detailProductNameContainer");
-        this.detailProductNameBlock.add(this.detailProductNameContainer);
-        this.detailProductNameField = new TextField<>("detailProductNameField", new PropertyModel<>(this, "detailProductNameValue"));
-        this.detailProductNameField.setLabel(Model.of("Product Name"));
-        this.detailProductNameContainer.add(this.detailProductNameField);
-        this.detailProductNameFeedback = new TextFeedbackPanel("detailProductNameFeedback", this.detailProductNameField);
-        this.detailProductNameContainer.add(this.detailProductNameFeedback);
+    protected void initSectionDetail() {
+        initDetailProductNameBlock();
 
-        this.detailShortNameBlock = new WebMarkupContainer("detailShortNameBlock");
-        this.detailShortNameBlock.setOutputMarkupId(true);
-        this.form.add(this.detailShortNameBlock);
-        this.detailShortNameContainer = new WebMarkupContainer("detailShortNameContainer");
-        this.detailShortNameBlock.add(this.detailShortNameContainer);
-        this.detailShortNameField = new TextField<>("detailShortNameField", new PropertyModel<>(this, "detailShortNameValue"));
-        this.detailShortNameField.setLabel(Model.of("Short Name"));
-        this.detailShortNameContainer.add(this.detailShortNameField);
-        this.detailShortNameFeedback = new TextFeedbackPanel("detailShortNameFeedback", this.detailShortNameField);
-        this.detailShortNameContainer.add(this.detailShortNameFeedback);
+        initDetailShortNameBlock();
 
-        this.detailDescriptionBlock = new WebMarkupContainer("detailDescriptionBlock");
+        initDetailDescriptionBlock();
+    }
+
+    protected void initDetailDescriptionBlock() {
+        this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Six_6);
         this.detailDescriptionBlock.setOutputMarkupId(true);
         this.form.add(this.detailDescriptionBlock);
-        this.detailDescriptionContainer = new WebMarkupContainer("detailDescriptionContainer");
-        this.detailDescriptionBlock.add(this.detailDescriptionContainer);
+        this.detailDescriptionIContainer = new WebMarkupContainer("detailDescriptionIContainer");
+        this.detailDescriptionBlock.add(this.detailDescriptionIContainer);
         this.detailDescriptionField = new TextField<>("detailDescriptionField", new PropertyModel<>(this, "detailDescriptionValue"));
         this.detailDescriptionField.setLabel(Model.of("Description"));
-        this.detailDescriptionContainer.add(this.detailDescriptionField);
+        this.detailDescriptionIContainer.add(this.detailDescriptionField);
         this.detailDescriptionFeedback = new TextFeedbackPanel("detailDescriptionFeedback", this.detailDescriptionField);
-        this.detailDescriptionContainer.add(this.detailDescriptionFeedback);
+        this.detailDescriptionIContainer.add(this.detailDescriptionFeedback);
+    }
+
+    protected void initDetailShortNameBlock() {
+        this.detailShortNameBlock = new WebMarkupBlock("detailShortNameBlock", Size.Six_6);
+        this.detailShortNameBlock.setOutputMarkupId(true);
+        this.form.add(this.detailShortNameBlock);
+        this.detailShortNameIContainer = new WebMarkupContainer("detailShortNameIContainer");
+        this.detailShortNameBlock.add(this.detailShortNameIContainer);
+        this.detailShortNameField = new TextField<>("detailShortNameField", new PropertyModel<>(this, "detailShortNameValue"));
+        this.detailShortNameField.setLabel(Model.of("Short Name"));
+        this.detailShortNameIContainer.add(this.detailShortNameField);
+        this.detailShortNameFeedback = new TextFeedbackPanel("detailShortNameFeedback", this.detailShortNameField);
+        this.detailShortNameIContainer.add(this.detailShortNameFeedback);
+    }
+
+    protected void initDetailProductNameBlock() {
+        this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
+        this.detailProductNameBlock.setOutputMarkupId(true);
+        this.form.add(this.detailProductNameBlock);
+        this.detailProductNameIContainer = new WebMarkupContainer("detailProductNameIContainer");
+        this.detailProductNameBlock.add(this.detailProductNameIContainer);
+        this.detailProductNameField = new TextField<>("detailProductNameField", new PropertyModel<>(this, "detailProductNameValue"));
+        this.detailProductNameField.setLabel(Model.of("Product Name"));
+        this.detailProductNameIContainer.add(this.detailProductNameField);
+        this.detailProductNameFeedback = new TextFeedbackPanel("detailProductNameFeedback", this.detailProductNameField);
+        this.detailProductNameIContainer.add(this.detailProductNameFeedback);
     }
 
     protected void saveButtonSubmit(Button button) {
@@ -889,8 +998,8 @@ public class ShareCreatePage extends Page {
             if (this.cashEquityValue != null) {
                 builder.withShareEquityId(this.cashEquityValue.getId());
             }
-            if (this.cashIncomeFromFeesValue != null) {
-                builder.withIncomeFromFeeAccountId(this.cashIncomeFromFeesValue.getId());
+            if (this.cashIncomeFromFeeValue != null) {
+                builder.withIncomeFromFeeAccountId(this.cashIncomeFromFeeValue.getId());
             }
         }
 

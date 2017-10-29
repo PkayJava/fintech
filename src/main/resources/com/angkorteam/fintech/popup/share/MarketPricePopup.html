@@ -9,17 +9,20 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="fromDateField">From Date</label> <input
-							wicket:id="fromDateField" type="text" class="form-control" /> <span
-							wicket:id="fromDateFeedback" class="help-block"></span>
+					<div wicket:id="fromDateBlock" class="form-group">
+						<wicket:container wicket:id="fromDateIContainer">
+							<label wicket:for="fromDateField">From Date</label>
+							<input wicket:id="fromDateField" type="text" class="form-control" />
+							<span wicket:id="fromDateFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="unitPriceField">Niminal/Unit Price</label> <input
-							wicket:id="unitPriceField" class="form-control" type="text" /> <span
-							wicket:id="unitPriceFeedback" class="help-block"></span>
+					<div wicket:id="unitPriceBlock" class="form-group">
+						<wicket:container wicket:id="unitPriceIContainer">
+							<label wicket:for="unitPriceField">Niminal/Unit Price</label>
+							<input wicket:id="unitPriceField" class="form-control"
+								type="text" />
+							<span wicket:id="unitPriceFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>

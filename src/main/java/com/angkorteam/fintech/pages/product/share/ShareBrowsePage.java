@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.product.share;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
@@ -32,13 +33,14 @@ import com.google.common.collect.Lists;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ShareBrowsePage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected JdbcProvider dataProvider;
+    protected FilterForm<Map<String, String>> dataFilterForm;
 
-    private JdbcProvider provider;
+    protected BookmarkablePageLink<Void> createLink;
 
-    private BookmarkablePageLink<Void> createLink;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -66,47 +68,61 @@ public class ShareBrowsePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("m_share_product");
-        this.provider.boardField("id", "id", Long.class);
-        this.provider.boardField("name", "name", String.class);
-        this.provider.boardField("short_name", "shortName", String.class);
-        this.provider.boardField("total_shares", "totalShares", Long.class);
+    protected void initData() {
+    }
 
-        this.provider.selectField("id", Long.class);
-
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Short Name"), "shortName", "shortName", this::shortNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Long, Model.of("Total Shares"), "totalShares", "totalShares", this::totalSharesColumn));
-
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
-
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+    @Override
+    protected void initComponent() {
+        initDataTable();
 
         this.createLink = new BookmarkablePageLink<>("createLink", ShareCreatePage.class);
         add(this.createLink);
     }
 
-    private ItemPanel shortNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected void initDataTable() {
+        this.dataProvider = new JdbcProvider("m_share_product");
+        this.dataProvider.boardField("id", "id", Long.class);
+        this.dataProvider.boardField("name", "name", String.class);
+        this.dataProvider.boardField("short_name", "shortName", String.class);
+        this.dataProvider.boardField("total_shares", "totalShares", Long.class);
+
+        this.dataProvider.selectField("id", Long.class);
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Short Name"), "shortName", "shortName", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Total Shares"), "totalShares", "totalShares", this::dataColumn));
+
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        add(this.dataFilterForm);
+
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
     }
 
-    private ItemPanel totalSharesColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long value = (Long) model.get(jdbcColumn);
-        return new TextCell(value);
+    @Override
+    protected void configureRequiredValidation() {
     }
 
-    private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        PageParameters parameters = new PageParameters();
-        parameters.add("shareId", model.get("id"));
-        return new LinkCell(ShareCreatePage.class, parameters, Model.of(name));
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column)) {
+            String value = (String) model.get(column);
+            PageParameters parameters = new PageParameters();
+            parameters.add("shareId", model.get("id"));
+            return new LinkCell(ShareCreatePage.class, parameters, value);
+        } else if ("shortName".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("totalShares".equals(column)) {
+            Long value = (Long) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }
