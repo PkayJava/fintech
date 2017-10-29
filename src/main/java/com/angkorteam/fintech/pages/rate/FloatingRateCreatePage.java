@@ -4,9 +4,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -25,6 +27,8 @@ import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -52,14 +56,20 @@ public class FloatingRateCreatePage extends Page {
     protected Form<Void> rateForm;
     protected AjaxButton addButton;
 
+    protected WebMarkupBlock fromDateBlock;
+    protected WebMarkupContainer fromDateIContainer;
     protected Date fromDateValue;
     protected DateTextField fromDateField;
     protected TextFeedbackPanel fromDateFeedback;
 
+    protected WebMarkupBlock interestRateBlock;
+    protected WebMarkupContainer interestRateIContainer;
     protected Double interestRateValue;
     protected TextField<Double> interestRateField;
     protected TextFeedbackPanel interestRateFeedback;
 
+    protected WebMarkupBlock differentialBlock;
+    protected WebMarkupContainer differentialIContainer;
     protected Boolean differentialValue;
     protected CheckBox differentialField;
     protected TextFeedbackPanel differentialFeedback;
@@ -68,21 +78,30 @@ public class FloatingRateCreatePage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
+    protected WebMarkupBlock nameBlock;
+    protected WebMarkupContainer nameIContainer;
     protected String nameValue;
     protected TextField<String> nameField;
     protected TextFeedbackPanel nameFeedback;
 
+    protected WebMarkupBlock activeBlock;
+    protected WebMarkupContainer activeIContainer;
     protected Boolean activeValue;
     protected CheckBox activeField;
     protected TextFeedbackPanel activeFeedback;
 
+    protected WebMarkupBlock baseLendingBlock;
+    protected WebMarkupContainer baseLendingIContainer;
     protected Boolean baseLendingValue;
     protected CheckBox baseLendingField;
     protected TextFeedbackPanel baseLendingFeedback;
 
+    protected WebMarkupBlock rateBlock;
+    protected WebMarkupContainer rateIContainer;
     protected List<Map<String, Object>> rateValue = Lists.newArrayList();
     protected DataTable<Map<String, Object>, String> rateTable;
     protected ListDataProvider rateProvider;
+    protected List<IColumn<Map<String, Object>, String>> rateColumn;
 
     protected static final List<PageBreadcrumb> BREADCRUMB;
 
@@ -118,9 +137,11 @@ public class FloatingRateCreatePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.rateForm = new Form<>("rateForm");
         add(this.rateForm);
 
@@ -128,23 +149,35 @@ public class FloatingRateCreatePage extends Page {
         this.addButton.setOnSubmit(this::addButtonSubmit);
         this.rateForm.add(this.addButton);
 
+        this.fromDateBlock = new WebMarkupBlock("fromDateBlock", Size.Four_4);
+        this.form.add(this.fromDateBlock);
+        this.fromDateIContainer = new WebMarkupContainer("fromDateIContainer");
+        this.fromDateBlock.add(this.fromDateIContainer);
         this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this, "fromDateValue"));
         this.fromDateField.setRequired(true);
-        this.rateForm.add(this.fromDateField);
+        this.fromDateIContainer.add(this.fromDateField);
         this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
-        this.rateForm.add(this.fromDateFeedback);
+        this.fromDateIContainer.add(this.fromDateFeedback);
 
+        this.interestRateBlock = new WebMarkupBlock("interestRateBlock", Size.Four_4);
+        this.form.add(this.interestRateBlock);
+        this.interestRateIContainer = new WebMarkupContainer("interestRateIContainer");
+        this.interestRateBlock.add(this.interestRateIContainer);
         this.interestRateField = new TextField<>("interestRateField", new PropertyModel<>(this, "interestRateValue"));
         this.interestRateField.setRequired(true);
-        this.rateForm.add(this.interestRateField);
+        this.interestRateIContainer.add(this.interestRateField);
         this.interestRateFeedback = new TextFeedbackPanel("interestRateFeedback", this.interestRateField);
-        this.rateForm.add(this.interestRateFeedback);
+        this.interestRateIContainer.add(this.interestRateFeedback);
 
+        this.differentialBlock = new WebMarkupBlock("differentialBlock", Size.Four_4);
+        this.form.add(this.differentialBlock);
+        this.differentialIContainer = new WebMarkupContainer("differentialIContainer");
+        this.differentialBlock.add(this.differentialIContainer);
         this.differentialField = new CheckBox("differentialField", new PropertyModel<>(this, "differentialValue"));
         this.differentialField.setRequired(true);
-        this.rateForm.add(this.differentialField);
+        this.differentialIContainer.add(this.differentialField);
         this.differentialFeedback = new TextFeedbackPanel("differentialFeedback", this.differentialField);
-        this.rateForm.add(this.differentialFeedback);
+        this.differentialIContainer.add(this.differentialFeedback);
 
         this.form = new Form<>("form");
         add(this.form);
@@ -156,37 +189,61 @@ public class FloatingRateCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", StaffBrowsePage.class);
         this.form.add(this.closeLink);
 
+        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Four_4);
+        this.form.add(this.nameBlock);
+        this.nameIContainer = new WebMarkupContainer("nameIContainer");
+        this.nameBlock.add(this.nameIContainer);
         this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
         this.nameField.setRequired(true);
-        this.form.add(this.nameField);
+        this.nameIContainer.add(this.nameField);
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.form.add(this.nameFeedback);
+        this.nameIContainer.add(this.nameFeedback);
 
+        this.activeBlock = new WebMarkupBlock("activeBlock", Size.Four_4);
+        this.form.add(this.activeBlock);
+        this.activeIContainer = new WebMarkupContainer("activeIContainer");
+        this.activeBlock.add(this.activeIContainer);
         this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
         this.activeField.setRequired(true);
-        this.form.add(this.activeField);
+        this.activeIContainer.add(this.activeField);
         this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
-        this.form.add(this.activeFeedback);
+        this.activeIContainer.add(this.activeFeedback);
 
+        this.baseLendingBlock = new WebMarkupBlock("baseLendingBlock", Size.Four_4);
+        this.form.add(this.baseLendingBlock);
+        this.baseLendingIContainer = new WebMarkupContainer("baseLendingIContainer");
+        this.baseLendingBlock.add(this.baseLendingIContainer);
         this.baseLendingField = new CheckBox("baseLendingField", new PropertyModel<>(this, "baseLendingValue"));
         this.baseLendingField.setRequired(true);
-        this.form.add(this.baseLendingField);
+        this.baseLendingIContainer.add(this.baseLendingField);
         this.baseLendingFeedback = new TextFeedbackPanel("baseLendingFeedback", this.baseLendingField);
-        this.form.add(this.baseLendingFeedback);
+        this.baseLendingIContainer.add(this.baseLendingFeedback);
 
-        List<IColumn<Map<String, Object>, String>> rateColumn = Lists.newArrayList();
-        rateColumn.add(new TextColumn(Model.of("From Date"), "fromDate", "fromDate", this::rateFromDateColumn));
-        rateColumn.add(new TextColumn(Model.of("Interest Rate"), "interestRate", "interestRate", this::rateInterestRateColumn));
-        rateColumn.add(new TextColumn(Model.of("Is Differential"), "differential", "differential", this::rateDifferentialColumn));
-        rateColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::rateActionItem, this::rateActionClick));
+        this.rateBlock = new WebMarkupBlock("rateBlock", Size.Twelve_12);
+        this.form.add(this.rateBlock);
+        this.rateIContainer = new WebMarkupContainer("rateIContainer");
+        this.rateBlock.add(this.rateIContainer);
+        this.rateColumn = Lists.newArrayList();
+        this.rateColumn.add(new TextColumn(Model.of("From Date"), "fromDate", "fromDate", this::rateColumn));
+        this.rateColumn.add(new TextColumn(Model.of("Interest Rate"), "interestRate", "interestRate", this::rateColumn));
+        this.rateColumn.add(new TextColumn(Model.of("Is Differential"), "differential", "differential", this::rateColumn));
+        this.rateColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::rateAction, this::rateClick));
         this.rateProvider = new ListDataProvider(this.rateValue);
-        this.rateTable = new DataTable<>("rateTable", rateColumn, this.rateProvider, 20);
-        this.form.add(this.rateTable);
+        this.rateTable = new DataTable<>("rateTable", this.rateColumn, this.rateProvider, 20);
+        this.rateIContainer.add(this.rateTable);
         this.rateTable.addTopToolbar(new HeadersToolbar<>(this.rateTable, this.rateProvider));
         this.rateTable.addBottomToolbar(new NoRecordsToolbar(this.rateTable));
     }
 
-    protected void rateActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void rateClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         if ("delete".equals(s)) {
             int index = -1;
             for (int i = 0; i < this.rateValue.size(); i++) {
@@ -203,29 +260,28 @@ public class FloatingRateCreatePage extends Page {
         }
     }
 
-    protected List<ActionItem> rateActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> rateAction(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         return actions;
     }
 
-    protected ItemPanel rateInterestRateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double value = (Double) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel rateFromDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date value = (Date) model.get(jdbcColumn);
-        return new TextCell(value, "dd/MM/yyyy");
-    }
-
-    protected ItemPanel rateDifferentialColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean differential = (Boolean) model.get(jdbcColumn);
-        if (differential != null && differential) {
-            return new BadgeCell(BadgeType.Success, Model.of("Yes"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("No"));
+    protected ItemPanel rateColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("fromDate".equals(column)) {
+            Date value = (Date) model.get(column);
+            return new TextCell(value, "dd/MM/yyyy");
+        } else if ("interestRate".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value);
+        } else if ("differential".equals(column)) {
+            Boolean differential = (Boolean) model.get(column);
+            if (differential != null && differential) {
+                return new BadgeCell(BadgeType.Success, Model.of("Yes"));
+            } else {
+                return new BadgeCell(BadgeType.Danger, Model.of("No"));
+            }
         }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
     protected boolean addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {

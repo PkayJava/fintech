@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.rate;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
@@ -34,13 +35,14 @@ import com.google.common.collect.Lists;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FloatingRateBrowsePage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected FilterForm<Map<String, String>> dataFilterForm;
+    protected JdbcProvider dataProvider;
 
-    private JdbcProvider provider;
+    protected BookmarkablePageLink<Void> createLink;
 
-    private BookmarkablePageLink<Void> createLink;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -68,63 +70,75 @@ public class FloatingRateBrowsePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("m_floating_rates");
-        this.provider.addJoin("INNER join m_appuser on m_floating_rates.createdby_id = m_appuser.id");
-        this.provider.boardField("m_floating_rates.id", "id", Long.class);
-        this.provider.boardField("m_floating_rates.name", "name", String.class);
-        this.provider.boardField("m_appuser.username", "createdBy", String.class);
-        this.provider.boardField("m_floating_rates.is_base_lending_rate", "base_lending_rate", Boolean.class);
-        this.provider.boardField("m_floating_rates.is_active", "active", Boolean.class);
+    protected void initData() {
+    }
 
-        this.provider.selectField("id", Long.class);
-
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Created By"), "createdBy", "createdBy", this::createdByColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Is Base Lending Rate"), "base_lending_rate", "base_lending_rate", this::baseLendingRateColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Boolean, Model.of("Active"), "active", "active", this::activeColumn));
-
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
-
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+    @Override
+    protected void initComponent() {
+        initDataTable();
 
         this.createLink = new BookmarkablePageLink<>("createLink", FloatingRateCreatePage.class);
         add(this.createLink);
     }
 
-    private ItemPanel activeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean active = (Boolean) model.get(jdbcColumn);
-        if (active != null && active) {
-            return new BadgeCell(BadgeType.Success, Model.of("Yes"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("No"));
+    protected void initDataTable() {
+        this.dataProvider = new JdbcProvider("m_floating_rates");
+        this.dataProvider.addJoin("INNER join m_appuser on m_floating_rates.createdby_id = m_appuser.id");
+        this.dataProvider.boardField("m_floating_rates.id", "id", Long.class);
+        this.dataProvider.boardField("m_floating_rates.name", "name", String.class);
+        this.dataProvider.boardField("m_appuser.username", "createdBy", String.class);
+        this.dataProvider.boardField("m_floating_rates.is_base_lending_rate", "base_lending_rate", Boolean.class);
+        this.dataProvider.boardField("m_floating_rates.is_active", "active", Boolean.class);
+
+        this.dataProvider.selectField("id", Long.class);
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Created By"), "createdBy", "createdBy", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Boolean, Model.of("Is Base Lending Rate"), "base_lending_rate", "base_lending_rate", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Boolean, Model.of("Active"), "active", "active", this::dataColumn));
+
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        add(this.dataFilterForm);
+
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column)) {
+            String value = (String) model.get(column);
+            PageParameters parameters = new PageParameters();
+            parameters.add("rateId", model.get("id"));
+            return new LinkCell(FloatingRateModifyPage.class, parameters, value);
+        } else if ("createdBy".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("base_lending_rate".equals(column)) {
+            Boolean baseLendingRate = (Boolean) model.get(column);
+            if (baseLendingRate != null && baseLendingRate) {
+                return new BadgeCell(BadgeType.Success, Model.of("Yes"));
+            } else {
+                return new BadgeCell(BadgeType.Danger, Model.of("No"));
+            }
+        } else if ("active".equals(column)) {
+            Boolean active = (Boolean) model.get(column);
+            if (active != null && active) {
+                return new BadgeCell(BadgeType.Success, Model.of("Yes"));
+            } else {
+                return new BadgeCell(BadgeType.Danger, Model.of("No"));
+            }
         }
-    }
-
-    private ItemPanel baseLendingRateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean baseLendingRate = (Boolean) model.get(jdbcColumn);
-        if (baseLendingRate != null && baseLendingRate) {
-            return new BadgeCell(BadgeType.Success, Model.of("Yes"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("No"));
-        }
-    }
-
-    private ItemPanel createdByColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        PageParameters parameters = new PageParameters();
-        parameters.add("rateId", model.get("id"));
-        return new LinkCell(FloatingRateModifyPage.class, parameters, Model.of(name));
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }

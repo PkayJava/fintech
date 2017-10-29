@@ -1,6 +1,9 @@
 package com.angkorteam.fintech.popup;
 
+import java.util.Date;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -8,6 +11,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
@@ -15,21 +20,30 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 
 public class RateModifyPopup extends Panel {
 
-    private ModalWindow window;
+    protected ModalWindow window;
 
-    private Form<Void> form;
-    private AjaxButton saveButton;
+    protected Form<Void> form;
+    protected AjaxButton saveButton;
 
-    private DateTextField fromDateField;
-    private TextFeedbackPanel fromDateFeedback;
+    protected WebMarkupBlock fromDateBlock;
+    protected WebMarkupContainer fromDateIContainer;
+    protected PropertyModel<Date> fromDateValue;
+    protected DateTextField fromDateField;
+    protected TextFeedbackPanel fromDateFeedback;
 
-    private TextField<Double> interestRateField;
-    private TextFeedbackPanel interestRateFeedback;
+    protected WebMarkupBlock interestRateBlock;
+    protected WebMarkupContainer interestRateIContainer;
+    protected PropertyModel<Double> interestRateValue;
+    protected TextField<Double> interestRateField;
+    protected TextFeedbackPanel interestRateFeedback;
 
-    private CheckBox differentialField;
-    private TextFeedbackPanel differentialFeedback;
+    protected WebMarkupBlock differentialBlock;
+    protected WebMarkupContainer differentialIContainer;
+    protected PropertyModel<Boolean> differentialValue;
+    protected CheckBox differentialField;
+    protected TextFeedbackPanel differentialFeedback;
 
-    private Object model;
+    protected Object model;
 
     public RateModifyPopup(String id, ModalWindow window, Object model) {
         super(id);
@@ -49,26 +63,41 @@ public class RateModifyPopup extends Panel {
         this.saveButton.setOnError(this::saveButtonError);
         this.form.add(this.saveButton);
 
-        this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this.model, "itemFromDateValue"));
+        this.fromDateBlock = new WebMarkupBlock("fromDateBlock", Size.Twelve_12);
+        this.form.add(this.fromDateBlock);
+        this.fromDateIContainer = new WebMarkupContainer("fromDateIContainer");
+        this.fromDateBlock.add(this.fromDateIContainer);
+        this.fromDateValue = new PropertyModel<>(this.model, "rateItemFromDateValue");
+        this.fromDateField = new DateTextField("fromDateField", this.fromDateValue);
         this.fromDateField.setLabel(Model.of("From Date"));
         this.fromDateField.setRequired(true);
-        this.form.add(this.fromDateField);
+        this.fromDateIContainer.add(this.fromDateField);
         this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
-        this.form.add(this.fromDateFeedback);
+        this.fromDateIContainer.add(this.fromDateFeedback);
 
-        this.interestRateField = new TextField<>("interestRateField", new PropertyModel<>(this.model, "itemInterestRateValue"));
+        this.interestRateBlock = new WebMarkupBlock("interestRateBlock", Size.Twelve_12);
+        this.form.add(this.interestRateBlock);
+        this.interestRateIContainer = new WebMarkupContainer("interestRateIContainer");
+        this.interestRateBlock.add(this.interestRateIContainer);
+        this.interestRateValue = new PropertyModel<>(this.model, "rateItemInterestRateValue");
+        this.interestRateField = new TextField<>("interestRateField", this.interestRateValue);
         this.interestRateField.setLabel(Model.of("Interest Rate"));
         this.interestRateField.setRequired(true);
-        this.form.add(this.interestRateField);
+        this.interestRateIContainer.add(this.interestRateField);
         this.interestRateFeedback = new TextFeedbackPanel("interestRateFeedback", this.interestRateField);
-        this.form.add(this.interestRateFeedback);
+        this.interestRateIContainer.add(this.interestRateFeedback);
 
-        this.differentialField = new CheckBox("differentialField", new PropertyModel<>(this.model, "itemDifferentialValue"));
+        this.differentialBlock = new WebMarkupBlock("differentialBlock", Size.Twelve_12);
+        this.form.add(this.differentialBlock);
+        this.differentialIContainer = new WebMarkupContainer("differentialIContainer");
+        this.differentialBlock.add(this.differentialIContainer);
+        this.differentialValue = new PropertyModel<>(this.model, "rateItemDifferentialValue");
+        this.differentialField = new CheckBox("differentialField", this.differentialValue);
         this.differentialField.setLabel(Model.of("Differential"));
         this.differentialField.setRequired(true);
-        this.form.add(this.differentialField);
+        this.differentialIContainer.add(this.differentialField);
         this.differentialFeedback = new TextFeedbackPanel("differentialFeedback", this.differentialField);
-        this.form.add(this.differentialFeedback);
+        this.differentialIContainer.add(this.differentialFeedback);
     }
 
     protected boolean saveButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
