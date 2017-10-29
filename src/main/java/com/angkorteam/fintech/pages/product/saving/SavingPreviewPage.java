@@ -35,11 +35,7 @@ public class SavingPreviewPage extends Page {
     protected Label detailDescriptionView;
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
-        initData();
-
+    protected void initComponent() {
         this.detailProductNameBlock = new WebMarkupContainer("detailProductNameBlock");
         add(this.detailProductNameBlock);
         this.detailProductNameContainer = new WebMarkupContainer("detailProductNameContainer");
@@ -62,6 +58,15 @@ public class SavingPreviewPage extends Page {
         this.detailDescriptionContainer.add(this.detailDescriptionView);
     }
 
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    @Override
     protected void initData() {
         this.savingId = getPageParameters().get("savingId").toString();
 
