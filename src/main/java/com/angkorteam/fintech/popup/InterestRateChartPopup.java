@@ -20,6 +20,8 @@ public class InterestRateChartPopup extends Panel {
 
     private Form<Void> form;
     private AjaxButton okayButton;
+    
+    // TODO : to be continue
 
     private LockInTypeProvider periodTypeProvider;
     private Select2SingleChoice<Option> periodTypeField;
