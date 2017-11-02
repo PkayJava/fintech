@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
@@ -35,13 +36,14 @@ import com.google.common.collect.Lists;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanBrowsePage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected FilterForm<Map<String, String>> dataFilterForm;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
 
-    private JdbcProvider provider;
+    protected BookmarkablePageLink<Void> createLink;
 
-    private BookmarkablePageLink<Void> createLink;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -69,58 +71,66 @@ public class LoanBrowsePage extends Page {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("m_product_loan");
-        this.provider.boardField("id", "id", Long.class);
-        this.provider.boardField("name", "name", String.class);
-        this.provider.boardField("short_name", "shortName", String.class);
-        this.provider.boardField("close_date", "expiryDate", Date.class);
-        this.provider.boardField("if(close_date >= date(now()), 'Active','Inactive')", "status", String.class);
+    protected void initData() {
+    }
 
-        this.provider.selectField("id", Long.class);
+    @Override
+    protected void initComponent() {
+        this.dataProvider = new JdbcProvider("m_product_loan");
+        this.dataProvider.boardField("id", "id", Long.class);
+        this.dataProvider.boardField("name", "name", String.class);
+        this.dataProvider.boardField("short_name", "shortName", String.class);
+        this.dataProvider.boardField("close_date", "expiryDate", Date.class);
+        this.dataProvider.boardField("if(close_date >= date(now()), 'Active','Inactive')", "status", String.class);
 
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Short Name"), "shortName", "shortName", this::shortNameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Date, Model.of("Expiry Date"), "expiryDate", "expiryDate", this::expiryDateColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Status"), "status", "status", this::statusColumn));
+        this.dataProvider.selectField("id", Long.class);
 
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Short Name"), "shortName", "shortName", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Expiry Date"), "expiryDate", "expiryDate", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Status"), "status", "status", this::dataColumn));
 
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        add(this.dataFilterForm);
+
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
 
         this.createLink = new BookmarkablePageLink<>("createLink", LoanCreatePage.class);
         add(this.createLink);
     }
 
-    private ItemPanel statusColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        if (value != null && value.equals("Active")) {
-            return new BadgeCell(BadgeType.Success, Model.of("Active"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("Inactive"));
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column)) {
+            String name = (String) model.get(column);
+            PageParameters parameters = new PageParameters();
+            parameters.add("loanId", model.get("id"));
+            return new LinkCell(LoanCreatePage.class, parameters, name);
+        } else if ("shortName".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("expiryDate".equals(column)) {
+            Date value = (Date) model.get(column);
+            return new TextCell(value, "dd/MM/yyyy");
+        } else if ("status".equals(column)) {
+            String value = (String) model.get(column);
+            if (value != null && value.equals("Active")) {
+                return new BadgeCell(BadgeType.Success, Model.of("Active"));
+            } else {
+                return new BadgeCell(BadgeType.Danger, Model.of("Inactive"));
+            }
         }
-    }
-
-    private ItemPanel expiryDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date value = (Date) model.get(jdbcColumn);
-        return new TextCell(value, "dd/MM/yyyy");
-    }
-
-    private ItemPanel shortNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        PageParameters parameters = new PageParameters();
-        parameters.add("loanId", model.get("id"));
-        return new LinkCell(LoanCreatePage.class, parameters, Model.of(name));
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }
