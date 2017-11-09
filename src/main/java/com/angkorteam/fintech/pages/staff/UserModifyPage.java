@@ -16,6 +16,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.AppUserBuilder;
@@ -40,7 +41,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class UserModifyPage extends DeprecatedPage {
+public class UserModifyPage extends Page {
 
     protected String userId;
 
@@ -209,9 +210,9 @@ public class UserModifyPage extends DeprecatedPage {
         this.passwordField.setRequired(false);
         this.passwordField.setResetPassword(false);
         this.passwordField.add(new OnChangeAjaxBehavior());
-        this.staffIContainer.add(this.passwordField);
+        this.passwordIContainer.add(this.passwordField);
         this.passwordFeedback = new TextFeedbackPanel("passwordFeedback", this.passwordField);
-        this.staffIContainer.add(this.passwordFeedback);
+        this.passwordIContainer.add(this.passwordFeedback);
     }
 
     protected void initRepeatPasswordBlock() {
