@@ -7,7 +7,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.dto.enums.DepositType;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.center.SavingAccountCreatePage;

@@ -22,7 +22,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.FixedBuilder;
@@ -89,7 +89,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class FixedDepositCreatePage extends Page {
+public class FixedDepositCreatePage extends DeprecatedPage {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FixedDepositCreatePage.class);
 

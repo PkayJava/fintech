@@ -13,7 +13,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.AccountingRuleHelper;
@@ -40,7 +40,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 7/5/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class RuleBrowsePage extends Page {
+public class RuleBrowsePage extends DeprecatedPage {
 
     public static String DEBIT = "1";
 

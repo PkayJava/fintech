@@ -16,7 +16,7 @@ import org.apache.wicket.util.lang.Bytes;
 
 import com.angkorteam.fintech.Application;
 import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;

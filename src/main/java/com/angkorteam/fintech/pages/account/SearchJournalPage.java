@@ -16,7 +16,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.JournalEntry;
 import com.angkorteam.fintech.pages.AccountingPage;
@@ -47,7 +47,7 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 7/2/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SearchJournalPage extends Page {
+public class SearchJournalPage extends DeprecatedPage {
 
     protected Form<Void> form;
     protected Button searchButton;

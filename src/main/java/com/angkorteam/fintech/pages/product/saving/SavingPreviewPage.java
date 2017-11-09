@@ -7,13 +7,13 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcTemplate;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingPreviewPage extends Page {
+public class SavingPreviewPage extends DeprecatedPage {
 
     private String savingId;
 

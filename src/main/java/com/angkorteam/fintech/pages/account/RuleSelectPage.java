@@ -11,7 +11,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -29,7 +29,7 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 6/11/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class RuleSelectPage extends Page {
+public class RuleSelectPage extends DeprecatedPage {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(RuleSelectPage.class);
 

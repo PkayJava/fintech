@@ -16,7 +16,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.popup.ReversePopup;
@@ -44,7 +44,7 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 7/2/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class TransactionPage extends Page {
+public class TransactionPage extends DeprecatedPage {
 
     protected static final DecimalFormat FORMAT = new DecimalFormat("#,###.000");
 

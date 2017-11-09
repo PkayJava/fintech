@@ -12,7 +12,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -33,7 +33,7 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 6/22/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class FloatingRateBrowsePage extends Page {
+public class FloatingRateBrowsePage extends DeprecatedPage {
 
     protected DataTable<Map<String, Object>, String> dataTable;
     protected List<IColumn<Map<String, Object>, String>> dataColumn;

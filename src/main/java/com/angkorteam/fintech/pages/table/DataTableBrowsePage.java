@@ -11,7 +11,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -29,7 +29,7 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 6/27/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class DataTableBrowsePage extends Page {
+public class DataTableBrowsePage extends DeprecatedPage {
 
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;

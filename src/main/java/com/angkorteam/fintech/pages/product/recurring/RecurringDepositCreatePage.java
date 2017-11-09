@@ -19,7 +19,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.json.JSONObject;
 
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.RecurringBuilder;
@@ -86,7 +86,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class RecurringDepositCreatePage extends Page {
+public class RecurringDepositCreatePage extends DeprecatedPage {
 
     public static final String ACC_NONE = "None";
     public static final String ACC_CASH = "Cash";

@@ -11,7 +11,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.dto.enums.DepositType;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.pages.product.share.ShareCreatePage;
@@ -27,7 +27,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
 
-public class RecurringDepositBrowsePage extends Page {
+public class RecurringDepositBrowsePage extends DeprecatedPage {
 
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;

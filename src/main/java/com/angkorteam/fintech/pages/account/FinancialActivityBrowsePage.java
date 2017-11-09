@@ -14,7 +14,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.constant.FinancialActivityTypeEnum;
@@ -40,7 +40,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 7/12/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class FinancialActivityBrowsePage extends Page {
+public class FinancialActivityBrowsePage extends DeprecatedPage {
 
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;

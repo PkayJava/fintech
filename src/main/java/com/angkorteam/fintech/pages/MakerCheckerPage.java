@@ -14,7 +14,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.RoleHelper;
@@ -49,7 +49,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 6/26/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class MakerCheckerPage extends Page {
+public class MakerCheckerPage extends DeprecatedPage {
 
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;

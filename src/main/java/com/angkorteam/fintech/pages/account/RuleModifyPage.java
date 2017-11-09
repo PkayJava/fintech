@@ -14,7 +14,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.AccountRuleBuilder;
@@ -43,7 +43,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 7/3/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class RuleModifyPage extends Page {
+public class RuleModifyPage extends DeprecatedPage {
 
     protected String ruleId;
 

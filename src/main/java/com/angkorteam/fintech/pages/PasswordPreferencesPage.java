@@ -12,7 +12,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.PasswordPreferencesHelper;
@@ -37,7 +37,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 6/26/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class PasswordPreferencesPage extends Page {
+public class PasswordPreferencesPage extends DeprecatedPage {
 
     protected DataTable<Map<String, Object>, String> dataTable;
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
