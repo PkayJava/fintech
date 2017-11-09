@@ -12,6 +12,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
@@ -24,7 +25,7 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 6/22/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class OfficeHierarchyPage extends Page {
+public class OfficeHierarchyPage extends DeprecatedPage {
 
     private NestedTree<Map<String, Object>> tree;
 

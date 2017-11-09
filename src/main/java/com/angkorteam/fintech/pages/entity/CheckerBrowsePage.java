@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
@@ -41,7 +42,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 7/15/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class CheckerBrowsePage extends Page {
+public class CheckerBrowsePage extends DeprecatedPage {
 
     private DataTable<Map<String, Object>, String> dataTable;
 

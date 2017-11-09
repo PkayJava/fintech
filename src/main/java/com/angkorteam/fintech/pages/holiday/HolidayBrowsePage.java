@@ -12,6 +12,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
@@ -37,7 +38,7 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 6/26/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class HolidayBrowsePage extends Page {
+public class HolidayBrowsePage extends DeprecatedPage {
 
     private FilterForm<Map<String, String>> filterForm;
     private DataTable<Map<String, Object>, String> dataTable;

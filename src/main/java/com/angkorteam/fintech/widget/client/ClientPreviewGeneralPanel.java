@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -23,8 +24,7 @@ import org.apache.wicket.request.resource.PackageResourceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.angkorteam.fintech.Application;
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Application; 
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.builder.client.client.ClientUnassignStaffBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
