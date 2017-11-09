@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.Page;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.form.TextField;
@@ -12,11 +13,11 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.WorkingPage;
 import com.angkorteam.fintech.dto.builder.NoteBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.pages.staff.UserBrowsePage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -116,8 +117,20 @@ public class CenterPreviewNotePanel extends Panel {
             error(e.getMessage());
             return;
         }
-        if (itemPage.reportError(node)) {
-            return;
+        if (itemPage instanceof com.angkorteam.fintech.Page) {
+            if (((com.angkorteam.fintech.Page) itemPage).reportError(node)) {
+                return;
+            }
+        }
+        if (itemPage instanceof DeprecatedPage) {
+            if (((com.angkorteam.fintech.DeprecatedPage) itemPage).reportError(node)) {
+                return;
+            }
+        }
+        if (itemPage instanceof WorkingPage) {
+            if (((com.angkorteam.fintech.WorkingPage) itemPage).reportError(node)) {
+                return;
+            }
         }
     }
 

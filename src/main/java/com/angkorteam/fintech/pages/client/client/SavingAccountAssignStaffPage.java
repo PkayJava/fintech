@@ -9,6 +9,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -23,7 +24,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingAccountAssignStaffPage extends Page {
+public class SavingAccountAssignStaffPage extends DeprecatedPage {
 
     protected String clientId;
     protected String officeId;

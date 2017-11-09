@@ -15,6 +15,7 @@ import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.util.lang.Bytes;
 
 import com.angkorteam.fintech.Application;
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
@@ -28,7 +29,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class ClientWebcamPage extends Page {
+public class ClientWebcamPage extends DeprecatedPage {
 
     protected String clientId;
 

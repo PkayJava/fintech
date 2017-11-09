@@ -6,6 +6,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.widget.client.ClientPreviewDocument;
@@ -16,7 +17,7 @@ import com.angkorteam.fintech.widget.client.ClientPreviewNote;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class ClientPreviewPage extends Page {
+public class ClientPreviewPage extends DeprecatedPage {
 
     private AjaxTabbedPanel<ITab> tab;
 

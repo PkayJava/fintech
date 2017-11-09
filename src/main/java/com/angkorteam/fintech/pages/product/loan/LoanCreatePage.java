@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-// TODO 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -20,6 +19,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.RangeValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
@@ -104,7 +104,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class LoanCreatePage extends Page {
+public class LoanCreatePage extends DeprecatedPage {
 
     public static final String ACC_NONE = "None";
     public static final String ACC_CASH = "Cash";
@@ -687,46 +687,64 @@ public class LoanCreatePage extends Page {
     protected WebMarkupContainer cashBlock;
     protected WebMarkupContainer cashIContainer;
 
+    protected WebMarkupBlock cashFundSourceBlock;
+    protected WebMarkupContainer cashFundSourceIContainer;
     protected SingleChoiceProvider cashFundSourceProvider;
     protected Option cashFundSourceValue;
     protected Select2SingleChoice<Option> cashFundSourceField;
     protected TextFeedbackPanel cashFundSourceFeedback;
 
+    protected WebMarkupBlock cashLoanPortfolioBlock;
+    protected WebMarkupContainer cashLoanPortfolioIContainer;
     protected SingleChoiceProvider cashLoanPortfolioProvider;
     protected Option cashLoanPortfolioValue;
     protected Select2SingleChoice<Option> cashLoanPortfolioField;
     protected TextFeedbackPanel cashLoanPortfolioFeedback;
 
+    protected WebMarkupBlock cashTransferInSuspenseBlock;
+    protected WebMarkupContainer cashTransferInSuspenseIContainer;
     protected SingleChoiceProvider cashTransferInSuspenseProvider;
     protected Option cashTransferInSuspenseValue;
     protected Select2SingleChoice<Option> cashTransferInSuspenseField;
     protected TextFeedbackPanel cashTransferInSuspenseFeedback;
 
+    protected WebMarkupBlock cashIncomeFromInterestBlock;
+    protected WebMarkupContainer cashIncomeFromInterestIContainer;
     protected SingleChoiceProvider cashIncomeFromInterestProvider;
     protected Option cashIncomeFromInterestValue;
     protected Select2SingleChoice<Option> cashIncomeFromInterestField;
     protected TextFeedbackPanel cashIncomeFromInterestFeedback;
 
+    protected WebMarkupBlock cashIncomeFromFeeBlock;
+    protected WebMarkupContainer cashIncomeFromFeeIContainer;
     protected SingleChoiceProvider cashIncomeFromFeeProvider;
     protected Option cashIncomeFromFeeValue;
     protected Select2SingleChoice<Option> cashIncomeFromFeeField;
     protected TextFeedbackPanel cashIncomeFromFeeFeedback;
 
+    protected WebMarkupBlock cashIncomeFromPenaltiesBlock;
+    protected WebMarkupContainer cashIncomeFromPenaltiesIContainer;
     protected SingleChoiceProvider cashIncomeFromPenaltiesProvider;
     protected Option cashIncomeFromPenaltiesValue;
     protected Select2SingleChoice<Option> cashIncomeFromPenaltiesField;
     protected TextFeedbackPanel cashIncomeFromPenaltiesFeedback;
 
+    protected WebMarkupBlock cashIncomeFromRecoveryRepaymentBlock;
+    protected WebMarkupContainer cashIncomeFromRecoveryRepaymentIContainer;
     protected SingleChoiceProvider cashIncomeFromRecoveryRepaymentProvider;
     protected Option cashIncomeFromRecoveryRepaymentValue;
     protected Select2SingleChoice<Option> cashIncomeFromRecoveryRepaymentField;
     protected TextFeedbackPanel cashIncomeFromRecoveryRepaymentFeedback;
 
+    protected WebMarkupBlock cashLossesWrittenOffBlock;
+    protected WebMarkupContainer cashLossesWrittenOffIContainer;
     protected SingleChoiceProvider cashLossesWrittenOffProvider;
     protected Option cashLossesWrittenOffValue;
     protected Select2SingleChoice<Option> cashLossesWrittenOffField;
     protected TextFeedbackPanel cashLossesWrittenOffFeedback;
 
+    protected WebMarkupBlock cashOverPaymentLiabilityBlock;
+    protected WebMarkupContainer cashOverPaymentLiabilityIContainer;
     protected SingleChoiceProvider cashOverPaymentLiabilityProvider;
     protected Option cashOverPaymentLiabilityValue;
     protected Select2SingleChoice<Option> cashOverPaymentLiabilityField;
@@ -735,61 +753,85 @@ public class LoanCreatePage extends Page {
     protected WebMarkupContainer periodicBlock;
     protected WebMarkupContainer periodicIContainer;
 
+    protected WebMarkupBlock periodicFundSourceBlock;
+    protected WebMarkupContainer periodicFundSourceIContainer;
     protected SingleChoiceProvider periodicFundSourceProvider;
     protected Option periodicFundSourceValue;
     protected Select2SingleChoice<Option> periodicFundSourceField;
     protected TextFeedbackPanel periodicFundSourceFeedback;
 
+    protected WebMarkupBlock periodicLoanPortfolioBlock;
+    protected WebMarkupContainer periodicLoanPortfolioIContainer;
     protected SingleChoiceProvider periodicLoanPortfolioProvider;
     protected Option periodicLoanPortfolioValue;
     protected Select2SingleChoice<Option> periodicLoanPortfolioField;
     protected TextFeedbackPanel periodicLoanPortfolioFeedback;
 
+    protected WebMarkupBlock periodicInterestReceivableBlock;
+    protected WebMarkupContainer periodicInterestReceivableIContainer;
     protected SingleChoiceProvider periodicInterestReceivableProvider;
     protected Option periodicInterestReceivableValue;
     protected Select2SingleChoice<Option> periodicInterestReceivableField;
     protected TextFeedbackPanel periodicInterestReceivableFeedback;
 
+    protected WebMarkupBlock periodicFeesReceivableBlock;
+    protected WebMarkupContainer periodicFeesReceivableIContainer;
     protected SingleChoiceProvider periodicFeesReceivableProvider;
     protected Option periodicFeesReceivableValue;
     protected Select2SingleChoice<Option> periodicFeesReceivableField;
     protected TextFeedbackPanel periodicFeesReceivableFeedback;
 
+    protected WebMarkupBlock periodicPenaltiesReceivableBlock;
+    protected WebMarkupContainer periodicPenaltiesReceivableIContainer;
     protected SingleChoiceProvider periodicPenaltiesReceivableProvider;
     protected Option periodicPenaltiesReceivableValue;
     protected Select2SingleChoice<Option> periodicPenaltiesReceivableField;
     protected TextFeedbackPanel periodicPenaltiesReceivableFeedback;
 
+    protected WebMarkupBlock periodicTransferInSuspenseBlock;
+    protected WebMarkupContainer periodicTransferInSuspenseIContainer;
     protected SingleChoiceProvider periodicTransferInSuspenseProvider;
     protected Option periodicTransferInSuspenseValue;
     protected Select2SingleChoice<Option> periodicTransferInSuspenseField;
     protected TextFeedbackPanel periodicTransferInSuspenseFeedback;
 
+    protected WebMarkupBlock periodicIncomeFromInterestBlock;
+    protected WebMarkupContainer periodicIncomeFromInterestIContainer;
     protected SingleChoiceProvider periodicIncomeFromInterestProvider;
     protected Option periodicIncomeFromInterestValue;
     protected Select2SingleChoice<Option> periodicIncomeFromInterestField;
     protected TextFeedbackPanel periodicIncomeFromInterestFeedback;
 
+    protected WebMarkupBlock periodicIncomeFromFeeBlock;
+    protected WebMarkupContainer periodicIncomeFromFeeIContainer;
     protected SingleChoiceProvider periodicIncomeFromFeeProvider;
     protected Option periodicIncomeFromFeeValue;
     protected Select2SingleChoice<Option> periodicIncomeFromFeeField;
     protected TextFeedbackPanel periodicIncomeFromFeeFeedback;
 
+    protected WebMarkupBlock periodicIncomeFromPenaltiesBlock;
+    protected WebMarkupContainer periodicIncomeFromPenaltiesIContainer;
     protected SingleChoiceProvider periodicIncomeFromPenaltiesProvider;
     protected Option periodicIncomeFromPenaltiesValue;
     protected Select2SingleChoice<Option> periodicIncomeFromPenaltiesField;
     protected TextFeedbackPanel periodicIncomeFromPenaltiesFeedback;
 
+    protected WebMarkupBlock periodicIncomeFromRecoveryRepaymentBlock;
+    protected WebMarkupContainer periodicIncomeFromRecoveryRepaymentIContainer;
     protected SingleChoiceProvider periodicIncomeFromRecoveryRepaymentProvider;
     protected Option periodicIncomeFromRecoveryRepaymentValue;
     protected Select2SingleChoice<Option> periodicIncomeFromRecoveryRepaymentField;
     protected TextFeedbackPanel periodicIncomeFromRecoveryRepaymentFeedback;
 
+    protected WebMarkupBlock periodicLossesWrittenOffBlock;
+    protected WebMarkupContainer periodicLossesWrittenOffIContainer;
     protected SingleChoiceProvider periodicLossesWrittenOffProvider;
     protected Option periodicLossesWrittenOffValue;
     protected Select2SingleChoice<Option> periodicLossesWrittenOffField;
     protected TextFeedbackPanel periodicLossesWrittenOffFeedback;
 
+    protected WebMarkupBlock periodicOverPaymentLiabilityBlock;
+    protected WebMarkupContainer periodicOverPaymentLiabilityIContainer;
     protected SingleChoiceProvider periodicOverPaymentLiabilityProvider;
     protected Option periodicOverPaymentLiabilityValue;
     protected Select2SingleChoice<Option> periodicOverPaymentLiabilityField;
@@ -798,61 +840,85 @@ public class LoanCreatePage extends Page {
     protected WebMarkupContainer upfrontBlock;
     protected WebMarkupContainer upfrontIContainer;
 
+    protected WebMarkupBlock upfrontFundSourceBlock;
+    protected WebMarkupContainer upfrontFundSourceIContainer;
     protected SingleChoiceProvider upfrontFundSourceProvider;
     protected Option upfrontFundSourceValue;
     protected Select2SingleChoice<Option> upfrontFundSourceField;
     protected TextFeedbackPanel upfrontFundSourceFeedback;
 
+    protected WebMarkupBlock upfrontLoanPortfolioBlock;
+    protected WebMarkupContainer upfrontLoanPortfolioIContainer;
     protected SingleChoiceProvider upfrontLoanPortfolioProvider;
     protected Option upfrontLoanPortfolioValue;
     protected Select2SingleChoice<Option> upfrontLoanPortfolioField;
     protected TextFeedbackPanel upfrontLoanPortfolioFeedback;
 
+    protected WebMarkupBlock upfrontInterestReceivableBlock;
+    protected WebMarkupContainer upfrontInterestReceivableIContainer;
     protected SingleChoiceProvider upfrontInterestReceivableProvider;
     protected Option upfrontInterestReceivableValue;
     protected Select2SingleChoice<Option> upfrontInterestReceivableField;
     protected TextFeedbackPanel upfrontInterestReceivableFeedback;
 
+    protected WebMarkupBlock upfrontFeesReceivableBlock;
+    protected WebMarkupContainer upfrontFeesReceivableIContainer;
     protected SingleChoiceProvider upfrontFeesReceivableProvider;
     protected Option upfrontFeesReceivableValue;
     protected Select2SingleChoice<Option> upfrontFeesReceivableField;
     protected TextFeedbackPanel upfrontFeesReceivableFeedback;
 
+    protected WebMarkupBlock upfrontPenaltiesReceivableBlock;
+    protected WebMarkupContainer upfrontPenaltiesReceivableIContainer;
     protected SingleChoiceProvider upfrontPenaltiesReceivableProvider;
     protected Option upfrontPenaltiesReceivableValue;
     protected Select2SingleChoice<Option> upfrontPenaltiesReceivableField;
     protected TextFeedbackPanel upfrontPenaltiesReceivableFeedback;
 
+    protected WebMarkupBlock upfrontTransferInSuspenseBlock;
+    protected WebMarkupContainer upfrontTransferInSuspenseIContainer;
     protected SingleChoiceProvider upfrontTransferInSuspenseProvider;
     protected Option upfrontTransferInSuspenseValue;
     protected Select2SingleChoice<Option> upfrontTransferInSuspenseField;
     protected TextFeedbackPanel upfrontTransferInSuspenseFeedback;
 
+    protected WebMarkupBlock upfrontIncomeFromInterestBlock;
+    protected WebMarkupContainer upfrontIncomeFromInterestIContainer;
     protected SingleChoiceProvider upfrontIncomeFromInterestProvider;
     protected Option upfrontIncomeFromInterestValue;
     protected Select2SingleChoice<Option> upfrontIncomeFromInterestField;
     protected TextFeedbackPanel upfrontIncomeFromInterestFeedback;
 
+    protected WebMarkupBlock upfrontIncomeFromFeeBlock;
+    protected WebMarkupContainer upfrontIncomeFromFeeIContainer;
     protected SingleChoiceProvider upfrontIncomeFromFeeProvider;
     protected Option upfrontIncomeFromFeeValue;
     protected Select2SingleChoice<Option> upfrontIncomeFromFeeField;
     protected TextFeedbackPanel upfrontIncomeFromFeeFeedback;
 
+    protected WebMarkupBlock upfrontIncomeFromPenaltiesBlock;
+    protected WebMarkupContainer upfrontIncomeFromPenaltiesIContainer;
     protected SingleChoiceProvider upfrontIncomeFromPenaltiesProvider;
     protected Option upfrontIncomeFromPenaltiesValue;
     protected Select2SingleChoice<Option> upfrontIncomeFromPenaltiesField;
     protected TextFeedbackPanel upfrontIncomeFromPenaltiesFeedback;
 
+    protected WebMarkupBlock upfrontIncomeFromRecoveryRepaymentBlock;
+    protected WebMarkupContainer upfrontIncomeFromRecoveryRepaymentIContainer;
     protected SingleChoiceProvider upfrontIncomeFromRecoveryRepaymentProvider;
     protected Option upfrontIncomeFromRecoveryRepaymentValue;
     protected Select2SingleChoice<Option> upfrontIncomeFromRecoveryRepaymentField;
     protected TextFeedbackPanel upfrontIncomeFromRecoveryRepaymentFeedback;
 
+    protected WebMarkupBlock upfrontLossesWrittenOffBlock;
+    protected WebMarkupContainer upfrontLossesWrittenOffIContainer;
     protected SingleChoiceProvider upfrontLossesWrittenOffProvider;
     protected Option upfrontLossesWrittenOffValue;
     protected Select2SingleChoice<Option> upfrontLossesWrittenOffField;
     protected TextFeedbackPanel upfrontLossesWrittenOffFeedback;
 
+    protected WebMarkupBlock upfrontOverPaymentLiabilityBlock;
+    protected WebMarkupContainer upfrontOverPaymentLiabilityIContainer;
     protected SingleChoiceProvider upfrontOverPaymentLiabilityProvider;
     protected Option upfrontOverPaymentLiabilityValue;
     protected Select2SingleChoice<Option> upfrontOverPaymentLiabilityField;
@@ -1227,125 +1293,173 @@ public class LoanCreatePage extends Page {
         this.upfrontIContainer = new WebMarkupContainer("upfrontIContainer");
         this.upfrontBlock.add(this.upfrontIContainer);
 
+        this.upfrontFundSourceBlock = new WebMarkupBlock("upfrontFundSourceBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontFundSourceBlock);
+        this.upfrontFundSourceIContainer = new WebMarkupContainer("upfrontFundSourceIContainer");
+        this.upfrontFundSourceBlock.add(this.upfrontFundSourceIContainer);
         this.upfrontFundSourceProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontFundSourceProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.upfrontFundSourceProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.upfrontFundSourceField = new Select2SingleChoice<>("upfrontFundSourceField", new PropertyModel<>(this, "upfrontFundSourceValue"), this.upfrontFundSourceProvider);
         this.upfrontFundSourceField.setLabel(Model.of("Fund source"));
         this.upfrontFundSourceField.add(new OnChangeAjaxBehavior());
-        this.upfrontIContainer.add(this.upfrontFundSourceField);
+        this.upfrontFundSourceIContainer.add(this.upfrontFundSourceField);
         this.upfrontFundSourceFeedback = new TextFeedbackPanel("upfrontFundSourceFeedback", this.upfrontFundSourceField);
-        this.upfrontIContainer.add(this.upfrontFundSourceFeedback);
+        this.upfrontFundSourceIContainer.add(this.upfrontFundSourceFeedback);
 
+        this.upfrontLoanPortfolioBlock = new WebMarkupBlock("upfrontLoanPortfolioBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontLoanPortfolioBlock);
+        this.upfrontLoanPortfolioIContainer = new WebMarkupContainer("upfrontLoanPortfolioIContainer");
+        this.upfrontLoanPortfolioBlock.add(this.upfrontLoanPortfolioIContainer);
         this.upfrontLoanPortfolioProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontLoanPortfolioProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.upfrontLoanPortfolioProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.upfrontLoanPortfolioField = new Select2SingleChoice<>("upfrontLoanPortfolioField", new PropertyModel<>(this, "upfrontLoanPortfolioValue"), this.upfrontLoanPortfolioProvider);
         this.upfrontLoanPortfolioField.setLabel(Model.of("Loan portfolio"));
         this.upfrontLoanPortfolioField.add(new OnChangeAjaxBehavior());
-        this.upfrontIContainer.add(this.upfrontLoanPortfolioField);
+        this.upfrontLoanPortfolioIContainer.add(this.upfrontLoanPortfolioField);
         this.upfrontLoanPortfolioFeedback = new TextFeedbackPanel("upfrontLoanPortfolioFeedback", this.upfrontLoanPortfolioField);
-        this.upfrontIContainer.add(this.upfrontLoanPortfolioFeedback);
+        this.upfrontLoanPortfolioIContainer.add(this.upfrontLoanPortfolioFeedback);
 
+        this.upfrontInterestReceivableBlock = new WebMarkupBlock("upfrontInterestReceivableBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontInterestReceivableBlock);
+        this.upfrontInterestReceivableIContainer = new WebMarkupContainer("upfrontInterestReceivableIContainer");
+        this.upfrontInterestReceivableBlock.add(this.upfrontInterestReceivableIContainer);
         this.upfrontInterestReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontInterestReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.upfrontInterestReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.upfrontInterestReceivableField = new Select2SingleChoice<>("upfrontInterestReceivableField", new PropertyModel<>(this, "upfrontInterestReceivableValue"), this.upfrontInterestReceivableProvider);
         this.upfrontInterestReceivableField.setLabel(Model.of("Interest Receivable"));
         this.upfrontInterestReceivableField.add(new OnChangeAjaxBehavior());
-        this.upfrontIContainer.add(this.upfrontInterestReceivableField);
+        this.upfrontInterestReceivableIContainer.add(this.upfrontInterestReceivableField);
         this.upfrontInterestReceivableFeedback = new TextFeedbackPanel("upfrontInterestReceivableFeedback", this.upfrontInterestReceivableField);
-        this.upfrontIContainer.add(this.upfrontInterestReceivableFeedback);
+        this.upfrontInterestReceivableIContainer.add(this.upfrontInterestReceivableFeedback);
 
+        this.upfrontFeesReceivableBlock = new WebMarkupBlock("upfrontFeesReceivableBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontFeesReceivableBlock);
+        this.upfrontFeesReceivableIContainer = new WebMarkupContainer("upfrontFeesReceivableIContainer");
+        this.upfrontFeesReceivableBlock.add(this.upfrontFeesReceivableIContainer);
         this.upfrontFeesReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontFeesReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.upfrontFeesReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.upfrontFeesReceivableField = new Select2SingleChoice<>("upfrontFeesReceivableField", new PropertyModel<>(this, "upfrontFeesReceivableValue"), this.upfrontFeesReceivableProvider);
         this.upfrontFeesReceivableField.setLabel(Model.of("Fees Receivable"));
         this.upfrontFeesReceivableField.add(new OnChangeAjaxBehavior());
-        this.upfrontIContainer.add(this.upfrontFeesReceivableField);
+        this.upfrontFeesReceivableIContainer.add(this.upfrontFeesReceivableField);
         this.upfrontFeesReceivableFeedback = new TextFeedbackPanel("upfrontFeesReceivableFeedback", this.upfrontFeesReceivableField);
-        this.upfrontIContainer.add(this.upfrontFeesReceivableFeedback);
+        this.upfrontFeesReceivableIContainer.add(this.upfrontFeesReceivableFeedback);
 
+        this.upfrontPenaltiesReceivableBlock = new WebMarkupBlock("upfrontPenaltiesReceivableBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontPenaltiesReceivableBlock);
+        this.upfrontPenaltiesReceivableIContainer = new WebMarkupContainer("upfrontPenaltiesReceivableIContainer");
+        this.upfrontPenaltiesReceivableBlock.add(this.upfrontPenaltiesReceivableIContainer);
         this.upfrontPenaltiesReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontPenaltiesReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.upfrontPenaltiesReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.upfrontPenaltiesReceivableField = new Select2SingleChoice<>("upfrontPenaltiesReceivableField", new PropertyModel<>(this, "upfrontPenaltiesReceivableValue"), this.upfrontPenaltiesReceivableProvider);
         this.upfrontPenaltiesReceivableField.setLabel(Model.of("Penalties Receivable"));
         this.upfrontPenaltiesReceivableField.add(new OnChangeAjaxBehavior());
-        this.upfrontIContainer.add(this.upfrontPenaltiesReceivableField);
+        this.upfrontPenaltiesReceivableIContainer.add(this.upfrontPenaltiesReceivableField);
         this.upfrontPenaltiesReceivableFeedback = new TextFeedbackPanel("upfrontPenaltiesReceivableFeedback", this.upfrontPenaltiesReceivableField);
-        this.upfrontIContainer.add(this.upfrontPenaltiesReceivableFeedback);
+        this.upfrontPenaltiesReceivableIContainer.add(this.upfrontPenaltiesReceivableFeedback);
 
+        this.upfrontTransferInSuspenseBlock = new WebMarkupBlock("upfrontTransferInSuspenseBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontTransferInSuspenseBlock);
+        this.upfrontTransferInSuspenseIContainer = new WebMarkupContainer("upfrontTransferInSuspenseIContainer");
+        this.upfrontTransferInSuspenseBlock.add(this.upfrontTransferInSuspenseIContainer);
         this.upfrontTransferInSuspenseProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontTransferInSuspenseProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.upfrontTransferInSuspenseProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.upfrontTransferInSuspenseField = new Select2SingleChoice<>("upfrontTransferInSuspenseField", new PropertyModel<>(this, "upfrontTransferInSuspenseValue"), this.upfrontTransferInSuspenseProvider);
         this.upfrontTransferInSuspenseField.setLabel(Model.of("Transfer in suspense"));
         this.upfrontTransferInSuspenseField.add(new OnChangeAjaxBehavior());
-        this.upfrontIContainer.add(this.upfrontTransferInSuspenseField);
+        this.upfrontTransferInSuspenseIContainer.add(this.upfrontTransferInSuspenseField);
         this.upfrontTransferInSuspenseFeedback = new TextFeedbackPanel("upfrontTransferInSuspenseFeedback", this.upfrontTransferInSuspenseField);
-        this.upfrontIContainer.add(this.upfrontTransferInSuspenseFeedback);
+        this.upfrontTransferInSuspenseIContainer.add(this.upfrontTransferInSuspenseFeedback);
 
+        this.upfrontIncomeFromInterestBlock = new WebMarkupBlock("upfrontIncomeFromInterestBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontIncomeFromInterestBlock);
+        this.upfrontIncomeFromInterestIContainer = new WebMarkupContainer("upfrontIncomeFromInterestIContainer");
+        this.upfrontIncomeFromInterestBlock.add(this.upfrontIncomeFromInterestIContainer);
         this.upfrontIncomeFromInterestProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontIncomeFromInterestProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.upfrontIncomeFromInterestProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.upfrontIncomeFromInterestField = new Select2SingleChoice<>("upfrontIncomeFromInterestField", new PropertyModel<>(this, "upfrontIncomeFromInterestValue"), this.upfrontIncomeFromInterestProvider);
         this.upfrontIncomeFromInterestField.setLabel(Model.of("Income from Interest"));
         this.upfrontIncomeFromInterestField.add(new OnChangeAjaxBehavior());
-        this.upfrontIContainer.add(this.upfrontIncomeFromInterestField);
+        this.upfrontIncomeFromInterestIContainer.add(this.upfrontIncomeFromInterestField);
         this.upfrontIncomeFromInterestFeedback = new TextFeedbackPanel("upfrontIncomeFromInterestFeedback", this.upfrontIncomeFromInterestField);
-        this.upfrontIContainer.add(this.upfrontIncomeFromInterestFeedback);
+        this.upfrontIncomeFromInterestIContainer.add(this.upfrontIncomeFromInterestFeedback);
 
+        this.upfrontIncomeFromFeeBlock = new WebMarkupBlock("upfrontIncomeFromFeeBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontIncomeFromFeeBlock);
+        this.upfrontIncomeFromFeeIContainer = new WebMarkupContainer("upfrontIncomeFromFeeIContainer");
+        this.upfrontIncomeFromFeeBlock.add(this.upfrontIncomeFromFeeIContainer);
         this.upfrontIncomeFromFeeProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontIncomeFromFeeProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.upfrontIncomeFromFeeProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.upfrontIncomeFromFeeField = new Select2SingleChoice<>("upfrontIncomeFromFeeField", new PropertyModel<>(this, "upfrontIncomeFromFeeValue"), this.upfrontIncomeFromFeeProvider);
         this.upfrontIncomeFromFeeField.setLabel(Model.of("Income from fees"));
         this.upfrontIncomeFromFeeField.add(new OnChangeAjaxBehavior());
-        this.upfrontIContainer.add(this.upfrontIncomeFromFeeField);
+        this.upfrontIncomeFromFeeIContainer.add(this.upfrontIncomeFromFeeField);
         this.upfrontIncomeFromFeeFeedback = new TextFeedbackPanel("upfrontIncomeFromFeeFeedback", this.upfrontIncomeFromFeeField);
-        this.upfrontIContainer.add(this.upfrontIncomeFromFeeFeedback);
+        this.upfrontIncomeFromFeeIContainer.add(this.upfrontIncomeFromFeeFeedback);
 
+        this.upfrontIncomeFromPenaltiesBlock = new WebMarkupBlock("upfrontIncomeFromPenaltiesBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontIncomeFromPenaltiesBlock);
+        this.upfrontIncomeFromPenaltiesIContainer = new WebMarkupContainer("upfrontIncomeFromPenaltiesIContainer");
+        this.upfrontIncomeFromPenaltiesBlock.add(this.upfrontIncomeFromPenaltiesIContainer);
         this.upfrontIncomeFromPenaltiesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontIncomeFromPenaltiesProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.upfrontIncomeFromPenaltiesProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.upfrontIncomeFromPenaltiesField = new Select2SingleChoice<>("upfrontIncomeFromPenaltiesField", new PropertyModel<>(this, "upfrontIncomeFromPenaltiesValue"), this.upfrontIncomeFromPenaltiesProvider);
         this.upfrontIncomeFromPenaltiesField.setLabel(Model.of("Income from penalties"));
         this.upfrontIncomeFromPenaltiesField.add(new OnChangeAjaxBehavior());
-        this.upfrontIContainer.add(this.upfrontIncomeFromPenaltiesField);
+        this.upfrontIncomeFromPenaltiesIContainer.add(this.upfrontIncomeFromPenaltiesField);
         this.upfrontIncomeFromPenaltiesFeedback = new TextFeedbackPanel("upfrontIncomeFromPenaltiesFeedback", this.upfrontIncomeFromPenaltiesField);
-        this.upfrontIContainer.add(this.upfrontIncomeFromPenaltiesFeedback);
+        this.upfrontIncomeFromPenaltiesIContainer.add(this.upfrontIncomeFromPenaltiesFeedback);
 
+        this.upfrontIncomeFromRecoveryRepaymentBlock = new WebMarkupBlock("upfrontIncomeFromRecoveryRepaymentBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontIncomeFromRecoveryRepaymentBlock);
+        this.upfrontIncomeFromRecoveryRepaymentIContainer = new WebMarkupContainer("upfrontIncomeFromRecoveryRepaymentIContainer");
+        this.upfrontIncomeFromRecoveryRepaymentBlock.add(this.upfrontIncomeFromRecoveryRepaymentIContainer);
         this.upfrontIncomeFromRecoveryRepaymentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontIncomeFromRecoveryRepaymentProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.upfrontIncomeFromRecoveryRepaymentProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.upfrontIncomeFromRecoveryRepaymentField = new Select2SingleChoice<>("upfrontIncomeFromRecoveryRepaymentField", new PropertyModel<>(this, "upfrontIncomeFromRecoveryRepaymentValue"), this.upfrontIncomeFromRecoveryRepaymentProvider);
         this.upfrontIncomeFromRecoveryRepaymentField.setLabel(Model.of("Income from Recovery Repayments"));
         this.upfrontIncomeFromRecoveryRepaymentField.add(new OnChangeAjaxBehavior());
-        this.upfrontIContainer.add(this.upfrontIncomeFromRecoveryRepaymentField);
+        this.upfrontIncomeFromRecoveryRepaymentIContainer.add(this.upfrontIncomeFromRecoveryRepaymentField);
         this.upfrontIncomeFromRecoveryRepaymentFeedback = new TextFeedbackPanel("upfrontIncomeFromRecoveryRepaymentFeedback", this.upfrontIncomeFromRecoveryRepaymentField);
-        this.upfrontIContainer.add(this.upfrontIncomeFromRecoveryRepaymentFeedback);
+        this.upfrontIncomeFromRecoveryRepaymentIContainer.add(this.upfrontIncomeFromRecoveryRepaymentFeedback);
 
+        this.upfrontLossesWrittenOffBlock = new WebMarkupBlock("upfrontLossesWrittenOffBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontLossesWrittenOffBlock);
+        this.upfrontLossesWrittenOffIContainer = new WebMarkupContainer("upfrontLossesWrittenOffIContainer");
+        this.upfrontLossesWrittenOffBlock.add(this.upfrontLossesWrittenOffIContainer);
         this.upfrontLossesWrittenOffProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontLossesWrittenOffProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.upfrontLossesWrittenOffProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Expense.getLiteral());
         this.upfrontLossesWrittenOffField = new Select2SingleChoice<>("upfrontLossesWrittenOffField", new PropertyModel<>(this, "upfrontLossesWrittenOffValue"), this.upfrontLossesWrittenOffProvider);
         this.upfrontLossesWrittenOffField.setLabel(Model.of("Losses written off"));
         this.upfrontLossesWrittenOffField.add(new OnChangeAjaxBehavior());
-        this.upfrontIContainer.add(this.upfrontLossesWrittenOffField);
+        this.upfrontLossesWrittenOffIContainer.add(this.upfrontLossesWrittenOffField);
         this.upfrontLossesWrittenOffFeedback = new TextFeedbackPanel("upfrontLossesWrittenOffFeedback", this.upfrontLossesWrittenOffField);
-        this.upfrontIContainer.add(this.upfrontLossesWrittenOffFeedback);
+        this.upfrontLossesWrittenOffIContainer.add(this.upfrontLossesWrittenOffFeedback);
 
+        this.upfrontOverPaymentLiabilityBlock = new WebMarkupBlock("upfrontOverPaymentLiabilityBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontOverPaymentLiabilityBlock);
+        this.upfrontOverPaymentLiabilityIContainer = new WebMarkupContainer("upfrontOverPaymentLiabilityIContainer");
+        this.upfrontOverPaymentLiabilityBlock.add(this.upfrontOverPaymentLiabilityIContainer);
         this.upfrontOverPaymentLiabilityProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.upfrontOverPaymentLiabilityProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.upfrontOverPaymentLiabilityProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
         this.upfrontOverPaymentLiabilityField = new Select2SingleChoice<>("upfrontOverPaymentLiabilityField", new PropertyModel<>(this, "upfrontOverPaymentLiabilityValue"), this.upfrontOverPaymentLiabilityProvider);
         this.upfrontOverPaymentLiabilityField.setLabel(Model.of("Over payment liability"));
         this.upfrontOverPaymentLiabilityField.add(new OnChangeAjaxBehavior());
-        this.upfrontIContainer.add(this.upfrontOverPaymentLiabilityField);
+        this.upfrontOverPaymentLiabilityIContainer.add(this.upfrontOverPaymentLiabilityField);
         this.upfrontOverPaymentLiabilityFeedback = new TextFeedbackPanel("upfrontOverPaymentLiabilityFeedback", this.upfrontOverPaymentLiabilityField);
-        this.upfrontIContainer.add(this.upfrontOverPaymentLiabilityFeedback);
+        this.upfrontOverPaymentLiabilityIContainer.add(this.upfrontOverPaymentLiabilityFeedback);
     }
 
     protected void initAccountingCash() {
@@ -1357,95 +1471,131 @@ public class LoanCreatePage extends Page {
         this.cashIContainer = new WebMarkupContainer("cashIContainer");
         this.cashBlock.add(this.cashIContainer);
 
+        this.cashFundSourceBlock = new WebMarkupBlock("cashFundSourceBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashFundSourceBlock);
+        this.cashFundSourceIContainer = new WebMarkupContainer("cashFundSourceIContainer");
+        this.cashFundSourceBlock.add(this.cashFundSourceIContainer);
         this.cashFundSourceProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashFundSourceProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.cashFundSourceProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.cashFundSourceField = new Select2SingleChoice<>("cashFundSourceField", new PropertyModel<>(this, "cashFundSourceValue"), this.cashFundSourceProvider);
         this.cashFundSourceField.setLabel(Model.of("Fund Source"));
         this.cashFundSourceField.add(new OnChangeAjaxBehavior());
-        this.cashIContainer.add(this.cashFundSourceField);
+        this.cashFundSourceIContainer.add(this.cashFundSourceField);
         this.cashFundSourceFeedback = new TextFeedbackPanel("cashFundSourceFeedback", this.cashFundSourceField);
-        this.cashIContainer.add(this.cashFundSourceFeedback);
+        this.cashFundSourceIContainer.add(this.cashFundSourceFeedback);
 
+        this.cashLoanPortfolioBlock = new WebMarkupBlock("cashLoanPortfolioBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashLoanPortfolioBlock);
+        this.cashLoanPortfolioIContainer = new WebMarkupContainer("cashLoanPortfolioIContainer");
+        this.cashLoanPortfolioBlock.add(this.cashLoanPortfolioIContainer);
         this.cashLoanPortfolioProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashLoanPortfolioProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.cashLoanPortfolioProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.cashLoanPortfolioField = new Select2SingleChoice<>("cashLoanPortfolioField", new PropertyModel<>(this, "cashLoanPortfolioValue"), this.cashLoanPortfolioProvider);
         this.cashLoanPortfolioField.setLabel(Model.of("Loan portfolio"));
         this.cashLoanPortfolioField.add(new OnChangeAjaxBehavior());
-        this.cashIContainer.add(this.cashLoanPortfolioField);
+        this.cashLoanPortfolioIContainer.add(this.cashLoanPortfolioField);
         this.cashLoanPortfolioFeedback = new TextFeedbackPanel("cashLoanPortfolioFeedback", this.cashLoanPortfolioField);
-        this.cashIContainer.add(this.cashLoanPortfolioFeedback);
+        this.cashLoanPortfolioIContainer.add(this.cashLoanPortfolioFeedback);
 
+        this.cashTransferInSuspenseBlock = new WebMarkupBlock("cashTransferInSuspenseBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashTransferInSuspenseBlock);
+        this.cashTransferInSuspenseIContainer = new WebMarkupContainer("cashTransferInSuspenseIContainer");
+        this.cashTransferInSuspenseBlock.add(this.cashTransferInSuspenseIContainer);
         this.cashTransferInSuspenseProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashTransferInSuspenseProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.cashTransferInSuspenseProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.cashTransferInSuspenseField = new Select2SingleChoice<>("cashTransferInSuspenseField", new PropertyModel<>(this, "cashTransferInSuspenseValue"), this.cashTransferInSuspenseProvider);
         this.cashTransferInSuspenseField.setLabel(Model.of("Transfer in suspense"));
         this.cashTransferInSuspenseField.add(new OnChangeAjaxBehavior());
-        this.cashIContainer.add(this.cashTransferInSuspenseField);
+        this.cashTransferInSuspenseIContainer.add(this.cashTransferInSuspenseField);
         this.cashTransferInSuspenseFeedback = new TextFeedbackPanel("cashTransferInSuspenseFeedback", this.cashTransferInSuspenseField);
-        this.cashIContainer.add(this.cashTransferInSuspenseFeedback);
+        this.cashTransferInSuspenseIContainer.add(this.cashTransferInSuspenseFeedback);
 
+        this.cashIncomeFromInterestBlock = new WebMarkupBlock("cashIncomeFromInterestBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashIncomeFromInterestBlock);
+        this.cashIncomeFromInterestIContainer = new WebMarkupContainer("cashIncomeFromInterestIContainer");
+        this.cashIncomeFromInterestBlock.add(this.cashIncomeFromInterestIContainer);
         this.cashIncomeFromInterestProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashIncomeFromInterestProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.cashIncomeFromInterestProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.cashIncomeFromInterestField = new Select2SingleChoice<>("cashIncomeFromInterestField", new PropertyModel<>(this, "cashIncomeFromInterestValue"), this.cashIncomeFromInterestProvider);
         this.cashIncomeFromInterestField.setLabel(Model.of("Income from Interest"));
         this.cashIncomeFromInterestField.add(new OnChangeAjaxBehavior());
-        this.cashIContainer.add(this.cashIncomeFromInterestField);
+        this.cashIncomeFromInterestIContainer.add(this.cashIncomeFromInterestField);
         this.cashIncomeFromInterestFeedback = new TextFeedbackPanel("cashIncomeFromInterestFeedback", this.cashIncomeFromInterestField);
-        this.cashIContainer.add(this.cashIncomeFromInterestFeedback);
+        this.cashIncomeFromInterestIContainer.add(this.cashIncomeFromInterestFeedback);
 
+        this.cashIncomeFromFeeBlock = new WebMarkupBlock("cashIncomeFromFeeBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashIncomeFromFeeBlock);
+        this.cashIncomeFromFeeIContainer = new WebMarkupContainer("cashIncomeFromFeeIContainer");
+        this.cashIncomeFromFeeBlock.add(this.cashIncomeFromFeeIContainer);
         this.cashIncomeFromFeeProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashIncomeFromFeeProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.cashIncomeFromFeeProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.cashIncomeFromFeeField = new Select2SingleChoice<>("cashIncomeFromFeeField", new PropertyModel<>(this, "cashIncomeFromFeeValue"), this.cashIncomeFromFeeProvider);
         this.cashIncomeFromFeeField.setLabel(Model.of("Income from fees"));
         this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
-        this.cashIContainer.add(this.cashIncomeFromFeeField);
+        this.cashIncomeFromFeeIContainer.add(this.cashIncomeFromFeeField);
         this.cashIncomeFromFeeFeedback = new TextFeedbackPanel("cashIncomeFromFeeFeedback", this.cashIncomeFromFeeField);
-        this.cashIContainer.add(this.cashIncomeFromFeeFeedback);
+        this.cashIncomeFromFeeIContainer.add(this.cashIncomeFromFeeFeedback);
 
+        this.cashIncomeFromPenaltiesBlock = new WebMarkupBlock("cashIncomeFromPenaltiesBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashIncomeFromPenaltiesBlock);
+        this.cashIncomeFromPenaltiesIContainer = new WebMarkupContainer("cashIncomeFromPenaltiesIContainer");
+        this.cashIncomeFromPenaltiesBlock.add(this.cashIncomeFromPenaltiesIContainer);
         this.cashIncomeFromPenaltiesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashIncomeFromPenaltiesProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.cashIncomeFromPenaltiesProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.cashIncomeFromPenaltiesField = new Select2SingleChoice<>("cashIncomeFromPenaltiesField", new PropertyModel<>(this, "cashIncomeFromPenaltiesValue"), this.cashIncomeFromPenaltiesProvider);
         this.cashIncomeFromPenaltiesField.setLabel(Model.of("Income from penalties"));
         this.cashIncomeFromPenaltiesField.add(new OnChangeAjaxBehavior());
-        this.cashIContainer.add(this.cashIncomeFromPenaltiesField);
+        this.cashIncomeFromPenaltiesIContainer.add(this.cashIncomeFromPenaltiesField);
         this.cashIncomeFromPenaltiesFeedback = new TextFeedbackPanel("cashIncomeFromPenaltiesFeedback", this.cashIncomeFromPenaltiesField);
-        this.cashIContainer.add(this.cashIncomeFromPenaltiesFeedback);
+        this.cashIncomeFromPenaltiesIContainer.add(this.cashIncomeFromPenaltiesFeedback);
 
+        this.cashIncomeFromRecoveryRepaymentBlock = new WebMarkupBlock("cashIncomeFromRecoveryRepaymentBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashIncomeFromRecoveryRepaymentBlock);
+        this.cashIncomeFromRecoveryRepaymentIContainer = new WebMarkupContainer("cashIncomeFromRecoveryRepaymentIContainer");
+        this.cashIncomeFromRecoveryRepaymentBlock.add(this.cashIncomeFromRecoveryRepaymentIContainer);
         this.cashIncomeFromRecoveryRepaymentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashIncomeFromRecoveryRepaymentProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.cashIncomeFromRecoveryRepaymentProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.cashIncomeFromRecoveryRepaymentField = new Select2SingleChoice<>("cashIncomeFromRecoveryRepaymentField", new PropertyModel<>(this, "cashIncomeFromRecoveryRepaymentValue"), this.cashIncomeFromRecoveryRepaymentProvider);
         this.cashIncomeFromRecoveryRepaymentField.setLabel(Model.of("Income from Recovery Repayments"));
         this.cashIncomeFromRecoveryRepaymentField.add(new OnChangeAjaxBehavior());
-        this.cashIContainer.add(this.cashIncomeFromRecoveryRepaymentField);
+        this.cashIncomeFromRecoveryRepaymentIContainer.add(this.cashIncomeFromRecoveryRepaymentField);
         this.cashIncomeFromRecoveryRepaymentFeedback = new TextFeedbackPanel("cashIncomeFromRecoveryRepaymentFeedback", this.cashIncomeFromRecoveryRepaymentField);
-        this.cashIContainer.add(this.cashIncomeFromRecoveryRepaymentFeedback);
+        this.cashIncomeFromRecoveryRepaymentIContainer.add(this.cashIncomeFromRecoveryRepaymentFeedback);
 
+        this.cashLossesWrittenOffBlock = new WebMarkupBlock("cashLossesWrittenOffBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashLossesWrittenOffBlock);
+        this.cashLossesWrittenOffIContainer = new WebMarkupContainer("cashLossesWrittenOffIContainer");
+        this.cashLossesWrittenOffBlock.add(this.cashLossesWrittenOffIContainer);
         this.cashLossesWrittenOffProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashLossesWrittenOffProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.cashLossesWrittenOffProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Expense.getLiteral());
         this.cashLossesWrittenOffField = new Select2SingleChoice<>("cashLossesWrittenOffField", new PropertyModel<>(this, "cashLossesWrittenOffValue"), this.cashLossesWrittenOffProvider);
         this.cashLossesWrittenOffField.setLabel(Model.of("Losses written off"));
         this.cashLossesWrittenOffField.add(new OnChangeAjaxBehavior());
-        this.cashIContainer.add(this.cashLossesWrittenOffField);
+        this.cashLossesWrittenOffIContainer.add(this.cashLossesWrittenOffField);
         this.cashLossesWrittenOffFeedback = new TextFeedbackPanel("cashLossesWrittenOffFeedback", this.cashLossesWrittenOffField);
-        this.cashIContainer.add(this.cashLossesWrittenOffFeedback);
+        this.cashLossesWrittenOffIContainer.add(this.cashLossesWrittenOffFeedback);
 
+        this.cashOverPaymentLiabilityBlock = new WebMarkupBlock("cashOverPaymentLiabilityBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashOverPaymentLiabilityBlock);
+        this.cashOverPaymentLiabilityIContainer = new WebMarkupContainer("cashOverPaymentLiabilityIContainer");
+        this.cashOverPaymentLiabilityBlock.add(this.cashOverPaymentLiabilityIContainer);
         this.cashOverPaymentLiabilityProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashOverPaymentLiabilityProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.cashOverPaymentLiabilityProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
         this.cashOverPaymentLiabilityField = new Select2SingleChoice<>("cashOverPaymentLiabilityField", new PropertyModel<>(this, "cashOverPaymentLiabilityValue"), this.cashOverPaymentLiabilityProvider);
         this.cashOverPaymentLiabilityField.setLabel(Model.of("Over payment liability"));
         this.cashOverPaymentLiabilityField.add(new OnChangeAjaxBehavior());
-        this.cashIContainer.add(this.cashOverPaymentLiabilityField);
+        this.cashOverPaymentLiabilityIContainer.add(this.cashOverPaymentLiabilityField);
         this.cashOverPaymentLiabilityFeedback = new TextFeedbackPanel("cashOverPaymentLiabilityFeedback", this.cashOverPaymentLiabilityField);
-        this.cashIContainer.add(this.cashOverPaymentLiabilityFeedback);
+        this.cashOverPaymentLiabilityIContainer.add(this.cashOverPaymentLiabilityFeedback);
     }
 
     protected void initAccountingPeriodic() {
@@ -1456,125 +1606,173 @@ public class LoanCreatePage extends Page {
         this.periodicIContainer = new WebMarkupContainer("periodicIContainer");
         this.periodicBlock.add(this.periodicIContainer);
 
+        this.periodicFundSourceBlock = new WebMarkupBlock("periodicFundSourceBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicFundSourceBlock);
+        this.periodicFundSourceIContainer = new WebMarkupContainer("periodicFundSourceIContainer");
+        this.periodicFundSourceBlock.add(this.periodicFundSourceIContainer);
         this.periodicFundSourceProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.periodicFundSourceProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.periodicFundSourceProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.periodicFundSourceField = new Select2SingleChoice<>("periodicFundSourceField", new PropertyModel<>(this, "periodicFundSourceValue"), this.periodicFundSourceProvider);
         this.periodicFundSourceField.setLabel(Model.of("Fund source"));
         this.periodicFundSourceField.add(new OnChangeAjaxBehavior());
-        this.periodicIContainer.add(this.periodicFundSourceField);
+        this.periodicFundSourceIContainer.add(this.periodicFundSourceField);
         this.periodicFundSourceFeedback = new TextFeedbackPanel("periodicFundSourceFeedback", this.periodicFundSourceField);
-        this.periodicIContainer.add(this.periodicFundSourceFeedback);
+        this.periodicFundSourceIContainer.add(this.periodicFundSourceFeedback);
 
+        this.periodicLoanPortfolioBlock = new WebMarkupBlock("periodicLoanPortfolioBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicLoanPortfolioBlock);
+        this.periodicLoanPortfolioIContainer = new WebMarkupContainer("periodicLoanPortfolioIContainer");
+        this.periodicLoanPortfolioBlock.add(this.periodicLoanPortfolioIContainer);
         this.periodicLoanPortfolioProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.periodicLoanPortfolioProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.periodicLoanPortfolioProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.periodicLoanPortfolioField = new Select2SingleChoice<>("periodicLoanPortfolioField", new PropertyModel<>(this, "periodicLoanPortfolioValue"), this.periodicLoanPortfolioProvider);
         this.periodicLoanPortfolioField.setLabel(Model.of("Loan portfolio"));
         this.periodicLoanPortfolioField.add(new OnChangeAjaxBehavior());
-        this.periodicIContainer.add(this.periodicLoanPortfolioField);
+        this.periodicLoanPortfolioIContainer.add(this.periodicLoanPortfolioField);
         this.periodicLoanPortfolioFeedback = new TextFeedbackPanel("periodicLoanPortfolioFeedback", this.periodicLoanPortfolioField);
-        this.periodicIContainer.add(this.periodicLoanPortfolioFeedback);
+        this.periodicLoanPortfolioIContainer.add(this.periodicLoanPortfolioFeedback);
 
+        this.periodicInterestReceivableBlock = new WebMarkupBlock("periodicInterestReceivableBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicInterestReceivableBlock);
+        this.periodicInterestReceivableIContainer = new WebMarkupContainer("periodicInterestReceivableIContainer");
+        this.periodicInterestReceivableBlock.add(this.periodicInterestReceivableIContainer);
         this.periodicInterestReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.periodicInterestReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.periodicInterestReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.periodicInterestReceivableField = new Select2SingleChoice<>("periodicInterestReceivableField", new PropertyModel<>(this, "periodicInterestReceivableValue"), this.periodicInterestReceivableProvider);
         this.periodicInterestReceivableField.setLabel(Model.of("Interest Receivable"));
         this.periodicInterestReceivableField.add(new OnChangeAjaxBehavior());
-        this.periodicIContainer.add(this.periodicInterestReceivableField);
+        this.periodicInterestReceivableIContainer.add(this.periodicInterestReceivableField);
         this.periodicInterestReceivableFeedback = new TextFeedbackPanel("periodicInterestReceivableFeedback", this.periodicInterestReceivableField);
-        this.periodicIContainer.add(this.periodicInterestReceivableFeedback);
+        this.periodicInterestReceivableIContainer.add(this.periodicInterestReceivableFeedback);
 
+        this.periodicFeesReceivableBlock = new WebMarkupBlock("periodicFeesReceivableBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicFeesReceivableBlock);
+        this.periodicFeesReceivableIContainer = new WebMarkupContainer("periodicFeesReceivableIContainer");
+        this.periodicFeesReceivableBlock.add(this.periodicFeesReceivableIContainer);
         this.periodicFeesReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.periodicFeesReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.periodicFeesReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.periodicFeesReceivableField = new Select2SingleChoice<>("periodicFeesReceivableField", new PropertyModel<>(this, "periodicFeesReceivableValue"), this.periodicFeesReceivableProvider);
         this.periodicFeesReceivableField.setLabel(Model.of("Fees Receivable"));
         this.periodicFeesReceivableField.add(new OnChangeAjaxBehavior());
-        this.periodicIContainer.add(this.periodicFeesReceivableField);
+        this.periodicFeesReceivableIContainer.add(this.periodicFeesReceivableField);
         this.periodicFeesReceivableFeedback = new TextFeedbackPanel("periodicFeesReceivableFeedback", this.periodicFeesReceivableField);
-        this.periodicIContainer.add(this.periodicFeesReceivableFeedback);
+        this.periodicFeesReceivableIContainer.add(this.periodicFeesReceivableFeedback);
 
+        this.periodicPenaltiesReceivableBlock = new WebMarkupBlock("periodicPenaltiesReceivableBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicPenaltiesReceivableBlock);
+        this.periodicPenaltiesReceivableIContainer = new WebMarkupContainer("periodicPenaltiesReceivableIContainer");
+        this.periodicPenaltiesReceivableBlock.add(this.periodicPenaltiesReceivableIContainer);
         this.periodicPenaltiesReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.periodicPenaltiesReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.periodicPenaltiesReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.periodicPenaltiesReceivableField = new Select2SingleChoice<>("periodicPenaltiesReceivableField", new PropertyModel<>(this, "periodicPenaltiesReceivableValue"), this.periodicPenaltiesReceivableProvider);
         this.periodicPenaltiesReceivableField.setLabel(Model.of("Penalties Receivable"));
         this.periodicPenaltiesReceivableField.add(new OnChangeAjaxBehavior());
-        this.periodicIContainer.add(this.periodicPenaltiesReceivableField);
+        this.periodicPenaltiesReceivableIContainer.add(this.periodicPenaltiesReceivableField);
         this.periodicPenaltiesReceivableFeedback = new TextFeedbackPanel("periodicPenaltiesReceivableFeedback", this.periodicPenaltiesReceivableField);
-        this.periodicIContainer.add(this.periodicPenaltiesReceivableFeedback);
+        this.periodicPenaltiesReceivableIContainer.add(this.periodicPenaltiesReceivableFeedback);
 
+        this.periodicTransferInSuspenseBlock = new WebMarkupBlock("periodicTransferInSuspenseBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicTransferInSuspenseBlock);
+        this.periodicTransferInSuspenseIContainer = new WebMarkupContainer("periodicTransferInSuspenseIContainer");
+        this.periodicTransferInSuspenseBlock.add(this.periodicTransferInSuspenseIContainer);
         this.periodicTransferInSuspenseProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.periodicTransferInSuspenseProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.periodicTransferInSuspenseProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
         this.periodicTransferInSuspenseField = new Select2SingleChoice<>("periodicTransferInSuspenseField", new PropertyModel<>(this, "periodicTransferInSuspenseValue"), this.periodicTransferInSuspenseProvider);
         this.periodicTransferInSuspenseField.setLabel(Model.of("Transfer in suspense"));
         this.periodicTransferInSuspenseField.add(new OnChangeAjaxBehavior());
-        this.periodicIContainer.add(this.periodicTransferInSuspenseField);
+        this.periodicTransferInSuspenseIContainer.add(this.periodicTransferInSuspenseField);
         this.periodicTransferInSuspenseFeedback = new TextFeedbackPanel("periodicTransferInSuspenseFeedback", this.periodicTransferInSuspenseField);
-        this.periodicIContainer.add(this.periodicTransferInSuspenseFeedback);
+        this.periodicTransferInSuspenseIContainer.add(this.periodicTransferInSuspenseFeedback);
 
+        this.periodicIncomeFromInterestBlock = new WebMarkupBlock("periodicIncomeFromInterestBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicIncomeFromInterestBlock);
+        this.periodicIncomeFromInterestIContainer = new WebMarkupContainer("periodicIncomeFromInterestIContainer");
+        this.periodicIncomeFromInterestBlock.add(this.periodicIncomeFromInterestIContainer);
         this.periodicIncomeFromInterestProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.periodicIncomeFromInterestProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.periodicIncomeFromInterestProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.periodicIncomeFromInterestField = new Select2SingleChoice<>("periodicIncomeFromInterestField", new PropertyModel<>(this, "periodicIncomeFromInterestValue"), this.periodicIncomeFromInterestProvider);
         this.periodicIncomeFromInterestField.setLabel(Model.of("Income from Interest"));
         this.periodicIncomeFromInterestField.add(new OnChangeAjaxBehavior());
-        this.periodicIContainer.add(this.periodicIncomeFromInterestField);
+        this.periodicIncomeFromInterestIContainer.add(this.periodicIncomeFromInterestField);
         this.periodicIncomeFromInterestFeedback = new TextFeedbackPanel("periodicIncomeFromInterestFeedback", this.periodicIncomeFromInterestField);
-        this.periodicIContainer.add(this.periodicIncomeFromInterestFeedback);
+        this.periodicIncomeFromInterestIContainer.add(this.periodicIncomeFromInterestFeedback);
 
+        this.periodicIncomeFromFeeBlock = new WebMarkupBlock("periodicIncomeFromFeeBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicIncomeFromFeeBlock);
+        this.periodicIncomeFromFeeIContainer = new WebMarkupContainer("periodicIncomeFromFeeIContainer");
+        this.periodicIncomeFromFeeBlock.add(this.periodicIncomeFromFeeIContainer);
         this.periodicIncomeFromFeeProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.periodicIncomeFromFeeProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.periodicIncomeFromFeeProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.periodicIncomeFromFeeField = new Select2SingleChoice<>("periodicIncomeFromFeeField", new PropertyModel<>(this, "periodicIncomeFromFeeValue"), this.periodicIncomeFromFeeProvider);
         this.periodicIncomeFromFeeField.setLabel(Model.of("Income from fees"));
         this.periodicIncomeFromFeeField.add(new OnChangeAjaxBehavior());
-        this.periodicIContainer.add(this.periodicIncomeFromFeeField);
+        this.periodicIncomeFromFeeIContainer.add(this.periodicIncomeFromFeeField);
         this.periodicIncomeFromFeeFeedback = new TextFeedbackPanel("periodicIncomeFromFeeFeedback", this.periodicIncomeFromFeeField);
-        this.periodicIContainer.add(this.periodicIncomeFromFeeFeedback);
+        this.periodicIncomeFromFeeIContainer.add(this.periodicIncomeFromFeeFeedback);
 
+        this.periodicIncomeFromPenaltiesBlock = new WebMarkupBlock("periodicIncomeFromPenaltiesBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicIncomeFromPenaltiesBlock);
+        this.periodicIncomeFromPenaltiesIContainer = new WebMarkupContainer("periodicIncomeFromPenaltiesIContainer");
+        this.periodicIncomeFromPenaltiesBlock.add(this.periodicIncomeFromPenaltiesIContainer);
         this.periodicIncomeFromPenaltiesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.periodicIncomeFromPenaltiesProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.periodicIncomeFromPenaltiesProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.periodicIncomeFromPenaltiesField = new Select2SingleChoice<>("periodicIncomeFromPenaltiesField", new PropertyModel<>(this, "periodicIncomeFromPenaltiesValue"), this.periodicIncomeFromPenaltiesProvider);
         this.periodicIncomeFromPenaltiesField.setLabel(Model.of("Income from penalties"));
         this.periodicIncomeFromPenaltiesField.add(new OnChangeAjaxBehavior());
-        this.periodicIContainer.add(this.periodicIncomeFromPenaltiesField);
+        this.periodicIncomeFromPenaltiesIContainer.add(this.periodicIncomeFromPenaltiesField);
         this.periodicIncomeFromPenaltiesFeedback = new TextFeedbackPanel("periodicIncomeFromPenaltiesFeedback", this.periodicIncomeFromPenaltiesField);
-        this.periodicIContainer.add(this.periodicIncomeFromPenaltiesFeedback);
+        this.periodicIncomeFromPenaltiesIContainer.add(this.periodicIncomeFromPenaltiesFeedback);
 
+        this.periodicIncomeFromRecoveryRepaymentBlock = new WebMarkupBlock("periodicIncomeFromRecoveryRepaymentBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicIncomeFromRecoveryRepaymentBlock);
+        this.periodicIncomeFromRecoveryRepaymentIContainer = new WebMarkupContainer("periodicIncomeFromRecoveryRepaymentIContainer");
+        this.periodicIncomeFromRecoveryRepaymentBlock.add(this.periodicIncomeFromRecoveryRepaymentIContainer);
         this.periodicIncomeFromRecoveryRepaymentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.periodicIncomeFromRecoveryRepaymentProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.periodicIncomeFromRecoveryRepaymentProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
         this.periodicIncomeFromRecoveryRepaymentField = new Select2SingleChoice<>("periodicIncomeFromRecoveryRepaymentField", new PropertyModel<>(this, "periodicIncomeFromRecoveryRepaymentValue"), this.periodicIncomeFromRecoveryRepaymentProvider);
         this.periodicIncomeFromRecoveryRepaymentField.setLabel(Model.of("Income from Recovery Repayments"));
         this.periodicIncomeFromRecoveryRepaymentField.add(new OnChangeAjaxBehavior());
-        this.periodicIContainer.add(this.periodicIncomeFromRecoveryRepaymentField);
+        this.periodicIncomeFromRecoveryRepaymentIContainer.add(this.periodicIncomeFromRecoveryRepaymentField);
         this.periodicIncomeFromRecoveryRepaymentFeedback = new TextFeedbackPanel("periodicIncomeFromRecoveryRepaymentFeedback", this.periodicIncomeFromRecoveryRepaymentField);
-        this.periodicIContainer.add(this.periodicIncomeFromRecoveryRepaymentFeedback);
+        this.periodicIncomeFromRecoveryRepaymentIContainer.add(this.periodicIncomeFromRecoveryRepaymentFeedback);
 
+        this.periodicLossesWrittenOffBlock = new WebMarkupBlock("periodicLossesWrittenOffBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicLossesWrittenOffBlock);
+        this.periodicLossesWrittenOffIContainer = new WebMarkupContainer("periodicLossesWrittenOffIContainer");
+        this.periodicLossesWrittenOffBlock.add(this.periodicLossesWrittenOffIContainer);
         this.periodicLossesWrittenOffProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.periodicLossesWrittenOffProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.periodicLossesWrittenOffProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Expense.getLiteral());
         this.periodicLossesWrittenOffField = new Select2SingleChoice<>("periodicLossesWrittenOffField", new PropertyModel<>(this, "periodicLossesWrittenOffValue"), this.periodicLossesWrittenOffProvider);
         this.periodicLossesWrittenOffField.setLabel(Model.of("Losses written off"));
         this.periodicLossesWrittenOffField.add(new OnChangeAjaxBehavior());
-        this.periodicIContainer.add(this.periodicLossesWrittenOffField);
+        this.periodicLossesWrittenOffIContainer.add(this.periodicLossesWrittenOffField);
         this.periodicLossesWrittenOffFeedback = new TextFeedbackPanel("periodicLossesWrittenOffFeedback", this.periodicLossesWrittenOffField);
-        this.periodicIContainer.add(this.periodicLossesWrittenOffFeedback);
+        this.periodicLossesWrittenOffIContainer.add(this.periodicLossesWrittenOffFeedback);
 
+        this.periodicOverPaymentLiabilityBlock = new WebMarkupBlock("periodicOverPaymentLiabilityBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicOverPaymentLiabilityBlock);
+        this.periodicOverPaymentLiabilityIContainer = new WebMarkupContainer("periodicOverPaymentLiabilityIContainer");
+        this.periodicOverPaymentLiabilityBlock.add(this.periodicOverPaymentLiabilityIContainer);
         this.periodicOverPaymentLiabilityProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.periodicOverPaymentLiabilityProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.periodicOverPaymentLiabilityProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
         this.periodicOverPaymentLiabilityField = new Select2SingleChoice<>("periodicOverPaymentLiabilityField", new PropertyModel<>(this, "periodicOverPaymentLiabilityValue"), this.periodicOverPaymentLiabilityProvider);
         this.periodicOverPaymentLiabilityField.setLabel(Model.of("Over payment liability"));
         this.periodicOverPaymentLiabilityField.add(new OnChangeAjaxBehavior());
-        this.periodicIContainer.add(this.periodicOverPaymentLiabilityField);
+        this.periodicOverPaymentLiabilityIContainer.add(this.periodicOverPaymentLiabilityField);
         this.periodicOverPaymentLiabilityFeedback = new TextFeedbackPanel("periodicOverPaymentLiabilityFeedback", this.periodicOverPaymentLiabilityField);
-        this.periodicIContainer.add(this.periodicOverPaymentLiabilityFeedback);
+        this.periodicOverPaymentLiabilityIContainer.add(this.periodicOverPaymentLiabilityFeedback);
 
     }
 

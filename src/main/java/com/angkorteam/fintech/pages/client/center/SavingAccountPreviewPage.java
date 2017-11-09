@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.widget.center.AccountPreviewCharge;
@@ -16,7 +17,7 @@ import com.angkorteam.fintech.widget.center.AccountPreviewTransaction;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingAccountPreviewPage extends Page {
+public class SavingAccountPreviewPage extends DeprecatedPage {
 
     protected String centerId;
     protected String accountId;

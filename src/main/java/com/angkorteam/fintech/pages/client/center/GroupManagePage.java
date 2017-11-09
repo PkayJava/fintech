@@ -12,6 +12,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -37,7 +38,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 import com.google.common.collect.Lists;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class GroupManagePage extends Page {
+public class GroupManagePage extends DeprecatedPage {
 
     protected String centerId;
     protected String officeId;

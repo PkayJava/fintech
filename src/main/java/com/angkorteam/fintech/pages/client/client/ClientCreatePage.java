@@ -18,6 +18,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.joda.time.DateTime;
 import org.joda.time.Years;
 
+import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
@@ -62,7 +63,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class ClientCreatePage extends Page {
+public class ClientCreatePage extends DeprecatedPage {
 
     protected Form<Void> form;
     protected Button saveButton;
