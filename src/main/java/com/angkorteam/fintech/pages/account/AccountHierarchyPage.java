@@ -6,16 +6,19 @@ import java.util.Map;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.AccountHierarchyProvider;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.tree.NestedTree;
 import com.google.common.collect.Lists;
@@ -24,16 +27,18 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 6/27/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class AccountHierarchyPage extends DeprecatedPage {
+public class AccountHierarchyPage extends Page {
 
-    private NestedTree<Map<String, Object>> accountTree;
-    private AccountHierarchyProvider accountProvider;
+    protected WebMarkupBlock dataBlock;
+    protected WebMarkupContainer dataIContainer;
+    protected NestedTree<Map<String, Object>> accountTree;
+    protected AccountHierarchyProvider accountProvider;
 
-    private BookmarkablePageLink<Void> browseLink;
+    protected BookmarkablePageLink<Void> browseLink;
 
-    private BookmarkablePageLink<Void> createLink;
+    protected BookmarkablePageLink<Void> createLink;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -67,10 +72,14 @@ public class AccountHierarchyPage extends DeprecatedPage {
 
     @Override
     protected void initComponent() {
-        this.accountProvider = new AccountHierarchyProvider();
+        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
+        add(this.dataBlock);
+        this.dataIContainer = new WebMarkupContainer("dataIContainer");
+        this.dataBlock.add(this.dataIContainer);
 
+        this.accountProvider = new AccountHierarchyProvider();
         this.accountTree = new NestedTree<>("accountTree", this.accountProvider, this::accountCreateLabel, this::accountCreateLink);
-        add(this.accountTree);
+        this.dataIContainer.add(this.accountTree);
 
         this.browseLink = new BookmarkablePageLink<>("browseLink", AccountBrowsePage.class);
         add(this.browseLink);
@@ -87,7 +96,7 @@ public class AccountHierarchyPage extends DeprecatedPage {
     protected void configureMetaData() {
     }
 
-    private MarkupContainer accountCreateLink(String s, IModel<Map<String, Object>> model) {
+    protected MarkupContainer accountCreateLink(String s, IModel<Map<String, Object>> model) {
         if (Boolean.TRUE.equals(model.getObject().get("memory"))) {
             return null;
         } else {
@@ -99,7 +108,7 @@ public class AccountHierarchyPage extends DeprecatedPage {
         }
     }
 
-    private Component accountCreateLabel(String s, IModel<Map<String, Object>> mapIModel) {
+    protected Component accountCreateLabel(String s, IModel<Map<String, Object>> mapIModel) {
         return new Label(s, (String) mapIModel.getObject().get("name"));
     }
 

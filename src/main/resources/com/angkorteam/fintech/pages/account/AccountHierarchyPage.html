@@ -22,7 +22,11 @@
 				</div>
 			</div>
 			<div class="box-body">
-				<div wicket:id="accountTree">[tree]</div>
+				<div wicket:id="dataBlock" class="form-group">
+					<wicket:container wicket:id="dataIContainer">
+						<div wicket:id="accountTree"></div>
+					</wicket:container>
+				</div>
 			</div>
 		</div>
 	</wicket:extend>
