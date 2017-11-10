@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.AccrualBuilder;
@@ -31,19 +31,19 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 6/27/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class AccrualAccountingPage extends DeprecatedPage {
+public class AccrualAccountingPage extends Page {
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
     protected WebMarkupBlock tillDateBlock;
     protected WebMarkupContainer tillDateIContainer;
-    private Date tillDateValue;
-    private DateTextField tillDateField;
-    private TextFeedbackPanel tillDateFeedback;
+    protected Date tillDateValue;
+    protected DateTextField tillDateField;
+    protected TextFeedbackPanel tillDateFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -105,7 +105,7 @@ public class AccrualAccountingPage extends DeprecatedPage {
     protected void configureMetaData() {
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         AccrualBuilder builder = new AccrualBuilder();
         builder.withTillDate(this.tillDateValue);
         JsonNode node = null;
