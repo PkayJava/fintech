@@ -155,7 +155,7 @@ public class AccountCreatePage extends Page {
             this.tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + accountType.getTag() + "')");
             this.tagProvider.setDisabled(false);
             this.parentProvider.setDisabled(false);
-            this.parentProvider.applyWhere("classification_enum", "classification_enum = " + accountType.getLiteral());
+            this.parentProvider.applyWhere("classification_enum", "classification_enum = '" + accountType.getLiteral() + "'");
         }
     }
 
@@ -283,8 +283,8 @@ public class AccountCreatePage extends Page {
         this.parentIContainer = new WebMarkupContainer("parentIContainer");
         this.parentBlock.add(this.parentIContainer);
         this.parentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.parentProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Header.getLiteral());
         this.parentProvider.setDisabled(true);
+        this.parentProvider.applyWhere("account_usage", "account_usage = '" + AccountUsage.Header.getLiteral() + "'");
         this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"), this.parentProvider);
         this.parentField.setLabel(Model.of("Parent Account"));
         this.parentIContainer.add(this.parentField);

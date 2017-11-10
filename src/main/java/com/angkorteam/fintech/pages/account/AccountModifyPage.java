@@ -15,7 +15,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.GLAccountBuilder;
@@ -45,7 +45,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 6/27/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class AccountModifyPage extends DeprecatedPage {
+public class AccountModifyPage extends Page {
 
     protected String accountId;
 
@@ -175,6 +175,8 @@ public class AccountModifyPage extends DeprecatedPage {
 
         initDescriptionBlock();
 
+        initTagBlock();
+
     }
 
     protected void initAccountTypeBlock() {
@@ -192,15 +194,15 @@ public class AccountModifyPage extends DeprecatedPage {
     }
 
     protected void initDescriptionBlock() {
-        this.manualAllowBlock = new WebMarkupBlock("manualAllowBlock", Size.Twelve_12);
-        this.form.add(this.manualAllowBlock);
-        this.manualAllowIContainer = new WebMarkupContainer("manualAllowIContainer");
-        this.manualAllowBlock.add(this.manualAllowIContainer);
+        this.descriptionBlock = new WebMarkupBlock("descriptionBlock", Size.Twelve_12);
+        this.form.add(this.descriptionBlock);
+        this.descriptionIContainer = new WebMarkupContainer("descriptionIContainer");
+        this.descriptionBlock.add(this.descriptionIContainer);
         this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
         this.descriptionField.setLabel(Model.of("Description"));
-        this.form.add(this.descriptionField);
+        this.descriptionIContainer.add(this.descriptionField);
         this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-        this.form.add(this.descriptionFeedback);
+        this.descriptionIContainer.add(this.descriptionFeedback);
     }
 
     protected void initManualAllowBlock() {
@@ -220,12 +222,11 @@ public class AccountModifyPage extends DeprecatedPage {
         this.tagIContainer = new WebMarkupContainer("tagIContainer");
         this.tagBlock.add(this.tagIContainer);
         this.tagProvider = new SingleChoiceProvider("m_code_value", "id", "code_value");
-        this.tagProvider.setDisabled(true);
         this.tagField = new Select2SingleChoice<>("tagField", new PropertyModel<>(this, "tagValue"), this.tagProvider);
         this.tagField.setLabel(Model.of("Tag"));
-        this.form.add(this.tagField);
+        this.tagIContainer.add(this.tagField);
         this.tagFeedback = new TextFeedbackPanel("tagFeedback", this.tagField);
-        this.form.add(this.tagFeedback);
+        this.tagIContainer.add(this.tagFeedback);
     }
 
     protected void initAccountUsageBlock() {
@@ -236,9 +237,9 @@ public class AccountModifyPage extends DeprecatedPage {
         this.accountUsageProvider = new AccountUsageProvider();
         this.accountUsageField = new Select2SingleChoice<>("accountUsageField", new PropertyModel<>(this, "accountUsageValue"), this.accountUsageProvider);
         this.accountUsageField.setLabel(Model.of("Account Usage"));
-        this.form.add(this.accountUsageField);
+        this.accountUsageIContainer.add(this.accountUsageField);
         this.accountUsageFeedback = new TextFeedbackPanel("accountUsageFeedback", this.accountUsageField);
-        this.form.add(this.accountUsageFeedback);
+        this.accountUsageIContainer.add(this.accountUsageFeedback);
     }
 
     protected void initAccountNameBlock() {
@@ -271,8 +272,7 @@ public class AccountModifyPage extends DeprecatedPage {
         this.parentIContainer = new WebMarkupContainer("parentIContainer");
         this.parentBlock.add(this.parentIContainer);
         this.parentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.parentProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Header.getLiteral());
-        this.parentProvider.setDisabled(true);
+        this.parentProvider.applyWhere("account_usage", "account_usage = '" + AccountUsage.Header.getLiteral() + "'");
         this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"), this.parentProvider);
         this.parentField.setLabel(Model.of("Parent Account"));
         this.parentIContainer.add(this.parentField);
@@ -294,6 +294,16 @@ public class AccountModifyPage extends DeprecatedPage {
     @Override
     protected void configureMetaData() {
         if (this.accountTypeValue == null) {
+            this.tagProvider.removeWhere("code");
+        } else {
+            AccountType temp = AccountType.valueOf(this.accountTypeValue.getId());
+            this.tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + temp.getTag() + "')");
+            this.parentProvider.applyWhere("classification_enum", "classification_enum = '" + this.accountTypeValue.getId() + "'");
+        }
+    }
+
+    protected boolean accountTypeFieldUpdate(AjaxRequestTarget target) {
+        if (this.accountTypeValue == null) {
             this.tagValue = null;
             this.parentValue = null;
             this.tagProvider.removeWhere("code");
@@ -304,12 +314,8 @@ public class AccountModifyPage extends DeprecatedPage {
             this.tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + temp.getTag() + "')");
             this.tagProvider.setDisabled(false);
             this.parentProvider.setDisabled(false);
-            this.parentProvider.applyWhere("classification_enum", "classification_enum = " + this.accountTypeValue.getId());
+            this.parentProvider.applyWhere("classification_enum", "classification_enum = '" + this.accountTypeValue.getId() + "'");
         }
-    }
-
-    protected boolean accountTypeFieldUpdate(AjaxRequestTarget target) {
-        configureMetaData();
         if (target != null) {
             target.add(this.tagBlock);
             target.add(this.parentBlock);
