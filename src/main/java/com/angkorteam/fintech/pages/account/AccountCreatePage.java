@@ -185,6 +185,8 @@ public class AccountCreatePage extends Page {
 
         initDescriptionBlock();
 
+        initTagBlock();
+
     }
 
     protected void initAccountTypeBlock() {
@@ -202,15 +204,15 @@ public class AccountCreatePage extends Page {
     }
 
     protected void initDescriptionBlock() {
-        this.manualAllowBlock = new WebMarkupBlock("manualAllowBlock", Size.Twelve_12);
-        this.form.add(this.manualAllowBlock);
-        this.manualAllowIContainer = new WebMarkupContainer("manualAllowIContainer");
-        this.manualAllowBlock.add(this.manualAllowIContainer);
+        this.descriptionBlock = new WebMarkupBlock("descriptionBlock", Size.Twelve_12);
+        this.form.add(this.descriptionBlock);
+        this.descriptionIContainer = new WebMarkupContainer("descriptionIContainer");
+        this.descriptionBlock.add(this.descriptionIContainer);
         this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
         this.descriptionField.setLabel(Model.of("Description"));
-        this.form.add(this.descriptionField);
+        this.descriptionIContainer.add(this.descriptionField);
         this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-        this.form.add(this.descriptionFeedback);
+        this.descriptionIContainer.add(this.descriptionFeedback);
     }
 
     protected void initManualAllowBlock() {
@@ -233,9 +235,9 @@ public class AccountCreatePage extends Page {
         this.tagProvider.setDisabled(true);
         this.tagField = new Select2SingleChoice<>("tagField", new PropertyModel<>(this, "tagValue"), this.tagProvider);
         this.tagField.setLabel(Model.of("Tag"));
-        this.form.add(this.tagField);
+        this.tagIContainer.add(this.tagField);
         this.tagFeedback = new TextFeedbackPanel("tagFeedback", this.tagField);
-        this.form.add(this.tagFeedback);
+        this.tagIContainer.add(this.tagFeedback);
     }
 
     protected void initAccountUsageBlock() {
@@ -246,9 +248,9 @@ public class AccountCreatePage extends Page {
         this.accountUsageProvider = new AccountUsageProvider();
         this.accountUsageField = new Select2SingleChoice<>("accountUsageField", new PropertyModel<>(this, "accountUsageValue"), this.accountUsageProvider);
         this.accountUsageField.setLabel(Model.of("Account Usage"));
-        this.form.add(this.accountUsageField);
+        this.accountUsageIContainer.add(this.accountUsageField);
         this.accountUsageFeedback = new TextFeedbackPanel("accountUsageFeedback", this.accountUsageField);
-        this.form.add(this.accountUsageFeedback);
+        this.accountUsageIContainer.add(this.accountUsageFeedback);
     }
 
     protected void initAccountNameBlock() {
