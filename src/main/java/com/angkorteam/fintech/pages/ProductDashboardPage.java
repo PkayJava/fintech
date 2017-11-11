@@ -6,7 +6,6 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.charge.ChargeBrowsePage;

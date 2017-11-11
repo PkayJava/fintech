@@ -6,7 +6,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.service.EMailConfigurationPage;
 import com.angkorteam.fintech.pages.service.S3ConfigurationPage;
@@ -19,7 +19,7 @@ import com.angkorteam.framework.panels.InfoBoxPanel;
 import com.google.common.collect.Lists;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class ServiceDashboardPage extends DeprecatedPage {
+public class ServiceDashboardPage extends Page {
 
     private static final List<PageBreadcrumb> BREADCRUMB;
 
@@ -49,9 +49,7 @@ public class ServiceDashboardPage extends DeprecatedPage {
     }
 
     @Override
-    protected void initData() {
-        // TODO Auto-generated method stub
-
+    protected void initData() { 
     }
 
     @Override
