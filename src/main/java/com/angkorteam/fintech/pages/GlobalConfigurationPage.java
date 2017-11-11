@@ -16,7 +16,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.GlobalConfigurationHelper;
@@ -50,8 +50,10 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 6/26/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class GlobalConfigurationPage extends DeprecatedPage {
+public class GlobalConfigurationPage extends Page {
 
+    protected WebMarkupBlock dataBlock;
+    protected WebMarkupContainer dataIContainer;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
@@ -108,7 +110,7 @@ public class GlobalConfigurationPage extends DeprecatedPage {
 
     @Override
     protected void initComponent() {
-        initDataTable();
+        initDataBlock();
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", SystemDashboardPage.class);
         add(this.closeLink);
@@ -150,7 +152,12 @@ public class GlobalConfigurationPage extends DeprecatedPage {
         this.nameIContainer.add(this.nameFeedback);
     }
 
-    protected void initDataTable() {
+    protected void initDataBlock() {
+        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
+        add(this.dataBlock);
+        this.dataIContainer = new WebMarkupContainer("dataIContainer");
+        this.dataBlock.add(this.dataIContainer);
+
         this.dataProvider = new JdbcProvider("c_configuration");
         this.dataProvider.boardField("id", "id", Long.class);
         this.dataProvider.boardField("name", "name", String.class);
@@ -168,7 +175,7 @@ public class GlobalConfigurationPage extends DeprecatedPage {
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 
         this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
-        add(this.dataFilterForm);
+        this.dataIContainer.add(this.dataFilterForm);
 
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
@@ -234,7 +241,7 @@ public class GlobalConfigurationPage extends DeprecatedPage {
                 return new BadgeCell(BadgeType.Danger, Model.of("No"));
             }
         } else if ("value".equals(column)) {
-            Integer value = (Integer) model.get(column);
+            Long value = (Long) model.get(column);
             return new TextCell(value);
         }
         throw new WicketRuntimeException("Unknown " + column);
