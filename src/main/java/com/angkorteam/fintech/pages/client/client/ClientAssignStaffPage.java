@@ -7,14 +7,15 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.client.client.ClientAssignStaffBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -26,7 +27,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class ClientAssignStaffPage extends DeprecatedPage {
+public class ClientAssignStaffPage extends Page {
 
     protected String clientId;
     protected String officeId;
@@ -36,19 +37,15 @@ public class ClientAssignStaffPage extends DeprecatedPage {
 
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupContainer staffBlock;
-    protected WebMarkupContainer staffContainer;
+    protected WebMarkupBlock staffBlock;
+    protected WebMarkupContainer staffIContainer;
     protected SingleChoiceProvider staffProvider;
     protected Option staffValue;
     protected Select2SingleChoice<Option> staffField;
     protected TextFeedbackPanel staffFeedback;
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
-        initData();
-
+    protected void initComponent() {
         PageParameters parameters = new PageParameters();
         parameters.add("clientId", this.clientId);
 
@@ -62,10 +59,24 @@ public class ClientAssignStaffPage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.staffBlock = new WebMarkupContainer("staffBlock");
+        initStaffBlock();
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+
+    }
+
+    @Override
+    protected void configureMetaData() {
+
+    }
+
+    protected void initStaffBlock() {
+        this.staffBlock = new WebMarkupBlock("staffBlock", Size.Six_6);
         this.form.add(this.staffBlock);
-        this.staffContainer = new WebMarkupContainer("staffContainer");
-        this.staffBlock.add(this.staffContainer);
+        this.staffIContainer = new WebMarkupContainer("staffIContainer");
+        this.staffBlock.add(this.staffIContainer);
         this.staffProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
         this.staffProvider.applyWhere("is_active", "is_active = 1");
         this.staffProvider.applyWhere("office_id", "office_id = " + this.officeId);
@@ -73,11 +84,12 @@ public class ClientAssignStaffPage extends DeprecatedPage {
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
         this.staffField.setRequired(true);
-        this.staffContainer.add(this.staffField);
+        this.staffIContainer.add(this.staffField);
         this.staffFeedback = new TextFeedbackPanel("staffFeedback", this.staffField);
-        this.staffContainer.add(this.staffFeedback);
+        this.staffIContainer.add(this.staffFeedback);
     }
 
+    @Override
     protected void initData() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         this.clientId = getPageParameters().get("clientId").toString();
