@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.EntityCheckBuilder;
@@ -22,6 +22,8 @@ import com.angkorteam.fintech.provider.EntityStatusProvider;
 import com.angkorteam.fintech.provider.EntityTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -36,28 +38,34 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 7/15/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class CheckerCreatePage extends DeprecatedPage {
+public class CheckerCreatePage extends Page {
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private EntityTypeProvider entityProvider;
-    private Option entityValue;
-    private Select2SingleChoice<Option> entityField;
-    private TextFeedbackPanel entityFeedback;
+    protected WebMarkupBlock entityBlock;
+    protected WebMarkupContainer entityIContainer;
+    protected EntityTypeProvider entityProvider;
+    protected Option entityValue;
+    protected Select2SingleChoice<Option> entityField;
+    protected TextFeedbackPanel entityFeedback;
 
-    private EntityStatusProvider statusProvider;
-    private Option statusValue;
-    private Select2SingleChoice<Option> statusField;
-    private TextFeedbackPanel statusFeedback;
+    protected WebMarkupBlock statusBlock;
+    protected WebMarkupContainer statusIContainer;
+    protected EntityStatusProvider statusProvider;
+    protected Option statusValue;
+    protected Select2SingleChoice<Option> statusField;
+    protected TextFeedbackPanel statusFeedback;
 
-    private SingleChoiceProvider datatableProvider;
-    private Option datatableValue;
-    private Select2SingleChoice<Option> datatableField;
-    private TextFeedbackPanel datatableFeedback;
+    protected WebMarkupBlock datatableBlock;
+    protected WebMarkupContainer datatableIContainer;
+    protected SingleChoiceProvider datatableProvider;
+    protected Option datatableValue;
+    protected Select2SingleChoice<Option> datatableField;
+    protected TextFeedbackPanel datatableFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -91,9 +99,11 @@ public class CheckerCreatePage extends DeprecatedPage {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -104,39 +114,64 @@ public class CheckerCreatePage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", CheckerBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.entityProvider = new EntityTypeProvider();
-        this.entityField = new Select2SingleChoice<>("entityField", 0, new PropertyModel<>(this, "entityValue"), this.entityProvider);
-        this.entityField.setRequired(true);
-        this.form.add(this.entityField);
-        this.entityFeedback = new TextFeedbackPanel("entityFeedback", this.entityField);
-        this.form.add(this.entityFeedback);
-        this.entityField.add(new OnChangeAjaxBehavior(this::entityFieldUpdate, this::entityFieldError));
+        initEntityBlock();
 
+        initStatusBlock();
+
+        initDatatableBlock();
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+
+    }
+
+    @Override
+    protected void configureMetaData() {
+
+    }
+
+    protected void initEntityBlock() {
+        this.entityBlock = new WebMarkupBlock("entityBlock", Size.Twelve_12);
+        this.form.add(this.entityBlock);
+        this.entityIContainer = new WebMarkupContainer("entityIContainer");
+        this.entityBlock.add(this.entityIContainer);
+        this.entityProvider = new EntityTypeProvider();
+        this.entityField = new Select2SingleChoice<>("entityField", new PropertyModel<>(this, "entityValue"), this.entityProvider);
+        this.entityField.setRequired(true);
+        this.entityIContainer.add(this.entityField);
+        this.entityFeedback = new TextFeedbackPanel("entityFeedback", this.entityField);
+        this.entityIContainer.add(this.entityFeedback);
+        this.entityField.add(new OnChangeAjaxBehavior(this::entityFieldUpdate));
+    }
+
+    protected void initStatusBlock() {
+        this.statusBlock = new WebMarkupBlock("statusBlock", Size.Twelve_12);
+        this.form.add(this.statusBlock);
+        this.statusIContainer = new WebMarkupContainer("statusIContainer");
+        this.statusBlock.add(this.statusIContainer);
         this.statusProvider = new EntityStatusProvider();
         this.statusField = new Select2SingleChoice<>("statusField", 0, new PropertyModel<>(this, "statusValue"), this.statusProvider);
         this.statusField.setRequired(true);
-        this.form.add(this.statusField);
+        this.statusIContainer.add(this.statusField);
         this.statusFeedback = new TextFeedbackPanel("statusFeedback", this.statusField);
-        this.form.add(this.statusFeedback);
-        this.statusField.add(new OnChangeAjaxBehavior(this::statusFieldUpdate, this::statusFieldError));
+        this.statusIContainer.add(this.statusFeedback);
+        this.statusField.add(new OnChangeAjaxBehavior(this::statusFieldUpdate));
+    }
 
+    protected void initDatatableBlock() {
+        this.datatableBlock = new WebMarkupBlock("datatableBlock", Size.Twelve_12);
+        this.form.add(this.datatableBlock);
+        this.datatableIContainer = new WebMarkupContainer("datatableIContainer");
+        this.datatableBlock.add(this.datatableIContainer);
         this.datatableProvider = new SingleChoiceProvider("x_registered_table", "application_table_name", "registered_table_name");
         this.datatableProvider.setDisabled(true);
         this.datatableField = new Select2SingleChoice<>("datatableField", 0, new PropertyModel<>(this, "datatableValue"), this.datatableProvider);
         this.datatableField.setRequired(true);
-        this.datatableField.add(new OnChangeAjaxBehavior(this::datatableFieldUpdate, this::datatableFieldError));
-        this.form.add(this.datatableField);
+        this.datatableField.add(new OnChangeAjaxBehavior(this::datatableFieldUpdate));
+        this.datatableIContainer.add(this.datatableField);
         this.datatableFeedback = new TextFeedbackPanel("datatableFeedback", this.datatableField);
-        this.form.add(this.datatableFeedback);
-
-    }
-
-    protected boolean datatableFieldError(AjaxRequestTarget target, RuntimeException e) {
-        if (e != null) {
-            throw e;
-        }
-        target.add(this.form);
-        return false;
+        this.datatableIContainer.add(this.datatableFeedback);
     }
 
     protected boolean datatableFieldUpdate(AjaxRequestTarget target) {
@@ -144,30 +179,7 @@ public class CheckerCreatePage extends DeprecatedPage {
         return false;
     }
 
-    protected boolean statusFieldError(AjaxRequestTarget target, RuntimeException e) {
-        if (e != null) {
-            throw e;
-        }
-        target.add(this.form);
-        return false;
-    }
-
     protected boolean statusFieldUpdate(AjaxRequestTarget target) {
-        target.add(this.form);
-        return false;
-    }
-
-    protected boolean entityFieldError(AjaxRequestTarget target, RuntimeException e) {
-        if (e != null) {
-            throw e;
-        }
-
-        this.statusValue = null;
-        this.statusProvider.setType(null);
-
-        this.datatableValue = null;
-        this.datatableProvider.setDisabled(true);
-
         target.add(this.form);
         return false;
     }
@@ -193,11 +205,15 @@ public class CheckerCreatePage extends DeprecatedPage {
             this.datatableProvider.setDisabled(true);
         }
 
-        target.add(this.form);
+        if (target != null) {
+            target.add(this.statusBlock);
+            target.add(this.datatableBlock);
+            target.add(this.entityBlock);
+        }
         return false;
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         EntityCheckBuilder builder = new EntityCheckBuilder();
         builder.withDatatableName(this.datatableValue.getText());
         builder.withEntity(EntityType.valueOf(this.entityValue.getId()).getLiteral());

@@ -11,30 +11,32 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="entityField">Entity</label> <select
-							wicket:id="entityField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="entityFeedback"
-							class="help-block"></span>
+					<div wicket:id="entityBlock" class="form-group">
+						<wicket:container wicket:id="entityIContainer">
+							<label wicket:for="entityField">Entity</label>
+							<select wicket:id="entityField" class="form-control"></select>
+							<span wicket:id="entityFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="statusField">Status</label> <select
-							wicket:id="statusField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="statusFeedback"
-							class="help-block"></span>
+					<div wicket:id="statusBlock" class="form-group">
+						<wicket:container wicket:id="statusIContainer">
+							<label wicket:for="statusField">Status</label>
+							<select wicket:id="statusField" class="form-control"></select>
+							<span wicket:id="statusFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
+
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="datatableField">Data Table</label> <select
-							wicket:id="datatableField" class="form-control select2"
-							style="width: 100%;"></select> <span
-							wicket:id="datatableFeedback" class="help-block"></span>
+					<div wicket:id="datatableBlock" class="form-group">
+						<wicket:container wicket:id="datatableIContainer">
+							<label wicket:for="datatableField">Data Table</label>
+							<select wicket:id="datatableField" class="form-control"></select>
+							<span wicket:id="datatableFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>
