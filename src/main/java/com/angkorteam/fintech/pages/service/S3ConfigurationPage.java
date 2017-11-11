@@ -11,7 +11,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.ExternalServiceBuilder;
@@ -33,31 +33,31 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class S3ConfigurationPage extends DeprecatedPage {
+public class S3ConfigurationPage extends Page {
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
     protected WebMarkupBlock s3AccessKeyBlock;
     protected WebMarkupContainer s3AccessKeyIContainer;
-    private String s3AccessKeyValue;
-    private TextField<String> s3AccessKeyField;
-    private TextFeedbackPanel s3AccessKeyFeedback;
+    protected String s3AccessKeyValue;
+    protected TextField<String> s3AccessKeyField;
+    protected TextFeedbackPanel s3AccessKeyFeedback;
 
     protected WebMarkupBlock s3BucketNameBlock;
     protected WebMarkupContainer s3BucketNameIContainer;
-    private String s3BucketNameValue;
-    private TextField<String> s3BucketNameField;
-    private TextFeedbackPanel s3BucketNameFeedback;
+    protected String s3BucketNameValue;
+    protected TextField<String> s3BucketNameField;
+    protected TextFeedbackPanel s3BucketNameFeedback;
 
     protected WebMarkupBlock s3SecretKeyBlock;
     protected WebMarkupContainer s3SecretKeyIContainer;
-    private String s3SecretKeyValue;
-    private TextField<String> s3SecretKeyField;
-    private TextFeedbackPanel s3SecretKeyFeedback;
+    protected String s3SecretKeyValue;
+    protected TextField<String> s3SecretKeyField;
+    protected TextFeedbackPanel s3SecretKeyFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -168,7 +168,7 @@ public class S3ConfigurationPage extends DeprecatedPage {
     protected void configureMetaData() {
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         ExternalServiceBuilder builder = new ExternalServiceBuilder(ServiceType.S3);
         builder.withS3AccessKey(this.s3AccessKeyValue);
         builder.withS3BucketName(this.s3BucketNameValue);
