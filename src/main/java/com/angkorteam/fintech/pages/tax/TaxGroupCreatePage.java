@@ -15,7 +15,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.TaxGroupBuilder;
@@ -54,7 +54,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 7/16/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class TaxGroupCreatePage extends DeprecatedPage {
+public class TaxGroupCreatePage extends Page {
 
     protected Form<Void> taxForm;
     protected AjaxButton addButton;
@@ -141,12 +141,12 @@ public class TaxGroupCreatePage extends DeprecatedPage {
         this.addButton.setOnSubmit(this::addButtonSubmit);
         this.taxForm.add(this.addButton);
 
+        this.form = new Form<>("form");
+        add(this.form);
+
         initTaxBlock();
 
         initStartDateBlock();
-
-        this.form = new Form<>("form");
-        add(this.form);
 
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
@@ -191,7 +191,7 @@ public class TaxGroupCreatePage extends DeprecatedPage {
 
     protected void initStartDateBlock() {
         this.startDateBlock = new WebMarkupBlock("startDateBlock", Size.Six_6);
-        this.form.add(this.startDateBlock);
+        this.taxForm.add(this.startDateBlock);
         this.startDateIContainer = new WebMarkupContainer("startDateIContainer");
         this.startDateBlock.add(this.startDateIContainer);
         this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
@@ -203,7 +203,7 @@ public class TaxGroupCreatePage extends DeprecatedPage {
 
     protected void initTaxBlock() {
         this.taxBlock = new WebMarkupBlock("taxBlock", Size.Six_6);
-        this.form.add(this.taxBlock);
+        this.taxForm.add(this.taxBlock);
         this.taxIContainer = new WebMarkupContainer("taxIContainer");
         this.taxBlock.add(this.taxIContainer);
         this.taxProvider = new SingleChoiceProvider("m_tax_component", "id", "name");

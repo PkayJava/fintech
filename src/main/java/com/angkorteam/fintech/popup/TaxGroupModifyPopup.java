@@ -1,14 +1,15 @@
 package com.angkorteam.fintech.popup;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
@@ -27,7 +28,7 @@ public class TaxGroupModifyPopup extends Panel {
     protected WebMarkupBlock startDateBlock;
     protected WebMarkupContainer startDateVContainer;
     protected PropertyModel<String> startDateValue;
-    protected Label startDateView;
+    protected ReadOnlyView startDateView;
 
     protected WebMarkupBlock endDateBlock;
     protected WebMarkupContainer endDateIContainer;
@@ -35,9 +36,9 @@ public class TaxGroupModifyPopup extends Panel {
     protected TextFeedbackPanel endDateFeedback;
     protected PropertyModel<Date> endDateValue;
 
-    protected Object model;
+    protected Map<String, Object> model;
 
-    public TaxGroupModifyPopup(String id, ModalWindow window, Object model) {
+    public TaxGroupModifyPopup(String id, ModalWindow window, Map<String, Object> model) {
         super(id);
         this.model = model;
         this.window = window;
@@ -52,38 +53,32 @@ public class TaxGroupModifyPopup extends Panel {
 
         this.saveButton = new AjaxButton("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
-        this.saveButton.setOnError(this::saveButtonError);
         this.form.add(this.saveButton);
 
-        this.startDateValue = new PropertyModel<>(this.model, "taxComponentItemStartDateValue");
+        this.startDateValue = new PropertyModel<>(this.model, "startDateValue");
         this.startDateBlock = new WebMarkupBlock("startDateBlock", Size.Twelve_12);
         this.form.add(this.startDateBlock);
         this.startDateVContainer = new WebMarkupContainer("startDateVContainer");
         this.startDateBlock.add(this.startDateVContainer);
-        this.startDateView = new Label("startDateView", this.startDateValue);
-        this.form.add(this.startDateView);
+        this.startDateView = new ReadOnlyView("startDateView", this.startDateValue);
+        this.startDateVContainer.add(this.startDateView);
 
         this.endDateBlock = new WebMarkupBlock("endDateBlock", Size.Twelve_12);
         this.form.add(this.endDateBlock);
         this.endDateIContainer = new WebMarkupContainer("endDateIContainer");
         this.endDateBlock.add(this.endDateIContainer);
-        this.endDateValue = new PropertyModel<>(this.model, "taxComponentItemEndDateValue");
+        this.endDateValue = new PropertyModel<>(this.model, "endDateValue");
         this.endDateField = new DateTextField("endDateField", this.endDateValue);
         this.endDateField.setLabel(Model.of("End Date"));
         this.endDateField.setRequired(true);
-        this.form.add(this.endDateField);
+        this.endDateIContainer.add(this.endDateField);
         this.endDateFeedback = new TextFeedbackPanel("endDateFeedback", this.endDateField);
-        this.form.add(this.endDateFeedback);
+        this.endDateIContainer.add(this.endDateFeedback);
     }
 
     protected boolean saveButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
         this.window.setElementId(ajaxButton.getId());
         this.window.close(target);
-        return true;
-    }
-
-    protected boolean saveButtonError(AjaxButton ajaxButton, AjaxRequestTarget target) {
-        target.add(this.form);
         return true;
     }
 }

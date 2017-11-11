@@ -17,7 +17,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.TaxGroupBuilder;
@@ -59,7 +59,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 7/16/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class TaxGroupModifyPage extends DeprecatedPage {
+public class TaxGroupModifyPage extends Page {
 
     protected String taxId;
 
@@ -97,9 +97,7 @@ public class TaxGroupModifyPage extends DeprecatedPage {
     protected List<IColumn<Map<String, Object>, String>> taxComponentColumn;
     protected ModalWindow taxComponentPopup;
 
-    protected Long taxComponentItemIdValue;
-    protected String taxComponentItemStartDateValue;
-    protected Date taxComponentItemEndDateValue;
+    protected Map<String, Object> popupModel;
 
     protected static final List<PageBreadcrumb> BREADCRUMB;
 
@@ -142,6 +140,8 @@ public class TaxGroupModifyPage extends DeprecatedPage {
 
     @Override
     protected void initData() {
+        this.popupModel = Maps.newHashMap();
+
         PageParameters parameters = getPageParameters();
         this.taxId = parameters.get("taxId").toString("");
 
@@ -164,12 +164,12 @@ public class TaxGroupModifyPage extends DeprecatedPage {
         this.addButton.setOnSubmit(this::addButtonSubmit);
         this.taxForm.add(this.addButton);
 
+        this.form = new Form<>("form");
+        add(this.form);
+
         initTaxBlock();
 
         initStartDateBlock();
-
-        this.form = new Form<>("form");
-        add(this.form);
 
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
@@ -197,7 +197,7 @@ public class TaxGroupModifyPage extends DeprecatedPage {
 
     protected void initTaxBlock() {
         this.taxBlock = new WebMarkupBlock("taxBlock", Size.Six_6);
-        this.form.add(this.taxBlock);
+        this.taxForm.add(this.taxBlock);
         this.taxIContainer = new WebMarkupContainer("taxIContainer");
         this.taxBlock.add(this.taxIContainer);
         this.taxProvider = new SingleChoiceProvider("m_tax_component", "id", "name");
@@ -209,7 +209,7 @@ public class TaxGroupModifyPage extends DeprecatedPage {
 
     protected void initStartDateBlock() {
         this.startDateBlock = new WebMarkupBlock("startDateBlock", Size.Six_6);
-        this.form.add(this.startDateBlock);
+        this.taxForm.add(this.startDateBlock);
         this.startDateIContainer = new WebMarkupContainer("startDateIContainer");
         this.startDateBlock.add(this.startDateIContainer);
         this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
@@ -263,15 +263,14 @@ public class TaxGroupModifyPage extends DeprecatedPage {
         this.taxComponentTable.addBottomToolbar(new NoRecordsToolbar(this.taxComponentTable));
 
         this.taxComponentPopup = new ModalWindow("taxComponentPopup");
-        add(this.taxComponentPopup);
+        this.taxComponentIContainer.add(this.taxComponentPopup);
         this.taxComponentPopup.setOnClose(this::taxComponentPopupClose);
     }
 
     protected void taxComponentPopupClose(String elementId, AjaxRequestTarget target) {
         for (Map<String, Object> item : this.taxComponentValue) {
-            if (this.taxComponentItemIdValue.equals(item.get("id"))) {
-                item.put("endDate", this.taxComponentItemEndDateValue);
-                this.taxComponentItemEndDateValue = null;
+            if (this.popupModel.get("idValue").equals(item.get("id"))) {
+                item.put("endDate", this.popupModel.get("endDateValue"));
                 break;
             }
         }
@@ -304,10 +303,11 @@ public class TaxGroupModifyPage extends DeprecatedPage {
             }
             target.add(this.taxComponentTable);
         } else if ("modify".equals(s)) {
-            this.taxComponentItemIdValue = (Long) model.get("id");
-            this.taxComponentItemEndDateValue = (Date) model.get("endDate");
-            this.taxComponentItemStartDateValue = DateFormatUtils.format((Date) model.get("startDate"), "yyyy-MM-dd");
-            this.taxComponentPopup.setContent(new TaxGroupModifyPopup(this.taxComponentPopup.getContentId(), this.taxComponentPopup, this));
+            this.popupModel.clear();
+            this.popupModel.put("idValue", model.get("id"));
+            this.popupModel.put("endDateValue", model.get("endDate"));
+            this.popupModel.put("startDateValue", DateFormatUtils.format((Date) model.get("startDate"), "yyyy-MM-dd"));
+            this.taxComponentPopup.setContent(new TaxGroupModifyPopup(this.taxComponentPopup.getContentId(), this.taxComponentPopup, this.popupModel));
             this.taxComponentPopup.show(target);
         }
     }
