@@ -16,9 +16,8 @@
 				<div class="box-body">
 
 					<!-- Row -->
-					<div wicket:id="nameBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="nameContainer">
+					<div wicket:id="nameBlock" class="form-group">
+						<wicket:container wicket:id="nameIContainer">
 							<label wicket:for="nameField">Name</label>
 							<input wicket:id="nameField" type="text" class="form-control" />
 							<span wicket:id="nameFeedback" class="help-block"></span>
@@ -30,12 +29,10 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="officeBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="officeContainer">
+					<div wicket:id="officeBlock" class="form-group">
+						<wicket:container wicket:id="officeIContainer">
 							<label wicket:for="officeField">Office</label>
-							<select wicket:id="officeField" class="form-control select2"
-								style="width: 100%;"></select>
+							<select wicket:id="officeField" class="form-control"></select>
 							<span wicket:id="officeFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
@@ -45,12 +42,10 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="staffBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="staffContainer">
+					<div wicket:id="staffBlock" class="form-group">
+						<wicket:container wicket:id="staffIContainer">
 							<label wicket:for="staffField">Staff</label>
-							<select wicket:id="staffField" class="form-control select2"
-								style="width: 100%;"></select>
+							<select wicket:id="staffField" class="form-control"></select>
 							<span wicket:id="staffFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
@@ -60,9 +55,8 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="activeBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="activeContainer">
+					<div wicket:id="activeBlock" class="form-group">
+						<wicket:container wicket:id="activeIContainer">
 							<label>&nbsp;</label>
 							<span style="display: block"> <label> <input
 									type="checkbox" wicket:id="activeField" /> Is Active ?
@@ -71,9 +65,8 @@
 							<span wicket:id="activeFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
-					<div wicket:id="activationDateBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="activationDateContainer">
+					<div wicket:id="activationDateBlock" class="form-group">
+						<wicket:container wicket:id="activationDateIContainer">
 							<label wicket:for="activationDateField">Activation Date</label>
 							<input wicket:id="activationDateField" type="text"
 								class="form-control" />
@@ -83,9 +76,8 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="externalIdBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="externalIdContainer">
+					<div wicket:id="externalIdBlock" class="form-group">
+						<wicket:container wicket:id="externalIdIContainer">
 							<label wicket:for="externalIdField">External ID</label>
 							<input wicket:id="externalIdField" type="text"
 								class="form-control" />
@@ -98,9 +90,8 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="submittedOnBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="submittedOnContainer">
+					<div wicket:id="submittedOnBlock" class="form-group">
+						<wicket:container wicket:id="submittedOnIContainer">
 							<label wicket:for="submittedOnField">Submitted On</label>
 							<input wicket:id="submittedOnField" type="text"
 								class="form-control" />
@@ -121,16 +112,18 @@
 				<div class="box-body">
 
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<div class="box box-primary">
-							<div class="box-body">
-								<table wicket:id="groupTable"></table>
+					<div wicket:id="groupBlock" class="form-group">
+						<wicket:container wicket:id="groupIContainer">
+							<div class="box box-primary">
+								<div class="box-body">
+									<table wicket:id="groupTable"></table>
+								</div>
+								<div class="box-footer">
+									<a wicket:id="groupAddLink" class="btn btn-default">Add</a>
+								</div>
 							</div>
-							<div class="box-footer">
-								<a wicket:id="groupAddLink" class="btn btn-default">Add</a>
-							</div>
-						</div>
+							<div wicket:id="groupPopup"></div>
+						</wicket:container>
 					</div>
 
 					<div class="clearfix"></div>
@@ -142,7 +135,6 @@
 				</div>
 			</div>
 		</form>
-		<div wicket:id="groupPopup" />
 	</wicket:extend>
 </body>
 

@@ -9,12 +9,12 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label wicket:for="groupField">Group</label> <select
-							wicket:id="groupField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="groupFeedback"
-							class="help-block"></span>
+					<div wicket:id="groupBlock" class="form-group">
+						<wicket:container wicket:id="groupIContainer">
+							<label wicket:for="groupField">Group</label>
+							<select wicket:id="groupField" class="form-control"></select>
+							<span wicket:id="groupFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
