@@ -6,17 +6,19 @@ import java.util.Map;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
 import com.angkorteam.fintech.provider.OfficeHierarchyProvider;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.tree.NestedTree;
 import com.google.common.collect.Lists;
@@ -25,17 +27,18 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 6/22/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class OfficeHierarchyPage extends DeprecatedPage {
+public class OfficeHierarchyPage extends Page {
 
-    private NestedTree<Map<String, Object>> tree;
+    protected WebMarkupBlock dataBlock;
+    protected WebMarkupContainer dataIContainer;
+    protected NestedTree<Map<String, Object>> dataTree;
+    protected OfficeHierarchyProvider dataProvider;
 
-    private OfficeHierarchyProvider provider;
+    protected BookmarkablePageLink<Void> browseLink;
 
-    private BookmarkablePageLink<Void> browseLink;
+    protected BookmarkablePageLink<Void> createLink;
 
-    private BookmarkablePageLink<Void> createLink;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -69,13 +72,12 @@ public class OfficeHierarchyPage extends DeprecatedPage {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
-        this.provider = new OfficeHierarchyProvider();
-
-        this.tree = new NestedTree<>("tree", this.provider, this::newLabel, this::newLink);
-        add(this.tree);
+    @Override
+    protected void initComponent() {
+        initDataBlock();
 
         this.browseLink = new BookmarkablePageLink<>("browseLink", OfficeBrowsePage.class);
         add(this.browseLink);
@@ -84,7 +86,25 @@ public class OfficeHierarchyPage extends DeprecatedPage {
         add(this.createLink);
     }
 
-    private MarkupContainer newLink(String s, IModel<Map<String, Object>> model) {
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initDataBlock() {
+        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
+        add(this.dataBlock);
+        this.dataIContainer = new WebMarkupContainer("dataIContainer");
+        this.dataBlock.add(this.dataIContainer);
+        this.dataProvider = new OfficeHierarchyProvider();
+        this.dataTree = new NestedTree<>("dataTree", this.dataProvider, this::dataNewLabel, this::dataNewLink);
+        this.dataIContainer.add(this.dataTree);
+    }
+
+    protected MarkupContainer dataNewLink(String s, IModel<Map<String, Object>> model) {
         Long id = (Long) model.getObject().get("id");
         PageParameters parameters = new PageParameters();
         parameters.add("officeId", id);
@@ -92,7 +112,7 @@ public class OfficeHierarchyPage extends DeprecatedPage {
         return link;
     }
 
-    private Component newLabel(String s, IModel<Map<String, Object>> mapIModel) {
+    protected Component dataNewLabel(String s, IModel<Map<String, Object>> mapIModel) {
         return new Label(s, (String) mapIModel.getObject().get("name"));
     }
 
