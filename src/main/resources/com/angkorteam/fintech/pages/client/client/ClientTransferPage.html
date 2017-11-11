@@ -16,12 +16,10 @@
 				<div class="box-body">
 
 					<!-- Row -->
-					<div wicket:id="officeBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="officeContainer">
+					<div wicket:id="officeBlock" class="form-group">
+						<wicket:container wicket:id="officeIContainer">
 							<label wicket:for="officeField">Office</label>
-							<select wicket:id="officeField" class="form-control select2"
-								style="width: 100%;"></select>
+							<select wicket:id="officeField" class="form-control"></select>
 							<span wicket:id="officeFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
@@ -31,9 +29,8 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="noteBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="noteContainer">
+					<div wicket:id="noteBlock" class="form-group">
+						<wicket:container wicket:id="noteIContainer">
 							<label wicket:for="noteField">Note</label>
 							<textarea wicket:id="noteField" class="form-control"></textarea>
 							<span wicket:id="noteFeedback" class="help-block"></span>
