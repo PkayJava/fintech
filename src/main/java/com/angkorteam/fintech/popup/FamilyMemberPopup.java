@@ -1,5 +1,7 @@
 package com.angkorteam.fintech.popup;
 
+import java.util.Map;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
@@ -65,9 +67,10 @@ public class FamilyMemberPopup extends Panel {
 
     private DateTextField dateOfBirthField;
     private TextFeedbackPanel dateOfBirthFeedback;
-    private Object model;
 
-    public FamilyMemberPopup(String id, ModalWindow window, Object model) {
+    private Map<String, Object> model;
+
+    public FamilyMemberPopup(String id, ModalWindow window, Map<String, Object> model) {
         super(id);
         this.model = model;
         this.window = window;
@@ -86,69 +89,69 @@ public class FamilyMemberPopup extends Panel {
         this.form.add(this.okayButton);
 
         this.relationshipProvider = new RelationshipProvider();
-        this.relationshipField = new Select2SingleChoice<>("relationshipField", new PropertyModel<>(this.model, "itemRelationshipValue"), this.relationshipProvider);
+        this.relationshipField = new Select2SingleChoice<>("relationshipField", new PropertyModel<>(this.model, "relationshipValue"), this.relationshipProvider);
         this.relationshipField.setLabel(Model.of("Relationship"));
         this.form.add(this.relationshipField);
         this.relationshipFeedback = new TextFeedbackPanel("relationshipFeedback", this.relationshipField);
         this.form.add(this.relationshipFeedback);
 
-        this.firstNameField = new TextField<>("firstNameField", new PropertyModel<>(this.model, "itemFirstNameValue"));
+        this.firstNameField = new TextField<>("firstNameField", new PropertyModel<>(this.model, "firstNameValue"));
         this.firstNameField.setLabel(Model.of("First Name"));
         this.form.add(this.firstNameField);
         this.firstNameFeedback = new TextFeedbackPanel("firstNameFeedback", this.firstNameField);
         this.form.add(this.firstNameFeedback);
 
-        this.middleNameField = new TextField<>("middleNameField", new PropertyModel<>(this.model, "itemMiddleNameValue"));
+        this.middleNameField = new TextField<>("middleNameField", new PropertyModel<>(this.model, "middleNameValue"));
         this.middleNameField.setLabel(Model.of("Middle Name"));
         this.form.add(this.middleNameField);
         this.middleNameFeedback = new TextFeedbackPanel("middleNameFeedback", this.middleNameField);
         this.form.add(this.middleNameFeedback);
 
-        this.lastNameField = new TextField<>("lastNameField", new PropertyModel<>(this.model, "itemLastNameValue"));
+        this.lastNameField = new TextField<>("lastNameField", new PropertyModel<>(this.model, "lastNameValue"));
         this.lastNameField.setLabel(Model.of("Last Name"));
         this.form.add(this.lastNameField);
         this.lastNameFeedback = new TextFeedbackPanel("lastNameFeedback", this.lastNameField);
         this.form.add(this.lastNameFeedback);
 
-        this.qualificationField = new TextField<>("qualificationField", new PropertyModel<>(this.model, "itemQualificationValue"));
+        this.qualificationField = new TextField<>("qualificationField", new PropertyModel<>(this.model, "qualificationValue"));
         this.qualificationField.setLabel(Model.of("Qualification"));
         this.form.add(this.qualificationField);
         this.qualificationFeedback = new TextFeedbackPanel("qualificationFeedback", this.qualificationField);
         this.form.add(this.qualificationFeedback);
 
-        this.mobileNumberField = new TextField<>("mobileNumberField", new PropertyModel<>(this.model, "itemMobileNumberValue"));
+        this.mobileNumberField = new TextField<>("mobileNumberField", new PropertyModel<>(this.model, "mobileNumberValue"));
         this.mobileNumberField.setLabel(Model.of("Mobile Number"));
         this.form.add(this.mobileNumberField);
         this.mobileNumberFeedback = new TextFeedbackPanel("mobileNumberFeedback", this.mobileNumberField);
         this.form.add(this.mobileNumberFeedback);
 
-        this.dependentField = new CheckBox("dependentField", new PropertyModel<>(this.model, "itemDependentValue"));
+        this.dependentField = new CheckBox("dependentField", new PropertyModel<>(this.model, "dependentValue"));
         this.form.add(this.dependentField);
         this.dependentFeedback = new TextFeedbackPanel("dependentFeedback", this.dependentField);
         this.form.add(this.dependentFeedback);
 
         this.genderProvider = new GenderProvider();
-        this.genderField = new Select2SingleChoice<>("genderField", new PropertyModel<>(this.model, "itemGenderValue"), this.genderProvider);
+        this.genderField = new Select2SingleChoice<>("genderField", new PropertyModel<>(this.model, "genderValue"), this.genderProvider);
         this.genderField.setLabel(Model.of("Gender"));
         this.form.add(this.genderField);
         this.genderFeedback = new TextFeedbackPanel("genderFeedback", this.genderField);
         this.form.add(this.genderFeedback);
 
         this.professionProvider = new ProfessionProvider();
-        this.professionField = new Select2SingleChoice<>("professionField", new PropertyModel<>(this.model, "itemProfessionValue"), this.professionProvider);
+        this.professionField = new Select2SingleChoice<>("professionField", new PropertyModel<>(this.model, "professionValue"), this.professionProvider);
         this.professionField.setLabel(Model.of("Profession"));
         this.form.add(this.professionField);
         this.professionFeedback = new TextFeedbackPanel("professionFeedback", this.professionField);
         this.form.add(this.professionFeedback);
 
         this.maritalStatusProvider = new MaritalStatusProvider();
-        this.maritalStatusField = new Select2SingleChoice<>("maritalStatusField", new PropertyModel<>(this.model, "itemMaritalStatusValue"), this.maritalStatusProvider);
+        this.maritalStatusField = new Select2SingleChoice<>("maritalStatusField", new PropertyModel<>(this.model, "maritalStatusValue"), this.maritalStatusProvider);
         this.maritalStatusField.setLabel(Model.of("Marital Status"));
         this.form.add(this.maritalStatusField);
         this.maritalStatusFeedback = new TextFeedbackPanel("maritalStatusFeedback", this.maritalStatusField);
         this.form.add(this.maritalStatusFeedback);
 
-        this.dateOfBirthField = new DateTextField("dateOfBirthField", new PropertyModel<>(this.model, "itemDateOfBirthValue"));
+        this.dateOfBirthField = new DateTextField("dateOfBirthField", new PropertyModel<>(this.model, "dateOfBirthValue"));
         this.dateOfBirthField.setLabel(Model.of("Date of Birth"));
         this.dateOfBirthField.setRequired(true);
         this.form.add(this.dateOfBirthField);
