@@ -9,12 +9,13 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.constant.FinancialActivityTypeEnum;
@@ -22,6 +23,8 @@ import com.angkorteam.fintech.helper.FinancialActivityHelper;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -40,8 +43,10 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 7/12/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class FinancialActivityBrowsePage extends DeprecatedPage {
+public class FinancialActivityBrowsePage extends Page {
 
+    protected WebMarkupBlock dataBlock;
+    protected WebMarkupContainer dataIContainer;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
@@ -77,28 +82,33 @@ public class FinancialActivityBrowsePage extends DeprecatedPage {
 
     @Override
     protected void initComponent() {
-        initDataTable();
+        initDataBlock();
 
         this.createLink = new BookmarkablePageLink<>("createLink", FinancialActivityCreatePage.class);
         add(this.createLink);
     }
 
-    protected void initDataTable() {
+    protected void initDataBlock() {
+        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
+        add(this.dataBlock);
+        this.dataIContainer = new WebMarkupContainer("dataIContainer");
+        this.dataBlock.add(this.dataIContainer);
+
         this.dataProvider = new JdbcProvider("acc_gl_financial_activity_account");
         this.dataProvider.addJoin("LEFT JOIN acc_gl_account ON acc_gl_financial_activity_account.gl_account_id = acc_gl_account.id");
         this.dataProvider.boardField("acc_gl_financial_activity_account.id", "id", Long.class);
         this.dataProvider.boardField("acc_gl_account.name", "account", String.class);
-        this.dataProvider.boardField("acc_gl_financial_activity_account.financial_activity_type", "type", Integer.class);
+        this.dataProvider.boardField("acc_gl_financial_activity_account.financial_activity_type", "type", Long.class);
 
         this.dataProvider.selectField("id", Long.class);
 
         this.dataColumn = new ArrayList<>();
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Integer, Model.of("Financial Activity"), "type", "type", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Financial Activity"), "type", "type", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Account Name"), "account", "account", this::dataColumn));
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 
         this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
-        add(this.dataFilterForm);
+        this.dataIContainer.add(this.dataFilterForm);
 
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
@@ -139,7 +149,7 @@ public class FinancialActivityBrowsePage extends DeprecatedPage {
 
     protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
         if ("type".equals(column)) {
-            Integer value = (Integer) model.get(column);
+            Long value = (Long) model.get(column);
             String text = null;
             if (FinancialActivityTypeEnum.AssetTransfer.getLiteral().equals(String.valueOf(value))) {
                 text = value + "." + FinancialActivityTypeEnum.AssetTransfer.getDescription();
