@@ -11,14 +11,15 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.CenterBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -31,7 +32,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class CenterModifyPage extends DeprecatedPage {
+public class CenterModifyPage extends Page {
 
     protected String centerId;
     protected String officeId;
@@ -40,40 +41,33 @@ public class CenterModifyPage extends DeprecatedPage {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupContainer nameBlock;
-    protected WebMarkupContainer nameContainer;
+    protected WebMarkupBlock nameBlock;
+    protected WebMarkupContainer nameIContainer;
     protected String nameValue;
     protected TextField<String> nameField;
     protected TextFeedbackPanel nameFeedback;
 
-    protected WebMarkupContainer staffBlock;
-    protected WebMarkupContainer staffContainer;
+    protected WebMarkupBlock staffBlock;
+    protected WebMarkupContainer staffIContainer;
     protected SingleChoiceProvider staffProvider;
     protected Option staffValue;
     protected Select2SingleChoice<Option> staffField;
     protected TextFeedbackPanel staffFeedback;
 
-    protected WebMarkupContainer externalIdBlock;
-    protected WebMarkupContainer externalIdContainer;
+    protected WebMarkupBlock externalIdBlock;
+    protected WebMarkupContainer externalIdIContainer;
     protected String externalIdValue;
     protected TextField<String> externalIdField;
     protected TextFeedbackPanel externalIdFeedback;
 
-    protected WebMarkupContainer activationDateBlock;
-    protected WebMarkupContainer activationDateContainer;
+    protected WebMarkupBlock activationDateBlock;
+    protected WebMarkupContainer activationDateIContainer;
     protected Date activationDateValue;
     protected DateTextField activationDateField;
     protected TextFeedbackPanel activationDateFeedback;
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
-        initData();
-
-        PageParameters parameters = new PageParameters();
-        parameters.add("centerId", this.centerId);
-
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -81,25 +75,61 @@ public class CenterModifyPage extends DeprecatedPage {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
+        PageParameters parameters = new PageParameters();
+        parameters.add("centerId", this.centerId);
         this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.nameBlock = new WebMarkupContainer("nameBlock");
-        this.nameBlock.setOutputMarkupId(true);
-        this.form.add(this.nameBlock);
-        this.nameContainer = new WebMarkupContainer("nameContainer");
-        this.nameBlock.add(this.nameContainer);
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setLabel(Model.of("Name"));
-        this.nameField.setRequired(true);
-        this.nameContainer.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.nameContainer.add(this.nameFeedback);
+        initNameBlock();
 
-        this.staffBlock = new WebMarkupContainer("staffBlock");
+        initStaffBlock();
+
+        initExternalIdBlock();
+
+        initActivationDateBlock();
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initActivationDateBlock() {
+        this.activationDateBlock = new WebMarkupBlock("activationDateBlock", Size.Six_6);
+        this.activationDateBlock.setOutputMarkupId(true);
+        this.form.add(this.activationDateBlock);
+        this.activationDateIContainer = new WebMarkupContainer("activationDateIContainer");
+        this.activationDateBlock.add(this.activationDateIContainer);
+        this.activationDateField = new DateTextField("activationDateField", new PropertyModel<>(this, "activationDateValue"));
+        this.activationDateField.setLabel(Model.of("Activation Date"));
+        this.activationDateField.setRequired(true);
+        this.activationDateIContainer.add(this.activationDateField);
+        this.activationDateFeedback = new TextFeedbackPanel("activationDateFeedback", this.activationDateField);
+        this.activationDateIContainer.add(this.activationDateFeedback);
+    }
+
+    protected void initExternalIdBlock() {
+        this.externalIdBlock = new WebMarkupBlock("externalIdBlock", Size.Six_6);
+        this.externalIdBlock.setOutputMarkupId(true);
+        this.form.add(this.externalIdBlock);
+        this.externalIdIContainer = new WebMarkupContainer("externalIdIContainer");
+        this.externalIdBlock.add(this.externalIdIContainer);
+        this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
+        this.externalIdField.setLabel(Model.of("External ID"));
+        this.externalIdField.setRequired(true);
+        this.externalIdIContainer.add(this.externalIdField);
+        this.externalIdFeedback = new TextFeedbackPanel("externalIdFeedback", this.externalIdField);
+        this.externalIdIContainer.add(this.externalIdFeedback);
+    }
+
+    protected void initStaffBlock() {
+        this.staffBlock = new WebMarkupBlock("staffBlock", Size.Six_6);
         this.form.add(this.staffBlock);
-        this.staffContainer = new WebMarkupContainer("staffContainer");
-        this.staffBlock.add(this.staffContainer);
+        this.staffIContainer = new WebMarkupContainer("staffIContainer");
+        this.staffBlock.add(this.staffIContainer);
         this.staffProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
         this.staffProvider.applyWhere("office_id", "office_id = " + this.officeId);
         this.staffProvider.applyWhere("is_active", "is_active = 1");
@@ -107,36 +137,26 @@ public class CenterModifyPage extends DeprecatedPage {
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
         this.staffField.setRequired(true);
-        this.staffContainer.add(this.staffField);
+        this.staffIContainer.add(this.staffField);
         this.staffFeedback = new TextFeedbackPanel("staffFeedback", this.staffField);
-        this.staffContainer.add(this.staffFeedback);
-
-        this.externalIdBlock = new WebMarkupContainer("externalIdBlock");
-        this.externalIdBlock.setOutputMarkupId(true);
-        this.form.add(this.externalIdBlock);
-        this.externalIdContainer = new WebMarkupContainer("externalIdContainer");
-        this.externalIdBlock.add(this.externalIdContainer);
-        this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
-        this.externalIdField.setLabel(Model.of("External ID"));
-        this.externalIdField.setRequired(true);
-        this.externalIdContainer.add(this.externalIdField);
-        this.externalIdFeedback = new TextFeedbackPanel("externalIdFeedback", this.externalIdField);
-        this.externalIdContainer.add(this.externalIdFeedback);
-
-        this.activationDateBlock = new WebMarkupContainer("activationDateBlock");
-        this.activationDateBlock.setOutputMarkupId(true);
-        this.form.add(this.activationDateBlock);
-        this.activationDateContainer = new WebMarkupContainer("activationDateContainer");
-        this.activationDateBlock.add(this.activationDateContainer);
-        this.activationDateField = new DateTextField("activationDateField", new PropertyModel<>(this, "activationDateValue"));
-        this.activationDateField.setLabel(Model.of("Activation Date"));
-        this.activationDateField.setRequired(true);
-        this.activationDateContainer.add(this.activationDateField);
-        this.activationDateFeedback = new TextFeedbackPanel("activationDateFeedback", this.activationDateField);
-        this.activationDateContainer.add(this.activationDateFeedback);
-
+        this.staffIContainer.add(this.staffFeedback);
     }
 
+    protected void initNameBlock() {
+        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
+        this.nameBlock.setOutputMarkupId(true);
+        this.form.add(this.nameBlock);
+        this.nameIContainer = new WebMarkupContainer("nameIContainer");
+        this.nameBlock.add(this.nameIContainer);
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setLabel(Model.of("Name"));
+        this.nameField.setRequired(true);
+        this.nameIContainer.add(this.nameField);
+        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+        this.nameIContainer.add(this.nameFeedback);
+    }
+
+    @Override
     protected void initData() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         this.centerId = getPageParameters().get("centerId").toString();
