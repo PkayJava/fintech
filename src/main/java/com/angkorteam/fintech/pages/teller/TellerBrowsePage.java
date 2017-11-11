@@ -9,12 +9,13 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.TellerHelper;
@@ -22,6 +23,8 @@ import com.angkorteam.fintech.pages.OrganizationDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -39,8 +42,10 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 7/13/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class TellerBrowsePage extends DeprecatedPage {
+public class TellerBrowsePage extends Page {
 
+    protected WebMarkupBlock dataBlock;
+    protected WebMarkupContainer dataIContainer;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
@@ -81,7 +86,7 @@ public class TellerBrowsePage extends DeprecatedPage {
 
     @Override
     protected void initComponent() {
-        initDataTable();
+        initDataBlock();
 
         this.createLink = new BookmarkablePageLink<>("createLink", TellerCreatePage.class);
         add(this.createLink);
@@ -95,7 +100,11 @@ public class TellerBrowsePage extends DeprecatedPage {
     protected void configureMetaData() {
     }
 
-    protected void initDataTable() {
+    protected void initDataBlock() {
+        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
+        add(this.dataBlock);
+        this.dataIContainer = new WebMarkupContainer("dataIContainer");
+        this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("m_tellers");
         this.dataProvider.addJoin("LEFT JOIN m_office on m_tellers.office_id = m_office.id");
         this.dataProvider.boardField("m_tellers.id", "id", Long.class);
@@ -116,9 +125,9 @@ public class TellerBrowsePage extends DeprecatedPage {
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
 
         this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
-        add(this.dataFilterForm);
+        this.dataIContainer.add(this.dataFilterForm);
 
-        this.dataTable = new DefaultDataTable<>("table", this.dataColumn, this.dataProvider, 20);
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
         this.dataFilterForm.add(this.dataTable);
     }
