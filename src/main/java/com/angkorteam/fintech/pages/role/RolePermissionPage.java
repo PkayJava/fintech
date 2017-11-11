@@ -15,7 +15,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.RoleHelper;
@@ -51,10 +51,12 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 6/26/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class RolePermissionPage extends DeprecatedPage {
+public class RolePermissionPage extends Page {
 
     protected String roleId;
 
+    protected WebMarkupBlock dataBlock;
+    protected WebMarkupContainer dataIContainer;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
@@ -112,7 +114,7 @@ public class RolePermissionPage extends DeprecatedPage {
     @Override
     protected void initComponent() {
 
-        initDataTable();
+        initDataBlock();
 
         this.form = new Form<>("form");
         add(this.form);
@@ -138,7 +140,11 @@ public class RolePermissionPage extends DeprecatedPage {
         this.permissionIContainer.add(this.permissionFeedback);
     }
 
-    protected void initDataTable() {
+    protected void initDataBlock() {
+        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
+        add(this.dataBlock);
+        this.dataIContainer = new WebMarkupContainer("dataIContainer");
+        this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("m_role_permission");
         this.dataProvider.addJoin("INNER JOIN m_permission ON m_role_permission.permission_id = m_permission.id");
         this.dataProvider.applyWhere("role", "m_role_permission.role_id = " + this.roleId);
@@ -156,9 +162,9 @@ public class RolePermissionPage extends DeprecatedPage {
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 
         this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
-        add(this.dataFilterForm);
+        this.dataIContainer.add(this.dataFilterForm);
 
-        this.dataTable = new DefaultDataTable<>("table", this.dataColumn, this.dataProvider, 20);
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
         this.dataFilterForm.add(this.dataTable);
     }

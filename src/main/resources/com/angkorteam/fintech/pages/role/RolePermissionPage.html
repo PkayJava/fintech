@@ -36,9 +36,13 @@
 				<h3 class="box-title">Permission Support</h3>
 			</div>
 			<div class="box-body">
-				<form wicket:id="dataFilterForm">
-					<table wicket:id="dataTable"></table>
-				</form>
+				<div wicket:id="dataBlock" class="form-group">
+					<wicket:container wicket:id="dataIContainer">
+						<form wicket:id="dataFilterForm">
+							<table wicket:id="dataTable"></table>
+						</form>
+					</wicket:container>
+				</div>
 			</div>
 		</div>
 	</wicket:extend>
