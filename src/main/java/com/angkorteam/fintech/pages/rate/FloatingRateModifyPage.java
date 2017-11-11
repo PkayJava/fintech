@@ -19,7 +19,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.FloatingRateBuilder;
@@ -31,6 +31,7 @@ import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -55,7 +56,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class FloatingRateModifyPage extends DeprecatedPage {
+public class FloatingRateModifyPage extends Page {
 
     protected String rateId;
 
@@ -110,10 +111,7 @@ public class FloatingRateModifyPage extends DeprecatedPage {
     protected List<IColumn<Map<String, Object>, String>> rateColumn;
     protected ModalWindow ratePopup;
 
-    protected Long rateItemIdValue;
-    protected Date rateItemFromDateValue;
-    protected Double rateItemInterestRateValue;
-    protected Boolean rateItemDifferentialValue;
+    protected Map<String, Object> popupModel;
 
     protected static final List<PageBreadcrumb> BREADCRUMB;
 
@@ -150,6 +148,7 @@ public class FloatingRateModifyPage extends DeprecatedPage {
 
     @Override
     protected void initData() {
+        this.popupModel = Maps.newHashMap();
         PageParameters parameters = getPageParameters();
         this.rateId = parameters.get("rateId").toString("");
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
@@ -159,93 +158,7 @@ public class FloatingRateModifyPage extends DeprecatedPage {
         this.activeValue = (Boolean) rateObject.get("is_active");
         this.baseLendingValue = (Boolean) rateObject.get("is_base_lending_rate");
 
-        refillTable();
-    }
-
-    @Override
-    protected void initComponent() {
-        this.rateForm = new Form<>("rateForm");
-        add(this.rateForm);
-
-        this.addButton = new AjaxButton("addButton");
-        this.addButton.setOnSubmit(this::addButtonSubmit);
-        this.rateForm.add(this.addButton);
-
-        this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this, "fromDateValue"));
-        this.fromDateField.setRequired(true);
-        this.rateForm.add(this.fromDateField);
-        this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
-        this.rateForm.add(this.fromDateFeedback);
-
-        this.interestRateField = new TextField<>("interestRateField", new PropertyModel<>(this, "interestRateValue"));
-        this.interestRateField.setRequired(true);
-        this.rateForm.add(this.interestRateField);
-        this.interestRateFeedback = new TextFeedbackPanel("interestRateFeedback", this.interestRateField);
-        this.rateForm.add(this.interestRateFeedback);
-
-        this.differentialField = new CheckBox("differentialField", new PropertyModel<>(this, "differentialValue"));
-        this.differentialField.setRequired(true);
-        this.rateForm.add(this.differentialField);
-        this.differentialFeedback = new TextFeedbackPanel("differentialFeedback", this.differentialField);
-        this.rateForm.add(this.differentialFeedback);
-
-        this.form = new Form<>("form");
-        add(this.form);
-
-        this.saveButton = new Button("saveButton");
-        this.saveButton.setOnSubmit(this::saveButtonSubmit);
-        this.form.add(this.saveButton);
-
-        this.closeLink = new BookmarkablePageLink<>("closeLink", FloatingRateBrowsePage.class);
-        this.form.add(this.closeLink);
-
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setRequired(true);
-        this.form.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.form.add(this.nameFeedback);
-
-        this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
-        this.activeField.setRequired(true);
-        this.form.add(this.activeField);
-        this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
-        this.form.add(this.activeFeedback);
-
-        this.baseLendingField = new CheckBox("baseLendingField", new PropertyModel<>(this, "baseLendingValue"));
-        this.baseLendingField.setRequired(true);
-        this.form.add(this.baseLendingField);
-        this.baseLendingFeedback = new TextFeedbackPanel("baseLendingFeedback", this.baseLendingField);
-        this.form.add(this.baseLendingFeedback);
-
-        refillTable();
-
-        this.rateColumn = Lists.newArrayList();
-        this.rateColumn.add(new TextColumn(Model.of("From Date"), "fromDate", "fromDate", this::rateColumn));
-        this.rateColumn.add(new TextColumn(Model.of("Interest Rate"), "interestRate", "interestRate", this::rateColumn));
-        this.rateColumn.add(new TextColumn(Model.of("Is Differential"), "differential", "differential", this::rateColumn));
-        this.rateColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::rateAction, this::rateClick));
-        this.rateProvider = new ListDataProvider(this.rateValue);
-        this.rateTable = new DataTable<>("rateTable", this.rateColumn, this.rateProvider, 20);
-        this.form.add(this.rateTable);
-        this.rateTable.addTopToolbar(new HeadersToolbar<>(this.rateTable, this.rateProvider));
-        this.rateTable.addBottomToolbar(new NoRecordsToolbar(this.rateTable));
-
-        this.ratePopup = new ModalWindow("ratePopup");
-        add(this.ratePopup);
-        this.ratePopup.setOnClose(this::ratePopupClose);
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
-    protected void configureMetaData() {
-    }
-
-    protected void refillTable() {
         this.rateValue.clear();
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         List<Map<String, Object>> rates = jdbcTemplate.queryForList("select id, from_date fromDate, concat(id, '') uuid, interest_rate interestRate, is_differential_to_base_lending_rate differential from m_floating_rates_periods where floating_rates_id = ? order by id desc", this.rateId);
         List<String> dates = Lists.newArrayList();
         for (Map<String, Object> rate : rates) {
@@ -258,15 +171,148 @@ public class FloatingRateModifyPage extends DeprecatedPage {
         }
     }
 
+    @Override
+    protected void initComponent() {
+        this.rateForm = new Form<>("rateForm");
+        add(this.rateForm);
+
+        this.addButton = new AjaxButton("addButton");
+        this.addButton.setOnSubmit(this::addButtonSubmit);
+        this.rateForm.add(this.addButton);
+
+        initFromDateBlock();
+
+        initInterestRateBlock();
+
+        initDifferentialBlock();
+
+        this.form = new Form<>("form");
+        add(this.form);
+
+        this.saveButton = new Button("saveButton");
+        this.saveButton.setOnSubmit(this::saveButtonSubmit);
+        this.form.add(this.saveButton);
+
+        this.closeLink = new BookmarkablePageLink<>("closeLink", FloatingRateBrowsePage.class);
+        this.form.add(this.closeLink);
+
+        initNameBlock();
+
+        initActiveBlock();
+
+        initBaseLendingBlock();
+
+        initRateBlock();
+    }
+
+    protected void initRateBlock() {
+        this.rateBlock = new WebMarkupBlock("rateBlock", Size.Twelve_12);
+        this.form.add(this.rateBlock);
+        this.rateIContainer = new WebMarkupContainer("rateIContainer");
+        this.rateBlock.add(this.rateIContainer);
+        this.rateColumn = Lists.newArrayList();
+        this.rateColumn.add(new TextColumn(Model.of("From Date"), "fromDate", "fromDate", this::rateColumn));
+        this.rateColumn.add(new TextColumn(Model.of("Interest Rate"), "interestRate", "interestRate", this::rateColumn));
+        this.rateColumn.add(new TextColumn(Model.of("Is Differential"), "differential", "differential", this::rateColumn));
+        this.rateColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::rateAction, this::rateClick));
+        this.rateProvider = new ListDataProvider(this.rateValue);
+        this.rateTable = new DataTable<>("rateTable", this.rateColumn, this.rateProvider, 20);
+        this.rateIContainer.add(this.rateTable);
+        this.rateTable.addTopToolbar(new HeadersToolbar<>(this.rateTable, this.rateProvider));
+        this.rateTable.addBottomToolbar(new NoRecordsToolbar(this.rateTable));
+
+        this.ratePopup = new ModalWindow("ratePopup");
+        this.rateIContainer.add(this.ratePopup);
+        this.ratePopup.setOnClose(this::ratePopupClose);
+    }
+
+    protected void initBaseLendingBlock() {
+        this.baseLendingBlock = new WebMarkupBlock("baseLendingBlock", Size.Four_4);
+        this.form.add(this.baseLendingBlock);
+        this.baseLendingIContainer = new WebMarkupContainer("baseLendingIContainer");
+        this.baseLendingBlock.add(this.baseLendingIContainer);
+        this.baseLendingField = new CheckBox("baseLendingField", new PropertyModel<>(this, "baseLendingValue"));
+        this.baseLendingField.setRequired(true);
+        this.baseLendingIContainer.add(this.baseLendingField);
+        this.baseLendingFeedback = new TextFeedbackPanel("baseLendingFeedback", this.baseLendingField);
+        this.baseLendingIContainer.add(this.baseLendingFeedback);
+    }
+
+    protected void initActiveBlock() {
+        this.activeBlock = new WebMarkupBlock("activeBlock", Size.Four_4);
+        this.form.add(this.activeBlock);
+        this.activeIContainer = new WebMarkupContainer("activeIContainer");
+        this.activeBlock.add(this.activeIContainer);
+        this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
+        this.activeField.setRequired(true);
+        this.activeIContainer.add(this.activeField);
+        this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
+        this.activeIContainer.add(this.activeFeedback);
+    }
+
+    protected void initNameBlock() {
+        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Four_4);
+        this.form.add(this.nameBlock);
+        this.nameIContainer = new WebMarkupContainer("nameIContainer");
+        this.nameBlock.add(this.nameIContainer);
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setRequired(true);
+        this.nameIContainer.add(this.nameField);
+        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+        this.nameIContainer.add(this.nameFeedback);
+    }
+
+    protected void initDifferentialBlock() {
+        this.differentialBlock = new WebMarkupBlock("differentialBlock", Size.Four_4);
+        this.rateForm.add(this.differentialBlock);
+        this.differentialIContainer = new WebMarkupContainer("differentialIContainer");
+        this.differentialBlock.add(this.differentialIContainer);
+        this.differentialField = new CheckBox("differentialField", new PropertyModel<>(this, "differentialValue"));
+        this.differentialField.setRequired(true);
+        this.differentialIContainer.add(this.differentialField);
+        this.differentialFeedback = new TextFeedbackPanel("differentialFeedback", this.differentialField);
+        this.differentialIContainer.add(this.differentialFeedback);
+    }
+
+    protected void initInterestRateBlock() {
+        this.interestRateBlock = new WebMarkupBlock("interestRateBlock", Size.Four_4);
+        this.rateForm.add(this.interestRateBlock);
+        this.interestRateIContainer = new WebMarkupContainer("interestRateIContainer");
+        this.interestRateBlock.add(this.interestRateIContainer);
+        this.interestRateField = new TextField<>("interestRateField", new PropertyModel<>(this, "interestRateValue"));
+        this.interestRateField.setRequired(true);
+        this.interestRateIContainer.add(this.interestRateField);
+        this.interestRateFeedback = new TextFeedbackPanel("interestRateFeedback", this.interestRateField);
+        this.interestRateIContainer.add(this.interestRateFeedback);
+    }
+
+    protected void initFromDateBlock() {
+        this.fromDateBlock = new WebMarkupBlock("fromDateBlock", Size.Four_4);
+        this.rateForm.add(this.fromDateBlock);
+        this.fromDateIContainer = new WebMarkupContainer("fromDateIContainer");
+        this.fromDateBlock.add(this.fromDateIContainer);
+        this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this, "fromDateValue"));
+        this.fromDateField.setRequired(true);
+        this.fromDateIContainer.add(this.fromDateField);
+        this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
+        this.fromDateIContainer.add(this.fromDateFeedback);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
     protected void ratePopupClose(String elementId, AjaxRequestTarget target) {
         for (Map<String, Object> item : this.rateValue) {
-            if (this.rateItemIdValue.equals(item.get("id"))) {
-                item.put("fromDate", this.rateItemFromDateValue);
-                item.put("interestRate", this.rateItemInterestRateValue);
-                item.put("differential", this.rateItemDifferentialValue);
-                this.rateItemFromDateValue = null;
-                this.rateItemInterestRateValue = null;
-                this.rateItemDifferentialValue = null;
+            if (this.popupModel.get("idValue").equals(item.get("id"))) {
+                item.put("fromDate", this.popupModel.get("fromDateValue"));
+                item.put("interestRate", this.popupModel.get("interestRateValue"));
+                item.put("differential", this.popupModel.get("differentialValue"));
+                this.popupModel.clear();
                 break;
             }
         }
@@ -288,15 +334,15 @@ public class FloatingRateModifyPage extends DeprecatedPage {
             }
             target.add(this.rateTable);
         } else if ("modify".equals(s)) {
-            this.rateItemIdValue = (Long) model.get("id");
-            this.rateItemFromDateValue = (Date) model.get("fromDate");
+            this.popupModel.put("idValue", model.get("id"));
+            this.popupModel.put("fromDateValue", model.get("fromDate"));
             if (model.get("interestRate") instanceof Double) {
-                this.rateItemInterestRateValue = (Double) model.get("interestRate");
+                this.popupModel.put("interestRateValue", model.get("interestRate"));
             } else if (model.get("interestRate") instanceof BigDecimal) {
-                this.rateItemInterestRateValue = ((BigDecimal) model.get("interestRate")).doubleValue();
+                this.popupModel.put("interestRateValue", ((BigDecimal) model.get("interestRate")).doubleValue());
             }
-            this.rateItemDifferentialValue = (Boolean) model.get("differential");
-            this.ratePopup.setContent(new RateModifyPopup(this.ratePopup.getContentId(), this.ratePopup, this));
+            this.popupModel.put("differentialValue", model.get("differential"));
+            this.ratePopup.setContent(new RateModifyPopup(this.ratePopup.getContentId(), this.ratePopup, this.popupModel));
             this.ratePopup.show(target);
         }
     }
@@ -316,7 +362,7 @@ public class FloatingRateModifyPage extends DeprecatedPage {
             Date value = (Date) model.get(column);
             return new TextCell(value, "dd/MM/yy");
         } else if ("interestRate".equals(column)) {
-            Number value = (Number) model.get(column);
+            Double value = (Double) model.get(column);
             return new TextCell(value);
         } else if ("differential".equals(column)) {
             Boolean differential = (Boolean) model.get(column);

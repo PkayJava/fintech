@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.popup;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -43,9 +44,9 @@ public class RateModifyPopup extends Panel {
     protected CheckBox differentialField;
     protected TextFeedbackPanel differentialFeedback;
 
-    protected Object model;
+    protected Map<String, Object> model;
 
-    public RateModifyPopup(String id, ModalWindow window, Object model) {
+    public RateModifyPopup(String id, ModalWindow window, Map<String, Object> model) {
         super(id);
         this.model = model;
         this.window = window;
@@ -60,14 +61,13 @@ public class RateModifyPopup extends Panel {
 
         this.saveButton = new AjaxButton("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
-        this.saveButton.setOnError(this::saveButtonError);
         this.form.add(this.saveButton);
 
         this.fromDateBlock = new WebMarkupBlock("fromDateBlock", Size.Twelve_12);
         this.form.add(this.fromDateBlock);
         this.fromDateIContainer = new WebMarkupContainer("fromDateIContainer");
         this.fromDateBlock.add(this.fromDateIContainer);
-        this.fromDateValue = new PropertyModel<>(this.model, "rateItemFromDateValue");
+        this.fromDateValue = new PropertyModel<>(this.model, "fromDateValue");
         this.fromDateField = new DateTextField("fromDateField", this.fromDateValue);
         this.fromDateField.setLabel(Model.of("From Date"));
         this.fromDateField.setRequired(true);
@@ -79,8 +79,9 @@ public class RateModifyPopup extends Panel {
         this.form.add(this.interestRateBlock);
         this.interestRateIContainer = new WebMarkupContainer("interestRateIContainer");
         this.interestRateBlock.add(this.interestRateIContainer);
-        this.interestRateValue = new PropertyModel<>(this.model, "rateItemInterestRateValue");
+        this.interestRateValue = new PropertyModel<>(this.model, "interestRateValue");
         this.interestRateField = new TextField<>("interestRateField", this.interestRateValue);
+        this.interestRateField.setType(Double.class);
         this.interestRateField.setLabel(Model.of("Interest Rate"));
         this.interestRateField.setRequired(true);
         this.interestRateIContainer.add(this.interestRateField);
@@ -91,7 +92,7 @@ public class RateModifyPopup extends Panel {
         this.form.add(this.differentialBlock);
         this.differentialIContainer = new WebMarkupContainer("differentialIContainer");
         this.differentialBlock.add(this.differentialIContainer);
-        this.differentialValue = new PropertyModel<>(this.model, "rateItemDifferentialValue");
+        this.differentialValue = new PropertyModel<>(this.model, "differentialValue");
         this.differentialField = new CheckBox("differentialField", this.differentialValue);
         this.differentialField.setLabel(Model.of("Differential"));
         this.differentialField.setRequired(true);
@@ -103,11 +104,6 @@ public class RateModifyPopup extends Panel {
     protected boolean saveButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
         this.window.setElementId(ajaxButton.getId());
         this.window.close(target);
-        return true;
-    }
-
-    protected boolean saveButtonError(AjaxButton ajaxButton, AjaxRequestTarget target) {
-        target.add(this.form);
         return true;
     }
 

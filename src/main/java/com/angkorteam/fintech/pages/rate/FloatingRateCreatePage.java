@@ -16,13 +16,12 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.FloatingRateBuilder;
 import com.angkorteam.fintech.helper.FloatingRateHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
-import com.angkorteam.fintech.pages.staff.StaffBrowsePage;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
@@ -51,7 +50,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class FloatingRateCreatePage extends DeprecatedPage {
+public class FloatingRateCreatePage extends Page {
 
     protected Form<Void> rateForm;
     protected AjaxButton addButton;
@@ -149,76 +148,32 @@ public class FloatingRateCreatePage extends DeprecatedPage {
         this.addButton.setOnSubmit(this::addButtonSubmit);
         this.rateForm.add(this.addButton);
 
-        this.fromDateBlock = new WebMarkupBlock("fromDateBlock", Size.Four_4);
-        this.form.add(this.fromDateBlock);
-        this.fromDateIContainer = new WebMarkupContainer("fromDateIContainer");
-        this.fromDateBlock.add(this.fromDateIContainer);
-        this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this, "fromDateValue"));
-        this.fromDateField.setRequired(true);
-        this.fromDateIContainer.add(this.fromDateField);
-        this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
-        this.fromDateIContainer.add(this.fromDateFeedback);
-
-        this.interestRateBlock = new WebMarkupBlock("interestRateBlock", Size.Four_4);
-        this.form.add(this.interestRateBlock);
-        this.interestRateIContainer = new WebMarkupContainer("interestRateIContainer");
-        this.interestRateBlock.add(this.interestRateIContainer);
-        this.interestRateField = new TextField<>("interestRateField", new PropertyModel<>(this, "interestRateValue"));
-        this.interestRateField.setRequired(true);
-        this.interestRateIContainer.add(this.interestRateField);
-        this.interestRateFeedback = new TextFeedbackPanel("interestRateFeedback", this.interestRateField);
-        this.interestRateIContainer.add(this.interestRateFeedback);
-
-        this.differentialBlock = new WebMarkupBlock("differentialBlock", Size.Four_4);
-        this.form.add(this.differentialBlock);
-        this.differentialIContainer = new WebMarkupContainer("differentialIContainer");
-        this.differentialBlock.add(this.differentialIContainer);
-        this.differentialField = new CheckBox("differentialField", new PropertyModel<>(this, "differentialValue"));
-        this.differentialField.setRequired(true);
-        this.differentialIContainer.add(this.differentialField);
-        this.differentialFeedback = new TextFeedbackPanel("differentialFeedback", this.differentialField);
-        this.differentialIContainer.add(this.differentialFeedback);
-
         this.form = new Form<>("form");
         add(this.form);
+
+        initFromDateBlock();
+
+        initInterestRateBlock();
+
+        initDifferentialBlock();
 
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", StaffBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", FloatingRateBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Four_4);
-        this.form.add(this.nameBlock);
-        this.nameIContainer = new WebMarkupContainer("nameIContainer");
-        this.nameBlock.add(this.nameIContainer);
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setRequired(true);
-        this.nameIContainer.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.nameIContainer.add(this.nameFeedback);
+        initNameBlock();
 
-        this.activeBlock = new WebMarkupBlock("activeBlock", Size.Four_4);
-        this.form.add(this.activeBlock);
-        this.activeIContainer = new WebMarkupContainer("activeIContainer");
-        this.activeBlock.add(this.activeIContainer);
-        this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
-        this.activeField.setRequired(true);
-        this.activeIContainer.add(this.activeField);
-        this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
-        this.activeIContainer.add(this.activeFeedback);
+        initActiveBlock();
 
-        this.baseLendingBlock = new WebMarkupBlock("baseLendingBlock", Size.Four_4);
-        this.form.add(this.baseLendingBlock);
-        this.baseLendingIContainer = new WebMarkupContainer("baseLendingIContainer");
-        this.baseLendingBlock.add(this.baseLendingIContainer);
-        this.baseLendingField = new CheckBox("baseLendingField", new PropertyModel<>(this, "baseLendingValue"));
-        this.baseLendingField.setRequired(true);
-        this.baseLendingIContainer.add(this.baseLendingField);
-        this.baseLendingFeedback = new TextFeedbackPanel("baseLendingFeedback", this.baseLendingField);
-        this.baseLendingIContainer.add(this.baseLendingFeedback);
+        initBaseLendingBlock();
 
+        initRateBlock();
+    }
+
+    protected void initRateBlock() {
         this.rateBlock = new WebMarkupBlock("rateBlock", Size.Twelve_12);
         this.form.add(this.rateBlock);
         this.rateIContainer = new WebMarkupContainer("rateIContainer");
@@ -233,6 +188,78 @@ public class FloatingRateCreatePage extends DeprecatedPage {
         this.rateIContainer.add(this.rateTable);
         this.rateTable.addTopToolbar(new HeadersToolbar<>(this.rateTable, this.rateProvider));
         this.rateTable.addBottomToolbar(new NoRecordsToolbar(this.rateTable));
+    }
+
+    protected void initBaseLendingBlock() {
+        this.baseLendingBlock = new WebMarkupBlock("baseLendingBlock", Size.Four_4);
+        this.form.add(this.baseLendingBlock);
+        this.baseLendingIContainer = new WebMarkupContainer("baseLendingIContainer");
+        this.baseLendingBlock.add(this.baseLendingIContainer);
+        this.baseLendingField = new CheckBox("baseLendingField", new PropertyModel<>(this, "baseLendingValue"));
+        this.baseLendingField.setRequired(true);
+        this.baseLendingIContainer.add(this.baseLendingField);
+        this.baseLendingFeedback = new TextFeedbackPanel("baseLendingFeedback", this.baseLendingField);
+        this.baseLendingIContainer.add(this.baseLendingFeedback);
+    }
+
+    protected void initActiveBlock() {
+        this.activeBlock = new WebMarkupBlock("activeBlock", Size.Four_4);
+        this.form.add(this.activeBlock);
+        this.activeIContainer = new WebMarkupContainer("activeIContainer");
+        this.activeBlock.add(this.activeIContainer);
+        this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
+        this.activeField.setRequired(true);
+        this.activeIContainer.add(this.activeField);
+        this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
+        this.activeIContainer.add(this.activeFeedback);
+    }
+
+    protected void initNameBlock() {
+        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Four_4);
+        this.form.add(this.nameBlock);
+        this.nameIContainer = new WebMarkupContainer("nameIContainer");
+        this.nameBlock.add(this.nameIContainer);
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameField.setRequired(true);
+        this.nameIContainer.add(this.nameField);
+        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
+        this.nameIContainer.add(this.nameFeedback);
+    }
+
+    protected void initDifferentialBlock() {
+        this.differentialBlock = new WebMarkupBlock("differentialBlock", Size.Four_4);
+        this.rateForm.add(this.differentialBlock);
+        this.differentialIContainer = new WebMarkupContainer("differentialIContainer");
+        this.differentialBlock.add(this.differentialIContainer);
+        this.differentialField = new CheckBox("differentialField", new PropertyModel<>(this, "differentialValue"));
+        this.differentialField.setRequired(true);
+        this.differentialIContainer.add(this.differentialField);
+        this.differentialFeedback = new TextFeedbackPanel("differentialFeedback", this.differentialField);
+        this.differentialIContainer.add(this.differentialFeedback);
+    }
+
+    protected void initInterestRateBlock() {
+        this.interestRateBlock = new WebMarkupBlock("interestRateBlock", Size.Four_4);
+        this.rateForm.add(this.interestRateBlock);
+        this.interestRateIContainer = new WebMarkupContainer("interestRateIContainer");
+        this.interestRateBlock.add(this.interestRateIContainer);
+        this.interestRateField = new TextField<>("interestRateField", new PropertyModel<>(this, "interestRateValue"));
+        this.interestRateField.setRequired(true);
+        this.interestRateIContainer.add(this.interestRateField);
+        this.interestRateFeedback = new TextFeedbackPanel("interestRateFeedback", this.interestRateField);
+        this.interestRateIContainer.add(this.interestRateFeedback);
+    }
+
+    protected void initFromDateBlock() {
+        this.fromDateBlock = new WebMarkupBlock("fromDateBlock", Size.Four_4);
+        this.rateForm.add(this.fromDateBlock);
+        this.fromDateIContainer = new WebMarkupContainer("fromDateIContainer");
+        this.fromDateBlock.add(this.fromDateIContainer);
+        this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this, "fromDateValue"));
+        this.fromDateField.setRequired(true);
+        this.fromDateIContainer.add(this.fromDateField);
+        this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
+        this.fromDateIContainer.add(this.fromDateFeedback);
     }
 
     @Override
