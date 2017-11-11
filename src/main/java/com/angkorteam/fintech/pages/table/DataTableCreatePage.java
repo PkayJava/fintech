@@ -257,7 +257,7 @@ public class DataTableCreatePage extends DeprecatedPage {
         this.codeBlock = new WebMarkupBlock("codeBlock", Size.Six_6);
         this.codeBlock.setOutputMarkupId(true);
         this.columnForm.add(this.codeBlock);
-        this.codeIContainer = new WebMarkupContainer("codeContainer");
+        this.codeIContainer = new WebMarkupContainer("codeIContainer");
         this.codeBlock.add(this.codeIContainer);
         this.codeProvider = new SingleChoiceProvider("m_code", "code_name", "code_name");
         this.codeField = new Select2SingleChoice<>("codeField", 0, new PropertyModel<>(this, "codeValue"), this.codeProvider);
@@ -296,7 +296,7 @@ public class DataTableCreatePage extends DeprecatedPage {
         this.lengthBlock = new WebMarkupBlock("lengthBlock", Size.Six_6);
         this.lengthBlock.setOutputMarkupId(true);
         this.columnForm.add(this.lengthBlock);
-        this.lengthIContainer = new WebMarkupContainer("lengthContainer");
+        this.lengthIContainer = new WebMarkupContainer("lengthIContainer");
         this.lengthBlock.add(this.lengthIContainer);
         this.lengthField = new TextField<>("lengthField", new PropertyModel<>(this, "lengthValue"));
         this.lengthIContainer.add(this.lengthField);
