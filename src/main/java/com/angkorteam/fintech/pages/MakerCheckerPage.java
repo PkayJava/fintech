@@ -14,7 +14,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.RoleHelper;
@@ -49,8 +49,10 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 6/26/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class MakerCheckerPage extends DeprecatedPage {
+public class MakerCheckerPage extends Page {
 
+    protected WebMarkupBlock dataBlock;
+    protected WebMarkupContainer dataIContainer;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
@@ -100,7 +102,7 @@ public class MakerCheckerPage extends DeprecatedPage {
 
     @Override
     protected void initComponent() {
-        initDataTable();
+        initDataBlock();
 
         this.form = new Form<>("form");
         add(this.form);
@@ -126,7 +128,11 @@ public class MakerCheckerPage extends DeprecatedPage {
         this.permissionIContainer.add(this.permissionFeedback);
     }
 
-    protected void initDataTable() {
+    protected void initDataBlock() {
+        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
+        add(this.dataBlock);
+        this.dataIContainer = new WebMarkupContainer("dataIContainer");
+        this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("m_permission");
         this.dataProvider.boardField("m_permission.grouping", "grouping", String.class);
         this.dataProvider.boardField("m_permission.code", "code", String.class);
@@ -144,7 +150,7 @@ public class MakerCheckerPage extends DeprecatedPage {
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 
         this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
-        add(this.dataFilterForm);
+        this.dataIContainer.add(this.dataFilterForm);
 
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
