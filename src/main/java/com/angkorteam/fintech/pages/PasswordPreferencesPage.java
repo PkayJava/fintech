@@ -124,7 +124,7 @@ public class PasswordPreferencesPage extends Page {
     }
 
     protected void dataClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
-        Integer id = (Integer) model.get("id");
+        Long id = (Long) model.get("id");
         try {
             PasswordPreferencesHelper.update((Session) getSession(), String.valueOf(id));
         } catch (UnirestException e) {
@@ -134,7 +134,7 @@ public class PasswordPreferencesPage extends Page {
 
     protected List<ActionItem> dataAction(String column, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
-        Integer active = (Integer) model.get("active");
+        Long active = (Long) model.get("active");
         if (active == null || active != 1) {
             actions.add(new ActionItem("activate", Model.of("Activate"), ItemCss.PRIMARY));
         }
@@ -143,7 +143,7 @@ public class PasswordPreferencesPage extends Page {
 
     protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
         if ("active".equals(column)) {
-            Integer value = (Integer) model.get(column);
+            Long value = (Long) model.get(column);
             if (value != null && value == 1) {
                 return new BadgeCell(BadgeType.Success, Model.of("Yes"));
             } else {
