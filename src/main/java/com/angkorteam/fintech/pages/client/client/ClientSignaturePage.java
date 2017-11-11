@@ -9,16 +9,14 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
-public class ClientSignaturePage extends DeprecatedPage {
+public class ClientSignaturePage extends Page {
 
     protected String clientId;
 
@@ -26,18 +24,14 @@ public class ClientSignaturePage extends DeprecatedPage {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupContainer fileBlock;
-    protected WebMarkupContainer fileContainer;
+    protected WebMarkupBlock fileBlock;
+    protected WebMarkupContainer fileIContainer;
     protected List<FileUpload> fileValue;
     protected FileUploadField fileField;
     protected TextFeedbackPanel fileFeedback;
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
-        initData();
-
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -45,18 +39,31 @@ public class ClientSignaturePage extends DeprecatedPage {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.fileBlock = new WebMarkupContainer("fileBlock");
+        initFileBlock();
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initFileBlock() {
+        this.fileBlock = new WebMarkupBlock("fileBlock", Size.Six_6);
         this.form.add(this.fileBlock);
-        this.fileContainer = new WebMarkupContainer("fileContainer");
-        this.fileBlock.add(this.fileContainer);
+        this.fileIContainer = new WebMarkupContainer("fileIContainer");
+        this.fileBlock.add(this.fileIContainer);
         this.fileField = new FileUploadField("fileField", new PropertyModel<>(this, "fileValue"));
         this.fileField.setRequired(true);
         this.fileField.setLabel(Model.of("file Account"));
-        this.fileContainer.add(this.fileField);
+        this.fileIContainer.add(this.fileField);
         this.fileFeedback = new TextFeedbackPanel("fileFeedback", this.fileField);
-        this.fileContainer.add(this.fileFeedback);
+        this.fileIContainer.add(this.fileFeedback);
     }
 
+    @Override
     protected void initData() {
         this.clientId = getPageParameters().get("clientId").toString();
     }
