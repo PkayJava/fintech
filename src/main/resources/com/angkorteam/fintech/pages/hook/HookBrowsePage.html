@@ -17,12 +17,12 @@
 				</div>
 				<div class="box-body">
 					<!-- Row -->
-					<div
-						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label wicket:for="templateField">Template</label> <select
-							wicket:id="templateField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="templateFeedback"
-							class="help-block"></span>
+					<div wicket:id="templateBlock" class="form-group">
+						<wicket:container wicket:id="templateIContainer">
+							<label wicket:for="templateField">Template</label>
+							<select wicket:id="templateField" class="form-control"></select>
+							<span wicket:id="templateFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -36,9 +36,13 @@
 				<h3 class="box-title">Hook Browse</h3>
 			</div>
 			<div class="box-body">
-				<form wicket:id="filter-form">
-					<table wicket:id="table" />
-				</form>
+				<div wicket:id="dataBlock" class="form-group">
+					<wicket:container wicket:id="dataIContainer">
+						<form wicket:id="dataFilterForm">
+							<table wicket:id="dataTable"></table>
+						</form>
+					</wicket:container>
+				</div>
 			</div>
 		</div>
 	</wicket:extend>

@@ -3,17 +3,18 @@ package com.angkorteam.fintech.pages.hook;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.HookHelper;
@@ -24,6 +25,8 @@ import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -46,21 +49,26 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 6/27/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class HookBrowsePage extends DeprecatedPage {
+public class HookBrowsePage extends Page {
 
-    private DataTable<Map<String, Object>, String> dataTable;
+    protected WebMarkupBlock dataBlock;
+    protected WebMarkupContainer dataIContainer;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected FilterForm<Map<String, String>> dataFilterForm;
 
-    private JdbcProvider provider;
+    protected WebMarkupBlock templateBlock;
+    protected WebMarkupContainer templateIContainer;
+    protected SingleChoiceProvider templateProvider;
+    protected Option templateValue;
+    protected Select2SingleChoice<Option> templateField;
+    protected TextFeedbackPanel templateFeedback;
 
-    private SingleChoiceProvider templateProvider;
-    private Option templateValue;
-    private Select2SingleChoice<Option> templateField;
-    private TextFeedbackPanel templateFeedback;
+    protected Form<Void> form;
+    protected Button createButton;
 
-    private Form<Void> form;
-    private Button createButton;
-
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -88,29 +96,12 @@ public class HookBrowsePage extends DeprecatedPage {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("m_hook");
-        this.provider.addJoin("left JOIN m_hook_templates ON m_hook.template_id = m_hook_templates.id");
-        this.provider.boardField("m_hook.id", "id", Long.class);
-        this.provider.boardField("m_hook.name", "name", String.class);
-        this.provider.boardField("m_hook_templates.name", "template", String.class);
-        this.provider.boardField("m_hook.is_active", "active", Integer.class);
+    protected void initData() {
+    }
 
-        this.provider.selectField("id", Long.class);
-
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Template"), "template", "template", this::templateColumn));
-        columns.add(new TextFilterColumn(this.provider, ItemClass.Integer, Model.of("Is Active ?"), "active", "active", this::activeColumn));
-        columns.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
-
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
-
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+    @Override
+    protected void initComponent() {
+        initDataBlock();
 
         this.form = new Form<>("form");
         add(this.form);
@@ -119,15 +110,59 @@ public class HookBrowsePage extends DeprecatedPage {
         this.createButton.setOnSubmit(this::createButtonSubmit);
         this.form.add(this.createButton);
 
+        initTemplateBlock();
+    }
+
+    protected void initTemplateBlock() {
+        this.templateBlock = new WebMarkupBlock("templateBlock", Size.Twelve_12);
+        this.form.add(this.templateBlock);
+        this.templateIContainer = new WebMarkupContainer("templateIContainer");
+        this.templateBlock.add(this.templateIContainer);
         this.templateProvider = new SingleChoiceProvider("m_hook_templates", "id", "name");
         this.templateField = new Select2SingleChoice<>("templateField", new PropertyModel<>(this, "templateValue"), this.templateProvider);
         this.templateField.setRequired(true);
-        this.form.add(this.templateField);
+        this.templateIContainer.add(this.templateField);
         this.templateFeedback = new TextFeedbackPanel("templateFeedback", this.templateField);
-        this.form.add(this.templateFeedback);
+        this.templateIContainer.add(this.templateFeedback);
     }
 
-    private void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void initDataBlock() {
+        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
+        add(this.dataBlock);
+        this.dataIContainer = new WebMarkupContainer("dataIContainer");
+        this.dataBlock.add(this.dataIContainer);
+        this.dataProvider = new JdbcProvider("m_hook");
+        this.dataProvider.addJoin("left JOIN m_hook_templates ON m_hook.template_id = m_hook_templates.id");
+        this.dataProvider.boardField("m_hook.id", "id", Long.class);
+        this.dataProvider.boardField("m_hook.name", "name", String.class);
+        this.dataProvider.boardField("m_hook_templates.name", "template", String.class);
+        this.dataProvider.boardField("m_hook.is_active", "active", Integer.class);
+
+        this.dataProvider.selectField("id", Long.class);
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Template"), "template", "template", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Integer, Model.of("Is Active ?"), "active", "active", this::dataColumn));
+        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
+
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        this.dataIContainer.add(this.dataFilterForm);
+
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void dataClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         Long id = (Long) model.get("id");
         try {
             HookHelper.delete((Session) getSession(), String.valueOf(id));
@@ -136,35 +171,34 @@ public class HookBrowsePage extends DeprecatedPage {
         target.add(this.dataTable);
     }
 
-    private List<ActionItem> actionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> dataAction(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    private void createButtonSubmit(Button button) {
+    protected void createButtonSubmit(Button button) {
         PageParameters parameters = new PageParameters();
         parameters.add("templateId", this.templateValue.getId());
         setResponsePage(HookCreatePage.class, parameters);
     }
 
-    private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        PageParameters parameters = new PageParameters();
-        parameters.add("hookId", model.get("id"));
-        return new LinkCell(HookModifyPage.class, parameters, Model.of(name));
-    }
-
-    private ItemPanel templateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    private ItemPanel activeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer active = (Integer) model.get(jdbcColumn);
-        if (active != null && active == 1) {
-            return new BadgeCell(BadgeType.Success, Model.of("Yes"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("No"));
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column)) {
+            String value = (String) model.get(column);
+            PageParameters parameters = new PageParameters();
+            parameters.add("hookId", model.get("id"));
+            return new LinkCell(HookModifyPage.class, parameters, value);
+        } else if ("template".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("active".equals(column)) {
+            Long value = (Long) model.get(column);
+            if (value != null && value == 1) {
+                return new BadgeCell(BadgeType.Success, Model.of("Yes"));
+            } else {
+                return new BadgeCell(BadgeType.Danger, Model.of("No"));
+            }
         }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }
