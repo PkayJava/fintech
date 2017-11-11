@@ -6,7 +6,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.tax.TaxComponentBrowsePage;
 import com.angkorteam.fintech.pages.tax.TaxGroupBrowsePage;
@@ -21,7 +21,7 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 7/16/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class TaxDashboardPage extends DeprecatedPage {
+public class TaxDashboardPage extends Page {
 
     private static final List<PageBreadcrumb> BREADCRUMB;
 
