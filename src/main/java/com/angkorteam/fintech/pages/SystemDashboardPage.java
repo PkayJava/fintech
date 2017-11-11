@@ -6,7 +6,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.code.CodeBrowsePage;
 import com.angkorteam.fintech.pages.hook.HookBrowsePage;
@@ -23,7 +23,7 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 6/26/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SystemDashboardPage extends DeprecatedPage {
+public class SystemDashboardPage extends Page {
 
     private static final List<PageBreadcrumb> BREADCRUMB;
 
