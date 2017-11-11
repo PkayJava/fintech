@@ -14,9 +14,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.util.lang.Bytes;
 
-import com.angkorteam.fintech.Application;
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
@@ -29,7 +27,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class ClientWebcamPage extends DeprecatedPage {
+public class ClientWebcamPage extends Page {
 
     protected String clientId;
 
@@ -64,8 +62,6 @@ public class ClientWebcamPage extends DeprecatedPage {
 
         StringBuffer jsFunction = new StringBuffer("");
         jsFunction.append("var " + varCamera + " = new JpegCamera('#" + camera + "', { shutter_ogg_url: '" + shutter_ogg + "', shutter_mp3_url: '" + shutter_mp3 + "', swf_url: '" + jpeg_camera + "'});");
-        // jsFunction.append("var " + varCamera + " = new JpegCamera('#" + camera +
-        // "');");
         jsFunction.append("$('#" + takeButton + "').click(");
         jsFunction.append("function(){");
         jsFunction.append("var snapshot = " + varCamera + ".capture();");
@@ -81,11 +77,7 @@ public class ClientWebcamPage extends DeprecatedPage {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
-        initData();
-
+    protected void initComponent() {
         this.form = new Form<>("form");
         this.form.setMaxSize(Bytes.megabytes(10));
         add(this.form);
@@ -121,6 +113,15 @@ public class ClientWebcamPage extends DeprecatedPage {
         this.form.add(this.takeButton);
     }
 
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    @Override
     protected void initData() {
         this.clientId = getPageParameters().get("clientId").toString();
     }
