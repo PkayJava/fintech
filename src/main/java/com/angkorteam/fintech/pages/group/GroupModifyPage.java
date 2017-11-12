@@ -2,7 +2,10 @@ package com.angkorteam.fintech.pages.group;
 
 import java.util.Map;
 
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
@@ -29,23 +32,31 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 6/26/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class GroupModifyPage extends DeprecatedPage {
+public class GroupModifyPage extends Page {
 
     protected String groupId;
 
+    protected WebMarkupBlock externalIdBlock;
+    protected WebMarkupContainer externalIdIContainer;
     protected String externalIdValue;
     protected TextField<String> externalIdField;
     protected TextFeedbackPanel externalIdFeedback;
 
+    protected WebMarkupBlock nameBlock;
+    protected WebMarkupContainer nameIContainer;
     protected String nameValue;
     protected TextField<String> nameField;
     protected TextFeedbackPanel nameFeedback;
 
+    protected WebMarkupBlock parentBlock;
+    protected WebMarkupContainer parentIContainer;
     protected SingleChoiceProvider parentProvider;
     protected Option parentValue;
     protected Select2SingleChoice<Option> parentField;
     protected TextFeedbackPanel parentFeedback;
 
+    protected WebMarkupBlock officeBlock;
+    protected WebMarkupContainer officeIContainer;
     protected SingleChoiceProvider officeProvider;
     protected Option officeValue;
     protected Select2SingleChoice<Option> officeField;
@@ -56,16 +67,19 @@ public class GroupModifyPage extends DeprecatedPage {
     protected BookmarkablePageLink<Void> closeLink;
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
+    protected void initData() {
         PageParameters parameters = getPageParameters();
         this.groupId = parameters.get("groupId").toString("");
-
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        Map<String, Object> groupObject = jdbcTemplate.queryForMap("select * from m_group where id = ?", this.groupId);
+        this.externalIdValue = (String) groupObject.get("external_id");
+        this.nameValue = (String) groupObject.get("display_name");
+        this.parentValue = jdbcTemplate.queryForObject("select id, display_name as text from m_group where id = ?", Option.MAPPER, groupObject.get("parent_id"));
+        this.officeValue = jdbcTemplate.queryForObject("select id, name as text from m_office where id = ?", Option.MAPPER, groupObject.get("office_id"));
+    }
 
-        Map<String, Object> object = jdbcTemplate.queryForMap("select * from m_group where id = ?", this.groupId);
-
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -76,35 +90,71 @@ public class GroupModifyPage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", GroupBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.externalIdValue = (String) object.get("external_id");
+        initExternalIdBlock();
+
+        initNameBlock();
+
+        initParentBlock();
+
+        initOfficeBlock();
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initExternalIdBlock() {
+        this.externalIdBlock = new WebMarkupBlock("externalIdBlock", WebMarkupBlock.Size.Twelve_12);
+        this.form.add(this.externalIdBlock);
+        this.externalIdIContainer = new WebMarkupContainer("externalIdIContainer");
+        this.externalIdBlock.add(this.externalIdIContainer);
         this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
         this.externalIdField.setRequired(true);
-        this.form.add(this.externalIdField);
+        this.externalIdIContainer.add(this.externalIdField);
         this.externalIdFeedback = new TextFeedbackPanel("externalIdFeedback", this.externalIdField);
-        this.form.add(this.externalIdFeedback);
+        this.externalIdIContainer.add(this.externalIdFeedback);
+    }
 
-        this.nameValue = (String) object.get("display_name");
+    protected void initNameBlock() {
+        this.nameBlock = new WebMarkupBlock("nameBlock", WebMarkupBlock.Size.Twelve_12);
+        this.form.add(this.nameBlock);
+        this.nameIContainer = new WebMarkupContainer("nameIContainer");
+        this.nameBlock.add(this.nameIContainer);
         this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
         this.nameField.setRequired(true);
-        this.form.add(this.nameField);
+        this.nameIContainer.add(this.nameField);
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.form.add(this.nameFeedback);
+        this.nameIContainer.add(this.nameFeedback);
+    }
 
-        this.parentValue = jdbcTemplate.queryForObject("select id, display_name as text from m_group where id = ?", Option.MAPPER, object.get("parent_id"));
+    protected void initParentBlock() {
+        this.parentBlock = new WebMarkupBlock("parentBlock", WebMarkupBlock.Size.Twelve_12);
+        this.form.add(this.parentBlock);
+        this.parentIContainer = new WebMarkupContainer("parentIContainer");
+        this.parentBlock.add(this.parentIContainer);
         this.parentProvider = new SingleChoiceProvider("m_group", "id", "display_name");
         this.parentField = new Select2SingleChoice<>("parentField", 0, new PropertyModel<>(this, "parentValue"), this.parentProvider);
         this.parentField.setRequired(true);
-        this.form.add(this.parentField);
+        this.parentIContainer.add(this.parentField);
         this.parentFeedback = new TextFeedbackPanel("parentFeedback", this.parentField);
-        this.form.add(this.parentFeedback);
+        this.parentIContainer.add(this.parentFeedback);
+    }
 
-        this.officeValue = jdbcTemplate.queryForObject("select id, name as text from m_office where id = ?", Option.MAPPER, object.get("office_id"));
+    protected void initOfficeBlock() {
+        this.officeBlock = new WebMarkupBlock("officeBlock", WebMarkupBlock.Size.Twelve_12);
+        this.form.add(this.officeBlock);
+        this.officeIContainer = new WebMarkupContainer("officeIContainer");
+        this.officeBlock.add(this.officeIContainer);
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
         this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
-        this.form.add(this.officeField);
+        this.officeIContainer.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
-        this.form.add(this.officeFeedback);
+        this.officeIContainer.add(this.officeFeedback);
     }
 
     protected void saveButtonSubmit(Button button) {

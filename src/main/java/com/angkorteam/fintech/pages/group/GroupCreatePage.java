@@ -1,6 +1,9 @@
 package com.angkorteam.fintech.pages.group;
 
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
@@ -24,34 +27,44 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 6/26/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class GroupCreatePage extends DeprecatedPage {
+public class GroupCreatePage extends Page {
 
-    private String externalIdValue;
-    private TextField<String> externalIdField;
-    private TextFeedbackPanel externalIdFeedback;
+    protected WebMarkupBlock externalIdBlock;
+    protected WebMarkupContainer externalIdIContainer;
+    protected String externalIdValue;
+    protected TextField<String> externalIdField;
+    protected TextFeedbackPanel externalIdFeedback;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected WebMarkupBlock nameBlock;
+    protected WebMarkupContainer nameIContainer;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
-    private SingleChoiceProvider parentProvider;
-    private Option parentValue;
-    private Select2SingleChoice<Option> parentField;
-    private TextFeedbackPanel parentFeedback;
+    protected WebMarkupBlock parentBlock;
+    protected WebMarkupContainer parentIContainer;
+    protected SingleChoiceProvider parentProvider;
+    protected Option parentValue;
+    protected Select2SingleChoice<Option> parentField;
+    protected TextFeedbackPanel parentFeedback;
 
-    private SingleChoiceProvider officeProvider;
-    private Option officeValue;
-    private Select2SingleChoice<Option> officeField;
-    private TextFeedbackPanel officeFeedback;
+    protected WebMarkupBlock officeBlock;
+    protected WebMarkupContainer officeIContainer;
+    protected SingleChoiceProvider officeProvider;
+    protected Option officeValue;
+    protected Select2SingleChoice<Option> officeField;
+    protected TextFeedbackPanel officeFeedback;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -62,34 +75,74 @@ public class GroupCreatePage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", GroupBrowsePage.class);
         this.form.add(this.closeLink);
 
+        initExternalIdBlock();
+
+        initNameBlock();
+
+        initParentBlock();
+
+        initOfficeBlock();
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initExternalIdBlock() {
+        this.externalIdBlock = new WebMarkupBlock("externalIdBlock", WebMarkupBlock.Size.Twelve_12);
+        this.form.add(this.externalIdBlock);
+        this.externalIdIContainer = new WebMarkupContainer("externalIdIContainer");
+        this.externalIdBlock.add(this.externalIdIContainer);
         this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
         this.externalIdField.setRequired(true);
-        this.form.add(this.externalIdField);
+        this.externalIdIContainer.add(this.externalIdField);
         this.externalIdFeedback = new TextFeedbackPanel("externalIdFeedback", this.externalIdField);
-        this.form.add(this.externalIdFeedback);
+        this.externalIdIContainer.add(this.externalIdFeedback);
+    }
 
+    protected void initNameBlock() {
+        this.nameBlock = new WebMarkupBlock("nameBlock", WebMarkupBlock.Size.Twelve_12);
+        this.form.add(this.nameBlock);
+        this.nameIContainer = new WebMarkupContainer("nameIContainer");
+        this.nameBlock.add(this.nameIContainer);
         this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
         this.nameField.setRequired(true);
-        this.form.add(this.nameField);
+        this.nameIContainer.add(this.nameField);
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.form.add(this.nameFeedback);
+        this.nameIContainer.add(this.nameFeedback);
+    }
 
+    protected void initParentBlock() {
+        this.parentBlock = new WebMarkupBlock("parentBlock", WebMarkupBlock.Size.Twelve_12);
+        this.form.add(this.parentBlock);
+        this.parentIContainer = new WebMarkupContainer("parentIContainer");
+        this.parentBlock.add(this.parentIContainer);
         this.parentProvider = new SingleChoiceProvider("m_group", "id", "display_name");
         this.parentField = new Select2SingleChoice<>("parentField", 0, new PropertyModel<>(this, "parentValue"), this.parentProvider);
         this.parentField.setRequired(true);
-        this.form.add(this.parentField);
+        this.parentIContainer.add(this.parentField);
         this.parentFeedback = new TextFeedbackPanel("parentFeedback", this.parentField);
-        this.form.add(this.parentFeedback);
+        this.parentIContainer.add(this.parentFeedback);
+    }
 
+    protected void initOfficeBlock() {
+        this.officeBlock = new WebMarkupBlock("officeBlock", WebMarkupBlock.Size.Twelve_12);
+        this.form.add(this.officeBlock);
+        this.officeIContainer = new WebMarkupContainer("officeIContainer");
+        this.officeBlock.add(this.officeIContainer);
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
         this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
-        this.form.add(this.officeField);
+        this.officeIContainer.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
-        this.form.add(this.officeFeedback);
+        this.officeIContainer.add(this.officeFeedback);
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         GroupBuilder builder = new GroupBuilder();
         builder.withName(this.nameValue);
         if (this.parentValue != null) {
