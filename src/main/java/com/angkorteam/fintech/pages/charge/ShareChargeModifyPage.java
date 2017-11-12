@@ -1,20 +1,6 @@
 package com.angkorteam.fintech.pages.charge;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.ChargeBuilder;
@@ -40,9 +26,21 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import java.util.List;
+import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class ShareChargeModifyPage extends DeprecatedPage {
+public class ShareChargeModifyPage extends Page {
 
     protected String chargeId;
 
@@ -281,11 +279,7 @@ public class ShareChargeModifyPage extends DeprecatedPage {
         String charge_calculation_enum = String.valueOf(chargeObject.get("charge_calculation_enum"));
         this.chargeCalculationValue = ChargeCalculation.optionLiteral(charge_calculation_enum);
 
-        if (chargeObject.get("amount") instanceof BigDecimal) {
-            this.amountValue = ((BigDecimal) chargeObject.get("amount")).doubleValue();
-        } else if (chargeObject.get("amount") instanceof Double) {
-            this.amountValue = (Double) chargeObject.get("amount");
-        }
+        this.amountValue = (Double) chargeObject.get("amount");
 
         this.activeValue = (Boolean) chargeObject.get("is_active");
 

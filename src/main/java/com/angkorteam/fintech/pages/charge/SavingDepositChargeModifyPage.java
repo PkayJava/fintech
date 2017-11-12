@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -48,7 +49,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingDepositChargeModifyPage extends DeprecatedPage {
+public class SavingDepositChargeModifyPage extends Page {
 
     protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/M");
 
@@ -179,13 +180,11 @@ public class SavingDepositChargeModifyPage extends DeprecatedPage {
         } catch (ParseException e) {
         }
 
-        this.repeatEveryValue = (Integer) chargeObject.get("fee_interval");
-
-        if (chargeObject.get("amount") instanceof BigDecimal) {
-            this.amountValue = ((BigDecimal) chargeObject.get("amount")).doubleValue();
-        } else if (chargeObject.get("amount") instanceof Double) {
-            this.amountValue = (Double) chargeObject.get("amount");
+        if (chargeObject.get("fee_interval") != null) {
+            this.repeatEveryValue = ((Long) chargeObject.get("fee_interval")).intValue();
         }
+
+        this.amountValue = (Double) chargeObject.get("amount");
 
         this.activeValue = (Boolean) chargeObject.get("is_active");
 

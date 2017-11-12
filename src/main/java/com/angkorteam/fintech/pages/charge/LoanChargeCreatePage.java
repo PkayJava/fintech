@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.charge;
 
 import java.util.List;
 
+import com.angkorteam.fintech.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -43,7 +44,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class LoanChargeCreatePage extends DeprecatedPage {
+public class LoanChargeCreatePage extends Page {
 
     protected Form<Void> form;
     protected Button saveButton;

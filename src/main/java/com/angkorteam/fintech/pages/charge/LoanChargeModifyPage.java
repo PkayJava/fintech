@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -47,7 +48,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class LoanChargeModifyPage extends DeprecatedPage {
+public class LoanChargeModifyPage extends Page {
 
     protected String chargeId;
 
@@ -187,11 +188,7 @@ public class LoanChargeModifyPage extends DeprecatedPage {
         String charge_payment_mode_enum = String.valueOf(chargeObject.get("charge_payment_mode_enum"));
         this.chargePaymentValue = ChargePayment.optionLiteral(charge_payment_mode_enum);
 
-        if (chargeObject.get("amount") instanceof BigDecimal) {
-            this.amountValue = ((BigDecimal) chargeObject.get("amount")).doubleValue();
-        } else if (chargeObject.get("amount") instanceof Double) {
-            this.amountValue = (Double) chargeObject.get("amount");
-        }
+        this.amountValue = (Double) chargeObject.get("amount");
 
         this.activeValue = (Boolean) chargeObject.get("is_active");
 
@@ -202,7 +199,9 @@ public class LoanChargeModifyPage extends DeprecatedPage {
         String fee_frequency = String.valueOf(chargeObject.get("fee_frequency"));
         this.chargeFrequencyValue = ChargeFrequency.optionLiteral(fee_frequency);
 
-        this.frequencyIntervalValue = (Integer) chargeObject.get("fee_interval");
+        if (chargeObject.get("fee_interval") != null) {
+            this.frequencyIntervalValue = ((Long) chargeObject.get("fee_interval")).intValue();
+        }
     }
 
     @Override
