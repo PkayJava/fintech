@@ -3,11 +3,14 @@ package com.angkorteam.fintech.pages.account;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -24,7 +27,6 @@ import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionColumn;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
@@ -40,12 +42,14 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 7/5/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class RuleBrowsePage extends DeprecatedPage {
+public class RuleBrowsePage extends Page {
 
     public static String DEBIT = "1";
 
     public static String CREDIT = "2";
 
+    protected WebMarkupBlock dataBlock;
+    protected WebMarkupContainer dataIContainer;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
@@ -96,6 +100,10 @@ public class RuleBrowsePage extends DeprecatedPage {
     }
 
     protected void initDataTable() {
+        this.dataBlock = new WebMarkupBlock("dataBlock", WebMarkupBlock.Size.Twelve_12);
+        add(this.dataBlock);
+        this.dataIContainer = new WebMarkupContainer("dataIContainer");
+        this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("acc_accounting_rule");
         this.dataProvider.addJoin("LEFT JOIN m_office ON acc_accounting_rule.office_id = m_office.id");
         this.dataProvider.addJoin("LEFT JOIN acc_gl_account debit ON acc_accounting_rule.debit_account_id = debit.id");
@@ -123,17 +131,17 @@ public class RuleBrowsePage extends DeprecatedPage {
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Debit Account"), "debit_account", "debit_account", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Credit Tags"), "credit_tags", "credit_tags", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Credit Amount"), "credit_account", "credit_account", this::dataColumn));
-        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::actionAction, this::actionClick));
+        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 
         this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
-        add(this.dataFilterForm);
+        this.dataIContainer.add(this.dataFilterForm);
 
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
         this.dataFilterForm.add(this.dataTable);
     }
 
-    protected void actionClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void dataClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
         if ("delete".equals(column)) {
             Long value = (Long) model.get("id");
             JsonNode node = null;
@@ -151,7 +159,7 @@ public class RuleBrowsePage extends DeprecatedPage {
         }
     }
 
-    protected List<ActionItem> actionAction(String s, Map<String, Object> model) {
+    protected List<ActionItem> dataAction(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         actions.add(new ActionItem("post", Model.of("Post"), ItemCss.INFO));

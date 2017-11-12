@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.account;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.Page;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -43,7 +44,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 7/3/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class RuleModifyPage extends DeprecatedPage {
+public class RuleModifyPage extends Page {
 
     protected String ruleId;
 
@@ -128,7 +129,7 @@ public class RuleModifyPage extends DeprecatedPage {
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Accounting Rule");
-            breadcrumb.setPage(RoleBrowsePage.class);
+            breadcrumb.setPage(RuleBrowsePage.class);
             BREADCRUMB.add(breadcrumb);
         }
         {
