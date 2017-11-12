@@ -2,7 +2,10 @@ package com.angkorteam.fintech.pages.fund;
 
 import java.util.List;
 
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -30,12 +33,16 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 6/26/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class FundCreatePage extends DeprecatedPage {
+public class FundCreatePage extends Page {
 
+    protected WebMarkupBlock externalIdBlock;
+    protected WebMarkupContainer externalIdIContainer;
     protected String externalIdValue;
     protected TextField<String> externalIdField;
     protected TextFeedbackPanel externalIdFeedback;
 
+    protected WebMarkupBlock nameBlock;
+    protected WebMarkupContainer nameIContainer;
     protected String nameValue;
     protected TextField<String> nameField;
     protected TextFeedbackPanel nameFeedback;
@@ -77,17 +84,14 @@ public class FundCreatePage extends DeprecatedPage {
         }
     }
 
+    @Override
     protected void initData() {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         this.externalIdValue = generator.externalId();
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
-        initData();
-
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -98,17 +102,41 @@ public class FundCreatePage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", FundBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
-        this.externalIdField.setRequired(true);
-        this.form.add(this.externalIdField);
-        this.externalIdFeedback = new TextFeedbackPanel("externalIdFeedback", this.externalIdField);
-        this.form.add(this.externalIdFeedback);
+        initExternalIdBlock();
 
+        initNameBlock();
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initNameBlock() {
+        this.nameBlock = new WebMarkupBlock("nameBlock", WebMarkupBlock.Size.Twelve_12);
+        this.form.add(this.nameBlock);
+        this.nameIContainer = new WebMarkupContainer("nameIContainer");
+        this.nameBlock.add(this.nameIContainer);
         this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
         this.nameField.setRequired(true);
-        this.form.add(this.nameField);
+        this.nameIContainer.add(this.nameField);
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.form.add(this.nameFeedback);
+        this.nameIContainer.add(this.nameFeedback);
+    }
+
+    protected void initExternalIdBlock() {
+        this.externalIdBlock = new WebMarkupBlock("externalIdBlock", WebMarkupBlock.Size.Twelve_12);
+        this.form.add(this.externalIdBlock);
+        this.externalIdIContainer = new WebMarkupContainer("externalIdIContainer");
+        this.externalIdBlock.add(this.externalIdIContainer);
+        this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
+        this.externalIdField.setRequired(true);
+        this.externalIdIContainer.add(this.externalIdField);
+        this.externalIdFeedback = new TextFeedbackPanel("externalIdFeedback", this.externalIdField);
+        this.externalIdIContainer.add(this.externalIdFeedback);
     }
 
     protected void saveButtonSubmit(Button button) {

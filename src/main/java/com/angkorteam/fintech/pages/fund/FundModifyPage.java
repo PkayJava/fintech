@@ -1,24 +1,13 @@
 package com.angkorteam.fintech.pages.fund;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.FundBuilder;
 import com.angkorteam.fintech.helper.FundHelper;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.spring.JdbcTemplate;
@@ -27,22 +16,37 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by socheatkhauv on 6/26/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class FundModifyPage extends DeprecatedPage {
+public class FundModifyPage extends Page {
 
     private String fundId;
 
-    private String externalIdValue;
-    private TextField<String> externalIdField;
-    private TextFeedbackPanel externalIdFeedback;
+    protected WebMarkupBlock externalIdBlock;
+    protected WebMarkupContainer externalIdIContainer;
+    protected String externalIdValue;
+    protected TextField<String> externalIdField;
+    protected TextFeedbackPanel externalIdFeedback;
 
-    private String nameValue;
-    private TextField<String> nameField;
-    private TextFeedbackPanel nameFeedback;
+    protected WebMarkupBlock nameBlock;
+    protected WebMarkupContainer nameIContainer;
+    protected String nameValue;
+    protected TextField<String> nameField;
+    protected TextFeedbackPanel nameFeedback;
 
     private Form<Void> form;
     private Button saveButton;
@@ -82,16 +86,19 @@ public class FundModifyPage extends DeprecatedPage {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
+    protected void initData() {
         PageParameters parameters = getPageParameters();
         this.fundId = parameters.get("fundId").toString("");
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        Map<String, Object> object = jdbcTemplate.queryForMap("select * from m_fund where id = ?", this.fundId);
+        Map<String, Object> fundObject = jdbcTemplate.queryForMap("select * from m_fund where id = ?", this.fundId);
+        this.externalIdValue = (String) fundObject.get("external_id");
+        this.nameValue = (String) fundObject.get("name");
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -102,19 +109,41 @@ public class FundModifyPage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", FundBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.externalIdValue = (String) object.get("external_id");
-        this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
-        this.externalIdField.setRequired(true);
-        this.form.add(this.externalIdField);
-        this.externalIdFeedback = new TextFeedbackPanel("externalIdFeedback", this.externalIdField);
-        this.form.add(this.externalIdFeedback);
+        initExternalIdBlock();
 
-        this.nameValue = (String) object.get("name");
+        initNameBlock();
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initNameBlock() {
+        this.nameBlock = new WebMarkupBlock("nameBlock", WebMarkupBlock.Size.Twelve_12);
+        this.form.add(this.nameBlock);
+        this.nameIContainer = new WebMarkupContainer("nameIContainer");
+        this.nameBlock.add(this.nameIContainer);
         this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
         this.nameField.setRequired(true);
-        this.form.add(this.nameField);
+        this.nameIContainer.add(this.nameField);
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.form.add(this.nameFeedback);
+        this.nameIContainer.add(this.nameFeedback);
+    }
+
+    protected void initExternalIdBlock() {
+        this.externalIdBlock = new WebMarkupBlock("externalIdBlock", WebMarkupBlock.Size.Twelve_12);
+        this.form.add(this.externalIdBlock);
+        this.externalIdIContainer = new WebMarkupContainer("externalIdIContainer");
+        this.externalIdBlock.add(this.externalIdIContainer);
+        this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
+        this.externalIdField.setRequired(true);
+        this.externalIdIContainer.add(this.externalIdField);
+        this.externalIdFeedback = new TextFeedbackPanel("externalIdFeedback", this.externalIdField);
+        this.externalIdIContainer.add(this.externalIdFeedback);
     }
 
     private void saveButtonSubmit(Button button) {
