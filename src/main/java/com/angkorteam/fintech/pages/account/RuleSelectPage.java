@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.account;
 
 import java.util.List;
 
+import com.angkorteam.fintech.Page;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
@@ -29,7 +30,7 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 6/11/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class RuleSelectPage extends DeprecatedPage {
+public class RuleSelectPage extends Page {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(RuleSelectPage.class);
 

@@ -1,24 +1,6 @@
 package com.angkorteam.fintech.pages.account;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.GLEntryBuilder;
@@ -55,12 +37,29 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by socheatkhauv on 7/11/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class FrequentPostPage extends DeprecatedPage {
+public class FrequentPostPage extends Page {
 
     protected String ruleId;
 
@@ -299,6 +298,34 @@ public class FrequentPostPage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", AccountingPage.class);
         this.form.add(this.closeLink);
 
+        initOfficeBlock();
+
+        initCurrencyBlock();
+
+        initDebitBlock();
+
+        initCreditBlock();
+
+        initReferenceNumberBlock();
+
+        initTransactionDateBlock();
+
+        initPaymentTypeBlock();
+
+        initAccountBlock();
+
+        initChequeBlock();
+
+        initRoutingCodeBlock();
+
+        initReceiptBlock();
+
+        initBankBlock();
+
+        initCommentBlock();
+    }
+
+    protected void initOfficeBlock() {
         this.officeBlock = new WebMarkupBlock("officeBlock", Size.Six_6);
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
@@ -309,7 +336,9 @@ public class FrequentPostPage extends DeprecatedPage {
         this.officeIContainer.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
         this.officeIContainer.add(this.officeFeedback);
+    }
 
+    protected void initCurrencyBlock() {
         this.currencyBlock = new WebMarkupBlock("currencyBlock", Size.Six_6);
         this.form.add(this.currencyBlock);
         this.currencyIContainer = new WebMarkupContainer("currencyIContainer");
@@ -320,7 +349,9 @@ public class FrequentPostPage extends DeprecatedPage {
         this.currencyIContainer.add(this.currencyField);
         this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
         this.currencyIContainer.add(this.currencyFeedback);
+    }
 
+    protected void initDebitBlock() {
         this.debitBlock = new WebMarkupBlock("debitBlock", Size.Twelve_12);
         this.form.add(this.debitBlock);
         this.debitIContainer = new WebMarkupContainer("debitIContainer");
@@ -335,7 +366,9 @@ public class FrequentPostPage extends DeprecatedPage {
         this.debitTable.addTopToolbar(new HeadersToolbar<>(this.debitTable, this.debitProvider));
         this.debitTable.addBottomToolbar(new NoRecordsToolbar(this.debitTable));
         this.debitIContainer.add(this.debitTable);
+    }
 
+    protected void initCreditBlock() {
         this.creditBlock = new WebMarkupBlock("creditBlock", Size.Twelve_12);
         this.form.add(this.creditBlock);
         this.creditIContainer = new WebMarkupContainer("creditIContainer");
@@ -350,7 +383,9 @@ public class FrequentPostPage extends DeprecatedPage {
         this.creditTable.addTopToolbar(new HeadersToolbar<>(this.creditTable, this.creditProvider));
         this.creditTable.addBottomToolbar(new NoRecordsToolbar(this.creditTable));
         this.creditIContainer.add(this.creditTable);
+    }
 
+    protected void initReferenceNumberBlock() {
         this.referenceNumberBlock = new WebMarkupBlock("referenceNumberBlock", Size.Six_6);
         this.form.add(this.referenceNumberBlock);
         this.referenceNumberIContainer = new WebMarkupContainer("referenceNumberIContainer");
@@ -360,7 +395,9 @@ public class FrequentPostPage extends DeprecatedPage {
         this.referenceNumberIContainer.add(this.referenceNumberField);
         this.referenceNumberFeedback = new TextFeedbackPanel("referenceNumberFeedback", this.referenceNumberField);
         this.referenceNumberIContainer.add(this.referenceNumberFeedback);
+    }
 
+    protected void initTransactionDateBlock() {
         this.transactionDateBlock = new WebMarkupBlock("transactionDateBlock", Size.Six_6);
         this.form.add(this.transactionDateBlock);
         this.transactionDateIContainer = new WebMarkupContainer("transactionDateIContainer");
@@ -370,7 +407,9 @@ public class FrequentPostPage extends DeprecatedPage {
         this.transactionDateIContainer.add(this.transactionDateField);
         this.transactionDateFeedback = new TextFeedbackPanel("transactionDateFeedback", this.transactionDateField);
         this.transactionDateIContainer.add(this.transactionDateFeedback);
+    }
 
+    protected void initPaymentTypeBlock() {
         this.paymentTypeBlock = new WebMarkupBlock("paymentTypeBlock", Size.Six_6);
         this.form.add(this.paymentTypeBlock);
         this.paymentTypeIContainer = new WebMarkupContainer("paymentTypeIContainer");
@@ -380,7 +419,9 @@ public class FrequentPostPage extends DeprecatedPage {
         this.paymentTypeIContainer.add(this.paymentTypeField);
         this.paymentTypeFeedback = new TextFeedbackPanel("paymentTypeFeedback", this.paymentTypeField);
         this.paymentTypeIContainer.add(this.paymentTypeFeedback);
+    }
 
+    protected void initAccountBlock() {
         this.accountBlock = new WebMarkupBlock("accountBlock", Size.Six_6);
         this.form.add(this.accountBlock);
         this.accountIContainer = new WebMarkupContainer("accountIContainer");
@@ -389,7 +430,9 @@ public class FrequentPostPage extends DeprecatedPage {
         this.accountIContainer.add(this.accountField);
         this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
         this.accountIContainer.add(this.accountFeedback);
+    }
 
+    protected void initChequeBlock() {
         this.chequeBlock = new WebMarkupBlock("chequeBlock", Size.Six_6);
         this.form.add(this.chequeBlock);
         this.chequeIContainer = new WebMarkupContainer("chequeIContainer");
@@ -398,7 +441,9 @@ public class FrequentPostPage extends DeprecatedPage {
         this.chequeIContainer.add(this.chequeField);
         this.chequeFeedback = new TextFeedbackPanel("chequeFeedback", this.chequeField);
         this.chequeIContainer.add(this.chequeFeedback);
+    }
 
+    protected void initRoutingCodeBlock() {
         this.routingCodeBlock = new WebMarkupBlock("routingCodeBlock", Size.Six_6);
         this.form.add(this.routingCodeBlock);
         this.routingCodeIContainer = new WebMarkupContainer("routingCodeIContainer");
@@ -407,7 +452,9 @@ public class FrequentPostPage extends DeprecatedPage {
         this.routingCodeIContainer.add(this.routingCodeField);
         this.routingCodeFeedback = new TextFeedbackPanel("routingCodeFeedback", this.routingCodeField);
         this.routingCodeIContainer.add(this.routingCodeFeedback);
+    }
 
+    protected void initReceiptBlock() {
         this.receiptBlock = new WebMarkupBlock("receiptBlock", Size.Six_6);
         this.form.add(this.receiptBlock);
         this.receiptIContainer = new WebMarkupContainer("receiptIContainer");
@@ -416,7 +463,9 @@ public class FrequentPostPage extends DeprecatedPage {
         this.receiptIContainer.add(this.receiptField);
         this.receiptFeedback = new TextFeedbackPanel("receiptFeedback", this.receiptField);
         this.receiptIContainer.add(this.receiptFeedback);
+    }
 
+    protected void initBankBlock() {
         this.bankBlock = new WebMarkupBlock("bankBlock", Size.Six_6);
         this.form.add(this.bankBlock);
         this.bankIContainer = new WebMarkupContainer("bankIContainer");
@@ -425,7 +474,9 @@ public class FrequentPostPage extends DeprecatedPage {
         this.bankIContainer.add(this.bankField);
         this.bankFeedback = new TextFeedbackPanel("bankFeedback", this.bankField);
         this.bankIContainer.add(this.bankFeedback);
+    }
 
+    protected void initCommentBlock() {
         this.commentBlock = new WebMarkupBlock("commentBlock", Size.Twelve_12);
         this.form.add(this.commentBlock);
         this.commentIContainer = new WebMarkupContainer("commentIContainer");
@@ -438,7 +489,7 @@ public class FrequentPostPage extends DeprecatedPage {
 
     protected void initCreditAccountNameBlock() {
         this.creditAccountNameBlock = new WebMarkupBlock("creditAccountNameBlock", Size.Six_6);
-        this.form.add(this.creditAccountNameBlock);
+        this.creditForm.add(this.creditAccountNameBlock);
         this.creditAccountNameIContainer = new WebMarkupContainer("creditAccountNameIContainer");
         this.creditAccountNameBlock.add(this.creditAccountNameIContainer);
         this.creditAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
@@ -452,7 +503,7 @@ public class FrequentPostPage extends DeprecatedPage {
 
     protected void initDebitAccountNameBlock() {
         this.debitAccountNameBlock = new WebMarkupBlock("debitAccountNameBlock", Size.Six_6);
-        this.form.add(this.debitAccountNameBlock);
+        this.debitForm.add(this.debitAccountNameBlock);
         this.debitAccountNameIContainer = new WebMarkupContainer("debitAccountNameIContainer");
         this.debitAccountNameBlock.add(this.debitAccountNameIContainer);
         this.debitAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
@@ -466,7 +517,7 @@ public class FrequentPostPage extends DeprecatedPage {
 
     protected void initCreditAmountBlock() {
         this.creditAmountBlock = new WebMarkupBlock("creditAmountBlock", Size.Six_6);
-        this.form.add(this.creditAmountBlock);
+        this.creditForm.add(this.creditAmountBlock);
         this.creditAmountIContainer = new WebMarkupContainer("creditAmountIContainer");
         this.creditAmountBlock.add(this.creditAmountIContainer);
         this.creditAmountField = new TextField<>("creditAmountField", new PropertyModel<>(this, "creditAmountValue"));
@@ -478,7 +529,7 @@ public class FrequentPostPage extends DeprecatedPage {
 
     protected void initDebitAmountBlock() {
         this.debitAmountBlock = new WebMarkupBlock("debitAmountBlock", Size.Six_6);
-        this.form.add(this.debitAmountBlock);
+        this.debitForm.add(this.debitAmountBlock);
         this.debitAmountIContainer = new WebMarkupContainer("debitAmountIContainer");
         this.debitAmountBlock.add(this.debitAmountIContainer);
         this.debitAmountField = new TextField<>("debitAmountField", new PropertyModel<>(this, "debitAmountValue"));
@@ -501,7 +552,7 @@ public class FrequentPostPage extends DeprecatedPage {
             Double value = (Double) model.get(column);
             return new TextCell(value);
         }
-        throw new WicketRuntimeException("Unknow " + column);
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
     protected void debitClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
