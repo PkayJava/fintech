@@ -1,18 +1,6 @@
 package com.angkorteam.fintech.pages.account;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.FinancialActivityBuilder;
@@ -37,12 +25,23 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by socheatkhauv on 6/27/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class FinancialActivityModifyPage extends DeprecatedPage {
+public class FinancialActivityModifyPage extends Page {
 
     protected String financialActivityId;
 
@@ -97,7 +96,7 @@ public class FinancialActivityModifyPage extends DeprecatedPage {
         PageParameters parameters = getPageParameters();
         this.financialActivityId = parameters.get("financialActivityId").toString("");
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> financialActivityObject = jdbcTemplate.queryForMap("select * from acc_gl_financial_activity_account where id = ?", financialActivityId);
+        Map<String, Object> financialActivityObject = jdbcTemplate.queryForMap("select * from acc_gl_financial_activity_account where id = ?", this.financialActivityId);
         this.financialActivityValue = FinancialActivityTypeEnum.optionLiteral(String.valueOf(financialActivityObject.get("financial_activity_type")));
         if (financialActivityObject.get("gl_account_id") != null) {
             this.accountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, financialActivityObject.get("gl_account_id"));

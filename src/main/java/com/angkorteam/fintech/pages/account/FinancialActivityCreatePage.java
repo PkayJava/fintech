@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.account;
 
 import java.util.List;
 
+import com.angkorteam.fintech.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -38,7 +39,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * Created by socheatkhauv on 6/27/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class FinancialActivityCreatePage extends DeprecatedPage {
+public class FinancialActivityCreatePage extends Page {
 
     protected Form<Void> form;
     protected Button saveButton;
