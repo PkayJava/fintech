@@ -217,6 +217,10 @@ public class FrequentPostPage extends Page {
 
         this.transactionDateValue = new Date();
 
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
+        this.referenceNumberValue = generator.externalId();
+        this.transactionDateValue = new Date();
+
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
         PageParameters parameters = getPageParameters();
