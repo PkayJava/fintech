@@ -1,5 +1,7 @@
 package com.angkorteam.fintech.popup;
 
+import java.util.Map;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -30,9 +32,9 @@ public class ReversePopup extends Panel {
     private TextArea<String> reasonField;
     private TextFeedbackPanel reasonFeedback;
 
-    private Object model;
+    private Map<String,Object> model;
 
-    public ReversePopup(String id, ModalWindow window, Object model, String transactionId) {
+    public ReversePopup(String id, ModalWindow window, Map<String,Object> model, String transactionId) {
         super(id);
         this.model = model;
         this.window = window;

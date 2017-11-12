@@ -11,14 +11,14 @@
 			<div class="box-body">
 
 				<!-- Row -->
-				<div wicket:id="{logic}Block" class="form-group">
-					<wicket:container wicket:id="{logic}VContainer">
+				<div wicket:id="officeBlock" class="form-group">
+					<wicket:container wicket:id="officeVContainer">
 						<label>Office</label>
 						<div wicket:id="officeView" class="form-control"></div>
 					</wicket:container>
 				</div>
-				<div wicket:id="{logic}Block" class="form-group">
-					<wicket:container wicket:id="{logic}VContainer">
+				<div wicket:id="transactionDateBlock" class="form-group">
+					<wicket:container wicket:id="transactionDateVContainer">
 						<label>Transaction Date</label>
 						<div wicket:id="transactionDateView" class="form-control"></div>
 					</wicket:container>
@@ -26,14 +26,14 @@
 				<div class="clearfix"></div>
 
 				<!-- Row -->
-				<div wicket:id="{logic}Block" class="form-group">
-					<wicket:container wicket:id="{logic}VContainer">
+				<div wicket:id="createdByBlock" class="form-group">
+					<wicket:container wicket:id="createdByVContainer">
 						<label>Created By</label>
 						<div wicket:id="createdByView" class="form-control"></div>
 					</wicket:container>
 				</div>
-				<div wicket:id="{logic}Block" class="form-group">
-					<wicket:container wicket:id="{logic}VContainer">
+				<div wicket:id="createdOnBlock" class="form-group">
+					<wicket:container wicket:id="createdOnVContainer">
 						<label>Created On</label>
 						<div wicket:id="createdOnView" class="form-control"></div>
 					</wicket:container>
@@ -41,9 +41,10 @@
 				<div class="clearfix"></div>
 
 				<!-- Row -->
-				<div
-					class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<table wicket:id="entryTable"></table>
+				<div wicket:id="entryBlock" class="form-group">
+					<wicket:container wicket:id="entryIContainer">
+						<table wicket:id="entryTable"></table>
+					</wicket:container>
 				</div>
 				<div class="clearfix"></div>
 			</div>

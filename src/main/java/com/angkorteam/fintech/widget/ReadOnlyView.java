@@ -2,6 +2,8 @@ package com.angkorteam.fintech.widget;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +25,11 @@ public class ReadOnlyView extends Label {
 
     public ReadOnlyView(String id, IModel<?> value) {
         super(id, value);
+    }
+
+    public ReadOnlyView(String id, IModel<?> value, String format) {
+        super(id, value);
+        this.format = format;
     }
 
     public ReadOnlyView(String id) {
@@ -382,7 +389,7 @@ public class ReadOnlyView extends Label {
                                 objects.add(this.format == null || "".equals(this.format) ? String.valueOf(((BigInteger) object).longValue()) : Application.FORMATS.get(this.format).format(((BigInteger) object).longValue()));
                             } else if (vClass == BigDecimal.class) {
                                 objects.add(this.format == null || "".equals(this.format) ? String.valueOf(((BigDecimal) object).doubleValue()) : Application.FORMATS.get(this.format).format(((BigDecimal) object).doubleValue()));
-                            } else if (vClass == Date.class) {
+                            } else if (vClass == Date.class || vClass == Time.class || vClass == java.sql.Date.class || vClass == Timestamp.class) {
                                 objects.add(DateFormatUtils.format((Date) object, this.format));
                             } else if (vClass == Option.class) {
                                 objects.add(((Option) object).getText());
@@ -481,6 +488,24 @@ public class ReadOnlyView extends Label {
                             objects.add(DateFormatUtils.format(v, this.format));
                         }
                     }
+                } else if (objectClass == java.sql.Date[].class) {
+                    for (Date v : (java.sql.Date[]) object) {
+                        if (v != null) {
+                            objects.add(DateFormatUtils.format(v, this.format));
+                        }
+                    }
+                } else if (objectClass == Timestamp[].class) {
+                    for (Date v : (Timestamp[]) object) {
+                        if (v != null) {
+                            objects.add(DateFormatUtils.format(v, this.format));
+                        }
+                    }
+                } else if (objectClass == Time[].class) {
+                    for (Date v : (Time[]) object) {
+                        if (v != null) {
+                            objects.add(DateFormatUtils.format(v, this.format));
+                        }
+                    }
                 } else if (objectClass == Character[].class) {
                     for (Character v : (Character[]) object) {
                         if (v != null) {
@@ -523,7 +548,7 @@ public class ReadOnlyView extends Label {
                     objects.add(this.format == null || "".equals(this.format) ? String.valueOf(((BigInteger) object).longValue()) : Application.FORMATS.get(this.format).format(((BigInteger) object).longValue()));
                 } else if (objectClass == BigDecimal.class) {
                     objects.add(this.format == null || "".equals(this.format) ? String.valueOf(((BigDecimal) object).doubleValue()) : Application.FORMATS.get(this.format).format(((BigDecimal) object).doubleValue()));
-                } else if (objectClass == Date.class) {
+                } else if (objectClass == Date.class || objectClass == Time.class || objectClass == java.sql.Date.class || objectClass == Timestamp.class) {
                     objects.add(DateFormatUtils.format((Date) object, this.format));
                 } else if (objectClass == Option.class) {
                     objects.add(((Option) object).getText());

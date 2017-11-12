@@ -1,11 +1,9 @@
 package com.angkorteam.fintech.pages.account;
 
-import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -16,7 +14,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.popup.ReversePopup;
@@ -39,14 +37,13 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * Created by socheatkhauv on 7/2/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class TransactionPage extends DeprecatedPage {
-
-    protected static final DecimalFormat FORMAT = new DecimalFormat("#,###.000");
+public class TransactionPage extends Page {
 
     protected String transactionId;
 
@@ -64,12 +61,12 @@ public class TransactionPage extends DeprecatedPage {
 
     protected WebMarkupBlock transactionDateBlock;
     protected WebMarkupContainer transactionDateVContainer;
-    protected String transactionDateValue;
+    protected Date transactionDateValue;
     protected ReadOnlyView transactionDateView;
 
     protected WebMarkupBlock createdOnBlock;
     protected WebMarkupContainer createdOnVContainer;
-    protected String createdOnValue;
+    protected Date createdOnValue;
     protected ReadOnlyView createdOnView;
 
     protected WebMarkupBlock createdByBlock;
@@ -77,11 +74,15 @@ public class TransactionPage extends DeprecatedPage {
     protected String createdByValue;
     protected ReadOnlyView createdByView;
 
+    protected WebMarkupBlock entryBlock;
+    protected WebMarkupContainer entryIContainer;
     protected DataTable<Map<String, Object>, String> entryTable;
     protected JdbcProvider entryProvider;
     protected List<IColumn<Map<String, Object>, String>> entryColumn;
 
     protected ModalWindow commentPopup;
+
+    protected Map<String, Object> popupModel;
 
     protected static final List<PageBreadcrumb> BREADCRUMB;
 
@@ -113,6 +114,7 @@ public class TransactionPage extends DeprecatedPage {
 
     @Override
     protected void initData() {
+        this.popupModel = Maps.newHashMap();
         PageParameters parameters = getPageParameters();
         this.transactionId = parameters.get("transactionId").toString("");
 
@@ -134,10 +136,8 @@ public class TransactionPage extends DeprecatedPage {
 
         this.officeValue = (String) entry.get("office");
         this.createdByValue = (String) entry.get("created_by");
-        Date transactionDate = (Date) entry.get("transaction_date");
-        this.transactionDateValue = transactionDate == null ? "" : DateFormatUtils.format(transactionDate, "yyyy-MM-dd");
-        Date createdOn = (Date) entry.get("created_date");
-        this.createdOnValue = createdOn == null ? "" : DateFormatUtils.format(createdOn, "yyyy-MM-dd");
+        this.transactionDateValue = (Date) entry.get("transaction_date");
+        this.createdOnValue = (Date) entry.get("created_date");
         this.transactionNumberValue = (String) entry.get("transaction_id");
     }
 
@@ -157,7 +157,7 @@ public class TransactionPage extends DeprecatedPage {
 
         initTransactionNumberBlock();
 
-        initEntryTable();
+        initEntryBlock();
 
         this.commentPopup = new ModalWindow("commentPopup");
         add(this.commentPopup);
@@ -174,7 +174,13 @@ public class TransactionPage extends DeprecatedPage {
 
     }
 
-    protected void initEntryTable() {
+    protected void initEntryBlock() {
+
+        this.entryBlock = new WebMarkupBlock("entryBlock", Size.Twelve_12);
+        add(this.entryBlock);
+        this.entryIContainer = new WebMarkupContainer("entryIContainer");
+        this.entryBlock.add(this.entryIContainer);
+
         this.entryProvider = new JdbcProvider("acc_gl_journal_entry");
         this.entryProvider.addJoin("LEFT JOIN acc_gl_account ON acc_gl_journal_entry.account_id = acc_gl_account.id");
         this.entryProvider.addJoin("LEFT JOIN m_office ON acc_gl_journal_entry.office_id = m_office.id");
@@ -200,7 +206,7 @@ public class TransactionPage extends DeprecatedPage {
         this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Credit"), "credit_amount", "credit_amount", this::entryColumn));
 
         this.entryTable = new DataTable<>("entryTable", this.entryColumn, this.entryProvider, 20);
-        add(this.entryTable);
+        this.entryIContainer.add(this.entryTable);
         this.entryTable.addTopToolbar(new HeadersToolbar<>(this.entryTable, this.entryProvider));
         this.entryTable.addBottomToolbar(new NoRecordsToolbar(this.entryTable));
     }
@@ -219,7 +225,7 @@ public class TransactionPage extends DeprecatedPage {
         this.add(this.createdOnBlock);
         this.createdOnVContainer = new WebMarkupContainer("createdOnVContainer");
         this.createdOnBlock.add(this.createdOnVContainer);
-        this.createdOnView = new ReadOnlyView("createdOnView", new PropertyModel<>(this, "createdOnValue"));
+        this.createdOnView = new ReadOnlyView("createdOnView", new PropertyModel<>(this, "createdOnValue"), "yyyy-MM-dd");
         this.createdOnVContainer.add(this.createdOnView);
     }
 
@@ -228,7 +234,7 @@ public class TransactionPage extends DeprecatedPage {
         add(this.transactionDateBlock);
         this.transactionDateVContainer = new WebMarkupContainer("transactionDateVContainer");
         this.transactionDateBlock.add(this.transactionDateVContainer);
-        this.transactionDateView = new ReadOnlyView("transactionDateView", new PropertyModel<>(this, "transactionDateValue"));
+        this.transactionDateView = new ReadOnlyView("transactionDateView", new PropertyModel<>(this, "transactionDateValue"), "yyyy-MM-dd");
         this.transactionDateVContainer.add(this.transactionDateView);
     }
 
@@ -255,8 +261,11 @@ public class TransactionPage extends DeprecatedPage {
     }
 
     protected ItemPanel entryColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("id".equals(column) || "account_type".equals(column) || "account_name".equals(column)) {
+        if ("id".equals(column)) {
             Long value = (Long) model.get(column);
+            return new TextCell(value);
+        } else if ("account_type".equals(column) || "account_name".equals(column)) {
+            String value = (String) model.get(column);
             return new TextCell(value);
         } else if ("debit_amount".equals(column) || "credit_amount".equals(column)) {
             Double value = (Double) model.get(column);
@@ -266,7 +275,7 @@ public class TransactionPage extends DeprecatedPage {
     }
 
     protected boolean reverseButtonClick(AjaxLink<Void> button, AjaxRequestTarget target) {
-        this.commentPopup.setContent(new ReversePopup(this.commentPopup.getContentId(), this.commentPopup, this, this.transactionId));
+        this.commentPopup.setContent(new ReversePopup(this.commentPopup.getContentId(), this.commentPopup, this.popupModel, this.transactionId));
         this.commentPopup.show(target);
         return false;
     }
