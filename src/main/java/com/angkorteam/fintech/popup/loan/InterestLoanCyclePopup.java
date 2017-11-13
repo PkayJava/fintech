@@ -14,6 +14,8 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
+import java.util.Map;
+
 public class InterestLoanCyclePopup extends Panel {
 
     protected ModalWindow window;
@@ -42,9 +44,9 @@ public class InterestLoanCyclePopup extends Panel {
     protected TextField<Double> maximumField;
     protected TextFeedbackPanel maximumFeedback;
 
-    protected Object model;
+    protected Map<String, Object> model;
 
-    public InterestLoanCyclePopup(String id, ModalWindow window, Object model) {
+    public InterestLoanCyclePopup(String id, ModalWindow window, Map<String, Object> model) {
         super(id);
         this.model = model;
         this.window = window;
@@ -62,7 +64,7 @@ public class InterestLoanCyclePopup extends Panel {
         this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
-        this.whenValue = new PropertyModel<>(this.model, "itemWhenValue");
+        this.whenValue = new PropertyModel<>(this.model, "whenValue");
         this.whenProvider = new WhenProvider();
         this.whenField = new Select2SingleChoice<>("whenField", 0, this.whenValue, this.whenProvider);
         this.whenField.setLabel(Model.of("When"));
@@ -70,29 +72,33 @@ public class InterestLoanCyclePopup extends Panel {
         this.whenFeedback = new TextFeedbackPanel("whenFeedback", this.whenField);
         this.form.add(this.whenFeedback);
 
-        this.loanCycleValue = new PropertyModel<>(this.model, "itemLoanCycleValue");
+        this.loanCycleValue = new PropertyModel<>(this.model, "loanCycleValue");
         this.loanCycleField = new TextField<>("loanCycleField", this.loanCycleValue);
         this.loanCycleField.setLabel(Model.of("Loan Cycle"));
+        this.loanCycleField.setType(Integer.class);
         this.form.add(this.loanCycleField);
         this.loanCycleFeedback = new TextFeedbackPanel("loanCycleFeedback", this.loanCycleField);
         this.form.add(this.loanCycleFeedback);
 
-        this.minimumValue = new PropertyModel<>(this.model, "itemMinimumValue");
+        this.minimumValue = new PropertyModel<>(this.model, "minimumValue");
         this.minimumField = new TextField<>("minimumField", this.minimumValue);
+        this.minimumField.setType(Double.class);
         this.minimumField.setLabel(Model.of("Minimum"));
         this.form.add(this.minimumField);
         this.minimumFeedback = new TextFeedbackPanel("minimumFeedback", this.minimumField);
         this.form.add(this.minimumFeedback);
 
-        this.defaultValue = new PropertyModel<>(this.model, "itemDefaultValue");
+        this.defaultValue = new PropertyModel<>(this.model, "defaultValue");
         this.defaultField = new TextField<>("defaultField", this.defaultValue);
         this.defaultField.setLabel(Model.of("Default"));
+        this.defaultField.setType(Double.class);
         this.form.add(this.defaultField);
         this.defaultFeedback = new TextFeedbackPanel("defaultFeedback", this.defaultField);
         this.form.add(this.defaultFeedback);
 
-        this.maximumValue = new PropertyModel<>(this.model, "itemMaximumValue");
+        this.maximumValue = new PropertyModel<>(this.model, "maximumValue");
         this.maximumField = new TextField<>("maximumField", this.maximumValue);
+        this.maximumField.setType(Double.class);
         this.maximumField.setLabel(Model.of("Maximum"));
         this.form.add(this.maximumField);
         this.maximumFeedback = new TextFeedbackPanel("maximumFeedback", this.maximumField);

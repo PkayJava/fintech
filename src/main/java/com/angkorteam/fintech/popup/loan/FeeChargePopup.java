@@ -16,6 +16,8 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
+import java.util.Map;
+
 public class FeeChargePopup extends Panel {
 
     private ModalWindow window;
@@ -35,9 +37,9 @@ public class FeeChargePopup extends Panel {
 
     private String currencyCode;
 
-    private Object model;
+    private Map<String, Object> model;
 
-    public FeeChargePopup(String id, ModalWindow window, Object model, String currencyCode) {
+    public FeeChargePopup(String id, ModalWindow window, Map<String, Object> model, String currencyCode) {
         super(id);
         this.model = model;
         this.window = window;
@@ -56,7 +58,7 @@ public class FeeChargePopup extends Panel {
         this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
-        this.chargeValue = new PropertyModel<>(this.model, "itemChargeValue");
+        this.chargeValue = new PropertyModel<>(this.model, "chargeValue");
         this.chargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
         this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.Loan.getLiteral());
         this.chargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
@@ -68,7 +70,7 @@ public class FeeChargePopup extends Panel {
         this.chargeFeedback = new TextFeedbackPanel("chargeFeedback", this.chargeField);
         this.form.add(this.chargeFeedback);
 
-        this.accountValue = new PropertyModel<>(this.model, "itemAccountValue");
+        this.accountValue = new PropertyModel<>(this.model, "accountValue");
         this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.accountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.accountProvider.applyWhere("classification_enum", "classification_enum in (" + AccountType.Income.getLiteral() + "," + AccountType.Liability.getLiteral() + ")");

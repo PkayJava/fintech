@@ -46,10 +46,9 @@ public class OverdueChargePopup extends Panel {
 
         this.okayButton = new AjaxButton("okayButton");
         this.okayButton.setOnSubmit(this::okayButtonSubmit);
-        this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
-        this.overdueChargeValue = new PropertyModel<>(this.model, "itemOverdueChargeValue");
+        this.overdueChargeValue = new PropertyModel<>(this.model, "overdueChargeValue");
         this.overdueChargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
         this.overdueChargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.Loan.getLiteral());
         this.overdueChargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
@@ -66,11 +65,6 @@ public class OverdueChargePopup extends Panel {
     protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
         this.window.setElementId(ajaxButton.getId());
         this.window.close(target);
-        return true;
-    }
-
-    protected boolean okayButtonError(AjaxButton ajaxButton, AjaxRequestTarget target) {
-        target.add(this.form);
         return true;
     }
 

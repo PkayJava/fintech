@@ -1,45 +1,11 @@
 package com.angkorteam.fintech.pages.product.fixed;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Radio;
-import org.apache.wicket.markup.html.form.RadioGroup;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.validation.validator.StringValidator;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.FixedBuilder;
 import com.angkorteam.fintech.dto.builder.FixedBuilder.IncentiveBuilder;
-import com.angkorteam.fintech.dto.enums.AccountType;
-import com.angkorteam.fintech.dto.enums.AccountUsage;
-import com.angkorteam.fintech.dto.enums.ApplyPenalOn;
-import com.angkorteam.fintech.dto.enums.Attribute;
-import com.angkorteam.fintech.dto.enums.ChargeCalculation;
-import com.angkorteam.fintech.dto.enums.ChargeTime;
-import com.angkorteam.fintech.dto.enums.DayInYear;
-import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
-import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
-import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
-import com.angkorteam.fintech.dto.enums.LockInType;
-import com.angkorteam.fintech.dto.enums.OperandType;
-import com.angkorteam.fintech.dto.enums.Operator;
+import com.angkorteam.fintech.dto.enums.*;
 import com.angkorteam.fintech.helper.FixedHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.popup.CurrencyPopup;
@@ -49,14 +15,7 @@ import com.angkorteam.fintech.popup.fixed.ChargePopup;
 import com.angkorteam.fintech.popup.fixed.FeeChargePopup;
 import com.angkorteam.fintech.popup.fixed.IncentivePopup;
 import com.angkorteam.fintech.popup.fixed.PenaltyChargePopup;
-import com.angkorteam.fintech.provider.ApplyPenalOnProvider;
-import com.angkorteam.fintech.provider.CurrencyProvider;
-import com.angkorteam.fintech.provider.DayInYearProvider;
-import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
-import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
-import com.angkorteam.fintech.provider.InterestPostingPeriodProvider;
-import com.angkorteam.fintech.provider.LockInTypeProvider;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.provider.*;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -87,6 +46,28 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.validator.StringValidator;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FixedDepositCreatePage extends DeprecatedPage {
@@ -295,9 +276,12 @@ public class FixedDepositCreatePage extends DeprecatedPage {
     protected CheckBox interestRatePrimaryGroupingByAmountField;
     protected TextFeedbackPanel interestRatePrimaryGroupingByAmountFeedback;
 
+    protected WebMarkupBlock interestRateChartBlock;
+    protected WebMarkupContainer interestRateChartIContainer;
     protected List<Map<String, Object>> interestRateChartValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> interestRateChartTable;
     protected ListDataProvider interestRateChartProvider;
+    protected List<IColumn<Map<String, Object>, String>> interestRateChartColumn;
     protected ModalWindow interestRateChartPopup;
     protected AjaxLink<Void> interestRateChartAddLink;
 
@@ -305,6 +289,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
 
     // Charges
 
+    protected List<IColumn<Map<String, Object>, String>> chargeColumn;
     protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> chargeTable;
     protected ListDataProvider chargeProvider;
@@ -366,36 +351,40 @@ public class FixedDepositCreatePage extends DeprecatedPage {
     protected WebMarkupContainer advancedAccountingRuleBlock;
     protected WebMarkupContainer advancedAccountingRuleIContainer;
 
+    protected List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFundSourceColumn;
     protected List<Map<String, Object>> advancedAccountingRuleFundSourceValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> advancedAccountingRuleFundSourceTable;
     protected ListDataProvider advancedAccountingRuleFundSourceProvider;
     protected AjaxLink<Void> advancedAccountingRuleFundSourceAddLink;
-    protected ModalWindow fundSourcePopup;
 
+    protected List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFeeIncomeColumn;
     protected List<Map<String, Object>> advancedAccountingRuleFeeIncomeValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> advancedAccountingRuleFeeIncomeTable;
     protected ListDataProvider advancedAccountingRuleFeeIncomeProvider;
     protected AjaxLink<Void> advancedAccountingRuleFeeIncomeAddLink;
-    protected ModalWindow feeIncomePopup;
 
+    protected List<IColumn<Map<String, Object>, String>> advancedAccountingRulePenaltyIncomeColumn;
     protected List<Map<String, Object>> advancedAccountingRulePenaltyIncomeValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> advancedAccountingRulePenaltyIncomeTable;
     protected ListDataProvider advancedAccountingRulePenaltyIncomeProvider;
     protected AjaxLink<Void> advancedAccountingRulePenaltyIncomeAddLink;
+
+//    protected Option itemChargeValue;
+//    protected Option itemPeriodTypeValue;
+//    protected Integer itemPeriodFromValue;
+//    protected Integer itemPeriodToValue;
+//    protected Integer itemAmountRangeFromValue;
+//    protected Integer itemAmountRangeToValue;
+//    protected Double itemInterestValue;
+//    protected String itemDescriptionValue;
+//    protected Option itemPaymentValue;
+//    protected Option itemAccountValue;
+
+    protected Map<String, Object> popupModel;
+
+    protected ModalWindow fundSourcePopup;
+    protected ModalWindow feeIncomePopup;
     protected ModalWindow penaltyIncomePopup;
-
-    protected Option itemChargeValue;
-    protected Option itemPeriodTypeValue;
-    protected Integer itemPeriodFromValue;
-    protected Integer itemPeriodToValue;
-    protected Integer itemAmountRangeFromValue;
-    protected Integer itemAmountRangeToValue;
-    protected Double itemInterestValue;
-    protected String itemDescriptionValue;
-    protected Option itemPaymentValue;
-    protected Option itemAccountValue;
-
-    protected ModalWindow currencyPopup;
 
     protected static final List<PageBreadcrumb> BREADCRUMB;
 
@@ -442,9 +431,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", FixedDepositBrowsePage.class);
         this.form.add(this.closeLink);
-
-        this.currencyPopup = new ModalWindow("currencyPopup");
-        add(this.currencyPopup);
 
         initSectionDetail();
 
@@ -493,6 +479,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
 
     @Override
     protected void initData() {
+        this.popupModel = Maps.newHashMap();
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         this.detailShortNameValue = generator.generate(4);
         this.currencyDecimalPlaceValue = 2;
@@ -623,14 +610,14 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         {
             this.fundSourcePopup = new ModalWindow("fundSourcePopup");
             add(this.fundSourcePopup);
-            this.fundSourcePopup.setOnClose(this::fundSourcePopupOnClose);
+            this.fundSourcePopup.setOnClose(this::fundSourcePopupClose);
 
-            List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFundSourceColumn = Lists.newLinkedList();
-            advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Payment Type"), "payment", "payment", this::advancedAccountingRuleFundSourcePaymentColumn));
-            advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Fund Source"), "account", "account", this::advancedAccountingRuleFundSourceAccountColumn));
-            advancedAccountingRuleFundSourceColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFundSourceActionItem, this::advancedAccountingRuleFundSourceActionClick));
+            this.advancedAccountingRuleFundSourceColumn = Lists.newLinkedList();
+            this.advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Payment Type"), "payment", "payment", this::advancedAccountingRuleFundSourceColumn));
+            this.advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Fund Source"), "account", "account", this::advancedAccountingRuleFundSourceColumn));
+            this.advancedAccountingRuleFundSourceColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFundSourceAction, this::advancedAccountingRuleFundSourceClick));
             this.advancedAccountingRuleFundSourceProvider = new ListDataProvider(this.advancedAccountingRuleFundSourceValue);
-            this.advancedAccountingRuleFundSourceTable = new DataTable<>("advancedAccountingRuleFundSourceTable", advancedAccountingRuleFundSourceColumn, this.advancedAccountingRuleFundSourceProvider, 20);
+            this.advancedAccountingRuleFundSourceTable = new DataTable<>("advancedAccountingRuleFundSourceTable", this.advancedAccountingRuleFundSourceColumn, this.advancedAccountingRuleFundSourceProvider, 20);
             this.advancedAccountingRuleIContainer.add(this.advancedAccountingRuleFundSourceTable);
             this.advancedAccountingRuleFundSourceTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRuleFundSourceTable, this.advancedAccountingRuleFundSourceProvider));
             this.advancedAccountingRuleFundSourceTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRuleFundSourceTable));
@@ -644,14 +631,14 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         {
             this.feeIncomePopup = new ModalWindow("feeIncomePopup");
             add(this.feeIncomePopup);
-            this.feeIncomePopup.setOnClose(this::feeIncomePopupOnClose);
+            this.feeIncomePopup.setOnClose(this::feeIncomePopupClose);
 
-            List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFeeIncomeColumn = Lists.newLinkedList();
-            advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Fees"), "charge", "charge", this::advancedAccountingRuleFeeIncomeChargeColumn));
-            advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRuleFeeIncomeAccountColumn));
-            advancedAccountingRuleFeeIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFeeIncomeActionItem, this::advancedAccountingRuleFeeIncomeActionClick));
+            this.advancedAccountingRuleFeeIncomeColumn = Lists.newLinkedList();
+            this.advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Fees"), "charge", "charge", this::advancedAccountingRuleFeeIncomeColumn));
+            this.advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRuleFeeIncomeColumn));
+            this.advancedAccountingRuleFeeIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFeeIncomeAction, this::advancedAccountingRuleFeeIncomeClick));
             this.advancedAccountingRuleFeeIncomeProvider = new ListDataProvider(this.advancedAccountingRuleFeeIncomeValue);
-            this.advancedAccountingRuleFeeIncomeTable = new DataTable<>("advancedAccountingRuleFeeIncomeTable", advancedAccountingRuleFeeIncomeColumn, this.advancedAccountingRuleFeeIncomeProvider, 20);
+            this.advancedAccountingRuleFeeIncomeTable = new DataTable<>("advancedAccountingRuleFeeIncomeTable", this.advancedAccountingRuleFeeIncomeColumn, this.advancedAccountingRuleFeeIncomeProvider, 20);
             this.advancedAccountingRuleIContainer.add(this.advancedAccountingRuleFeeIncomeTable);
             this.advancedAccountingRuleFeeIncomeTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRuleFeeIncomeTable, this.advancedAccountingRuleFeeIncomeProvider));
             this.advancedAccountingRuleFeeIncomeTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRuleFeeIncomeTable));
@@ -665,14 +652,14 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         {
             this.penaltyIncomePopup = new ModalWindow("penaltyIncomePopup");
             add(this.penaltyIncomePopup);
-            this.penaltyIncomePopup.setOnClose(this::penaltyIncomePopupOnClose);
+            this.penaltyIncomePopup.setOnClose(this::penaltyIncomePopupClose);
 
-            List<IColumn<Map<String, Object>, String>> advancedAccountingRulePenaltyIncomeColumn = Lists.newLinkedList();
-            advancedAccountingRulePenaltyIncomeColumn.add(new TextColumn(Model.of("Penalty"), "charge", "charge", this::advancedAccountingRulePenaltyIncomeChargeColumn));
-            advancedAccountingRulePenaltyIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRulePenaltyIncomeAccountColumn));
-            advancedAccountingRulePenaltyIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRulePenaltyIncomeActionItem, this::advancedAccountingRulePenaltyIncomeActionClick));
+            this.advancedAccountingRulePenaltyIncomeColumn = Lists.newLinkedList();
+            this.advancedAccountingRulePenaltyIncomeColumn.add(new TextColumn(Model.of("Penalty"), "charge", "charge", this::advancedAccountingRulePenaltyIncomeColumn));
+            this.advancedAccountingRulePenaltyIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRulePenaltyIncomeColumn));
+            this.advancedAccountingRulePenaltyIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRulePenaltyIncomeAction, this::advancedAccountingRulePenaltyIncomeClick));
             this.advancedAccountingRulePenaltyIncomeProvider = new ListDataProvider(this.advancedAccountingRulePenaltyIncomeValue);
-            this.advancedAccountingRulePenaltyIncomeTable = new DataTable<>("advancedAccountingRulePenaltyIncomeTable", advancedAccountingRulePenaltyIncomeColumn, this.advancedAccountingRulePenaltyIncomeProvider, 20);
+            this.advancedAccountingRulePenaltyIncomeTable = new DataTable<>("advancedAccountingRulePenaltyIncomeTable", this.advancedAccountingRulePenaltyIncomeColumn, this.advancedAccountingRulePenaltyIncomeProvider, 20);
             this.advancedAccountingRuleIContainer.add(this.advancedAccountingRulePenaltyIncomeTable);
             this.advancedAccountingRulePenaltyIncomeTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRulePenaltyIncomeTable, this.advancedAccountingRulePenaltyIncomeProvider));
             this.advancedAccountingRulePenaltyIncomeTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRulePenaltyIncomeTable));
@@ -683,65 +670,56 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         }
     }
 
-    protected void feeIncomePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void feeIncomePopupClose(String elementId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
-        item.put("chargeId", this.itemChargeValue.getId());
-        item.put("charge", this.itemChargeValue.getText());
-        item.put("accountId", this.itemAccountValue.getId());
-        item.put("account", this.itemAccountValue.getText());
+        item.put("charge", this.popupModel.get("chargeValue"));
+        item.put("account", this.popupModel.get("accountValue"));
         this.advancedAccountingRuleFeeIncomeValue.add(item);
         target.add(this.advancedAccountingRuleFeeIncomeTable);
     }
 
-    protected void penaltyIncomePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void penaltyIncomePopupClose(String elementId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", UUID.randomUUID().toString());
-        item.put("chargeId", this.itemChargeValue.getId());
-        item.put("charge", this.itemChargeValue.getText());
-        item.put("accountId", this.itemAccountValue.getId());
-        item.put("account", this.itemAccountValue.getText());
+        item.put("charge", this.popupModel.get("chargeValue"));
+        item.put("account", this.popupModel.get("accountValue"));
         this.advancedAccountingRulePenaltyIncomeValue.add(item);
         target.add(this.advancedAccountingRulePenaltyIncomeTable);
     }
 
-    protected void fundSourcePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void fundSourcePopupClose(String elementId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
-        item.put("paymentId", this.itemPaymentValue.getId());
-        item.put("payment", this.itemPaymentValue.getText());
-        item.put("accountId", this.itemAccountValue.getId());
-        item.put("account", this.itemAccountValue.getText());
+        item.put("payment", this.popupModel.get("paymentValue"));
+        item.put("account", this.popupModel.get("accountValue"));
         this.advancedAccountingRuleFundSourceValue.add(item);
         target.add(this.advancedAccountingRuleFundSourceTable);
     }
 
     protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemChargeValue = null;
-        this.itemAccountValue = null;
+        this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this, this.currencyCodeValue.getId()));
+            this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
         } else {
-            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
-            this.currencyPopup.show(target);
+            this.penaltyIncomePopup.setContent(new CurrencyPopup(this.penaltyIncomePopup.getContentId()));
+            this.penaltyIncomePopup.show(target);
         }
         return false;
     }
 
-    protected ItemPanel advancedAccountingRulePenaltyIncomeChargeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel advancedAccountingRulePenaltyIncomeColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("charge".equals(column) || "account".equals(column)) {
+            Option value = (Option) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected ItemPanel advancedAccountingRulePenaltyIncomeAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected void advancedAccountingRulePenaltyIncomeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void advancedAccountingRulePenaltyIncomeClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.advancedAccountingRulePenaltyIncomeValue.size(); i++) {
             Map<String, Object> column = this.advancedAccountingRulePenaltyIncomeValue.get(i);
@@ -756,38 +734,35 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         target.add(this.advancedAccountingRulePenaltyIncomeTable);
     }
 
-    protected List<ActionItem> advancedAccountingRulePenaltyIncomeActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> advancedAccountingRulePenaltyIncomeAction(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected List<ActionItem> advancedAccountingRuleFeeIncomeActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> advancedAccountingRuleFeeIncomeAction(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     protected boolean advancedAccountingRuleFeeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemChargeValue = null;
-        this.itemAccountValue = null;
+        this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this, this.currencyCodeValue.getId()));
+            this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
         } else {
-            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
-            this.currencyPopup.show(target);
+            this.feeIncomePopup.setContent(new CurrencyPopup(this.feeIncomePopup.getContentId()));
+            this.feeIncomePopup.show(target);
         }
         return false;
     }
 
-    protected ItemPanel advancedAccountingRuleFeeIncomeChargeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel advancedAccountingRuleFeeIncomeColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("charge".equals(column) || "account".equals(column)) {
+            Option value = (Option) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected ItemPanel advancedAccountingRuleFeeIncomeAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected void advancedAccountingRuleFeeIncomeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void advancedAccountingRuleFeeIncomeClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.advancedAccountingRuleFeeIncomeValue.size(); i++) {
             Map<String, Object> column = this.advancedAccountingRuleFeeIncomeValue.get(i);
@@ -802,7 +777,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         target.add(this.advancedAccountingRuleFeeIncomeTable);
     }
 
-    protected void advancedAccountingRuleFundSourceActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void advancedAccountingRuleFundSourceClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.advancedAccountingRuleFundSourceValue.size(); i++) {
             Map<String, Object> column = this.advancedAccountingRuleFundSourceValue.get(i);
@@ -817,24 +792,22 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         target.add(this.advancedAccountingRuleFundSourceTable);
     }
 
-    protected List<ActionItem> advancedAccountingRuleFundSourceActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> advancedAccountingRuleFundSourceAction(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     protected boolean advancedAccountingRuleFundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this));
+        this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this.popupModel));
         this.fundSourcePopup.show(target);
         return false;
     }
 
-    protected ItemPanel advancedAccountingRuleFundSourcePaymentColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel advancedAccountingRuleFundSourceAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel advancedAccountingRuleFundSourceColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("payment".equals(column) || "account".equals(column)) {
+            Option value = (Option) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
     protected boolean accountingFieldUpdate(AjaxRequestTarget target) {
@@ -859,17 +832,17 @@ public class FixedDepositCreatePage extends DeprecatedPage {
     protected void initSectionCharge() {
         this.chargePopup = new ModalWindow("chargePopup");
         add(this.chargePopup);
-        this.chargePopup.setOnClose(this::chargePopupOnClose);
+        this.chargePopup.setOnClose(this::chargePopupClose);
 
-        List<IColumn<Map<String, Object>, String>> chargeColumn = Lists.newLinkedList();
-        chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeNameColumn));
-        chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeTypeColumn));
-        chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeAmountColumn));
-        chargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::chargeCollectColumn));
-        chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeDateColumn));
-        chargeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::chargeActionItem, this::chargeActionClick));
+        this.chargeColumn = Lists.newLinkedList();
+        this.chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeColumn));
+        this.chargeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::chargeAction, this::chargeClick));
         this.chargeProvider = new ListDataProvider(this.chargeValue);
-        this.chargeTable = new DataTable<>("chargeTable", chargeColumn, this.chargeProvider, 20);
+        this.chargeTable = new DataTable<>("chargeTable", this.chargeColumn, this.chargeProvider, 20);
         this.form.add(this.chargeTable);
         this.chargeTable.addTopToolbar(new HeadersToolbar<>(this.chargeTable, this.chargeProvider));
         this.chargeTable.addBottomToolbar(new NoRecordsToolbar(this.chargeTable));
@@ -879,16 +852,16 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.form.add(this.chargeAddLink);
     }
 
-    protected void chargePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void chargePopupClose(String elementId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
-        String chargeId = this.itemChargeValue.getId();
+        Option charge = (Option) this.popupModel.get("chargeValue");
         for (Map<String, Object> temp : this.chargeValue) {
-            if (chargeId.equals(temp.get("uuid"))) {
+            if (charge.getId().equals(temp.get("uuid"))) {
                 return;
             }
         }
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, concat(charge_calculation_enum,'') type, concat(charge_time_enum,'') collect, amount from m_charge where id = ?", chargeId);
+        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, concat(charge_calculation_enum,'') type, concat(charge_time_enum,'') collect, amount from m_charge where id = ?", charge.getId());
         String type = (String) chargeObject.get("type");
         for (ChargeCalculation calculation : ChargeCalculation.values()) {
             if (type.equals(calculation.getLiteral())) {
@@ -903,8 +876,8 @@ public class FixedDepositCreatePage extends DeprecatedPage {
                 break;
             }
         }
-        item.put("uuid", chargeId);
-        item.put("chargeId", chargeId);
+        item.put("uuid", charge.getId());
+        item.put("charge", charge);
         item.put("name", chargeObject.get("name"));
         item.put("type", type);
         item.put("amount", chargeObject.get("amount"));
@@ -915,43 +888,29 @@ public class FixedDepositCreatePage extends DeprecatedPage {
     }
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemChargeValue = null;
+        this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
+            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
-            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
-            this.currencyPopup.show(target);
+            this.chargePopup.setContent(new CurrencyPopup(this.chargePopup.getContentId()));
+            this.chargePopup.show(target);
         }
         return false;
     }
 
-    protected ItemPanel chargeNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel chargeColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column) || "type".equals(column) || "collect".equals(column) || "data".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("amount".equals(column)) {
+            Number value = (Number) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected ItemPanel chargeTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel chargeAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Number value = (Number) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel chargeCollectColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel chargeDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected void chargeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void chargeClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.chargeValue.size(); i++) {
             Map<String, Object> column = this.chargeValue.get(i);
@@ -966,22 +925,75 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         target.add(this.chargeTable);
     }
 
-    protected List<ActionItem> chargeActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> chargeAction(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     protected void initSectionInterestRateChart() {
-        this.interestRateValidFromDateBlock = new WebMarkupBlock("interestRateValidFromDateBlock", Size.Six_6);
-        this.interestRateValidFromDateBlock.setOutputMarkupId(true);
-        this.form.add(this.interestRateValidFromDateBlock);
-        this.interestRateValidFromDateIContainer = new WebMarkupContainer("interestRateValidFromDateIContainer");
-        this.interestRateValidFromDateBlock.add(this.interestRateValidFromDateIContainer);
-        this.interestRateValidFromDateField = new DateTextField("interestRateValidFromDateField", new PropertyModel<>(this, "interestRateValidFromDateValue"));
-        this.interestRateValidFromDateField.setLabel(Model.of("Valid From Date"));
-        this.interestRateValidFromDateIContainer.add(this.interestRateValidFromDateField);
-        this.interestRateValidFromDateFeedback = new TextFeedbackPanel("interestRateValidFromDateFeedback", this.interestRateValidFromDateField);
-        this.interestRateValidFromDateIContainer.add(this.interestRateValidFromDateFeedback);
+        initInterestRateValidFromDateBlock();
 
+        initInterestRateValidEndDateBlock();
+
+        initInterestRatePrimaryGroupingByAmountBlock();
+
+        // Table
+        this.interestRateChartPopup = new ModalWindow("interestRateChartPopup");
+        this.interestRateChartPopup.setHeightUnit("px");
+        this.interestRateChartPopup.setWidthUnit("px");
+        this.interestRateChartPopup.setInitialHeight(600);
+        this.interestRateChartPopup.setInitialWidth(1000);
+        add(this.interestRateChartPopup);
+        this.interestRateChartPopup.setOnClose(this::interestRateChartPopupClose);
+
+        this.incentivePopup = new ModalWindow("incentivePopup");
+        this.incentivePopup.setHeightUnit("px");
+        this.incentivePopup.setWidthUnit("px");
+        this.incentivePopup.setInitialHeight(600);
+        this.incentivePopup.setInitialWidth(1100);
+        add(this.incentivePopup);
+        this.incentivePopup.setOnClose(this::incentivePopupClose);
+
+        initInterestRateChartBlock();
+
+        this.interestRateChartAddLink = new AjaxLink<>("interestRateChartAddLink");
+        this.interestRateChartAddLink.setOnClick(this::interestRateChartAddLinkClick);
+        this.form.add(this.interestRateChartAddLink);
+    }
+
+    protected void initInterestRateChartBlock() {
+        this.interestRateChartColumn = Lists.newLinkedList();
+        this.interestRateChartColumn.add(new TextColumn(Model.of("Period Type"), "periodType", "periodType", this::interestRateChartColumn));
+        this.interestRateChartColumn.add(new TextColumn(Model.of("Period From"), "periodFrom", "periodFrom", this::interestRateChartColumn));
+        this.interestRateChartColumn.add(new TextColumn(Model.of("Period To"), "periodTo", "periodTo", this::interestRateChartColumn));
+        this.interestRateChartColumn.add(new TextColumn(Model.of("Amount Range From"), "amountRangeFrom", "amountRangeFrom", this::interestRateChartColumn));
+        this.interestRateChartColumn.add(new TextColumn(Model.of("Amount Range To"), "amountRangeTo", "amountRangeTo", this::interestRateChartColumn));
+        this.interestRateChartColumn.add(new TextColumn(Model.of("Interest"), "interest", "interest", this::interestRateChartColumn));
+        this.interestRateChartColumn.add(new TextColumn(Model.of("Description"), "description", "description", this::interestRateChartColumn));
+        this.interestRateChartColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::interestRateChartAction, this::interestRateChartClick));
+        this.interestRateChartProvider = new ListDataProvider(this.interestRateChartValue);
+        this.interestRateChartBlock = new WebMarkupBlock("interestRateChartBlock", Size.Twelve_12);
+        this.form.add(this.interestRateChartBlock);
+        this.interestRateChartIContainer = new WebMarkupContainer("interestRateChartIContainer");
+        this.interestRateChartBlock.add(this.interestRateChartIContainer);
+        this.interestRateChartTable = new DataTable<>("interestRateChartTable", interestRateChartColumn, this.interestRateChartProvider, 20);
+        this.interestRateChartIContainer.add(this.interestRateChartTable);
+        this.interestRateChartTable.addTopToolbar(new HeadersToolbar<>(this.interestRateChartTable, this.interestRateChartProvider));
+        this.interestRateChartTable.addBottomToolbar(new NoRecordsToolbar(this.interestRateChartTable));
+    }
+
+    protected void initInterestRatePrimaryGroupingByAmountBlock() {
+        this.interestRatePrimaryGroupingByAmountBlock = new WebMarkupBlock("interestRatePrimaryGroupingByAmountBlock", Size.Six_6);
+        this.form.add(this.interestRatePrimaryGroupingByAmountBlock);
+        this.interestRatePrimaryGroupingByAmountIContainer = new WebMarkupContainer("interestRatePrimaryGroupingByAmountIContainer");
+        this.interestRatePrimaryGroupingByAmountBlock.add(this.interestRatePrimaryGroupingByAmountIContainer);
+        this.interestRatePrimaryGroupingByAmountField = new CheckBox("interestRatePrimaryGroupingByAmountField", new PropertyModel<>(this, "interestRatePrimaryGroupingByAmountValue"));
+        this.interestRatePrimaryGroupingByAmountField.add(new OnChangeAjaxBehavior());
+        this.interestRatePrimaryGroupingByAmountIContainer.add(this.interestRatePrimaryGroupingByAmountField);
+        this.interestRatePrimaryGroupingByAmountFeedback = new TextFeedbackPanel("interestRatePrimaryGroupingByAmountFeedback", this.interestRatePrimaryGroupingByAmountField);
+        this.interestRatePrimaryGroupingByAmountIContainer.add(this.interestRatePrimaryGroupingByAmountFeedback);
+    }
+
+    protected void initInterestRateValidEndDateBlock() {
         this.interestRateValidEndDateBlock = new WebMarkupBlock("interestRateValidEndDateBlock", Size.Six_6);
         this.interestRateValidEndDateBlock.setOutputMarkupId(true);
         this.form.add(this.interestRateValidEndDateBlock);
@@ -992,122 +1004,68 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.interestRateValidEndDateIContainer.add(this.interestRateValidEndDateField);
         this.interestRateValidEndDateFeedback = new TextFeedbackPanel("interestRateValidEndDateFeedback", this.interestRateValidEndDateField);
         this.interestRateValidEndDateIContainer.add(this.interestRateValidEndDateFeedback);
-
-        this.interestRatePrimaryGroupingByAmountBlock = new WebMarkupBlock("interestRatePrimaryGroupingByAmountBlock", Size.Six_6);
-        this.form.add(this.interestRatePrimaryGroupingByAmountBlock);
-        this.interestRatePrimaryGroupingByAmountIContainer = new WebMarkupContainer("interestRatePrimaryGroupingByAmountIContainer");
-        this.interestRatePrimaryGroupingByAmountBlock.add(this.interestRatePrimaryGroupingByAmountIContainer);
-        this.interestRatePrimaryGroupingByAmountField = new CheckBox("interestRatePrimaryGroupingByAmountField", new PropertyModel<>(this, "interestRatePrimaryGroupingByAmountValue"));
-        this.interestRatePrimaryGroupingByAmountField.add(new OnChangeAjaxBehavior());
-        this.interestRatePrimaryGroupingByAmountIContainer.add(this.interestRatePrimaryGroupingByAmountField);
-        this.interestRatePrimaryGroupingByAmountFeedback = new TextFeedbackPanel("interestRatePrimaryGroupingByAmountFeedback", this.interestRatePrimaryGroupingByAmountField);
-        this.interestRatePrimaryGroupingByAmountIContainer.add(this.interestRatePrimaryGroupingByAmountFeedback);
-
-        // Table
-        this.interestRateChartPopup = new ModalWindow("interestRateChartPopup");
-        this.interestRateChartPopup.setHeightUnit("px");
-        this.interestRateChartPopup.setWidthUnit("px");
-        this.interestRateChartPopup.setInitialHeight(600);
-        this.interestRateChartPopup.setInitialWidth(1000);
-        add(this.interestRateChartPopup);
-        this.interestRateChartPopup.setOnClose(this::interestRateChartPopupOnClose);
-
-        this.incentivePopup = new ModalWindow("incentivePopup");
-        this.incentivePopup.setHeightUnit("px");
-        this.incentivePopup.setWidthUnit("px");
-        this.incentivePopup.setInitialHeight(600);
-        this.incentivePopup.setInitialWidth(1100);
-        add(this.incentivePopup);
-        this.incentivePopup.setOnClose(this::incentivePopupOnClose);
-
-        List<IColumn<Map<String, Object>, String>> interestRateChartColumn = Lists.newLinkedList();
-        interestRateChartColumn.add(new TextColumn(Model.of("Period Type"), "periodType", "periodType", this::interestRateChartPeriodTypeColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Period From"), "periodFrom", "periodFrom", this::interestRateChartPeriodFromColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Period To"), "periodTo", "periodTo", this::interestRateChartPeriodToColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Amount Range From"), "amountRangeFrom", "amountRangeFrom", this::interestRateChartAmountRangeFromColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Amount Range To"), "amountRangeTo", "amountRangeTo", this::interestRateChartAmountRangeToColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Interest"), "interest", "interest", this::interestRateChartInterestColumn));
-        interestRateChartColumn.add(new TextColumn(Model.of("Description"), "description", "description", this::interestRateChartDescriptionColumn));
-        interestRateChartColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::interestRateChartActionItem, this::interestRateChartActionClick));
-        this.interestRateChartProvider = new ListDataProvider(this.interestRateChartValue);
-        this.interestRateChartTable = new DataTable<>("interestRateChartTable", interestRateChartColumn, this.interestRateChartProvider, 20);
-        this.form.add(this.interestRateChartTable);
-        this.interestRateChartTable.addTopToolbar(new HeadersToolbar<>(this.interestRateChartTable, this.interestRateChartProvider));
-        this.interestRateChartTable.addBottomToolbar(new NoRecordsToolbar(this.interestRateChartTable));
-
-        this.interestRateChartAddLink = new AjaxLink<>("interestRateChartAddLink");
-        this.interestRateChartAddLink.setOnClick(this::interestRateChartAddLinkClick);
-        this.form.add(this.interestRateChartAddLink);
     }
 
-    protected void incentivePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void initInterestRateValidFromDateBlock() {
+        this.interestRateValidFromDateBlock = new WebMarkupBlock("interestRateValidFromDateBlock", Size.Six_6);
+        this.interestRateValidFromDateBlock.setOutputMarkupId(true);
+        this.form.add(this.interestRateValidFromDateBlock);
+        this.interestRateValidFromDateIContainer = new WebMarkupContainer("interestRateValidFromDateIContainer");
+        this.interestRateValidFromDateBlock.add(this.interestRateValidFromDateIContainer);
+        this.interestRateValidFromDateField = new DateTextField("interestRateValidFromDateField", new PropertyModel<>(this, "interestRateValidFromDateValue"));
+        this.interestRateValidFromDateField.setLabel(Model.of("Valid From Date"));
+        this.interestRateValidFromDateIContainer.add(this.interestRateValidFromDateField);
+        this.interestRateValidFromDateFeedback = new TextFeedbackPanel("interestRateValidFromDateFeedback", this.interestRateValidFromDateField);
+        this.interestRateValidFromDateIContainer.add(this.interestRateValidFromDateFeedback);
     }
 
-    protected void interestRateChartPopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void incentivePopupClose(String elementId, AjaxRequestTarget target) {
+    }
+
+    protected void interestRateChartPopupClose(String elementId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         String uuid = UUID.randomUUID().toString();
         item.put("uuid", uuid);
-        item.put("periodType", this.itemPeriodTypeValue);
-        item.put("periodFrom", this.itemPeriodFromValue);
-        item.put("periodTo", this.itemPeriodToValue);
-        item.put("amountRangeFrom", this.itemAmountRangeFromValue);
-        item.put("amountRangeTo", this.itemAmountRangeToValue);
-        item.put("interest", this.itemInterestValue);
-        item.put("description", this.itemDescriptionValue);
+        item.put("periodType", this.popupModel.get("periodTypeValue"));
+        item.put("periodFrom", this.popupModel.get("periodFromValue"));
+        item.put("periodTo", this.popupModel.get("periodToValue"));
+        item.put("amountRangeFrom", this.popupModel.get("amountRangeFromValue"));
+        item.put("amountRangeTo", this.popupModel.get("amountRangeToValue"));
+        item.put("interest", this.popupModel.get("interestValue"));
+        item.put("description", this.popupModel.get("descriptionValue"));
         item.put("interestRate", Lists.newLinkedList());
         this.interestRateChartValue.add(item);
         target.add(this.interestRateChartTable);
     }
 
     protected boolean interestRateChartAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemPeriodTypeValue = null;
-        this.itemPeriodFromValue = null;
-        this.itemPeriodToValue = null;
-        this.itemAmountRangeFromValue = null;
-        this.itemAmountRangeToValue = null;
-        this.itemInterestValue = null;
-        this.itemDescriptionValue = null;
-        this.interestRateChartPopup.setContent(new InterestRateChartPopup(this.interestRateChartPopup.getContentId(), this.interestRateChartPopup, this));
+        this.popupModel.clear();
+        this.interestRateChartPopup.setContent(new InterestRateChartPopup(this.interestRateChartPopup.getContentId(), this.interestRateChartPopup, this.popupModel));
         this.interestRateChartPopup.show(target);
         return false;
     }
 
-    protected ItemPanel interestRateChartPeriodTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Option value = (Option) model.get(jdbcColumn);
-        return new TextCell(value == null ? "" : value.getText());
+    protected ItemPanel interestRateChartColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("periodType".equals(column)) {
+            Option value = (Option) model.get(column);
+            return new TextCell(value);
+        } else if ("periodFrom".equals(column)
+                || "periodTo".equals(column)
+                || "amountRangeFrom".equals(column)
+                || "amountRangeTo".equals(column)) {
+            Integer value = (Integer) model.get(column);
+            return new TextCell(value);
+        } else if ("interest".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value);
+        } else if ("description".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected ItemPanel interestRateChartPeriodFromColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer value = (Integer) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel interestRateChartPeriodToColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer value = (Integer) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel interestRateChartAmountRangeFromColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer value = (Integer) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel interestRateChartAmountRangeToColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer value = (Integer) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel interestRateChartInterestColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double value = (Double) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel interestRateChartDescriptionColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected void interestRateChartActionClick(String link, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void interestRateChartClick(String link, Map<String, Object> model, AjaxRequestTarget target) {
         if ("delete".equals(link)) {
             int index = -1;
             for (int i = 0; i < this.interestRateChartValue.size(); i++) {
@@ -1128,7 +1086,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         }
     }
 
-    protected List<ActionItem> interestRateChartActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> interestRateChartAction(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newLinkedList();
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         actions.add(new ActionItem("incentives", Model.of("Incentives"), ItemCss.PRIMARY));

@@ -15,6 +15,8 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
+import java.util.Map;
+
 public class PaymentTypePopup extends Panel {
 
     private ModalWindow window;
@@ -30,9 +32,9 @@ public class PaymentTypePopup extends Panel {
     private Select2SingleChoice<Option> accountField;
     private TextFeedbackPanel accountFeedback;
 
-    private Object model;
+    private Map<String, Object> model;
 
-    public PaymentTypePopup(String id, ModalWindow window, Object model) {
+    public PaymentTypePopup(String id, ModalWindow window, Map<String, Object> model) {
         super(id);
         this.model = model;
         this.window = window;
@@ -47,11 +49,10 @@ public class PaymentTypePopup extends Panel {
 
         this.okayButton = new AjaxButton("okayButton");
         this.okayButton.setOnSubmit(this::okayButtonSubmit);
-        this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
         this.paymentProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
-        this.paymentField = new Select2SingleChoice<>("paymentField", 0, new PropertyModel<>(this.model, "itemPaymentValue"), this.paymentProvider);
+        this.paymentField = new Select2SingleChoice<>("paymentField", 0, new PropertyModel<>(this.model, "paymentValue"), this.paymentProvider);
         this.paymentField.setLabel(Model.of("Payment"));
         this.form.add(this.paymentField);
         this.paymentFeedback = new TextFeedbackPanel("paymentFeedback", this.paymentField);
@@ -60,7 +61,7 @@ public class PaymentTypePopup extends Panel {
         this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.accountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.accountProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
-        this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this.model, "itemAccountValue"), this.accountProvider);
+        this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this.model, "accountValue"), this.accountProvider);
         this.accountField.setLabel(Model.of("Account"));
         this.form.add(this.accountField);
         this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
@@ -71,11 +72,6 @@ public class PaymentTypePopup extends Panel {
     protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
         this.window.setElementId(ajaxButton.getId());
         this.window.close(target);
-        return true;
-    }
-
-    protected boolean okayButtonError(AjaxButton ajaxButton, AjaxRequestTarget target) {
-        target.add(this.form);
         return true;
     }
 

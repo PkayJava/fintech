@@ -16,6 +16,8 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
+import java.util.Map;
+
 public class PenaltyChargePopup extends Panel {
 
     protected ModalWindow window;
@@ -35,9 +37,9 @@ public class PenaltyChargePopup extends Panel {
 
     protected String currencyCode;
 
-    protected Object model;
+    protected Map<String, Object> model;
 
-    public PenaltyChargePopup(String id, ModalWindow window, Object model, String currencyCode) {
+    public  PenaltyChargePopup(String id, ModalWindow window, Map<String, Object> model, String currencyCode) {
         super(id);
         this.model = model;
         this.window = window;
@@ -53,10 +55,9 @@ public class PenaltyChargePopup extends Panel {
 
         this.okayButton = new AjaxButton("okayButton");
         this.okayButton.setOnSubmit(this::okayButtonSubmit);
-        this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
-        this.chargeValue = new PropertyModel<>(this.model, "itemChargeValue");
+        this.chargeValue = new PropertyModel<>(this.model, "chargeValue");
         this.chargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
         this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.SavingDeposit.getLiteral());
         this.chargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
@@ -68,7 +69,7 @@ public class PenaltyChargePopup extends Panel {
         this.chargeFeedback = new TextFeedbackPanel("chargeFeedback", this.chargeField);
         this.form.add(this.chargeFeedback);
 
-        this.accountValue = new PropertyModel<>(this.model, "itemAccountValue");
+        this.accountValue = new PropertyModel<>(this.model, "accountValue");
         this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.accountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.accountProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
@@ -83,11 +84,6 @@ public class PenaltyChargePopup extends Panel {
     protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
         this.window.setElementId(ajaxButton.getId());
         this.window.close(target);
-        return true;
-    }
-
-    protected boolean okayButtonError(AjaxButton ajaxButton, AjaxRequestTarget target) {
-        target.add(this.form);
         return true;
     }
 

@@ -14,6 +14,8 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
+import java.util.Map;
+
 public class ChargePopup extends Panel {
 
     protected ModalWindow window;
@@ -28,9 +30,9 @@ public class ChargePopup extends Panel {
 
     protected String currencyCode;
 
-    protected Object model;
+    protected Map<String, Object> model;
 
-    public ChargePopup(String id, ModalWindow window, Object model, String currencyCode) {
+    public ChargePopup(String id, ModalWindow window, Map<String, Object> model, String currencyCode) {
         super(id);
         this.model = model;
         this.window = window;
@@ -49,7 +51,7 @@ public class ChargePopup extends Panel {
         this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
-        this.chargeValue = new PropertyModel<>(this.model, "itemChargeValue");
+        this.chargeValue = new PropertyModel<>(this.model, "chargeValue");
         this.chargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
         this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.Loan.getLiteral());
         this.chargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");

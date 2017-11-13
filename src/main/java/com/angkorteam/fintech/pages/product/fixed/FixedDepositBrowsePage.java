@@ -3,10 +3,13 @@ package com.angkorteam.fintech.pages.product.fixed;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -33,8 +36,10 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 6/22/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class FixedDepositBrowsePage extends DeprecatedPage {
+public class FixedDepositBrowsePage extends Page {
 
+    protected WebMarkupBlock dataBlock;
+    protected WebMarkupContainer dataIContainer;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;
     protected FilterForm<Map<String, String>> dataFilterForm;
@@ -76,6 +81,11 @@ public class FixedDepositBrowsePage extends DeprecatedPage {
 
     @Override
     protected void initComponent() {
+        this.dataBlock = new WebMarkupBlock("dataBlock", WebMarkupBlock.Size.Twelve_12);
+        add(this.dataBlock);
+        this.dataIContainer = new WebMarkupContainer("dataIContainer");
+        this.dataBlock.add(this.dataIContainer);
+
         this.dataProvider = new JdbcProvider("m_savings_product");
         this.dataProvider.applyWhere("deposit_type_enum", "deposit_type_enum = " + DepositType.Fixed.getLiteral());
         this.dataProvider.boardField("id", "id", Long.class);
@@ -89,7 +99,7 @@ public class FixedDepositBrowsePage extends DeprecatedPage {
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Short Name"), "shortName", "shortName", this::dataColumn));
 
         this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
-        add(this.dataFilterForm);
+        this.dataIContainer.add(this.dataFilterForm);
 
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
