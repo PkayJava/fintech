@@ -606,10 +606,10 @@ public class SavingCreatePage extends DeprecatedPage {
     protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.penaltyIncomePopup.setContent(new PenaltyChargePopup("penaltyCharge", this.penaltyIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
         } else {
-            this.penaltyIncomePopup.setContent(new CurrencyPopup(this.penaltyIncomePopup.getContentId()));
+            this.penaltyIncomePopup.setContent(new CurrencyPopup("currency", this.penaltyIncomePopup));
             this.penaltyIncomePopup.show(target);
         }
         return false;
@@ -653,10 +653,10 @@ public class SavingCreatePage extends DeprecatedPage {
     protected boolean advancedAccountingRuleFeeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.feeIncomePopup.setContent(new FeeChargePopup("feeCharge", this.feeIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
         } else {
-            this.feeIncomePopup.setContent(new CurrencyPopup(this.feeIncomePopup.getContentId()));
+            this.feeIncomePopup.setContent(new CurrencyPopup("currency", this.feeIncomePopup));
             this.feeIncomePopup.show(target);
         }
         return false;
@@ -707,7 +707,7 @@ public class SavingCreatePage extends DeprecatedPage {
     }
 
     protected boolean advancedAccountingRuleFundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this.popupModel));
+        this.fundSourcePopup.setContent(new PaymentTypePopup("paymentType", this.fundSourcePopup, this.popupModel));
         this.fundSourcePopup.show(target);
         return false;
     }
@@ -986,10 +986,10 @@ public class SavingCreatePage extends DeprecatedPage {
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.chargePopup.setContent(new ChargePopup("charge", this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
-            this.chargePopup.setContent(new CurrencyPopup(this.chargePopup.getContentId()));
+            this.chargePopup.setContent(new CurrencyPopup("currency", this.chargePopup));
             this.chargePopup.show(target);
         }
         return false;

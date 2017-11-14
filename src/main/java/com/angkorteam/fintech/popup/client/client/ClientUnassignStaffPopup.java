@@ -1,13 +1,13 @@
 package com.angkorteam.fintech.popup.client.client;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.panel.Panel;
 
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 
-public class ClientUnassignStaffPopup extends Panel {
+public class ClientUnassignStaffPopup extends PopupPanel {
 
     protected ModalWindow window;
     protected Object model;
@@ -16,8 +16,8 @@ public class ClientUnassignStaffPopup extends Panel {
     protected AjaxButton cancelButton;
     protected AjaxButton confirmButton;
 
-    public ClientUnassignStaffPopup(String id, ModalWindow window, Object model) {
-        super(id);
+    public ClientUnassignStaffPopup(String name, ModalWindow window, Object model) {
+        super(name, window);
         this.model = model;
         this.window = window;
     }

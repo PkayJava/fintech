@@ -5,7 +5,6 @@ import java.util.Map;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
@@ -16,6 +15,7 @@ import com.angkorteam.fintech.provider.RelationshipProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -24,7 +24,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 /**
  * Created by socheatkhauv on 7/2/17.
  */
-public class FamilyMemberPopup extends Panel {
+public class FamilyMemberPopup extends PopupPanel {
 
     private ModalWindow window;
 
@@ -70,8 +70,8 @@ public class FamilyMemberPopup extends Panel {
 
     private Map<String, Object> model;
 
-    public FamilyMemberPopup(String id, ModalWindow window, Map<String, Object> model) {
-        super(id);
+    public FamilyMemberPopup(String name, ModalWindow window, Map<String, Object> model) {
+        super(name, window);
         this.model = model;
         this.window = window;
     }

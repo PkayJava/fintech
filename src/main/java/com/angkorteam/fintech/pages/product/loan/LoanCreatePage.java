@@ -1,19 +1,77 @@
 package com.angkorteam.fintech.pages.product.loan;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.validator.RangeValidator;
+import org.apache.wicket.validation.validator.StringValidator;
+
 import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.AllowAttributeOverrideBuilder;
 import com.angkorteam.fintech.dto.builder.LoanBuilder;
-import com.angkorteam.fintech.dto.enums.*;
-import com.angkorteam.fintech.dto.enums.loan.*;
+import com.angkorteam.fintech.dto.enums.AccountType;
+import com.angkorteam.fintech.dto.enums.AccountUsage;
+import com.angkorteam.fintech.dto.enums.ChargeCalculation;
+import com.angkorteam.fintech.dto.enums.ChargeTime;
+import com.angkorteam.fintech.dto.enums.DayInYear;
+import com.angkorteam.fintech.dto.enums.LockInType;
+import com.angkorteam.fintech.dto.enums.loan.AdvancePaymentsAdjustmentType;
+import com.angkorteam.fintech.dto.enums.loan.Amortization;
+import com.angkorteam.fintech.dto.enums.loan.ClosureInterestCalculationRule;
+import com.angkorteam.fintech.dto.enums.loan.DayInMonth;
+import com.angkorteam.fintech.dto.enums.loan.Frequency;
+import com.angkorteam.fintech.dto.enums.loan.FrequencyDay;
+import com.angkorteam.fintech.dto.enums.loan.FrequencyType;
+import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
+import com.angkorteam.fintech.dto.enums.loan.InterestMethod;
+import com.angkorteam.fintech.dto.enums.loan.InterestRecalculationCompound;
+import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateType;
+import com.angkorteam.fintech.dto.enums.loan.RepaymentStrategy;
+import com.angkorteam.fintech.dto.enums.loan.WhenType;
 import com.angkorteam.fintech.helper.LoanHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.popup.CurrencyPopup;
 import com.angkorteam.fintech.popup.PaymentTypePopup;
-import com.angkorteam.fintech.popup.loan.*;
-import com.angkorteam.fintech.provider.*;
-import com.angkorteam.fintech.provider.loan.*;
+import com.angkorteam.fintech.popup.loan.ChargePopup;
+import com.angkorteam.fintech.popup.loan.FeeChargePopup;
+import com.angkorteam.fintech.popup.loan.InterestLoanCyclePopup;
+import com.angkorteam.fintech.popup.loan.OverdueChargePopup;
+import com.angkorteam.fintech.popup.loan.PenaltyChargePopup;
+import com.angkorteam.fintech.popup.loan.PrincipalLoanCyclePopup;
+import com.angkorteam.fintech.popup.loan.RepaymentLoanCyclePopup;
+import com.angkorteam.fintech.provider.CurrencyProvider;
+import com.angkorteam.fintech.provider.DayInYearProvider;
+import com.angkorteam.fintech.provider.FundProvider;
+import com.angkorteam.fintech.provider.LockInTypeProvider;
+import com.angkorteam.fintech.provider.NominalInterestRateTypeProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.provider.loan.AdvancePaymentsAdjustmentTypeProvider;
+import com.angkorteam.fintech.provider.loan.AmortizationProvider;
+import com.angkorteam.fintech.provider.loan.ClosureInterestCalculationRuleProvider;
+import com.angkorteam.fintech.provider.loan.DayInMonthProvider;
+import com.angkorteam.fintech.provider.loan.FrequencyDayProvider;
+import com.angkorteam.fintech.provider.loan.FrequencyProvider;
+import com.angkorteam.fintech.provider.loan.FrequencyTypeProvider;
+import com.angkorteam.fintech.provider.loan.InterestCalculationPeriodProvider;
+import com.angkorteam.fintech.provider.loan.InterestMethodProvider;
+import com.angkorteam.fintech.provider.loan.InterestRecalculationCompoundProvider;
+import com.angkorteam.fintech.provider.loan.RepaymentStrategyProvider;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -44,25 +102,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Radio;
-import org.apache.wicket.markup.html.form.RadioGroup;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.validation.validator.RangeValidator;
-import org.apache.wicket.validation.validator.StringValidator;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanCreatePage extends DeprecatedPage {
@@ -313,15 +352,15 @@ public class LoanCreatePage extends DeprecatedPage {
     protected TextField<Integer> termMinimumDayBetweenDisbursalAndFirstRepaymentDateField;
     protected TextFeedbackPanel termMinimumDayBetweenDisbursalAndFirstRepaymentDateFeedback;
 
-//    protected Option itemWhenValue;
-//    protected Integer itemLoanCycleValue;
-//    protected Double itemMinimumValue;
-//    protected Double itemDefaultValue;
-//    protected Double itemMaximumValue;
-//    protected Option itemChargeValue;
-//    protected Option itemOverdueChargeValue;
-//    protected Option itemPaymentValue;
-//    protected Option itemAccountValue;
+    // protected Option itemWhenValue;
+    // protected Integer itemLoanCycleValue;
+    // protected Double itemMinimumValue;
+    // protected Double itemDefaultValue;
+    // protected Double itemMaximumValue;
+    // protected Option itemChargeValue;
+    // protected Option itemOverdueChargeValue;
+    // protected Option itemPaymentValue;
+    // protected Option itemAccountValue;
 
     // Settings
 
@@ -1097,20 +1136,17 @@ public class LoanCreatePage extends DeprecatedPage {
     protected boolean overdueChargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.overdueChargePopup.setContent(new OverdueChargePopup(this.overdueChargePopup.getContentId(), this.overdueChargePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.overdueChargePopup.setContent(new OverdueChargePopup("overdueCharge", this.overdueChargePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.overdueChargePopup.show(target);
         } else {
-            this.overdueChargePopup.setContent(new CurrencyPopup(this.overdueChargePopup.getContentId()));
+            this.overdueChargePopup.setContent(new CurrencyPopup("currency", this.overdueChargePopup));
             this.overdueChargePopup.show(target);
         }
         return false;
     }
 
     protected ItemPanel overdueChargeColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("name".equals(column)
-                || "type".equals(column)
-                || "collect".equals(column)
-                || "date".equals(column)) {
+        if ("name".equals(column) || "type".equals(column) || "collect".equals(column) || "date".equals(column)) {
             String value = (String) model.get(column);
             return new TextCell(value);
         } else if ("amount".equals(column)) {
@@ -1168,10 +1204,10 @@ public class LoanCreatePage extends DeprecatedPage {
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.chargePopup.setContent(new ChargePopup("charge", this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
-            this.chargePopup.setContent(new CurrencyPopup(this.chargePopup.getContentId()));
+            this.chargePopup.setContent(new CurrencyPopup("currency", this.chargePopup));
             this.chargePopup.show(target);
         }
         return false;
@@ -1791,10 +1827,10 @@ public class LoanCreatePage extends DeprecatedPage {
     protected boolean advancedAccountingRuleFeeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.feeIncomePopup.setContent(new FeeChargePopup("feeCharge", this.feeIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
         } else {
-            this.feeIncomePopup.setContent(new CurrencyPopup(this.feeIncomePopup.getContentId()));
+            this.feeIncomePopup.setContent(new CurrencyPopup("currency", this.feeIncomePopup));
             this.feeIncomePopup.show(target);
         }
         return false;
@@ -1832,10 +1868,10 @@ public class LoanCreatePage extends DeprecatedPage {
     protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.penaltyIncomePopup.setContent(new PenaltyChargePopup("penaltyCharge", this.penaltyIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
         } else {
-            this.penaltyIncomePopup.setContent(new CurrencyPopup(this.penaltyIncomePopup.getContentId()));
+            this.penaltyIncomePopup.setContent(new CurrencyPopup("currency", this.penaltyIncomePopup));
             this.penaltyIncomePopup.show(target);
         }
         return false;
@@ -1872,7 +1908,7 @@ public class LoanCreatePage extends DeprecatedPage {
 
     protected boolean advancedAccountingRuleFundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this.popupModel));
+        this.fundSourcePopup.setContent(new PaymentTypePopup("paymentType", this.fundSourcePopup, this.popupModel));
         this.fundSourcePopup.show(target);
         return false;
     }
@@ -3101,7 +3137,7 @@ public class LoanCreatePage extends DeprecatedPage {
 
     protected boolean termNominalInterestRateByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.termNominalInterestRateByLoanCyclePopup.setContent(new InterestLoanCyclePopup(this.termNominalInterestRateByLoanCyclePopup.getContentId(), this.termNominalInterestRateByLoanCyclePopup, this.popupModel));
+        this.termNominalInterestRateByLoanCyclePopup.setContent(new InterestLoanCyclePopup("termNominalInterestRateByLoanCycle", this.termNominalInterestRateByLoanCyclePopup, this.popupModel));
         this.termNominalInterestRateByLoanCyclePopup.show(target);
         return false;
     }
@@ -3168,7 +3204,7 @@ public class LoanCreatePage extends DeprecatedPage {
 
     protected boolean termNumberOfRepaymentByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.termNumberOfRepaymentByLoanCyclePopup.setContent(new RepaymentLoanCyclePopup(this.termNumberOfRepaymentByLoanCyclePopup.getContentId(), this.termNumberOfRepaymentByLoanCyclePopup, this.popupModel));
+        this.termNumberOfRepaymentByLoanCyclePopup.setContent(new RepaymentLoanCyclePopup("termNumberOfRepaymentByLoanCycle", this.termNumberOfRepaymentByLoanCyclePopup, this.popupModel));
         this.termNumberOfRepaymentByLoanCyclePopup.show(target);
         return false;
     }
@@ -3196,7 +3232,7 @@ public class LoanCreatePage extends DeprecatedPage {
 
     protected boolean termPrincipalByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.termPrincipalByLoanCyclePopup.setContent(new PrincipalLoanCyclePopup(this.termPrincipalByLoanCyclePopup.getContentId(), this.termPrincipalByLoanCyclePopup, this.popupModel));
+        this.termPrincipalByLoanCyclePopup.setContent(new PrincipalLoanCyclePopup("termPrincipalByLoanCycle", this.termPrincipalByLoanCyclePopup, this.popupModel));
         this.termPrincipalByLoanCyclePopup.show(target);
         return false;
     }

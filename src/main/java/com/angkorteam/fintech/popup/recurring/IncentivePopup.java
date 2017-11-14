@@ -2,12 +2,10 @@ package com.angkorteam.fintech.popup.recurring;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -22,6 +20,7 @@ import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
@@ -36,7 +35,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-public class IncentivePopup extends Panel {
+public class IncentivePopup extends PopupPanel {
 
     private ModalWindow window;
 
@@ -70,8 +69,8 @@ public class IncentivePopup extends Panel {
     private DataTable<Map<String, Object>, String> dataTable;
     private ListDataProvider provider;
 
-    public IncentivePopup(String id, ModalWindow window, List<Map<String, Object>> incentiveValue) {
-        super(id);
+    public IncentivePopup(String name, ModalWindow window, List<Map<String, Object>> incentiveValue) {
+        super(name, window);
         this.window = window;
         this.incentiveValue = incentiveValue;
     }

@@ -6,19 +6,19 @@ import java.util.Map;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
+import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
+import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
 
-public class MarketPricePopup extends Panel {
+public class MarketPricePopup extends PopupPanel {
 
     protected ModalWindow window;
 
@@ -39,8 +39,8 @@ public class MarketPricePopup extends Panel {
 
     protected Map<String, Object> model;
 
-    public MarketPricePopup(String id, ModalWindow window, Map<String, Object> model) {
-        super(id);
+    public MarketPricePopup(String name, ModalWindow window, Map<String, Object> model) {
+        super(name, window);
         this.model = model;
         this.window = window;
     }

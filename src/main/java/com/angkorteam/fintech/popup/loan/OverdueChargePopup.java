@@ -1,7 +1,6 @@
 package com.angkorteam.fintech.popup.loan;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
@@ -10,11 +9,12 @@ import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
-public class OverdueChargePopup extends Panel {
+public class OverdueChargePopup extends PopupPanel {
 
     protected ModalWindow window;
 
@@ -30,8 +30,8 @@ public class OverdueChargePopup extends Panel {
 
     protected Object model;
 
-    public OverdueChargePopup(String id, ModalWindow window, Object model, String currencyCode) {
-        super(id);
+    public OverdueChargePopup(String name, ModalWindow window, Object model, String currencyCode) {
+        super(name, window);
         this.model = model;
         this.window = window;
         this.currencyCode = currencyCode;

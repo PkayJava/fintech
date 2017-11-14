@@ -10,7 +10,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.slf4j.Logger;
@@ -25,12 +24,13 @@ import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.DayMonthTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
-public class AccountChargePopup extends Panel {
+public class AccountChargePopup extends PopupPanel {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountChargePopup.class);
 
@@ -77,8 +77,8 @@ public class AccountChargePopup extends Panel {
 
     protected String currencyCode;
 
-    public AccountChargePopup(String id, ModalWindow window, Object model, String currencyCode) {
-        super(id);
+    public AccountChargePopup(String name, ModalWindow window, Object model, String currencyCode) {
+        super(name, window);
         this.model = model;
         this.window = window;
         this.currencyCode = currencyCode;

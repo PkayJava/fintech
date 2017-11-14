@@ -18,7 +18,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.angkorteam.fintech.pages.IndexPage;
 import com.angkorteam.fintech.pages.LoginPage;
-import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.framework.ResourceScope;
 import com.google.common.collect.Maps;
 

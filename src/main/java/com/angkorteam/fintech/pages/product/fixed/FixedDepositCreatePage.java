@@ -1,11 +1,46 @@
 package com.angkorteam.fintech.pages.product.fixed;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.validator.StringValidator;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.FixedBuilder;
 import com.angkorteam.fintech.dto.builder.FixedBuilder.IncentiveBuilder;
-import com.angkorteam.fintech.dto.enums.*;
+import com.angkorteam.fintech.dto.enums.AccountType;
+import com.angkorteam.fintech.dto.enums.AccountUsage;
+import com.angkorteam.fintech.dto.enums.ApplyPenalOn;
+import com.angkorteam.fintech.dto.enums.Attribute;
+import com.angkorteam.fintech.dto.enums.ChargeCalculation;
+import com.angkorteam.fintech.dto.enums.ChargeTime;
+import com.angkorteam.fintech.dto.enums.DayInYear;
+import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
+import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
+import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
+import com.angkorteam.fintech.dto.enums.LockInType;
+import com.angkorteam.fintech.dto.enums.OperandType;
+import com.angkorteam.fintech.dto.enums.Operator;
 import com.angkorteam.fintech.helper.FixedHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.popup.CurrencyPopup;
@@ -15,7 +50,14 @@ import com.angkorteam.fintech.popup.fixed.ChargePopup;
 import com.angkorteam.fintech.popup.fixed.FeeChargePopup;
 import com.angkorteam.fintech.popup.fixed.IncentivePopup;
 import com.angkorteam.fintech.popup.fixed.PenaltyChargePopup;
-import com.angkorteam.fintech.provider.*;
+import com.angkorteam.fintech.provider.ApplyPenalOnProvider;
+import com.angkorteam.fintech.provider.CurrencyProvider;
+import com.angkorteam.fintech.provider.DayInYearProvider;
+import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
+import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
+import com.angkorteam.fintech.provider.InterestPostingPeriodProvider;
+import com.angkorteam.fintech.provider.LockInTypeProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -46,28 +88,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Radio;
-import org.apache.wicket.markup.html.form.RadioGroup;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.validation.validator.StringValidator;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FixedDepositCreatePage extends DeprecatedPage {
@@ -689,10 +709,10 @@ public class FixedDepositCreatePage extends DeprecatedPage {
     protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.penaltyIncomePopup.setContent(new PenaltyChargePopup("penaltyCharge", this.penaltyIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
         } else {
-            this.penaltyIncomePopup.setContent(new CurrencyPopup(this.penaltyIncomePopup.getContentId()));
+            this.penaltyIncomePopup.setContent(new CurrencyPopup("currency", this.penaltyIncomePopup));
             this.penaltyIncomePopup.show(target);
         }
         return false;
@@ -732,10 +752,10 @@ public class FixedDepositCreatePage extends DeprecatedPage {
     protected boolean advancedAccountingRuleFeeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.feeIncomePopup.setContent(new FeeChargePopup("feeCharge", this.feeIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
         } else {
-            this.feeIncomePopup.setContent(new CurrencyPopup(this.feeIncomePopup.getContentId()));
+            this.feeIncomePopup.setContent(new CurrencyPopup("currency", this.feeIncomePopup));
             this.feeIncomePopup.show(target);
         }
         return false;
@@ -784,7 +804,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
     }
 
     protected boolean advancedAccountingRuleFundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this.popupModel));
+        this.fundSourcePopup.setContent(new PaymentTypePopup("paymentType", this.fundSourcePopup, this.popupModel));
         this.fundSourcePopup.show(target);
         return false;
     }
@@ -877,10 +897,10 @@ public class FixedDepositCreatePage extends DeprecatedPage {
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.chargePopup.setContent(new ChargePopup("charge", this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
-            this.chargePopup.setContent(new CurrencyPopup(this.chargePopup.getContentId()));
+            this.chargePopup.setContent(new CurrencyPopup("currency", this.chargePopup));
             this.chargePopup.show(target);
         }
         return false;
@@ -1025,7 +1045,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
 
     protected boolean interestRateChartAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.interestRateChartPopup.setContent(new InterestRateChartPopup(this.interestRateChartPopup.getContentId(), this.interestRateChartPopup, this.popupModel));
+        this.interestRateChartPopup.setContent(new InterestRateChartPopup("interestRateChart", this.interestRateChartPopup, this.popupModel));
         this.interestRateChartPopup.show(target);
         return false;
     }
@@ -1034,10 +1054,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         if ("periodType".equals(column)) {
             Option value = (Option) model.get(column);
             return new TextCell(value);
-        } else if ("periodFrom".equals(column)
-                || "periodTo".equals(column)
-                || "amountRangeFrom".equals(column)
-                || "amountRangeTo".equals(column)) {
+        } else if ("periodFrom".equals(column) || "periodTo".equals(column) || "amountRangeFrom".equals(column) || "amountRangeTo".equals(column)) {
             Integer value = (Integer) model.get(column);
             return new TextCell(value);
         } else if ("interest".equals(column)) {
@@ -1066,7 +1083,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
             target.add(this.interestRateChartTable);
         } else if ("incentives".equals(link)) {
             List<Map<String, Object>> incentiveValue = (List<Map<String, Object>>) model.get("interestRate");
-            this.incentivePopup.setContent(new IncentivePopup(this.incentivePopup.getContentId(), this.incentivePopup, incentiveValue));
+            this.incentivePopup.setContent(new IncentivePopup("incentive", this.incentivePopup, incentiveValue));
             this.incentivePopup.show(target);
         }
     }

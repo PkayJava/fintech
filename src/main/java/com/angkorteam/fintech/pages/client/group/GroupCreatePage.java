@@ -16,7 +16,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.GroupBuilder;
@@ -268,7 +267,7 @@ public class GroupCreatePage extends DeprecatedPage {
     protected boolean clientAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemClientValue = null;
         if (this.officeValue == null) {
-            this.clientPopup.setContent(new OfficePopup(this.clientPopup.getContentId()));
+            this.clientPopup.setContent(new OfficePopup("office", this.clientPopup));
             this.clientPopup.show(target);
         } else {
             this.clientPopup.setContent(new ClientPopup(this.clientPopup.getContentId(), this.clientPopup, this, this.officeValue.getId()));

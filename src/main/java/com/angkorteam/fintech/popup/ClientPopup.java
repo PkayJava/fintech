@@ -1,7 +1,6 @@
 package com.angkorteam.fintech.popup;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
@@ -9,11 +8,12 @@ import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
-public class ClientPopup extends Panel {
+public class ClientPopup extends PopupPanel {
 
     private ModalWindow window;
 
@@ -28,8 +28,8 @@ public class ClientPopup extends Panel {
 
     private Object model;
 
-    public ClientPopup(String id, ModalWindow window, Object model, String officeId) {
-        super(id);
+    public ClientPopup(String name, ModalWindow window, Object model, String officeId) {
+        super(name, window);
         this.model = model;
         this.window = window;
         this.officeId = officeId;

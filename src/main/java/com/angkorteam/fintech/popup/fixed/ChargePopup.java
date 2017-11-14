@@ -10,13 +10,14 @@ import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 import java.util.Map;
 
-public class ChargePopup extends Panel {
+public class ChargePopup extends PopupPanel {
 
     protected ModalWindow window;
 
@@ -32,8 +33,8 @@ public class ChargePopup extends Panel {
 
     protected Map<String, Object> model;
 
-    public ChargePopup(String id, ModalWindow window, Map<String, Object> model, String currencyCode) {
-        super(id);
+    public ChargePopup(String name, ModalWindow window, Map<String, Object> model, String currencyCode) {
+        super(name, window);
         this.model = model;
         this.window = window;
         this.currencyCode = currencyCode;

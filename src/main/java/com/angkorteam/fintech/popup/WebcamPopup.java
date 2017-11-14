@@ -6,7 +6,6 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.HiddenField;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.resource.PackageResourceReference;
@@ -16,9 +15,10 @@ import com.angkorteam.fintech.widget.Webcam;
 import com.angkorteam.framework.ReferenceUtilities;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 
-public class WebcamPopup extends Panel {
+public class WebcamPopup extends PopupPanel {
 
     protected ModalWindow window;
     protected Object model;
@@ -36,8 +36,8 @@ public class WebcamPopup extends Panel {
 
     protected WebMarkupContainer takeButton;
 
-    public WebcamPopup(String id, ModalWindow window, Object model) {
-        super(id);
+    public WebcamPopup(String name, ModalWindow window, Object model) {
+        super(name, window);
         this.model = model;
         this.window = window;
     }
@@ -54,7 +54,8 @@ public class WebcamPopup extends Panel {
         String snapDataField = this.snapDataField.getMarkupId();
         StringBuffer jsFunction = new StringBuffer("");
         jsFunction.append("var " + varCamera + " = new JpegCamera('#" + camera + "', { shutter_ogg_url: 'shutter.ogg', shutter_mp3_url: 'shutter.mp3', swf_url: 'jpeg_camera.swf'});");
-        // jsFunction.append("var " + varCamera + " = new JpegCamera('#" + camera + "');");
+        // jsFunction.append("var " + varCamera + " = new JpegCamera('#" + camera +
+        // "');");
         jsFunction.append("$('#" + takeButton + "').click(");
         jsFunction.append("function(){");
         jsFunction.append("var snapshot = " + varCamera + ".capture();");

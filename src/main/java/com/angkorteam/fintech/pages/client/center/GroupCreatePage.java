@@ -273,7 +273,7 @@ public class GroupCreatePage extends DeprecatedPage {
     protected boolean clientAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.itemClientValue = null;
         if (this.officeValue == null) {
-            this.clientPopup.setContent(new OfficePopup(this.clientPopup.getContentId()));
+            this.clientPopup.setContent(new OfficePopup("office", this.clientPopup));
             this.clientPopup.show(target);
         } else {
             this.clientPopup.setContent(new ClientPopup(this.clientPopup.getContentId(), this.clientPopup, this, this.officeId));

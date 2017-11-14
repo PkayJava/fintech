@@ -3,7 +3,6 @@ package com.angkorteam.fintech.popup;
 import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
@@ -13,11 +12,12 @@ import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
-public class PaymentTypePopup extends Panel {
+public class PaymentTypePopup extends PopupPanel {
 
     protected ModalWindow window;
 
@@ -36,8 +36,8 @@ public class PaymentTypePopup extends Panel {
 
     protected Map<String, Object> model;
 
-    public PaymentTypePopup(String id, ModalWindow window, Map<String, Object> model) {
-        super(id);
+    public PaymentTypePopup(String name, ModalWindow window, Map<String, Object> model) {
+        super(name, window);
         this.model = model;
         this.window = window;
     }

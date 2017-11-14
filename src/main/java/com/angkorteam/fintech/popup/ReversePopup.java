@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
@@ -13,13 +12,14 @@ import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 7/2/17.
  */
-public class ReversePopup extends Panel {
+public class ReversePopup extends PopupPanel {
 
     private ModalWindow window;
 
@@ -34,8 +34,8 @@ public class ReversePopup extends Panel {
 
     private Map<String,Object> model;
 
-    public ReversePopup(String id, ModalWindow window, Map<String,Object> model, String transactionId) {
-        super(id);
+    public ReversePopup(String name, ModalWindow window, Map<String,Object> model, String transactionId) {
+        super(name, window);
         this.model = model;
         this.window = window;
         this.transactionId = transactionId;

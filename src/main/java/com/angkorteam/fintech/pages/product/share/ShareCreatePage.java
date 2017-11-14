@@ -484,7 +484,7 @@ public class ShareCreatePage extends DeprecatedPage {
 
     protected boolean marketPriceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.marketPricePopup.setContent(new MarketPricePopup(this.marketPricePopup.getContentId(), this.marketPricePopup, this.popupModel));
+        this.marketPricePopup.setContent(new MarketPricePopup("marketPrice", this.marketPricePopup, this.popupModel));
         this.marketPricePopup.show(target);
         return false;
     }
@@ -588,10 +588,10 @@ public class ShareCreatePage extends DeprecatedPage {
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.chargePopup.setContent(new ChargePopup("charge", this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
-            this.chargePopup.setContent(new CurrencyPopup(this.chargePopup.getContentId()));
+            this.chargePopup.setContent(new CurrencyPopup("currency", this.chargePopup));
             this.chargePopup.show(target);
         }
         return false;
