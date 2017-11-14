@@ -382,11 +382,7 @@ public class SavingCreatePage extends DeprecatedPage {
     protected List<IColumn<Map<String, Object>, String>> advancedAccountingRulePenaltyIncomeColumn;
     protected ModalWindow penaltyIncomePopup;
 
-    protected Option itemChargeValue;
-    protected Option itemPaymentValue;
-    protected Option itemAccountValue;
-
-    protected ModalWindow currencyPopup;
+    protected Map<String, Object> popupModel;
 
     protected static final List<PageBreadcrumb> BREADCRUMB;
 
@@ -462,9 +458,6 @@ public class SavingCreatePage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.currencyPopup = new ModalWindow("currencyPopup");
-        add(this.currencyPopup);
-
         initSectionDetail();
 
         initSectionCurrency();
@@ -480,6 +473,7 @@ public class SavingCreatePage extends DeprecatedPage {
 
     @Override
     protected void initData() {
+        this.popupModel = Maps.newHashMap();
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         this.detailShortNameValue = generator.generate(4);
         this.currencyDecimalPlaceValue = 2;
@@ -496,10 +490,8 @@ public class SavingCreatePage extends DeprecatedPage {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
-        item.put("chargeId", this.itemChargeValue.getId());
-        item.put("charge", this.itemChargeValue.getText());
-        item.put("accountId", this.itemAccountValue.getId());
-        item.put("account", this.itemAccountValue.getText());
+        item.put("charge", this.popupModel.get("chargeValue"));
+        item.put("account", this.popupModel.get("accountValue"));
         this.advancedAccountingRuleFeeIncomeValue.add(item);
         target.add(this.advancedAccountingRuleFeeIncomeTable);
     }
@@ -508,10 +500,8 @@ public class SavingCreatePage extends DeprecatedPage {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
-        item.put("chargeId", this.itemChargeValue.getId());
-        item.put("charge", this.itemChargeValue.getText());
-        item.put("accountId", this.itemAccountValue.getId());
-        item.put("account", this.itemAccountValue.getText());
+        item.put("charge", this.popupModel.get("chargeValue"));
+        item.put("account", this.popupModel.get("accountValue"));
         this.advancedAccountingRulePenaltyIncomeValue.add(item);
         target.add(this.advancedAccountingRulePenaltyIncomeTable);
     }
@@ -520,10 +510,8 @@ public class SavingCreatePage extends DeprecatedPage {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
-        item.put("paymentId", this.itemPaymentValue.getId());
-        item.put("payment", this.itemPaymentValue.getText());
-        item.put("accountId", this.itemAccountValue.getId());
-        item.put("account", this.itemAccountValue.getText());
+        item.put("payment", this.popupModel.get("paymentValue"));
+        item.put("account", this.popupModel.get("accountValue"));
         this.advancedAccountingRuleFundSourceValue.add(item);
         target.add(this.advancedAccountingRuleFundSourceTable);
     }
@@ -543,7 +531,6 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void initAdvancedAccountingRule() {
         this.advancedAccountingRuleBlock = new WebMarkupContainer("advancedAccountingRuleBlock");
-        this.advancedAccountingRuleBlock.setOutputMarkupId(true);
         this.form.add(this.advancedAccountingRuleBlock);
         this.advancedAccountingRuleIContainer = new WebMarkupContainer("advancedAccountingRuleIContainer");
         this.advancedAccountingRuleBlock.add(this.advancedAccountingRuleIContainer);
@@ -617,14 +604,13 @@ public class SavingCreatePage extends DeprecatedPage {
     }
 
     protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemChargeValue = null;
-        this.itemAccountValue = null;
+        this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this, this.currencyCodeValue.getId()));
+            this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
         } else {
-            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
-            this.currencyPopup.show(target);
+            this.penaltyIncomePopup.setContent(new CurrencyPopup(this.penaltyIncomePopup.getContentId()));
+            this.penaltyIncomePopup.show(target);
         }
         return false;
     }
@@ -665,14 +651,13 @@ public class SavingCreatePage extends DeprecatedPage {
     }
 
     protected boolean advancedAccountingRuleFeeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemChargeValue = null;
-        this.itemAccountValue = null;
+        this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this, this.currencyCodeValue.getId()));
+            this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
         } else {
-            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
-            this.currencyPopup.show(target);
+            this.feeIncomePopup.setContent(new CurrencyPopup(this.feeIncomePopup.getContentId()));
+            this.feeIncomePopup.show(target);
         }
         return false;
     }
@@ -722,7 +707,7 @@ public class SavingCreatePage extends DeprecatedPage {
     }
 
     protected boolean advancedAccountingRuleFundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this));
+        this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this.popupModel));
         this.fundSourcePopup.show(target);
         return false;
     }
@@ -737,7 +722,6 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void initAccountingCash() {
         this.cashBlock = new WebMarkupContainer("cashBlock");
-        this.cashBlock.setOutputMarkupId(true);
         this.form.add(this.cashBlock);
         this.cashIContainer = new WebMarkupContainer("cashIContainer");
         this.cashBlock.add(this.cashIContainer);
@@ -825,7 +809,6 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void initCashEscheatLiabilityBlock() {
         this.cashEscheatLiabilityBlock = new WebMarkupContainer("cashEscheatLiabilityBlock");
-        this.cashEscheatLiabilityBlock.setOutputMarkupId(true);
         this.cashIContainer.add(cashEscheatLiabilityBlock);
         this.cashEscheatLiabilityIContainer = new WebMarkupContainer("cashEscheatLiabilityIContainer");
         this.cashEscheatLiabilityBlock.add(this.cashEscheatLiabilityIContainer);
@@ -967,14 +950,14 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void chargePopupClose(String elementId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
-        String chargeId = this.itemChargeValue.getId();
+        Option charge = (Option) this.popupModel.get("chargeValue");
         for (Map<String, Object> temp : this.chargeValue) {
-            if (chargeId.equals(temp.get("uuid"))) {
+            if (charge.getId().equals(temp.get("uuid"))) {
                 return;
             }
         }
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, concat(charge_calculation_enum,'') type, concat(charge_time_enum,'') collect, amount from m_charge where id = ?", chargeId);
+        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, concat(charge_calculation_enum,'') type, concat(charge_time_enum,'') collect, amount from m_charge where id = ?", charge.getId());
         String type = (String) chargeObject.get("type");
         for (ChargeCalculation calculation : ChargeCalculation.values()) {
             if (type.equals(calculation.getLiteral())) {
@@ -989,8 +972,8 @@ public class SavingCreatePage extends DeprecatedPage {
                 break;
             }
         }
-        item.put("uuid", chargeId);
-        item.put("chargeId", chargeId);
+        item.put("uuid", charge.getId());
+        item.put("charge", charge);
         item.put("name", chargeObject.get("name"));
         item.put("type", type);
         item.put("amount", chargeObject.get("amount"));
@@ -1001,13 +984,13 @@ public class SavingCreatePage extends DeprecatedPage {
     }
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemChargeValue = null;
+        this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
+            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
-            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
-            this.currencyPopup.show(target);
+            this.chargePopup.setContent(new CurrencyPopup(this.chargePopup.getContentId()));
+            this.chargePopup.show(target);
         }
         return false;
     }
@@ -1082,7 +1065,6 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void initSettingNumberOfDaysToEscheatBlock() {
         this.settingNumberOfDaysToEscheatBlock = new WebMarkupBlock("settingNumberOfDaysToEscheatBlock", Size.Six_6);
-        this.settingNumberOfDaysToEscheatBlock.setOutputMarkupId(true);
         this.form.add(this.settingNumberOfDaysToEscheatBlock);
         this.settingNumberOfDaysToEscheatIContainer = new WebMarkupContainer("settingNumberOfDaysToEscheatIContainer");
         this.settingNumberOfDaysToEscheatBlock.add(this.settingNumberOfDaysToEscheatIContainer);
@@ -1096,7 +1078,6 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void initSettingNumberOfDaysToDormantSubStatusBlock() {
         this.settingNumberOfDaysToDormantSubStatusBlock = new WebMarkupBlock("settingNumberOfDaysToDormantSubStatusBlock", Size.Six_6);
-        this.settingNumberOfDaysToDormantSubStatusBlock.setOutputMarkupId(true);
         this.form.add(this.settingNumberOfDaysToDormantSubStatusBlock);
         this.settingNumberOfDaysToDormantSubStatusIContainer = new WebMarkupContainer("settingNumberOfDaysToDormantSubStatusIContainer");
         this.settingNumberOfDaysToDormantSubStatusBlock.add(this.settingNumberOfDaysToDormantSubStatusIContainer);
@@ -1110,7 +1091,6 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void initSettingNumberOfDaysToInactiveSubStatusBlock() {
         this.settingNumberOfDaysToInactiveSubStatusBlock = new WebMarkupBlock("settingNumberOfDaysToInactiveSubStatusBlock", Size.Six_6);
-        this.settingNumberOfDaysToInactiveSubStatusBlock.setOutputMarkupId(true);
         this.form.add(this.settingNumberOfDaysToInactiveSubStatusBlock);
         this.settingNumberOfDaysToInactiveSubStatusIContainer = new WebMarkupContainer("settingNumberOfDaysToInactiveSubStatusIContainer");
         this.settingNumberOfDaysToInactiveSubStatusBlock.add(this.settingNumberOfDaysToInactiveSubStatusIContainer);
@@ -1136,7 +1116,6 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void initSettingTaxGroupBlock() {
         this.settingTaxGroupBlock = new WebMarkupBlock("settingTaxGroupBlock", Size.Six_6);
-        this.settingTaxGroupBlock.setOutputMarkupId(true);
         this.form.add(this.settingTaxGroupBlock);
         this.settingTaxGroupIContainer = new WebMarkupContainer("settingTaxGroupIContainer");
         this.settingTaxGroupBlock.add(this.settingTaxGroupIContainer);
@@ -1163,7 +1142,6 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void initSettingMinOverdraftRequiredForInterestCalculationBlock() {
         this.settingMinOverdraftRequiredForInterestCalculationBlock = new WebMarkupBlock("settingMinOverdraftRequiredForInterestCalculationBlock", Size.Six_6);
-        this.settingMinOverdraftRequiredForInterestCalculationBlock.setOutputMarkupId(true);
         this.form.add(this.settingMinOverdraftRequiredForInterestCalculationBlock);
         this.settingMinOverdraftRequiredForInterestCalculationIContainer = new WebMarkupContainer("settingMinOverdraftRequiredForInterestCalculationIContainer");
         this.settingMinOverdraftRequiredForInterestCalculationBlock.add(this.settingMinOverdraftRequiredForInterestCalculationIContainer);
@@ -1177,7 +1155,6 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void initSettingNominalAnnualInterestForOverdraftBlock() {
         this.settingNominalAnnualInterestForOverdraftBlock = new WebMarkupBlock("settingNominalAnnualInterestForOverdraftBlock", Size.Six_6);
-        this.settingNominalAnnualInterestForOverdraftBlock.setOutputMarkupId(true);
         this.form.add(this.settingNominalAnnualInterestForOverdraftBlock);
         this.settingNominalAnnualInterestForOverdraftIContainer = new WebMarkupContainer("settingNominalAnnualInterestForOverdraftIContainer");
         this.settingNominalAnnualInterestForOverdraftBlock.add(this.settingNominalAnnualInterestForOverdraftIContainer);
@@ -1191,7 +1168,6 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void initSettingMaximumOverdraftAmountLimitBlock() {
         this.settingMaximumOverdraftAmountLimitBlock = new WebMarkupBlock("settingMaximumOverdraftAmountLimitBlock", Size.Six_6);
-        this.settingMaximumOverdraftAmountLimitBlock.setOutputMarkupId(true);
         this.form.add(this.settingMaximumOverdraftAmountLimitBlock);
         this.settingMaximumOverdraftAmountLimitIContainer = new WebMarkupContainer("settingMaximumOverdraftAmountLimitIContainer");
         this.settingMaximumOverdraftAmountLimitBlock.add(this.settingMaximumOverdraftAmountLimitIContainer);
@@ -1446,7 +1422,6 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void initDetailDescriptionBlock() {
         this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Six_6);
-        this.detailDescriptionBlock.setOutputMarkupId(true);
         this.form.add(this.detailDescriptionBlock);
         this.detailDescriptionIContainer = new WebMarkupContainer("detailDescriptionIContainer");
         this.detailDescriptionBlock.add(this.detailDescriptionIContainer);
@@ -1459,7 +1434,6 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void initDetailShortNameBlock() {
         this.detailShortNameBlock = new WebMarkupBlock("detailShortNameBlock", Size.Six_6);
-        this.detailShortNameBlock.setOutputMarkupId(true);
         this.form.add(this.detailShortNameBlock);
         this.detailShortNameIContainer = new WebMarkupContainer("detailShortNameIContainer");
         this.detailShortNameBlock.add(this.detailShortNameIContainer);
@@ -1472,7 +1446,6 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void initDetailProductNameBlock() {
         this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
-        this.detailProductNameBlock.setOutputMarkupId(true);
         this.form.add(this.detailProductNameBlock);
         this.detailProductNameIContainer = new WebMarkupContainer("detailProductNameIContainer");
         this.detailProductNameBlock.add(this.detailProductNameIContainer);

@@ -386,7 +386,6 @@ public class ClientCreatePage extends Page {
 
     protected void initExternalIdBlock() {
         this.externalIdBlock = new WebMarkupBlock("externalIdBlock", Size.Four_4);
-        this.externalIdBlock.setOutputMarkupId(true);
         this.form.add(this.externalIdBlock);
         this.externalIdIContainer = new WebMarkupContainer("externalIdIContainer");
         this.externalIdBlock.add(this.externalIdIContainer);
@@ -400,7 +399,6 @@ public class ClientCreatePage extends Page {
 
     protected void initSavingsAccountBlock() {
         this.savingsAccountBlock = new WebMarkupBlock("savingsAccountBlock", Size.Four_4);
-        this.savingsAccountBlock.setOutputMarkupId(true);
         this.form.add(this.savingsAccountBlock);
         this.savingsAccountIContainer = new WebMarkupContainer("savingsAccountIContainer");
         this.savingsAccountBlock.add(this.savingsAccountIContainer);
@@ -416,7 +414,6 @@ public class ClientCreatePage extends Page {
 
     protected void initOpenSavingsAccountBlock() {
         this.openSavingsAccountBlock = new WebMarkupBlock("openSavingsAccountBlock", Size.Four_4);
-        this.openSavingsAccountBlock.setOutputMarkupId(true);
         this.form.add(this.openSavingsAccountBlock);
         this.openSavingsAccountIContainer = new WebMarkupContainer("openSavingsAccountIContainer");
         this.openSavingsAccountBlock.add(this.openSavingsAccountIContainer);
@@ -429,7 +426,6 @@ public class ClientCreatePage extends Page {
 
     protected void initSubmittedOnBlock() {
         this.submittedOnBlock = new WebMarkupBlock("submittedOnBlock", Size.Four_4);
-        this.submittedOnBlock.setOutputMarkupId(true);
         this.form.add(this.submittedOnBlock);
         this.submittedOnIContainer = new WebMarkupContainer("submittedOnIContainer");
         this.submittedOnBlock.add(this.submittedOnIContainer);
@@ -443,7 +439,6 @@ public class ClientCreatePage extends Page {
 
     protected void initActivationDateBlock() {
         this.activationDateBlock = new WebMarkupBlock("activationDateBlock", Size.Four_4);
-        this.activationDateBlock.setOutputMarkupId(true);
         this.form.add(this.activationDateBlock);
         this.activationDateIContainer = new WebMarkupContainer("activationDateIContainer");
         this.activationDateBlock.add(this.activationDateIContainer);
@@ -457,7 +452,6 @@ public class ClientCreatePage extends Page {
 
     protected void initActiveBlock() {
         this.activeBlock = new WebMarkupBlock("activeBlock", Size.Four_4);
-        this.activeBlock.setOutputMarkupId(true);
         this.form.add(this.activeBlock);
         this.activeIContainer = new WebMarkupContainer("activeIContainer");
         this.activeBlock.add(this.activeIContainer);
@@ -470,7 +464,6 @@ public class ClientCreatePage extends Page {
 
     protected void initRemarkBlock() {
         this.remarkBlock = new WebMarkupBlock("remarkBlock", Size.Six_6);
-        this.remarkBlock.setOutputMarkupId(true);
         this.form.add(this.remarkBlock);
         this.remarkIContainer = new WebMarkupContainer("remarkIContainer");
         this.remarkBlock.add(this.remarkIContainer);
@@ -485,7 +478,6 @@ public class ClientCreatePage extends Page {
     protected void initConstitutionBlock() {
         this.constitutionProvider = new ConstitutionProvider();
         this.constitutionBlock = new WebMarkupBlock("constitutionBlock", Size.Six_6);
-        this.constitutionBlock.setOutputMarkupId(true);
         this.form.add(this.constitutionBlock);
         this.constitutionIContainer = new WebMarkupContainer("constitutionIContainer");
         this.constitutionBlock.add(this.constitutionIContainer);
@@ -499,7 +491,6 @@ public class ClientCreatePage extends Page {
 
     protected void initMainBusinessLineBlock() {
         this.mainBusinessLineBlock = new WebMarkupBlock("mainBusinessLineBlock", Size.Six_6);
-        this.mainBusinessLineBlock.setOutputMarkupId(true);
         this.form.add(this.mainBusinessLineBlock);
         this.mainBusinessLineIContainer = new WebMarkupContainer("mainBusinessLineIContainer");
         this.mainBusinessLineBlock.add(this.mainBusinessLineIContainer);
@@ -514,7 +505,6 @@ public class ClientCreatePage extends Page {
 
     protected void initIncorporationNumberBlock() {
         this.incorporationNumberBlock = new WebMarkupBlock("incorporationNumberBlock", Size.Six_6);
-        this.incorporationNumberBlock.setOutputMarkupId(true);
         this.form.add(this.incorporationNumberBlock);
         this.incorporationNumberIContainer = new WebMarkupContainer("incorporationNumberIContainer");
         this.incorporationNumberBlock.add(this.incorporationNumberIContainer);
@@ -528,7 +518,6 @@ public class ClientCreatePage extends Page {
 
     protected void initClientClassificationBlock() {
         this.clientClassificationBlock = new WebMarkupBlock("clientClassificationBlock", Size.Six_6);
-        this.clientClassificationBlock.setOutputMarkupId(true);
         this.form.add(this.clientClassificationBlock);
         this.clientClassificationIContainer = new WebMarkupContainer("clientClassificationIContainer");
         this.clientClassificationBlock.add(this.clientClassificationIContainer);
@@ -543,7 +532,6 @@ public class ClientCreatePage extends Page {
 
     protected void initClientTypeBlock() {
         this.clientTypeBlock = new WebMarkupBlock("clientTypeBlock", Size.Six_6);
-        this.clientTypeBlock.setOutputMarkupId(true);
         this.form.add(this.clientTypeBlock);
         this.clientTypeIContainer = new WebMarkupContainer("clientTypeIContainer");
         this.clientTypeBlock.add(this.clientTypeIContainer);
@@ -558,7 +546,6 @@ public class ClientCreatePage extends Page {
 
     protected void initIncorporationValidityTillDateBlock() {
         this.incorporationValidityTillDateBlock = new WebMarkupBlock("incorporationValidityTillDateBlock", Size.Six_6);
-        this.incorporationValidityTillDateBlock.setOutputMarkupId(true);
         this.form.add(this.incorporationValidityTillDateBlock);
         this.incorporationValidityTillDateIContainer = new WebMarkupContainer("incorporationValidityTillDateIContainer");
         this.incorporationValidityTillDateBlock.add(this.incorporationValidityTillDateIContainer);
@@ -572,7 +559,6 @@ public class ClientCreatePage extends Page {
 
     protected void initIncorporationDateBlock() {
         this.incorporationDateBlock = new WebMarkupBlock("incorporationDateBlock", Size.Six_6);
-        this.incorporationDateBlock.setOutputMarkupId(true);
         this.form.add(this.incorporationDateBlock);
         this.incorporationDateIContainer = new WebMarkupContainer("incorporationDateIContainer");
         this.incorporationDateBlock.add(this.incorporationDateIContainer);
@@ -586,7 +572,6 @@ public class ClientCreatePage extends Page {
 
     protected void initGenderBlock() {
         this.genderBlock = new WebMarkupBlock("genderBlock", Size.Four_4);
-        this.genderBlock.setOutputMarkupId(true);
         this.form.add(this.genderBlock);
         this.genderIContainer = new WebMarkupContainer("genderIContainer");
         this.genderBlock.add(this.genderIContainer);
@@ -601,7 +586,6 @@ public class ClientCreatePage extends Page {
 
     protected void initDateOfBirthBlock() {
         this.dateOfBirthBlock = new WebMarkupBlock("dateOfBirthBlock", Size.Four_4);
-        this.dateOfBirthBlock.setOutputMarkupId(true);
         this.form.add(this.dateOfBirthBlock);
         this.dateOfBirthIContainer = new WebMarkupContainer("dateOfBirthIContainer");
         this.dateOfBirthBlock.add(this.dateOfBirthIContainer);
@@ -615,7 +599,6 @@ public class ClientCreatePage extends Page {
 
     protected void initMobileNumberBlock() {
         this.mobileNumberBlock = new WebMarkupBlock("mobileNumberBlock", Size.Four_4);
-        this.mobileNumberBlock.setOutputMarkupId(true);
         this.form.add(this.mobileNumberBlock);
         this.mobileNumberIContainer = new WebMarkupContainer("mobileNumberIContainer");
         this.mobileNumberBlock.add(this.mobileNumberIContainer);
@@ -629,7 +612,6 @@ public class ClientCreatePage extends Page {
 
     protected void initNameBlock() {
         this.nameBlock = new WebMarkupBlock("nameBlock", Size.Four_4);
-        this.nameBlock.setOutputMarkupId(true);
         this.form.add(this.nameBlock);
         this.nameIContainer = new WebMarkupContainer("nameIContainer");
         this.nameBlock.add(this.nameIContainer);
@@ -643,7 +625,6 @@ public class ClientCreatePage extends Page {
 
     protected void initLastNameBlock() {
         this.lastNameBlock = new WebMarkupBlock("lastNameBlock", Size.Four_4);
-        this.lastNameBlock.setOutputMarkupId(true);
         this.form.add(this.lastNameBlock);
         this.lastNameIContainer = new WebMarkupContainer("lastNameIContainer");
         this.lastNameBlock.add(this.lastNameIContainer);
@@ -657,7 +638,6 @@ public class ClientCreatePage extends Page {
 
     protected void initMiddleNameBlock() {
         this.middleNameBlock = new WebMarkupBlock("middleNameBlock", Size.Four_4);
-        this.middleNameBlock.setOutputMarkupId(true);
         this.form.add(this.middleNameBlock);
         this.middleNameIContainer = new WebMarkupContainer("middleNameIContainer");
         this.middleNameBlock.add(this.middleNameIContainer);
@@ -671,7 +651,6 @@ public class ClientCreatePage extends Page {
 
     protected void initFirstNameBlock() {
         this.firstNameBlock = new WebMarkupBlock("firstNameBlock", Size.Four_4);
-        this.firstNameBlock.setOutputMarkupId(true);
         this.form.add(this.firstNameBlock);
         this.firstNameIContainer = new WebMarkupContainer("firstNameIContainer");
         this.firstNameBlock.add(this.firstNameIContainer);
@@ -685,7 +664,6 @@ public class ClientCreatePage extends Page {
 
     protected void initStaffApplicationBlock() {
         this.staffApplicationBlock = new WebMarkupBlock("staffApplicationBlock", Size.Six_6);
-        this.staffApplicationBlock.setOutputMarkupId(true);
         this.form.add(this.staffApplicationBlock);
         this.staffApplicationIContainer = new WebMarkupContainer("staffApplicationIContainer");
         this.staffApplicationBlock.add(this.staffApplicationIContainer);
@@ -698,7 +676,6 @@ public class ClientCreatePage extends Page {
 
     protected void initLegalFormBlock() {
         this.legalFormBlock = new WebMarkupBlock("legalFormBlock", Size.Six_6);
-        this.legalFormBlock.setOutputMarkupId(true);
         this.form.add(this.legalFormBlock);
         this.legalFormIContainer = new WebMarkupContainer("legalFormIContainer");
         this.legalFormBlock.add(this.legalFormIContainer);
@@ -713,7 +690,6 @@ public class ClientCreatePage extends Page {
 
     protected void initStaffBlock() {
         this.staffBlock = new WebMarkupBlock("staffBlock", Size.Six_6);
-        this.staffBlock.setOutputMarkupId(true);
         this.form.add(this.staffBlock);
         this.staffIContainer = new WebMarkupContainer("staffIContainer");
         this.staffBlock.add(this.staffIContainer);
@@ -729,7 +705,6 @@ public class ClientCreatePage extends Page {
 
     protected void initOfficeBlock() {
         this.officeBlock = new WebMarkupBlock("officeBlock", Size.Six_6);
-        this.officeBlock.setOutputMarkupId(true);
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);

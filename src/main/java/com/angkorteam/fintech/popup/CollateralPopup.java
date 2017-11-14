@@ -62,7 +62,6 @@ public class CollateralPopup extends Panel {
         this.collateralValue = new PropertyModel<>(this.model, "itemCollateralValue");
         this.collateralProvider = new LoanCollateralProvider();
         this.collateralBlock = new WebMarkupContainer("collateralBlock");
-        this.collateralBlock.setOutputMarkupId(true);
         this.form.add(this.collateralBlock);
         this.collateralContainer = new WebMarkupContainer("collateralContainer");
         this.collateralBlock.add(this.collateralContainer);
@@ -75,7 +74,6 @@ public class CollateralPopup extends Panel {
 
         this.amountValue = new PropertyModel<>(this.model, "itemAmountValue");
         this.amountBlock = new WebMarkupContainer("amountBlock");
-        this.amountBlock.setOutputMarkupId(true);
         this.form.add(this.amountBlock);
         this.amountContainer = new WebMarkupContainer("amountContainer");
         this.amountBlock.add(this.amountContainer);
@@ -87,7 +85,6 @@ public class CollateralPopup extends Panel {
 
         this.descriptionValue = new PropertyModel<>(this.model, "itemDescriptionValue");
         this.descriptionBlock = new WebMarkupContainer("descriptionBlock");
-        this.descriptionBlock.setOutputMarkupId(true);
         this.form.add(this.descriptionBlock);
         this.descriptionContainer = new WebMarkupContainer("descriptionContainer");
         this.descriptionBlock.add(this.descriptionContainer);

@@ -80,7 +80,6 @@ public class ClientTransferPage extends Page {
 
     protected void initNoteBlock() {
         this.noteBlock = new WebMarkupBlock("noteBlock", Size.Six_6);
-        this.noteBlock.setOutputMarkupId(true);
         this.form.add(this.noteBlock);
         this.noteIContainer = new WebMarkupContainer("noteIContainer");
         this.noteBlock.add(this.noteIContainer);

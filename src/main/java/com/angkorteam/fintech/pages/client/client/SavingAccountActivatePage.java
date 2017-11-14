@@ -58,7 +58,6 @@ public class SavingAccountActivatePage extends DeprecatedPage {
         this.form.add(this.closeLink);
 
         this.activatedOnBlock = new WebMarkupContainer("activatedOnBlock");
-        this.activatedOnBlock.setOutputMarkupId(true);
         this.form.add(this.activatedOnBlock);
         this.activatedOnContainer = new WebMarkupContainer("activatedOnContainer");
         this.activatedOnBlock.add(this.activatedOnContainer);

@@ -99,7 +99,6 @@ public class CenterModifyPage extends Page {
 
     protected void initActivationDateBlock() {
         this.activationDateBlock = new WebMarkupBlock("activationDateBlock", Size.Six_6);
-        this.activationDateBlock.setOutputMarkupId(true);
         this.form.add(this.activationDateBlock);
         this.activationDateIContainer = new WebMarkupContainer("activationDateIContainer");
         this.activationDateBlock.add(this.activationDateIContainer);
@@ -113,7 +112,6 @@ public class CenterModifyPage extends Page {
 
     protected void initExternalIdBlock() {
         this.externalIdBlock = new WebMarkupBlock("externalIdBlock", Size.Six_6);
-        this.externalIdBlock.setOutputMarkupId(true);
         this.form.add(this.externalIdBlock);
         this.externalIdIContainer = new WebMarkupContainer("externalIdIContainer");
         this.externalIdBlock.add(this.externalIdIContainer);
@@ -144,7 +142,6 @@ public class CenterModifyPage extends Page {
 
     protected void initNameBlock() {
         this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
-        this.nameBlock.setOutputMarkupId(true);
         this.form.add(this.nameBlock);
         this.nameIContainer = new WebMarkupContainer("nameIContainer");
         this.nameBlock.add(this.nameIContainer);

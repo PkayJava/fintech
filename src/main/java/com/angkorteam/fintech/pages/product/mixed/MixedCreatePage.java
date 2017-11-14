@@ -9,8 +9,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.MixedBuilder;
@@ -19,6 +18,8 @@ import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.provider.MultipleChoiceProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -31,27 +32,27 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class MixedCreatePage extends DeprecatedPage {
+public class MixedCreatePage extends Page {
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private WebMarkupContainer productBlock;
-    private WebMarkupContainer productContainer;
-    private SingleChoiceProvider productProvider;
-    private Option productValue;
-    private Select2SingleChoice<Option> productField;
-    private TextFeedbackPanel productFeedback;
+    protected WebMarkupBlock productBlock;
+    protected WebMarkupContainer productIContainer;
+    protected SingleChoiceProvider productProvider;
+    protected Option productValue;
+    protected Select2SingleChoice<Option> productField;
+    protected TextFeedbackPanel productFeedback;
 
-    private WebMarkupContainer restrictedBlock;
-    private WebMarkupContainer restrictedContainer;
-    private MultipleChoiceProvider restrictedProvider;
-    private List<Option> restrictedValue;
-    private Select2MultipleChoice<Option> restrictedField;
-    private TextFeedbackPanel restrictedFeedback;
+    protected WebMarkupBlock restrictedBlock;
+    protected WebMarkupContainer restrictedIContainer;
+    protected MultipleChoiceProvider restrictedProvider;
+    protected List<Option> restrictedValue;
+    protected Select2MultipleChoice<Option> restrictedField;
+    protected TextFeedbackPanel restrictedFeedback;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -86,9 +87,11 @@ public class MixedCreatePage extends DeprecatedPage {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -99,35 +102,51 @@ public class MixedCreatePage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", MixedBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.productBlock = new WebMarkupContainer("productBlock");
+        initProductBlock();
+
+        initRestrictedBlock();
+    }
+
+    protected void initRestrictedBlock() {
+        this.restrictedBlock = new WebMarkupBlock("restrictedBlock", Size.Six_6);
+        this.form.add(this.restrictedBlock);
+        this.restrictedIContainer = new WebMarkupContainer("restrictedContainer");
+        this.restrictedBlock.add(this.restrictedIContainer);
+        this.restrictedProvider = new MultipleChoiceProvider("m_product_loan", "id", "name");
+        this.restrictedField = new Select2MultipleChoice<>("restrictedField", new PropertyModel<>(this, "restrictedValue"), this.restrictedProvider);
+        this.restrictedField.setLabel(Model.of("Restricted"));
+        this.restrictedField.setRequired(false);
+        this.restrictedField.add(new OnChangeAjaxBehavior());
+        this.restrictedIContainer.add(this.restrictedField);
+        this.restrictedFeedback = new TextFeedbackPanel("restrictedFeedback", this.restrictedField);
+        this.restrictedIContainer.add(this.restrictedFeedback);
+    }
+
+    protected void initProductBlock() {
+        this.productBlock = new WebMarkupBlock("productBlock", Size.Six_6);
         this.form.add(this.productBlock);
-        this.productContainer = new WebMarkupContainer("productContainer");
-        this.productBlock.add(this.productContainer);
+        this.productIContainer = new WebMarkupContainer("productContainer");
+        this.productBlock.add(this.productIContainer);
         this.productProvider = new SingleChoiceProvider("m_product_loan", "id", "name");
         this.productProvider.applyWhere("product", "m_product_loan.id not in (select product_id from m_product_mix)");
         this.productField = new Select2SingleChoice<>("productField", new PropertyModel<>(this, "productValue"), this.productProvider);
         this.productField.setLabel(Model.of("Product"));
         this.productField.setRequired(false);
         this.productField.add(new OnChangeAjaxBehavior());
-        this.productContainer.add(this.productField);
+        this.productIContainer.add(this.productField);
         this.productFeedback = new TextFeedbackPanel("productFeedback", this.productField);
-        this.productContainer.add(this.productFeedback);
-
-        this.restrictedBlock = new WebMarkupContainer("restrictedBlock");
-        this.form.add(this.restrictedBlock);
-        this.restrictedContainer = new WebMarkupContainer("restrictedContainer");
-        this.restrictedBlock.add(this.restrictedContainer);
-        this.restrictedProvider = new MultipleChoiceProvider("m_product_loan", "id", "name");
-        this.restrictedField = new Select2MultipleChoice<>("restrictedField", new PropertyModel<>(this, "restrictedValue"), this.restrictedProvider);
-        this.restrictedField.setLabel(Model.of("Restricted"));
-        this.restrictedField.setRequired(false);
-        this.restrictedField.add(new OnChangeAjaxBehavior());
-        this.restrictedContainer.add(this.restrictedField);
-        this.restrictedFeedback = new TextFeedbackPanel("restrictedFeedback", this.restrictedField);
-        this.restrictedContainer.add(this.restrictedFeedback);
+        this.productIContainer.add(this.productFeedback);
     }
 
-    private void saveButtonSubmit(Button button) {
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void saveButtonSubmit(Button button) {
         MixedBuilder builder = new MixedBuilder();
 
         if (this.productValue != null) {

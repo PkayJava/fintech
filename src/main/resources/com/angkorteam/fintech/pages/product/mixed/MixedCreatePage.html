@@ -16,12 +16,10 @@
 				<div class="box-body">
 
 					<!-- Row -->
-					<div wicket:id="productBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="productContainer">
+					<div wicket:id="productBlock" class="form-group">
+						<wicket:container wicket:id="productIContainer">
 							<label wicket:for="productField">Product</label>
-							<select wicket:id="productField" class="form-control select2"
-								style="width: 100%;"></select>
+							<select wicket:id="productField" class="form-control"></select>
 							<span wicket:id="productFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
@@ -31,12 +29,10 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="restrictedBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="restrictedContainer">
+					<div wicket:id="restrictedBlock" class="form-group">
+						<wicket:container wicket:id="restrictedIContainer">
 							<label wicket:for="restrictedField">Restricted</label>
-							<select wicket:id="restrictedField" class="form-control select2"
-								style="width: 100%;"></select>
+							<select wicket:id="restrictedField" class="form-control"></select>
 							<span wicket:id="restrictedFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>

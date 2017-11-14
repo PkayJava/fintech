@@ -255,7 +255,6 @@ public class DataTableCreatePage extends Page {
 
     protected void initCodeBlock() {
         this.codeBlock = new WebMarkupBlock("codeBlock", Size.Six_6);
-        this.codeBlock.setOutputMarkupId(true);
         this.columnForm.add(this.codeBlock);
         this.codeIContainer = new WebMarkupContainer("codeIContainer");
         this.codeBlock.add(this.codeIContainer);
@@ -294,7 +293,6 @@ public class DataTableCreatePage extends Page {
 
     protected void initLengthBlock() {
         this.lengthBlock = new WebMarkupBlock("lengthBlock", Size.Six_6);
-        this.lengthBlock.setOutputMarkupId(true);
         this.columnForm.add(this.lengthBlock);
         this.lengthIContainer = new WebMarkupContainer("lengthIContainer");
         this.lengthBlock.add(this.lengthIContainer);

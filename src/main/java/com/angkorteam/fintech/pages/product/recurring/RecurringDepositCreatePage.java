@@ -325,6 +325,7 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     // Charges
 
+    protected List<IColumn<Map<String, Object>, String>> chargeColumn;
     protected List<Map<String, Object>> chargeValue = Lists.newArrayList();
     protected DataTable<Map<String, Object>, String> chargeTable;
     protected ListDataProvider chargeProvider;
@@ -374,36 +375,28 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
     protected WebMarkupContainer advancedAccountingRuleBlock;
     protected WebMarkupContainer advancedAccountingRuleIContainer;
 
+    protected List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFundSourceColumn;
     protected List<Map<String, Object>> advancedAccountingRuleFundSourceValue = Lists.newArrayList();
     protected DataTable<Map<String, Object>, String> advancedAccountingRuleFundSourceTable;
     protected ListDataProvider advancedAccountingRuleFundSourceProvider;
     protected AjaxLink<Void> advancedAccountingRuleFundSourceAddLink;
     protected ModalWindow fundSourcePopup;
 
+    protected List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFeeIncomeColumn;
     protected List<Map<String, Object>> advancedAccountingRuleFeeIncomeValue = Lists.newArrayList();
     protected DataTable<Map<String, Object>, String> advancedAccountingRuleFeeIncomeTable;
     protected ListDataProvider advancedAccountingRuleFeeIncomeProvider;
     protected AjaxLink<Void> advancedAccountingRuleFeeIncomeAddLink;
     protected ModalWindow feeIncomePopup;
 
+    protected List<IColumn<Map<String, Object>, String>> advancedAccountingRulePenaltyIncomeColumn;
     protected List<Map<String, Object>> advancedAccountingRulePenaltyIncomeValue = Lists.newArrayList();
     protected DataTable<Map<String, Object>, String> advancedAccountingRulePenaltyIncomeTable;
     protected ListDataProvider advancedAccountingRulePenaltyIncomeProvider;
     protected AjaxLink<Void> advancedAccountingRulePenaltyIncomeAddLink;
     protected ModalWindow penaltyIncomePopup;
 
-    protected Option itemChargeValue;
-    protected Option itemPeriodTypeValue;
-    protected Integer itemPeriodFromValue;
-    protected Integer itemPeriodToValue;
-    protected Integer itemAmountRangeFromValue;
-    protected Integer itemAmountRangeToValue;
-    protected Double itemInterestValue;
-    protected String itemDescriptionValue;
-    protected Option itemPaymentValue;
-    protected Option itemAccountValue;
-
-    protected ModalWindow currencyPopup;
+    protected Map<String, Object> popupModel;
 
     protected static final List<PageBreadcrumb> BREADCRUMB;
 
@@ -451,9 +444,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", RecurringDepositBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.currencyPopup = new ModalWindow("currencyPopup");
-        add(this.currencyPopup);
-
         initSectionDetail();
 
         initSectionCurrency();
@@ -496,6 +486,7 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     @Override
     protected void initData() {
+        this.popupModel = Maps.newHashMap();
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
 
         this.detailShortNameValue = generator.generate(4);
@@ -530,7 +521,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initAccountingCash() {
         this.cashBlock = new WebMarkupContainer("cashBlock");
-        this.cashBlock.setOutputMarkupId(true);
         this.form.add(this.cashBlock);
         this.cashIContainer = new WebMarkupContainer("cashIContainer");
         this.cashBlock.add(this.cashIContainer);
@@ -598,7 +588,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initAdvancedAccountingRule() {
         this.advancedAccountingRuleBlock = new WebMarkupContainer("advancedAccountingRuleBlock");
-        this.advancedAccountingRuleBlock.setOutputMarkupId(true);
         this.form.add(this.advancedAccountingRuleBlock);
         this.advancedAccountingRuleIContainer = new WebMarkupContainer("advancedAccountingRuleIContainer");
         this.advancedAccountingRuleBlock.add(this.advancedAccountingRuleIContainer);
@@ -607,14 +596,14 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
         {
             this.fundSourcePopup = new ModalWindow("fundSourcePopup");
             add(this.fundSourcePopup);
-            this.fundSourcePopup.setOnClose(this::fundSourcePopupOnClose);
+            this.fundSourcePopup.setOnClose(this::fundSourcePopupClose);
 
-            List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFundSourceColumn = Lists.newArrayList();
-            advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Payment Type"), "payment", "payment", this::advancedAccountingRuleFundSourcePaymentColumn));
-            advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Fund Source"), "account", "account", this::advancedAccountingRuleFundSourceAccountColumn));
-            advancedAccountingRuleFundSourceColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFundSourceActionItem, this::advancedAccountingRuleFundSourceActionClick));
+            this.advancedAccountingRuleFundSourceColumn = Lists.newArrayList();
+            this.advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Payment Type"), "payment", "payment", this::advancedAccountingRuleFeeIncomeColumn));
+            this.advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Fund Source"), "account", "account", this::advancedAccountingRuleFundSourceColumn));
+            this.advancedAccountingRuleFundSourceColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFundSourceAction, this::advancedAccountingRuleFundSourceClick));
             this.advancedAccountingRuleFundSourceProvider = new ListDataProvider(this.advancedAccountingRuleFundSourceValue);
-            this.advancedAccountingRuleFundSourceTable = new DataTable<>("advancedAccountingRuleFundSourceTable", advancedAccountingRuleFundSourceColumn, this.advancedAccountingRuleFundSourceProvider, 20);
+            this.advancedAccountingRuleFundSourceTable = new DataTable<>("advancedAccountingRuleFundSourceTable", this.advancedAccountingRuleFundSourceColumn, this.advancedAccountingRuleFundSourceProvider, 20);
             this.advancedAccountingRuleIContainer.add(this.advancedAccountingRuleFundSourceTable);
             this.advancedAccountingRuleFundSourceTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRuleFundSourceTable, this.advancedAccountingRuleFundSourceProvider));
             this.advancedAccountingRuleFundSourceTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRuleFundSourceTable));
@@ -628,14 +617,14 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
         {
             this.feeIncomePopup = new ModalWindow("feeIncomePopup");
             add(this.feeIncomePopup);
-            this.feeIncomePopup.setOnClose(this::feeIncomePopupOnClose);
+            this.feeIncomePopup.setOnClose(this::feeIncomePopupClose);
 
-            List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFeeIncomeColumn = Lists.newArrayList();
-            advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Fees"), "charge", "charge", this::advancedAccountingRuleFeeIncomeChargeColumn));
-            advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRuleFeeIncomeAccountColumn));
-            advancedAccountingRuleFeeIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFeeIncomeActionItem, this::advancedAccountingRuleFeeIncomeActionClick));
+            this.advancedAccountingRuleFeeIncomeColumn = Lists.newArrayList();
+            this.advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Fees"), "charge", "charge", this::advancedAccountingRuleFeeIncomeColumn));
+            this.advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRuleFeeIncomeColumn));
+            this.advancedAccountingRuleFeeIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFeeIncomeAction, this::advancedAccountingRuleFeeIncomeClick));
             this.advancedAccountingRuleFeeIncomeProvider = new ListDataProvider(this.advancedAccountingRuleFeeIncomeValue);
-            this.advancedAccountingRuleFeeIncomeTable = new DataTable<>("advancedAccountingRuleFeeIncomeTable", advancedAccountingRuleFeeIncomeColumn, this.advancedAccountingRuleFeeIncomeProvider, 20);
+            this.advancedAccountingRuleFeeIncomeTable = new DataTable<>("advancedAccountingRuleFeeIncomeTable", this.advancedAccountingRuleFeeIncomeColumn, this.advancedAccountingRuleFeeIncomeProvider, 20);
             this.advancedAccountingRuleIContainer.add(this.advancedAccountingRuleFeeIncomeTable);
             this.advancedAccountingRuleFeeIncomeTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRuleFeeIncomeTable, this.advancedAccountingRuleFeeIncomeProvider));
             this.advancedAccountingRuleFeeIncomeTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRuleFeeIncomeTable));
@@ -649,14 +638,14 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
         {
             this.penaltyIncomePopup = new ModalWindow("penaltyIncomePopup");
             add(this.penaltyIncomePopup);
-            this.penaltyIncomePopup.setOnClose(this::penaltyIncomePopupOnClose);
+            this.penaltyIncomePopup.setOnClose(this::penaltyIncomePopupClose);
 
-            List<IColumn<Map<String, Object>, String>> advancedAccountingRulePenaltyIncomeColumn = Lists.newArrayList();
-            advancedAccountingRulePenaltyIncomeColumn.add(new TextColumn(Model.of("Penalty"), "charge", "charge", this::advancedAccountingRulePenaltyIncomeChargeColumn));
-            advancedAccountingRulePenaltyIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRulePenaltyIncomeAccountColumn));
-            advancedAccountingRulePenaltyIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRulePenaltyIncomeActionItem, this::advancedAccountingRulePenaltyIncomeActionClick));
+            this.advancedAccountingRulePenaltyIncomeColumn = Lists.newArrayList();
+            this.advancedAccountingRulePenaltyIncomeColumn.add(new TextColumn(Model.of("Penalty"), "charge", "charge", this::advancedAccountingRulePenaltyIncomeColumn));
+            this.advancedAccountingRulePenaltyIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRulePenaltyIncomeColumn));
+            this.advancedAccountingRulePenaltyIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRulePenaltyIncomeAction, this::advancedAccountingRulePenaltyIncomeClick));
             this.advancedAccountingRulePenaltyIncomeProvider = new ListDataProvider(this.advancedAccountingRulePenaltyIncomeValue);
-            this.advancedAccountingRulePenaltyIncomeTable = new DataTable<>("advancedAccountingRulePenaltyIncomeTable", advancedAccountingRulePenaltyIncomeColumn, this.advancedAccountingRulePenaltyIncomeProvider, 20);
+            this.advancedAccountingRulePenaltyIncomeTable = new DataTable<>("advancedAccountingRulePenaltyIncomeTable", this.advancedAccountingRulePenaltyIncomeColumn, this.advancedAccountingRulePenaltyIncomeProvider, 20);
             this.advancedAccountingRuleIContainer.add(this.advancedAccountingRulePenaltyIncomeTable);
             this.advancedAccountingRulePenaltyIncomeTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRulePenaltyIncomeTable, this.advancedAccountingRulePenaltyIncomeProvider));
             this.advancedAccountingRulePenaltyIncomeTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRulePenaltyIncomeTable));
@@ -667,66 +656,57 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
         }
     }
 
-    protected void feeIncomePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void feeIncomePopupClose(String elementId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
-        item.put("chargeId", this.itemChargeValue.getId());
-        item.put("charge", this.itemChargeValue.getText());
-        item.put("accountId", this.itemAccountValue.getId());
-        item.put("account", this.itemAccountValue.getText());
+        item.put("charge", this.popupModel.get("chargeValue"));
+        item.put("account", this.popupModel.get("accountValue"));
         this.advancedAccountingRuleFeeIncomeValue.add(item);
         target.add(this.advancedAccountingRuleFeeIncomeTable);
     }
 
-    protected void penaltyIncomePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void penaltyIncomePopupClose(String elementId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
-        item.put("chargeId", this.itemChargeValue.getId());
-        item.put("charge", this.itemChargeValue.getText());
-        item.put("accountId", this.itemAccountValue.getId());
-        item.put("account", this.itemAccountValue.getText());
+        item.put("charge", this.popupModel.get("chargeValue"));
+        item.put("account", this.popupModel.get("accountValue"));
         this.advancedAccountingRulePenaltyIncomeValue.add(item);
         target.add(this.advancedAccountingRulePenaltyIncomeTable);
     }
 
-    protected void fundSourcePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void fundSourcePopupClose(String elementId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
-        item.put("paymentId", this.itemPaymentValue.getId());
-        item.put("payment", this.itemPaymentValue.getText());
-        item.put("accountId", this.itemAccountValue.getId());
-        item.put("account", this.itemAccountValue.getText());
+        item.put("payment", this.popupModel.get("paymentValue"));
+        item.put("account", this.popupModel.get("accountValue"));
         this.advancedAccountingRuleFundSourceValue.add(item);
         target.add(this.advancedAccountingRuleFundSourceTable);
     }
 
     protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemChargeValue = null;
-        this.itemAccountValue = null;
+        this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this, this.currencyCodeValue.getId()));
+            this.penaltyIncomePopup.setContent(new PenaltyChargePopup(this.penaltyIncomePopup.getContentId(), this.penaltyIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
         } else {
-            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
-            this.currencyPopup.show(target);
+            this.penaltyIncomePopup.setContent(new CurrencyPopup(this.penaltyIncomePopup.getContentId()));
+            this.penaltyIncomePopup.show(target);
         }
         return false;
     }
 
-    protected ItemPanel advancedAccountingRulePenaltyIncomeChargeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel advancedAccountingRulePenaltyIncomeColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("charge".equals(column) || "account".equals(column)) {
+            Option value = (Option) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected ItemPanel advancedAccountingRulePenaltyIncomeAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected void advancedAccountingRulePenaltyIncomeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void advancedAccountingRulePenaltyIncomeClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.advancedAccountingRulePenaltyIncomeValue.size(); i++) {
             Map<String, Object> column = this.advancedAccountingRulePenaltyIncomeValue.get(i);
@@ -741,38 +721,35 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
         target.add(this.advancedAccountingRulePenaltyIncomeTable);
     }
 
-    protected List<ActionItem> advancedAccountingRulePenaltyIncomeActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> advancedAccountingRulePenaltyIncomeAction(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected List<ActionItem> advancedAccountingRuleFeeIncomeActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> advancedAccountingRuleFeeIncomeAction(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     protected boolean advancedAccountingRuleFeeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemChargeValue = null;
-        this.itemAccountValue = null;
+        this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this, this.currencyCodeValue.getId()));
+            this.feeIncomePopup.setContent(new FeeChargePopup(this.feeIncomePopup.getContentId(), this.feeIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
         } else {
-            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
-            this.currencyPopup.show(target);
+            this.feeIncomePopup.setContent(new CurrencyPopup(this.feeIncomePopup.getContentId()));
+            this.feeIncomePopup.show(target);
         }
         return false;
     }
 
-    protected ItemPanel advancedAccountingRuleFeeIncomeChargeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel advancedAccountingRuleFeeIncomeColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("payment".equals(column) || "account".equals(column)) {
+            Option value = (Option) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected ItemPanel advancedAccountingRuleFeeIncomeAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected void advancedAccountingRuleFeeIncomeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void advancedAccountingRuleFeeIncomeClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.advancedAccountingRuleFeeIncomeValue.size(); i++) {
             Map<String, Object> column = this.advancedAccountingRuleFeeIncomeValue.get(i);
@@ -791,7 +768,7 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void advancedAccountingRuleFundSourceActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void advancedAccountingRuleFundSourceClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.advancedAccountingRuleFundSourceValue.size(); i++) {
             Map<String, Object> column = this.advancedAccountingRuleFundSourceValue.get(i);
@@ -806,24 +783,22 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
         target.add(this.advancedAccountingRuleFundSourceTable);
     }
 
-    protected List<ActionItem> advancedAccountingRuleFundSourceActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> advancedAccountingRuleFundSourceAction(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     protected boolean advancedAccountingRuleFundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this));
+        this.fundSourcePopup.setContent(new PaymentTypePopup(this.fundSourcePopup.getContentId(), this.fundSourcePopup, this.popupModel));
         this.fundSourcePopup.show(target);
         return false;
     }
 
-    protected ItemPanel advancedAccountingRuleFundSourcePaymentColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel advancedAccountingRuleFundSourceAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel advancedAccountingRuleFundSourceColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("payment".equals(column) || "account".equals(column)) {
+            Option value = (Option) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
     protected List<ActionItem> fundSourceActionItem(String s, Map<String, Object> model) {
@@ -852,17 +827,17 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
     protected void initSectionCharge() {
         this.chargePopup = new ModalWindow("chargePopup");
         add(this.chargePopup);
-        this.chargePopup.setOnClose(this::chargePopupOnClose);
+        this.chargePopup.setOnClose(this::chargePopupClose);
 
-        List<IColumn<Map<String, Object>, String>> chargeColumn = Lists.newArrayList();
-        chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeNameColumn));
-        chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeTypeColumn));
-        chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeAmountColumn));
-        chargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::chargeCollectColumn));
-        chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeDateColumn));
-        chargeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::chargeActionItem, this::chargeActionClick));
+        this.chargeColumn = Lists.newArrayList();
+        this.chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeColumn));
+        this.chargeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::chargeAction, this::chargeClick));
         this.chargeProvider = new ListDataProvider(this.chargeValue);
-        this.chargeTable = new DataTable<>("chargeTable", chargeColumn, this.chargeProvider, 20);
+        this.chargeTable = new DataTable<>("chargeTable", this.chargeColumn, this.chargeProvider, 20);
         this.form.add(this.chargeTable);
         this.chargeTable.addTopToolbar(new HeadersToolbar<>(this.chargeTable, this.chargeProvider));
         this.chargeTable.addBottomToolbar(new NoRecordsToolbar(this.chargeTable));
@@ -872,16 +847,16 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
         this.form.add(this.chargeAddLink);
     }
 
-    protected void chargePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void chargePopupClose(String elementId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
-        String chargeId = this.itemChargeValue.getId();
+        Option charge = (Option) this.popupModel.get("chargeValue");
         for (Map<String, Object> temp : this.chargeValue) {
-            if (chargeId.equals(temp.get("uuid"))) {
+            if (charge.getId().equals(temp.get("uuid"))) {
                 return;
             }
         }
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, concat(charge_calculation_enum,'') type, concat(charge_time_enum,'') collect, amount from m_charge where id = ?", chargeId);
+        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, concat(charge_calculation_enum,'') type, concat(charge_time_enum,'') collect, amount from m_charge where id = ?", charge.getId());
         String type = (String) chargeObject.get("type");
         for (ChargeCalculation calculation : ChargeCalculation.values()) {
             if (type.equals(calculation.getLiteral())) {
@@ -896,8 +871,8 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
                 break;
             }
         }
-        item.put("uuid", chargeId);
-        item.put("chargeId", chargeId);
+        item.put("uuid", charge.getId());
+        item.put("charge", charge);
         item.put("name", chargeObject.get("name"));
         item.put("type", type);
         item.put("amount", chargeObject.get("amount"));
@@ -908,43 +883,29 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
     }
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemChargeValue = null;
+        this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
+            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
-            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
-            this.currencyPopup.show(target);
+            this.chargePopup.setContent(new CurrencyPopup(this.chargePopup.getContentId()));
+            this.chargePopup.show(target);
         }
         return false;
     }
 
-    protected ItemPanel chargeNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel chargeColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column) || "type".equals(column) || "collect".equals(column) || "date".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("amount".equals(column)) {
+            Number value = (Number) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected ItemPanel chargeTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel chargeAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Number value = (Number) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel chargeCollectColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel chargeDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected void chargeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void chargeClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.chargeValue.size(); i++) {
             Map<String, Object> column = this.chargeValue.get(i);
@@ -959,7 +920,7 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
         target.add(this.chargeTable);
     }
 
-    protected List<ActionItem> chargeActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> chargeAction(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -1025,7 +986,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initInterestRateValidEndDateBlock() {
         this.interestRateValidEndDateBlock = new WebMarkupBlock("interestRateValidEndDateBlock", Size.Six_6);
-        this.interestRateValidEndDateBlock.setOutputMarkupId(true);
         this.form.add(this.interestRateValidEndDateBlock);
         this.interestRateValidEndDateIContainer = new WebMarkupContainer("interestRateValidEndDateIContainer");
         this.interestRateValidEndDateBlock.add(this.interestRateValidEndDateIContainer);
@@ -1038,7 +998,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initInterestRateValidFromDateBlock() {
         this.interestRateValidFromDateBlock = new WebMarkupBlock("interestRateValidFromDateBlock", Size.Six_6);
-        this.interestRateValidFromDateBlock.setOutputMarkupId(true);
         this.form.add(this.interestRateValidFromDateBlock);
         this.interestRateValidFromDateIContainer = new WebMarkupContainer("interestRateValidFromDateIContainer");
         this.interestRateValidFromDateBlock.add(this.interestRateValidFromDateIContainer);
@@ -1058,27 +1017,21 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
         Map<String, Object> item = Maps.newHashMap();
         String uuid = generator.externalId();
         item.put("uuid", uuid);
-        item.put("periodType", this.itemPeriodTypeValue);
-        item.put("periodFrom", this.itemPeriodFromValue);
-        item.put("periodTo", this.itemPeriodToValue);
-        item.put("amountRangeFrom", this.itemAmountRangeFromValue);
-        item.put("amountRangeTo", this.itemAmountRangeToValue);
-        item.put("interest", this.itemInterestValue);
-        item.put("description", this.itemDescriptionValue);
+        item.put("periodType", this.popupModel.get("periodTypeValue"));
+        item.put("periodFrom", this.popupModel.get("periodFromValue"));
+        item.put("periodTo", this.popupModel.get("periodToValue"));
+        item.put("amountRangeFrom", this.popupModel.get("amountRangeFromValue"));
+        item.put("amountRangeTo", this.popupModel.get("amountRangeToValue"));
+        item.put("interest", this.popupModel.get("interestValue"));
+        item.put("description", this.popupModel.get("descriptionValue"));
         item.put("interestRate", Lists.newLinkedList());
         this.interestRateChartValue.add(item);
         target.add(this.interestRateChartTable);
     }
 
     protected boolean interestRateChartAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemPeriodTypeValue = null;
-        this.itemPeriodFromValue = null;
-        this.itemPeriodToValue = null;
-        this.itemAmountRangeFromValue = null;
-        this.itemAmountRangeToValue = null;
-        this.itemInterestValue = null;
-        this.itemDescriptionValue = null;
-        this.interestRateChartPopup.setContent(new InterestRateChartPopup(this.interestRateChartPopup.getContentId(), this.interestRateChartPopup, this));
+        this.popupModel.clear();
+        this.interestRateChartPopup.setContent(new InterestRateChartPopup(this.interestRateChartPopup.getContentId(), this.interestRateChartPopup, this.popupModel));
         this.interestRateChartPopup.show(target);
         return false;
     }
@@ -1168,7 +1121,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initSettingTaxGroupBlock() {
         this.settingTaxGroupBlock = new WebMarkupBlock("settingTaxGroupBlock", Size.Six_6);
-        this.settingTaxGroupBlock.setOutputMarkupId(true);
         this.form.add(this.settingTaxGroupBlock);
         this.settingTaxGroupIContainer = new WebMarkupContainer("settingTaxGroupIContainer");
         this.settingTaxGroupBlock.add(this.settingTaxGroupIContainer);
@@ -1195,7 +1147,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initSettingBalanceRequiredForInterestCalculationBlock() {
         this.settingBalanceRequiredForInterestCalculationBlock = new WebMarkupBlock("settingBalanceRequiredForInterestCalculationBlock", Size.Three_3);
-        this.settingBalanceRequiredForInterestCalculationBlock.setOutputMarkupId(true);
         this.form.add(this.settingBalanceRequiredForInterestCalculationBlock);
         this.settingBalanceRequiredForInterestCalculationIContainer = new WebMarkupContainer("settingBalanceRequiredForInterestCalculationIContainer");
         this.settingBalanceRequiredForInterestCalculationBlock.add(this.settingBalanceRequiredForInterestCalculationIContainer);
@@ -1222,7 +1173,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initSettingApplyPenalInterestBlock() {
         this.settingApplyPenalInterestBlock = new WebMarkupBlock("settingApplyPenalInterestBlock", Size.Three_3);
-        this.settingApplyPenalInterestBlock.setOutputMarkupId(true);
         this.form.add(this.settingApplyPenalInterestBlock);
         this.settingApplyPenalInterestIContainer = new WebMarkupContainer("settingApplyPenalInterestIContainer");
         this.settingApplyPenalInterestBlock.add(this.settingApplyPenalInterestIContainer);
@@ -1261,7 +1211,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initSettingMaximumDepositTermBlock() {
         this.settingMaximumDepositTermBlock = new WebMarkupBlock("settingMaximumDepositTermBlock", Size.Three_3);
-        this.settingMaximumDepositTermBlock.setOutputMarkupId(true);
         this.form.add(this.settingMaximumDepositTermBlock);
         this.settingMaximumDepositTermIContainer = new WebMarkupContainer("settingMaximumDepositTermIContainer");
         this.settingMaximumDepositTermBlock.add(this.settingMaximumDepositTermIContainer);
@@ -1288,7 +1237,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initSettingInMultiplesOfBlock() {
         this.settingInMultiplesOfBlock = new WebMarkupBlock("settingInMultiplesOfBlock", Size.Three_3);
-        this.settingInMultiplesOfBlock.setOutputMarkupId(true);
         this.form.add(this.settingInMultiplesOfBlock);
         this.settingInMultiplesOfIContainer = new WebMarkupContainer("settingInMultiplesOfIContainer");
         this.settingInMultiplesOfBlock.add(this.settingInMultiplesOfIContainer);
@@ -1315,7 +1263,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initSettingMinimumDepositTermBlock() {
         this.settingMinimumDepositTermBlock = new WebMarkupBlock("settingMinimumDepositTermBlock", Size.Three_3);
-        this.settingMinimumDepositTermBlock.setOutputMarkupId(true);
         this.form.add(this.settingMinimumDepositTermBlock);
         this.settingMinimumDepositTermIContainer = new WebMarkupContainer("settingMinimumDepositTermIContainer");
         this.settingMinimumDepositTermBlock.add(this.settingMinimumDepositTermIContainer);
@@ -1342,7 +1289,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initSettingLockInPeriodBlock() {
         this.settingLockInPeriodBlock = new WebMarkupBlock("settingLockInPeriodBlock", Size.Three_3);
-        this.settingLockInPeriodBlock.setOutputMarkupId(true);
         this.form.add(this.settingLockInPeriodBlock);
         this.settingLockInPeriodIContainer = new WebMarkupContainer("settingLockInPeriodIContainer");
         this.settingLockInPeriodBlock.add(this.settingLockInPeriodIContainer);
@@ -1355,7 +1301,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initSettingAllowWithdrawalBlock() {
         this.settingAllowWithdrawalBlock = new WebMarkupBlock("settingAllowWithdrawalBlock", Size.Six_6);
-        this.settingAllowWithdrawalBlock.setOutputMarkupId(true);
         this.form.add(this.settingAllowWithdrawalBlock);
         this.settingAllowWithdrawalIContainer = new WebMarkupContainer("settingAllowWithdrawalIContainer");
         this.settingAllowWithdrawalBlock.add(this.settingAllowWithdrawalIContainer);
@@ -1367,7 +1312,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initSettingAdjustAdvancePaymentBlock() {
         this.settingAdjustAdvancePaymentBlock = new WebMarkupBlock("settingAdjustAdvancePaymentBlock", Size.Six_6);
-        this.settingAdjustAdvancePaymentBlock.setOutputMarkupId(true);
         this.form.add(this.settingAdjustAdvancePaymentBlock);
         this.settingAdjustAdvancePaymentIContainer = new WebMarkupContainer("settingAdjustAdvancePaymentIContainer");
         this.settingAdjustAdvancePaymentBlock.add(this.settingAdjustAdvancePaymentIContainer);
@@ -1379,7 +1323,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initSettingMandatoryDepositBlock() {
         this.settingMandatoryDepositBlock = new WebMarkupBlock("settingMandatoryDepositBlock", Size.Six_6);
-        this.settingMandatoryDepositBlock.setOutputMarkupId(true);
         this.form.add(this.settingMandatoryDepositBlock);
         this.settingMandatoryDepositIContainer = new WebMarkupContainer("settingMandatoryDepositIContainer");
         this.settingMandatoryDepositBlock.add(this.settingMandatoryDepositIContainer);
@@ -1474,7 +1417,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initTermMaximumDepositAmountBlock() {
         this.termMaximumDepositAmountBlock = new WebMarkupBlock("termMaximumDepositAmountBlock", Size.Six_6);
-        this.termMaximumDepositAmountBlock.setOutputMarkupId(true);
         this.form.add(this.termMaximumDepositAmountBlock);
         this.termMaximumDepositAmountIContainer = new WebMarkupContainer("termMaximumDepositAmountIContainer");
         this.termMaximumDepositAmountBlock.add(this.termMaximumDepositAmountIContainer);
@@ -1487,7 +1429,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initTermMinimumDepositAmountBlock() {
         this.termMinimumDepositAmountBlock = new WebMarkupBlock("termMinimumDepositAmountBlock", Size.Six_6);
-        this.termMinimumDepositAmountBlock.setOutputMarkupId(true);
         this.form.add(this.termMinimumDepositAmountBlock);
         this.termMinimumDepositAmountIContainer = new WebMarkupContainer("termMinimumDepositAmountIContainer");
         this.termMinimumDepositAmountBlock.add(this.termMinimumDepositAmountIContainer);
@@ -1500,7 +1441,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initTermDefaultDepositAmountBlock() {
         this.termDefaultDepositAmountBlock = new WebMarkupBlock("termDefaultDepositAmountBlock", Size.Six_6);
-        this.termDefaultDepositAmountBlock.setOutputMarkupId(true);
         this.form.add(this.termDefaultDepositAmountBlock);
         this.termDefaultDepositAmountIContainer = new WebMarkupContainer("termDefaultDepositAmountIContainer");
         this.termDefaultDepositAmountBlock.add(this.termDefaultDepositAmountIContainer);
@@ -1570,7 +1510,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initDetailDescriptionBlock() {
         this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Six_6);
-        this.detailDescriptionBlock.setOutputMarkupId(true);
         this.form.add(this.detailDescriptionBlock);
         this.detailDescriptionIContainer = new WebMarkupContainer("detailDescriptionIContainer");
         this.detailDescriptionBlock.add(this.detailDescriptionIContainer);
@@ -1583,7 +1522,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initDetailShortNameBlock() {
         this.detailShortNameBlock = new WebMarkupBlock("detailShortNameBlock", Size.Six_6);
-        this.detailShortNameBlock.setOutputMarkupId(true);
         this.form.add(this.detailShortNameBlock);
         this.detailShortNameIContainer = new WebMarkupContainer("detailShortNameIContainer");
         this.detailShortNameBlock.add(this.detailShortNameIContainer);
@@ -1596,7 +1534,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initDetailProductNameBlock() {
         this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
-        this.detailProductNameBlock.setOutputMarkupId(true);
         this.form.add(this.detailProductNameBlock);
         this.detailProductNameIContainer = new WebMarkupContainer("detailProductNameIContainer");
         this.detailProductNameBlock.add(this.detailProductNameIContainer);

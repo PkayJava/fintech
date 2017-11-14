@@ -1,5 +1,7 @@
 package com.angkorteam.fintech.popup.share;
 
+import java.util.Map;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -33,9 +35,9 @@ public class ChargePopup extends Panel {
 
     protected String currencyCode;
 
-    protected Object model;
+    protected Map<String, Object> model;
 
-    public ChargePopup(String id, ModalWindow window, Object model, String currencyCode) {
+    public ChargePopup(String id, ModalWindow window, Map<String, Object> model, String currencyCode) {
         super(id);
         this.model = model;
         this.window = window;
@@ -63,8 +65,8 @@ public class ChargePopup extends Panel {
         this.chargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
         this.chargeProvider.applyWhere("is_penalty", "is_penalty = 0");
         this.chargeProvider.applyWhere("is_active", "is_active = 1");
-        this.chargeValue = new PropertyModel<>(this.model, "chargeItemValue");
-        this.chargeField = new Select2SingleChoice<>("chargeField", 0, this.chargeValue, this.chargeProvider);
+        this.chargeValue = new PropertyModel<>(this.model, "chargeValue");
+        this.chargeField = new Select2SingleChoice<>("chargeField", this.chargeValue, this.chargeProvider);
         this.chargeField.setLabel(Model.of("Charge"));
         this.chargeIContainer.add(this.chargeField);
         this.chargeFeedback = new TextFeedbackPanel("chargeFeedback", this.chargeField);

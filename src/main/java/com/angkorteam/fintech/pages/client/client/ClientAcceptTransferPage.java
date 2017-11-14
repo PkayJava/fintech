@@ -52,7 +52,6 @@ public class ClientAcceptTransferPage extends Page {
         this.form.add(this.closeLink);
 
         this.noteBlock = new WebMarkupBlock("noteBlock", Size.Six_6);
-        this.noteBlock.setOutputMarkupId(true);
         this.form.add(this.noteBlock);
         this.noteIContainer = new WebMarkupContainer("noteIContainer");
         this.noteBlock.add(this.noteIContainer);

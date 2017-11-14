@@ -3,21 +3,24 @@ package com.angkorteam.fintech.pages.product.mixed;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.pages.product.loan.LoanCreatePage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -31,11 +34,14 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 6/22/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class MixedBrowsePage extends DeprecatedPage {
+public class MixedBrowsePage extends Page {
 
+    protected WebMarkupBlock dataBlock;
+    protected WebMarkupContainer dataIContainer;
     private DataTable<Map<String, Object>, String> dataTable;
-
-    private JdbcProvider provider;
+    private JdbcProvider dataProvider;
+    private List<IColumn<Map<String, Object>, String>> dataColumn;
+    private FilterForm<Map<String, String>> dataFilterForm;
 
     private BookmarkablePageLink<Void> createLink;
 
@@ -67,35 +73,53 @@ public class MixedBrowsePage extends DeprecatedPage {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        this.provider = new JdbcProvider("m_product_loan");
-        this.provider.addJoin("INNER JOIN m_product_mix ON m_product_loan.id = m_product_mix.product_id");
-        this.provider.setGroupBy("m_product_loan.id");
-        this.provider.boardField("m_product_loan.id", "id", Long.class);
-        this.provider.boardField("MAX(m_product_loan.name)", "name", String.class);
+    protected void initData() {
+    }
 
-        this.provider.selectField("id", Long.class);
+    @Override
+    protected void initComponent() {
+        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
+        add(this.dataBlock);
+        this.dataIContainer = new WebMarkupContainer("dataIContainer");
+        this.dataBlock.add(this.dataIContainer);
+        this.dataProvider = new JdbcProvider("m_product_loan");
+        this.dataProvider.addJoin("INNER JOIN m_product_mix ON m_product_loan.id = m_product_mix.product_id");
+        this.dataProvider.setGroupBy("m_product_loan.id");
+        this.dataProvider.boardField("m_product_loan.id", "id", Long.class);
+        this.dataProvider.boardField("MAX(m_product_loan.name)", "name", String.class);
 
-        List<IColumn<Map<String, Object>, String>> columns = Lists.newArrayList();
-        columns.add(new TextFilterColumn(this.provider, ItemClass.String, Model.of("Name"), "name", "name", this::nameColumn));
+        this.dataProvider.selectField("id", Long.class);
 
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.provider);
-        add(filterForm);
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
 
-        this.dataTable = new DefaultDataTable<>("table", columns, this.provider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        this.dataIContainer.add(this.dataFilterForm);
+
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
 
         this.createLink = new BookmarkablePageLink<>("createLink", MixedCreatePage.class);
         add(this.createLink);
     }
 
-    private ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String name = (String) model.get(jdbcColumn);
-        PageParameters parameters = new PageParameters();
-        parameters.add("loanId", model.get("id"));
-        return new LinkCell(LoanCreatePage.class, parameters, Model.of(name));
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    private ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column)) {
+            String name = (String) model.get(column);
+            PageParameters parameters = new PageParameters();
+            parameters.add("loanId", model.get("id"));
+            return new LinkCell(LoanCreatePage.class, parameters, name);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }

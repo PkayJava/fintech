@@ -65,7 +65,6 @@ public class SavingAccountApprovePage extends DeprecatedPage {
         this.form.add(this.closeLink);
 
         this.approvedOnBlock = new WebMarkupContainer("approvedOnBlock");
-        this.approvedOnBlock.setOutputMarkupId(true);
         this.form.add(this.approvedOnBlock);
         this.approvedOnContainer = new WebMarkupContainer("approvedOnContainer");
         this.approvedOnBlock.add(this.approvedOnContainer);
@@ -76,7 +75,6 @@ public class SavingAccountApprovePage extends DeprecatedPage {
         this.approvedOnContainer.add(this.approvedOnFeedback);
 
         this.noteBlock = new WebMarkupContainer("noteBlock");
-        this.noteBlock.setOutputMarkupId(true);
         this.form.add(this.noteBlock);
         this.noteContainer = new WebMarkupContainer("noteContainer");
         this.noteBlock.add(this.noteContainer);

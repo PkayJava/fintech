@@ -84,7 +84,6 @@ public class SavingAccountAssignStaffPage extends DeprecatedPage {
         this.officerContainer.add(this.officerFeedback);
 
         this.assignmentDateBlock = new WebMarkupContainer("assignmentDateBlock");
-        this.assignmentDateBlock.setOutputMarkupId(true);
         this.form.add(this.assignmentDateBlock);
         this.assignmentDateContainer = new WebMarkupContainer("assignmentDateContainer");
         this.assignmentDateBlock.add(this.assignmentDateContainer);

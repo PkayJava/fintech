@@ -208,9 +208,6 @@ public class ShareCreatePage extends DeprecatedPage {
     protected List<IColumn<Map<String, Object>, String>> marketPriceColumn;
     protected AjaxLink<Void> marketPriceAddLink;
 
-    protected Date marketPriceItemFromDateValue;
-    protected Double marketPriceItemUnitPriceValue;
-
     // Charges
 
     protected WebMarkupBlock chargeBlock;
@@ -221,7 +218,6 @@ public class ShareCreatePage extends DeprecatedPage {
     protected ModalWindow chargePopup;
     protected AjaxLink<Void> chargeAddLink;
     protected List<IColumn<Map<String, Object>, String>> chargeColumn;
-    protected Option chargeItemValue;
 
     // Accounting
 
@@ -259,7 +255,7 @@ public class ShareCreatePage extends DeprecatedPage {
     protected Select2SingleChoice<Option> cashIncomeFromFeeField;
     protected TextFeedbackPanel cashIncomeFromFeeFeedback;
 
-    protected ModalWindow currencyPopup;
+    protected Map<String, Object> popupModel;
 
     protected static final List<PageBreadcrumb> BREADCRUMB;
 
@@ -308,9 +304,6 @@ public class ShareCreatePage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ShareBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.currencyPopup = new ModalWindow("currencyPopup");
-        add(this.currencyPopup);
-
         initSectionDetail();
 
         initSectionCurrency();
@@ -348,6 +341,7 @@ public class ShareCreatePage extends DeprecatedPage {
 
     @Override
     protected void initData() {
+        this.popupModel = Maps.newHashMap();
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         this.detailShortNameValue = generator.generate(4);
         this.currencyDecimalPlaceValue = 2;
@@ -386,7 +380,6 @@ public class ShareCreatePage extends DeprecatedPage {
 
     protected void initSectionAccountingCash() {
         this.cashBlock = new WebMarkupContainer("cashBlock");
-        this.cashBlock.setOutputMarkupId(true);
         this.cashIContainer.add(this.cashBlock);
         this.cashIContainer = new WebMarkupContainer("cashIContainer");
         this.cashBlock.add(this.cashIContainer);
@@ -483,16 +476,15 @@ public class ShareCreatePage extends DeprecatedPage {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
-        item.put("unitPrice", this.marketPriceItemUnitPriceValue);
-        item.put("fromDate", this.marketPriceItemFromDateValue);
+        item.put("unitPrice", this.popupModel.get("unitPriceValue"));
+        item.put("fromDate", this.popupModel.get("fromDateValue"));
         this.marketPriceValue.add(item);
         target.add(this.form);
     }
 
     protected boolean marketPriceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.marketPriceItemFromDateValue = null;
-        this.marketPriceItemUnitPriceValue = null;
-        this.marketPricePopup.setContent(new MarketPricePopup(this.marketPricePopup.getContentId(), this.marketPricePopup, this));
+        this.popupModel.clear();
+        this.marketPricePopup.setContent(new MarketPricePopup(this.marketPricePopup.getContentId(), this.marketPricePopup, this.popupModel));
         this.marketPricePopup.show(target);
         return false;
     }
@@ -560,14 +552,14 @@ public class ShareCreatePage extends DeprecatedPage {
 
     protected void chargePopupClose(String elementId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
-        String chargeId = this.chargeItemValue.getId();
+        Option charge = (Option) this.popupModel.get("chargeValue");
         for (Map<String, Object> temp : this.chargeValue) {
-            if (chargeId.equals(temp.get("uuid"))) {
+            if (charge.getId().equals(temp.get("uuid"))) {
                 return;
             }
         }
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, concat(charge_calculation_enum,'') type, concat(charge_time_enum,'') collect, amount from m_charge where id = ?", chargeId);
+        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, concat(charge_calculation_enum,'') type, concat(charge_time_enum,'') collect, amount from m_charge where id = ?", charge.getId());
         String type = (String) chargeObject.get("type");
         for (ChargeCalculation calculation : ChargeCalculation.values()) {
             if (type.equals(calculation.getLiteral())) {
@@ -582,8 +574,8 @@ public class ShareCreatePage extends DeprecatedPage {
                 break;
             }
         }
-        item.put("uuid", chargeId);
-        item.put("chargeId", chargeId);
+        item.put("uuid", charge.getId());
+        item.put("charge", charge);
         item.put("name", chargeObject.get("name"));
         item.put("type", type);
         item.put("amount", chargeObject.get("amount"));
@@ -594,13 +586,13 @@ public class ShareCreatePage extends DeprecatedPage {
     }
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.chargeItemValue = null;
+        this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyCodeValue.getId()));
+            this.chargePopup.setContent(new ChargePopup(this.chargePopup.getContentId(), this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
-            this.currencyPopup.setContent(new CurrencyPopup(this.currencyPopup.getContentId()));
-            this.currencyPopup.show(target);
+            this.chargePopup.setContent(new CurrencyPopup(this.chargePopup.getContentId()));
+            this.chargePopup.show(target);
         }
         return false;
     }
@@ -886,7 +878,6 @@ public class ShareCreatePage extends DeprecatedPage {
 
     protected void initDetailDescriptionBlock() {
         this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Six_6);
-        this.detailDescriptionBlock.setOutputMarkupId(true);
         this.form.add(this.detailDescriptionBlock);
         this.detailDescriptionIContainer = new WebMarkupContainer("detailDescriptionIContainer");
         this.detailDescriptionBlock.add(this.detailDescriptionIContainer);
@@ -899,7 +890,6 @@ public class ShareCreatePage extends DeprecatedPage {
 
     protected void initDetailShortNameBlock() {
         this.detailShortNameBlock = new WebMarkupBlock("detailShortNameBlock", Size.Six_6);
-        this.detailShortNameBlock.setOutputMarkupId(true);
         this.form.add(this.detailShortNameBlock);
         this.detailShortNameIContainer = new WebMarkupContainer("detailShortNameIContainer");
         this.detailShortNameBlock.add(this.detailShortNameIContainer);
@@ -912,7 +902,6 @@ public class ShareCreatePage extends DeprecatedPage {
 
     protected void initDetailProductNameBlock() {
         this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
-        this.detailProductNameBlock.setOutputMarkupId(true);
         this.form.add(this.detailProductNameBlock);
         this.detailProductNameIContainer = new WebMarkupContainer("detailProductNameIContainer");
         this.detailProductNameBlock.add(this.detailProductNameIContainer);

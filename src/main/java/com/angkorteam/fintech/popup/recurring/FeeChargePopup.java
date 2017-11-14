@@ -1,5 +1,7 @@
 package com.angkorteam.fintech.popup.recurring;
 
+import java.util.Map;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
@@ -23,19 +25,21 @@ public class FeeChargePopup extends Panel {
     private Form<Void> form;
     private AjaxButton okayButton;
 
+    private PropertyModel<Option> chargeValue;
     private SingleChoiceProvider chargeProvider;
     private Select2SingleChoice<Option> chargeField;
     private TextFeedbackPanel chargeFeedback;
 
+    private PropertyModel<Option> accountValue;
     private SingleChoiceProvider accountProvider;
     private Select2SingleChoice<Option> accountField;
     private TextFeedbackPanel accountFeedback;
 
     private String currencyCode;
 
-    private Object model;
+    private Map<String, Object> model;
 
-    public FeeChargePopup(String id, ModalWindow window, Object model, String currencyCode) {
+    public FeeChargePopup(String id, ModalWindow window, Map<String, Object> model, String currencyCode) {
         super(id);
         this.model = model;
         this.window = window;
@@ -54,21 +58,23 @@ public class FeeChargePopup extends Panel {
         this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
+        this.chargeValue = new PropertyModel<>(this.model, "chargeValue");
         this.chargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
         this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.SavingDeposit.getLiteral());
         this.chargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
         this.chargeProvider.applyWhere("is_penalty", "is_penalty = 0");
         this.chargeProvider.applyWhere("is_active", "is_active = 1");
-        this.chargeField = new Select2SingleChoice<>("chargeField", 0, new PropertyModel<>(this.model, "itemChargeValue"), this.chargeProvider);
+        this.chargeField = new Select2SingleChoice<>("chargeField", this.chargeValue, this.chargeProvider);
         this.chargeField.setLabel(Model.of("Charge"));
         this.form.add(this.chargeField);
         this.chargeFeedback = new TextFeedbackPanel("chargeFeedback", this.chargeField);
         this.form.add(this.chargeFeedback);
 
+        this.accountValue = new PropertyModel<>(this.model, "accountValue");
         this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.accountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.accountProvider.applyWhere("classification_enum", "classification_enum in (" + AccountType.Income.getLiteral() + ")");
-        this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this.model, "itemAccountValue"), this.accountProvider);
+        this.accountField = new Select2SingleChoice<>("accountField", this.accountValue, this.accountProvider);
         this.accountField.setLabel(Model.of("Account"));
         this.form.add(this.accountField);
         this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);

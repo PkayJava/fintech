@@ -223,7 +223,6 @@ public class CenterCreatePage extends Page {
 
     protected void initSubmittedOnBlock() {
         this.submittedOnBlock = new WebMarkupBlock("submittedOnBlock", Size.Six_6);
-        this.submittedOnBlock.setOutputMarkupId(true);
         this.form.add(this.submittedOnBlock);
         this.submittedOnIContainer = new WebMarkupContainer("submittedOnIContainer");
         this.submittedOnBlock.add(this.submittedOnIContainer);
@@ -237,7 +236,6 @@ public class CenterCreatePage extends Page {
 
     protected void initExternalIdBlock() {
         this.externalIdBlock = new WebMarkupBlock("externalIdBlock", Size.Six_6);
-        this.externalIdBlock.setOutputMarkupId(true);
         this.form.add(this.externalIdBlock);
         this.externalIdIContainer = new WebMarkupContainer("externalIdIContainer");
         this.externalIdBlock.add(this.externalIdIContainer);
@@ -251,7 +249,6 @@ public class CenterCreatePage extends Page {
 
     protected void initActivationDateBlock() {
         this.activationDateBlock = new WebMarkupBlock("activationDateBlock", Size.Six_6);
-        this.activationDateBlock.setOutputMarkupId(true);
         this.form.add(this.activationDateBlock);
         this.activationDateIContainer = new WebMarkupContainer("activationDateIContainer");
         this.activationDateBlock.add(this.activationDateIContainer);
@@ -265,7 +262,6 @@ public class CenterCreatePage extends Page {
 
     protected void initActiveBlock() {
         this.activeBlock = new WebMarkupBlock("activeBlock", Size.Six_6);
-        this.activeBlock.setOutputMarkupId(true);
         this.form.add(this.activeBlock);
         this.activeIContainer = new WebMarkupContainer("activeIContainer");
         this.activeBlock.add(this.activeIContainer);
@@ -278,7 +274,6 @@ public class CenterCreatePage extends Page {
 
     protected void initStaffBlock() {
         this.staffBlock = new WebMarkupBlock("staffBlock", Size.Six_6);
-        this.staffBlock.setOutputMarkupId(true);
         this.form.add(this.staffBlock);
         this.staffIContainer = new WebMarkupContainer("staffIContainer");
         this.staffBlock.add(this.staffIContainer);
@@ -294,7 +289,6 @@ public class CenterCreatePage extends Page {
 
     protected void initOfficeBlock() {
         this.officeBlock = new WebMarkupBlock("officeBlock", Size.Six_6);
-        this.officeBlock.setOutputMarkupId(true);
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
@@ -309,7 +303,6 @@ public class CenterCreatePage extends Page {
 
     protected void initNameBlock() {
         this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
-        this.nameBlock.setOutputMarkupId(true);
         this.form.add(this.nameBlock);
         this.nameIContainer = new WebMarkupContainer("nameIContainer");
         this.nameBlock.add(this.nameIContainer);

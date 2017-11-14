@@ -133,7 +133,6 @@ public class SavingAccountClosePage extends DeprecatedPage {
         this.form.add(this.closeLink);
 
         this.closedOnBlock = new WebMarkupContainer("closedOnBlock");
-        this.closedOnBlock.setOutputMarkupId(true);
         this.form.add(this.closedOnBlock);
         this.closedOnContainer = new WebMarkupContainer("closedOnContainer");
         this.closedOnBlock.add(this.closedOnContainer);
@@ -144,7 +143,6 @@ public class SavingAccountClosePage extends DeprecatedPage {
         this.closedOnContainer.add(this.closedOnFeedback);
 
         this.withdrawBalanceBlock = new WebMarkupContainer("withdrawBalanceBlock");
-        this.withdrawBalanceBlock.setOutputMarkupId(true);
         this.form.add(this.withdrawBalanceBlock);
         this.withdrawBalanceContainer = new WebMarkupContainer("withdrawBalanceContainer");
         this.withdrawBalanceBlock.add(this.withdrawBalanceContainer);
@@ -155,7 +153,6 @@ public class SavingAccountClosePage extends DeprecatedPage {
         this.withdrawBalanceContainer.add(this.withdrawBalanceFeedback);
 
         this.postInterestBlock = new WebMarkupContainer("postInterestBlock");
-        this.postInterestBlock.setOutputMarkupId(true);
         this.form.add(this.postInterestBlock);
         this.postInterestContainer = new WebMarkupContainer("postInterestContainer");
         this.postInterestBlock.add(this.postInterestContainer);
@@ -165,7 +162,6 @@ public class SavingAccountClosePage extends DeprecatedPage {
         this.postInterestContainer.add(this.postInterestFeedback);
 
         this.transactionAmountBlock = new WebMarkupContainer("transactionAmountBlock");
-        this.transactionAmountBlock.setOutputMarkupId(true);
         this.form.add(this.transactionAmountBlock);
         this.transactionAmountContainer = new WebMarkupContainer("transactionAmountContainer");
         this.transactionAmountBlock.add(this.transactionAmountContainer);
@@ -174,7 +170,6 @@ public class SavingAccountClosePage extends DeprecatedPage {
 
         this.paymentTypeProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
         this.paymentTypeBlock = new WebMarkupContainer("paymentTypeBlock");
-        this.paymentTypeBlock.setOutputMarkupId(true);
         this.form.add(this.paymentTypeBlock);
         this.paymentTypeContainer = new WebMarkupContainer("paymentTypeContainer");
         this.paymentTypeBlock.add(this.paymentTypeContainer);
@@ -184,7 +179,6 @@ public class SavingAccountClosePage extends DeprecatedPage {
         this.paymentTypeContainer.add(this.paymentTypeFeedback);
 
         this.paymentDetailBlock = new WebMarkupContainer("paymentDetailBlock");
-        this.paymentDetailBlock.setOutputMarkupId(true);
         this.form.add(this.paymentDetailBlock);
         this.paymentDetailContainer = new WebMarkupContainer("paymentDetailContainer");
         this.paymentDetailBlock.add(this.paymentDetailContainer);
@@ -195,7 +189,6 @@ public class SavingAccountClosePage extends DeprecatedPage {
         this.paymentDetailContainer.add(this.paymentDetailFeedback);
 
         this.accountBlock = new WebMarkupContainer("accountBlock");
-        this.accountBlock.setOutputMarkupId(true);
         this.form.add(this.accountBlock);
         this.accountContainer = new WebMarkupContainer("accountContainer");
         this.accountBlock.add(this.accountContainer);
@@ -206,7 +199,6 @@ public class SavingAccountClosePage extends DeprecatedPage {
         this.accountContainer.add(this.accountFeedback);
 
         this.chequeBlock = new WebMarkupContainer("chequeBlock");
-        this.chequeBlock.setOutputMarkupId(true);
         this.form.add(this.chequeBlock);
         this.chequeContainer = new WebMarkupContainer("chequeContainer");
         this.chequeBlock.add(this.chequeContainer);
@@ -217,7 +209,6 @@ public class SavingAccountClosePage extends DeprecatedPage {
         this.chequeContainer.add(this.chequeFeedback);
 
         this.routingBlock = new WebMarkupContainer("routingBlock");
-        this.routingBlock.setOutputMarkupId(true);
         this.form.add(this.routingBlock);
         this.routingContainer = new WebMarkupContainer("routingContainer");
         this.routingBlock.add(this.routingContainer);
@@ -228,7 +219,6 @@ public class SavingAccountClosePage extends DeprecatedPage {
         this.routingContainer.add(this.routingFeedback);
 
         this.receiptBlock = new WebMarkupContainer("receiptBlock");
-        this.receiptBlock.setOutputMarkupId(true);
         this.form.add(this.receiptBlock);
         this.receiptContainer = new WebMarkupContainer("receiptContainer");
         this.receiptBlock.add(this.receiptContainer);
@@ -239,7 +229,6 @@ public class SavingAccountClosePage extends DeprecatedPage {
         this.receiptContainer.add(this.receiptFeedback);
 
         this.bankBlock = new WebMarkupContainer("bankBlock");
-        this.bankBlock.setOutputMarkupId(true);
         this.form.add(this.bankBlock);
         this.bankContainer = new WebMarkupContainer("bankContainer");
         this.bankBlock.add(this.bankContainer);
@@ -250,7 +239,6 @@ public class SavingAccountClosePage extends DeprecatedPage {
         this.bankContainer.add(this.bankFeedback);
 
         this.noteBlock = new WebMarkupContainer("noteBlock");
-        this.noteBlock.setOutputMarkupId(true);
         this.form.add(this.noteBlock);
         this.noteContainer = new WebMarkupContainer("noteContainer");
         this.noteBlock.add(this.noteContainer);

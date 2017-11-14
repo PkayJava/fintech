@@ -1230,7 +1230,6 @@ public class LoanCreatePage extends DeprecatedPage {
 
     protected void initAccountingUpFront() {
         this.upfrontBlock = new WebMarkupContainer("upfrontBlock");
-        this.upfrontBlock.setOutputMarkupId(true);
         this.form.add(this.upfrontBlock);
 
         this.upfrontIContainer = new WebMarkupContainer("upfrontIContainer");
@@ -1408,7 +1407,6 @@ public class LoanCreatePage extends DeprecatedPage {
     protected void initAccountingCash() {
 
         this.cashBlock = new WebMarkupContainer("cashBlock");
-        this.cashBlock.setOutputMarkupId(true);
         this.form.add(this.cashBlock);
 
         this.cashIContainer = new WebMarkupContainer("cashIContainer");
@@ -1543,7 +1541,6 @@ public class LoanCreatePage extends DeprecatedPage {
 
     protected void initAccountingPeriodic() {
         this.periodicBlock = new WebMarkupContainer("periodicBlock");
-        this.periodicBlock.setOutputMarkupId(true);
         this.form.add(this.periodicBlock);
 
         this.periodicIContainer = new WebMarkupContainer("periodicIContainer");
@@ -1722,7 +1719,6 @@ public class LoanCreatePage extends DeprecatedPage {
     protected void initAdvancedAccountingRule() {
 
         this.advancedAccountingRuleBlock = new WebMarkupContainer("advancedAccountingRuleBlock");
-        this.advancedAccountingRuleBlock.setOutputMarkupId(true);
         this.form.add(this.advancedAccountingRuleBlock);
 
         this.advancedAccountingRuleIContainer = new WebMarkupContainer("advancedAccountingRuleIContainer");
@@ -1939,7 +1935,6 @@ public class LoanCreatePage extends DeprecatedPage {
     protected void initSectionConfigurableTermsAndSettings() {
 
         this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock = new WebMarkupBlock("configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock", Size.Twelve_12);
-        this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock.setOutputMarkupId(true);
         this.form.add(this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock);
         this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountIContainer = new WebMarkupContainer("configurableAllowOverridingSelectTermsAndSettingsInLoanAccountIContainer");
         this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock.add(this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountIContainer);
@@ -1950,7 +1945,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountIContainer.add(this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountFeedback);
 
         this.configurableAmortizationBlock = new WebMarkupBlock("configurableAmortizationBlock", Size.Six_6);
-        this.configurableAmortizationBlock.setOutputMarkupId(true);
         this.form.add(this.configurableAmortizationBlock);
         this.configurableAmortizationIContainer = new WebMarkupContainer("configurableAmortizationIContainer");
         this.configurableAmortizationBlock.add(this.configurableAmortizationIContainer);
@@ -1961,7 +1955,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.configurableAmortizationIContainer.add(this.configurableAmortizationFeedback);
 
         this.configurableInterestMethodBlock = new WebMarkupBlock("configurableInterestMethodBlock", Size.Six_6);
-        this.configurableInterestMethodBlock.setOutputMarkupId(true);
         this.form.add(this.configurableInterestMethodBlock);
         this.configurableInterestMethodIContainer = new WebMarkupContainer("configurableInterestMethodIContainer");
         this.configurableInterestMethodBlock.add(this.configurableInterestMethodIContainer);
@@ -1972,7 +1965,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.configurableInterestMethodIContainer.add(this.configurableInterestMethodFeedback);
 
         this.configurableRepaymentStrategyBlock = new WebMarkupBlock("configurableRepaymentStrategyBlock", Size.Six_6);
-        this.configurableRepaymentStrategyBlock.setOutputMarkupId(true);
         this.form.add(this.configurableRepaymentStrategyBlock);
         this.configurableRepaymentStrategyIContainer = new WebMarkupContainer("configurableRepaymentStrategyIContainer");
         this.configurableRepaymentStrategyBlock.add(this.configurableRepaymentStrategyIContainer);
@@ -1983,7 +1975,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.configurableRepaymentStrategyIContainer.add(this.configurableRepaymentStrategyFeedback);
 
         this.configurableInterestCalculationPeriodBlock = new WebMarkupBlock("configurableInterestCalculationPeriodBlock", Size.Six_6);
-        this.configurableInterestCalculationPeriodBlock.setOutputMarkupId(true);
         this.form.add(this.configurableInterestCalculationPeriodBlock);
         this.configurableInterestCalculationPeriodIContainer = new WebMarkupContainer("configurableInterestCalculationPeriodIContainer");
         this.configurableInterestCalculationPeriodBlock.add(this.configurableInterestCalculationPeriodIContainer);
@@ -1994,7 +1985,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.configurableInterestCalculationPeriodIContainer.add(this.configurableInterestCalculationPeriodFeedback);
 
         this.configurableArrearsToleranceBlock = new WebMarkupBlock("configurableArrearsToleranceBlock", Size.Six_6);
-        this.configurableArrearsToleranceBlock.setOutputMarkupId(true);
         this.form.add(this.configurableArrearsToleranceBlock);
         this.configurableArrearsToleranceIContainer = new WebMarkupContainer("configurableArrearsToleranceIContainer");
         this.configurableArrearsToleranceBlock.add(this.configurableArrearsToleranceIContainer);
@@ -2005,7 +1995,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.configurableArrearsToleranceIContainer.add(this.configurableArrearsToleranceFeedback);
 
         this.configurableRepaidEveryBlock = new WebMarkupBlock("configurableRepaidEveryBlock", Size.Six_6);
-        this.configurableRepaidEveryBlock.setOutputMarkupId(true);
         this.form.add(this.configurableRepaidEveryBlock);
         this.configurableRepaidEveryIContainer = new WebMarkupContainer("configurableRepaidEveryIContainer");
         this.configurableRepaidEveryBlock.add(this.configurableRepaidEveryIContainer);
@@ -2016,7 +2005,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.configurableRepaidEveryIContainer.add(this.configurableRepaidEveryFeedback);
 
         this.configurableMoratoriumBlock = new WebMarkupBlock("configurableMoratoriumBlock", Size.Six_6);
-        this.configurableMoratoriumBlock.setOutputMarkupId(true);
         this.form.add(this.configurableMoratoriumBlock);
         this.configurableMoratoriumIContainer = new WebMarkupContainer("configurableMoratoriumIContainer");
         this.configurableMoratoriumBlock.add(this.configurableMoratoriumIContainer);
@@ -2027,7 +2015,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.configurableMoratoriumIContainer.add(this.configurableMoratoriumFeedback);
 
         this.configurableOverdueBeforeMovingBlock = new WebMarkupBlock("configurableOverdueBeforeMovingBlock", Size.Six_6);
-        this.configurableOverdueBeforeMovingBlock.setOutputMarkupId(true);
         this.form.add(this.configurableOverdueBeforeMovingBlock);
         this.configurableOverdueBeforeMovingIContainer = new WebMarkupContainer("configurableOverdueBeforeMovingIContainer");
         this.configurableOverdueBeforeMovingBlock.add(this.configurableOverdueBeforeMovingIContainer);
@@ -2064,7 +2051,6 @@ public class LoanCreatePage extends DeprecatedPage {
     protected void initSectionLoanTrancheDetails() {
 
         this.loanTrancheDetailEnableMultipleDisbursalBlock = new WebMarkupBlock("loanTrancheDetailEnableMultipleDisbursalBlock", Size.Twelve_12);
-        this.loanTrancheDetailEnableMultipleDisbursalBlock.setOutputMarkupId(true);
         this.form.add(this.loanTrancheDetailEnableMultipleDisbursalBlock);
         this.loanTrancheDetailEnableMultipleDisbursalIContainer = new WebMarkupContainer("loanTrancheDetailEnableMultipleDisbursalIContainer");
         this.loanTrancheDetailEnableMultipleDisbursalBlock.add(this.loanTrancheDetailEnableMultipleDisbursalIContainer);
@@ -2075,7 +2061,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.loanTrancheDetailEnableMultipleDisbursalIContainer.add(this.loanTrancheDetailEnableMultipleDisbursalFeedback);
 
         this.loanTrancheDetailMaximumTrancheCountBlock = new WebMarkupBlock("loanTrancheDetailMaximumTrancheCountBlock", Size.Six_6);
-        this.loanTrancheDetailMaximumTrancheCountBlock.setOutputMarkupId(true);
         this.form.add(this.loanTrancheDetailMaximumTrancheCountBlock);
         this.loanTrancheDetailMaximumTrancheCountIContainer = new WebMarkupContainer("loanTrancheDetailMaximumTrancheCountIContainer");
         this.loanTrancheDetailMaximumTrancheCountBlock.add(this.loanTrancheDetailMaximumTrancheCountIContainer);
@@ -2087,7 +2072,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.loanTrancheDetailMaximumTrancheCountIContainer.add(this.loanTrancheDetailMaximumTrancheCountFeedback);
 
         this.loanTrancheDetailMaximumAllowedOutstandingBalanceBlock = new WebMarkupBlock("loanTrancheDetailMaximumAllowedOutstandingBalanceBlock", Size.Six_6);
-        this.loanTrancheDetailMaximumAllowedOutstandingBalanceBlock.setOutputMarkupId(true);
         this.form.add(this.loanTrancheDetailMaximumAllowedOutstandingBalanceBlock);
         this.loanTrancheDetailMaximumAllowedOutstandingBalanceIContainer = new WebMarkupContainer("loanTrancheDetailMaximumAllowedOutstandingBalanceIContainer");
         this.loanTrancheDetailMaximumAllowedOutstandingBalanceBlock.add(this.loanTrancheDetailMaximumAllowedOutstandingBalanceIContainer);
@@ -2113,7 +2097,6 @@ public class LoanCreatePage extends DeprecatedPage {
     protected void initSectionGuaranteeRequirements() {
 
         this.guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock = new WebMarkupBlock("guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock", Size.Twelve_12);
-        this.guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock.setOutputMarkupId(true);
         this.form.add(this.guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock);
         this.guaranteeRequirementPlaceGuaranteeFundsOnHoldIContainer = new WebMarkupContainer("guaranteeRequirementPlaceGuaranteeFundsOnHoldIContainer");
         this.guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock.add(this.guaranteeRequirementPlaceGuaranteeFundsOnHoldIContainer);
@@ -2124,7 +2107,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.guaranteeRequirementPlaceGuaranteeFundsOnHoldIContainer.add(this.guaranteeRequirementPlaceGuaranteeFundsOnHoldFeedback);
 
         this.guaranteeRequirementMandatoryGuaranteeBlock = new WebMarkupBlock("guaranteeRequirementMandatoryGuaranteeBlock", Size.Six_6);
-        this.guaranteeRequirementMandatoryGuaranteeBlock.setOutputMarkupId(true);
         this.form.add(this.guaranteeRequirementMandatoryGuaranteeBlock);
         this.guaranteeRequirementMandatoryGuaranteeIContainer = new WebMarkupContainer("guaranteeRequirementMandatoryGuaranteeIContainer");
         this.guaranteeRequirementMandatoryGuaranteeBlock.add(this.guaranteeRequirementMandatoryGuaranteeIContainer);
@@ -2136,7 +2118,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.guaranteeRequirementMandatoryGuaranteeIContainer.add(this.guaranteeRequirementMandatoryGuaranteeFeedback);
 
         this.guaranteeRequirementMinimumGuaranteeBlock = new WebMarkupBlock("guaranteeRequirementMinimumGuaranteeBlock", Size.Six_6);
-        this.guaranteeRequirementMinimumGuaranteeBlock.setOutputMarkupId(true);
         this.form.add(this.guaranteeRequirementMinimumGuaranteeBlock);
         this.guaranteeRequirementMinimumGuaranteeIContainer = new WebMarkupContainer("guaranteeRequirementMinimumGuaranteeIContainer");
         this.guaranteeRequirementMinimumGuaranteeBlock.add(this.guaranteeRequirementMinimumGuaranteeIContainer);
@@ -2148,7 +2129,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.guaranteeRequirementMinimumGuaranteeIContainer.add(this.guaranteeRequirementMinimumGuaranteeFeedback);
 
         this.guaranteeRequirementMinimumGuaranteeFromGuarantorBlock = new WebMarkupBlock("guaranteeRequirementMinimumGuaranteeFromGuarantorBlock", Size.Six_6);
-        this.guaranteeRequirementMinimumGuaranteeFromGuarantorBlock.setOutputMarkupId(true);
         this.form.add(this.guaranteeRequirementMinimumGuaranteeFromGuarantorBlock);
         this.guaranteeRequirementMinimumGuaranteeFromGuarantorIContainer = new WebMarkupContainer("guaranteeRequirementMinimumGuaranteeFromGuarantorIContainer");
         this.guaranteeRequirementMinimumGuaranteeFromGuarantorBlock.add(this.guaranteeRequirementMinimumGuaranteeFromGuarantorIContainer);
@@ -2220,7 +2200,6 @@ public class LoanCreatePage extends DeprecatedPage {
     protected void initSectionInterestRecalculation() {
 
         this.interestRecalculationRecalculateInterestBlock = new WebMarkupBlock("interestRecalculationRecalculateInterestBlock", Size.Twelve_12);
-        this.interestRecalculationRecalculateInterestBlock.setOutputMarkupId(true);
         this.form.add(this.interestRecalculationRecalculateInterestBlock);
         this.interestRecalculationRecalculateInterestIContainer = new WebMarkupContainer("interestRecalculationRecalculateInterestIContainer");
         this.interestRecalculationRecalculateInterestBlock.add(this.interestRecalculationRecalculateInterestIContainer);
@@ -2231,7 +2210,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationRecalculateInterestIContainer.add(this.interestRecalculationRecalculateInterestFeedback);
 
         this.interestRecalculationPreClosureInterestCalculationRuleBlock = new WebMarkupBlock("interestRecalculationPreClosureInterestCalculationRuleBlock", Size.Six_6);
-        this.interestRecalculationPreClosureInterestCalculationRuleBlock.setOutputMarkupId(true);
         this.form.add(this.interestRecalculationPreClosureInterestCalculationRuleBlock);
         this.interestRecalculationPreClosureInterestCalculationRuleIContainer = new WebMarkupContainer("interestRecalculationPreClosureInterestCalculationRuleIContainer");
         this.interestRecalculationPreClosureInterestCalculationRuleBlock.add(this.interestRecalculationPreClosureInterestCalculationRuleIContainer);
@@ -2244,7 +2222,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationPreClosureInterestCalculationRuleIContainer.add(this.interestRecalculationPreClosureInterestCalculationRuleFeedback);
 
         this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock = new WebMarkupBlock("interestRecalculationAdvancePaymentsAdjustmentTypeBlock", Size.Six_6);
-        this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock.setOutputMarkupId(true);
         this.form.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock);
         this.interestRecalculationAdvancePaymentsAdjustmentTypeIContainer = new WebMarkupContainer("interestRecalculationAdvancePaymentsAdjustmentTypeIContainer");
         this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeIContainer);
@@ -2257,7 +2234,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationAdvancePaymentsAdjustmentTypeIContainer.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeFeedback);
 
         this.interestRecalculationCompoundingOnBlock = new WebMarkupBlock("interestRecalculationCompoundingOnBlock", Size.Four_4);
-        this.interestRecalculationCompoundingOnBlock.setOutputMarkupId(true);
         this.form.add(this.interestRecalculationCompoundingOnBlock);
         this.interestRecalculationCompoundingOnIContainer = new WebMarkupContainer("interestRecalculationCompoundingOnIContainer");
         this.interestRecalculationCompoundingOnBlock.add(this.interestRecalculationCompoundingOnIContainer);
@@ -2270,7 +2246,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationCompoundingOnIContainer.add(this.interestRecalculationCompoundingOnFeedback);
 
         this.interestRecalculationCompoundingBlock = new WebMarkupBlock("interestRecalculationCompoundingBlock", Size.Four_4);
-        this.interestRecalculationCompoundingBlock.setOutputMarkupId(true);
         this.form.add(this.interestRecalculationCompoundingBlock);
         this.interestRecalculationCompoundingIContainer = new WebMarkupContainer("interestRecalculationCompoundingIContainer");
         this.interestRecalculationCompoundingBlock.add(this.interestRecalculationCompoundingIContainer);
@@ -2283,7 +2258,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationCompoundingIContainer.add(this.interestRecalculationCompoundingFeedback);
 
         this.interestRecalculationCompoundingTypeBlock = new WebMarkupBlock("interestRecalculationCompoundingTypeBlock", Size.Four_4);
-        this.interestRecalculationCompoundingTypeBlock.setOutputMarkupId(true);
         this.form.add(this.interestRecalculationCompoundingTypeBlock);
         this.interestRecalculationCompoundingTypeIContainer = new WebMarkupContainer("interestRecalculationCompoundingTypeIContainer");
         this.interestRecalculationCompoundingTypeBlock.add(this.interestRecalculationCompoundingTypeIContainer);
@@ -2296,7 +2270,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationCompoundingTypeIContainer.add(this.interestRecalculationCompoundingTypeFeedback);
 
         this.interestRecalculationCompoundingDayBlock = new WebMarkupBlock("interestRecalculationCompoundingDayBlock", Size.Four_4);
-        this.interestRecalculationCompoundingDayBlock.setOutputMarkupId(true);
         this.form.add(this.interestRecalculationCompoundingDayBlock);
         this.interestRecalculationCompoundingDayIContainer = new WebMarkupContainer("interestRecalculationCompoundingDayIContainer");
         this.interestRecalculationCompoundingDayBlock.add(this.interestRecalculationCompoundingDayIContainer);
@@ -2309,7 +2282,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationCompoundingDayIContainer.add(this.interestRecalculationCompoundingDayFeedback);
 
         this.interestRecalculationCompoundingIntervalBlock = new WebMarkupBlock("interestRecalculationCompoundingIntervalBlock", Size.Four_4);
-        this.interestRecalculationCompoundingIntervalBlock.setOutputMarkupId(true);
         this.form.add(this.interestRecalculationCompoundingIntervalBlock);
         this.interestRecalculationCompoundingIntervalIContainer = new WebMarkupContainer("interestRecalculationCompoundingIntervalIContainer");
         this.interestRecalculationCompoundingIntervalBlock.add(this.interestRecalculationCompoundingIntervalIContainer);
@@ -2321,7 +2293,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationCompoundingIntervalIContainer.add(this.interestRecalculationCompoundingIntervalFeedback);
 
         this.interestRecalculationRecalculateBlock = new WebMarkupBlock("interestRecalculationRecalculateBlock", Size.Four_4);
-        this.interestRecalculationRecalculateBlock.setOutputMarkupId(true);
         this.form.add(this.interestRecalculationRecalculateBlock);
         this.interestRecalculationRecalculateIContainer = new WebMarkupContainer("interestRecalculationRecalculateIContainer");
         this.interestRecalculationRecalculateBlock.add(this.interestRecalculationRecalculateIContainer);
@@ -2334,7 +2305,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationRecalculateIContainer.add(this.interestRecalculationRecalculateFeedback);
 
         this.interestRecalculationRecalculateTypeBlock = new WebMarkupBlock("interestRecalculationRecalculateTypeBlock", Size.Four_4);
-        this.interestRecalculationRecalculateTypeBlock.setOutputMarkupId(true);
         this.form.add(this.interestRecalculationRecalculateTypeBlock);
         this.interestRecalculationRecalculateTypeIContainer = new WebMarkupContainer("interestRecalculationRecalculateTypeIContainer");
         this.interestRecalculationRecalculateTypeBlock.add(this.interestRecalculationRecalculateTypeIContainer);
@@ -2347,7 +2317,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationRecalculateTypeIContainer.add(this.interestRecalculationRecalculateTypeFeedback);
 
         this.interestRecalculationRecalculateDayBlock = new WebMarkupBlock("interestRecalculationRecalculateDayBlock", Size.Four_4);
-        this.interestRecalculationRecalculateDayBlock.setOutputMarkupId(true);
         this.form.add(this.interestRecalculationRecalculateDayBlock);
         this.interestRecalculationRecalculateDayIContainer = new WebMarkupContainer("interestRecalculationRecalculateDayIContainer");
         this.interestRecalculationRecalculateDayBlock.add(this.interestRecalculationRecalculateDayIContainer);
@@ -2360,7 +2329,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationRecalculateDayIContainer.add(this.interestRecalculationRecalculateDayFeedback);
 
         this.interestRecalculationRecalculateIntervalBlock = new WebMarkupBlock("interestRecalculationRecalculateIntervalBlock", Size.Four_4);
-        this.interestRecalculationRecalculateIntervalBlock.setOutputMarkupId(true);
         this.form.add(this.interestRecalculationRecalculateIntervalBlock);
         this.interestRecalculationRecalculateIntervalIContainer = new WebMarkupContainer("interestRecalculationRecalculateIntervalIContainer");
         this.interestRecalculationRecalculateIntervalBlock.add(this.interestRecalculationRecalculateIntervalIContainer);
@@ -2372,7 +2340,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationRecalculateIntervalIContainer.add(this.interestRecalculationRecalculateIntervalFeedback);
 
         this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock = new WebMarkupBlock("interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock", Size.Twelve_12);
-        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock.setOutputMarkupId(true);
         this.form.add(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock);
         this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleIContainer = new WebMarkupContainer("interestRecalculationArrearsRecognizationBasedOnOriginalScheduleIContainer");
         this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock.add(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleIContainer);
@@ -2445,7 +2412,6 @@ public class LoanCreatePage extends DeprecatedPage {
     protected void initSectionSetting() {
 
         this.settingAmortizationBlock = new WebMarkupBlock("settingAmortizationBlock", Size.Six_6);
-        this.settingAmortizationBlock.setOutputMarkupId(true);
         this.form.add(this.settingAmortizationBlock);
         this.settingAmortizationIContainer = new WebMarkupContainer("settingAmortizationIContainer");
         this.settingAmortizationBlock.add(this.settingAmortizationIContainer);
@@ -2458,7 +2424,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingAmortizationIContainer.add(this.settingAmortizationFeedback);
 
         this.settingInterestMethodBlock = new WebMarkupBlock("settingInterestMethodBlock", Size.Six_6);
-        this.settingInterestMethodBlock.setOutputMarkupId(true);
         this.form.add(this.settingInterestMethodBlock);
         this.settingInterestMethodIContainer = new WebMarkupContainer("settingInterestMethodIContainer");
         this.settingInterestMethodBlock.add(this.settingInterestMethodIContainer);
@@ -2471,7 +2436,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingInterestMethodIContainer.add(this.settingInterestMethodFeedback);
 
         this.settingInterestCalculationPeriodBlock = new WebMarkupBlock("settingInterestCalculationPeriodBlock", Size.Six_6);
-        this.settingInterestCalculationPeriodBlock.setOutputMarkupId(true);
         this.form.add(this.settingInterestCalculationPeriodBlock);
         this.settingInterestCalculationPeriodIContainer = new WebMarkupContainer("settingInterestCalculationPeriodIContainer");
         this.settingInterestCalculationPeriodBlock.add(this.settingInterestCalculationPeriodIContainer);
@@ -2484,7 +2448,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingInterestCalculationPeriodIContainer.add(this.settingInterestCalculationPeriodFeedback);
 
         this.settingCalculateInterestForExactDaysInPartialPeriodBlock = new WebMarkupBlock("settingCalculateInterestForExactDaysInPartialPeriodBlock", Size.Six_6);
-        this.settingCalculateInterestForExactDaysInPartialPeriodBlock.setOutputMarkupId(true);
         this.form.add(this.settingCalculateInterestForExactDaysInPartialPeriodBlock);
         this.settingCalculateInterestForExactDaysInPartialPeriodIContainer = new WebMarkupContainer("settingCalculateInterestForExactDaysInPartialPeriodIContainer");
         this.settingCalculateInterestForExactDaysInPartialPeriodBlock.add(this.settingCalculateInterestForExactDaysInPartialPeriodIContainer);
@@ -2495,7 +2458,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingCalculateInterestForExactDaysInPartialPeriodIContainer.add(this.settingCalculateInterestForExactDaysInPartialPeriodFeedback);
 
         this.settingRepaymentStrategyBlock = new WebMarkupBlock("settingRepaymentStrategyBlock", Size.Six_6);
-        this.settingRepaymentStrategyBlock.setOutputMarkupId(true);
         this.form.add(this.settingRepaymentStrategyBlock);
         this.settingRepaymentStrategyIContainer = new WebMarkupContainer("settingRepaymentStrategyIContainer");
         this.settingRepaymentStrategyBlock.add(this.settingRepaymentStrategyIContainer);
@@ -2508,7 +2470,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingRepaymentStrategyIContainer.add(this.settingRepaymentStrategyFeedback);
 
         this.settingMoratoriumPrincipalBlock = new WebMarkupBlock("settingMoratoriumPrincipalBlock", Size.Six_6);
-        this.settingMoratoriumPrincipalBlock.setOutputMarkupId(true);
         this.form.add(this.settingMoratoriumPrincipalBlock);
         this.settingMoratoriumPrincipalIContainer = new WebMarkupContainer("settingMoratoriumPrincipalIContainer");
         this.settingMoratoriumPrincipalBlock.add(this.settingMoratoriumPrincipalIContainer);
@@ -2520,7 +2481,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingMoratoriumPrincipalIContainer.add(this.settingMoratoriumPrincipalFeedback);
 
         this.settingMoratoriumInterestBlock = new WebMarkupBlock("settingMoratoriumInterestBlock", Size.Six_6);
-        this.settingMoratoriumInterestBlock.setOutputMarkupId(true);
         this.form.add(this.settingMoratoriumInterestBlock);
         this.settingMoratoriumInterestIContainer = new WebMarkupContainer("settingMoratoriumInterestIContainer");
         this.settingMoratoriumInterestBlock.add(this.settingMoratoriumInterestIContainer);
@@ -2532,7 +2492,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingMoratoriumInterestIContainer.add(this.settingMoratoriumInterestFeedback);
 
         this.settingInterestFreePeriodBlock = new WebMarkupBlock("settingInterestFreePeriodBlock", Size.Six_6);
-        this.settingInterestFreePeriodBlock.setOutputMarkupId(true);
         this.form.add(this.settingInterestFreePeriodBlock);
         this.settingInterestFreePeriodIContainer = new WebMarkupContainer("settingInterestFreePeriodIContainer");
         this.settingInterestFreePeriodBlock.add(this.settingInterestFreePeriodIContainer);
@@ -2544,7 +2503,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingInterestFreePeriodIContainer.add(this.settingInterestFreePeriodFeedback);
 
         this.settingArrearsToleranceBlock = new WebMarkupBlock("settingArrearsToleranceBlock", Size.Six_6);
-        this.settingArrearsToleranceBlock.setOutputMarkupId(true);
         this.form.add(this.settingArrearsToleranceBlock);
         this.settingArrearsToleranceIContainer = new WebMarkupContainer("settingArrearsToleranceIContainer");
         this.settingArrearsToleranceBlock.add(this.settingArrearsToleranceIContainer);
@@ -2556,7 +2514,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingArrearsToleranceIContainer.add(this.settingArrearsToleranceFeedback);
 
         this.settingDayInYearBlock = new WebMarkupBlock("settingDayInYearBlock", Size.Six_6);
-        this.settingDayInYearBlock.setOutputMarkupId(true);
         this.form.add(this.settingDayInYearBlock);
         this.settingDayInYearIContainer = new WebMarkupContainer("settingDayInYearIContainer");
         this.settingDayInYearBlock.add(this.settingDayInYearIContainer);
@@ -2569,7 +2526,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingDayInYearIContainer.add(this.settingDayInYearFeedback);
 
         this.settingDayInMonthBlock = new WebMarkupBlock("settingDayInMonthBlock", Size.Six_6);
-        this.settingDayInMonthBlock.setOutputMarkupId(true);
         this.form.add(this.settingDayInMonthBlock);
         this.settingDayInMonthIContainer = new WebMarkupContainer("settingDayInMonthIContainer");
         this.settingDayInMonthBlock.add(this.settingDayInMonthIContainer);
@@ -2582,7 +2538,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingDayInMonthIContainer.add(this.settingDayInMonthFeedback);
 
         this.settingAllowFixingOfTheInstallmentAmountBlock = new WebMarkupBlock("settingAllowFixingOfTheInstallmentAmountBlock", Size.Twelve_12);
-        this.settingAllowFixingOfTheInstallmentAmountBlock.setOutputMarkupId(true);
         this.form.add(this.settingAllowFixingOfTheInstallmentAmountBlock);
         this.settingAllowFixingOfTheInstallmentAmountIContainer = new WebMarkupContainer("settingAllowFixingOfTheInstallmentAmountIContainer");
         this.settingAllowFixingOfTheInstallmentAmountBlock.add(this.settingAllowFixingOfTheInstallmentAmountIContainer);
@@ -2593,7 +2548,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingAllowFixingOfTheInstallmentAmountIContainer.add(this.settingAllowFixingOfTheInstallmentAmountFeedback);
 
         this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock = new WebMarkupBlock("settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock", Size.Six_6);
-        this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock.setOutputMarkupId(true);
         this.form.add(this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock);
         this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsIContainer = new WebMarkupContainer("settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsIContainer");
         this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock.add(this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsIContainer);
@@ -2605,7 +2559,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsIContainer.add(this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback);
 
         this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock = new WebMarkupBlock("settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock", Size.Six_6);
-        this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock.setOutputMarkupId(true);
         this.form.add(this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock);
         this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaIContainer = new WebMarkupContainer("settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaIContainer");
         this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock.add(this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaIContainer);
@@ -2617,7 +2570,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaIContainer.add(this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback);
 
         this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock = new WebMarkupBlock("settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock", Size.Six_6);
-        this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock.setOutputMarkupId(true);
         this.form.add(this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock);
         this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedIContainer = new WebMarkupContainer("settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedIContainer");
         this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock.add(this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedIContainer);
@@ -2628,7 +2580,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedIContainer.add(this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback);
 
         this.settingPrincipalThresholdForLastInstalmentBlock = new WebMarkupBlock("settingPrincipalThresholdForLastInstalmentBlock", Size.Six_6);
-        this.settingPrincipalThresholdForLastInstalmentBlock.setOutputMarkupId(true);
         this.form.add(this.settingPrincipalThresholdForLastInstalmentBlock);
         this.settingPrincipalThresholdForLastInstalmentIContainer = new WebMarkupContainer("settingPrincipalThresholdForLastInstalmentIContainer");
         this.settingPrincipalThresholdForLastInstalmentBlock.add(this.settingPrincipalThresholdForLastInstalmentIContainer);
@@ -2640,7 +2591,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingPrincipalThresholdForLastInstalmentIContainer.add(this.settingPrincipalThresholdForLastInstalmentFeedback);
 
         this.settingVariableInstallmentsAllowedBlock = new WebMarkupBlock("settingVariableInstallmentsAllowedBlock", Size.Six_6);
-        this.settingVariableInstallmentsAllowedBlock.setOutputMarkupId(true);
         this.form.add(this.settingVariableInstallmentsAllowedBlock);
         this.settingVariableInstallmentsAllowedIContainer = new WebMarkupContainer("settingVariableInstallmentsAllowedIContainer");
         this.settingVariableInstallmentsAllowedBlock.add(this.settingVariableInstallmentsAllowedIContainer);
@@ -2651,7 +2601,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingVariableInstallmentsAllowedIContainer.add(this.settingVariableInstallmentsAllowedFeedback);
 
         this.settingVariableInstallmentsMinimumBlock = new WebMarkupBlock("settingVariableInstallmentsMinimumBlock", Size.Six_6);
-        this.settingVariableInstallmentsMinimumBlock.setOutputMarkupId(true);
         this.form.add(this.settingVariableInstallmentsMinimumBlock);
         this.settingVariableInstallmentsMinimumIContainer = new WebMarkupContainer("settingVariableInstallmentsMinimumIContainer");
         this.settingVariableInstallmentsMinimumBlock.add(this.settingVariableInstallmentsMinimumIContainer);
@@ -2663,7 +2612,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingVariableInstallmentsMinimumIContainer.add(this.settingVariableInstallmentsMinimumFeedback);
 
         this.settingVariableInstallmentsMaximumBlock = new WebMarkupBlock("settingVariableInstallmentsMaximumBlock", Size.Six_6);
-        this.settingVariableInstallmentsMaximumBlock.setOutputMarkupId(true);
         this.form.add(this.settingVariableInstallmentsMaximumBlock);
         this.settingVariableInstallmentsMaximumIContainer = new WebMarkupContainer("settingVariableInstallmentsMaximumIContainer");
         this.settingVariableInstallmentsMaximumBlock.add(this.settingVariableInstallmentsMaximumIContainer);
@@ -2675,7 +2623,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingVariableInstallmentsMaximumIContainer.add(this.settingVariableInstallmentsMaximumFeedback);
 
         this.settingAllowedToBeUsedForProvidingTopupLoansBlock = new WebMarkupBlock("settingAllowedToBeUsedForProvidingTopupLoansBlock", Size.Twelve_12);
-        this.settingAllowedToBeUsedForProvidingTopupLoansBlock.setOutputMarkupId(true);
         this.form.add(this.settingAllowedToBeUsedForProvidingTopupLoansBlock);
         this.settingAllowedToBeUsedForProvidingTopupLoansIContainer = new WebMarkupContainer("settingAllowedToBeUsedForProvidingTopupLoansIContainer");
         this.settingAllowedToBeUsedForProvidingTopupLoansBlock.add(this.settingAllowedToBeUsedForProvidingTopupLoansIContainer);
@@ -2712,7 +2659,6 @@ public class LoanCreatePage extends DeprecatedPage {
     protected void initSectionDetail() {
 
         this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
-        this.detailProductNameBlock.setOutputMarkupId(true);
         this.form.add(this.detailProductNameBlock);
         this.detailProductNameIContainer = new WebMarkupContainer("detailProductNameIContainer");
         this.detailProductNameBlock.add(this.detailProductNameIContainer);
@@ -2723,7 +2669,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.detailProductNameIContainer.add(this.detailProductNameFeedback);
 
         this.detailShortNameBlock = new WebMarkupBlock("detailShortNameBlock", Size.Six_6);
-        this.detailShortNameBlock.setOutputMarkupId(true);
         this.form.add(this.detailShortNameBlock);
         this.detailShortNameIContainer = new WebMarkupContainer("detailShortNameIContainer");
         this.detailShortNameBlock.add(this.detailShortNameIContainer);
@@ -2734,7 +2679,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.detailShortNameIContainer.add(this.detailShortNameFeedback);
 
         this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Six_6);
-        this.detailDescriptionBlock.setOutputMarkupId(true);
         this.form.add(this.detailDescriptionBlock);
         this.detailDescriptionIContainer = new WebMarkupContainer("detailDescriptionIContainer");
         this.detailDescriptionBlock.add(this.detailDescriptionIContainer);
@@ -2746,7 +2690,6 @@ public class LoanCreatePage extends DeprecatedPage {
 
         this.detailFundProvider = new FundProvider();
         this.detailFundBlock = new WebMarkupBlock("detailFundBlock", Size.Six_6);
-        this.detailFundBlock.setOutputMarkupId(true);
         this.form.add(this.detailFundBlock);
         this.detailFundIContainer = new WebMarkupContainer("detailFundIContainer");
         this.detailFundBlock.add(this.detailFundIContainer);
@@ -2757,7 +2700,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.detailFundIContainer.add(this.detailFundFeedback);
 
         this.detailStartDateBlock = new WebMarkupBlock("detailStartDateBlock", Size.Six_6);
-        this.detailStartDateBlock.setOutputMarkupId(true);
         this.form.add(this.detailStartDateBlock);
         this.detailStartDateIContainer = new WebMarkupContainer("detailStartDateIContainer");
         this.detailStartDateBlock.add(this.detailStartDateIContainer);
@@ -2768,7 +2710,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.detailStartDateIContainer.add(this.detailStartDateFeedback);
 
         this.detailCloseDateBlock = new WebMarkupBlock("detailCloseDateBlock", Size.Six_6);
-        this.detailCloseDateBlock.setOutputMarkupId(true);
         this.form.add(this.detailCloseDateBlock);
         this.detailCloseDateIContainer = new WebMarkupContainer("detailCloseDateIContainer");
         this.detailCloseDateBlock.add(this.detailCloseDateIContainer);
@@ -2779,7 +2720,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.detailCloseDateIContainer.add(this.detailCloseDateFeedback);
 
         this.detailIncludeInCustomerLoanCounterBlock = new WebMarkupBlock("detailIncludeInCustomerLoanCounterBlock", Size.Twelve_12);
-        this.detailIncludeInCustomerLoanCounterBlock.setOutputMarkupId(true);
         this.form.add(this.detailIncludeInCustomerLoanCounterBlock);
         this.detailIncludeInCustomerLoanCounterIContainer = new WebMarkupContainer("detailIncludeInCustomerLoanCounterIContainer");
         this.detailIncludeInCustomerLoanCounterBlock.add(this.detailIncludeInCustomerLoanCounterIContainer);
@@ -2792,7 +2732,6 @@ public class LoanCreatePage extends DeprecatedPage {
     protected void initSectionCurrency() {
 
         this.currencyCodeBlock = new WebMarkupBlock("currencyCodeBlock", Size.Six_6);
-        this.currencyCodeBlock.setOutputMarkupId(true);
         this.form.add(this.currencyCodeBlock);
         this.currencyCodeIContainer = new WebMarkupContainer("currencyCodeIContainer");
         this.currencyCodeBlock.add(this.currencyCodeIContainer);
@@ -2805,7 +2744,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.currencyCodeIContainer.add(this.currencyCodeFeedback);
 
         this.currencyDecimalPlaceBlock = new WebMarkupBlock("currencyDecimalPlaceBlock", Size.Six_6);
-        this.currencyDecimalPlaceBlock.setOutputMarkupId(true);
         this.form.add(this.currencyDecimalPlaceBlock);
         this.currencyDecimalPlaceIContainer = new WebMarkupContainer("currencyDecimalPlaceIContainer");
         this.currencyDecimalPlaceBlock.add(this.currencyDecimalPlaceIContainer);
@@ -2817,7 +2755,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.currencyDecimalPlaceIContainer.add(this.currencyDecimalPlaceFeedback);
 
         this.currencyInMultipleOfBlock = new WebMarkupBlock("currencyInMultipleOfBlock", Size.Six_6);
-        this.currencyInMultipleOfBlock.setOutputMarkupId(true);
         this.form.add(this.currencyInMultipleOfBlock);
         this.currencyInMultipleOfIContainer = new WebMarkupContainer("currencyInMultipleOfIContainer");
         this.currencyInMultipleOfBlock.add(this.currencyInMultipleOfIContainer);
@@ -2829,7 +2766,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.currencyInMultipleOfIContainer.add(this.currencyInMultipleOfFeedback);
 
         this.currencyInstallmentInMultipleOfBlock = new WebMarkupBlock("currencyInstallmentInMultipleOfBlock", Size.Six_6);
-        this.currencyInstallmentInMultipleOfBlock.setOutputMarkupId(true);
         this.form.add(this.currencyInstallmentInMultipleOfBlock);
         this.currencyInstallmentInMultipleOfIContainer = new WebMarkupContainer("currencyInstallmentInMultipleOfIContainer");
         this.currencyInstallmentInMultipleOfBlock.add(this.currencyInstallmentInMultipleOfIContainer);
@@ -2845,7 +2781,6 @@ public class LoanCreatePage extends DeprecatedPage {
     protected void initSectionTerms() {
 
         this.termVaryBasedOnLoanCycleBlock = new WebMarkupBlock("termVaryBasedOnLoanCycleBlock", Size.Twelve_12);
-        this.termVaryBasedOnLoanCycleBlock.setOutputMarkupId(true);
         this.form.add(this.termVaryBasedOnLoanCycleBlock);
         this.termVaryBasedOnLoanCycleIContainer = new WebMarkupContainer("termVaryBasedOnLoanCycleIContainer");
         this.termVaryBasedOnLoanCycleBlock.add(this.termVaryBasedOnLoanCycleIContainer);
@@ -2856,7 +2791,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termVaryBasedOnLoanCycleIContainer.add(this.termVaryBasedOnLoanCycleFeedback);
 
         this.termPrincipalMinimumBlock = new WebMarkupBlock("termPrincipalMinimumBlock", Size.Four_4);
-        this.termPrincipalMinimumBlock.setOutputMarkupId(true);
         this.form.add(this.termPrincipalMinimumBlock);
         this.termPrincipalMinimumIContainer = new WebMarkupContainer("termPrincipalMinimumIContainer");
         this.termPrincipalMinimumBlock.add(this.termPrincipalMinimumIContainer);
@@ -2868,7 +2802,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termPrincipalMinimumIContainer.add(this.termPrincipalMinimumFeedback);
 
         this.termPrincipalDefaultBlock = new WebMarkupBlock("termPrincipalDefaultBlock", Size.Four_4);
-        this.termPrincipalDefaultBlock.setOutputMarkupId(true);
         this.form.add(this.termPrincipalDefaultBlock);
         this.termPrincipalDefaultIContainer = new WebMarkupContainer("termPrincipalDefaultIContainer");
         this.termPrincipalDefaultBlock.add(this.termPrincipalDefaultIContainer);
@@ -2880,7 +2813,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termPrincipalDefaultIContainer.add(this.termPrincipalDefaultFeedback);
 
         this.termPrincipalMaximumBlock = new WebMarkupBlock("termPrincipalMaximumBlock", Size.Four_4);
-        this.termPrincipalMaximumBlock.setOutputMarkupId(true);
         this.form.add(this.termPrincipalMaximumBlock);
         this.termPrincipalMaximumIContainer = new WebMarkupContainer("termPrincipalMaximumIContainer");
         this.termPrincipalMaximumBlock.add(this.termPrincipalMaximumIContainer);
@@ -2897,7 +2829,6 @@ public class LoanCreatePage extends DeprecatedPage {
             this.termPrincipalByLoanCyclePopup.setOnClose(this::termPrincipalByLoanCyclePopupClose);
 
             this.termPrincipalByLoanCycleBlock = new WebMarkupBlock("termPrincipalByLoanCycleBlock", Size.Twelve_12);
-            this.termPrincipalByLoanCycleBlock.setOutputMarkupId(true);
             this.form.add(this.termPrincipalByLoanCycleBlock);
             this.termPrincipalByLoanCycleIContainer = new WebMarkupContainer("termPrincipalByLoanCycleIContainer");
             this.termPrincipalByLoanCycleBlock.add(this.termPrincipalByLoanCycleIContainer);
@@ -2921,7 +2852,6 @@ public class LoanCreatePage extends DeprecatedPage {
         }
 
         this.termNumberOfRepaymentMinimumBlock = new WebMarkupBlock("termNumberOfRepaymentMinimumBlock", Size.Four_4);
-        this.termNumberOfRepaymentMinimumBlock.setOutputMarkupId(true);
         this.form.add(this.termNumberOfRepaymentMinimumBlock);
         this.termNumberOfRepaymentMinimumIContainer = new WebMarkupContainer("termNumberOfRepaymentMinimumIContainer");
         this.termNumberOfRepaymentMinimumBlock.add(this.termNumberOfRepaymentMinimumIContainer);
@@ -2933,7 +2863,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termNumberOfRepaymentMinimumIContainer.add(this.termNumberOfRepaymentMinimumFeedback);
 
         this.termNumberOfRepaymentDefaultBlock = new WebMarkupBlock("termNumberOfRepaymentDefaultBlock", Size.Four_4);
-        this.termNumberOfRepaymentDefaultBlock.setOutputMarkupId(true);
         this.form.add(this.termNumberOfRepaymentDefaultBlock);
         this.termNumberOfRepaymentDefaultIContainer = new WebMarkupContainer("termNumberOfRepaymentDefaultIContainer");
         this.termNumberOfRepaymentDefaultBlock.add(this.termNumberOfRepaymentDefaultIContainer);
@@ -2945,7 +2874,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termNumberOfRepaymentDefaultIContainer.add(this.termNumberOfRepaymentDefaultFeedback);
 
         this.termNumberOfRepaymentMaximumBlock = new WebMarkupBlock("termNumberOfRepaymentMaximumBlock", Size.Four_4);
-        this.termNumberOfRepaymentMaximumBlock.setOutputMarkupId(true);
         this.form.add(this.termNumberOfRepaymentMaximumBlock);
         this.termNumberOfRepaymentMaximumIContainer = new WebMarkupContainer("termNumberOfRepaymentMaximumIContainer");
         this.termNumberOfRepaymentMaximumBlock.add(this.termNumberOfRepaymentMaximumIContainer);
@@ -2963,7 +2891,6 @@ public class LoanCreatePage extends DeprecatedPage {
             this.termNumberOfRepaymentByLoanCyclePopup.setOnClose(this::termNumberOfRepaymentByLoanCyclePopupClose);
 
             this.termNumberOfRepaymentByLoanCycleBlock = new WebMarkupBlock("termNumberOfRepaymentByLoanCycleBlock", Size.Twelve_12);
-            this.termNumberOfRepaymentByLoanCycleBlock.setOutputMarkupId(true);
             this.form.add(this.termNumberOfRepaymentByLoanCycleBlock);
             this.termNumberOfRepaymentByLoanCycleIContainer = new WebMarkupContainer("termNumberOfRepaymentByLoanCycleIContainer");
             this.termNumberOfRepaymentByLoanCycleBlock.add(this.termNumberOfRepaymentByLoanCycleIContainer);
@@ -2988,7 +2915,6 @@ public class LoanCreatePage extends DeprecatedPage {
 
         // Linked to Floating Interest Rates
         this.termLinkedToFloatingInterestRatesBlock = new WebMarkupBlock("termLinkedToFloatingInterestRatesBlock", Size.Twelve_12);
-        this.termLinkedToFloatingInterestRatesBlock.setOutputMarkupId(true);
         this.form.add(this.termLinkedToFloatingInterestRatesBlock);
         this.termLinkedToFloatingInterestRatesIContainer = new WebMarkupContainer("termLinkedToFloatingInterestRatesIContainer");
         this.termLinkedToFloatingInterestRatesBlock.add(this.termLinkedToFloatingInterestRatesIContainer);
@@ -2999,7 +2925,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termLinkedToFloatingInterestRatesIContainer.add(this.termLinkedToFloatingInterestRatesFeedback);
 
         this.termNominalInterestRateMinimumBlock = new WebMarkupBlock("termNominalInterestRateMinimumBlock", Size.Three_3);
-        this.termNominalInterestRateMinimumBlock.setOutputMarkupId(true);
         this.form.add(this.termNominalInterestRateMinimumBlock);
         this.termNominalInterestRateMinimumIContainer = new WebMarkupContainer("termNominalInterestRateMinimumIContainer");
         this.termNominalInterestRateMinimumBlock.add(this.termNominalInterestRateMinimumIContainer);
@@ -3011,7 +2936,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termNominalInterestRateMinimumIContainer.add(this.termNominalInterestRateMinimumFeedback);
 
         this.termNominalInterestRateDefaultBlock = new WebMarkupBlock("termNominalInterestRateDefaultBlock", Size.Three_3);
-        this.termNominalInterestRateDefaultBlock.setOutputMarkupId(true);
         this.form.add(this.termNominalInterestRateDefaultBlock);
         this.termNominalInterestRateDefaultIContainer = new WebMarkupContainer("termNominalInterestRateDefaultIContainer");
         this.termNominalInterestRateDefaultBlock.add(this.termNominalInterestRateDefaultIContainer);
@@ -3023,7 +2947,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termNominalInterestRateDefaultIContainer.add(this.termNominalInterestRateDefaultFeedback);
 
         this.termNominalInterestRateMaximumBlock = new WebMarkupBlock("termNominalInterestRateMaximumBlock", Size.Three_3);
-        this.termNominalInterestRateMaximumBlock.setOutputMarkupId(true);
         this.form.add(this.termNominalInterestRateMaximumBlock);
         this.termNominalInterestRateMaximumIContainer = new WebMarkupContainer("termNominalInterestRateMaximumIContainer");
         this.termNominalInterestRateMaximumBlock.add(this.termNominalInterestRateMaximumIContainer);
@@ -3035,7 +2958,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termNominalInterestRateMaximumIContainer.add(this.termNominalInterestRateMaximumFeedback);
 
         this.termNominalInterestRateTypeBlock = new WebMarkupBlock("termNominalInterestRateTypeBlock", Size.Three_3);
-        this.termNominalInterestRateTypeBlock.setOutputMarkupId(true);
         this.form.add(this.termNominalInterestRateTypeBlock);
         this.termNominalInterestRateTypeIContainer = new WebMarkupContainer("termNominalInterestRateTypeIContainer");
         this.termNominalInterestRateTypeBlock.add(this.termNominalInterestRateTypeIContainer);
@@ -3048,7 +2970,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termNominalInterestRateTypeIContainer.add(this.termNominalInterestRateTypeFeedback);
 
         this.termFloatingInterestRateBlock = new WebMarkupBlock("termFloatingInterestRateBlock", Size.Four_4);
-        this.termFloatingInterestRateBlock.setOutputMarkupId(true);
         this.form.add(this.termFloatingInterestRateBlock);
         this.termFloatingInterestRateIContainer = new WebMarkupContainer("termFloatingInterestRateIContainer");
         this.termFloatingInterestRateBlock.add(this.termFloatingInterestRateIContainer);
@@ -3061,7 +2982,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termFloatingInterestRateIContainer.add(this.termFloatingInterestRateFeedback);
 
         this.termFloatingInterestDifferentialBlock = new WebMarkupBlock("termFloatingInterestDifferentialBlock", Size.Four_4);
-        this.termFloatingInterestDifferentialBlock.setOutputMarkupId(true);
         this.form.add(this.termFloatingInterestDifferentialBlock);
         this.termFloatingInterestDifferentialIContainer = new WebMarkupContainer("termFloatingInterestDifferentialIContainer");
         this.termFloatingInterestDifferentialBlock.add(this.termFloatingInterestDifferentialIContainer);
@@ -3073,7 +2993,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termFloatingInterestDifferentialIContainer.add(this.termFloatingInterestDifferentialFeedback);
 
         this.termFloatingInterestAllowedBlock = new WebMarkupBlock("termFloatingInterestAllowedBlock", Size.Four_4);
-        this.termFloatingInterestAllowedBlock.setOutputMarkupId(true);
         this.form.add(this.termFloatingInterestAllowedBlock);
         this.termFloatingInterestAllowedIContainer = new WebMarkupContainer("termFloatingInterestAllowedIContainer");
         this.termFloatingInterestAllowedBlock.add(this.termFloatingInterestAllowedIContainer);
@@ -3084,7 +3003,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termFloatingInterestAllowedIContainer.add(this.termFloatingInterestAllowedFeedback);
 
         this.termFloatingInterestMinimumBlock = new WebMarkupBlock("termFloatingInterestMinimumBlock", Size.Four_4);
-        this.termFloatingInterestMinimumBlock.setOutputMarkupId(true);
         this.form.add(this.termFloatingInterestMinimumBlock);
         this.termFloatingInterestMinimumIContainer = new WebMarkupContainer("termFloatingInterestMinimumIContainer");
         this.termFloatingInterestMinimumBlock.add(this.termFloatingInterestMinimumIContainer);
@@ -3096,7 +3014,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termFloatingInterestMinimumIContainer.add(this.termFloatingInterestMinimumFeedback);
 
         this.termFloatingInterestDefaultBlock = new WebMarkupBlock("termFloatingInterestDefaultBlock", Size.Four_4);
-        this.termFloatingInterestDefaultBlock.setOutputMarkupId(true);
         this.form.add(this.termFloatingInterestDefaultBlock);
         this.termFloatingInterestDefaultIContainer = new WebMarkupContainer("termFloatingInterestDefaultIContainer");
         this.termFloatingInterestDefaultBlock.add(this.termFloatingInterestDefaultIContainer);
@@ -3108,7 +3025,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termFloatingInterestDefaultIContainer.add(this.termFloatingInterestDefaultFeedback);
 
         this.termFloatingInterestMaximumBlock = new WebMarkupBlock("termFloatingInterestMaximumBlock", Size.Four_4);
-        this.termFloatingInterestMaximumBlock.setOutputMarkupId(true);
         this.form.add(this.termFloatingInterestMaximumBlock);
         this.termFloatingInterestMaximumIContainer = new WebMarkupContainer("termFloatingInterestMaximumIContainer");
         this.termFloatingInterestMaximumBlock.add(this.termFloatingInterestMaximumIContainer);
@@ -3122,7 +3038,6 @@ public class LoanCreatePage extends DeprecatedPage {
         // Table
         {
             this.termNominalInterestRateByLoanCycleBlock = new WebMarkupBlock("termNominalInterestRateByLoanCycleBlock", Size.Twelve_12);
-            this.termNominalInterestRateByLoanCycleBlock.setOutputMarkupId(true);
             this.form.add(this.termNominalInterestRateByLoanCycleBlock);
             this.termNominalInterestRateByLoanCycleIContainer = new WebMarkupContainer("termNominalInterestRateByLoanCycleIContainer");
             this.termNominalInterestRateByLoanCycleBlock.add(this.termNominalInterestRateByLoanCycleIContainer);
@@ -3150,7 +3065,6 @@ public class LoanCreatePage extends DeprecatedPage {
         }
 
         this.termRepaidEveryBlock = new WebMarkupBlock("termRepaidEveryBlock", Size.Six_6);
-        this.termRepaidEveryBlock.setOutputMarkupId(true);
         this.form.add(this.termRepaidEveryBlock);
         this.termRepaidEveryIContainer = new WebMarkupContainer("termRepaidEveryIContainer");
         this.termRepaidEveryBlock.add(this.termRepaidEveryIContainer);
@@ -3162,7 +3076,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termRepaidEveryIContainer.add(this.termRepaidEveryFeedback);
 
         this.termRepaidTypeBlock = new WebMarkupBlock("termRepaidTypeBlock", Size.Six_6);
-        this.termRepaidTypeBlock.setOutputMarkupId(true);
         this.termRepaidTypeProvider = new LockInTypeProvider(LockInType.Day, LockInType.Week, LockInType.Month);
         this.form.add(this.termRepaidTypeBlock);
         this.termRepaidTypeIContainer = new WebMarkupContainer("termRepaidTypeIContainer");
@@ -3175,7 +3088,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termRepaidTypeIContainer.add(this.termRepaidTypeFeedback);
 
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock = new WebMarkupBlock("termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock", Size.Six_6);
-        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock.setOutputMarkupId(true);
         this.form.add(this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock);
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateIContainer = new WebMarkupContainer("termMinimumDayBetweenDisbursalAndFirstRepaymentDateIContainer");
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock.add(this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateIContainer);

@@ -290,7 +290,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.loanOfficerProvider.applyWhere("is_active", "is_active = 1");
         this.loanOfficerProvider.applyWhere("office_id", "office_id = " + this.officeId);
         this.loanOfficerBlock = new WebMarkupContainer("loanOfficerBlock");
-        this.loanOfficerBlock.setOutputMarkupId(true);
         this.form.add(this.loanOfficerBlock);
         this.loanOfficerContainer = new WebMarkupContainer("loanOfficerContainer");
         this.loanOfficerBlock.add(this.loanOfficerContainer);
@@ -303,7 +302,6 @@ public class LoanCreatePage extends DeprecatedPage {
 
         this.loanPurposeProvider = new LoanPurposeProvider();
         this.loanPurposeBlock = new WebMarkupContainer("loanPurposeBlock");
-        this.loanPurposeBlock.setOutputMarkupId(true);
         this.form.add(this.loanPurposeBlock);
         this.loanPurposeContainer = new WebMarkupContainer("loanPurposeContainer");
         this.loanPurposeBlock.add(this.loanPurposeContainer);
@@ -316,7 +314,6 @@ public class LoanCreatePage extends DeprecatedPage {
 
         this.fundProvider = new FundProvider();
         this.fundBlock = new WebMarkupContainer("fundBlock");
-        this.fundBlock.setOutputMarkupId(true);
         this.form.add(this.fundBlock);
         this.fundContainer = new WebMarkupContainer("fundContainer");
         this.fundBlock.add(this.fundContainer);
@@ -328,7 +325,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.fundContainer.add(this.fundFeedback);
 
         this.submittedOnBlock = new WebMarkupContainer("submittedOnBlock");
-        this.submittedOnBlock.setOutputMarkupId(true);
         this.form.add(this.submittedOnBlock);
         this.submittedOnContainer = new WebMarkupContainer("submittedOnContainer");
         this.submittedOnBlock.add(this.submittedOnContainer);
@@ -340,7 +336,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.submittedOnContainer.add(this.submittedOnFeedback);
 
         this.disbursementOnBlock = new WebMarkupContainer("disbursementOnBlock");
-        this.disbursementOnBlock.setOutputMarkupId(true);
         this.form.add(this.disbursementOnBlock);
         this.disbursementOnContainer = new WebMarkupContainer("disbursementOnContainer");
         this.disbursementOnBlock.add(this.disbursementOnContainer);
@@ -352,7 +347,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.disbursementOnContainer.add(this.disbursementOnFeedback);
 
         this.externalIdBlock = new WebMarkupContainer("externalIdBlock");
-        this.externalIdBlock.setOutputMarkupId(true);
         this.form.add(this.externalIdBlock);
         this.externalIdContainer = new WebMarkupContainer("externalIdContainer");
         this.externalIdBlock.add(this.externalIdContainer);
@@ -368,7 +362,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.linkSavingAccountProvider.applyWhere("status_enum", "m_savings_account.status_enum = 300");
         this.linkSavingAccountProvider.applyWhere("client_id", "m_savings_account.client_id = " + this.clientId);
         this.linkSavingAccountBlock = new WebMarkupContainer("linkSavingAccountBlock");
-        this.linkSavingAccountBlock.setOutputMarkupId(true);
         this.form.add(this.linkSavingAccountBlock);
         this.linkSavingAccountContainer = new WebMarkupContainer("linkSavingAccountContainer");
         this.linkSavingAccountBlock.add(this.linkSavingAccountContainer);
@@ -380,7 +373,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.linkSavingAccountContainer.add(this.linkSavingAccountFeedback);
 
         this.createStandingInstructionAtDisbursementBlock = new WebMarkupContainer("createStandingInstructionAtDisbursementBlock");
-        this.createStandingInstructionAtDisbursementBlock.setOutputMarkupId(true);
         this.form.add(this.createStandingInstructionAtDisbursementBlock);
         this.createStandingInstructionAtDisbursementContainer = new WebMarkupContainer("createStandingInstructionAtDisbursementContainer");
         this.createStandingInstructionAtDisbursementBlock.add(this.createStandingInstructionAtDisbursementContainer);
@@ -403,7 +395,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.form.add(this.installmentInMultiplesOfView);
 
         this.principalBlock = new WebMarkupContainer("principalBlock");
-        this.principalBlock.setOutputMarkupId(true);
         this.form.add(this.principalBlock);
         this.principalContainer = new WebMarkupContainer("principalContainer");
         this.principalBlock.add(this.principalContainer);
@@ -415,7 +406,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.principalContainer.add(this.principalFeedback);
 
         this.loanTermBlock = new WebMarkupContainer("loanTermBlock");
-        this.loanTermBlock.setOutputMarkupId(true);
         this.form.add(this.loanTermBlock);
         this.loanTermContainer = new WebMarkupContainer("loanTermContainer");
         this.loanTermBlock.add(this.loanTermContainer);
@@ -428,7 +418,6 @@ public class LoanCreatePage extends DeprecatedPage {
 
         this.loanTypeProvider = new ChargeFrequencyProvider();
         this.loanTypeBlock = new WebMarkupContainer("loanTypeBlock");
-        this.loanTypeBlock.setOutputMarkupId(true);
         this.form.add(this.loanTypeBlock);
         this.loanTypeContainer = new WebMarkupContainer("loanTypeContainer");
         this.loanTypeBlock.add(this.loanTypeContainer);
@@ -440,7 +429,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.loanTypeContainer.add(this.loanTypeFeedback);
 
         this.numberOfRepaymentBlock = new WebMarkupContainer("numberOfRepaymentBlock");
-        this.numberOfRepaymentBlock.setOutputMarkupId(true);
         this.form.add(this.numberOfRepaymentBlock);
         this.numberOfRepaymentContainer = new WebMarkupContainer("numberOfRepaymentContainer");
         this.numberOfRepaymentBlock.add(this.numberOfRepaymentContainer);
@@ -459,7 +447,6 @@ public class LoanCreatePage extends DeprecatedPage {
 
         this.repaidOnProvider = new RepaidOnProvider();
         this.repaidOnBlock = new WebMarkupContainer("repaidOnBlock");
-        this.repaidOnBlock.setOutputMarkupId(true);
         this.form.add(this.repaidOnBlock);
         this.repaidOnContainer = new WebMarkupContainer("repaidOnContainer");
         this.repaidOnBlock.add(this.repaidOnContainer);
@@ -472,7 +459,6 @@ public class LoanCreatePage extends DeprecatedPage {
 
         this.repaidDayProvider = new FrequencyDayProvider();
         this.repaidDayBlock = new WebMarkupContainer("repaidDayBlock");
-        this.repaidDayBlock.setOutputMarkupId(true);
         this.form.add(this.repaidDayBlock);
         this.repaidDayContainer = new WebMarkupContainer("repaidDayContainer");
         this.repaidDayBlock.add(this.repaidDayContainer);
@@ -484,7 +470,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.repaidDayContainer.add(this.repaidDayFeedback);
 
         this.firstRepaymentOnBlock = new WebMarkupContainer("firstRepaymentOnBlock");
-        this.firstRepaymentOnBlock.setOutputMarkupId(true);
         this.form.add(this.firstRepaymentOnBlock);
         this.firstRepaymentOnContainer = new WebMarkupContainer("firstRepaymentOnContainer");
         this.firstRepaymentOnBlock.add(this.firstRepaymentOnContainer);
@@ -496,7 +481,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.firstRepaymentOnContainer.add(this.firstRepaymentOnFeedback);
 
         this.interestChargedFromBlock = new WebMarkupContainer("interestChargedFromBlock");
-        this.interestChargedFromBlock.setOutputMarkupId(true);
         this.form.add(this.interestChargedFromBlock);
         this.interestChargedFromContainer = new WebMarkupContainer("interestChargedFromContainer");
         this.interestChargedFromBlock.add(this.interestChargedFromContainer);
@@ -508,7 +492,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestChargedFromContainer.add(this.interestChargedFromFeedback);
 
         this.nominalInterestRateBlock = new WebMarkupContainer("nominalInterestRateBlock");
-        this.nominalInterestRateBlock.setOutputMarkupId(true);
         this.form.add(this.nominalInterestRateBlock);
         this.nominalInterestRateContainer = new WebMarkupContainer("nominalInterestRateContainer");
         this.nominalInterestRateBlock.add(this.nominalInterestRateContainer);
@@ -538,7 +521,6 @@ public class LoanCreatePage extends DeprecatedPage {
         this.form.add(this.arrearsToleranceView);
 
         this.interestFreePeriodBlock = new WebMarkupContainer("interestFreePeriodBlock");
-        this.interestFreePeriodBlock.setOutputMarkupId(true);
         this.form.add(this.interestFreePeriodBlock);
         this.interestFreePeriodContainer = new WebMarkupContainer("interestFreePeriodContainer");
         this.interestFreePeriodBlock.add(this.interestFreePeriodContainer);

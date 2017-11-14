@@ -62,7 +62,6 @@ public class ClientUndoTransferPage extends Page {
 
     protected void initNoteBlock() {
         this.noteBlock = new WebMarkupContainer("noteBlock");
-        this.noteBlock.setOutputMarkupId(true);
         this.form.add(this.noteBlock);
         this.noteIContainer = new WebMarkupContainer("noteIContainer");
         this.noteBlock.add(this.noteIContainer);

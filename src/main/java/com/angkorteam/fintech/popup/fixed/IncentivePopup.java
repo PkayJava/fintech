@@ -2,7 +2,6 @@ package com.angkorteam.fintech.popup.fixed;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -38,37 +37,37 @@ import com.google.common.collect.Maps;
 
 public class IncentivePopup extends Panel {
 
-    private ModalWindow window;
+    protected ModalWindow window;
 
-    private Form<Void> form;
-    private AjaxButton addButton;
+    protected Form<Void> form;
+    protected AjaxButton addButton;
 
-    private Option attributeValue;
-    private AttributeProvider attributeProvider;
-    private Select2SingleChoice<Option> attributeField;
-    private TextFeedbackPanel attributeFeedback;
+    protected Option attributeValue;
+    protected AttributeProvider attributeProvider;
+    protected Select2SingleChoice<Option> attributeField;
+    protected TextFeedbackPanel attributeFeedback;
 
-    private Option operatorValue;
-    private OperatorProvider operatorProvider;
-    private Select2SingleChoice<Option> operatorField;
-    private TextFeedbackPanel operatorFeedback;
+    protected Option operatorValue;
+    protected OperatorProvider operatorProvider;
+    protected Select2SingleChoice<Option> operatorField;
+    protected TextFeedbackPanel operatorFeedback;
 
-    private String operandValue;
-    private TextField<String> operandField;
-    private TextFeedbackPanel operandFeedback;
+    protected String operandValue;
+    protected TextField<String> operandField;
+    protected TextFeedbackPanel operandFeedback;
 
-    private Option operandTypeValue;
-    private OperandTypeProvider operandTypeProvider;
-    private Select2SingleChoice<Option> operandTypeField;
-    private TextFeedbackPanel operandTypeFeedback;
+    protected Option operandTypeValue;
+    protected OperandTypeProvider operandTypeProvider;
+    protected Select2SingleChoice<Option> operandTypeField;
+    protected TextFeedbackPanel operandTypeFeedback;
 
-    private Double interestValue;
-    private TextField<Double> interestField;
-    private TextFeedbackPanel interestFeedback;
+    protected Double interestValue;
+    protected TextField<Double> interestField;
+    protected TextFeedbackPanel interestFeedback;
 
-    private List<Map<String, Object>> incentiveValue;
-    private DataTable<Map<String, Object>, String> dataTable;
-    private ListDataProvider provider;
+    protected List<Map<String, Object>> incentiveValue;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected ListDataProvider provider;
 
     public IncentivePopup(String id, ModalWindow window, List<Map<String, Object>> incentiveValue) {
         super(id);

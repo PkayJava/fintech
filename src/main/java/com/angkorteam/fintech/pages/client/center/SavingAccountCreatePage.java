@@ -239,7 +239,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
         this.form.add(this.productView);
 
         this.submittedOnBlock = new WebMarkupContainer("submittedOnBlock");
-        this.submittedOnBlock.setOutputMarkupId(true);
         this.form.add(this.submittedOnBlock);
         this.submittedOnContainer = new WebMarkupContainer("submittedOnContainer");
         this.submittedOnBlock.add(this.submittedOnContainer);
@@ -254,7 +253,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
         this.officerProvider.applyWhere("is_active", "is_active = 1");
         this.officerProvider.applyWhere("office_id", "office_id = " + this.officeId);
         this.officerBlock = new WebMarkupContainer("officerBlock");
-        this.officerBlock.setOutputMarkupId(true);
         this.form.add(this.officerBlock);
         this.officerContainer = new WebMarkupContainer("officerContainer");
         this.officerBlock.add(this.officerContainer);
@@ -266,7 +264,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
         this.officerContainer.add(this.officerFeedback);
 
         this.externalIdBlock = new WebMarkupContainer("externalIdBlock");
-        this.externalIdBlock.setOutputMarkupId(true);
         this.form.add(this.externalIdBlock);
         this.externalIdContainer = new WebMarkupContainer("externalIdContainer");
         this.externalIdBlock.add(this.externalIdContainer);
@@ -284,7 +281,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
         this.form.add(this.decimalPlacesView);
 
         this.nominalAnnualInterestBlock = new WebMarkupContainer("nominalAnnualInterestBlock");
-        this.nominalAnnualInterestBlock.setOutputMarkupId(true);
         this.form.add(this.nominalAnnualInterestBlock);
         this.nominalAnnualInterestContainer = new WebMarkupContainer("nominalAnnualInterestContainer");
         this.nominalAnnualInterestBlock.add(this.nominalAnnualInterestContainer);
@@ -297,7 +293,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
 
         this.interestCompoundingPeriodProvider = new InterestCompoundingPeriodProvider();
         this.interestCompoundingPeriodBlock = new WebMarkupContainer("interestCompoundingPeriodBlock");
-        this.interestCompoundingPeriodBlock.setOutputMarkupId(true);
         this.form.add(this.interestCompoundingPeriodBlock);
         this.interestCompoundingPeriodContainer = new WebMarkupContainer("interestCompoundingPeriodContainer");
         this.interestCompoundingPeriodBlock.add(this.interestCompoundingPeriodContainer);
@@ -313,7 +308,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
 
         this.interestPostingPeriodProvider = new InterestPostingPeriodProvider();
         this.interestPostingPeriodBlock = new WebMarkupContainer("interestPostingPeriodBlock");
-        this.interestPostingPeriodBlock.setOutputMarkupId(true);
         this.form.add(this.interestPostingPeriodBlock);
         this.interestPostingPeriodContainer = new WebMarkupContainer("interestPostingPeriodContainer");
         this.interestPostingPeriodBlock.add(this.interestPostingPeriodContainer);
@@ -326,7 +320,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
 
         this.interestCalculatedUsingProvider = new InterestCalculatedUsingProvider();
         this.interestCalculatedUsingBlock = new WebMarkupContainer("interestCalculatedUsingBlock");
-        this.interestCalculatedUsingBlock.setOutputMarkupId(true);
         this.form.add(this.interestCalculatedUsingBlock);
         this.interestCalculatedUsingContainer = new WebMarkupContainer("interestCalculatedUsingContainer");
         this.interestCalculatedUsingBlock.add(this.interestCalculatedUsingContainer);
@@ -339,7 +332,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
 
         this.dayInYearProvider = new DayInYearProvider(DayInYear.D365, DayInYear.D360);
         this.dayInYearBlock = new WebMarkupContainer("dayInYearBlock");
-        this.dayInYearBlock.setOutputMarkupId(true);
         this.form.add(this.dayInYearBlock);
         this.dayInYearContainer = new WebMarkupContainer("dayInYearContainer");
         this.dayInYearBlock.add(this.dayInYearContainer);
@@ -351,7 +343,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
         this.dayInYearContainer.add(this.dayInYearFeedback);
 
         this.minimumOpeningBalanceBlock = new WebMarkupContainer("minimumOpeningBalanceBlock");
-        this.minimumOpeningBalanceBlock.setOutputMarkupId(true);
         this.form.add(this.minimumOpeningBalanceBlock);
         this.minimumOpeningBalanceContainer = new WebMarkupContainer("minimumOpeningBalanceContainer");
         this.minimumOpeningBalanceBlock.add(this.minimumOpeningBalanceContainer);
@@ -363,7 +354,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
         this.minimumOpeningBalanceContainer.add(this.minimumOpeningBalanceFeedback);
 
         this.lockInPeriodBlock = new WebMarkupContainer("lockInPeriodBlock");
-        this.lockInPeriodBlock.setOutputMarkupId(true);
         this.form.add(this.lockInPeriodBlock);
         this.lockInPeriodContainer = new WebMarkupContainer("lockInPeriodContainer");
         this.lockInPeriodBlock.add(this.lockInPeriodContainer);
@@ -376,7 +366,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
 
         this.lockInTypeProvider = new LockInTypeProvider();
         this.lockInTypeBlock = new WebMarkupContainer("lockInTypeBlock");
-        this.lockInTypeBlock.setOutputMarkupId(true);
         this.form.add(this.lockInTypeBlock);
         this.lockInTypeContainer = new WebMarkupContainer("lockInTypeContainer");
         this.lockInTypeBlock.add(this.lockInTypeContainer);
@@ -388,7 +377,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
         this.lockInTypeContainer.add(this.lockInTypeFeedback);
 
         this.applyWithdrawalFeeForTransferBlock = new WebMarkupContainer("applyWithdrawalFeeForTransferBlock");
-        this.applyWithdrawalFeeForTransferBlock.setOutputMarkupId(true);
         this.form.add(this.applyWithdrawalFeeForTransferBlock);
         this.applyWithdrawalFeeForTransferContainer = new WebMarkupContainer("applyWithdrawalFeeForTransferContainer");
         this.applyWithdrawalFeeForTransferBlock.add(this.applyWithdrawalFeeForTransferContainer);
@@ -399,7 +387,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
         this.applyWithdrawalFeeForTransferContainer.add(this.applyWithdrawalFeeForTransferFeedback);
 
         this.overdraftAllowedBlock = new WebMarkupContainer("overdraftAllowedBlock");
-        this.overdraftAllowedBlock.setOutputMarkupId(true);
         this.form.add(this.overdraftAllowedBlock);
         this.overdraftAllowedContainer = new WebMarkupContainer("overdraftAllowedContainer");
         this.overdraftAllowedBlock.add(this.overdraftAllowedContainer);
@@ -411,7 +398,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
         this.overdraftAllowedContainer.add(this.overdraftAllowedFeedback);
 
         this.maximumOverdraftAmountLimitBlock = new WebMarkupContainer("maximumOverdraftAmountLimitBlock");
-        this.maximumOverdraftAmountLimitBlock.setOutputMarkupId(true);
         this.form.add(this.maximumOverdraftAmountLimitBlock);
         this.maximumOverdraftAmountLimitContainer = new WebMarkupContainer("maximumOverdraftAmountLimitContainer");
         this.maximumOverdraftAmountLimitBlock.add(this.maximumOverdraftAmountLimitContainer);
@@ -423,7 +409,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
         this.maximumOverdraftAmountLimitContainer.add(this.maximumOverdraftAmountLimitFeedback);
 
         this.nominalAnnualInterestForOverdraftBlock = new WebMarkupContainer("nominalAnnualInterestForOverdraftBlock");
-        this.nominalAnnualInterestForOverdraftBlock.setOutputMarkupId(true);
         this.form.add(this.nominalAnnualInterestForOverdraftBlock);
         this.nominalAnnualInterestForOverdraftContainer = new WebMarkupContainer("nominalAnnualInterestForOverdraftContainer");
         this.nominalAnnualInterestForOverdraftBlock.add(this.nominalAnnualInterestForOverdraftContainer);
@@ -435,7 +420,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
         this.nominalAnnualInterestForOverdraftContainer.add(this.nominalAnnualInterestForOverdraftFeedback);
 
         this.minOverdraftRequiredForInterestCalculationBlock = new WebMarkupContainer("minOverdraftRequiredForInterestCalculationBlock");
-        this.minOverdraftRequiredForInterestCalculationBlock.setOutputMarkupId(true);
         this.form.add(this.minOverdraftRequiredForInterestCalculationBlock);
         this.minOverdraftRequiredForInterestCalculationContainer = new WebMarkupContainer("minOverdraftRequiredForInterestCalculationContainer");
         this.minOverdraftRequiredForInterestCalculationBlock.add(this.minOverdraftRequiredForInterestCalculationContainer);
@@ -447,7 +431,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
         this.minOverdraftRequiredForInterestCalculationContainer.add(this.minOverdraftRequiredForInterestCalculationFeedback);
 
         this.enforceMinimumBalanceBlock = new WebMarkupContainer("enforceMinimumBalanceBlock");
-        this.enforceMinimumBalanceBlock.setOutputMarkupId(true);
         this.form.add(this.enforceMinimumBalanceBlock);
         this.enforceMinimumBalanceContainer = new WebMarkupContainer("enforceMinimumBalanceContainer");
         this.enforceMinimumBalanceBlock.add(this.enforceMinimumBalanceContainer);
@@ -458,7 +441,6 @@ public class SavingAccountCreatePage extends DeprecatedPage {
         this.enforceMinimumBalanceContainer.add(this.enforceMinimumBalanceFeedback);
 
         this.minimumBalanceBlock = new WebMarkupContainer("minimumBalanceBlock");
-        this.minimumBalanceBlock.setOutputMarkupId(true);
         this.form.add(this.minimumBalanceBlock);
         this.minimumBalanceContainer = new WebMarkupContainer("minimumBalanceContainer");
         this.minimumBalanceBlock.add(this.minimumBalanceContainer);

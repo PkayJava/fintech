@@ -369,17 +369,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
     protected ListDataProvider advancedAccountingRulePenaltyIncomeProvider;
     protected AjaxLink<Void> advancedAccountingRulePenaltyIncomeAddLink;
 
-//    protected Option itemChargeValue;
-//    protected Option itemPeriodTypeValue;
-//    protected Integer itemPeriodFromValue;
-//    protected Integer itemPeriodToValue;
-//    protected Integer itemAmountRangeFromValue;
-//    protected Integer itemAmountRangeToValue;
-//    protected Double itemInterestValue;
-//    protected String itemDescriptionValue;
-//    protected Option itemPaymentValue;
-//    protected Option itemAccountValue;
-
     protected Map<String, Object> popupModel;
 
     protected ModalWindow fundSourcePopup;
@@ -509,7 +498,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
 
     protected void initAccountingCash() {
         this.cashBlock = new WebMarkupContainer("cashBlock");
-        this.cashBlock.setOutputMarkupId(true);
         this.form.add(this.cashBlock);
         this.cashIContainer = new WebMarkupContainer("cashIContainer");
         this.cashBlock.add(this.cashIContainer);
@@ -601,7 +589,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
 
     protected void initAdvancedAccountingRule() {
         this.advancedAccountingRuleBlock = new WebMarkupContainer("advancedAccountingRuleBlock");
-        this.advancedAccountingRuleBlock.setOutputMarkupId(true);
         this.form.add(this.advancedAccountingRuleBlock);
         this.advancedAccountingRuleIContainer = new WebMarkupContainer("advancedAccountingRuleIContainer");
         this.advancedAccountingRuleBlock.add(this.advancedAccountingRuleIContainer);
@@ -995,7 +982,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
 
     protected void initInterestRateValidEndDateBlock() {
         this.interestRateValidEndDateBlock = new WebMarkupBlock("interestRateValidEndDateBlock", Size.Six_6);
-        this.interestRateValidEndDateBlock.setOutputMarkupId(true);
         this.form.add(this.interestRateValidEndDateBlock);
         this.interestRateValidEndDateIContainer = new WebMarkupContainer("interestRateValidEndDateIContainer");
         this.interestRateValidEndDateBlock.add(this.interestRateValidEndDateIContainer);
@@ -1008,7 +994,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
 
     protected void initInterestRateValidFromDateBlock() {
         this.interestRateValidFromDateBlock = new WebMarkupBlock("interestRateValidFromDateBlock", Size.Six_6);
-        this.interestRateValidFromDateBlock.setOutputMarkupId(true);
         this.form.add(this.interestRateValidFromDateBlock);
         this.interestRateValidFromDateIContainer = new WebMarkupContainer("interestRateValidFromDateIContainer");
         this.interestRateValidFromDateBlock.add(this.interestRateValidFromDateIContainer);
@@ -1095,7 +1080,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
 
     protected void initSectionSetting() {
         this.settingLockInPeriodBlock = new WebMarkupBlock("settingLockInPeriodBlock", Size.Three_3);
-        this.settingLockInPeriodBlock.setOutputMarkupId(true);
         this.form.add(this.settingLockInPeriodBlock);
         this.settingLockInPeriodIContainer = new WebMarkupContainer("settingLockInPeriodIContainer");
         this.settingLockInPeriodBlock.add(this.settingLockInPeriodIContainer);
@@ -1118,7 +1102,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.settingLockInTypeIContainer.add(this.settingLockInTypeFeedback);
 
         this.settingMinimumDepositTermBlock = new WebMarkupBlock("settingMinimumDepositTermBlock", Size.Three_3);
-        this.settingMinimumDepositTermBlock.setOutputMarkupId(true);
         this.form.add(this.settingMinimumDepositTermBlock);
         this.settingMinimumDepositTermIContainer = new WebMarkupContainer("settingMinimumDepositTermIContainer");
         this.settingMinimumDepositTermBlock.add(this.settingMinimumDepositTermIContainer);
@@ -1142,7 +1125,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.settingMinimumDepositTypeIContainer.add(this.settingMinimumDepositTypeFeedback);
 
         this.settingInMultiplesOfBlock = new WebMarkupBlock("settingInMultiplesOfBlock", Size.Three_3);
-        this.settingInMultiplesOfBlock.setOutputMarkupId(true);
         this.form.add(this.settingInMultiplesOfBlock);
         this.settingInMultiplesOfIContainer = new WebMarkupContainer("settingInMultiplesOfIContainer");
         this.settingInMultiplesOfBlock.add(this.settingInMultiplesOfIContainer);
@@ -1165,7 +1147,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.settingInMultiplesTypeIContainer.add(this.settingInMultiplesTypeFeedback);
 
         this.settingMaximumDepositTermBlock = new WebMarkupBlock("settingMaximumDepositTermBlock", Size.Three_3);
-        this.settingMaximumDepositTermBlock.setOutputMarkupId(true);
         this.form.add(this.settingMaximumDepositTermBlock);
         this.settingMaximumDepositTermIContainer = new WebMarkupContainer("settingMaximumDepositTermIContainer");
         this.settingMaximumDepositTermBlock.add(this.settingMaximumDepositTermIContainer);
@@ -1198,7 +1179,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.settingForPreMatureClosureIContainer.add(this.settingForPreMatureClosureFeedback);
 
         this.settingApplyPenalInterestBlock = new WebMarkupBlock("settingApplyPenalInterestBlock", Size.Three_3);
-        this.settingApplyPenalInterestBlock.setOutputMarkupId(true);
         this.form.add(this.settingApplyPenalInterestBlock);
         this.settingApplyPenalInterestIContainer = new WebMarkupContainer("settingApplyPenalInterestIContainer");
         this.settingApplyPenalInterestBlock.add(this.settingApplyPenalInterestIContainer);
@@ -1231,7 +1211,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.settingWithholdTaxApplicableIContainer.add(this.settingWithholdTaxApplicableFeedback);
 
         this.settingTaxGroupBlock = new WebMarkupBlock("settingTaxGroupBlock", Size.Six_6);
-        this.settingTaxGroupBlock.setOutputMarkupId(true);
         this.form.add(this.settingTaxGroupBlock);
         this.settingTaxGroupIContainer = new WebMarkupContainer("settingTaxGroupIContainer");
         this.settingTaxGroupBlock.add(this.settingTaxGroupIContainer);
@@ -1257,7 +1236,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
     protected void initSectionTerm() {
 
         this.termDefaultDepositAmountBlock = new WebMarkupBlock("termDefaultDepositAmountBlock", Size.Six_6);
-        this.termDefaultDepositAmountBlock.setOutputMarkupId(true);
         this.form.add(this.termDefaultDepositAmountBlock);
         this.termDefaultDepositAmountIContainer = new WebMarkupContainer("termDefaultDepositAmountIContainer");
         this.termDefaultDepositAmountBlock.add(this.termDefaultDepositAmountIContainer);
@@ -1268,7 +1246,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.termDefaultDepositAmountIContainer.add(this.termDefaultDepositAmountFeedback);
 
         this.termMinimumDepositAmountBlock = new WebMarkupBlock("termMinimumDepositAmountBlock", Size.Six_6);
-        this.termMinimumDepositAmountBlock.setOutputMarkupId(true);
         this.form.add(this.termMinimumDepositAmountBlock);
         this.termMinimumDepositAmountIContainer = new WebMarkupContainer("termMinimumDepositAmountIContainer");
         this.termMinimumDepositAmountBlock.add(this.termMinimumDepositAmountIContainer);
@@ -1279,7 +1256,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.termMinimumDepositAmountIContainer.add(this.termMinimumDepositAmountFeedback);
 
         this.termMaximumDepositAmountBlock = new WebMarkupBlock("termMaximumDepositAmountBlock", Size.Six_6);
-        this.termMaximumDepositAmountBlock.setOutputMarkupId(true);
         this.form.add(this.termMaximumDepositAmountBlock);
         this.termMaximumDepositAmountIContainer = new WebMarkupContainer("termMaximumDepositAmountIContainer");
         this.termMaximumDepositAmountBlock.add(this.termMaximumDepositAmountIContainer);
@@ -1378,7 +1354,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
 
     protected void initSectionDetail() {
         this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
-        this.detailProductNameBlock.setOutputMarkupId(true);
         this.form.add(this.detailProductNameBlock);
         this.detailProductNameIContainer = new WebMarkupContainer("detailProductNameIContainer");
         this.detailProductNameBlock.add(this.detailProductNameIContainer);
@@ -1389,7 +1364,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.detailProductNameIContainer.add(this.detailProductNameFeedback);
 
         this.detailShortNameBlock = new WebMarkupBlock("detailShortNameBlock", Size.Six_6);
-        this.detailShortNameBlock.setOutputMarkupId(true);
         this.form.add(this.detailShortNameBlock);
         this.detailShortNameIContainer = new WebMarkupContainer("detailShortNameIContainer");
         this.detailShortNameBlock.add(this.detailShortNameIContainer);
@@ -1400,7 +1374,6 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.detailShortNameIContainer.add(this.detailShortNameFeedback);
 
         this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Six_6);
-        this.detailDescriptionBlock.setOutputMarkupId(true);
         this.form.add(this.detailDescriptionBlock);
         this.detailDescriptionIContainer = new WebMarkupContainer("detailDescriptionIContainer");
         this.detailDescriptionBlock.add(this.detailDescriptionIContainer);

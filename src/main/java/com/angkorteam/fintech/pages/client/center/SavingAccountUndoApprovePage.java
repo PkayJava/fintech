@@ -55,7 +55,6 @@ public class SavingAccountUndoApprovePage extends DeprecatedPage {
         this.form.add(this.closeLink);
 
         this.noteBlock = new WebMarkupContainer("noteBlock");
-        this.noteBlock.setOutputMarkupId(true);
         this.form.add(this.noteBlock);
         this.noteContainer = new WebMarkupContainer("noteContainer");
         this.noteBlock.add(this.noteContainer);

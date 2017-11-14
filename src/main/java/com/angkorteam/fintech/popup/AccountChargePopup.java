@@ -101,7 +101,6 @@ public class AccountChargePopup extends Panel {
         this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = 2");
         this.chargeProvider.applyWhere("is_active", "is_active = 1");
         this.chargeBlock = new WebMarkupContainer("chargeBlock");
-        this.chargeBlock.setOutputMarkupId(true);
         this.form.add(this.chargeBlock);
         this.chargeContainer = new WebMarkupContainer("chargeContainer");
         this.chargeBlock.add(this.chargeContainer);
@@ -115,7 +114,6 @@ public class AccountChargePopup extends Panel {
 
         this.chargeTypeValue = new PropertyModel<>(this.model, "itemChargeTypeValue");
         this.chargeTypeBlock = new WebMarkupContainer("chargeTypeBlock");
-        this.chargeTypeBlock.setOutputMarkupId(true);
         this.form.add(this.chargeTypeBlock);
         this.chargeTypeContainer = new WebMarkupContainer("chargeTypeContainer");
         this.chargeTypeBlock.add(this.chargeTypeContainer);
@@ -124,7 +122,6 @@ public class AccountChargePopup extends Panel {
 
         this.amountValue = new PropertyModel<>(this.model, "itemAmountValue");
         this.amountBlock = new WebMarkupContainer("amountBlock");
-        this.amountBlock.setOutputMarkupId(true);
         this.form.add(this.amountBlock);
         this.amountContainer = new WebMarkupContainer("amountContainer");
         this.amountBlock.add(this.amountContainer);
@@ -136,7 +133,6 @@ public class AccountChargePopup extends Panel {
 
         this.collectedOnValue = new PropertyModel<>(this.model, "itemCollectedOnValue");
         this.collectedOnBlock = new WebMarkupContainer("collectedOnBlock");
-        this.collectedOnBlock.setOutputMarkupId(true);
         this.form.add(this.collectedOnBlock);
         this.collectedOnContainer = new WebMarkupContainer("collectedOnContainer");
         this.collectedOnBlock.add(this.collectedOnContainer);
@@ -145,7 +141,6 @@ public class AccountChargePopup extends Panel {
 
         this.dateValue = new PropertyModel<>(this.model, "itemDateValue");
         this.dateBlock = new WebMarkupContainer("dateBlock");
-        this.dateBlock.setOutputMarkupId(true);
         this.form.add(this.dateBlock);
         this.dateContainer = new WebMarkupContainer("dateContainer");
         this.dateBlock.add(this.dateContainer);
@@ -157,7 +152,6 @@ public class AccountChargePopup extends Panel {
 
         this.repaymentEveryValue = new PropertyModel<>(this.model, "itemRepaymentEveryValue");
         this.repaymentEveryBlock = new WebMarkupContainer("repaymentEveryBlock");
-        this.repaymentEveryBlock.setOutputMarkupId(true);
         this.form.add(this.repaymentEveryBlock);
         this.repaymentEveryContainer = new WebMarkupContainer("repaymentEveryContainer");
         this.repaymentEveryBlock.add(this.repaymentEveryContainer);

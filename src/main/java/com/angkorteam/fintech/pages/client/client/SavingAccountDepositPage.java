@@ -115,7 +115,6 @@ public class SavingAccountDepositPage extends DeprecatedPage {
         this.form.add(this.closeLink);
 
         this.transactionDateBlock = new WebMarkupContainer("transactionDateBlock");
-        this.transactionDateBlock.setOutputMarkupId(true);
         this.form.add(this.transactionDateBlock);
         this.transactionDateContainer = new WebMarkupContainer("transactionDateContainer");
         this.transactionDateBlock.add(this.transactionDateContainer);
@@ -127,7 +126,6 @@ public class SavingAccountDepositPage extends DeprecatedPage {
         this.transactionDateContainer.add(this.transactionDateFeedback);
 
         this.transactionAmountBlock = new WebMarkupContainer("transactionAmountBlock");
-        this.transactionAmountBlock.setOutputMarkupId(true);
         this.form.add(this.transactionAmountBlock);
         this.transactionAmountContainer = new WebMarkupContainer("transactionAmountContainer");
         this.transactionAmountBlock.add(this.transactionAmountContainer);
@@ -140,7 +138,6 @@ public class SavingAccountDepositPage extends DeprecatedPage {
 
         this.paymentTypeProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
         this.paymentTypeBlock = new WebMarkupContainer("paymentTypeBlock");
-        this.paymentTypeBlock.setOutputMarkupId(true);
         this.form.add(this.paymentTypeBlock);
         this.paymentTypeContainer = new WebMarkupContainer("paymentTypeContainer");
         this.paymentTypeBlock.add(this.paymentTypeContainer);
@@ -152,7 +149,6 @@ public class SavingAccountDepositPage extends DeprecatedPage {
         this.paymentTypeContainer.add(this.paymentTypeFeedback);
 
         this.paymentDetailBlock = new WebMarkupContainer("paymentDetailBlock");
-        this.paymentDetailBlock.setOutputMarkupId(true);
         this.form.add(this.paymentDetailBlock);
         this.paymentDetailContainer = new WebMarkupContainer("paymentDetailContainer");
         this.paymentDetailBlock.add(this.paymentDetailContainer);
@@ -163,7 +159,6 @@ public class SavingAccountDepositPage extends DeprecatedPage {
         this.paymentDetailContainer.add(this.paymentDetailFeedback);
 
         this.accountBlock = new WebMarkupContainer("accountBlock");
-        this.accountBlock.setOutputMarkupId(true);
         this.form.add(this.accountBlock);
         this.accountContainer = new WebMarkupContainer("accountContainer");
         this.accountBlock.add(this.accountContainer);
@@ -174,7 +169,6 @@ public class SavingAccountDepositPage extends DeprecatedPage {
         this.accountContainer.add(this.accountFeedback);
 
         this.chequeBlock = new WebMarkupContainer("chequeBlock");
-        this.chequeBlock.setOutputMarkupId(true);
         this.form.add(this.chequeBlock);
         this.chequeContainer = new WebMarkupContainer("chequeContainer");
         this.chequeBlock.add(this.chequeContainer);
@@ -185,7 +179,6 @@ public class SavingAccountDepositPage extends DeprecatedPage {
         this.chequeContainer.add(this.chequeFeedback);
 
         this.routingBlock = new WebMarkupContainer("routingBlock");
-        this.routingBlock.setOutputMarkupId(true);
         this.form.add(this.routingBlock);
         this.routingContainer = new WebMarkupContainer("routingContainer");
         this.routingBlock.add(this.routingContainer);
@@ -196,7 +189,6 @@ public class SavingAccountDepositPage extends DeprecatedPage {
         this.routingContainer.add(this.routingFeedback);
 
         this.receiptBlock = new WebMarkupContainer("receiptBlock");
-        this.receiptBlock.setOutputMarkupId(true);
         this.form.add(this.receiptBlock);
         this.receiptContainer = new WebMarkupContainer("receiptContainer");
         this.receiptBlock.add(this.receiptContainer);
@@ -207,7 +199,6 @@ public class SavingAccountDepositPage extends DeprecatedPage {
         this.receiptContainer.add(this.receiptFeedback);
 
         this.bankBlock = new WebMarkupContainer("bankBlock");
-        this.bankBlock.setOutputMarkupId(true);
         this.form.add(this.bankBlock);
         this.bankContainer = new WebMarkupContainer("bankContainer");
         this.bankBlock.add(this.bankContainer);

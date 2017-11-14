@@ -161,7 +161,6 @@ public class GroupCreatePage extends DeprecatedPage {
         this.form.add(this.closeLink);
 
         this.officeBlock = new WebMarkupContainer("officeBlock");
-        this.officeBlock.setOutputMarkupId(true);
         this.form.add(this.officeBlock);
         this.officeContainer = new WebMarkupContainer("officeContainer");
         this.officeBlock.add(this.officeContainer);
@@ -174,7 +173,6 @@ public class GroupCreatePage extends DeprecatedPage {
         this.officeContainer.add(this.officeFeedback);
 
         this.staffBlock = new WebMarkupContainer("staffBlock");
-        this.staffBlock.setOutputMarkupId(true);
         this.form.add(this.staffBlock);
         this.staffContainer = new WebMarkupContainer("staffContainer");
         this.staffBlock.add(this.staffContainer);
@@ -188,7 +186,6 @@ public class GroupCreatePage extends DeprecatedPage {
         this.staffContainer.add(this.staffFeedback);
 
         this.nameBlock = new WebMarkupContainer("nameBlock");
-        this.nameBlock.setOutputMarkupId(true);
         this.form.add(this.nameBlock);
         this.nameContainer = new WebMarkupContainer("nameContainer");
         this.nameBlock.add(this.nameContainer);
@@ -200,7 +197,6 @@ public class GroupCreatePage extends DeprecatedPage {
         this.nameContainer.add(this.nameFeedback);
 
         this.externalIdBlock = new WebMarkupContainer("externalIdBlock");
-        this.externalIdBlock.setOutputMarkupId(true);
         this.form.add(this.externalIdBlock);
         this.externalIdContainer = new WebMarkupContainer("externalIdContainer");
         this.externalIdBlock.add(this.externalIdContainer);
@@ -212,7 +208,6 @@ public class GroupCreatePage extends DeprecatedPage {
         this.externalIdContainer.add(this.externalIdFeedback);
 
         this.activeBlock = new WebMarkupContainer("activeBlock");
-        this.activeBlock.setOutputMarkupId(true);
         this.form.add(this.activeBlock);
         this.activeContainer = new WebMarkupContainer("activeContainer");
         this.activeBlock.add(this.activeContainer);
@@ -223,7 +218,6 @@ public class GroupCreatePage extends DeprecatedPage {
         this.activeContainer.add(this.activeFeedback);
 
         this.activationDateBlock = new WebMarkupContainer("activationDateBlock");
-        this.activationDateBlock.setOutputMarkupId(true);
         this.form.add(this.activationDateBlock);
         this.activationDateContainer = new WebMarkupContainer("activationDateContainer");
         this.activationDateBlock.add(this.activationDateContainer);
@@ -235,7 +229,6 @@ public class GroupCreatePage extends DeprecatedPage {
         this.activationDateContainer.add(this.activationDateFeedback);
 
         this.submittedOnBlock = new WebMarkupContainer("submittedOnBlock");
-        this.submittedOnBlock.setOutputMarkupId(true);
         this.form.add(this.submittedOnBlock);
         this.submittedOnContainer = new WebMarkupContainer("submittedOnContainer");
         this.submittedOnBlock.add(this.submittedOnContainer);
