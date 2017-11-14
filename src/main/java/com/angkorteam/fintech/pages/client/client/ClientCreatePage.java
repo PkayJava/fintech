@@ -755,7 +755,7 @@ public class ClientCreatePage extends Page {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void familyMemberPopupClose(String elementId, AjaxRequestTarget target) {
+    protected void familyMemberPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());

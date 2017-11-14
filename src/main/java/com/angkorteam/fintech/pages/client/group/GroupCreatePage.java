@@ -242,7 +242,7 @@ public class GroupCreatePage extends DeprecatedPage {
         {
             this.clientPopup = new ModalWindow("clientPopup");
             add(this.clientPopup);
-            this.clientPopup.setOnClose(this::clientPopupOnClose);
+            this.clientPopup.setOnClose(this::clientPopupClose);
 
             List<IColumn<Map<String, Object>, String>> clientColumn = Lists.newLinkedList();
             clientColumn.add(new TextColumn(Model.of("Display Name"), "displayName", "displayName", this::clientDisplayNameColumn));
@@ -321,7 +321,7 @@ public class GroupCreatePage extends DeprecatedPage {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void clientPopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void clientPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         if (this.itemClientValue != null) {
             JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
             SelectQuery query = new SelectQuery("m_client");

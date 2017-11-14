@@ -657,7 +657,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         }
     }
 
-    protected void feeIncomePopupClose(String elementId, AjaxRequestTarget target) {
+    protected void feeIncomePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
@@ -667,7 +667,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         target.add(this.advancedAccountingRuleFeeIncomeTable);
     }
 
-    protected void penaltyIncomePopupClose(String elementId, AjaxRequestTarget target) {
+    protected void penaltyIncomePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", UUID.randomUUID().toString());
         item.put("charge", this.popupModel.get("chargeValue"));
@@ -676,7 +676,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         target.add(this.advancedAccountingRulePenaltyIncomeTable);
     }
 
-    protected void fundSourcePopupClose(String elementId, AjaxRequestTarget target) {
+    protected void fundSourcePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
@@ -839,7 +839,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.form.add(this.chargeAddLink);
     }
 
-    protected void chargePopupClose(String elementId, AjaxRequestTarget target) {
+    protected void chargePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         Option charge = (Option) this.popupModel.get("chargeValue");
         for (Map<String, Object> temp : this.chargeValue) {
@@ -1004,10 +1004,10 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.interestRateValidFromDateIContainer.add(this.interestRateValidFromDateFeedback);
     }
 
-    protected void incentivePopupClose(String elementId, AjaxRequestTarget target) {
+    protected void incentivePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
     }
 
-    protected void interestRateChartPopupClose(String elementId, AjaxRequestTarget target) {
+    protected void interestRateChartPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         String uuid = UUID.randomUUID().toString();
         item.put("uuid", uuid);

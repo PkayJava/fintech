@@ -486,7 +486,7 @@ public class SavingCreatePage extends DeprecatedPage {
         this.accountingValue = ACC_NONE;
     }
 
-    protected void feeIncomePopupClose(String elementId, AjaxRequestTarget target) {
+    protected void feeIncomePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
@@ -496,7 +496,7 @@ public class SavingCreatePage extends DeprecatedPage {
         target.add(this.advancedAccountingRuleFeeIncomeTable);
     }
 
-    protected void penaltyIncomePopupClose(String elementId, AjaxRequestTarget target) {
+    protected void penaltyIncomePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
@@ -506,7 +506,7 @@ public class SavingCreatePage extends DeprecatedPage {
         target.add(this.advancedAccountingRulePenaltyIncomeTable);
     }
 
-    protected void fundSourcePopupClose(String elementId, AjaxRequestTarget target) {
+    protected void fundSourcePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
@@ -948,7 +948,7 @@ public class SavingCreatePage extends DeprecatedPage {
         this.chargeIContainer.add(this.chargeAddLink);
     }
 
-    protected void chargePopupClose(String elementId, AjaxRequestTarget target) {
+    protected void chargePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         Option charge = (Option) this.popupModel.get("chargeValue");
         for (Map<String, Object> temp : this.chargeValue) {

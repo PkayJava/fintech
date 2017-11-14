@@ -353,7 +353,7 @@ public class CenterCreatePage extends Page {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void groupPopupClose(String elementId, AjaxRequestTarget target) {
+    protected void groupPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         if (this.popupModel.get("groupValue") != null) {
             JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
             SelectQuery query = new SelectQuery("m_group");

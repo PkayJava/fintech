@@ -267,7 +267,7 @@ public class TaxGroupModifyPage extends Page {
         this.taxComponentPopup.setOnClose(this::taxComponentPopupClose);
     }
 
-    protected void taxComponentPopupClose(String elementId, AjaxRequestTarget target) {
+    protected void taxComponentPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         for (Map<String, Object> item : this.taxComponentValue) {
             if (this.popupModel.get("idValue").equals(item.get("id"))) {
                 item.put("endDate", this.popupModel.get("endDateValue"));

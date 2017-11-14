@@ -546,7 +546,7 @@ public class LoanCreatePage extends DeprecatedPage {
         // Table
         this.chargePopup = new ModalWindow("chargePopup");
         add(this.chargePopup);
-        this.chargePopup.setOnClose(this::chargePopupOnClose);
+        this.chargePopup.setOnClose(this::chargePopupClose);
 
         List<IColumn<Map<String, Object>, String>> chargeColumn = Lists.newLinkedList();
         chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeNameColumn));
@@ -611,7 +611,7 @@ public class LoanCreatePage extends DeprecatedPage {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void collateralPopupClose(String elementId, AjaxRequestTarget target) {
+    protected void collateralPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         Map<String, Object> item = null;
         for (Map<String, Object> temp : this.collateralValue) {
             if (this.itemCollateralValue.getId().equals(temp.get("uuid"))) {
@@ -731,7 +731,7 @@ public class LoanCreatePage extends DeprecatedPage {
         return false;
     }
 
-    protected void chargePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void chargePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", UUID.randomUUID().toString());
         item.put("chargeId", this.itemChargeValue.getId());

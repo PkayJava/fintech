@@ -104,7 +104,7 @@ public class WebcamPopup extends Panel {
 
     protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
         if (this.window != null) {
-            this.window.setElementId(ajaxButton.getId());
+            this.window.setSignalId(ajaxButton.getId());
             this.window.close(target);
         }
         return true;

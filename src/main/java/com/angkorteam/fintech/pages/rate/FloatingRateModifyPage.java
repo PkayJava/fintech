@@ -306,7 +306,7 @@ public class FloatingRateModifyPage extends Page {
     protected void configureMetaData() {
     }
 
-    protected void ratePopupClose(String elementId, AjaxRequestTarget target) {
+    protected void ratePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         for (Map<String, Object> item : this.rateValue) {
             if (this.popupModel.get("idValue").equals(item.get("id"))) {
                 item.put("fromDate", this.popupModel.get("fromDateValue"));

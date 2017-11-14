@@ -256,7 +256,7 @@ public class TransactionPage extends Page {
         this.officeVContainer.add(this.officeView);
     }
 
-    protected void commentPopupClose(String elementId, AjaxRequestTarget target) {
+    protected void commentPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         setResponsePage(SearchJournalPage.class);
     }
 

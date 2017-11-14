@@ -120,7 +120,7 @@ public class ClientPreviewGeneralPanel extends Panel {
         initData();
 
         this.clientUnassignStaffPopup = new ModalWindow("clientUnassignStaffPopup");
-        this.clientUnassignStaffPopup.setOnClose(this::clientUnassignStaffPopupOnClose);
+        this.clientUnassignStaffPopup.setOnClose(this::clientUnassignStaffPopupClose);
         add(this.clientUnassignStaffPopup);
 
         this.buttonGroups = new WebMarkupContainer("buttonGroups");
@@ -229,8 +229,8 @@ public class ClientPreviewGeneralPanel extends Panel {
         initDefault();
     }
 
-    protected void clientUnassignStaffPopupOnClose(String elementId, AjaxRequestTarget target) {
-        if ("confirmButton".equals(elementId)) {
+    protected void clientUnassignStaffPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
+        if ("confirmButton".equals(signalId)) {
             JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
             String staffId = jdbcTemplate.queryForObject("select staff_id from m_client where id = ?", String.class, this.clientId);
             ClientUnassignStaffBuilder builder = new ClientUnassignStaffBuilder();

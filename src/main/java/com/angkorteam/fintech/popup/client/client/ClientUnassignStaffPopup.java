@@ -39,13 +39,13 @@ public class ClientUnassignStaffPopup extends Panel {
     }
 
     protected boolean cancelButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
-        this.window.setElementId(ajaxButton.getId());
+        this.window.setSignalId(ajaxButton.getId());
         this.window.close(target);
         return true;
     }
 
     protected boolean confirmButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
-        this.window.setElementId(ajaxButton.getId());
+        this.window.setSignalId(ajaxButton.getId());
         this.window.close(target);
         return true;
     }

@@ -1074,7 +1074,7 @@ public class LoanCreatePage extends DeprecatedPage {
     protected void initSectionOverdueCharge() {
         this.overdueChargePopup = new ModalWindow("overdueChargePopup");
         add(this.overdueChargePopup);
-        this.overdueChargePopup.setOnClose(this::overdueChargePopupOnClose);
+        this.overdueChargePopup.setOnClose(this::overdueChargePopupClose);
 
         this.overdueChargeColumn = Lists.newArrayList();
         this.overdueChargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::overdueChargeColumn));
@@ -1145,7 +1145,7 @@ public class LoanCreatePage extends DeprecatedPage {
 
         this.chargePopup = new ModalWindow("chargePopup");
         add(this.chargePopup);
-        this.chargePopup.setOnClose(this::chargePopupOnClose);
+        this.chargePopup.setOnClose(this::chargePopupClose);
 
         this.chargeColumn = Lists.newArrayList();
         this.chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeColumn));
@@ -1728,7 +1728,7 @@ public class LoanCreatePage extends DeprecatedPage {
         {
             this.fundSourcePopup = new ModalWindow("fundSourcePopup");
             add(this.fundSourcePopup);
-            this.fundSourcePopup.setOnClose(this::fundSourcePopupOnClose);
+            this.fundSourcePopup.setOnClose(this::fundSourcePopupClose);
 
             this.advancedAccountingRuleFundSourceColumn = Lists.newArrayList();
             this.advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Payment Type"), "payment", "payment", this::advancedAccountingRuleFundSourceColumn));
@@ -1770,7 +1770,7 @@ public class LoanCreatePage extends DeprecatedPage {
         {
             this.penaltyIncomePopup = new ModalWindow("penaltyIncomePopup");
             add(this.penaltyIncomePopup);
-            this.penaltyIncomePopup.setOnClose(this::penaltyIncomePopupOnClose);
+            this.penaltyIncomePopup.setOnClose(this::penaltyIncomePopupClose);
 
             this.advancedAccountingRulePenaltyIncomeColumn = Lists.newArrayList();
             this.advancedAccountingRulePenaltyIncomeColumn.add(new TextColumn(Model.of("Penalty"), "charge", "charge", this::advancedAccountingRulePenaltyIncomeColumn));
@@ -3044,7 +3044,7 @@ public class LoanCreatePage extends DeprecatedPage {
 
             this.termNominalInterestRateByLoanCyclePopup = new ModalWindow("termNominalInterestRateByLoanCyclePopup");
             add(this.termNominalInterestRateByLoanCyclePopup);
-            this.termNominalInterestRateByLoanCyclePopup.setOnClose(this::termNominalInterestRateByLoanCyclePopupOnClose);
+            this.termNominalInterestRateByLoanCyclePopup.setOnClose(this::termNominalInterestRateByLoanCyclePopupClose);
 
             List<IColumn<Map<String, Object>, String>> termNominalInterestRateByLoanCycleColumn = Lists.newArrayList();
             termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("When"), "when", "when", this::termNominalInterestRateByLoanCycleWhenColumn));
@@ -3201,7 +3201,7 @@ public class LoanCreatePage extends DeprecatedPage {
         return false;
     }
 
-    protected void termNominalInterestRateByLoanCyclePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void termNominalInterestRateByLoanCyclePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
@@ -3326,7 +3326,7 @@ public class LoanCreatePage extends DeprecatedPage {
         return false;
     }
 
-    protected void termNumberOfRepaymentByLoanCyclePopupClose(String elementId, AjaxRequestTarget target) {
+    protected void termNumberOfRepaymentByLoanCyclePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
@@ -3339,7 +3339,7 @@ public class LoanCreatePage extends DeprecatedPage {
         target.add(this.termNumberOfRepaymentByLoanCycleBlock);
     }
 
-    protected void termPrincipalByLoanCyclePopupClose(String elementId, AjaxRequestTarget target) {
+    protected void termPrincipalByLoanCyclePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
@@ -3352,7 +3352,7 @@ public class LoanCreatePage extends DeprecatedPage {
         target.add(this.termPrincipalByLoanCycleBlock);
     }
 
-    protected void fundSourcePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void fundSourcePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
@@ -3362,7 +3362,7 @@ public class LoanCreatePage extends DeprecatedPage {
         target.add(this.advancedAccountingRuleFundSourceTable);
     }
 
-    protected void feeIncomePopupClose(String elementId, AjaxRequestTarget target) {
+    protected void feeIncomePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
@@ -3372,7 +3372,7 @@ public class LoanCreatePage extends DeprecatedPage {
         target.add(this.advancedAccountingRuleFeeIncomeTable);
     }
 
-    protected void penaltyIncomePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void penaltyIncomePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
@@ -3382,7 +3382,7 @@ public class LoanCreatePage extends DeprecatedPage {
         target.add(this.advancedAccountingRulePenaltyIncomeTable);
     }
 
-    protected void overdueChargePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void overdueChargePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         Option charge = (Option) this.popupModel.get("overdueChargeValue");
         for (Map<String, Object> temp : this.overdueChargeValue) {
@@ -3417,7 +3417,7 @@ public class LoanCreatePage extends DeprecatedPage {
         target.add(this.overdueChargeTable);
     }
 
-    protected void chargePopupOnClose(String elementId, AjaxRequestTarget target) {
+    protected void chargePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         Option charge = (Option) this.popupModel.get("chargeValue");
         for (Map<String, Object> temp : this.chargeValue) {

@@ -58,7 +58,7 @@ public class ClientPopup extends Panel {
     }
 
     protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
-        this.window.setElementId(ajaxButton.getId());
+        this.window.setSignalId(ajaxButton.getId());
         this.window.close(target);
         return true;
     }

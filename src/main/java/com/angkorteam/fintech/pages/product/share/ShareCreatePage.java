@@ -472,7 +472,7 @@ public class ShareCreatePage extends DeprecatedPage {
         this.marketPriceIContainer.add(this.marketPriceAddLink);
     }
 
-    protected void marketPricePopupClose(String elementId, AjaxRequestTarget target) {
+    protected void marketPricePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
@@ -550,7 +550,7 @@ public class ShareCreatePage extends DeprecatedPage {
         this.form.add(this.chargeAddLink);
     }
 
-    protected void chargePopupClose(String elementId, AjaxRequestTarget target) {
+    protected void chargePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         Option charge = (Option) this.popupModel.get("chargeValue");
         for (Map<String, Object> temp : this.chargeValue) {
