@@ -1,6 +1,5 @@
 package com.angkorteam.fintech.pages.client.client;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -24,7 +23,6 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.joda.time.DateTime;
 
-import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.ChargeFrequency;
@@ -69,6 +67,8 @@ import com.google.common.collect.Maps;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanCreatePage extends DeprecatedPage {
 
+    // TODO : clean tech debt
+    
     protected String clientId;
     protected String loanId;
     protected String officeId;
@@ -770,19 +770,15 @@ public class LoanCreatePage extends DeprecatedPage {
         this.externalIdValue = generator.externalId();
 
         this.currencyValue = (String) loanObject.get("currency_code");
-        this.decimalPlacesValue = (Integer) loanObject.get("currency_digits");
+        this.decimalPlacesValue = loanObject.get("currency_digits") == null ? null : ((Long) loanObject.get("currency_digits")).intValue();
 
-        this.currencyInMultiplesOfValue = (Integer) loanObject.get("currency_multiplesof");
-        if (loanObject.get("instalment_amount_in_multiples_of") != null) {
-            this.installmentInMultiplesOfValue = ((BigDecimal) loanObject.get("instalment_amount_in_multiples_of")).doubleValue();
-        }
+        this.currencyInMultiplesOfValue = loanObject.get("currency_multiplesof") == null ? null : ((Long) loanObject.get("currency_multiplesof")).intValue();
+        this.installmentInMultiplesOfValue = (Double) loanObject.get("instalment_amount_in_multiples_of");
 
-        if (loanObject.get("principal_amount") != null) {
-            this.principalValue = ((BigDecimal) loanObject.get("principal_amount")).doubleValue();
-        }
+        this.principalValue = (Double) loanObject.get("principal_amount");
 
-        this.numberOfRepaymentValue = (Integer) loanObject.get("number_of_repayments");
-        this.repaidEveryValue = (Integer) loanObject.get("repay_every");
+        this.numberOfRepaymentValue = loanObject.get("number_of_repayments") == null ? null : ((Long) loanObject.get("number_of_repayments")).intValue();
+        this.repaidEveryValue = loanObject.get("repay_every") == null ? null : ((Long) loanObject.get("repay_every")).intValue();
 
         if (this.numberOfRepaymentValue != null && this.repaidEveryValue != null) {
             this.loanTermValue = this.numberOfRepaymentValue * this.repaidEveryValue;
@@ -797,9 +793,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.firstRepaymentOnValue = DateTime.now().toDate();
         this.interestChargedFromValue = DateTime.now().toDate();
 
-        if (loanObject.get("nominal_interest_rate_per_period") != null) {
-            this.nominalInterestRateValue = ((BigDecimal) loanObject.get("nominal_interest_rate_per_period")).doubleValue();
-        }
+        this.nominalInterestRateValue = (Double) loanObject.get("nominal_interest_rate_per_period");
 
         NominalInterestRateType nominalInterestTypeValue = NominalInterestRateType.parseLiteral(String.valueOf(loanObject.get("interest_period_frequency_enum")));
         this.nominalInterestTypeValue = nominalInterestTypeValue == null ? "" : nominalInterestTypeValue.getDescription();
@@ -823,15 +817,13 @@ public class LoanCreatePage extends DeprecatedPage {
         RepaymentStrategy repaymentStrategyValue = RepaymentStrategy.parseLiteral(String.valueOf(loanObject.get("loan_transaction_strategy_id")));
         this.repaymentStrategyValue = repaymentStrategyValue == null ? "" : repaymentStrategyValue.getDescription();
 
-        if (loanObject.get("arrearstolerance_amount") != null) {
-            this.arrearsToleranceValue = ((BigDecimal) loanObject.get("arrearstolerance_amount")).doubleValue();
-        }
+        this.arrearsToleranceValue = (Double) loanObject.get("arrearstolerance_amount");
 
-        this.interestFreePeriodValue = (Integer) loanObject.get("grace_interest_free_periods");
+        this.interestFreePeriodValue = loanObject.get("grace_interest_free_periods") == null ? null : ((Long) loanObject.get("grace_interest_free_periods")).intValue();
 
-        this.onArrearsAgingValue = (Integer) loanObject.get("grace_on_arrears_ageing");
-        this.onInterestPaymentValue = (Integer) loanObject.get("grace_on_interest_periods");
-        this.onPrincipalPaymentValue = (Integer) loanObject.get("grace_on_principal_periods");
+        this.onArrearsAgingValue = loanObject.get("grace_on_arrears_ageing") == null ? null : ((Long) loanObject.get("grace_on_arrears_ageing")).intValue();
+        this.onInterestPaymentValue = loanObject.get("grace_on_interest_periods") == null ? null : ((Long) loanObject.get("grace_on_interest_periods")).intValue();
+        this.onPrincipalPaymentValue = loanObject.get("grace_on_principal_periods") == null ? null : ((Long) loanObject.get("grace_on_principal_periods")).intValue();
 
     }
 

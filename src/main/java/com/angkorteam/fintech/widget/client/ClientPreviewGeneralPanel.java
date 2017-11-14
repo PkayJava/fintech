@@ -2,13 +2,13 @@ package com.angkorteam.fintech.widget.client;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Page;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -24,7 +24,7 @@ import org.apache.wicket.request.resource.PackageResourceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.angkorteam.fintech.Application; 
+import com.angkorteam.fintech.Application;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.builder.client.client.ClientUnassignStaffBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
@@ -99,6 +99,7 @@ public class ClientPreviewGeneralPanel extends Panel {
 
     protected DataTable<Map<String, Object>, String> savingAccountTable;
     protected JdbcProvider savingAccountProvider;
+    protected List<IColumn<Map<String, Object>, String>> savingAccountColumn;
 
     protected Label clientNameView;
     protected String clientNameValue;
@@ -206,13 +207,13 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.savingAccountProvider.selectField("id", String.class);
         this.savingAccountProvider.selectField("status", String.class);
 
-        List<IColumn<Map<String, Object>, String>> savingAccountColumns = Lists.newArrayList();
-        savingAccountColumns.add(new TextFilterColumn(this.savingAccountProvider, ItemClass.String, Model.of("Account"), "account", "account", this::savingAccountAccountColumn));
-        savingAccountColumns.add(new TextFilterColumn(this.savingAccountProvider, ItemClass.String, Model.of("Product"), "product", "product", this::savingAccountProductColumn));
-        savingAccountColumns.add(new TextFilterColumn(this.savingAccountProvider, ItemClass.Double, Model.of("Balance"), "balance", "balance", this::savingAccountBalanceColumn));
-        savingAccountColumns.add(new ActionFilterColumn<>(Model.of("Action"), this::savingAccountActionItem, this::savingAccountActionClick));
+        this.savingAccountColumn = Lists.newArrayList();
+        this.savingAccountColumn.add(new TextFilterColumn(this.savingAccountProvider, ItemClass.String, Model.of("Account"), "account", "account", this::savingAccountColumn));
+        this.savingAccountColumn.add(new TextFilterColumn(this.savingAccountProvider, ItemClass.String, Model.of("Product"), "product", "product", this::savingAccountColumn));
+        this.savingAccountColumn.add(new TextFilterColumn(this.savingAccountProvider, ItemClass.Double, Model.of("Balance"), "balance", "balance", this::savingAccountColumn));
+        this.savingAccountColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::savingAccountAction, this::savingAccountClick));
 
-        this.savingAccountTable = new DefaultDataTable<>("savingAccountTable", savingAccountColumns, this.savingAccountProvider, 20);
+        this.savingAccountTable = new DefaultDataTable<>("savingAccountTable", savingAccountColumn, this.savingAccountProvider, 20);
         add(this.savingAccountTable);
 
         this.clientNameView = new Label("clientNameView", new PropertyModel<>(this, "clientNameValue"));
@@ -258,7 +259,7 @@ public class ClientPreviewGeneralPanel extends Panel {
     protected void initDefault() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         Map<String, Object> clientObject = jdbcTemplate.queryForMap("select * from m_client where id = ?", this.clientId);
-        Integer statusEnum = (Integer) clientObject.get("status_enum");
+        Long statusEnum = (Long) clientObject.get("status_enum");
 
         // status enum
         // 300 : active
@@ -341,9 +342,9 @@ public class ClientPreviewGeneralPanel extends Panel {
         }
     }
 
-    protected List<ActionItem> savingAccountActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> savingAccountAction(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
-        Integer status = (Integer) model.get("status");
+        Long status = (Long) model.get("status");
         if (100 == status) {
             actions.add(new ActionItem("Approve", Model.of("Approve"), ItemCss.PRIMARY));
         } else if (200 == status) {
@@ -356,7 +357,7 @@ public class ClientPreviewGeneralPanel extends Panel {
         return actions;
     }
 
-    protected void savingAccountActionClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void savingAccountClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
         if ("Approve".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
@@ -390,22 +391,21 @@ public class ClientPreviewGeneralPanel extends Panel {
         }
     }
 
-    protected ItemPanel savingAccountAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        PageParameters parameters = new PageParameters();
-        parameters.add("clientId", this.clientId);
-        parameters.add("accountId", model.get("id"));
-        return new LinkCell(SavingAccountPreviewPage.class, parameters, value);
-    }
-
-    protected ItemPanel savingAccountBalanceColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        BigDecimal value = (BigDecimal) model.get(jdbcColumn);
-        return new TextCell(value, "#,###,##0.00");
-    }
-
-    protected ItemPanel savingAccountProductColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel savingAccountColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("account".equals(column)) {
+            String value = (String) model.get(column);
+            PageParameters parameters = new PageParameters();
+            parameters.add("clientId", this.clientId);
+            parameters.add("accountId", model.get("id"));
+            return new LinkCell(SavingAccountPreviewPage.class, parameters, value);
+        } else if ("product".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("balance".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value, "#,###,##0.00");
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }
