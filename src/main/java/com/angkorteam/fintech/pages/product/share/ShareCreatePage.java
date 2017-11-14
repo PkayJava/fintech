@@ -380,7 +380,8 @@ public class ShareCreatePage extends DeprecatedPage {
 
     protected void initSectionAccountingCash() {
         this.cashBlock = new WebMarkupContainer("cashBlock");
-        this.cashIContainer.add(this.cashBlock);
+        this.cashBlock.setOutputMarkupId(true);
+        this.form.add(this.cashBlock);
         this.cashIContainer = new WebMarkupContainer("cashIContainer");
         this.cashBlock.add(this.cashIContainer);
 
@@ -398,19 +399,19 @@ public class ShareCreatePage extends DeprecatedPage {
         this.cashShareReferenceFeedback = new TextFeedbackPanel("cashShareReferenceFeedback", this.cashShareReferenceField);
         this.cashShareReferenceIContainer.add(this.cashShareReferenceFeedback);
 
-        this.cashIncomeFromFeeBlock = new WebMarkupBlock("cashIncomeFromFeeBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashIncomeFromFeeBlock);
-        this.cashIncomeFromFeeIContainer = new WebMarkupContainer("cashIncomeFromFeeIContainer");
-        this.cashIncomeFromFeeBlock.add(this.cashIncomeFromFeeIContainer);
+        this.cashShareSuspenseControlBlock = new WebMarkupBlock("cashShareSuspenseControlBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashShareSuspenseControlBlock);
+        this.cashShareSuspenseControlIContainer = new WebMarkupContainer("cashShareSuspenseControlIContainer");
+        this.cashShareSuspenseControlBlock.add(this.cashShareSuspenseControlIContainer);
         this.cashShareSuspenseControlProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.cashShareSuspenseControlProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.cashShareSuspenseControlProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
         this.cashShareSuspenseControlField = new Select2SingleChoice<>("cashShareSuspenseControlField", new PropertyModel<>(this, "cashShareSuspenseControlValue"), this.cashShareSuspenseControlProvider);
         this.cashShareSuspenseControlField.setLabel(Model.of("Share Suspense control"));
         this.cashShareSuspenseControlField.add(new OnChangeAjaxBehavior());
-        this.cashIncomeFromFeeIContainer.add(this.cashShareSuspenseControlField);
+        this.cashShareSuspenseControlIContainer.add(this.cashShareSuspenseControlField);
         this.cashShareSuspenseControlFeedback = new TextFeedbackPanel("cashShareSuspenseControlFeedback", this.cashShareSuspenseControlField);
-        this.cashIncomeFromFeeIContainer.add(this.cashShareSuspenseControlFeedback);
+        this.cashShareSuspenseControlIContainer.add(this.cashShareSuspenseControlFeedback);
 
         this.cashEquityBlock = new WebMarkupBlock("cashEquityBlock", Size.Six_6);
         this.cashIContainer.add(this.cashEquityBlock);
@@ -547,7 +548,7 @@ public class ShareCreatePage extends DeprecatedPage {
 
         this.chargeAddLink = new AjaxLink<>("chargeAddLink");
         this.chargeAddLink.setOnClick(this::chargeAddLinkClick);
-        this.form.add(this.chargeAddLink);
+        this.chargeIContainer.add(this.chargeAddLink);
     }
 
     protected void chargePopupClose(String popupName, String signalId, AjaxRequestTarget target) {

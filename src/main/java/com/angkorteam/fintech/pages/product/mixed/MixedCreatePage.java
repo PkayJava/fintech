@@ -110,7 +110,7 @@ public class MixedCreatePage extends Page {
     protected void initRestrictedBlock() {
         this.restrictedBlock = new WebMarkupBlock("restrictedBlock", Size.Six_6);
         this.form.add(this.restrictedBlock);
-        this.restrictedIContainer = new WebMarkupContainer("restrictedContainer");
+        this.restrictedIContainer = new WebMarkupContainer("restrictedIContainer");
         this.restrictedBlock.add(this.restrictedIContainer);
         this.restrictedProvider = new MultipleChoiceProvider("m_product_loan", "id", "name");
         this.restrictedField = new Select2MultipleChoice<>("restrictedField", new PropertyModel<>(this, "restrictedValue"), this.restrictedProvider);
@@ -125,7 +125,7 @@ public class MixedCreatePage extends Page {
     protected void initProductBlock() {
         this.productBlock = new WebMarkupBlock("productBlock", Size.Six_6);
         this.form.add(this.productBlock);
-        this.productIContainer = new WebMarkupContainer("productContainer");
+        this.productIContainer = new WebMarkupContainer("productIContainer");
         this.productBlock.add(this.productIContainer);
         this.productProvider = new SingleChoiceProvider("m_product_loan", "id", "name");
         this.productProvider.applyWhere("product", "m_product_loan.id not in (select product_id from m_product_mix)");
