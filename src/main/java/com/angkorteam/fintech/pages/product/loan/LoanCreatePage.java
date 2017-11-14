@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -104,7 +105,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class LoanCreatePage extends DeprecatedPage {
+public class LoanCreatePage extends Page {
 
     public static final String ACC_NONE = "None";
     public static final String ACC_CASH = "Cash";
@@ -351,16 +352,6 @@ public class LoanCreatePage extends DeprecatedPage {
     protected Integer termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue;
     protected TextField<Integer> termMinimumDayBetweenDisbursalAndFirstRepaymentDateField;
     protected TextFeedbackPanel termMinimumDayBetweenDisbursalAndFirstRepaymentDateFeedback;
-
-    // protected Option itemWhenValue;
-    // protected Integer itemLoanCycleValue;
-    // protected Double itemMinimumValue;
-    // protected Double itemDefaultValue;
-    // protected Double itemMaximumValue;
-    // protected Option itemChargeValue;
-    // protected Option itemOverdueChargeValue;
-    // protected Option itemPaymentValue;
-    // protected Option itemAccountValue;
 
     // Settings
 
@@ -724,12 +715,12 @@ public class LoanCreatePage extends DeprecatedPage {
     protected Select2SingleChoice<Option> cashIncomeFromFeeField;
     protected TextFeedbackPanel cashIncomeFromFeeFeedback;
 
-    protected WebMarkupBlock cashIncomeFromPenaltiesBlock;
-    protected WebMarkupContainer cashIncomeFromPenaltiesIContainer;
-    protected SingleChoiceProvider cashIncomeFromPenaltiesProvider;
-    protected Option cashIncomeFromPenaltiesValue;
-    protected Select2SingleChoice<Option> cashIncomeFromPenaltiesField;
-    protected TextFeedbackPanel cashIncomeFromPenaltiesFeedback;
+    protected WebMarkupBlock cashIncomeFromPenaltyBlock;
+    protected WebMarkupContainer cashIncomeFromPenaltyIContainer;
+    protected SingleChoiceProvider cashIncomeFromPenaltyProvider;
+    protected Option cashIncomeFromPenaltyValue;
+    protected Select2SingleChoice<Option> cashIncomeFromPenaltyField;
+    protected TextFeedbackPanel cashIncomeFromPenaltyFeedback;
 
     protected WebMarkupBlock cashIncomeFromRecoveryRepaymentBlock;
     protected WebMarkupContainer cashIncomeFromRecoveryRepaymentIContainer;
@@ -738,12 +729,12 @@ public class LoanCreatePage extends DeprecatedPage {
     protected Select2SingleChoice<Option> cashIncomeFromRecoveryRepaymentField;
     protected TextFeedbackPanel cashIncomeFromRecoveryRepaymentFeedback;
 
-    protected WebMarkupBlock cashLossesWrittenOffBlock;
-    protected WebMarkupContainer cashLossesWrittenOffIContainer;
-    protected SingleChoiceProvider cashLossesWrittenOffProvider;
-    protected Option cashLossesWrittenOffValue;
-    protected Select2SingleChoice<Option> cashLossesWrittenOffField;
-    protected TextFeedbackPanel cashLossesWrittenOffFeedback;
+    protected WebMarkupBlock cashLossWrittenOffBlock;
+    protected WebMarkupContainer cashLossWrittenOffIContainer;
+    protected SingleChoiceProvider cashLossWrittenOffProvider;
+    protected Option cashLossWrittenOffValue;
+    protected Select2SingleChoice<Option> cashLossWrittenOffField;
+    protected TextFeedbackPanel cashLossWrittenOffFeedback;
 
     protected WebMarkupBlock cashOverPaymentLiabilityBlock;
     protected WebMarkupContainer cashOverPaymentLiabilityIContainer;
@@ -776,19 +767,19 @@ public class LoanCreatePage extends DeprecatedPage {
     protected Select2SingleChoice<Option> periodicInterestReceivableField;
     protected TextFeedbackPanel periodicInterestReceivableFeedback;
 
-    protected WebMarkupBlock periodicFeesReceivableBlock;
-    protected WebMarkupContainer periodicFeesReceivableIContainer;
-    protected SingleChoiceProvider periodicFeesReceivableProvider;
-    protected Option periodicFeesReceivableValue;
-    protected Select2SingleChoice<Option> periodicFeesReceivableField;
-    protected TextFeedbackPanel periodicFeesReceivableFeedback;
+    protected WebMarkupBlock periodicFeeReceivableBlock;
+    protected WebMarkupContainer periodicFeeReceivableIContainer;
+    protected SingleChoiceProvider periodicFeeReceivableProvider;
+    protected Option periodicFeeReceivableValue;
+    protected Select2SingleChoice<Option> periodicFeeReceivableField;
+    protected TextFeedbackPanel periodicFeeReceivableFeedback;
 
-    protected WebMarkupBlock periodicPenaltiesReceivableBlock;
-    protected WebMarkupContainer periodicPenaltiesReceivableIContainer;
-    protected SingleChoiceProvider periodicPenaltiesReceivableProvider;
-    protected Option periodicPenaltiesReceivableValue;
-    protected Select2SingleChoice<Option> periodicPenaltiesReceivableField;
-    protected TextFeedbackPanel periodicPenaltiesReceivableFeedback;
+    protected WebMarkupBlock periodicPenaltyReceivableBlock;
+    protected WebMarkupContainer periodicPenaltyReceivableIContainer;
+    protected SingleChoiceProvider periodicPenaltyReceivableProvider;
+    protected Option periodicPenaltyReceivableValue;
+    protected Select2SingleChoice<Option> periodicPenaltyReceivableField;
+    protected TextFeedbackPanel periodicPenaltyReceivableFeedback;
 
     protected WebMarkupBlock periodicTransferInSuspenseBlock;
     protected WebMarkupContainer periodicTransferInSuspenseIContainer;
@@ -811,12 +802,12 @@ public class LoanCreatePage extends DeprecatedPage {
     protected Select2SingleChoice<Option> periodicIncomeFromFeeField;
     protected TextFeedbackPanel periodicIncomeFromFeeFeedback;
 
-    protected WebMarkupBlock periodicIncomeFromPenaltiesBlock;
-    protected WebMarkupContainer periodicIncomeFromPenaltiesIContainer;
-    protected SingleChoiceProvider periodicIncomeFromPenaltiesProvider;
-    protected Option periodicIncomeFromPenaltiesValue;
-    protected Select2SingleChoice<Option> periodicIncomeFromPenaltiesField;
-    protected TextFeedbackPanel periodicIncomeFromPenaltiesFeedback;
+    protected WebMarkupBlock periodicIncomeFromPenaltyBlock;
+    protected WebMarkupContainer periodicIncomeFromPenaltyIContainer;
+    protected SingleChoiceProvider periodicIncomeFromPenaltyProvider;
+    protected Option periodicIncomeFromPenaltyValue;
+    protected Select2SingleChoice<Option> periodicIncomeFromPenaltyField;
+    protected TextFeedbackPanel periodicIncomeFromPenaltyFeedback;
 
     protected WebMarkupBlock periodicIncomeFromRecoveryRepaymentBlock;
     protected WebMarkupContainer periodicIncomeFromRecoveryRepaymentIContainer;
@@ -825,12 +816,12 @@ public class LoanCreatePage extends DeprecatedPage {
     protected Select2SingleChoice<Option> periodicIncomeFromRecoveryRepaymentField;
     protected TextFeedbackPanel periodicIncomeFromRecoveryRepaymentFeedback;
 
-    protected WebMarkupBlock periodicLossesWrittenOffBlock;
-    protected WebMarkupContainer periodicLossesWrittenOffIContainer;
-    protected SingleChoiceProvider periodicLossesWrittenOffProvider;
-    protected Option periodicLossesWrittenOffValue;
-    protected Select2SingleChoice<Option> periodicLossesWrittenOffField;
-    protected TextFeedbackPanel periodicLossesWrittenOffFeedback;
+    protected WebMarkupBlock periodicLossWrittenOffBlock;
+    protected WebMarkupContainer periodicLossWrittenOffIContainer;
+    protected SingleChoiceProvider periodicLossWrittenOffProvider;
+    protected Option periodicLossWrittenOffValue;
+    protected Select2SingleChoice<Option> periodicLossWrittenOffField;
+    protected TextFeedbackPanel periodicLossWrittenOffFeedback;
 
     protected WebMarkupBlock periodicOverPaymentLiabilityBlock;
     protected WebMarkupContainer periodicOverPaymentLiabilityIContainer;
@@ -863,19 +854,19 @@ public class LoanCreatePage extends DeprecatedPage {
     protected Select2SingleChoice<Option> upfrontInterestReceivableField;
     protected TextFeedbackPanel upfrontInterestReceivableFeedback;
 
-    protected WebMarkupBlock upfrontFeesReceivableBlock;
-    protected WebMarkupContainer upfrontFeesReceivableIContainer;
-    protected SingleChoiceProvider upfrontFeesReceivableProvider;
-    protected Option upfrontFeesReceivableValue;
-    protected Select2SingleChoice<Option> upfrontFeesReceivableField;
-    protected TextFeedbackPanel upfrontFeesReceivableFeedback;
+    protected WebMarkupBlock upfrontFeeReceivableBlock;
+    protected WebMarkupContainer upfrontFeeReceivableIContainer;
+    protected SingleChoiceProvider upfrontFeeReceivableProvider;
+    protected Option upfrontFeeReceivableValue;
+    protected Select2SingleChoice<Option> upfrontFeeReceivableField;
+    protected TextFeedbackPanel upfrontFeeReceivableFeedback;
 
-    protected WebMarkupBlock upfrontPenaltiesReceivableBlock;
-    protected WebMarkupContainer upfrontPenaltiesReceivableIContainer;
-    protected SingleChoiceProvider upfrontPenaltiesReceivableProvider;
-    protected Option upfrontPenaltiesReceivableValue;
-    protected Select2SingleChoice<Option> upfrontPenaltiesReceivableField;
-    protected TextFeedbackPanel upfrontPenaltiesReceivableFeedback;
+    protected WebMarkupBlock upfrontPenaltyReceivableBlock;
+    protected WebMarkupContainer upfrontPenaltyReceivableIContainer;
+    protected SingleChoiceProvider upfrontPenaltyReceivableProvider;
+    protected Option upfrontPenaltyReceivableValue;
+    protected Select2SingleChoice<Option> upfrontPenaltyReceivableField;
+    protected TextFeedbackPanel upfrontPenaltyReceivableFeedback;
 
     protected WebMarkupBlock upfrontTransferInSuspenseBlock;
     protected WebMarkupContainer upfrontTransferInSuspenseIContainer;
@@ -898,12 +889,12 @@ public class LoanCreatePage extends DeprecatedPage {
     protected Select2SingleChoice<Option> upfrontIncomeFromFeeField;
     protected TextFeedbackPanel upfrontIncomeFromFeeFeedback;
 
-    protected WebMarkupBlock upfrontIncomeFromPenaltiesBlock;
-    protected WebMarkupContainer upfrontIncomeFromPenaltiesIContainer;
-    protected SingleChoiceProvider upfrontIncomeFromPenaltiesProvider;
-    protected Option upfrontIncomeFromPenaltiesValue;
-    protected Select2SingleChoice<Option> upfrontIncomeFromPenaltiesField;
-    protected TextFeedbackPanel upfrontIncomeFromPenaltiesFeedback;
+    protected WebMarkupBlock upfrontIncomeFromPenaltyBlock;
+    protected WebMarkupContainer upfrontIncomeFromPenaltyIContainer;
+    protected SingleChoiceProvider upfrontIncomeFromPenaltyProvider;
+    protected Option upfrontIncomeFromPenaltyValue;
+    protected Select2SingleChoice<Option> upfrontIncomeFromPenaltyField;
+    protected TextFeedbackPanel upfrontIncomeFromPenaltyFeedback;
 
     protected WebMarkupBlock upfrontIncomeFromRecoveryRepaymentBlock;
     protected WebMarkupContainer upfrontIncomeFromRecoveryRepaymentIContainer;
@@ -912,12 +903,12 @@ public class LoanCreatePage extends DeprecatedPage {
     protected Select2SingleChoice<Option> upfrontIncomeFromRecoveryRepaymentField;
     protected TextFeedbackPanel upfrontIncomeFromRecoveryRepaymentFeedback;
 
-    protected WebMarkupBlock upfrontLossesWrittenOffBlock;
-    protected WebMarkupContainer upfrontLossesWrittenOffIContainer;
-    protected SingleChoiceProvider upfrontLossesWrittenOffProvider;
-    protected Option upfrontLossesWrittenOffValue;
-    protected Select2SingleChoice<Option> upfrontLossesWrittenOffField;
-    protected TextFeedbackPanel upfrontLossesWrittenOffFeedback;
+    protected WebMarkupBlock upfrontLossWrittenOffBlock;
+    protected WebMarkupContainer upfrontLossWrittenOffIContainer;
+    protected SingleChoiceProvider upfrontLossWrittenOffProvider;
+    protected Option upfrontLossWrittenOffValue;
+    protected Select2SingleChoice<Option> upfrontLossWrittenOffField;
+    protected TextFeedbackPanel upfrontLossWrittenOffFeedback;
 
     protected WebMarkupBlock upfrontOverPaymentLiabilityBlock;
     protected WebMarkupContainer upfrontOverPaymentLiabilityIContainer;
@@ -1005,11 +996,7 @@ public class LoanCreatePage extends DeprecatedPage {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
-        initData();
-
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -1045,7 +1032,14 @@ public class LoanCreatePage extends DeprecatedPage {
         initSectionDefault();
 
         initSectionValidationRule();
+    }
 
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
     @Override
@@ -1266,6 +1260,7 @@ public class LoanCreatePage extends DeprecatedPage {
 
     protected void initAccountingUpFront() {
         this.upfrontBlock = new WebMarkupContainer("upfrontBlock");
+        this.upfrontBlock.setOutputMarkupId(true);
         this.form.add(this.upfrontBlock);
 
         this.upfrontIContainer = new WebMarkupContainer("upfrontIContainer");
@@ -1313,33 +1308,33 @@ public class LoanCreatePage extends DeprecatedPage {
         this.upfrontInterestReceivableFeedback = new TextFeedbackPanel("upfrontInterestReceivableFeedback", this.upfrontInterestReceivableField);
         this.upfrontInterestReceivableIContainer.add(this.upfrontInterestReceivableFeedback);
 
-        this.upfrontFeesReceivableBlock = new WebMarkupBlock("upfrontFeesReceivableBlock", Size.Six_6);
-        this.upfrontIContainer.add(this.upfrontFeesReceivableBlock);
-        this.upfrontFeesReceivableIContainer = new WebMarkupContainer("upfrontFeesReceivableIContainer");
-        this.upfrontFeesReceivableBlock.add(this.upfrontFeesReceivableIContainer);
-        this.upfrontFeesReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.upfrontFeesReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.upfrontFeesReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
-        this.upfrontFeesReceivableField = new Select2SingleChoice<>("upfrontFeesReceivableField", new PropertyModel<>(this, "upfrontFeesReceivableValue"), this.upfrontFeesReceivableProvider);
-        this.upfrontFeesReceivableField.setLabel(Model.of("Fees Receivable"));
-        this.upfrontFeesReceivableField.add(new OnChangeAjaxBehavior());
-        this.upfrontFeesReceivableIContainer.add(this.upfrontFeesReceivableField);
-        this.upfrontFeesReceivableFeedback = new TextFeedbackPanel("upfrontFeesReceivableFeedback", this.upfrontFeesReceivableField);
-        this.upfrontFeesReceivableIContainer.add(this.upfrontFeesReceivableFeedback);
+        this.upfrontFeeReceivableBlock = new WebMarkupBlock("upfrontFeeReceivableBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontFeeReceivableBlock);
+        this.upfrontFeeReceivableIContainer = new WebMarkupContainer("upfrontFeeReceivableIContainer");
+        this.upfrontFeeReceivableBlock.add(this.upfrontFeeReceivableIContainer);
+        this.upfrontFeeReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.upfrontFeeReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.upfrontFeeReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
+        this.upfrontFeeReceivableField = new Select2SingleChoice<>("upfrontFeeReceivableField", new PropertyModel<>(this, "upfrontFeeReceivableValue"), this.upfrontFeeReceivableProvider);
+        this.upfrontFeeReceivableField.setLabel(Model.of("Fee Receivable"));
+        this.upfrontFeeReceivableField.add(new OnChangeAjaxBehavior());
+        this.upfrontFeeReceivableIContainer.add(this.upfrontFeeReceivableField);
+        this.upfrontFeeReceivableFeedback = new TextFeedbackPanel("upfrontFeeReceivableFeedback", this.upfrontFeeReceivableField);
+        this.upfrontFeeReceivableIContainer.add(this.upfrontFeeReceivableFeedback);
 
-        this.upfrontPenaltiesReceivableBlock = new WebMarkupBlock("upfrontPenaltiesReceivableBlock", Size.Six_6);
-        this.upfrontIContainer.add(this.upfrontPenaltiesReceivableBlock);
-        this.upfrontPenaltiesReceivableIContainer = new WebMarkupContainer("upfrontPenaltiesReceivableIContainer");
-        this.upfrontPenaltiesReceivableBlock.add(this.upfrontPenaltiesReceivableIContainer);
-        this.upfrontPenaltiesReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.upfrontPenaltiesReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.upfrontPenaltiesReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
-        this.upfrontPenaltiesReceivableField = new Select2SingleChoice<>("upfrontPenaltiesReceivableField", new PropertyModel<>(this, "upfrontPenaltiesReceivableValue"), this.upfrontPenaltiesReceivableProvider);
-        this.upfrontPenaltiesReceivableField.setLabel(Model.of("Penalties Receivable"));
-        this.upfrontPenaltiesReceivableField.add(new OnChangeAjaxBehavior());
-        this.upfrontPenaltiesReceivableIContainer.add(this.upfrontPenaltiesReceivableField);
-        this.upfrontPenaltiesReceivableFeedback = new TextFeedbackPanel("upfrontPenaltiesReceivableFeedback", this.upfrontPenaltiesReceivableField);
-        this.upfrontPenaltiesReceivableIContainer.add(this.upfrontPenaltiesReceivableFeedback);
+        this.upfrontPenaltyReceivableBlock = new WebMarkupBlock("upfrontPenaltyReceivableBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontPenaltyReceivableBlock);
+        this.upfrontPenaltyReceivableIContainer = new WebMarkupContainer("upfrontPenaltyReceivableIContainer");
+        this.upfrontPenaltyReceivableBlock.add(this.upfrontPenaltyReceivableIContainer);
+        this.upfrontPenaltyReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.upfrontPenaltyReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.upfrontPenaltyReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
+        this.upfrontPenaltyReceivableField = new Select2SingleChoice<>("upfrontPenaltyReceivableField", new PropertyModel<>(this, "upfrontPenaltyReceivableValue"), this.upfrontPenaltyReceivableProvider);
+        this.upfrontPenaltyReceivableField.setLabel(Model.of("Penalty Receivable"));
+        this.upfrontPenaltyReceivableField.add(new OnChangeAjaxBehavior());
+        this.upfrontPenaltyReceivableIContainer.add(this.upfrontPenaltyReceivableField);
+        this.upfrontPenaltyReceivableFeedback = new TextFeedbackPanel("upfrontPenaltyReceivableFeedback", this.upfrontPenaltyReceivableField);
+        this.upfrontPenaltyReceivableIContainer.add(this.upfrontPenaltyReceivableFeedback);
 
         this.upfrontTransferInSuspenseBlock = new WebMarkupBlock("upfrontTransferInSuspenseBlock", Size.Six_6);
         this.upfrontIContainer.add(this.upfrontTransferInSuspenseBlock);
@@ -1383,19 +1378,19 @@ public class LoanCreatePage extends DeprecatedPage {
         this.upfrontIncomeFromFeeFeedback = new TextFeedbackPanel("upfrontIncomeFromFeeFeedback", this.upfrontIncomeFromFeeField);
         this.upfrontIncomeFromFeeIContainer.add(this.upfrontIncomeFromFeeFeedback);
 
-        this.upfrontIncomeFromPenaltiesBlock = new WebMarkupBlock("upfrontIncomeFromPenaltiesBlock", Size.Six_6);
-        this.upfrontIContainer.add(this.upfrontIncomeFromPenaltiesBlock);
-        this.upfrontIncomeFromPenaltiesIContainer = new WebMarkupContainer("upfrontIncomeFromPenaltiesIContainer");
-        this.upfrontIncomeFromPenaltiesBlock.add(this.upfrontIncomeFromPenaltiesIContainer);
-        this.upfrontIncomeFromPenaltiesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.upfrontIncomeFromPenaltiesProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.upfrontIncomeFromPenaltiesProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
-        this.upfrontIncomeFromPenaltiesField = new Select2SingleChoice<>("upfrontIncomeFromPenaltiesField", new PropertyModel<>(this, "upfrontIncomeFromPenaltiesValue"), this.upfrontIncomeFromPenaltiesProvider);
-        this.upfrontIncomeFromPenaltiesField.setLabel(Model.of("Income from penalties"));
-        this.upfrontIncomeFromPenaltiesField.add(new OnChangeAjaxBehavior());
-        this.upfrontIncomeFromPenaltiesIContainer.add(this.upfrontIncomeFromPenaltiesField);
-        this.upfrontIncomeFromPenaltiesFeedback = new TextFeedbackPanel("upfrontIncomeFromPenaltiesFeedback", this.upfrontIncomeFromPenaltiesField);
-        this.upfrontIncomeFromPenaltiesIContainer.add(this.upfrontIncomeFromPenaltiesFeedback);
+        this.upfrontIncomeFromPenaltyBlock = new WebMarkupBlock("upfrontIncomeFromPenaltyBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontIncomeFromPenaltyBlock);
+        this.upfrontIncomeFromPenaltyIContainer = new WebMarkupContainer("upfrontIncomeFromPenaltyIContainer");
+        this.upfrontIncomeFromPenaltyBlock.add(this.upfrontIncomeFromPenaltyIContainer);
+        this.upfrontIncomeFromPenaltyProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.upfrontIncomeFromPenaltyProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.upfrontIncomeFromPenaltyProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
+        this.upfrontIncomeFromPenaltyField = new Select2SingleChoice<>("upfrontIncomeFromPenaltyField", new PropertyModel<>(this, "upfrontIncomeFromPenaltyValue"), this.upfrontIncomeFromPenaltyProvider);
+        this.upfrontIncomeFromPenaltyField.setLabel(Model.of("Income from Penalty"));
+        this.upfrontIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
+        this.upfrontIncomeFromPenaltyIContainer.add(this.upfrontIncomeFromPenaltyField);
+        this.upfrontIncomeFromPenaltyFeedback = new TextFeedbackPanel("upfrontIncomeFromPenaltyFeedback", this.upfrontIncomeFromPenaltyField);
+        this.upfrontIncomeFromPenaltyIContainer.add(this.upfrontIncomeFromPenaltyFeedback);
 
         this.upfrontIncomeFromRecoveryRepaymentBlock = new WebMarkupBlock("upfrontIncomeFromRecoveryRepaymentBlock", Size.Six_6);
         this.upfrontIContainer.add(this.upfrontIncomeFromRecoveryRepaymentBlock);
@@ -1411,19 +1406,19 @@ public class LoanCreatePage extends DeprecatedPage {
         this.upfrontIncomeFromRecoveryRepaymentFeedback = new TextFeedbackPanel("upfrontIncomeFromRecoveryRepaymentFeedback", this.upfrontIncomeFromRecoveryRepaymentField);
         this.upfrontIncomeFromRecoveryRepaymentIContainer.add(this.upfrontIncomeFromRecoveryRepaymentFeedback);
 
-        this.upfrontLossesWrittenOffBlock = new WebMarkupBlock("upfrontLossesWrittenOffBlock", Size.Six_6);
-        this.upfrontIContainer.add(this.upfrontLossesWrittenOffBlock);
-        this.upfrontLossesWrittenOffIContainer = new WebMarkupContainer("upfrontLossesWrittenOffIContainer");
-        this.upfrontLossesWrittenOffBlock.add(this.upfrontLossesWrittenOffIContainer);
-        this.upfrontLossesWrittenOffProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.upfrontLossesWrittenOffProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.upfrontLossesWrittenOffProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Expense.getLiteral());
-        this.upfrontLossesWrittenOffField = new Select2SingleChoice<>("upfrontLossesWrittenOffField", new PropertyModel<>(this, "upfrontLossesWrittenOffValue"), this.upfrontLossesWrittenOffProvider);
-        this.upfrontLossesWrittenOffField.setLabel(Model.of("Losses written off"));
-        this.upfrontLossesWrittenOffField.add(new OnChangeAjaxBehavior());
-        this.upfrontLossesWrittenOffIContainer.add(this.upfrontLossesWrittenOffField);
-        this.upfrontLossesWrittenOffFeedback = new TextFeedbackPanel("upfrontLossesWrittenOffFeedback", this.upfrontLossesWrittenOffField);
-        this.upfrontLossesWrittenOffIContainer.add(this.upfrontLossesWrittenOffFeedback);
+        this.upfrontLossWrittenOffBlock = new WebMarkupBlock("upfrontLossWrittenOffBlock", Size.Six_6);
+        this.upfrontIContainer.add(this.upfrontLossWrittenOffBlock);
+        this.upfrontLossWrittenOffIContainer = new WebMarkupContainer("upfrontLossWrittenOffIContainer");
+        this.upfrontLossWrittenOffBlock.add(this.upfrontLossWrittenOffIContainer);
+        this.upfrontLossWrittenOffProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.upfrontLossWrittenOffProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.upfrontLossWrittenOffProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Expense.getLiteral());
+        this.upfrontLossWrittenOffField = new Select2SingleChoice<>("upfrontLossWrittenOffField", new PropertyModel<>(this, "upfrontLossWrittenOffValue"), this.upfrontLossWrittenOffProvider);
+        this.upfrontLossWrittenOffField.setLabel(Model.of("Loss written off"));
+        this.upfrontLossWrittenOffField.add(new OnChangeAjaxBehavior());
+        this.upfrontLossWrittenOffIContainer.add(this.upfrontLossWrittenOffField);
+        this.upfrontLossWrittenOffFeedback = new TextFeedbackPanel("upfrontLossWrittenOffFeedback", this.upfrontLossWrittenOffField);
+        this.upfrontLossWrittenOffIContainer.add(this.upfrontLossWrittenOffFeedback);
 
         this.upfrontOverPaymentLiabilityBlock = new WebMarkupBlock("upfrontOverPaymentLiabilityBlock", Size.Six_6);
         this.upfrontIContainer.add(this.upfrontOverPaymentLiabilityBlock);
@@ -1443,6 +1438,7 @@ public class LoanCreatePage extends DeprecatedPage {
     protected void initAccountingCash() {
 
         this.cashBlock = new WebMarkupContainer("cashBlock");
+        this.cashBlock.setOutputMarkupId(true);
         this.form.add(this.cashBlock);
 
         this.cashIContainer = new WebMarkupContainer("cashIContainer");
@@ -1518,19 +1514,19 @@ public class LoanCreatePage extends DeprecatedPage {
         this.cashIncomeFromFeeFeedback = new TextFeedbackPanel("cashIncomeFromFeeFeedback", this.cashIncomeFromFeeField);
         this.cashIncomeFromFeeIContainer.add(this.cashIncomeFromFeeFeedback);
 
-        this.cashIncomeFromPenaltiesBlock = new WebMarkupBlock("cashIncomeFromPenaltiesBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashIncomeFromPenaltiesBlock);
-        this.cashIncomeFromPenaltiesIContainer = new WebMarkupContainer("cashIncomeFromPenaltiesIContainer");
-        this.cashIncomeFromPenaltiesBlock.add(this.cashIncomeFromPenaltiesIContainer);
-        this.cashIncomeFromPenaltiesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashIncomeFromPenaltiesProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashIncomeFromPenaltiesProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
-        this.cashIncomeFromPenaltiesField = new Select2SingleChoice<>("cashIncomeFromPenaltiesField", new PropertyModel<>(this, "cashIncomeFromPenaltiesValue"), this.cashIncomeFromPenaltiesProvider);
-        this.cashIncomeFromPenaltiesField.setLabel(Model.of("Income from penalties"));
-        this.cashIncomeFromPenaltiesField.add(new OnChangeAjaxBehavior());
-        this.cashIncomeFromPenaltiesIContainer.add(this.cashIncomeFromPenaltiesField);
-        this.cashIncomeFromPenaltiesFeedback = new TextFeedbackPanel("cashIncomeFromPenaltiesFeedback", this.cashIncomeFromPenaltiesField);
-        this.cashIncomeFromPenaltiesIContainer.add(this.cashIncomeFromPenaltiesFeedback);
+        this.cashIncomeFromPenaltyBlock = new WebMarkupBlock("cashIncomeFromPenaltyBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashIncomeFromPenaltyBlock);
+        this.cashIncomeFromPenaltyIContainer = new WebMarkupContainer("cashIncomeFromPenaltyIContainer");
+        this.cashIncomeFromPenaltyBlock.add(this.cashIncomeFromPenaltyIContainer);
+        this.cashIncomeFromPenaltyProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.cashIncomeFromPenaltyProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromPenaltyProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
+        this.cashIncomeFromPenaltyField = new Select2SingleChoice<>("cashIncomeFromPenaltyField", new PropertyModel<>(this, "cashIncomeFromPenaltyValue"), this.cashIncomeFromPenaltyProvider);
+        this.cashIncomeFromPenaltyField.setLabel(Model.of("Income from Penalty"));
+        this.cashIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
+        this.cashIncomeFromPenaltyIContainer.add(this.cashIncomeFromPenaltyField);
+        this.cashIncomeFromPenaltyFeedback = new TextFeedbackPanel("cashIncomeFromPenaltyFeedback", this.cashIncomeFromPenaltyField);
+        this.cashIncomeFromPenaltyIContainer.add(this.cashIncomeFromPenaltyFeedback);
 
         this.cashIncomeFromRecoveryRepaymentBlock = new WebMarkupBlock("cashIncomeFromRecoveryRepaymentBlock", Size.Six_6);
         this.cashIContainer.add(this.cashIncomeFromRecoveryRepaymentBlock);
@@ -1546,19 +1542,19 @@ public class LoanCreatePage extends DeprecatedPage {
         this.cashIncomeFromRecoveryRepaymentFeedback = new TextFeedbackPanel("cashIncomeFromRecoveryRepaymentFeedback", this.cashIncomeFromRecoveryRepaymentField);
         this.cashIncomeFromRecoveryRepaymentIContainer.add(this.cashIncomeFromRecoveryRepaymentFeedback);
 
-        this.cashLossesWrittenOffBlock = new WebMarkupBlock("cashLossesWrittenOffBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashLossesWrittenOffBlock);
-        this.cashLossesWrittenOffIContainer = new WebMarkupContainer("cashLossesWrittenOffIContainer");
-        this.cashLossesWrittenOffBlock.add(this.cashLossesWrittenOffIContainer);
-        this.cashLossesWrittenOffProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashLossesWrittenOffProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashLossesWrittenOffProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Expense.getLiteral());
-        this.cashLossesWrittenOffField = new Select2SingleChoice<>("cashLossesWrittenOffField", new PropertyModel<>(this, "cashLossesWrittenOffValue"), this.cashLossesWrittenOffProvider);
-        this.cashLossesWrittenOffField.setLabel(Model.of("Losses written off"));
-        this.cashLossesWrittenOffField.add(new OnChangeAjaxBehavior());
-        this.cashLossesWrittenOffIContainer.add(this.cashLossesWrittenOffField);
-        this.cashLossesWrittenOffFeedback = new TextFeedbackPanel("cashLossesWrittenOffFeedback", this.cashLossesWrittenOffField);
-        this.cashLossesWrittenOffIContainer.add(this.cashLossesWrittenOffFeedback);
+        this.cashLossWrittenOffBlock = new WebMarkupBlock("cashLossWrittenOffBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashLossWrittenOffBlock);
+        this.cashLossWrittenOffIContainer = new WebMarkupContainer("cashLossWrittenOffIContainer");
+        this.cashLossWrittenOffBlock.add(this.cashLossWrittenOffIContainer);
+        this.cashLossWrittenOffProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.cashLossWrittenOffProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashLossWrittenOffProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Expense.getLiteral());
+        this.cashLossWrittenOffField = new Select2SingleChoice<>("cashLossWrittenOffField", new PropertyModel<>(this, "cashLossWrittenOffValue"), this.cashLossWrittenOffProvider);
+        this.cashLossWrittenOffField.setLabel(Model.of("Loss written off"));
+        this.cashLossWrittenOffField.add(new OnChangeAjaxBehavior());
+        this.cashLossWrittenOffIContainer.add(this.cashLossWrittenOffField);
+        this.cashLossWrittenOffFeedback = new TextFeedbackPanel("cashLossWrittenOffFeedback", this.cashLossWrittenOffField);
+        this.cashLossWrittenOffIContainer.add(this.cashLossWrittenOffFeedback);
 
         this.cashOverPaymentLiabilityBlock = new WebMarkupBlock("cashOverPaymentLiabilityBlock", Size.Six_6);
         this.cashIContainer.add(this.cashOverPaymentLiabilityBlock);
@@ -1577,6 +1573,7 @@ public class LoanCreatePage extends DeprecatedPage {
 
     protected void initAccountingPeriodic() {
         this.periodicBlock = new WebMarkupContainer("periodicBlock");
+        this.periodicBlock.setOutputMarkupId(true);
         this.form.add(this.periodicBlock);
 
         this.periodicIContainer = new WebMarkupContainer("periodicIContainer");
@@ -1624,33 +1621,33 @@ public class LoanCreatePage extends DeprecatedPage {
         this.periodicInterestReceivableFeedback = new TextFeedbackPanel("periodicInterestReceivableFeedback", this.periodicInterestReceivableField);
         this.periodicInterestReceivableIContainer.add(this.periodicInterestReceivableFeedback);
 
-        this.periodicFeesReceivableBlock = new WebMarkupBlock("periodicFeesReceivableBlock", Size.Six_6);
-        this.periodicIContainer.add(this.periodicFeesReceivableBlock);
-        this.periodicFeesReceivableIContainer = new WebMarkupContainer("periodicFeesReceivableIContainer");
-        this.periodicFeesReceivableBlock.add(this.periodicFeesReceivableIContainer);
-        this.periodicFeesReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.periodicFeesReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.periodicFeesReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
-        this.periodicFeesReceivableField = new Select2SingleChoice<>("periodicFeesReceivableField", new PropertyModel<>(this, "periodicFeesReceivableValue"), this.periodicFeesReceivableProvider);
-        this.periodicFeesReceivableField.setLabel(Model.of("Fees Receivable"));
-        this.periodicFeesReceivableField.add(new OnChangeAjaxBehavior());
-        this.periodicFeesReceivableIContainer.add(this.periodicFeesReceivableField);
-        this.periodicFeesReceivableFeedback = new TextFeedbackPanel("periodicFeesReceivableFeedback", this.periodicFeesReceivableField);
-        this.periodicFeesReceivableIContainer.add(this.periodicFeesReceivableFeedback);
+        this.periodicFeeReceivableBlock = new WebMarkupBlock("periodicFeeReceivableBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicFeeReceivableBlock);
+        this.periodicFeeReceivableIContainer = new WebMarkupContainer("periodicFeeReceivableIContainer");
+        this.periodicFeeReceivableBlock.add(this.periodicFeeReceivableIContainer);
+        this.periodicFeeReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.periodicFeeReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.periodicFeeReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
+        this.periodicFeeReceivableField = new Select2SingleChoice<>("periodicFeeReceivableField", new PropertyModel<>(this, "periodicFeeReceivableValue"), this.periodicFeeReceivableProvider);
+        this.periodicFeeReceivableField.setLabel(Model.of("Fee Receivable"));
+        this.periodicFeeReceivableField.add(new OnChangeAjaxBehavior());
+        this.periodicFeeReceivableIContainer.add(this.periodicFeeReceivableField);
+        this.periodicFeeReceivableFeedback = new TextFeedbackPanel("periodicFeeReceivableFeedback", this.periodicFeeReceivableField);
+        this.periodicFeeReceivableIContainer.add(this.periodicFeeReceivableFeedback);
 
-        this.periodicPenaltiesReceivableBlock = new WebMarkupBlock("periodicPenaltiesReceivableBlock", Size.Six_6);
-        this.periodicIContainer.add(this.periodicPenaltiesReceivableBlock);
-        this.periodicPenaltiesReceivableIContainer = new WebMarkupContainer("periodicPenaltiesReceivableIContainer");
-        this.periodicPenaltiesReceivableBlock.add(this.periodicPenaltiesReceivableIContainer);
-        this.periodicPenaltiesReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.periodicPenaltiesReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.periodicPenaltiesReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
-        this.periodicPenaltiesReceivableField = new Select2SingleChoice<>("periodicPenaltiesReceivableField", new PropertyModel<>(this, "periodicPenaltiesReceivableValue"), this.periodicPenaltiesReceivableProvider);
-        this.periodicPenaltiesReceivableField.setLabel(Model.of("Penalties Receivable"));
-        this.periodicPenaltiesReceivableField.add(new OnChangeAjaxBehavior());
-        this.periodicPenaltiesReceivableIContainer.add(this.periodicPenaltiesReceivableField);
-        this.periodicPenaltiesReceivableFeedback = new TextFeedbackPanel("periodicPenaltiesReceivableFeedback", this.periodicPenaltiesReceivableField);
-        this.periodicPenaltiesReceivableIContainer.add(this.periodicPenaltiesReceivableFeedback);
+        this.periodicPenaltyReceivableBlock = new WebMarkupBlock("periodicPenaltyReceivableBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicPenaltyReceivableBlock);
+        this.periodicPenaltyReceivableIContainer = new WebMarkupContainer("periodicPenaltyReceivableIContainer");
+        this.periodicPenaltyReceivableBlock.add(this.periodicPenaltyReceivableIContainer);
+        this.periodicPenaltyReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.periodicPenaltyReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.periodicPenaltyReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
+        this.periodicPenaltyReceivableField = new Select2SingleChoice<>("periodicPenaltyReceivableField", new PropertyModel<>(this, "periodicPenaltyReceivableValue"), this.periodicPenaltyReceivableProvider);
+        this.periodicPenaltyReceivableField.setLabel(Model.of("Penalty Receivable"));
+        this.periodicPenaltyReceivableField.add(new OnChangeAjaxBehavior());
+        this.periodicPenaltyReceivableIContainer.add(this.periodicPenaltyReceivableField);
+        this.periodicPenaltyReceivableFeedback = new TextFeedbackPanel("periodicPenaltyReceivableFeedback", this.periodicPenaltyReceivableField);
+        this.periodicPenaltyReceivableIContainer.add(this.periodicPenaltyReceivableFeedback);
 
         this.periodicTransferInSuspenseBlock = new WebMarkupBlock("periodicTransferInSuspenseBlock", Size.Six_6);
         this.periodicIContainer.add(this.periodicTransferInSuspenseBlock);
@@ -1694,19 +1691,19 @@ public class LoanCreatePage extends DeprecatedPage {
         this.periodicIncomeFromFeeFeedback = new TextFeedbackPanel("periodicIncomeFromFeeFeedback", this.periodicIncomeFromFeeField);
         this.periodicIncomeFromFeeIContainer.add(this.periodicIncomeFromFeeFeedback);
 
-        this.periodicIncomeFromPenaltiesBlock = new WebMarkupBlock("periodicIncomeFromPenaltiesBlock", Size.Six_6);
-        this.periodicIContainer.add(this.periodicIncomeFromPenaltiesBlock);
-        this.periodicIncomeFromPenaltiesIContainer = new WebMarkupContainer("periodicIncomeFromPenaltiesIContainer");
-        this.periodicIncomeFromPenaltiesBlock.add(this.periodicIncomeFromPenaltiesIContainer);
-        this.periodicIncomeFromPenaltiesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.periodicIncomeFromPenaltiesProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.periodicIncomeFromPenaltiesProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
-        this.periodicIncomeFromPenaltiesField = new Select2SingleChoice<>("periodicIncomeFromPenaltiesField", new PropertyModel<>(this, "periodicIncomeFromPenaltiesValue"), this.periodicIncomeFromPenaltiesProvider);
-        this.periodicIncomeFromPenaltiesField.setLabel(Model.of("Income from penalties"));
-        this.periodicIncomeFromPenaltiesField.add(new OnChangeAjaxBehavior());
-        this.periodicIncomeFromPenaltiesIContainer.add(this.periodicIncomeFromPenaltiesField);
-        this.periodicIncomeFromPenaltiesFeedback = new TextFeedbackPanel("periodicIncomeFromPenaltiesFeedback", this.periodicIncomeFromPenaltiesField);
-        this.periodicIncomeFromPenaltiesIContainer.add(this.periodicIncomeFromPenaltiesFeedback);
+        this.periodicIncomeFromPenaltyBlock = new WebMarkupBlock("periodicIncomeFromPenaltyBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicIncomeFromPenaltyBlock);
+        this.periodicIncomeFromPenaltyIContainer = new WebMarkupContainer("periodicIncomeFromPenaltyIContainer");
+        this.periodicIncomeFromPenaltyBlock.add(this.periodicIncomeFromPenaltyIContainer);
+        this.periodicIncomeFromPenaltyProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.periodicIncomeFromPenaltyProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.periodicIncomeFromPenaltyProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
+        this.periodicIncomeFromPenaltyField = new Select2SingleChoice<>("periodicIncomeFromPenaltyField", new PropertyModel<>(this, "periodicIncomeFromPenaltyValue"), this.periodicIncomeFromPenaltyProvider);
+        this.periodicIncomeFromPenaltyField.setLabel(Model.of("Income from Penalty"));
+        this.periodicIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
+        this.periodicIncomeFromPenaltyIContainer.add(this.periodicIncomeFromPenaltyField);
+        this.periodicIncomeFromPenaltyFeedback = new TextFeedbackPanel("periodicIncomeFromPenaltyFeedback", this.periodicIncomeFromPenaltyField);
+        this.periodicIncomeFromPenaltyIContainer.add(this.periodicIncomeFromPenaltyFeedback);
 
         this.periodicIncomeFromRecoveryRepaymentBlock = new WebMarkupBlock("periodicIncomeFromRecoveryRepaymentBlock", Size.Six_6);
         this.periodicIContainer.add(this.periodicIncomeFromRecoveryRepaymentBlock);
@@ -1722,19 +1719,19 @@ public class LoanCreatePage extends DeprecatedPage {
         this.periodicIncomeFromRecoveryRepaymentFeedback = new TextFeedbackPanel("periodicIncomeFromRecoveryRepaymentFeedback", this.periodicIncomeFromRecoveryRepaymentField);
         this.periodicIncomeFromRecoveryRepaymentIContainer.add(this.periodicIncomeFromRecoveryRepaymentFeedback);
 
-        this.periodicLossesWrittenOffBlock = new WebMarkupBlock("periodicLossesWrittenOffBlock", Size.Six_6);
-        this.periodicIContainer.add(this.periodicLossesWrittenOffBlock);
-        this.periodicLossesWrittenOffIContainer = new WebMarkupContainer("periodicLossesWrittenOffIContainer");
-        this.periodicLossesWrittenOffBlock.add(this.periodicLossesWrittenOffIContainer);
-        this.periodicLossesWrittenOffProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.periodicLossesWrittenOffProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.periodicLossesWrittenOffProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Expense.getLiteral());
-        this.periodicLossesWrittenOffField = new Select2SingleChoice<>("periodicLossesWrittenOffField", new PropertyModel<>(this, "periodicLossesWrittenOffValue"), this.periodicLossesWrittenOffProvider);
-        this.periodicLossesWrittenOffField.setLabel(Model.of("Losses written off"));
-        this.periodicLossesWrittenOffField.add(new OnChangeAjaxBehavior());
-        this.periodicLossesWrittenOffIContainer.add(this.periodicLossesWrittenOffField);
-        this.periodicLossesWrittenOffFeedback = new TextFeedbackPanel("periodicLossesWrittenOffFeedback", this.periodicLossesWrittenOffField);
-        this.periodicLossesWrittenOffIContainer.add(this.periodicLossesWrittenOffFeedback);
+        this.periodicLossWrittenOffBlock = new WebMarkupBlock("periodicLossWrittenOffBlock", Size.Six_6);
+        this.periodicIContainer.add(this.periodicLossWrittenOffBlock);
+        this.periodicLossWrittenOffIContainer = new WebMarkupContainer("periodicLossWrittenOffIContainer");
+        this.periodicLossWrittenOffBlock.add(this.periodicLossWrittenOffIContainer);
+        this.periodicLossWrittenOffProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.periodicLossWrittenOffProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.periodicLossWrittenOffProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Expense.getLiteral());
+        this.periodicLossWrittenOffField = new Select2SingleChoice<>("periodicLossWrittenOffField", new PropertyModel<>(this, "periodicLossWrittenOffValue"), this.periodicLossWrittenOffProvider);
+        this.periodicLossWrittenOffField.setLabel(Model.of("Loss written off"));
+        this.periodicLossWrittenOffField.add(new OnChangeAjaxBehavior());
+        this.periodicLossWrittenOffIContainer.add(this.periodicLossWrittenOffField);
+        this.periodicLossWrittenOffFeedback = new TextFeedbackPanel("periodicLossWrittenOffFeedback", this.periodicLossWrittenOffField);
+        this.periodicLossWrittenOffIContainer.add(this.periodicLossWrittenOffFeedback);
 
         this.periodicOverPaymentLiabilityBlock = new WebMarkupBlock("periodicOverPaymentLiabilityBlock", Size.Six_6);
         this.periodicIContainer.add(this.periodicOverPaymentLiabilityBlock);
@@ -1755,6 +1752,7 @@ public class LoanCreatePage extends DeprecatedPage {
     protected void initAdvancedAccountingRule() {
 
         this.advancedAccountingRuleBlock = new WebMarkupContainer("advancedAccountingRuleBlock");
+        this.advancedAccountingRuleBlock.setOutputMarkupId(true);
         this.form.add(this.advancedAccountingRuleBlock);
 
         this.advancedAccountingRuleIContainer = new WebMarkupContainer("advancedAccountingRuleIContainer");
@@ -1788,7 +1786,7 @@ public class LoanCreatePage extends DeprecatedPage {
             this.feeIncomePopup.setOnClose(this::feeIncomePopupClose);
 
             this.advancedAccountingRuleFeeIncomeColumn = Lists.newArrayList();
-            this.advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Fees"), "charge", "charge", this::advancedAccountingRuleFeeIncomeColumn));
+            this.advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Fee"), "charge", "charge", this::advancedAccountingRuleFeeIncomeColumn));
             this.advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRuleFeeIncomeColumn));
             this.advancedAccountingRuleFeeIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFeeIncomeAction, this::advancedAccountingRuleFeeIncomeClick));
             this.advancedAccountingRuleFeeIncomeProvider = new ListDataProvider(this.advancedAccountingRuleFeeIncomeValue);
@@ -3781,14 +3779,14 @@ public class LoanCreatePage extends DeprecatedPage {
             if (this.cashIncomeFromFeeValue != null) {
                 builder.withIncomeFromFeeAccountId(this.cashIncomeFromFeeValue.getId());
             }
-            if (this.cashIncomeFromPenaltiesValue != null) {
-                builder.withIncomeFromPenaltyAccountId(this.cashIncomeFromPenaltiesValue.getId());
+            if (this.cashIncomeFromPenaltyValue != null) {
+                builder.withIncomeFromPenaltyAccountId(this.cashIncomeFromPenaltyValue.getId());
             }
             if (this.cashIncomeFromRecoveryRepaymentValue != null) {
                 builder.withIncomeFromRecoveryAccountId(this.cashIncomeFromRecoveryRepaymentValue.getId());
             }
-            if (this.cashLossesWrittenOffValue != null) {
-                builder.withWriteOffAccountId(this.cashLossesWrittenOffValue.getId());
+            if (this.cashLossWrittenOffValue != null) {
+                builder.withWriteOffAccountId(this.cashLossWrittenOffValue.getId());
             }
             if (this.cashOverPaymentLiabilityValue != null) {
                 builder.withOverpaymentLiabilityAccountId(this.cashOverPaymentLiabilityValue.getId());
@@ -3809,14 +3807,14 @@ public class LoanCreatePage extends DeprecatedPage {
             if (this.periodicIncomeFromFeeValue != null) {
                 builder.withIncomeFromFeeAccountId(this.periodicIncomeFromFeeValue.getId());
             }
-            if (this.periodicIncomeFromPenaltiesValue != null) {
-                builder.withIncomeFromPenaltyAccountId(this.periodicIncomeFromPenaltiesValue.getId());
+            if (this.periodicIncomeFromPenaltyValue != null) {
+                builder.withIncomeFromPenaltyAccountId(this.periodicIncomeFromPenaltyValue.getId());
             }
             if (this.periodicIncomeFromRecoveryRepaymentValue != null) {
                 builder.withIncomeFromRecoveryAccountId(this.periodicIncomeFromRecoveryRepaymentValue.getId());
             }
-            if (this.periodicLossesWrittenOffValue != null) {
-                builder.withWriteOffAccountId(this.periodicLossesWrittenOffValue.getId());
+            if (this.periodicLossWrittenOffValue != null) {
+                builder.withWriteOffAccountId(this.periodicLossWrittenOffValue.getId());
             }
             if (this.periodicOverPaymentLiabilityValue != null) {
                 builder.withOverpaymentLiabilityAccountId(this.periodicOverPaymentLiabilityValue.getId());
@@ -3824,11 +3822,11 @@ public class LoanCreatePage extends DeprecatedPage {
             if (this.periodicInterestReceivableValue != null) {
                 builder.withReceivableInterestAccountId(this.periodicInterestReceivableValue.getId());
             }
-            if (this.periodicFeesReceivableValue != null) {
-                builder.withReceivableFeeAccountId(this.periodicFeesReceivableValue.getId());
+            if (this.periodicFeeReceivableValue != null) {
+                builder.withReceivableFeeAccountId(this.periodicFeeReceivableValue.getId());
             }
-            if (this.periodicPenaltiesReceivableValue != null) {
-                builder.withReceivablePenaltyAccountId(this.periodicPenaltiesReceivableValue.getId());
+            if (this.periodicPenaltyReceivableValue != null) {
+                builder.withReceivablePenaltyAccountId(this.periodicPenaltyReceivableValue.getId());
             }
         } else if (ACC_UPFRONT.equals(accounting)) {
             if (this.upfrontFundSourceValue != null) {
@@ -3846,14 +3844,14 @@ public class LoanCreatePage extends DeprecatedPage {
             if (this.upfrontIncomeFromFeeValue != null) {
                 builder.withIncomeFromFeeAccountId(this.upfrontIncomeFromFeeValue.getId());
             }
-            if (this.upfrontIncomeFromPenaltiesValue != null) {
-                builder.withIncomeFromPenaltyAccountId(this.upfrontIncomeFromPenaltiesValue.getId());
+            if (this.upfrontIncomeFromPenaltyValue != null) {
+                builder.withIncomeFromPenaltyAccountId(this.upfrontIncomeFromPenaltyValue.getId());
             }
             if (this.upfrontIncomeFromRecoveryRepaymentValue != null) {
                 builder.withIncomeFromRecoveryAccountId(this.upfrontIncomeFromRecoveryRepaymentValue.getId());
             }
-            if (this.upfrontLossesWrittenOffValue != null) {
-                builder.withWriteOffAccountId(this.upfrontLossesWrittenOffValue.getId());
+            if (this.upfrontLossWrittenOffValue != null) {
+                builder.withWriteOffAccountId(this.upfrontLossWrittenOffValue.getId());
             }
             if (this.upfrontOverPaymentLiabilityValue != null) {
                 builder.withOverpaymentLiabilityAccountId(this.upfrontOverPaymentLiabilityValue.getId());
@@ -3861,11 +3859,11 @@ public class LoanCreatePage extends DeprecatedPage {
             if (this.upfrontInterestReceivableValue != null) {
                 builder.withReceivableInterestAccountId(this.upfrontInterestReceivableValue.getId());
             }
-            if (this.upfrontFeesReceivableValue != null) {
-                builder.withReceivableFeeAccountId(this.upfrontFeesReceivableValue.getId());
+            if (this.upfrontFeeReceivableValue != null) {
+                builder.withReceivableFeeAccountId(this.upfrontFeeReceivableValue.getId());
             }
-            if (this.upfrontPenaltiesReceivableValue != null) {
-                builder.withReceivablePenaltyAccountId(this.upfrontPenaltiesReceivableValue.getId());
+            if (this.upfrontPenaltyReceivableValue != null) {
+                builder.withReceivablePenaltyAccountId(this.upfrontPenaltyReceivableValue.getId());
             }
         }
 
