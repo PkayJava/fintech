@@ -1,35 +1,10 @@
 package com.angkorteam.fintech.pages.product.saving;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Radio;
-import org.apache.wicket.markup.html.form.RadioGroup;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.SavingBuilder;
-import com.angkorteam.fintech.dto.enums.AccountType;
-import com.angkorteam.fintech.dto.enums.AccountUsage;
-import com.angkorteam.fintech.dto.enums.ChargeCalculation;
-import com.angkorteam.fintech.dto.enums.ChargeTime;
-import com.angkorteam.fintech.dto.enums.DayInYear;
-import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
-import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
-import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
-import com.angkorteam.fintech.dto.enums.LockInType;
+import com.angkorteam.fintech.dto.enums.*;
 import com.angkorteam.fintech.helper.SavingHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.popup.CurrencyPopup;
@@ -37,13 +12,7 @@ import com.angkorteam.fintech.popup.PaymentTypePopup;
 import com.angkorteam.fintech.popup.saving.ChargePopup;
 import com.angkorteam.fintech.popup.saving.FeeChargePopup;
 import com.angkorteam.fintech.popup.saving.PenaltyChargePopup;
-import com.angkorteam.fintech.provider.CurrencyProvider;
-import com.angkorteam.fintech.provider.DayInYearProvider;
-import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
-import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
-import com.angkorteam.fintech.provider.InterestPostingPeriodProvider;
-import com.angkorteam.fintech.provider.LockInTypeProvider;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.provider.*;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -73,9 +42,25 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
+import java.util.List;
+import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingCreatePage extends DeprecatedPage {
+public class SavingCreatePage extends Page {
 
     public static final String ACC_NONE = "None";
     public static final String ACC_CASH = "Cash";
@@ -307,14 +292,14 @@ public class SavingCreatePage extends DeprecatedPage {
     protected Select2SingleChoice<Option> cashSavingControlField;
     protected TextFeedbackPanel cashSavingControlFeedback;
 
-    protected WebMarkupBlock cashSavingsTransfersInSuspenseBlock;
-    protected WebMarkupContainer cashSavingsTransfersInSuspenseIContainer;
-    protected SingleChoiceProvider cashSavingsTransfersInSuspenseProvider;
-    protected Option cashSavingsTransfersInSuspenseValue;
-    protected Select2SingleChoice<Option> cashSavingsTransfersInSuspenseField;
-    protected TextFeedbackPanel cashSavingsTransfersInSuspenseFeedback;
+    protected WebMarkupBlock cashSavingTransferInSuspenseBlock;
+    protected WebMarkupContainer cashSavingTransferInSuspenseIContainer;
+    protected SingleChoiceProvider cashSavingTransferInSuspenseProvider;
+    protected Option cashSavingTransferInSuspenseValue;
+    protected Select2SingleChoice<Option> cashSavingTransferInSuspenseField;
+    protected TextFeedbackPanel cashSavingTransferInSuspenseFeedback;
 
-    protected WebMarkupContainer cashEscheatLiabilityBlock;
+    protected WebMarkupBlock cashEscheatLiabilityBlock;
     protected WebMarkupContainer cashEscheatLiabilityIContainer;
     protected SingleChoiceProvider cashEscheatLiabilityProvider;
     protected Option cashEscheatLiabilityValue;
@@ -531,6 +516,7 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void initAdvancedAccountingRule() {
         this.advancedAccountingRuleBlock = new WebMarkupContainer("advancedAccountingRuleBlock");
+        this.advancedAccountingRuleBlock.setOutputMarkupId(true);
         this.form.add(this.advancedAccountingRuleBlock);
         this.advancedAccountingRuleIContainer = new WebMarkupContainer("advancedAccountingRuleIContainer");
         this.advancedAccountingRuleBlock.add(this.advancedAccountingRuleIContainer);
@@ -617,7 +603,7 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected ItemPanel advancedAccountingRulePenaltyIncomeColumn(String column, IModel<String> display, Map<String, Object> model) {
         if ("charge".equals(column) || "account".equals(column)) {
-            String value = (String) model.get(column);
+            Option value = (Option) model.get(column);
             return new TextCell(value);
         }
         throw new WicketRuntimeException("Unknown " + column);
@@ -664,7 +650,7 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected ItemPanel advancedAccountingRuleFeeIncomeColumn(String column, IModel<String> display, Map<String, Object> model) {
         if ("charge".equals(column) || "account".equals(column)) {
-            String value = (String) model.get(column);
+            Option value = (Option) model.get(column);
             return new TextCell(value);
         }
         throw new WicketRuntimeException("Unknown " + column);
@@ -714,7 +700,7 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected ItemPanel advancedAccountingRuleFundSourceColumn(String column, IModel<String> display, Map<String, Object> model) {
         if ("payment".equals(column) || "account".equals(column)) {
-            String value = (String) model.get(column);
+            Option value = (Option) model.get(column);
             return new TextCell(value);
         }
         throw new WicketRuntimeException("Unknown " + column);
@@ -722,6 +708,7 @@ public class SavingCreatePage extends DeprecatedPage {
 
     protected void initAccountingCash() {
         this.cashBlock = new WebMarkupContainer("cashBlock");
+        this.cashBlock.setOutputMarkupId(true);
         this.form.add(this.cashBlock);
         this.cashIContainer = new WebMarkupContainer("cashIContainer");
         this.cashBlock.add(this.cashIContainer);
@@ -732,7 +719,7 @@ public class SavingCreatePage extends DeprecatedPage {
 
         initCashSavingControlBlock();
 
-        initCashSavingsTransfersInSuspenseBlock();
+        initCashSavingTransferInSuspenseBlock();
 
         initCashEscheatLiabilityBlock();
 
@@ -792,23 +779,23 @@ public class SavingCreatePage extends DeprecatedPage {
         this.cashSavingControlIContainer.add(this.cashSavingControlFeedback);
     }
 
-    protected void initCashSavingsTransfersInSuspenseBlock() {
-        this.cashSavingsTransfersInSuspenseBlock = new WebMarkupBlock("cashSavingsTransfersInSuspenseBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashSavingsTransfersInSuspenseBlock);
-        this.cashSavingsTransfersInSuspenseIContainer = new WebMarkupContainer("cashSavingsTransfersInSuspenseIContainer");
-        this.cashSavingsTransfersInSuspenseBlock.add(this.cashSavingsTransfersInSuspenseIContainer);
-        this.cashSavingsTransfersInSuspenseProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashSavingsTransfersInSuspenseProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashSavingsTransfersInSuspenseProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
-        this.cashSavingsTransfersInSuspenseField = new Select2SingleChoice<>("cashSavingsTransfersInSuspenseField", new PropertyModel<>(this, "cashSavingsTransfersInSuspenseValue"), this.cashSavingsTransfersInSuspenseProvider);
-        this.cashSavingsTransfersInSuspenseField.add(new OnChangeAjaxBehavior());
-        this.cashSavingsTransfersInSuspenseIContainer.add(this.cashSavingsTransfersInSuspenseField);
-        this.cashSavingsTransfersInSuspenseFeedback = new TextFeedbackPanel("cashSavingsTransfersInSuspenseFeedback", this.cashSavingsTransfersInSuspenseField);
-        this.cashSavingsTransfersInSuspenseIContainer.add(this.cashSavingsTransfersInSuspenseFeedback);
+    protected void initCashSavingTransferInSuspenseBlock() {
+        this.cashSavingTransferInSuspenseBlock = new WebMarkupBlock("cashSavingTransferInSuspenseBlock", Size.Six_6);
+        this.cashIContainer.add(this.cashSavingTransferInSuspenseBlock);
+        this.cashSavingTransferInSuspenseIContainer = new WebMarkupContainer("cashSavingTransferInSuspenseIContainer");
+        this.cashSavingTransferInSuspenseBlock.add(this.cashSavingTransferInSuspenseIContainer);
+        this.cashSavingTransferInSuspenseProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.cashSavingTransferInSuspenseProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashSavingTransferInSuspenseProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
+        this.cashSavingTransferInSuspenseField = new Select2SingleChoice<>("cashSavingTransferInSuspenseField", new PropertyModel<>(this, "cashSavingTransferInSuspenseValue"), this.cashSavingTransferInSuspenseProvider);
+        this.cashSavingTransferInSuspenseField.add(new OnChangeAjaxBehavior());
+        this.cashSavingTransferInSuspenseIContainer.add(this.cashSavingTransferInSuspenseField);
+        this.cashSavingTransferInSuspenseFeedback = new TextFeedbackPanel("cashSavingTransferInSuspenseFeedback", this.cashSavingTransferInSuspenseField);
+        this.cashSavingTransferInSuspenseIContainer.add(this.cashSavingTransferInSuspenseFeedback);
     }
 
     protected void initCashEscheatLiabilityBlock() {
-        this.cashEscheatLiabilityBlock = new WebMarkupContainer("cashEscheatLiabilityBlock");
+        this.cashEscheatLiabilityBlock = new WebMarkupBlock("cashEscheatLiabilityBlock", Size.Six_6);
         this.cashIContainer.add(cashEscheatLiabilityBlock);
         this.cashEscheatLiabilityIContainer = new WebMarkupContainer("cashEscheatLiabilityIContainer");
         this.cashEscheatLiabilityBlock.add(this.cashEscheatLiabilityIContainer);
@@ -1582,8 +1569,8 @@ public class SavingCreatePage extends DeprecatedPage {
             if (this.cashSavingControlValue != null) {
                 builder.withSavingsControlAccountId(this.cashSavingControlValue.getId());
             }
-            if (this.cashSavingsTransfersInSuspenseValue != null) {
-                builder.withTransfersInSuspenseAccountId(this.cashSavingsTransfersInSuspenseValue.getId());
+            if (this.cashSavingTransferInSuspenseValue != null) {
+                builder.withTransfersInSuspenseAccountId(this.cashSavingTransferInSuspenseValue.getId());
             }
             if (this.settingEnableDormancyTrackingValue != null && this.settingEnableDormancyTrackingValue) {
                 if (this.cashEscheatLiabilityValue != null) {
