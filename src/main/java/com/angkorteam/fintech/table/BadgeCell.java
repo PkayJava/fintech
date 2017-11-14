@@ -174,7 +174,7 @@ public class BadgeCell extends ItemPanel {
     }
 
     public BadgeCell(BadgeType type, Option v) {
-        this(type, v != null & v.getText() != null && !"".equals(v.getText()) ? Model.of(String.valueOf(v.getText())) : Model.of(""));
+        this(type, v != null && v.getText() != null && !"".equals(v.getText()) ? Model.of(String.valueOf(v.getText())) : Model.of(""));
     }
 
     public BadgeCell(BadgeType type, IModel<?> model) {

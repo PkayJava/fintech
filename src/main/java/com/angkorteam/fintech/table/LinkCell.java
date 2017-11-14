@@ -176,7 +176,7 @@ public class LinkCell extends ItemPanel {
     }
 
     public LinkCell(Class<? extends Page> page, PageParameters parameters, Option v) {
-        this(page, parameters, v != null & v.getText() != null && !"".equals(v.getText()) ? Model.of(String.valueOf(v.getText())) : Model.of(""));
+        this(page, parameters, v != null && v.getText() != null && !"".equals(v.getText()) ? Model.of(String.valueOf(v.getText())) : Model.of(""));
     }
 
     public LinkCell(Class<? extends Page> page, PageParameters parameters, IModel<?> model) {
