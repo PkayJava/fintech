@@ -161,7 +161,7 @@ public class TextCell extends ItemPanel {
     }
 
     public TextCell(Option v) {
-        this(v != null & v.getText() != null && !"".equals(v.getText()) ? Model.of(String.valueOf(v.getText())) : Model.of(""));
+        this(v != null && v.getText() != null && !"".equals(v.getText()) ? Model.of(String.valueOf(v.getText())) : Model.of(""));
     }
 
     public TextCell(Number v) {

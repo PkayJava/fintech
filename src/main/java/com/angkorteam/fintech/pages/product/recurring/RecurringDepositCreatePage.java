@@ -1,42 +1,11 @@
 package com.angkorteam.fintech.pages.product.recurring;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Radio;
-import org.apache.wicket.markup.html.form.RadioGroup;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.json.JSONObject;
-
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.RecurringBuilder;
 import com.angkorteam.fintech.dto.builder.RecurringBuilder.IncentiveBuilder;
-import com.angkorteam.fintech.dto.enums.AccountType;
-import com.angkorteam.fintech.dto.enums.AccountUsage;
-import com.angkorteam.fintech.dto.enums.ApplyPenalOn;
-import com.angkorteam.fintech.dto.enums.Attribute;
-import com.angkorteam.fintech.dto.enums.ChargeCalculation;
-import com.angkorteam.fintech.dto.enums.ChargeTime;
-import com.angkorteam.fintech.dto.enums.DayInYear;
-import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
-import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
-import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
-import com.angkorteam.fintech.dto.enums.LockInType;
-import com.angkorteam.fintech.dto.enums.OperandType;
-import com.angkorteam.fintech.dto.enums.Operator;
+import com.angkorteam.fintech.dto.enums.*;
 import com.angkorteam.fintech.helper.RecurringHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.popup.CurrencyPopup;
@@ -46,14 +15,7 @@ import com.angkorteam.fintech.popup.recurring.ChargePopup;
 import com.angkorteam.fintech.popup.recurring.FeeChargePopup;
 import com.angkorteam.fintech.popup.recurring.IncentivePopup;
 import com.angkorteam.fintech.popup.recurring.PenaltyChargePopup;
-import com.angkorteam.fintech.provider.ApplyPenalOnProvider;
-import com.angkorteam.fintech.provider.CurrencyProvider;
-import com.angkorteam.fintech.provider.DayInYearProvider;
-import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
-import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
-import com.angkorteam.fintech.provider.InterestPostingPeriodProvider;
-import com.angkorteam.fintech.provider.LockInTypeProvider;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.provider.*;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -84,9 +46,27 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.json.JSONObject;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class RecurringDepositCreatePage extends DeprecatedPage {
+public class RecurringDepositCreatePage extends Page {
 
     public static final String ACC_NONE = "None";
     public static final String ACC_CASH = "Cash";
@@ -350,25 +330,25 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
     protected Select2SingleChoice<Option> cashSavingControlField;
     protected TextFeedbackPanel cashSavingControlFeedback;
 
-    protected SingleChoiceProvider cashSavingsTransfersInSuspenseProvider;
-    protected Option cashSavingsTransfersInSuspenseValue;
-    protected Select2SingleChoice<Option> cashSavingsTransfersInSuspenseField;
-    protected TextFeedbackPanel cashSavingsTransfersInSuspenseFeedback;
+    protected SingleChoiceProvider cashSavingTransfersInSuspenseProvider;
+    protected Option cashSavingTransfersInSuspenseValue;
+    protected Select2SingleChoice<Option> cashSavingTransfersInSuspenseField;
+    protected TextFeedbackPanel cashSavingTransfersInSuspenseFeedback;
 
-    protected SingleChoiceProvider cashInterestOnSavingsProvider;
-    protected Option cashInterestOnSavingsValue;
-    protected Select2SingleChoice<Option> cashInterestOnSavingsField;
-    protected TextFeedbackPanel cashInterestOnSavingsFeedback;
+    protected SingleChoiceProvider cashInterestOnSavingProvider;
+    protected Option cashInterestOnSavingValue;
+    protected Select2SingleChoice<Option> cashInterestOnSavingField;
+    protected TextFeedbackPanel cashInterestOnSavingFeedback;
 
-    protected SingleChoiceProvider cashIncomeFromFeesProvider;
-    protected Option cashIncomeFromFeesValue;
-    protected Select2SingleChoice<Option> cashIncomeFromFeesField;
-    protected TextFeedbackPanel cashIncomeFromFeesFeedback;
+    protected SingleChoiceProvider cashIncomeFromFeeProvider;
+    protected Option cashIncomeFromFeeValue;
+    protected Select2SingleChoice<Option> cashIncomeFromFeeField;
+    protected TextFeedbackPanel cashIncomeFromFeeFeedback;
 
-    protected SingleChoiceProvider cashIncomeFromPenaltiesProvider;
-    protected Option cashIncomeFromPenaltiesValue;
-    protected Select2SingleChoice<Option> cashIncomeFromPenaltiesField;
-    protected TextFeedbackPanel cashIncomeFromPenaltiesFeedback;
+    protected SingleChoiceProvider cashIncomeFromPenaltyProvider;
+    protected Option cashIncomeFromPenaltyValue;
+    protected Select2SingleChoice<Option> cashIncomeFromPenaltyField;
+    protected TextFeedbackPanel cashIncomeFromPenaltyFeedback;
 
     // Advanced Accounting Rule
 
@@ -521,6 +501,7 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
 
     protected void initAccountingCash() {
         this.cashBlock = new WebMarkupContainer("cashBlock");
+        this.cashBlock.setOutputMarkupId(true);
         this.form.add(this.cashBlock);
         this.cashIContainer = new WebMarkupContainer("cashIContainer");
         this.cashBlock.add(this.cashIContainer);
@@ -545,49 +526,50 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
         this.cashSavingControlFeedback = new TextFeedbackPanel("cashSavingControlFeedback", this.cashSavingControlField);
         this.cashIContainer.add(this.cashSavingControlFeedback);
 
-        this.cashSavingsTransfersInSuspenseProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashSavingsTransfersInSuspenseProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashSavingsTransfersInSuspenseProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
-        this.cashSavingsTransfersInSuspenseField = new Select2SingleChoice<>("cashSavingsTransfersInSuspenseField", new PropertyModel<>(this, "cashSavingsTransfersInSuspenseValue"), this.cashSavingsTransfersInSuspenseProvider);
-        this.cashSavingsTransfersInSuspenseField.setLabel(Model.of("Savings transfers in suspense"));
-        this.cashSavingsTransfersInSuspenseField.add(new OnChangeAjaxBehavior());
-        this.cashIContainer.add(this.cashSavingsTransfersInSuspenseField);
-        this.cashSavingsTransfersInSuspenseFeedback = new TextFeedbackPanel("cashSavingsTransfersInSuspenseFeedback", this.cashSavingsTransfersInSuspenseField);
-        this.cashIContainer.add(this.cashSavingsTransfersInSuspenseFeedback);
+        this.cashSavingTransfersInSuspenseProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.cashSavingTransfersInSuspenseProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashSavingTransfersInSuspenseProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
+        this.cashSavingTransfersInSuspenseField = new Select2SingleChoice<>("cashSavingTransfersInSuspenseField", new PropertyModel<>(this, "cashSavingTransfersInSuspenseValue"), this.cashSavingTransfersInSuspenseProvider);
+        this.cashSavingTransfersInSuspenseField.setLabel(Model.of("Saving transfers in suspense"));
+        this.cashSavingTransfersInSuspenseField.add(new OnChangeAjaxBehavior());
+        this.cashIContainer.add(this.cashSavingTransfersInSuspenseField);
+        this.cashSavingTransfersInSuspenseFeedback = new TextFeedbackPanel("cashSavingTransfersInSuspenseFeedback", this.cashSavingTransfersInSuspenseField);
+        this.cashIContainer.add(this.cashSavingTransfersInSuspenseFeedback);
 
-        this.cashInterestOnSavingsProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashInterestOnSavingsProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashInterestOnSavingsProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Expense.getLiteral());
-        this.cashInterestOnSavingsField = new Select2SingleChoice<>("cashInterestOnSavingsField", new PropertyModel<>(this, "cashInterestOnSavingsValue"), this.cashInterestOnSavingsProvider);
-        this.cashInterestOnSavingsField.setLabel(Model.of("Interest on savings"));
-        this.cashInterestOnSavingsField.add(new OnChangeAjaxBehavior());
-        this.cashIContainer.add(this.cashInterestOnSavingsField);
-        this.cashInterestOnSavingsFeedback = new TextFeedbackPanel("cashInterestOnSavingsFeedback", this.cashInterestOnSavingsField);
-        this.cashIContainer.add(this.cashInterestOnSavingsFeedback);
+        this.cashInterestOnSavingProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.cashInterestOnSavingProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashInterestOnSavingProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Expense.getLiteral());
+        this.cashInterestOnSavingField = new Select2SingleChoice<>("cashInterestOnSavingField", new PropertyModel<>(this, "cashInterestOnSavingValue"), this.cashInterestOnSavingProvider);
+        this.cashInterestOnSavingField.setLabel(Model.of("Interest on savings"));
+        this.cashInterestOnSavingField.add(new OnChangeAjaxBehavior());
+        this.cashIContainer.add(this.cashInterestOnSavingField);
+        this.cashInterestOnSavingFeedback = new TextFeedbackPanel("cashInterestOnSavingFeedback", this.cashInterestOnSavingField);
+        this.cashIContainer.add(this.cashInterestOnSavingFeedback);
 
-        this.cashIncomeFromFeesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashIncomeFromFeesProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashIncomeFromFeesProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
-        this.cashIncomeFromFeesField = new Select2SingleChoice<>("cashIncomeFromFeesField", new PropertyModel<>(this, "cashIncomeFromFeesValue"), this.cashIncomeFromFeesProvider);
-        this.cashIncomeFromFeesField.setLabel(Model.of("Income from fees"));
-        this.cashIncomeFromFeesField.add(new OnChangeAjaxBehavior());
-        this.cashIContainer.add(this.cashIncomeFromFeesField);
-        this.cashIncomeFromFeesFeedback = new TextFeedbackPanel("cashIncomeFromFeesFeedback", this.cashIncomeFromFeesField);
-        this.cashIContainer.add(this.cashIncomeFromFeesFeedback);
+        this.cashIncomeFromFeeProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.cashIncomeFromFeeProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromFeeProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
+        this.cashIncomeFromFeeField = new Select2SingleChoice<>("cashIncomeFromFeeField", new PropertyModel<>(this, "cashIncomeFromFeeValue"), this.cashIncomeFromFeeProvider);
+        this.cashIncomeFromFeeField.setLabel(Model.of("Income from fees"));
+        this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
+        this.cashIContainer.add(this.cashIncomeFromFeeField);
+        this.cashIncomeFromFeeFeedback = new TextFeedbackPanel("cashIncomeFromFeeFeedback", this.cashIncomeFromFeeField);
+        this.cashIContainer.add(this.cashIncomeFromFeeFeedback);
 
-        this.cashIncomeFromPenaltiesProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashIncomeFromPenaltiesProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashIncomeFromPenaltiesProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
-        this.cashIncomeFromPenaltiesField = new Select2SingleChoice<>("cashIncomeFromPenaltiesField", new PropertyModel<>(this, "cashIncomeFromPenaltiesValue"), this.cashIncomeFromPenaltiesProvider);
-        this.cashIncomeFromPenaltiesField.setLabel(Model.of("Income from penalties"));
-        this.cashIncomeFromPenaltiesField.add(new OnChangeAjaxBehavior());
-        this.cashIContainer.add(this.cashIncomeFromPenaltiesField);
-        this.cashIncomeFromPenaltiesFeedback = new TextFeedbackPanel("cashIncomeFromPenaltiesFeedback", this.cashIncomeFromPenaltiesField);
-        this.cashIContainer.add(this.cashIncomeFromPenaltiesFeedback);
+        this.cashIncomeFromPenaltyProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.cashIncomeFromPenaltyProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromPenaltyProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
+        this.cashIncomeFromPenaltyField = new Select2SingleChoice<>("cashIncomeFromPenaltyField", new PropertyModel<>(this, "cashIncomeFromPenaltyValue"), this.cashIncomeFromPenaltyProvider);
+        this.cashIncomeFromPenaltyField.setLabel(Model.of("Income from penalties"));
+        this.cashIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
+        this.cashIContainer.add(this.cashIncomeFromPenaltyField);
+        this.cashIncomeFromPenaltyFeedback = new TextFeedbackPanel("cashIncomeFromPenaltyFeedback", this.cashIncomeFromPenaltyField);
+        this.cashIContainer.add(this.cashIncomeFromPenaltyFeedback);
     }
 
     protected void initAdvancedAccountingRule() {
         this.advancedAccountingRuleBlock = new WebMarkupContainer("advancedAccountingRuleBlock");
+        this.advancedAccountingRuleBlock.setOutputMarkupId(true);
         this.form.add(this.advancedAccountingRuleBlock);
         this.advancedAccountingRuleIContainer = new WebMarkupContainer("advancedAccountingRuleIContainer");
         this.advancedAccountingRuleBlock.add(this.advancedAccountingRuleIContainer);
@@ -599,7 +581,7 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
             this.fundSourcePopup.setOnClose(this::fundSourcePopupClose);
 
             this.advancedAccountingRuleFundSourceColumn = Lists.newArrayList();
-            this.advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Payment Type"), "payment", "payment", this::advancedAccountingRuleFeeIncomeColumn));
+            this.advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Payment Type"), "payment", "payment", this::advancedAccountingRuleFundSourceColumn));
             this.advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Fund Source"), "account", "account", this::advancedAccountingRuleFundSourceColumn));
             this.advancedAccountingRuleFundSourceColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFundSourceAction, this::advancedAccountingRuleFundSourceClick));
             this.advancedAccountingRuleFundSourceProvider = new ListDataProvider(this.advancedAccountingRuleFundSourceValue);
@@ -620,7 +602,7 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
             this.feeIncomePopup.setOnClose(this::feeIncomePopupClose);
 
             this.advancedAccountingRuleFeeIncomeColumn = Lists.newArrayList();
-            this.advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Fees"), "charge", "charge", this::advancedAccountingRuleFeeIncomeColumn));
+            this.advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Fee"), "charge", "charge", this::advancedAccountingRuleFeeIncomeColumn));
             this.advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRuleFeeIncomeColumn));
             this.advancedAccountingRuleFeeIncomeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFeeIncomeAction, this::advancedAccountingRuleFeeIncomeClick));
             this.advancedAccountingRuleFeeIncomeProvider = new ListDataProvider(this.advancedAccountingRuleFeeIncomeValue);
@@ -742,7 +724,7 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
     }
 
     protected ItemPanel advancedAccountingRuleFeeIncomeColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("payment".equals(column) || "account".equals(column)) {
+        if ("charge".equals(column) || "account".equals(column)) {
             Option value = (Option) model.get(column);
             return new TextCell(value);
         }
@@ -799,10 +781,6 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
             return new TextCell(value);
         }
         throw new WicketRuntimeException("Unknown " + column);
-    }
-
-    protected List<ActionItem> fundSourceActionItem(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     protected boolean accountingFieldUpdate(AjaxRequestTarget target) {
@@ -1705,17 +1683,17 @@ public class RecurringDepositCreatePage extends DeprecatedPage {
             if (this.cashSavingControlValue != null) {
                 builder.withSavingsControlAccountId(this.cashSavingControlValue.getId());
             }
-            if (this.cashSavingsTransfersInSuspenseValue != null) {
-                builder.withTransfersInSuspenseAccountId(this.cashSavingsTransfersInSuspenseValue.getId());
+            if (this.cashSavingTransfersInSuspenseValue != null) {
+                builder.withTransfersInSuspenseAccountId(this.cashSavingTransfersInSuspenseValue.getId());
             }
-            if (this.cashInterestOnSavingsValue != null) {
-                builder.withInterestOnSavingsAccountId(this.cashInterestOnSavingsValue.getId());
+            if (this.cashInterestOnSavingValue != null) {
+                builder.withInterestOnSavingsAccountId(this.cashInterestOnSavingValue.getId());
             }
-            if (this.cashIncomeFromFeesValue != null) {
-                builder.withIncomeFromFeeAccountId(this.cashIncomeFromFeesValue.getId());
+            if (this.cashIncomeFromFeeValue != null) {
+                builder.withIncomeFromFeeAccountId(this.cashIncomeFromFeeValue.getId());
             }
-            if (this.cashIncomeFromPenaltiesValue != null) {
-                builder.withIncomeFromPenaltyAccountId(this.cashIncomeFromPenaltiesValue.getId());
+            if (this.cashIncomeFromPenaltyValue != null) {
+                builder.withIncomeFromPenaltyAccountId(this.cashIncomeFromPenaltyValue.getId());
             }
         }
 
