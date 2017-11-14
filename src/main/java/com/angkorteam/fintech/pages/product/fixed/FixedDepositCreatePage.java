@@ -1,46 +1,11 @@
 package com.angkorteam.fintech.pages.product.fixed;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Radio;
-import org.apache.wicket.markup.html.form.RadioGroup;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.validation.validator.StringValidator;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.FixedBuilder;
 import com.angkorteam.fintech.dto.builder.FixedBuilder.IncentiveBuilder;
-import com.angkorteam.fintech.dto.enums.AccountType;
-import com.angkorteam.fintech.dto.enums.AccountUsage;
-import com.angkorteam.fintech.dto.enums.ApplyPenalOn;
-import com.angkorteam.fintech.dto.enums.Attribute;
-import com.angkorteam.fintech.dto.enums.ChargeCalculation;
-import com.angkorteam.fintech.dto.enums.ChargeTime;
-import com.angkorteam.fintech.dto.enums.DayInYear;
-import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
-import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
-import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
-import com.angkorteam.fintech.dto.enums.LockInType;
-import com.angkorteam.fintech.dto.enums.OperandType;
-import com.angkorteam.fintech.dto.enums.Operator;
+import com.angkorteam.fintech.dto.enums.*;
 import com.angkorteam.fintech.helper.FixedHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.popup.CurrencyPopup;
@@ -50,14 +15,7 @@ import com.angkorteam.fintech.popup.fixed.ChargePopup;
 import com.angkorteam.fintech.popup.fixed.FeeChargePopup;
 import com.angkorteam.fintech.popup.fixed.IncentivePopup;
 import com.angkorteam.fintech.popup.fixed.PenaltyChargePopup;
-import com.angkorteam.fintech.provider.ApplyPenalOnProvider;
-import com.angkorteam.fintech.provider.CurrencyProvider;
-import com.angkorteam.fintech.provider.DayInYearProvider;
-import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
-import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
-import com.angkorteam.fintech.provider.InterestPostingPeriodProvider;
-import com.angkorteam.fintech.provider.LockInTypeProvider;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.provider.*;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -88,9 +46,31 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.validator.StringValidator;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class FixedDepositCreatePage extends DeprecatedPage {
+public class FixedDepositCreatePage extends Page {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FixedDepositCreatePage.class);
 
@@ -518,6 +498,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
 
     protected void initAccountingCash() {
         this.cashBlock = new WebMarkupContainer("cashBlock");
+        this.cashBlock.setOutputMarkupId(true);
         this.form.add(this.cashBlock);
         this.cashIContainer = new WebMarkupContainer("cashIContainer");
         this.cashBlock.add(this.cashIContainer);
@@ -609,6 +590,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
 
     protected void initAdvancedAccountingRule() {
         this.advancedAccountingRuleBlock = new WebMarkupContainer("advancedAccountingRuleBlock");
+        this.advancedAccountingRuleBlock.setOutputMarkupId(true);
         this.form.add(this.advancedAccountingRuleBlock);
         this.advancedAccountingRuleIContainer = new WebMarkupContainer("advancedAccountingRuleIContainer");
         this.advancedAccountingRuleBlock.add(this.advancedAccountingRuleIContainer);
@@ -907,7 +889,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
     }
 
     protected ItemPanel chargeColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("name".equals(column) || "type".equals(column) || "collect".equals(column) || "data".equals(column)) {
+        if ("name".equals(column) || "type".equals(column) || "collect".equals(column) || "date".equals(column)) {
             String value = (String) model.get(column);
             return new TextCell(value);
         } else if ("amount".equals(column)) {
