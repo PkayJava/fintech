@@ -202,7 +202,7 @@ public class DataTableCreatePage extends Page {
         this.appTableIContainer = new WebMarkupContainer("appTableIContainer");
         this.appTableBlock.add(this.appTableIContainer);
         this.appTableProvider = new AppTableOptionProvider();
-        this.appTableField = new Select2SingleChoice<>("appTableField", 0, new PropertyModel<>(this, "appTableValue"), this.appTableProvider);
+        this.appTableField = new Select2SingleChoice<>("appTableField", new PropertyModel<>(this, "appTableValue"), this.appTableProvider);
         this.appTableField.setRequired(true);
         this.appTableIContainer.add(this.appTableField);
         this.appTableFeedback = new TextFeedbackPanel("appTableFeedback", this.appTableField);
@@ -259,7 +259,7 @@ public class DataTableCreatePage extends Page {
         this.codeIContainer = new WebMarkupContainer("codeIContainer");
         this.codeBlock.add(this.codeIContainer);
         this.codeProvider = new SingleChoiceProvider("m_code", "code_name", "code_name");
-        this.codeField = new Select2SingleChoice<>("codeField", 0, new PropertyModel<>(this, "codeValue"), this.codeProvider);
+        this.codeField = new Select2SingleChoice<>("codeField", new PropertyModel<>(this, "codeValue"), this.codeProvider);
         this.codeIContainer.add(this.codeField);
         this.codeFeedback = new TextFeedbackPanel("codeFeedback", this.codeField);
         this.codeIContainer.add(this.codeFeedback);
@@ -271,7 +271,7 @@ public class DataTableCreatePage extends Page {
         this.typeIContainer = new WebMarkupContainer("typeIContainer");
         this.typeBlock.add(this.typeIContainer);
         this.typeProvider = new ColumnTypeOptionProvider();
-        this.typeField = new Select2SingleChoice<>("typeField", 0, new PropertyModel<>(this, "typeValue"), this.typeProvider);
+        this.typeField = new Select2SingleChoice<>("typeField", new PropertyModel<>(this, "typeValue"), this.typeProvider);
         this.typeField.add(new OnChangeAjaxBehavior(this::typeFieldUpdate));
         this.typeField.setRequired(true);
         this.typeIContainer.add(this.typeField);

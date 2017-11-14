@@ -1094,7 +1094,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.settingLockInTypeIContainer = new WebMarkupContainer("settingLockInTypeIContainer");
         this.settingLockInTypeBlock.add(this.settingLockInTypeIContainer);
         this.settingLockInTypeProvider = new LockInTypeProvider();
-        this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", 0, new PropertyModel<>(this, "settingLockInTypeValue"), this.settingLockInTypeProvider);
+        this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", new PropertyModel<>(this, "settingLockInTypeValue"), this.settingLockInTypeProvider);
         this.settingLockInTypeField.setLabel(Model.of("Type"));
         this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
         this.settingLockInTypeIContainer.add(this.settingLockInTypeField);
@@ -1117,7 +1117,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.settingMinimumDepositTypeIContainer = new WebMarkupContainer("settingMinimumDepositTypeIContainer");
         this.settingMinimumDepositTypeBlock.add(this.settingMinimumDepositTypeIContainer);
         this.settingMinimumDepositTypeProvider = new LockInTypeProvider();
-        this.settingMinimumDepositTypeField = new Select2SingleChoice<>("settingMinimumDepositTypeField", 0, new PropertyModel<>(this, "settingMinimumDepositTypeValue"), this.settingMinimumDepositTypeProvider);
+        this.settingMinimumDepositTypeField = new Select2SingleChoice<>("settingMinimumDepositTypeField", new PropertyModel<>(this, "settingMinimumDepositTypeValue"), this.settingMinimumDepositTypeProvider);
         this.settingMinimumDepositTypeField.setLabel(Model.of("Type"));
         this.settingMinimumDepositTypeField.add(new OnChangeAjaxBehavior());
         this.settingMinimumDepositTypeIContainer.add(this.settingMinimumDepositTypeField);
@@ -1139,7 +1139,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.settingInMultiplesTypeIContainer = new WebMarkupContainer("settingInMultiplesTypeIContainer");
         this.settingInMultiplesTypeBlock.add(this.settingInMultiplesTypeIContainer);
         this.settingInMultiplesTypeProvider = new LockInTypeProvider();
-        this.settingInMultiplesTypeField = new Select2SingleChoice<>("settingInMultiplesTypeField", 0, new PropertyModel<>(this, "settingInMultiplesTypeValue"), this.settingInMultiplesTypeProvider);
+        this.settingInMultiplesTypeField = new Select2SingleChoice<>("settingInMultiplesTypeField", new PropertyModel<>(this, "settingInMultiplesTypeValue"), this.settingInMultiplesTypeProvider);
         this.settingInMultiplesTypeField.setLabel(Model.of("Type"));
         this.settingInMultiplesTypeField.add(new OnChangeAjaxBehavior());
         this.settingInMultiplesTypeIContainer.add(this.settingInMultiplesTypeField);
@@ -1161,7 +1161,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.settingMaximumDepositTypeIContainer = new WebMarkupContainer("settingMaximumDepositTypeIContainer");
         this.settingMaximumDepositTypeBlock.add(this.settingMaximumDepositTypeIContainer);
         this.settingMaximumDepositTypeProvider = new LockInTypeProvider();
-        this.settingMaximumDepositTypeField = new Select2SingleChoice<>("settingMaximumDepositTypeField", 0, new PropertyModel<>(this, "settingMaximumDepositTypeValue"), this.settingMaximumDepositTypeProvider);
+        this.settingMaximumDepositTypeField = new Select2SingleChoice<>("settingMaximumDepositTypeField", new PropertyModel<>(this, "settingMaximumDepositTypeValue"), this.settingMaximumDepositTypeProvider);
         this.settingMaximumDepositTypeField.setLabel(Model.of("Type"));
         this.settingMaximumDepositTypeField.add(new OnChangeAjaxBehavior());
         this.settingMaximumDepositTypeIContainer.add(this.settingMaximumDepositTypeField);
@@ -1193,7 +1193,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.settingApplyPenalOnIContainer = new WebMarkupContainer("settingApplyPenalOnIContainer");
         this.settingApplyPenalOnBlock.add(this.settingApplyPenalOnIContainer);
         this.settingApplyPenalOnProvider = new ApplyPenalOnProvider();
-        this.settingApplyPenalOnField = new Select2SingleChoice<>("settingApplyPenalOnField", 0, new PropertyModel<>(this, "settingApplyPenalOnValue"), this.settingApplyPenalOnProvider);
+        this.settingApplyPenalOnField = new Select2SingleChoice<>("settingApplyPenalOnField", new PropertyModel<>(this, "settingApplyPenalOnValue"), this.settingApplyPenalOnProvider);
         this.settingApplyPenalOnField.setLabel(Model.of("On"));
         this.settingApplyPenalOnField.add(new OnChangeAjaxBehavior());
         this.settingApplyPenalOnIContainer.add(this.settingApplyPenalOnField);
@@ -1215,7 +1215,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.settingTaxGroupIContainer = new WebMarkupContainer("settingTaxGroupIContainer");
         this.settingTaxGroupBlock.add(this.settingTaxGroupIContainer);
         this.settingTaxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
-        this.settingTaxGroupField = new Select2SingleChoice<>("settingTaxGroupField", 0, new PropertyModel<>(this, "settingTaxGroupValue"), this.settingTaxGroupProvider);
+        this.settingTaxGroupField = new Select2SingleChoice<>("settingTaxGroupField", new PropertyModel<>(this, "settingTaxGroupValue"), this.settingTaxGroupProvider);
         this.settingTaxGroupField.setLabel(Model.of("Tax Group"));
         this.settingTaxGroupField.add(new OnChangeAjaxBehavior());
         this.settingTaxGroupIContainer.add(this.settingTaxGroupField);
@@ -1270,7 +1270,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.termInterestCompoundingPeriodIContainer = new WebMarkupContainer("termInterestCompoundingPeriodIContainer");
         this.termInterestCompoundingPeriodBlock.add(this.termInterestCompoundingPeriodIContainer);
         this.termInterestCompoundingPeriodProvider = new InterestCompoundingPeriodProvider();
-        this.termInterestCompoundingPeriodField = new Select2SingleChoice<>("termInterestCompoundingPeriodField", 0, new PropertyModel<>(this, "termInterestCompoundingPeriodValue"), this.termInterestCompoundingPeriodProvider);
+        this.termInterestCompoundingPeriodField = new Select2SingleChoice<>("termInterestCompoundingPeriodField", new PropertyModel<>(this, "termInterestCompoundingPeriodValue"), this.termInterestCompoundingPeriodProvider);
         this.termInterestCompoundingPeriodField.setLabel(Model.of("Interest compounding period"));
         this.termInterestCompoundingPeriodField.add(new OnChangeAjaxBehavior());
         this.termInterestCompoundingPeriodIContainer.add(this.termInterestCompoundingPeriodField);
@@ -1282,7 +1282,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.termInterestPostingPeriodIContainer = new WebMarkupContainer("termInterestPostingPeriodIContainer");
         this.termInterestPostingPeriodBlock.add(this.termInterestPostingPeriodIContainer);
         this.termInterestPostingPeriodProvider = new InterestPostingPeriodProvider();
-        this.termInterestPostingPeriodField = new Select2SingleChoice<>("termInterestPostingPeriodField", 0, new PropertyModel<>(this, "termInterestPostingPeriodValue"), this.termInterestPostingPeriodProvider);
+        this.termInterestPostingPeriodField = new Select2SingleChoice<>("termInterestPostingPeriodField", new PropertyModel<>(this, "termInterestPostingPeriodValue"), this.termInterestPostingPeriodProvider);
         this.termInterestPostingPeriodField.setLabel(Model.of("Interest posting period"));
         this.termInterestPostingPeriodField.add(new OnChangeAjaxBehavior());
         this.termInterestPostingPeriodIContainer.add(this.termInterestPostingPeriodField);
@@ -1294,7 +1294,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.termInterestCalculatedUsingIContainer = new WebMarkupContainer("termInterestCalculatedUsingIContainer");
         this.termInterestCalculatedUsingBlock.add(this.termInterestCalculatedUsingIContainer);
         this.termInterestCalculatedUsingProvider = new InterestCalculatedUsingProvider();
-        this.termInterestCalculatedUsingField = new Select2SingleChoice<>("termInterestCalculatedUsingField", 0, new PropertyModel<>(this, "termInterestCalculatedUsingValue"), this.termInterestCalculatedUsingProvider);
+        this.termInterestCalculatedUsingField = new Select2SingleChoice<>("termInterestCalculatedUsingField", new PropertyModel<>(this, "termInterestCalculatedUsingValue"), this.termInterestCalculatedUsingProvider);
         this.termInterestCalculatedUsingField.setLabel(Model.of("Interest calculated using"));
         this.termInterestCalculatedUsingField.add(new OnChangeAjaxBehavior());
         this.termInterestCalculatedUsingIContainer.add(this.termInterestCalculatedUsingField);
@@ -1306,7 +1306,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.termDayInYearIContainer = new WebMarkupContainer("termDayInYearIContainer");
         this.termDayInYearBlock.add(this.termDayInYearIContainer);
         this.termDayInYearProvider = new DayInYearProvider(DayInYear.D365, DayInYear.D360);
-        this.termDayInYearField = new Select2SingleChoice<>("termDayInYearField", 0, new PropertyModel<>(this, "termDayInYearValue"), this.termDayInYearProvider);
+        this.termDayInYearField = new Select2SingleChoice<>("termDayInYearField", new PropertyModel<>(this, "termDayInYearValue"), this.termDayInYearProvider);
         this.termDayInYearField.setLabel(Model.of("Days in year"));
         this.termDayInYearField.add(new OnChangeAjaxBehavior());
         this.termDayInYearIContainer.add(this.termDayInYearField);
@@ -1322,7 +1322,7 @@ public class FixedDepositCreatePage extends DeprecatedPage {
         this.currencyCodeIContainer = new WebMarkupContainer("currencyCodeIContainer");
         this.currencyCodeBlock.add(this.currencyCodeIContainer);
         this.currencyCodeProvider = new CurrencyProvider();
-        this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", 0, new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
+        this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
         this.currencyCodeField.setLabel(Model.of("Currency"));
         this.currencyCodeField.add(new OnChangeAjaxBehavior());
         this.currencyCodeIContainer.add(this.currencyCodeField);

@@ -165,7 +165,7 @@ public class GroupCreatePage extends DeprecatedPage {
         this.officeContainer = new WebMarkupContainer("officeContainer");
         this.officeBlock.add(this.officeContainer);
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setLabel(Model.of("Office"));
         this.officeField.add(new OnChangeAjaxBehavior(this::officeFieldUpdate));
         this.officeContainer.add(this.officeField);
@@ -178,7 +178,7 @@ public class GroupCreatePage extends DeprecatedPage {
         this.staffBlock.add(this.staffContainer);
         this.staffProvider = new SingleChoiceProvider("m_staff", "m_staff.id", "m_staff.display_name");
         this.staffProvider.addJoin("inner join m_office on m_staff.office_id = m_office.id");
-        this.staffField = new Select2SingleChoice<>("staffField", 0, new PropertyModel<>(this, "staffValue"), this.staffProvider);
+        this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
         this.staffContainer.add(this.staffField);

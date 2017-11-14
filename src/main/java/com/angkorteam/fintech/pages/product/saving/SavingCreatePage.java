@@ -1120,7 +1120,7 @@ public class SavingCreatePage extends DeprecatedPage {
         this.settingTaxGroupIContainer = new WebMarkupContainer("settingTaxGroupIContainer");
         this.settingTaxGroupBlock.add(this.settingTaxGroupIContainer);
         this.settingTaxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
-        this.settingTaxGroupField = new Select2SingleChoice<>("settingTaxGroupField", 0, new PropertyModel<>(this, "settingTaxGroupValue"), this.settingTaxGroupProvider);
+        this.settingTaxGroupField = new Select2SingleChoice<>("settingTaxGroupField", new PropertyModel<>(this, "settingTaxGroupValue"), this.settingTaxGroupProvider);
         this.settingTaxGroupField.setLabel(Model.of("Tax Group"));
         this.settingTaxGroupField.add(new OnChangeAjaxBehavior());
         this.settingTaxGroupIContainer.add(this.settingTaxGroupField);
@@ -1247,7 +1247,7 @@ public class SavingCreatePage extends DeprecatedPage {
         this.settingLockInTypeIContainer = new WebMarkupContainer("settingLockInTypeIContainer");
         this.settingLockInTypeBlock.add(this.settingLockInTypeIContainer);
         this.settingLockInTypeProvider = new LockInTypeProvider();
-        this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", 0, new PropertyModel<>(this, "settingLockInTypeValue"), this.settingLockInTypeProvider);
+        this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", new PropertyModel<>(this, "settingLockInTypeValue"), this.settingLockInTypeProvider);
         this.settingLockInTypeField.setLabel(Model.of("Type"));
         this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
         this.settingLockInTypeIContainer.add(this.settingLockInTypeField);
@@ -1300,7 +1300,7 @@ public class SavingCreatePage extends DeprecatedPage {
         this.termDaysInYearIContainer = new WebMarkupContainer("termDaysInYearIContainer");
         this.termDaysInYearBlock.add(this.termDaysInYearIContainer);
         this.termDaysInYearProvider = new DayInYearProvider(DayInYear.D365, DayInYear.D360);
-        this.termDaysInYearField = new Select2SingleChoice<>("termDaysInYearField", 0, new PropertyModel<>(this, "termDaysInYearValue"), this.termDaysInYearProvider);
+        this.termDaysInYearField = new Select2SingleChoice<>("termDaysInYearField", new PropertyModel<>(this, "termDaysInYearValue"), this.termDaysInYearProvider);
         this.termDaysInYearField.setLabel(Model.of("Days in year"));
         this.termDaysInYearField.add(new OnChangeAjaxBehavior());
         this.termDaysInYearIContainer.add(this.termDaysInYearField);
@@ -1314,7 +1314,7 @@ public class SavingCreatePage extends DeprecatedPage {
         this.termInterestPostingPeriodIContainer = new WebMarkupContainer("termInterestPostingPeriodIContainer");
         this.termInterestPostingPeriodBlock.add(this.termInterestPostingPeriodIContainer);
         this.termInterestPostingPeriodProvider = new InterestPostingPeriodProvider();
-        this.termInterestPostingPeriodField = new Select2SingleChoice<>("termInterestPostingPeriodField", 0, new PropertyModel<>(this, "termInterestPostingPeriodValue"), this.termInterestPostingPeriodProvider);
+        this.termInterestPostingPeriodField = new Select2SingleChoice<>("termInterestPostingPeriodField", new PropertyModel<>(this, "termInterestPostingPeriodValue"), this.termInterestPostingPeriodProvider);
         this.termInterestPostingPeriodField.setLabel(Model.of("Interest calculated using"));
         this.termInterestPostingPeriodField.add(new OnChangeAjaxBehavior());
         this.termInterestPostingPeriodIContainer.add(this.termInterestPostingPeriodField);
@@ -1328,7 +1328,7 @@ public class SavingCreatePage extends DeprecatedPage {
         this.termInterestCalculatedUsingIContainer = new WebMarkupContainer("termInterestCalculatedUsingIContainer");
         this.termInterestCalculatedUsingBlock.add(this.termInterestCalculatedUsingIContainer);
         this.termInterestCalculatedUsingProvider = new InterestCalculatedUsingProvider();
-        this.termInterestCalculatedUsingField = new Select2SingleChoice<>("termInterestCalculatedUsingField", 0, new PropertyModel<>(this, "termInterestCalculatedUsingValue"), this.termInterestCalculatedUsingProvider);
+        this.termInterestCalculatedUsingField = new Select2SingleChoice<>("termInterestCalculatedUsingField", new PropertyModel<>(this, "termInterestCalculatedUsingValue"), this.termInterestCalculatedUsingProvider);
         this.termInterestCalculatedUsingField.setLabel(Model.of("Interest posting period"));
         this.termInterestCalculatedUsingField.add(new OnChangeAjaxBehavior());
         this.termInterestCalculatedUsingIContainer.add(this.termInterestCalculatedUsingField);
@@ -1342,7 +1342,7 @@ public class SavingCreatePage extends DeprecatedPage {
         this.termInterestCompoundingPeriodIContainer = new WebMarkupContainer("termInterestCompoundingPeriodIContainer");
         this.termInterestCompoundingPeriodBlock.add(this.termInterestCompoundingPeriodIContainer);
         this.termInterestCompoundingPeriodProvider = new InterestCompoundingPeriodProvider();
-        this.termInterestCompoundingPeriodField = new Select2SingleChoice<>("termInterestCompoundingPeriodField", 0, new PropertyModel<>(this, "termInterestCompoundingPeriodValue"), this.termInterestCompoundingPeriodProvider);
+        this.termInterestCompoundingPeriodField = new Select2SingleChoice<>("termInterestCompoundingPeriodField", new PropertyModel<>(this, "termInterestCompoundingPeriodValue"), this.termInterestCompoundingPeriodProvider);
         this.termInterestCompoundingPeriodField.setLabel(Model.of("Interest compounding period"));
         this.termInterestCompoundingPeriodField.add(new OnChangeAjaxBehavior());
         this.termInterestCompoundingPeriodIContainer.add(this.termInterestCompoundingPeriodField);
@@ -1404,7 +1404,7 @@ public class SavingCreatePage extends DeprecatedPage {
         this.currencyCodeIContainer = new WebMarkupContainer("currencyCodeIContainer");
         this.currencyCodeBlock.add(this.currencyCodeIContainer);
         this.currencyCodeProvider = new CurrencyProvider();
-        this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", 0, new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
+        this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
         this.currencyCodeField.setLabel(Model.of("Currency"));
         this.currencyCodeField.add(new OnChangeAjaxBehavior());
         this.currencyCodeIContainer.add(this.currencyCodeField);

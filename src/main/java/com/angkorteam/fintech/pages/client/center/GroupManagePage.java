@@ -133,7 +133,7 @@ public class GroupManagePage extends DeprecatedPage {
         this.groupProvider = new SingleChoiceProvider("m_group", "id", "display_name");
         this.groupProvider.applyWhere("level_id", "level_id = 2");
         this.groupProvider.applyWhere("parent_id", "(parent_id is NULL or parent_id != " + this.centerId + ")");
-        this.groupField = new Select2SingleChoice<>("groupField", 0, new PropertyModel<>(this, "groupValue"), this.groupProvider);
+        this.groupField = new Select2SingleChoice<>("groupField", new PropertyModel<>(this, "groupValue"), this.groupProvider);
         this.groupField.setLabel(Model.of("Group"));
         this.groupField.add(new OnChangeAjaxBehavior());
         this.groupField.setRequired(true);

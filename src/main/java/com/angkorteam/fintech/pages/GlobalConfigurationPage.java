@@ -145,7 +145,7 @@ public class GlobalConfigurationPage extends Page {
         this.nameIContainer = new WebMarkupContainer("nameIContainer");
         this.nameBlock.add(this.nameIContainer);
         this.nameProvider = new SingleChoiceProvider("c_configuration", "id", "name");
-        this.nameField = new Select2SingleChoice<>("nameField", 0, new PropertyModel<>(this, "nameValue"), this.nameProvider);
+        this.nameField = new Select2SingleChoice<>("nameField", new PropertyModel<>(this, "nameValue"), this.nameProvider);
         this.nameField.setRequired(true);
         this.nameIContainer.add(this.nameField);
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);

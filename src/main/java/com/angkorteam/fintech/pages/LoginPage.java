@@ -42,7 +42,7 @@ public class LoginPage extends WebPage {
         this.add(this.form);
 
         this.identifierProvider = new MifosSingleChoiceProvider("tenants", "identifier", "name");
-        this.identifierField = new Select2SingleChoice<>("identifierField", 0, new PropertyModel<>(this, "identifierValue"), this.identifierProvider);
+        this.identifierField = new Select2SingleChoice<>("identifierField", new PropertyModel<>(this, "identifierValue"), this.identifierProvider);
         this.identifierField.add(new OnChangeAjaxBehavior());
         this.identifierField.setRequired(true);
         this.form.add(this.identifierField);

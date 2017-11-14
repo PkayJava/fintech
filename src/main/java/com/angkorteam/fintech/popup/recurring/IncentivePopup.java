@@ -89,14 +89,14 @@ public class IncentivePopup extends Panel {
         this.form.add(this.addButton);
 
         this.attributeProvider = new AttributeProvider();
-        this.attributeField = new Select2SingleChoice<>("attributeField", 0, new PropertyModel<>(this, "attributeValue"), this.attributeProvider);
+        this.attributeField = new Select2SingleChoice<>("attributeField", new PropertyModel<>(this, "attributeValue"), this.attributeProvider);
         this.attributeField.setLabel(Model.of("Attribute"));
         this.form.add(this.attributeField);
         this.attributeFeedback = new TextFeedbackPanel("attributeFeedback", this.attributeField);
         this.form.add(this.attributeFeedback);
 
         this.operatorProvider = new OperatorProvider();
-        this.operatorField = new Select2SingleChoice<>("operatorField", 0, new PropertyModel<>(this, "operatorValue"), this.operatorProvider);
+        this.operatorField = new Select2SingleChoice<>("operatorField", new PropertyModel<>(this, "operatorValue"), this.operatorProvider);
         this.operatorField.setLabel(Model.of("Operator"));
         this.form.add(this.operatorField);
         this.operatorFeedback = new TextFeedbackPanel("operatorFeedback", this.operatorField);
@@ -109,7 +109,7 @@ public class IncentivePopup extends Panel {
         this.form.add(this.operandFeedback);
 
         this.operandTypeProvider = new OperandTypeProvider();
-        this.operandTypeField = new Select2SingleChoice<>("operandTypeField", 0, new PropertyModel<>(this, "operandTypeValue"), this.operandTypeProvider);
+        this.operandTypeField = new Select2SingleChoice<>("operandTypeField", new PropertyModel<>(this, "operandTypeValue"), this.operandTypeProvider);
         this.operandTypeField.setLabel(Model.of("Type"));
         this.form.add(this.operandTypeField);
         this.operandTypeFeedback = new TextFeedbackPanel("operandTypeFeedback", this.operandTypeField);

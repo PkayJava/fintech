@@ -198,7 +198,7 @@ public class TellerCreatePage extends Page {
         this.statusIContainer = new WebMarkupContainer("statusIContainer");
         this.statusBlock.add(this.statusIContainer);
         this.statusProvider = new TellerStateProvider();
-        this.statusField = new Select2SingleChoice<>("statusField", 0, new PropertyModel<>(this, "statusValue"), this.statusProvider);
+        this.statusField = new Select2SingleChoice<>("statusField", new PropertyModel<>(this, "statusValue"), this.statusProvider);
         this.statusIContainer.add(this.statusField);
         this.statusFeedback = new TextFeedbackPanel("statusFeedback", this.statusField);
         this.statusIContainer.add(this.statusFeedback);
@@ -210,7 +210,7 @@ public class TellerCreatePage extends Page {
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.officeIContainer.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);

@@ -2214,7 +2214,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationPreClosureInterestCalculationRuleIContainer = new WebMarkupContainer("interestRecalculationPreClosureInterestCalculationRuleIContainer");
         this.interestRecalculationPreClosureInterestCalculationRuleBlock.add(this.interestRecalculationPreClosureInterestCalculationRuleIContainer);
         this.interestRecalculationPreClosureInterestCalculationRuleProvider = new ClosureInterestCalculationRuleProvider();
-        this.interestRecalculationPreClosureInterestCalculationRuleField = new Select2SingleChoice<>("interestRecalculationPreClosureInterestCalculationRuleField", 0, new PropertyModel<>(this, "interestRecalculationPreClosureInterestCalculationRuleValue"), this.interestRecalculationPreClosureInterestCalculationRuleProvider);
+        this.interestRecalculationPreClosureInterestCalculationRuleField = new Select2SingleChoice<>("interestRecalculationPreClosureInterestCalculationRuleField", new PropertyModel<>(this, "interestRecalculationPreClosureInterestCalculationRuleValue"), this.interestRecalculationPreClosureInterestCalculationRuleProvider);
         this.interestRecalculationPreClosureInterestCalculationRuleField.setLabel(Model.of("Pre-closure interest calculation rule"));
         this.interestRecalculationPreClosureInterestCalculationRuleField.add(new OnChangeAjaxBehavior());
         this.interestRecalculationPreClosureInterestCalculationRuleIContainer.add(this.interestRecalculationPreClosureInterestCalculationRuleField);
@@ -2226,7 +2226,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationAdvancePaymentsAdjustmentTypeIContainer = new WebMarkupContainer("interestRecalculationAdvancePaymentsAdjustmentTypeIContainer");
         this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeIContainer);
         this.interestRecalculationAdvancePaymentsAdjustmentTypeProvider = new AdvancePaymentsAdjustmentTypeProvider();
-        this.interestRecalculationAdvancePaymentsAdjustmentTypeField = new Select2SingleChoice<>("interestRecalculationAdvancePaymentsAdjustmentTypeField", 0, new PropertyModel<>(this, "interestRecalculationAdvancePaymentsAdjustmentTypeValue"), this.interestRecalculationAdvancePaymentsAdjustmentTypeProvider);
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeField = new Select2SingleChoice<>("interestRecalculationAdvancePaymentsAdjustmentTypeField", new PropertyModel<>(this, "interestRecalculationAdvancePaymentsAdjustmentTypeValue"), this.interestRecalculationAdvancePaymentsAdjustmentTypeProvider);
         this.interestRecalculationAdvancePaymentsAdjustmentTypeField.setLabel(Model.of("Advance payments adjustment type"));
         this.interestRecalculationAdvancePaymentsAdjustmentTypeField.add(new OnChangeAjaxBehavior());
         this.interestRecalculationAdvancePaymentsAdjustmentTypeIContainer.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeField);
@@ -2238,7 +2238,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationCompoundingOnIContainer = new WebMarkupContainer("interestRecalculationCompoundingOnIContainer");
         this.interestRecalculationCompoundingOnBlock.add(this.interestRecalculationCompoundingOnIContainer);
         this.interestRecalculationCompoundingOnProvider = new InterestRecalculationCompoundProvider();
-        this.interestRecalculationCompoundingOnField = new Select2SingleChoice<>("interestRecalculationCompoundingOnField", 0, new PropertyModel<>(this, "interestRecalculationCompoundingOnValue"), this.interestRecalculationCompoundingOnProvider);
+        this.interestRecalculationCompoundingOnField = new Select2SingleChoice<>("interestRecalculationCompoundingOnField", new PropertyModel<>(this, "interestRecalculationCompoundingOnValue"), this.interestRecalculationCompoundingOnProvider);
         this.interestRecalculationCompoundingOnField.setLabel(Model.of("Interest recalculation compounding on"));
         this.interestRecalculationCompoundingOnField.add(new OnChangeAjaxBehavior(this::interestRecalculationCompoundingFieldUpdate));
         this.interestRecalculationCompoundingOnIContainer.add(this.interestRecalculationCompoundingOnField);
@@ -2250,7 +2250,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationCompoundingIContainer = new WebMarkupContainer("interestRecalculationCompoundingIContainer");
         this.interestRecalculationCompoundingBlock.add(this.interestRecalculationCompoundingIContainer);
         this.interestRecalculationCompoundingProvider = new FrequencyProvider();
-        this.interestRecalculationCompoundingField = new Select2SingleChoice<>("interestRecalculationCompoundingField", 0, new PropertyModel<>(this, "interestRecalculationCompoundingValue"), this.interestRecalculationCompoundingProvider);
+        this.interestRecalculationCompoundingField = new Select2SingleChoice<>("interestRecalculationCompoundingField", new PropertyModel<>(this, "interestRecalculationCompoundingValue"), this.interestRecalculationCompoundingProvider);
         this.interestRecalculationCompoundingField.setLabel(Model.of("Frequency for compounding"));
         this.interestRecalculationCompoundingIContainer.add(this.interestRecalculationCompoundingField);
         this.interestRecalculationCompoundingField.add(new OnChangeAjaxBehavior(this::interestRecalculationCompoundingFieldUpdate));
@@ -2262,7 +2262,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationCompoundingTypeIContainer = new WebMarkupContainer("interestRecalculationCompoundingTypeIContainer");
         this.interestRecalculationCompoundingTypeBlock.add(this.interestRecalculationCompoundingTypeIContainer);
         this.interestRecalculationCompoundingTypeProvider = new FrequencyTypeProvider();
-        this.interestRecalculationCompoundingTypeField = new Select2SingleChoice<>("interestRecalculationCompoundingTypeField", 0, new PropertyModel<>(this, "interestRecalculationCompoundingTypeValue"), this.interestRecalculationCompoundingTypeProvider);
+        this.interestRecalculationCompoundingTypeField = new Select2SingleChoice<>("interestRecalculationCompoundingTypeField", new PropertyModel<>(this, "interestRecalculationCompoundingTypeValue"), this.interestRecalculationCompoundingTypeProvider);
         this.interestRecalculationCompoundingTypeField.setLabel(Model.of("Frequency type for compounding"));
         this.interestRecalculationCompoundingTypeField.add(new OnChangeAjaxBehavior());
         this.interestRecalculationCompoundingTypeIContainer.add(this.interestRecalculationCompoundingTypeField);
@@ -2274,7 +2274,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationCompoundingDayIContainer = new WebMarkupContainer("interestRecalculationCompoundingDayIContainer");
         this.interestRecalculationCompoundingDayBlock.add(this.interestRecalculationCompoundingDayIContainer);
         this.interestRecalculationCompoundingDayProvider = new FrequencyDayProvider();
-        this.interestRecalculationCompoundingDayField = new Select2SingleChoice<>("interestRecalculationCompoundingDayField", 0, new PropertyModel<>(this, "interestRecalculationCompoundingDayValue"), this.interestRecalculationCompoundingDayProvider);
+        this.interestRecalculationCompoundingDayField = new Select2SingleChoice<>("interestRecalculationCompoundingDayField", new PropertyModel<>(this, "interestRecalculationCompoundingDayValue"), this.interestRecalculationCompoundingDayProvider);
         this.interestRecalculationCompoundingDayField.setLabel(Model.of("Frequency day for compounding"));
         this.interestRecalculationCompoundingDayField.add(new OnChangeAjaxBehavior());
         this.interestRecalculationCompoundingDayIContainer.add(this.interestRecalculationCompoundingDayField);
@@ -2297,7 +2297,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationRecalculateIContainer = new WebMarkupContainer("interestRecalculationRecalculateIContainer");
         this.interestRecalculationRecalculateBlock.add(this.interestRecalculationRecalculateIContainer);
         this.interestRecalculationRecalculateProvider = new FrequencyProvider();
-        this.interestRecalculationRecalculateField = new Select2SingleChoice<>("interestRecalculationRecalculateField", 0, new PropertyModel<>(this, "interestRecalculationRecalculateValue"), this.interestRecalculationRecalculateProvider);
+        this.interestRecalculationRecalculateField = new Select2SingleChoice<>("interestRecalculationRecalculateField", new PropertyModel<>(this, "interestRecalculationRecalculateValue"), this.interestRecalculationRecalculateProvider);
         this.interestRecalculationRecalculateField.setLabel(Model.of("Frequency for recalculate Outstanding Principal"));
         this.interestRecalculationRecalculateField.add(new OnChangeAjaxBehavior(this::interestRecalculationRecalculateFieldUpdate));
         this.interestRecalculationRecalculateIContainer.add(this.interestRecalculationRecalculateField);
@@ -2309,7 +2309,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationRecalculateTypeIContainer = new WebMarkupContainer("interestRecalculationRecalculateTypeIContainer");
         this.interestRecalculationRecalculateTypeBlock.add(this.interestRecalculationRecalculateTypeIContainer);
         this.interestRecalculationRecalculateTypeProvider = new FrequencyTypeProvider();
-        this.interestRecalculationRecalculateTypeField = new Select2SingleChoice<>("interestRecalculationRecalculateTypeField", 0, new PropertyModel<>(this, "interestRecalculationRecalculateTypeValue"), this.interestRecalculationRecalculateTypeProvider);
+        this.interestRecalculationRecalculateTypeField = new Select2SingleChoice<>("interestRecalculationRecalculateTypeField", new PropertyModel<>(this, "interestRecalculationRecalculateTypeValue"), this.interestRecalculationRecalculateTypeProvider);
         this.interestRecalculationRecalculateTypeField.setLabel(Model.of("Frequency type for recalculate"));
         this.interestRecalculationRecalculateTypeField.add(new OnChangeAjaxBehavior());
         this.interestRecalculationRecalculateTypeIContainer.add(this.interestRecalculationRecalculateTypeField);
@@ -2321,7 +2321,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.interestRecalculationRecalculateDayIContainer = new WebMarkupContainer("interestRecalculationRecalculateDayIContainer");
         this.interestRecalculationRecalculateDayBlock.add(this.interestRecalculationRecalculateDayIContainer);
         this.interestRecalculationRecalculateDayProvider = new FrequencyDayProvider();
-        this.interestRecalculationRecalculateDayField = new Select2SingleChoice<>("interestRecalculationRecalculateDayField", 0, new PropertyModel<>(this, "interestRecalculationRecalculateDayValue"), this.interestRecalculationRecalculateDayProvider);
+        this.interestRecalculationRecalculateDayField = new Select2SingleChoice<>("interestRecalculationRecalculateDayField", new PropertyModel<>(this, "interestRecalculationRecalculateDayValue"), this.interestRecalculationRecalculateDayProvider);
         this.interestRecalculationRecalculateDayField.setLabel(Model.of("Frequency day for recalculate"));
         this.interestRecalculationRecalculateDayField.add(new OnChangeAjaxBehavior());
         this.interestRecalculationRecalculateDayIContainer.add(this.interestRecalculationRecalculateDayField);
@@ -2416,7 +2416,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingAmortizationIContainer = new WebMarkupContainer("settingAmortizationIContainer");
         this.settingAmortizationBlock.add(this.settingAmortizationIContainer);
         this.settingAmortizationProvider = new AmortizationProvider();
-        this.settingAmortizationField = new Select2SingleChoice<>("settingAmortizationField", 0, new PropertyModel<>(this, "settingAmortizationValue"), this.settingAmortizationProvider);
+        this.settingAmortizationField = new Select2SingleChoice<>("settingAmortizationField", new PropertyModel<>(this, "settingAmortizationValue"), this.settingAmortizationProvider);
         this.settingAmortizationField.setLabel(Model.of("Amortization"));
         this.settingAmortizationField.add(new OnChangeAjaxBehavior());
         this.settingAmortizationIContainer.add(this.settingAmortizationField);
@@ -2428,7 +2428,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingInterestMethodIContainer = new WebMarkupContainer("settingInterestMethodIContainer");
         this.settingInterestMethodBlock.add(this.settingInterestMethodIContainer);
         this.settingInterestMethodProvider = new InterestMethodProvider();
-        this.settingInterestMethodField = new Select2SingleChoice<>("settingInterestMethodField", 0, new PropertyModel<>(this, "settingInterestMethodValue"), this.settingInterestMethodProvider);
+        this.settingInterestMethodField = new Select2SingleChoice<>("settingInterestMethodField", new PropertyModel<>(this, "settingInterestMethodValue"), this.settingInterestMethodProvider);
         this.settingInterestMethodField.setLabel(Model.of("Interest method"));
         this.settingInterestMethodField.add(new OnChangeAjaxBehavior());
         this.settingInterestMethodIContainer.add(this.settingInterestMethodField);
@@ -2440,7 +2440,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingInterestCalculationPeriodIContainer = new WebMarkupContainer("settingInterestCalculationPeriodIContainer");
         this.settingInterestCalculationPeriodBlock.add(this.settingInterestCalculationPeriodIContainer);
         this.settingInterestCalculationPeriodProvider = new InterestCalculationPeriodProvider();
-        this.settingInterestCalculationPeriodField = new Select2SingleChoice<>("settingInterestCalculationPeriodField", 0, new PropertyModel<>(this, "settingInterestCalculationPeriodValue"), this.settingInterestCalculationPeriodProvider);
+        this.settingInterestCalculationPeriodField = new Select2SingleChoice<>("settingInterestCalculationPeriodField", new PropertyModel<>(this, "settingInterestCalculationPeriodValue"), this.settingInterestCalculationPeriodProvider);
         this.settingInterestCalculationPeriodField.setLabel(Model.of("Interest calculation period"));
         this.settingInterestCalculationPeriodField.add(new OnChangeAjaxBehavior(this::settingInterestCalculationPeriodFieldUpdate));
         this.settingInterestCalculationPeriodIContainer.add(this.settingInterestCalculationPeriodField);
@@ -2462,7 +2462,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingRepaymentStrategyIContainer = new WebMarkupContainer("settingRepaymentStrategyIContainer");
         this.settingRepaymentStrategyBlock.add(this.settingRepaymentStrategyIContainer);
         this.settingRepaymentStrategyProvider = new RepaymentStrategyProvider();
-        this.settingRepaymentStrategyField = new Select2SingleChoice<>("settingRepaymentStrategyField", 0, new PropertyModel<>(this, "settingRepaymentStrategyValue"), this.settingRepaymentStrategyProvider);
+        this.settingRepaymentStrategyField = new Select2SingleChoice<>("settingRepaymentStrategyField", new PropertyModel<>(this, "settingRepaymentStrategyValue"), this.settingRepaymentStrategyProvider);
         this.settingRepaymentStrategyField.setLabel(Model.of("Repayment strategy"));
         this.settingRepaymentStrategyField.add(new OnChangeAjaxBehavior());
         this.settingRepaymentStrategyIContainer.add(this.settingRepaymentStrategyField);
@@ -2518,7 +2518,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingDayInYearIContainer = new WebMarkupContainer("settingDayInYearIContainer");
         this.settingDayInYearBlock.add(this.settingDayInYearIContainer);
         this.settingDayInYearProvider = new DayInYearProvider();
-        this.settingDayInYearField = new Select2SingleChoice<>("settingDayInYearField", 0, new PropertyModel<>(this, "settingDayInYearValue"), this.settingDayInYearProvider);
+        this.settingDayInYearField = new Select2SingleChoice<>("settingDayInYearField", new PropertyModel<>(this, "settingDayInYearValue"), this.settingDayInYearProvider);
         this.settingDayInYearField.setLabel(Model.of("Day in year"));
         this.settingDayInYearField.add(new OnChangeAjaxBehavior());
         this.settingDayInYearIContainer.add(this.settingDayInYearField);
@@ -2530,7 +2530,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.settingDayInMonthIContainer = new WebMarkupContainer("settingDayInMonthIContainer");
         this.settingDayInMonthBlock.add(this.settingDayInMonthIContainer);
         this.settingDayInMonthProvider = new DayInMonthProvider();
-        this.settingDayInMonthField = new Select2SingleChoice<>("settingDayInMonthField", 0, new PropertyModel<>(this, "settingDayInMonthValue"), this.settingDayInMonthProvider);
+        this.settingDayInMonthField = new Select2SingleChoice<>("settingDayInMonthField", new PropertyModel<>(this, "settingDayInMonthValue"), this.settingDayInMonthProvider);
         this.settingDayInMonthField.setLabel(Model.of("Day in month"));
         this.settingDayInMonthField.add(new OnChangeAjaxBehavior());
         this.settingDayInMonthIContainer.add(this.settingDayInMonthField);
@@ -2693,7 +2693,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.form.add(this.detailFundBlock);
         this.detailFundIContainer = new WebMarkupContainer("detailFundIContainer");
         this.detailFundBlock.add(this.detailFundIContainer);
-        this.detailFundField = new Select2SingleChoice<>("detailFundField", 0, new PropertyModel<>(this, "detailFundValue"), this.detailFundProvider);
+        this.detailFundField = new Select2SingleChoice<>("detailFundField", new PropertyModel<>(this, "detailFundValue"), this.detailFundProvider);
         this.detailFundField.setLabel(Model.of("Fund"));
         this.detailFundIContainer.add(this.detailFundField);
         this.detailFundFeedback = new TextFeedbackPanel("detailFundFeedback", this.detailFundField);
@@ -2736,7 +2736,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.currencyCodeIContainer = new WebMarkupContainer("currencyCodeIContainer");
         this.currencyCodeBlock.add(this.currencyCodeIContainer);
         this.currencyCodeProvider = new CurrencyProvider();
-        this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", 0, new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
+        this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
         this.currencyCodeField.add(new OnChangeAjaxBehavior());
         this.currencyCodeField.setLabel(Model.of("Currency"));
         this.currencyCodeIContainer.add(this.currencyCodeField);
@@ -2962,7 +2962,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termNominalInterestRateTypeIContainer = new WebMarkupContainer("termNominalInterestRateTypeIContainer");
         this.termNominalInterestRateTypeBlock.add(this.termNominalInterestRateTypeIContainer);
         this.termNominalInterestRateTypeProvider = new NominalInterestRateTypeProvider();
-        this.termNominalInterestRateTypeField = new Select2SingleChoice<>("termNominalInterestRateTypeField", 0, new PropertyModel<>(this, "termNominalInterestRateTypeValue"), this.termNominalInterestRateTypeProvider);
+        this.termNominalInterestRateTypeField = new Select2SingleChoice<>("termNominalInterestRateTypeField", new PropertyModel<>(this, "termNominalInterestRateTypeValue"), this.termNominalInterestRateTypeProvider);
         this.termNominalInterestRateTypeField.setLabel(Model.of("Type"));
         this.termNominalInterestRateTypeField.add(new OnChangeAjaxBehavior());
         this.termNominalInterestRateTypeIContainer.add(this.termNominalInterestRateTypeField);
@@ -2974,7 +2974,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.termFloatingInterestRateIContainer = new WebMarkupContainer("termFloatingInterestRateIContainer");
         this.termFloatingInterestRateBlock.add(this.termFloatingInterestRateIContainer);
         this.termFloatingInterestRateProvider = new SingleChoiceProvider("m_floating_rates", "id", "name");
-        this.termFloatingInterestRateField = new Select2SingleChoice<>("termFloatingInterestRateField", 0, new PropertyModel<>(this, "termFloatingInterestRateValue"), this.termFloatingInterestRateProvider);
+        this.termFloatingInterestRateField = new Select2SingleChoice<>("termFloatingInterestRateField", new PropertyModel<>(this, "termFloatingInterestRateValue"), this.termFloatingInterestRateProvider);
         this.termFloatingInterestRateField.setLabel(Model.of("Floating interest rate"));
         this.termFloatingInterestRateField.add(new OnChangeAjaxBehavior());
         this.termFloatingInterestRateIContainer.add(this.termFloatingInterestRateField);
@@ -3080,7 +3080,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.form.add(this.termRepaidTypeBlock);
         this.termRepaidTypeIContainer = new WebMarkupContainer("termRepaidTypeIContainer");
         this.termRepaidTypeBlock.add(this.termRepaidTypeIContainer);
-        this.termRepaidTypeField = new Select2SingleChoice<>("termRepaidTypeField", 0, new PropertyModel<>(this, "termRepaidTypeValue"), this.termRepaidTypeProvider);
+        this.termRepaidTypeField = new Select2SingleChoice<>("termRepaidTypeField", new PropertyModel<>(this, "termRepaidTypeValue"), this.termRepaidTypeProvider);
         this.termRepaidTypeField.setLabel(Model.of("Repaid Type"));
         this.termRepaidTypeField.add(new OnChangeAjaxBehavior());
         this.termRepaidTypeIContainer.add(this.termRepaidTypeField);

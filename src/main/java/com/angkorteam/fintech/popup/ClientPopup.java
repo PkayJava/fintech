@@ -49,7 +49,7 @@ public class ClientPopup extends Panel {
 
         this.clientProvider = new SingleChoiceProvider("m_client", "id", "display_name");
         this.clientProvider.applyWhere("office_id", "office_id = " + this.officeId);
-        this.clientField = new Select2SingleChoice<>("clientField", 0, new PropertyModel<>(this.model, "itemClientValue"), this.clientProvider);
+        this.clientField = new Select2SingleChoice<>("clientField", new PropertyModel<>(this.model, "itemClientValue"), this.clientProvider);
         this.clientField.setLabel(Model.of("Client"));
         this.form.add(this.clientField);
         this.clientFeedback = new TextFeedbackPanel("clientFeedback", this.clientField);

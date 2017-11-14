@@ -161,7 +161,7 @@ public class ShareChargeModifyPage extends Page {
         this.taxGroupIContainer = new WebMarkupContainer("taxGroupIContainer");
         this.taxGroupBlock.add(this.taxGroupIContainer);
         this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
-        this.taxGroupField = new Select2SingleChoice<>("taxGroupField", 0, new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
+        this.taxGroupField = new Select2SingleChoice<>("taxGroupField", new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
         this.taxGroupField.setLabel(Model.of("Tax Group"));
         this.taxGroupIContainer.add(this.taxGroupField);
         this.taxGroupFeedback = new TextFeedbackPanel("taxGroupFeedback", this.taxGroupField);
@@ -200,7 +200,7 @@ public class ShareChargeModifyPage extends Page {
         this.chargeCalculationBlock.add(this.chargeCalculationIContainer);
         this.chargeCalculationProvider = new ChargeCalculationProvider();
         this.chargeCalculationProvider.setValues(ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount);
-        this.chargeCalculationField = new Select2SingleChoice<>("chargeCalculationField", 0, new PropertyModel<>(this, "chargeCalculationValue"), this.chargeCalculationProvider);
+        this.chargeCalculationField = new Select2SingleChoice<>("chargeCalculationField", new PropertyModel<>(this, "chargeCalculationValue"), this.chargeCalculationProvider);
         this.chargeCalculationField.setLabel(Model.of("Charge calculation"));
         this.chargeCalculationField.setRequired(true);
         this.chargeCalculationField.add(new OnChangeAjaxBehavior());
@@ -216,7 +216,7 @@ public class ShareChargeModifyPage extends Page {
         this.chargeTimeBlock.add(this.chargeTimeIContainer);
         this.chargeTimeProvider = new ChargeTimeProvider();
         this.chargeTimeProvider.setValues(ChargeTime.ShareAccountActivate, ChargeTime.SharePurchase, ChargeTime.ShareRedeem);
-        this.chargeTimeField = new Select2SingleChoice<>("chargeTimeField", 0, new PropertyModel<>(this, "chargeTimeValue"), this.chargeTimeProvider);
+        this.chargeTimeField = new Select2SingleChoice<>("chargeTimeField", new PropertyModel<>(this, "chargeTimeValue"), this.chargeTimeProvider);
         this.chargeTimeField.setLabel(Model.of("Charge time type"));
         this.chargeTimeField.setRequired(true);
         this.chargeTimeField.add(new OnChangeAjaxBehavior());
@@ -231,7 +231,7 @@ public class ShareChargeModifyPage extends Page {
         this.currencyIContainer = new WebMarkupContainer("currencyIContainer");
         this.currencyBlock.add(this.currencyIContainer);
         this.currencyProvider = new CurrencyProvider();
-        this.currencyField = new Select2SingleChoice<>("currencyField", 0, new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
+        this.currencyField = new Select2SingleChoice<>("currencyField", new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
         this.currencyField.setLabel(Model.of("Currency"));
         this.currencyField.setRequired(true);
         this.currencyIContainer.add(this.currencyField);

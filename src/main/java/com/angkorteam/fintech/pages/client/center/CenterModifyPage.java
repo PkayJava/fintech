@@ -131,7 +131,7 @@ public class CenterModifyPage extends Page {
         this.staffProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
         this.staffProvider.applyWhere("office_id", "office_id = " + this.officeId);
         this.staffProvider.applyWhere("is_active", "is_active = 1");
-        this.staffField = new Select2SingleChoice<>("staffField", 0, new PropertyModel<>(this, "staffValue"), this.staffProvider);
+        this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
         this.staffField.setRequired(true);

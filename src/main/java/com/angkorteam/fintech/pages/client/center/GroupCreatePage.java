@@ -175,7 +175,7 @@ public class GroupCreatePage extends DeprecatedPage {
         this.staffBlock.add(this.staffContainer);
         this.staffProvider = new SingleChoiceProvider("m_staff", "m_staff.id", "m_staff.display_name");
         this.staffProvider.applyWhere("office_id", "m_staff.office_id = " + this.officeId);
-        this.staffField = new Select2SingleChoice<>("staffField", 0, new PropertyModel<>(this, "staffValue"), this.staffProvider);
+        this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
         this.staffContainer.add(this.staffField);

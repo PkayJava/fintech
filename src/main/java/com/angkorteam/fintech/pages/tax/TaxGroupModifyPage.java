@@ -201,7 +201,7 @@ public class TaxGroupModifyPage extends Page {
         this.taxIContainer = new WebMarkupContainer("taxIContainer");
         this.taxBlock.add(this.taxIContainer);
         this.taxProvider = new SingleChoiceProvider("m_tax_component", "id", "name");
-        this.taxField = new Select2SingleChoice<>("taxField", 0, new PropertyModel<>(this, "taxValue"), this.taxProvider);
+        this.taxField = new Select2SingleChoice<>("taxField", new PropertyModel<>(this, "taxValue"), this.taxProvider);
         this.taxIContainer.add(this.taxField);
         this.taxFeedback = new TextFeedbackPanel("taxFeedback", this.taxField);
         this.taxIContainer.add(this.taxFeedback);

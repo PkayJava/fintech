@@ -175,7 +175,7 @@ public class TaxComponentCreatePage extends Page {
         this.accountTypeIContainer = new WebMarkupContainer("accountTypeIContainer");
         this.accountTypeBlock.add(this.accountTypeIContainer);
         this.accountTypeProvider = new AccountTypeProvider();
-        this.accountTypeField = new Select2SingleChoice<>("accountTypeField", 0, new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
+        this.accountTypeField = new Select2SingleChoice<>("accountTypeField", new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
         this.accountTypeField.setRequired(true);
         this.accountTypeField.add(new OnChangeAjaxBehavior(this::accountTypeFieldUpdate));
         this.accountTypeIContainer.add(this.accountTypeField);
@@ -191,7 +191,7 @@ public class TaxComponentCreatePage extends Page {
         this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.accountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.accountProvider.setDisabled(true);
-        this.accountField = new Select2SingleChoice<>("accountField", 0, new PropertyModel<>(this, "accountValue"), this.accountProvider);
+        this.accountField = new Select2SingleChoice<>("accountField", new PropertyModel<>(this, "accountValue"), this.accountProvider);
         this.accountIContainer.add(this.accountField);
         this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
         this.accountIContainer.add(this.accountFeedback);

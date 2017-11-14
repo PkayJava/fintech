@@ -59,7 +59,7 @@ public class RepaymentLoanCyclePopup extends Panel {
         this.form.add(this.okayButton);
 
         this.whenProvider = new WhenProvider();
-        this.whenField = new Select2SingleChoice<>("whenField", 0, new PropertyModel<>(this.model, "whenValue"), this.whenProvider);
+        this.whenField = new Select2SingleChoice<>("whenField", new PropertyModel<>(this.model, "whenValue"), this.whenProvider);
         this.whenField.setLabel(Model.of("When"));
         this.form.add(this.whenField);
         this.whenFeedback = new TextFeedbackPanel("whenFeedback", this.whenField);

@@ -188,7 +188,7 @@ public class RuleCreatePage extends Page {
         this.creditTagBlock.add(this.creditTagIContainer);
         this.creditTagProvider = new MultipleChoiceProvider("m_code_value", "id", "code_value");
         this.creditTagProvider.applyWhere("code_id", "code_id in (7,8,9,10,11)");
-        this.creditTagField = new Select2MultipleChoice<>("creditTagField", 0, new PropertyModel<>(this, "creditTagValue"), this.creditTagProvider);
+        this.creditTagField = new Select2MultipleChoice<>("creditTagField", new PropertyModel<>(this, "creditTagValue"), this.creditTagProvider);
         this.creditTagIContainer.add(this.creditTagField);
         this.creditTagFeedback = new TextFeedbackPanel("creditTagFeedback", this.creditTagField);
         this.creditTagIContainer.add(this.creditTagFeedback);
@@ -201,7 +201,7 @@ public class RuleCreatePage extends Page {
         this.creditAccountBlock.add(this.creditAccountIContainer);
         this.creditAccountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.creditAccountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.creditAccountField = new Select2SingleChoice<>("creditAccountField", 0, new PropertyModel<>(this, "creditAccountValue"), this.creditAccountProvider);
+        this.creditAccountField = new Select2SingleChoice<>("creditAccountField", new PropertyModel<>(this, "creditAccountValue"), this.creditAccountProvider);
         this.creditAccountIContainer.add(this.creditAccountField);
         this.creditAccountFeedback = new TextFeedbackPanel("creditAccountFeedback", this.creditAccountField);
         this.creditAccountIContainer.add(this.creditAccountFeedback);
@@ -226,7 +226,7 @@ public class RuleCreatePage extends Page {
         this.debitTagBlock.add(this.debitTagIContainer);
         this.debitTagProvider = new MultipleChoiceProvider("m_code_value", "id", "code_value");
         this.debitTagProvider.applyWhere("code_id", "code_id in (7,8,9,10,11)");
-        this.debitTagField = new Select2MultipleChoice<>("debitTagField", 0, new PropertyModel<>(this, "debitTagValue"), this.debitTagProvider);
+        this.debitTagField = new Select2MultipleChoice<>("debitTagField", new PropertyModel<>(this, "debitTagValue"), this.debitTagProvider);
         this.debitTagIContainer.add(this.debitTagField);
         this.debitTagFeedback = new TextFeedbackPanel("debitTagFeedback", this.debitTagField);
         this.debitTagIContainer.add(this.debitTagFeedback);
@@ -239,7 +239,7 @@ public class RuleCreatePage extends Page {
         this.debitAccountBlock.add(this.debitAccountIContainer);
         this.debitAccountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.debitAccountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.debitAccountField = new Select2SingleChoice<>("debitAccountField", 0, new PropertyModel<>(this, "debitAccountValue"), this.debitAccountProvider);
+        this.debitAccountField = new Select2SingleChoice<>("debitAccountField", new PropertyModel<>(this, "debitAccountValue"), this.debitAccountProvider);
         this.debitAccountIContainer.add(this.debitAccountField);
         this.debitAccountFeedback = new TextFeedbackPanel("debitAccountFeedback", this.debitAccountField);
         this.debitAccountIContainer.add(this.debitAccountFeedback);
@@ -263,7 +263,7 @@ public class RuleCreatePage extends Page {
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.officeIContainer.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);

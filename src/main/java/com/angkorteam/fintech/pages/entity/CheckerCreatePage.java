@@ -151,7 +151,7 @@ public class CheckerCreatePage extends Page {
         this.statusIContainer = new WebMarkupContainer("statusIContainer");
         this.statusBlock.add(this.statusIContainer);
         this.statusProvider = new EntityStatusProvider();
-        this.statusField = new Select2SingleChoice<>("statusField", 0, new PropertyModel<>(this, "statusValue"), this.statusProvider);
+        this.statusField = new Select2SingleChoice<>("statusField", new PropertyModel<>(this, "statusValue"), this.statusProvider);
         this.statusField.setRequired(true);
         this.statusIContainer.add(this.statusField);
         this.statusFeedback = new TextFeedbackPanel("statusFeedback", this.statusField);
@@ -166,7 +166,7 @@ public class CheckerCreatePage extends Page {
         this.datatableBlock.add(this.datatableIContainer);
         this.datatableProvider = new SingleChoiceProvider("x_registered_table", "application_table_name", "registered_table_name");
         this.datatableProvider.setDisabled(true);
-        this.datatableField = new Select2SingleChoice<>("datatableField", 0, new PropertyModel<>(this, "datatableValue"), this.datatableProvider);
+        this.datatableField = new Select2SingleChoice<>("datatableField", new PropertyModel<>(this, "datatableValue"), this.datatableProvider);
         this.datatableField.setRequired(true);
         this.datatableField.add(new OnChangeAjaxBehavior(this::datatableFieldUpdate));
         this.datatableIContainer.add(this.datatableField);

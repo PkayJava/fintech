@@ -252,7 +252,7 @@ public class UserCreatePage extends Page {
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.add(new OnChangeAjaxBehavior(this::officeFieldUpdate));
         this.officeField.setRequired(true);
         this.officeIContainer.add(this.officeField);
@@ -266,7 +266,7 @@ public class UserCreatePage extends Page {
         this.permissionIContainer = new WebMarkupContainer("permissionIContainer");
         this.permissionBlock.add(this.permissionIContainer);
         this.permissionProvider = new MultipleChoiceProvider("m_role", "id", "name");
-        this.permissionField = new Select2MultipleChoice<>("permissionField", 0, new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
+        this.permissionField = new Select2MultipleChoice<>("permissionField", new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
         this.permissionField.add(new OnChangeAjaxBehavior());
         this.permissionField.setRequired(true);
         this.permissionIContainer.add(this.permissionField);

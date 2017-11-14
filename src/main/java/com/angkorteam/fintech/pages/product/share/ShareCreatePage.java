@@ -668,7 +668,7 @@ public class ShareCreatePage extends DeprecatedPage {
         this.settingLockInTypeIContainer = new WebMarkupContainer("settingLockInTypeIContainer");
         this.settingLockInTypeBlock.add(this.settingLockInTypeIContainer);
         this.settingLockInTypeProvider = new LockInTypeProvider();
-        this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", 0, new PropertyModel<>(this, "settingLockInTypeValue"), this.settingLockInTypeProvider);
+        this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", new PropertyModel<>(this, "settingLockInTypeValue"), this.settingLockInTypeProvider);
         this.settingLockInTypeField.setLabel(Model.of("Type"));
         this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
         this.settingLockInTypeIContainer.add(this.settingLockInTypeField);
@@ -695,7 +695,7 @@ public class ShareCreatePage extends DeprecatedPage {
         this.settingMinimumActiveTypeIContainer = new WebMarkupContainer("settingMinimumActiveTypeIContainer");
         this.settingMinimumActiveTypeBlock.add(this.settingMinimumActiveTypeIContainer);
         this.settingMinimumActiveTypeProvider = new MinimumActivePeriodProvider();
-        this.settingMinimumActiveTypeField = new Select2SingleChoice<>("settingMinimumActiveTypeField", 0, new PropertyModel<>(this, "settingMinimumActiveTypeValue"), this.settingMinimumActiveTypeProvider);
+        this.settingMinimumActiveTypeField = new Select2SingleChoice<>("settingMinimumActiveTypeField", new PropertyModel<>(this, "settingMinimumActiveTypeValue"), this.settingMinimumActiveTypeProvider);
         this.settingMinimumActiveTypeField.setLabel(Model.of("Type"));
         this.settingMinimumActiveTypeField.add(new OnChangeAjaxBehavior());
         this.settingMinimumActiveTypeIContainer.add(this.settingMinimumActiveTypeField);
@@ -860,7 +860,7 @@ public class ShareCreatePage extends DeprecatedPage {
         this.currencyCodeIContainer = new WebMarkupContainer("currencyCodeIContainer");
         this.currencyCodeBlock.add(this.currencyCodeIContainer);
         this.currencyCodeProvider = new CurrencyProvider();
-        this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", 0, new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
+        this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
         this.currencyCodeField.setLabel(Model.of("Currency"));
         this.currencyCodeField.add(new OnChangeAjaxBehavior());
         this.currencyCodeIContainer.add(this.currencyCodeField);

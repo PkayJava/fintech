@@ -404,7 +404,7 @@ public class ClientCreatePage extends Page {
         this.savingsAccountBlock.add(this.savingsAccountIContainer);
         this.savingsAccountProvider = new SingleChoiceProvider("m_savings_product", "id", "name");
         this.savingsAccountProvider.applyWhere("deposit_type_enum", "deposit_type_enum = " + DepositType.Saving.getLiteral());
-        this.savingsAccountField = new Select2SingleChoice<>("savingsAccountField", 0, new PropertyModel<>(this, "savingsAccountValue"), this.savingsAccountProvider);
+        this.savingsAccountField = new Select2SingleChoice<>("savingsAccountField", new PropertyModel<>(this, "savingsAccountValue"), this.savingsAccountProvider);
         this.savingsAccountField.setLabel(Model.of("Savings Account"));
         this.savingsAccountField.add(new OnChangeAjaxBehavior());
         this.savingsAccountIContainer.add(this.savingsAccountField);
@@ -495,7 +495,7 @@ public class ClientCreatePage extends Page {
         this.mainBusinessLineIContainer = new WebMarkupContainer("mainBusinessLineIContainer");
         this.mainBusinessLineBlock.add(this.mainBusinessLineIContainer);
         this.mainBusinessLineProvider = new MainBusinessLineProvider();
-        this.mainBusinessLineField = new Select2SingleChoice<>("mainBusinessLineField", 0, new PropertyModel<>(this, "mainBusinessLineValue"), this.mainBusinessLineProvider);
+        this.mainBusinessLineField = new Select2SingleChoice<>("mainBusinessLineField", new PropertyModel<>(this, "mainBusinessLineValue"), this.mainBusinessLineProvider);
         this.mainBusinessLineField.setLabel(Model.of("Client Classification"));
         this.mainBusinessLineField.add(new OnChangeAjaxBehavior());
         this.mainBusinessLineIContainer.add(this.mainBusinessLineField);
@@ -522,7 +522,7 @@ public class ClientCreatePage extends Page {
         this.clientClassificationIContainer = new WebMarkupContainer("clientClassificationIContainer");
         this.clientClassificationBlock.add(this.clientClassificationIContainer);
         this.clientClassificationProvider = new ClientClassificationProvider();
-        this.clientClassificationField = new Select2SingleChoice<>("clientClassificationField", 0, new PropertyModel<>(this, "clientClassificationValue"), this.clientClassificationProvider);
+        this.clientClassificationField = new Select2SingleChoice<>("clientClassificationField", new PropertyModel<>(this, "clientClassificationValue"), this.clientClassificationProvider);
         this.clientClassificationField.setLabel(Model.of("Client Classification"));
         this.clientClassificationField.add(new OnChangeAjaxBehavior());
         this.clientClassificationIContainer.add(this.clientClassificationField);
@@ -536,7 +536,7 @@ public class ClientCreatePage extends Page {
         this.clientTypeIContainer = new WebMarkupContainer("clientTypeIContainer");
         this.clientTypeBlock.add(this.clientTypeIContainer);
         this.clientTypeProvider = new ClientTypeProvider();
-        this.clientTypeField = new Select2SingleChoice<>("clientTypeField", 0, new PropertyModel<>(this, "clientTypeValue"), this.clientTypeProvider);
+        this.clientTypeField = new Select2SingleChoice<>("clientTypeField", new PropertyModel<>(this, "clientTypeValue"), this.clientTypeProvider);
         this.clientTypeField.setLabel(Model.of("Client Type"));
         this.clientTypeField.add(new OnChangeAjaxBehavior());
         this.clientTypeIContainer.add(this.clientTypeField);
@@ -576,7 +576,7 @@ public class ClientCreatePage extends Page {
         this.genderIContainer = new WebMarkupContainer("genderIContainer");
         this.genderBlock.add(this.genderIContainer);
         this.genderProvider = new GenderProvider();
-        this.genderField = new Select2SingleChoice<>("genderField", 0, new PropertyModel<>(this, "genderValue"), this.genderProvider);
+        this.genderField = new Select2SingleChoice<>("genderField", new PropertyModel<>(this, "genderValue"), this.genderProvider);
         this.genderField.setLabel(Model.of("Gender"));
         this.genderField.add(new OnChangeAjaxBehavior());
         this.genderIContainer.add(this.genderField);
@@ -680,7 +680,7 @@ public class ClientCreatePage extends Page {
         this.legalFormIContainer = new WebMarkupContainer("legalFormIContainer");
         this.legalFormBlock.add(this.legalFormIContainer);
         this.legalFormProvider = new LegalFormProvider();
-        this.legalFormField = new Select2SingleChoice<>("legalFormField", 0, new PropertyModel<>(this, "legalFormValue"), this.legalFormProvider);
+        this.legalFormField = new Select2SingleChoice<>("legalFormField", new PropertyModel<>(this, "legalFormValue"), this.legalFormProvider);
         this.legalFormField.setLabel(Model.of("Legal Form"));
         this.legalFormField.add(new OnChangeAjaxBehavior(this::legalFormFieldUpdate));
         this.legalFormIContainer.add(this.legalFormField);
@@ -695,7 +695,7 @@ public class ClientCreatePage extends Page {
         this.staffBlock.add(this.staffIContainer);
         this.staffProvider = new SingleChoiceProvider("m_staff", "m_staff.id", "m_staff.display_name");
         this.staffProvider.addJoin("inner join m_office on m_staff.office_id = m_office.id");
-        this.staffField = new Select2SingleChoice<>("staffField", 0, new PropertyModel<>(this, "staffValue"), this.staffProvider);
+        this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
         this.staffIContainer.add(this.staffField);
@@ -709,7 +709,7 @@ public class ClientCreatePage extends Page {
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setLabel(Model.of("Office"));
         this.officeField.add(new OnChangeAjaxBehavior(this::officeFieldUpdate));
         this.officeIContainer.add(this.officeField);

@@ -293,7 +293,7 @@ public class CenterCreatePage extends Page {
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
         this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeField = new Select2SingleChoice<>("officeField", 0, new PropertyModel<>(this, "officeValue"), this.officeProvider);
+        this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setLabel(Model.of("Office"));
         this.officeField.add(new OnChangeAjaxBehavior(this::officeFieldUpdate));
         this.officeIContainer.add(this.officeField);
