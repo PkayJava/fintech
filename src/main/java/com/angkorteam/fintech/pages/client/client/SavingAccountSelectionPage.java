@@ -7,12 +7,13 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.DepositType;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -20,7 +21,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingAccountSelectionPage extends DeprecatedPage {
+public class SavingAccountSelectionPage extends Page {
 
     protected String clientId;
 
@@ -29,19 +30,15 @@ public class SavingAccountSelectionPage extends DeprecatedPage {
 
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupContainer savingBlock;
-    protected WebMarkupContainer savingContainer;
+    protected WebMarkupBlock savingBlock;
+    protected WebMarkupContainer savingIContainer;
     protected SingleChoiceProvider savingProvider;
     protected Option savingValue;
     protected Select2SingleChoice<Option> savingField;
     protected TextFeedbackPanel savingFeedback;
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
-        initData();
-
+    protected void initComponent() {
         PageParameters parameters = new PageParameters();
         parameters.add("clientId", this.clientId);
 
@@ -55,21 +52,34 @@ public class SavingAccountSelectionPage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.savingBlock = new WebMarkupContainer("savingBlock");
+        initSavingBlock();
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initSavingBlock() {
+        this.savingBlock = new WebMarkupBlock("savingBlock", Size.Six_6);
         this.form.add(this.savingBlock);
-        this.savingContainer = new WebMarkupContainer("savingContainer");
-        this.savingBlock.add(this.savingContainer);
+        this.savingIContainer = new WebMarkupContainer("savingIContainer");
+        this.savingBlock.add(this.savingIContainer);
         this.savingProvider = new SingleChoiceProvider("m_savings_product", "id", "name");
         this.savingProvider.applyWhere("deposit_type_enum", "deposit_type_enum = " + DepositType.Saving.getLiteral());
         this.savingField = new Select2SingleChoice<>("savingField", new PropertyModel<>(this, "savingValue"), this.savingProvider);
         this.savingField.setLabel(Model.of("Product"));
         this.savingField.add(new OnChangeAjaxBehavior());
         this.savingField.setRequired(true);
-        this.savingContainer.add(this.savingField);
+        this.savingIContainer.add(this.savingField);
         this.savingFeedback = new TextFeedbackPanel("savingFeedback", this.savingField);
-        this.savingContainer.add(this.savingFeedback);
+        this.savingIContainer.add(this.savingFeedback);
     }
 
+    @Override
     protected void initData() {
         this.clientId = getPageParameters().get("clientId").toString();
     }

@@ -1,5 +1,7 @@
 package com.angkorteam.fintech.popup;
 
+import java.util.Map;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
@@ -18,7 +20,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 public class CollateralPopup extends PopupPanel {
 
     protected ModalWindow window;
-    protected Object model;
+    protected Map<String, Object> model;
 
     protected Form<Void> form;
     protected AjaxButton okayButton;
@@ -42,7 +44,7 @@ public class CollateralPopup extends PopupPanel {
     protected TextFeedbackPanel descriptionFeedback;
     protected PropertyModel<String> descriptionValue;
 
-    public CollateralPopup(String name, ModalWindow window, Object model) {
+    public CollateralPopup(String name, ModalWindow window, Map<String, Object> model) {
         super(name, window);
         this.model = model;
         this.window = window;
@@ -59,20 +61,20 @@ public class CollateralPopup extends PopupPanel {
         this.okayButton.setOnSubmit(this::okayButtonSubmit);
         this.form.add(this.okayButton);
 
-        this.collateralValue = new PropertyModel<>(this.model, "itemCollateralValue");
+        this.collateralValue = new PropertyModel<>(this.model, "collateralValue");
         this.collateralProvider = new LoanCollateralProvider();
         this.collateralBlock = new WebMarkupContainer("collateralBlock");
         this.form.add(this.collateralBlock);
         this.collateralContainer = new WebMarkupContainer("collateralContainer");
         this.collateralBlock.add(this.collateralContainer);
-        this.collateralField = new Select2SingleChoice<>("collateralField", 0, this.collateralValue, this.collateralProvider);
+        this.collateralField = new Select2SingleChoice<>("collateralField", this.collateralValue, this.collateralProvider);
         this.collateralField.setRequired(true);
         this.collateralField.setLabel(Model.of("Collateral"));
         this.collateralContainer.add(this.collateralField);
         this.collateralFeedback = new TextFeedbackPanel("collateralFeedback", this.collateralField);
         this.collateralContainer.add(this.collateralFeedback);
 
-        this.amountValue = new PropertyModel<>(this.model, "itemAmountValue");
+        this.amountValue = new PropertyModel<>(this.model, "amountValue");
         this.amountBlock = new WebMarkupContainer("amountBlock");
         this.form.add(this.amountBlock);
         this.amountContainer = new WebMarkupContainer("amountContainer");
@@ -83,7 +85,7 @@ public class CollateralPopup extends PopupPanel {
         this.amountFeedback = new TextFeedbackPanel("amountFeedback", this.amountField);
         this.amountContainer.add(this.amountFeedback);
 
-        this.descriptionValue = new PropertyModel<>(this.model, "itemDescriptionValue");
+        this.descriptionValue = new PropertyModel<>(this.model, "descriptionValue");
         this.descriptionBlock = new WebMarkupContainer("descriptionBlock");
         this.form.add(this.descriptionBlock);
         this.descriptionContainer = new WebMarkupContainer("descriptionContainer");

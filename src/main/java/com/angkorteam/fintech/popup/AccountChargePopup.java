@@ -35,7 +35,7 @@ public class AccountChargePopup extends PopupPanel {
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountChargePopup.class);
 
     protected ModalWindow window;
-    protected Object model;
+    protected Map<String, Object> model;
 
     protected Form<Void> form;
     protected AjaxButton okayButton;
@@ -77,7 +77,7 @@ public class AccountChargePopup extends PopupPanel {
 
     protected String currencyCode;
 
-    public AccountChargePopup(String name, ModalWindow window, Object model, String currencyCode) {
+    public AccountChargePopup(String name, ModalWindow window, Map<String, Object> model, String currencyCode) {
         super(name, window);
         this.model = model;
         this.window = window;
@@ -95,7 +95,7 @@ public class AccountChargePopup extends PopupPanel {
         this.okayButton.setOnSubmit(this::okayButtonSubmit);
         this.form.add(this.okayButton);
 
-        this.chargeValue = new PropertyModel<>(this.model, "itemChargeValue");
+        this.chargeValue = new PropertyModel<>(this.model, "chargeValue");
         this.chargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
         this.chargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
         this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = 2");
@@ -104,7 +104,7 @@ public class AccountChargePopup extends PopupPanel {
         this.form.add(this.chargeBlock);
         this.chargeContainer = new WebMarkupContainer("chargeContainer");
         this.chargeBlock.add(this.chargeContainer);
-        this.chargeField = new Select2SingleChoice<>("chargeField", 0, this.chargeValue, this.chargeProvider);
+        this.chargeField = new Select2SingleChoice<>("chargeField", this.chargeValue, this.chargeProvider);
         this.chargeField.setRequired(true);
         this.chargeField.add(new OnChangeAjaxBehavior(this::chargeFieldUpdate));
         this.chargeField.setLabel(Model.of("Charge"));
@@ -112,7 +112,7 @@ public class AccountChargePopup extends PopupPanel {
         this.chargeFeedback = new TextFeedbackPanel("chargeFeedback", this.chargeField);
         this.chargeContainer.add(this.chargeFeedback);
 
-        this.chargeTypeValue = new PropertyModel<>(this.model, "itemChargeTypeValue");
+        this.chargeTypeValue = new PropertyModel<>(this.model, "chargeTypeValue");
         this.chargeTypeBlock = new WebMarkupContainer("chargeTypeBlock");
         this.form.add(this.chargeTypeBlock);
         this.chargeTypeContainer = new WebMarkupContainer("chargeTypeContainer");
@@ -120,18 +120,19 @@ public class AccountChargePopup extends PopupPanel {
         this.chargeTypeView = new Label("chargeTypeView", this.chargeTypeValue);
         this.chargeTypeContainer.add(this.chargeTypeView);
 
-        this.amountValue = new PropertyModel<>(this.model, "itemAmountValue");
+        this.amountValue = new PropertyModel<>(this.model, "amountValue");
         this.amountBlock = new WebMarkupContainer("amountBlock");
         this.form.add(this.amountBlock);
         this.amountContainer = new WebMarkupContainer("amountContainer");
         this.amountBlock.add(this.amountContainer);
         this.amountField = new TextField<>("amountField", this.amountValue);
+        this.amountField.setType(Double.class);
         this.amountField.setLabel(Model.of("Amount"));
         this.amountContainer.add(this.amountField);
         this.amountFeedback = new TextFeedbackPanel("amountFeedback", this.amountField);
         this.amountContainer.add(this.amountFeedback);
 
-        this.collectedOnValue = new PropertyModel<>(this.model, "itemCollectedOnValue");
+        this.collectedOnValue = new PropertyModel<>(this.model, "collectedOnValue");
         this.collectedOnBlock = new WebMarkupContainer("collectedOnBlock");
         this.form.add(this.collectedOnBlock);
         this.collectedOnContainer = new WebMarkupContainer("collectedOnContainer");
@@ -139,7 +140,7 @@ public class AccountChargePopup extends PopupPanel {
         this.collectedOnView = new Label("collectedOnView", this.collectedOnValue);
         this.collectedOnContainer.add(this.collectedOnView);
 
-        this.dateValue = new PropertyModel<>(this.model, "itemDateValue");
+        this.dateValue = new PropertyModel<>(this.model, "dateValue");
         this.dateBlock = new WebMarkupContainer("dateBlock");
         this.form.add(this.dateBlock);
         this.dateContainer = new WebMarkupContainer("dateContainer");
@@ -150,12 +151,13 @@ public class AccountChargePopup extends PopupPanel {
         this.dateFeedback = new TextFeedbackPanel("dateFeedback", this.dateField);
         this.dateContainer.add(this.dateFeedback);
 
-        this.repaymentEveryValue = new PropertyModel<>(this.model, "itemRepaymentEveryValue");
+        this.repaymentEveryValue = new PropertyModel<>(this.model, "repaymentEveryValue");
         this.repaymentEveryBlock = new WebMarkupContainer("repaymentEveryBlock");
         this.form.add(this.repaymentEveryBlock);
         this.repaymentEveryContainer = new WebMarkupContainer("repaymentEveryContainer");
         this.repaymentEveryBlock.add(this.repaymentEveryContainer);
         this.repaymentEveryField = new TextField<>("repaymentEveryField", this.repaymentEveryValue);
+        this.repaymentEveryField.setType(Integer.class);
         this.repaymentEveryField.setLabel(Model.of("repaymentEvery"));
         this.repaymentEveryContainer.add(this.repaymentEveryField);
         this.repaymentEveryFeedback = new TextFeedbackPanel("repaymentEveryFeedback", this.repaymentEveryField);

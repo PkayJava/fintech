@@ -16,9 +16,8 @@
 				<div class="box-body">
 
 					<!-- Row -->
-					<div wicket:id="officerBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="officerContainer">
+					<div wicket:id="officerBlock" class="form-group">
+						<wicket:container wicket:id="officerIContainer">
 							<label wicket:for="officerField">Saving Officer</label>
 							<select wicket:id="officerField" class="form-control select2"
 								style="width: 100%;"></select>
@@ -31,11 +30,11 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="assignmentDateBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="assignmentDateContainer">
+					<div wicket:id="assignmentDateBlock" class="form-group">
+						<wicket:container wicket:id="assignmentDateIContainer">
 							<label wicket:for="assignmentDateField">Assignment Date</label>
-							<input type="text" wicket:id="assignmentDateField" class="form-control" />
+							<input type="text" wicket:id="assignmentDateField"
+								class="form-control" />
 							<span wicket:id="assignmentDateFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>

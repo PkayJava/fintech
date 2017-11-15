@@ -54,7 +54,7 @@ public class OverdueChargePopup extends PopupPanel {
         this.overdueChargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
         this.overdueChargeProvider.applyWhere("is_penalty", "is_penalty = 1");
         this.overdueChargeProvider.applyWhere("is_active", "is_active = 1");
-        this.overdueChargeField = new Select2SingleChoice<>("overdueChargeField", 0, this.overdueChargeValue, this.overdueChargeProvider);
+        this.overdueChargeField = new Select2SingleChoice<>("overdueChargeField", this.overdueChargeValue, this.overdueChargeProvider);
         this.overdueChargeField.setLabel(Model.of("Overdue Charge"));
         this.form.add(this.overdueChargeField);
         this.overdueChargeFeedback = new TextFeedbackPanel("overdueChargeFeedback", this.overdueChargeField);

@@ -9,11 +9,12 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -24,7 +25,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingAccountAssignStaffPage extends DeprecatedPage {
+public class SavingAccountAssignStaffPage extends Page {
 
     protected String clientId;
     protected String officeId;
@@ -36,24 +37,20 @@ public class SavingAccountAssignStaffPage extends DeprecatedPage {
     protected BookmarkablePageLink<Void> closeLink;
 
     protected SingleChoiceProvider officerProvider;
-    protected WebMarkupContainer officerBlock;
-    protected WebMarkupContainer officerContainer;
+    protected WebMarkupBlock officerBlock;
+    protected WebMarkupContainer officerIContainer;
     protected Option officerValue;
     protected Select2SingleChoice<Option> officerField;
     protected TextFeedbackPanel officerFeedback;
 
-    protected WebMarkupContainer assignmentDateBlock;
-    protected WebMarkupContainer assignmentDateContainer;
+    protected WebMarkupBlock assignmentDateBlock;
+    protected WebMarkupContainer assignmentDateIContainer;
     protected DateTextField assignmentDateField;
     protected TextFeedbackPanel assignmentDateFeedback;
     protected Date assignmentDateValue;
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
-        initData();
-
+    protected void initComponent() {
         PageParameters parameters = new PageParameters();
         parameters.add("clientId", this.clientId);
 
@@ -67,10 +64,29 @@ public class SavingAccountAssignStaffPage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.officerBlock = new WebMarkupContainer("officerBlock");
+        initOfficerBlock();
+
+        initAssignmentDateBlock();
+    }
+
+    protected void initAssignmentDateBlock() {
+        this.assignmentDateBlock = new WebMarkupBlock("assignmentDateBlock", Size.Six_6);
+        this.form.add(this.assignmentDateBlock);
+        this.assignmentDateIContainer = new WebMarkupContainer("assignmentDateIContainer");
+        this.assignmentDateBlock.add(this.assignmentDateIContainer);
+        this.assignmentDateField = new DateTextField("assignmentDateField", new PropertyModel<>(this, "assignmentDateValue"));
+        this.assignmentDateField.setLabel(Model.of("Assignment Date"));
+        this.assignmentDateField.setRequired(false);
+        this.assignmentDateIContainer.add(this.assignmentDateField);
+        this.assignmentDateFeedback = new TextFeedbackPanel("assignmentDateFeedback", this.assignmentDateField);
+        this.assignmentDateIContainer.add(this.assignmentDateFeedback);
+    }
+
+    protected void initOfficerBlock() {
+        this.officerBlock = new WebMarkupBlock("officerBlock", Size.Six_6);
         this.form.add(this.officerBlock);
-        this.officerContainer = new WebMarkupContainer("officerContainer");
-        this.officerBlock.add(this.officerContainer);
+        this.officerIContainer = new WebMarkupContainer("officerIContainer");
+        this.officerBlock.add(this.officerIContainer);
         this.officerProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
         this.officerProvider.applyWhere("is_active", "is_active = 1");
         this.officerProvider.applyWhere("is_loan_officer", "is_loan_officer = 1");
@@ -79,22 +95,20 @@ public class SavingAccountAssignStaffPage extends DeprecatedPage {
         this.officerField.setLabel(Model.of("Officer"));
         this.officerField.add(new OnChangeAjaxBehavior());
         this.officerField.setRequired(true);
-        this.officerContainer.add(this.officerField);
+        this.officerIContainer.add(this.officerField);
         this.officerFeedback = new TextFeedbackPanel("officerFeedback", this.officerField);
-        this.officerContainer.add(this.officerFeedback);
-
-        this.assignmentDateBlock = new WebMarkupContainer("assignmentDateBlock");
-        this.form.add(this.assignmentDateBlock);
-        this.assignmentDateContainer = new WebMarkupContainer("assignmentDateContainer");
-        this.assignmentDateBlock.add(this.assignmentDateContainer);
-        this.assignmentDateField = new DateTextField("assignmentDateField", new PropertyModel<>(this, "assignmentDateValue"));
-        this.assignmentDateField.setLabel(Model.of("Assignment Date"));
-        this.assignmentDateField.setRequired(false);
-        this.assignmentDateContainer.add(this.assignmentDateField);
-        this.assignmentDateFeedback = new TextFeedbackPanel("assignmentDateFeedback", this.assignmentDateField);
-        this.assignmentDateContainer.add(this.assignmentDateFeedback);
+        this.officerIContainer.add(this.officerFeedback);
     }
 
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    @Override
     protected void initData() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         this.clientId = getPageParameters().get("clientId").toString();

@@ -64,7 +64,7 @@ public class PenaltyChargePopup extends PopupPanel {
         this.chargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
         this.chargeProvider.applyWhere("is_penalty", "is_penalty = 1");
         this.chargeProvider.applyWhere("is_active", "is_active = 1");
-        this.chargeField = new Select2SingleChoice<>("chargeField", 0, this.chargeValue, this.chargeProvider);
+        this.chargeField = new Select2SingleChoice<>("chargeField", this.chargeValue, this.chargeProvider);
         this.chargeField.setLabel(Model.of("Charge"));
         this.form.add(this.chargeField);
         this.chargeFeedback = new TextFeedbackPanel("chargeFeedback", this.chargeField);
@@ -74,7 +74,7 @@ public class PenaltyChargePopup extends PopupPanel {
         this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
         this.accountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
         this.accountProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
-        this.accountField = new Select2SingleChoice<>("accountField", 0, this.accountValue, this.accountProvider);
+        this.accountField = new Select2SingleChoice<>("accountField", this.accountValue, this.accountProvider);
         this.accountField.setLabel(Model.of("Account"));
         this.form.add(this.accountField);
         this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);

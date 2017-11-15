@@ -64,7 +64,7 @@ public class FeeChargePopup extends PopupPanel {
         this.chargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
         this.chargeProvider.applyWhere("is_penalty", "is_penalty = 0");
         this.chargeProvider.applyWhere("is_active", "is_active = 1");
-        this.chargeField = new Select2SingleChoice<>("chargeField", 0, this.chargeValue, this.chargeProvider);
+        this.chargeField = new Select2SingleChoice<>("chargeField", this.chargeValue, this.chargeProvider);
         this.chargeField.setLabel(Model.of("Charge"));
         this.form.add(this.chargeField);
         this.chargeFeedback = new TextFeedbackPanel("chargeFeedback", this.chargeField);

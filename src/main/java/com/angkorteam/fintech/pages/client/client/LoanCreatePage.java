@@ -13,7 +13,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -41,7 +40,10 @@ import com.angkorteam.fintech.provider.loan.FrequencyDayProvider;
 import com.angkorteam.fintech.provider.loan.RepaidOnProvider;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
@@ -68,7 +70,7 @@ import com.google.common.collect.Maps;
 public class LoanCreatePage extends DeprecatedPage {
 
     // TODO : clean tech debt
-    
+
     protected String clientId;
     protected String loanId;
     protected String officeId;
@@ -77,177 +79,212 @@ public class LoanCreatePage extends DeprecatedPage {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
+    protected WebMarkupBlock productBlock;
+    protected WebMarkupContainer productVContainer;
     protected String productValue;
-    protected Label productView;
+    protected ReadOnlyView productView;
 
     protected SingleChoiceProvider loanOfficerProvider;
-    protected WebMarkupContainer loanOfficerBlock;
-    protected WebMarkupContainer loanOfficerContainer;
+    protected WebMarkupBlock loanOfficerBlock;
+    protected WebMarkupContainer loanOfficerIContainer;
     protected Option loanOfficerValue;
     protected Select2SingleChoice<Option> loanOfficerField;
     protected TextFeedbackPanel loanOfficerFeedback;
 
     protected LoanPurposeProvider loanPurposeProvider;
     protected WebMarkupContainer loanPurposeBlock;
-    protected WebMarkupContainer loanPurposeContainer;
+    protected WebMarkupContainer loanPurposeIContainer;
     protected Option loanPurposeValue;
     protected Select2SingleChoice<Option> loanPurposeField;
     protected TextFeedbackPanel loanPurposeFeedback;
 
     protected FundProvider fundProvider;
     protected WebMarkupContainer fundBlock;
-    protected WebMarkupContainer fundContainer;
+    protected WebMarkupContainer fundIContainer;
     protected Option fundValue;
     protected Select2SingleChoice<Option> fundField;
     protected TextFeedbackPanel fundFeedback;
 
-    protected WebMarkupContainer submittedOnBlock;
-    protected WebMarkupContainer submittedOnContainer;
+    protected WebMarkupBlock submittedOnBlock;
+    protected WebMarkupContainer submittedOnIContainer;
     protected Date submittedOnValue;
     protected DateTextField submittedOnField;
     protected TextFeedbackPanel submittedOnFeedback;
 
-    protected WebMarkupContainer disbursementOnBlock;
-    protected WebMarkupContainer disbursementOnContainer;
+    protected WebMarkupBlock disbursementOnBlock;
+    protected WebMarkupContainer disbursementOnIContainer;
     protected Date disbursementOnValue;
     protected DateTextField disbursementOnField;
     protected TextFeedbackPanel disbursementOnFeedback;
 
-    protected WebMarkupContainer externalIdBlock;
-    protected WebMarkupContainer externalIdContainer;
+    protected WebMarkupBlock externalIdBlock;
+    protected WebMarkupContainer externalIdIContainer;
     protected String externalIdValue;
     protected TextField<String> externalIdField;
     protected TextFeedbackPanel externalIdFeedback;
 
     protected SingleChoiceProvider linkSavingAccountProvider;
-    protected WebMarkupContainer linkSavingAccountBlock;
-    protected WebMarkupContainer linkSavingAccountContainer;
+    protected WebMarkupBlock linkSavingAccountBlock;
+    protected WebMarkupContainer linkSavingAccountIContainer;
     protected Option linkSavingAccountValue;
     protected Select2SingleChoice<Option> linkSavingAccountField;
     protected TextFeedbackPanel linkSavingAccountFeedback;
 
-    protected WebMarkupContainer createStandingInstructionAtDisbursementBlock;
-    protected WebMarkupContainer createStandingInstructionAtDisbursementContainer;
+    protected WebMarkupBlock createStandingInstructionAtDisbursementBlock;
+    protected WebMarkupContainer createStandingInstructionAtDisbursementIContainer;
     protected Boolean createStandingInstructionAtDisbursementValue;
     protected CheckBox createStandingInstructionAtDisbursementField;
     protected TextFeedbackPanel createStandingInstructionAtDisbursementFeedback;
 
+    protected WebMarkupBlock currencyBlock;
+    protected WebMarkupContainer currencyVContainer;
     protected String currencyValue;
-    protected Label currencyView;
+    protected ReadOnlyView currencyView;
 
+    protected WebMarkupBlock decimalPlacesBlock;
+    protected WebMarkupContainer decimalPlacesVContainer;
     protected Integer decimalPlacesValue;
-    protected Label decimalPlacesView;
+    protected ReadOnlyView decimalPlacesView;
 
+    protected WebMarkupBlock currencyInMultiplesOfBlock;
+    protected WebMarkupContainer currencyInMultiplesOfVContainer;
     protected Integer currencyInMultiplesOfValue;
-    protected Label currencyInMultiplesOfView;
+    protected ReadOnlyView currencyInMultiplesOfView;
 
+    protected WebMarkupBlock installmentInMultiplesOfBlock;
+    protected WebMarkupContainer installmentInMultiplesOfVContainer;
     protected Double installmentInMultiplesOfValue;
-    protected Label installmentInMultiplesOfView;
+    protected ReadOnlyView installmentInMultiplesOfView;
 
-    protected WebMarkupContainer principalBlock;
-    protected WebMarkupContainer principalContainer;
+    protected WebMarkupBlock principalBlock;
+    protected WebMarkupContainer principalIContainer;
     protected Double principalValue;
     protected TextField<Double> principalField;
     protected TextFeedbackPanel principalFeedback;
 
-    protected WebMarkupContainer loanTermBlock;
-    protected WebMarkupContainer loanTermContainer;
+    protected WebMarkupBlock loanTermBlock;
+    protected WebMarkupContainer loanTermIContainer;
     protected Integer loanTermValue;
     protected TextField<Integer> loanTermField;
     protected TextFeedbackPanel loanTermFeedback;
 
     protected ChargeFrequencyProvider loanTypeProvider;
-    protected WebMarkupContainer loanTypeBlock;
-    protected WebMarkupContainer loanTypeContainer;
+    protected WebMarkupBlock loanTypeBlock;
+    protected WebMarkupContainer loanTypeIContainer;
     protected Option loanTypeValue;
     protected Select2SingleChoice<Option> loanTypeField;
     protected TextFeedbackPanel loanTypeFeedback;
 
-    protected WebMarkupContainer numberOfRepaymentBlock;
-    protected WebMarkupContainer numberOfRepaymentContainer;
+    protected WebMarkupBlock numberOfRepaymentBlock;
+    protected WebMarkupContainer numberOfRepaymentIContainer;
     protected Integer numberOfRepaymentValue;
     protected TextField<Integer> numberOfRepaymentField;
     protected TextFeedbackPanel numberOfRepaymentFeedback;
 
+    protected WebMarkupBlock repaidEveryBlock;
+    protected WebMarkupContainer repaidEveryVContainer;
     protected Integer repaidEveryValue;
-    protected Label repaidEveryView;
+    protected ReadOnlyView repaidEveryView;
 
+    protected WebMarkupBlock repaidTypeBlock;
+    protected WebMarkupContainer repaidTypeVContainer;
     protected String repaidTypeValue;
-    protected Label repaidTypeView;
+    protected ReadOnlyView repaidTypeView;
 
     protected RepaidOnProvider repaidOnProvider;
     protected WebMarkupContainer repaidOnBlock;
-    protected WebMarkupContainer repaidOnContainer;
+    protected WebMarkupContainer repaidOnIContainer;
     protected Option repaidOnValue;
     protected Select2SingleChoice<Option> repaidOnField;
     protected TextFeedbackPanel repaidOnFeedback;
 
     protected FrequencyDayProvider repaidDayProvider;
     protected WebMarkupContainer repaidDayBlock;
-    protected WebMarkupContainer repaidDayContainer;
+    protected WebMarkupContainer repaidDayIContainer;
     protected Option repaidDayValue;
     protected Select2SingleChoice<Option> repaidDayField;
     protected TextFeedbackPanel repaidDayFeedback;
 
     protected WebMarkupContainer firstRepaymentOnBlock;
-    protected WebMarkupContainer firstRepaymentOnContainer;
+    protected WebMarkupContainer firstRepaymentOnIContainer;
     protected Date firstRepaymentOnValue;
     protected DateTextField firstRepaymentOnField;
     protected TextFeedbackPanel firstRepaymentOnFeedback;
 
     protected WebMarkupContainer interestChargedFromBlock;
-    protected WebMarkupContainer interestChargedFromContainer;
+    protected WebMarkupContainer interestChargedFromIContainer;
     protected Date interestChargedFromValue;
     protected DateTextField interestChargedFromField;
     protected TextFeedbackPanel interestChargedFromFeedback;
 
     protected WebMarkupContainer nominalInterestRateBlock;
-    protected WebMarkupContainer nominalInterestRateContainer;
+    protected WebMarkupContainer nominalInterestRateIContainer;
     protected Double nominalInterestRateValue;
     protected TextField<Double> nominalInterestRateField;
     protected TextFeedbackPanel nominalInterestRateFeedback;
 
+    protected WebMarkupBlock nominalInterestTypeBlock;
+    protected WebMarkupContainer nominalInterestTypeVContainer;
     protected String nominalInterestTypeValue;
-    protected Label nominalInterestTypeView;
+    protected ReadOnlyView nominalInterestTypeView;
 
+    protected WebMarkupBlock interestMethodBlock;
+    protected WebMarkupContainer interestMethodVContainer;
     protected String interestMethodValue;
-    protected Label interestMethodView;
+    protected ReadOnlyView interestMethodView;
 
+    protected WebMarkupBlock amortizationBlock;
+    protected WebMarkupContainer amortizationVContainer;
     protected String amortizationValue;
-    protected Label amortizationView;
+    protected ReadOnlyView amortizationView;
 
+    protected WebMarkupBlock interestCalculationPeriodBlock;
+    protected WebMarkupContainer interestCalculationPeriodVContainer;
     protected String interestCalculationPeriodValue;
-    protected Label interestCalculationPeriodView;
+    protected ReadOnlyView interestCalculationPeriodView;
 
+    protected WebMarkupBlock calculateInterestForExactDayInPartialPeriodBlock;
+    protected WebMarkupContainer calculateInterestForExactDayInPartialPeriodVContainer;
     protected String calculateInterestForExactDayInPartialPeriodValue;
-    protected Label calculateInterestForExactDayInPartialPeriodView;
+    protected ReadOnlyView calculateInterestForExactDayInPartialPeriodView;
 
+    protected WebMarkupBlock arrearsToleranceBlock;
+    protected WebMarkupContainer arrearsToleranceVContainer;
     protected Double arrearsToleranceValue;
-    protected Label arrearsToleranceView;
+    protected ReadOnlyView arrearsToleranceView;
 
     protected WebMarkupContainer interestFreePeriodBlock;
-    protected WebMarkupContainer interestFreePeriodContainer;
+    protected WebMarkupContainer interestFreePeriodIContainer;
     protected Integer interestFreePeriodValue;
     protected TextField<Integer> interestFreePeriodField;
     protected TextFeedbackPanel interestFreePeriodFeedback;
 
+    protected WebMarkupBlock repaymentStrategyBlock;
+    protected WebMarkupContainer repaymentStrategyVContainer;
     protected String repaymentStrategyValue;
-    protected Label repaymentStrategyView;
+    protected ReadOnlyView repaymentStrategyView;
 
+    protected WebMarkupBlock onPrincipalPaymentBlock;
+    protected WebMarkupContainer onPrincipalPaymentVContainer;
     protected Integer onPrincipalPaymentValue;
-    protected Label onPrincipalPaymentView;
+    protected ReadOnlyView onPrincipalPaymentView;
 
+    protected WebMarkupBlock onInterestPaymentBlock;
+    protected WebMarkupContainer onInterestPaymentVContainer;
     protected Integer onInterestPaymentValue;
-    protected Label onInterestPaymentView;
+    protected ReadOnlyView onInterestPaymentView;
 
+    protected WebMarkupBlock onArrearsAgingBlock;
+    protected WebMarkupContainer onArrearsAgingVContainer;
     protected Integer onArrearsAgingValue;
-    protected Label onArrearsAgingView;
+    protected ReadOnlyView onArrearsAgingView;
 
     protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> chargeTable;
     protected ListDataProvider chargeProvider;
     protected AjaxLink<Void> chargeAddLink;
     protected ModalWindow chargePopup;
+    protected List<IColumn<Map<String, Object>, String>> chargeColumn;
 
     protected List<Map<String, Object>> collateralValue;
     protected DataTable<Map<String, Object>, String> collateralTable;
@@ -256,20 +293,10 @@ public class LoanCreatePage extends DeprecatedPage {
     protected ModalWindow collateralPopup;
     protected List<IColumn<Map<String, Object>, String>> collateralColumn;
 
-    protected Option itemChargeValue;
-    protected String itemChargeTypeValue;
-    protected Double itemAmountValue;
-    protected String itemCollectedOnValue;
-    protected Date itemDateValue;
-    protected Integer itemRepaymentEveryValue;
-    protected Option itemCollateralValue;
-    protected String itemDescriptionValue;
+    protected Map<String, Object> popupModel;
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        initData();
-
+    protected void initComponent() {
         PageParameters parameters = new PageParameters();
         parameters.add("clientId", this.clientId);
 
@@ -283,281 +310,91 @@ public class LoanCreatePage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.productView = new Label("productView", new PropertyModel<>(this, "productValue"));
-        this.form.add(this.productView);
+        initProductBlock();
 
-        this.loanOfficerProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
-        this.loanOfficerProvider.applyWhere("is_active", "is_active = 1");
-        this.loanOfficerProvider.applyWhere("office_id", "office_id = " + this.officeId);
-        this.loanOfficerBlock = new WebMarkupContainer("loanOfficerBlock");
-        this.form.add(this.loanOfficerBlock);
-        this.loanOfficerContainer = new WebMarkupContainer("loanOfficerContainer");
-        this.loanOfficerBlock.add(this.loanOfficerContainer);
-        this.loanOfficerField = new Select2SingleChoice<>("loanOfficerField", new PropertyModel<>(this, "loanOfficerValue"), this.loanOfficerProvider);
-        this.loanOfficerField.setLabel(Model.of("Loan Officer"));
-        this.loanOfficerField.setRequired(false);
-        this.loanOfficerContainer.add(this.loanOfficerField);
-        this.loanOfficerFeedback = new TextFeedbackPanel("loanOfficerFeedback", this.loanOfficerField);
-        this.loanOfficerContainer.add(this.loanOfficerFeedback);
+        initLoanOfficerBlock();
 
-        this.loanPurposeProvider = new LoanPurposeProvider();
-        this.loanPurposeBlock = new WebMarkupContainer("loanPurposeBlock");
-        this.form.add(this.loanPurposeBlock);
-        this.loanPurposeContainer = new WebMarkupContainer("loanPurposeContainer");
-        this.loanPurposeBlock.add(this.loanPurposeContainer);
-        this.loanPurposeField = new Select2SingleChoice<>("loanPurposeField", new PropertyModel<>(this, "loanPurposeValue"), this.loanPurposeProvider);
-        this.loanPurposeField.setLabel(Model.of("Loan Purpose"));
-        this.loanPurposeField.setRequired(false);
-        this.loanPurposeContainer.add(this.loanPurposeField);
-        this.loanPurposeFeedback = new TextFeedbackPanel("loanPurposeFeedback", this.loanPurposeField);
-        this.loanPurposeContainer.add(this.loanPurposeFeedback);
+        initLoanPurposeBlock();
 
-        this.fundProvider = new FundProvider();
-        this.fundBlock = new WebMarkupContainer("fundBlock");
-        this.form.add(this.fundBlock);
-        this.fundContainer = new WebMarkupContainer("fundContainer");
-        this.fundBlock.add(this.fundContainer);
-        this.fundField = new Select2SingleChoice<>("fundField", new PropertyModel<>(this, "fundValue"), this.fundProvider);
-        this.fundField.setLabel(Model.of("Fund"));
-        this.fundField.setRequired(false);
-        this.fundContainer.add(this.fundField);
-        this.fundFeedback = new TextFeedbackPanel("fundFeedback", this.fundField);
-        this.fundContainer.add(this.fundFeedback);
+        initFundBlock();
 
-        this.submittedOnBlock = new WebMarkupContainer("submittedOnBlock");
-        this.form.add(this.submittedOnBlock);
-        this.submittedOnContainer = new WebMarkupContainer("submittedOnContainer");
-        this.submittedOnBlock.add(this.submittedOnContainer);
-        this.submittedOnField = new DateTextField("submittedOnField", new PropertyModel<>(this, "submittedOnValue"));
-        this.submittedOnField.setLabel(Model.of("Submitted On"));
-        this.submittedOnField.setRequired(false);
-        this.submittedOnContainer.add(this.submittedOnField);
-        this.submittedOnFeedback = new TextFeedbackPanel("submittedOnFeedback", this.submittedOnField);
-        this.submittedOnContainer.add(this.submittedOnFeedback);
+        initSubmittedOnBlock();
 
-        this.disbursementOnBlock = new WebMarkupContainer("disbursementOnBlock");
-        this.form.add(this.disbursementOnBlock);
-        this.disbursementOnContainer = new WebMarkupContainer("disbursementOnContainer");
-        this.disbursementOnBlock.add(this.disbursementOnContainer);
-        this.disbursementOnField = new DateTextField("disbursementOnField", new PropertyModel<>(this, "disbursementOnValue"));
-        this.disbursementOnField.setLabel(Model.of("Disbursement On"));
-        this.disbursementOnField.setRequired(false);
-        this.disbursementOnContainer.add(this.disbursementOnField);
-        this.disbursementOnFeedback = new TextFeedbackPanel("disbursementOnFeedback", this.disbursementOnField);
-        this.disbursementOnContainer.add(this.disbursementOnFeedback);
+        initDisbursementOnBlock();
 
-        this.externalIdBlock = new WebMarkupContainer("externalIdBlock");
-        this.form.add(this.externalIdBlock);
-        this.externalIdContainer = new WebMarkupContainer("externalIdContainer");
-        this.externalIdBlock.add(this.externalIdContainer);
-        this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
-        this.externalIdField.setLabel(Model.of("External ID"));
-        this.externalIdField.setRequired(false);
-        this.externalIdContainer.add(this.externalIdField);
-        this.externalIdFeedback = new TextFeedbackPanel("externalIdFeedback", this.externalIdField);
-        this.externalIdContainer.add(this.externalIdFeedback);
+        initExternalIdBlock();
 
-        this.linkSavingAccountProvider = new SingleChoiceProvider("m_savings_account", "m_savings_account.id", "m_savings_account.account_no", "concat(m_savings_account.account_no, ' => ', m_savings_product.name)");
-        this.linkSavingAccountProvider.addJoin("INNER JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
-        this.linkSavingAccountProvider.applyWhere("status_enum", "m_savings_account.status_enum = 300");
-        this.linkSavingAccountProvider.applyWhere("client_id", "m_savings_account.client_id = " + this.clientId);
-        this.linkSavingAccountBlock = new WebMarkupContainer("linkSavingAccountBlock");
-        this.form.add(this.linkSavingAccountBlock);
-        this.linkSavingAccountContainer = new WebMarkupContainer("linkSavingAccountContainer");
-        this.linkSavingAccountBlock.add(this.linkSavingAccountContainer);
-        this.linkSavingAccountField = new Select2SingleChoice<>("linkSavingAccountField", new PropertyModel<>(this, "linkSavingAccountValue"), this.linkSavingAccountProvider);
-        this.linkSavingAccountField.setLabel(Model.of("Saving Account"));
-        this.linkSavingAccountField.setRequired(false);
-        this.linkSavingAccountContainer.add(this.linkSavingAccountField);
-        this.linkSavingAccountFeedback = new TextFeedbackPanel("linkSavingAccountFeedback", this.linkSavingAccountField);
-        this.linkSavingAccountContainer.add(this.linkSavingAccountFeedback);
+        initLinkSavingAccountBlock();
 
-        this.createStandingInstructionAtDisbursementBlock = new WebMarkupContainer("createStandingInstructionAtDisbursementBlock");
-        this.form.add(this.createStandingInstructionAtDisbursementBlock);
-        this.createStandingInstructionAtDisbursementContainer = new WebMarkupContainer("createStandingInstructionAtDisbursementContainer");
-        this.createStandingInstructionAtDisbursementBlock.add(this.createStandingInstructionAtDisbursementContainer);
-        this.createStandingInstructionAtDisbursementField = new CheckBox("createStandingInstructionAtDisbursementField", new PropertyModel<>(this, "createStandingInstructionAtDisbursementValue"));
-        this.createStandingInstructionAtDisbursementField.add(new OnChangeAjaxBehavior());
-        this.createStandingInstructionAtDisbursementContainer.add(this.createStandingInstructionAtDisbursementField);
-        this.createStandingInstructionAtDisbursementFeedback = new TextFeedbackPanel("createStandingInstructionAtDisbursementFeedback", this.createStandingInstructionAtDisbursementField);
-        this.createStandingInstructionAtDisbursementContainer.add(this.createStandingInstructionAtDisbursementFeedback);
+        initCreateStandingInstructionAtDisbursementBlock();
 
-        this.currencyView = new Label("currencyView", new PropertyModel<>(this, "currencyValue"));
-        this.form.add(this.currencyView);
+        initCurrencyBlock();
 
-        this.decimalPlacesView = new Label("decimalPlacesView", new PropertyModel<>(this, "decimalPlacesValue"));
-        this.form.add(this.decimalPlacesView);
+        initDecimalPlacesBlock();
 
-        this.currencyInMultiplesOfView = new Label("currencyInMultiplesOfView", new PropertyModel<>(this, "currencyInMultiplesOfValue"));
-        this.form.add(this.currencyInMultiplesOfView);
+        initCurrencyInMultiplesOfBlock();
 
-        this.installmentInMultiplesOfView = new Label("installmentInMultiplesOfView", new PropertyModel<>(this, "installmentInMultiplesOfValue"));
-        this.form.add(this.installmentInMultiplesOfView);
+        initInstallmentInMultiplesOfBlock();
 
-        this.principalBlock = new WebMarkupContainer("principalBlock");
-        this.form.add(this.principalBlock);
-        this.principalContainer = new WebMarkupContainer("principalContainer");
-        this.principalBlock.add(this.principalContainer);
-        this.principalField = new TextField<>("principalField", new PropertyModel<>(this, "principalValue"));
-        this.principalField.setLabel(Model.of("Principal"));
-        this.principalField.setRequired(false);
-        this.principalContainer.add(this.principalField);
-        this.principalFeedback = new TextFeedbackPanel("principalFeedback", this.principalField);
-        this.principalContainer.add(this.principalFeedback);
+        initPrincipalBlock();
 
-        this.loanTermBlock = new WebMarkupContainer("loanTermBlock");
-        this.form.add(this.loanTermBlock);
-        this.loanTermContainer = new WebMarkupContainer("loanTermContainer");
-        this.loanTermBlock.add(this.loanTermContainer);
-        this.loanTermField = new TextField<>("loanTermField", new PropertyModel<>(this, "loanTermValue"));
-        this.loanTermField.setLabel(Model.of("Loan Term"));
-        this.loanTermField.setRequired(false);
-        this.loanTermContainer.add(this.loanTermField);
-        this.loanTermFeedback = new TextFeedbackPanel("loanTermFeedback", this.loanTermField);
-        this.loanTermContainer.add(this.loanTermFeedback);
+        initLoanTermBlock();
 
-        this.loanTypeProvider = new ChargeFrequencyProvider();
-        this.loanTypeBlock = new WebMarkupContainer("loanTypeBlock");
-        this.form.add(this.loanTypeBlock);
-        this.loanTypeContainer = new WebMarkupContainer("loanTypeContainer");
-        this.loanTypeBlock.add(this.loanTypeContainer);
-        this.loanTypeField = new Select2SingleChoice<>("loanTypeField", new PropertyModel<>(this, "loanTypeValue"), this.loanTypeProvider);
-        this.loanTypeField.setLabel(Model.of("Type"));
-        this.loanTypeField.setRequired(false);
-        this.loanTypeContainer.add(this.loanTypeField);
-        this.loanTypeFeedback = new TextFeedbackPanel("loanTypeFeedback", this.loanTypeField);
-        this.loanTypeContainer.add(this.loanTypeFeedback);
+        initLoanTypeBlock();
 
-        this.numberOfRepaymentBlock = new WebMarkupContainer("numberOfRepaymentBlock");
-        this.form.add(this.numberOfRepaymentBlock);
-        this.numberOfRepaymentContainer = new WebMarkupContainer("numberOfRepaymentContainer");
-        this.numberOfRepaymentBlock.add(this.numberOfRepaymentContainer);
-        this.numberOfRepaymentField = new TextField<>("numberOfRepaymentField", new PropertyModel<>(this, "numberOfRepaymentValue"));
-        this.numberOfRepaymentField.setLabel(Model.of("Number Of Repayment"));
-        this.numberOfRepaymentField.setRequired(false);
-        this.numberOfRepaymentContainer.add(this.numberOfRepaymentField);
-        this.numberOfRepaymentFeedback = new TextFeedbackPanel("numberOfRepaymentFeedback", this.numberOfRepaymentField);
-        this.numberOfRepaymentContainer.add(this.numberOfRepaymentFeedback);
+        initNumberOfRepaymentBlock();
 
-        this.repaidEveryView = new Label("repaidEveryView", new PropertyModel<>(this, "repaidEveryValue"));
-        this.form.add(this.repaidEveryView);
+        initRepaidEveryBlock();
 
-        this.repaidTypeView = new Label("repaidTypeView", new PropertyModel<>(this, "repaidTypeValue"));
-        this.form.add(this.repaidTypeView);
+        initRepaidTypeBlock();
 
-        this.repaidOnProvider = new RepaidOnProvider();
-        this.repaidOnBlock = new WebMarkupContainer("repaidOnBlock");
-        this.form.add(this.repaidOnBlock);
-        this.repaidOnContainer = new WebMarkupContainer("repaidOnContainer");
-        this.repaidOnBlock.add(this.repaidOnContainer);
-        this.repaidOnField = new Select2SingleChoice<>("repaidOnField", new PropertyModel<>(this, "repaidOnValue"), this.repaidOnProvider);
-        this.repaidOnField.setLabel(Model.of("On"));
-        this.repaidOnField.setRequired(false);
-        this.repaidOnContainer.add(this.repaidOnField);
-        this.repaidOnFeedback = new TextFeedbackPanel("repaidOnFeedback", this.repaidOnField);
-        this.repaidOnContainer.add(this.repaidOnFeedback);
+        initRepaidOnBlock();
 
-        this.repaidDayProvider = new FrequencyDayProvider();
-        this.repaidDayBlock = new WebMarkupContainer("repaidDayBlock");
-        this.form.add(this.repaidDayBlock);
-        this.repaidDayContainer = new WebMarkupContainer("repaidDayContainer");
-        this.repaidDayBlock.add(this.repaidDayContainer);
-        this.repaidDayField = new Select2SingleChoice<>("repaidDayField", new PropertyModel<>(this, "repaidDayValue"), this.repaidDayProvider);
-        this.repaidDayField.setLabel(Model.of("Day"));
-        this.repaidDayField.setRequired(false);
-        this.repaidDayContainer.add(this.repaidDayField);
-        this.repaidDayFeedback = new TextFeedbackPanel("repaidDayFeedback", this.repaidDayField);
-        this.repaidDayContainer.add(this.repaidDayFeedback);
+        initRepaidDayBlock();
 
-        this.firstRepaymentOnBlock = new WebMarkupContainer("firstRepaymentOnBlock");
-        this.form.add(this.firstRepaymentOnBlock);
-        this.firstRepaymentOnContainer = new WebMarkupContainer("firstRepaymentOnContainer");
-        this.firstRepaymentOnBlock.add(this.firstRepaymentOnContainer);
-        this.firstRepaymentOnField = new DateTextField("firstRepaymentOnField", new PropertyModel<>(this, "firstRepaymentOnValue"));
-        this.firstRepaymentOnField.setLabel(Model.of("First Repayment On"));
-        this.firstRepaymentOnField.setRequired(false);
-        this.firstRepaymentOnContainer.add(this.firstRepaymentOnField);
-        this.firstRepaymentOnFeedback = new TextFeedbackPanel("firstRepaymentOnFeedback", this.firstRepaymentOnField);
-        this.firstRepaymentOnContainer.add(this.firstRepaymentOnFeedback);
+        initFirstRepaymentOnBlock();
 
-        this.interestChargedFromBlock = new WebMarkupContainer("interestChargedFromBlock");
-        this.form.add(this.interestChargedFromBlock);
-        this.interestChargedFromContainer = new WebMarkupContainer("interestChargedFromContainer");
-        this.interestChargedFromBlock.add(this.interestChargedFromContainer);
-        this.interestChargedFromField = new DateTextField("interestChargedFromField", new PropertyModel<>(this, "interestChargedFromValue"));
-        this.interestChargedFromField.setLabel(Model.of("Interest Charged From"));
-        this.interestChargedFromField.setRequired(false);
-        this.interestChargedFromContainer.add(this.interestChargedFromField);
-        this.interestChargedFromFeedback = new TextFeedbackPanel("interestChargedFromFeedback", this.interestChargedFromField);
-        this.interestChargedFromContainer.add(this.interestChargedFromFeedback);
+        initInterestChargedFromBlock();
 
-        this.nominalInterestRateBlock = new WebMarkupContainer("nominalInterestRateBlock");
-        this.form.add(this.nominalInterestRateBlock);
-        this.nominalInterestRateContainer = new WebMarkupContainer("nominalInterestRateContainer");
-        this.nominalInterestRateBlock.add(this.nominalInterestRateContainer);
-        this.nominalInterestRateField = new TextField<>("nominalInterestRateField", new PropertyModel<>(this, "nominalInterestRateValue"));
-        this.nominalInterestRateField.setLabel(Model.of("Nominal Interest Rate"));
-        this.nominalInterestRateField.setRequired(false);
-        this.nominalInterestRateContainer.add(this.nominalInterestRateField);
-        this.nominalInterestRateFeedback = new TextFeedbackPanel("nominalInterestRateFeedback", this.nominalInterestRateField);
-        this.nominalInterestRateContainer.add(this.nominalInterestRateFeedback);
+        initNominalInterestRateBlock();
 
-        this.nominalInterestTypeView = new Label("nominalInterestTypeView", new PropertyModel<>(this, "nominalInterestTypeValue"));
-        this.form.add(this.nominalInterestTypeView);
+        initNominalInterestTypeBlock();
 
-        this.interestMethodView = new Label("interestMethodView", new PropertyModel<>(this, "interestMethodValue"));
-        this.form.add(this.interestMethodView);
+        initInterestMethodBlock();
 
-        this.amortizationView = new Label("amortizationView", new PropertyModel<>(this, "amortizationValue"));
-        this.form.add(this.amortizationView);
+        initAmortizationBlock();
 
-        this.interestCalculationPeriodView = new Label("interestCalculationPeriodView", new PropertyModel<>(this, "interestCalculationPeriodValue"));
-        this.form.add(this.interestCalculationPeriodView);
+        initInterestCalculationPeriodBlock();
 
-        this.calculateInterestForExactDayInPartialPeriodView = new Label("calculateInterestForExactDayInPartialPeriodView", new PropertyModel<>(this, "calculateInterestForExactDayInPartialPeriodValue"));
-        this.form.add(this.calculateInterestForExactDayInPartialPeriodView);
+        initCalculateInterestForExactDayInPartialPeriodBlock();
 
-        this.arrearsToleranceView = new Label("arrearsToleranceView", new PropertyModel<>(this, "arrearsToleranceValue"));
-        this.form.add(this.arrearsToleranceView);
+        initArrearsToleranceBlock();
 
-        this.interestFreePeriodBlock = new WebMarkupContainer("interestFreePeriodBlock");
-        this.form.add(this.interestFreePeriodBlock);
-        this.interestFreePeriodContainer = new WebMarkupContainer("interestFreePeriodContainer");
-        this.interestFreePeriodBlock.add(this.interestFreePeriodContainer);
-        this.interestFreePeriodField = new TextField<>("interestFreePeriodField", new PropertyModel<>(this, "interestFreePeriodValue"));
-        this.interestFreePeriodField.setLabel(Model.of("Interest Free Period"));
-        this.interestFreePeriodField.setRequired(false);
-        this.interestFreePeriodContainer.add(this.interestFreePeriodField);
-        this.interestFreePeriodFeedback = new TextFeedbackPanel("interestFreePeriodFeedback", this.interestFreePeriodField);
-        this.interestFreePeriodContainer.add(this.interestFreePeriodFeedback);
+        initInterestFreePeriodBlock();
 
-        this.repaymentStrategyView = new Label("repaymentStrategyView", new PropertyModel<>(this, "repaymentStrategyValue"));
-        this.form.add(this.repaymentStrategyView);
+        initRepaymentStrategyBlock();
 
-        this.onPrincipalPaymentView = new Label("onPrincipalPaymentView", new PropertyModel<>(this, "onPrincipalPaymentValue"));
-        this.form.add(this.onPrincipalPaymentView);
+        initOnPrincipalPaymentBlock();
 
-        this.onInterestPaymentView = new Label("onInterestPaymentView", new PropertyModel<>(this, "onInterestPaymentValue"));
-        this.form.add(this.onInterestPaymentView);
+        initOnInterestPaymentBlock();
 
-        this.onArrearsAgingView = new Label("onArrearsAgingView", new PropertyModel<>(this, "onArrearsAgingValue"));
-        this.form.add(this.onArrearsAgingView);
+        initOnArrearsAgingBlock();
 
         // Table
         this.chargePopup = new ModalWindow("chargePopup");
         add(this.chargePopup);
         this.chargePopup.setOnClose(this::chargePopupClose);
 
-        List<IColumn<Map<String, Object>, String>> chargeColumn = Lists.newLinkedList();
-        chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeNameColumn));
-        chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeTypeColumn));
-        chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeAmountColumn));
-        chargeColumn.add(new TextColumn(Model.of("Collected On"), "collectedOn", "collectedOn", this::chargeCollectedOnColumn));
-        chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeDateColumn));
-        chargeColumn.add(new TextColumn(Model.of("Repayments Every"), "repaymentEvery", "repaymentEvery", this::chargeRepaymentEveryColumn));
-        chargeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::chargeActionItem, this::chargeActionClick));
+        this.chargeColumn = Lists.newLinkedList();
+        this.chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Collected On"), "collectedOn", "collectedOn", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Repayments Every"), "repaymentEvery", "repaymentEvery", this::chargeRepaymentEveryColumn));
+        this.chargeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::chargeAction, this::chargeClick));
         this.chargeProvider = new ListDataProvider(this.chargeValue);
-        this.chargeTable = new DataTable<>("chargeTable", chargeColumn, this.chargeProvider, 20);
+        this.chargeTable = new DataTable<>("chargeTable", this.chargeColumn, this.chargeProvider, 20);
         this.form.add(this.chargeTable);
         this.chargeTable.addTopToolbar(new HeadersToolbar<>(this.chargeTable, this.chargeProvider));
         this.chargeTable.addBottomToolbar(new NoRecordsToolbar(this.chargeTable));
@@ -588,8 +425,420 @@ public class LoanCreatePage extends DeprecatedPage {
         this.collateralAddLink.setOnClick(this::collateralAddLinkClick);
         this.form.add(this.collateralAddLink);
 
-        initDefault();
+    }
 
+    @Override
+    protected void configureRequiredValidation() {
+
+    }
+
+    @Override
+    protected void configureMetaData() {
+        if (ChargeFrequency.Month.getDescription().equals(this.repaidTypeValue)) {
+            this.repaidOnIContainer.setVisible(true);
+            this.repaidDayIContainer.setVisible(true);
+        } else {
+            this.repaidOnIContainer.setVisible(false);
+            this.repaidDayIContainer.setVisible(false);
+        }
+    }
+
+    protected void initOnArrearsAgingBlock() {
+        this.onArrearsAgingBlock = new WebMarkupBlock("onArrearsAgingBlock", Size.Four_4);
+        this.form.add(this.onArrearsAgingBlock);
+        this.onArrearsAgingVContainer = new WebMarkupContainer("onArrearsAgingVContainer");
+        this.onArrearsAgingBlock.add(this.onArrearsAgingVContainer);
+        this.onArrearsAgingView = new ReadOnlyView("onArrearsAgingView", new PropertyModel<>(this, "onArrearsAgingValue"));
+        this.onArrearsAgingVContainer.add(this.onArrearsAgingView);
+    }
+
+    protected void initOnInterestPaymentBlock() {
+        this.onInterestPaymentBlock = new WebMarkupBlock("onInterestPaymentBlock", Size.Four_4);
+        this.form.add(this.onInterestPaymentBlock);
+        this.onInterestPaymentVContainer = new WebMarkupContainer("onInterestPaymentVContainer");
+        this.onInterestPaymentBlock.add(this.onInterestPaymentVContainer);
+        this.onInterestPaymentView = new ReadOnlyView("onInterestPaymentView", new PropertyModel<>(this, "onInterestPaymentValue"));
+        this.onInterestPaymentVContainer.add(this.onInterestPaymentView);
+    }
+
+    protected void initOnPrincipalPaymentBlock() {
+        this.onPrincipalPaymentBlock = new WebMarkupBlock("onPrincipalPaymentBlock", Size.Four_4);
+        this.form.add(this.onPrincipalPaymentBlock);
+        this.onPrincipalPaymentVContainer = new WebMarkupContainer("onPrincipalPaymentVContainer");
+        this.onPrincipalPaymentBlock.add(this.onPrincipalPaymentVContainer);
+        this.onPrincipalPaymentView = new ReadOnlyView("onPrincipalPaymentView", new PropertyModel<>(this, "onPrincipalPaymentValue"));
+        this.onPrincipalPaymentVContainer.add(this.onPrincipalPaymentView);
+    }
+
+    protected void initRepaymentStrategyBlock() {
+        this.repaymentStrategyBlock = new WebMarkupBlock("repaymentStrategyBlock", Size.Six_6);
+        this.form.add(this.repaymentStrategyBlock);
+        this.repaymentStrategyVContainer = new WebMarkupContainer("repaymentStrategyVContainer");
+        this.repaymentStrategyBlock.add(this.repaymentStrategyVContainer);
+        this.repaymentStrategyView = new ReadOnlyView("repaymentStrategyView", new PropertyModel<>(this, "repaymentStrategyValue"));
+        this.repaymentStrategyVContainer.add(this.repaymentStrategyView);
+    }
+
+    protected void initInterestFreePeriodBlock() {
+        this.interestFreePeriodBlock = new WebMarkupContainer("interestFreePeriodBlock");
+        this.form.add(this.interestFreePeriodBlock);
+        this.interestFreePeriodIContainer = new WebMarkupContainer("interestFreePeriodIContainer");
+        this.interestFreePeriodBlock.add(this.interestFreePeriodIContainer);
+        this.interestFreePeriodField = new TextField<>("interestFreePeriodField", new PropertyModel<>(this, "interestFreePeriodValue"));
+        this.interestFreePeriodField.setLabel(Model.of("Interest Free Period"));
+        this.interestFreePeriodField.setRequired(false);
+        this.interestFreePeriodIContainer.add(this.interestFreePeriodField);
+        this.interestFreePeriodFeedback = new TextFeedbackPanel("interestFreePeriodFeedback", this.interestFreePeriodField);
+        this.interestFreePeriodIContainer.add(this.interestFreePeriodFeedback);
+    }
+
+    protected void initArrearsToleranceBlock() {
+        this.arrearsToleranceBlock = new WebMarkupBlock("arrearsToleranceBlock", Size.Six_6);
+        this.form.add(this.arrearsToleranceBlock);
+        this.arrearsToleranceVContainer = new WebMarkupContainer("arrearsToleranceVContainer");
+        this.arrearsToleranceBlock.add(this.arrearsToleranceVContainer);
+        this.arrearsToleranceView = new ReadOnlyView("arrearsToleranceView", new PropertyModel<>(this, "arrearsToleranceValue"));
+        this.arrearsToleranceVContainer.add(this.arrearsToleranceView);
+    }
+
+    protected void initCalculateInterestForExactDayInPartialPeriodBlock() {
+        this.calculateInterestForExactDayInPartialPeriodBlock = new WebMarkupBlock("calculateInterestForExactDayInPartialPeriodBlock", Size.Six_6);
+        this.form.add(this.calculateInterestForExactDayInPartialPeriodBlock);
+        this.calculateInterestForExactDayInPartialPeriodVContainer = new WebMarkupContainer("calculateInterestForExactDayInPartialPeriodVContainer");
+        this.calculateInterestForExactDayInPartialPeriodBlock.add(this.calculateInterestForExactDayInPartialPeriodVContainer);
+        this.calculateInterestForExactDayInPartialPeriodView = new ReadOnlyView("calculateInterestForExactDayInPartialPeriodView", new PropertyModel<>(this, "calculateInterestForExactDayInPartialPeriodValue"));
+        this.calculateInterestForExactDayInPartialPeriodVContainer.add(this.calculateInterestForExactDayInPartialPeriodView);
+    }
+
+    protected void initInterestCalculationPeriodBlock() {
+        this.interestCalculationPeriodBlock = new WebMarkupBlock("interestCalculationPeriodBlock", Size.Six_6);
+        this.form.add(this.interestCalculationPeriodBlock);
+        this.interestCalculationPeriodVContainer = new WebMarkupContainer("interestCalculationPeriodVContainer");
+        this.interestCalculationPeriodBlock.add(this.interestCalculationPeriodVContainer);
+        this.interestCalculationPeriodView = new ReadOnlyView("interestCalculationPeriodView", new PropertyModel<>(this, "interestCalculationPeriodValue"));
+        this.interestCalculationPeriodVContainer.add(this.interestCalculationPeriodView);
+    }
+
+    protected void initAmortizationBlock() {
+        this.amortizationBlock = new WebMarkupBlock("amortizationBlock", Size.Six_6);
+        this.form.add(this.amortizationBlock);
+        this.amortizationVContainer = new WebMarkupContainer("amortizationVContainer");
+        this.amortizationBlock.add(this.amortizationVContainer);
+        this.amortizationView = new ReadOnlyView("amortizationView", new PropertyModel<>(this, "amortizationValue"));
+        this.amortizationVContainer.add(this.amortizationView);
+    }
+
+    protected void initInterestMethodBlock() {
+        this.interestMethodBlock = new WebMarkupBlock("interestMethodBlock", Size.Four_4);
+        this.form.add(this.interestMethodBlock);
+        this.interestMethodVContainer = new WebMarkupContainer("interestMethodVContainer");
+        this.interestMethodBlock.add(this.interestMethodVContainer);
+        this.interestMethodView = new ReadOnlyView("interestMethodView", new PropertyModel<>(this, "interestMethodValue"));
+        this.interestMethodVContainer.add(this.interestMethodView);
+    }
+
+    protected void initNominalInterestTypeBlock() {
+        this.nominalInterestTypeBlock = new WebMarkupBlock("nominalInterestTypeBlock", Size.Four_4);
+        this.form.add(this.nominalInterestTypeBlock);
+        this.nominalInterestTypeVContainer = new WebMarkupContainer("nominalInterestTypeVContainer");
+        this.nominalInterestTypeBlock.add(this.nominalInterestTypeVContainer);
+        this.nominalInterestTypeView = new ReadOnlyView("nominalInterestTypeView", new PropertyModel<>(this, "nominalInterestTypeValue"));
+        this.nominalInterestTypeVContainer.add(this.nominalInterestTypeView);
+    }
+
+    protected void initNominalInterestRateBlock() {
+        this.nominalInterestRateBlock = new WebMarkupContainer("nominalInterestRateBlock");
+        this.form.add(this.nominalInterestRateBlock);
+        this.nominalInterestRateIContainer = new WebMarkupContainer("nominalInterestRateIContainer");
+        this.nominalInterestRateBlock.add(this.nominalInterestRateIContainer);
+        this.nominalInterestRateField = new TextField<>("nominalInterestRateField", new PropertyModel<>(this, "nominalInterestRateValue"));
+        this.nominalInterestRateField.setLabel(Model.of("Nominal Interest Rate"));
+        this.nominalInterestRateField.setRequired(false);
+        this.nominalInterestRateIContainer.add(this.nominalInterestRateField);
+        this.nominalInterestRateFeedback = new TextFeedbackPanel("nominalInterestRateFeedback", this.nominalInterestRateField);
+        this.nominalInterestRateIContainer.add(this.nominalInterestRateFeedback);
+    }
+
+    protected void initInterestChargedFromBlock() {
+        this.interestChargedFromBlock = new WebMarkupContainer("interestChargedFromBlock");
+        this.form.add(this.interestChargedFromBlock);
+        this.interestChargedFromIContainer = new WebMarkupContainer("interestChargedFromIContainer");
+        this.interestChargedFromBlock.add(this.interestChargedFromIContainer);
+        this.interestChargedFromField = new DateTextField("interestChargedFromField", new PropertyModel<>(this, "interestChargedFromValue"));
+        this.interestChargedFromField.setLabel(Model.of("Interest Charged From"));
+        this.interestChargedFromField.setRequired(false);
+        this.interestChargedFromIContainer.add(this.interestChargedFromField);
+        this.interestChargedFromFeedback = new TextFeedbackPanel("interestChargedFromFeedback", this.interestChargedFromField);
+        this.interestChargedFromIContainer.add(this.interestChargedFromFeedback);
+    }
+
+    protected void initFirstRepaymentOnBlock() {
+        this.firstRepaymentOnBlock = new WebMarkupContainer("firstRepaymentOnBlock");
+        this.form.add(this.firstRepaymentOnBlock);
+        this.firstRepaymentOnIContainer = new WebMarkupContainer("firstRepaymentOnIContainer");
+        this.firstRepaymentOnBlock.add(this.firstRepaymentOnIContainer);
+        this.firstRepaymentOnField = new DateTextField("firstRepaymentOnField", new PropertyModel<>(this, "firstRepaymentOnValue"));
+        this.firstRepaymentOnField.setLabel(Model.of("First Repayment On"));
+        this.firstRepaymentOnField.setRequired(false);
+        this.firstRepaymentOnIContainer.add(this.firstRepaymentOnField);
+        this.firstRepaymentOnFeedback = new TextFeedbackPanel("firstRepaymentOnFeedback", this.firstRepaymentOnField);
+        this.firstRepaymentOnIContainer.add(this.firstRepaymentOnFeedback);
+    }
+
+    protected void initRepaidDayBlock() {
+        this.repaidDayProvider = new FrequencyDayProvider();
+        this.repaidDayBlock = new WebMarkupContainer("repaidDayBlock");
+        this.form.add(this.repaidDayBlock);
+        this.repaidDayIContainer = new WebMarkupContainer("repaidDayIContainer");
+        this.repaidDayBlock.add(this.repaidDayIContainer);
+        this.repaidDayField = new Select2SingleChoice<>("repaidDayField", new PropertyModel<>(this, "repaidDayValue"), this.repaidDayProvider);
+        this.repaidDayField.setLabel(Model.of("Day"));
+        this.repaidDayField.setRequired(false);
+        this.repaidDayIContainer.add(this.repaidDayField);
+        this.repaidDayFeedback = new TextFeedbackPanel("repaidDayFeedback", this.repaidDayField);
+        this.repaidDayIContainer.add(this.repaidDayFeedback);
+    }
+
+    protected void initRepaidOnBlock() {
+        this.repaidOnProvider = new RepaidOnProvider();
+        this.repaidOnBlock = new WebMarkupContainer("repaidOnBlock");
+        this.form.add(this.repaidOnBlock);
+        this.repaidOnIContainer = new WebMarkupContainer("repaidOnIContainer");
+        this.repaidOnBlock.add(this.repaidOnIContainer);
+        this.repaidOnField = new Select2SingleChoice<>("repaidOnField", new PropertyModel<>(this, "repaidOnValue"), this.repaidOnProvider);
+        this.repaidOnField.setLabel(Model.of("On"));
+        this.repaidOnField.setRequired(false);
+        this.repaidOnIContainer.add(this.repaidOnField);
+        this.repaidOnFeedback = new TextFeedbackPanel("repaidOnFeedback", this.repaidOnField);
+        this.repaidOnIContainer.add(this.repaidOnFeedback);
+    }
+
+    protected void initRepaidTypeBlock() {
+        this.repaidTypeBlock = new WebMarkupBlock("repaidTypeBlock", Size.Four_4);
+        this.form.add(this.repaidTypeBlock);
+        this.repaidTypeVContainer = new WebMarkupContainer("repaidTypeVContainer");
+        this.repaidTypeBlock.add(this.repaidTypeVContainer);
+        this.repaidTypeView = new ReadOnlyView("repaidTypeView", new PropertyModel<>(this, "repaidTypeValue"));
+        this.repaidTypeVContainer.add(this.repaidTypeView);
+    }
+
+    protected void initRepaidEveryBlock() {
+        this.repaidEveryBlock = new WebMarkupBlock("repaidEveryBlock", Size.Four_4);
+        this.form.add(this.repaidEveryBlock);
+        this.repaidEveryVContainer = new WebMarkupContainer("repaidEveryVContainer");
+        this.repaidEveryBlock.add(this.repaidEveryVContainer);
+        this.repaidEveryView = new ReadOnlyView("repaidEveryView", new PropertyModel<>(this, "repaidEveryValue"));
+        this.repaidEveryVContainer.add(this.repaidEveryView);
+    }
+
+    protected void initNumberOfRepaymentBlock() {
+        this.numberOfRepaymentBlock = new WebMarkupBlock("numberOfRepaymentBlock", Size.Four_4);
+        this.form.add(this.numberOfRepaymentBlock);
+        this.numberOfRepaymentIContainer = new WebMarkupContainer("numberOfRepaymentIContainer");
+        this.numberOfRepaymentBlock.add(this.numberOfRepaymentIContainer);
+        this.numberOfRepaymentField = new TextField<>("numberOfRepaymentField", new PropertyModel<>(this, "numberOfRepaymentValue"));
+        this.numberOfRepaymentField.setLabel(Model.of("Number Of Repayment"));
+        this.numberOfRepaymentField.setRequired(false);
+        this.numberOfRepaymentIContainer.add(this.numberOfRepaymentField);
+        this.numberOfRepaymentFeedback = new TextFeedbackPanel("numberOfRepaymentFeedback", this.numberOfRepaymentField);
+        this.numberOfRepaymentIContainer.add(this.numberOfRepaymentFeedback);
+    }
+
+    protected void initLoanTypeBlock() {
+        this.loanTypeProvider = new ChargeFrequencyProvider();
+        this.loanTypeBlock = new WebMarkupBlock("loanTypeBlock", Size.Four_4);
+        this.form.add(this.loanTypeBlock);
+        this.loanTypeIContainer = new WebMarkupContainer("loanTypeIContainer");
+        this.loanTypeBlock.add(this.loanTypeIContainer);
+        this.loanTypeField = new Select2SingleChoice<>("loanTypeField", new PropertyModel<>(this, "loanTypeValue"), this.loanTypeProvider);
+        this.loanTypeField.setLabel(Model.of("Type"));
+        this.loanTypeField.setRequired(false);
+        this.loanTypeIContainer.add(this.loanTypeField);
+        this.loanTypeFeedback = new TextFeedbackPanel("loanTypeFeedback", this.loanTypeField);
+        this.loanTypeIContainer.add(this.loanTypeFeedback);
+    }
+
+    protected void initLoanTermBlock() {
+        this.loanTermBlock = new WebMarkupBlock("loanTermBlock", Size.Four_4);
+        this.form.add(this.loanTermBlock);
+        this.loanTermIContainer = new WebMarkupContainer("loanTermIContainer");
+        this.loanTermBlock.add(this.loanTermIContainer);
+        this.loanTermField = new TextField<>("loanTermField", new PropertyModel<>(this, "loanTermValue"));
+        this.loanTermField.setLabel(Model.of("Loan Term"));
+        this.loanTermField.setRequired(false);
+        this.loanTermIContainer.add(this.loanTermField);
+        this.loanTermFeedback = new TextFeedbackPanel("loanTermFeedback", this.loanTermField);
+        this.loanTermIContainer.add(this.loanTermFeedback);
+    }
+
+    protected void initPrincipalBlock() {
+        this.principalBlock = new WebMarkupBlock("principalBlock", Size.Four_4);
+        this.form.add(this.principalBlock);
+        this.principalIContainer = new WebMarkupContainer("principalIContainer");
+        this.principalBlock.add(this.principalIContainer);
+        this.principalField = new TextField<>("principalField", new PropertyModel<>(this, "principalValue"));
+        this.principalField.setLabel(Model.of("Principal"));
+        this.principalField.setRequired(false);
+        this.principalIContainer.add(this.principalField);
+        this.principalFeedback = new TextFeedbackPanel("principalFeedback", this.principalField);
+        this.principalIContainer.add(this.principalFeedback);
+    }
+
+    protected void initInstallmentInMultiplesOfBlock() {
+        this.installmentInMultiplesOfBlock = new WebMarkupBlock("installmentInMultiplesOfBlock", Size.Six_6);
+        this.form.add(this.installmentInMultiplesOfBlock);
+        this.installmentInMultiplesOfVContainer = new WebMarkupContainer("installmentInMultiplesOfVContainer");
+        this.installmentInMultiplesOfBlock.add(this.installmentInMultiplesOfVContainer);
+        this.installmentInMultiplesOfView = new ReadOnlyView("installmentInMultiplesOfView", new PropertyModel<>(this, "installmentInMultiplesOfValue"));
+        this.installmentInMultiplesOfVContainer.add(this.installmentInMultiplesOfView);
+    }
+
+    protected void initCurrencyInMultiplesOfBlock() {
+        this.currencyInMultiplesOfBlock = new WebMarkupBlock("currencyInMultiplesOfBlock", Size.Six_6);
+        this.form.add(this.currencyInMultiplesOfBlock);
+        this.currencyInMultiplesOfVContainer = new WebMarkupContainer("currencyInMultiplesOfVContainer");
+        this.currencyInMultiplesOfBlock.add(this.currencyInMultiplesOfVContainer);
+        this.currencyInMultiplesOfView = new ReadOnlyView("currencyInMultiplesOfView", new PropertyModel<>(this, "currencyInMultiplesOfValue"));
+        this.currencyInMultiplesOfVContainer.add(this.currencyInMultiplesOfView);
+    }
+
+    protected void initDecimalPlacesBlock() {
+        this.decimalPlacesBlock = new WebMarkupBlock("decimalPlacesBlock", Size.Six_6);
+        this.form.add(this.decimalPlacesBlock);
+        this.decimalPlacesVContainer = new WebMarkupContainer("decimalPlacesVContainer");
+        this.decimalPlacesBlock.add(this.decimalPlacesVContainer);
+        this.decimalPlacesView = new ReadOnlyView("decimalPlacesView", new PropertyModel<>(this, "decimalPlacesValue"));
+        this.decimalPlacesVContainer.add(this.decimalPlacesView);
+    }
+
+    protected void initCurrencyBlock() {
+        this.currencyBlock = new WebMarkupBlock("currencyBlock", Size.Six_6);
+        this.form.add(this.currencyBlock);
+        this.currencyVContainer = new WebMarkupContainer("currencyVContainer");
+        this.currencyBlock.add(this.currencyVContainer);
+        this.currencyView = new ReadOnlyView("currencyView", new PropertyModel<>(this, "currencyValue"));
+        this.currencyVContainer.add(this.currencyView);
+    }
+
+    protected void initCreateStandingInstructionAtDisbursementBlock() {
+        this.createStandingInstructionAtDisbursementBlock = new WebMarkupBlock("createStandingInstructionAtDisbursementBlock", Size.Six_6);
+        this.form.add(this.createStandingInstructionAtDisbursementBlock);
+        this.createStandingInstructionAtDisbursementIContainer = new WebMarkupContainer("createStandingInstructionAtDisbursementIContainer");
+        this.createStandingInstructionAtDisbursementBlock.add(this.createStandingInstructionAtDisbursementIContainer);
+        this.createStandingInstructionAtDisbursementField = new CheckBox("createStandingInstructionAtDisbursementField", new PropertyModel<>(this, "createStandingInstructionAtDisbursementValue"));
+        this.createStandingInstructionAtDisbursementField.add(new OnChangeAjaxBehavior());
+        this.createStandingInstructionAtDisbursementIContainer.add(this.createStandingInstructionAtDisbursementField);
+        this.createStandingInstructionAtDisbursementFeedback = new TextFeedbackPanel("createStandingInstructionAtDisbursementFeedback", this.createStandingInstructionAtDisbursementField);
+        this.createStandingInstructionAtDisbursementIContainer.add(this.createStandingInstructionAtDisbursementFeedback);
+    }
+
+    protected void initLinkSavingAccountBlock() {
+        this.linkSavingAccountProvider = new SingleChoiceProvider("m_savings_account", "m_savings_account.id", "m_savings_account.account_no", "concat(m_savings_account.account_no, ' => ', m_savings_product.name)");
+        this.linkSavingAccountProvider.addJoin("INNER JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
+        this.linkSavingAccountProvider.applyWhere("status_enum", "m_savings_account.status_enum = 300");
+        this.linkSavingAccountProvider.applyWhere("client_id", "m_savings_account.client_id = " + this.clientId);
+        this.linkSavingAccountBlock = new WebMarkupBlock("linkSavingAccountBlock", Size.Six_6);
+        this.form.add(this.linkSavingAccountBlock);
+        this.linkSavingAccountIContainer = new WebMarkupContainer("linkSavingAccountIContainer");
+        this.linkSavingAccountBlock.add(this.linkSavingAccountIContainer);
+        this.linkSavingAccountField = new Select2SingleChoice<>("linkSavingAccountField", new PropertyModel<>(this, "linkSavingAccountValue"), this.linkSavingAccountProvider);
+        this.linkSavingAccountField.setLabel(Model.of("Saving Account"));
+        this.linkSavingAccountField.setRequired(false);
+        this.linkSavingAccountIContainer.add(this.linkSavingAccountField);
+        this.linkSavingAccountFeedback = new TextFeedbackPanel("linkSavingAccountFeedback", this.linkSavingAccountField);
+        this.linkSavingAccountIContainer.add(this.linkSavingAccountFeedback);
+    }
+
+    protected void initExternalIdBlock() {
+        this.externalIdBlock = new WebMarkupBlock("externalIdBlock", Size.Six_6);
+        this.form.add(this.externalIdBlock);
+        this.externalIdIContainer = new WebMarkupContainer("externalIdIContainer");
+        this.externalIdBlock.add(this.externalIdIContainer);
+        this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
+        this.externalIdField.setLabel(Model.of("External ID"));
+        this.externalIdField.setRequired(false);
+        this.externalIdIContainer.add(this.externalIdField);
+        this.externalIdFeedback = new TextFeedbackPanel("externalIdFeedback", this.externalIdField);
+        this.externalIdIContainer.add(this.externalIdFeedback);
+    }
+
+    protected void initDisbursementOnBlock() {
+        this.disbursementOnBlock = new WebMarkupBlock("disbursementOnBlock", Size.Six_6);
+        this.form.add(this.disbursementOnBlock);
+        this.disbursementOnIContainer = new WebMarkupContainer("disbursementOnIContainer");
+        this.disbursementOnBlock.add(this.disbursementOnIContainer);
+        this.disbursementOnField = new DateTextField("disbursementOnField", new PropertyModel<>(this, "disbursementOnValue"));
+        this.disbursementOnField.setLabel(Model.of("Disbursement On"));
+        this.disbursementOnField.setRequired(false);
+        this.disbursementOnIContainer.add(this.disbursementOnField);
+        this.disbursementOnFeedback = new TextFeedbackPanel("disbursementOnFeedback", this.disbursementOnField);
+        this.disbursementOnIContainer.add(this.disbursementOnFeedback);
+    }
+
+    protected void initSubmittedOnBlock() {
+        this.submittedOnBlock = new WebMarkupBlock("submittedOnBlock", Size.Six_6);
+        this.form.add(this.submittedOnBlock);
+        this.submittedOnIContainer = new WebMarkupContainer("submittedOnIContainer");
+        this.submittedOnBlock.add(this.submittedOnIContainer);
+        this.submittedOnField = new DateTextField("submittedOnField", new PropertyModel<>(this, "submittedOnValue"));
+        this.submittedOnField.setLabel(Model.of("Submitted On"));
+        this.submittedOnField.setRequired(false);
+        this.submittedOnIContainer.add(this.submittedOnField);
+        this.submittedOnFeedback = new TextFeedbackPanel("submittedOnFeedback", this.submittedOnField);
+        this.submittedOnIContainer.add(this.submittedOnFeedback);
+    }
+
+    protected void initFundBlock() {
+        this.fundProvider = new FundProvider();
+        this.fundBlock = new WebMarkupBlock("fundBlock", Size.Six_6);
+        this.form.add(this.fundBlock);
+        this.fundIContainer = new WebMarkupContainer("fundIContainer");
+        this.fundBlock.add(this.fundIContainer);
+        this.fundField = new Select2SingleChoice<>("fundField", new PropertyModel<>(this, "fundValue"), this.fundProvider);
+        this.fundField.setLabel(Model.of("Fund"));
+        this.fundField.setRequired(false);
+        this.fundIContainer.add(this.fundField);
+        this.fundFeedback = new TextFeedbackPanel("fundFeedback", this.fundField);
+        this.fundIContainer.add(this.fundFeedback);
+    }
+
+    protected void initLoanPurposeBlock() {
+        this.loanPurposeProvider = new LoanPurposeProvider();
+        this.loanPurposeBlock = new WebMarkupBlock("loanPurposeBlock", Size.Six_6);
+        this.form.add(this.loanPurposeBlock);
+        this.loanPurposeIContainer = new WebMarkupContainer("loanPurposeIContainer");
+        this.loanPurposeBlock.add(this.loanPurposeIContainer);
+        this.loanPurposeField = new Select2SingleChoice<>("loanPurposeField", new PropertyModel<>(this, "loanPurposeValue"), this.loanPurposeProvider);
+        this.loanPurposeField.setLabel(Model.of("Loan Purpose"));
+        this.loanPurposeField.setRequired(false);
+        this.loanPurposeIContainer.add(this.loanPurposeField);
+        this.loanPurposeFeedback = new TextFeedbackPanel("loanPurposeFeedback", this.loanPurposeField);
+        this.loanPurposeIContainer.add(this.loanPurposeFeedback);
+    }
+
+    protected void initLoanOfficerBlock() {
+        this.loanOfficerProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
+        this.loanOfficerProvider.applyWhere("is_active", "is_active = 1");
+        this.loanOfficerProvider.applyWhere("office_id", "office_id = " + this.officeId);
+        this.loanOfficerBlock = new WebMarkupBlock("loanOfficerBlock", Size.Six_6);
+        this.form.add(this.loanOfficerBlock);
+        this.loanOfficerIContainer = new WebMarkupContainer("loanOfficerIContainer");
+        this.loanOfficerBlock.add(this.loanOfficerIContainer);
+        this.loanOfficerField = new Select2SingleChoice<>("loanOfficerField", new PropertyModel<>(this, "loanOfficerValue"), this.loanOfficerProvider);
+        this.loanOfficerField.setLabel(Model.of("Loan Officer"));
+        this.loanOfficerField.setRequired(false);
+        this.loanOfficerIContainer.add(this.loanOfficerField);
+        this.loanOfficerFeedback = new TextFeedbackPanel("loanOfficerFeedback", this.loanOfficerField);
+        this.loanOfficerIContainer.add(this.loanOfficerFeedback);
+    }
+
+    protected void initProductBlock() {
+        this.productBlock = new WebMarkupBlock("productBlock", Size.Six_6);
+        this.form.add(this.productBlock);
+        this.productVContainer = new WebMarkupContainer("productVContainer");
+        this.productBlock.add(this.productVContainer);
+        this.productView = new ReadOnlyView("productView", new PropertyModel<>(this, "productValue"));
+        this.productVContainer.add(this.productView);
     }
 
     protected void collateralClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
@@ -613,47 +862,35 @@ public class LoanCreatePage extends DeprecatedPage {
 
     protected void collateralPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         Map<String, Object> item = null;
+        Option collateral = (Option) this.popupModel.get("collateralValue");
         for (Map<String, Object> temp : this.collateralValue) {
-            if (this.itemCollateralValue.getId().equals(temp.get("uuid"))) {
+            if (collateral.getId().equals(temp.get("uuid"))) {
                 item = temp;
                 break;
             }
         }
         if (item == null) {
             item = Maps.newHashMap();
-            item.put("uuid", this.itemCollateralValue.getId());
-            item.put("collateral", this.itemCollateralValue);
-            item.put("value", this.itemAmountValue);
-            item.put("description", this.itemDescriptionValue);
+            item.put("uuid", collateral.getId());
+            item.put("collateral", collateral);
+            item.put("value", this.popupModel.get("amountValue"));
+            item.put("description", this.popupModel.get("descriptionValue"));
             this.collateralValue.add(item);
         } else {
-            item.put("uuid", this.itemCollateralValue.getId());
-            item.put("collateral", this.itemCollateralValue);
-            item.put("value", this.itemAmountValue);
-            item.put("description", this.itemDescriptionValue);
+            item.put("uuid", collateral.getId());
+            item.put("collateral", collateral);
+            item.put("value", this.popupModel.get("amountValue"));
+            item.put("description", this.popupModel.get("descriptionValue"));
         }
 
         target.add(this.collateralTable);
     }
 
     protected boolean collateralAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemCollateralValue = null;
-        this.itemAmountValue = null;
-        this.itemDescriptionValue = null;
-        this.collateralPopup.setContent(new CollateralPopup(this.collateralPopup.getContentId(), this.collateralPopup, this));
+        this.popupModel.clear();
+        this.collateralPopup.setContent(new CollateralPopup("collateral", this.collateralPopup, this.popupModel));
         this.collateralPopup.show(target);
         return false;
-    }
-
-    protected void initDefault() {
-        if (ChargeFrequency.Month.getDescription().equals(this.repaidTypeValue)) {
-            this.repaidOnContainer.setVisible(true);
-            this.repaidDayContainer.setVisible(true);
-        } else {
-            this.repaidOnContainer.setVisible(false);
-            this.repaidDayContainer.setVisible(false);
-        }
-
     }
 
     protected ItemPanel collateralColumn(String column, IModel<String> display, Map<String, Object> model) {
@@ -670,29 +907,18 @@ public class LoanCreatePage extends DeprecatedPage {
         throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected ItemPanel chargeCollectedOnColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel chargeDateColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date value = (Date) model.get(jdbcColumn);
-        return new TextCell(value, "dd MMMM");
-    }
-
-    protected ItemPanel chargeNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel chargeTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel chargeAmountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double value = (Double) model.get(jdbcColumn);
-        return new TextCell(value, "#,###.00");
+    protected ItemPanel chargeColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column) || "type".equals(column) || "collectedOn".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("amount".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value, "#,###,##0.00");
+        } else if ("date".equals(column)) {
+            Date value = (Date) model.get(column);
+            return new TextCell(value, "dd MMMM");
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
     protected ItemPanel chargeRepaymentEveryColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
@@ -700,7 +926,7 @@ public class LoanCreatePage extends DeprecatedPage {
         return new TextCell(value);
     }
 
-    protected void chargeActionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void chargeClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.chargeValue.size(); i++) {
             Map<String, Object> column = this.chargeValue.get(i);
@@ -715,18 +941,13 @@ public class LoanCreatePage extends DeprecatedPage {
         target.add(this.chargeTable);
     }
 
-    protected List<ActionItem> chargeActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> chargeAction(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemChargeValue = null;
-        this.itemChargeTypeValue = null;
-        this.itemAmountValue = null;
-        this.itemCollectedOnValue = null;
-        this.itemDateValue = null;
-        this.itemRepaymentEveryValue = null;
-        this.chargePopup.setContent(new AccountChargePopup(this.chargePopup.getContentId(), this.chargePopup, this, this.currencyValue));
+        this.popupModel.clear();
+        this.chargePopup.setContent(new AccountChargePopup("charge", this.chargePopup, this.popupModel, this.currencyValue));
         this.chargePopup.show(target);
         return false;
     }
@@ -734,18 +955,20 @@ public class LoanCreatePage extends DeprecatedPage {
     protected void chargePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", UUID.randomUUID().toString());
-        item.put("chargeId", this.itemChargeValue.getId());
-        item.put("amount", this.itemAmountValue);
-        item.put("date", this.itemDateValue);
-        item.put("repaymentEvery", this.itemRepaymentEveryValue);
-        item.put("type", this.itemChargeTypeValue);
-        item.put("name", this.itemChargeValue.getText());
-        item.put("collectedOn", this.itemCollectedOnValue);
+        item.put("charge", this.popupModel.get("chargeValue"));
+        item.put("amount", this.popupModel.get("amountValue"));
+        item.put("date", this.popupModel.get("dateValue"));
+        item.put("repaymentEvery", this.popupModel.get("repaymentEveryValue"));
+        item.put("type", this.popupModel.get("chargeTypeValue"));
+        item.put("name", this.popupModel.get("chargeValue"));
+        item.put("collectedOn", this.popupModel.get("collectedOnValue"));
         this.chargeValue.add(item);
         target.add(this.chargeTable);
     }
 
+    @Override
     protected void initData() {
+        this.popupModel = Maps.newHashMap();
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
 
