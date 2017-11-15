@@ -319,7 +319,7 @@ public class GroupCreatePage extends Page {
     }
 
     protected ItemPanel clientColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("name".equals(column) || "mobileNumber".equals(column) || "gender".equals(column) || "account".equals(column) || "status".equals(column)) {
+        if ("displayName".equals(column) || "mobileNumber".equals(column) || "gender".equals(column) || "account".equals(column) || "status".equals(column)) {
             String value = (String) model.get(column);
             return new TextCell(value);
         }

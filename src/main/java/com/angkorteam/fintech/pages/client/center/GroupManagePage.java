@@ -3,22 +3,25 @@ package com.angkorteam.fintech.pages.client.center;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.spring.JdbcTemplate;
@@ -38,21 +41,26 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 import com.google.common.collect.Lists;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class GroupManagePage extends DeprecatedPage {
+public class GroupManagePage extends Page {
 
     protected String centerId;
     protected String officeId;
 
     protected DataTable<Map<String, Object>, String> associatedGroupTable;
     protected JdbcProvider associatedGroupProvider;
+    protected List<IColumn<Map<String, Object>, String>> associatedGroupColumn;
 
+    protected WebMarkupBlock officeBlock;
+    protected WebMarkupContainer officeVContainer;
     protected String officeValue;
-    protected Label officeView;
+    protected ReadOnlyView officeView;
 
-    private SingleChoiceProvider groupProvider;
-    private Option groupValue;
-    private Select2SingleChoice<Option> groupField;
-    private TextFeedbackPanel groupFeedback;
+    protected WebMarkupBlock groupBlock;
+    protected WebMarkupContainer groupIContainer;
+    protected SingleChoiceProvider groupProvider;
+    protected Option groupValue;
+    protected Select2SingleChoice<Option> groupField;
+    protected TextFeedbackPanel groupFeedback;
 
     protected Form<Void> form;
     protected Button addButton;
@@ -94,11 +102,7 @@ public class GroupManagePage extends DeprecatedPage {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
-        initData();
-
+    protected void initComponent() {
         this.associatedGroupProvider = new JdbcProvider("m_group");
         this.associatedGroupProvider.addJoin("left join m_office on m_group.office_id = m_office.id ");
         this.associatedGroupProvider.addJoin("LEFT JOIN r_enum_value ON  m_group.status_enum = r_enum_value.enum_id AND r_enum_value.enum_name = 'status_enum'");
@@ -114,13 +118,13 @@ public class GroupManagePage extends DeprecatedPage {
 
         this.associatedGroupProvider.selectField("id", Integer.class);
 
-        List<IColumn<Map<String, Object>, String>> associatedGroupColumns = Lists.newArrayList();
-        associatedGroupColumns.add(new TextFilterColumn(this.associatedGroupProvider, ItemClass.String, Model.of("Name"), "name", "name", this::associatedGroupNameColumn));
-        associatedGroupColumns.add(new TextFilterColumn(this.associatedGroupProvider, ItemClass.String, Model.of("Account"), "account", "account", this::associatedGroupAccountColumn));
-        associatedGroupColumns.add(new TextFilterColumn(this.associatedGroupProvider, ItemClass.String, Model.of("Status"), "status", "status", this::associatedGroupStatusColumn));
-        associatedGroupColumns.add(new ActionFilterColumn<>(Model.of("Action"), this::associatedGroupActionItem, this::actionClick));
+        this.associatedGroupColumn = Lists.newArrayList();
+        this.associatedGroupColumn.add(new TextFilterColumn(this.associatedGroupProvider, ItemClass.String, Model.of("Name"), "name", "name", this::associatedGroupColumn));
+        this.associatedGroupColumn.add(new TextFilterColumn(this.associatedGroupProvider, ItemClass.String, Model.of("Account"), "account", "account", this::associatedGroupColumn));
+        this.associatedGroupColumn.add(new TextFilterColumn(this.associatedGroupProvider, ItemClass.String, Model.of("Status"), "status", "status", this::associatedGroupColumn));
+        this.associatedGroupColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::associatedGroupAction, this::associatedGroupClick));
 
-        this.associatedGroupTable = new DefaultDataTable<>("associatedGroupTable", associatedGroupColumns, this.associatedGroupProvider, 20);
+        this.associatedGroupTable = new DefaultDataTable<>("associatedGroupTable", this.associatedGroupColumn, this.associatedGroupProvider, 20);
         add(this.associatedGroupTable);
 
         this.form = new Form<>("form");
@@ -130,6 +134,24 @@ public class GroupManagePage extends DeprecatedPage {
         this.addButton.setOnSubmit(this::addButtonSubmit);
         this.form.add(this.addButton);
 
+        initOfficeBlock();
+
+        initGroupBlock();
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initGroupBlock() {
+        this.groupBlock = new WebMarkupBlock("groupBlock", Size.Six_6);
+        this.form.add(this.groupBlock);
+        this.groupIContainer = new WebMarkupContainer("groupIContainer");
+        this.groupBlock.add(this.groupIContainer);
         this.groupProvider = new SingleChoiceProvider("m_group", "id", "display_name");
         this.groupProvider.applyWhere("level_id", "level_id = 2");
         this.groupProvider.applyWhere("parent_id", "(parent_id is NULL or parent_id != " + this.centerId + ")");
@@ -137,15 +159,21 @@ public class GroupManagePage extends DeprecatedPage {
         this.groupField.setLabel(Model.of("Group"));
         this.groupField.add(new OnChangeAjaxBehavior());
         this.groupField.setRequired(true);
-        this.form.add(this.groupField);
+        this.groupIContainer.add(this.groupField);
         this.groupFeedback = new TextFeedbackPanel("groupFeedback", this.groupField);
-        this.form.add(this.groupFeedback);
-
-        this.officeView = new Label("officeView", new PropertyModel<>(this, "officeValue"));
-        this.form.add(this.officeView);
-
+        this.groupIContainer.add(this.groupFeedback);
     }
 
+    protected void initOfficeBlock() {
+        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Six_6);
+        this.form.add(this.officeBlock);
+        this.officeVContainer = new WebMarkupContainer("officeVContainer");
+        this.officeBlock.add(this.officeVContainer);
+        this.officeView = new ReadOnlyView("officeView", new PropertyModel<>(this, "officeValue"));
+        this.officeVContainer.add(this.officeView);
+    }
+
+    @Override
     protected void initData() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         this.centerId = getPageParameters().get("centerId").toString();
@@ -159,29 +187,22 @@ public class GroupManagePage extends DeprecatedPage {
         setResponsePage(CenterPreviewPage.class, parameters);
     }
 
-    protected void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void associatedGroupClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
 
     }
 
-    protected List<ActionItem> associatedGroupActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> associatedGroupAction(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         return actions;
     }
 
-    protected ItemPanel associatedGroupNameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel associatedGroupAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel associatedGroupStatusColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel associatedGroupColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column) || "account".equals(column) || "status".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }
