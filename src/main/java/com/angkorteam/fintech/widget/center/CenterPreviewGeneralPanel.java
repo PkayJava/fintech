@@ -135,7 +135,7 @@ public class CenterPreviewGeneralPanel extends Panel {
 
     protected List<ActionItem> savingAccountActionItem(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
-        Integer status = (Integer) model.get("status");
+        Long status = (Long) model.get("status");
         if (100 == status) {
             actions.add(new ActionItem("Approve", Model.of("Approve"), ItemCss.PRIMARY));
         } else if (200 == status) {
