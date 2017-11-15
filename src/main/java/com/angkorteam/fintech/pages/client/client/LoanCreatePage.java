@@ -22,7 +22,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.joda.time.DateTime;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.ChargeFrequency;
 import com.angkorteam.fintech.dto.enums.loan.Amortization;
@@ -67,7 +67,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class LoanCreatePage extends DeprecatedPage {
+public class LoanCreatePage extends Page {
 
     protected String clientId;
     protected String loanId;
