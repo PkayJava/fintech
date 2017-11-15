@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.table;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -239,12 +240,12 @@ public class DataTableCreatePage extends Page {
         this.columnIContainer = new WebMarkupContainer("columnIContainer");
         this.columnBlock.add(this.columnIContainer);
         this.columnColumn = Lists.newArrayList();
-        this.columnColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::nameColumn));
-        this.columnColumn.add(new TextColumn(Model.of("Mandatory"), "mandatory", "mandatory", this::mandatoryColumn));
-        this.columnColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::typeColumn));
-        this.columnColumn.add(new TextColumn(Model.of("Length"), "length", "length", this::lengthColumn));
-        this.columnColumn.add(new TextColumn(Model.of("Code"), "code", "code", this::codeColumn));
-        this.columnColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
+        this.columnColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::columnColumn));
+        this.columnColumn.add(new TextColumn(Model.of("Mandatory"), "mandatory", "mandatory", this::columnColumn));
+        this.columnColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::columnColumn));
+        this.columnColumn.add(new TextColumn(Model.of("Length"), "length", "length", this::columnColumn));
+        this.columnColumn.add(new TextColumn(Model.of("Code"), "code", "code", this::columnColumn));
+        this.columnColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::columnAction, this::columnClick));
         this.columnValue = Lists.newArrayList();
         this.columnProvider = new ListDataProvider(this.columnValue);
         this.columnTable = new DataTable<>("columnTable", this.columnColumn, this.columnProvider, 20);
@@ -344,7 +345,7 @@ public class DataTableCreatePage extends Page {
         return false;
     }
 
-    protected void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void columnClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
         for (int i = 0; i < this.columnValue.size(); i++) {
             Map<String, Object> column = this.columnValue.get(i);
@@ -359,7 +360,7 @@ public class DataTableCreatePage extends Page {
         target.add(this.columnTable);
     }
 
-    protected List<ActionItem> actionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> columnAction(String s, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
@@ -427,33 +428,22 @@ public class DataTableCreatePage extends Page {
         return false;
     }
 
-    protected ItemPanel codeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel nameColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel typeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel lengthColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer value = (Integer) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel mandatoryColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Boolean mandatory = (Boolean) model.get(jdbcColumn);
-        if (mandatory != null && mandatory) {
-            return new BadgeCell(BadgeType.Success, Model.of("Yes"));
-        } else {
-            return new BadgeCell(BadgeType.Danger, Model.of("No"));
+    protected ItemPanel columnColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column) || "type".equals(column) || "code".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("mandatory".equals(column)) {
+            Boolean mandatory = (Boolean) model.get(column);
+            if (mandatory != null && mandatory) {
+                return new BadgeCell(BadgeType.Success, Model.of("Yes"));
+            } else {
+                return new BadgeCell(BadgeType.Danger, Model.of("No"));
+            }
+        } else if ("length".equals(column)) {
+            Integer value = (Integer) model.get(column);
+            return new TextCell(value);
         }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }

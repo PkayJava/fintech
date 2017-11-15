@@ -275,7 +275,7 @@ public class ValueBrowsePage extends Page {
     }
 
     protected void dataClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
-        Integer id = (Integer) model.get("id");
+        Long id = (Long) model.get("id");
         try {
             if ("disable".equals(s)) {
                 CodeValueBuilder builder = new CodeValueBuilder();

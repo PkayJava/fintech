@@ -1,6 +1,5 @@
 package com.angkorteam.fintech.pages.rate;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -336,11 +335,7 @@ public class FloatingRateModifyPage extends Page {
         } else if ("modify".equals(s)) {
             this.popupModel.put("idValue", model.get("id"));
             this.popupModel.put("fromDateValue", model.get("fromDate"));
-            if (model.get("interestRate") instanceof Double) {
-                this.popupModel.put("interestRateValue", model.get("interestRate"));
-            } else if (model.get("interestRate") instanceof BigDecimal) {
-                this.popupModel.put("interestRateValue", ((BigDecimal) model.get("interestRate")).doubleValue());
-            }
+            this.popupModel.put("interestRateValue", (Double) model.get("interestRate"));
             this.popupModel.put("differentialValue", model.get("differential"));
             this.ratePopup.setContent(new RateModifyPopup(this.ratePopup.getContentId(), this.ratePopup, this.popupModel));
             this.ratePopup.show(target);
@@ -398,11 +393,7 @@ public class FloatingRateModifyPage extends Page {
         builder.withBaseLendingRate(this.baseLendingValue);
         builder.withName(this.nameValue);
         for (Map<String, Object> rate : this.rateValue) {
-            if (rate.get("interestRate") instanceof Double) {
-                builder.withRatePeriod((Date) rate.get("fromDate"), (Double) rate.get("interestRate"), (Boolean) rate.get("differential"));
-            } else if (rate.get("interestRate") instanceof BigDecimal) {
-                builder.withRatePeriod((Date) rate.get("fromDate"), ((BigDecimal) rate.get("interestRate")).doubleValue(), (Boolean) rate.get("differential"));
-            }
+            builder.withRatePeriod((Date) rate.get("fromDate"), (Double) rate.get("interestRate"), (Boolean) rate.get("differential"));
         }
 
         JsonNode node = null;

@@ -146,7 +146,7 @@ public class CheckerBrowsePage extends Page {
     }
 
     protected void dataClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
-        Integer id = (Integer) model.get("id");
+        Long id = (Long) model.get("id");
         JsonNode node = null;
         try {
             EntityCheckHelper.delete((Session) getSession(), String.valueOf(id));
@@ -167,7 +167,7 @@ public class CheckerBrowsePage extends Page {
             String value = (String) model.get(column);
             return new TextCell(value);
         } else if ("account".equals(column)) {
-            Integer value = (Integer) model.get(column);
+            Long value = (Long) model.get(column);
             return new TextCell(value);
         } else if ("system".equals(column)) {
             String value = (String) model.get(column);

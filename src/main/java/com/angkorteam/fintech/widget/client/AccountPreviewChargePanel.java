@@ -82,7 +82,7 @@ public class AccountPreviewChargePanel extends Panel {
 
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
-        dataFilterForm.add(this.dataTable);
+        this.dataFilterForm.add(this.dataTable);
 
     }
 
