@@ -5,13 +5,13 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class IndexPage extends DeprecatedPage {
+public class IndexPage extends Page {
 
     private Option test;
 
