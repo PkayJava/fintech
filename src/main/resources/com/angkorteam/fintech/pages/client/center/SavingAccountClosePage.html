@@ -16,9 +16,8 @@
 				<div class="box-body">
 
 					<!-- Row -->
-					<div wicket:id="closedOnBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="closedOnContainer">
+					<div wicket:id="closedOnBlock" class="form-group">
+						<wicket:container wicket:id="closedOnIContainer">
 							<label wicket:for="closedOnField">Closed on</label>
 							<input wicket:id="closedOnField" type="text" class="form-control" />
 							<span wicket:id="closedOnFeedback" class="help-block"></span>
@@ -30,9 +29,8 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="withdrawBalanceBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="withdrawBalanceContainer">
+					<div wicket:id="withdrawBalanceBlock" class="form-group">
+						<wicket:container wicket:id="withdrawBalanceIContainer">
 							<label>&nbsp;</label>
 							<span style="display: block"> <label> <input
 									type="checkbox" wicket:id="withdrawBalanceField"> Is
@@ -48,9 +46,8 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="postInterestBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="postInterestContainer">
+					<div wicket:id="postInterestBlock" class="form-group">
+						<wicket:container wicket:id="postInterestIContainer">
 							<label>&nbsp;</label>
 							<span style="display: block"> <label> <input
 									type="checkbox" wicket:id="postInterestField"> Is
@@ -66,9 +63,8 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="transactionAmountBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="transactionAmountContainer">
+					<div wicket:id="transactionAmountBlock" class="form-group">
+						<wicket:container wicket:id="transactionAmountIContainer">
 							<label>Transaction Amount</label>
 							<div wicket:id="transactionAmountView" readonly="readonly"
 								class="form-control" />
@@ -80,12 +76,10 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="paymentTypeBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="paymentTypeContainer">
+					<div wicket:id="paymentTypeBlock" class="form-group">
+						<wicket:container wicket:id="paymentTypeIContainer">
 							<label wicket:for="paymentTypeField">Payment Type</label>
-							<select wicket:id="paymentTypeField" class="form-control select2"
-								style="width: 100%;"></select>
+							<select wicket:id="paymentTypeField" class="form-control"></select>
 							<span wicket:id="paymentTypeFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
@@ -95,9 +89,8 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="paymentDetailBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="paymentDetailContainer">
+					<div wicket:id="paymentDetailBlock" class="form-group">
+						<wicket:container wicket:id="paymentDetailIContainer">
 							<label>&nbsp;</label>
 							<span style="display: block"> <label> <input
 									type="checkbox" wicket:id="paymentDetailField"> Is
@@ -113,17 +106,15 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="accountBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="accountContainer">
+					<div wicket:id="accountBlock" class="form-group">
+						<wicket:container wicket:id="accountIContainer">
 							<label wicket:for="accountField">Account#</label>
 							<input wicket:id="accountField" type="text" class="form-control" />
 							<span wicket:id="accountFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
-					<div wicket:id="chequeBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="chequeContainer">
+					<div wicket:id="chequeBlock" class="form-group">
+						<wicket:container wicket:id="chequeIContainer">
 							<label wicket:for="chequeField">Cheque#</label>
 							<input wicket:id="chequeField" type="text" class="form-control" />
 							<span wicket:id="chequeFeedback" class="help-block"></span>
@@ -132,17 +123,15 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="routingBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="routingContainer">
+					<div wicket:id="routingBlock" class="form-group">
+						<wicket:container wicket:id="routingIContainer">
 							<label wicket:for="routingField">Routing code</label>
 							<input wicket:id="routingField" type="text" class="form-control" />
 							<span wicket:id="routingFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
-					<div wicket:id="receiptBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="receiptContainer">
+					<div wicket:id="receiptBlock" class="form-group">
+						<wicket:container wicket:id="receiptIContainer">
 							<label wicket:for="receiptField">Receipt#</label>
 							<input wicket:id="receiptField" type="text" class="form-control" />
 							<span wicket:id="receiptFeedback" class="help-block"></span>
@@ -151,9 +140,8 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="bankBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="bankContainer">
+					<div wicket:id="bankBlock" class="form-group">
+						<wicket:container wicket:id="bankIContainer">
 							<label wicket:for="bankField">Bank#</label>
 							<input wicket:id="bankField" type="text" class="form-control" />
 							<span wicket:id="bankFeedback" class="help-block"></span>
@@ -165,9 +153,8 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="noteBlock"
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<wicket:container wicket:id="noteContainer">
+					<div wicket:id="noteBlock" class="form-group">
+						<wicket:container wicket:id="noteIContainer">
 							<label wicket:for="noteField">Note</label>
 							<textarea wicket:id="noteField" class="form-control"></textarea>
 							<span wicket:id="noteFeedback" class="help-block"></span>

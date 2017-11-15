@@ -1,10 +1,10 @@
 package com.angkorteam.fintech.widget.group;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Page;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -39,6 +39,7 @@ public class GroupPreviewGeneralPanel extends Panel {
 
     protected DataTable<Map<String, Object>, String> savingAccountTable;
     protected JdbcProvider savingAccountProvider;
+    protected List<IColumn<Map<String, Object>, String>> savingAccountColumn;
 
     public GroupPreviewGeneralPanel(String id, Page itemPage) {
         super(id);
@@ -69,17 +70,17 @@ public class GroupPreviewGeneralPanel extends Panel {
         this.savingAccountProvider.selectField("id", String.class);
         this.savingAccountProvider.selectField("status", String.class);
 
-        List<IColumn<Map<String, Object>, String>> savingAccountColumns = Lists.newArrayList();
-        savingAccountColumns.add(new TextFilterColumn(this.savingAccountProvider, ItemClass.String, Model.of("Account"), "account", "account", this::savingAccountAccountColumn));
-        savingAccountColumns.add(new TextFilterColumn(this.savingAccountProvider, ItemClass.String, Model.of("Product"), "product", "product", this::savingAccountProductColumn));
-        savingAccountColumns.add(new TextFilterColumn(this.savingAccountProvider, ItemClass.Double, Model.of("Balance"), "balance", "balance", this::savingAccountBalanceColumn));
-        savingAccountColumns.add(new ActionFilterColumn<>(Model.of("Action"), this::savingAccountActionItem, this::savingAccountActionClick));
+        this.savingAccountColumn = Lists.newArrayList();
+        this.savingAccountColumn.add(new TextFilterColumn(this.savingAccountProvider, ItemClass.String, Model.of("Account"), "account", "account", this::savingAccountColumn));
+        this.savingAccountColumn.add(new TextFilterColumn(this.savingAccountProvider, ItemClass.String, Model.of("Product"), "product", "product", this::savingAccountColumn));
+        this.savingAccountColumn.add(new TextFilterColumn(this.savingAccountProvider, ItemClass.Double, Model.of("Balance"), "balance", "balance", this::savingAccountColumn));
+        this.savingAccountColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::savingAccountAction, this::savingAccountClick));
 
-        this.savingAccountTable = new DefaultDataTable<>("savingAccountTable", savingAccountColumns, this.savingAccountProvider, 20);
+        this.savingAccountTable = new DefaultDataTable<>("savingAccountTable", this.savingAccountColumn, this.savingAccountProvider, 20);
         add(this.savingAccountTable);
     }
 
-    protected List<ActionItem> savingAccountActionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> savingAccountAction(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         Integer status = (Integer) model.get("status");
         if (100 == status) {
@@ -94,7 +95,7 @@ public class GroupPreviewGeneralPanel extends Panel {
         return actions;
     }
 
-    protected void savingAccountActionClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void savingAccountClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
         if ("Approve".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
@@ -128,22 +129,21 @@ public class GroupPreviewGeneralPanel extends Panel {
         }
     }
 
-    protected ItemPanel savingAccountAccountColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        PageParameters parameters = new PageParameters();
-        parameters.add("groupId", this.groupId);
-        parameters.add("accountId", model.get("id"));
-        return new LinkCell(SavingAccountPreviewPage.class, parameters, value);
-    }
-
-    protected ItemPanel savingAccountBalanceColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        BigDecimal value = (BigDecimal) model.get(jdbcColumn);
-        return new TextCell(value, "#,###,##0.00");
-    }
-
-    protected ItemPanel savingAccountProductColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel savingAccountColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("account".equals(column)) {
+            String value = (String) model.get(column);
+            PageParameters parameters = new PageParameters();
+            parameters.add("groupId", this.groupId);
+            parameters.add("accountId", model.get("id"));
+            return new LinkCell(SavingAccountPreviewPage.class, parameters, value);
+        } else if ("product".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("balance".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value, "#,###,##0.00");
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }

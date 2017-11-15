@@ -1,11 +1,11 @@
 package com.angkorteam.fintech.widget.center;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Page;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
@@ -14,7 +14,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
- 
+
 import com.angkorteam.fintech.pages.client.center.TransactionPreviewPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
@@ -38,8 +38,9 @@ public class AccountPreviewTransactionPanel extends Panel {
     protected Page itemPage;
 
     protected DataTable<Map<String, Object>, String> dataTable;
-
     protected JdbcProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected FilterForm<Map<String, String>> dataFilterForm;
 
     public AccountPreviewTransactionPanel(String id, Page itemPage) {
         super(id);
@@ -62,20 +63,20 @@ public class AccountPreviewTransactionPanel extends Panel {
         this.dataProvider.applyWhere("savings_account_id", "savings_account_id = " + this.accountId);
         this.dataProvider.setSort("id", SortOrder.DESCENDING);
 
-        List<IColumn<Map<String, Object>, String>> dataColumns = Lists.newArrayList();
-        dataColumns.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("ID"), "id", "id", this::idDataColumn));
-        dataColumns.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Transaction Date"), "transactionDate", "transactionDate", this::transactionDateDataColumn));
-        dataColumns.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Transaction Type"), "transactionType", "transactionType", this::transactionTypeDataColumn));
-        dataColumns.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Debit"), "debit", "debit", this::debitDataColumn));
-        dataColumns.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Credit"), "credit", "credit", this::creditDataColumn));
-        dataColumns.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Balance"), "balance", "balance", this::balanceDataColumn));
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("ID"), "id", "id", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Transaction Date"), "transactionDate", "transactionDate", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Transaction Type"), "transactionType", "transactionType", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Debit"), "debit", "debit", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Credit"), "credit", "credit", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Balance"), "balance", "balance", this::dataColumn));
 
-        FilterForm<Map<String, String>> filterForm = new FilterForm<>("filter-form", this.dataProvider);
-        add(filterForm);
+        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
+        add(this.dataFilterForm);
 
-        this.dataTable = new DefaultDataTable<>("dataTable", dataColumns, this.dataProvider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, filterForm));
-        filterForm.add(this.dataTable);
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
+        this.dataFilterForm.add(this.dataTable);
 
     }
 
@@ -83,36 +84,23 @@ public class AccountPreviewTransactionPanel extends Panel {
         this.accountId = new PropertyModel<String>(this.itemPage, "accountId").getObject();
     }
 
-    protected ItemPanel transactionDateDataColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date value = (Date) model.get(jdbcColumn);
-        return new TextCell(value, "dd/MM/yyyy");
-    }
-
-    protected ItemPanel balanceDataColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        BigDecimal value = (BigDecimal) model.get(jdbcColumn);
-        return new TextCell(value, "#,###.00");
-    }
-
-    protected ItemPanel creditDataColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        BigDecimal value = (BigDecimal) model.get(jdbcColumn);
-        return new TextCell(value, "#,###.00");
-    }
-
-    protected ItemPanel debitDataColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        BigDecimal value = (BigDecimal) model.get(jdbcColumn);
-        return new TextCell(value, "#,###.00");
-    }
-
-    protected ItemPanel transactionTypeDataColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel idDataColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long name = (Long) model.get(jdbcColumn);
-        PageParameters parameters = new PageParameters();
-        parameters.add("transactionId", model.get("id"));
-        return new LinkCell(TransactionPreviewPage.class, parameters, Model.of(name));
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("id".equals(column)) {
+            Long name = (Long) model.get(column);
+            PageParameters parameters = new PageParameters();
+            parameters.add("transactionId", model.get("id"));
+            return new LinkCell(TransactionPreviewPage.class, parameters, name);
+        } else if ("transactionDate".equals(column)) {
+            Date value = (Date) model.get(column);
+            return new TextCell(value, "dd/MM/yyyy");
+        } else if ("transactionType".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("debit".equals(column) || "credit".equals(column) || "balance".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value, "#,###,##0.00");
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }

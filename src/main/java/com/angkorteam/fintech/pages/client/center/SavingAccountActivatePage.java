@@ -10,13 +10,14 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.joda.time.DateTime;
 
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.helper.acount.ActivateBuilder;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -24,7 +25,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingAccountActivatePage extends DeprecatedPage {
+public class SavingAccountActivatePage extends Page {
 
     private String centerId;
     private String accountId;
@@ -33,17 +34,14 @@ public class SavingAccountActivatePage extends DeprecatedPage {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupContainer activatedOnBlock;
-    protected WebMarkupContainer activatedOnContainer;
+    protected WebMarkupBlock activatedOnBlock;
+    protected WebMarkupContainer activatedOnIContainer;
     protected Date activatedOnValue;
     protected DateTextField activatedOnField;
     protected TextFeedbackPanel activatedOnFeedback;
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        initData();
-
+    protected void initComponent() {
         PageParameters parameters = new PageParameters();
         parameters.add("centerId", this.centerId);
 
@@ -57,17 +55,30 @@ public class SavingAccountActivatePage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.activatedOnBlock = new WebMarkupContainer("activatedOnBlock");
-        this.form.add(this.activatedOnBlock);
-        this.activatedOnContainer = new WebMarkupContainer("activatedOnContainer");
-        this.activatedOnBlock.add(this.activatedOnContainer);
-        this.activatedOnField = new DateTextField("activatedOnField", new PropertyModel<>(this, "activatedOnValue"));
-        this.activatedOnField.setLabel(Model.of("Activated On"));
-        this.activatedOnContainer.add(this.activatedOnField);
-        this.activatedOnFeedback = new TextFeedbackPanel("activatedOnFeedback", this.activatedOnField);
-        this.activatedOnContainer.add(this.activatedOnFeedback);
+        initActivatedOnBlock();
     }
 
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initActivatedOnBlock() {
+        this.activatedOnBlock = new WebMarkupBlock("activatedOnBlock", Size.Six_6);
+        this.form.add(this.activatedOnBlock);
+        this.activatedOnIContainer = new WebMarkupContainer("activatedOnIContainer");
+        this.activatedOnBlock.add(this.activatedOnIContainer);
+        this.activatedOnField = new DateTextField("activatedOnField", new PropertyModel<>(this, "activatedOnValue"));
+        this.activatedOnField.setLabel(Model.of("Activated On"));
+        this.activatedOnIContainer.add(this.activatedOnField);
+        this.activatedOnFeedback = new TextFeedbackPanel("activatedOnFeedback", this.activatedOnField);
+        this.activatedOnIContainer.add(this.activatedOnFeedback);
+    }
+
+    @Override
     protected void initData() {
         this.centerId = getPageParameters().get("centerId").toString();
         this.accountId = getPageParameters().get("accountId").toString();

@@ -11,13 +11,14 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.joda.time.DateTime;
 
-import com.angkorteam.fintech.DeprecatedPage;
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.helper.acount.ApproveBuilder;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -25,7 +26,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingAccountApprovePage extends DeprecatedPage {
+public class SavingAccountApprovePage extends Page {
 
     private String centerId;
     private String accountId;
@@ -34,23 +35,20 @@ public class SavingAccountApprovePage extends DeprecatedPage {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupContainer approvedOnBlock;
-    protected WebMarkupContainer approvedOnContainer;
+    protected WebMarkupBlock approvedOnBlock;
+    protected WebMarkupContainer approvedOnIContainer;
     protected Date approvedOnValue;
     protected DateTextField approvedOnField;
     protected TextFeedbackPanel approvedOnFeedback;
 
-    protected WebMarkupContainer noteBlock;
-    protected WebMarkupContainer noteContainer;
+    protected WebMarkupBlock noteBlock;
+    protected WebMarkupContainer noteIContainer;
     protected String noteValue;
     protected TextArea<String> noteField;
     protected TextFeedbackPanel noteFeedback;
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        initData();
-
+    protected void initComponent() {
         PageParameters parameters = new PageParameters();
         parameters.add("centerId", this.centerId);
 
@@ -64,27 +62,44 @@ public class SavingAccountApprovePage extends DeprecatedPage {
         this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.approvedOnBlock = new WebMarkupContainer("approvedOnBlock");
-        this.form.add(this.approvedOnBlock);
-        this.approvedOnContainer = new WebMarkupContainer("approvedOnContainer");
-        this.approvedOnBlock.add(this.approvedOnContainer);
-        this.approvedOnField = new DateTextField("approvedOnField", new PropertyModel<>(this, "approvedOnValue"));
-        this.approvedOnField.setLabel(Model.of("Approved On"));
-        this.approvedOnContainer.add(this.approvedOnField);
-        this.approvedOnFeedback = new TextFeedbackPanel("approvedOnFeedback", this.approvedOnField);
-        this.approvedOnContainer.add(this.approvedOnFeedback);
+        initNoteBlock();
 
-        this.noteBlock = new WebMarkupContainer("noteBlock");
-        this.form.add(this.noteBlock);
-        this.noteContainer = new WebMarkupContainer("noteContainer");
-        this.noteBlock.add(this.noteContainer);
-        this.noteField = new TextArea<>("noteField", new PropertyModel<>(this, "noteValue"));
-        this.noteField.setLabel(Model.of("Note"));
-        this.noteContainer.add(this.noteField);
-        this.noteFeedback = new TextFeedbackPanel("noteFeedback", this.noteField);
-        this.noteContainer.add(this.noteFeedback);
+        initApprovedOnBlock();
     }
 
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    protected void initApprovedOnBlock() {
+        this.approvedOnBlock = new WebMarkupBlock("approvedOnBlock", Size.Six_6);
+        this.form.add(this.approvedOnBlock);
+        this.approvedOnIContainer = new WebMarkupContainer("approvedOnIContainer");
+        this.approvedOnBlock.add(this.approvedOnIContainer);
+        this.approvedOnField = new DateTextField("approvedOnField", new PropertyModel<>(this, "approvedOnValue"));
+        this.approvedOnField.setLabel(Model.of("Approved On"));
+        this.approvedOnIContainer.add(this.approvedOnField);
+        this.approvedOnFeedback = new TextFeedbackPanel("approvedOnFeedback", this.approvedOnField);
+        this.approvedOnIContainer.add(this.approvedOnFeedback);
+    }
+
+    protected void initNoteBlock() {
+        this.noteBlock = new WebMarkupBlock("noteBlock", Size.Six_6);
+        this.form.add(this.noteBlock);
+        this.noteIContainer = new WebMarkupContainer("noteIContainer");
+        this.noteBlock.add(this.noteIContainer);
+        this.noteField = new TextArea<>("noteField", new PropertyModel<>(this, "noteValue"));
+        this.noteField.setLabel(Model.of("Note"));
+        this.noteIContainer.add(this.noteField);
+        this.noteFeedback = new TextFeedbackPanel("noteFeedback", this.noteField);
+        this.noteIContainer.add(this.noteFeedback);
+    }
+
+    @Override
     protected void initData() {
         this.centerId = getPageParameters().get("centerId").toString();
         this.accountId = getPageParameters().get("accountId").toString();

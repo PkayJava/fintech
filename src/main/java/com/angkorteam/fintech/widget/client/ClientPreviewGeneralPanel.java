@@ -333,7 +333,7 @@ public class ClientPreviewGeneralPanel extends Panel {
             try {
                 HttpResponse<InputStream> response = ClientHelper.retrieveClientImage((Session) getSession(), this.clientId);
                 this.clientImageValue = IOUtils.toString(response.getBody(), "UTF-8");
-                IOUtils.closeQuietly(response.getBody());
+                response.getBody().close();
             } catch (UnirestException | IOException e) {
                 LOGGER.info(e.getMessage(), e);
             }
