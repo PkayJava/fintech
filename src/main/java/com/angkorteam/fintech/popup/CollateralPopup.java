@@ -81,6 +81,7 @@ public class CollateralPopup extends PopupPanel {
         this.amountBlock.add(this.amountContainer);
         this.amountField = new TextField<>("amountField", this.amountValue);
         this.amountField.setLabel(Model.of("Value"));
+        this.amountField.setType(Double.class);
         this.amountContainer.add(this.amountField);
         this.amountFeedback = new TextFeedbackPanel("amountFeedback", this.amountField);
         this.amountContainer.add(this.amountFeedback);

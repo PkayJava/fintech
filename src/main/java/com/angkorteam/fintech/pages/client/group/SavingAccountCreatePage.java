@@ -1,6 +1,5 @@
 package com.angkorteam.fintech.pages.client.group;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -543,7 +542,7 @@ public class SavingAccountCreatePage extends DeprecatedPage {
         this.currencyVContainer = new WebMarkupContainer("currencyVContainer");
         this.currencyBlock.add(this.currencyVContainer);
         this.currencyView = new ReadOnlyView("currencyView", new PropertyModel<>(this, "currencyValue"));
-        this.form.add(this.currencyView);
+        this.currencyVContainer.add(this.currencyView);
     }
 
     protected void initExternalIdBlock() {
@@ -607,7 +606,10 @@ public class SavingAccountCreatePage extends DeprecatedPage {
     }
 
     protected ItemPanel chargeColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("name".equals(column) || "type".equals(column) || "collectedOn".equals(column)) {
+        if ("name".equals(column)) {
+            Option value = (Option) model.get(column);
+            return new TextCell(value);
+        } else if ("type".equals(column) || "collectedOn".equals(column)) {
             String value = (String) model.get(column);
             return new TextCell(value);
         } else if ("amount".equals(column)) {
@@ -692,44 +694,36 @@ public class SavingAccountCreatePage extends DeprecatedPage {
         Map<String, Object> savingObject = jdbcTemplate.queryForMap("select * from m_savings_product where id = ?", this.savingId);
         this.productValue = (String) savingObject.get("name");
         this.currencyValue = (String) savingObject.get("currency_code");
-        this.decimalPlacesValue = (Integer) savingObject.get("currency_digits");
+        this.decimalPlacesValue = savingObject.get("currency_digits") == null ? null : ((Long) savingObject.get("currency_digits")).intValue();
 
-        this.currencyInMultiplesOfValue = (Integer) savingObject.get("currency_multiplesof");
+        this.currencyInMultiplesOfValue = savingObject.get("currency_multiplesof") == null ? null : ((Long) savingObject.get("currency_multiplesof")).intValue();
 
-        BigDecimal nominalAnnualInterestValue = (BigDecimal) savingObject.get("nominal_annual_interest_rate");
-        this.nominalAnnualInterestValue = nominalAnnualInterestValue == null ? null : nominalAnnualInterestValue.doubleValue();
+        this.nominalAnnualInterestValue = (Double) savingObject.get("nominal_annual_interest_rate");
 
-        BigDecimal nominalAnnualInterestForOverdraftValue = (BigDecimal) savingObject.get("nominal_annual_interest_rate_overdraft");
-        this.nominalAnnualInterestForOverdraftValue = nominalAnnualInterestForOverdraftValue == null ? null : nominalAnnualInterestForOverdraftValue.doubleValue();
+        this.nominalAnnualInterestForOverdraftValue = (Double) savingObject.get("nominal_annual_interest_rate_overdraft");
 
         this.interestCompoundingPeriodValue = InterestCompoundingPeriod.optionLiteral(String.valueOf(savingObject.get("interest_compounding_period_enum")));
         this.interestPostingPeriodValue = InterestPostingPeriod.optionLiteral(String.valueOf(savingObject.get("interest_posting_period_enum")));
         this.interestCalculatedUsingValue = InterestCalculatedUsing.optionLiteral(String.valueOf(savingObject.get("interest_calculation_type_enum")));
         this.dayInYearValue = DayInYear.optionLiteral(String.valueOf(savingObject.get("interest_calculation_days_in_year_type_enum")));
-        BigDecimal lockInPeriodValue = (BigDecimal) savingObject.get("lockin_period_frequency");
-        this.lockInPeriodValue = lockInPeriodValue == null ? null : lockInPeriodValue.intValue();
+        this.lockInPeriodValue = savingObject.get("lockin_period_frequency") == null ? null : ((Double) savingObject.get("lockin_period_frequency")).intValue();
         this.lockInTypeValue = LockInType.optionLiteral(String.valueOf(savingObject.get("lockin_period_frequency_enum")));
 
-        Integer applyWithdrawalFeeForTransferValue = (Integer) savingObject.get("withdrawal_fee_for_transfer");
+        Long applyWithdrawalFeeForTransferValue = (Long) savingObject.get("withdrawal_fee_for_transfer");
         this.applyWithdrawalFeeForTransferValue = applyWithdrawalFeeForTransferValue == null ? false : applyWithdrawalFeeForTransferValue == 1;
 
-        BigDecimal minimumOpeningBalanceValue = (BigDecimal) savingObject.get("min_required_opening_balance");
-        this.minimumOpeningBalanceValue = minimumOpeningBalanceValue == null ? null : minimumOpeningBalanceValue.doubleValue();
+        this.minimumOpeningBalanceValue = (Double) savingObject.get("min_required_opening_balance");
 
         this.overdraftAllowedValue = (Boolean) savingObject.get("allow_overdraft");
 
-        BigDecimal maximumOverdraftAmountLimitValue = (BigDecimal) savingObject.get("overdraft_limit");
-        this.maximumOverdraftAmountLimitValue = maximumOverdraftAmountLimitValue == null ? null : maximumOverdraftAmountLimitValue.doubleValue();
+        this.maximumOverdraftAmountLimitValue = (Double) savingObject.get("overdraft_limit");
 
-        BigDecimal minOverdraftRequiredForInterestCalculationValue = (BigDecimal) savingObject.get("min_overdraft_for_interest_calculation");
-        this.minOverdraftRequiredForInterestCalculationValue = minOverdraftRequiredForInterestCalculationValue == null ? null : minOverdraftRequiredForInterestCalculationValue.doubleValue();
+        this.minOverdraftRequiredForInterestCalculationValue = (Double) savingObject.get("min_overdraft_for_interest_calculation");
         this.enforceMinimumBalanceValue = (Boolean) savingObject.get("enforce_min_required_balance");
 
-        BigDecimal minimumBalanceValue = (BigDecimal) savingObject.get("min_required_balance");
-        this.minimumBalanceValue = minimumBalanceValue == null ? null : minimumBalanceValue.doubleValue();
+        this.minimumBalanceValue = (Double) savingObject.get("min_required_balance");
 
-        BigDecimal balanceRequiredForInterestCalculationValue = (BigDecimal) savingObject.get("min_balance_for_interest_calculation");
-        this.balanceRequiredForInterestCalculationValue = balanceRequiredForInterestCalculationValue == null ? null : balanceRequiredForInterestCalculationValue.doubleValue();
+        this.balanceRequiredForInterestCalculationValue = (Double) savingObject.get("min_balance_for_interest_calculation");
 
     }
 

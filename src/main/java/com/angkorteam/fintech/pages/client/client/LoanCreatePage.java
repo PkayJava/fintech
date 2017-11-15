@@ -69,8 +69,6 @@ import com.google.common.collect.Maps;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanCreatePage extends DeprecatedPage {
 
-    // TODO : clean tech debt
-
     protected String clientId;
     protected String loanId;
     protected String officeId;
@@ -391,7 +389,7 @@ public class LoanCreatePage extends DeprecatedPage {
         this.chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeColumn));
         this.chargeColumn.add(new TextColumn(Model.of("Collected On"), "collectedOn", "collectedOn", this::chargeColumn));
         this.chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeColumn));
-        this.chargeColumn.add(new TextColumn(Model.of("Repayments Every"), "repaymentEvery", "repaymentEvery", this::chargeRepaymentEveryColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Repayments Every"), "repaymentEvery", "repaymentEvery", this::chargeColumn));
         this.chargeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::chargeAction, this::chargeClick));
         this.chargeProvider = new ListDataProvider(this.chargeValue);
         this.chargeTable = new DataTable<>("chargeTable", this.chargeColumn, this.chargeProvider, 20);
@@ -908,7 +906,10 @@ public class LoanCreatePage extends DeprecatedPage {
     }
 
     protected ItemPanel chargeColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("name".equals(column) || "type".equals(column) || "collectedOn".equals(column)) {
+        if ("name".equals(column)) {
+            Option value = (Option) model.get(column);
+            return new TextCell(value);
+        } else if ("type".equals(column) || "collectedOn".equals(column)) {
             String value = (String) model.get(column);
             return new TextCell(value);
         } else if ("amount".equals(column)) {
@@ -917,13 +918,11 @@ public class LoanCreatePage extends DeprecatedPage {
         } else if ("date".equals(column)) {
             Date value = (Date) model.get(column);
             return new TextCell(value, "dd MMMM");
+        } else if ("repaymentEvery".equals(column)) {
+            Integer value = (Integer) model.get(column);
+            return new TextCell(value);
         }
         throw new WicketRuntimeException("Unknown " + column);
-    }
-
-    protected ItemPanel chargeRepaymentEveryColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer value = (Integer) model.get(jdbcColumn);
-        return new TextCell(value);
     }
 
     protected void chargeClick(String s, Map<String, Object> model, AjaxRequestTarget target) {

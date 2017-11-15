@@ -1,6 +1,5 @@
 package com.angkorteam.fintech.popup;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
@@ -19,6 +18,8 @@ import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -40,36 +41,36 @@ public class AccountChargePopup extends PopupPanel {
     protected Form<Void> form;
     protected AjaxButton okayButton;
 
-    protected WebMarkupContainer chargeBlock;
+    protected WebMarkupBlock chargeBlock;
     protected WebMarkupContainer chargeContainer;
     protected SingleChoiceProvider chargeProvider;
     protected Select2SingleChoice<Option> chargeField;
     protected TextFeedbackPanel chargeFeedback;
     protected PropertyModel<Option> chargeValue;
 
-    protected WebMarkupContainer chargeTypeBlock;
+    protected WebMarkupBlock chargeTypeBlock;
     protected WebMarkupContainer chargeTypeContainer;
     protected Label chargeTypeView;
     protected PropertyModel<String> chargeTypeValue;
 
-    protected WebMarkupContainer amountBlock;
+    protected WebMarkupBlock amountBlock;
     protected WebMarkupContainer amountContainer;
     protected TextField<Double> amountField;
     protected TextFeedbackPanel amountFeedback;
     protected PropertyModel<Double> amountValue;
 
-    protected WebMarkupContainer collectedOnBlock;
+    protected WebMarkupBlock collectedOnBlock;
     protected WebMarkupContainer collectedOnContainer;
     protected Label collectedOnView;
     protected PropertyModel<String> collectedOnValue;
 
-    protected WebMarkupContainer dateBlock;
+    protected WebMarkupBlock dateBlock;
     protected WebMarkupContainer dateContainer;
     protected DayMonthTextField dateField;
     protected TextFeedbackPanel dateFeedback;
     protected PropertyModel<Date> dateValue;
 
-    protected WebMarkupContainer repaymentEveryBlock;
+    protected WebMarkupBlock repaymentEveryBlock;
     protected WebMarkupContainer repaymentEveryContainer;
     protected TextField<Integer> repaymentEveryField;
     protected TextFeedbackPanel repaymentEveryFeedback;
@@ -100,7 +101,7 @@ public class AccountChargePopup extends PopupPanel {
         this.chargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
         this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = 2");
         this.chargeProvider.applyWhere("is_active", "is_active = 1");
-        this.chargeBlock = new WebMarkupContainer("chargeBlock");
+        this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Six_6);
         this.form.add(this.chargeBlock);
         this.chargeContainer = new WebMarkupContainer("chargeContainer");
         this.chargeBlock.add(this.chargeContainer);
@@ -113,7 +114,7 @@ public class AccountChargePopup extends PopupPanel {
         this.chargeContainer.add(this.chargeFeedback);
 
         this.chargeTypeValue = new PropertyModel<>(this.model, "chargeTypeValue");
-        this.chargeTypeBlock = new WebMarkupContainer("chargeTypeBlock");
+        this.chargeTypeBlock = new WebMarkupBlock("chargeTypeBlock", Size.Six_6);
         this.form.add(this.chargeTypeBlock);
         this.chargeTypeContainer = new WebMarkupContainer("chargeTypeContainer");
         this.chargeTypeBlock.add(this.chargeTypeContainer);
@@ -121,7 +122,7 @@ public class AccountChargePopup extends PopupPanel {
         this.chargeTypeContainer.add(this.chargeTypeView);
 
         this.amountValue = new PropertyModel<>(this.model, "amountValue");
-        this.amountBlock = new WebMarkupContainer("amountBlock");
+        this.amountBlock = new WebMarkupBlock("amountBlock", Size.Six_6);
         this.form.add(this.amountBlock);
         this.amountContainer = new WebMarkupContainer("amountContainer");
         this.amountBlock.add(this.amountContainer);
@@ -133,7 +134,7 @@ public class AccountChargePopup extends PopupPanel {
         this.amountContainer.add(this.amountFeedback);
 
         this.collectedOnValue = new PropertyModel<>(this.model, "collectedOnValue");
-        this.collectedOnBlock = new WebMarkupContainer("collectedOnBlock");
+        this.collectedOnBlock = new WebMarkupBlock("collectedOnBlock", Size.Six_6);
         this.form.add(this.collectedOnBlock);
         this.collectedOnContainer = new WebMarkupContainer("collectedOnContainer");
         this.collectedOnBlock.add(this.collectedOnContainer);
@@ -141,7 +142,7 @@ public class AccountChargePopup extends PopupPanel {
         this.collectedOnContainer.add(this.collectedOnView);
 
         this.dateValue = new PropertyModel<>(this.model, "dateValue");
-        this.dateBlock = new WebMarkupContainer("dateBlock");
+        this.dateBlock = new WebMarkupBlock("dateBlock", Size.Six_6);
         this.form.add(this.dateBlock);
         this.dateContainer = new WebMarkupContainer("dateContainer");
         this.dateBlock.add(this.dateContainer);
@@ -152,7 +153,7 @@ public class AccountChargePopup extends PopupPanel {
         this.dateContainer.add(this.dateFeedback);
 
         this.repaymentEveryValue = new PropertyModel<>(this.model, "repaymentEveryValue");
-        this.repaymentEveryBlock = new WebMarkupContainer("repaymentEveryBlock");
+        this.repaymentEveryBlock = new WebMarkupBlock("repaymentEveryBlock", Size.Six_6);
         this.form.add(this.repaymentEveryBlock);
         this.repaymentEveryContainer = new WebMarkupContainer("repaymentEveryContainer");
         this.repaymentEveryBlock.add(this.repaymentEveryContainer);
@@ -168,7 +169,7 @@ public class AccountChargePopup extends PopupPanel {
         if (this.chargeValue.getObject() != null) {
             JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
             Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select * from m_charge where id = ?", this.chargeValue.getObject().getId());
-            Integer collectedOn = (Integer) chargeObject.get("charge_time_enum");
+            Long collectedOn = (Long) chargeObject.get("charge_time_enum");
             if (collectedOn != null) {
                 Option option = ChargeTime.optionLiteral(String.valueOf(collectedOn));
                 if (option != null) {
@@ -178,14 +179,14 @@ public class AccountChargePopup extends PopupPanel {
                 this.collectedOnValue.setObject(null);
             }
 
-            BigDecimal amount = (BigDecimal) chargeObject.get("amount");
+            Double amount = (Double) chargeObject.get("amount");
             if (amount != null) {
-                this.amountValue.setObject(amount.doubleValue());
+                this.amountValue.setObject(amount);
             } else {
                 this.amountValue.setObject(null);
             }
 
-            Integer type = (Integer) chargeObject.get("charge_calculation_enum");
+            Long type = (Long) chargeObject.get("charge_calculation_enum");
             if (type != null) {
                 Option option = ChargeCalculation.optionLiteral(String.valueOf(type));
                 if (option != null) {
@@ -195,11 +196,11 @@ public class AccountChargePopup extends PopupPanel {
                 this.chargeTypeValue.setObject(null);
             }
 
-            Integer repaymentEveryValue = (Integer) chargeObject.get("fee_interval");
-            this.repaymentEveryValue.setObject(repaymentEveryValue);
+            Long repaymentEveryValue = (Long) chargeObject.get("fee_interval");
+            this.repaymentEveryValue.setObject(repaymentEveryValue == null ? null : repaymentEveryValue.intValue());
 
-            Integer month = (Integer) chargeObject.get("fee_on_month");
-            Integer day = (Integer) chargeObject.get("fee_on_day");
+            Long month = (Long) chargeObject.get("fee_on_month");
+            Long day = (Long) chargeObject.get("fee_on_day");
             if (day != null && month != null) {
                 try {
                     this.dateValue.setObject(DateUtils.parseDate(day + "/" + month, "d/M"));

@@ -57,71 +57,82 @@
 							<div class="box-body">
 
 								<!-- Row -->
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>Interest earned</label>
-									<div wicket:id="interestEarnedView" readonly="readonly"
-										class="form-control"></div>
+								<div wicket:id="interestEarnedBlock" class="form-group">
+									<wicket:container wicket:id="interestEarnedVContainer">
+										<label>Interest earned</label>
+										<div wicket:id="interestEarnedView" class="form-control"></div>
+									</wicket:container>
 								</div>
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>Earned interest not posted</label>
-									<div wicket:id="interestView" readonly="readonly"
-										class="form-control"></div>
-								</div>
-								<div class="clearfix"></div>
-
-								<!-- Row -->
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>Nominal interest rate</label>
-									<div wicket:id="nominalInterestRateView" readonly="readonly"
-										class="form-control"></div>
-								</div>
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>Interest compounding period</label>
-									<div wicket:id="interestCompoundingPeriodView"
-										readonly="readonly" class="form-control"></div>
+								<div wicket:id="interestBlock" class="form-group">
+									<wicket:container wicket:id="interestVContainer">
+										<label>Earned interest not posted</label>
+										<div wicket:id="interestView" class="form-control"></div>
+									</wicket:container>
 								</div>
 								<div class="clearfix"></div>
 
 								<!-- Row -->
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>Interest posting period</label>
-									<div wicket:id="interestPostingPeriodView" readonly="readonly"
-										class="form-control"></div>
+								<div wicket:id="nominalInterestRateBlock" class="form-group">
+									<wicket:container wicket:id="nominalInterestRateVContainer">
+										<label>Nominal interest rate</label>
+										<div wicket:id="nominalInterestRateView" class="form-control"></div>
+									</wicket:container>
 								</div>
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>Interest calculated using</label>
-									<div wicket:id="interestCalculatedUsingView"
-										readonly="readonly" class="form-control"></div>
-								</div>
-								<div class="clearfix"></div>
-
-								<!-- Row -->
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>Days in Year</label>
-									<div wicket:id="daysInYearView" readonly="readonly"
-										class="form-control"></div>
-								</div>
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>Last Active Transaction Date</label>
-									<div wicket:id="lastActiveTransactionDateView"
-										readonly="readonly" class="form-control"></div>
+								<div wicket:id="interestCompoundingPeriodBlock"
+									class="form-group">
+									<wicket:container
+										wicket:id="interestCompoundingPeriodVContainer">
+										<label>Interest compounding period</label>
+										<div wicket:id="interestCompoundingPeriodView"
+											class="form-control"></div>
+									</wicket:container>
 								</div>
 								<div class="clearfix"></div>
 
 								<!-- Row -->
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>Interest Recalculation Date</label>
-									<div wicket:id="interestRecalculationDateView"
-										readonly="readonly" class="form-control"></div>
+								<div wicket:id="interestPostingPeriodBlock" class="form-group">
+									<wicket:container wicket:id="interestPostingPeriodVContainer">
+										<label>Interest posting period</label>
+										<div wicket:id="interestPostingPeriodView"
+											class="form-control"></div>
+									</wicket:container>
+								</div>
+								<div wicket:id="interestCalculatedUsingBlock" class="form-group">
+									<wicket:container wicket:id="interestCalculatedUsingVContainer">
+										<label>Interest calculated using</label>
+										<div wicket:id="interestCalculatedUsingView"
+											class="form-control"></div>
+									</wicket:container>
+								</div>
+								<div class="clearfix"></div>
+
+								<!-- Row -->
+								<div wicket:id="daysInYearBlock" class="form-group">
+									<wicket:container wicket:id="daysInYearVContainer">
+										<label>Days in Year</label>
+										<div wicket:id="daysInYearView" class="form-control"></div>
+									</wicket:container>
+								</div>
+								<div wicket:id="lastActiveTransactionDateBlock"
+									class="form-group">
+									<wicket:container
+										wicket:id="lastActiveTransactionDateVContainer">
+										<label>Last Active Transaction Date</label>
+										<div wicket:id="lastActiveTransactionDateView"
+											class="form-control"></div>
+									</wicket:container>
+								</div>
+								<div class="clearfix"></div>
+
+								<!-- Row -->
+								<div wicket:id="interestRecalculationDateBlock"
+									class="form-group">
+									<wicket:container
+										wicket:id="interestRecalculationDateVContainer">
+										<label>Interest Recalculation Date</label>
+										<div wicket:id="interestRecalculationDateView"
+											class="form-control"></div>
+									</wicket:container>
 								</div>
 								<div
 									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -139,41 +150,44 @@
 							<div class="box-body">
 
 								<!-- Row -->
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>Activation Date</label>
-									<div wicket:id="activationDateView" readonly="readonly"
-										class="form-control"></div>
+								<div wicket:id="activationDateBlock" class="form-group">
+									<wicket:container wicket:id="activationDateVContainer">
+										<label>Activation Date</label>
+										<div wicket:id="activationDateView" class="form-control"></div>
+									</wicket:container>
 								</div>
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>Field Officer</label>
-									<div wicket:id="officerView" readonly="readonly"
-										class="form-control"></div>
-								</div>
-								<div class="clearfix"></div>
-
-								<!-- Row -->
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>External ID</label>
-									<div wicket:id="externalIdView" readonly="readonly"
-										class="form-control"></div>
-								</div>
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>Currency</label>
-									<div wicket:id="currencyView" readonly="readonly"
-										class="form-control"></div>
+								<div wicket:id="officerBlock" class="form-group">
+									<wicket:container wicket:id="officerVContainer">
+										<label>Field Officer</label>
+										<div wicket:id="officerView" class="form-control"></div>
+									</wicket:container>
 								</div>
 								<div class="clearfix"></div>
 
 								<!-- Row -->
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>Nominal interest rate</label>
-									<div wicket:id="detailNominalInterestRateView"
-										readonly="readonly" class="form-control"></div>
+								<div wicket:id="externalIdBlock" class="form-group">
+									<wicket:container wicket:id="externalIdVContainer">
+										<label>External ID</label>
+										<div wicket:id="externalIdView" class="form-control"></div>
+									</wicket:container>
+								</div>
+								<div wicket:id="currencyBlock" class="form-group">
+									<wicket:container wicket:id="currencyVContainer">
+										<label>Currency</label>
+										<div wicket:id="currencyView" class="form-control"></div>
+									</wicket:container>
+								</div>
+								<div class="clearfix"></div>
+
+								<!-- Row -->
+								<div wicket:id="detailNominalInterestRateBlock"
+									class="form-group">
+									<wicket:container
+										wicket:id="detailNominalInterestRateVContainer">
+										<label>Nominal interest rate</label>
+										<div wicket:id="detailNominalInterestRateView"
+											class="form-control"></div>
+									</wicket:container>
 								</div>
 								<div
 									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -190,17 +204,17 @@
 							<div class="box-body">
 
 								<!-- Row -->
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>Total Deposits</label>
-									<div wicket:id="totalDepositView" readonly="readonly"
-										class="form-control"></div>
+								<div wicket:id="totalDepositBlock" class="form-group">
+									<wicket:container wicket:id="totalDepositVContainer">
+										<label>Total Deposits</label>
+										<div wicket:id="totalDepositView" class="form-control"></div>
+									</wicket:container>
 								</div>
-								<div
-									class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-									<label>Interest earned</label>
-									<div wicket:id="totalInterestEarnedView" readonly="readonly"
-										class="form-control"></div>
+								<div wicket:id="totalInterestEarnedBlock" class="form-group">
+									<wicket:container wicket:id="totalInterestEarnedVContainer">
+										<label>Interest earned</label>
+										<div wicket:id="totalInterestEarnedView" class="form-control"></div>
+									</wicket:container>
 								</div>
 								<div class="clearfix"></div>
 
