@@ -135,7 +135,8 @@ public class GroupPreviewGeneralPanel extends Panel {
             PageParameters parameters = new PageParameters();
             parameters.add("groupId", this.groupId);
             parameters.add("accountId", model.get("id"));
-            return new LinkCell(SavingAccountPreviewPage.class, parameters, value);
+//            return new LinkCell(SavingAccountPreviewPage.class, parameters, value);
+            return new TextCell(value);
         } else if ("product".equals(column)) {
             String value = (String) model.get(column);
             return new TextCell(value);
