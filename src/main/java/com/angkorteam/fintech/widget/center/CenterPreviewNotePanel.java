@@ -13,7 +13,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.DeprecatedPage;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.WorkingPage;
 import com.angkorteam.fintech.dto.builder.NoteBuilder;
@@ -119,11 +118,6 @@ public class CenterPreviewNotePanel extends Panel {
         }
         if (itemPage instanceof com.angkorteam.fintech.Page) {
             if (((com.angkorteam.fintech.Page) itemPage).reportError(node)) {
-                return;
-            }
-        }
-        if (itemPage instanceof DeprecatedPage) {
-            if (((com.angkorteam.fintech.DeprecatedPage) itemPage).reportError(node)) {
                 return;
             }
         }

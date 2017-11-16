@@ -40,7 +40,6 @@ import com.mashape.unirest.http.JsonNode;
 /**
  * Created by socheatkhauv on 6/17/17.
  */
-@Deprecated
 public abstract class WorkingPage extends DashboardPage {
 
     private FeedbackPanel feedbackPanel;
@@ -63,7 +62,7 @@ public abstract class WorkingPage extends DashboardPage {
     }
 
     @Override
-    protected void onInitialize() {
+    protected final void onInitialize() {
         super.onInitialize();
         this.feedbackPanel = new FeedbackPanel("feedbackPanel", this::report);
         this.add(this.feedbackPanel);

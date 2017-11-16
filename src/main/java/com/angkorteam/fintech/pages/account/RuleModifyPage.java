@@ -3,7 +3,6 @@ package com.angkorteam.fintech.pages.account;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.Page;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -15,14 +14,13 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.AccountRuleBuilder;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.helper.AccountingRuleHelper;
 import com.angkorteam.fintech.pages.AccountingPage;
-import com.angkorteam.fintech.pages.role.RoleBrowsePage;
 import com.angkorteam.fintech.provider.MultipleChoiceProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
