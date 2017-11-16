@@ -55,6 +55,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -117,7 +118,7 @@ public class GroupCreatePage extends Page {
     protected ModalWindow clientPopup;
     protected AjaxLink<Void> clientAddLink;
 
-    protected Option itemClientValue;
+    protected Map<String, Object> popupModel;
 
     protected static final List<PageBreadcrumb> BREADCRUMB;
 
@@ -148,6 +149,7 @@ public class GroupCreatePage extends Page {
 
     @Override
     protected void initComponent() {
+        this.popupModel = Maps.newHashMap();
         PageParameters parameters = new PageParameters();
         parameters.add("centerId", this.centerId);
 
@@ -307,12 +309,12 @@ public class GroupCreatePage extends Page {
     }
 
     protected boolean clientAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.itemClientValue = null;
+        this.popupModel.clear();
         if (this.officeValue == null) {
             this.clientPopup.setContent(new OfficePopup("office", this.clientPopup));
             this.clientPopup.show(target);
         } else {
-            this.clientPopup.setContent(new ClientPopup(this.clientPopup.getContentId(), this.clientPopup, this, this.officeId));
+            this.clientPopup.setContent(new ClientPopup("client", this.clientPopup, this.popupModel, this.officeId));
             this.clientPopup.show(target);
         }
         return false;
@@ -346,7 +348,7 @@ public class GroupCreatePage extends Page {
     }
 
     protected void clientPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
-        if (this.itemClientValue != null) {
+        if (this.popupModel.get("clientValue") != null) {
             JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
             SelectQuery query = new SelectQuery("m_client");
             query.addJoin("LEFT JOIN m_code_value gender_code on m_client.gender_cv_id = gender_code.id");
@@ -357,7 +359,7 @@ public class GroupCreatePage extends Page {
             query.addField("gender_code.code_description gender");
             query.addField("m_client.account_no account");
             query.addField("status.enum_value status");
-            query.addWhere("m_client.id = :id", this.itemClientValue.getId());
+            query.addWhere("m_client.id = :id", ((Option) this.popupModel.get("clientValue")).getId());
             Map<String, Object> client = named.queryForMap(query.toSQL(), query.getParam());
             this.clientValue.add(client);
             target.add(this.clientTable);

@@ -1,5 +1,7 @@
 package com.angkorteam.fintech.popup;
 
+import java.util.Map;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -26,9 +28,9 @@ public class ClientPopup extends PopupPanel {
 
     private String officeId;
 
-    private Object model;
+    private Map<String, Object> model;
 
-    public ClientPopup(String name, ModalWindow window, Object model, String officeId) {
+    public ClientPopup(String name, ModalWindow window, Map<String, Object> model, String officeId) {
         super(name, window);
         this.model = model;
         this.window = window;
@@ -49,7 +51,7 @@ public class ClientPopup extends PopupPanel {
 
         this.clientProvider = new SingleChoiceProvider("m_client", "id", "display_name");
         this.clientProvider.applyWhere("office_id", "office_id = " + this.officeId);
-        this.clientField = new Select2SingleChoice<>("clientField", new PropertyModel<>(this.model, "itemClientValue"), this.clientProvider);
+        this.clientField = new Select2SingleChoice<>("clientField", new PropertyModel<>(this.model, "clientValue"), this.clientProvider);
         this.clientField.setLabel(Model.of("Client"));
         this.form.add(this.clientField);
         this.clientFeedback = new TextFeedbackPanel("clientFeedback", this.clientField);

@@ -4,58 +4,60 @@ import java.util.Map;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.DeprecatedPage;
+import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.widget.ReadOnlyView;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcTemplate;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingPreviewPage extends DeprecatedPage {
+public class SavingPreviewPage extends Page {
 
-    private String savingId;
+    protected String savingId;
 
     // Detail
 
-    protected WebMarkupContainer detailProductNameBlock;
-    protected WebMarkupContainer detailProductNameContainer;
+    protected WebMarkupBlock detailProductNameBlock;
+    protected WebMarkupContainer detailProductNameVContainer;
     protected String detailProductNameValue;
-    protected Label detailProductNameView;
+    protected ReadOnlyView detailProductNameView;
 
-    protected WebMarkupContainer detailShortNameBlock;
-    protected WebMarkupContainer detailShortNameContainer;
+    protected WebMarkupBlock detailShortNameBlock;
+    protected WebMarkupContainer detailShortNameVContainer;
     protected String detailShortNameValue;
-    protected Label detailShortNameView;
+    protected ReadOnlyView detailShortNameView;
 
-    protected WebMarkupContainer detailDescriptionBlock;
-    protected WebMarkupContainer detailDescriptionContainer;
+    protected WebMarkupBlock detailDescriptionBlock;
+    protected WebMarkupContainer detailDescriptionVContainer;
     protected String detailDescriptionValue;
-    protected Label detailDescriptionView;
+    protected ReadOnlyView detailDescriptionView;
 
     @Override
     protected void initComponent() {
-        this.detailProductNameBlock = new WebMarkupContainer("detailProductNameBlock");
+        this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
         add(this.detailProductNameBlock);
-        this.detailProductNameContainer = new WebMarkupContainer("detailProductNameContainer");
-        this.detailProductNameBlock.add(this.detailProductNameContainer);
-        this.detailProductNameView = new Label("detailProductNameView", new PropertyModel<>(this, "detailProductNameValue"));
-        this.detailProductNameContainer.add(this.detailProductNameView);
+        this.detailProductNameVContainer = new WebMarkupContainer("detailProductNameVContainer");
+        this.detailProductNameBlock.add(this.detailProductNameVContainer);
+        this.detailProductNameView = new ReadOnlyView("detailProductNameView", new PropertyModel<>(this, "detailProductNameValue"));
+        this.detailProductNameVContainer.add(this.detailProductNameView);
 
-        this.detailShortNameBlock = new WebMarkupContainer("detailShortNameBlock");
+        this.detailShortNameBlock = new WebMarkupBlock("detailShortNameBlock", Size.Six_6);
         add(this.detailShortNameBlock);
-        this.detailShortNameContainer = new WebMarkupContainer("detailShortNameContainer");
-        this.detailShortNameBlock.add(this.detailShortNameContainer);
-        this.detailShortNameView = new Label("detailShortNameView", new PropertyModel<>(this, "detailShortNameValue"));
-        this.detailShortNameContainer.add(this.detailShortNameView);
+        this.detailShortNameVContainer = new WebMarkupContainer("detailShortNameVContainer");
+        this.detailShortNameBlock.add(this.detailShortNameVContainer);
+        this.detailShortNameView = new ReadOnlyView("detailShortNameView", new PropertyModel<>(this, "detailShortNameValue"));
+        this.detailShortNameVContainer.add(this.detailShortNameView);
 
-        this.detailDescriptionBlock = new WebMarkupContainer("detailDescriptionBlock");
+        this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Six_6);
         add(this.detailDescriptionBlock);
-        this.detailDescriptionContainer = new WebMarkupContainer("detailDescriptionContainer");
-        this.detailDescriptionBlock.add(this.detailDescriptionContainer);
-        this.detailDescriptionView = new Label("detailDescriptionView", new PropertyModel<>(this, "detailDescriptionValue"));
-        this.detailDescriptionContainer.add(this.detailDescriptionView);
+        this.detailDescriptionVContainer = new WebMarkupContainer("detailDescriptionVContainer");
+        this.detailDescriptionBlock.add(this.detailDescriptionVContainer);
+        this.detailDescriptionView = new ReadOnlyView("detailDescriptionView", new PropertyModel<>(this, "detailDescriptionValue"));
+        this.detailDescriptionVContainer.add(this.detailDescriptionView);
     }
 
     @Override
