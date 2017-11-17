@@ -59,15 +59,18 @@ public class LoginPage extends WebPage {
         if (file.exists()) {
             try {
                 List<String> lines = FileUtils.readLines(file, "UTF-8");
+                String v = "";
+                String t = "";
                 for (String line : lines) {
                     if (line != null && !"".equals(line)) {
                         if (line.startsWith("Version")) {
-                            this.versionValue = this.versionValue + " " + StringUtils.trimToEmpty(StringUtils.substring(line, "Version:".length()));
+                            v = StringUtils.trimToEmpty(StringUtils.substring(line, "Version:".length()));
                         } else if (line.startsWith("Build-Time")) {
-                            this.versionValue = this.versionValue + " " + StringUtils.trimToEmpty(StringUtils.substring(line, "Build-Time:".length()));
+                            t = StringUtils.trimToEmpty(StringUtils.substring(line, "Build-Time:".length()));
                         }
                     }
                 }
+                this.versionValue = v + " " + t;
             } catch (IOException e) {
                 this.versionValue = this.versionValue + " N/A SNAPSHOT " + DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(new Date());
             }
