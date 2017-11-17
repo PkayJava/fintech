@@ -70,7 +70,7 @@ public class LoginPage extends WebPage {
                         }
                     }
                 }
-                this.versionValue = v + " " + t;
+                this.versionValue = "VERSION : " + v + " " + t;
             } catch (IOException e) {
                 this.versionValue = this.versionValue + " N/A SNAPSHOT " + DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(new Date());
             }
