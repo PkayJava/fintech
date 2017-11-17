@@ -27,13 +27,14 @@
 		</license>
 	</licenses>
 	<properties>
+		<maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ssZZ</maven.build.timestamp.format>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<servlet.version>3.1.0</servlet.version>
 		<wicket.version>8.0.0-M7</wicket.version>
 		<jetty9.version>9.4.5.v20170502</jetty9.version>
 		<log4j.version>2.8.2</log4j.version>
 		<junit.version>4.12</junit.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<!-- allowed values: R7, 1.0, 1.5, 2.0 or none -->
 		<wtp.version>none</wtp.version>
 		<frmk.version>1.7.7</frmk.version>
@@ -373,7 +374,8 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<version>${project.version}</version>
+							<Version>${project.version}</Version>
+							<Build-Time>${maven.build.timestamp}</Build-Time>
 						</manifestEntries>
 					</archive>
 				</configuration>

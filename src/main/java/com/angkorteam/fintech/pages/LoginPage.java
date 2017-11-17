@@ -1,15 +1,25 @@
 package com.angkorteam.fintech.pages;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.PropertyModel;
 
+import com.angkorteam.fintech.Application;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.provider.MifosSingleChoiceProvider;
+import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.framework.ReferenceUtilities;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -22,22 +32,49 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
  */
 public class LoginPage extends WebPage {
 
-    private MifosSingleChoiceProvider identifierProvider;
-    private Option identifierValue;
-    private Select2SingleChoice<Option> identifierField;
+    protected MifosSingleChoiceProvider identifierProvider;
+    protected Option identifierValue;
+    protected Select2SingleChoice<Option> identifierField;
 
-    private String loginValue;
-    private TextField<String> loginField;
+    protected String loginValue;
+    protected TextField<String> loginField;
 
-    private String passwordValue;
-    private TextField<String> passwordField;
+    protected String passwordValue;
+    protected TextField<String> passwordField;
 
-    private Form<Void> form;
-    private Button loginButton;
+    protected String versionValue = "VERSION :";
+    protected ReadOnlyView versionView;
+
+    protected Form<Void> form;
+    protected Button loginButton;
 
     @Override
     protected void onInitialize() {
         super.onInitialize();
+
+        String manifest = "/META-INF/MANIFEST.MF";
+        String absoluteDiskPath = Application.get().getServletContext().getRealPath(manifest);
+        File file = new File(absoluteDiskPath);
+
+        if (file.exists()) {
+            try {
+                List<String> lines = FileUtils.readLines(file, "UTF-8");
+                for (String line : lines) {
+                    if (line != null && !"".equals(line)) {
+                        if (line.startsWith("Version")) {
+                            this.versionValue = this.versionValue + " " + StringUtils.trimToEmpty(StringUtils.substring(line, "Version:".length()));
+                        } else if (line.startsWith("Build-Time")) {
+                            this.versionValue = this.versionValue + " " + StringUtils.trimToEmpty(StringUtils.substring(line, "Build-Time:".length()));
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                this.versionValue = this.versionValue + " N/A SNAPSHOT " + DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(new Date());
+            }
+        } else {
+            this.versionValue = this.versionValue + " N/A SNAPSHOT " + DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(new Date());
+        }
+
         this.form = new Form<>("form");
         this.add(this.form);
 
@@ -59,6 +96,8 @@ public class LoginPage extends WebPage {
         this.form.add(this.loginButton);
         this.loginButton.setOnSubmit(this::loginButtonClick);
 
+        this.versionView = new ReadOnlyView("versionView", new PropertyModel<String>(this, "versionValue"));
+        add(this.versionView);
     }
 
     protected void loginButtonClick(Button button) {
