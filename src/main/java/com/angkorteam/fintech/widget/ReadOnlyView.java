@@ -21,7 +21,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public class ReadOnlyView extends Label {
 
-    private String format;
+    protected String format;
 
     public ReadOnlyView(String id, IModel<?> value) {
         super(id, value);

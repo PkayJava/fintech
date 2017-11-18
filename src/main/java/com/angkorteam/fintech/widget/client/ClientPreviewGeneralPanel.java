@@ -65,7 +65,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class ClientPreviewGeneralPanel extends Panel {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientPreviewGeneralPanel.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ClientPreviewGeneralPanel.class);
 
     protected Page itemPage;
 

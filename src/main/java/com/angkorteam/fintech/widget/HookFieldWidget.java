@@ -12,11 +12,11 @@ import org.apache.wicket.model.PropertyModel;
  */
 public class HookFieldWidget extends Panel {
 
-    private String itemName;
-    private Map<String, String> itemValue;
-    private Label itemLabel;
-    private TextField<String> itemField;
-    private TextFeedbackPanel itemFeedback;
+    protected String itemName;
+    protected Map<String, String> itemValue;
+    protected Label itemLabel;
+    protected TextField<String> itemField;
+    protected TextFeedbackPanel itemFeedback;
 
     public HookFieldWidget(String id, String itemName, Map<String, String> itemValue) {
         super(id);

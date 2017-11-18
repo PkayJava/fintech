@@ -68,7 +68,6 @@ public class ClientIdentityCreatePage extends Page {
 
     @Override
     protected void initComponent() {
-
         PageParameters parameters = new PageParameters();
         parameters.add("clientId", this.clientId);
 

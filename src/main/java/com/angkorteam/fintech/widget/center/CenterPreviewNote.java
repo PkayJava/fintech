@@ -9,7 +9,7 @@ import org.apache.wicket.model.Model;
 
 public class CenterPreviewNote implements ITab {
 
-    private Page itemPage;
+    protected Page itemPage;
 
     public CenterPreviewNote(Page itemPage) {
         this.itemPage = itemPage;

@@ -9,7 +9,7 @@ import org.apache.wicket.model.Model;
 
 public class AccountPreviewTransaction implements ITab {
 
-    private Page itemPage;
+    protected Page itemPage;
 
     public AccountPreviewTransaction(Page itemPage) {
         this.itemPage = itemPage;

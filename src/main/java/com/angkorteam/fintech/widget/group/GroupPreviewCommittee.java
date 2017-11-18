@@ -9,7 +9,7 @@ import org.apache.wicket.model.Model;
 
 public class GroupPreviewCommittee implements ITab {
 
-    private Page itemPage;
+    protected Page itemPage;
 
     public GroupPreviewCommittee(Page itemPage) {
         this.itemPage = itemPage;

@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 
 public class WebMarkupBlock extends WebMarkupContainer {
     
-    private Size size;
+    protected Size size;
 
     public WebMarkupBlock(String id, Size size) {
         super(id);
@@ -45,9 +45,9 @@ public class WebMarkupBlock extends WebMarkupContainer {
         Eleven_11(11, "col-xl-11 col-lg-11 col-md-11 col-sm-11 col-xs-11"), 
         Twelve_12(12, "col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12");
 
-        private String css;
+        protected String css;
 
-        private int size;
+        protected int size;
 
         Size(int size, String css) {
             this.css = css;

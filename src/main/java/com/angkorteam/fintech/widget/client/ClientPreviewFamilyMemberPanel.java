@@ -4,7 +4,7 @@ import org.apache.wicket.Page;
 
 public class ClientPreviewFamilyMemberPanel extends com.angkorteam.fintech.widget.Panel {
 
-    private Page itemPage;
+    protected Page itemPage;
 
     public ClientPreviewFamilyMemberPanel(String id, Page itemPage) {
         super(id);

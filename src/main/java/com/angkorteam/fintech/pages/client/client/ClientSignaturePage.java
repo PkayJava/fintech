@@ -57,7 +57,7 @@ public class ClientSignaturePage extends Page {
         this.fileBlock.add(this.fileIContainer);
         this.fileField = new FileUploadField("fileField", new PropertyModel<>(this, "fileValue"));
         this.fileField.setRequired(true);
-        this.fileField.setLabel(Model.of("file Account"));
+        this.fileField.setLabel(Model.of("Picture"));
         this.fileIContainer.add(this.fileField);
         this.fileFeedback = new TextFeedbackPanel("fileFeedback", this.fileField);
         this.fileIContainer.add(this.fileFeedback);

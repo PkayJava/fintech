@@ -1,13 +1,22 @@
 package com.angkorteam.fintech.helper;
 
+import java.io.File;
 import java.io.InputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.angkorteam.fintech.IMifos;
+import com.angkorteam.fintech.MifosDataSourceManager;
+import com.angkorteam.framework.SpringBean;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class ClientHelper {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientHelper.class);
 
     public static JsonNode createClient(IMifos session, JsonNode object) throws UnirestException {
         return Helper.performServerPost(session, "/api/v1/clients", object);
@@ -26,12 +35,12 @@ public class ClientHelper {
         return Helper.performServerPut(session, "/api/v1/centers/" + id, object);
     }
 
-    public static JsonNode postCenterNote(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode postNoteCenter(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("centerId");
         return Helper.performServerPost(session, "/api/v1/groups/" + id + "/notes", object);
     }
 
-    public static JsonNode postGroupNote(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode postNoteGroup(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("groupId");
         return Helper.performServerPost(session, "/api/v1/groups/" + id + "/notes", object);
     }
@@ -126,6 +135,22 @@ public class ClientHelper {
     public static JsonNode createIdentityClient(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("clientId");
         return Helper.performServerPost(session, "/api/v1/clients/" + id + "/identifiers", object);
+    }
+
+    public static JsonNode postNoteClient(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("clientId");
+        return Helper.performServerPost(session, "/api/v1/clients/" + id + "/notes", object);
+    }
+
+    public static JsonNode postDocumentClient(IMifos session, String clientId, String name, String description, File file) throws UnirestException {
+        MifosDataSourceManager mifos = SpringBean.getBean(MifosDataSourceManager.class);
+        String url = "/api/v1/clients/" + clientId + "/documents";
+        String mifosUrl = mifos.getMifosUrl() + url;
+        JsonNode response = Unirest.post(mifosUrl).header("Authorization", "Basic " + session.getToken()).header("Fineract-Platform-TenantId", session.getIdentifier()).header("accept", "application/json").field("name", name).field("description", description).field("file", file).asJson().getBody();
+        if (Helper.hasError(response)) {
+            LOGGER.info("RS {}", response.toString());
+        }
+        return response;
     }
 
 }

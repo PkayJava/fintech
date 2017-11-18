@@ -9,7 +9,7 @@ import org.apache.wicket.model.Model;
 
 public class GroupPreviewNote implements ITab {
 
-    private Page itemPage;
+    protected Page itemPage;
 
     public GroupPreviewNote(Page itemPage) {
         this.itemPage = itemPage;

@@ -15,7 +15,7 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.WorkingPage;
-import com.angkorteam.fintech.dto.builder.NoteBuilder;
+import com.angkorteam.fintech.dto.builder.client.center.CenterNoteBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
@@ -116,13 +116,13 @@ public class CenterPreviewNotePanel extends Panel {
     }
 
     protected void addButtonSubmit(Button button) {
-        NoteBuilder builder = new NoteBuilder();
+        CenterNoteBuilder builder = new CenterNoteBuilder();
         builder.withCenterId(this.centerId);
         builder.withNote(this.noteValue);
 
         JsonNode node = null;
         try {
-            node = ClientHelper.postCenterNote((Session) getSession(), builder.build());
+            node = ClientHelper.postNoteCenter((Session) getSession(), builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

@@ -9,7 +9,7 @@ import org.apache.wicket.model.Model;
 
 public class CenterPreviewGeneral implements ITab {
 
-    private Page itemPage;
+    protected Page itemPage;
 
     public CenterPreviewGeneral(Page itemPage) {
         this.itemPage = itemPage;

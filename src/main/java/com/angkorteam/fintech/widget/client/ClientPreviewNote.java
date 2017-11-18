@@ -10,7 +10,7 @@ import com.angkorteam.fintech.widget.group.GroupPreviewCommitteePanel;
 
 public class ClientPreviewNote implements ITab {
 
-    private Page itemPage;
+    protected Page itemPage;
 
     public ClientPreviewNote(Page itemPage) {
         this.itemPage = itemPage;

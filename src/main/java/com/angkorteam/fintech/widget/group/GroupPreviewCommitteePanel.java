@@ -6,7 +6,7 @@ import com.angkorteam.fintech.widget.Panel;
 
 public class GroupPreviewCommitteePanel extends Panel {
 
-    private Page itemPage;
+    protected Page itemPage;
 
     public GroupPreviewCommitteePanel(String id, Page itemPage) {
         super(id);
