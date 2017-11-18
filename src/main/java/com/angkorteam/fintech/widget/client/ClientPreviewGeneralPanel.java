@@ -31,6 +31,7 @@ import com.angkorteam.fintech.pages.client.client.ClientAcceptTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientAssignStaffPage;
 import com.angkorteam.fintech.pages.client.client.ClientDefaultSavingAccountPage;
 import com.angkorteam.fintech.pages.client.client.ClientRejectTransferPage;
+import com.angkorteam.fintech.pages.client.client.ClientSignatureUploadPage;
 import com.angkorteam.fintech.pages.client.client.ClientTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientUndoTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientWebcamPage;
@@ -161,7 +162,7 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.clientScreenReportLink = new BookmarkablePageLink<Void>("clientScreenReportLink", ClientTransferPage.class, parameters);
         this.buttonGroups.add(this.clientScreenReportLink);
 
-        this.clientUploadSignatureLink = new BookmarkablePageLink<Void>("clientUploadSignatureLink", ClientTransferPage.class, parameters);
+        this.clientUploadSignatureLink = new BookmarkablePageLink<Void>("clientUploadSignatureLink", ClientSignatureUploadPage.class, parameters);
         this.buttonGroups.add(this.clientUploadSignatureLink);
 
         this.viewStandingInstructionLink = new BookmarkablePageLink<Void>("viewStandingInstructionLink", ClientTransferPage.class, parameters);
