@@ -12,7 +12,6 @@ import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -21,20 +20,20 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  */
 public class ReversePopup extends PopupPanel {
 
-    private ModalWindow window;
+    protected ModalWindow window;
 
-    private String transactionId;
+    protected String transactionId;
 
-    private Form<Void> form;
-    private AjaxButton reverseButton;
+    protected Form<Void> form;
+    protected AjaxButton reverseButton;
 
-    private String reasonValue;
-    private TextArea<String> reasonField;
-    private TextFeedbackPanel reasonFeedback;
+    protected String reasonValue;
+    protected TextArea<String> reasonField;
+    protected TextFeedbackPanel reasonFeedback;
 
-    private Map<String,Object> model;
+    protected Map<String, Object> model;
 
-    public ReversePopup(String name, ModalWindow window, Map<String,Object> model, String transactionId) {
+    public ReversePopup(String name, ModalWindow window, Map<String, Object> model, String transactionId) {
         super(name, window);
         this.model = model;
         this.window = window;
@@ -42,9 +41,11 @@ public class ReversePopup extends PopupPanel {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -59,6 +60,14 @@ public class ReversePopup extends PopupPanel {
         this.form.add(this.reasonField);
         this.reasonFeedback = new TextFeedbackPanel("reasonFeedback", this.reasonField);
         this.form.add(this.reasonFeedback);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
     protected boolean reverseButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {

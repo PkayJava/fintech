@@ -62,8 +62,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class GroupCreatePage extends Page {
 
-    private String centerId;
-    private String officeId;
+    protected String centerId;
+    protected String officeId;
 
     protected Form<Void> form;
     protected Button saveButton;

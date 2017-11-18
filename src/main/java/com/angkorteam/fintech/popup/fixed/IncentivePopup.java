@@ -3,6 +3,7 @@ package com.angkorteam.fintech.popup.fixed;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.form.TextField;
@@ -10,6 +11,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import com.angkorteam.fintech.popup.PopupPanel;
 import com.angkorteam.fintech.provider.AttributeProvider;
 import com.angkorteam.fintech.provider.OperandTypeProvider;
 import com.angkorteam.fintech.provider.OperatorProvider;
@@ -20,7 +22,6 @@ import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
@@ -65,20 +66,23 @@ public class IncentivePopup extends PopupPanel {
     protected TextField<Double> interestField;
     protected TextFeedbackPanel interestFeedback;
 
-    protected List<Map<String, Object>> incentiveValue;
+    protected List<Map<String, Object>> dataValue;
     protected DataTable<Map<String, Object>, String> dataTable;
-    protected ListDataProvider provider;
+    protected ListDataProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
 
     public IncentivePopup(String name, ModalWindow window, List<Map<String, Object>> incentiveValue) {
         super(name, window);
         this.window = window;
-        this.incentiveValue = incentiveValue;
+        this.dataValue = incentiveValue;
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -121,18 +125,26 @@ public class IncentivePopup extends PopupPanel {
         this.form.add(this.interestFeedback);
 
         // Table
-        List<IColumn<Map<String, Object>, String>> incentiveColumn = Lists.newArrayList();
-        incentiveColumn.add(new TextColumn(Model.of("Attribute"), "attribute", "attribute", this::attributeColumn));
-        incentiveColumn.add(new TextColumn(Model.of("Operator"), "operator", "operator", this::operatorColumn));
-        incentiveColumn.add(new TextColumn(Model.of("Value"), "operand", "operand", this::operandColumn));
-        incentiveColumn.add(new TextColumn(Model.of("Type"), "operandType", "operandType", this::operandTypeColumn));
-        incentiveColumn.add(new TextColumn(Model.of("Interest"), "interest", "interest", this::interestColumn));
-        incentiveColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::actionItem, this::actionClick));
-        this.provider = new ListDataProvider(this.incentiveValue);
-        this.dataTable = new DataTable<>("dataTable", incentiveColumn, this.provider, 20);
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextColumn(Model.of("Attribute"), "attribute", "attribute", this::dataColumn));
+        this.dataColumn.add(new TextColumn(Model.of("Operator"), "operator", "operator", this::dataColumn));
+        this.dataColumn.add(new TextColumn(Model.of("Value"), "operand", "operand", this::dataColumn));
+        this.dataColumn.add(new TextColumn(Model.of("Type"), "operandType", "operandType", this::dataColumn));
+        this.dataColumn.add(new TextColumn(Model.of("Interest"), "interest", "interest", this::dataColumn));
+        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
+        this.dataProvider = new ListDataProvider(this.dataValue);
+        this.dataTable = new DataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         add(this.dataTable);
-        this.dataTable.addTopToolbar(new HeadersToolbar<>(this.dataTable, this.provider));
+        this.dataTable.addTopToolbar(new HeadersToolbar<>(this.dataTable, this.dataProvider));
         this.dataTable.addBottomToolbar(new NoRecordsToolbar(this.dataTable));
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
     protected boolean addButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
@@ -144,7 +156,7 @@ public class IncentivePopup extends PopupPanel {
         item.put("operand", this.operandValue);
         item.put("operandType", this.operandTypeValue);
         item.put("interest", this.interestValue);
-        this.incentiveValue.add(item);
+        this.dataValue.add(item);
         target.add(this.dataTable);
         return false;
     }
@@ -153,49 +165,38 @@ public class IncentivePopup extends PopupPanel {
         return false;
     }
 
-    protected ItemPanel attributeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Option value = (Option) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("attribute".equals(column) || "operator".equals(column) || "operandType".equals(column)) {
+            Option value = (Option) model.get(column);
+            return new TextCell(value);
+        } else if ("operand".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("interest".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected ItemPanel operatorColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Option value = (Option) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel operandColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel operandTypeColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Option value = (Option) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel interestColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double value = (Double) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void dataClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         if ("delete".equals(s)) {
             int index = -1;
-            for (int i = 0; i < this.incentiveValue.size(); i++) {
-                Map<String, Object> column = this.incentiveValue.get(i);
+            for (int i = 0; i < this.dataValue.size(); i++) {
+                Map<String, Object> column = this.dataValue.get(i);
                 if (model.get("uuid").equals(column.get("uuid"))) {
                     index = i;
                     break;
                 }
             }
             if (index >= 0) {
-                this.incentiveValue.remove(index);
+                this.dataValue.remove(index);
             }
             target.add(this.dataTable);
         }
     }
 
-    protected List<ActionItem> actionItem(String s, Map<String, Object> model) {
+    protected List<ActionItem> dataAction(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         return actions;

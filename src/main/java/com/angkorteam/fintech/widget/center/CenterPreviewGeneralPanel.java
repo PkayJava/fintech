@@ -8,7 +8,6 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -28,6 +27,7 @@ import com.angkorteam.fintech.pages.client.center.SavingAccountWithdrawPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
@@ -68,10 +68,12 @@ public class CenterPreviewGeneralPanel extends Panel {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
+    protected void initData() {
         this.centerId = new PropertyModel<String>(this.itemPage, "centerId").getObject();
+    }
+
+    @Override
+    protected void initComponent() {
 
         this.groupProvider = new JdbcProvider("m_group");
         this.groupProvider.addJoin("LEFT JOIN r_enum_value ON m_group.status_enum = r_enum_value.enum_id AND r_enum_value.enum_name = 'status_enum'");
@@ -130,7 +132,14 @@ public class CenterPreviewGeneralPanel extends Panel {
 
         this.savingAccountTable = new DefaultDataTable<>("savingAccountTable", this.savingAccountColumn, this.savingAccountProvider, 20);
         add(this.savingAccountTable);
+    }
 
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
     protected List<ActionItem> savingAccountActionItem(String s, Map<String, Object> model) {

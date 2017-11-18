@@ -1,7 +1,6 @@
 package com.angkorteam.fintech.popup;
 
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 
 /**
  * Created by socheatkhauv on 7/2/17.
@@ -13,8 +12,19 @@ public class CurrencyPopup extends PopupPanel {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
+
+    @Override
+    protected void initComponent() {
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
 }

@@ -14,7 +14,6 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -47,6 +46,7 @@ import com.angkorteam.fintech.popup.client.client.ClientUnassignStaffPopup;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
@@ -115,11 +115,7 @@ public class ClientPreviewGeneralPanel extends Panel {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
-        initData();
-
+    protected void initComponent() {
         this.clientUnassignStaffPopup = new ModalWindow("clientUnassignStaffPopup");
         this.clientUnassignStaffPopup.setOnClose(this::clientUnassignStaffPopupClose);
         add(this.clientUnassignStaffPopup);
@@ -226,37 +222,14 @@ public class ClientPreviewGeneralPanel extends Panel {
 
         this.takePictureLink = new BookmarkablePageLink<Void>("takePictureLink", ClientWebcamPage.class, parameters);
         add(this.takePictureLink);
-
-        initDefault();
     }
 
-    protected void clientUnassignStaffPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
-        if ("confirmButton".equals(signalId)) {
-            JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-            String staffId = jdbcTemplate.queryForObject("select staff_id from m_client where id = ?", String.class, this.clientId);
-            ClientUnassignStaffBuilder builder = new ClientUnassignStaffBuilder();
-            builder.withId(this.clientId);
-            builder.withStaffId(staffId);
-            try {
-                ClientHelper.unassignStaffClient((Session) getSession(), builder.build());
-            } catch (UnirestException e) {
-                LOGGER.info(e.getMessage(), e);
-            }
-            jdbcTemplate.execute("commit");
-            Map<String, Object> clientObject = jdbcTemplate.queryForMap("select staff_id from m_client where id = ?", this.clientId);
-            this.assignStaffLink.setVisible(clientObject.get("staff_id") == null);
-            this.unassignStaffLink.setVisible(clientObject.get("staff_id") != null);
-            target.add(this.buttonGroups);
-        }
+    @Override
+    protected void configureRequiredValidation() {
     }
 
-    protected boolean unassignStaffLinkClick(AjaxLink<Void> ajaxLink, AjaxRequestTarget target) {
-        this.clientUnassignStaffPopup.setContent(new ClientUnassignStaffPopup(this.clientUnassignStaffPopup.getContentId(), this.clientUnassignStaffPopup, this));
-        this.clientUnassignStaffPopup.show(target);
-        return false;
-    }
-
-    protected void initDefault() {
+    @Override
+    protected void configureMetaData() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         Map<String, Object> clientObject = jdbcTemplate.queryForMap("select * from m_client where id = ?", this.clientId);
         Long statusEnum = (Long) clientObject.get("status_enum");
@@ -321,9 +294,35 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.clientScreenReportLink.setVisible(true);
         this.assignStaffLink.setVisible(clientObject.get("staff_id") == null);
         this.unassignStaffLink.setVisible(clientObject.get("staff_id") != null);
-
     }
 
+    protected void clientUnassignStaffPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
+        if ("confirmButton".equals(signalId)) {
+            JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+            String staffId = jdbcTemplate.queryForObject("select staff_id from m_client where id = ?", String.class, this.clientId);
+            ClientUnassignStaffBuilder builder = new ClientUnassignStaffBuilder();
+            builder.withId(this.clientId);
+            builder.withStaffId(staffId);
+            try {
+                ClientHelper.unassignStaffClient((Session) getSession(), builder.build());
+            } catch (UnirestException e) {
+                LOGGER.info(e.getMessage(), e);
+            }
+            jdbcTemplate.execute("commit");
+            Map<String, Object> clientObject = jdbcTemplate.queryForMap("select staff_id from m_client where id = ?", this.clientId);
+            this.assignStaffLink.setVisible(clientObject.get("staff_id") == null);
+            this.unassignStaffLink.setVisible(clientObject.get("staff_id") != null);
+            target.add(this.buttonGroups);
+        }
+    }
+
+    protected boolean unassignStaffLinkClick(AjaxLink<Void> ajaxLink, AjaxRequestTarget target) {
+        this.clientUnassignStaffPopup.setContent(new ClientUnassignStaffPopup(this.clientUnassignStaffPopup.getContentId(), this.clientUnassignStaffPopup, this));
+        this.clientUnassignStaffPopup.show(target);
+        return false;
+    }
+
+    @Override
     protected void initData() {
         this.clientId = new PropertyModel<String>(this.itemPage, "clientId").getObject();
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);

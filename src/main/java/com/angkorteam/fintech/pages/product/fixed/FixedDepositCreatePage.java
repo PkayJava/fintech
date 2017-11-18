@@ -92,7 +92,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FixedDepositCreatePage extends Page {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FixedDepositCreatePage.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(FixedDepositCreatePage.class);
 
     public static final String ACC_NONE = "None";
     public static final String ACC_CASH = "Cash";

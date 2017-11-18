@@ -1,5 +1,7 @@
 package com.angkorteam.fintech.popup;
 
+import java.util.Map;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -15,13 +17,12 @@ import com.angkorteam.fintech.widget.Webcam;
 import com.angkorteam.framework.ReferenceUtilities;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 
 public class WebcamPopup extends PopupPanel {
 
     protected ModalWindow window;
-    protected Object model;
+    protected Map<String, Object> model;
 
     protected Form<Void> form;
     protected AjaxButton okayButton;
@@ -36,7 +37,7 @@ public class WebcamPopup extends PopupPanel {
 
     protected WebMarkupContainer takeButton;
 
-    public WebcamPopup(String name, ModalWindow window, Object model) {
+    public WebcamPopup(String name, ModalWindow window, Map<String, Object> model) {
         super(name, window);
         this.model = model;
         this.window = window;
@@ -71,9 +72,11 @@ public class WebcamPopup extends PopupPanel {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -101,6 +104,14 @@ public class WebcamPopup extends PopupPanel {
         this.takeButton = new WebMarkupContainer("takeButton");
         this.takeButton.setOutputMarkupId(true);
         this.form.add(this.takeButton);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
     protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {

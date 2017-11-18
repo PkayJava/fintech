@@ -8,7 +8,6 @@ import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -18,6 +17,7 @@ import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -44,10 +44,7 @@ public class AccountPreviewChargePanel extends Panel {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        initData();
-
+    protected void initComponent() {
         this.dataProvider = new JdbcProvider("m_savings_account_charge");
         this.dataProvider.addJoin("INNER JOIN m_charge ON m_savings_account_charge.charge_id = m_charge.id");
         this.dataProvider.boardField("m_savings_account_charge.id", "id", Long.class);
@@ -83,9 +80,17 @@ public class AccountPreviewChargePanel extends Panel {
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
         this.dataFilterForm.add(this.dataTable);
-
     }
 
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    @Override
     protected void initData() {
         this.accountId = new PropertyModel<String>(this.itemPage, "accountId").getObject();
     }

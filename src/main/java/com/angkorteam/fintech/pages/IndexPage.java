@@ -13,11 +13,11 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class IndexPage extends Page {
 
-    private Option test;
+    protected Option test;
 
-    private Label pp;
+    protected Label pp;
 
-    private AjaxLink<Void> ss;
+    protected AjaxLink<Void> ss;
 
     @Override
     protected void initData() {

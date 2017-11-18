@@ -35,7 +35,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FundModifyPage extends Page {
 
-    private String fundId;
+    protected String fundId;
 
     protected WebMarkupBlock externalIdBlock;
     protected WebMarkupContainer externalIdIContainer;
@@ -49,11 +49,11 @@ public class FundModifyPage extends Page {
     protected TextField<String> nameField;
     protected TextFeedbackPanel nameFeedback;
 
-    private Form<Void> form;
-    private Button saveButton;
-    private BookmarkablePageLink<Void> closeLink;
+    protected Form<Void> form;
+    protected Button saveButton;
+    protected BookmarkablePageLink<Void> closeLink;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -147,7 +147,7 @@ public class FundModifyPage extends Page {
         this.externalIdIContainer.add(this.externalIdFeedback);
     }
 
-    private void saveButtonSubmit(Button button) {
+    protected void saveButtonSubmit(Button button) {
         FundBuilder builder = new FundBuilder();
         builder.withName(this.nameValue);
         builder.withExternalId(this.externalIdValue);

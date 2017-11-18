@@ -38,14 +38,14 @@ public class MixedBrowsePage extends Page {
 
     protected WebMarkupBlock dataBlock;
     protected WebMarkupContainer dataIContainer;
-    private DataTable<Map<String, Object>, String> dataTable;
-    private JdbcProvider dataProvider;
-    private List<IColumn<Map<String, Object>, String>> dataColumn;
-    private FilterForm<Map<String, String>> dataFilterForm;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected FilterForm<Map<String, String>> dataFilterForm;
 
-    private BookmarkablePageLink<Void> createLink;
+    protected BookmarkablePageLink<Void> createLink;
 
-    private static final List<PageBreadcrumb> BREADCRUMB;
+    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -112,7 +112,7 @@ public class MixedBrowsePage extends Page {
     protected void configureMetaData() {
     }
 
-    private ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
         if ("name".equals(column)) {
             String name = (String) model.get(column);
             PageParameters parameters = new PageParameters();

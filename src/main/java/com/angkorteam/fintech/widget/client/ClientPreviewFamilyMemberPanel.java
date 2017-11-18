@@ -1,16 +1,30 @@
 package com.angkorteam.fintech.widget.client;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.markup.html.panel.Panel;
- 
 
-public class ClientPreviewFamilyMemberPanel extends Panel {
+public class ClientPreviewFamilyMemberPanel extends com.angkorteam.fintech.widget.Panel {
 
     private Page itemPage;
 
     public ClientPreviewFamilyMemberPanel(String id, Page itemPage) {
         super(id);
         this.itemPage = itemPage;
+    }
+
+    @Override
+    protected void initData() {
+    }
+
+    @Override
+    protected void initComponent() {
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
 }

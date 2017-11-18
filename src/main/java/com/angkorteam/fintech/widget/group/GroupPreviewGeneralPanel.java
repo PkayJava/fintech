@@ -8,17 +8,15 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.pages.client.center.SavingAccountPreviewPage;
 import com.angkorteam.fintech.pages.client.group.SavingAccountSelectionPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
-import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
@@ -47,11 +45,12 @@ public class GroupPreviewGeneralPanel extends Panel {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
+    protected void initData() {
         this.groupId = new PropertyModel<String>(this.itemPage, "groupId").getObject();
+    }
 
+    @Override
+    protected void initComponent() {
         PageParameters parameters = new PageParameters();
         parameters.add("groupId", this.groupId);
 
@@ -78,6 +77,14 @@ public class GroupPreviewGeneralPanel extends Panel {
 
         this.savingAccountTable = new DefaultDataTable<>("savingAccountTable", this.savingAccountColumn, this.savingAccountProvider, 20);
         add(this.savingAccountTable);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
     protected List<ActionItem> savingAccountAction(String s, Map<String, Object> model) {
@@ -135,7 +142,7 @@ public class GroupPreviewGeneralPanel extends Panel {
             PageParameters parameters = new PageParameters();
             parameters.add("groupId", this.groupId);
             parameters.add("accountId", model.get("id"));
-//            return new LinkCell(SavingAccountPreviewPage.class, parameters, value);
+            // return new LinkCell(SavingAccountPreviewPage.class, parameters, value);
             return new TextCell(value);
         } else if ("product".equals(column)) {
             String value = (String) model.get(column);

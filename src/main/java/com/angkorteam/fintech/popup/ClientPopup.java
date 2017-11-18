@@ -10,25 +10,24 @@ import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 public class ClientPopup extends PopupPanel {
 
-    private ModalWindow window;
+    protected ModalWindow window;
 
-    private Form<Void> form;
-    private AjaxButton okayButton;
+    protected Form<Void> form;
+    protected AjaxButton okayButton;
 
-    private SingleChoiceProvider clientProvider;
-    private Select2SingleChoice<Option> clientField;
-    private TextFeedbackPanel clientFeedback;
+    protected SingleChoiceProvider clientProvider;
+    protected Select2SingleChoice<Option> clientField;
+    protected TextFeedbackPanel clientFeedback;
 
-    private String officeId;
+    protected String officeId;
 
-    private Map<String, Object> model;
+    protected Map<String, Object> model;
 
     public ClientPopup(String name, ModalWindow window, Map<String, Object> model, String officeId) {
         super(name, window);
@@ -38,9 +37,11 @@ public class ClientPopup extends PopupPanel {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -56,7 +57,14 @@ public class ClientPopup extends PopupPanel {
         this.form.add(this.clientField);
         this.clientFeedback = new TextFeedbackPanel("clientFeedback", this.clientField);
         this.form.add(this.clientFeedback);
+    }
 
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
     protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {

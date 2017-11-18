@@ -15,7 +15,6 @@ import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 
@@ -53,9 +52,11 @@ public class RateModifyPopup extends PopupPanel {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -99,6 +100,14 @@ public class RateModifyPopup extends PopupPanel {
         this.differentialIContainer.add(this.differentialField);
         this.differentialFeedback = new TextFeedbackPanel("differentialFeedback", this.differentialField);
         this.differentialIContainer.add(this.differentialFeedback);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
     protected boolean saveButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {

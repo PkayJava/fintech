@@ -25,7 +25,6 @@ import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.DayMonthTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -33,7 +32,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 
 public class AccountChargePopup extends PopupPanel {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AccountChargePopup.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(AccountChargePopup.class);
 
     protected ModalWindow window;
     protected Map<String, Object> model;
@@ -86,9 +85,11 @@ public class AccountChargePopup extends PopupPanel {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -163,6 +164,14 @@ public class AccountChargePopup extends PopupPanel {
         this.repaymentEveryContainer.add(this.repaymentEveryField);
         this.repaymentEveryFeedback = new TextFeedbackPanel("repaymentEveryFeedback", this.repaymentEveryField);
         this.repaymentEveryContainer.add(this.repaymentEveryFeedback);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
     protected boolean chargeFieldUpdate(AjaxRequestTarget target) {

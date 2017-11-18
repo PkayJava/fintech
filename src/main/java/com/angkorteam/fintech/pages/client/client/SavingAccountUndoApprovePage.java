@@ -22,8 +22,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingAccountUndoApprovePage extends Page {
 
-    private String clientId;
-    private String accountId;
+    protected String clientId;
+    protected String accountId;
 
     protected Form<Void> form;
     protected Button saveButton;

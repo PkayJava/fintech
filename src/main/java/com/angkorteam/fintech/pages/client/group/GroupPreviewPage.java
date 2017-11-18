@@ -16,7 +16,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPan
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class GroupPreviewPage extends Page {
 
-    private AjaxTabbedPanel<ITab> tab;
+    protected AjaxTabbedPanel<ITab> tab;
 
     protected String groupId;
 

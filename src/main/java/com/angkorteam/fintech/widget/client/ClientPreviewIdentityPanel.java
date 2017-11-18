@@ -1,8 +1,23 @@
 package com.angkorteam.fintech.widget.client;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.Page;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
 import com.angkorteam.fintech.pages.client.client.ClientIdentityCreatePage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
@@ -10,21 +25,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
-import org.apache.wicket.Page;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import java.util.List;
-import java.util.Map;
-
 
 public class ClientPreviewIdentityPanel extends Panel {
 
@@ -51,11 +51,7 @@ public class ClientPreviewIdentityPanel extends Panel {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
-        initData();
-
+    protected void initComponent() {
         this.dataProvider = new JdbcProvider("m_client_identifier");
         this.dataProvider.addJoin("LEFT JOIN m_code_value document_type on m_client_identifier.document_type_id = document_type.id");
         this.dataProvider.boardField("m_client_identifier.description", "description", String.class);
@@ -84,9 +80,17 @@ public class ClientPreviewIdentityPanel extends Panel {
         parameters.add("clientId", this.clientId);
         this.createLink = new BookmarkablePageLink<>("createLink", ClientIdentityCreatePage.class, parameters);
         add(this.createLink);
-
     }
 
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    @Override
     protected void initData() {
         this.clientId = new PropertyModel<String>(this.itemPage, "clientId").getObject();
     }
@@ -98,6 +102,5 @@ public class ClientPreviewIdentityPanel extends Panel {
         }
         throw new WicketRuntimeException("Unknown " + column);
     }
-
 
 }

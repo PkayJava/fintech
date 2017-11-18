@@ -15,7 +15,6 @@ import com.angkorteam.fintech.provider.RelationshipProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -26,49 +25,49 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
  */
 public class FamilyMemberPopup extends PopupPanel {
 
-    private ModalWindow window;
+    protected ModalWindow window;
 
-    private Form<Void> form;
-    private AjaxButton okayButton;
+    protected Form<Void> form;
+    protected AjaxButton okayButton;
 
-    private RelationshipProvider relationshipProvider;
-    private Select2SingleChoice<Option> relationshipField;
-    private TextFeedbackPanel relationshipFeedback;
+    protected RelationshipProvider relationshipProvider;
+    protected Select2SingleChoice<Option> relationshipField;
+    protected TextFeedbackPanel relationshipFeedback;
 
-    private TextField<String> firstNameField;
-    private TextFeedbackPanel firstNameFeedback;
+    protected TextField<String> firstNameField;
+    protected TextFeedbackPanel firstNameFeedback;
 
-    private TextField<String> middleNameField;
-    private TextFeedbackPanel middleNameFeedback;
+    protected TextField<String> middleNameField;
+    protected TextFeedbackPanel middleNameFeedback;
 
-    private TextField<String> lastNameField;
-    private TextFeedbackPanel lastNameFeedback;
+    protected TextField<String> lastNameField;
+    protected TextFeedbackPanel lastNameFeedback;
 
-    private TextField<String> qualificationField;
-    private TextFeedbackPanel qualificationFeedback;
+    protected TextField<String> qualificationField;
+    protected TextFeedbackPanel qualificationFeedback;
 
-    private TextField<String> mobileNumberField;
-    private TextFeedbackPanel mobileNumberFeedback;
+    protected TextField<String> mobileNumberField;
+    protected TextFeedbackPanel mobileNumberFeedback;
 
-    private CheckBox dependentField;
-    private TextFeedbackPanel dependentFeedback;
+    protected CheckBox dependentField;
+    protected TextFeedbackPanel dependentFeedback;
 
-    private GenderProvider genderProvider;
-    private Select2SingleChoice<Option> genderField;
-    private TextFeedbackPanel genderFeedback;
+    protected GenderProvider genderProvider;
+    protected Select2SingleChoice<Option> genderField;
+    protected TextFeedbackPanel genderFeedback;
 
-    private ProfessionProvider professionProvider;
-    private Select2SingleChoice<Option> professionField;
-    private TextFeedbackPanel professionFeedback;
+    protected ProfessionProvider professionProvider;
+    protected Select2SingleChoice<Option> professionField;
+    protected TextFeedbackPanel professionFeedback;
 
-    private MaritalStatusProvider maritalStatusProvider;
-    private Select2SingleChoice<Option> maritalStatusField;
-    private TextFeedbackPanel maritalStatusFeedback;
+    protected MaritalStatusProvider maritalStatusProvider;
+    protected Select2SingleChoice<Option> maritalStatusField;
+    protected TextFeedbackPanel maritalStatusFeedback;
 
-    private DateTextField dateOfBirthField;
-    private TextFeedbackPanel dateOfBirthFeedback;
+    protected DateTextField dateOfBirthField;
+    protected TextFeedbackPanel dateOfBirthFeedback;
 
-    private Map<String, Object> model;
+    protected Map<String, Object> model;
 
     public FamilyMemberPopup(String name, ModalWindow window, Map<String, Object> model) {
         super(name, window);
@@ -77,9 +76,11 @@ public class FamilyMemberPopup extends PopupPanel {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -157,6 +158,14 @@ public class FamilyMemberPopup extends PopupPanel {
         this.form.add(this.dateOfBirthField);
         this.dateOfBirthFeedback = new TextFeedbackPanel("dateOfBirthFeedback", this.dateOfBirthField);
         this.form.add(this.dateOfBirthFeedback);
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
     protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {

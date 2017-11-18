@@ -1,7 +1,7 @@
 package com.angkorteam.fintech.popup.client.client;
 
+import com.angkorteam.fintech.popup.PopupPanel;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 
 public class ClientSignaturePopup extends PopupPanel {
 
@@ -15,9 +15,20 @@ public class ClientSignaturePopup extends PopupPanel {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
+
+    @Override
+    protected void initComponent() {
         // https://demo.openmf.org/fineract-provider/api/v1/clients/6/documents/84/attachment?tenantIdentifier=default
+    }
+
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
 }

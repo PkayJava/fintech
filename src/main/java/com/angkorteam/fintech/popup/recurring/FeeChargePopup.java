@@ -9,35 +9,35 @@ import org.apache.wicket.model.PropertyModel;
 import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.dto.enums.ChargeType;
+import com.angkorteam.fintech.popup.PopupPanel;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 public class FeeChargePopup extends PopupPanel {
 
-    private ModalWindow window;
+    protected ModalWindow window;
 
-    private Form<Void> form;
-    private AjaxButton okayButton;
+    protected Form<Void> form;
+    protected AjaxButton okayButton;
 
-    private PropertyModel<Option> chargeValue;
-    private SingleChoiceProvider chargeProvider;
-    private Select2SingleChoice<Option> chargeField;
-    private TextFeedbackPanel chargeFeedback;
+    protected PropertyModel<Option> chargeValue;
+    protected SingleChoiceProvider chargeProvider;
+    protected Select2SingleChoice<Option> chargeField;
+    protected TextFeedbackPanel chargeFeedback;
 
-    private PropertyModel<Option> accountValue;
-    private SingleChoiceProvider accountProvider;
-    private Select2SingleChoice<Option> accountField;
-    private TextFeedbackPanel accountFeedback;
+    protected PropertyModel<Option> accountValue;
+    protected SingleChoiceProvider accountProvider;
+    protected Select2SingleChoice<Option> accountField;
+    protected TextFeedbackPanel accountFeedback;
 
-    private String currencyCode;
+    protected String currencyCode;
 
-    private Map<String, Object> model;
+    protected Map<String, Object> model;
 
     public FeeChargePopup(String name, ModalWindow window, Map<String, Object> model, String currencyCode) {
         super(name, window);
@@ -47,9 +47,11 @@ public class FeeChargePopup extends PopupPanel {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -79,7 +81,14 @@ public class FeeChargePopup extends PopupPanel {
         this.form.add(this.accountField);
         this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
         this.form.add(this.accountFeedback);
+    }
 
+    @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
     }
 
     protected boolean okayButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {

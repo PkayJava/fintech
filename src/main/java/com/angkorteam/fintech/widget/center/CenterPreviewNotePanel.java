@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Page;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -19,6 +19,7 @@ import com.angkorteam.fintech.dto.builder.NoteBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -40,9 +41,10 @@ public class CenterPreviewNotePanel extends Panel {
     protected Form<Void> form;
     protected Button addButton;
 
-    private String noteValue;
-    private TextField<String> noteField;
-    private TextFeedbackPanel noteFeedback;
+    protected List<IColumn<Map<String, Object>, String>> noteColumn;
+    protected String noteValue;
+    protected TextField<String> noteField;
+    protected TextFeedbackPanel noteFeedback;
 
     protected DataTable<Map<String, Object>, String> noteTable;
     protected JdbcProvider noteProvider;
@@ -53,10 +55,12 @@ public class CenterPreviewNotePanel extends Panel {
     }
 
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
+    protected void initData() {
         this.centerId = new PropertyModel<String>(this.itemPage, "centerId").getObject();
+    }
 
+    @Override
+    protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
 
@@ -80,28 +84,35 @@ public class CenterPreviewNotePanel extends Panel {
 
         this.noteProvider.setSort("createdOn", SortOrder.DESCENDING);
 
-        List<IColumn<Map<String, Object>, String>> noteColumns = Lists.newArrayList();
-        noteColumns.add(new TextFilterColumn(this.noteProvider, ItemClass.String, Model.of("Comment"), "comment", "comment", this::commentNoteColumn));
-        noteColumns.add(new TextFilterColumn(this.noteProvider, ItemClass.String, Model.of("Created By"), "createdBy", "createdBy", this::createdByNoteColumn));
-        noteColumns.add(new TextFilterColumn(this.noteProvider, ItemClass.String, Model.of("Created On"), "createdOn", "createdOn", this::createdOnNoteColumn));
+        this.noteColumn = Lists.newArrayList();
+        this.noteColumn.add(new TextFilterColumn(this.noteProvider, ItemClass.String, Model.of("Comment"), "comment", "comment", this::noteColumn));
+        this.noteColumn.add(new TextFilterColumn(this.noteProvider, ItemClass.String, Model.of("Created By"), "createdBy", "createdBy", this::noteColumn));
+        this.noteColumn.add(new TextFilterColumn(this.noteProvider, ItemClass.String, Model.of("Created On"), "createdOn", "createdOn", this::noteColumn));
 
-        this.noteTable = new DefaultDataTable<>("noteTable", noteColumns, this.noteProvider, 20);
+        this.noteTable = new DefaultDataTable<>("noteTable", this.noteColumn, this.noteProvider, 20);
         add(this.noteTable);
     }
 
-    protected ItemPanel commentNoteColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    @Override
+    protected void configureRequiredValidation() {
     }
 
-    protected ItemPanel createdByNoteColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
+    @Override
+    protected void configureMetaData() {
     }
 
-    protected ItemPanel createdOnNoteColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Date value = (Date) model.get(jdbcColumn);
-        return new TextCell(value, "dd MMM yyyy HH:mm:ss");
+    protected ItemPanel noteColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("comment".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("createdBy".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("createdOn".equals(column)) {
+            Date value = (Date) model.get(column);
+            return new TextCell(value, "dd MMM yyyy HH:mm:ss");
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
     protected void addButtonSubmit(Button button) {
@@ -126,6 +137,7 @@ public class CenterPreviewNotePanel extends Panel {
                 return;
             }
         }
+        this.noteValue = "";
     }
 
 }
