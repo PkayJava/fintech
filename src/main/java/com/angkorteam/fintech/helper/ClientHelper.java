@@ -162,4 +162,16 @@ public class ClientHelper {
         return Helper.performServerPost(session, "/api/v1/clients/" + id + "/charges", object);
     }
 
+    public static JsonNode postClientChargePay(IMifos session, JsonNode object) throws UnirestException {
+        String clientId = (String) object.getObject().remove("clientId");
+        String chargeId = (String) object.getObject().remove("chargeId");
+        return Helper.performServerPost(session, "/api/v1/clients/" + clientId + "/charges/" + chargeId + "?command=paycharge", object);
+    }
+
+    public static JsonNode postClientChargeWaive(IMifos session, JsonNode object) throws UnirestException {
+        String clientId = (String) object.getObject().get("clientId");
+        String chargeId = (String) object.getObject().remove("chargeId");
+        return Helper.performServerPost(session, "/api/v1/clients/" + clientId + "/charges/" + chargeId + "?command=waive", object);
+    }
+
 }

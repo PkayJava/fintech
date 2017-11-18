@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.client.client;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -12,6 +13,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.client.client.ClientChargeBuilder;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
@@ -29,6 +31,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ChargeCreatePage extends Page {
 
     private String clientId;

@@ -2,6 +2,7 @@ package com.angkorteam.fintech.widget.client;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,9 +25,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.angkorteam.fintech.Application;
+import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.builder.client.client.ClientChargeWaiveBuilder;
 import com.angkorteam.fintech.dto.builder.client.client.ClientUnassignStaffBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
+import com.angkorteam.fintech.pages.client.client.ChargePayPage;
 import com.angkorteam.fintech.pages.client.client.ChargeSelectionPage;
 import com.angkorteam.fintech.pages.client.client.ClientAcceptTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientAssignStaffPage;
@@ -57,6 +61,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.Calendar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
@@ -102,6 +107,10 @@ public class ClientPreviewGeneralPanel extends Panel {
     protected DataTable<Map<String, Object>, String> savingAccountTable;
     protected JdbcProvider savingAccountProvider;
     protected List<IColumn<Map<String, Object>, String>> savingAccountColumn;
+
+    protected DataTable<Map<String, Object>, String> upcomingChargeTable;
+    protected JdbcProvider upcomingChargeProvider;
+    protected List<IColumn<Map<String, Object>, String>> upcomingChargeColumn;
 
     protected Label clientNameView;
     protected String clientNameValue;
@@ -193,6 +202,23 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.undoTransferLink = new BookmarkablePageLink<Void>("undoTransferLink", ClientUndoTransferPage.class, parameters);
         this.buttonGroups.add(this.undoTransferLink);
 
+        initSavingAccountTable();
+
+        initUpcomingChargeTable();
+
+        this.clientNameView = new Label("clientNameView", new PropertyModel<>(this, "clientNameValue"));
+        add(this.clientNameView);
+
+        this.clientImageField = new WebMarkupContainer("clientImageField");
+        this.clientImageField.setOutputMarkupId(true);
+        this.clientImageField.add(AttributeModifier.replace("src", new PropertyModel<>(this, "clientImageValue")));
+        add(this.clientImageField);
+
+        this.takePictureLink = new BookmarkablePageLink<Void>("takePictureLink", ClientWebcamPage.class, parameters);
+        add(this.takePictureLink);
+    }
+
+    protected void initSavingAccountTable() {
         this.savingAccountProvider = new JdbcProvider("m_savings_account");
         this.savingAccountProvider.addJoin("LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
         this.savingAccountProvider.boardField("concat(m_savings_account.id,'')", "id", String.class);
@@ -213,17 +239,37 @@ public class ClientPreviewGeneralPanel extends Panel {
 
         this.savingAccountTable = new DefaultDataTable<>("savingAccountTable", savingAccountColumn, this.savingAccountProvider, 20);
         add(this.savingAccountTable);
+    }
 
-        this.clientNameView = new Label("clientNameView", new PropertyModel<>(this, "clientNameValue"));
-        add(this.clientNameView);
+    protected void initUpcomingChargeTable() {
+        this.upcomingChargeProvider = new JdbcProvider("m_client_charge");
+        this.upcomingChargeProvider.addJoin("inner join m_charge on m_client_charge.charge_id = m_charge.id");
 
-        this.clientImageField = new WebMarkupContainer("clientImageField");
-        this.clientImageField.setOutputMarkupId(true);
-        this.clientImageField.add(AttributeModifier.replace("src", new PropertyModel<>(this, "clientImageValue")));
-        add(this.clientImageField);
+        this.upcomingChargeProvider.boardField("m_client_charge.id", "id", Long.class);
+        this.upcomingChargeProvider.boardField("m_charge.name", "name", String.class);
+        this.upcomingChargeProvider.boardField("m_client_charge.charge_due_date", "due_date", Calendar.Date);
+        this.upcomingChargeProvider.boardField("m_client_charge.amount", "due", Double.class);
+        this.upcomingChargeProvider.boardField("m_client_charge.amount_paid_derived", "paid", Double.class);
+        this.upcomingChargeProvider.boardField("m_client_charge.amount_waived_derived", "waived", Double.class);
+        this.upcomingChargeProvider.boardField("m_client_charge.amount_outstanding_derived", "outstanding", Double.class);
 
-        this.takePictureLink = new BookmarkablePageLink<Void>("takePictureLink", ClientWebcamPage.class, parameters);
-        add(this.takePictureLink);
+        this.upcomingChargeProvider.applyWhere("amount_outstanding_derived", "m_client_charge.amount_outstanding_derived > 0");
+        this.upcomingChargeProvider.applyWhere("is_active", "m_client_charge.is_active = 1");
+        this.upcomingChargeProvider.applyWhere("client_id", "m_client_charge.client_id = " + this.clientId);
+
+        this.upcomingChargeProvider.selectField("id", Long.class);
+
+        this.upcomingChargeColumn = Lists.newArrayList();
+        this.upcomingChargeColumn.add(new TextFilterColumn(this.upcomingChargeProvider, ItemClass.String, Model.of("Name"), "name", "name", this::upcomingChargeColumn));
+        this.upcomingChargeColumn.add(new TextFilterColumn(this.upcomingChargeProvider, ItemClass.Date, Model.of("Due as of"), "due_date", "due_date", this::upcomingChargeColumn));
+        this.upcomingChargeColumn.add(new TextFilterColumn(this.upcomingChargeProvider, ItemClass.Double, Model.of("Due"), "due", "due", this::upcomingChargeColumn));
+        this.upcomingChargeColumn.add(new TextFilterColumn(this.upcomingChargeProvider, ItemClass.Double, Model.of("Paid"), "paid", "paid", this::upcomingChargeColumn));
+        this.upcomingChargeColumn.add(new TextFilterColumn(this.upcomingChargeProvider, ItemClass.Double, Model.of("Waived"), "waived", "waived", this::upcomingChargeColumn));
+        this.upcomingChargeColumn.add(new TextFilterColumn(this.upcomingChargeProvider, ItemClass.Double, Model.of("Outstanding"), "outstanding", "outstanding", this::upcomingChargeColumn));
+        this.upcomingChargeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::upcomingChargeAction, this::upcomingChargeClick));
+
+        this.upcomingChargeTable = new DefaultDataTable<>("upcomingChargeTable", upcomingChargeColumn, this.upcomingChargeProvider, 20);
+        add(this.upcomingChargeTable);
     }
 
     @Override
@@ -405,6 +451,47 @@ public class ClientPreviewGeneralPanel extends Panel {
         } else if ("balance".equals(column)) {
             Double value = (Double) model.get(column);
             return new TextCell(value, "#,###,##0.00");
+        }
+        throw new WicketRuntimeException("Unknown " + column);
+    }
+
+    protected List<ActionItem> upcomingChargeAction(String s, Map<String, Object> model) {
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("Pay", Model.of("Pay"), ItemCss.PRIMARY));
+        actions.add(new ActionItem("Waive", Model.of("Waive"), ItemCss.DANGER));
+        return actions;
+    }
+
+    protected void upcomingChargeClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
+        if ("Pay".equals(column)) {
+            PageParameters parameters = new PageParameters();
+            parameters.add("clientId", this.clientId);
+            parameters.add("chargeId", model.get("id"));
+            setResponsePage(ChargePayPage.class, parameters);
+        } else if ("Waive".equals(column)) {
+            ClientChargeWaiveBuilder builder = new ClientChargeWaiveBuilder();
+            builder.withChargeId(String.valueOf(model.get("id")));
+            builder.withResourceType("2");
+            builder.withClientId(this.clientId);
+            try {
+                ClientHelper.postClientChargeWaive((IMifos) getSession(), builder.build());
+            } catch (UnirestException e) {
+                throw new WicketRuntimeException(e);
+            }
+            target.add(this.upcomingChargeTable);
+        }
+    }
+
+    protected ItemPanel upcomingChargeColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("due_date".equals(column)) {
+            Date value = (Date) model.get(column);
+            return new TextCell(value, "yyyy-MM-dd");
+        } else if ("due".equals(column) || "paid".equals(column) || "waived".equals(column) || "outstanding".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value == null ? 0 : value, "#,###,##0.00");
         }
         throw new WicketRuntimeException("Unknown " + column);
     }
