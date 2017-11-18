@@ -27,6 +27,7 @@ import com.angkorteam.fintech.Application;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.builder.client.client.ClientUnassignStaffBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
+import com.angkorteam.fintech.pages.client.client.ChargeSelectionPage;
 import com.angkorteam.fintech.pages.client.client.ClientAcceptTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientAssignStaffPage;
 import com.angkorteam.fintech.pages.client.client.ClientDefaultSavingAccountPage;
@@ -150,7 +151,7 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.newShareLink = new BookmarkablePageLink<Void>("newShareLink", ClientTransferPage.class, parameters);
         this.buttonGroups.add(this.newShareLink);
 
-        this.newChargeLink = new BookmarkablePageLink<Void>("newChargeLink", ClientTransferPage.class, parameters);
+        this.newChargeLink = new BookmarkablePageLink<Void>("newChargeLink", ChargeSelectionPage.class, parameters);
         this.buttonGroups.add(this.newChargeLink);
 
         this.closeLink = new BookmarkablePageLink<Void>("closeLink", ClientTransferPage.class, parameters);
