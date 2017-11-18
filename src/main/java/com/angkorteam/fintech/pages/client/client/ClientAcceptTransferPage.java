@@ -76,7 +76,6 @@ public class ClientAcceptTransferPage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-
         ClientAcceptTransferBuilder builder = new ClientAcceptTransferBuilder();
         builder.withId(this.clientId);
         builder.withNote(this.noteValue);
@@ -94,6 +93,5 @@ public class ClientAcceptTransferPage extends Page {
         PageParameters parameters = new PageParameters();
         parameters.add("clientId", this.clientId);
         setResponsePage(ClientPreviewPage.class, parameters);
-
     }
 }

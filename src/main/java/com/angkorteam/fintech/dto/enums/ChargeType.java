@@ -2,6 +2,12 @@ package com.angkorteam.fintech.dto.enums;
 
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
+/**
+ * charge_applies_to_enum
+ * 
+ * @author socheat
+ *
+ */
 public enum ChargeType {
 
     Loan("1", "Loan", new ChargeTime[] { ChargeTime.Disbursement, ChargeTime.SpecifiedDueDate, ChargeTime.InstallmentFee, ChargeTime.OverdraftFee, ChargeTime.TrancheDisbursement }, new ChargeCalculation[] { ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount, ChargeCalculation.LoanAmountInterest, ChargeCalculation.Interest }), 

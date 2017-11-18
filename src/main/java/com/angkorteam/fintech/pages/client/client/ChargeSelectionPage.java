@@ -84,6 +84,6 @@ public class ChargeSelectionPage extends Page {
         PageParameters parameters = new PageParameters();
         parameters.add("clientId", this.clientId);
         parameters.add("chargeId", this.chargeValue.getId());
-        setResponsePage(SavingAccountCreatePage.class, parameters);
+        setResponsePage(ChargeCreatePage.class, parameters);
     }
 }

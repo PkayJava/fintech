@@ -2,6 +2,12 @@ package com.angkorteam.fintech.dto.enums;
 
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
+/**
+ * charge_payment_mode_enum
+ * 
+ * @author socheat
+ *
+ */
 public enum ChargePayment {
 
     RegularMode("0", "Regular Mode"), 

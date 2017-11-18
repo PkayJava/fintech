@@ -11,23 +11,14 @@ public class ClientIdentityBuilder implements Serializable {
     private String documentTypeId;
     private boolean hasDocumentTypeId;
 
-    private String status;
-    private boolean hasStatus;
-
-    private String documentKey;
-    private boolean hasDocumentKey;
-
-    private String description;
-    private boolean hasDescription;
-
-    private String clientId;
-    private boolean hasClientId;
-
     public ClientIdentityBuilder withDocumentTypeId(String documentTypeId) {
         this.documentTypeId = documentTypeId;
         this.hasDocumentTypeId = true;
         return this;
     }
+
+    private String clientId;
+    private boolean hasClientId;
 
     public ClientIdentityBuilder withClientId(String clientId) {
         this.clientId = clientId;
@@ -35,17 +26,26 @@ public class ClientIdentityBuilder implements Serializable {
         return this;
     }
 
+    private String status;
+    private boolean hasStatus;
+
     public ClientIdentityBuilder withStatus(String status) {
         this.status = status;
         this.hasStatus = true;
         return this;
     }
 
+    private String documentKey;
+    private boolean hasDocumentKey;
+
     public ClientIdentityBuilder withDocumentKey(String documentKey) {
         this.documentKey = documentKey;
         this.hasDocumentKey = true;
         return this;
     }
+
+    private String description;
+    private boolean hasDescription;
 
     public ClientIdentityBuilder withDescription(String description) {
         this.description = description;

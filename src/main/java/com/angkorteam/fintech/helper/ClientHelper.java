@@ -132,7 +132,7 @@ public class ClientHelper {
         return Helper.performServerPost(session, "/api/v1/clients/" + id + "?command=updateSavingsAccount", object);
     }
 
-    public static JsonNode createIdentityClient(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode createClientIdentity(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("clientId");
         return Helper.performServerPost(session, "/api/v1/clients/" + id + "/identifiers", object);
     }
@@ -155,6 +155,11 @@ public class ClientHelper {
 
     public static HttpResponse<InputStream> retrieveClientDocument(IMifos session, String clientId, String documentId) throws UnirestException {
         return Helper.performServerGet(session, "/api/v1/clients/" + clientId + "/documents/" + documentId + "/attachment");
+    }
+
+    public static JsonNode postClientCharge(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("clientId");
+        return Helper.performServerPost(session, "/api/v1/clients/" + id + "/charges", object);
     }
 
 }

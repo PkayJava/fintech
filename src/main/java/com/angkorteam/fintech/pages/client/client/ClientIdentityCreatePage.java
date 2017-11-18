@@ -164,7 +164,7 @@ public class ClientIdentityCreatePage extends Page {
 
         JsonNode node = null;
         try {
-            node = ClientHelper.createIdentityClient((Session) getSession(), builder.build());
+            node = ClientHelper.createClientIdentity((Session) getSession(), builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;
