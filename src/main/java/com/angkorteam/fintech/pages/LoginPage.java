@@ -6,15 +6,21 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.PropertyModel;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import com.angkorteam.fintech.Application;
 import com.angkorteam.fintech.Session;
@@ -42,7 +48,7 @@ public class LoginPage extends WebPage {
     protected String passwordValue;
     protected TextField<String> passwordField;
 
-    protected String versionValue = "VERSION :";
+    protected String versionValue;
     protected ReadOnlyView versionView;
 
     protected Form<Void> form;
@@ -72,10 +78,28 @@ public class LoginPage extends WebPage {
                 }
                 this.versionValue = "VERSION : " + v + " " + t;
             } catch (IOException e) {
-                this.versionValue = this.versionValue + " N/A SNAPSHOT " + DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(new Date());
+                throw new WicketRuntimeException(e);
             }
         } else {
-            this.versionValue = this.versionValue + " N/A SNAPSHOT " + DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(new Date());
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = null;
+
+            try {
+                builder = factory.newDocumentBuilder();
+            } catch (ParserConfigurationException e) {
+                throw new WicketRuntimeException(e);
+            }
+
+            File popFile = new File("pom.xml");
+
+            Document document = null;
+            try {
+                document = builder.parse(popFile);
+            } catch (SAXException | IOException e) {
+                throw new WicketRuntimeException(e);
+            }
+
+            this.versionValue = "VERSION : " + document.getDocumentElement().getElementsByTagName("version").item(0).getTextContent() + " " + DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(new Date());
         }
 
         this.form = new Form<>("form");
