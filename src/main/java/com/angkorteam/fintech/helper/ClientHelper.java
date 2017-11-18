@@ -35,12 +35,12 @@ public class ClientHelper {
         return Helper.performServerPut(session, "/api/v1/centers/" + id, object);
     }
 
-    public static JsonNode postNoteCenter(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode postCenterNote(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("centerId");
         return Helper.performServerPost(session, "/api/v1/groups/" + id + "/notes", object);
     }
 
-    public static JsonNode postNoteGroup(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode postGroupNote(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("groupId");
         return Helper.performServerPost(session, "/api/v1/groups/" + id + "/notes", object);
     }
@@ -137,12 +137,12 @@ public class ClientHelper {
         return Helper.performServerPost(session, "/api/v1/clients/" + id + "/identifiers", object);
     }
 
-    public static JsonNode postNoteClient(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode postClientNote(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("clientId");
         return Helper.performServerPost(session, "/api/v1/clients/" + id + "/notes", object);
     }
 
-    public static JsonNode postDocumentClient(IMifos session, String clientId, String name, String description, File file) throws UnirestException {
+    public static JsonNode postClientDocument(IMifos session, String clientId, String name, String description, File file) throws UnirestException {
         MifosDataSourceManager mifos = SpringBean.getBean(MifosDataSourceManager.class);
         String url = "/api/v1/clients/" + clientId + "/documents";
         String mifosUrl = mifos.getMifosUrl() + url;
@@ -151,6 +151,10 @@ public class ClientHelper {
             LOGGER.info("RS {}", response.toString());
         }
         return response;
+    }
+
+    public static HttpResponse<InputStream> retrieveClientDocument(IMifos session, String clientId, String documentId) throws UnirestException {
+        return Helper.performServerGet(session, "/api/v1/clients/" + clientId + "/documents/" + documentId + "/attachment");
     }
 
 }

@@ -143,7 +143,7 @@ public class ClientDocumentUploadPage extends Page {
 
         JsonNode node = null;
         try {
-            node = ClientHelper.postDocumentClient((Session) getSession(), this.clientId, this.nameValue, this.descriptionValue, tempFile);
+            node = ClientHelper.postClientDocument((Session) getSession(), this.clientId, this.nameValue, this.descriptionValue, tempFile);
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

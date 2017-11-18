@@ -122,7 +122,7 @@ public class CenterPreviewNotePanel extends Panel {
 
         JsonNode node = null;
         try {
-            node = ClientHelper.postNoteCenter((Session) getSession(), builder.build());
+            node = ClientHelper.postCenterNote((Session) getSession(), builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;
