@@ -30,6 +30,7 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.builder.client.client.ClientChargeWaiveBuilder;
 import com.angkorteam.fintech.dto.builder.client.client.ClientUnassignStaffBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
+import com.angkorteam.fintech.pages.client.client.ChargeOverviewPage;
 import com.angkorteam.fintech.pages.client.client.ChargePayPage;
 import com.angkorteam.fintech.pages.client.client.ChargeSelectionPage;
 import com.angkorteam.fintech.pages.client.client.ClientAcceptTransferPage;
@@ -187,7 +188,7 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.newRecurringLink = new BookmarkablePageLink<Void>("newRecurringLink", ClientTransferPage.class, parameters);
         this.buttonGroups.add(this.newRecurringLink);
 
-        this.chargeOverviewLink = new BookmarkablePageLink<Void>("chargeOverviewLink", ClientTransferPage.class, parameters);
+        this.chargeOverviewLink = new BookmarkablePageLink<Void>("chargeOverviewLink", ChargeOverviewPage.class, parameters);
         this.buttonGroups.add(this.chargeOverviewLink);
 
         this.surveyLink = new BookmarkablePageLink<Void>("surveyLink", ClientTransferPage.class, parameters);

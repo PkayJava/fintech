@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<wicket:extend>
+		<div class="box box-primary">
+
+			<div class="box-body">
+
+				<!-- Row -->
+				<div wicket:id="chargeBlock" class="form-group">
+					<wicket:container wicket:id="chargeVContainer">
+						<label>Charge</label>
+						<div wicket:id="chargeView" class="form-control"></div>
+					</wicket:container>
+				</div>
+				<div class="clearfix"></div>
+
+				<!-- Row -->
+				<div wicket:id="currencyBlock" class="form-group">
+					<wicket:container wicket:id="currencyVContainer">
+						<label>Currency</label>
+						<div wicket:id="currencyView" class="form-control"></div>
+					</wicket:container>
+				</div>
+				<div wicket:id="dueDateBlock" class="form-group">
+					<wicket:container wicket:id="dueDateVContainer">
+						<label>Due as of</label>
+						<div wicket:id="dueDateView" class="form-control"></div>
+					</wicket:container>
+				</div>
+				<div class="clearfix"></div>
+
+				<!-- Row -->
+				<div wicket:id="chargeTypeBlock" class="form-group">
+					<wicket:container wicket:id="chargeTypeVContainer">
+						<label>Charge Time Type</label>
+						<div wicket:id="chargeTypeView" class="form-control"></div>
+					</wicket:container>
+				</div>
+				<div wicket:id="chargeCalculationBlock" class="form-group">
+					<wicket:container wicket:id="chargeCalculationVContainer">
+						<label>Charge Calculation Type</label>
+						<div wicket:id="chargeCalculationView" class="form-control"></div>
+					</wicket:container>
+				</div>
+				<div class="clearfix"></div>
+
+				<!-- Row -->
+				<div wicket:id="dueBlock" class="form-group">
+					<wicket:container wicket:id="dueVContainer">
+						<label>Due</label>
+						<div wicket:id="dueView" class="form-control"></div>
+					</wicket:container>
+				</div>
+				<div wicket:id="paidBlock" class="form-group">
+					<wicket:container wicket:id="paidVContainer">
+						<label>Paid</label>
+						<div wicket:id="paidView" class="form-control"></div>
+					</wicket:container>
+				</div>
+				<div wicket:id="waivedBlock" class="form-group">
+					<wicket:container wicket:id="waivedVContainer">
+						<label>Waived</label>
+						<div wicket:id="waivedView" class="form-control"></div>
+					</wicket:container>
+				</div>
+				<div wicket:id="outstandingBlock" class="form-group">
+					<wicket:container wicket:id="outstandingVContainer">
+						<label>Outstanding</label>
+						<div wicket:id="outstandingView" class="form-control"></div>
+					</wicket:container>
+				</div>
+				<div class="clearfix"></div>
+
+			</div>
+		</div>
+
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title">Transactions</h3>
+			</div>
+			<div class="box-body">
+				<div wicket:id="dataBlock" class="form-group">
+					<wicket:container wicket:id="dataIContainer">
+						<table wicket:id="dataTable"></table>
+					</wicket:container>
+				</div>
+			</div>
+			<div class="box-footer">
+				<a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
+			</div>
+		</div>
+	</wicket:extend>
+</body>
+</html>
