@@ -25,4 +25,10 @@
 	<entry key="validation.msg.loanproduct.writeOffAccountId.cannot.be.blank">cashLossWrittenOffField,upfrontLossWrittenOffField,periodicLossWrittenOffField</entry>
 	<entry
 		key="validation.msg.loanproduct.overpaymentLiabilityAccountId.cannot.be.blank">cashOverPaymentLiabilityField,upfrontOverPaymentLiabilityField,periodicOverPaymentLiabilityField</entry>
+	<entry key="maxPrincipal">termPrincipalMaximumField</entry>
+	<entry key="validation.msg.loanproduct.maxPrincipal.is.less.than.min">termPrincipalMinimumField</entry>
+	<entry
+		key="validation.msg.loanproduct.principal.amount.is.not.within.min.max.range">termPrincipalDefaultField</entry>
+	<entry key="principal">termPrincipalDefaultField</entry>
+
 </properties>

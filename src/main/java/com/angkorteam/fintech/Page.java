@@ -96,28 +96,75 @@ public abstract class Page extends DashboardPage {
 
     public boolean reportError(JsonNode node) {
         if (node.getObject().has("errors")) {
-            JSONArray array = (JSONArray) node.getObject().get("errors");
+            JSONArray array = node.getObject().getJSONArray("errors");
             for (Object object : array) {
                 JSONObject o = (JSONObject) object;
-                String defaultUserMessage = (String) o.get("defaultUserMessage");
-                String userMessageGlobalisationCode = (String) o.get("userMessageGlobalisationCode");
+                String defaultUserMessage = o.getString("defaultUserMessage");
+                String userMessageGlobalisationCode = o.getString("userMessageGlobalisationCode");
                 if (userMessageGlobalisationCode != null && !"".equals(userMessageGlobalisationCode)) {
                     String fieldNames = null;
                     try {
                         fieldNames = getString(userMessageGlobalisationCode);
-                        if (fieldNames != null && !"".equals(fieldNames)) {
-                            for (String fieldName : StringUtils.split(fieldNames, ',')) {
-                                FormComponent<?> field = null;
-                                java.lang.reflect.Field temp = getClass().getDeclaredField(StringUtils.trimToEmpty(fieldName));
-                                temp.setAccessible(true);
-                                field = (FormComponent<?>) temp.get(this);
-                                field.info(defaultUserMessage);
-                                LOGGER.info("{} => {} => {}", userMessageGlobalisationCode, fieldName, defaultUserMessage);
+                    } catch (MissingResourceException e) {
+                        error(userMessageGlobalisationCode + " due to this reason " + defaultUserMessage);
+                        continue;
+                    }
+
+                    if (fieldNames != null && !"".equals(fieldNames)) {
+                        for (String fieldName : StringUtils.split(fieldNames, ',')) {
+                            java.lang.reflect.Field temp = null;
+                            try {
+                                temp = getClass().getDeclaredField(StringUtils.trimToEmpty(fieldName));
+                            } catch (NoSuchFieldException | SecurityException e) {
+                                error(userMessageGlobalisationCode + " due to this reason " + defaultUserMessage);
+                                continue;
                             }
-                        } else {
-                            error(userMessageGlobalisationCode + " due to this reason " + defaultUserMessage);
+                            temp.setAccessible(true);
+
+                            FormComponent<?> field = null;
+                            try {
+                                field = (FormComponent<?>) temp.get(this);
+                            } catch (IllegalArgumentException | IllegalAccessException e) {
+                                error(userMessageGlobalisationCode + " due to this reason " + defaultUserMessage);
+                                continue;
+                            }
+
+                            if (o.has("parameterName")) {
+                                String parameterName = o.getString("parameterName");
+                                String parameterNameField = null;
+                                String translated = null;
+                                try {
+                                    parameterNameField = getString(parameterName);
+                                } catch (MissingResourceException e) {
+                                }
+                                if (parameterNameField != null && !"".equals(parameterNameField)) {
+                                    java.lang.reflect.Field t = null;
+                                    try {
+                                        t = getClass().getDeclaredField(parameterNameField);
+                                    } catch (NoSuchFieldException | SecurityException e) {
+                                    }
+                                    if (t != null) {
+                                        t.setAccessible(true);
+                                        FormComponent<?> f = null;
+                                        try {
+                                            f = (FormComponent<?>) temp.get(this);
+                                        } catch (IllegalArgumentException | IllegalAccessException e) {
+                                        }
+                                        if (f != null && f.getLabel() != null) {
+                                            translated = f.getLabel().getObject();
+                                        }
+                                    }
+                                    if (translated != null && !"".equals(translated)) {
+                                        defaultUserMessage = StringUtils.replaceAll(defaultUserMessage, parameterName, "'" + translated + "'");
+                                    }
+                                }
+                            }
+
+                            field.info(defaultUserMessage);
+                            LOGGER.info("{} => {} => {}", userMessageGlobalisationCode, fieldName, defaultUserMessage);
                         }
-                    } catch (MissingResourceException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+                    } else {
+                        error(userMessageGlobalisationCode + " due to this reason " + defaultUserMessage);
                     }
                 } else {
                     error(defaultUserMessage);
