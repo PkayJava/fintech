@@ -3593,7 +3593,6 @@ public class LoanCreatePage extends Page {
                 builder.withAllowPartialPeriodInterestCalcualtion(this.settingCalculateInterestForExactDaysInPartialPeriodValue == null ? false : this.settingCalculateInterestForExactDaysInPartialPeriodValue);
             }
             if (settingInterestCalculationPeriod == InterestCalculationPeriod.Daily) {
-                // Interest Recalculation
 
                 boolean interestRecalculationEnabled = this.interestRecalculationRecalculateInterestValue == null ? false : this.interestRecalculationRecalculateInterestValue;
                 builder.withInterestRecalculationEnabled(interestRecalculationEnabled);
@@ -3656,6 +3655,8 @@ public class LoanCreatePage extends Page {
                     }
 
                 }
+            } else if (settingInterestCalculationPeriod == InterestCalculationPeriod.SameAsPayment) {
+                builder.withInterestRecalculationEnabled(false);
             }
         }
         builder.withGraceOnPrincipalPayment(this.settingMoratoriumPrincipalValue);

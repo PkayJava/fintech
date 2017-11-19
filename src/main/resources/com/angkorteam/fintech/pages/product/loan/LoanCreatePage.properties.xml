@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry
+		key="validation.msg.loanproduct.isInterestRecalculationEnabled.cannot.be.blank">interestRecalculationRecalculateInterestField</entry>
+	<entry
+		key="validation.msg.loanproduct.isInterestRecalculationEnabled.is.not.one.of.expected.enumerations">interestRecalculationRecalculateInterestField</entry>
+	<entry
+		key="validation.msg.loanproduct.recalculationRestFrequencyInterval.cannot.be.blank">interestRecalculationRecalculateIntervalField</entry>
+	<entry
+		key="validation.msg.loanproduct.recalculationCompoundingFrequencyInterval.cannot.be.blank">interestRecalculationCompoundingIntervalField</entry>
+	<entry key="validation.msg.loanproduct.fundSourceAccountId.cannot.be.blank">cashFundSourceField,upfrontFundSourceField,periodicFundSourceField</entry>
+	<entry
+		key="validation.msg.loanproduct.loanPortfolioAccountId.cannot.be.blank">cashLoanPortfolioField,upfrontLoanPortfolioField,periodicLoanPortfolioField</entry>
+	<entry
+		key="validation.msg.loanproduct.transfersInSuspenseAccountId.cannot.be.blank">cashTransferInSuspenseField,upfrontTransferInSuspenseField,periodicTransferInSuspenseField</entry>
+	<entry
+		key="validation.msg.loanproduct.interestOnLoanAccountId.cannot.be.blank">cashIncomeFromInterestField,upfrontIncomeFromInterestField,periodicIncomeFromInterestField</entry>
+	<entry
+		key="validation.msg.loanproduct.incomeFromFeeAccountId.cannot.be.blank">cashIncomeFromFeeField,upfrontIncomeFromFeeField,periodicIncomeFromFeeField</entry>
+	<entry
+		key="validation.msg.loanproduct.incomeFromPenaltyAccountId.cannot.be.blank">cashIncomeFromPenaltyField,upfrontIncomeFromPenaltyField,periodicIncomeFromPenaltyField</entry>
+	<entry
+		key="validation.msg.loanproduct.incomeFromRecoveryAccountId.cannot.be.blank">cashIncomeFromRecoveryRepaymentField,upfrontIncomeFromRecoveryRepaymentField,periodicIncomeFromRecoveryRepaymentField</entry>
+	<entry key="validation.msg.loanproduct.writeOffAccountId.cannot.be.blank">cashLossWrittenOffField,upfrontLossWrittenOffField,periodicLossWrittenOffField</entry>
+	<entry
+		key="validation.msg.loanproduct.overpaymentLiabilityAccountId.cannot.be.blank">cashOverPaymentLiabilityField,upfrontOverPaymentLiabilityField,periodicOverPaymentLiabilityField</entry>
+</properties>
