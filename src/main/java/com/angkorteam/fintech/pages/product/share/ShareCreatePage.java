@@ -21,7 +21,7 @@ import org.apache.wicket.model.PropertyModel;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.builder.ShareBuilder;
+import com.angkorteam.fintech.dto.builder.ProductShareBuilder;
 import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
@@ -914,7 +914,7 @@ public class ShareCreatePage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        ShareBuilder builder = new ShareBuilder();
+        ProductShareBuilder builder = new ProductShareBuilder();
 
         // Detail
 

@@ -3,8 +3,8 @@ package com.angkorteam.fintech.pages.product.recurring;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.builder.RecurringBuilder;
-import com.angkorteam.fintech.dto.builder.RecurringBuilder.IncentiveBuilder;
+import com.angkorteam.fintech.dto.builder.ProductRecurringDepositBuilder;
+import com.angkorteam.fintech.dto.builder.ProductRecurringDepositBuilder.IncentiveBuilder;
 import com.angkorteam.fintech.dto.enums.*;
 import com.angkorteam.fintech.helper.RecurringHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
@@ -1523,7 +1523,7 @@ public class RecurringDepositCreatePage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        RecurringBuilder builder = new RecurringBuilder();
+        ProductRecurringDepositBuilder builder = new ProductRecurringDepositBuilder();
 
         // Detail
         builder.withName(this.detailProductNameValue);

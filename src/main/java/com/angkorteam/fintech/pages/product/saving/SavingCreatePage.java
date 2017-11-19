@@ -3,7 +3,7 @@ package com.angkorteam.fintech.pages.product.saving;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.builder.SavingBuilder;
+import com.angkorteam.fintech.dto.builder.ProductSavingBuilder;
 import com.angkorteam.fintech.dto.enums.*;
 import com.angkorteam.fintech.helper.SavingHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
@@ -1481,7 +1481,7 @@ public class SavingCreatePage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        SavingBuilder builder = new SavingBuilder();
+        ProductSavingBuilder builder = new ProductSavingBuilder();
 
         // Detail
         builder.withName(this.detailProductNameValue);

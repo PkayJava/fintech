@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import com.angkorteam.fintech.Application;
 import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.builder.client.client.ClientChargeWaiveBuilder;
 import com.angkorteam.fintech.dto.builder.client.client.ClientUnassignStaffBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
@@ -42,13 +43,13 @@ import com.angkorteam.fintech.pages.client.client.ClientTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientUndoTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientWebcamPage;
 import com.angkorteam.fintech.pages.client.client.LoanSelectionPage;
-import com.angkorteam.fintech.pages.client.client.SavingAccountActivatePage;
-import com.angkorteam.fintech.pages.client.client.SavingAccountApprovePage;
-import com.angkorteam.fintech.pages.client.client.SavingAccountDepositPage;
-import com.angkorteam.fintech.pages.client.client.SavingAccountPreviewPage;
-import com.angkorteam.fintech.pages.client.client.SavingAccountSelectionPage;
-import com.angkorteam.fintech.pages.client.client.SavingAccountUndoApprovePage;
-import com.angkorteam.fintech.pages.client.client.SavingAccountWithdrawPage;
+import com.angkorteam.fintech.pages.client.common.SavingAccountActivatePage;
+import com.angkorteam.fintech.pages.client.common.SavingAccountApprovePage;
+import com.angkorteam.fintech.pages.client.common.SavingAccountDepositPage;
+import com.angkorteam.fintech.pages.client.common.SavingAccountPreviewPage;
+import com.angkorteam.fintech.pages.client.common.SavingAccountSelectionPage;
+import com.angkorteam.fintech.pages.client.common.SavingAccountUndoApprovePage;
+import com.angkorteam.fintech.pages.client.common.SavingAccountWithdrawPage;
 import com.angkorteam.fintech.popup.client.client.ClientUnassignStaffPopup;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
@@ -136,11 +137,15 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.buttonGroups.setOutputMarkupId(true);
         add(this.buttonGroups);
 
+        PageParameters savingParameters = new PageParameters();
+        savingParameters.add("clientId", this.clientId);
+        savingParameters.add("client", ClientEnum.Client.name());
+
+        this.newSavingLink = new BookmarkablePageLink<>("newSavingLink", SavingAccountSelectionPage.class, savingParameters);
+        this.buttonGroups.add(this.newSavingLink);
+
         PageParameters parameters = new PageParameters();
         parameters.add("clientId", this.clientId);
-
-        this.newSavingLink = new BookmarkablePageLink<>("newSavingLink", SavingAccountSelectionPage.class, parameters);
-        this.buttonGroups.add(this.newSavingLink);
 
         this.assignStaffLink = new BookmarkablePageLink<>("assignStaffLink", ClientAssignStaffPage.class, parameters);
         this.buttonGroups.add(this.assignStaffLink);
@@ -409,6 +414,7 @@ public class ClientPreviewGeneralPanel extends Panel {
         if ("Approve".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
+            parameters.add("client", ClientEnum.Client.name());
             parameters.add("clientId", this.clientId);
             parameters.add("accountId", accountId);
             setResponsePage(SavingAccountApprovePage.class, parameters);
@@ -416,24 +422,28 @@ public class ClientPreviewGeneralPanel extends Panel {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
+            parameters.add("client", ClientEnum.Client.name());
             parameters.add("accountId", accountId);
             setResponsePage(SavingAccountUndoApprovePage.class, parameters);
         } else if ("Activate".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
+            parameters.add("client", ClientEnum.Client.name());
             parameters.add("accountId", accountId);
             setResponsePage(SavingAccountActivatePage.class, parameters);
         } else if ("Deposit".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
+            parameters.add("client", ClientEnum.Client.name());
             parameters.add("accountId", accountId);
             setResponsePage(SavingAccountDepositPage.class, parameters);
         } else if ("Withdraw".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
+            parameters.add("client", ClientEnum.Client.name());
             parameters.add("accountId", accountId);
             setResponsePage(SavingAccountWithdrawPage.class, parameters);
         }
@@ -443,6 +453,7 @@ public class ClientPreviewGeneralPanel extends Panel {
         if ("account".equals(column)) {
             String value = (String) model.get(column);
             PageParameters parameters = new PageParameters();
+            parameters.add("client", ClientEnum.Client.name());
             parameters.add("clientId", this.clientId);
             parameters.add("accountId", model.get("id"));
             return new LinkCell(SavingAccountPreviewPage.class, parameters, value);

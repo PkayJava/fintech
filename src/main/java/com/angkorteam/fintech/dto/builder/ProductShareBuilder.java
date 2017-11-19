@@ -14,12 +14,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 
-public class ShareBuilder implements Serializable {
+public class ProductShareBuilder implements Serializable {
 
     private String name;
     private boolean hasName;
 
-    public ShareBuilder withName(String name) {
+    public ProductShareBuilder withName(String name) {
         this.name = name;
         this.hasName = true;
         return this;
@@ -28,7 +28,7 @@ public class ShareBuilder implements Serializable {
     private String shortName;
     private boolean hasShortName;
 
-    public ShareBuilder withShortName(String shortName) {
+    public ProductShareBuilder withShortName(String shortName) {
         this.shortName = shortName;
         this.hasShortName = true;
         return this;
@@ -37,7 +37,7 @@ public class ShareBuilder implements Serializable {
     private String currencyCode;
     private boolean hasCurrencyCode;
 
-    public ShareBuilder withCurrencyCode(String currencyCode) {
+    public ProductShareBuilder withCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
         this.hasCurrencyCode = true;
         return this;
@@ -46,7 +46,7 @@ public class ShareBuilder implements Serializable {
     private Integer digitsAfterDecimal;
     private boolean hasDigitsAfterDecimal;
 
-    public ShareBuilder withDigitsAfterDecimal(Integer digitsAfterDecimal) {
+    public ProductShareBuilder withDigitsAfterDecimal(Integer digitsAfterDecimal) {
         this.digitsAfterDecimal = digitsAfterDecimal;
         this.hasDigitsAfterDecimal = true;
         return this;
@@ -55,7 +55,7 @@ public class ShareBuilder implements Serializable {
     private Integer accountingRule;
     private boolean hasAccountingRule;
 
-    public ShareBuilder withAccountingRule(Integer accountingRule) {
+    public ProductShareBuilder withAccountingRule(Integer accountingRule) {
         this.accountingRule = accountingRule;
         this.hasAccountingRule = true;
         return this;
@@ -64,7 +64,7 @@ public class ShareBuilder implements Serializable {
     private String locale = "en";
     private boolean hasLocale = true;
 
-    public ShareBuilder withLocale(String locale) {
+    public ProductShareBuilder withLocale(String locale) {
         this.locale = locale;
         this.hasLocale = true;
         return this;
@@ -73,7 +73,7 @@ public class ShareBuilder implements Serializable {
     private String description;
     private boolean hasDescription;
 
-    public ShareBuilder withDescription(String description) {
+    public ProductShareBuilder withDescription(String description) {
         this.description = description;
         this.hasDescription = true;
         return this;
@@ -82,7 +82,7 @@ public class ShareBuilder implements Serializable {
     private Integer inMultiplesOf;
     private boolean hasInMultiplesOf;
 
-    public ShareBuilder withInMultiplesOf(Integer inMultiplesOf) {
+    public ProductShareBuilder withInMultiplesOf(Integer inMultiplesOf) {
         this.inMultiplesOf = inMultiplesOf;
         this.hasInMultiplesOf = true;
         return this;
@@ -91,7 +91,7 @@ public class ShareBuilder implements Serializable {
     private List<Map<String, Object>> charges = Lists.newArrayList();
     private boolean hasCharges;
 
-    public ShareBuilder withCharges(String chargeId) {
+    public ProductShareBuilder withCharges(String chargeId) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("id", chargeId);
         this.charges.add(item);
@@ -102,7 +102,7 @@ public class ShareBuilder implements Serializable {
     private List<Map<String, Object>> marketPricePeriods = Lists.newArrayList();
     private boolean hasMarketPricePeriods;
 
-    public ShareBuilder withMarketPricePeriods(Date fromDate, Double shareValue) {
+    public ProductShareBuilder withMarketPricePeriods(Date fromDate, Double shareValue) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("locale", "en");
         item.put("dateFormat", "yyyy-MM-dd");
@@ -116,7 +116,7 @@ public class ShareBuilder implements Serializable {
     private Integer totalShares;
     private boolean hasTotalShares;
 
-    public ShareBuilder withTotalShares(Integer totalShares) {
+    public ProductShareBuilder withTotalShares(Integer totalShares) {
         this.totalShares = totalShares;
         this.hasTotalShares = true;
         return this;
@@ -125,7 +125,7 @@ public class ShareBuilder implements Serializable {
     private Integer sharesIssued;
     private boolean hasSharesIssued;
 
-    public ShareBuilder withSharesIssued(Integer sharesIssued) {
+    public ProductShareBuilder withSharesIssued(Integer sharesIssued) {
         this.sharesIssued = sharesIssued;
         this.hasSharesIssued = true;
         return this;
@@ -134,7 +134,7 @@ public class ShareBuilder implements Serializable {
     private Double unitPrice;
     private boolean hasUnitPrice;
 
-    public ShareBuilder withUnitPrice(Double unitPrice) {
+    public ProductShareBuilder withUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
         this.hasUnitPrice = true;
         return this;
@@ -143,7 +143,7 @@ public class ShareBuilder implements Serializable {
     private Double shareCapital;
     private boolean hasShareCapital;
 
-    public ShareBuilder withShareCapital(Double shareCapital) {
+    public ProductShareBuilder withShareCapital(Double shareCapital) {
         this.shareCapital = shareCapital;
         this.hasShareCapital = true;
         return this;
@@ -152,7 +152,7 @@ public class ShareBuilder implements Serializable {
     private Integer minimumShares;
     private boolean hasMinimumShares;
 
-    public ShareBuilder withMinimumShares(Integer minimumShares) {
+    public ProductShareBuilder withMinimumShares(Integer minimumShares) {
         this.minimumShares = minimumShares;
         this.hasMinimumShares = true;
         return this;
@@ -161,7 +161,7 @@ public class ShareBuilder implements Serializable {
     private Integer nominalShares;
     private boolean hasNominalShares;
 
-    public ShareBuilder withNominalShares(Integer nominalShares) {
+    public ProductShareBuilder withNominalShares(Integer nominalShares) {
         this.nominalShares = nominalShares;
         this.hasNominalShares = true;
         return this;
@@ -170,7 +170,7 @@ public class ShareBuilder implements Serializable {
     private Integer maximumShares;
     private boolean hasMaximumShares;
 
-    public ShareBuilder withMaximumShares(Integer maximumShares) {
+    public ProductShareBuilder withMaximumShares(Integer maximumShares) {
         this.maximumShares = maximumShares;
         this.hasMaximumShares = true;
         return this;
@@ -179,7 +179,7 @@ public class ShareBuilder implements Serializable {
     private Integer minimumActivePeriodForDividends;
     private boolean hasMinimumActivePeriodForDividends;
 
-    public ShareBuilder withMinimumActivePeriodForDividends(Integer minimumActivePeriodForDividends) {
+    public ProductShareBuilder withMinimumActivePeriodForDividends(Integer minimumActivePeriodForDividends) {
         this.minimumActivePeriodForDividends = minimumActivePeriodForDividends;
         this.hasMinimumActivePeriodForDividends = true;
         return this;
@@ -188,7 +188,7 @@ public class ShareBuilder implements Serializable {
     private MinimumActivePeriod minimumactiveperiodFrequencyType;
     private boolean hasMinimumactiveperiodFrequencyType;
 
-    public ShareBuilder withMinimumactiveperiodFrequencyType(MinimumActivePeriod minimumactiveperiodFrequencyType) {
+    public ProductShareBuilder withMinimumactiveperiodFrequencyType(MinimumActivePeriod minimumactiveperiodFrequencyType) {
         this.minimumactiveperiodFrequencyType = minimumactiveperiodFrequencyType;
         this.hasMinimumactiveperiodFrequencyType = true;
         return this;
@@ -197,7 +197,7 @@ public class ShareBuilder implements Serializable {
     private Integer lockinPeriodFrequency;
     private boolean hasLockinPeriodFrequency;
 
-    public ShareBuilder withLockinPeriodFrequency(Integer lockinPeriodFrequency) {
+    public ProductShareBuilder withLockinPeriodFrequency(Integer lockinPeriodFrequency) {
         this.lockinPeriodFrequency = lockinPeriodFrequency;
         this.hasLockinPeriodFrequency = true;
         return this;
@@ -206,7 +206,7 @@ public class ShareBuilder implements Serializable {
     private LockInType lockinPeriodFrequencyType;
     private boolean hasLockinPeriodFrequencyType;
 
-    public ShareBuilder withLockinPeriodFrequencyType(LockInType lockinPeriodFrequencyType) {
+    public ProductShareBuilder withLockinPeriodFrequencyType(LockInType lockinPeriodFrequencyType) {
         this.lockinPeriodFrequencyType = lockinPeriodFrequencyType;
         this.hasLockinPeriodFrequencyType = true;
         return this;
@@ -215,7 +215,7 @@ public class ShareBuilder implements Serializable {
     private Boolean allowDividendCalculationForInactiveClients;
     private boolean hasAllowDividendCalculationForInactiveClients;
 
-    public ShareBuilder withAllowDividendCalculationForInactiveClients(Boolean allowDividendCalculationForInactiveClients) {
+    public ProductShareBuilder withAllowDividendCalculationForInactiveClients(Boolean allowDividendCalculationForInactiveClients) {
         this.allowDividendCalculationForInactiveClients = allowDividendCalculationForInactiveClients;
         this.hasAllowDividendCalculationForInactiveClients = true;
         return this;
@@ -224,7 +224,7 @@ public class ShareBuilder implements Serializable {
     private String shareReferenceId;
     private boolean hasShareReferenceId;
 
-    public ShareBuilder withShareReferenceId(String shareReferenceId) {
+    public ProductShareBuilder withShareReferenceId(String shareReferenceId) {
         this.shareReferenceId = shareReferenceId;
         this.hasShareReferenceId = true;
         return this;
@@ -233,7 +233,7 @@ public class ShareBuilder implements Serializable {
     private String shareSuspenseId;
     private boolean hasShareSuspenseId;
 
-    public ShareBuilder withShareSuspenseId(String shareSuspenseId) {
+    public ProductShareBuilder withShareSuspenseId(String shareSuspenseId) {
         this.shareSuspenseId = shareSuspenseId;
         this.hasShareSuspenseId = true;
         return this;
@@ -242,7 +242,7 @@ public class ShareBuilder implements Serializable {
     private String shareEquityId;
     private boolean hasShareEquityId;
 
-    public ShareBuilder withShareEquityId(String shareEquityId) {
+    public ProductShareBuilder withShareEquityId(String shareEquityId) {
         this.shareEquityId = shareEquityId;
         this.hasShareEquityId = true;
         return this;
@@ -251,7 +251,7 @@ public class ShareBuilder implements Serializable {
     private String incomeFromFeeAccountId;
     private boolean hasIncomeFromFeeAccountId;
 
-    public ShareBuilder withIncomeFromFeeAccountId(String incomeFromFeeAccountId) {
+    public ProductShareBuilder withIncomeFromFeeAccountId(String incomeFromFeeAccountId) {
         this.incomeFromFeeAccountId = incomeFromFeeAccountId;
         this.hasIncomeFromFeeAccountId = true;
         return this;

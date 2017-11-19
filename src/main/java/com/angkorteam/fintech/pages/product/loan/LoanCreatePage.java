@@ -24,7 +24,7 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.AllowAttributeOverrideBuilder;
-import com.angkorteam.fintech.dto.builder.LoanBuilder;
+import com.angkorteam.fintech.dto.builder.ProductLoanBuilder;
 import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
@@ -3486,7 +3486,7 @@ public class LoanCreatePage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        LoanBuilder builder = new LoanBuilder();
+        ProductLoanBuilder builder = new ProductLoanBuilder();
 
         // Detail
         builder.withName(this.detailProductNameValue);

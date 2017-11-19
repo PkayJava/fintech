@@ -281,6 +281,26 @@
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 					</div>
 					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="withHoldBlock" class="form-group">
+						<wicket:container wicket:id="withHoldIContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox" wicket:id="withHoldField"> Is Withhold
+									tax applicable ?
+							</label>
+							</span>
+							<span wicket:id="withHoldFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="taxGroupBlock" class="form-group">
+						<wicket:container wicket:id="taxGroupVContainer">
+							<label>Tax Group</label>
+							<div wicket:id="taxGroupView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
 				</div>
 
 				<div class="box-header with-border">

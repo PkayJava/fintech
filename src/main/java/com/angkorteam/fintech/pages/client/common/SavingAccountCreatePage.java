@@ -1,10 +1,13 @@
-package com.angkorteam.fintech.pages.client.center;
+package com.angkorteam.fintech.pages.client.common;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -21,14 +24,20 @@ import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.builder.AccountBuilder;
+import com.angkorteam.fintech.dto.builder.SavingAccountBuilder;
+import com.angkorteam.fintech.dto.enums.ChargeCalculation;
+import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.DayInYear;
 import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
 import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
 import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
 import com.angkorteam.fintech.dto.enums.LockInType;
 import com.angkorteam.fintech.helper.ClientHelper;
+import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
+import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
+import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
 import com.angkorteam.fintech.popup.AccountChargePopup;
 import com.angkorteam.fintech.provider.DayInYearProvider;
 import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
@@ -36,7 +45,6 @@ import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
 import com.angkorteam.fintech.provider.InterestPostingPeriodProvider;
 import com.angkorteam.fintech.provider.LockInTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -69,7 +77,12 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingAccountCreatePage extends Page {
 
+    protected ClientEnum client;
+
+    protected String clientId;
+    protected String groupId;
     protected String centerId;
+
     protected String savingId;
     protected String officeId;
 
@@ -216,6 +229,17 @@ public class SavingAccountCreatePage extends Page {
     protected Double balanceRequiredForInterestCalculationValue;
     protected ReadOnlyView balanceRequiredForInterestCalculationView;
 
+    protected WebMarkupBlock withHoldBlock;
+    protected WebMarkupContainer withHoldIContainer;
+    protected Boolean withHoldValue;
+    protected CheckBox withHoldField;
+    protected TextFeedbackPanel withHoldFeedback;
+
+    protected WebMarkupBlock taxGroupBlock;
+    protected WebMarkupContainer taxGroupVContainer;
+    protected String taxGroupValue;
+    protected ReadOnlyView taxGroupView;
+
     protected List<IColumn<Map<String, Object>, String>> chargeColumn;
     protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> chargeTable;
@@ -228,8 +252,6 @@ public class SavingAccountCreatePage extends Page {
     @Override
     protected void initComponent() {
         this.popupModel = Maps.newHashMap();
-        PageParameters parameters = new PageParameters();
-        parameters.add("centerId", this.centerId);
 
         this.form = new Form<>("form");
         add(this.form);
@@ -238,7 +260,19 @@ public class SavingAccountCreatePage extends Page {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
+        PageParameters parameters = new PageParameters();
+        if (this.client == ClientEnum.Client) {
+            parameters.add("clientId", this.clientId);
+            this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
+        } else if (this.client == ClientEnum.Group) {
+            parameters.add("groupId", this.groupId);
+            this.closeLink = new BookmarkablePageLink<>("closeLink", GroupPreviewPage.class, parameters);
+        } else if (this.client == ClientEnum.Center) {
+            parameters.add("centerId", this.centerId);
+            this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
+        } else {
+            throw new WicketRuntimeException("Unknown " + this.client);
+        }
         this.form.add(this.closeLink);
 
         initProductBlock();
@@ -287,7 +321,10 @@ public class SavingAccountCreatePage extends Page {
 
         initBalanceRequiredForInterestCalculationBlock();
 
-        // Table
+        initWithHoldBlock();
+
+        initTaxGroupBlock();
+
         this.chargePopup = new ModalWindow("chargePopup");
         add(this.chargePopup);
         this.chargePopup.setOnClose(this::chargePopupClose);
@@ -318,6 +355,27 @@ public class SavingAccountCreatePage extends Page {
         this.balanceRequiredForInterestCalculationBlock.add(this.balanceRequiredForInterestCalculationVContainer);
         this.balanceRequiredForInterestCalculationView = new ReadOnlyView("balanceRequiredForInterestCalculationView", new PropertyModel<>(this, "balanceRequiredForInterestCalculationValue"));
         this.balanceRequiredForInterestCalculationVContainer.add(this.balanceRequiredForInterestCalculationView);
+    }
+
+    protected void initWithHoldBlock() {
+        this.withHoldBlock = new WebMarkupBlock("withHoldBlock", Size.Six_6);
+        this.form.add(this.withHoldBlock);
+        this.withHoldIContainer = new WebMarkupContainer("withHoldIContainer");
+        this.withHoldBlock.add(this.withHoldIContainer);
+        this.withHoldField = new CheckBox("withHoldField", new PropertyModel<>(this, "withHoldValue"));
+        this.withHoldField.add(new OnChangeAjaxBehavior(this::withHoldFieldUpdate));
+        this.withHoldIContainer.add(this.withHoldField);
+        this.withHoldFeedback = new TextFeedbackPanel("withHoldFeedback", this.withHoldField);
+        this.withHoldIContainer.add(this.withHoldFeedback);
+    }
+
+    protected void initTaxGroupBlock() {
+        this.taxGroupBlock = new WebMarkupBlock("taxGroupBlock", Size.Six_6);
+        this.form.add(this.taxGroupBlock);
+        this.taxGroupVContainer = new WebMarkupContainer("taxGroupVContainer");
+        this.taxGroupBlock.add(this.taxGroupVContainer);
+        this.taxGroupView = new ReadOnlyView("taxGroupView", new PropertyModel<>(this, "taxGroupValue"));
+        this.taxGroupVContainer.add(this.taxGroupView);
     }
 
     protected void initMinimumBalanceBlock() {
@@ -528,7 +586,7 @@ public class SavingAccountCreatePage extends Page {
     }
 
     protected void initDecimalPlacesBlock() {
-        this.decimalPlacesBlock = new WebMarkupBlock("decimalPlacesBlock", Size.Twelve_12);
+        this.decimalPlacesBlock = new WebMarkupBlock("decimalPlacesBlock", Size.Six_6);
         this.form.add(this.decimalPlacesBlock);
         this.decimalPlacesVContainer = new WebMarkupContainer("decimalPlacesVContainer");
         this.decimalPlacesBlock.add(this.decimalPlacesVContainer);
@@ -603,45 +661,74 @@ public class SavingAccountCreatePage extends Page {
     @Override
     protected void configureMetaData() {
         overdraftAllowedFieldUpdate(null);
+        this.withHoldIContainer.setVisible(this.withHoldValue != null && this.withHoldValue);
+        this.taxGroupVContainer.setVisible(this.withHoldValue != null && this.withHoldValue);
     }
 
     protected ItemPanel chargeColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("name".equals(column)) {
+        if ("name".equals(column) || "type".equals(column) || "collectedOn".equals(column)) {
             Option value = (Option) model.get(column);
-            return new TextCell(value);
-        } else if ("type".equals(column) || "collectedOn".equals(column)) {
-            String value = (String) model.get(column);
             return new TextCell(value);
         } else if ("amount".equals(column)) {
             Double value = (Double) model.get(column);
             return new TextCell(value, "#,###,##0.00");
         } else if ("date".equals(column)) {
-            Date value = (Date) model.get(column);
-            return new TextCell(value, "dd MMMM");
+            ChargeTime chargeTime = ChargeTime.parseLiteral(String.valueOf(model.get("chargeTime")));
+            if (chargeTime == ChargeTime.AnnualFee || chargeTime == ChargeTime.MonthlyFee) {
+                Date value = (Date) model.get("dayMonth");
+                return new TextCell(value, "dd MMMM");
+            } else if (chargeTime == ChargeTime.WeeklyFee || chargeTime == ChargeTime.SpecifiedDueDate) {
+                Date value = (Date) model.get("date");
+                return new TextCell(value, "yyyy-MM-dd");
+            } else {
+                return new TextCell("");
+            }
         } else if ("repaymentEvery".equals(column)) {
-            Integer value = (Integer) model.get(column);
-            return new TextCell(value);
+            ChargeTime chargeTime = ChargeTime.parseLiteral(String.valueOf(model.get("chargeTime")));
+            if (chargeTime == ChargeTime.MonthlyFee || chargeTime == ChargeTime.WeeklyFee) {
+                Integer value = (Integer) model.get(column);
+                return new TextCell(value);
+            } else {
+                return new TextCell("");
+            }
         }
         throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected void chargeClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
-        int index = -1;
-        for (int i = 0; i < this.chargeValue.size(); i++) {
-            Map<String, Object> column = this.chargeValue.get(i);
-            if (model.get("uuid").equals(column.get("uuid"))) {
-                index = i;
-                break;
+    protected void chargeClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
+        if ("delete".equals(column)) {
+            int index = -1;
+            for (int i = 0; i < this.chargeValue.size(); i++) {
+                Map<String, Object> value = this.chargeValue.get(i);
+                if (model.get("uuid").equals(value.get("uuid"))) {
+                    index = i;
+                    break;
+                }
             }
+            if (index >= 0) {
+                this.chargeValue.remove(index);
+            }
+            target.add(this.chargeTable);
+        } else if ("update".equals(column)) {
+            this.popupModel.clear();
+            this.popupModel.put("uuid", model.get("uuid"));
+            this.popupModel.put("chargeValue", model.get("charge"));
+            this.popupModel.put("amountValue", model.get("amount"));
+            this.popupModel.put("dateValue", model.get("date"));
+            this.popupModel.put("repaymentEveryValue", model.get("repaymentEvery"));
+            this.popupModel.put("chargeTypeValue", model.get("type"));
+            this.popupModel.put("chargeValue", model.get("name"));
+            this.popupModel.put("collectedOnValue", model.get("collectedOn"));
+            this.chargePopup.setContent(new AccountChargePopup("charge", this.chargePopup, this.popupModel, this.currencyValue));
+            this.chargePopup.show(target);
         }
-        if (index >= 0) {
-            this.chargeValue.remove(index);
-        }
-        target.add(this.chargeTable);
     }
 
     protected List<ActionItem> chargeAction(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("update", Model.of("Update"), ItemCss.PRIMARY));
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return actions;
     }
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
@@ -665,70 +752,144 @@ public class SavingAccountCreatePage extends Page {
     }
 
     protected void chargePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
-        Map<String, Object> item = Maps.newHashMap();
-        item.put("uuid", UUID.randomUUID().toString());
+        Map<String, Object> item = null;
+        if (this.popupModel.get("uuid") != null) {
+            for (int i = 0; i < this.chargeValue.size(); i++) {
+                item = this.chargeValue.get(i);
+                if (this.popupModel.get("uuid").equals(item.get("uuid"))) {
+                    break;
+                }
+            }
+        } else {
+            item = Maps.newHashMap();
+            item.put("uuid", UUID.randomUUID().toString());
+            this.chargeValue.add(item);
+        }
         item.put("charge", this.popupModel.get("chargeValue"));
+        item.put("chargeTime", this.popupModel.get("chargeTime"));
         item.put("amount", this.popupModel.get("amountValue"));
         item.put("date", this.popupModel.get("dateValue"));
+        item.put("dayMonth", this.popupModel.get("dayMonthValue"));
         item.put("repaymentEvery", this.popupModel.get("repaymentEveryValue"));
         item.put("type", this.popupModel.get("chargeTypeValue"));
         item.put("name", this.popupModel.get("chargeValue"));
         item.put("collectedOn", this.popupModel.get("collectedOnValue"));
-        this.chargeValue.add(item);
         target.add(this.chargeTable);
+    }
+
+    protected boolean withHoldFieldUpdate(AjaxRequestTarget target) {
+        this.taxGroupVContainer.setVisible(this.withHoldValue != null && this.withHoldValue);
+        if (target != null) {
+            target.add(this.taxGroupBlock);
+        }
+        return false;
     }
 
     @Override
     protected void initData() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
+        this.client = ClientEnum.valueOf(getPageParameters().get("client").toString());
 
-        this.submittedOnValue = DateTime.now().toDate();
-        this.externalIdValue = generator.externalId();
-
+        this.clientId = getPageParameters().get("clientId").toString();
+        this.groupId = getPageParameters().get("groupId").toString();
         this.centerId = getPageParameters().get("centerId").toString();
+
         this.savingId = getPageParameters().get("savingId").toString();
 
-        Map<String, Object> centerObject = jdbcTemplate.queryForMap("select * from m_group where id = ?", this.centerId);
-        this.officeId = String.valueOf(centerObject.get("office_id"));
-        Map<String, Object> savingObject = jdbcTemplate.queryForMap("select * from m_savings_product where id = ?", this.savingId);
-        this.productValue = (String) savingObject.get("name");
-        this.currencyValue = (String) savingObject.get("currency_code");
-        this.decimalPlacesValue = savingObject.get("currency_digits") == null ? null : ((Long) savingObject.get("currency_digits")).intValue();
+        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        this.currencyInMultiplesOfValue = savingObject.get("currency_multiplesof") == null ? null : ((Long) savingObject.get("currency_multiplesof")).intValue();
+        this.submittedOnValue = DateTime.now().toDate();
+        this.externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
 
-        this.nominalAnnualInterestValue = (Double) savingObject.get("nominal_annual_interest_rate");
+        if (this.client == ClientEnum.Client) {
+            Map<String, Object> clientObject = jdbcTemplate.queryForMap("select * from m_client where id = ?", this.clientId);
+            this.officeId = String.valueOf(clientObject.get("office_id"));
+        } else if (this.client == ClientEnum.Group) {
+            Map<String, Object> groupObject = jdbcTemplate.queryForMap("select * from m_group where id = ?", this.groupId);
+            this.officeId = String.valueOf(groupObject.get("office_id"));
+        } else if (this.client == ClientEnum.Center) {
+            Map<String, Object> centerObject = jdbcTemplate.queryForMap("select * from m_group where id = ?", this.centerId);
+            this.officeId = String.valueOf(centerObject.get("office_id"));
+        }
+        Map<String, Object> savingProductObject = jdbcTemplate.queryForMap("select * from m_savings_product where id = ?", this.savingId);
+        this.productValue = (String) savingProductObject.get("name");
+        this.currencyValue = (String) savingProductObject.get("currency_code");
+        this.decimalPlacesValue = savingProductObject.get("currency_digits") == null ? null : ((Long) savingProductObject.get("currency_digits")).intValue();
 
-        this.nominalAnnualInterestForOverdraftValue = (Double) savingObject.get("nominal_annual_interest_rate_overdraft");
+        this.currencyInMultiplesOfValue = savingProductObject.get("currency_multiplesof") == null ? null : ((Long) savingProductObject.get("currency_multiplesof")).intValue();
 
-        this.interestCompoundingPeriodValue = InterestCompoundingPeriod.optionLiteral(String.valueOf(savingObject.get("interest_compounding_period_enum")));
-        this.interestPostingPeriodValue = InterestPostingPeriod.optionLiteral(String.valueOf(savingObject.get("interest_posting_period_enum")));
-        this.interestCalculatedUsingValue = InterestCalculatedUsing.optionLiteral(String.valueOf(savingObject.get("interest_calculation_type_enum")));
-        this.dayInYearValue = DayInYear.optionLiteral(String.valueOf(savingObject.get("interest_calculation_days_in_year_type_enum")));
-        this.lockInPeriodValue = savingObject.get("lockin_period_frequency") == null ? null : ((Double) savingObject.get("lockin_period_frequency")).intValue();
-        this.lockInTypeValue = LockInType.optionLiteral(String.valueOf(savingObject.get("lockin_period_frequency_enum")));
+        this.nominalAnnualInterestValue = (Double) savingProductObject.get("nominal_annual_interest_rate");
 
-        Long applyWithdrawalFeeForTransferValue = (Long) savingObject.get("withdrawal_fee_for_transfer");
+        this.nominalAnnualInterestForOverdraftValue = (Double) savingProductObject.get("nominal_annual_interest_rate_overdraft");
+
+        this.interestCompoundingPeriodValue = InterestCompoundingPeriod.optionLiteral(String.valueOf(savingProductObject.get("interest_compounding_period_enum")));
+        this.interestPostingPeriodValue = InterestPostingPeriod.optionLiteral(String.valueOf(savingProductObject.get("interest_posting_period_enum")));
+        this.interestCalculatedUsingValue = InterestCalculatedUsing.optionLiteral(String.valueOf(savingProductObject.get("interest_calculation_type_enum")));
+        this.dayInYearValue = DayInYear.optionLiteral(String.valueOf(savingProductObject.get("interest_calculation_days_in_year_type_enum")));
+        this.lockInPeriodValue = savingProductObject.get("lockin_period_frequency") == null ? null : ((Double) savingProductObject.get("lockin_period_frequency")).intValue();
+        this.lockInTypeValue = LockInType.optionLiteral(String.valueOf(savingProductObject.get("lockin_period_frequency_enum")));
+
+        Long applyWithdrawalFeeForTransferValue = (Long) savingProductObject.get("withdrawal_fee_for_transfer");
         this.applyWithdrawalFeeForTransferValue = applyWithdrawalFeeForTransferValue == null ? false : applyWithdrawalFeeForTransferValue == 1;
 
-        this.minimumOpeningBalanceValue = (Double) savingObject.get("min_required_opening_balance");
+        this.minimumOpeningBalanceValue = (Double) savingProductObject.get("min_required_opening_balance");
 
-        this.overdraftAllowedValue = (Boolean) savingObject.get("allow_overdraft");
+        this.overdraftAllowedValue = (Boolean) savingProductObject.get("allow_overdraft");
 
-        this.maximumOverdraftAmountLimitValue = (Double) savingObject.get("overdraft_limit");
+        this.maximumOverdraftAmountLimitValue = (Double) savingProductObject.get("overdraft_limit");
 
-        this.minOverdraftRequiredForInterestCalculationValue = (Double) savingObject.get("min_overdraft_for_interest_calculation");
-        this.enforceMinimumBalanceValue = (Boolean) savingObject.get("enforce_min_required_balance");
+        this.minOverdraftRequiredForInterestCalculationValue = (Double) savingProductObject.get("min_overdraft_for_interest_calculation");
+        this.enforceMinimumBalanceValue = (Boolean) savingProductObject.get("enforce_min_required_balance");
 
-        this.minimumBalanceValue = (Double) savingObject.get("min_required_balance");
+        this.minimumBalanceValue = (Double) savingProductObject.get("min_required_balance");
 
-        this.balanceRequiredForInterestCalculationValue = (Double) savingObject.get("min_balance_for_interest_calculation");
+        this.balanceRequiredForInterestCalculationValue = (Double) savingProductObject.get("min_balance_for_interest_calculation");
+
+        this.withHoldValue = savingProductObject.get("withhold_tax") == null ? false : ((Long) savingProductObject.get("withhold_tax")) == 1;
+        this.taxGroupValue = (String) jdbcTemplate.queryForObject("select name from m_tax_group where id = ?", String.class, savingProductObject.get("tax_group_id"));
+
+        List<Map<String, Object>> charges = jdbcTemplate.queryForList("select m_charge.* from m_savings_product_charge inner join m_charge ON m_savings_product_charge.charge_id = m_charge.id where m_savings_product_charge.savings_product_id = ?", this.savingId);
+        if (charges != null && !charges.isEmpty()) {
+            for (Map<String, Object> chargeObject : charges) {
+                ChargeTime chargeTime = ChargeTime.parseLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
+                Map<String, Object> item = Maps.newHashMap();
+                item.put("uuid", UUID.randomUUID().toString());
+                Option charge = new Option(String.valueOf(chargeObject.get("id")), (String) chargeObject.get("name"));
+                item.put("charge", charge);
+                item.put("name", charge);
+                item.put("chargeTime", chargeObject.get("charge_time_enum"));
+                item.put("amount", chargeObject.get("amount"));
+
+                Long collectedOn = (Long) chargeObject.get("charge_time_enum");
+                if (collectedOn != null) {
+                    Option option = ChargeTime.optionLiteral(String.valueOf(collectedOn));
+                    item.put("collectedOn", option);
+                }
+
+                Long type = (Long) chargeObject.get("charge_calculation_enum");
+                if (type != null) {
+                    Option option = ChargeCalculation.optionLiteral(String.valueOf(type));
+                    item.put("type", option);
+                }
+
+                Long repaymentEveryValue = (Long) chargeObject.get("fee_interval");
+                item.put("repaymentEvery", repaymentEveryValue == null ? null : repaymentEveryValue.intValue());
+
+                Long month = (Long) chargeObject.get("fee_on_month");
+                Long day = (Long) chargeObject.get("fee_on_day");
+                if (day != null && month != null) {
+                    try {
+                        item.put("dayMonth", DateUtils.parseDate(day + "/" + month, "d/M"));
+                    } catch (ParseException e) {
+                    }
+                }
+                this.chargeValue.add(item);
+            }
+        }
 
     }
 
     protected void saveButtonSubmit(Button button) {
-        AccountBuilder builder = new AccountBuilder();
+        SavingAccountBuilder builder = new SavingAccountBuilder();
 
         builder.withProductId(this.savingId);
         builder.withNominalAnnualInterestRate(this.nominalAnnualInterestValue);
@@ -772,10 +933,21 @@ public class SavingAccountCreatePage extends Page {
         builder.withSubmittedOnDate(this.submittedOnValue);
 
         for (Map<String, Object> charge : this.chargeValue) {
-            builder.withCharge((String) charge.get("chargeId"), (Double) charge.get("amount"), (Date) charge.get("date"), (Integer) charge.get("repaymentEvery"));
+            String chargeId = ((Option) charge.get("charge")).getId();
+            Double amount = (Double) charge.get("amount");
+            Date feeOnMonthDay = (Date) charge.get("dayMonth");
+            Date dueDate = (Date) charge.get("date");
+            Integer feeInterval = (Integer) charge.get("repaymentEvery");
+            builder.withCharge(chargeId, amount, feeOnMonthDay, dueDate, feeInterval);
         }
 
-        builder.withGroupId(this.centerId);
+        if (this.client == ClientEnum.Client) {
+            builder.withClientId(this.clientId);
+        } else if (this.client == ClientEnum.Group) {
+            builder.withGroupId(this.groupId);
+        } else if (this.client == ClientEnum.Center) {
+            builder.withGroupId(this.centerId);
+        }
 
         JsonNode node = null;
         JsonNode request = builder.build();
@@ -788,10 +960,21 @@ public class SavingAccountCreatePage extends Page {
         if (reportError(node)) {
             return;
         }
-        PageParameters parameters = new PageParameters();
-        parameters.add("centerId", this.centerId);
-        setResponsePage(CenterPreviewPage.class, parameters);
+        if (this.client == ClientEnum.Client) {
+            PageParameters parameters = new PageParameters();
+            parameters.add("clientId", this.clientId);
+            setResponsePage(ClientPreviewPage.class, parameters);
+        } else if (this.client == ClientEnum.Center) {
+            PageParameters parameters = new PageParameters();
+            parameters.add("centerId", this.centerId);
+            setResponsePage(CenterPreviewPage.class, parameters);
+        } else if (this.client == ClientEnum.Group) {
+            PageParameters parameters = new PageParameters();
+            parameters.add("groupId", this.groupId);
+            setResponsePage(GroupPreviewPage.class, parameters);
+        } else {
+            throw new WicketRuntimeException("Unknown " + this.client);
+        }
 
     }
-
 }

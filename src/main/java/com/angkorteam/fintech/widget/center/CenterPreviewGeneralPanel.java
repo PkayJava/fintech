@@ -13,17 +13,18 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.pages.client.center.CenterClosePage;
 import com.angkorteam.fintech.pages.client.center.CenterModifyPage;
 import com.angkorteam.fintech.pages.client.center.GroupCreatePage;
 import com.angkorteam.fintech.pages.client.center.GroupManagePage;
-import com.angkorteam.fintech.pages.client.center.SavingAccountActivatePage;
-import com.angkorteam.fintech.pages.client.center.SavingAccountApprovePage;
-import com.angkorteam.fintech.pages.client.center.SavingAccountDepositPage;
-import com.angkorteam.fintech.pages.client.center.SavingAccountPreviewPage;
-import com.angkorteam.fintech.pages.client.center.SavingAccountSelectionPage;
-import com.angkorteam.fintech.pages.client.center.SavingAccountUndoApprovePage;
-import com.angkorteam.fintech.pages.client.center.SavingAccountWithdrawPage;
+import com.angkorteam.fintech.pages.client.common.SavingAccountActivatePage;
+import com.angkorteam.fintech.pages.client.common.SavingAccountApprovePage;
+import com.angkorteam.fintech.pages.client.common.SavingAccountDepositPage;
+import com.angkorteam.fintech.pages.client.common.SavingAccountPreviewPage;
+import com.angkorteam.fintech.pages.client.common.SavingAccountSelectionPage;
+import com.angkorteam.fintech.pages.client.common.SavingAccountUndoApprovePage;
+import com.angkorteam.fintech.pages.client.common.SavingAccountWithdrawPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
@@ -106,7 +107,11 @@ public class CenterPreviewGeneralPanel extends Panel {
         this.manageGroupLink = new BookmarkablePageLink<>("manageGroupLink", GroupManagePage.class, parameters);
         add(this.manageGroupLink);
 
-        this.centerSavingApplicationLink = new BookmarkablePageLink<>("centerSavingApplicationLink", SavingAccountSelectionPage.class, parameters);
+        PageParameters savingParameters = new PageParameters();
+        savingParameters.add("centerId", this.centerId);
+        savingParameters.add("client", ClientEnum.Center.name());
+
+        this.centerSavingApplicationLink = new BookmarkablePageLink<>("centerSavingApplicationLink", SavingAccountSelectionPage.class, savingParameters);
         add(this.centerSavingApplicationLink);
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", CenterClosePage.class, parameters);
@@ -161,30 +166,35 @@ public class CenterPreviewGeneralPanel extends Panel {
         if ("Approve".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
+            parameters.add("client", ClientEnum.Center.name());
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
             setResponsePage(SavingAccountApprovePage.class, parameters);
         } else if ("Undo Approve".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
+            parameters.add("client", ClientEnum.Center.name());
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
             setResponsePage(SavingAccountUndoApprovePage.class, parameters);
         } else if ("Activate".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
+            parameters.add("client", ClientEnum.Center.name());
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
             setResponsePage(SavingAccountActivatePage.class, parameters);
         } else if ("Deposit".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
+            parameters.add("client", ClientEnum.Center.name());
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
             setResponsePage(SavingAccountDepositPage.class, parameters);
         } else if ("Withdraw".equals(column)) {
             String accountId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
+            parameters.add("client", ClientEnum.Center.name());
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", accountId);
             setResponsePage(SavingAccountWithdrawPage.class, parameters);
@@ -195,6 +205,7 @@ public class CenterPreviewGeneralPanel extends Panel {
         if ("account".equals(column)) {
             String value = (String) model.get(column);
             PageParameters parameters = new PageParameters();
+            parameters.add("client", ClientEnum.Center.name());
             parameters.add("centerId", this.centerId);
             parameters.add("accountId", model.get("id"));
             return new LinkCell(SavingAccountPreviewPage.class, parameters, value);

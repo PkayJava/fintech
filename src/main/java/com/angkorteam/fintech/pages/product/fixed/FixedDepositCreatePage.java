@@ -26,8 +26,8 @@ import org.slf4j.LoggerFactory;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.builder.FixedBuilder;
-import com.angkorteam.fintech.dto.builder.FixedBuilder.IncentiveBuilder;
+import com.angkorteam.fintech.dto.builder.ProductFixedDepositBuilder;
+import com.angkorteam.fintech.dto.builder.ProductFixedDepositBuilder.IncentiveBuilder;
 import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.dto.enums.ApplyPenalOn;
@@ -1404,7 +1404,7 @@ public class FixedDepositCreatePage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        FixedBuilder builder = new FixedBuilder();
+        ProductFixedDepositBuilder builder = new ProductFixedDepositBuilder();
 
         // Detail
         builder.withName(this.detailProductNameValue);

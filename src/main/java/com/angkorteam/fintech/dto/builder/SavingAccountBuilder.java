@@ -17,12 +17,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 
-public class AccountBuilder implements Serializable {
+public class SavingAccountBuilder implements Serializable {
 
     private String clientId;
     private boolean hasClientId;
 
-    public AccountBuilder withClientId(String clientId) {
+    public SavingAccountBuilder withClientId(String clientId) {
         this.clientId = clientId;
         this.hasClientId = true;
         return this;
@@ -31,7 +31,7 @@ public class AccountBuilder implements Serializable {
     private String productId;
     private boolean hasProductId;
 
-    public AccountBuilder withProductId(String productId) {
+    public SavingAccountBuilder withProductId(String productId) {
         this.productId = productId;
         this.hasProductId = true;
         return this;
@@ -40,7 +40,7 @@ public class AccountBuilder implements Serializable {
     private Double nominalAnnualInterestRate;
     private boolean hasNominalAnnualInterestRate;
 
-    public AccountBuilder withNominalAnnualInterestRate(Double nominalAnnualInterestRate) {
+    public SavingAccountBuilder withNominalAnnualInterestRate(Double nominalAnnualInterestRate) {
         this.nominalAnnualInterestRate = nominalAnnualInterestRate;
         this.hasNominalAnnualInterestRate = true;
         return this;
@@ -49,7 +49,7 @@ public class AccountBuilder implements Serializable {
     private Double minRequiredOpeningBalance;
     private boolean hasMinRequiredOpeningBalance;
 
-    public AccountBuilder withMinRequiredOpeningBalance(Double minRequiredOpeningBalance) {
+    public SavingAccountBuilder withMinRequiredOpeningBalance(Double minRequiredOpeningBalance) {
         this.minRequiredOpeningBalance = minRequiredOpeningBalance;
         this.hasMinRequiredOpeningBalance = true;
         return this;
@@ -58,7 +58,7 @@ public class AccountBuilder implements Serializable {
     private Integer lockinPeriodFrequency;
     private boolean hasLockinPeriodFrequency;
 
-    public AccountBuilder withLockinPeriodFrequency(Integer lockinPeriodFrequency) {
+    public SavingAccountBuilder withLockinPeriodFrequency(Integer lockinPeriodFrequency) {
         this.lockinPeriodFrequency = lockinPeriodFrequency;
         this.hasLockinPeriodFrequency = true;
         return this;
@@ -67,7 +67,7 @@ public class AccountBuilder implements Serializable {
     private boolean withdrawalFeeForTransfers;
     private boolean hasWithdrawalFeeForTransfers;
 
-    public AccountBuilder withWithdrawalFeeForTransfers(boolean withdrawalFeeForTransfers) {
+    public SavingAccountBuilder withWithdrawalFeeForTransfers(boolean withdrawalFeeForTransfers) {
         this.withdrawalFeeForTransfers = withdrawalFeeForTransfers;
         this.hasWithdrawalFeeForTransfers = true;
         return this;
@@ -76,7 +76,7 @@ public class AccountBuilder implements Serializable {
     private boolean allowOverdraft;
     private boolean hasAllowOverdraft;
 
-    public AccountBuilder withAllowOverdraft(boolean allowOverdraft) {
+    public SavingAccountBuilder withAllowOverdraft(boolean allowOverdraft) {
         this.allowOverdraft = allowOverdraft;
         this.hasAllowOverdraft = true;
         return this;
@@ -85,7 +85,7 @@ public class AccountBuilder implements Serializable {
     private Double overdraftLimit;
     private boolean hasOverdraftLimit;
 
-    public AccountBuilder withOverdraftLimit(Double overdraftLimit) {
+    public SavingAccountBuilder withOverdraftLimit(Double overdraftLimit) {
         this.overdraftLimit = overdraftLimit;
         this.hasOverdraftLimit = true;
         return this;
@@ -94,7 +94,7 @@ public class AccountBuilder implements Serializable {
     private Double nominalAnnualInterestRateOverdraft;
     private boolean hasNominalAnnualInterestRateOverdraft;
 
-    public AccountBuilder withNominalAnnualInterestRateOverdraft(Double nominalAnnualInterestRateOverdraft) {
+    public SavingAccountBuilder withNominalAnnualInterestRateOverdraft(Double nominalAnnualInterestRateOverdraft) {
         this.nominalAnnualInterestRateOverdraft = nominalAnnualInterestRateOverdraft;
         this.hasNominalAnnualInterestRateOverdraft = true;
         return this;
@@ -103,7 +103,7 @@ public class AccountBuilder implements Serializable {
     private Double minOverdraftForInterestCalculation;
     private boolean hasMinOverdraftForInterestCalculation;
 
-    public AccountBuilder withMinOverdraftForInterestCalculation(Double minOverdraftForInterestCalculation) {
+    public SavingAccountBuilder withMinOverdraftForInterestCalculation(Double minOverdraftForInterestCalculation) {
         this.minOverdraftForInterestCalculation = minOverdraftForInterestCalculation;
         this.hasMinOverdraftForInterestCalculation = true;
         return this;
@@ -112,7 +112,7 @@ public class AccountBuilder implements Serializable {
     private boolean enforceMinRequiredBalance;
     private boolean hasEnforceMinRequiredBalance;
 
-    public AccountBuilder withEnforceMinRequiredBalance(boolean enforceMinRequiredBalance) {
+    public SavingAccountBuilder withEnforceMinRequiredBalance(boolean enforceMinRequiredBalance) {
         this.enforceMinRequiredBalance = enforceMinRequiredBalance;
         this.hasEnforceMinRequiredBalance = true;
         return this;
@@ -121,7 +121,7 @@ public class AccountBuilder implements Serializable {
     private Double minRequiredBalance;
     private boolean hasMinRequiredBalance;
 
-    public AccountBuilder withMinRequiredBalance(Double minRequiredBalance) {
+    public SavingAccountBuilder withMinRequiredBalance(Double minRequiredBalance) {
         this.minRequiredBalance = minRequiredBalance;
         this.hasMinRequiredBalance = true;
         return this;
@@ -130,7 +130,7 @@ public class AccountBuilder implements Serializable {
     private boolean holdTax;
     private boolean hasHoldTax;
 
-    public AccountBuilder withHoldTax(boolean holdTax) {
+    public SavingAccountBuilder withHoldTax(boolean holdTax) {
         this.holdTax = holdTax;
         this.hasHoldTax = true;
         return this;
@@ -139,7 +139,7 @@ public class AccountBuilder implements Serializable {
     private InterestCompoundingPeriod interestCompoundingPeriodType;
     private boolean hasInterestCompoundingPeriodType;
 
-    public AccountBuilder withInterestCompoundingPeriodType(InterestCompoundingPeriod interestCompoundingPeriodType) {
+    public SavingAccountBuilder withInterestCompoundingPeriodType(InterestCompoundingPeriod interestCompoundingPeriodType) {
         this.interestCompoundingPeriodType = interestCompoundingPeriodType;
         this.hasInterestCompoundingPeriodType = true;
         return this;
@@ -148,7 +148,7 @@ public class AccountBuilder implements Serializable {
     private InterestPostingPeriod interestPostingPeriodType;
     private boolean hasInterestPostingPeriodType;
 
-    public AccountBuilder withInterestPostingPeriodType(InterestPostingPeriod interestPostingPeriodType) {
+    public SavingAccountBuilder withInterestPostingPeriodType(InterestPostingPeriod interestPostingPeriodType) {
         this.interestPostingPeriodType = interestPostingPeriodType;
         this.hasInterestPostingPeriodType = true;
         return this;
@@ -157,7 +157,7 @@ public class AccountBuilder implements Serializable {
     private InterestCalculatedUsing interestCalculationType;
     private boolean hasInterestCalculationType;
 
-    public AccountBuilder withInterestCalculationType(InterestCalculatedUsing interestCalculationType) {
+    public SavingAccountBuilder withInterestCalculationType(InterestCalculatedUsing interestCalculationType) {
         this.interestCalculationType = interestCalculationType;
         this.hasInterestCalculationType = true;
         return this;
@@ -166,7 +166,7 @@ public class AccountBuilder implements Serializable {
     private DayInYear interestCalculationDaysInYearType;
     private boolean hasInterestCalculationDaysInYearType;
 
-    public AccountBuilder withInterestCalculationDaysInYearType(DayInYear interestCalculationDaysInYearType) {
+    public SavingAccountBuilder withInterestCalculationDaysInYearType(DayInYear interestCalculationDaysInYearType) {
         this.interestCalculationDaysInYearType = interestCalculationDaysInYearType;
         this.hasInterestCalculationDaysInYearType = true;
         return this;
@@ -175,7 +175,7 @@ public class AccountBuilder implements Serializable {
     private LockInType lockinPeriodFrequencyType;
     private boolean hasLockinPeriodFrequencyType;
 
-    public AccountBuilder withLockinPeriodFrequencyType(LockInType lockinPeriodFrequencyType) {
+    public SavingAccountBuilder withLockinPeriodFrequencyType(LockInType lockinPeriodFrequencyType) {
         this.lockinPeriodFrequencyType = lockinPeriodFrequencyType;
         this.hasLockinPeriodFrequencyType = true;
         return this;
@@ -184,7 +184,7 @@ public class AccountBuilder implements Serializable {
     private String fieldOfficerId;
     private boolean hasFieldOfficerId;
 
-    public AccountBuilder withFieldOfficerId(String fieldOfficerId) {
+    public SavingAccountBuilder withFieldOfficerId(String fieldOfficerId) {
         this.fieldOfficerId = fieldOfficerId;
         this.hasFieldOfficerId = true;
         return this;
@@ -193,7 +193,7 @@ public class AccountBuilder implements Serializable {
     private String externalId;
     private boolean hasExternalId;
 
-    public AccountBuilder withExternalId(String externalId) {
+    public SavingAccountBuilder withExternalId(String externalId) {
         this.externalId = externalId;
         this.hasExternalId = true;
         return this;
@@ -202,7 +202,7 @@ public class AccountBuilder implements Serializable {
     private Date submittedOnDate;
     private boolean hasSubmittedOnDate;
 
-    public AccountBuilder withSubmittedOnDate(Date submittedOnDate) {
+    public SavingAccountBuilder withSubmittedOnDate(Date submittedOnDate) {
         this.submittedOnDate = submittedOnDate;
         this.hasSubmittedOnDate = true;
         return this;
@@ -211,7 +211,7 @@ public class AccountBuilder implements Serializable {
     private String locale = "en";
     private boolean hasLocale = true;
 
-    public AccountBuilder withLocale(String locale) {
+    public SavingAccountBuilder withLocale(String locale) {
         this.locale = locale;
         this.hasLocale = true;
         return this;
@@ -220,7 +220,7 @@ public class AccountBuilder implements Serializable {
     private String dateFormat = "yyyy-MM-dd";
     private boolean hasDateFormat = true;
 
-    public AccountBuilder withDateFormat(String dateFormat) {
+    public SavingAccountBuilder withDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
         this.hasDateFormat = true;
         return this;
@@ -229,7 +229,7 @@ public class AccountBuilder implements Serializable {
     private String monthDayFormat = "dd MMMM";
     private boolean hasMonthDayFormat = true;
 
-    public AccountBuilder withMonthDayFormat(String monthDayFormat) {
+    public SavingAccountBuilder withMonthDayFormat(String monthDayFormat) {
         this.monthDayFormat = monthDayFormat;
         this.hasMonthDayFormat = true;
         return this;
@@ -238,7 +238,7 @@ public class AccountBuilder implements Serializable {
     private String groupId;
     private boolean hasGroupId;
 
-    public AccountBuilder withGroupId(String groupId) {
+    public SavingAccountBuilder withGroupId(String groupId) {
         this.groupId = groupId;
         this.hasGroupId = true;
         return this;
@@ -247,12 +247,19 @@ public class AccountBuilder implements Serializable {
     private List<Map<String, Object>> charges = Lists.newArrayList();
     private boolean hasCharges;
 
-    public AccountBuilder withCharge(String chargeId, Double amount, Date feeOnMonthDay, Integer feeInterval) {
+    public SavingAccountBuilder withCharge(String chargeId, Double amount, Date feeOnMonthDay, Date dueDate, Integer feeInterval) {
         Map<String, Object> charge = Maps.newHashMap();
         charge.put("chargeId", chargeId);
         charge.put("amount", amount);
-        charge.put("feeOnMonthDay", DateFormatUtils.format(feeOnMonthDay, this.monthDayFormat));
-        charge.put("feeInterval", feeInterval);
+        if (feeOnMonthDay != null) {
+            charge.put("feeOnMonthDay", DateFormatUtils.format(feeOnMonthDay, this.monthDayFormat));
+        }
+        if (dueDate != null) {
+            charge.put("dueDate", DateFormatUtils.format(dueDate, this.dateFormat));
+        }
+        if (feeInterval != null) {
+            charge.put("feeInterval", feeInterval);
+        }
         this.charges.add(charge);
         this.hasCharges = true;
         return this;

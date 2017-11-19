@@ -15,12 +15,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 
-public class SavingBuilder implements Serializable {
+public class ProductSavingBuilder implements Serializable {
 
     private String name;
     private boolean hasName;
 
-    public SavingBuilder withName(String name) {
+    public ProductSavingBuilder withName(String name) {
         this.name = name;
         this.hasName = true;
         return this;
@@ -29,7 +29,7 @@ public class SavingBuilder implements Serializable {
     private String shortName;
     private boolean hasShortName;
 
-    public SavingBuilder withShortName(String shortName) {
+    public ProductSavingBuilder withShortName(String shortName) {
         this.shortName = shortName;
         this.hasShortName = true;
         return this;
@@ -38,7 +38,7 @@ public class SavingBuilder implements Serializable {
     private String currencyCode;
     private boolean hasCurrencyCode;
 
-    public SavingBuilder withCurrencyCode(String currencyCode) {
+    public ProductSavingBuilder withCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
         this.hasCurrencyCode = true;
         return this;
@@ -47,7 +47,7 @@ public class SavingBuilder implements Serializable {
     private Integer digitsAfterDecimal;
     private boolean hasDigitsAfterDecimal;
 
-    public SavingBuilder withDigitsAfterDecimal(Integer digitsAfterDecimal) {
+    public ProductSavingBuilder withDigitsAfterDecimal(Integer digitsAfterDecimal) {
         this.digitsAfterDecimal = digitsAfterDecimal;
         this.hasDigitsAfterDecimal = true;
         return this;
@@ -56,7 +56,7 @@ public class SavingBuilder implements Serializable {
     private Integer accountingRule;
     private boolean hasAccountingRule;
 
-    public SavingBuilder withAccountingRule(Integer accountingRule) {
+    public ProductSavingBuilder withAccountingRule(Integer accountingRule) {
         this.accountingRule = accountingRule;
         this.hasAccountingRule = true;
         return this;
@@ -65,7 +65,7 @@ public class SavingBuilder implements Serializable {
     private String locale = "en";
     private boolean hasLocale = true;
 
-    public SavingBuilder withLocale(String locale) {
+    public ProductSavingBuilder withLocale(String locale) {
         this.locale = locale;
         this.hasLocale = true;
         return this;
@@ -74,7 +74,7 @@ public class SavingBuilder implements Serializable {
     private String description;
     private boolean hasDescription;
 
-    public SavingBuilder withDescription(String description) {
+    public ProductSavingBuilder withDescription(String description) {
         this.description = description;
         this.hasDescription = true;
         return this;
@@ -83,7 +83,7 @@ public class SavingBuilder implements Serializable {
     private Integer inMultiplesOf;
     private boolean hasInMultiplesOf;
 
-    public SavingBuilder withInMultiplesOf(Integer inMultiplesOf) {
+    public ProductSavingBuilder withInMultiplesOf(Integer inMultiplesOf) {
         this.inMultiplesOf = inMultiplesOf;
         this.hasInMultiplesOf = true;
         return this;
@@ -92,7 +92,7 @@ public class SavingBuilder implements Serializable {
     private List<Map<String, Object>> paymentChannelToFundSourceMappings = Lists.newArrayList();
     private boolean hasPaymentChannelToFundSourceMappings;
 
-    public SavingBuilder withPaymentChannelToFundSourceMappings(String paymentTypeId, String fundSourceAccountId) {
+    public ProductSavingBuilder withPaymentChannelToFundSourceMappings(String paymentTypeId, String fundSourceAccountId) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("paymentTypeId", paymentTypeId);
         item.put("fundSourceAccountId", fundSourceAccountId);
@@ -104,7 +104,7 @@ public class SavingBuilder implements Serializable {
     private List<Map<String, Object>> feeToIncomeAccountMappings = Lists.newArrayList();
     private boolean hasFeeToIncomeAccountMappings;
 
-    public SavingBuilder withFeeToIncomeAccountMappings(String chargeId, String incomeAccountId) {
+    public ProductSavingBuilder withFeeToIncomeAccountMappings(String chargeId, String incomeAccountId) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("chargeId", chargeId);
         item.put("incomeAccountId", incomeAccountId);
@@ -116,7 +116,7 @@ public class SavingBuilder implements Serializable {
     private List<Map<String, Object>> penaltyToIncomeAccountMappings = Lists.newArrayList();
     private boolean hasPenaltyToIncomeAccountMappings;
 
-    public SavingBuilder withPenaltyToIncomeAccountMappings(String chargeId, String incomeAccountId) {
+    public ProductSavingBuilder withPenaltyToIncomeAccountMappings(String chargeId, String incomeAccountId) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("chargeId", chargeId);
         item.put("incomeAccountId", incomeAccountId);
@@ -128,7 +128,7 @@ public class SavingBuilder implements Serializable {
     private List<Map<String, Object>> charges = Lists.newArrayList();
     private boolean hasCharges;
 
-    public SavingBuilder withCharges(String chargeId) {
+    public ProductSavingBuilder withCharges(String chargeId) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("id", chargeId);
         this.charges.add(item);
@@ -139,7 +139,7 @@ public class SavingBuilder implements Serializable {
     private InterestCompoundingPeriod interestCompoundingPeriodType;
     private boolean hasInterestCompoundingPeriodType;
 
-    public SavingBuilder withInterestCompoundingPeriodType(InterestCompoundingPeriod interestCompoundingPeriodType) {
+    public ProductSavingBuilder withInterestCompoundingPeriodType(InterestCompoundingPeriod interestCompoundingPeriodType) {
         this.interestCompoundingPeriodType = interestCompoundingPeriodType;
         this.hasInterestCompoundingPeriodType = true;
         return this;
@@ -148,7 +148,7 @@ public class SavingBuilder implements Serializable {
     private InterestPostingPeriod interestPostingPeriodType;
     private boolean hasInterestPostingPeriodType;
 
-    public SavingBuilder withInterestPostingPeriodType(InterestPostingPeriod interestPostingPeriodType) {
+    public ProductSavingBuilder withInterestPostingPeriodType(InterestPostingPeriod interestPostingPeriodType) {
         this.interestPostingPeriodType = interestPostingPeriodType;
         this.hasInterestPostingPeriodType = true;
         return this;
@@ -157,7 +157,7 @@ public class SavingBuilder implements Serializable {
     private InterestCalculatedUsing interestCalculationType;
     private boolean hasInterestCalculationType;
 
-    public SavingBuilder withInterestCalculationType(InterestCalculatedUsing interestCalculationType) {
+    public ProductSavingBuilder withInterestCalculationType(InterestCalculatedUsing interestCalculationType) {
         this.interestCalculationType = interestCalculationType;
         this.hasInterestCalculationType = true;
         return this;
@@ -166,7 +166,7 @@ public class SavingBuilder implements Serializable {
     private DayInYear interestCalculationDaysInYearType;
     private boolean hasInterestCalculationDaysInYearType;
 
-    public SavingBuilder withInterestCalculationDaysInYearType(DayInYear interestCalculationDaysInYearType) {
+    public ProductSavingBuilder withInterestCalculationDaysInYearType(DayInYear interestCalculationDaysInYearType) {
         this.interestCalculationDaysInYearType = interestCalculationDaysInYearType;
         this.hasInterestCalculationDaysInYearType = true;
         return this;
@@ -175,7 +175,7 @@ public class SavingBuilder implements Serializable {
     private Double nominalAnnualInterestRate;
     private boolean hasNominalAnnualInterestRate;
 
-    public SavingBuilder withNominalAnnualInterestRate(Double nominalAnnualInterestRate) {
+    public ProductSavingBuilder withNominalAnnualInterestRate(Double nominalAnnualInterestRate) {
         this.nominalAnnualInterestRate = nominalAnnualInterestRate;
         this.hasNominalAnnualInterestRate = true;
         return this;
@@ -184,7 +184,7 @@ public class SavingBuilder implements Serializable {
     private Double minRequiredOpeningBalance;
     private boolean hasMinRequiredOpeningBalance;
 
-    public SavingBuilder withMinRequiredOpeningBalance(Double minRequiredOpeningBalance) {
+    public ProductSavingBuilder withMinRequiredOpeningBalance(Double minRequiredOpeningBalance) {
         this.minRequiredOpeningBalance = minRequiredOpeningBalance;
         this.hasMinRequiredOpeningBalance = true;
         return this;
@@ -193,7 +193,7 @@ public class SavingBuilder implements Serializable {
     private Integer lockinPeriodFrequency;
     private boolean hasLockinPeriodFrequency;
 
-    public SavingBuilder withLockinPeriodFrequency(Integer lockinPeriodFrequency) {
+    public ProductSavingBuilder withLockinPeriodFrequency(Integer lockinPeriodFrequency) {
         this.lockinPeriodFrequency = lockinPeriodFrequency;
         this.hasLockinPeriodFrequency = true;
         return this;
@@ -202,7 +202,7 @@ public class SavingBuilder implements Serializable {
     private LockInType lockinPeriodFrequencyType;
     private boolean hasLockinPeriodFrequencyType;
 
-    public SavingBuilder withLockinPeriodFrequencyType(LockInType lockinPeriodFrequencyType) {
+    public ProductSavingBuilder withLockinPeriodFrequencyType(LockInType lockinPeriodFrequencyType) {
         this.lockinPeriodFrequencyType = lockinPeriodFrequencyType;
         this.hasLockinPeriodFrequencyType = true;
         return this;
@@ -211,7 +211,7 @@ public class SavingBuilder implements Serializable {
     private Boolean withdrawalFeeForTransfers;
     private boolean hasWithdrawalFeeForTransfers;
 
-    public SavingBuilder withWithdrawalFeeForTransfers(Boolean withdrawalFeeForTransfers) {
+    public ProductSavingBuilder withWithdrawalFeeForTransfers(Boolean withdrawalFeeForTransfers) {
         this.withdrawalFeeForTransfers = withdrawalFeeForTransfers;
         this.hasWithdrawalFeeForTransfers = true;
         return this;
@@ -220,7 +220,7 @@ public class SavingBuilder implements Serializable {
     private Boolean enforceMinRequiredBalance;
     private boolean hasEnforceMinRequiredBalance;
 
-    public SavingBuilder withEnforceMinRequiredBalance(Boolean enforceMinRequiredBalance) {
+    public ProductSavingBuilder withEnforceMinRequiredBalance(Boolean enforceMinRequiredBalance) {
         this.enforceMinRequiredBalance = enforceMinRequiredBalance;
         this.hasEnforceMinRequiredBalance = true;
         return this;
@@ -229,7 +229,7 @@ public class SavingBuilder implements Serializable {
     private Boolean allowOverdraft;
     private boolean hasAllowOverdraft;
 
-    public SavingBuilder withAllowOverdraft(Boolean allowOverdraft) {
+    public ProductSavingBuilder withAllowOverdraft(Boolean allowOverdraft) {
         this.allowOverdraft = allowOverdraft;
         this.hasAllowOverdraft = true;
         return this;
@@ -238,7 +238,7 @@ public class SavingBuilder implements Serializable {
     private Boolean holdTax;
     private boolean hasHoldTax;
 
-    public SavingBuilder withHoldTax(Boolean holdTax) {
+    public ProductSavingBuilder withHoldTax(Boolean holdTax) {
         this.holdTax = holdTax;
         this.hasHoldTax = true;
         return this;
@@ -247,7 +247,7 @@ public class SavingBuilder implements Serializable {
     private Boolean dormancyTrackingActive;
     private boolean hasDormancyTrackingActive;
 
-    public SavingBuilder withDormancyTrackingActive(Boolean dormancyTrackingActive) {
+    public ProductSavingBuilder withDormancyTrackingActive(Boolean dormancyTrackingActive) {
         this.dormancyTrackingActive = dormancyTrackingActive;
         this.hasDormancyTrackingActive = true;
         return this;
@@ -256,7 +256,7 @@ public class SavingBuilder implements Serializable {
     private String taxGroupId;
     private boolean hasTaxGroupId;
 
-    public SavingBuilder withTaxGroupId(String taxGroupId) {
+    public ProductSavingBuilder withTaxGroupId(String taxGroupId) {
         this.taxGroupId = taxGroupId;
         this.hasTaxGroupId = true;
         return this;
@@ -265,7 +265,7 @@ public class SavingBuilder implements Serializable {
     private Double minBalanceForInterestCalculation;
     private boolean hasMinBalanceForInterestCalculation;
 
-    public SavingBuilder withMinBalanceForInterestCalculation(Double minBalanceForInterestCalculation) {
+    public ProductSavingBuilder withMinBalanceForInterestCalculation(Double minBalanceForInterestCalculation) {
         this.minBalanceForInterestCalculation = minBalanceForInterestCalculation;
         this.hasMinBalanceForInterestCalculation = true;
         return this;
@@ -274,7 +274,7 @@ public class SavingBuilder implements Serializable {
     private Double minRequiredBalance;
     private boolean hasMinRequiredBalance;
 
-    public SavingBuilder withMinRequiredBalance(Double minRequiredBalance) {
+    public ProductSavingBuilder withMinRequiredBalance(Double minRequiredBalance) {
         this.minRequiredBalance = minRequiredBalance;
         this.hasMinRequiredBalance = true;
         return this;
@@ -283,7 +283,7 @@ public class SavingBuilder implements Serializable {
     private Double overdraftLimit;
     private boolean hasOverdraftLimit;
 
-    public SavingBuilder withOverdraftLimit(Double overdraftLimit) {
+    public ProductSavingBuilder withOverdraftLimit(Double overdraftLimit) {
         this.overdraftLimit = overdraftLimit;
         this.hasOverdraftLimit = true;
         return this;
@@ -292,7 +292,7 @@ public class SavingBuilder implements Serializable {
     private Double nominalAnnualInterestRateOverdraft;
     private boolean hasNominalAnnualInterestRateOverdraft;
 
-    public SavingBuilder withNominalAnnualInterestRateOverdraft(Double nominalAnnualInterestRateOverdraft) {
+    public ProductSavingBuilder withNominalAnnualInterestRateOverdraft(Double nominalAnnualInterestRateOverdraft) {
         this.nominalAnnualInterestRateOverdraft = nominalAnnualInterestRateOverdraft;
         this.hasNominalAnnualInterestRateOverdraft = true;
         return this;
@@ -301,7 +301,7 @@ public class SavingBuilder implements Serializable {
     private Double minOverdraftForInterestCalculation;
     private boolean hasMinOverdraftForInterestCalculation;
 
-    public SavingBuilder withMinOverdraftForInterestCalculation(Double minOverdraftForInterestCalculation) {
+    public ProductSavingBuilder withMinOverdraftForInterestCalculation(Double minOverdraftForInterestCalculation) {
         this.minOverdraftForInterestCalculation = minOverdraftForInterestCalculation;
         this.hasMinOverdraftForInterestCalculation = true;
         return this;
@@ -310,7 +310,7 @@ public class SavingBuilder implements Serializable {
     private Integer daysToInactive;
     private boolean hasDaysToInactive;
 
-    public SavingBuilder withDaysToInactive(Integer daysToInactive) {
+    public ProductSavingBuilder withDaysToInactive(Integer daysToInactive) {
         this.daysToInactive = daysToInactive;
         this.hasDaysToInactive = true;
         return this;
@@ -319,7 +319,7 @@ public class SavingBuilder implements Serializable {
     private Integer daysToDormancy;
     private boolean hasDaysToDormancy;
 
-    public SavingBuilder withDaysToDormancy(Integer daysToDormancy) {
+    public ProductSavingBuilder withDaysToDormancy(Integer daysToDormancy) {
         this.daysToDormancy = daysToDormancy;
         this.hasDaysToDormancy = true;
         return this;
@@ -328,7 +328,7 @@ public class SavingBuilder implements Serializable {
     private Integer daysToEscheat;
     private boolean hasDaysToEscheat;
 
-    public SavingBuilder withDaysToEscheat(Integer daysToEscheat) {
+    public ProductSavingBuilder withDaysToEscheat(Integer daysToEscheat) {
         this.daysToEscheat = daysToEscheat;
         this.hasDaysToEscheat = true;
         return this;
@@ -337,7 +337,7 @@ public class SavingBuilder implements Serializable {
     private String savingsReferenceAccountId;
     private boolean hasSavingsReferenceAccountId;
 
-    public SavingBuilder withSavingsReferenceAccountId(String savingsReferenceAccountId) {
+    public ProductSavingBuilder withSavingsReferenceAccountId(String savingsReferenceAccountId) {
         this.savingsReferenceAccountId = savingsReferenceAccountId;
         this.hasSavingsReferenceAccountId = true;
         return this;
@@ -346,7 +346,7 @@ public class SavingBuilder implements Serializable {
     private String overdraftPortfolioControlId;
     private boolean hasOverdraftPortfolioControlId;
 
-    public SavingBuilder withOverdraftPortfolioControlId(String overdraftPortfolioControlId) {
+    public ProductSavingBuilder withOverdraftPortfolioControlId(String overdraftPortfolioControlId) {
         this.overdraftPortfolioControlId = overdraftPortfolioControlId;
         this.hasOverdraftPortfolioControlId = true;
         return this;
@@ -355,7 +355,7 @@ public class SavingBuilder implements Serializable {
     private String savingsControlAccountId;
     private boolean hasSavingsControlAccountId;
 
-    public SavingBuilder withSavingsControlAccountId(String savingsControlAccountId) {
+    public ProductSavingBuilder withSavingsControlAccountId(String savingsControlAccountId) {
         this.savingsControlAccountId = savingsControlAccountId;
         this.hasSavingsControlAccountId = true;
         return this;
@@ -364,7 +364,7 @@ public class SavingBuilder implements Serializable {
     private String transfersInSuspenseAccountId;
     private boolean hasTransfersInSuspenseAccountId;
 
-    public SavingBuilder withTransfersInSuspenseAccountId(String transfersInSuspenseAccountId) {
+    public ProductSavingBuilder withTransfersInSuspenseAccountId(String transfersInSuspenseAccountId) {
         this.transfersInSuspenseAccountId = transfersInSuspenseAccountId;
         this.hasTransfersInSuspenseAccountId = true;
         return this;
@@ -373,7 +373,7 @@ public class SavingBuilder implements Serializable {
     private String escheatLiabilityId;
     private boolean hasEscheatLiabilityId;
 
-    public SavingBuilder withEscheatLiabilityId(String escheatLiabilityId) {
+    public ProductSavingBuilder withEscheatLiabilityId(String escheatLiabilityId) {
         this.escheatLiabilityId = escheatLiabilityId;
         this.hasEscheatLiabilityId = true;
         return this;
@@ -382,7 +382,7 @@ public class SavingBuilder implements Serializable {
     private String interestOnSavingsAccountId;
     private boolean hasInterestOnSavingsAccountId;
 
-    public SavingBuilder withInterestOnSavingsAccountId(String interestOnSavingsAccountId) {
+    public ProductSavingBuilder withInterestOnSavingsAccountId(String interestOnSavingsAccountId) {
         this.interestOnSavingsAccountId = interestOnSavingsAccountId;
         this.hasInterestOnSavingsAccountId = true;
         return this;
@@ -391,7 +391,7 @@ public class SavingBuilder implements Serializable {
     private String writeOffAccountId;
     private boolean hasWriteOffAccountId;
 
-    public SavingBuilder withWriteOffAccountId(String writeOffAccountId) {
+    public ProductSavingBuilder withWriteOffAccountId(String writeOffAccountId) {
         this.writeOffAccountId = writeOffAccountId;
         this.hasWriteOffAccountId = true;
         return this;
@@ -400,7 +400,7 @@ public class SavingBuilder implements Serializable {
     private String incomeFromFeeAccountId;
     private boolean hasIncomeFromFeeAccountId;
 
-    public SavingBuilder withIncomeFromFeeAccountId(String incomeFromFeeAccountId) {
+    public ProductSavingBuilder withIncomeFromFeeAccountId(String incomeFromFeeAccountId) {
         this.incomeFromFeeAccountId = incomeFromFeeAccountId;
         this.hasIncomeFromFeeAccountId = true;
         return this;
@@ -409,7 +409,7 @@ public class SavingBuilder implements Serializable {
     private String incomeFromPenaltyAccountId;
     private boolean hasIncomeFromPenaltyAccountId;
 
-    public SavingBuilder withIncomeFromPenaltyAccountId(String incomeFromPenaltyAccountId) {
+    public ProductSavingBuilder withIncomeFromPenaltyAccountId(String incomeFromPenaltyAccountId) {
         this.incomeFromPenaltyAccountId = incomeFromPenaltyAccountId;
         this.hasIncomeFromPenaltyAccountId = true;
         return this;
@@ -418,7 +418,7 @@ public class SavingBuilder implements Serializable {
     private String incomeFromInterestId;
     private boolean hasIncomeFromInterestId;
 
-    public SavingBuilder withIncomeFromInterestId(String incomeFromInterestId) {
+    public ProductSavingBuilder withIncomeFromInterestId(String incomeFromInterestId) {
         this.incomeFromInterestId = incomeFromInterestId;
         this.hasIncomeFromInterestId = true;
         return this;

@@ -28,12 +28,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 
-public class LoanBuilder implements Serializable {
+public class ProductLoanBuilder implements Serializable {
 
     private String name;
     private boolean hasName;
 
-    public LoanBuilder withName(String name) {
+    public ProductLoanBuilder withName(String name) {
         this.name = name;
         this.hasName = true;
         return this;
@@ -42,7 +42,7 @@ public class LoanBuilder implements Serializable {
     private String shortName;
     private boolean hasShortName;
 
-    public LoanBuilder withShortName(String shortName) {
+    public ProductLoanBuilder withShortName(String shortName) {
         this.shortName = shortName;
         this.hasShortName = true;
         return this;
@@ -51,7 +51,7 @@ public class LoanBuilder implements Serializable {
     private String currencyCode;
     private boolean hasCurrencyCode;
 
-    public LoanBuilder withCurrencyCode(String currencyCode) {
+    public ProductLoanBuilder withCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
         this.hasCurrencyCode = true;
         return this;
@@ -60,7 +60,7 @@ public class LoanBuilder implements Serializable {
     private Integer digitsAfterDecimal;
     private boolean hasDigitsAfterDecimal;
 
-    public LoanBuilder withDigitsAfterDecimal(Integer digitsAfterDecimal) {
+    public ProductLoanBuilder withDigitsAfterDecimal(Integer digitsAfterDecimal) {
         this.digitsAfterDecimal = digitsAfterDecimal;
         this.hasDigitsAfterDecimal = true;
         return this;
@@ -69,7 +69,7 @@ public class LoanBuilder implements Serializable {
     private Integer repaymentEvery;
     private boolean hasRepaymentEvery;
 
-    public LoanBuilder withRepaymentEvery(Integer repaymentEvery) {
+    public ProductLoanBuilder withRepaymentEvery(Integer repaymentEvery) {
         this.repaymentEvery = repaymentEvery;
         this.hasRepaymentEvery = true;
         return this;
@@ -78,7 +78,7 @@ public class LoanBuilder implements Serializable {
     private DayInYear daysInYearType;
     private boolean hasDaysInYearType;
 
-    public LoanBuilder withDaysInYearType(DayInYear daysInYearType) {
+    public ProductLoanBuilder withDaysInYearType(DayInYear daysInYearType) {
         this.daysInYearType = daysInYearType;
         this.hasDaysInYearType = true;
         return this;
@@ -87,7 +87,7 @@ public class LoanBuilder implements Serializable {
     private DayInMonth daysInMonthType;
     private boolean hasDaysInMonthType;
 
-    public LoanBuilder withDaysInMonthType(DayInMonth daysInMonthType) {
+    public ProductLoanBuilder withDaysInMonthType(DayInMonth daysInMonthType) {
         this.daysInMonthType = daysInMonthType;
         this.hasDaysInMonthType = true;
         return this;
@@ -96,7 +96,7 @@ public class LoanBuilder implements Serializable {
     private Boolean interestRecalculationEnabled;
     private boolean hasInterestRecalculationEnabled;
 
-    public LoanBuilder withInterestRecalculationEnabled(Boolean interestRecalculationEnabled) {
+    public ProductLoanBuilder withInterestRecalculationEnabled(Boolean interestRecalculationEnabled) {
         this.interestRecalculationEnabled = interestRecalculationEnabled;
         this.hasInterestRecalculationEnabled = true;
         return this;
@@ -105,7 +105,7 @@ public class LoanBuilder implements Serializable {
     private Integer accountingRule;
     private boolean hasAccountingRule;
 
-    public LoanBuilder withAccountingRule(Integer accountingRule) {
+    public ProductLoanBuilder withAccountingRule(Integer accountingRule) {
         this.accountingRule = accountingRule;
         this.hasAccountingRule = true;
         return this;
@@ -114,7 +114,7 @@ public class LoanBuilder implements Serializable {
     private String locale = "en";
     private boolean hasLocale = true;
 
-    public LoanBuilder withLocale(String locale) {
+    public ProductLoanBuilder withLocale(String locale) {
         this.locale = locale;
         this.hasLocale = true;
         return this;
@@ -123,7 +123,7 @@ public class LoanBuilder implements Serializable {
     private String dateFormat = "yyyy-MM-dd";
     private boolean hasDateFormat = true;
 
-    public LoanBuilder withDateFormat(String dateFormat) {
+    public ProductLoanBuilder withDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
         this.hasDateFormat = true;
         return this;
@@ -132,7 +132,7 @@ public class LoanBuilder implements Serializable {
     private Date startDate;
     private boolean hasStartDate;
 
-    public LoanBuilder withStartDate(Date startDate) {
+    public ProductLoanBuilder withStartDate(Date startDate) {
         this.startDate = startDate;
         this.hasStartDate = true;
         return this;
@@ -141,7 +141,7 @@ public class LoanBuilder implements Serializable {
     private Date closeDate;
     private boolean hasCloseDate;
 
-    public LoanBuilder withCloseDate(Date closeDate) {
+    public ProductLoanBuilder withCloseDate(Date closeDate) {
         this.closeDate = closeDate;
         this.hasCloseDate = true;
         return this;
@@ -150,7 +150,7 @@ public class LoanBuilder implements Serializable {
     private String fundId;
     private boolean hasFundId;
 
-    public LoanBuilder withFundId(String fundId) {
+    public ProductLoanBuilder withFundId(String fundId) {
         this.fundId = fundId;
         this.hasFundId = true;
         return this;
@@ -159,7 +159,7 @@ public class LoanBuilder implements Serializable {
     private String description;
     private boolean hasDescription;
 
-    public LoanBuilder withDescription(String description) {
+    public ProductLoanBuilder withDescription(String description) {
         this.description = description;
         this.hasDescription = true;
         return this;
@@ -168,7 +168,7 @@ public class LoanBuilder implements Serializable {
     private Boolean includeInBorrowerCycle;
     private boolean hasIncludeInBorrowerCycle;
 
-    public LoanBuilder withIncludeInBorrowerCycle(Boolean includeInBorrowerCycle) {
+    public ProductLoanBuilder withIncludeInBorrowerCycle(Boolean includeInBorrowerCycle) {
         this.includeInBorrowerCycle = includeInBorrowerCycle;
         this.hasIncludeInBorrowerCycle = true;
         return this;
@@ -177,7 +177,7 @@ public class LoanBuilder implements Serializable {
     private Integer installmentAmountInMultiplesOf;
     private Boolean hasInstallmentAmountInMultiplesOf;
 
-    public LoanBuilder withInstallmentAmountInMultiplesOf(Integer installmentAmountInMultiplesOf) {
+    public ProductLoanBuilder withInstallmentAmountInMultiplesOf(Integer installmentAmountInMultiplesOf) {
         this.installmentAmountInMultiplesOf = installmentAmountInMultiplesOf;
         this.hasInstallmentAmountInMultiplesOf = true;
         return this;
@@ -186,7 +186,7 @@ public class LoanBuilder implements Serializable {
     private Integer inMultiplesOf;
     private boolean hasInMultiplesOf;
 
-    public LoanBuilder withInMultiplesOf(Integer inMultiplesOf) {
+    public ProductLoanBuilder withInMultiplesOf(Integer inMultiplesOf) {
         this.inMultiplesOf = inMultiplesOf;
         this.hasInMultiplesOf = true;
         return this;
@@ -195,7 +195,7 @@ public class LoanBuilder implements Serializable {
     private Double minPrincipal;
     private boolean hasMinPrincipal;
 
-    public LoanBuilder withMinPrincipal(Double minPrincipal) {
+    public ProductLoanBuilder withMinPrincipal(Double minPrincipal) {
         this.minPrincipal = minPrincipal;
         this.hasMinPrincipal = true;
         return this;
@@ -204,7 +204,7 @@ public class LoanBuilder implements Serializable {
     private Double maxPrincipal;
     private boolean hasMaxPrincipal;
 
-    public LoanBuilder withMaxPrincipal(Double maxPrincipal) {
+    public ProductLoanBuilder withMaxPrincipal(Double maxPrincipal) {
         this.maxPrincipal = maxPrincipal;
         this.hasMaxPrincipal = true;
         return this;
@@ -213,7 +213,7 @@ public class LoanBuilder implements Serializable {
     private Double principal;
     private boolean hasPrincipal;
 
-    public LoanBuilder withPrincipal(Double principal) {
+    public ProductLoanBuilder withPrincipal(Double principal) {
         this.principal = principal;
         this.hasPrincipal = true;
         return this;
@@ -222,7 +222,7 @@ public class LoanBuilder implements Serializable {
     private Boolean useBorrowerCycle;
     private boolean hasUseBorrowerCycle;
 
-    public LoanBuilder withUseBorrowerCycle(Boolean useBorrowerCycle) {
+    public ProductLoanBuilder withUseBorrowerCycle(Boolean useBorrowerCycle) {
         this.useBorrowerCycle = useBorrowerCycle;
         this.hasUseBorrowerCycle = true;
         return this;
@@ -231,7 +231,7 @@ public class LoanBuilder implements Serializable {
     private Integer minNumberOfRepayments;
     private boolean hasMinNumberOfRepayments;
 
-    public LoanBuilder withMinNumberOfRepayments(Integer minNumberOfRepayments) {
+    public ProductLoanBuilder withMinNumberOfRepayments(Integer minNumberOfRepayments) {
         this.minNumberOfRepayments = minNumberOfRepayments;
         this.hasMinNumberOfRepayments = true;
         return this;
@@ -240,7 +240,7 @@ public class LoanBuilder implements Serializable {
     private Integer numberOfRepayments;
     private boolean hasNumberOfRepayments;
 
-    public LoanBuilder withNumberOfRepayments(Integer numberOfRepayments) {
+    public ProductLoanBuilder withNumberOfRepayments(Integer numberOfRepayments) {
         this.numberOfRepayments = numberOfRepayments;
         this.hasNumberOfRepayments = true;
         return this;
@@ -249,7 +249,7 @@ public class LoanBuilder implements Serializable {
     private Integer maxNumberOfRepayments;
     private boolean hasMaxNumberOfRepayments;
 
-    public LoanBuilder withMaxNumberOfRepayments(Integer maxNumberOfRepayments) {
+    public ProductLoanBuilder withMaxNumberOfRepayments(Integer maxNumberOfRepayments) {
         this.maxNumberOfRepayments = maxNumberOfRepayments;
         this.hasMaxNumberOfRepayments = true;
         return this;
@@ -258,7 +258,7 @@ public class LoanBuilder implements Serializable {
     private Double minInterestRatePerPeriod;
     private boolean hasMinInterestRatePerPeriod;
 
-    public LoanBuilder withMinInterestRatePerPeriod(Double minInterestRatePerPeriod) {
+    public ProductLoanBuilder withMinInterestRatePerPeriod(Double minInterestRatePerPeriod) {
         this.minInterestRatePerPeriod = minInterestRatePerPeriod;
         this.hasMinInterestRatePerPeriod = true;
         return this;
@@ -267,7 +267,7 @@ public class LoanBuilder implements Serializable {
     private Double interestRatePerPeriod;
     private boolean hasInterestRatePerPeriod;
 
-    public LoanBuilder withInterestRatePerPeriod(Double interestRatePerPeriod) {
+    public ProductLoanBuilder withInterestRatePerPeriod(Double interestRatePerPeriod) {
         this.interestRatePerPeriod = interestRatePerPeriod;
         this.hasInterestRatePerPeriod = true;
         return this;
@@ -276,7 +276,7 @@ public class LoanBuilder implements Serializable {
     private Double maxInterestRatePerPeriod;
     private boolean hasMaxInterestRatePerPeriod;
 
-    public LoanBuilder withMaxInterestRatePerPeriod(Double maxInterestRatePerPeriod) {
+    public ProductLoanBuilder withMaxInterestRatePerPeriod(Double maxInterestRatePerPeriod) {
         this.maxInterestRatePerPeriod = maxInterestRatePerPeriod;
         this.hasMaxInterestRatePerPeriod = true;
         return this;
@@ -285,7 +285,7 @@ public class LoanBuilder implements Serializable {
     private NominalInterestRateType interestRateFrequencyType;
     private boolean hasInterestRateFrequencyType;
 
-    public LoanBuilder withInterestRateFrequencyType(NominalInterestRateType interestRateFrequencyType) {
+    public ProductLoanBuilder withInterestRateFrequencyType(NominalInterestRateType interestRateFrequencyType) {
         this.interestRateFrequencyType = interestRateFrequencyType;
         this.hasInterestRateFrequencyType = true;
         return this;
@@ -294,7 +294,7 @@ public class LoanBuilder implements Serializable {
     private Integer minimumDaysBetweenDisbursalAndFirstRepayment;
     private boolean hasMinimumDaysBetweenDisbursalAndFirstRepayment;
 
-    public LoanBuilder withMinimumDaysBetweenDisbursalAndFirstRepayment(Integer minimumDaysBetweenDisbursalAndFirstRepayment) {
+    public ProductLoanBuilder withMinimumDaysBetweenDisbursalAndFirstRepayment(Integer minimumDaysBetweenDisbursalAndFirstRepayment) {
         this.minimumDaysBetweenDisbursalAndFirstRepayment = minimumDaysBetweenDisbursalAndFirstRepayment;
         this.hasMinimumDaysBetweenDisbursalAndFirstRepayment = true;
         return this;
@@ -303,7 +303,7 @@ public class LoanBuilder implements Serializable {
     private LockInType repaymentFrequencyType;
     private boolean hasRepaymentFrequencyType;
 
-    public LoanBuilder withRepaymentFrequencyType(LockInType repaymentFrequencyType) {
+    public ProductLoanBuilder withRepaymentFrequencyType(LockInType repaymentFrequencyType) {
         this.repaymentFrequencyType = repaymentFrequencyType;
         this.hasRepaymentFrequencyType = true;
         return this;
@@ -312,7 +312,7 @@ public class LoanBuilder implements Serializable {
     private Boolean linkedToFloatingInterestRates;
     private boolean hasLinkedToFloatingInterestRates;
 
-    public LoanBuilder withLinkedToFloatingInterestRates(Boolean linkedToFloatingInterestRates) {
+    public ProductLoanBuilder withLinkedToFloatingInterestRates(Boolean linkedToFloatingInterestRates) {
         this.linkedToFloatingInterestRates = linkedToFloatingInterestRates;
         this.hasLinkedToFloatingInterestRates = true;
         return this;
@@ -321,7 +321,7 @@ public class LoanBuilder implements Serializable {
     private Boolean floatingInterestRateCalculationAllowed;
     private boolean hasFloatingInterestRateCalculationAllowed;
 
-    public LoanBuilder withFloatingInterestRateCalculationAllowed(Boolean floatingInterestRateCalculationAllowed) {
+    public ProductLoanBuilder withFloatingInterestRateCalculationAllowed(Boolean floatingInterestRateCalculationAllowed) {
         this.floatingInterestRateCalculationAllowed = floatingInterestRateCalculationAllowed;
         this.hasFloatingInterestRateCalculationAllowed = true;
         return this;
@@ -330,7 +330,7 @@ public class LoanBuilder implements Serializable {
     private Double interestRateDifferential;
     private boolean hasInterestRateDifferential;
 
-    public LoanBuilder withInterestRateDifferential(Double interestRateDifferential) {
+    public ProductLoanBuilder withInterestRateDifferential(Double interestRateDifferential) {
         this.interestRateDifferential = interestRateDifferential;
         this.hasInterestRateDifferential = true;
         return this;
@@ -339,7 +339,7 @@ public class LoanBuilder implements Serializable {
     private String floatingRatesId;
     private boolean hasFloatingRatesId;
 
-    public LoanBuilder withFloatingRatesId(String floatingRatesId) {
+    public ProductLoanBuilder withFloatingRatesId(String floatingRatesId) {
         this.floatingRatesId = floatingRatesId;
         this.hasFloatingRatesId = true;
         return this;
@@ -348,7 +348,7 @@ public class LoanBuilder implements Serializable {
     private Double maxDifferentialLendingRate;
     private boolean hasMaxDifferentialLendingRate;
 
-    public LoanBuilder withMaxDifferentialLendingRate(Double maxDifferentialLendingRate) {
+    public ProductLoanBuilder withMaxDifferentialLendingRate(Double maxDifferentialLendingRate) {
         this.maxDifferentialLendingRate = maxDifferentialLendingRate;
         this.hasMaxDifferentialLendingRate = true;
         return this;
@@ -357,7 +357,7 @@ public class LoanBuilder implements Serializable {
     private Double defaultDifferentialLendingRate;
     private boolean hasDefaultDifferentialLendingRate;
 
-    public LoanBuilder withDefaultDifferentialLendingRate(Double defaultDifferentialLendingRate) {
+    public ProductLoanBuilder withDefaultDifferentialLendingRate(Double defaultDifferentialLendingRate) {
         this.defaultDifferentialLendingRate = defaultDifferentialLendingRate;
         this.hasDefaultDifferentialLendingRate = true;
         return this;
@@ -366,7 +366,7 @@ public class LoanBuilder implements Serializable {
     private Double minDifferentialLendingRate;
     private boolean hasMinDifferentialLendingRate;
 
-    public LoanBuilder withMinDifferentialLendingRate(Double minDifferentialLendingRate) {
+    public ProductLoanBuilder withMinDifferentialLendingRate(Double minDifferentialLendingRate) {
         this.minDifferentialLendingRate = minDifferentialLendingRate;
         this.hasMinDifferentialLendingRate = true;
         return this;
@@ -375,7 +375,7 @@ public class LoanBuilder implements Serializable {
     private List<Map<String, Object>> principalVariationsForBorrowerCycle = Lists.newArrayList();
     private boolean hasPrincipalVariationsForBorrowerCycle;
 
-    public LoanBuilder withPrincipalVariationsForBorrowerCycle(WhenType valueConditionType, Integer borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
+    public ProductLoanBuilder withPrincipalVariationsForBorrowerCycle(WhenType valueConditionType, Integer borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
         Map<String, Object> cycle = Maps.newHashMap();
         cycle.put("valueConditionType", valueConditionType.getLiteral());
         cycle.put("borrowerCycleNumber", borrowerCycleNumber);
@@ -390,7 +390,7 @@ public class LoanBuilder implements Serializable {
     private List<Map<String, Object>> numberOfRepaymentVariationsForBorrowerCycle = Lists.newArrayList();
     private boolean hasNumberOfRepaymentVariationsForBorrowerCycle;
 
-    public LoanBuilder withNumberOfRepaymentVariationsForBorrowerCycle(WhenType valueConditionType, Integer borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
+    public ProductLoanBuilder withNumberOfRepaymentVariationsForBorrowerCycle(WhenType valueConditionType, Integer borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
         Map<String, Object> cycle = Maps.newHashMap();
         cycle.put("valueConditionType", valueConditionType.getLiteral());
         cycle.put("borrowerCycleNumber", borrowerCycleNumber);
@@ -405,7 +405,7 @@ public class LoanBuilder implements Serializable {
     private List<Map<String, Object>> interestRateVariationsForBorrowerCycle = Lists.newArrayList();
     private boolean hasInterestRateVariationsForBorrowerCycle;
 
-    public LoanBuilder withInterestRateVariationsForBorrowerCycle(WhenType valueConditionType, Integer borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
+    public ProductLoanBuilder withInterestRateVariationsForBorrowerCycle(WhenType valueConditionType, Integer borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
         Map<String, Object> cycle = Maps.newHashMap();
         cycle.put("valueConditionType", valueConditionType.getLiteral());
         cycle.put("borrowerCycleNumber", borrowerCycleNumber);
@@ -420,7 +420,7 @@ public class LoanBuilder implements Serializable {
     private Amortization amortizationType;
     private boolean hasAmortizationType;
 
-    public LoanBuilder withAmortizationType(Amortization amortizationType) {
+    public ProductLoanBuilder withAmortizationType(Amortization amortizationType) {
         this.amortizationType = amortizationType;
         this.hasAmortizationType = true;
         return this;
@@ -429,7 +429,7 @@ public class LoanBuilder implements Serializable {
     private InterestMethod interestType;
     private boolean hasInterestType;
 
-    public LoanBuilder withInterestType(InterestMethod interestType) {
+    public ProductLoanBuilder withInterestType(InterestMethod interestType) {
         this.interestType = interestType;
         this.hasInterestType = true;
         return this;
@@ -438,7 +438,7 @@ public class LoanBuilder implements Serializable {
     private Boolean allowPartialPeriodInterestCalcualtion;
     private boolean hasAllowPartialPeriodInterestCalcualtion;
 
-    public LoanBuilder withAllowPartialPeriodInterestCalcualtion(Boolean allowPartialPeriodInterestCalcualtion) {
+    public ProductLoanBuilder withAllowPartialPeriodInterestCalcualtion(Boolean allowPartialPeriodInterestCalcualtion) {
         this.allowPartialPeriodInterestCalcualtion = allowPartialPeriodInterestCalcualtion;
         this.hasAllowPartialPeriodInterestCalcualtion = true;
         return this;
@@ -447,7 +447,7 @@ public class LoanBuilder implements Serializable {
     private InterestCalculationPeriod interestCalculationPeriodType;
     private boolean hasInterestCalculationPeriodType;
 
-    public LoanBuilder withInterestCalculationPeriodType(InterestCalculationPeriod interestCalculationPeriodType) {
+    public ProductLoanBuilder withInterestCalculationPeriodType(InterestCalculationPeriod interestCalculationPeriodType) {
         this.interestCalculationPeriodType = interestCalculationPeriodType;
         this.hasInterestCalculationPeriodType = true;
         return this;
@@ -456,7 +456,7 @@ public class LoanBuilder implements Serializable {
     private RepaymentStrategy transactionProcessingStrategyId;
     private boolean hasTransactionProcessingStrategyId;
 
-    public LoanBuilder withTransactionProcessingStrategyId(RepaymentStrategy repaymentStrategy) {
+    public ProductLoanBuilder withTransactionProcessingStrategyId(RepaymentStrategy repaymentStrategy) {
         this.transactionProcessingStrategyId = repaymentStrategy;
         this.hasTransactionProcessingStrategyId = true;
         return this;
@@ -465,7 +465,7 @@ public class LoanBuilder implements Serializable {
     private Integer graceOnPrincipalPayment;
     private boolean hasGraceOnPrincipalPayment;
 
-    public LoanBuilder withGraceOnPrincipalPayment(Integer graceOnPrincipalPayment) {
+    public ProductLoanBuilder withGraceOnPrincipalPayment(Integer graceOnPrincipalPayment) {
         this.graceOnPrincipalPayment = graceOnPrincipalPayment;
         this.hasGraceOnPrincipalPayment = true;
         return this;
@@ -474,7 +474,7 @@ public class LoanBuilder implements Serializable {
     private Integer graceOnInterestPayment;
     private boolean hasGraceOnInterestPayment;
 
-    public LoanBuilder withGraceOnInterestPayment(Integer graceOnInterestPayment) {
+    public ProductLoanBuilder withGraceOnInterestPayment(Integer graceOnInterestPayment) {
         this.graceOnInterestPayment = graceOnInterestPayment;
         this.hasGraceOnInterestPayment = true;
         return this;
@@ -483,7 +483,7 @@ public class LoanBuilder implements Serializable {
     private Integer graceOnInterestCharged;
     private boolean hasGraceOnInterestCharged;
 
-    public LoanBuilder withGraceOnInterestCharged(Integer graceOnInterestCharged) {
+    public ProductLoanBuilder withGraceOnInterestCharged(Integer graceOnInterestCharged) {
         this.graceOnInterestCharged = graceOnInterestCharged;
         this.hasGraceOnInterestCharged = true;
         return this;
@@ -492,7 +492,7 @@ public class LoanBuilder implements Serializable {
     private Double inArrearsTolerance;
     private boolean hasInArrearsTolerance;
 
-    public LoanBuilder withInArrearsTolerance(Double inArrearsTolerance) {
+    public ProductLoanBuilder withInArrearsTolerance(Double inArrearsTolerance) {
         this.inArrearsTolerance = inArrearsTolerance;
         this.hasInArrearsTolerance = true;
         return this;
@@ -501,7 +501,7 @@ public class LoanBuilder implements Serializable {
     private Boolean canDefineInstallmentAmount;
     private boolean hasCanDefineInstallmentAmount;
 
-    public LoanBuilder withCanDefineInstallmentAmount(Boolean canDefineInstallmentAmount) {
+    public ProductLoanBuilder withCanDefineInstallmentAmount(Boolean canDefineInstallmentAmount) {
         this.canDefineInstallmentAmount = canDefineInstallmentAmount;
         this.hasCanDefineInstallmentAmount = true;
         return this;
@@ -510,7 +510,7 @@ public class LoanBuilder implements Serializable {
     private Integer graceOnArrearsAgeing;
     private boolean hasGraceOnArrearsAgeing;
 
-    public LoanBuilder withGraceOnArrearsAgeing(Integer graceOnArrearsAgeing) {
+    public ProductLoanBuilder withGraceOnArrearsAgeing(Integer graceOnArrearsAgeing) {
         this.graceOnArrearsAgeing = graceOnArrearsAgeing;
         this.hasGraceOnArrearsAgeing = true;
         return this;
@@ -519,7 +519,7 @@ public class LoanBuilder implements Serializable {
     private Integer overdueDaysForNPA;
     private boolean hasOverdueDaysForNPA;
 
-    public LoanBuilder withOverdueDaysForNPA(Integer overdueDaysForNPA) {
+    public ProductLoanBuilder withOverdueDaysForNPA(Integer overdueDaysForNPA) {
         this.overdueDaysForNPA = overdueDaysForNPA;
         this.hasOverdueDaysForNPA = true;
         return this;
@@ -528,7 +528,7 @@ public class LoanBuilder implements Serializable {
     private Double principalThresholdForLastInstallment;
     private boolean hasPrincipalThresholdForLastInstallment;
 
-    public LoanBuilder withPrincipalThresholdForLastInstallment(Double principalThresholdForLastInstallment) {
+    public ProductLoanBuilder withPrincipalThresholdForLastInstallment(Double principalThresholdForLastInstallment) {
         this.principalThresholdForLastInstallment = principalThresholdForLastInstallment;
         this.hasPrincipalThresholdForLastInstallment = true;
         return this;
@@ -537,7 +537,7 @@ public class LoanBuilder implements Serializable {
     private Integer minimumGap;
     private boolean hasMinimumGap;
 
-    public LoanBuilder withMinimumGap(Integer minimumGap) {
+    public ProductLoanBuilder withMinimumGap(Integer minimumGap) {
         this.minimumGap = minimumGap;
         this.hasMinimumGap = true;
         return this;
@@ -546,7 +546,7 @@ public class LoanBuilder implements Serializable {
     private Integer maximumGap;
     private boolean hasMaximumGap;
 
-    public LoanBuilder withMaximumGap(Integer maximumGap) {
+    public ProductLoanBuilder withMaximumGap(Integer maximumGap) {
         this.maximumGap = maximumGap;
         this.hasMaximumGap = true;
         return this;
@@ -555,7 +555,7 @@ public class LoanBuilder implements Serializable {
     private Boolean accountMovesOutOfNPAOnlyOnArrearsCompletion;
     private boolean hasAccountMovesOutOfNPAOnlyOnArrearsCompletion;
 
-    public LoanBuilder withAccountMovesOutOfNPAOnlyOnArrearsCompletion(Boolean accountMovesOutOfNPAOnlyOnArrearsCompletion) {
+    public ProductLoanBuilder withAccountMovesOutOfNPAOnlyOnArrearsCompletion(Boolean accountMovesOutOfNPAOnlyOnArrearsCompletion) {
         this.accountMovesOutOfNPAOnlyOnArrearsCompletion = accountMovesOutOfNPAOnlyOnArrearsCompletion;
         this.hasAccountMovesOutOfNPAOnlyOnArrearsCompletion = true;
         return this;
@@ -564,7 +564,7 @@ public class LoanBuilder implements Serializable {
     private Boolean allowVariableInstallments;
     private boolean hasAllowVariableInstallments;
 
-    public LoanBuilder withAllowVariableInstallments(Boolean allowVariableInstallments) {
+    public ProductLoanBuilder withAllowVariableInstallments(Boolean allowVariableInstallments) {
         this.allowVariableInstallments = allowVariableInstallments;
         this.hasAllowVariableInstallments = true;
         return this;
@@ -573,7 +573,7 @@ public class LoanBuilder implements Serializable {
     private Boolean canUseForTopup;
     private boolean hasCanUseForTopup;
 
-    public LoanBuilder withCanUseForTopup(Boolean canUseForTopup) {
+    public ProductLoanBuilder withCanUseForTopup(Boolean canUseForTopup) {
         this.canUseForTopup = canUseForTopup;
         this.hasCanUseForTopup = true;
         return this;
@@ -582,7 +582,7 @@ public class LoanBuilder implements Serializable {
     private ClosureInterestCalculationRule preClosureInterestCalculationStrategy;
     private boolean hasPreClosureInterestCalculationStrategy;
 
-    public LoanBuilder withPreClosureInterestCalculationStrategy(ClosureInterestCalculationRule preClosureInterestCalculationStrategy) {
+    public ProductLoanBuilder withPreClosureInterestCalculationStrategy(ClosureInterestCalculationRule preClosureInterestCalculationStrategy) {
         this.preClosureInterestCalculationStrategy = preClosureInterestCalculationStrategy;
         this.hasPreClosureInterestCalculationStrategy = true;
         return this;
@@ -591,7 +591,7 @@ public class LoanBuilder implements Serializable {
     private AdvancePaymentsAdjustmentType rescheduleStrategyMethod;
     private boolean hasRescheduleStrategyMethod;
 
-    public LoanBuilder withRescheduleStrategyMethod(AdvancePaymentsAdjustmentType rescheduleStrategyMethod) {
+    public ProductLoanBuilder withRescheduleStrategyMethod(AdvancePaymentsAdjustmentType rescheduleStrategyMethod) {
         this.rescheduleStrategyMethod = rescheduleStrategyMethod;
         this.hasRescheduleStrategyMethod = true;
         return this;
@@ -600,7 +600,7 @@ public class LoanBuilder implements Serializable {
     private InterestRecalculationCompound interestRecalculationCompoundingMethod;
     private boolean hasInterestRecalculationCompoundingMethod;
 
-    public LoanBuilder withInterestRecalculationCompoundingMethod(InterestRecalculationCompound interestRecalculationCompoundingMethod) {
+    public ProductLoanBuilder withInterestRecalculationCompoundingMethod(InterestRecalculationCompound interestRecalculationCompoundingMethod) {
         this.interestRecalculationCompoundingMethod = interestRecalculationCompoundingMethod;
         this.hasInterestRecalculationCompoundingMethod = true;
         return this;
@@ -609,7 +609,7 @@ public class LoanBuilder implements Serializable {
     private Frequency recalculationCompoundingFrequencyType;
     private boolean hasRecalculationCompoundingFrequencyType;
 
-    public LoanBuilder withRecalculationCompoundingFrequencyType(Frequency recalculationCompoundingFrequencyType) {
+    public ProductLoanBuilder withRecalculationCompoundingFrequencyType(Frequency recalculationCompoundingFrequencyType) {
         this.recalculationCompoundingFrequencyType = recalculationCompoundingFrequencyType;
         this.hasRecalculationCompoundingFrequencyType = true;
         return this;
@@ -618,7 +618,7 @@ public class LoanBuilder implements Serializable {
     private Integer recalculationCompoundingFrequencyInterval;
     private boolean hasRecalculationCompoundingFrequencyInterval;
 
-    public LoanBuilder withRecalculationCompoundingFrequencyInterval(Integer recalculationCompoundingFrequencyInterval) {
+    public ProductLoanBuilder withRecalculationCompoundingFrequencyInterval(Integer recalculationCompoundingFrequencyInterval) {
         this.recalculationCompoundingFrequencyInterval = recalculationCompoundingFrequencyInterval;
         this.hasRecalculationCompoundingFrequencyInterval = true;
         return this;
@@ -627,7 +627,7 @@ public class LoanBuilder implements Serializable {
     private FrequencyType recalculationCompoundingFrequencyNthDayType;
     private boolean hasRecalculationCompoundingFrequencyNthDayType;
 
-    public LoanBuilder withRecalculationCompoundingFrequencyNthDayType(FrequencyType recalculationCompoundingFrequencyNthDayType) {
+    public ProductLoanBuilder withRecalculationCompoundingFrequencyNthDayType(FrequencyType recalculationCompoundingFrequencyNthDayType) {
         this.recalculationCompoundingFrequencyNthDayType = recalculationCompoundingFrequencyNthDayType;
         this.hasRecalculationCompoundingFrequencyNthDayType = true;
         return this;
@@ -636,7 +636,7 @@ public class LoanBuilder implements Serializable {
     private FrequencyDay recalculationCompoundingFrequencyDayOfWeekType;
     private boolean hasRecalculationCompoundingFrequencyDayOfWeekType;
 
-    public LoanBuilder withRecalculationCompoundingFrequencyDayOfWeekType(FrequencyDay recalculationCompoundingFrequencyDayOfWeekType) {
+    public ProductLoanBuilder withRecalculationCompoundingFrequencyDayOfWeekType(FrequencyDay recalculationCompoundingFrequencyDayOfWeekType) {
         this.recalculationCompoundingFrequencyDayOfWeekType = recalculationCompoundingFrequencyDayOfWeekType;
         this.hasRecalculationCompoundingFrequencyDayOfWeekType = true;
         return this;
@@ -645,7 +645,7 @@ public class LoanBuilder implements Serializable {
     private Boolean arrearsBasedOnOriginalSchedule;
     private boolean hasArrearsBasedOnOriginalSchedule;
 
-    public LoanBuilder withArrearsBasedOnOriginalSchedule(Boolean arrearsBasedOnOriginalSchedule) {
+    public ProductLoanBuilder withArrearsBasedOnOriginalSchedule(Boolean arrearsBasedOnOriginalSchedule) {
         this.arrearsBasedOnOriginalSchedule = arrearsBasedOnOriginalSchedule;
         this.hasArrearsBasedOnOriginalSchedule = true;
         return this;
@@ -654,7 +654,7 @@ public class LoanBuilder implements Serializable {
     private Integer recalculationRestFrequencyInterval;
     private boolean hasRecalculationRestFrequencyInterval;
 
-    public LoanBuilder withRecalculationRestFrequencyInterval(Integer recalculationRestFrequencyInterval) {
+    public ProductLoanBuilder withRecalculationRestFrequencyInterval(Integer recalculationRestFrequencyInterval) {
         this.recalculationRestFrequencyInterval = recalculationRestFrequencyInterval;
         this.hasRecalculationRestFrequencyInterval = true;
         return this;
@@ -663,7 +663,7 @@ public class LoanBuilder implements Serializable {
     private FrequencyDay recalculationRestFrequencyDayOfWeekType;
     private boolean hasRecalculationRestFrequencyDayOfWeekType;
 
-    public LoanBuilder withRecalculationRestFrequencyDayOfWeekType(FrequencyDay recalculationRestFrequencyDayOfWeekType) {
+    public ProductLoanBuilder withRecalculationRestFrequencyDayOfWeekType(FrequencyDay recalculationRestFrequencyDayOfWeekType) {
         this.recalculationRestFrequencyDayOfWeekType = recalculationRestFrequencyDayOfWeekType;
         this.hasRecalculationRestFrequencyDayOfWeekType = true;
         return this;
@@ -672,7 +672,7 @@ public class LoanBuilder implements Serializable {
     private FrequencyType recalculationRestFrequencyNthDayType;
     private boolean hasRecalculationRestFrequencyNthDayType;
 
-    public LoanBuilder withRecalculationRestFrequencyNthDayType(FrequencyType recalculationRestFrequencyNthDayType) {
+    public ProductLoanBuilder withRecalculationRestFrequencyNthDayType(FrequencyType recalculationRestFrequencyNthDayType) {
         this.recalculationRestFrequencyNthDayType = recalculationRestFrequencyNthDayType;
         this.hasRecalculationRestFrequencyNthDayType = true;
         return this;
@@ -681,7 +681,7 @@ public class LoanBuilder implements Serializable {
     private Frequency recalculationRestFrequencyType;
     private boolean hasRecalculationRestFrequencyType;
 
-    public LoanBuilder withRecalculationRestFrequencyType(Frequency recalculationRestFrequencyType) {
+    public ProductLoanBuilder withRecalculationRestFrequencyType(Frequency recalculationRestFrequencyType) {
         this.recalculationRestFrequencyType = recalculationRestFrequencyType;
         this.hasRecalculationRestFrequencyType = true;
         return this;
@@ -690,7 +690,7 @@ public class LoanBuilder implements Serializable {
     private Boolean holdGuaranteeFunds;
     private boolean hasHoldGuaranteeFunds;
 
-    public LoanBuilder withHoldGuaranteeFunds(Boolean holdGuaranteeFunds) {
+    public ProductLoanBuilder withHoldGuaranteeFunds(Boolean holdGuaranteeFunds) {
         this.holdGuaranteeFunds = holdGuaranteeFunds;
         this.hasHoldGuaranteeFunds = true;
         return this;
@@ -699,7 +699,7 @@ public class LoanBuilder implements Serializable {
     private Double mandatoryGuarantee;
     private boolean hasMandatoryGuarantee;
 
-    public LoanBuilder withMandatoryGuarantee(Double mandatoryGuarantee) {
+    public ProductLoanBuilder withMandatoryGuarantee(Double mandatoryGuarantee) {
         this.mandatoryGuarantee = mandatoryGuarantee;
         this.hasMandatoryGuarantee = true;
         return this;
@@ -708,7 +708,7 @@ public class LoanBuilder implements Serializable {
     private Double minimumGuaranteeFromGuarantor;
     private boolean hasMinimumGuaranteeFromGuarantor;
 
-    public LoanBuilder withMinimumGuaranteeFromGuarantor(Double minimumGuaranteeFromGuarantor) {
+    public ProductLoanBuilder withMinimumGuaranteeFromGuarantor(Double minimumGuaranteeFromGuarantor) {
         this.minimumGuaranteeFromGuarantor = minimumGuaranteeFromGuarantor;
         this.hasMinimumGuaranteeFromGuarantor = true;
         return this;
@@ -717,7 +717,7 @@ public class LoanBuilder implements Serializable {
     private Double minimumGuaranteeFromOwnFunds;
     private boolean hasMinimumGuaranteeFromOwnFunds;
 
-    public LoanBuilder withMinimumGuaranteeFromOwnFunds(Double minimumGuaranteeFromOwnFunds) {
+    public ProductLoanBuilder withMinimumGuaranteeFromOwnFunds(Double minimumGuaranteeFromOwnFunds) {
         this.minimumGuaranteeFromOwnFunds = minimumGuaranteeFromOwnFunds;
         this.hasMinimumGuaranteeFromOwnFunds = true;
         return this;
@@ -726,7 +726,7 @@ public class LoanBuilder implements Serializable {
     private Boolean multiDisburseLoan;
     private boolean hasMultiDisburseLoan;
 
-    public LoanBuilder withMultiDisburseLoan(Boolean multiDisburseLoan) {
+    public ProductLoanBuilder withMultiDisburseLoan(Boolean multiDisburseLoan) {
         this.multiDisburseLoan = multiDisburseLoan;
         this.hasMultiDisburseLoan = true;
         return this;
@@ -735,7 +735,7 @@ public class LoanBuilder implements Serializable {
     private Integer maxTrancheCount;
     private boolean hasMaxTrancheCount;
 
-    public LoanBuilder withMaxTrancheCount(Integer maxTrancheCount) {
+    public ProductLoanBuilder withMaxTrancheCount(Integer maxTrancheCount) {
         this.maxTrancheCount = maxTrancheCount;
         this.hasMaxTrancheCount = true;
         return this;
@@ -744,7 +744,7 @@ public class LoanBuilder implements Serializable {
     private Double outstandingLoanBalance;
     private boolean hasOutstandingLoanBalance;
 
-    public LoanBuilder withOutstandingLoanBalance(Double outstandingLoanBalance) {
+    public ProductLoanBuilder withOutstandingLoanBalance(Double outstandingLoanBalance) {
         this.outstandingLoanBalance = outstandingLoanBalance;
         this.hasOutstandingLoanBalance = true;
         return this;
@@ -753,7 +753,7 @@ public class LoanBuilder implements Serializable {
     private JSONObject allowAttributeOverrides;
     private boolean hasAllowAttributeOverrides;
 
-    public LoanBuilder withAllowAttributeOverrides(JSONObject allowAttributeOverrides) {
+    public ProductLoanBuilder withAllowAttributeOverrides(JSONObject allowAttributeOverrides) {
         this.allowAttributeOverrides = allowAttributeOverrides;
         this.hasAllowAttributeOverrides = true;
         return this;
@@ -762,7 +762,7 @@ public class LoanBuilder implements Serializable {
     private String fundSourceAccountId;
     private boolean hasFundSourceAccountId;
 
-    public LoanBuilder withFundSourceAccountId(String fundSourceAccountId) {
+    public ProductLoanBuilder withFundSourceAccountId(String fundSourceAccountId) {
         this.fundSourceAccountId = fundSourceAccountId;
         this.hasFundSourceAccountId = true;
         return this;
@@ -771,7 +771,7 @@ public class LoanBuilder implements Serializable {
     private String loanPortfolioAccountId;
     private boolean hasLoanPortfolioAccountId;
 
-    public LoanBuilder withLoanPortfolioAccountId(String loanPortfolioAccountId) {
+    public ProductLoanBuilder withLoanPortfolioAccountId(String loanPortfolioAccountId) {
         this.loanPortfolioAccountId = loanPortfolioAccountId;
         this.hasLoanPortfolioAccountId = true;
         return this;
@@ -780,7 +780,7 @@ public class LoanBuilder implements Serializable {
     private String receivableInterestAccountId;
     private boolean hasReceivableInterestAccountId;
 
-    public LoanBuilder withReceivableInterestAccountId(String receivableInterestAccountId) {
+    public ProductLoanBuilder withReceivableInterestAccountId(String receivableInterestAccountId) {
         this.receivableInterestAccountId = receivableInterestAccountId;
         this.hasReceivableInterestAccountId = true;
         return this;
@@ -789,7 +789,7 @@ public class LoanBuilder implements Serializable {
     private String interestOnLoanAccountId;
     private boolean hasInterestOnLoanAccountId;
 
-    public LoanBuilder withInterestOnLoanAccountId(String interestOnLoanAccountId) {
+    public ProductLoanBuilder withInterestOnLoanAccountId(String interestOnLoanAccountId) {
         this.interestOnLoanAccountId = interestOnLoanAccountId;
         this.hasInterestOnLoanAccountId = true;
         return this;
@@ -798,7 +798,7 @@ public class LoanBuilder implements Serializable {
     private String incomeFromFeeAccountId;
     private boolean hasIncomeFromFeeAccountId;
 
-    public LoanBuilder withIncomeFromFeeAccountId(String incomeFromFeeAccountId) {
+    public ProductLoanBuilder withIncomeFromFeeAccountId(String incomeFromFeeAccountId) {
         this.incomeFromFeeAccountId = incomeFromFeeAccountId;
         this.hasIncomeFromFeeAccountId = true;
         return this;
@@ -807,7 +807,7 @@ public class LoanBuilder implements Serializable {
     private String incomeFromPenaltyAccountId;
     private boolean hasIncomeFromPenaltyAccountId;
 
-    public LoanBuilder withIncomeFromPenaltyAccountId(String incomeFromPenaltyAccountId) {
+    public ProductLoanBuilder withIncomeFromPenaltyAccountId(String incomeFromPenaltyAccountId) {
         this.incomeFromPenaltyAccountId = incomeFromPenaltyAccountId;
         this.hasIncomeFromPenaltyAccountId = true;
         return this;
@@ -816,7 +816,7 @@ public class LoanBuilder implements Serializable {
     private String incomeFromRecoveryAccountId;
     private boolean hasIncomeFromRecoveryAccountId;
 
-    public LoanBuilder withIncomeFromRecoveryAccountId(String incomeFromRecoveryAccountId) {
+    public ProductLoanBuilder withIncomeFromRecoveryAccountId(String incomeFromRecoveryAccountId) {
         this.incomeFromRecoveryAccountId = incomeFromRecoveryAccountId;
         this.hasIncomeFromRecoveryAccountId = true;
         return this;
@@ -825,7 +825,7 @@ public class LoanBuilder implements Serializable {
     private String writeOffAccountId;
     private boolean hasWriteOffAccountId;
 
-    public LoanBuilder withWriteOffAccountId(String writeOffAccountId) {
+    public ProductLoanBuilder withWriteOffAccountId(String writeOffAccountId) {
         this.writeOffAccountId = writeOffAccountId;
         this.hasWriteOffAccountId = true;
         return this;
@@ -834,7 +834,7 @@ public class LoanBuilder implements Serializable {
     private String overpaymentLiabilityAccountId;
     private boolean hasOverpaymentLiabilityAccountId;
 
-    public LoanBuilder withOverpaymentLiabilityAccountId(String overpaymentLiabilityAccountId) {
+    public ProductLoanBuilder withOverpaymentLiabilityAccountId(String overpaymentLiabilityAccountId) {
         this.overpaymentLiabilityAccountId = overpaymentLiabilityAccountId;
         this.hasOverpaymentLiabilityAccountId = true;
         return this;
@@ -843,7 +843,7 @@ public class LoanBuilder implements Serializable {
     private String transfersInSuspenseAccountId;
     private boolean hasTransfersInSuspenseAccountId;
 
-    public LoanBuilder withTransfersInSuspenseAccountId(String transfersInSuspenseAccountId) {
+    public ProductLoanBuilder withTransfersInSuspenseAccountId(String transfersInSuspenseAccountId) {
         this.transfersInSuspenseAccountId = transfersInSuspenseAccountId;
         this.hasTransfersInSuspenseAccountId = true;
         return this;
@@ -852,7 +852,7 @@ public class LoanBuilder implements Serializable {
     private String receivableFeeAccountId;
     private boolean hasReceivableFeeAccountId;
 
-    public LoanBuilder withReceivableFeeAccountId(String receivableFeeAccountId) {
+    public ProductLoanBuilder withReceivableFeeAccountId(String receivableFeeAccountId) {
         this.receivableFeeAccountId = receivableFeeAccountId;
         this.hasReceivableFeeAccountId = true;
         return this;
@@ -861,7 +861,7 @@ public class LoanBuilder implements Serializable {
     private String receivablePenaltyAccountId;
     private boolean hasReceivablePenaltyAccountId;
 
-    public LoanBuilder withReceivablePenaltyAccountId(String receivablePenaltyAccountId) {
+    public ProductLoanBuilder withReceivablePenaltyAccountId(String receivablePenaltyAccountId) {
         this.receivablePenaltyAccountId = receivablePenaltyAccountId;
         this.hasReceivablePenaltyAccountId = true;
         return this;
@@ -870,7 +870,7 @@ public class LoanBuilder implements Serializable {
     private List<Map<String, Object>> paymentChannelToFundSourceMappings = Lists.newArrayList();
     private boolean hasPaymentChannelToFundSourceMappings;
 
-    public LoanBuilder withPaymentChannelToFundSourceMappings(String paymentTypeId, String fundSourceAccountId) {
+    public ProductLoanBuilder withPaymentChannelToFundSourceMappings(String paymentTypeId, String fundSourceAccountId) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("paymentTypeId", paymentTypeId);
         item.put("fundSourceAccountId", fundSourceAccountId);
@@ -882,7 +882,7 @@ public class LoanBuilder implements Serializable {
     private List<Map<String, Object>> feeToIncomeAccountMappings = Lists.newArrayList();
     private boolean hasFeeToIncomeAccountMappings;
 
-    public LoanBuilder withFeeToIncomeAccountMappings(String chargeId, String incomeAccountId) {
+    public ProductLoanBuilder withFeeToIncomeAccountMappings(String chargeId, String incomeAccountId) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("chargeId", chargeId);
         item.put("incomeAccountId", incomeAccountId);
@@ -894,7 +894,7 @@ public class LoanBuilder implements Serializable {
     private List<Map<String, Object>> penaltyToIncomeAccountMappings = Lists.newArrayList();
     private boolean hasPenaltyToIncomeAccountMappings;
 
-    public LoanBuilder withPenaltyToIncomeAccountMappings(String chargeId, String incomeAccountId) {
+    public ProductLoanBuilder withPenaltyToIncomeAccountMappings(String chargeId, String incomeAccountId) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("chargeId", chargeId);
         item.put("incomeAccountId", incomeAccountId);
@@ -906,7 +906,7 @@ public class LoanBuilder implements Serializable {
     private List<Map<String, Object>> charges = Lists.newArrayList();
     private boolean hasCharges;
 
-    public LoanBuilder withCharges(String chargeId) {
+    public ProductLoanBuilder withCharges(String chargeId) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("id", chargeId);
         this.charges.add(item);

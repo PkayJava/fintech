@@ -9,7 +9,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.enums.DepositType;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
-import com.angkorteam.fintech.pages.client.center.SavingAccountCreatePage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
@@ -84,7 +83,7 @@ public class GroupLoanPage extends Page {
         PageParameters parameters = new PageParameters();
         parameters.add("groupId", this.groupId);
         parameters.add("productId", this.productValue.getId());
-        setResponsePage(SavingAccountCreatePage.class, parameters);
+        // setResponsePage(SavingAccountCreatePage.class, parameters);
     }
 
 }

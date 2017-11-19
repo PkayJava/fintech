@@ -10,7 +10,7 @@
 				<div class="box-body">
 					<!-- Row -->
 					<div wicket:id="chargeBlock" class="form-group">
-						<wicket:container wicket:id="chargeContainer">
+						<wicket:container wicket:id="chargeIContainer">
 							<label wicket:for="chargeField">Charge</label>
 							<select wicket:id="chargeField" class="form-control select2"
 								style="width: 100%;"></select>
@@ -18,7 +18,7 @@
 						</wicket:container>
 					</div>
 					<div wicket:id="chargeTypeBlock" class="form-group">
-						<wicket:container wicket:id="chargeTypeContainer">
+						<wicket:container wicket:id="chargeTypeIContainer">
 							<label>Type</label>
 							<div wicket:id="chargeTypeView" readonly="readonly"
 								class="form-control"></div>
@@ -28,14 +28,14 @@
 
 					<!-- Row -->
 					<div wicket:id="amountBlock" class="form-group">
-						<wicket:container wicket:id="amountContainer">
+						<wicket:container wicket:id="amountIContainer">
 							<label wicket:for="amountField">Amount</label>
 							<input type="text" wicket:id="amountField" class="form-control" />
 							<span wicket:id="amountFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
 					<div wicket:id="collectedOnBlock" class="form-group">
-						<wicket:container wicket:id="collectedOnContainer">
+						<wicket:container wicket:id="collectedOnIContainer">
 							<label>Collected On</label>
 							<div wicket:id="collectedOnView" readonly="readonly"
 								class="form-control"></div>
@@ -44,20 +44,42 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
+					<div wicket:id="dayMonthBlock" class="form-group">
+						<wicket:container wicket:id="dayMonthIContainer">
+							<label wicket:for="dayMonthField">Day Month</label>
+							<input type="text" wicket:id="dayMonthField" class="form-control" />
+							<span wicket:id="dayMonthFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
 					<div wicket:id="dateBlock" class="form-group">
-						<wicket:container wicket:id="dateContainer">
+						<wicket:container wicket:id="dateIContainer">
 							<label wicket:for="dateField">Date</label>
 							<input type="text" wicket:id="dateField" class="form-control" />
 							<span wicket:id="dateFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
 					<div wicket:id="repaymentEveryBlock" class="form-group">
-						<wicket:container wicket:id="repaymentEveryContainer">
+						<wicket:container wicket:id="repaymentEveryIContainer">
 							<label wicket:for="repaymentEveryField">Repayment Every</label>
 							<input type="text" wicket:id="repaymentEveryField"
 								class="form-control" />
 							<span wicket:id="repaymentEveryFeedback" class="help-block"></span>
 						</wicket:container>
+					</div>
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 					</div>
 					<div class="clearfix"></div>
 

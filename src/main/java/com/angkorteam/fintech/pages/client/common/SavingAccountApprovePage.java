@@ -1,7 +1,8 @@
-package com.angkorteam.fintech.pages.client.client;
+package com.angkorteam.fintech.pages.client.common;
 
 import java.util.Date;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -13,9 +14,13 @@ import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.helper.acount.ApproveBuilder;
+import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
+import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
+import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
@@ -28,7 +33,12 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingAccountApprovePage extends Page {
 
+    protected ClientEnum client;
+
     protected String clientId;
+    protected String groupId;
+    protected String centerId;
+
     protected String accountId;
 
     protected Form<Void> form;
@@ -49,9 +59,6 @@ public class SavingAccountApprovePage extends Page {
 
     @Override
     protected void initComponent() {
-        PageParameters parameters = new PageParameters();
-        parameters.add("clientId", this.clientId);
-
         this.form = new Form<>("form");
         add(this.form);
 
@@ -59,7 +66,19 @@ public class SavingAccountApprovePage extends Page {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
+        PageParameters parameters = new PageParameters();
+        if (this.client == ClientEnum.Client) {
+            parameters.add("clientId", this.clientId);
+            this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
+        } else if (this.client == ClientEnum.Group) {
+            parameters.add("groupId", this.groupId);
+            this.closeLink = new BookmarkablePageLink<>("closeLink", GroupPreviewPage.class, parameters);
+        } else if (this.client == ClientEnum.Center) {
+            parameters.add("centerId", this.centerId);
+            this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
+        } else {
+            throw new WicketRuntimeException("Unknown " + this.client);
+        }
         this.form.add(this.closeLink);
 
         initApprovedOnBlock();
@@ -101,7 +120,12 @@ public class SavingAccountApprovePage extends Page {
 
     @Override
     protected void initData() {
+        this.client = ClientEnum.valueOf(getPageParameters().get("client").toString());
+
         this.clientId = getPageParameters().get("clientId").toString();
+        this.groupId = getPageParameters().get("groupId").toString();
+        this.centerId = getPageParameters().get("centerId").toString();
+
         this.accountId = getPageParameters().get("accountId").toString();
         this.approvedOnValue = DateTime.now().toDate();
     }
@@ -123,9 +147,21 @@ public class SavingAccountApprovePage extends Page {
             return;
         }
 
-        PageParameters parameters = new PageParameters();
-        parameters.add("clientId", this.clientId);
-        setResponsePage(ClientPreviewPage.class, parameters);
+        if (this.client == ClientEnum.Client) {
+            PageParameters parameters = new PageParameters();
+            parameters.add("clientId", this.clientId);
+            setResponsePage(ClientPreviewPage.class, parameters);
+        } else if (this.client == ClientEnum.Center) {
+            PageParameters parameters = new PageParameters();
+            parameters.add("centerId", this.centerId);
+            setResponsePage(CenterPreviewPage.class, parameters);
+        } else if (this.client == ClientEnum.Group) {
+            PageParameters parameters = new PageParameters();
+            parameters.add("groupId", this.groupId);
+            setResponsePage(GroupPreviewPage.class, parameters);
+        } else {
+            throw new WicketRuntimeException("Unknown " + this.client);
+        }
     }
 
 }

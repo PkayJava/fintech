@@ -22,12 +22,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 
-public class FixedBuilder implements Serializable {
+public class ProductRecurringDepositBuilder implements Serializable {
 
     private List<Map<String, Object>> paymentChannelToFundSourceMappings = Lists.newArrayList();
     private boolean hasPaymentChannelToFundSourceMappings;
 
-    public FixedBuilder withPaymentChannelToFundSourceMappings(String paymentTypeId, String fundSourceAccountId) {
+    public ProductRecurringDepositBuilder withPaymentChannelToFundSourceMappings(String paymentTypeId, String fundSourceAccountId) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("paymentTypeId", paymentTypeId);
         item.put("fundSourceAccountId", fundSourceAccountId);
@@ -39,7 +39,7 @@ public class FixedBuilder implements Serializable {
     private List<Map<String, Object>> feeToIncomeAccountMappings = Lists.newArrayList();
     private boolean hasFeeToIncomeAccountMappings;
 
-    public FixedBuilder withFeeToIncomeAccountMappings(String chargeId, String incomeAccountId) {
+    public ProductRecurringDepositBuilder withFeeToIncomeAccountMappings(String chargeId, String incomeAccountId) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("chargeId", chargeId);
         item.put("incomeAccountId", incomeAccountId);
@@ -51,7 +51,7 @@ public class FixedBuilder implements Serializable {
     private List<Map<String, Object>> penaltyToIncomeAccountMappings = Lists.newArrayList();
     private boolean hasPenaltyToIncomeAccountMappings;
 
-    public FixedBuilder withPenaltyToIncomeAccountMappings(String chargeId, String incomeAccountId) {
+    public ProductRecurringDepositBuilder withPenaltyToIncomeAccountMappings(String chargeId, String incomeAccountId) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("chargeId", chargeId);
         item.put("incomeAccountId", incomeAccountId);
@@ -63,7 +63,7 @@ public class FixedBuilder implements Serializable {
     private Double depositAmount;
     private boolean hasDepositAmount;
 
-    public FixedBuilder withDepositAmount(Double depositAmount) {
+    public ProductRecurringDepositBuilder withDepositAmount(Double depositAmount) {
         this.depositAmount = depositAmount;
         this.hasDepositAmount = true;
         return this;
@@ -72,7 +72,7 @@ public class FixedBuilder implements Serializable {
     private Double minDepositAmount;
     private boolean hasMinDepositAmount;
 
-    public FixedBuilder withMinDepositAmount(Double minDepositAmount) {
+    public ProductRecurringDepositBuilder withMinDepositAmount(Double minDepositAmount) {
         this.minDepositAmount = minDepositAmount;
         this.hasMinDepositAmount = true;
         return this;
@@ -81,7 +81,7 @@ public class FixedBuilder implements Serializable {
     private Double maxDepositAmount;
     private boolean hasMaxDepositAmount;
 
-    public FixedBuilder withMaxDepositAmount(Double maxDepositAmount) {
+    public ProductRecurringDepositBuilder withMaxDepositAmount(Double maxDepositAmount) {
         this.maxDepositAmount = maxDepositAmount;
         this.hasMaxDepositAmount = true;
         return this;
@@ -90,7 +90,7 @@ public class FixedBuilder implements Serializable {
     private String description;
     private boolean hasDescription;
 
-    public FixedBuilder withDescription(String description) {
+    public ProductRecurringDepositBuilder withDescription(String description) {
         this.description = description;
         this.hasDescription = true;
         return this;
@@ -99,7 +99,7 @@ public class FixedBuilder implements Serializable {
     private String shortName;
     private boolean hasShortName;
 
-    public FixedBuilder withShortName(String shortName) {
+    public ProductRecurringDepositBuilder withShortName(String shortName) {
         this.shortName = shortName;
         this.hasShortName = true;
         return this;
@@ -108,7 +108,7 @@ public class FixedBuilder implements Serializable {
     private String name;
     private boolean hasName;
 
-    public FixedBuilder withName(String name) {
+    public ProductRecurringDepositBuilder withName(String name) {
         this.name = name;
         this.hasName = true;
         return this;
@@ -117,7 +117,7 @@ public class FixedBuilder implements Serializable {
     private Integer inMultiplesOf;
     private boolean hasInMultiplesOf;
 
-    public FixedBuilder withInMultiplesOf(Integer inMultiplesOf) {
+    public ProductRecurringDepositBuilder withInMultiplesOf(Integer inMultiplesOf) {
         this.inMultiplesOf = inMultiplesOf;
         this.hasInMultiplesOf = true;
         return this;
@@ -126,16 +126,16 @@ public class FixedBuilder implements Serializable {
     private String taxGroupId;
     private boolean hasTaxGroupId;
 
-    public FixedBuilder withTaxGroupId(String taxGroupId) {
+    public ProductRecurringDepositBuilder withTaxGroupId(String taxGroupId) {
         this.taxGroupId = taxGroupId;
         this.hasTaxGroupId = true;
         return this;
     }
 
-    private boolean holdTax;
+    private Boolean holdTax;
     private boolean hasHoldTax;
 
-    public FixedBuilder withHoldTax(boolean holdTax) {
+    public ProductRecurringDepositBuilder withHoldTax(Boolean holdTax) {
         this.holdTax = holdTax;
         this.hasHoldTax = true;
         return this;
@@ -144,7 +144,7 @@ public class FixedBuilder implements Serializable {
     private String currencyCode;
     private boolean hasCurrencyCode;
 
-    public FixedBuilder withCurrencyCode(String currencyCode) {
+    public ProductRecurringDepositBuilder withCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
         this.hasCurrencyCode = true;
         return this;
@@ -153,7 +153,7 @@ public class FixedBuilder implements Serializable {
     private Integer digitsAfterDecimal;
     private boolean hasDigitsAfterDecimal;
 
-    public FixedBuilder withDigitsAfterDecimal(Integer digitsAfterDecimal) {
+    public ProductRecurringDepositBuilder withDigitsAfterDecimal(Integer digitsAfterDecimal) {
         this.digitsAfterDecimal = digitsAfterDecimal;
         this.hasDigitsAfterDecimal = true;
         return this;
@@ -162,7 +162,7 @@ public class FixedBuilder implements Serializable {
     private List<Map<String, Object>> charges = Lists.newArrayList();
     private boolean hasCharges;
 
-    public FixedBuilder withCharges(String chargeId) {
+    public ProductRecurringDepositBuilder withCharges(String chargeId) {
         Map<String, Object> item = Maps.newHashMap();
         item.put("id", chargeId);
         this.charges.add(item);
@@ -173,7 +173,7 @@ public class FixedBuilder implements Serializable {
     private String locale = "en";
     private boolean hasLocale = true;
 
-    public FixedBuilder withLocale(String locale) {
+    public ProductRecurringDepositBuilder withLocale(String locale) {
         this.locale = locale;
         this.hasLocale = true;
         return this;
@@ -182,7 +182,7 @@ public class FixedBuilder implements Serializable {
     private Integer accountingRule;
     private boolean hasAccountingRule;
 
-    public FixedBuilder withAccountingRule(Integer accountingRule) {
+    public ProductRecurringDepositBuilder withAccountingRule(Integer accountingRule) {
         this.accountingRule = accountingRule;
         this.hasAccountingRule = true;
         return this;
@@ -191,7 +191,7 @@ public class FixedBuilder implements Serializable {
     private InterestCompoundingPeriod interestCompoundingPeriodType;
     private boolean hasInterestCompoundingPeriodType;
 
-    public FixedBuilder withInterestCompoundingPeriodType(InterestCompoundingPeriod interestCompoundingPeriodType) {
+    public ProductRecurringDepositBuilder withInterestCompoundingPeriodType(InterestCompoundingPeriod interestCompoundingPeriodType) {
         this.interestCompoundingPeriodType = interestCompoundingPeriodType;
         this.hasInterestCompoundingPeriodType = true;
         return this;
@@ -200,7 +200,7 @@ public class FixedBuilder implements Serializable {
     private InterestPostingPeriod interestPostingPeriodType;
     private boolean hasInterestPostingPeriodType;
 
-    public FixedBuilder withInterestPostingPeriodType(InterestPostingPeriod interestPostingPeriodType) {
+    public ProductRecurringDepositBuilder withInterestPostingPeriodType(InterestPostingPeriod interestPostingPeriodType) {
         this.interestPostingPeriodType = interestPostingPeriodType;
         this.hasInterestPostingPeriodType = true;
         return this;
@@ -209,7 +209,7 @@ public class FixedBuilder implements Serializable {
     private InterestCalculatedUsing interestCalculationType;
     private boolean hasInterestCalculationType;
 
-    public FixedBuilder withInterestCalculationType(InterestCalculatedUsing interestCalculationType) {
+    public ProductRecurringDepositBuilder withInterestCalculationType(InterestCalculatedUsing interestCalculationType) {
         this.interestCalculationType = interestCalculationType;
         this.hasInterestCalculationType = true;
         return this;
@@ -218,7 +218,7 @@ public class FixedBuilder implements Serializable {
     private DayInYear interestCalculationDaysInYearType;
     private boolean hasInterestCalculationDaysInYearType;
 
-    public FixedBuilder withInterestCalculationDaysInYearType(DayInYear interestCalculationDaysInYearType) {
+    public ProductRecurringDepositBuilder withInterestCalculationDaysInYearType(DayInYear interestCalculationDaysInYearType) {
         this.interestCalculationDaysInYearType = interestCalculationDaysInYearType;
         this.hasInterestCalculationDaysInYearType = true;
         return this;
@@ -227,7 +227,7 @@ public class FixedBuilder implements Serializable {
     private ApplyPenalOn preClosurePenalInterestOnTypeId;
     private boolean hasPreClosurePenalInterestOnTypeId;
 
-    public FixedBuilder withPreClosurePenalInterestOnTypeId(ApplyPenalOn preClosurePenalInterestOnTypeId) {
+    public ProductRecurringDepositBuilder withPreClosurePenalInterestOnTypeId(ApplyPenalOn preClosurePenalInterestOnTypeId) {
         this.preClosurePenalInterestOnTypeId = preClosurePenalInterestOnTypeId;
         this.hasPreClosurePenalInterestOnTypeId = true;
         return this;
@@ -236,7 +236,7 @@ public class FixedBuilder implements Serializable {
     private String savingsReferenceAccountId;
     private boolean hasSavingsReferenceAccountId;
 
-    public FixedBuilder withSavingsReferenceAccountId(String savingsReferenceAccountId) {
+    public ProductRecurringDepositBuilder withSavingsReferenceAccountId(String savingsReferenceAccountId) {
         this.savingsReferenceAccountId = savingsReferenceAccountId;
         this.hasSavingsReferenceAccountId = true;
         return this;
@@ -245,7 +245,7 @@ public class FixedBuilder implements Serializable {
     private String savingsControlAccountId;
     private boolean hasSavingsControlAccountId;
 
-    public FixedBuilder withSavingsControlAccountId(String savingsControlAccountId) {
+    public ProductRecurringDepositBuilder withSavingsControlAccountId(String savingsControlAccountId) {
         this.savingsControlAccountId = savingsControlAccountId;
         this.hasSavingsControlAccountId = true;
         return this;
@@ -254,7 +254,7 @@ public class FixedBuilder implements Serializable {
     private String interestOnSavingsAccountId;
     private boolean hasInterestOnSavingsAccountId;
 
-    public FixedBuilder withInterestOnSavingsAccountId(String interestOnSavingsAccountId) {
+    public ProductRecurringDepositBuilder withInterestOnSavingsAccountId(String interestOnSavingsAccountId) {
         this.interestOnSavingsAccountId = interestOnSavingsAccountId;
         this.hasInterestOnSavingsAccountId = true;
         return this;
@@ -263,7 +263,7 @@ public class FixedBuilder implements Serializable {
     private String incomeFromFeeAccountId;
     private boolean hasIncomeFromFeeAccountId;
 
-    public FixedBuilder withIncomeFromFeeAccountId(String incomeFromFeeAccountId) {
+    public ProductRecurringDepositBuilder withIncomeFromFeeAccountId(String incomeFromFeeAccountId) {
         this.incomeFromFeeAccountId = incomeFromFeeAccountId;
         this.hasIncomeFromFeeAccountId = true;
         return this;
@@ -272,7 +272,7 @@ public class FixedBuilder implements Serializable {
     private String incomeFromPenaltyAccountId;
     private boolean hasIncomeFromPenaltyAccountId;
 
-    public FixedBuilder withIncomeFromPenaltyAccountId(String incomeFromPenaltyAccountId) {
+    public ProductRecurringDepositBuilder withIncomeFromPenaltyAccountId(String incomeFromPenaltyAccountId) {
         this.incomeFromPenaltyAccountId = incomeFromPenaltyAccountId;
         this.hasIncomeFromPenaltyAccountId = true;
         return this;
@@ -281,19 +281,19 @@ public class FixedBuilder implements Serializable {
     private String transfersInSuspenseAccountId;
     private boolean hasTransfersInSuspenseAccountId;
 
-    public FixedBuilder withTransfersInSuspenseAccountId(String transfersInSuspenseAccountId) {
+    public ProductRecurringDepositBuilder withTransfersInSuspenseAccountId(String transfersInSuspenseAccountId) {
         this.transfersInSuspenseAccountId = transfersInSuspenseAccountId;
         this.hasTransfersInSuspenseAccountId = true;
         return this;
     }
 
-    private boolean hasCharts;
     private List<Map<String, Object>> charts = Lists.newArrayList();
+    private boolean hasCharts;
 
     private Date fromDate;
     private boolean hasFromDate;
 
-    public FixedBuilder withFromDate(Date fromDate) {
+    public ProductRecurringDepositBuilder withFromDate(Date fromDate) {
         this.fromDate = fromDate;
         this.hasFromDate = true;
         this.hasCharts = true;
@@ -303,18 +303,18 @@ public class FixedBuilder implements Serializable {
     private Date endDate;
     private boolean hasEndDate;
 
-    public FixedBuilder withEndDate(Date endDate) {
+    public ProductRecurringDepositBuilder withEndDate(Date endDate) {
         this.endDate = endDate;
         this.hasEndDate = true;
         this.hasCharts = true;
         return this;
     }
 
-    private boolean isPrimaryGroupingByAmount;
+    private Boolean primaryGroupingByAmount;
     private boolean hasPrimaryGroupingByAmount;
 
-    public FixedBuilder withPrimaryGroupingByAmount(boolean isPrimaryGroupingByAmount) {
-        this.isPrimaryGroupingByAmount = isPrimaryGroupingByAmount;
+    public ProductRecurringDepositBuilder withPrimaryGroupingByAmount(Boolean primaryGroupingByAmount) {
+        this.primaryGroupingByAmount = primaryGroupingByAmount;
         this.hasPrimaryGroupingByAmount = true;
         this.hasCharts = true;
         return this;
@@ -324,7 +324,7 @@ public class FixedBuilder implements Serializable {
     private String dateFormat = "yyyy-MM-dd";
     private boolean hasDateFormat = true;
 
-    public FixedBuilder withDateFormat(String dateFormat) {
+    public ProductRecurringDepositBuilder withDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
         this.hasDateFormat = true;
         return this;
@@ -333,7 +333,7 @@ public class FixedBuilder implements Serializable {
     private List<Map<String, Object>> chartSlabs = Lists.newArrayList();
     private boolean hasChartSlabs;
 
-    public FixedBuilder withChartSlab(LockInType periodType, Integer fromPeriod, Integer toPeriod, Integer amountRangeFrom, Integer amountRangeTo, Double annualInterestRate, String description, List<JSONObject> incentives) {
+    public ProductRecurringDepositBuilder withChartSlab(LockInType periodType, Integer fromPeriod, Integer toPeriod, Integer amountRangeFrom, Integer amountRangeTo, Double annualInterestRate, String description, List<JSONObject> incentives) {
         Map<String, Object> chartSlab = Maps.newHashMap();
         chartSlab.put("periodType", periodType == null ? null : periodType.getLiteral());
         chartSlab.put("fromPeriod", fromPeriod == null ? null : fromPeriod);
@@ -357,7 +357,7 @@ public class FixedBuilder implements Serializable {
     private Integer lockInPeriodFrequency;
     private boolean hasLockInPeriodFrequency;
 
-    public FixedBuilder withLockInPeriodFrequency(Integer lockInPeriodFrequency) {
+    public ProductRecurringDepositBuilder withLockInPeriodFrequency(Integer lockInPeriodFrequency) {
         this.lockInPeriodFrequency = lockInPeriodFrequency;
         this.hasLockInPeriodFrequency = true;
         return this;
@@ -366,7 +366,7 @@ public class FixedBuilder implements Serializable {
     private LockInType lockInPeriodFrequencyType;
     private boolean hasLockInPeriodFrequencyType;
 
-    public FixedBuilder withLockinPeriodFrequencyType(LockInType lockInPeriodFrequencyType) {
+    public ProductRecurringDepositBuilder withLockinPeriodFrequencyType(LockInType lockInPeriodFrequencyType) {
         this.lockInPeriodFrequencyType = lockInPeriodFrequencyType;
         this.hasLockInPeriodFrequencyType = true;
         return this;
@@ -375,7 +375,7 @@ public class FixedBuilder implements Serializable {
     private Integer minDepositTerm;
     private boolean hasMinDepositTerm;
 
-    public FixedBuilder withMinDepositTerm(Integer minDepositTerm) {
+    public ProductRecurringDepositBuilder withMinDepositTerm(Integer minDepositTerm) {
         this.minDepositTerm = minDepositTerm;
         this.hasMinDepositTerm = true;
         return this;
@@ -384,7 +384,7 @@ public class FixedBuilder implements Serializable {
     private LockInType minDepositTermTypeId;
     private boolean hasMinDepositTermTypeId;
 
-    public FixedBuilder withMinDepositTermTypeId(LockInType minDepositTermTypeId) {
+    public ProductRecurringDepositBuilder withMinDepositTermTypeId(LockInType minDepositTermTypeId) {
         this.minDepositTermTypeId = minDepositTermTypeId;
         this.hasMinDepositTermTypeId = true;
         return this;
@@ -393,7 +393,7 @@ public class FixedBuilder implements Serializable {
     private Integer inMultiplesOfDepositTerm;
     private boolean hasInMultiplesOfDepositTerm;
 
-    public FixedBuilder withInMultiplesOfDepositTerm(Integer inMultiplesOfDepositTerm) {
+    public ProductRecurringDepositBuilder withInMultiplesOfDepositTerm(Integer inMultiplesOfDepositTerm) {
         this.inMultiplesOfDepositTerm = inMultiplesOfDepositTerm;
         this.hasInMultiplesOfDepositTerm = true;
         return this;
@@ -402,7 +402,7 @@ public class FixedBuilder implements Serializable {
     private LockInType inMultiplesOfDepositTermTypeId;
     private boolean hasInMultiplesOfDepositTermTypeId;
 
-    public FixedBuilder withInMultiplesOfDepositTermTypeId(LockInType inMultiplesOfDepositTermTypeId) {
+    public ProductRecurringDepositBuilder withInMultiplesOfDepositTermTypeId(LockInType inMultiplesOfDepositTermTypeId) {
         this.inMultiplesOfDepositTermTypeId = inMultiplesOfDepositTermTypeId;
         this.hasInMultiplesOfDepositTermTypeId = true;
         return this;
@@ -411,7 +411,7 @@ public class FixedBuilder implements Serializable {
     private Integer maxDepositTerm;
     private boolean hasMaxDepositTerm;
 
-    public FixedBuilder withMaxDepositTerm(Integer maxDepositTerm) {
+    public ProductRecurringDepositBuilder withMaxDepositTerm(Integer maxDepositTerm) {
         this.maxDepositTerm = maxDepositTerm;
         this.hasMaxDepositTerm = true;
         return this;
@@ -420,16 +420,16 @@ public class FixedBuilder implements Serializable {
     private LockInType maxDepositTermTypeId;
     private boolean hasMaxDepositTermTypeId;
 
-    public FixedBuilder withMaxDepositTermTypeId(LockInType maxDepositTermTypeId) {
+    public ProductRecurringDepositBuilder withMaxDepositTermTypeId(LockInType maxDepositTermTypeId) {
         this.maxDepositTermTypeId = maxDepositTermTypeId;
         this.hasMaxDepositTermTypeId = true;
         return this;
     }
 
-    private boolean preClosurePenalApplicable;
+    private Boolean preClosurePenalApplicable;
     private boolean hasPreClosurePenalApplicable;
 
-    public FixedBuilder withPreClosurePenalApplicable(boolean preClosurePenalApplicable) {
+    public ProductRecurringDepositBuilder withPreClosurePenalApplicable(Boolean preClosurePenalApplicable) {
         this.preClosurePenalApplicable = preClosurePenalApplicable;
         this.hasPreClosurePenalApplicable = true;
         return this;
@@ -438,16 +438,52 @@ public class FixedBuilder implements Serializable {
     private Double preClosurePenalInterest;
     private boolean hasPreClosurePenalInterest;
 
-    public FixedBuilder withPreClosurePenalInterest(Double preClosurePenalInterest) {
+    public ProductRecurringDepositBuilder withPreClosurePenalInterest(Double preClosurePenalInterest) {
         this.preClosurePenalInterest = preClosurePenalInterest;
         this.hasPreClosurePenalInterest = true;
         return this;
     }
 
+    private Double minBalanceForInterestCalculation;
+    private boolean hasMinBalanceForInterestCalculation;
+
+    public ProductRecurringDepositBuilder withMinBalanceForInterestCalculation(Double minBalanceForInterestCalculation) {
+        this.minBalanceForInterestCalculation = minBalanceForInterestCalculation;
+        this.hasMinBalanceForInterestCalculation = true;
+        return this;
+    }
+
+    private Boolean mandatoryDeposit;
+    private boolean hasMandatoryDeposit;
+
+    public ProductRecurringDepositBuilder withMandatoryDeposit(Boolean mandatoryDeposit) {
+        this.mandatoryDeposit = mandatoryDeposit;
+        this.hasMandatoryDeposit = true;
+        return this;
+    }
+
+    private Boolean adjustAdvanceTowardsFuturePayments;
+    private boolean hasAdjustAdvanceTowardsFuturePayments;
+
+    public ProductRecurringDepositBuilder withAdjustAdvanceTowardsFuturePayments(Boolean adjustAdvanceTowardsFuturePayments) {
+        this.adjustAdvanceTowardsFuturePayments = adjustAdvanceTowardsFuturePayments;
+        this.hasAdjustAdvanceTowardsFuturePayments = true;
+        return this;
+    }
+
+    private Boolean allowWithdrawal;
+    private boolean hasAllowWithdrawal;
+
+    public ProductRecurringDepositBuilder withAllowWithdrawal(Boolean allowWithdrawal) {
+        this.allowWithdrawal = allowWithdrawal;
+        this.hasAllowWithdrawal = true;
+        return this;
+    }
+
     public JsonNode build() {
-        JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
 
         List<String> errors = Lists.newArrayList();
+
         if (this.name == null || "".equals(this.name)) {
             errors.add("name is required");
         }
@@ -496,6 +532,14 @@ public class FixedBuilder implements Serializable {
             errors.add("depositAmount is required");
         }
 
+        // if (this.recurringDepositFrequency == null) {
+        // errors.add("recurringDepositFrequency is required");
+        // }
+
+        // if (this.recurringDepositFrequencyTypeId == null) {
+        // errors.add("recurringDepositFrequencyTypeId is required");
+        // }
+
         if (this.accountingRule == null) {
             errors.add("accountingRule is required");
         } else {
@@ -522,8 +566,27 @@ public class FixedBuilder implements Serializable {
         }
 
         if (!errors.isEmpty()) {
-            // throw new IllegalArgumentException("invalid builder :: " + StringUtils.join(errors, ","));
+            // throw new IllegalArgumentException("invalid builder :: " +
+            // StringUtils.join(errors, ","));
             System.out.println("invalid builder :: " + StringUtils.join(errors, ","));
+        }
+
+        JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
+
+        if (this.hasAllowWithdrawal) {
+            object.getObject().put("allowWithdrawal", this.allowWithdrawal);
+        }
+
+        if (this.hasAdjustAdvanceTowardsFuturePayments) {
+            object.getObject().put("adjustAdvanceTowardsFuturePayments", this.adjustAdvanceTowardsFuturePayments);
+        }
+
+        if (this.hasMandatoryDeposit) {
+            object.getObject().put("isMandatoryDeposit", this.mandatoryDeposit);
+        }
+
+        if (this.hasMinBalanceForInterestCalculation) {
+            object.getObject().put("minBalanceForInterestCalculation", this.minBalanceForInterestCalculation);
         }
 
         if (this.hasPreClosurePenalInterest) {
@@ -598,7 +661,7 @@ public class FixedBuilder implements Serializable {
                 chart.put("locale", this.locale);
             }
             if (this.hasPrimaryGroupingByAmount) {
-                chart.put("isPrimaryGroupingByAmount", this.isPrimaryGroupingByAmount);
+                chart.put("isPrimaryGroupingByAmount", this.primaryGroupingByAmount);
             }
             if (this.hasEndDate) {
                 if (this.endDate != null) {

@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.pages.client.center;
+package com.angkorteam.fintech.pages.client.common;
 
 import java.util.Arrays;
 
@@ -10,18 +10,24 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
-import com.angkorteam.fintech.widget.center.AccountPreviewCharge;
-import com.angkorteam.fintech.widget.center.AccountPreviewTransaction;
+import com.angkorteam.fintech.widget.client.AccountPreviewCharge;
+import com.angkorteam.fintech.widget.client.AccountPreviewTransaction;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingAccountPreviewPage extends Page {
 
+    protected ClientEnum client;
+
+    protected String clientId;
+    protected String groupId;
     protected String centerId;
+
     protected String accountId;
 
     protected WebMarkupBlock interestEarnedBlock;
@@ -228,7 +234,8 @@ public class SavingAccountPreviewPage extends Page {
         add(this.tab);
 
         PageParameters parameters = new PageParameters();
-        parameters.add("centerId", this.centerId);
+        parameters.add("client", this.client.name());
+        parameters.add("clientId", this.clientId);
         parameters.add("accountId", this.accountId);
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", SavingAccountClosePage.class, parameters);
@@ -251,7 +258,12 @@ public class SavingAccountPreviewPage extends Page {
 
     @Override
     protected void initData() {
+        this.client = ClientEnum.valueOf(getPageParameters().get("client").toString());
+
+        this.clientId = getPageParameters().get("clientId").toString();
+        this.groupId = getPageParameters().get("groupId").toString();
         this.centerId = getPageParameters().get("centerId").toString();
+
         this.accountId = getPageParameters().get("accountId").toString();
     }
 

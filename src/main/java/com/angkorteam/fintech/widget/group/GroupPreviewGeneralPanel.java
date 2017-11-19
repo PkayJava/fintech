@@ -13,7 +13,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.pages.client.group.SavingAccountSelectionPage;
+import com.angkorteam.fintech.dto.ClientEnum;
+import com.angkorteam.fintech.pages.client.common.SavingAccountSelectionPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
@@ -51,11 +52,16 @@ public class GroupPreviewGeneralPanel extends Panel {
 
     @Override
     protected void initComponent() {
+
+        PageParameters savingParameters = new PageParameters();
+        savingParameters.add("groupId", this.groupId);
+        savingParameters.add("client", ClientEnum.Group.name());
+
+        this.groupSavingApplicationLink = new BookmarkablePageLink<>("groupSavingApplicationLink", SavingAccountSelectionPage.class, savingParameters);
+        add(this.groupSavingApplicationLink);
+
         PageParameters parameters = new PageParameters();
         parameters.add("groupId", this.groupId);
-
-        this.groupSavingApplicationLink = new BookmarkablePageLink<>("groupSavingApplicationLink", SavingAccountSelectionPage.class, parameters);
-        add(this.groupSavingApplicationLink);
 
         this.savingAccountProvider = new JdbcProvider("m_savings_account");
         this.savingAccountProvider.addJoin("LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
