@@ -1,5 +1,6 @@
 package com.angkorteam.fintech;
 
+import java.sql.Connection;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -55,6 +56,9 @@ public class MifosDataSourceManager implements DisposableBean, InitializingBean 
             dataSource.setMaxWaitMillis(5000);
             dataSource.setMaxTotal(200);
             dataSource.setInitialSize(30);
+            dataSource.setDefaultTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            dataSource.setDefaultAutoCommit(false);
+            dataSource.setEnableAutoCommitOnReturn(true);
             String jdbcUrl = "jdbc:mysql://" + connectionObject.get("schema_server") + ":" + String.valueOf(connectionObject.get("schema_server_port")) + "/" + connectionObject.get("schema_name") + "?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&serverTimezone=UTC";
             dataSource.setUrl(jdbcUrl);
             this.dataSources.put(identifier, dataSource);

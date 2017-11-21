@@ -14,11 +14,10 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.angkorteam.framework.HttpServletRequestDataSource;
-import com.angkorteam.framework.spring.HttpServletRequestDataSourceFactoryBean;
 
 public class MifosDataSourceFactoryBean implements FactoryBean<DataSource>, InitializingBean, DisposableBean {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpServletRequestDataSourceFactoryBean.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MifosDataSourceFactoryBean.class);
 
     private MifosDataSourceManager manager;
 
