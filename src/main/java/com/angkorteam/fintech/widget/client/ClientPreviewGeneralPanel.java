@@ -362,7 +362,6 @@ public class ClientPreviewGeneralPanel extends Panel {
             } catch (UnirestException e) {
                 LOGGER.info(e.getMessage(), e);
             }
-            jdbcTemplate.execute("commit");
             Map<String, Object> clientObject = jdbcTemplate.queryForMap("select staff_id from m_client where id = ?", this.clientId);
             this.assignStaffLink.setVisible(clientObject.get("staff_id") == null);
             this.unassignStaffLink.setVisible(clientObject.get("staff_id") != null);
