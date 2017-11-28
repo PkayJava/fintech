@@ -104,13 +104,13 @@ public class RuleBrowsePage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("acc_accounting_rule");
-        this.dataProvider.addJoin("LEFT JOIN m_office ON acc_accounting_rule.office_id = m_office.id");
-        this.dataProvider.addJoin("LEFT JOIN acc_gl_account debit ON acc_accounting_rule.debit_account_id = debit.id");
-        this.dataProvider.addJoin("LEFT JOIN acc_gl_account credit ON acc_accounting_rule.credit_account_id = credit.id");
-        this.dataProvider.addJoin("LEFT JOIN acc_rule_tags debit_tag on acc_accounting_rule.id = debit_tag.acc_rule_id and debit_tag.acc_type_enum = " + DEBIT);
-        this.dataProvider.addJoin("LEFT JOIN m_code_value debit_tag_code on debit_tag.tag_id = debit_tag_code.id");
-        this.dataProvider.addJoin("LEFT JOIN acc_rule_tags credit_tag on acc_accounting_rule.id = credit_tag.acc_rule_id and credit_tag.acc_type_enum = " + CREDIT);
-        this.dataProvider.addJoin("LEFT JOIN m_code_value credit_tag_code on credit_tag.tag_id = credit_tag_code.id");
+        this.dataProvider.applyJoin("m_office", "LEFT JOIN m_office ON acc_accounting_rule.office_id = m_office.id");
+        this.dataProvider.applyJoin("acc_gl_account_debit", "LEFT JOIN acc_gl_account debit ON acc_accounting_rule.debit_account_id = debit.id");
+        this.dataProvider.applyJoin("acc_gl_account_credit", "LEFT JOIN acc_gl_account credit ON acc_accounting_rule.credit_account_id = credit.id");
+        this.dataProvider.applyJoin("acc_rule", "LEFT JOIN acc_rule_tags debit_tag on acc_accounting_rule.id = debit_tag.acc_rule_id and debit_tag.acc_type_enum = " + DEBIT);
+        this.dataProvider.applyJoin("m_code_value_debit", "LEFT JOIN m_code_value debit_tag_code on debit_tag.tag_id = debit_tag_code.id");
+        this.dataProvider.applyJoin("acc_rule_tags", "LEFT JOIN acc_rule_tags credit_tag on acc_accounting_rule.id = credit_tag.acc_rule_id and credit_tag.acc_type_enum = " + CREDIT);
+        this.dataProvider.applyJoin("m_code_value_credit", "LEFT JOIN m_code_value credit_tag_code on credit_tag.tag_id = credit_tag_code.id");
         this.dataProvider.setGroupBy("acc_accounting_rule.id");
 
         this.dataProvider.boardField("max(acc_accounting_rule.id)", "id", Long.class);

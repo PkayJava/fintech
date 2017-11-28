@@ -96,8 +96,8 @@ public class ClientBrowsePage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("m_client");
-        this.dataProvider.addJoin("left join m_office on m_client.office_id = m_office.id ");
-        this.dataProvider.addJoin("left join m_staff on m_client.staff_id = m_staff.id ");
+        this.dataProvider.applyJoin("m_office", "left join m_office on m_client.office_id = m_office.id ");
+        this.dataProvider.applyJoin("m_staff", "left join m_staff on m_client.staff_id = m_staff.id ");
         this.dataProvider.boardField("m_client.id", "id", Long.class);
         this.dataProvider.boardField("m_client.account_no", "account", String.class);
         this.dataProvider.boardField("m_client.display_name", "name", String.class);

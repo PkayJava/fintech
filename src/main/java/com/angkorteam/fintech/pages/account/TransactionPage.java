@@ -182,9 +182,9 @@ public class TransactionPage extends Page {
         this.entryBlock.add(this.entryIContainer);
 
         this.entryProvider = new JdbcProvider("acc_gl_journal_entry");
-        this.entryProvider.addJoin("LEFT JOIN acc_gl_account ON acc_gl_journal_entry.account_id = acc_gl_account.id");
-        this.entryProvider.addJoin("LEFT JOIN m_office ON acc_gl_journal_entry.office_id = m_office.id");
-        this.entryProvider.addJoin("LEFT JOIN m_appuser ON acc_gl_journal_entry.createdby_id = m_appuser.id");
+        this.entryProvider.applyJoin("acc_gl_account", "LEFT JOIN acc_gl_account ON acc_gl_journal_entry.account_id = acc_gl_account.id");
+        this.entryProvider.applyJoin("m_office", "LEFT JOIN m_office ON acc_gl_journal_entry.office_id = m_office.id");
+        this.entryProvider.applyJoin("m_appuser", "LEFT JOIN m_appuser ON acc_gl_journal_entry.createdby_id = m_appuser.id");
 
         this.entryProvider.boardField("acc_gl_journal_entry.id", "id", Long.class);
         this.entryProvider.boardField("acc_gl_account.name", "account_name", String.class);

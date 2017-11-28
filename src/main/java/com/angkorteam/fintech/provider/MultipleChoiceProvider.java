@@ -14,13 +14,17 @@ public class MultipleChoiceProvider extends OptionMultipleChoiceProvider {
         super(table, idField, queryField);
     }
 
-    public MultipleChoiceProvider(String table, String idField, String queryField, String labelField) {
-        super(table, idField, queryField, labelField);
+    public MultipleChoiceProvider(String table, String idField, String queryField, String orderBy) {
+        super(table, idField, queryField, orderBy);
     }
 
     @Override
     protected JdbcNamed getNamed() {
         return SpringBean.getBean(JdbcNamed.class);
+    }
+
+    public MultipleChoiceProvider(String table, String idField, String queryField, String orderBy, String labelField) {
+        super(table, idField, queryField, orderBy, labelField);
     }
 
 }

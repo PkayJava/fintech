@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -17,6 +18,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import com.angkorteam.fintech.Application;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Language;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public class ReadOnlyView extends Label {
@@ -351,6 +354,25 @@ public class ReadOnlyView extends Label {
     protected void onComponentTag(ComponentTag tag) {
         super.onComponentTag(tag);
         tag.put("readonly", "readonly");
+        IModel<?> model = getDefaultModel();
+        Object object = model.getObject();
+        boolean multipleLine = false;
+        if (object instanceof List) {
+            multipleLine = ((List) object).size() > 1;
+        } else {
+            if (object instanceof Object[]) {
+                multipleLine = ((Object[]) object).length > 1;
+            }
+        }
+        if (multipleLine) {
+            String style = tag.getAttribute("style");
+            if (style == null || "".equals(style)) {
+                style = "height: auto";
+            } else {
+                style = "height: auto !important; " + style;
+            }
+            tag.put("style", style);
+        }
     }
 
     @Override
@@ -365,39 +387,11 @@ public class ReadOnlyView extends Label {
             } else {
                 List<String> objects = new ArrayList<>();
                 Class<?> objectClass = object.getClass();
-                if (objectClass == List.class) {
+                if (object instanceof List) {
                     for (Object v : (List<Object>) object) {
                         if (v != null) {
                             Class<?> vClass = v.getClass();
-                            if (vClass == Boolean.class || vClass == boolean.class) {
-                                objects.add((boolean) object ? "Yes" : "No");
-                            } else if (vClass == Byte.class || vClass == byte.class) {
-                                objects.add(this.format == null || "".equals(this.format) ? String.valueOf((byte) object) : Application.FORMATS.get(this.format).format((byte) object));
-                            } else if (vClass == Short.class || vClass == short.class) {
-                                objects.add(this.format == null || "".equals(this.format) ? String.valueOf((short) object) : Application.FORMATS.get(this.format).format((short) object));
-                            } else if (vClass == Integer.class || vClass == int.class) {
-                                objects.add(this.format == null || "".equals(this.format) ? String.valueOf((int) object) : Application.FORMATS.get(this.format).format((int) object));
-                            } else if (vClass == Long.class || vClass == long.class) {
-                                objects.add(this.format == null || "".equals(this.format) ? String.valueOf((long) object) : Application.FORMATS.get(this.format).format((long) object));
-                            } else if (vClass == Float.class || vClass == float.class) {
-                                objects.add(this.format == null || "".equals(this.format) ? String.valueOf((float) object) : Application.FORMATS.get(this.format).format((float) object));
-                            } else if (vClass == Double.class || vClass == double.class) {
-                                objects.add(this.format == null || "".equals(this.format) ? String.valueOf((double) object) : Application.FORMATS.get(this.format).format((double) object));
-                            } else if (vClass == Character.class || vClass == char.class) {
-                                objects.add(String.valueOf((Character) object));
-                            } else if (vClass == BigInteger.class) {
-                                objects.add(this.format == null || "".equals(this.format) ? String.valueOf(((BigInteger) object).longValue()) : Application.FORMATS.get(this.format).format(((BigInteger) object).longValue()));
-                            } else if (vClass == BigDecimal.class) {
-                                objects.add(this.format == null || "".equals(this.format) ? String.valueOf(((BigDecimal) object).doubleValue()) : Application.FORMATS.get(this.format).format(((BigDecimal) object).doubleValue()));
-                            } else if (vClass == Date.class || vClass == Time.class || vClass == java.sql.Date.class || vClass == Timestamp.class) {
-                                objects.add(DateFormatUtils.format((Date) object, this.format));
-                            } else if (vClass == Option.class) {
-                                objects.add(((Option) object).getText());
-                            } else if (vClass == String.class) {
-                                if (!"".equals(object)) {
-                                    objects.add((String) object);
-                                }
-                            }
+                            parceObject(objects, vClass, v);
                         }
                     }
                 } else if (objectClass == Boolean[].class) {
@@ -528,36 +522,55 @@ public class ReadOnlyView extends Label {
                             objects.add(v.getText());
                         }
                     }
-                } else if (objectClass == Boolean.class || objectClass == boolean.class) {
-                    objects.add((boolean) object ? "Yes" : "No");
-                } else if (objectClass == Byte.class || objectClass == byte.class) {
-                    objects.add(this.format == null || "".equals(this.format) ? String.valueOf((byte) object) : Application.FORMATS.get(this.format).format((byte) object));
-                } else if (objectClass == Short.class || objectClass == short.class) {
-                    objects.add(this.format == null || "".equals(this.format) ? String.valueOf((short) object) : Application.FORMATS.get(this.format).format((short) object));
-                } else if (objectClass == Integer.class || objectClass == int.class) {
-                    objects.add(this.format == null || "".equals(this.format) ? String.valueOf((int) object) : Application.FORMATS.get(this.format).format((int) object));
-                } else if (objectClass == Long.class || objectClass == long.class) {
-                    objects.add(this.format == null || "".equals(this.format) ? String.valueOf((long) object) : Application.FORMATS.get(this.format).format((long) object));
-                } else if (objectClass == Float.class || objectClass == float.class) {
-                    objects.add(this.format == null || "".equals(this.format) ? String.valueOf((float) object) : Application.FORMATS.get(this.format).format((float) object));
-                } else if (objectClass == Double.class || objectClass == double.class) {
-                    objects.add(this.format == null || "".equals(this.format) ? String.valueOf((double) object) : Application.FORMATS.get(this.format).format((double) object));
-                } else if (objectClass == Character.class || objectClass == char.class) {
-                    objects.add(String.valueOf((Character) object));
-                } else if (objectClass == BigInteger.class) {
-                    objects.add(this.format == null || "".equals(this.format) ? String.valueOf(((BigInteger) object).longValue()) : Application.FORMATS.get(this.format).format(((BigInteger) object).longValue()));
-                } else if (objectClass == BigDecimal.class) {
-                    objects.add(this.format == null || "".equals(this.format) ? String.valueOf(((BigDecimal) object).doubleValue()) : Application.FORMATS.get(this.format).format(((BigDecimal) object).doubleValue()));
-                } else if (objectClass == Date.class || objectClass == Time.class || objectClass == java.sql.Date.class || objectClass == Timestamp.class) {
-                    objects.add(DateFormatUtils.format((Date) object, this.format));
-                } else if (objectClass == Option.class) {
-                    objects.add(((Option) object).getText());
-                } else if (objectClass == String.class) {
-                    if (!"".equals(object)) {
-                        objects.add((String) object);
-                    }
+                } else {
+                    parceObject(objects, objectClass, object);
                 }
                 replaceComponentTagBody(markupStream, openTag, StringUtils.join(objects, ", "));
+            }
+        }
+    }
+
+    protected void parceObject(List<String> objects, Class<?> clazz, Object value) {
+        if (clazz == Boolean.class || clazz == boolean.class) {
+            objects.add((boolean) value ? "Yes" : "No");
+        } else if (clazz == Byte.class || clazz == byte.class) {
+            objects.add(this.format == null || "".equals(this.format) ? String.valueOf((byte) value) : Application.FORMATS.get(this.format).format((byte) value));
+        } else if (clazz == Short.class || clazz == short.class) {
+            objects.add(this.format == null || "".equals(this.format) ? String.valueOf((short) value) : Application.FORMATS.get(this.format).format((short) value));
+        } else if (clazz == Integer.class || clazz == int.class) {
+            objects.add(this.format == null || "".equals(this.format) ? String.valueOf((int) value) : Application.FORMATS.get(this.format).format((int) value));
+        } else if (clazz == Long.class || clazz == long.class) {
+            objects.add(this.format == null || "".equals(this.format) ? String.valueOf((long) value) : Application.FORMATS.get(this.format).format((long) value));
+        } else if (clazz == Float.class || clazz == float.class) {
+            objects.add(this.format == null || "".equals(this.format) ? String.valueOf((float) value) : Application.FORMATS.get(this.format).format((float) value));
+        } else if (clazz == Double.class || clazz == double.class) {
+            objects.add(this.format == null || "".equals(this.format) ? String.valueOf((double) value) : Application.FORMATS.get(this.format).format((double) value));
+        } else if (clazz == Character.class || clazz == char.class) {
+            objects.add(String.valueOf((Character) value));
+        } else if (clazz == BigInteger.class) {
+            objects.add(this.format == null || "".equals(this.format) ? String.valueOf(((BigInteger) value).longValue()) : Application.FORMATS.get(this.format).format(((BigInteger) value).longValue()));
+        } else if (clazz == BigDecimal.class) {
+            objects.add(this.format == null || "".equals(this.format) ? String.valueOf(((BigDecimal) value).doubleValue()) : Application.FORMATS.get(this.format).format(((BigDecimal) value).doubleValue()));
+        } else if (clazz == Date.class || clazz == Time.class || clazz == java.sql.Date.class || clazz == Timestamp.class) {
+            objects.add(DateFormatUtils.format((Date) value, this.format));
+        } else if (clazz == Option.class) {
+            objects.add(((Option) value).getText());
+        } else if (clazz == String.class) {
+            if (!"".equals(value)) {
+                objects.add((String) value);
+            }
+        } else if (value instanceof Map) {
+            Map<String, Object> vm = (Map<String, Object>) value;
+            Object v1 = null;
+            if (vm.keySet().size() == 1) {
+                v1 = vm.values().iterator().next();
+            } else {
+                Language language = ((Session) getSession()).getLanguage();
+                v1 = vm.get(language.getLiteral() + "_" + language.getLocalization());
+            }
+            if (v1 != null) {
+                Class<?> v1Class = v1.getClass();
+                parceObject(objects, v1Class, v1);
             }
         }
     }

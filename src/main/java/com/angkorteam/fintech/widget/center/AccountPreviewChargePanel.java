@@ -46,7 +46,7 @@ public class AccountPreviewChargePanel extends Panel {
     @Override
     protected void initComponent() {
         this.dataProvider = new JdbcProvider("m_savings_account_charge");
-        this.dataProvider.addJoin("INNER JOIN m_charge ON m_savings_account_charge.charge_id = m_charge.id");
+        this.dataProvider.applyJoin("m_charge", "INNER JOIN m_charge ON m_savings_account_charge.charge_id = m_charge.id");
         this.dataProvider.boardField("m_savings_account_charge.id", "id", Long.class);
         this.dataProvider.boardField("m_charge.name", "name", String.class);
         this.dataProvider.boardField("case m_savings_account_charge.is_penalty when 1 then 'Penalty' when 0 then 'Fee' else concat(m_savings_account_charge.is_penalty,'') end", "chargeType", String.class);

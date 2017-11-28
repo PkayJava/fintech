@@ -63,7 +63,7 @@ public class ChargeOverviewPage extends Page {
         this.dataBlock.add(this.dataIContainer);
 
         this.dataProvider = new JdbcProvider("m_client_charge");
-        this.dataProvider.addJoin("inner join m_charge on m_client_charge.charge_id = m_charge.id");
+        this.dataProvider.applyJoin("m_charge", "inner join m_charge on m_client_charge.charge_id = m_charge.id");
 
         this.dataProvider.boardField("m_client_charge.id", "id", Long.class);
         this.dataProvider.boardField("m_charge.name", "name", String.class);

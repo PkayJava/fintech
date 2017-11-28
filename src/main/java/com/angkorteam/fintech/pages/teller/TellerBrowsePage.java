@@ -106,7 +106,7 @@ public class TellerBrowsePage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("m_tellers");
-        this.dataProvider.addJoin("LEFT JOIN m_office on m_tellers.office_id = m_office.id");
+        this.dataProvider.applyJoin("m_office", "LEFT JOIN m_office on m_tellers.office_id = m_office.id");
         this.dataProvider.boardField("m_tellers.id", "id", Long.class);
         this.dataProvider.boardField("m_office.name", "branch", String.class);
         this.dataProvider.boardField("m_tellers.name", "name", String.class);

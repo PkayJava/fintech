@@ -146,7 +146,7 @@ public class RolePermissionPage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("m_role_permission");
-        this.dataProvider.addJoin("INNER JOIN m_permission ON m_role_permission.permission_id = m_permission.id");
+        this.dataProvider.applyJoin("m_permission", "INNER JOIN m_permission ON m_role_permission.permission_id = m_permission.id");
         this.dataProvider.applyWhere("role", "m_role_permission.role_id = " + this.roleId);
         this.dataProvider.boardField("m_permission.grouping", "grouping", String.class);
         this.dataProvider.boardField("m_permission.code", "code", String.class);

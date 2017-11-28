@@ -83,7 +83,7 @@ public class MixedBrowsePage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("m_product_loan");
-        this.dataProvider.addJoin("INNER JOIN m_product_mix ON m_product_loan.id = m_product_mix.product_id");
+        this.dataProvider.applyJoin("m_product_mix", "INNER JOIN m_product_mix ON m_product_loan.id = m_product_mix.product_id");
         this.dataProvider.setGroupBy("m_product_loan.id");
         this.dataProvider.boardField("m_product_loan.id", "id", Long.class);
         this.dataProvider.boardField("MAX(m_product_loan.name)", "name", String.class);

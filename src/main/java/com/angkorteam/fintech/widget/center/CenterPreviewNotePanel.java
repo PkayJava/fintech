@@ -75,7 +75,7 @@ public class CenterPreviewNotePanel extends Panel {
         this.form.add(this.noteFeedback);
 
         this.noteProvider = new JdbcProvider("m_note");
-        this.noteProvider.addJoin("LEFT JOIN m_appuser on m_note.createdby_id = m_appuser.id");
+        this.noteProvider.applyJoin("m_appuser", "LEFT JOIN m_appuser on m_note.createdby_id = m_appuser.id");
         this.noteProvider.boardField("m_note.note", "comment", String.class);
         this.noteProvider.boardField("m_appuser.username", "createdBy", String.class);
         this.noteProvider.boardField("m_note.created_date", "createdOn", String.class);

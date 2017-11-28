@@ -77,7 +77,7 @@ public class CenterPreviewGeneralPanel extends Panel {
     protected void initComponent() {
 
         this.groupProvider = new JdbcProvider("m_group");
-        this.groupProvider.addJoin("LEFT JOIN r_enum_value ON m_group.status_enum = r_enum_value.enum_id AND r_enum_value.enum_name = 'status_enum'");
+        this.groupProvider.applyJoin("r_enum_value", "LEFT JOIN r_enum_value ON m_group.status_enum = r_enum_value.enum_id AND r_enum_value.enum_name = 'status_enum'");
         this.groupProvider.boardField("m_group.id", "id", Long.class);
         this.groupProvider.boardField("m_group.display_name", "displayName", String.class);
         this.groupProvider.boardField("m_group.account_no", "account", String.class);
@@ -118,7 +118,7 @@ public class CenterPreviewGeneralPanel extends Panel {
         add(this.closeLink);
 
         this.savingAccountProvider = new JdbcProvider("m_savings_account");
-        this.savingAccountProvider.addJoin("LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
+        this.savingAccountProvider.applyJoin("m_savings_product", "LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
         this.savingAccountProvider.boardField("concat(m_savings_account.id,'')", "id", String.class);
         this.savingAccountProvider.boardField("m_savings_account.account_no", "account", String.class);
         this.savingAccountProvider.boardField("m_savings_product.name", "product", String.class);

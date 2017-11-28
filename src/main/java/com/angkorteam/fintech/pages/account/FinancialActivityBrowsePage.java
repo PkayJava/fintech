@@ -95,7 +95,7 @@ public class FinancialActivityBrowsePage extends Page {
         this.dataBlock.add(this.dataIContainer);
 
         this.dataProvider = new JdbcProvider("acc_gl_financial_activity_account");
-        this.dataProvider.addJoin("LEFT JOIN acc_gl_account ON acc_gl_financial_activity_account.gl_account_id = acc_gl_account.id");
+        this.dataProvider.applyJoin("acc_gl_account", "LEFT JOIN acc_gl_account ON acc_gl_financial_activity_account.gl_account_id = acc_gl_account.id");
         this.dataProvider.boardField("acc_gl_financial_activity_account.id", "id", Long.class);
         this.dataProvider.boardField("acc_gl_account.name", "account", String.class);
         this.dataProvider.boardField("acc_gl_financial_activity_account.financial_activity_type", "type", Long.class);

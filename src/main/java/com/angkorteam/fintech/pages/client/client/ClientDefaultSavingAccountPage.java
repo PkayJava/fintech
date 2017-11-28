@@ -77,7 +77,7 @@ public class ClientDefaultSavingAccountPage extends Page {
         this.savingIContainer = new WebMarkupContainer("savingIContainer");
         this.savingBlock.add(this.savingIContainer);
         this.savingProvider = new SingleChoiceProvider("m_savings_account", "m_savings_account.id", "m_savings_account.account_no", "concat(m_savings_account.account_no, ' => ', m_savings_product.name)");
-        this.savingProvider.addJoin("INNER JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
+        this.savingProvider.applyJoin("m_savings_product", "INNER JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
         this.savingProvider.applyWhere("status_enum", "m_savings_account.status_enum = 300");
         this.savingProvider.applyWhere("client_id", "m_savings_account.client_id = " + this.clientId);
         this.savingField = new Select2SingleChoice<>("savingField", new PropertyModel<>(this, "savingValue"), this.savingProvider);

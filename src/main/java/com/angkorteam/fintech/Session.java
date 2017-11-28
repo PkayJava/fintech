@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.Language;
 import com.angkorteam.fintech.helper.LoginHelper;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -27,6 +28,8 @@ public class Session extends AbstractAuthenticatedWebSession implements IMifos {
     private String token;
 
     private String identifier;
+    
+    private Language language = Language.English;
 
     public Session(Request request) {
         super(request);
@@ -35,6 +38,10 @@ public class Session extends AbstractAuthenticatedWebSession implements IMifos {
 
     public String getToken() {
         return token;
+    }
+    
+    public Language getLanguage() {
+        return this.language;
     }
 
     protected boolean authenticate(HttpSession session, String identifier, String username, String password) {

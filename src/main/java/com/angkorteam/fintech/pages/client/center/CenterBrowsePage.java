@@ -97,7 +97,7 @@ public class CenterBrowsePage extends Page {
         this.dataBlock.add(this.dataIContainer);
 
         this.dataProvider = new JdbcProvider("m_group");
-        this.dataProvider.addJoin("left join m_office on m_group.office_id = m_office.id ");
+        this.dataProvider.applyJoin("m_office", "left join m_office on m_group.office_id = m_office.id ");
         this.dataProvider.boardField("m_group.id", "id", Long.class);
         this.dataProvider.boardField("m_group.account_no", "account", String.class);
         this.dataProvider.boardField("m_group.display_name", "name", String.class);

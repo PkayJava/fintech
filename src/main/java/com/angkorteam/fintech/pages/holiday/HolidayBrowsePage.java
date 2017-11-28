@@ -131,7 +131,7 @@ public class HolidayBrowsePage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("m_holiday");
-        this.dataProvider.addJoin("LEFT JOIN m_holiday_office ON m_holiday.id = m_holiday_office.holiday_id");
+        this.dataProvider.applyJoin("m_holiday_office", "LEFT JOIN m_holiday_office ON m_holiday.id = m_holiday_office.holiday_id");
         this.dataProvider.setGroupBy("m_holiday.id");
         this.dataProvider.boardField("m_holiday.id", "id", Long.class);
         this.dataProvider.boardField("m_holiday.name", "name", String.class);

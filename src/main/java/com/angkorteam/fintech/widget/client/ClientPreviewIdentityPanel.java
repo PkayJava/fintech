@@ -53,7 +53,7 @@ public class ClientPreviewIdentityPanel extends Panel {
     @Override
     protected void initComponent() {
         this.dataProvider = new JdbcProvider("m_client_identifier");
-        this.dataProvider.addJoin("LEFT JOIN m_code_value document_type on m_client_identifier.document_type_id = document_type.id");
+        this.dataProvider.applyJoin("m_code_value", "LEFT JOIN m_code_value document_type on m_client_identifier.document_type_id = document_type.id");
         this.dataProvider.boardField("m_client_identifier.description", "description", String.class);
         this.dataProvider.boardField("document_type.code_value", "type", String.class);
         this.dataProvider.boardField("m_client_identifier.document_key", "documentKey", String.class);

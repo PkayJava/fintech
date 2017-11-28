@@ -133,8 +133,8 @@ public class ChargeTransactionPage extends Page {
         this.dataBlock.add(this.dataIContainer);
 
         this.dataProvider = new JdbcProvider("m_client_charge_paid_by");
-        this.dataProvider.addJoin("INNER JOIN m_client_transaction ON m_client_charge_paid_by.client_transaction_id = m_client_transaction.id");
-        this.dataProvider.addJoin("INNER JOIN m_office ON m_office.id = m_client_transaction.office_id");
+        this.dataProvider.applyJoin("m_client_transaction", "INNER JOIN m_client_transaction ON m_client_charge_paid_by.client_transaction_id = m_client_transaction.id");
+        this.dataProvider.applyJoin("m_office", "INNER JOIN m_office ON m_office.id = m_client_transaction.office_id");
 
         this.dataProvider.boardField("m_client_transaction.id", "id", Long.class);
         this.dataProvider.boardField("m_office.name", "office", String.class);

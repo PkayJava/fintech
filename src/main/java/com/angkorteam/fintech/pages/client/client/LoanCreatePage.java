@@ -732,7 +732,7 @@ public class LoanCreatePage extends Page {
 
     protected void initLinkSavingAccountBlock() {
         this.linkSavingAccountProvider = new SingleChoiceProvider("m_savings_account", "m_savings_account.id", "m_savings_account.account_no", "concat(m_savings_account.account_no, ' => ', m_savings_product.name)");
-        this.linkSavingAccountProvider.addJoin("INNER JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
+        this.linkSavingAccountProvider.applyJoin("m_savings_product", "INNER JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
         this.linkSavingAccountProvider.applyWhere("status_enum", "m_savings_account.status_enum = 300");
         this.linkSavingAccountProvider.applyWhere("client_id", "m_savings_account.client_id = " + this.clientId);
         this.linkSavingAccountBlock = new WebMarkupBlock("linkSavingAccountBlock", Size.Six_6);

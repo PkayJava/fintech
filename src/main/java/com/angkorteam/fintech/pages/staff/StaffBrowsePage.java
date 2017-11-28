@@ -92,7 +92,7 @@ public class StaffBrowsePage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("m_staff");
-        this.dataProvider.addJoin("LEFT JOIN m_office ON m_staff.office_id = m_office.id");
+        this.dataProvider.applyJoin("m_office", "LEFT JOIN m_office ON m_staff.office_id = m_office.id");
         this.dataProvider.boardField("m_staff.id", "id", Long.class);
         this.dataProvider.boardField("m_staff.firstname", "firstname", String.class);
         this.dataProvider.boardField("m_staff.lastname", "lastname", String.class);

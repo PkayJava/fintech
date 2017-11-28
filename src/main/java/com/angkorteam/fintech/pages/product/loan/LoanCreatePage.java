@@ -3187,7 +3187,7 @@ public class LoanCreatePage extends Page {
 
     protected ItemPanel termNumberOfRepaymentByLoanCycleColumn(String column, IModel<String> display, Map<String, Object> model) {
         if ("when".equals(column)) {
-            String value = (String) model.get(column);
+            Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("cycle".equals(column)) {
             Integer value = (Integer) model.get(column);
@@ -3249,7 +3249,7 @@ public class LoanCreatePage extends Page {
 
     protected ItemPanel termPrincipalByLoanCycleColumn(String column, IModel<String> display, Map<String, Object> model) {
         if ("when".equals(column)) {
-            String value = (String) model.get(column);
+            Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("cycle".equals(column)) {
             Integer value = (Integer) model.get(column);

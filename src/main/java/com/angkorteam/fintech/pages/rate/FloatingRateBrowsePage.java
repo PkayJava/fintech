@@ -92,7 +92,7 @@ public class FloatingRateBrowsePage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("m_floating_rates");
-        this.dataProvider.addJoin("INNER join m_appuser on m_floating_rates.createdby_id = m_appuser.id");
+        this.dataProvider.applyJoin("m_appuser", "INNER join m_appuser on m_floating_rates.createdby_id = m_appuser.id");
         this.dataProvider.boardField("m_floating_rates.id", "id", Long.class);
         this.dataProvider.boardField("m_floating_rates.name", "name", String.class);
         this.dataProvider.boardField("m_appuser.username", "createdBy", String.class);

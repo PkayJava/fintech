@@ -64,7 +64,7 @@ public class GroupPreviewGeneralPanel extends Panel {
         parameters.add("groupId", this.groupId);
 
         this.savingAccountProvider = new JdbcProvider("m_savings_account");
-        this.savingAccountProvider.addJoin("LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
+        this.savingAccountProvider.applyJoin("m_savings_product", "LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
         this.savingAccountProvider.boardField("concat(m_savings_account.id,'')", "id", String.class);
         this.savingAccountProvider.boardField("m_savings_account.account_no", "account", String.class);
         this.savingAccountProvider.boardField("m_savings_product.name", "product", String.class);

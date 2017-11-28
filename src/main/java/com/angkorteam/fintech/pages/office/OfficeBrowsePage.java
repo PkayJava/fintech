@@ -99,7 +99,7 @@ public class OfficeBrowsePage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("m_office office");
-        this.dataProvider.addJoin("LEFT JOIN m_office parent ON office.parent_id = parent.id");
+        this.dataProvider.applyJoin("m_office", "LEFT JOIN m_office parent ON office.parent_id = parent.id");
         this.dataProvider.boardField("office.id", "id", Long.class);
         this.dataProvider.boardField("office.external_id", "external_id", String.class);
         this.dataProvider.boardField("office.parent_id", "parent_id", Long.class);

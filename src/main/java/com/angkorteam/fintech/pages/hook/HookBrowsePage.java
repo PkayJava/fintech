@@ -132,7 +132,7 @@ public class HookBrowsePage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("m_hook");
-        this.dataProvider.addJoin("left JOIN m_hook_templates ON m_hook.template_id = m_hook_templates.id");
+        this.dataProvider.applyJoin("m_hook_templates", "left JOIN m_hook_templates ON m_hook.template_id = m_hook_templates.id");
         this.dataProvider.boardField("m_hook.id", "id", Long.class);
         this.dataProvider.boardField("m_hook.name", "name", String.class);
         this.dataProvider.boardField("m_hook_templates.name", "template", String.class);

@@ -104,8 +104,8 @@ public class GroupManagePage extends Page {
     @Override
     protected void initComponent() {
         this.associatedGroupProvider = new JdbcProvider("m_group");
-        this.associatedGroupProvider.addJoin("left join m_office on m_group.office_id = m_office.id ");
-        this.associatedGroupProvider.addJoin("LEFT JOIN r_enum_value ON  m_group.status_enum = r_enum_value.enum_id AND r_enum_value.enum_name = 'status_enum'");
+        this.associatedGroupProvider.applyJoin("m_office", "left join m_office on m_group.office_id = m_office.id ");
+        this.associatedGroupProvider.applyJoin("r_enum_value", "LEFT JOIN r_enum_value ON  m_group.status_enum = r_enum_value.enum_id AND r_enum_value.enum_name = 'status_enum'");
         this.associatedGroupProvider.boardField("m_group.id", "id", Long.class);
         this.associatedGroupProvider.boardField("m_group.account_no", "account", String.class);
         this.associatedGroupProvider.boardField("m_group.display_name", "name", String.class);

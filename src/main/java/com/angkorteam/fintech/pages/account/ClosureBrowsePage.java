@@ -43,7 +43,6 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ClosureBrowsePage extends Page {
 
-
     protected WebMarkupBlock dataBlock;
     protected WebMarkupContainer dataIContainer;
     protected DataTable<Map<String, Object>, String> dataTable;
@@ -93,8 +92,8 @@ public class ClosureBrowsePage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("acc_gl_closure");
-        this.dataProvider.addJoin("LEFT JOIN m_office ON acc_gl_closure.office_id = m_office.id");
-        this.dataProvider.addJoin("LEFT JOIN m_appuser on acc_gl_closure.createdby_id = m_appuser.id");
+        this.dataProvider.applyJoin("m_office", "LEFT JOIN m_office ON acc_gl_closure.office_id = m_office.id");
+        this.dataProvider.applyJoin("m_appuser", "LEFT JOIN m_appuser on acc_gl_closure.createdby_id = m_appuser.id");
         this.dataProvider.boardField("acc_gl_closure.id", "id", Long.class);
         this.dataProvider.boardField("m_office.name", "office", String.class);
         this.dataProvider.boardField("acc_gl_closure.closing_date", "closing_date", Date.class);
