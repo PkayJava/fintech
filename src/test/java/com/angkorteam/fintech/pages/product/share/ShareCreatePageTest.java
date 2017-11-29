@@ -2,7 +2,6 @@ package com.angkorteam.fintech.pages.product.share;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.markup.html.form.RadioGroup;
@@ -19,7 +18,6 @@ import com.angkorteam.fintech.dto.enums.MinimumActivePeriod;
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitFormTester;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
-import com.angkorteam.fintech.pages.product.share.ShareCreatePage;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;

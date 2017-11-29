@@ -105,10 +105,9 @@ public class UserCreatePage extends Page {
     protected CheckBox overridePasswordExpiryPolicyField;
     protected TextFeedbackPanel overridePasswordExpiryPolicyFeedback;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -125,10 +124,6 @@ public class UserCreatePage extends Page {
             breadcrumb.setLabel("User Create");
             BREADCRUMB.add(breadcrumb);
         }
-    }
-
-    @Override
-    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
         return Model.ofList(BREADCRUMB);
     }
 

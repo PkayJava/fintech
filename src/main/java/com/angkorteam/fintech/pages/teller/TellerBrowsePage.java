@@ -53,15 +53,9 @@ public class TellerBrowsePage extends Page {
 
     protected BookmarkablePageLink<Void> createLink;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -78,6 +72,7 @@ public class TellerBrowsePage extends Page {
             breadcrumb.setLabel("Teller");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -110,7 +105,7 @@ public class TellerBrowsePage extends Page {
         this.dataProvider.boardField("m_tellers.id", "id", Long.class);
         this.dataProvider.boardField("m_office.name", "branch", String.class);
         this.dataProvider.boardField("m_tellers.name", "name", String.class);
-        this.dataProvider.boardField("case m_tellers.state when 300 then 'Active' when 400 then 'Inactive' end", "state", Integer.class);
+        this.dataProvider.boardField("case m_tellers.state when 300 then 'Active' when 400 then 'Inactive' end", "state", Long.class);
         this.dataProvider.boardField("m_tellers.valid_from", "valid_from", Date.class);
         this.dataProvider.boardField("m_tellers.valid_to", "valid_to", Date.class);
 

@@ -67,15 +67,9 @@ public class PaymentTypeModifyPage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -98,6 +92,7 @@ public class PaymentTypeModifyPage extends Page {
             breadcrumb.setLabel("Payment Modify");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -196,9 +191,7 @@ public class PaymentTypeModifyPage extends Page {
         PaymentTypeBuilder builder = new PaymentTypeBuilder();
         builder.withId(this.paymentTypeId);
         builder.withName(this.nameValue);
-        if (this.positionValue != null) {
-            builder.withPosition(this.positionValue.intValue());
-        }
+        builder.withPosition(this.positionValue);
         builder.withCashPayment(this.cashValue);
         builder.withDescription(this.descriptionValue);
 

@@ -1,9 +1,10 @@
 package com.angkorteam.fintech.dto.builder;
 
-import com.mashape.unirest.http.JsonNode;
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
-import java.io.Serializable;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -22,7 +23,7 @@ public class CodeValueBuilder implements Serializable {
     private String description;
     private boolean hasDescription;
 
-    private Integer position;
+    private Long position;
     private boolean hasPosition;
 
     private boolean active;
@@ -69,7 +70,7 @@ public class CodeValueBuilder implements Serializable {
         return this;
     }
 
-    public CodeValueBuilder withPosition(Integer position) {
+    public CodeValueBuilder withPosition(Long position) {
         this.position = position;
         this.hasPosition = true;
         return this;

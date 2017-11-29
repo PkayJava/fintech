@@ -92,8 +92,8 @@ public class SavingDepositChargeModifyPage extends Page {
 
     protected WebMarkupBlock repeatEveryBlock;
     protected WebMarkupContainer repeatEveryIContainer;
-    protected Integer repeatEveryValue;
-    protected TextField<Integer> repeatEveryField;
+    protected Long repeatEveryValue;
+    protected TextField<Long> repeatEveryField;
     protected TextFeedbackPanel repeatEveryFeedback;
 
     protected WebMarkupBlock amountBlock;
@@ -121,15 +121,9 @@ public class SavingDepositChargeModifyPage extends Page {
     protected Select2SingleChoice<Option> taxGroupField;
     protected TextFeedbackPanel taxGroupFeedback;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -153,6 +147,7 @@ public class SavingDepositChargeModifyPage extends Page {
             breadcrumb.setLabel("Saving & Deposit Charge Modify");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -178,9 +173,7 @@ public class SavingDepositChargeModifyPage extends Page {
         } catch (ParseException e) {
         }
 
-        if (chargeObject.get("fee_interval") != null) {
-            this.repeatEveryValue = ((Long) chargeObject.get("fee_interval")).intValue();
-        }
+        this.repeatEveryValue = (Long) chargeObject.get("fee_interval");
 
         this.amountValue = (Double) chargeObject.get("amount");
 

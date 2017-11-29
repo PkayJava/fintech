@@ -1,9 +1,9 @@
 package com.angkorteam.fintech.dto.builder;
 
+import java.io.Serializable;
+
 import com.angkorteam.fintech.dto.enums.EntityStatus;
 import com.mashape.unirest.http.JsonNode;
-
-import java.io.Serializable;
 
 /**
  * Created by socheatkhauv on 7/15/17.
@@ -32,7 +32,7 @@ public class EntityCheckBuilder implements Serializable {
         }
         if (this.hasStatus) {
             if (this.status != null) {
-                object.getObject().put("status", Integer.valueOf(this.status.getLiteral()));
+                object.getObject().put("status", Long.valueOf(this.status.getLiteral()));
             } else {
                 object.getObject().put("status", (String) null);
             }

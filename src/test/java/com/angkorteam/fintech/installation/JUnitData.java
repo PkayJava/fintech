@@ -3,9 +3,7 @@ package com.angkorteam.fintech.installation;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -230,7 +228,7 @@ public class JUnitData implements IMifos {
             builder.withDescription(PAYMENT);
             builder.withName(PAYMENT);
             builder.withCashPayment(false);
-            builder.withPosition(1);
+            builder.withPosition(1l);
             PaymentTypeHelper.create(session, builder.build());
         }
         if (!jdbcTemplate.queryForObject("select count(*) from m_payment_type where value = ?", Boolean.class, PAYMENT_CASH)) {
@@ -238,7 +236,7 @@ public class JUnitData implements IMifos {
             builder.withDescription(PAYMENT_CASH);
             builder.withName(PAYMENT_CASH);
             builder.withCashPayment(true);
-            builder.withPosition(1);
+            builder.withPosition(1l);
             PaymentTypeHelper.create(session, builder.build());
         }
     }

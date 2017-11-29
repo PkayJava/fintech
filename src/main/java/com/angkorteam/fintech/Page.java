@@ -69,11 +69,11 @@ public abstract class Page extends DashboardPage {
 
     @Override
     protected final void onInitialize() {
+        initData();
         super.onInitialize();
         this.feedbackPanel = new FeedbackPanel("feedbackPanel", this::report);
         this.add(this.feedbackPanel);
         this.setOutputMarkupId(true);
-        initData();
         initComponent();
         configureRequiredValidation();
         configureMetaData();

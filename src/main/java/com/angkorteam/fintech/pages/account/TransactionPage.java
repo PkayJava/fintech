@@ -84,15 +84,9 @@ public class TransactionPage extends Page {
 
     protected Map<String, Object> popupModel;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Accounting");
@@ -110,6 +104,7 @@ public class TransactionPage extends Page {
             breadcrumb.setLabel("View Transaction");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override

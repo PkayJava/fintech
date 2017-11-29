@@ -1,9 +1,10 @@
 package com.angkorteam.fintech.dto.builder;
 
-import com.mashape.unirest.http.JsonNode;
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
-import java.io.Serializable;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 6/26/17.

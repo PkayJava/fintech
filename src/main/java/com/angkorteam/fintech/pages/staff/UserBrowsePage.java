@@ -42,10 +42,9 @@ public class UserBrowsePage extends Page {
 
     protected BookmarkablePageLink<Void> createLink;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -56,10 +55,6 @@ public class UserBrowsePage extends Page {
             breadcrumb.setLabel("User");
             BREADCRUMB.add(breadcrumb);
         }
-    }
-
-    @Override
-    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
         return Model.ofList(BREADCRUMB);
     }
 

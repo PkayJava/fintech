@@ -1,8 +1,8 @@
 package com.angkorteam.fintech.dto.builder;
 
-import com.mashape.unirest.http.JsonNode;
-
 import java.io.Serializable;
+
+import com.mashape.unirest.http.JsonNode;
 
 public class JobBuilder implements Serializable {
 

@@ -98,8 +98,8 @@ public class LoanChargeCreatePage extends Page {
 
     protected WebMarkupBlock frequencyIntervalBlock;
     protected WebMarkupContainer frequencyIntervalIContainer;
-    protected Integer frequencyIntervalValue;
-    protected TextField<Integer> frequencyIntervalField;
+    protected Long frequencyIntervalValue;
+    protected TextField<Long> frequencyIntervalField;
     protected TextFeedbackPanel frequencyIntervalFeedback;
 
     protected WebMarkupBlock amountBlock;
@@ -127,15 +127,9 @@ public class LoanChargeCreatePage extends Page {
     protected Select2SingleChoice<Option> taxGroupField;
     protected TextFeedbackPanel taxGroupFeedback;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -153,12 +147,12 @@ public class LoanChargeCreatePage extends Page {
             breadcrumb.setPage(ChargeBrowsePage.class);
             BREADCRUMB.add(breadcrumb);
         }
-
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Loan Charge Create");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override

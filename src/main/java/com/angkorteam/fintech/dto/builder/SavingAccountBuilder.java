@@ -55,10 +55,10 @@ public class SavingAccountBuilder implements Serializable {
         return this;
     }
 
-    private Integer lockinPeriodFrequency;
+    private Long lockinPeriodFrequency;
     private boolean hasLockinPeriodFrequency;
 
-    public SavingAccountBuilder withLockinPeriodFrequency(Integer lockinPeriodFrequency) {
+    public SavingAccountBuilder withLockinPeriodFrequency(Long lockinPeriodFrequency) {
         this.lockinPeriodFrequency = lockinPeriodFrequency;
         this.hasLockinPeriodFrequency = true;
         return this;
@@ -247,7 +247,7 @@ public class SavingAccountBuilder implements Serializable {
     private List<Map<String, Object>> charges = Lists.newArrayList();
     private boolean hasCharges;
 
-    public SavingAccountBuilder withCharge(String chargeId, Double amount, Date feeOnMonthDay, Date dueDate, Integer feeInterval) {
+    public SavingAccountBuilder withCharge(String chargeId, Double amount, Date feeOnMonthDay, Date dueDate, Long feeInterval) {
         Map<String, Object> charge = Maps.newHashMap();
         charge.put("chargeId", chargeId);
         charge.put("amount", amount);

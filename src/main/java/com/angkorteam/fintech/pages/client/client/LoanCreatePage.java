@@ -141,12 +141,12 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupBlock decimalPlacesBlock;
     protected WebMarkupContainer decimalPlacesVContainer;
-    protected Integer decimalPlacesValue;
+    protected Long decimalPlacesValue;
     protected ReadOnlyView decimalPlacesView;
 
     protected WebMarkupBlock currencyInMultiplesOfBlock;
     protected WebMarkupContainer currencyInMultiplesOfVContainer;
-    protected Integer currencyInMultiplesOfValue;
+    protected Long currencyInMultiplesOfValue;
     protected ReadOnlyView currencyInMultiplesOfView;
 
     protected WebMarkupBlock installmentInMultiplesOfBlock;
@@ -162,8 +162,8 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupBlock loanTermBlock;
     protected WebMarkupContainer loanTermIContainer;
-    protected Integer loanTermValue;
-    protected TextField<Integer> loanTermField;
+    protected Long loanTermValue;
+    protected TextField<Long> loanTermField;
     protected TextFeedbackPanel loanTermFeedback;
 
     protected ChargeFrequencyProvider loanTypeProvider;
@@ -175,13 +175,13 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupBlock numberOfRepaymentBlock;
     protected WebMarkupContainer numberOfRepaymentIContainer;
-    protected Integer numberOfRepaymentValue;
-    protected TextField<Integer> numberOfRepaymentField;
+    protected Long numberOfRepaymentValue;
+    protected TextField<Long> numberOfRepaymentField;
     protected TextFeedbackPanel numberOfRepaymentFeedback;
 
     protected WebMarkupBlock repaidEveryBlock;
     protected WebMarkupContainer repaidEveryVContainer;
-    protected Integer repaidEveryValue;
+    protected Long repaidEveryValue;
     protected ReadOnlyView repaidEveryView;
 
     protected WebMarkupBlock repaidTypeBlock;
@@ -253,8 +253,8 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupContainer interestFreePeriodBlock;
     protected WebMarkupContainer interestFreePeriodIContainer;
-    protected Integer interestFreePeriodValue;
-    protected TextField<Integer> interestFreePeriodField;
+    protected Long interestFreePeriodValue;
+    protected TextField<Long> interestFreePeriodField;
     protected TextFeedbackPanel interestFreePeriodFeedback;
 
     protected WebMarkupBlock repaymentStrategyBlock;
@@ -264,17 +264,17 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupBlock onPrincipalPaymentBlock;
     protected WebMarkupContainer onPrincipalPaymentVContainer;
-    protected Integer onPrincipalPaymentValue;
+    protected Long onPrincipalPaymentValue;
     protected ReadOnlyView onPrincipalPaymentView;
 
     protected WebMarkupBlock onInterestPaymentBlock;
     protected WebMarkupContainer onInterestPaymentVContainer;
-    protected Integer onInterestPaymentValue;
+    protected Long onInterestPaymentValue;
     protected ReadOnlyView onInterestPaymentView;
 
     protected WebMarkupBlock onArrearsAgingBlock;
     protected WebMarkupContainer onArrearsAgingVContainer;
-    protected Integer onArrearsAgingValue;
+    protected Long onArrearsAgingValue;
     protected ReadOnlyView onArrearsAgingView;
 
     protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
@@ -919,7 +919,7 @@ public class LoanCreatePage extends Page {
             Date value = (Date) model.get(column);
             return new TextCell(value, "dd MMMM");
         } else if ("repaymentEvery".equals(column)) {
-            Integer value = (Integer) model.get(column);
+            Long value = (Long) model.get(column);
             return new TextCell(value);
         }
         throw new WicketRuntimeException("Unknown " + column);
@@ -992,15 +992,15 @@ public class LoanCreatePage extends Page {
         this.externalIdValue = generator.externalId();
 
         this.currencyValue = (String) loanObject.get("currency_code");
-        this.decimalPlacesValue = loanObject.get("currency_digits") == null ? null : ((Long) loanObject.get("currency_digits")).intValue();
+        this.decimalPlacesValue = (Long) loanObject.get("currency_digits");
 
-        this.currencyInMultiplesOfValue = loanObject.get("currency_multiplesof") == null ? null : ((Long) loanObject.get("currency_multiplesof")).intValue();
+        this.currencyInMultiplesOfValue = (Long) loanObject.get("currency_multiplesof");
         this.installmentInMultiplesOfValue = (Double) loanObject.get("instalment_amount_in_multiples_of");
 
         this.principalValue = (Double) loanObject.get("principal_amount");
 
-        this.numberOfRepaymentValue = loanObject.get("number_of_repayments") == null ? null : ((Long) loanObject.get("number_of_repayments")).intValue();
-        this.repaidEveryValue = loanObject.get("repay_every") == null ? null : ((Long) loanObject.get("repay_every")).intValue();
+        this.numberOfRepaymentValue = (Long) loanObject.get("number_of_repayments");
+        this.repaidEveryValue = (Long) loanObject.get("repay_every");
 
         if (this.numberOfRepaymentValue != null && this.repaidEveryValue != null) {
             this.loanTermValue = this.numberOfRepaymentValue * this.repaidEveryValue;
@@ -1041,11 +1041,11 @@ public class LoanCreatePage extends Page {
 
         this.arrearsToleranceValue = (Double) loanObject.get("arrearstolerance_amount");
 
-        this.interestFreePeriodValue = loanObject.get("grace_interest_free_periods") == null ? null : ((Long) loanObject.get("grace_interest_free_periods")).intValue();
+        this.interestFreePeriodValue = (Long) loanObject.get("grace_interest_free_periods");
 
-        this.onArrearsAgingValue = loanObject.get("grace_on_arrears_ageing") == null ? null : ((Long) loanObject.get("grace_on_arrears_ageing")).intValue();
-        this.onInterestPaymentValue = loanObject.get("grace_on_interest_periods") == null ? null : ((Long) loanObject.get("grace_on_interest_periods")).intValue();
-        this.onPrincipalPaymentValue = loanObject.get("grace_on_principal_periods") == null ? null : ((Long) loanObject.get("grace_on_principal_periods")).intValue();
+        this.onArrearsAgingValue = (Long) loanObject.get("grace_on_arrears_ageing");
+        this.onInterestPaymentValue = (Long) loanObject.get("grace_on_interest_periods");
+        this.onPrincipalPaymentValue = (Long) loanObject.get("grace_on_principal_periods");
 
     }
 

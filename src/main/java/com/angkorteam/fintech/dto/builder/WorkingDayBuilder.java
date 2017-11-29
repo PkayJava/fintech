@@ -1,13 +1,14 @@
 package com.angkorteam.fintech.dto.builder;
 
-import com.angkorteam.fintech.dto.enums.RepaymentOption;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
+import java.io.Serializable;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
-import java.io.Serializable;
-import java.util.List;
+import com.angkorteam.fintech.dto.enums.RepaymentOption;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 6/26/17.

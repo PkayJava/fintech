@@ -7,11 +7,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.RandomStringGenerator;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -904,7 +902,7 @@ public class SampleData implements IMifos {
                             ChargeBuilder builder = new ChargeBuilder();
                             builder.withChargeAppliesTo(ChargeType.Loan);
                             if (chargeTime == ChargeTime.OverdueFees) {
-                                builder.withFeeInterval(1);
+                                builder.withFeeInterval(1l);
                                 builder.withFeeFrequency(ChargeFrequency.Day);
                             }
                             builder.withName(name);
@@ -933,9 +931,9 @@ public class SampleData implements IMifos {
                             builder.withFeeOnMonthDay(DateTime.now().toDate());
                         } else if (chargeTime == ChargeTime.MonthlyFee) {
                             builder.withFeeOnMonthDay(DateTime.now().toDate());
-                            builder.withFeeInterval(1);
+                            builder.withFeeInterval(1l);
                         } else if (chargeTime == ChargeTime.WeeklyFee) {
-                            builder.withFeeInterval(1);
+                            builder.withFeeInterval(1l);
                         }
                         builder.withName(name);
                         builder.withCurrencyCode(currency);
@@ -1010,7 +1008,7 @@ public class SampleData implements IMifos {
                 builder.withDescription(name);
                 builder.withName(name);
                 builder.withCashPayment(cashPayment);
-                builder.withPosition(1);
+                builder.withPosition(1l);
                 PaymentTypeHelper.create(session, builder.build());
             }
         }

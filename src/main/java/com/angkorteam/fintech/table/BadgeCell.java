@@ -2,10 +2,7 @@ package com.angkorteam.fintech.table;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Date;
-import java.util.Map;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.AttributeModifier;
@@ -18,7 +15,6 @@ import com.angkorteam.fintech.Application;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.google.common.collect.Maps;
 
 /**
  * Created by socheatkhauv on 6/17/17.

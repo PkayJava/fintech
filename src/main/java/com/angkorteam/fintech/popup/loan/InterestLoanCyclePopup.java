@@ -28,8 +28,8 @@ public class InterestLoanCyclePopup extends PopupPanel {
     protected Select2SingleChoice<Option> whenField;
     protected TextFeedbackPanel whenFeedback;
 
-    protected PropertyModel<Integer> loanCycleValue;
-    protected TextField<Integer> loanCycleField;
+    protected PropertyModel<Long> loanCycleValue;
+    protected TextField<Long> loanCycleField;
     protected TextFeedbackPanel loanCycleFeedback;
 
     protected PropertyModel<Double> minimumValue;
@@ -77,7 +77,7 @@ public class InterestLoanCyclePopup extends PopupPanel {
         this.loanCycleValue = new PropertyModel<>(this.model, "loanCycleValue");
         this.loanCycleField = new TextField<>("loanCycleField", this.loanCycleValue);
         this.loanCycleField.setLabel(Model.of("Loan Cycle"));
-        this.loanCycleField.setType(Integer.class);
+        this.loanCycleField.setType(Long.class);
         this.form.add(this.loanCycleField);
         this.loanCycleFeedback = new TextFeedbackPanel("loanCycleFeedback", this.loanCycleField);
         this.form.add(this.loanCycleFeedback);

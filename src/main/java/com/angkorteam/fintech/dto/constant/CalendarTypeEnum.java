@@ -17,13 +17,13 @@ public enum CalendarTypeEnum {
 
     private final String description;
     
-    private final int enumType;
+    private final Long enumType;
 
     CalendarTypeEnum(String literal, String description) {
-        this(literal, description, 0);
+        this(literal, description, 0l);
     }
 
-    CalendarTypeEnum(String literal, String description, int enumType) {
+    CalendarTypeEnum(String literal, String description, Long enumType) {
         this.literal = literal;
         this.description = description;
         this.enumType = enumType;
@@ -37,7 +37,7 @@ public enum CalendarTypeEnum {
         return description;
     }
     
-    public int getEnumType() {
+    public Long getEnumType() {
         return enumType;
     }
     

@@ -17,10 +17,10 @@ public class MixedBuilder implements Serializable {
 	return this;
     }
 
-    private List<Integer> restrictedProducts = Lists.newArrayList();
+    private List<Long> restrictedProducts = Lists.newArrayList();
     private boolean hasRestrictedProducts;
 
-    public MixedBuilder withRestrictedProduct(Integer restrictedProduct) {
+    public MixedBuilder withRestrictedProduct(Long restrictedProduct) {
 	this.restrictedProducts.add(restrictedProduct);
 	this.hasRestrictedProducts = true;
 	return this;

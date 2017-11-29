@@ -114,10 +114,10 @@ public class ProductFixedDepositBuilder implements Serializable {
         return this;
     }
 
-    private Integer inMultiplesOf;
+    private Long inMultiplesOf;
     private boolean hasInMultiplesOf;
 
-    public ProductFixedDepositBuilder withInMultiplesOf(Integer inMultiplesOf) {
+    public ProductFixedDepositBuilder withInMultiplesOf(Long inMultiplesOf) {
         this.inMultiplesOf = inMultiplesOf;
         this.hasInMultiplesOf = true;
         return this;
@@ -150,10 +150,10 @@ public class ProductFixedDepositBuilder implements Serializable {
         return this;
     }
 
-    private Integer digitsAfterDecimal;
+    private Long digitsAfterDecimal;
     private boolean hasDigitsAfterDecimal;
 
-    public ProductFixedDepositBuilder withDigitsAfterDecimal(Integer digitsAfterDecimal) {
+    public ProductFixedDepositBuilder withDigitsAfterDecimal(Long digitsAfterDecimal) {
         this.digitsAfterDecimal = digitsAfterDecimal;
         this.hasDigitsAfterDecimal = true;
         return this;
@@ -179,10 +179,10 @@ public class ProductFixedDepositBuilder implements Serializable {
         return this;
     }
 
-    private Integer accountingRule;
+    private Long accountingRule;
     private boolean hasAccountingRule;
 
-    public ProductFixedDepositBuilder withAccountingRule(Integer accountingRule) {
+    public ProductFixedDepositBuilder withAccountingRule(Long accountingRule) {
         this.accountingRule = accountingRule;
         this.hasAccountingRule = true;
         return this;
@@ -333,7 +333,7 @@ public class ProductFixedDepositBuilder implements Serializable {
     private List<Map<String, Object>> chartSlabs = Lists.newArrayList();
     private boolean hasChartSlabs;
 
-    public ProductFixedDepositBuilder withChartSlab(LockInType periodType, Integer fromPeriod, Integer toPeriod, Integer amountRangeFrom, Integer amountRangeTo, Double annualInterestRate, String description, List<JSONObject> incentives) {
+    public ProductFixedDepositBuilder withChartSlab(LockInType periodType, Long fromPeriod, Long toPeriod, Long amountRangeFrom, Long amountRangeTo, Double annualInterestRate, String description, List<JSONObject> incentives) {
         Map<String, Object> chartSlab = Maps.newHashMap();
         chartSlab.put("periodType", periodType == null ? null : periodType.getLiteral());
         chartSlab.put("fromPeriod", fromPeriod == null ? null : fromPeriod);
@@ -354,10 +354,10 @@ public class ProductFixedDepositBuilder implements Serializable {
         return this;
     }
 
-    private Integer lockInPeriodFrequency;
+    private Long lockInPeriodFrequency;
     private boolean hasLockInPeriodFrequency;
 
-    public ProductFixedDepositBuilder withLockInPeriodFrequency(Integer lockInPeriodFrequency) {
+    public ProductFixedDepositBuilder withLockInPeriodFrequency(Long lockInPeriodFrequency) {
         this.lockInPeriodFrequency = lockInPeriodFrequency;
         this.hasLockInPeriodFrequency = true;
         return this;
@@ -372,10 +372,10 @@ public class ProductFixedDepositBuilder implements Serializable {
         return this;
     }
 
-    private Integer minDepositTerm;
+    private Long minDepositTerm;
     private boolean hasMinDepositTerm;
 
-    public ProductFixedDepositBuilder withMinDepositTerm(Integer minDepositTerm) {
+    public ProductFixedDepositBuilder withMinDepositTerm(Long minDepositTerm) {
         this.minDepositTerm = minDepositTerm;
         this.hasMinDepositTerm = true;
         return this;
@@ -390,10 +390,10 @@ public class ProductFixedDepositBuilder implements Serializable {
         return this;
     }
 
-    private Integer inMultiplesOfDepositTerm;
+    private Long inMultiplesOfDepositTerm;
     private boolean hasInMultiplesOfDepositTerm;
 
-    public ProductFixedDepositBuilder withInMultiplesOfDepositTerm(Integer inMultiplesOfDepositTerm) {
+    public ProductFixedDepositBuilder withInMultiplesOfDepositTerm(Long inMultiplesOfDepositTerm) {
         this.inMultiplesOfDepositTerm = inMultiplesOfDepositTerm;
         this.hasInMultiplesOfDepositTerm = true;
         return this;
@@ -408,10 +408,10 @@ public class ProductFixedDepositBuilder implements Serializable {
         return this;
     }
 
-    private Integer maxDepositTerm;
+    private Long maxDepositTerm;
     private boolean hasMaxDepositTerm;
 
-    public ProductFixedDepositBuilder withMaxDepositTerm(Integer maxDepositTerm) {
+    public ProductFixedDepositBuilder withMaxDepositTerm(Long maxDepositTerm) {
         this.maxDepositTerm = maxDepositTerm;
         this.hasMaxDepositTerm = true;
         return this;

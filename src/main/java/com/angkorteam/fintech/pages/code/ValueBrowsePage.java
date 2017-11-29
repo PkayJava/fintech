@@ -77,8 +77,8 @@ public class ValueBrowsePage extends Page {
 
     protected WebMarkupBlock positionBlock;
     protected WebMarkupContainer positionIContainer;
-    protected Integer positionValue;
-    protected TextField<Integer> positionField;
+    protected Long positionValue;
+    protected TextField<Long> positionField;
     protected TextFeedbackPanel positionFeedback;
 
     protected WebMarkupBlock activeBlock;
@@ -90,26 +90,9 @@ public class ValueBrowsePage extends Page {
     protected Form<Void> form;
     protected Button addButton;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        PageParameters parameters = getPageParameters();
-        this.codeId = parameters.get("codeId").toString("");
-
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        String codeName = jdbcTemplate.queryForObject("select code_name from m_code where id = ?", String.class, this.codeId);
-        List<PageBreadcrumb> temp = Lists.newArrayList(BREADCRUMB);
-        {
-            PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel(codeName);
-            temp.add(breadcrumb);
-        }
-        return Model.ofList(temp);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -127,6 +110,15 @@ public class ValueBrowsePage extends Page {
             breadcrumb.setPage(CodeBrowsePage.class);
             BREADCRUMB.add(breadcrumb);
         }
+        {
+            JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+            String codeName = jdbcTemplate.queryForObject("select code_name from m_code where id = ?", String.class, this.codeId);
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel(codeName);
+            BREADCRUMB.add(breadcrumb);
+        }
+
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -173,20 +165,20 @@ public class ValueBrowsePage extends Page {
         this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("m_code_value");
         this.dataProvider.applyWhere("code", "code_id = " + this.codeId);
-        this.dataProvider.boardField("id", "id", Integer.class);
+        this.dataProvider.boardField("id", "id", Long.class);
         this.dataProvider.boardField("code_value", "code_value", String.class);
         this.dataProvider.boardField("code_description", "code_description", String.class);
-        this.dataProvider.boardField("order_position", "order_position", Integer.class);
+        this.dataProvider.boardField("order_position", "order_position", Long.class);
         this.dataProvider.boardField("is_active", "active", Boolean.class);
 
         this.dataProvider.setSort("code_value", SortOrder.ASCENDING);
 
-        this.dataProvider.selectField("id", Integer.class);
+        this.dataProvider.selectField("id", Long.class);
 
         this.dataColumn = Lists.newArrayList();
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "code_value", "code_value", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Description"), "code_description", "code_description", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Integer, Model.of("Position"), "order_position", "order_position", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Position"), "order_position", "order_position", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Boolean, Model.of("Is Active ?"), "active", "active", this::dataColumn));
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 

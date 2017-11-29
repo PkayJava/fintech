@@ -82,8 +82,8 @@ public class SavingDepositChargeCreatePage extends Page {
 
     protected WebMarkupBlock repeatEveryBlock;
     protected WebMarkupContainer repeatEveryIContainer;
-    protected Integer repeatEveryValue;
-    protected TextField<Integer> repeatEveryField;
+    protected Long repeatEveryValue;
+    protected TextField<Long> repeatEveryField;
     protected TextFeedbackPanel repeatEveryFeedback;
 
     protected WebMarkupBlock amountBlock;
@@ -111,15 +111,9 @@ public class SavingDepositChargeCreatePage extends Page {
     protected Select2SingleChoice<Option> taxGroupField;
     protected TextFeedbackPanel taxGroupFeedback;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -137,12 +131,12 @@ public class SavingDepositChargeCreatePage extends Page {
             breadcrumb.setPage(ChargeBrowsePage.class);
             BREADCRUMB.add(breadcrumb);
         }
-
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Saving & Deposit Charge Create");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override

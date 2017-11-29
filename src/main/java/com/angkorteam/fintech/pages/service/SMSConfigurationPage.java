@@ -59,19 +59,13 @@ public class SMSConfigurationPage extends Page {
 
     protected WebMarkupBlock portBlock;
     protected WebMarkupContainer portIContainer;
-    protected Integer portValue = 9191;
-    protected TextField<Integer> portField;
+    protected Long portValue = 9191l;
+    protected TextField<Long> portField;
     protected TextFeedbackPanel portFeedback;
-
-    protected static final List<PageBreadcrumb> BREADCRUMB;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -94,6 +88,7 @@ public class SMSConfigurationPage extends Page {
             breadcrumb.setLabel("SMS");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -107,7 +102,7 @@ public class SMSConfigurationPage extends Page {
         this.endpointValue = (String) params.get("end_point");
         this.tenantAppKeyValue = (String) params.get("tenant_app_key");
         this.hostValue = (String) params.get("host_name");
-        this.portValue = Integer.valueOf((String) params.get("port_number"));
+        this.portValue = Long.valueOf((String) params.get("port_number"));
     }
 
     @Override

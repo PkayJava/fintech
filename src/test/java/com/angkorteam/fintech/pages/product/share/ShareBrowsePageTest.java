@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
-import com.angkorteam.fintech.pages.product.share.ShareBrowsePage;
 
 public class ShareBrowsePageTest {
     private JUnitWicketTester wicket;

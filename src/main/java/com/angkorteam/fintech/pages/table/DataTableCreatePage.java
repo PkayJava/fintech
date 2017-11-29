@@ -93,8 +93,8 @@ public class DataTableCreatePage extends Page {
 
     protected WebMarkupBlock lengthBlock;
     protected WebMarkupContainer lengthIContainer;
-    protected Integer lengthValue;
-    protected TextField<Integer> lengthField;
+    protected Long lengthValue;
+    protected TextField<Long> lengthField;
     protected TextFeedbackPanel lengthFeedback;
 
     protected WebMarkupBlock mandatoryBlock;
@@ -124,15 +124,9 @@ public class DataTableCreatePage extends Page {
     protected ListDataProvider columnProvider;
     protected List<IColumn<Map<String, Object>, String>> columnColumn;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -155,6 +149,7 @@ public class DataTableCreatePage extends Page {
             breadcrumb.setLabel("Data Table Create");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -372,7 +367,7 @@ public class DataTableCreatePage extends Page {
         for (Map<String, Object> column : columnValue) {
             String type = (String) column.get("type");
             if ("String".equals(type)) {
-                builder.withColumnString((String) column.get("name"), (Boolean) column.get("mandatory"), (Integer) column.get("length"));
+                builder.withColumnString((String) column.get("name"), (Boolean) column.get("mandatory"), (Long) column.get("length"));
             } else if ("Number".equals(type)) {
                 builder.withColumnNumber((String) column.get("name"), (Boolean) column.get("mandatory"));
             } else if ("Decimal".equals(type)) {
@@ -440,7 +435,7 @@ public class DataTableCreatePage extends Page {
                 return new BadgeCell(BadgeType.Danger, Model.of("No"));
             }
         } else if ("length".equals(column)) {
-            Integer value = (Integer) model.get(column);
+            Long value = (Long) model.get(column);
             return new TextCell(value);
         }
         throw new WicketRuntimeException("Unknown " + column);

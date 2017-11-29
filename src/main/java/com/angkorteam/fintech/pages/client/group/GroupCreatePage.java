@@ -116,15 +116,9 @@ public class GroupCreatePage extends Page {
 
     protected Map<String, Object> popupModel;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Clients");
@@ -141,6 +135,7 @@ public class GroupCreatePage extends Page {
             breadcrumb.setLabel("Group Create");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -270,7 +265,7 @@ public class GroupCreatePage extends Page {
         this.staffIContainer = new WebMarkupContainer("staffIContainer");
         this.staffBlock.add(this.staffIContainer);
         this.staffProvider = new SingleChoiceProvider("m_staff", "m_staff.id", "m_staff.display_name");
-        this.staffProvider.applyJoin("m_office","inner join m_office on m_staff.office_id = m_office.id");
+        this.staffProvider.applyJoin("m_office", "inner join m_office on m_staff.office_id = m_office.id");
         this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());

@@ -1,11 +1,12 @@
 package com.angkorteam.fintech.dto.builder;
 
-import com.angkorteam.fintech.dto.enums.AccountType;
-import com.mashape.unirest.http.JsonNode;
-import org.apache.commons.lang3.time.DateFormatUtils;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import org.apache.commons.lang3.time.DateFormatUtils;
+
+import com.angkorteam.fintech.dto.enums.AccountType;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 7/17/17.

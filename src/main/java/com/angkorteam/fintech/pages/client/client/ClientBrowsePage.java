@@ -43,25 +43,20 @@ public class ClientBrowsePage extends Page {
 
     protected BookmarkablePageLink<Void> createLink;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Clients");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Clients");
+            BREADCRUMB.add(breadcrumb);
+        }
         return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
-        {
-            PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Clients");
-            BREADCRUMB.add(breadcrumb);
-        }
-        {
-            PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Clients");
-            BREADCRUMB.add(breadcrumb);
-        }
     }
 
     @Override

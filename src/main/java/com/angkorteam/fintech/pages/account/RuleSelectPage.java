@@ -43,15 +43,9 @@ public class RuleSelectPage extends Page {
     protected Select2SingleChoice<Option> ruleField;
     protected TextFeedbackPanel ruleFeedback;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Accounting");
@@ -63,6 +57,7 @@ public class RuleSelectPage extends Page {
             breadcrumb.setLabel("Accounting Rule Selection");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override

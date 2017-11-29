@@ -111,10 +111,9 @@ public class UserModifyPage extends Page {
     protected PasswordTextField repeatPasswordField;
     protected TextFeedbackPanel repeatPasswordFeedback;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -131,10 +130,6 @@ public class UserModifyPage extends Page {
             breadcrumb.setLabel("User Modify");
             BREADCRUMB.add(breadcrumb);
         }
-    }
-
-    @Override
-    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
         return Model.ofList(BREADCRUMB);
     }
 

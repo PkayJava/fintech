@@ -11,13 +11,13 @@ public enum InterestMethodEnum {
 
     private final String description;
     
-    private final int enumType;
+    private final Long enumType;
 
     InterestMethodEnum(String literal, String description) {
-        this(literal, description, 0);
+        this(literal, description, 0l);
     }
 
-    InterestMethodEnum(String literal, String description, int enumType) {
+    InterestMethodEnum(String literal, String description, Long enumType) {
         this.literal = literal;
         this.description = description;
         this.enumType = enumType;
@@ -31,7 +31,7 @@ public enum InterestMethodEnum {
         return description;
     }
     
-    public int getEnumType() {
+    public Long getEnumType() {
         return enumType;
     }
 

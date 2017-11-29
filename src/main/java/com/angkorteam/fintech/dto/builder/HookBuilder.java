@@ -1,12 +1,12 @@
 package com.angkorteam.fintech.dto.builder;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.mashape.unirest.http.JsonNode;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.mashape.unirest.http.JsonNode;
 
 public class HookBuilder implements Serializable {
 

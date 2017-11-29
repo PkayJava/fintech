@@ -132,14 +132,14 @@ public class FixedDepositCreatePage extends Page {
 
     protected WebMarkupContainer currencyDecimalPlaceBlock;
     protected WebMarkupContainer currencyDecimalPlaceIContainer;
-    protected Integer currencyDecimalPlaceValue;
-    protected TextField<Integer> currencyDecimalPlaceField;
+    protected Long currencyDecimalPlaceValue;
+    protected TextField<Long> currencyDecimalPlaceField;
     protected TextFeedbackPanel currencyDecimalPlaceFeedback;
 
     protected WebMarkupBlock currencyMultipleOfBlock;
     protected WebMarkupContainer currencyMultipleOfIContainer;
-    protected Integer currencyMultipleOfValue;
-    protected TextField<Integer> currencyMultipleOfField;
+    protected Long currencyMultipleOfValue;
+    protected TextField<Long> currencyMultipleOfField;
     protected TextFeedbackPanel currencyMultipleOfFeedback;
 
     // Terms
@@ -194,8 +194,8 @@ public class FixedDepositCreatePage extends Page {
 
     protected WebMarkupBlock settingLockInPeriodBlock;
     protected WebMarkupContainer settingLockInPeriodIContainer;
-    protected Integer settingLockInPeriodValue;
-    protected TextField<Integer> settingLockInPeriodField;
+    protected Long settingLockInPeriodValue;
+    protected TextField<Long> settingLockInPeriodField;
     protected TextFeedbackPanel settingLockInPeriodFeedback;
 
     protected WebMarkupBlock settingLockInTypeBlock;
@@ -207,8 +207,8 @@ public class FixedDepositCreatePage extends Page {
 
     protected WebMarkupBlock settingMinimumDepositTermBlock;
     protected WebMarkupContainer settingMinimumDepositTermIContainer;
-    protected Integer settingMinimumDepositTermValue;
-    protected TextField<Integer> settingMinimumDepositTermField;
+    protected Long settingMinimumDepositTermValue;
+    protected TextField<Long> settingMinimumDepositTermField;
     protected TextFeedbackPanel settingMinimumDepositTermFeedback;
 
     protected WebMarkupBlock settingMinimumDepositTypeBlock;
@@ -220,8 +220,8 @@ public class FixedDepositCreatePage extends Page {
 
     protected WebMarkupBlock settingInMultiplesOfBlock;
     protected WebMarkupContainer settingInMultiplesOfIContainer;
-    protected Integer settingInMultiplesOfValue;
-    protected TextField<Integer> settingInMultiplesOfField;
+    protected Long settingInMultiplesOfValue;
+    protected TextField<Long> settingInMultiplesOfField;
     protected TextFeedbackPanel settingInMultiplesOfFeedback;
 
     protected WebMarkupBlock settingInMultiplesTypeBlock;
@@ -233,8 +233,8 @@ public class FixedDepositCreatePage extends Page {
 
     protected WebMarkupBlock settingMaximumDepositTermBlock;
     protected WebMarkupContainer settingMaximumDepositTermIContainer;
-    protected Integer settingMaximumDepositTermValue;
-    protected TextField<Integer> settingMaximumDepositTermField;
+    protected Long settingMaximumDepositTermValue;
+    protected TextField<Long> settingMaximumDepositTermField;
     protected TextFeedbackPanel settingMaximumDepositTermFeedback;
 
     protected WebMarkupBlock settingMaximumDepositTypeBlock;
@@ -395,15 +395,9 @@ public class FixedDepositCreatePage extends Page {
     protected ModalWindow feeIncomePopup;
     protected ModalWindow penaltyIncomePopup;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newLinkedList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newLinkedList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -427,6 +421,7 @@ public class FixedDepositCreatePage extends Page {
             breadcrumb.setLabel("Fixed Deposit Product Create");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -491,15 +486,15 @@ public class FixedDepositCreatePage extends Page {
         this.popupModel = Maps.newHashMap();
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         this.detailShortNameValue = generator.generate(4);
-        this.currencyDecimalPlaceValue = 2;
-        this.currencyMultipleOfValue = 1;
+        this.currencyDecimalPlaceValue = 2l;
+        this.currencyMultipleOfValue = 1l;
 
         this.termDefaultDepositAmountValue = 100d;
         this.termInterestCompoundingPeriodValue = InterestCompoundingPeriod.Daily.toOption();
         this.termInterestCalculatedUsingValue = InterestCalculatedUsing.DailyBalance.toOption();
         this.termInterestPostingPeriodValue = InterestPostingPeriod.Monthly.toOption();
         this.termDayInYearValue = DayInYear.D365.toOption();
-        this.settingMinimumDepositTermValue = 1;
+        this.settingMinimumDepositTermValue = 1l;
         this.settingMinimumDepositTypeValue = LockInType.Month.toOption();
         this.accountingValue = ACC_NONE;
     }
@@ -870,21 +865,9 @@ public class FixedDepositCreatePage extends Page {
             }
         }
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, concat(charge_calculation_enum,'') type, concat(charge_time_enum,'') collect, amount from m_charge where id = ?", charge.getId());
-        String type = (String) chargeObject.get("type");
-        for (ChargeCalculation calculation : ChargeCalculation.values()) {
-            if (type.equals(calculation.getLiteral())) {
-                type = calculation.getDescription();
-                break;
-            }
-        }
-        String collect = (String) chargeObject.get("collect");
-        for (ChargeTime time : ChargeTime.values()) {
-            if (collect.equals(time.getLiteral())) {
-                collect = time.getDescription();
-                break;
-            }
-        }
+        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, charge_calculation_enum, charge_time_enum, amount from m_charge where id = ?", charge.getId());
+        Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
+        Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
         item.put("uuid", charge.getId());
         item.put("charge", charge);
         item.put("name", chargeObject.get("name"));
@@ -909,8 +892,11 @@ public class FixedDepositCreatePage extends Page {
     }
 
     protected ItemPanel chargeColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("name".equals(column) || "type".equals(column) || "collect".equals(column) || "date".equals(column)) {
+        if ("name".equals(column) || "date".equals(column)) {
             String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("type".equals(column) || "collect".equals(column)) {
+            Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("amount".equals(column)) {
             Number value = (Number) model.get(column);
@@ -1057,7 +1043,7 @@ public class FixedDepositCreatePage extends Page {
             Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("periodFrom".equals(column) || "periodTo".equals(column) || "amountRangeFrom".equals(column) || "amountRangeTo".equals(column)) {
-            Integer value = (Integer) model.get(column);
+            Long value = (Long) model.get(column);
             return new TextCell(value);
         } else if ("interest".equals(column)) {
             Double value = (Double) model.get(column);
@@ -1492,10 +1478,10 @@ public class FixedDepositCreatePage extends Page {
             for (Map<String, Object> interestRateChart : this.interestRateChartValue) {
                 Option periodTypeOption = (Option) interestRateChart.get("periodType");
                 LockInType periodType = periodTypeOption == null ? null : LockInType.valueOf(periodTypeOption.getId());
-                Integer fromPeriod = (Integer) interestRateChart.get("periodFrom");
-                Integer toPeriod = (Integer) interestRateChart.get("periodTo");
-                Integer amountRangeFrom = (Integer) interestRateChart.get("amountRangeFrom");
-                Integer amountRangeTo = (Integer) interestRateChart.get("amountRangeTo");
+                Long fromPeriod = (Long) interestRateChart.get("periodFrom");
+                Long toPeriod = (Long) interestRateChart.get("periodTo");
+                Long amountRangeFrom = (Long) interestRateChart.get("amountRangeFrom");
+                Long amountRangeTo = (Long) interestRateChart.get("amountRangeTo");
                 Double annualInterestRate = (Double) interestRateChart.get("interest");
                 String description = (String) interestRateChart.get("description");
                 List<Map<String, Object>> interestRate = (List<Map<String, Object>>) interestRateChart.get("interestRate");
@@ -1544,9 +1530,9 @@ public class FixedDepositCreatePage extends Page {
         String accounting = this.accountingValue;
 
         if (ACC_NONE.equals(accounting)) {
-            builder.withAccountingRule(1);
+            builder.withAccountingRule(1l);
         } else if (ACC_CASH.equals(accounting)) {
-            builder.withAccountingRule(2);
+            builder.withAccountingRule(2l);
         }
 
         if (ACC_CASH.equals(accounting)) {

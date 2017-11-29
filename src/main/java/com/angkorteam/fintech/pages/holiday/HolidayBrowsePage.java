@@ -1,5 +1,19 @@
 package com.angkorteam.fintech.pages.holiday;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
@@ -11,25 +25,16 @@ import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.Calendar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -56,15 +61,9 @@ public class HolidayBrowsePage extends Page {
     protected Form<Void> form;
     protected Button searchButton;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -81,6 +80,7 @@ public class HolidayBrowsePage extends Page {
             breadcrumb.setLabel("Holiday");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -135,7 +135,7 @@ public class HolidayBrowsePage extends Page {
         this.dataProvider.setGroupBy("m_holiday.id");
         this.dataProvider.boardField("m_holiday.id", "id", Long.class);
         this.dataProvider.boardField("m_holiday.name", "name", String.class);
-        this.dataProvider.boardField("m_holiday.status_enum", "status_enum", Integer.class);
+        this.dataProvider.boardField("m_holiday.status_enum", "status_enum", Long.class);
         this.dataProvider.boardField("m_holiday.from_date", "from_date", Calendar.Date);
         this.dataProvider.boardField("m_holiday.to_date", "to_date", Calendar.Date);
         this.dataProvider.boardField("m_holiday.repayments_rescheduled_to", "repayments_rescheduled_to", Calendar.Date);
@@ -146,7 +146,7 @@ public class HolidayBrowsePage extends Page {
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Start Date"), "from_date", "from_date", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("End Date"), "to_date", "to_date", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Alternate Working Day"), "repayments_rescheduled_to", "repayments_rescheduled_to", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Integer, Model.of("Status"), "status_enum", "status_enum", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Status"), "status_enum", "status_enum", this::dataColumn));
 
         this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
         this.dataIContainer.add(this.dataFilterForm);

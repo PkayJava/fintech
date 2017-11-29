@@ -108,28 +108,28 @@ public class ShareCreatePage extends Page {
 
     protected WebMarkupBlock currencyDecimalPlaceBlock;
     protected WebMarkupContainer currencyDecimalPlaceIContainer;
-    protected Integer currencyDecimalPlaceValue;
-    protected TextField<Integer> currencyDecimalPlaceField;
+    protected Long currencyDecimalPlaceValue;
+    protected TextField<Long> currencyDecimalPlaceField;
     protected TextFeedbackPanel currencyDecimalPlaceFeedback;
 
     protected WebMarkupBlock currencyMultipleOfBlock;
     protected WebMarkupContainer currencyMultipleOfIContainer;
-    protected Integer currencyMultipleOfValue;
-    protected TextField<Integer> currencyMultipleOfField;
+    protected Long currencyMultipleOfValue;
+    protected TextField<Long> currencyMultipleOfField;
     protected TextFeedbackPanel currencyMultipleOfFeedback;
 
     // Term
 
     protected WebMarkupBlock termTotalNumberOfShareBlock;
     protected WebMarkupContainer termTotalNumberOfShareIContainer;
-    protected Integer termTotalNumberOfShareValue;
-    protected TextField<Integer> termTotalNumberOfShareField;
+    protected Long termTotalNumberOfShareValue;
+    protected TextField<Long> termTotalNumberOfShareField;
     protected TextFeedbackPanel termTotalNumberOfShareFeedback;
 
     protected WebMarkupBlock termShareToBeIssuedBlock;
     protected WebMarkupContainer termShareToBeIssuedIContainer;
-    protected Integer termShareToBeIssuedValue;
-    protected TextField<Integer> termShareToBeIssuedField;
+    protected Long termShareToBeIssuedValue;
+    protected TextField<Long> termShareToBeIssuedField;
     protected TextFeedbackPanel termShareToBeIssuedFeedback;
 
     protected WebMarkupBlock termNominalPriceBlock;
@@ -148,26 +148,26 @@ public class ShareCreatePage extends Page {
 
     protected WebMarkupBlock settingSharePerClientMinimumBlock;
     protected WebMarkupContainer settingSharePerClientMinimumIContainer;
-    protected Integer settingSharePerClientMinimumValue;
-    protected TextField<Integer> settingSharePerClientMinimumField;
+    protected Long settingSharePerClientMinimumValue;
+    protected TextField<Long> settingSharePerClientMinimumField;
     protected TextFeedbackPanel settingSharePerClientMinimumFeedback;
 
     protected WebMarkupBlock settingSharePerClientDefaultBlock;
     protected WebMarkupContainer settingSharePerClientDefaultIContainer;
-    protected Integer settingSharePerClientDefaultValue;
-    protected TextField<Integer> settingSharePerClientDefaultField;
+    protected Long settingSharePerClientDefaultValue;
+    protected TextField<Long> settingSharePerClientDefaultField;
     protected TextFeedbackPanel settingSharePerClientDefaultFeedback;
 
     protected WebMarkupBlock settingSharePerClientMaximumBlock;
     protected WebMarkupContainer settingSharePerClientMaximumIContainer;
-    protected Integer settingSharePerClientMaximumValue;
-    protected TextField<Integer> settingSharePerClientMaximumField;
+    protected Long settingSharePerClientMaximumValue;
+    protected TextField<Long> settingSharePerClientMaximumField;
     protected TextFeedbackPanel settingSharePerClientMaximumFeedback;
 
     protected WebMarkupBlock settingMinimumActivePeriodBlock;
     protected WebMarkupContainer settingMinimumActivePeriodIContainer;
-    protected Integer settingMinimumActivePeriodValue;
-    protected TextField<Integer> settingMinimumActivePeriodField;
+    protected Long settingMinimumActivePeriodValue;
+    protected TextField<Long> settingMinimumActivePeriodField;
     protected TextFeedbackPanel settingMinimumActivePeriodFeedback;
 
     protected WebMarkupBlock settingMinimumActiveTypeBlock;
@@ -179,8 +179,8 @@ public class ShareCreatePage extends Page {
 
     protected WebMarkupBlock settingLockInPeriodBlock;
     protected WebMarkupContainer settingLockInPeriodIContainer;
-    protected Integer settingLockInPeriodValue;
-    protected TextField<Integer> settingLockInPeriodField;
+    protected Long settingLockInPeriodValue;
+    protected TextField<Long> settingLockInPeriodField;
     protected TextFeedbackPanel settingLockInPeriodFeedback;
 
     protected WebMarkupBlock settingLockInTypeBlock;
@@ -257,15 +257,9 @@ public class ShareCreatePage extends Page {
 
     protected Map<String, Object> popupModel;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -283,12 +277,12 @@ public class ShareCreatePage extends Page {
             breadcrumb.setPage(ShareBrowsePage.class);
             BREADCRUMB.add(breadcrumb);
         }
-
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Share Loan Product Create");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -344,13 +338,13 @@ public class ShareCreatePage extends Page {
         this.popupModel = Maps.newHashMap();
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         this.detailShortNameValue = generator.generate(4);
-        this.currencyDecimalPlaceValue = 2;
-        this.currencyMultipleOfValue = 1;
-        this.termTotalNumberOfShareValue = 10;
+        this.currencyDecimalPlaceValue = 2l;
+        this.currencyMultipleOfValue = 1l;
+        this.termTotalNumberOfShareValue = 10l;
         this.termNominalPriceValue = 10d;
-        this.settingSharePerClientDefaultValue = 10;
+        this.settingSharePerClientDefaultValue = 10l;
         this.settingAllowDividendForInactiveClientValue = true;
-        this.termShareToBeIssuedValue = 10;
+        this.termShareToBeIssuedValue = 10l;
         this.accountingValue = ACC_NONE;
     }
 
@@ -560,21 +554,9 @@ public class ShareCreatePage extends Page {
             }
         }
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, concat(charge_calculation_enum,'') type, concat(charge_time_enum,'') collect, amount from m_charge where id = ?", charge.getId());
-        String type = (String) chargeObject.get("type");
-        for (ChargeCalculation calculation : ChargeCalculation.values()) {
-            if (type.equals(calculation.getLiteral())) {
-                type = calculation.getDescription();
-                break;
-            }
-        }
-        String collect = (String) chargeObject.get("collect");
-        for (ChargeTime time : ChargeTime.values()) {
-            if (collect.equals(time.getLiteral())) {
-                collect = time.getDescription();
-                break;
-            }
-        }
+        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, charge_calculation_enum, charge_time_enum, amount from m_charge where id = ?", charge.getId());
+        Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
+        Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
         item.put("uuid", charge.getId());
         item.put("charge", charge);
         item.put("name", chargeObject.get("name"));
@@ -599,14 +581,14 @@ public class ShareCreatePage extends Page {
     }
 
     protected ItemPanel chargeColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("name".equals(column) || "collect".equals(column) || "type".equals(column)) {
+        if ("name".equals(column) || "date".equals(column)) {
             String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("type".equals(column) || "collect".equals(column)) {
+            Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("amount".equals(column)) {
             Number value = (Number) model.get(column);
-            return new TextCell(value);
-        } else if ("date".equals(column)) {
-            String value = (String) model.get(column);
             return new TextCell(value);
         }
         throw new WicketRuntimeException("Unknown " + column);
@@ -973,9 +955,9 @@ public class ShareCreatePage extends Page {
         String accounting = this.accountingValue;
 
         if (ACC_NONE.equals(accounting)) {
-            builder.withAccountingRule(1);
+            builder.withAccountingRule(1l);
         } else if (ACC_CASH.equals(accounting)) {
-            builder.withAccountingRule(2);
+            builder.withAccountingRule(2l);
         }
 
         if (ACC_CASH.equals(accounting)) {

@@ -109,15 +109,9 @@ public class RuleModifyPage extends Page {
     protected CheckBox multipleCreditField;
     protected TextFeedbackPanel multipleCreditFeedback;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Accounting");
@@ -135,6 +129,7 @@ public class RuleModifyPage extends Page {
             breadcrumb.setLabel("Accounting Rule Modify");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override

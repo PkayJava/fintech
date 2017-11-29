@@ -1,10 +1,10 @@
 package com.angkorteam.fintech.pages.product.saving;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -17,6 +17,8 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.enums.ChargeCalculation;
+import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.DayInYear;
 import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
 import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
@@ -39,9 +41,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.TextColumn;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -296,15 +295,9 @@ public class SavingPreviewPage extends Page {
     protected ListDataProvider advancedAccountingRulePenaltyIncomeProvider;
     protected List<IColumn<Map<String, Object>, String>> advancedAccountingRulePenaltyIncomeColumn;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -322,12 +315,12 @@ public class SavingPreviewPage extends Page {
             breadcrumb.setPage(SavingBrowsePage.class);
             BREADCRUMB.add(breadcrumb);
         }
-
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Saving Product Preview");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -365,31 +358,37 @@ public class SavingPreviewPage extends Page {
         this.savingId = getPageParameters().get("savingId").toString();
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        SelectQuery query = new SelectQuery("m_savings_product");
-        query.addField("m_savings_product.name");
-        query.addField("m_savings_product.short_name");
-        query.addField("m_savings_product.description");
-        query.addField("m_savings_product.currency_digits");
-        query.addField("m_savings_product.currency_multiplesof");
-        query.addField("m_savings_product.nominal_annual_interest_rate");
-        query.addField("m_savings_product.interest_compounding_period_enum");
-        query.addField("m_savings_product.interest_posting_period_enum");
-        query.addField("m_savings_product.interest_calculation_type_enum");
-        query.addField("m_savings_product.interest_calculation_days_in_year_type_enum");
-        query.addField("concat(m_organisation_currency.name, ' [', m_organisation_currency.code, ']') currency");
-        query.addField("m_savings_product.min_required_opening_balance");
-        query.addField("m_savings_product.lockin_period_frequency");
-        query.addField("m_savings_product.lockin_period_frequency_enum");
-        query.addField("m_savings_product.withdrawal_fee_for_transfer");
-        query.addField("m_savings_product.enforce_min_required_balance");
-        query.addField("m_savings_product.min_required_balance");
-        query.addField("m_savings_product.min_balance_for_interest_calculation");
+        SelectQuery savingProductQuery = new SelectQuery("m_savings_product");
+        savingProductQuery.addField("m_savings_product.name");
+        savingProductQuery.addField("m_savings_product.short_name");
+        savingProductQuery.addField("m_savings_product.description");
+        savingProductQuery.addField("m_savings_product.currency_digits");
+        savingProductQuery.addField("m_savings_product.currency_multiplesof");
+        savingProductQuery.addField("m_savings_product.nominal_annual_interest_rate");
+        savingProductQuery.addField("m_savings_product.interest_compounding_period_enum");
+        savingProductQuery.addField("m_savings_product.interest_posting_period_enum");
+        savingProductQuery.addField("m_savings_product.interest_calculation_type_enum");
+        savingProductQuery.addField("m_savings_product.interest_calculation_days_in_year_type_enum");
+        savingProductQuery.addField("concat(m_organisation_currency.name, ' [', m_organisation_currency.code, ']') currency");
+        savingProductQuery.addField("m_savings_product.min_required_opening_balance");
+        savingProductQuery.addField("m_savings_product.lockin_period_frequency");
+        savingProductQuery.addField("m_savings_product.lockin_period_frequency_enum");
+        savingProductQuery.addField("m_savings_product.withdrawal_fee_for_transfer");
+        savingProductQuery.addField("m_savings_product.enforce_min_required_balance");
+        savingProductQuery.addField("m_savings_product.min_required_balance");
+        savingProductQuery.addField("m_savings_product.min_balance_for_interest_calculation");
+        savingProductQuery.addField("m_savings_product.withhold_tax");
+        savingProductQuery.addField("m_savings_product.tax_group_id");
+        savingProductQuery.addField("m_savings_product.is_dormancy_tracking_active");
+        savingProductQuery.addField("m_savings_product.days_to_inactive");
+        savingProductQuery.addField("m_savings_product.days_to_dormancy");
+        savingProductQuery.addField("m_savings_product.days_to_escheat");
 
-        query.addJoin("inner join m_organisation_currency on m_savings_product.currency_code = m_organisation_currency.code");
+        savingProductQuery.addJoin("inner join m_organisation_currency on m_savings_product.currency_code = m_organisation_currency.code");
 
-        query.addWhere("m_savings_product.id = '" + this.savingId + "'");
+        savingProductQuery.addWhere("m_savings_product.id = '" + this.savingId + "'");
 
-        Map<String, Object> savingObject = jdbcTemplate.queryForMap(query.toSQL());
+        Map<String, Object> savingObject = jdbcTemplate.queryForMap(savingProductQuery.toSQL());
         this.detailProductNameValue = (String) savingObject.get("name");
         this.detailShortNameValue = (String) savingObject.get("short_name");
         this.detailDescriptionValue = (String) savingObject.get("description");
@@ -413,6 +412,54 @@ public class SavingPreviewPage extends Page {
         this.settingEnforceMinimumBalanceValue = (Boolean) savingObject.get("enforce_min_required_balance");
         this.settingMinimumBalanceValue = (Double) savingObject.get("min_required_balance");
         this.settingBalanceRequiredForInterestCalculationValue = (Double) savingObject.get("min_balance_for_interest_calculation");
+
+        this.settingWithholdTaxApplicableValue = (Boolean) savingObject.get("withhold_tax");
+        this.settingTaxGroupValue = jdbcTemplate.queryForObject("select name from m_tax_group where id = ?", String.class, savingObject.get("tax_group_id"));
+
+        this.settingEnableDormancyTrackingValue = (Boolean) savingObject.get("is_dormancy_tracking_active");
+        this.settingNumberOfDaysToDormantSubStatusValue = (Long) savingObject.get("days_to_dormancy");
+
+        this.settingNumberOfDaysToInactiveSubStatusValue = (Long) savingObject.get("days_to_inactive");
+        this.settingNumberOfDaysToEscheatValue = (Long) savingObject.get("days_to_escheat");
+
+        SelectQuery chargeQuery = new SelectQuery("m_charge");
+        chargeQuery.addField("concat(m_charge.name, ' [', m_charge.currency_code, ']') name");
+        chargeQuery.addField("m_charge.charge_time_enum");
+        chargeQuery.addField("m_charge.charge_calculation_enum");
+        chargeQuery.addField("m_charge.charge_payment_mode_enum");
+        chargeQuery.addField("m_charge.amount");
+        chargeQuery.addField("m_charge.fee_on_day");
+        chargeQuery.addField("m_charge.fee_interval");
+        chargeQuery.addField("m_charge.fee_on_month");
+        chargeQuery.addField("m_charge.is_penalty");
+        chargeQuery.addField("m_charge.is_active");
+        chargeQuery.addField("m_charge.min_cap");
+        chargeQuery.addField("m_charge.max_cap");
+        chargeQuery.addField("m_charge.fee_frequency");
+        chargeQuery.addField("m_charge.income_or_liability_account_id");
+        chargeQuery.addField("m_charge.tax_group_id");
+        chargeQuery.addJoin("inner join m_savings_product_charge on m_savings_product_charge.charge_id = m_charge.id");
+        chargeQuery.addWhere("m_savings_product_charge.savings_product_id = '" + this.savingId + "'");
+
+        List<Map<String, Object>> chargeObjects = jdbcTemplate.queryForList(chargeQuery.toSQL());
+
+        for (Map<String, Object> chargeObject : chargeObjects) {
+            Map<String, Object> charge = new HashMap<>();
+            charge.put("name", chargeObject.get("name"));
+            Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
+            charge.put("type", type);
+            Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
+            charge.put("collect", collect);
+            charge.put("amount", chargeObject.get("amount"));
+            this.chargeValue.add(charge);
+        }
+
+        this.chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::chargeColumn));
+        this.chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeColumn));
+
     }
 
     protected void initSectionAccounting() {
@@ -481,21 +528,6 @@ public class SavingPreviewPage extends Page {
             return new TextCell(value);
         }
         throw new WicketRuntimeException("Unknown " + column);
-    }
-
-    protected void advancedAccountingRulePenaltyIncomeClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
-        int index = -1;
-        for (int i = 0; i < this.advancedAccountingRulePenaltyIncomeValue.size(); i++) {
-            Map<String, Object> column = this.advancedAccountingRulePenaltyIncomeValue.get(i);
-            if (model.get("uuid").equals(column.get("uuid"))) {
-                index = i;
-                break;
-            }
-        }
-        if (index >= 0) {
-            this.advancedAccountingRulePenaltyIncomeValue.remove(index);
-        }
-        target.add(this.advancedAccountingRulePenaltyIncomeTable);
     }
 
     protected ItemPanel advancedAccountingRuleFeeIncomeColumn(String column, IModel<String> display, Map<String, Object> model) {
@@ -648,7 +680,6 @@ public class SavingPreviewPage extends Page {
         this.chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeColumn));
         this.chargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::chargeColumn));
         this.chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeColumn));
-        this.chargeColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::chargeAction, this::chargeClick));
         this.chargeProvider = new ListDataProvider(this.chargeValue);
         this.chargeTable = new DataTable<>("chargeTable", this.chargeColumn, this.chargeProvider, 20);
         this.chargeVContainer.add(this.chargeTable);
@@ -665,27 +696,6 @@ public class SavingPreviewPage extends Page {
             return new TextCell(value);
         }
         throw new WicketRuntimeException("Unknown " + column);
-    }
-
-    protected void chargeClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
-        int index = -1;
-        for (int i = 0; i < this.chargeValue.size(); i++) {
-            Map<String, Object> column = this.chargeValue.get(i);
-            if (model.get("uuid").equals(column.get("uuid"))) {
-                index = i;
-                break;
-            }
-        }
-        if (index >= 0) {
-            this.chargeValue.remove(index);
-        }
-        target.add(this.chargeTable);
-    }
-
-    protected List<ActionItem> chargeAction(String s, Map<String, Object> model) {
-        List<ActionItem> actions = Lists.newArrayList();
-        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
-        return actions;
     }
 
     protected void initSectionSetting() {

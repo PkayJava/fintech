@@ -47,8 +47,8 @@ public class PaymentTypeCreatePage extends Page {
 
     protected WebMarkupBlock positionBlock;
     protected WebMarkupContainer positionIContainer;
-    protected Integer positionValue;
-    protected TextField<Integer> positionField;
+    protected Long positionValue;
+    protected TextField<Long> positionField;
     protected TextFeedbackPanel positionFeedback;
 
     protected WebMarkupBlock cashBlock;
@@ -61,15 +61,9 @@ public class PaymentTypeCreatePage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -92,6 +86,7 @@ public class PaymentTypeCreatePage extends Page {
             breadcrumb.setLabel("Payment Create");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override

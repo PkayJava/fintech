@@ -1,9 +1,10 @@
 package com.angkorteam.fintech.dto.builder;
 
-import com.mashape.unirest.http.JsonNode;
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
-import java.io.Serializable;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -22,7 +23,7 @@ public class PaymentTypeBuilder implements Serializable {
     private boolean cashPayment;
     private boolean hasCashPayment;
 
-    private int position;
+    private Long position;
     private boolean hasPosition;
 
     public PaymentTypeBuilder withCashPayment(boolean cashPayment) {
@@ -31,7 +32,7 @@ public class PaymentTypeBuilder implements Serializable {
         return this;
     }
 
-    public PaymentTypeBuilder withPosition(int position) {
+    public PaymentTypeBuilder withPosition(Long position) {
         this.position = position;
         this.hasPosition = true;
         return this;

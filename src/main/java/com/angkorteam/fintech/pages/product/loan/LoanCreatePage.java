@@ -171,20 +171,20 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupBlock currencyDecimalPlaceBlock;
     protected WebMarkupContainer currencyDecimalPlaceIContainer;
-    protected Integer currencyDecimalPlaceValue;
-    protected TextField<Integer> currencyDecimalPlaceField;
+    protected Long currencyDecimalPlaceValue;
+    protected TextField<Long> currencyDecimalPlaceField;
     protected TextFeedbackPanel currencyDecimalPlaceFeedback;
 
     protected WebMarkupBlock currencyInMultipleOfBlock;
     protected WebMarkupContainer currencyInMultipleOfIContainer;
-    protected Integer currencyInMultipleOfValue;
-    protected TextField<Integer> currencyInMultipleOfField;
+    protected Long currencyInMultipleOfValue;
+    protected TextField<Long> currencyInMultipleOfField;
     protected TextFeedbackPanel currencyInMultipleOfFeedback;
 
     protected WebMarkupBlock currencyInstallmentInMultipleOfBlock;
     protected WebMarkupContainer currencyInstallmentInMultipleOfIContainer;
-    protected Integer currencyInstallmentInMultipleOfValue;
-    protected TextField<Integer> currencyInstallmentInMultipleOfField;
+    protected Long currencyInstallmentInMultipleOfValue;
+    protected TextField<Long> currencyInstallmentInMultipleOfField;
     protected TextFeedbackPanel currencyInstallmentInMultipleOfFeedback;
 
     // Terms
@@ -228,20 +228,20 @@ public class LoanCreatePage extends Page {
     // Row 3 : Number of repayments
     protected WebMarkupBlock termNumberOfRepaymentMinimumBlock;
     protected WebMarkupContainer termNumberOfRepaymentMinimumIContainer;
-    protected Integer termNumberOfRepaymentMinimumValue;
-    protected TextField<Integer> termNumberOfRepaymentMinimumField;
+    protected Long termNumberOfRepaymentMinimumValue;
+    protected TextField<Long> termNumberOfRepaymentMinimumField;
     protected TextFeedbackPanel termNumberOfRepaymentMinimumFeedback;
 
     protected WebMarkupBlock termNumberOfRepaymentDefaultBlock;
     protected WebMarkupContainer termNumberOfRepaymentDefaultIContainer;
-    protected Integer termNumberOfRepaymentDefaultValue;
-    protected TextField<Integer> termNumberOfRepaymentDefaultField;
+    protected Long termNumberOfRepaymentDefaultValue;
+    protected TextField<Long> termNumberOfRepaymentDefaultField;
     protected TextFeedbackPanel termNumberOfRepaymentDefaultFeedback;
 
     protected WebMarkupBlock termNumberOfRepaymentMaximumBlock;
     protected WebMarkupContainer termNumberOfRepaymentMaximumIContainer;
-    protected Integer termNumberOfRepaymentMaximumValue;
-    protected TextField<Integer> termNumberOfRepaymentMaximumField;
+    protected Long termNumberOfRepaymentMaximumValue;
+    protected TextField<Long> termNumberOfRepaymentMaximumField;
     protected TextFeedbackPanel termNumberOfRepaymentMaximumFeedback;
 
     // Row 3 (Optional) : Number of Repayments by loan cycle
@@ -335,8 +335,8 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupBlock termRepaidEveryBlock;
     protected WebMarkupContainer termRepaidEveryIContainer;
-    protected Integer termRepaidEveryValue;
-    protected TextField<Integer> termRepaidEveryField;
+    protected Long termRepaidEveryValue;
+    protected TextField<Long> termRepaidEveryField;
     protected TextFeedbackPanel termRepaidEveryFeedback;
 
     protected WebMarkupBlock termRepaidTypeBlock;
@@ -348,8 +348,8 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupBlock termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock;
     protected WebMarkupContainer termMinimumDayBetweenDisbursalAndFirstRepaymentDateIContainer;
-    protected Integer termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue;
-    protected TextField<Integer> termMinimumDayBetweenDisbursalAndFirstRepaymentDateField;
+    protected Long termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue;
+    protected TextField<Long> termMinimumDayBetweenDisbursalAndFirstRepaymentDateField;
     protected TextFeedbackPanel termMinimumDayBetweenDisbursalAndFirstRepaymentDateFeedback;
 
     // Settings
@@ -390,20 +390,20 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupBlock settingMoratoriumPrincipalBlock;
     protected WebMarkupContainer settingMoratoriumPrincipalIContainer;
-    protected Integer settingMoratoriumPrincipalValue;
-    protected TextField<Integer> settingMoratoriumPrincipalField;
+    protected Long settingMoratoriumPrincipalValue;
+    protected TextField<Long> settingMoratoriumPrincipalField;
     protected TextFeedbackPanel settingMoratoriumPrincipalFeedback;
 
     protected WebMarkupBlock settingMoratoriumInterestBlock;
     protected WebMarkupContainer settingMoratoriumInterestIContainer;
-    protected Integer settingMoratoriumInterestValue;
-    protected TextField<Integer> settingMoratoriumInterestField;
+    protected Long settingMoratoriumInterestValue;
+    protected TextField<Long> settingMoratoriumInterestField;
     protected TextFeedbackPanel settingMoratoriumInterestFeedback;
 
     protected WebMarkupBlock settingInterestFreePeriodBlock;
     protected WebMarkupContainer settingInterestFreePeriodIContainer;
-    protected Integer settingInterestFreePeriodValue;
-    protected TextField<Integer> settingInterestFreePeriodField;
+    protected Long settingInterestFreePeriodValue;
+    protected TextField<Long> settingInterestFreePeriodField;
     protected TextFeedbackPanel settingInterestFreePeriodFeedback;
 
     protected WebMarkupBlock settingArrearsToleranceBlock;
@@ -434,14 +434,14 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupBlock settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock;
     protected WebMarkupContainer settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsIContainer;
-    protected Integer settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue;
-    protected TextField<Integer> settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField;
+    protected Long settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue;
+    protected TextField<Long> settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField;
     protected TextFeedbackPanel settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsFeedback;
 
     protected WebMarkupBlock settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock;
     protected WebMarkupContainer settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaIContainer;
-    protected Integer settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue;
-    protected TextField<Integer> settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField;
+    protected Long settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue;
+    protected TextField<Long> settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField;
     protected TextFeedbackPanel settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaFeedback;
 
     protected WebMarkupBlock settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock;
@@ -464,14 +464,14 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupBlock settingVariableInstallmentsMinimumBlock;
     protected WebMarkupContainer settingVariableInstallmentsMinimumIContainer;
-    protected Integer settingVariableInstallmentsMinimumValue;
-    protected TextField<Integer> settingVariableInstallmentsMinimumField;
+    protected Long settingVariableInstallmentsMinimumValue;
+    protected TextField<Long> settingVariableInstallmentsMinimumField;
     protected TextFeedbackPanel settingVariableInstallmentsMinimumFeedback;
 
     protected WebMarkupBlock settingVariableInstallmentsMaximumBlock;
     protected WebMarkupContainer settingVariableInstallmentsMaximumIContainer;
-    protected Integer settingVariableInstallmentsMaximumValue;
-    protected TextField<Integer> settingVariableInstallmentsMaximumField;
+    protected Long settingVariableInstallmentsMaximumValue;
+    protected TextField<Long> settingVariableInstallmentsMaximumField;
     protected TextFeedbackPanel settingVariableInstallmentsMaximumFeedback;
 
     protected WebMarkupBlock settingAllowedToBeUsedForProvidingTopupLoansBlock;
@@ -532,8 +532,8 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupBlock interestRecalculationCompoundingIntervalBlock;
     protected WebMarkupContainer interestRecalculationCompoundingIntervalIContainer;
-    protected Integer interestRecalculationCompoundingIntervalValue;
-    protected TextField<Integer> interestRecalculationCompoundingIntervalField;
+    protected Long interestRecalculationCompoundingIntervalValue;
+    protected TextField<Long> interestRecalculationCompoundingIntervalField;
     protected TextFeedbackPanel interestRecalculationCompoundingIntervalFeedback;
 
     protected WebMarkupBlock interestRecalculationRecalculateBlock;
@@ -559,8 +559,8 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupBlock interestRecalculationRecalculateIntervalBlock;
     protected WebMarkupContainer interestRecalculationRecalculateIntervalIContainer;
-    protected Integer interestRecalculationRecalculateIntervalValue;
-    protected TextField<Integer> interestRecalculationRecalculateIntervalField;
+    protected Long interestRecalculationRecalculateIntervalValue;
+    protected TextField<Long> interestRecalculationRecalculateIntervalField;
     protected TextFeedbackPanel interestRecalculationRecalculateIntervalFeedback;
 
     protected WebMarkupBlock interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock;
@@ -605,8 +605,8 @@ public class LoanCreatePage extends Page {
 
     protected WebMarkupBlock loanTrancheDetailMaximumTrancheCountBlock;
     protected WebMarkupContainer loanTrancheDetailMaximumTrancheCountIContainer;
-    protected Integer loanTrancheDetailMaximumTrancheCountValue;
-    protected TextField<Integer> loanTrancheDetailMaximumTrancheCountField;
+    protected Long loanTrancheDetailMaximumTrancheCountValue;
+    protected TextField<Long> loanTrancheDetailMaximumTrancheCountField;
     protected TextFeedbackPanel loanTrancheDetailMaximumTrancheCountFeedback;
 
     protected WebMarkupBlock loanTrancheDetailMaximumAllowedOutstandingBalanceBlock;
@@ -960,15 +960,9 @@ public class LoanCreatePage extends Page {
 
     protected Map<String, Object> popupModel;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -992,6 +986,7 @@ public class LoanCreatePage extends Page {
             breadcrumb.setLabel("Loan Product Create");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -1046,11 +1041,11 @@ public class LoanCreatePage extends Page {
         this.popupModel = Maps.newHashMap();
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         this.detailShortNameValue = generator.generate(4);
-        this.currencyDecimalPlaceValue = 2;
-        this.currencyInMultipleOfValue = 1;
+        this.currencyDecimalPlaceValue = 2l;
+        this.currencyInMultipleOfValue = 1l;
         this.termPrincipalDefaultValue = 100d;
-        this.termNumberOfRepaymentDefaultValue = 12;
-        this.termRepaidEveryValue = 1;
+        this.termNumberOfRepaymentDefaultValue = 12l;
+        this.termRepaidEveryValue = 1l;
         this.termRepaidTypeValue = LockInType.Month.toOption();
         this.termNominalInterestRateDefaultValue = 10d;
         this.termNominalInterestRateTypeValue = NominalInterestRateType.Year.toOption();
@@ -1139,8 +1134,11 @@ public class LoanCreatePage extends Page {
     }
 
     protected ItemPanel overdueChargeColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("name".equals(column) || "type".equals(column) || "collect".equals(column) || "date".equals(column)) {
+        if ("name".equals(column) || "date".equals(column)) {
             String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("type".equals(column) || "collect".equals(column)) {
+            Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("amount".equals(column)) {
             Number value = (Number) model.get(column);
@@ -1207,8 +1205,11 @@ public class LoanCreatePage extends Page {
     }
 
     protected ItemPanel chargeColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("name".equals(column) || "type".equals(column) || "collect".equals(column) || "date".equals(column)) {
+        if ("name".equals(column) || "date".equals(column)) {
             String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("type".equals(column) || "collect".equals(column)) {
+            Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("amount".equals(column)) {
             Number value = (Number) model.get(column);
@@ -3160,7 +3161,7 @@ public class LoanCreatePage extends Page {
     }
 
     protected ItemPanel termNominalInterestRateByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Integer value = (Integer) model.get(jdbcColumn);
+        Long value = (Long) model.get(jdbcColumn);
         return new TextCell(value);
     }
 
@@ -3190,7 +3191,7 @@ public class LoanCreatePage extends Page {
             Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("cycle".equals(column)) {
-            Integer value = (Integer) model.get(column);
+            Long value = (Long) model.get(column);
             return new TextCell(value);
         } else if ("minimum".equals(column) || "default".equals(column) || "maximum".equals(column)) {
             Double value = (Double) model.get(column);
@@ -3252,7 +3253,7 @@ public class LoanCreatePage extends Page {
             Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("cycle".equals(column)) {
-            Integer value = (Integer) model.get(column);
+            Long value = (Long) model.get(column);
             return new TextCell(value);
         } else if ("minimum".equals(column) || "default".equals(column) || "maximum".equals(column)) {
             Double value = (Double) model.get(column);
@@ -3424,21 +3425,9 @@ public class LoanCreatePage extends Page {
             }
         }
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, concat(charge_calculation_enum,'') type, concat(charge_time_enum,'') collect, amount from m_charge where id = ?", charge.getId());
-        String type = (String) chargeObject.get("type");
-        for (ChargeCalculation calculation : ChargeCalculation.values()) {
-            if (type.equals(calculation.getLiteral())) {
-                type = calculation.getDescription();
-                break;
-            }
-        }
-        String collect = (String) chargeObject.get("collect");
-        for (ChargeTime time : ChargeTime.values()) {
-            if (collect.equals(time.getLiteral())) {
-                collect = time.getDescription();
-                break;
-            }
-        }
+        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, charge_calculation_enum, charge_time_enum, amount from m_charge where id = ?", charge.getId());
+        Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
+        Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
         item.put("uuid", charge.getId());
         item.put("charge", charge);
         item.put("name", chargeObject.get("name"));
@@ -3459,21 +3448,9 @@ public class LoanCreatePage extends Page {
             }
         }
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, concat(charge_calculation_enum,'') type, concat(charge_time_enum,'') collect, amount from m_charge where id = ?", charge.getId());
-        String type = (String) chargeObject.get("type");
-        for (ChargeCalculation calculation : ChargeCalculation.values()) {
-            if (type.equals(calculation.getLiteral())) {
-                type = calculation.getDescription();
-                break;
-            }
-        }
-        String collect = (String) chargeObject.get("collect");
-        for (ChargeTime time : ChargeTime.values()) {
-            if (collect.equals(time.getLiteral())) {
-                collect = time.getDescription();
-                break;
-            }
-        }
+        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, charge_calculation_enum, charge_time_enum, amount from m_charge where id = ?", charge.getId());
+        Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
+        Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
         item.put("uuid", charge.getId());
         item.put("charge", charge);
         item.put("name", chargeObject.get("name"));
@@ -3543,7 +3520,7 @@ public class LoanCreatePage extends Page {
             if (this.termPrincipalByLoanCycleValue != null) {
                 for (Map<String, Object> item : this.termPrincipalByLoanCycleValue) {
                     WhenType valueConditionType = (WhenType) item.get("valueConditionType");
-                    Integer borrowerCycleNumber = (Integer) item.get("cycle");
+                    Long borrowerCycleNumber = (Long) item.get("cycle");
                     Double minValue = (Double) item.get("minimum");
                     Double defaultValue = (Double) item.get("default");
                     Double maxValue = (Double) item.get("maximum");
@@ -3553,7 +3530,7 @@ public class LoanCreatePage extends Page {
             if (this.termNumberOfRepaymentByLoanCycleValue != null) {
                 for (Map<String, Object> item : this.termNumberOfRepaymentByLoanCycleValue) {
                     WhenType valueConditionType = (WhenType) item.get("valueConditionType");
-                    Integer borrowerCycleNumber = (Integer) item.get("cycle");
+                    Long borrowerCycleNumber = (Long) item.get("cycle");
                     Double minValue = (Double) item.get("minimum");
                     Double defaultValue = (Double) item.get("default");
                     Double maxValue = (Double) item.get("maximum");
@@ -3563,7 +3540,7 @@ public class LoanCreatePage extends Page {
             if (this.termNominalInterestRateByLoanCycleValue != null) {
                 for (Map<String, Object> item : this.termNominalInterestRateByLoanCycleValue) {
                     WhenType valueConditionType = (WhenType) item.get("valueConditionType");
-                    Integer borrowerCycleNumber = (Integer) item.get("cycle");
+                    Long borrowerCycleNumber = (Long) item.get("cycle");
                     Double minValue = (Double) item.get("minimum");
                     Double defaultValue = (Double) item.get("default");
                     Double maxValue = (Double) item.get("maximum");
@@ -3755,13 +3732,13 @@ public class LoanCreatePage extends Page {
         String accounting = this.accountingValue;
 
         if (ACC_NONE.equals(accounting)) {
-            builder.withAccountingRule(1);
+            builder.withAccountingRule(1l);
         } else if (ACC_CASH.equals(accounting)) {
-            builder.withAccountingRule(2);
+            builder.withAccountingRule(2l);
         } else if (ACC_PERIODIC.equals(accounting)) {
-            builder.withAccountingRule(3);
+            builder.withAccountingRule(3l);
         } else if (ACC_UPFRONT.equals(accounting)) {
-            builder.withAccountingRule(4);
+            builder.withAccountingRule(4l);
         }
         if (ACC_CASH.equals(accounting)) {
             if (this.cashFundSourceValue != null) {

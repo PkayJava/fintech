@@ -178,15 +178,9 @@ public class JournalPostPage extends Page {
     protected ListDataProvider debitProvider;
     protected List<IColumn<Map<String, Object>, String>> debitColumn;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Accounting");
@@ -198,6 +192,7 @@ public class JournalPostPage extends Page {
             breadcrumb.setLabel("Add Journal Entry");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override

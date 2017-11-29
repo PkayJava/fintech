@@ -78,9 +78,9 @@ public class AccountChargePopup extends PopupPanel {
 
     protected WebMarkupBlock repaymentEveryBlock;
     protected WebMarkupContainer repaymentEveryIContainer;
-    protected TextField<Integer> repaymentEveryField;
+    protected TextField<Long> repaymentEveryField;
     protected TextFeedbackPanel repaymentEveryFeedback;
-    protected PropertyModel<Integer> repaymentEveryValue;
+    protected PropertyModel<Long> repaymentEveryValue;
 
     protected String currencyCode;
 
@@ -177,7 +177,7 @@ public class AccountChargePopup extends PopupPanel {
         this.repaymentEveryIContainer = new WebMarkupContainer("repaymentEveryIContainer");
         this.repaymentEveryBlock.add(this.repaymentEveryIContainer);
         this.repaymentEveryField = new TextField<>("repaymentEveryField", this.repaymentEveryValue);
-        this.repaymentEveryField.setType(Integer.class);
+        this.repaymentEveryField.setType(Long.class);
         this.repaymentEveryField.setLabel(Model.of("repaymentEvery"));
         this.repaymentEveryIContainer.add(this.repaymentEveryField);
         this.repaymentEveryFeedback = new TextFeedbackPanel("repaymentEveryFeedback", this.repaymentEveryField);
@@ -228,7 +228,7 @@ public class AccountChargePopup extends PopupPanel {
             }
 
             Long repaymentEveryValue = (Long) chargeObject.get("fee_interval");
-            this.repaymentEveryValue.setObject(repaymentEveryValue == null ? null : repaymentEveryValue.intValue());
+            this.repaymentEveryValue.setObject(repaymentEveryValue);
 
             Long month = (Long) chargeObject.get("fee_on_month");
             Long day = (Long) chargeObject.get("fee_on_day");

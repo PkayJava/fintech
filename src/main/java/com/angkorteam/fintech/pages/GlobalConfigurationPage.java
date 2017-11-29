@@ -70,22 +70,16 @@ public class GlobalConfigurationPage extends Page {
 
     protected WebMarkupBlock valueBlock;
     protected WebMarkupContainer valueIContainer;
-    protected Integer valueValue;
-    protected TextField<Integer> valueField;
+    protected Long valueValue;
+    protected TextField<Long> valueField;
     protected TextFeedbackPanel valueFeedback;
 
     protected Form<Void> form;
     protected Button saveButton;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -102,6 +96,7 @@ public class GlobalConfigurationPage extends Page {
             breadcrumb.setLabel("Global Configuration");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -162,7 +157,7 @@ public class GlobalConfigurationPage extends Page {
         this.dataProvider.boardField("id", "id", Long.class);
         this.dataProvider.boardField("name", "name", String.class);
         this.dataProvider.boardField("enabled", "enabled", Boolean.class);
-        this.dataProvider.boardField("value", "value", Integer.class);
+        this.dataProvider.boardField("value", "value", Long.class);
 
         this.dataProvider.setSort("name", SortOrder.ASCENDING);
 
@@ -171,7 +166,7 @@ public class GlobalConfigurationPage extends Page {
         this.dataColumn = Lists.newArrayList();
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Boolean, Model.of("Enabled ?"), "enabled", "enabled", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Integer, Model.of("Value"), "value", "value", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Value"), "value", "value", this::dataColumn));
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 
         this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);

@@ -103,8 +103,8 @@ public class LoanChargeModifyPage extends Page {
 
     protected WebMarkupBlock frequencyIntervalBlock;
     protected WebMarkupContainer frequencyIntervalIContainer;
-    protected Integer frequencyIntervalValue;
-    protected TextField<Integer> frequencyIntervalField;
+    protected Long frequencyIntervalValue;
+    protected TextField<Long> frequencyIntervalField;
     protected TextFeedbackPanel frequencyIntervalFeedback;
 
     protected WebMarkupBlock amountBlock;
@@ -132,15 +132,9 @@ public class LoanChargeModifyPage extends Page {
     protected Select2SingleChoice<Option> taxGroupField;
     protected TextFeedbackPanel taxGroupFeedback;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -158,12 +152,12 @@ public class LoanChargeModifyPage extends Page {
             breadcrumb.setPage(ChargeBrowsePage.class);
             BREADCRUMB.add(breadcrumb);
         }
-
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Loan Charge Modify");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -197,9 +191,7 @@ public class LoanChargeModifyPage extends Page {
         String fee_frequency = String.valueOf(chargeObject.get("fee_frequency"));
         this.chargeFrequencyValue = ChargeFrequency.optionLiteral(fee_frequency);
 
-        if (chargeObject.get("fee_interval") != null) {
-            this.frequencyIntervalValue = ((Long) chargeObject.get("fee_interval")).intValue();
-        }
+        this.frequencyIntervalValue = (Long) chargeObject.get("fee_interval");
     }
 
     @Override

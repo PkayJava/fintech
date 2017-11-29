@@ -64,10 +64,10 @@ public class FamilyMemberBuilder implements Serializable {
         return this;
     }
 
-    private int age;
+    private Long age;
     private boolean hasAge;
 
-    public FamilyMemberBuilder withAge(int age) {
+    public FamilyMemberBuilder withAge(Long age) {
         this.age = age;
         this.hasAge = true;
         return this;

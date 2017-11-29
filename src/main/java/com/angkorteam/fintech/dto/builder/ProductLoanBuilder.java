@@ -57,19 +57,19 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private Integer digitsAfterDecimal;
+    private Long digitsAfterDecimal;
     private boolean hasDigitsAfterDecimal;
 
-    public ProductLoanBuilder withDigitsAfterDecimal(Integer digitsAfterDecimal) {
+    public ProductLoanBuilder withDigitsAfterDecimal(Long digitsAfterDecimal) {
         this.digitsAfterDecimal = digitsAfterDecimal;
         this.hasDigitsAfterDecimal = true;
         return this;
     }
 
-    private Integer repaymentEvery;
+    private Long repaymentEvery;
     private boolean hasRepaymentEvery;
 
-    public ProductLoanBuilder withRepaymentEvery(Integer repaymentEvery) {
+    public ProductLoanBuilder withRepaymentEvery(Long repaymentEvery) {
         this.repaymentEvery = repaymentEvery;
         this.hasRepaymentEvery = true;
         return this;
@@ -102,10 +102,10 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private Integer accountingRule;
+    private Long accountingRule;
     private boolean hasAccountingRule;
 
-    public ProductLoanBuilder withAccountingRule(Integer accountingRule) {
+    public ProductLoanBuilder withAccountingRule(Long accountingRule) {
         this.accountingRule = accountingRule;
         this.hasAccountingRule = true;
         return this;
@@ -174,19 +174,19 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private Integer installmentAmountInMultiplesOf;
+    private Long installmentAmountInMultiplesOf;
     private Boolean hasInstallmentAmountInMultiplesOf;
 
-    public ProductLoanBuilder withInstallmentAmountInMultiplesOf(Integer installmentAmountInMultiplesOf) {
+    public ProductLoanBuilder withInstallmentAmountInMultiplesOf(Long installmentAmountInMultiplesOf) {
         this.installmentAmountInMultiplesOf = installmentAmountInMultiplesOf;
         this.hasInstallmentAmountInMultiplesOf = true;
         return this;
     }
 
-    private Integer inMultiplesOf;
+    private Long inMultiplesOf;
     private boolean hasInMultiplesOf;
 
-    public ProductLoanBuilder withInMultiplesOf(Integer inMultiplesOf) {
+    public ProductLoanBuilder withInMultiplesOf(Long inMultiplesOf) {
         this.inMultiplesOf = inMultiplesOf;
         this.hasInMultiplesOf = true;
         return this;
@@ -228,28 +228,28 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private Integer minNumberOfRepayments;
+    private Long minNumberOfRepayments;
     private boolean hasMinNumberOfRepayments;
 
-    public ProductLoanBuilder withMinNumberOfRepayments(Integer minNumberOfRepayments) {
+    public ProductLoanBuilder withMinNumberOfRepayments(Long minNumberOfRepayments) {
         this.minNumberOfRepayments = minNumberOfRepayments;
         this.hasMinNumberOfRepayments = true;
         return this;
     }
 
-    private Integer numberOfRepayments;
+    private Long numberOfRepayments;
     private boolean hasNumberOfRepayments;
 
-    public ProductLoanBuilder withNumberOfRepayments(Integer numberOfRepayments) {
+    public ProductLoanBuilder withNumberOfRepayments(Long numberOfRepayments) {
         this.numberOfRepayments = numberOfRepayments;
         this.hasNumberOfRepayments = true;
         return this;
     }
 
-    private Integer maxNumberOfRepayments;
+    private Long maxNumberOfRepayments;
     private boolean hasMaxNumberOfRepayments;
 
-    public ProductLoanBuilder withMaxNumberOfRepayments(Integer maxNumberOfRepayments) {
+    public ProductLoanBuilder withMaxNumberOfRepayments(Long maxNumberOfRepayments) {
         this.maxNumberOfRepayments = maxNumberOfRepayments;
         this.hasMaxNumberOfRepayments = true;
         return this;
@@ -291,10 +291,10 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private Integer minimumDaysBetweenDisbursalAndFirstRepayment;
+    private Long minimumDaysBetweenDisbursalAndFirstRepayment;
     private boolean hasMinimumDaysBetweenDisbursalAndFirstRepayment;
 
-    public ProductLoanBuilder withMinimumDaysBetweenDisbursalAndFirstRepayment(Integer minimumDaysBetweenDisbursalAndFirstRepayment) {
+    public ProductLoanBuilder withMinimumDaysBetweenDisbursalAndFirstRepayment(Long minimumDaysBetweenDisbursalAndFirstRepayment) {
         this.minimumDaysBetweenDisbursalAndFirstRepayment = minimumDaysBetweenDisbursalAndFirstRepayment;
         this.hasMinimumDaysBetweenDisbursalAndFirstRepayment = true;
         return this;
@@ -375,7 +375,7 @@ public class ProductLoanBuilder implements Serializable {
     private List<Map<String, Object>> principalVariationsForBorrowerCycle = Lists.newArrayList();
     private boolean hasPrincipalVariationsForBorrowerCycle;
 
-    public ProductLoanBuilder withPrincipalVariationsForBorrowerCycle(WhenType valueConditionType, Integer borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
+    public ProductLoanBuilder withPrincipalVariationsForBorrowerCycle(WhenType valueConditionType, Long borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
         Map<String, Object> cycle = Maps.newHashMap();
         cycle.put("valueConditionType", valueConditionType.getLiteral());
         cycle.put("borrowerCycleNumber", borrowerCycleNumber);
@@ -390,7 +390,7 @@ public class ProductLoanBuilder implements Serializable {
     private List<Map<String, Object>> numberOfRepaymentVariationsForBorrowerCycle = Lists.newArrayList();
     private boolean hasNumberOfRepaymentVariationsForBorrowerCycle;
 
-    public ProductLoanBuilder withNumberOfRepaymentVariationsForBorrowerCycle(WhenType valueConditionType, Integer borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
+    public ProductLoanBuilder withNumberOfRepaymentVariationsForBorrowerCycle(WhenType valueConditionType, Long borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
         Map<String, Object> cycle = Maps.newHashMap();
         cycle.put("valueConditionType", valueConditionType.getLiteral());
         cycle.put("borrowerCycleNumber", borrowerCycleNumber);
@@ -405,7 +405,7 @@ public class ProductLoanBuilder implements Serializable {
     private List<Map<String, Object>> interestRateVariationsForBorrowerCycle = Lists.newArrayList();
     private boolean hasInterestRateVariationsForBorrowerCycle;
 
-    public ProductLoanBuilder withInterestRateVariationsForBorrowerCycle(WhenType valueConditionType, Integer borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
+    public ProductLoanBuilder withInterestRateVariationsForBorrowerCycle(WhenType valueConditionType, Long borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
         Map<String, Object> cycle = Maps.newHashMap();
         cycle.put("valueConditionType", valueConditionType.getLiteral());
         cycle.put("borrowerCycleNumber", borrowerCycleNumber);
@@ -462,28 +462,28 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private Integer graceOnPrincipalPayment;
+    private Long graceOnPrincipalPayment;
     private boolean hasGraceOnPrincipalPayment;
 
-    public ProductLoanBuilder withGraceOnPrincipalPayment(Integer graceOnPrincipalPayment) {
+    public ProductLoanBuilder withGraceOnPrincipalPayment(Long graceOnPrincipalPayment) {
         this.graceOnPrincipalPayment = graceOnPrincipalPayment;
         this.hasGraceOnPrincipalPayment = true;
         return this;
     }
 
-    private Integer graceOnInterestPayment;
+    private Long graceOnInterestPayment;
     private boolean hasGraceOnInterestPayment;
 
-    public ProductLoanBuilder withGraceOnInterestPayment(Integer graceOnInterestPayment) {
+    public ProductLoanBuilder withGraceOnInterestPayment(Long graceOnInterestPayment) {
         this.graceOnInterestPayment = graceOnInterestPayment;
         this.hasGraceOnInterestPayment = true;
         return this;
     }
 
-    private Integer graceOnInterestCharged;
+    private Long graceOnInterestCharged;
     private boolean hasGraceOnInterestCharged;
 
-    public ProductLoanBuilder withGraceOnInterestCharged(Integer graceOnInterestCharged) {
+    public ProductLoanBuilder withGraceOnInterestCharged(Long graceOnInterestCharged) {
         this.graceOnInterestCharged = graceOnInterestCharged;
         this.hasGraceOnInterestCharged = true;
         return this;
@@ -507,19 +507,19 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private Integer graceOnArrearsAgeing;
+    private Long graceOnArrearsAgeing;
     private boolean hasGraceOnArrearsAgeing;
 
-    public ProductLoanBuilder withGraceOnArrearsAgeing(Integer graceOnArrearsAgeing) {
+    public ProductLoanBuilder withGraceOnArrearsAgeing(Long graceOnArrearsAgeing) {
         this.graceOnArrearsAgeing = graceOnArrearsAgeing;
         this.hasGraceOnArrearsAgeing = true;
         return this;
     }
 
-    private Integer overdueDaysForNPA;
+    private Long overdueDaysForNPA;
     private boolean hasOverdueDaysForNPA;
 
-    public ProductLoanBuilder withOverdueDaysForNPA(Integer overdueDaysForNPA) {
+    public ProductLoanBuilder withOverdueDaysForNPA(Long overdueDaysForNPA) {
         this.overdueDaysForNPA = overdueDaysForNPA;
         this.hasOverdueDaysForNPA = true;
         return this;
@@ -534,19 +534,19 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private Integer minimumGap;
+    private Long minimumGap;
     private boolean hasMinimumGap;
 
-    public ProductLoanBuilder withMinimumGap(Integer minimumGap) {
+    public ProductLoanBuilder withMinimumGap(Long minimumGap) {
         this.minimumGap = minimumGap;
         this.hasMinimumGap = true;
         return this;
     }
 
-    private Integer maximumGap;
+    private Long maximumGap;
     private boolean hasMaximumGap;
 
-    public ProductLoanBuilder withMaximumGap(Integer maximumGap) {
+    public ProductLoanBuilder withMaximumGap(Long maximumGap) {
         this.maximumGap = maximumGap;
         this.hasMaximumGap = true;
         return this;
@@ -615,10 +615,10 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private Integer recalculationCompoundingFrequencyInterval;
+    private Long recalculationCompoundingFrequencyInterval;
     private boolean hasRecalculationCompoundingFrequencyInterval;
 
-    public ProductLoanBuilder withRecalculationCompoundingFrequencyInterval(Integer recalculationCompoundingFrequencyInterval) {
+    public ProductLoanBuilder withRecalculationCompoundingFrequencyInterval(Long recalculationCompoundingFrequencyInterval) {
         this.recalculationCompoundingFrequencyInterval = recalculationCompoundingFrequencyInterval;
         this.hasRecalculationCompoundingFrequencyInterval = true;
         return this;
@@ -651,10 +651,10 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private Integer recalculationRestFrequencyInterval;
+    private Long recalculationRestFrequencyInterval;
     private boolean hasRecalculationRestFrequencyInterval;
 
-    public ProductLoanBuilder withRecalculationRestFrequencyInterval(Integer recalculationRestFrequencyInterval) {
+    public ProductLoanBuilder withRecalculationRestFrequencyInterval(Long recalculationRestFrequencyInterval) {
         this.recalculationRestFrequencyInterval = recalculationRestFrequencyInterval;
         this.hasRecalculationRestFrequencyInterval = true;
         return this;
@@ -732,10 +732,10 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private Integer maxTrancheCount;
+    private Long maxTrancheCount;
     private boolean hasMaxTrancheCount;
 
-    public ProductLoanBuilder withMaxTrancheCount(Integer maxTrancheCount) {
+    public ProductLoanBuilder withMaxTrancheCount(Long maxTrancheCount) {
         this.maxTrancheCount = maxTrancheCount;
         this.hasMaxTrancheCount = true;
         return this;

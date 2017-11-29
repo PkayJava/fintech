@@ -2,10 +2,6 @@ package com.angkorteam.fintech.pages.account;
 
 import java.util.Map;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxEventBehavior;
-import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
-import org.apache.wicket.util.tester.WicketTesterHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

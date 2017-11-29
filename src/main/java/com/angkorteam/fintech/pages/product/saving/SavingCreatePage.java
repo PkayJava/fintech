@@ -1,10 +1,35 @@
 package com.angkorteam.fintech.pages.product.saving;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.ProductSavingBuilder;
-import com.angkorteam.fintech.dto.enums.*;
+import com.angkorteam.fintech.dto.enums.AccountType;
+import com.angkorteam.fintech.dto.enums.AccountUsage;
+import com.angkorteam.fintech.dto.enums.ChargeCalculation;
+import com.angkorteam.fintech.dto.enums.ChargeTime;
+import com.angkorteam.fintech.dto.enums.DayInYear;
+import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
+import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
+import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
+import com.angkorteam.fintech.dto.enums.LockInType;
 import com.angkorteam.fintech.helper.SavingHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.popup.CurrencyPopup;
@@ -12,7 +37,13 @@ import com.angkorteam.fintech.popup.PaymentTypePopup;
 import com.angkorteam.fintech.popup.saving.ChargePopup;
 import com.angkorteam.fintech.popup.saving.FeeChargePopup;
 import com.angkorteam.fintech.popup.saving.PenaltyChargePopup;
-import com.angkorteam.fintech.provider.*;
+import com.angkorteam.fintech.provider.CurrencyProvider;
+import com.angkorteam.fintech.provider.DayInYearProvider;
+import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
+import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
+import com.angkorteam.fintech.provider.InterestPostingPeriodProvider;
+import com.angkorteam.fintech.provider.LockInTypeProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -42,22 +73,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Radio;
-import org.apache.wicket.markup.html.form.RadioGroup;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-
-import java.util.List;
-import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingCreatePage extends Page {
@@ -100,14 +115,14 @@ public class SavingCreatePage extends Page {
 
     protected WebMarkupBlock currencyDecimalPlaceBlock;
     protected WebMarkupContainer currencyDecimalPlaceIContainer;
-    protected Integer currencyDecimalPlaceValue;
-    protected TextField<Integer> currencyDecimalPlaceField;
+    protected Long currencyDecimalPlaceValue;
+    protected TextField<Long> currencyDecimalPlaceField;
     protected TextFeedbackPanel currencyDecimalPlaceFeedback;
 
     protected WebMarkupBlock currencyMultipleOfBlock;
     protected WebMarkupContainer currencyMultipleOfIContainer;
-    protected Integer currencyMultipleOfValue;
-    protected TextField<Integer> currencyMultipleOfField;
+    protected Long currencyMultipleOfValue;
+    protected TextField<Long> currencyMultipleOfField;
     protected TextFeedbackPanel currencyMultipleOfFeedback;
 
     // Terms
@@ -156,8 +171,8 @@ public class SavingCreatePage extends Page {
 
     protected WebMarkupBlock settingLockInPeriodBlock;
     protected WebMarkupContainer settingLockInPeriodIContainer;
-    protected Integer settingLockInPeriodValue;
-    protected TextField<Integer> settingLockInPeriodField;
+    protected Long settingLockInPeriodValue;
+    protected TextField<Long> settingLockInPeriodField;
     protected TextFeedbackPanel settingLockInPeriodFeedback;
 
     protected WebMarkupBlock settingLockInTypeBlock;
@@ -236,20 +251,20 @@ public class SavingCreatePage extends Page {
 
     protected WebMarkupBlock settingNumberOfDaysToInactiveSubStatusBlock;
     protected WebMarkupContainer settingNumberOfDaysToInactiveSubStatusIContainer;
-    protected Integer settingNumberOfDaysToInactiveSubStatusValue;
-    protected TextField<Integer> settingNumberOfDaysToInactiveSubStatusField;
+    protected Long settingNumberOfDaysToInactiveSubStatusValue;
+    protected TextField<Long> settingNumberOfDaysToInactiveSubStatusField;
     protected TextFeedbackPanel settingNumberOfDaysToInactiveSubStatusFeedback;
 
     protected WebMarkupBlock settingNumberOfDaysToDormantSubStatusBlock;
     protected WebMarkupContainer settingNumberOfDaysToDormantSubStatusIContainer;
-    protected Integer settingNumberOfDaysToDormantSubStatusValue;
-    protected TextField<Integer> settingNumberOfDaysToDormantSubStatusField;
+    protected Long settingNumberOfDaysToDormantSubStatusValue;
+    protected TextField<Long> settingNumberOfDaysToDormantSubStatusField;
     protected TextFeedbackPanel settingNumberOfDaysToDormantSubStatusFeedback;
 
     protected WebMarkupBlock settingNumberOfDaysToEscheatBlock;
     protected WebMarkupContainer settingNumberOfDaysToEscheatIContainer;
-    protected Integer settingNumberOfDaysToEscheatValue;
-    protected TextField<Integer> settingNumberOfDaysToEscheatField;
+    protected Long settingNumberOfDaysToEscheatValue;
+    protected TextField<Long> settingNumberOfDaysToEscheatField;
     protected TextFeedbackPanel settingNumberOfDaysToEscheatFeedback;
 
     // Charges
@@ -369,15 +384,9 @@ public class SavingCreatePage extends Page {
 
     protected Map<String, Object> popupModel;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -395,12 +404,12 @@ public class SavingCreatePage extends Page {
             breadcrumb.setPage(SavingBrowsePage.class);
             BREADCRUMB.add(breadcrumb);
         }
-
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Saving Product Create");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -461,8 +470,8 @@ public class SavingCreatePage extends Page {
         this.popupModel = Maps.newHashMap();
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         this.detailShortNameValue = generator.generate(4);
-        this.currencyDecimalPlaceValue = 2;
-        this.currencyMultipleOfValue = 1;
+        this.currencyDecimalPlaceValue = 2l;
+        this.currencyMultipleOfValue = 1l;
         this.termNominalAnnualInterestValue = 10d;
         this.termInterestCompoundingPeriodValue = InterestCompoundingPeriod.Daily.toOption();
         this.termInterestCalculatedUsingValue = InterestCalculatedUsing.DailyBalance.toOption();
@@ -944,21 +953,9 @@ public class SavingCreatePage extends Page {
             }
         }
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, concat(charge_calculation_enum,'') type, concat(charge_time_enum,'') collect, amount from m_charge where id = ?", charge.getId());
-        String type = (String) chargeObject.get("type");
-        for (ChargeCalculation calculation : ChargeCalculation.values()) {
-            if (type.equals(calculation.getLiteral())) {
-                type = calculation.getDescription();
-                break;
-            }
-        }
-        String collect = (String) chargeObject.get("collect");
-        for (ChargeTime time : ChargeTime.values()) {
-            if (collect.equals(time.getLiteral())) {
-                collect = time.getDescription();
-                break;
-            }
-        }
+        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, charge_calculation_enum, charge_time_enum, amount from m_charge where id = ?", charge.getId());
+        Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
+        Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
         item.put("uuid", charge.getId());
         item.put("charge", charge);
         item.put("name", chargeObject.get("name"));
@@ -983,8 +980,11 @@ public class SavingCreatePage extends Page {
     }
 
     protected ItemPanel chargeColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("name".equals(column) || "type".equals(column) || "collect".equals(column) || "date".equals(column)) {
+        if ("name".equals(column) || "date".equals(column)) {
             String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("type".equals(column) || "collect".equals(column)) {
+            Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("amount".equals(column)) {
             Number value = (Number) model.get(column);
@@ -1554,9 +1554,9 @@ public class SavingCreatePage extends Page {
         String accounting = this.accountingValue;
 
         if (ACC_NONE.equals(accounting)) {
-            builder.withAccountingRule(1);
+            builder.withAccountingRule(1l);
         } else if (ACC_CASH.equals(accounting)) {
-            builder.withAccountingRule(2);
+            builder.withAccountingRule(2l);
         }
 
         if (ACC_CASH.equals(accounting)) {

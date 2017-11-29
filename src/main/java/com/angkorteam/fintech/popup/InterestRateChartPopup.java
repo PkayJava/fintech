@@ -27,20 +27,20 @@ public class InterestRateChartPopup extends PopupPanel {
     protected Select2SingleChoice<Option> periodTypeField;
     protected TextFeedbackPanel periodTypeFeedback;
 
-    protected PropertyModel<Integer> periodFromValue;
-    protected TextField<Integer> periodFromField;
+    protected PropertyModel<Long> periodFromValue;
+    protected TextField<Long> periodFromField;
     protected TextFeedbackPanel periodFromFeedback;
 
-    protected PropertyModel<Integer> periodToValue;
-    protected TextField<Integer> periodToField;
+    protected PropertyModel<Long> periodToValue;
+    protected TextField<Long> periodToField;
     protected TextFeedbackPanel periodToFeedback;
 
-    protected PropertyModel<Integer> amountRangeFromValue;
-    protected TextField<Integer> amountRangeFromField;
+    protected PropertyModel<Long> amountRangeFromValue;
+    protected TextField<Long> amountRangeFromField;
     protected TextFeedbackPanel amountRangeFromFeedback;
 
-    protected PropertyModel<Integer> amountRangeToValue;
-    protected TextField<Integer> amountRangeToField;
+    protected PropertyModel<Long> amountRangeToValue;
+    protected TextField<Long> amountRangeToField;
     protected TextFeedbackPanel amountRangeToFeedback;
 
     protected PropertyModel<Double> interestValue;
@@ -83,7 +83,7 @@ public class InterestRateChartPopup extends PopupPanel {
         this.periodFromValue = new PropertyModel<>(this.model, "periodFromValue");
         this.periodFromField = new TextField<>("periodFromField", this.periodFromValue);
         this.periodFromField.setLabel(Model.of("Period From"));
-        this.periodFromField.setType(Integer.class);
+        this.periodFromField.setType(Long.class);
         this.form.add(this.periodFromField);
         this.periodFromFeedback = new TextFeedbackPanel("periodFromFeedback", this.periodFromField);
         this.form.add(this.periodFromFeedback);
@@ -91,7 +91,7 @@ public class InterestRateChartPopup extends PopupPanel {
         this.periodToValue = new PropertyModel<>(this.model, "periodToValue");
         this.periodToField = new TextField<>("periodToField", this.periodToValue);
         this.periodToField.setLabel(Model.of("Period To"));
-        this.periodToField.setType(Integer.class);
+        this.periodToField.setType(Long.class);
         this.form.add(this.periodToField);
         this.periodToFeedback = new TextFeedbackPanel("periodToFeedback", this.periodToField);
         this.form.add(this.periodToFeedback);
@@ -99,7 +99,7 @@ public class InterestRateChartPopup extends PopupPanel {
         this.amountRangeFromValue = new PropertyModel<>(this.model, "amountRangeFromValue");
         this.amountRangeFromField = new TextField<>("amountRangeFromField", this.amountRangeFromValue);
         this.amountRangeFromField.setLabel(Model.of("Amount Range From"));
-        this.amountRangeFromField.setType(Integer.class);
+        this.amountRangeFromField.setType(Long.class);
         this.form.add(this.amountRangeFromField);
         this.amountRangeFromFeedback = new TextFeedbackPanel("amountRangeFromFeedback", this.amountRangeFromField);
         this.form.add(this.amountRangeFromFeedback);
@@ -107,7 +107,7 @@ public class InterestRateChartPopup extends PopupPanel {
         this.amountRangeToValue = new PropertyModel<>(this.model, "amountRangeToValue");
         this.amountRangeToField = new TextField<>("amountRangeToField", new PropertyModel<>(this.model, "amountRangeToValue"));
         this.amountRangeToField.setLabel(Model.of("Amount Range To"));
-        this.amountRangeToField.setType(Integer.class);
+        this.amountRangeToField.setType(Long.class);
         this.form.add(this.amountRangeToField);
         this.amountRangeToFeedback = new TextFeedbackPanel("amountRangeToFeedback", this.amountRangeToField);
         this.form.add(this.amountRangeToFeedback);

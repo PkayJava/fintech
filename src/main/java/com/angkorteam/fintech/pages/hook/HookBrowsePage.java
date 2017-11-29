@@ -68,15 +68,9 @@ public class HookBrowsePage extends Page {
     protected Form<Void> form;
     protected Button createButton;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -93,6 +87,7 @@ public class HookBrowsePage extends Page {
             breadcrumb.setLabel("Hook");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -136,14 +131,14 @@ public class HookBrowsePage extends Page {
         this.dataProvider.boardField("m_hook.id", "id", Long.class);
         this.dataProvider.boardField("m_hook.name", "name", String.class);
         this.dataProvider.boardField("m_hook_templates.name", "template", String.class);
-        this.dataProvider.boardField("m_hook.is_active", "active", Integer.class);
+        this.dataProvider.boardField("m_hook.is_active", "active", Long.class);
 
         this.dataProvider.selectField("id", Long.class);
 
         this.dataColumn = Lists.newArrayList();
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Template"), "template", "template", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Integer, Model.of("Is Active ?"), "active", "active", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Is Active ?"), "active", "active", this::dataColumn));
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 
         this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);

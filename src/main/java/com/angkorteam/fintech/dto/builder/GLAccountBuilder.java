@@ -98,10 +98,10 @@ public class GLAccountBuilder implements Serializable {
             object.getObject().put("id", this.id);
         }
         if (this.hasTagId) {
-            object.getObject().put("tagId", Integer.valueOf(this.tagId));
+            object.getObject().put("tagId", Long.valueOf(this.tagId));
         }
         if (this.hasParentId) {
-            object.getObject().put("parentId", Integer.valueOf(this.parentId));
+            object.getObject().put("parentId", Long.valueOf(this.parentId));
         }
         if (this.hasName) {
             object.getObject().put("name", this.name);
@@ -114,14 +114,14 @@ public class GLAccountBuilder implements Serializable {
         }
         if (this.hasType) {
             if (this.type != null) {
-                object.getObject().put("type", Integer.valueOf(this.type.getLiteral()));
+                object.getObject().put("type", Long.valueOf(this.type.getLiteral()));
             } else {
                 object.getObject().put("type", (String) null);
             }
         }
         if (this.hasUsage) {
             if (this.usage != null) {
-                object.getObject().put("usage", Integer.valueOf(this.usage.getLiteral()));
+                object.getObject().put("usage", Long.valueOf(this.usage.getLiteral()));
             } else {
                 object.getObject().put("usage", (String) null);
             }

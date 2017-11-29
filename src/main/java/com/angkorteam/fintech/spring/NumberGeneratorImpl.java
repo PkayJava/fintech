@@ -4,7 +4,7 @@ import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
 
 public class NumberGeneratorImpl implements NumberGenerator {
-    
+
     private RandomStringGenerator generator;
 
     public NumberGeneratorImpl() {

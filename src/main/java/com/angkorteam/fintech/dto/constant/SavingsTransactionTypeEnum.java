@@ -4,12 +4,12 @@ public enum SavingsTransactionTypeEnum {
     
     Invalid("0", "Invalid"),
     Deposit("1", "Deposit"),
-    Withdrawal("2", "Withdrawal", 1),
+    Withdrawal("2", "Withdrawal", 1l),
     InterestPosting("3", "Interest Posting"),
-    WithdrawalFee("4", "Withdrawal Fee", 1),
-    AnnualFee("5", "Annual Fee", 1),
+    WithdrawalFee("4", "Withdrawal Fee", 1l),
+    AnnualFee("5", "Annual Fee", 1l),
     WaiveCharge("6", "Waive Charge"),
-    PayCharge("7", "Pay Charge", 1),
+    PayCharge("7", "Pay Charge", 1l),
     DividendPayout("8", "Dividend Payout"),
     InitiateTransfer("12", "Initiate Transfer"),
     ApproveTransfer("13", "Approve Transfer"),
@@ -25,13 +25,13 @@ public enum SavingsTransactionTypeEnum {
 
     private final String description;
     
-    private final int enumType;
+    private final Long enumType;
 
     SavingsTransactionTypeEnum(String literal, String description) {
-        this(literal, description, 0);
+        this(literal, description, 0l);
     }
 
-    SavingsTransactionTypeEnum(String literal, String description, int enumType) {
+    SavingsTransactionTypeEnum(String literal, String description, Long enumType) {
         this.literal = literal;
         this.description = description;
         this.enumType = enumType;
@@ -45,7 +45,7 @@ public enum SavingsTransactionTypeEnum {
         return description;
     }
     
-    public int getEnumType() {
+    public Long getEnumType() {
         return enumType;
     }
 

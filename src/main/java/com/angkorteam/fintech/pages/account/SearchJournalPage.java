@@ -98,15 +98,9 @@ public class SearchJournalPage extends Page {
     protected JdbcProvider entryProvider;
     protected List<IColumn<Map<String, Object>, String>> entryColumn;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Accounting");
@@ -118,6 +112,7 @@ public class SearchJournalPage extends Page {
             breadcrumb.setLabel("Search Journal Entries");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override

@@ -1,9 +1,9 @@
 package com.angkorteam.fintech.dto.builder;
 
+import java.io.Serializable;
+
 import com.angkorteam.fintech.dto.enums.ServiceType;
 import com.mashape.unirest.http.JsonNode;
-
-import java.io.Serializable;
 
 public class ExternalServiceBuilder implements Serializable {
 
@@ -23,7 +23,7 @@ public class ExternalServiceBuilder implements Serializable {
     private String host;
     private boolean hasHost;
 
-    private Integer port;
+    private Long port;
     private boolean hasPort;
 
     // SMTP
@@ -65,7 +65,7 @@ public class ExternalServiceBuilder implements Serializable {
         return this;
     }
 
-    public ExternalServiceBuilder withPort(Integer port) {
+    public ExternalServiceBuilder withPort(Long port) {
         this.port = port;
         this.hasPort = true;
         return this;

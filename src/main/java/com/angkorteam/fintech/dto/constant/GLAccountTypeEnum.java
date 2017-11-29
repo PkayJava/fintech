@@ -14,13 +14,13 @@ public enum GLAccountTypeEnum {
 
     private final String description;
     
-    private final int enumType;
+    private final Long enumType;
 
     GLAccountTypeEnum(String literal, String description) {
-        this(literal, description, 0);
+        this(literal, description, 0l);
     }
 
-    GLAccountTypeEnum(String literal, String description, int enumType) {
+    GLAccountTypeEnum(String literal, String description, Long enumType) {
         this.literal = literal;
         this.description = description;
         this.enumType = enumType;
@@ -34,7 +34,7 @@ public enum GLAccountTypeEnum {
         return description;
     }
     
-    public int getEnumType() {
+    public Long getEnumType() {
         return enumType;
     }
 }

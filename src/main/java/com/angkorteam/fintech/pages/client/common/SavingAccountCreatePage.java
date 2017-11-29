@@ -121,7 +121,7 @@ public class SavingAccountCreatePage extends Page {
 
     protected WebMarkupBlock decimalPlacesBlock;
     protected WebMarkupContainer decimalPlacesVContainer;
-    protected Integer decimalPlacesValue;
+    protected Long decimalPlacesValue;
     protected ReadOnlyView decimalPlacesView;
 
     protected WebMarkupBlock nominalAnnualInterestBlock;
@@ -139,7 +139,7 @@ public class SavingAccountCreatePage extends Page {
 
     protected WebMarkupBlock currencyInMultiplesOfBlock;
     protected WebMarkupContainer currencyInMultiplesOfVContainer;
-    protected Integer currencyInMultiplesOfValue;
+    protected Long currencyInMultiplesOfValue;
     protected ReadOnlyView currencyInMultiplesOfView;
 
     protected InterestPostingPeriodProvider interestPostingPeriodProvider;
@@ -171,8 +171,8 @@ public class SavingAccountCreatePage extends Page {
 
     protected WebMarkupContainer lockInPeriodBlock;
     protected WebMarkupContainer lockInPeriodIContainer;
-    protected Integer lockInPeriodValue;
-    protected TextField<Integer> lockInPeriodField;
+    protected Long lockInPeriodValue;
+    protected TextField<Long> lockInPeriodField;
     protected TextFeedbackPanel lockInPeriodFeedback;
 
     protected LockInTypeProvider lockInTypeProvider;
@@ -686,7 +686,7 @@ public class SavingAccountCreatePage extends Page {
         } else if ("repaymentEvery".equals(column)) {
             ChargeTime chargeTime = ChargeTime.parseLiteral(String.valueOf(model.get("chargeTime")));
             if (chargeTime == ChargeTime.MonthlyFee || chargeTime == ChargeTime.WeeklyFee) {
-                Integer value = (Integer) model.get(column);
+                Long value = (Long) model.get(column);
                 return new TextCell(value);
             } else {
                 return new TextCell("");
@@ -813,9 +813,9 @@ public class SavingAccountCreatePage extends Page {
         Map<String, Object> savingProductObject = jdbcTemplate.queryForMap("select * from m_savings_product where id = ?", this.savingId);
         this.productValue = (String) savingProductObject.get("name");
         this.currencyValue = (String) savingProductObject.get("currency_code");
-        this.decimalPlacesValue = savingProductObject.get("currency_digits") == null ? null : ((Long) savingProductObject.get("currency_digits")).intValue();
+        this.decimalPlacesValue = (Long) savingProductObject.get("currency_digits");
 
-        this.currencyInMultiplesOfValue = savingProductObject.get("currency_multiplesof") == null ? null : ((Long) savingProductObject.get("currency_multiplesof")).intValue();
+        this.currencyInMultiplesOfValue = (Long) savingProductObject.get("currency_multiplesof");
 
         this.nominalAnnualInterestValue = (Double) savingProductObject.get("nominal_annual_interest_rate");
 
@@ -825,7 +825,7 @@ public class SavingAccountCreatePage extends Page {
         this.interestPostingPeriodValue = InterestPostingPeriod.optionLiteral(String.valueOf(savingProductObject.get("interest_posting_period_enum")));
         this.interestCalculatedUsingValue = InterestCalculatedUsing.optionLiteral(String.valueOf(savingProductObject.get("interest_calculation_type_enum")));
         this.dayInYearValue = DayInYear.optionLiteral(String.valueOf(savingProductObject.get("interest_calculation_days_in_year_type_enum")));
-        this.lockInPeriodValue = savingProductObject.get("lockin_period_frequency") == null ? null : ((Double) savingProductObject.get("lockin_period_frequency")).intValue();
+        this.lockInPeriodValue = (Long) savingProductObject.get("lockin_period_frequency");
         this.lockInTypeValue = LockInType.optionLiteral(String.valueOf(savingProductObject.get("lockin_period_frequency_enum")));
 
         Long applyWithdrawalFeeForTransferValue = (Long) savingProductObject.get("withdrawal_fee_for_transfer");
@@ -850,7 +850,6 @@ public class SavingAccountCreatePage extends Page {
         List<Map<String, Object>> charges = jdbcTemplate.queryForList("select m_charge.* from m_savings_product_charge inner join m_charge ON m_savings_product_charge.charge_id = m_charge.id where m_savings_product_charge.savings_product_id = ?", this.savingId);
         if (charges != null && !charges.isEmpty()) {
             for (Map<String, Object> chargeObject : charges) {
-                ChargeTime chargeTime = ChargeTime.parseLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
                 Map<String, Object> item = Maps.newHashMap();
                 item.put("uuid", UUID.randomUUID().toString());
                 Option charge = new Option(String.valueOf(chargeObject.get("id")), (String) chargeObject.get("name"));
@@ -859,17 +858,9 @@ public class SavingAccountCreatePage extends Page {
                 item.put("chargeTime", chargeObject.get("charge_time_enum"));
                 item.put("amount", chargeObject.get("amount"));
 
-                Long collectedOn = (Long) chargeObject.get("charge_time_enum");
-                if (collectedOn != null) {
-                    Option option = ChargeTime.optionLiteral(String.valueOf(collectedOn));
-                    item.put("collectedOn", option);
-                }
+                item.put("collectedOn", ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum"))));
 
-                Long type = (Long) chargeObject.get("charge_calculation_enum");
-                if (type != null) {
-                    Option option = ChargeCalculation.optionLiteral(String.valueOf(type));
-                    item.put("type", option);
-                }
+                item.put("type", ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum"))));
 
                 Long repaymentEveryValue = (Long) chargeObject.get("fee_interval");
                 item.put("repaymentEvery", repaymentEveryValue == null ? null : repaymentEveryValue.intValue());
@@ -937,7 +928,7 @@ public class SavingAccountCreatePage extends Page {
             Double amount = (Double) charge.get("amount");
             Date feeOnMonthDay = (Date) charge.get("dayMonth");
             Date dueDate = (Date) charge.get("date");
-            Integer feeInterval = (Integer) charge.get("repaymentEvery");
+            Long feeInterval = (Long) charge.get("repaymentEvery");
             builder.withCharge(chargeId, amount, feeOnMonthDay, dueDate, feeInterval);
         }
 

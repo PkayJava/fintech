@@ -89,15 +89,9 @@ public class TaxGroupCreatePage extends Page {
     protected ListDataProvider taxComponentProvider;
     protected List<IColumn<Map<String, Object>, String>> taxComponentColumn;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -126,6 +120,7 @@ public class TaxGroupCreatePage extends Page {
             breadcrumb.setLabel("Tax Group Create");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override

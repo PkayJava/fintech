@@ -1,10 +1,10 @@
 package com.angkorteam.fintech.dto.builder;
 
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-
 import java.io.Serializable;
 import java.util.List;
+
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 7/3/17.

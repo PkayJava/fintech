@@ -18,13 +18,13 @@ public enum CashAccountsForLoanTypeEnum {
 
     private final String description;
     
-    private final int enumType;
+    private final Long enumType;
 
     CashAccountsForLoanTypeEnum(String literal, String description) {
-        this(literal, description, 0);
+        this(literal, description, 0l);
     }
 
-    CashAccountsForLoanTypeEnum(String literal, String description, int enumType) {
+    CashAccountsForLoanTypeEnum(String literal, String description, Long enumType) {
         this.literal = literal;
         this.description = description;
         this.enumType = enumType;
@@ -38,7 +38,7 @@ public enum CashAccountsForLoanTypeEnum {
         return description;
     }
     
-    public int getEnumType() {
+    public Long getEnumType() {
         return enumType;
     }
 }

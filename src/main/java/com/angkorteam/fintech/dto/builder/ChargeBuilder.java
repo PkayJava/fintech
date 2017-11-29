@@ -44,7 +44,7 @@ public class ChargeBuilder implements Serializable {
     private Double amount;
     private boolean hasAmount;
 
-    private Integer feeInterval;
+    private Long feeInterval;
     private boolean hasFeeInterval;
 
     private ChargeFrequency feeFrequency;
@@ -231,7 +231,7 @@ public class ChargeBuilder implements Serializable {
         return this;
     }
 
-    public ChargeBuilder withFeeInterval(Integer feeInterval) {
+    public ChargeBuilder withFeeInterval(Long feeInterval) {
         this.feeInterval = feeInterval;
         this.hasFeeInterval = true;
         return this;

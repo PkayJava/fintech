@@ -44,19 +44,19 @@ public class ProductSavingBuilder implements Serializable {
         return this;
     }
 
-    private Integer digitsAfterDecimal;
+    private Long digitsAfterDecimal;
     private boolean hasDigitsAfterDecimal;
 
-    public ProductSavingBuilder withDigitsAfterDecimal(Integer digitsAfterDecimal) {
+    public ProductSavingBuilder withDigitsAfterDecimal(Long digitsAfterDecimal) {
         this.digitsAfterDecimal = digitsAfterDecimal;
         this.hasDigitsAfterDecimal = true;
         return this;
     }
 
-    private Integer accountingRule;
+    private Long accountingRule;
     private boolean hasAccountingRule;
 
-    public ProductSavingBuilder withAccountingRule(Integer accountingRule) {
+    public ProductSavingBuilder withAccountingRule(Long accountingRule) {
         this.accountingRule = accountingRule;
         this.hasAccountingRule = true;
         return this;
@@ -80,10 +80,10 @@ public class ProductSavingBuilder implements Serializable {
         return this;
     }
 
-    private Integer inMultiplesOf;
+    private Long inMultiplesOf;
     private boolean hasInMultiplesOf;
 
-    public ProductSavingBuilder withInMultiplesOf(Integer inMultiplesOf) {
+    public ProductSavingBuilder withInMultiplesOf(Long inMultiplesOf) {
         this.inMultiplesOf = inMultiplesOf;
         this.hasInMultiplesOf = true;
         return this;
@@ -190,10 +190,10 @@ public class ProductSavingBuilder implements Serializable {
         return this;
     }
 
-    private Integer lockinPeriodFrequency;
+    private Long lockinPeriodFrequency;
     private boolean hasLockinPeriodFrequency;
 
-    public ProductSavingBuilder withLockinPeriodFrequency(Integer lockinPeriodFrequency) {
+    public ProductSavingBuilder withLockinPeriodFrequency(Long lockinPeriodFrequency) {
         this.lockinPeriodFrequency = lockinPeriodFrequency;
         this.hasLockinPeriodFrequency = true;
         return this;
@@ -307,28 +307,28 @@ public class ProductSavingBuilder implements Serializable {
         return this;
     }
 
-    private Integer daysToInactive;
+    private Long daysToInactive;
     private boolean hasDaysToInactive;
 
-    public ProductSavingBuilder withDaysToInactive(Integer daysToInactive) {
+    public ProductSavingBuilder withDaysToInactive(Long daysToInactive) {
         this.daysToInactive = daysToInactive;
         this.hasDaysToInactive = true;
         return this;
     }
 
-    private Integer daysToDormancy;
+    private Long daysToDormancy;
     private boolean hasDaysToDormancy;
 
-    public ProductSavingBuilder withDaysToDormancy(Integer daysToDormancy) {
+    public ProductSavingBuilder withDaysToDormancy(Long daysToDormancy) {
         this.daysToDormancy = daysToDormancy;
         this.hasDaysToDormancy = true;
         return this;
     }
 
-    private Integer daysToEscheat;
+    private Long daysToEscheat;
     private boolean hasDaysToEscheat;
 
-    public ProductSavingBuilder withDaysToEscheat(Integer daysToEscheat) {
+    public ProductSavingBuilder withDaysToEscheat(Long daysToEscheat) {
         this.daysToEscheat = daysToEscheat;
         this.hasDaysToEscheat = true;
         return this;

@@ -16,13 +16,13 @@ public enum StatusEnum {
 
     private final String description;
     
-    private final int enumType;
+    private final Long enumType;
 
     StatusEnum(String literal, String description) {
-        this(literal, description, 0);
+        this(literal, description, 0l);
     }
 
-    StatusEnum(String literal, String description, int enumType) {
+    StatusEnum(String literal, String description, Long enumType) {
         this.literal = literal;
         this.description = description;
         this.enumType = enumType;
@@ -36,7 +36,7 @@ public enum StatusEnum {
         return description;
     }
     
-    public int getEnumType() {
+    public Long getEnumType() {
         return enumType;
     }
 }

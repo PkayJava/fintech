@@ -43,19 +43,19 @@ public class ProductShareBuilder implements Serializable {
         return this;
     }
 
-    private Integer digitsAfterDecimal;
+    private Long digitsAfterDecimal;
     private boolean hasDigitsAfterDecimal;
 
-    public ProductShareBuilder withDigitsAfterDecimal(Integer digitsAfterDecimal) {
+    public ProductShareBuilder withDigitsAfterDecimal(Long digitsAfterDecimal) {
         this.digitsAfterDecimal = digitsAfterDecimal;
         this.hasDigitsAfterDecimal = true;
         return this;
     }
 
-    private Integer accountingRule;
+    private Long accountingRule;
     private boolean hasAccountingRule;
 
-    public ProductShareBuilder withAccountingRule(Integer accountingRule) {
+    public ProductShareBuilder withAccountingRule(Long accountingRule) {
         this.accountingRule = accountingRule;
         this.hasAccountingRule = true;
         return this;
@@ -79,10 +79,10 @@ public class ProductShareBuilder implements Serializable {
         return this;
     }
 
-    private Integer inMultiplesOf;
+    private Long inMultiplesOf;
     private boolean hasInMultiplesOf;
 
-    public ProductShareBuilder withInMultiplesOf(Integer inMultiplesOf) {
+    public ProductShareBuilder withInMultiplesOf(Long inMultiplesOf) {
         this.inMultiplesOf = inMultiplesOf;
         this.hasInMultiplesOf = true;
         return this;
@@ -113,19 +113,19 @@ public class ProductShareBuilder implements Serializable {
         return this;
     }
 
-    private Integer totalShares;
+    private Long totalShares;
     private boolean hasTotalShares;
 
-    public ProductShareBuilder withTotalShares(Integer totalShares) {
+    public ProductShareBuilder withTotalShares(Long totalShares) {
         this.totalShares = totalShares;
         this.hasTotalShares = true;
         return this;
     }
 
-    private Integer sharesIssued;
+    private Long sharesIssued;
     private boolean hasSharesIssued;
 
-    public ProductShareBuilder withSharesIssued(Integer sharesIssued) {
+    public ProductShareBuilder withSharesIssued(Long sharesIssued) {
         this.sharesIssued = sharesIssued;
         this.hasSharesIssued = true;
         return this;
@@ -149,37 +149,37 @@ public class ProductShareBuilder implements Serializable {
         return this;
     }
 
-    private Integer minimumShares;
+    private Long minimumShares;
     private boolean hasMinimumShares;
 
-    public ProductShareBuilder withMinimumShares(Integer minimumShares) {
+    public ProductShareBuilder withMinimumShares(Long minimumShares) {
         this.minimumShares = minimumShares;
         this.hasMinimumShares = true;
         return this;
     }
 
-    private Integer nominalShares;
+    private Long nominalShares;
     private boolean hasNominalShares;
 
-    public ProductShareBuilder withNominalShares(Integer nominalShares) {
+    public ProductShareBuilder withNominalShares(Long nominalShares) {
         this.nominalShares = nominalShares;
         this.hasNominalShares = true;
         return this;
     }
 
-    private Integer maximumShares;
+    private Long maximumShares;
     private boolean hasMaximumShares;
 
-    public ProductShareBuilder withMaximumShares(Integer maximumShares) {
+    public ProductShareBuilder withMaximumShares(Long maximumShares) {
         this.maximumShares = maximumShares;
         this.hasMaximumShares = true;
         return this;
     }
 
-    private Integer minimumActivePeriodForDividends;
+    private Long minimumActivePeriodForDividends;
     private boolean hasMinimumActivePeriodForDividends;
 
-    public ProductShareBuilder withMinimumActivePeriodForDividends(Integer minimumActivePeriodForDividends) {
+    public ProductShareBuilder withMinimumActivePeriodForDividends(Long minimumActivePeriodForDividends) {
         this.minimumActivePeriodForDividends = minimumActivePeriodForDividends;
         this.hasMinimumActivePeriodForDividends = true;
         return this;
@@ -194,10 +194,10 @@ public class ProductShareBuilder implements Serializable {
         return this;
     }
 
-    private Integer lockinPeriodFrequency;
+    private Long lockinPeriodFrequency;
     private boolean hasLockinPeriodFrequency;
 
-    public ProductShareBuilder withLockinPeriodFrequency(Integer lockinPeriodFrequency) {
+    public ProductShareBuilder withLockinPeriodFrequency(Long lockinPeriodFrequency) {
         this.lockinPeriodFrequency = lockinPeriodFrequency;
         this.hasLockinPeriodFrequency = true;
         return this;

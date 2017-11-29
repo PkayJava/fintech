@@ -169,8 +169,8 @@ public class ClientCreatePage extends Page {
 
     protected WebMarkupBlock incorporationNumberBlock;
     protected WebMarkupContainer incorporationNumberIContainer;
-    protected Integer incorporationNumberValue;
-    protected TextField<Integer> incorporationNumberField;
+    protected Long incorporationNumberValue;
+    protected TextField<Long> incorporationNumberField;
     protected TextFeedbackPanel incorporationNumberFeedback;
 
     protected WebMarkupBlock mainBusinessLineBlock;
@@ -241,15 +241,9 @@ public class ClientCreatePage extends Page {
 
     protected Map<String, Object> popupModel;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Clients");
@@ -266,6 +260,7 @@ public class ClientCreatePage extends Page {
             breadcrumb.setLabel("Client Create");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -934,7 +929,7 @@ public class ClientCreatePage extends Page {
             f.withDateOfBirth(dateOfBirth);
             String age = (String) item.get("age");
             if (age != null && !"".equals(age)) {
-                f.withAge(Integer.valueOf(age));
+                f.withAge(Long.valueOf(age));
             }
             builder.withFamilyMembers(f.build());
         }

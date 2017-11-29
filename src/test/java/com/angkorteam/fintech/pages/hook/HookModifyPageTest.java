@@ -3,7 +3,6 @@ package com.angkorteam.fintech.pages.hook;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Test;
 
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;

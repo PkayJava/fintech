@@ -6,8 +6,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum Language {
 
-    Khmer("khmer", "ភាសាខ្មែរ", new Locale("kh"), "khmer"), 
-    English("english", "English", new Locale("en"), "latin");
+    Khmer("khmer", "ភាសាខ្មែរ", new Locale("kh"), "khmer"), English("english", "English", new Locale("en"), "latin");
 
     private final String literal;
 

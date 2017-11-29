@@ -1,14 +1,15 @@
 package com.angkorteam.fintech.dto.builder;
 
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONObject;
+
 import com.angkorteam.fintech.dto.enums.TableType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
-import org.json.JSONObject;
-
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -70,7 +71,7 @@ public class DataTableBuilder implements Serializable {
         return column;
     }
 
-    public DataTableBuilder withColumnString(String name, boolean mandatory, int length) {
+    public DataTableBuilder withColumnString(String name, boolean mandatory, Long length) {
         Map<String, Object> column = buildColumn("String", name, mandatory);
         column.put("length", length);
         columns.add(column);

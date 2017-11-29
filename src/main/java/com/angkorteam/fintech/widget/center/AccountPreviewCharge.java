@@ -6,7 +6,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-
 public class AccountPreviewCharge implements ITab {
 
     protected Page itemPage;

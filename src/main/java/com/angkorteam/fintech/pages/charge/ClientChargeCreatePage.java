@@ -105,15 +105,9 @@ public class ClientChargeCreatePage extends Page {
     protected Select2SingleChoice<Option> taxGroupField;
     protected TextFeedbackPanel taxGroupFeedback;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -137,6 +131,7 @@ public class ClientChargeCreatePage extends Page {
             breadcrumb.setLabel("Client Charge Create");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override

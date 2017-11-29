@@ -116,7 +116,7 @@ public class GroupManagePage extends Page {
         this.associatedGroupProvider.applyWhere("parent_id", "m_group.parent_id = " + this.centerId);
         this.associatedGroupProvider.applyWhere("level_id", "m_group.level_id = 2");
 
-        this.associatedGroupProvider.selectField("id", Integer.class);
+        this.associatedGroupProvider.selectField("id", Long.class);
 
         this.associatedGroupColumn = Lists.newArrayList();
         this.associatedGroupColumn.add(new TextFilterColumn(this.associatedGroupProvider, ItemClass.String, Model.of("Name"), "name", "name", this::associatedGroupColumn));

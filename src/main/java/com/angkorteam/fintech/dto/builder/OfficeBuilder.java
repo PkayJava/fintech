@@ -1,11 +1,12 @@
 package com.angkorteam.fintech.dto.builder;
 
-import com.mashape.unirest.http.JsonNode;
+import java.io.Serializable;
+import java.util.Date;
+
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.json.JSONObject;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 6/22/17.

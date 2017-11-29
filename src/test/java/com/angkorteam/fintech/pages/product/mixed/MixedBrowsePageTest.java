@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
-import com.angkorteam.fintech.pages.product.mixed.MixedBrowsePage;
 
 public class MixedBrowsePageTest {
     private JUnitWicketTester wicket;

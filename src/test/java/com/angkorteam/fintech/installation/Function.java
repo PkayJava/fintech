@@ -16,13 +16,11 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.RandomStringGenerator;
 import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.IMifos;

@@ -1,6 +1,5 @@
 package com.angkorteam.fintech.dto.constant;
 
-import com.angkorteam.fintech.dto.enums.loan.AdvancePaymentsAdjustmentType;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum TellerStatus {
@@ -15,13 +14,13 @@ public enum TellerStatus {
 
     private final String description;
     
-    private final int enumType;
+    private final Long enumType;
 
     TellerStatus(String literal, String description) {
-        this(literal, description, 0);
+        this(literal, description, 0l);
     }
 
-    TellerStatus(String literal, String description, int enumType) {
+    TellerStatus(String literal, String description, Long enumType) {
         this.literal = literal;
         this.description = description;
         this.enumType = enumType;
@@ -35,7 +34,7 @@ public enum TellerStatus {
         return description;
     }
     
-    public int getEnumType() {
+    public Long getEnumType() {
         return enumType;
     }
     

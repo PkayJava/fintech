@@ -1,11 +1,12 @@
 package com.angkorteam.fintech.dto.builder;
 
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.util.List;
+
+import org.json.JSONObject;
+
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
 
 public class AppUserBuilder implements Serializable {
 

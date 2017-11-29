@@ -59,15 +59,9 @@ public class AccountBrowsePage extends Page {
 
     protected BookmarkablePageLink<Void> createLink;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Accounting");
@@ -79,6 +73,7 @@ public class AccountBrowsePage extends Page {
             breadcrumb.setLabel("Chart of Accounts");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -113,7 +108,7 @@ public class AccountBrowsePage extends Page {
         this.dataProvider.boardField("name", "name", String.class);
         this.dataProvider.boardField("gl_code", "gl_code", String.class);
         this.dataProvider.boardField("case classification_enum " + StringUtils.join(classification_enum, " ") + " end", "classification_enum", String.class);
-        this.dataProvider.boardField("account_usage", "account_usage", Integer.class);
+        this.dataProvider.boardField("account_usage", "account_usage", Long.class);
         this.dataProvider.boardField("disabled", "disabled", Boolean.class);
         this.dataProvider.boardField("manual_journal_entries_allowed", "manual_journal_entries_allowed", Boolean.class);
 

@@ -5,8 +5,6 @@ import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
- 
-import com.angkorteam.fintech.widget.group.GroupPreviewCommitteePanel;
 
 public class ClientPreviewDocument implements ITab {
 

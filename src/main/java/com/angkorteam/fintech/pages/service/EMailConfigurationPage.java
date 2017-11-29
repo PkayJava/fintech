@@ -60,8 +60,8 @@ public class EMailConfigurationPage extends Page {
 
     protected WebMarkupBlock portBlock;
     protected WebMarkupContainer portIContainer;
-    protected Integer portValue = 25;
-    protected TextField<Integer> portField;
+    protected Long portValue = 25l;
+    protected TextField<Long> portField;
     protected TextFeedbackPanel portFeedback;
 
     protected WebMarkupBlock useTlsBlock;
@@ -70,15 +70,9 @@ public class EMailConfigurationPage extends Page {
     protected CheckBox useTlsField;
     protected TextFeedbackPanel useTlsFeedback;
 
-    protected static final List<PageBreadcrumb> BREADCRUMB;
-
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        return Model.ofList(BREADCRUMB);
-    }
-
-    static {
-        BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -101,6 +95,7 @@ public class EMailConfigurationPage extends Page {
             breadcrumb.setLabel("SMTP");
             BREADCRUMB.add(breadcrumb);
         }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -114,7 +109,7 @@ public class EMailConfigurationPage extends Page {
         this.usernameValue = (String) params.get("username");
         this.passwordValue = (String) params.get("password");
         this.hostValue = (String) params.get("host");
-        this.portValue = Integer.valueOf((String) params.get("port"));
+        this.portValue = Long.valueOf((String) params.get("port"));
         this.useTlsValue = Boolean.valueOf((String) params.get("useTLS"));
     }
 
