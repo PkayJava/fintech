@@ -69,7 +69,9 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class ShareCreatePage extends Page {
+public class SharePreviewPage extends Page {
+    
+    protected String shareId;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -333,6 +335,7 @@ public class ShareCreatePage extends Page {
 
     @Override
     protected void initData() {
+        this.shareId = getPageParameters().get("shareId").toString();
         this.popupModel = Maps.newHashMap();
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         this.detailShortNameValue = generator.generate(4);

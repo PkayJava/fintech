@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.json.JSONObject;
 
+import com.angkorteam.fintech.dto.enums.AccountingType;
 import com.angkorteam.fintech.dto.enums.DayInYear;
 import com.angkorteam.fintech.dto.enums.LockInType;
 import com.angkorteam.fintech.dto.enums.loan.AdvancePaymentsAdjustmentType;
@@ -102,10 +103,10 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private Long accountingRule;
+    private AccountingType accountingRule;
     private boolean hasAccountingRule;
 
-    public ProductLoanBuilder withAccountingRule(Long accountingRule) {
+    public ProductLoanBuilder withAccountingRule(AccountingType accountingRule) {
         this.accountingRule = accountingRule;
         this.hasAccountingRule = true;
         return this;
@@ -996,7 +997,7 @@ public class ProductLoanBuilder implements Serializable {
         if (this.accountingRule == null) {
             errors.add("accountingRule is required");
         } else {
-            if (this.accountingRule == 2) {
+            if (this.accountingRule == AccountingType.Cash) {
                 if (this.fundSourceAccountId == null || "".equals(this.fundSourceAccountId)) {
                     errors.add("fundSourceAccountId is required");
                 }
@@ -1021,7 +1022,7 @@ public class ProductLoanBuilder implements Serializable {
                 if (this.overpaymentLiabilityAccountId == null || "".equals(this.overpaymentLiabilityAccountId)) {
                     errors.add("overpaymentLiabilityAccountId is required");
                 }
-            } else if (this.accountingRule == 3 || this.accountingRule == 4) {
+            } else if (this.accountingRule == AccountingType.Periodic || this.accountingRule == AccountingType.Upfront) {
                 if (this.fundSourceAccountId == null || "".equals(this.fundSourceAccountId)) {
                     errors.add("fundSourceAccountId is required");
                 }
@@ -1479,7 +1480,7 @@ public class ProductLoanBuilder implements Serializable {
         }
 
         if (this.hasAccountingRule) {
-            object.getObject().put("accountingRule", this.accountingRule);
+            object.getObject().put("accountingRule", this.accountingRule.getLiteral());
         }
 
         if (this.hasInterestRecalculationEnabled) {

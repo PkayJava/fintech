@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.angkorteam.fintech.dto.enums.AccountingType;
 import com.angkorteam.fintech.dto.enums.DayInYear;
 import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
 import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
@@ -53,10 +54,10 @@ public class ProductSavingBuilder implements Serializable {
         return this;
     }
 
-    private Long accountingRule;
+    private AccountingType accountingRule;
     private boolean hasAccountingRule;
 
-    public ProductSavingBuilder withAccountingRule(Long accountingRule) {
+    public ProductSavingBuilder withAccountingRule(AccountingType accountingRule) {
         this.accountingRule = accountingRule;
         this.hasAccountingRule = true;
         return this;
@@ -475,7 +476,7 @@ public class ProductSavingBuilder implements Serializable {
         if (this.accountingRule == null) {
             errors.add("accountingRule is required");
         } else {
-            if (this.accountingRule == 2) {
+            if (this.accountingRule == AccountingType.Cash) {
                 if (this.savingsReferenceAccountId == null || "".equals(this.savingsReferenceAccountId)) {
                     errors.add("savingsReferenceAccountId is required");
                 }
@@ -682,7 +683,7 @@ public class ProductSavingBuilder implements Serializable {
         }
 
         if (this.hasAccountingRule) {
-            object.getObject().put("accountingRule", this.accountingRule);
+            object.getObject().put("accountingRule", this.accountingRule.getLiteral());
         }
 
         if (this.hasName) {

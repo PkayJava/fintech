@@ -27,6 +27,7 @@ import com.angkorteam.fintech.dto.builder.AllowAttributeOverrideBuilder;
 import com.angkorteam.fintech.dto.builder.ProductLoanBuilder;
 import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
+import com.angkorteam.fintech.dto.enums.AccountingType;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.DayInYear;
@@ -105,11 +106,6 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanCreatePage extends Page {
-
-    public static final String ACC_NONE = "None";
-    public static final String ACC_CASH = "Cash";
-    public static final String ACC_PERIODIC = "Periodic";
-    public static final String ACC_UPFRONT = "Upfront";
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -673,7 +669,7 @@ public class LoanCreatePage extends Page {
 
     // Accounting
 
-    protected String accountingValue = ACC_NONE;
+    protected String accountingValue = AccountingType.None.getDescription();
     protected RadioGroup<String> accountingField;
 
     protected WebMarkupContainer cashBlock;
@@ -1053,7 +1049,7 @@ public class LoanCreatePage extends Page {
         this.settingInterestMethodValue = InterestMethod.DecliningBalance.toOption();
         this.settingInterestCalculationPeriodValue = InterestCalculationPeriod.SameAsPayment.toOption();
         this.settingRepaymentStrategyValue = RepaymentStrategy.Interest_Principal_Penalty_Fee.toOption();
-        this.accountingValue = ACC_NONE;
+        this.accountingValue = AccountingType.None.getDescription();
         this.interestRecalculationRecalculateInterestValue = false;
         this.settingDayInYearValue = DayInYear.Actual.toOption();
         this.settingDayInMonthValue = DayInMonth.Actual.toOption();
@@ -1242,10 +1238,10 @@ public class LoanCreatePage extends Page {
     protected void initSectionAccounting() {
         this.accountingField = new RadioGroup<>("accountingField", new PropertyModel<>(this, "accountingValue"));
         this.accountingField.add(new AjaxFormChoiceComponentUpdatingBehavior(this::accountingFieldUpdate));
-        this.accountingField.add(new Radio<>("accountingNone", new Model<>(ACC_NONE)));
-        this.accountingField.add(new Radio<>("accountingCash", new Model<>(ACC_CASH)));
-        this.accountingField.add(new Radio<>("accountingPeriodic", new Model<>(ACC_PERIODIC)));
-        this.accountingField.add(new Radio<>("accountingUpfront", new Model<>(ACC_UPFRONT)));
+        this.accountingField.add(new Radio<>("accountingNone", new Model<>(AccountingType.None.getDescription())));
+        this.accountingField.add(new Radio<>("accountingCash", new Model<>(AccountingType.Cash.getDescription())));
+        this.accountingField.add(new Radio<>("accountingPeriodic", new Model<>(AccountingType.Periodic.getDescription())));
+        this.accountingField.add(new Radio<>("accountingUpfront", new Model<>(AccountingType.Upfront.getDescription())));
         this.form.add(this.accountingField);
 
         initAccountingCash();
@@ -3731,16 +3727,16 @@ public class LoanCreatePage extends Page {
 
         String accounting = this.accountingValue;
 
-        if (ACC_NONE.equals(accounting)) {
-            builder.withAccountingRule(1l);
-        } else if (ACC_CASH.equals(accounting)) {
-            builder.withAccountingRule(2l);
-        } else if (ACC_PERIODIC.equals(accounting)) {
-            builder.withAccountingRule(3l);
-        } else if (ACC_UPFRONT.equals(accounting)) {
-            builder.withAccountingRule(4l);
+        if (AccountingType.None.getDescription().equals(accounting)) {
+            builder.withAccountingRule(AccountingType.None);
+        } else if (AccountingType.Cash.getDescription().equals(accounting)) {
+            builder.withAccountingRule(AccountingType.Cash);
+        } else if (AccountingType.Periodic.getDescription().equals(accounting)) {
+            builder.withAccountingRule(AccountingType.Periodic);
+        } else if (AccountingType.Upfront.getDescription().equals(accounting)) {
+            builder.withAccountingRule(AccountingType.Upfront);
         }
-        if (ACC_CASH.equals(accounting)) {
+        if (AccountingType.Cash.getDescription().equals(accounting)) {
             if (this.cashFundSourceValue != null) {
                 builder.withFundSourceAccountId(this.cashFundSourceValue.getId());
             }
@@ -3768,7 +3764,7 @@ public class LoanCreatePage extends Page {
             if (this.cashOverPaymentLiabilityValue != null) {
                 builder.withOverpaymentLiabilityAccountId(this.cashOverPaymentLiabilityValue.getId());
             }
-        } else if (ACC_PERIODIC.equals(accounting)) {
+        } else if (AccountingType.Periodic.getDescription().equals(accounting)) {
             if (this.periodicFundSourceValue != null) {
                 builder.withFundSourceAccountId(this.periodicFundSourceValue.getId());
             }
@@ -3805,7 +3801,7 @@ public class LoanCreatePage extends Page {
             if (this.periodicPenaltyReceivableValue != null) {
                 builder.withReceivablePenaltyAccountId(this.periodicPenaltyReceivableValue.getId());
             }
-        } else if (ACC_UPFRONT.equals(accounting)) {
+        } else if (AccountingType.Upfront.getDescription().equals(accounting)) {
             if (this.upfrontFundSourceValue != null) {
                 builder.withFundSourceAccountId(this.upfrontFundSourceValue.getId());
             }
@@ -3844,7 +3840,7 @@ public class LoanCreatePage extends Page {
             }
         }
 
-        if (ACC_CASH.equals(accounting) || ACC_PERIODIC.equals(accounting) || ACC_UPFRONT.equals(accounting)) {
+        if (AccountingType.Cash.getDescription().equals(accounting) || AccountingType.Periodic.getDescription().equals(accounting) || AccountingType.Upfront.getDescription().equals(accounting)) {
             if (this.advancedAccountingRuleFundSourceValue != null && !this.advancedAccountingRuleFundSourceValue.isEmpty()) {
                 for (Map<String, Object> item : this.advancedAccountingRuleFundSourceValue) {
                     builder.withPaymentChannelToFundSourceMappings((String) item.get("paymentId"), (String) item.get("accountId"));

@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.json.JSONObject;
 
+import com.angkorteam.fintech.dto.enums.AccountingType;
 import com.angkorteam.fintech.dto.enums.ApplyPenalOn;
 import com.angkorteam.fintech.dto.enums.Attribute;
 import com.angkorteam.fintech.dto.enums.DayInYear;
@@ -179,10 +180,10 @@ public class ProductRecurringDepositBuilder implements Serializable {
         return this;
     }
 
-    private Long accountingRule;
+    private AccountingType accountingRule;
     private boolean hasAccountingRule;
 
-    public ProductRecurringDepositBuilder withAccountingRule(Long accountingRule) {
+    public ProductRecurringDepositBuilder withAccountingRule(AccountingType accountingRule) {
         this.accountingRule = accountingRule;
         this.hasAccountingRule = true;
         return this;
@@ -543,7 +544,7 @@ public class ProductRecurringDepositBuilder implements Serializable {
         if (this.accountingRule == null) {
             errors.add("accountingRule is required");
         } else {
-            if (this.accountingRule == 2) {
+            if (this.accountingRule == AccountingType.Cash) {
                 if (this.savingsReferenceAccountId == null || "".equals(this.savingsReferenceAccountId)) {
                     errors.add("savingsReferenceAccountId is required");
                 }
@@ -749,7 +750,7 @@ public class ProductRecurringDepositBuilder implements Serializable {
         }
 
         if (this.hasAccountingRule) {
-            object.getObject().put("accountingRule", this.accountingRule);
+            object.getObject().put("accountingRule", this.accountingRule.getLiteral());
         }
 
         if (this.hasLocale) {

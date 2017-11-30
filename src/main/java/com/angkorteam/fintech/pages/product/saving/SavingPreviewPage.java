@@ -17,9 +17,11 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.enums.AccountingType;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.DayInYear;
+import com.angkorteam.fintech.dto.enums.FinancialAccountType;
 import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
 import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
 import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
@@ -48,9 +50,6 @@ import com.google.common.collect.Lists;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingPreviewPage extends Page {
-
-    public static final String ACC_NONE = "None";
-    public static final String ACC_CASH = "Cash";
 
     protected BookmarkablePageLink<Void> editLink;
     protected BookmarkablePageLink<Void> closeLink;
@@ -219,7 +218,7 @@ public class SavingPreviewPage extends Page {
 
     // Accounting
 
-    protected String accountingValue = ACC_NONE;
+    protected String accountingValue = AccountingType.None.getDescription();
     protected RadioGroup<String> accountingField;
 
     protected WebMarkupContainer cashBlock;
@@ -227,52 +226,52 @@ public class SavingPreviewPage extends Page {
 
     protected WebMarkupBlock cashSavingReferenceBlock;
     protected WebMarkupContainer cashSavingReferenceVContainer;
-    protected String cashSavingReferenceValue;
+    protected Option cashSavingReferenceValue;
     protected ReadOnlyView cashSavingReferenceView;
 
     protected WebMarkupBlock cashOverdraftPortfolioBlock;
     protected WebMarkupContainer cashOverdraftPortfolioVContainer;
-    protected String cashOverdraftPortfolioValue;
+    protected Option cashOverdraftPortfolioValue;
     protected ReadOnlyView cashOverdraftPortfolioView;
 
     protected WebMarkupBlock cashSavingControlBlock;
     protected WebMarkupContainer cashSavingControlVContainer;
-    protected String cashSavingControlValue;
+    protected Option cashSavingControlValue;
     protected ReadOnlyView cashSavingControlView;
 
     protected WebMarkupBlock cashSavingTransferInSuspenseBlock;
     protected WebMarkupContainer cashSavingTransferInSuspenseVContainer;
-    protected String cashSavingTransferInSuspenseValue;
+    protected Option cashSavingTransferInSuspenseValue;
     protected ReadOnlyView cashSavingTransferInSuspenseView;
 
     protected WebMarkupBlock cashEscheatLiabilityBlock;
     protected WebMarkupContainer cashEscheatLiabilityVContainer;
-    protected String cashEscheatLiabilityValue;
+    protected Option cashEscheatLiabilityValue;
     protected ReadOnlyView cashEscheatLiabilityView;
 
     protected WebMarkupBlock cashInterestOnSavingBlock;
     protected WebMarkupContainer cashInterestOnSavingVContainer;
-    protected String cashInterestOnSavingValue;
+    protected Option cashInterestOnSavingValue;
     protected ReadOnlyView cashInterestOnSavingView;
 
     protected WebMarkupBlock cashWriteOffBlock;
     protected WebMarkupContainer cashWriteOffVContainer;
-    protected String cashWriteOffValue;
+    protected Option cashWriteOffValue;
     protected ReadOnlyView cashWriteOffView;
 
     protected WebMarkupBlock cashIncomeFromFeeBlock;
     protected WebMarkupContainer cashIncomeFromFeeVContainer;
-    protected String cashIncomeFromFeeValue;
+    protected Option cashIncomeFromFeeValue;
     protected ReadOnlyView cashIncomeFromFeeView;
 
     protected WebMarkupBlock cashIncomeFromPenaltyBlock;
     protected WebMarkupContainer cashIncomeFromPenaltyVContainer;
-    protected String cashIncomeFromPenaltyValue;
+    protected Option cashIncomeFromPenaltyValue;
     protected ReadOnlyView cashIncomeFromPenaltyView;
 
     protected WebMarkupBlock cashOverdraftInterestIncomeBlock;
     protected WebMarkupContainer cashOverdraftInterestIncomeVContainer;
-    protected String cashOverdraftInterestIncomeValue;
+    protected Option cashOverdraftInterestIncomeValue;
     protected ReadOnlyView cashOverdraftInterestIncomeView;
 
     // Advanced Accounting Rule
@@ -441,31 +440,79 @@ public class SavingPreviewPage extends Page {
         chargeQuery.addJoin("inner join m_savings_product_charge on m_savings_product_charge.charge_id = m_charge.id");
         chargeQuery.addWhere("m_savings_product_charge.savings_product_id = '" + this.savingId + "'");
 
-        List<Map<String, Object>> chargeObjects = jdbcTemplate.queryForList(chargeQuery.toSQL());
+        AccountingType accountingType = AccountingType.parseLiteral(String.valueOf(savingObject.get("accounting_type")));
+        cashVContainer.setVisible(accountingType != null);
+        if (accountingType != null) {
+            this.accountingValue = accountingType.getDescription();
 
-        for (Map<String, Object> chargeObject : chargeObjects) {
-            Map<String, Object> charge = new HashMap<>();
-            charge.put("name", chargeObject.get("name"));
-            Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
-            charge.put("type", type);
-            Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
-            charge.put("collect", collect);
-            charge.put("amount", chargeObject.get("amount"));
-            this.chargeValue.add(charge);
+            List<Map<String, Object>> chargeObjects = jdbcTemplate.queryForList(chargeQuery.toSQL());
+
+            for (Map<String, Object> chargeObject : chargeObjects) {
+                Map<String, Object> charge = new HashMap<>();
+                charge.put("name", chargeObject.get("name"));
+                Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
+                charge.put("type", type);
+                Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
+                charge.put("collect", collect);
+                charge.put("amount", chargeObject.get("amount"));
+                this.chargeValue.add(charge);
+            }
+
+            List<Map<String, Object>> mappings = jdbcTemplate.queryForList("select * from acc_product_mapping where product_id = ?", this.savingId);
+
+            for (Map<String, Object> mapping : mappings) {
+                FinancialAccountType financialAccountType = FinancialAccountType.parseLiteral(String.valueOf(mapping.get("financial_account_type")));
+                if (financialAccountType == FinancialAccountType.SavingReference && mapping.get("payment_type") != null && mapping.get("charge_id") == null && mapping.get("gl_account_id") != null) {
+                    Map<String, Object> item = new HashMap<>();
+                    item.put("payment", jdbcTemplate.queryForObject("select id, value text m_payment_type where id = ?", Option.MAPPER, mapping.get("payment_type")));
+                    item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
+                    this.advancedAccountingRuleFundSourceValue.add(item);
+                }
+                if (financialAccountType == FinancialAccountType.IncomeFee && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
+                    Map<String, Object> item = new HashMap<>();
+                    item.put("charge", jdbcTemplate.queryForObject("select id, name text from m_charge where id = ?", Option.MAPPER, mapping.get("charge_id")));
+                    item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
+                    this.advancedAccountingRuleFeeIncomeValue.add(item);
+
+                }
+                if (financialAccountType == FinancialAccountType.IncomePenalty && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
+                    Map<String, Object> item = new HashMap<>();
+                    item.put("charge", jdbcTemplate.queryForObject("select id, name text from m_charge where id = ?", Option.MAPPER, mapping.get("charge_id")));
+                    item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
+                    this.advancedAccountingRulePenaltyIncomeValue.add(item);
+                }
+                if (financialAccountType != null && mapping.get("gl_account_id") != null && mapping.get("charge_id") == null && mapping.get("payment_type") == null) {
+                    if (financialAccountType == FinancialAccountType.SavingReference) {
+                        this.cashSavingReferenceValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.OverdraftPortfolio) {
+                        this.cashOverdraftPortfolioValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.SavingControl) {
+                        this.cashSavingControlValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.TransferInSuspense) {
+                        this.cashSavingTransferInSuspenseValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.EscheatLiability) {
+                        this.cashEscheatLiabilityValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.InterestOnSaving) {
+                        this.cashInterestOnSavingValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.WriteOff) {
+                        this.cashWriteOffValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.IncomeFee) {
+                        this.cashIncomeFromFeeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.IncomePenalty) {
+                        this.cashIncomeFromPenaltyValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.OverdraftInterestIncome) {
+                        this.cashOverdraftInterestIncomeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    }
+                }
+            }
         }
-
-        this.chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeColumn));
-        this.chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeColumn));
-        this.chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeColumn));
-        this.chargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::chargeColumn));
-        this.chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeColumn));
 
     }
 
     protected void initSectionAccounting() {
         this.accountingField = new RadioGroup<>("accountingView", new PropertyModel<>(this, "accountingValue"));
-        this.accountingField.add(new Radio<>("accountingNone", new Model<>(ACC_NONE)));
-        this.accountingField.add(new Radio<>("accountingCash", new Model<>(ACC_CASH)));
+        this.accountingField.add(new Radio<>("accountingNone", new Model<>(AccountingType.None.getDescription())));
+        this.accountingField.add(new Radio<>("accountingCash", new Model<>(AccountingType.Cash.getDescription())));
         add(this.accountingField);
 
         initAccountingCash();
@@ -524,7 +571,7 @@ public class SavingPreviewPage extends Page {
 
     protected ItemPanel advancedAccountingRulePenaltyIncomeColumn(String column, IModel<String> display, Map<String, Object> model) {
         if ("charge".equals(column) || "account".equals(column)) {
-            Option value = (Option) model.get(column);
+            String value = (String) model.get(column);
             return new TextCell(value);
         }
         throw new WicketRuntimeException("Unknown " + column);
@@ -688,8 +735,11 @@ public class SavingPreviewPage extends Page {
     }
 
     protected ItemPanel chargeColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("name".equals(column) || "type".equals(column) || "collect".equals(column) || "date".equals(column)) {
+        if ("name".equals(column) || "date".equals(column)) {
             String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("type".equals(column) || "collect".equals(column)) {
+            Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("amount".equals(column)) {
             Number value = (Number) model.get(column);

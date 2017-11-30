@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
+import com.angkorteam.fintech.dto.enums.AccountingType;
 import com.angkorteam.fintech.dto.enums.ApplyPenalOn;
 import com.angkorteam.fintech.dto.enums.Attribute;
 import com.angkorteam.fintech.dto.enums.ChargeType;
@@ -748,7 +749,7 @@ public class RecurringDepositCreatePageTest {
 
         this.wicket.startPage(page);
 
-        Assert.assertEquals("expected to have accountingValue = 'Cash'", page.accountingValue, RecurringDepositCreatePage.ACC_CASH);
+        Assert.assertEquals("expected to have accountingValue = 'Cash'", page.accountingValue, AccountingType.Cash.getDescription());
     }
 
     @Test

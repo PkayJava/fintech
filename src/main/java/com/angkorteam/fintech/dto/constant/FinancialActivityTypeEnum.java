@@ -5,7 +5,13 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum FinancialActivityTypeEnum {
 
-    AssetTransfer("100", "Asset Transfer", AccountType.Asset), CashAtMainvault("101", "Cash At Mainvault", AccountType.Asset), CashAtTeller("102", "Cash At Teller", AccountType.Asset), AssetFundSource("103", "Asset Fund Source", AccountType.Asset), LiabilityTransfer("200", "Liability Transfer", AccountType.Liability), PayableDividends("201", "Payable Dividends", AccountType.Liability), OpeningBalancesTransferContra("300", "Opening Balances Transfer Contra", AccountType.Equity);
+    AssetTransfer("100", "Asset Transfer", AccountType.Asset), 
+    CashAtMainvault("101", "Cash At Mainvault", AccountType.Asset), 
+    CashAtTeller("102", "Cash At Teller", AccountType.Asset), 
+    AssetFundSource("103", "Asset Fund Source", AccountType.Asset), 
+    LiabilityTransfer("200", "Liability Transfer", AccountType.Liability), 
+    PayableDividends("201", "Payable Dividends", AccountType.Liability), 
+    OpeningBalancesTransferContra("300", "Opening Balances Transfer Contra", AccountType.Equity);
 
     public static final String ID = "financial_activity_type_enum";
 

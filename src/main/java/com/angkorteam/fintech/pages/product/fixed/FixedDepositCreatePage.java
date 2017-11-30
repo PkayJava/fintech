@@ -30,6 +30,7 @@ import com.angkorteam.fintech.dto.builder.ProductFixedDepositBuilder;
 import com.angkorteam.fintech.dto.builder.ProductFixedDepositBuilder.IncentiveBuilder;
 import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
+import com.angkorteam.fintech.dto.enums.AccountingType;
 import com.angkorteam.fintech.dto.enums.ApplyPenalOn;
 import com.angkorteam.fintech.dto.enums.Attribute;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
@@ -93,9 +94,6 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 public class FixedDepositCreatePage extends Page {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(FixedDepositCreatePage.class);
-
-    public static final String ACC_NONE = "None";
-    public static final String ACC_CASH = "Cash";
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -318,7 +316,7 @@ public class FixedDepositCreatePage extends Page {
 
     // Accounting
 
-    protected String accountingValue = ACC_NONE;
+    protected String accountingValue = AccountingType.None.getDescription();
     protected RadioGroup<String> accountingField;
 
     protected WebMarkupContainer cashBlock;
@@ -496,14 +494,14 @@ public class FixedDepositCreatePage extends Page {
         this.termDayInYearValue = DayInYear.D365.toOption();
         this.settingMinimumDepositTermValue = 1l;
         this.settingMinimumDepositTypeValue = LockInType.Month.toOption();
-        this.accountingValue = ACC_NONE;
+        this.accountingValue = AccountingType.None.getDescription();
     }
 
     protected void initSectionAccounting() {
         this.accountingField = new RadioGroup<>("accountingField", new PropertyModel<>(this, "accountingValue"));
         this.accountingField.add(new AjaxFormChoiceComponentUpdatingBehavior(this::accountingFieldUpdate));
-        this.accountingField.add(new Radio<>("accountingNone", new Model<>(ACC_NONE)));
-        this.accountingField.add(new Radio<>("accountingCash", new Model<>(ACC_CASH)));
+        this.accountingField.add(new Radio<>("accountingNone", new Model<>(AccountingType.None.getDescription())));
+        this.accountingField.add(new Radio<>("accountingCash", new Model<>(AccountingType.Cash.getDescription())));
         this.form.add(this.accountingField);
 
         initAccountingCash();
@@ -1529,13 +1527,13 @@ public class FixedDepositCreatePage extends Page {
 
         String accounting = this.accountingValue;
 
-        if (ACC_NONE.equals(accounting)) {
-            builder.withAccountingRule(1l);
-        } else if (ACC_CASH.equals(accounting)) {
-            builder.withAccountingRule(2l);
+        if (AccountingType.None.getDescription().equals(accounting)) {
+            builder.withAccountingRule(AccountingType.None);
+        } else if (AccountingType.Cash.getDescription().equals(accounting)) {
+            builder.withAccountingRule(AccountingType.Cash);
         }
 
-        if (ACC_CASH.equals(accounting)) {
+        if (AccountingType.Cash.getDescription().equals(accounting)) {
             if (this.cashSavingReferenceValue != null) {
                 builder.withSavingsReferenceAccountId(this.cashSavingReferenceValue.getId());
             }
@@ -1556,7 +1554,7 @@ public class FixedDepositCreatePage extends Page {
             }
         }
 
-        if (ACC_CASH.equals(accounting)) {
+        if (AccountingType.Cash.getDescription().equals(accounting)) {
             if (this.advancedAccountingRuleFundSourceValue != null && !this.advancedAccountingRuleFundSourceValue.isEmpty()) {
                 for (Map<String, Object> item : this.advancedAccountingRuleFundSourceValue) {
                     builder.withPaymentChannelToFundSourceMappings((String) item.get("paymentId"), (String) item.get("accountId"));
