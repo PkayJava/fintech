@@ -382,6 +382,7 @@ public class SavingPreviewPage extends Page {
         savingProductQuery.addField("m_savings_product.days_to_inactive");
         savingProductQuery.addField("m_savings_product.days_to_dormancy");
         savingProductQuery.addField("m_savings_product.days_to_escheat");
+        savingProductQuery.addField("m_savings_product.accounting_type");
 
         savingProductQuery.addJoin("inner join m_organisation_currency on m_savings_product.currency_code = m_organisation_currency.code");
 
@@ -412,10 +413,12 @@ public class SavingPreviewPage extends Page {
         this.settingMinimumBalanceValue = (Double) savingObject.get("min_required_balance");
         this.settingBalanceRequiredForInterestCalculationValue = (Double) savingObject.get("min_balance_for_interest_calculation");
 
-        this.settingWithholdTaxApplicableValue = (Boolean) savingObject.get("withhold_tax");
+        Long withhold_tax = (Long) savingObject.get("withhold_tax");
+        this.settingWithholdTaxApplicableValue = withhold_tax != null && withhold_tax == 1;
         this.settingTaxGroupValue = jdbcTemplate.queryForObject("select name from m_tax_group where id = ?", String.class, savingObject.get("tax_group_id"));
 
-        this.settingEnableDormancyTrackingValue = (Boolean) savingObject.get("is_dormancy_tracking_active");
+        Long is_dormancy_tracking_active = (Long) savingObject.get("is_dormancy_tracking_active");
+        this.settingEnableDormancyTrackingValue = is_dormancy_tracking_active != null && is_dormancy_tracking_active == 1;
         this.settingNumberOfDaysToDormantSubStatusValue = (Long) savingObject.get("days_to_dormancy");
 
         this.settingNumberOfDaysToInactiveSubStatusValue = (Long) savingObject.get("days_to_inactive");
@@ -441,7 +444,7 @@ public class SavingPreviewPage extends Page {
         chargeQuery.addWhere("m_savings_product_charge.savings_product_id = '" + this.savingId + "'");
 
         AccountingType accountingType = AccountingType.parseLiteral(String.valueOf(savingObject.get("accounting_type")));
-        cashVContainer.setVisible(accountingType != null);
+
         if (accountingType != null) {
             this.accountingValue = accountingType.getDescription();
 
@@ -464,7 +467,7 @@ public class SavingPreviewPage extends Page {
                 FinancialAccountType financialAccountType = FinancialAccountType.parseLiteral(String.valueOf(mapping.get("financial_account_type")));
                 if (financialAccountType == FinancialAccountType.SavingReference && mapping.get("payment_type") != null && mapping.get("charge_id") == null && mapping.get("gl_account_id") != null) {
                     Map<String, Object> item = new HashMap<>();
-                    item.put("payment", jdbcTemplate.queryForObject("select id, value text m_payment_type where id = ?", Option.MAPPER, mapping.get("payment_type")));
+                    item.put("payment", jdbcTemplate.queryForObject("select id, value text from m_payment_type where id = ?", Option.MAPPER, mapping.get("payment_type")));
                     item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
                     this.advancedAccountingRuleFundSourceValue.add(item);
                 }
@@ -571,7 +574,7 @@ public class SavingPreviewPage extends Page {
 
     protected ItemPanel advancedAccountingRulePenaltyIncomeColumn(String column, IModel<String> display, Map<String, Object> model) {
         if ("charge".equals(column) || "account".equals(column)) {
-            String value = (String) model.get(column);
+            Option value = (Option) model.get(column);
             return new TextCell(value);
         }
         throw new WicketRuntimeException("Unknown " + column);
