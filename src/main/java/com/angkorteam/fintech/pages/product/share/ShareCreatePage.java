@@ -944,7 +944,8 @@ public class ShareCreatePage extends Page {
 
         if (this.chargeValue != null && !this.chargeValue.isEmpty()) {
             for (Map<String, Object> item : this.chargeValue) {
-                builder.withCharges((String) item.get("chargeId"));
+                Option charge = (Option) item.get("charge");
+                builder.withCharges(charge.getId());
             }
         }
 
