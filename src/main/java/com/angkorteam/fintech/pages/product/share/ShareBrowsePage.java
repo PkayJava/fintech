@@ -118,7 +118,7 @@ public class ShareBrowsePage extends Page {
             String value = (String) model.get(column);
             PageParameters parameters = new PageParameters();
             parameters.add("shareId", model.get("id"));
-            return new LinkCell(ShareCreatePage.class, parameters, value);
+            return new LinkCell(SharePreviewPage.class, parameters, value);
         } else if ("shortName".equals(column)) {
             String value = (String) model.get(column);
             return new TextCell(value);

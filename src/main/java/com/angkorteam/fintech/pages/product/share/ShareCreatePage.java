@@ -360,7 +360,7 @@ public class ShareCreatePage extends Page {
     protected boolean accountingFieldUpdate(AjaxRequestTarget target) {
         this.cashIContainer.setVisible(false);
 
-        if ("Cash".equals(this.accountingValue)) {
+        if (AccountingType.Cash.getDescription().equals(this.accountingValue)) {
             this.cashIContainer.setVisible(true);
         }
 

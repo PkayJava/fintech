@@ -25,6 +25,7 @@ import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
 import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
 import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
 import com.angkorteam.fintech.dto.enums.LockInType;
+import com.angkorteam.fintech.dto.enums.ProductType;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.ReadOnlyView;
@@ -359,6 +360,7 @@ public class SavingPreviewPage extends Page {
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         SelectQuery savingProductQuery = new SelectQuery("m_savings_product");
+        savingProductQuery.addJoin("inner join m_organisation_currency on m_savings_product.currency_code = m_organisation_currency.code");
         savingProductQuery.addField("m_savings_product.name");
         savingProductQuery.addField("m_savings_product.short_name");
         savingProductQuery.addField("m_savings_product.description");
@@ -385,14 +387,13 @@ public class SavingPreviewPage extends Page {
         savingProductQuery.addField("m_savings_product.days_to_escheat");
         savingProductQuery.addField("m_savings_product.accounting_type");
 
-        savingProductQuery.addJoin("inner join m_organisation_currency on m_savings_product.currency_code = m_organisation_currency.code");
-
         savingProductQuery.addWhere("m_savings_product.id = '" + this.savingId + "'");
 
         Map<String, Object> savingObject = jdbcTemplate.queryForMap(savingProductQuery.toSQL());
         this.detailProductNameValue = (String) savingObject.get("name");
         this.detailShortNameValue = (String) savingObject.get("short_name");
         this.detailDescriptionValue = (String) savingObject.get("description");
+
         this.currencyCodeValue = (String) savingObject.get("currency");
         this.currencyMultipleOfValue = (Long) savingObject.get("currency_multiplesof");
         this.currencyDecimalPlaceValue = (Long) savingObject.get("currency_digits");
@@ -409,23 +410,20 @@ public class SavingPreviewPage extends Page {
         this.settingLockInTypeValue = LockInType.optionLiteral(String.valueOf(savingObject.get("lockin_period_frequency_enum")));
         Long withdrawal_fee_for_transfer = (Long) savingObject.get("withdrawal_fee_for_transfer");
         this.settingApplyWithdrawalFeeForTransferValue = withdrawal_fee_for_transfer != null && withdrawal_fee_for_transfer == 1l;
-
         this.settingEnforceMinimumBalanceValue = (Boolean) savingObject.get("enforce_min_required_balance");
         this.settingMinimumBalanceValue = (Double) savingObject.get("min_required_balance");
         this.settingBalanceRequiredForInterestCalculationValue = (Double) savingObject.get("min_balance_for_interest_calculation");
-
         Long withhold_tax = (Long) savingObject.get("withhold_tax");
         this.settingWithholdTaxApplicableValue = withhold_tax != null && withhold_tax == 1;
         this.settingTaxGroupValue = jdbcTemplate.queryForObject("select name from m_tax_group where id = ?", String.class, savingObject.get("tax_group_id"));
-
         Long is_dormancy_tracking_active = (Long) savingObject.get("is_dormancy_tracking_active");
         this.settingEnableDormancyTrackingValue = is_dormancy_tracking_active != null && is_dormancy_tracking_active == 1;
         this.settingNumberOfDaysToDormantSubStatusValue = (Long) savingObject.get("days_to_dormancy");
-
         this.settingNumberOfDaysToInactiveSubStatusValue = (Long) savingObject.get("days_to_inactive");
         this.settingNumberOfDaysToEscheatValue = (Long) savingObject.get("days_to_escheat");
 
         SelectQuery chargeQuery = new SelectQuery("m_charge");
+        chargeQuery.addJoin("inner join m_savings_product_charge on m_savings_product_charge.charge_id = m_charge.id");
         chargeQuery.addField("concat(m_charge.name, ' [', m_charge.currency_code, ']') name");
         chargeQuery.addField("m_charge.charge_time_enum");
         chargeQuery.addField("m_charge.charge_calculation_enum");
@@ -441,28 +439,27 @@ public class SavingPreviewPage extends Page {
         chargeQuery.addField("m_charge.fee_frequency");
         chargeQuery.addField("m_charge.income_or_liability_account_id");
         chargeQuery.addField("m_charge.tax_group_id");
-        chargeQuery.addJoin("inner join m_savings_product_charge on m_savings_product_charge.charge_id = m_charge.id");
         chargeQuery.addWhere("m_savings_product_charge.savings_product_id = '" + this.savingId + "'");
+
+        List<Map<String, Object>> chargeObjects = jdbcTemplate.queryForList(chargeQuery.toSQL());
+
+        for (Map<String, Object> chargeObject : chargeObjects) {
+            Map<String, Object> charge = new HashMap<>();
+            charge.put("name", chargeObject.get("name"));
+            Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
+            charge.put("type", type);
+            Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
+            charge.put("collect", collect);
+            charge.put("amount", chargeObject.get("amount"));
+            this.chargeValue.add(charge);
+        }
 
         AccountingType accountingType = AccountingType.parseLiteral(String.valueOf(savingObject.get("accounting_type")));
 
         if (accountingType != null) {
             this.accountingValue = accountingType.getDescription();
 
-            List<Map<String, Object>> chargeObjects = jdbcTemplate.queryForList(chargeQuery.toSQL());
-
-            for (Map<String, Object> chargeObject : chargeObjects) {
-                Map<String, Object> charge = new HashMap<>();
-                charge.put("name", chargeObject.get("name"));
-                Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
-                charge.put("type", type);
-                Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
-                charge.put("collect", collect);
-                charge.put("amount", chargeObject.get("amount"));
-                this.chargeValue.add(charge);
-            }
-
-            List<Map<String, Object>> mappings = jdbcTemplate.queryForList("select * from acc_product_mapping where product_id = ?", this.savingId);
+            List<Map<String, Object>> mappings = jdbcTemplate.queryForList("select * from acc_product_mapping where product_id = ? and product_type = ?", this.savingId, ProductType.Saving.getLiteral());
 
             for (Map<String, Object> mapping : mappings) {
                 FinancialAccountType financialAccountType = FinancialAccountType.parseLiteral(String.valueOf(mapping.get("financial_account_type")));
@@ -477,7 +474,6 @@ public class SavingPreviewPage extends Page {
                     item.put("charge", jdbcTemplate.queryForObject("select id, name text from m_charge where id = ?", Option.MAPPER, mapping.get("charge_id")));
                     item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
                     this.advancedAccountingRuleFeeIncomeValue.add(item);
-
                 }
                 if (financialAccountType == FinancialAccountType.IncomePenalty && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
                     Map<String, Object> item = new HashMap<>();
@@ -1066,10 +1062,6 @@ public class SavingPreviewPage extends Page {
         this.detailProductNameBlock.add(this.detailProductNameVContainer);
         this.detailProductNameView = new ReadOnlyView("detailProductNameView", new PropertyModel<>(this, "detailProductNameValue"));
         this.detailProductNameVContainer.add(this.detailProductNameView);
-    }
-
-    protected void saveButtonSubmit(Button button) {
-        setResponsePage(SavingBrowsePage.class);
     }
 
 }
