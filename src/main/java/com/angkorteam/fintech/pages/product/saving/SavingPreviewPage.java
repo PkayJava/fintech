@@ -8,8 +8,7 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.Radio;
-import org.apache.wicket.markup.html.form.RadioGroup;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -219,7 +218,7 @@ public class SavingPreviewPage extends Page {
     // Accounting
 
     protected String accountingValue = AccountingType.None.getDescription();
-    protected RadioGroup<String> accountingField;
+    protected Label accountingLabel;
 
     protected WebMarkupContainer cashBlock;
     protected WebMarkupContainer cashVContainer;
@@ -328,6 +327,8 @@ public class SavingPreviewPage extends Page {
 
     @Override
     protected void configureMetaData() {
+        this.cashVContainer.setVisible(AccountingType.Cash.getDescription().equals(this.accountingValue));
+        this.advancedAccountingRuleVContainer.setVisible(AccountingType.Cash.getDescription().equals(this.accountingValue));
     }
 
     @Override
@@ -513,10 +514,8 @@ public class SavingPreviewPage extends Page {
     }
 
     protected void initSectionAccounting() {
-        this.accountingField = new RadioGroup<>("accountingView", new PropertyModel<>(this, "accountingValue"));
-        this.accountingField.add(new Radio<>("accountingNone", new Model<>(AccountingType.None.getDescription())));
-        this.accountingField.add(new Radio<>("accountingCash", new Model<>(AccountingType.Cash.getDescription())));
-        add(this.accountingField);
+        this.accountingLabel = new Label("accountingLabel", new PropertyModel<>(this, "accountingValue"));
+        add(this.accountingLabel);
 
         initAccountingCash();
 
