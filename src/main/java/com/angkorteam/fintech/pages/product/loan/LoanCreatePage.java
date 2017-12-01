@@ -32,6 +32,7 @@ import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.DayInYear;
 import com.angkorteam.fintech.dto.enums.LockInType;
+import com.angkorteam.fintech.dto.enums.ProductPopup;
 import com.angkorteam.fintech.dto.enums.loan.AdvancePaymentsAdjustmentType;
 import com.angkorteam.fintech.dto.enums.loan.Amortization;
 import com.angkorteam.fintech.dto.enums.loan.ClosureInterestCalculationRule;
@@ -47,15 +48,14 @@ import com.angkorteam.fintech.dto.enums.loan.RepaymentStrategy;
 import com.angkorteam.fintech.dto.enums.loan.WhenType;
 import com.angkorteam.fintech.helper.LoanHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
+import com.angkorteam.fintech.popup.ChargePopup;
 import com.angkorteam.fintech.popup.CurrencyPopup;
+import com.angkorteam.fintech.popup.FeeChargePopup;
+import com.angkorteam.fintech.popup.InterestLoanCyclePopup;
 import com.angkorteam.fintech.popup.PaymentTypePopup;
-import com.angkorteam.fintech.popup.loan.ChargePopup;
-import com.angkorteam.fintech.popup.loan.FeeChargePopup;
-import com.angkorteam.fintech.popup.loan.InterestLoanCyclePopup;
-import com.angkorteam.fintech.popup.loan.OverdueChargePopup;
-import com.angkorteam.fintech.popup.loan.PenaltyChargePopup;
-import com.angkorteam.fintech.popup.loan.PrincipalLoanCyclePopup;
-import com.angkorteam.fintech.popup.loan.RepaymentLoanCyclePopup;
+import com.angkorteam.fintech.popup.PenaltyChargePopup;
+import com.angkorteam.fintech.popup.PrincipalLoanCyclePopup;
+import com.angkorteam.fintech.popup.RepaymentLoanCyclePopup;
 import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.provider.DayInYearProvider;
 import com.angkorteam.fintech.provider.FundProvider;
@@ -1120,7 +1120,7 @@ public class LoanCreatePage extends Page {
     protected boolean overdueChargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.overdueChargePopup.setContent(new OverdueChargePopup("overdueCharge", this.overdueChargePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.overdueChargePopup.setContent(new com.angkorteam.fintech.popup.OverdueChargePopup("overdueCharge", this.overdueChargePopup, ProductPopup.Loan, this.popupModel, this.currencyCodeValue.getId()));
             this.overdueChargePopup.show(target);
         } else {
             this.overdueChargePopup.setContent(new CurrencyPopup("currency", this.overdueChargePopup));
@@ -1191,7 +1191,7 @@ public class LoanCreatePage extends Page {
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.chargePopup.setContent(new ChargePopup("charge", this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.chargePopup.setContent(new ChargePopup("charge", this.chargePopup, ProductPopup.Loan, this.popupModel, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
             this.chargePopup.setContent(new CurrencyPopup("currency", this.chargePopup));
@@ -1821,7 +1821,7 @@ public class LoanCreatePage extends Page {
     protected boolean advancedAccountingRuleFeeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.feeIncomePopup.setContent(new FeeChargePopup("feeCharge", this.feeIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.feeIncomePopup.setContent(new FeeChargePopup("feeCharge", this.feeIncomePopup, ProductPopup.Loan, this.popupModel, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
         } else {
             this.feeIncomePopup.setContent(new CurrencyPopup("currency", this.feeIncomePopup));
@@ -1862,7 +1862,7 @@ public class LoanCreatePage extends Page {
     protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.penaltyIncomePopup.setContent(new PenaltyChargePopup("penaltyCharge", this.penaltyIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.penaltyIncomePopup.setContent(new PenaltyChargePopup("penaltyCharge", this.penaltyIncomePopup, ProductPopup.Loan, this.popupModel, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
         } else {
             this.penaltyIncomePopup.setContent(new CurrencyPopup("currency", this.penaltyIncomePopup));

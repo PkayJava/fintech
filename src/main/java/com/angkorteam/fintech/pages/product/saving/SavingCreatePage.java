@@ -31,13 +31,14 @@ import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
 import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
 import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
 import com.angkorteam.fintech.dto.enums.LockInType;
+import com.angkorteam.fintech.dto.enums.ProductPopup;
 import com.angkorteam.fintech.helper.SavingHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
+import com.angkorteam.fintech.popup.ChargePopup;
 import com.angkorteam.fintech.popup.CurrencyPopup;
+import com.angkorteam.fintech.popup.FeeChargePopup;
 import com.angkorteam.fintech.popup.PaymentTypePopup;
-import com.angkorteam.fintech.popup.saving.ChargePopup;
-import com.angkorteam.fintech.popup.saving.FeeChargePopup;
-import com.angkorteam.fintech.popup.saving.PenaltyChargePopup;
+import com.angkorteam.fintech.popup.PenaltyChargePopup;
 import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.provider.DayInYearProvider;
 import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
@@ -152,12 +153,12 @@ public class SavingCreatePage extends Page {
     protected Select2SingleChoice<Option> termInterestPostingPeriodField;
     protected TextFeedbackPanel termInterestPostingPeriodFeedback;
 
-    protected WebMarkupBlock termDaysInYearBlock;
-    protected WebMarkupContainer termDaysInYearIContainer;
-    protected DayInYearProvider termDaysInYearProvider;
-    protected Option termDaysInYearValue;
-    protected Select2SingleChoice<Option> termDaysInYearField;
-    protected TextFeedbackPanel termDaysInYearFeedback;
+    protected WebMarkupBlock termDayInYearBlock;
+    protected WebMarkupContainer termDayInYearIContainer;
+    protected DayInYearProvider termDayInYearProvider;
+    protected Option termDayInYearValue;
+    protected Select2SingleChoice<Option> termDayInYearField;
+    protected TextFeedbackPanel termDayInYearFeedback;
 
     // Settings
 
@@ -421,7 +422,7 @@ public class SavingCreatePage extends Page {
         this.termNominalAnnualInterestField.setRequired(true);
         this.termInterestCompoundingPeriodField.setRequired(true);
         this.termInterestCalculatedUsingField.setRequired(true);
-        this.termDaysInYearField.setRequired(true);
+        this.termDayInYearField.setRequired(true);
         this.accountingField.setRequired(true);
         this.termInterestPostingPeriodField.setRequired(true);
     }
@@ -474,7 +475,7 @@ public class SavingCreatePage extends Page {
         this.termInterestCompoundingPeriodValue = InterestCompoundingPeriod.Daily.toOption();
         this.termInterestCalculatedUsingValue = InterestCalculatedUsing.DailyBalance.toOption();
         this.termInterestPostingPeriodValue = InterestPostingPeriod.Monthly.toOption();
-        this.termDaysInYearValue = DayInYear.D365.toOption();
+        this.termDayInYearValue = DayInYear.D365.toOption();
         this.accountingValue = AccountingType.None.getDescription();
     }
 
@@ -599,7 +600,7 @@ public class SavingCreatePage extends Page {
     protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.penaltyIncomePopup.setContent(new PenaltyChargePopup("penaltyCharge", this.penaltyIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.penaltyIncomePopup.setContent(new PenaltyChargePopup("penaltyCharge", this.penaltyIncomePopup, ProductPopup.Saving, this.popupModel, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
         } else {
             this.penaltyIncomePopup.setContent(new CurrencyPopup("currency", this.penaltyIncomePopup));
@@ -646,7 +647,7 @@ public class SavingCreatePage extends Page {
     protected boolean advancedAccountingRuleFeeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.feeIncomePopup.setContent(new FeeChargePopup("feeCharge", this.feeIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.feeIncomePopup.setContent(new FeeChargePopup("feeCharge", this.feeIncomePopup, ProductPopup.Saving, this.popupModel, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
         } else {
             this.feeIncomePopup.setContent(new CurrencyPopup("currency", this.feeIncomePopup));
@@ -968,7 +969,7 @@ public class SavingCreatePage extends Page {
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.chargePopup.setContent(new ChargePopup("charge", this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.chargePopup.setContent(new ChargePopup("charge", this.chargePopup, ProductPopup.Saving, this.popupModel, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
             this.chargePopup.setContent(new CurrencyPopup("currency", this.chargePopup));
@@ -1276,21 +1277,21 @@ public class SavingCreatePage extends Page {
 
         initTermInterestPostingPeriodBlock();
 
-        initTermDaysInYearBlock();
+        inittermDayInYearBlock();
     }
 
-    protected void initTermDaysInYearBlock() {
-        this.termDaysInYearBlock = new WebMarkupBlock("termDaysInYearBlock", Size.Six_6);
-        this.form.add(this.termDaysInYearBlock);
-        this.termDaysInYearIContainer = new WebMarkupContainer("termDaysInYearIContainer");
-        this.termDaysInYearBlock.add(this.termDaysInYearIContainer);
-        this.termDaysInYearProvider = new DayInYearProvider(DayInYear.D365, DayInYear.D360);
-        this.termDaysInYearField = new Select2SingleChoice<>("termDaysInYearField", new PropertyModel<>(this, "termDaysInYearValue"), this.termDaysInYearProvider);
-        this.termDaysInYearField.setLabel(Model.of("Days in year"));
-        this.termDaysInYearField.add(new OnChangeAjaxBehavior());
-        this.termDaysInYearIContainer.add(this.termDaysInYearField);
-        this.termDaysInYearFeedback = new TextFeedbackPanel("termDaysInYearFeedback", this.termDaysInYearField);
-        this.termDaysInYearIContainer.add(this.termDaysInYearFeedback);
+    protected void inittermDayInYearBlock() {
+        this.termDayInYearBlock = new WebMarkupBlock("termDayInYearBlock", Size.Six_6);
+        this.form.add(this.termDayInYearBlock);
+        this.termDayInYearIContainer = new WebMarkupContainer("termDayInYearIContainer");
+        this.termDayInYearBlock.add(this.termDayInYearIContainer);
+        this.termDayInYearProvider = new DayInYearProvider(DayInYear.D365, DayInYear.D360);
+        this.termDayInYearField = new Select2SingleChoice<>("termDayInYearField", new PropertyModel<>(this, "termDayInYearValue"), this.termDayInYearProvider);
+        this.termDayInYearField.setLabel(Model.of("Days in year"));
+        this.termDayInYearField.add(new OnChangeAjaxBehavior());
+        this.termDayInYearIContainer.add(this.termDayInYearField);
+        this.termDayInYearFeedback = new TextFeedbackPanel("termDayInYearFeedback", this.termDayInYearField);
+        this.termDayInYearIContainer.add(this.termDayInYearFeedback);
     }
 
     protected void initTermInterestPostingPeriodBlock() {
@@ -1504,8 +1505,8 @@ public class SavingCreatePage extends Page {
         if (this.termInterestCalculatedUsingValue != null) {
             builder.withInterestCalculationType(InterestCalculatedUsing.valueOf(this.termInterestCalculatedUsingValue.getId()));
         }
-        if (this.termDaysInYearValue != null) {
-            builder.withInterestCalculationDaysInYearType(DayInYear.valueOf(this.termDaysInYearValue.getId()));
+        if (this.termDayInYearValue != null) {
+            builder.withInterestCalculationDaysInYearType(DayInYear.valueOf(this.termDayInYearValue.getId()));
         }
         builder.withMinRequiredOpeningBalance(this.settingMinimumOpeningBalanceValue);
         builder.withLockinPeriodFrequency(this.settingLockInPeriodValue);

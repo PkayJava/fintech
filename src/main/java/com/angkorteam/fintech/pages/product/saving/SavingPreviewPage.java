@@ -44,7 +44,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.TextColumn;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
 
@@ -112,11 +111,11 @@ public class SavingPreviewPage extends Page {
     protected Option termInterestPostingPeriodValue;
     protected ReadOnlyView termInterestPostingPeriodView;
 
-    protected WebMarkupBlock termDaysInYearBlock;
-    protected WebMarkupContainer termDaysInYearVContainer;
-    protected Option termDaysInYearValue;
-    protected ReadOnlyView termDaysInYearView;
-    protected TextFeedbackPanel termDaysInYearFeedback;
+    protected WebMarkupBlock termDayInYearBlock;
+    protected WebMarkupContainer termDayInYearVContainer;
+    protected Option termDayInYearValue;
+    protected ReadOnlyView termDayInYearView;
+    protected TextFeedbackPanel termDayInYearFeedback;
 
     // Settings
 
@@ -364,6 +363,7 @@ public class SavingPreviewPage extends Page {
         savingProductQuery.addField("m_savings_product.name");
         savingProductQuery.addField("m_savings_product.short_name");
         savingProductQuery.addField("m_savings_product.description");
+        savingProductQuery.addField("concat(m_organisation_currency.name, ' [', m_organisation_currency.code, ']') currency");
         savingProductQuery.addField("m_savings_product.currency_digits");
         savingProductQuery.addField("m_savings_product.currency_multiplesof");
         savingProductQuery.addField("m_savings_product.nominal_annual_interest_rate");
@@ -371,7 +371,6 @@ public class SavingPreviewPage extends Page {
         savingProductQuery.addField("m_savings_product.interest_posting_period_enum");
         savingProductQuery.addField("m_savings_product.interest_calculation_type_enum");
         savingProductQuery.addField("m_savings_product.interest_calculation_days_in_year_type_enum");
-        savingProductQuery.addField("concat(m_organisation_currency.name, ' [', m_organisation_currency.code, ']') currency");
         savingProductQuery.addField("m_savings_product.min_required_opening_balance");
         savingProductQuery.addField("m_savings_product.lockin_period_frequency");
         savingProductQuery.addField("m_savings_product.lockin_period_frequency_enum");
@@ -397,12 +396,12 @@ public class SavingPreviewPage extends Page {
         this.currencyCodeValue = (String) savingObject.get("currency");
         this.currencyMultipleOfValue = (Long) savingObject.get("currency_multiplesof");
         this.currencyDecimalPlaceValue = (Long) savingObject.get("currency_digits");
+        
         this.termNominalAnnualInterestValue = (Double) savingObject.get("nominal_annual_interest_rate");
-
         this.termInterestCompoundingPeriodValue = InterestCompoundingPeriod.optionLiteral(String.valueOf(savingObject.get("interest_compounding_period_enum")));
         this.termInterestPostingPeriodValue = InterestPostingPeriod.optionLiteral(String.valueOf(savingObject.get("interest_posting_period_enum")));
         this.termInterestCalculatedUsingValue = InterestCalculatedUsing.optionLiteral(String.valueOf(savingObject.get("interest_calculation_type_enum")));
-        this.termDaysInYearValue = DayInYear.optionLiteral(String.valueOf(savingObject.get("interest_calculation_days_in_year_type_enum")));
+        this.termDayInYearValue = DayInYear.optionLiteral(String.valueOf(savingObject.get("interest_calculation_days_in_year_type_enum")));
 
         this.settingMinimumOpeningBalanceValue = (Double) savingObject.get("min_required_opening_balance");
         Double lockin_period_frequency = (Double) savingObject.get("lockin_period_frequency");
@@ -945,16 +944,16 @@ public class SavingPreviewPage extends Page {
 
         initTermInterestPostingPeriodBlock();
 
-        initTermDaysInYearBlock();
+        inittermDayInYearBlock();
     }
 
-    protected void initTermDaysInYearBlock() {
-        this.termDaysInYearBlock = new WebMarkupBlock("termDaysInYearBlock", Size.Six_6);
-        add(this.termDaysInYearBlock);
-        this.termDaysInYearVContainer = new WebMarkupContainer("termDaysInYearVContainer");
-        this.termDaysInYearBlock.add(this.termDaysInYearVContainer);
-        this.termDaysInYearView = new ReadOnlyView("termDaysInYearView", new PropertyModel<>(this, "termDaysInYearValue"));
-        this.termDaysInYearVContainer.add(this.termDaysInYearView);
+    protected void inittermDayInYearBlock() {
+        this.termDayInYearBlock = new WebMarkupBlock("termDayInYearBlock", Size.Six_6);
+        add(this.termDayInYearBlock);
+        this.termDayInYearVContainer = new WebMarkupContainer("termDayInYearVContainer");
+        this.termDayInYearBlock.add(this.termDayInYearVContainer);
+        this.termDayInYearView = new ReadOnlyView("termDayInYearView", new PropertyModel<>(this, "termDayInYearValue"));
+        this.termDayInYearVContainer.add(this.termDayInYearView);
     }
 
     protected void initTermInterestPostingPeriodBlock() {

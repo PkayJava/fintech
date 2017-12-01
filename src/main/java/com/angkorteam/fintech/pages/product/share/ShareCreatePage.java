@@ -29,11 +29,12 @@ import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.LockInType;
 import com.angkorteam.fintech.dto.enums.MinimumActivePeriod;
+import com.angkorteam.fintech.dto.enums.ProductPopup;
 import com.angkorteam.fintech.helper.ShareHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
+import com.angkorteam.fintech.popup.ChargePopup;
 import com.angkorteam.fintech.popup.CurrencyPopup;
-import com.angkorteam.fintech.popup.share.ChargePopup;
-import com.angkorteam.fintech.popup.share.MarketPricePopup;
+import com.angkorteam.fintech.popup.MarketPricePopup;
 import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.provider.LockInTypeProvider;
 import com.angkorteam.fintech.provider.MinimumActivePeriodProvider;
@@ -569,7 +570,7 @@ public class ShareCreatePage extends Page {
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.chargePopup.setContent(new ChargePopup("charge", this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.chargePopup.setContent(new ChargePopup("charge", this.chargePopup, ProductPopup.Share, this.popupModel, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
             this.chargePopup.setContent(new CurrencyPopup("currency", this.chargePopup));

@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.popup.loan;
+package com.angkorteam.fintech.popup;
 
 import java.util.Map;
 
@@ -7,7 +7,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.popup.PopupPanel;
 import com.angkorteam.fintech.provider.WhenProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;

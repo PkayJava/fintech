@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.popup.recurring;
+package com.angkorteam.fintech.popup;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.popup.PopupPanel;
 import com.angkorteam.fintech.provider.AttributeProvider;
 import com.angkorteam.fintech.provider.OperandTypeProvider;
 import com.angkorteam.fintech.provider.OperatorProvider;
@@ -36,7 +35,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-public class IncentivePopup extends PopupPanel {
+public class IncentivePreviewPopup extends PopupPanel {
 
     protected ModalWindow window;
 
@@ -71,7 +70,7 @@ public class IncentivePopup extends PopupPanel {
     protected DataTable<Map<String, Object>, String> dataTable;
     protected ListDataProvider dataProvider;
 
-    public IncentivePopup(String name, ModalWindow window, List<Map<String, Object>> incentiveValue) {
+    public IncentivePreviewPopup(String name, ModalWindow window, List<Map<String, Object>> incentiveValue) {
         super(name, window);
         this.window = window;
         this.dataValue = incentiveValue;

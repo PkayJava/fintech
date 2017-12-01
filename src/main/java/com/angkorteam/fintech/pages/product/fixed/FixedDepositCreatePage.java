@@ -42,15 +42,16 @@ import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
 import com.angkorteam.fintech.dto.enums.LockInType;
 import com.angkorteam.fintech.dto.enums.OperandType;
 import com.angkorteam.fintech.dto.enums.Operator;
+import com.angkorteam.fintech.dto.enums.ProductPopup;
 import com.angkorteam.fintech.helper.FixedHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
+import com.angkorteam.fintech.popup.ChargePopup;
 import com.angkorteam.fintech.popup.CurrencyPopup;
+import com.angkorteam.fintech.popup.FeeChargePopup;
+import com.angkorteam.fintech.popup.IncentivePopup;
 import com.angkorteam.fintech.popup.InterestRateChartPopup;
 import com.angkorteam.fintech.popup.PaymentTypePopup;
-import com.angkorteam.fintech.popup.fixed.ChargePopup;
-import com.angkorteam.fintech.popup.fixed.FeeChargePopup;
-import com.angkorteam.fintech.popup.fixed.IncentivePopup;
-import com.angkorteam.fintech.popup.fixed.PenaltyChargePopup;
+import com.angkorteam.fintech.popup.PenaltyChargePopup;
 import com.angkorteam.fintech.provider.ApplyPenalOnProvider;
 import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.provider.DayInYearProvider;
@@ -704,7 +705,7 @@ public class FixedDepositCreatePage extends Page {
     protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.penaltyIncomePopup.setContent(new PenaltyChargePopup("penaltyCharge", this.penaltyIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.penaltyIncomePopup.setContent(new PenaltyChargePopup("penaltyCharge", this.penaltyIncomePopup, ProductPopup.Fixed, this.popupModel, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
         } else {
             this.penaltyIncomePopup.setContent(new CurrencyPopup("currency", this.penaltyIncomePopup));
@@ -747,7 +748,7 @@ public class FixedDepositCreatePage extends Page {
     protected boolean advancedAccountingRuleFeeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.feeIncomePopup.setContent(new FeeChargePopup("feeCharge", this.feeIncomePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.feeIncomePopup.setContent(new FeeChargePopup("feeCharge", this.feeIncomePopup, ProductPopup.Fixed, this.popupModel, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
         } else {
             this.feeIncomePopup.setContent(new CurrencyPopup("currency", this.feeIncomePopup));
@@ -880,7 +881,7 @@ public class FixedDepositCreatePage extends Page {
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.chargePopup.setContent(new ChargePopup("charge", this.chargePopup, this.popupModel, this.currencyCodeValue.getId()));
+            this.chargePopup.setContent(new ChargePopup("charge", this.chargePopup, ProductPopup.Fixed, this.popupModel, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
             this.chargePopup.setContent(new CurrencyPopup("currency", this.chargePopup));

@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.popup.fixed;
+package com.angkorteam.fintech.popup;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.popup.PopupPanel;
 import com.angkorteam.fintech.provider.AttributeProvider;
 import com.angkorteam.fintech.provider.OperandTypeProvider;
 import com.angkorteam.fintech.provider.OperatorProvider;
@@ -66,10 +65,10 @@ public class IncentivePopup extends PopupPanel {
     protected TextField<Double> interestField;
     protected TextFeedbackPanel interestFeedback;
 
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
     protected List<Map<String, Object>> dataValue;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected ListDataProvider dataProvider;
-    protected List<IColumn<Map<String, Object>, String>> dataColumn;
 
     public IncentivePopup(String name, ModalWindow window, List<Map<String, Object>> incentiveValue) {
         super(name, window);

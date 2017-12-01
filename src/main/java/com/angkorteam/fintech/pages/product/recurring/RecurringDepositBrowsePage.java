@@ -15,7 +15,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.enums.DepositType;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
-import com.angkorteam.fintech.pages.product.share.ShareCreatePage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
@@ -112,8 +111,8 @@ public class RecurringDepositBrowsePage extends Page {
         if ("name".equals(column)) {
             String value = (String) model.get(column);
             PageParameters parameters = new PageParameters();
-            parameters.add("shareId", model.get("id"));
-            return new LinkCell(ShareCreatePage.class, parameters, value);
+            parameters.add("recurringId", model.get("id"));
+            return new LinkCell(RecurringDepositPreviewPage.class, parameters, value);
         } else if ("shortName".equals(column)) {
             String value = (String) model.get(column);
             return new TextCell(value);
