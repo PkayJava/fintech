@@ -2,59 +2,12 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <body>
 	<wicket:panel>
-		<form role="form" wicket:id="form">
-			<div class="box box-primary">
-				<div class="box-header with-border">
-					<h3 class="box-title">Incentive Form</h3>
-				</div>
-				<div class="box-body">
-					<!-- Row -->
-					<div
-						class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2">
-						<label wicket:for="attributeField">Attribute</label> <select
-							wicket:id="attributeField" class="form-control select2"
-							style="width: 100%;"></select> <span
-							wicket:id="attributeFeedback" class="help-block"></span>
-					</div>
-					<div
-						class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2">
-						<label wicket:for="operatorField">Operator</label> <select
-							wicket:id="operatorField" class="form-control select2"
-							style="width: 100%;"></select> <span wicket:id="operatorFeedback"
-							class="help-block"></span>
-					</div>
-					<div
-						class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2">
-						<label wicket:for="operandField">Value</label> <input
-							wicket:id="operandField" type="text" class="form-control" /> <span
-							wicket:id="operandFeedback" class="help-block"></span>
-					</div>
-					<div
-						class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
-						<label wicket:for="operandTypeField">Type</label> <select
-							wicket:id="operandTypeField" class="form-control select2"
-							style="width: 100%;"></select> <span
-							wicket:id="operandTypeFeedback" class="help-block"></span>
-					</div>
-					<div
-						class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
-						<label wicket:for="interestField">Interest</label> <input
-							wicket:id="interestField" type="text" class="form-control" /> <span
-							wicket:id="interestFeedback" class="help-block"></span>
-					</div>
-					<div class="clearfix"></div>
-				</div>
-				<div class="box-footer">
-					<button wicket:id="addButton" type="submit" class="btn btn-info">Add</button>
-				</div>
-			</div>
-		</form>
 		<div class="box box-primary">
 			<div class="box-header with-border">
-				<h3 class="box-title">Incentive Browse</h3>
+				<h3 class="box-title">Incentive</h3>
 			</div>
 			<div class="box-body">
-				<table wicket:id="dataTable" />
+				<table wicket:id="dataTable"></table>
 			</div>
 		</div>
 	</wicket:panel>

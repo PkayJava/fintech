@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.pages.product.recurring;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.AccountingType;
 import com.angkorteam.fintech.dto.enums.ApplyPenalOn;
+import com.angkorteam.fintech.dto.enums.Attribute;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.DayInYear;
@@ -28,9 +30,11 @@ import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
 import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
 import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
 import com.angkorteam.fintech.dto.enums.LockInType;
+import com.angkorteam.fintech.dto.enums.OperandType;
+import com.angkorteam.fintech.dto.enums.Operator;
 import com.angkorteam.fintech.dto.enums.ProductType;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
-import com.angkorteam.fintech.popup.IncentivePopup;
+import com.angkorteam.fintech.popup.IncentivePreviewPopup;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
@@ -40,6 +44,7 @@ import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
@@ -58,6 +63,8 @@ public class RecurringDepositPreviewPage extends Page {
 
     protected BookmarkablePageLink<Void> editLink;
     protected BookmarkablePageLink<Void> closeLink;
+
+    protected ModalWindow popup;
 
     // Detail
 
@@ -353,6 +360,14 @@ public class RecurringDepositPreviewPage extends Page {
         initSectionCharge();
 
         initSectionAccounting();
+
+        this.popup = new ModalWindow("popup");
+        add(this.popup);
+        this.popup.setOnClose(this::popupClose);
+    }
+
+    protected void popupClose(String popupName, String signalId, AjaxRequestTarget target) {
+
     }
 
     @Override
@@ -504,6 +519,7 @@ public class RecurringDepositPreviewPage extends Page {
         this.interestRatePrimaryGroupingByAmountValue = (Boolean) interestChartObject.get("is_primary_grouping_by_amount");
 
         SelectQuery rateQuery = new SelectQuery("m_interest_rate_slab");
+        rateQuery.addField("id");
         rateQuery.addField("from_period");
         rateQuery.addField("to_period");
         rateQuery.addField("period_type_enum");
@@ -524,10 +540,25 @@ public class RecurringDepositPreviewPage extends Page {
             item.put("amountRangeTo", rateObject.get("amount_range_to") != null ? ((Double) rateObject.get("amount_range_to")).longValue() : null);
             item.put("interest", rateObject.get("annual_interest_rate"));
             item.put("description", rateObject.get("description"));
+
+            List<Map<String, Object>> incentivesObject = jdbcTemplate.queryForList("select entiry_type, attribute_name, condition_type, attribute_value, incentive_type, amount from m_interest_incentives where interest_rate_slab_id = ?", rateObject.get("id"));
+            if (incentivesObject != null && !incentivesObject.isEmpty()) {
+                List<Map<String, Object>> interestRate = new ArrayList<>();
+                for (Map<String, Object> incentiveObject : incentivesObject) {
+                    Map<String, Object> incentive = new HashMap<>();
+                    incentive.put("operand", String.valueOf(incentiveObject.get("attribute_value")));
+                    incentive.put("attribute", Attribute.optionLiteral(String.valueOf(incentiveObject.get("entiry_type"))));
+                    incentive.put("operator", Operator.optionLiteral(String.valueOf(incentiveObject.get("condition_type"))));
+                    incentive.put("operandType", OperandType.optionLiteral(String.valueOf(incentiveObject.get("incentive_type"))));
+                    incentive.put("interest", incentiveObject.get("amount"));
+
+                    interestRate.add(incentive);
+                }
+                item.put("interestRate", interestRate);
+            }
+
             this.interestRateChartValue.add(item);
         }
-
-        // select * from m_interest_incentives where interest_rate_slab_id = 1;
 
         AccountingType accountingType = AccountingType.parseLiteral(String.valueOf(recurringObject.get("accounting_type")));
 
@@ -1143,8 +1174,8 @@ public class RecurringDepositPreviewPage extends Page {
     protected void interestRateChartClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         if ("incentives".equals(s)) {
             List<Map<String, Object>> incentiveValue = (List<Map<String, Object>>) model.get("interestRate");
-//            this.incentivePopup.setContent(new IncentivePopup("incentive", this.incentivePopup, incentiveValue));
-//            this.incentivePopup.show(target);
+            this.popup.setContent(new IncentivePreviewPopup("incentive", this.popup, incentiveValue));
+            this.popup.show(target);
         }
     }
 
