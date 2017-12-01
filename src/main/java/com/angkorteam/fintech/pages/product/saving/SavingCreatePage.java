@@ -894,12 +894,12 @@ public class SavingCreatePage extends Page {
     protected boolean accountingFieldUpdate(AjaxRequestTarget target) {
         this.cashIContainer.setVisible(false);
         this.advancedAccountingRuleIContainer.setVisible(false);
-        if ("None".equals(this.accountingValue) || this.accountingValue == null) {
+        if (AccountingType.None.getDescription().equals(this.accountingValue) || this.accountingValue == null) {
             this.advancedAccountingRuleIContainer.setVisible(false);
         } else {
             this.advancedAccountingRuleIContainer.setVisible(true);
         }
-        if ("Cash".equals(this.accountingValue)) {
+        if (AccountingType.Cash.getDescription().equals(this.accountingValue)) {
             this.cashIContainer.setVisible(true);
         }
 
