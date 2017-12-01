@@ -1681,8 +1681,23 @@ public class RecurringDepositCreatePage extends Page {
                         Operator operator = operatorOption == null ? null : Operator.valueOf(operatorOption.getId());
                         incentiveBuilder.withConditionType(operator);
 
-                        String operand = (String) rate.get("operand");
-                        incentiveBuilder.withAttributeValue(operand);
+                        if (attributeOption != null) {
+                            if (attributeOption.getId().equals(Attribute.ClientType.name())) {
+                                Option operand = (Option) rate.get("clientTypeOperand");
+                                incentiveBuilder.withAttributeValue(operand.getId());
+                            } else if (attributeOption.getId().equals(Attribute.ClientClassification.name())) {
+                                Option operand = (Option) rate.get("clientClassificationOperand");
+                                incentiveBuilder.withAttributeValue(operand.getId());
+                            } else {
+                                if (rate.get("numberOperand") instanceof String) {
+                                    String operand = (String) rate.get("numberOperand");
+                                    incentiveBuilder.withAttributeValue(operand);
+                                } else {
+                                    Long operand = (Long) rate.get("numberOperand");
+                                    incentiveBuilder.withAttributeValue(String.valueOf(operand));
+                                }
+                            }
+                        }
 
                         Option operandTypeOption = (Option) rate.get("operandType");
                         OperandType operandType = operandTypeOption == null ? null : OperandType.valueOf(operandTypeOption.getId());

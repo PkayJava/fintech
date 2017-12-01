@@ -107,9 +107,9 @@ public class SavingCreatePage extends Page {
 
     protected WebMarkupBlock currencyCodeBlock;
     protected WebMarkupContainer currencyCodeIContainer;
-    protected CurrencyProvider currencyCodeProvider;
     protected Option currencyCodeValue;
     protected Select2SingleChoice<Option> currencyCodeField;
+    protected CurrencyProvider currencyCodeProvider;
     protected TextFeedbackPanel currencyCodeFeedback;
 
     protected WebMarkupBlock currencyDecimalPlaceBlock;

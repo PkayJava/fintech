@@ -23,11 +23,24 @@
 							style="width: 100%;"></select> <span wicket:id="operatorFeedback"
 							class="help-block"></span>
 					</div>
-					<div
-						class="form-group col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2">
-						<label wicket:for="operandField">Value</label> <input
-							wicket:id="operandField" type="text" class="form-control" /> <span
-							wicket:id="operandFeedback" class="help-block"></span>
+					<div wicket:id="operandBlock" class="form-group">
+						<wicket:container wicket:id="numberOperandIContainer">
+							<label wicket:for="numberOperandField">Value</label>
+							<input wicket:id="numberOperandField" type="text"
+								class="form-control" />
+							<span wicket:id="numberOperandFeedback" class="help-block"></span>
+						</wicket:container>
+						<wicket:container wicket:id="clientTypeOperandIContainer">
+							<label wicket:for="clientTypeOperandField">Value</label>
+							<select wicket:id="clientTypeOperandField" class="form-control"></select>
+							<span wicket:id="clientTypeOperandFeedback" class="help-block"></span>
+						</wicket:container>
+						<wicket:container wicket:id="clientClassificationOperandIContainer">
+							<label wicket:for="clientClassificationOperandField">Value</label>
+							<select wicket:id="clientClassificationOperandField"
+								class="form-control"></select>
+							<span wicket:id="clientClassificationOperandFeedback" class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div
 						class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">

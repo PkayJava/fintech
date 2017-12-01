@@ -1499,8 +1499,23 @@ public class FixedDepositCreatePage extends Page {
                         Operator operator = operatorOption == null ? null : Operator.valueOf(operatorOption.getId());
                         incentiveBuilder.withConditionType(operator);
 
-                        String operand = (String) rate.get("operand");
-                        incentiveBuilder.withAttributeValue(operand);
+                        if (attributeOption != null) {
+                            if (attributeOption.getId().equals(Attribute.ClientType.name())) {
+                                Option operand = (Option) rate.get("clientTypeOperand");
+                                incentiveBuilder.withAttributeValue(operand.getId());
+                            } else if (attributeOption.getId().equals(Attribute.ClientClassification.name())) {
+                                Option operand = (Option) rate.get("clientClassificationOperand");
+                                incentiveBuilder.withAttributeValue(operand.getId());
+                            } else {
+                                if (rate.get("numberOperand") instanceof String) {
+                                    String operand = (String) rate.get("numberOperand");
+                                    incentiveBuilder.withAttributeValue(operand);
+                                } else {
+                                    Long operand = (Long) rate.get("numberOperand");
+                                    incentiveBuilder.withAttributeValue(String.valueOf(operand));
+                                }
+                            }
+                        }
 
                         Option operandTypeOption = (Option) rate.get("operandType");
                         OperandType operandType = operandTypeOption == null ? null : OperandType.valueOf(operandTypeOption.getId());
@@ -1558,17 +1573,23 @@ public class FixedDepositCreatePage extends Page {
         if (AccountingType.Cash.getDescription().equals(accounting)) {
             if (this.advancedAccountingRuleFundSourceValue != null && !this.advancedAccountingRuleFundSourceValue.isEmpty()) {
                 for (Map<String, Object> item : this.advancedAccountingRuleFundSourceValue) {
-                    builder.withPaymentChannelToFundSourceMappings((String) item.get("paymentId"), (String) item.get("accountId"));
+                    Option payment = (Option) item.get("payment");
+                    Option account = (Option) item.get("account");
+                    builder.withPaymentChannelToFundSourceMappings(payment.getId(), account.getId());
                 }
             }
             if (this.advancedAccountingRuleFeeIncomeValue != null && !this.advancedAccountingRuleFeeIncomeValue.isEmpty()) {
                 for (Map<String, Object> item : this.advancedAccountingRuleFeeIncomeValue) {
-                    builder.withFeeToIncomeAccountMappings((String) item.get("chargeId"), (String) item.get("accountId"));
+                    Option charge = (Option) item.get("charge");
+                    Option account = (Option) item.get("account");
+                    builder.withFeeToIncomeAccountMappings(charge.getId(), account.getId());
                 }
             }
             if (this.advancedAccountingRulePenaltyIncomeValue != null && !this.advancedAccountingRulePenaltyIncomeValue.isEmpty()) {
                 for (Map<String, Object> item : this.advancedAccountingRulePenaltyIncomeValue) {
-                    builder.withPenaltyToIncomeAccountMappings((String) item.get("chargeId"), (String) item.get("accountId"));
+                    Option charge = (Option) item.get("charge");
+                    Option account = (Option) item.get("account");
+                    builder.withPenaltyToIncomeAccountMappings(charge.getId(), account.getId());
                 }
             }
         }

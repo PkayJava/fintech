@@ -17,7 +17,6 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.DepositType;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
-import com.angkorteam.fintech.pages.product.share.ShareCreatePage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
@@ -117,8 +116,8 @@ public class FixedDepositBrowsePage extends Page {
         if ("name".equals(column)) {
             String name = (String) model.get(column);
             PageParameters parameters = new PageParameters();
-            parameters.add("shareId", model.get("id"));
-            return new LinkCell(ShareCreatePage.class, parameters, name);
+            parameters.add("fixedId", model.get("id"));
+            return new LinkCell(FixedDepositPreviewPage.class, parameters, name);
         } else if ("shortName".equals(column)) {
             String value = (String) model.get(column);
             return new TextCell(value);

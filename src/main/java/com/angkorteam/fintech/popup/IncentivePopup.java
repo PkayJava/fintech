@@ -6,19 +6,26 @@ import java.util.Map;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import com.angkorteam.fintech.dto.enums.Attribute;
 import com.angkorteam.fintech.provider.AttributeProvider;
+import com.angkorteam.fintech.provider.ClientClassificationProvider;
+import com.angkorteam.fintech.provider.ClientTypeProvider;
 import com.angkorteam.fintech.provider.OperandTypeProvider;
 import com.angkorteam.fintech.provider.OperatorProvider;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.share.provider.ListDataProvider;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -52,9 +59,24 @@ public class IncentivePopup extends PopupPanel {
     protected Select2SingleChoice<Option> operatorField;
     protected TextFeedbackPanel operatorFeedback;
 
-    protected String operandValue;
-    protected TextField<String> operandField;
-    protected TextFeedbackPanel operandFeedback;
+    protected WebMarkupBlock operandBlock;
+
+    protected WebMarkupContainer numberOperandIContainer;
+    protected Long numberOperandValue;
+    protected TextField<Long> numberOperandField;
+    protected TextFeedbackPanel numberOperandFeedback;
+
+    protected WebMarkupContainer clientTypeOperandIContainer;
+    protected Option clientTypeOperandValue;
+    protected ClientTypeProvider clientTypeOperandProvider;
+    protected Select2SingleChoice<Option> clientTypeOperandField;
+    protected TextFeedbackPanel clientTypeOperandFeedback;
+
+    protected WebMarkupContainer clientClassificationOperandIContainer;
+    protected Option clientClassificationOperandValue;
+    protected ClientClassificationProvider clientClassificationOperandProvider;
+    protected Select2SingleChoice<Option> clientClassificationOperandField;
+    protected TextFeedbackPanel clientClassificationOperandFeedback;
 
     protected Option operandTypeValue;
     protected OperandTypeProvider operandTypeProvider;
@@ -93,6 +115,7 @@ public class IncentivePopup extends PopupPanel {
         this.attributeProvider = new AttributeProvider();
         this.attributeField = new Select2SingleChoice<>("attributeField", new PropertyModel<>(this, "attributeValue"), this.attributeProvider);
         this.attributeField.setLabel(Model.of("Attribute"));
+        this.attributeField.add(new OnChangeAjaxBehavior(this::attributeFieldUpdate));
         this.form.add(this.attributeField);
         this.attributeFeedback = new TextFeedbackPanel("attributeFeedback", this.attributeField);
         this.form.add(this.attributeFeedback);
@@ -104,11 +127,34 @@ public class IncentivePopup extends PopupPanel {
         this.operatorFeedback = new TextFeedbackPanel("operatorFeedback", this.operatorField);
         this.form.add(this.operatorFeedback);
 
-        this.operandField = new TextField<>("operandField", new PropertyModel<>(this, "operandValue"));
-        this.operandField.setLabel(Model.of("Value"));
-        this.form.add(this.operandField);
-        this.operandFeedback = new TextFeedbackPanel("operandFeedback", this.operandField);
-        this.form.add(this.operandFeedback);
+        this.operandBlock = new WebMarkupBlock("operandBlock", Size.Two_2);
+        this.form.add(this.operandBlock);
+
+        this.numberOperandIContainer = new WebMarkupContainer("numberOperandIContainer");
+        this.operandBlock.add(this.numberOperandIContainer);
+        this.numberOperandField = new TextField<>("numberOperandField", new PropertyModel<>(this, "numberOperandValue"));
+        this.numberOperandField.setLabel(Model.of("Value"));
+        this.numberOperandIContainer.add(this.numberOperandField);
+        this.numberOperandFeedback = new TextFeedbackPanel("numberOperandFeedback", this.numberOperandField);
+        this.numberOperandIContainer.add(this.numberOperandFeedback);
+
+        this.clientTypeOperandIContainer = new WebMarkupContainer("clientTypeOperandIContainer");
+        this.operandBlock.add(this.clientTypeOperandIContainer);
+        this.clientTypeOperandProvider = new ClientTypeProvider();
+        this.clientTypeOperandField = new Select2SingleChoice<>("clientTypeOperandField", new PropertyModel<>(this, "clientTypeOperandValue"), this.clientTypeOperandProvider);
+        this.clientTypeOperandField.setLabel(Model.of("Value"));
+        this.clientTypeOperandIContainer.add(this.clientTypeOperandField);
+        this.clientTypeOperandFeedback = new TextFeedbackPanel("clientTypeOperandFeedback", this.clientTypeOperandField);
+        this.clientTypeOperandIContainer.add(this.clientTypeOperandFeedback);
+
+        this.clientClassificationOperandIContainer = new WebMarkupContainer("clientClassificationOperandIContainer");
+        this.operandBlock.add(this.clientClassificationOperandIContainer);
+        this.clientClassificationOperandProvider = new ClientClassificationProvider();
+        this.clientClassificationOperandField = new Select2SingleChoice<>("clientClassificationOperandField", new PropertyModel<>(this, "clientClassificationOperandValue"), this.clientClassificationOperandProvider);
+        this.clientClassificationOperandField.setLabel(Model.of("Value"));
+        this.clientClassificationOperandIContainer.add(this.clientClassificationOperandField);
+        this.clientClassificationOperandFeedback = new TextFeedbackPanel("clientClassificationOperandFeedback", this.clientClassificationOperandField);
+        this.clientClassificationOperandIContainer.add(this.clientClassificationOperandFeedback);
 
         this.operandTypeProvider = new OperandTypeProvider();
         this.operandTypeField = new Select2SingleChoice<>("operandTypeField", new PropertyModel<>(this, "operandTypeValue"), this.operandTypeProvider);
@@ -144,6 +190,26 @@ public class IncentivePopup extends PopupPanel {
 
     @Override
     protected void configureMetaData() {
+        attributeFieldUpdate(null);
+    }
+
+    protected boolean attributeFieldUpdate(AjaxRequestTarget target) {
+        this.numberOperandIContainer.setVisible(false);
+        this.clientTypeOperandIContainer.setVisible(false);
+        this.clientClassificationOperandIContainer.setVisible(false);
+        if (this.attributeValue != null) {
+            if (this.attributeValue.getId().equals(Attribute.ClientType.name())) {
+                this.clientTypeOperandIContainer.setVisible(true);
+            } else if (this.attributeValue.getId().equals(Attribute.ClientClassification.name())) {
+                this.clientClassificationOperandIContainer.setVisible(true);
+            } else {
+                this.numberOperandIContainer.setVisible(true);
+            }
+        }
+        if (target != null) {
+            target.add(this.operandBlock);
+        }
+        return false;
     }
 
     protected boolean addButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
@@ -152,7 +218,9 @@ public class IncentivePopup extends PopupPanel {
         item.put("uuid", generator.externalId());
         item.put("attribute", this.attributeValue);
         item.put("operator", this.operatorValue);
-        item.put("operand", this.operandValue);
+        item.put("numberOperand", this.numberOperandValue);
+        item.put("clientTypeOperand", this.clientTypeOperandValue);
+        item.put("clientClassificationOperand", this.clientClassificationOperandValue);
         item.put("operandType", this.operandTypeValue);
         item.put("interest", this.interestValue);
         this.dataValue.add(item);
@@ -169,8 +237,26 @@ public class IncentivePopup extends PopupPanel {
             Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("operand".equals(column)) {
-            String value = (String) model.get(column);
-            return new TextCell(value);
+            Option attribute = (Option) model.get("attribute");
+            if (attribute == null) {
+                return new TextCell("");
+            } else {
+                if (attribute.getId().equals(Attribute.ClientType.name())) {
+                    Option value = (Option) model.get("clientTypeOperand");
+                    return new TextCell(value);
+                } else if (attribute.getId().equals(Attribute.ClientClassification.name())) {
+                    Option value = (Option) model.get("clientClassificationOperand");
+                    return new TextCell(value);
+                } else {
+                    if (model.get("numberOperand") instanceof String) {
+                        String value = (String) model.get("numberOperand");
+                        return new TextCell(value);
+                    } else {
+                        Long value = (Long) model.get("numberOperand");
+                        return new TextCell(value);
+                    }
+                }
+            }
         } else if ("interest".equals(column)) {
             Double value = (Double) model.get(column);
             return new TextCell(value);

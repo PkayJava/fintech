@@ -8,6 +8,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import com.angkorteam.fintech.dto.enums.Attribute;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -40,7 +41,6 @@ public class IncentivePreviewPopup extends PopupPanel {
 
     @Override
     protected void initComponent() {
-        // Table
         this.dataColumn = Lists.newArrayList();
         this.dataColumn.add(new TextColumn(Model.of("Attribute"), "attribute", "attribute", this::dataColumn));
         this.dataColumn.add(new TextColumn(Model.of("Operator"), "operator", "operator", this::dataColumn));
@@ -67,8 +67,26 @@ public class IncentivePreviewPopup extends PopupPanel {
             Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("operand".equals(column)) {
-            String value = (String) model.get(column);
-            return new TextCell(value);
+            Option attribute = (Option) model.get("attribute");
+            if (attribute == null) {
+                return new TextCell("");
+            } else {
+                if (attribute.getId().equals(Attribute.ClientType.name())) {
+                    Option value = (Option) model.get("clientTypeOperand");
+                    return new TextCell(value);
+                } else if (attribute.getId().equals(Attribute.ClientClassification.name())) {
+                    Option value = (Option) model.get("clientClassificationOperand");
+                    return new TextCell(value);
+                } else {
+                    if (model.get("numberOperand") instanceof String) {
+                        String value = (String) model.get("numberOperand");
+                        return new TextCell(value);
+                    } else {
+                        Long value = (Long) model.get("numberOperand");
+                        return new TextCell(value);
+                    }
+                }
+            }
         } else if ("interest".equals(column)) {
             Double value = (Double) model.get(column);
             return new TextCell(value);

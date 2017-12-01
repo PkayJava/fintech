@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.pages.product.recurring;
+package com.angkorteam.fintech.pages.product.fixed;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +16,8 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
@@ -35,6 +37,7 @@ import com.angkorteam.fintech.dto.enums.Operator;
 import com.angkorteam.fintech.dto.enums.ProductType;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.popup.IncentivePreviewPopup;
+import com.angkorteam.fintech.provider.LockInTypeProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
@@ -57,14 +60,14 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class RecurringDepositPreviewPage extends Page {
+public class FixedDepositPreviewPage extends Page {
 
-    protected String recurringId;
+    protected static final Logger LOGGER = LoggerFactory.getLogger(FixedDepositPreviewPage.class);
+
+    private String fixedId;
 
     protected BookmarkablePageLink<Void> editLink;
     protected BookmarkablePageLink<Void> closeLink;
-
-    protected ModalWindow popup;
 
     // Detail
 
@@ -90,7 +93,7 @@ public class RecurringDepositPreviewPage extends Page {
     protected String currencyCodeValue;
     protected ReadOnlyView currencyCodeView;
 
-    protected WebMarkupBlock currencyDecimalPlaceBlock;
+    protected WebMarkupContainer currencyDecimalPlaceBlock;
     protected WebMarkupContainer currencyDecimalPlaceVContainer;
     protected Long currencyDecimalPlaceValue;
     protected ReadOnlyView currencyDecimalPlaceView;
@@ -139,21 +142,6 @@ public class RecurringDepositPreviewPage extends Page {
 
     // Setting
 
-    protected WebMarkupBlock settingMandatoryDepositBlock;
-    protected WebMarkupContainer settingMandatoryDepositVContainer;
-    protected Boolean settingMandatoryDepositValue;
-    protected ReadOnlyView settingMandatoryDepositView;
-
-    protected WebMarkupBlock settingAdjustAdvancePaymentBlock;
-    protected WebMarkupContainer settingAdjustAdvancePaymentVContainer;
-    protected Boolean settingAdjustAdvancePaymentValue;
-    protected ReadOnlyView settingAdjustAdvancePaymentView;
-
-    protected WebMarkupBlock settingAllowWithdrawalBlock;
-    protected WebMarkupContainer settingAllowWithdrawalVContainer;
-    protected Boolean settingAllowWithdrawalValue;
-    protected ReadOnlyView settingAllowWithdrawalView;
-
     protected WebMarkupBlock settingLockInPeriodBlock;
     protected WebMarkupContainer settingLockInPeriodVContainer;
     protected Long settingLockInPeriodValue;
@@ -161,6 +149,7 @@ public class RecurringDepositPreviewPage extends Page {
 
     protected WebMarkupBlock settingLockInTypeBlock;
     protected WebMarkupContainer settingLockInTypeVContainer;
+    protected LockInTypeProvider settingLockInTypeProvider;
     protected Option settingLockInTypeValue;
     protected ReadOnlyView settingLockInTypeView;
 
@@ -179,7 +168,7 @@ public class RecurringDepositPreviewPage extends Page {
     protected Long settingInMultiplesOfValue;
     protected ReadOnlyView settingInMultiplesOfView;
 
-    protected WebMarkupContainer settingInMultiplesTypeBlock;
+    protected WebMarkupBlock settingInMultiplesTypeBlock;
     protected WebMarkupContainer settingInMultiplesTypeVContainer;
     protected Option settingInMultiplesTypeValue;
     protected ReadOnlyView settingInMultiplesTypeView;
@@ -189,7 +178,7 @@ public class RecurringDepositPreviewPage extends Page {
     protected Long settingMaximumDepositTermValue;
     protected ReadOnlyView settingMaximumDepositTermView;
 
-    protected WebMarkupContainer settingMaximumDepositTypeBlock;
+    protected WebMarkupBlock settingMaximumDepositTypeBlock;
     protected WebMarkupContainer settingMaximumDepositTypeVContainer;
     protected Option settingMaximumDepositTypeValue;
     protected ReadOnlyView settingMaximumDepositTypeView;
@@ -208,11 +197,6 @@ public class RecurringDepositPreviewPage extends Page {
     protected WebMarkupContainer settingApplyPenalOnVContainer;
     protected Option settingApplyPenalOnValue;
     protected ReadOnlyView settingApplyPenalOnView;
-
-    protected WebMarkupBlock settingBalanceRequiredForInterestCalculationBlock;
-    protected WebMarkupContainer settingBalanceRequiredForInterestCalculationVContainer;
-    protected Double settingBalanceRequiredForInterestCalculationValue;
-    protected ReadOnlyView settingBalanceRequiredForInterestCalculationView;
 
     protected WebMarkupBlock settingWithholdTaxApplicableBlock;
     protected WebMarkupContainer settingWithholdTaxApplicableVContainer;
@@ -241,15 +225,19 @@ public class RecurringDepositPreviewPage extends Page {
     protected Boolean interestRatePrimaryGroupingByAmountValue;
     protected ReadOnlyView interestRatePrimaryGroupingByAmountView;
 
-    protected List<Map<String, Object>> interestRateChartValue = Lists.newArrayList();
+    protected WebMarkupBlock interestRateChartBlock;
+    protected WebMarkupContainer interestRateChartVContainer;
+    protected List<Map<String, Object>> interestRateChartValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> interestRateChartTable;
     protected ListDataProvider interestRateChartProvider;
     protected List<IColumn<Map<String, Object>, String>> interestRateChartColumn;
 
+    protected ModalWindow popup;
+
     // Charges
 
     protected List<IColumn<Map<String, Object>, String>> chargeColumn;
-    protected List<Map<String, Object>> chargeValue = Lists.newArrayList();
+    protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> chargeTable;
     protected ListDataProvider chargeProvider;
 
@@ -297,23 +285,23 @@ public class RecurringDepositPreviewPage extends Page {
     protected WebMarkupContainer advancedAccountingRuleVContainer;
 
     protected List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFundSourceColumn;
-    protected List<Map<String, Object>> advancedAccountingRuleFundSourceValue = Lists.newArrayList();
+    protected List<Map<String, Object>> advancedAccountingRuleFundSourceValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> advancedAccountingRuleFundSourceTable;
     protected ListDataProvider advancedAccountingRuleFundSourceProvider;
 
     protected List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFeeIncomeColumn;
-    protected List<Map<String, Object>> advancedAccountingRuleFeeIncomeValue = Lists.newArrayList();
+    protected List<Map<String, Object>> advancedAccountingRuleFeeIncomeValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> advancedAccountingRuleFeeIncomeTable;
     protected ListDataProvider advancedAccountingRuleFeeIncomeProvider;
 
     protected List<IColumn<Map<String, Object>, String>> advancedAccountingRulePenaltyIncomeColumn;
-    protected List<Map<String, Object>> advancedAccountingRulePenaltyIncomeValue = Lists.newArrayList();
+    protected List<Map<String, Object>> advancedAccountingRulePenaltyIncomeValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> advancedAccountingRulePenaltyIncomeTable;
     protected ListDataProvider advancedAccountingRulePenaltyIncomeProvider;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
+        List<PageBreadcrumb> BREADCRUMB = Lists.newLinkedList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Admin");
@@ -327,13 +315,14 @@ public class RecurringDepositPreviewPage extends Page {
         }
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Recurring Deposit Product");
-            breadcrumb.setPage(RecurringDepositBrowsePage.class);
+            breadcrumb.setLabel("Fixed Deposit Product");
+            breadcrumb.setPage(FixedDepositBrowsePage.class);
             BREADCRUMB.add(breadcrumb);
         }
+
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Recurring Deposit Product Create");
+            breadcrumb.setLabel("Fixed Deposit Product Create");
             BREADCRUMB.add(breadcrumb);
         }
         return Model.ofList(BREADCRUMB);
@@ -342,9 +331,10 @@ public class RecurringDepositPreviewPage extends Page {
     @Override
     protected void initComponent() {
 
-        this.editLink = new BookmarkablePageLink<>("editLink", RecurringDepositBrowsePage.class);
+        this.editLink = new BookmarkablePageLink<>("editLink", FixedDepositBrowsePage.class);
         add(this.editLink);
-        this.closeLink = new BookmarkablePageLink<>("closeLink", RecurringDepositBrowsePage.class);
+
+        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedDepositBrowsePage.class);
         add(this.closeLink);
 
         initSectionDetail();
@@ -360,14 +350,6 @@ public class RecurringDepositPreviewPage extends Page {
         initSectionCharge();
 
         initSectionAccounting();
-
-        this.popup = new ModalWindow("popup");
-        add(this.popup);
-        this.popup.setOnClose(this::popupClose);
-    }
-
-    protected void popupClose(String popupName, String signalId, AjaxRequestTarget target) {
-
     }
 
     @Override
@@ -380,96 +362,83 @@ public class RecurringDepositPreviewPage extends Page {
 
     @Override
     protected void initData() {
-        this.recurringId = getPageParameters().get("recurringId").toString();
+        this.fixedId = getPageParameters().get("fixedId").toString();
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        SelectQuery recurringProductQuery = new SelectQuery("m_savings_product");
-        recurringProductQuery.addJoin("inner join m_organisation_currency on m_savings_product.currency_code = m_organisation_currency.code");
-        recurringProductQuery.addJoin("inner join m_deposit_product_term_and_preclosure on m_deposit_product_term_and_preclosure.savings_product_id = m_savings_product.id");
-        recurringProductQuery.addJoin("inner join m_deposit_product_recurring_detail on m_deposit_product_recurring_detail.savings_product_id = m_savings_product.id");
-        recurringProductQuery.addWhere("m_savings_product.id = '" + this.recurringId + "'");
+        SelectQuery fixedProductQuery = new SelectQuery("m_savings_product");
+        fixedProductQuery.addJoin("inner join m_organisation_currency on m_savings_product.currency_code = m_organisation_currency.code");
+        fixedProductQuery.addJoin("inner join m_deposit_product_term_and_preclosure on m_deposit_product_term_and_preclosure.savings_product_id = m_savings_product.id");
+        fixedProductQuery.addWhere("m_savings_product.id = '" + this.fixedId + "'");
 
-        recurringProductQuery.addField("m_savings_product.name");
-        recurringProductQuery.addField("m_savings_product.short_name");
-        recurringProductQuery.addField("m_savings_product.description");
+        fixedProductQuery.addField("m_savings_product.name");
+        fixedProductQuery.addField("m_savings_product.short_name");
+        fixedProductQuery.addField("m_savings_product.description");
 
-        recurringProductQuery.addField("concat(m_organisation_currency.name, ' [', m_organisation_currency.code, ']') currency");
-        recurringProductQuery.addField("m_savings_product.currency_digits");
-        recurringProductQuery.addField("m_savings_product.currency_multiplesof");
+        fixedProductQuery.addField("concat(m_organisation_currency.name, ' [', m_organisation_currency.code, ']') currency");
+        fixedProductQuery.addField("m_savings_product.currency_digits");
+        fixedProductQuery.addField("m_savings_product.currency_multiplesof");
 
-        recurringProductQuery.addField("m_deposit_product_term_and_preclosure.min_deposit_amount");
-        recurringProductQuery.addField("m_deposit_product_term_and_preclosure.max_deposit_amount");
-        recurringProductQuery.addField("m_deposit_product_term_and_preclosure.deposit_amount");
-        recurringProductQuery.addField("m_savings_product.interest_compounding_period_enum");
-        recurringProductQuery.addField("m_savings_product.interest_posting_period_enum");
-        recurringProductQuery.addField("m_savings_product.interest_calculation_type_enum");
-        recurringProductQuery.addField("m_savings_product.interest_calculation_days_in_year_type_enum");
+        fixedProductQuery.addField("m_deposit_product_term_and_preclosure.min_deposit_amount");
+        fixedProductQuery.addField("m_deposit_product_term_and_preclosure.max_deposit_amount");
+        fixedProductQuery.addField("m_deposit_product_term_and_preclosure.deposit_amount");
+        fixedProductQuery.addField("m_savings_product.interest_compounding_period_enum");
+        fixedProductQuery.addField("m_savings_product.interest_posting_period_enum");
+        fixedProductQuery.addField("m_savings_product.interest_calculation_type_enum");
+        fixedProductQuery.addField("m_savings_product.interest_calculation_days_in_year_type_enum");
 
-        recurringProductQuery.addField("m_deposit_product_recurring_detail.is_mandatory");
-        recurringProductQuery.addField("m_deposit_product_recurring_detail.adjust_advance_towards_future_payments");
-        recurringProductQuery.addField("m_deposit_product_recurring_detail.allow_withdrawal");
+        fixedProductQuery.addField("m_deposit_product_term_and_preclosure.in_multiples_of_deposit_term");
+        fixedProductQuery.addField("m_deposit_product_term_and_preclosure.in_multiples_of_deposit_term_type_enum");
 
-        recurringProductQuery.addField("m_deposit_product_term_and_preclosure.in_multiples_of_deposit_term");
-        recurringProductQuery.addField("m_deposit_product_term_and_preclosure.in_multiples_of_deposit_term_type_enum");
+        fixedProductQuery.addField("m_deposit_product_term_and_preclosure.min_deposit_term");
+        fixedProductQuery.addField("m_deposit_product_term_and_preclosure.min_deposit_term_type_enum");
 
-        recurringProductQuery.addField("m_deposit_product_term_and_preclosure.min_deposit_term");
-        recurringProductQuery.addField("m_deposit_product_term_and_preclosure.min_deposit_term_type_enum");
+        fixedProductQuery.addField("m_deposit_product_term_and_preclosure.max_deposit_term");
+        fixedProductQuery.addField("m_deposit_product_term_and_preclosure.max_deposit_term_type_enum");
 
-        recurringProductQuery.addField("m_deposit_product_term_and_preclosure.max_deposit_term");
-        recurringProductQuery.addField("m_deposit_product_term_and_preclosure.max_deposit_term_type_enum");
+        fixedProductQuery.addField("m_deposit_product_term_and_preclosure.pre_closure_penal_applicable");
+        fixedProductQuery.addField("m_deposit_product_term_and_preclosure.pre_closure_penal_interest");
+        fixedProductQuery.addField("m_deposit_product_term_and_preclosure.pre_closure_penal_interest_on_enum");
 
-        recurringProductQuery.addField("m_deposit_product_term_and_preclosure.pre_closure_penal_applicable");
-        recurringProductQuery.addField("m_deposit_product_term_and_preclosure.pre_closure_penal_interest");
-        recurringProductQuery.addField("m_deposit_product_term_and_preclosure.pre_closure_penal_interest_on_enum");
+        fixedProductQuery.addField("m_savings_product.withhold_tax");
+        fixedProductQuery.addField("m_savings_product.tax_group_id");
 
-        recurringProductQuery.addField("m_savings_product.min_balance_for_interest_calculation");
+        fixedProductQuery.addField("m_savings_product.accounting_type");
 
-        recurringProductQuery.addField("m_savings_product.withhold_tax");
-        recurringProductQuery.addField("m_savings_product.tax_group_id");
+        Map<String, Object> fixedObject = jdbcTemplate.queryForMap(fixedProductQuery.toSQL());
 
-        recurringProductQuery.addField("m_savings_product.accounting_type");
+        this.detailDescriptionValue = (String) fixedObject.get("description");
+        this.detailProductNameValue = (String) fixedObject.get("name");
+        this.detailShortNameValue = (String) fixedObject.get("short_name");
 
-        Map<String, Object> recurringObject = jdbcTemplate.queryForMap(recurringProductQuery.toSQL());
+        this.currencyCodeValue = (String) fixedObject.get("currency");
+        this.currencyMultipleOfValue = (Long) fixedObject.get("currency_multiplesof");
+        this.currencyDecimalPlaceValue = (Long) fixedObject.get("currency_digits");
 
-        this.detailDescriptionValue = (String) recurringObject.get("description");
-        this.detailProductNameValue = (String) recurringObject.get("name");
-        this.detailShortNameValue = (String) recurringObject.get("short_name");
+        this.termDefaultDepositAmountValue = (Double) fixedObject.get("deposit_amount");
+        this.termMinimumDepositAmountValue = (Double) fixedObject.get("min_deposit_amount");
+        this.termMaximumDepositAmountValue = (Double) fixedObject.get("max_deposit_amount");
 
-        this.currencyCodeValue = (String) recurringObject.get("currency");
-        this.currencyMultipleOfValue = (Long) recurringObject.get("currency_multiplesof");
-        this.currencyDecimalPlaceValue = (Long) recurringObject.get("currency_digits");
+        this.termInterestCompoundingPeriodValue = InterestCompoundingPeriod.optionLiteral(String.valueOf(fixedObject.get("interest_compounding_period_enum")));
+        this.termInterestPostingPeriodValue = InterestPostingPeriod.optionLiteral(String.valueOf(fixedObject.get("interest_posting_period_enum")));
+        this.termInterestCalculatedUsingValue = InterestCalculatedUsing.optionLiteral(String.valueOf(fixedObject.get("interest_calculation_type_enum")));
+        this.termDayInYearValue = DayInYear.optionLiteral(String.valueOf(fixedObject.get("interest_calculation_days_in_year_type_enum")));
 
-        this.termDefaultDepositAmountValue = (Double) recurringObject.get("deposit_amount");
-        this.termMinimumDepositAmountValue = (Double) recurringObject.get("min_deposit_amount");
-        this.termMaximumDepositAmountValue = (Double) recurringObject.get("max_deposit_amount");
+        this.settingInMultiplesOfValue = (Long) fixedObject.get("in_multiples_of_deposit_term");
+        this.settingInMultiplesTypeValue = LockInType.optionLiteral(String.valueOf(fixedObject.get("in_multiples_of_deposit_term_type_enum")));
 
-        this.termInterestCompoundingPeriodValue = InterestCompoundingPeriod.optionLiteral(String.valueOf(recurringObject.get("interest_compounding_period_enum")));
-        this.termInterestPostingPeriodValue = InterestPostingPeriod.optionLiteral(String.valueOf(recurringObject.get("interest_posting_period_enum")));
-        this.termInterestCalculatedUsingValue = InterestCalculatedUsing.optionLiteral(String.valueOf(recurringObject.get("interest_calculation_type_enum")));
-        this.termDayInYearValue = DayInYear.optionLiteral(String.valueOf(recurringObject.get("interest_calculation_days_in_year_type_enum")));
+        this.settingMinimumDepositTermValue = (Long) fixedObject.get("min_deposit_term");
+        this.settingMinimumDepositTypeValue = LockInType.optionLiteral(String.valueOf(fixedObject.get("min_deposit_term_type_enum")));
 
-        this.settingMandatoryDepositValue = (Boolean) recurringObject.get("is_mandatory");
-        this.settingAdjustAdvancePaymentValue = (Boolean) recurringObject.get("adjust_advance_towards_future_payments");
-        this.settingAllowWithdrawalValue = (Boolean) recurringObject.get("allow_withdrawal");
-
-        this.settingInMultiplesOfValue = (Long) recurringObject.get("in_multiples_of_deposit_term");
-        this.settingInMultiplesTypeValue = LockInType.optionLiteral(String.valueOf(recurringObject.get("in_multiples_of_deposit_term_type_enum")));
-
-        this.settingMinimumDepositTermValue = (Long) recurringObject.get("min_deposit_term");
-        this.settingMinimumDepositTypeValue = LockInType.optionLiteral(String.valueOf(recurringObject.get("min_deposit_term_type_enum")));
-
-        this.settingMaximumDepositTermValue = (Long) recurringObject.get("max_deposit_term");
-        this.settingMaximumDepositTypeValue = LockInType.optionLiteral(String.valueOf(recurringObject.get("max_deposit_term_type_enum")));
-        Long pre_closure_penal_applicable = (Long) recurringObject.get("pre_closure_penal_applicable");
+        this.settingMaximumDepositTermValue = (Long) fixedObject.get("max_deposit_term");
+        this.settingMaximumDepositTypeValue = LockInType.optionLiteral(String.valueOf(fixedObject.get("max_deposit_term_type_enum")));
+        Long pre_closure_penal_applicable = (Long) fixedObject.get("pre_closure_penal_applicable");
         this.settingForPreMatureClosureValue = pre_closure_penal_applicable != null && pre_closure_penal_applicable == 1;
-        this.settingApplyPenalInterestValue = (Double) recurringObject.get("pre_closure_penal_interest");
-        this.settingApplyPenalOnValue = ApplyPenalOn.optionLiteral(String.valueOf(recurringObject.get("pre_closure_penal_interest_on_enum")));
+        this.settingApplyPenalInterestValue = (Double) fixedObject.get("pre_closure_penal_interest");
+        this.settingApplyPenalOnValue = ApplyPenalOn.optionLiteral(String.valueOf(fixedObject.get("pre_closure_penal_interest_on_enum")));
 
-        this.settingBalanceRequiredForInterestCalculationValue = (Double) recurringObject.get("min_balance_for_interest_calculation");
-
-        Long withhold_tax = (Long) recurringObject.get("withhold_tax");
+        Long withhold_tax = (Long) fixedObject.get("withhold_tax");
         this.settingWithholdTaxApplicableValue = withhold_tax != null && withhold_tax == 1;
-        this.settingTaxGroupValue = jdbcTemplate.queryForObject("select name from m_tax_group where id = ?", String.class, recurringObject.get("tax_group_id"));
+        this.settingTaxGroupValue = jdbcTemplate.queryForObject("select name from m_tax_group where id = ?", String.class, fixedObject.get("tax_group_id"));
 
         SelectQuery chargeQuery = new SelectQuery("m_charge");
         chargeQuery.addJoin("inner join m_savings_product_charge on m_savings_product_charge.charge_id = m_charge.id");
@@ -488,7 +457,7 @@ public class RecurringDepositPreviewPage extends Page {
         chargeQuery.addField("m_charge.fee_frequency");
         chargeQuery.addField("m_charge.income_or_liability_account_id");
         chargeQuery.addField("m_charge.tax_group_id");
-        chargeQuery.addWhere("m_savings_product_charge.savings_product_id = '" + this.recurringId + "'");
+        chargeQuery.addWhere("m_savings_product_charge.savings_product_id = '" + this.fixedId + "'");
 
         List<Map<String, Object>> chargeObjects = jdbcTemplate.queryForList(chargeQuery.toSQL());
 
@@ -507,16 +476,14 @@ public class RecurringDepositPreviewPage extends Page {
         interestChartQuery.addJoin("inner join m_interest_rate_chart on m_deposit_product_interest_rate_chart.interest_rate_chart_id = m_interest_rate_chart.id");
         interestChartQuery.addOrderBy("m_interest_rate_chart.from_date desc");
         interestChartQuery.setLimit(0l, 1l);
-        interestChartQuery.addWhere("m_deposit_product_interest_rate_chart.deposit_product_id = '" + this.recurringId + "'");
+        interestChartQuery.addWhere("m_deposit_product_interest_rate_chart.deposit_product_id = '" + this.fixedId + "'");
         interestChartQuery.addField("m_interest_rate_chart.id");
         interestChartQuery.addField("m_interest_rate_chart.from_date");
         interestChartQuery.addField("m_interest_rate_chart.end_date");
         interestChartQuery.addField("m_interest_rate_chart.is_primary_grouping_by_amount");
 
         Map<String, Object> interestChartObject = jdbcTemplate.queryForMap(interestChartQuery.toSQL());
-
         if (interestChartObject != null) {
-
             this.interestRateValidFromDateValue = (Date) interestChartObject.get("from_date");
             this.interestRateValidEndDateValue = (Date) interestChartObject.get("end_date");
             this.interestRatePrimaryGroupingByAmountValue = (Boolean) interestChartObject.get("is_primary_grouping_by_amount");
@@ -531,7 +498,6 @@ public class RecurringDepositPreviewPage extends Page {
             rateQuery.addField("annual_interest_rate");
             rateQuery.addField("description");
             rateQuery.addWhere("interest_rate_chart_id = '" + interestChartObject.get("id") + "'");
-
             List<Map<String, Object>> ratesObject = jdbcTemplate.queryForList(rateQuery.toSQL());
 
             for (Map<String, Object> rateObject : ratesObject) {
@@ -574,12 +540,12 @@ public class RecurringDepositPreviewPage extends Page {
             }
         }
 
-        AccountingType accountingType = AccountingType.parseLiteral(String.valueOf(recurringObject.get("accounting_type")));
+        AccountingType accountingType = AccountingType.parseLiteral(String.valueOf(fixedObject.get("accounting_type")));
 
         if (accountingType != null) {
             this.accountingValue = accountingType.getDescription();
 
-            List<Map<String, Object>> mappings = jdbcTemplate.queryForList("select * from acc_product_mapping where product_id = ? and product_type = ?", this.recurringId, ProductType.Saving.getLiteral());
+            List<Map<String, Object>> mappings = jdbcTemplate.queryForList("select * from acc_product_mapping where product_id = ? and product_type = ?", this.fixedId, ProductType.Saving.getLiteral());
 
             for (Map<String, Object> mapping : mappings) {
                 FinancialAccountType financialAccountType = FinancialAccountType.parseLiteral(String.valueOf(mapping.get("financial_account_type")));
@@ -687,7 +653,7 @@ public class RecurringDepositPreviewPage extends Page {
         this.advancedAccountingRuleVContainer = new WebMarkupContainer("advancedAccountingRuleVContainer");
         this.advancedAccountingRuleBlock.add(this.advancedAccountingRuleVContainer);
 
-        this.advancedAccountingRuleFundSourceColumn = Lists.newArrayList();
+        this.advancedAccountingRuleFundSourceColumn = Lists.newLinkedList();
         this.advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Payment Type"), "payment", "payment", this::advancedAccountingRuleFundSourceColumn));
         this.advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Fund Source"), "account", "account", this::advancedAccountingRuleFundSourceColumn));
         this.advancedAccountingRuleFundSourceProvider = new ListDataProvider(this.advancedAccountingRuleFundSourceValue);
@@ -696,8 +662,8 @@ public class RecurringDepositPreviewPage extends Page {
         this.advancedAccountingRuleFundSourceTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRuleFundSourceTable, this.advancedAccountingRuleFundSourceProvider));
         this.advancedAccountingRuleFundSourceTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRuleFundSourceTable));
 
-        this.advancedAccountingRuleFeeIncomeColumn = Lists.newArrayList();
-        this.advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Fee"), "charge", "charge", this::advancedAccountingRuleFeeIncomeColumn));
+        this.advancedAccountingRuleFeeIncomeColumn = Lists.newLinkedList();
+        this.advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Fees"), "charge", "charge", this::advancedAccountingRuleFeeIncomeColumn));
         this.advancedAccountingRuleFeeIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRuleFeeIncomeColumn));
         this.advancedAccountingRuleFeeIncomeProvider = new ListDataProvider(this.advancedAccountingRuleFeeIncomeValue);
         this.advancedAccountingRuleFeeIncomeTable = new DataTable<>("advancedAccountingRuleFeeIncomeTable", this.advancedAccountingRuleFeeIncomeColumn, this.advancedAccountingRuleFeeIncomeProvider, 20);
@@ -705,7 +671,7 @@ public class RecurringDepositPreviewPage extends Page {
         this.advancedAccountingRuleFeeIncomeTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRuleFeeIncomeTable, this.advancedAccountingRuleFeeIncomeProvider));
         this.advancedAccountingRuleFeeIncomeTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRuleFeeIncomeTable));
 
-        this.advancedAccountingRulePenaltyIncomeColumn = Lists.newArrayList();
+        this.advancedAccountingRulePenaltyIncomeColumn = Lists.newLinkedList();
         this.advancedAccountingRulePenaltyIncomeColumn.add(new TextColumn(Model.of("Penalty"), "charge", "charge", this::advancedAccountingRulePenaltyIncomeColumn));
         this.advancedAccountingRulePenaltyIncomeColumn.add(new TextColumn(Model.of("Income Account"), "account", "account", this::advancedAccountingRulePenaltyIncomeColumn));
         this.advancedAccountingRulePenaltyIncomeProvider = new ListDataProvider(this.advancedAccountingRulePenaltyIncomeValue);
@@ -741,8 +707,7 @@ public class RecurringDepositPreviewPage extends Page {
     }
 
     protected void initSectionCharge() {
-
-        this.chargeColumn = Lists.newArrayList();
+        this.chargeColumn = Lists.newLinkedList();
         this.chargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::chargeColumn));
         this.chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeColumn));
         this.chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeColumn));
@@ -753,7 +718,6 @@ public class RecurringDepositPreviewPage extends Page {
         add(this.chargeTable);
         this.chargeTable.addTopToolbar(new HeadersToolbar<>(this.chargeTable, this.chargeProvider));
         this.chargeTable.addBottomToolbar(new NoRecordsToolbar(this.chargeTable));
-
     }
 
     protected ItemPanel chargeColumn(String column, IModel<String> display, Map<String, Object> model) {
@@ -777,12 +741,15 @@ public class RecurringDepositPreviewPage extends Page {
 
         initInterestRatePrimaryGroupingByAmountBlock();
 
-        initInterestRateChartTable();
+        this.popup = new ModalWindow("popup");
+        add(this.popup);
+        this.popup.setOnClose(this::popupClose);
 
+        initInterestRateChartBlock();
     }
 
-    protected void initInterestRateChartTable() {
-        this.interestRateChartColumn = Lists.newArrayList();
+    protected void initInterestRateChartBlock() {
+        this.interestRateChartColumn = Lists.newLinkedList();
         this.interestRateChartColumn.add(new TextColumn(Model.of("Period Type"), "periodType", "periodType", this::interestRateChartColumn));
         this.interestRateChartColumn.add(new TextColumn(Model.of("Period From"), "periodFrom", "periodFrom", this::interestRateChartColumn));
         this.interestRateChartColumn.add(new TextColumn(Model.of("Period To"), "periodTo", "periodTo", this::interestRateChartColumn));
@@ -790,10 +757,14 @@ public class RecurringDepositPreviewPage extends Page {
         this.interestRateChartColumn.add(new TextColumn(Model.of("Amount Range To"), "amountRangeTo", "amountRangeTo", this::interestRateChartColumn));
         this.interestRateChartColumn.add(new TextColumn(Model.of("Interest"), "interest", "interest", this::interestRateChartColumn));
         this.interestRateChartColumn.add(new TextColumn(Model.of("Description"), "description", "description", this::interestRateChartColumn));
-        this.interestRateChartColumn.add(new ActionFilterColumn<>(Model.of(""), this::interestRateChartAction, this::interestRateChartClick));
+        this.interestRateChartColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::interestRateChartAction, this::interestRateChartClick));
         this.interestRateChartProvider = new ListDataProvider(this.interestRateChartValue);
-        this.interestRateChartTable = new DataTable<>("interestRateChartTable", this.interestRateChartColumn, this.interestRateChartProvider, 20);
-        add(this.interestRateChartTable);
+        this.interestRateChartBlock = new WebMarkupBlock("interestRateChartBlock", Size.Twelve_12);
+        add(this.interestRateChartBlock);
+        this.interestRateChartVContainer = new WebMarkupContainer("interestRateChartVContainer");
+        this.interestRateChartBlock.add(this.interestRateChartVContainer);
+        this.interestRateChartTable = new DataTable<>("interestRateChartTable", interestRateChartColumn, this.interestRateChartProvider, 20);
+        this.interestRateChartVContainer.add(this.interestRateChartTable);
         this.interestRateChartTable.addTopToolbar(new HeadersToolbar<>(this.interestRateChartTable, this.interestRateChartProvider));
         this.interestRateChartTable.addBottomToolbar(new NoRecordsToolbar(this.interestRateChartTable));
     }
@@ -825,6 +796,9 @@ public class RecurringDepositPreviewPage extends Page {
         this.interestRateValidFromDateVContainer.add(this.interestRateValidFromDateView);
     }
 
+    protected void popupClose(String popupName, String signalId, AjaxRequestTarget target) {
+    }
+
     protected ItemPanel interestRateChartColumn(String column, IModel<String> display, Map<String, Object> model) {
         if ("periodType".equals(column)) {
             Option value = (Option) model.get(column);
@@ -842,288 +816,192 @@ public class RecurringDepositPreviewPage extends Page {
         throw new WicketRuntimeException("Unknown " + column);
     }
 
+    protected void interestRateChartClick(String link, Map<String, Object> model, AjaxRequestTarget target) {
+        if ("incentives".equals(link)) {
+            List<Map<String, Object>> incentiveValue = (List<Map<String, Object>>) model.get("interestRate");
+            this.popup.setContent(new IncentivePreviewPopup("incentive", this.popup, incentiveValue));
+            this.popup.show(target);
+        }
+    }
+
+    protected List<ActionItem> interestRateChartAction(String s, Map<String, Object> model) {
+        List<ActionItem> actions = Lists.newLinkedList();
+        actions.add(new ActionItem("incentives", Model.of("Incentives"), ItemCss.PRIMARY));
+        return actions;
+    }
+
     protected void initSectionSetting() {
-
-        initSettingMandatoryDepositBlock();
-
-        initSettingAdjustAdvancePaymentBlock();
-
-        initSettingAllowWithdrawalBlock();
-
-        initSettingLockInPeriodBlock();
-
-        initSettingLockInTypeBlock();
-
-        initSettingMinimumDepositTermBlock();
-
-        initSettingMinimumDepositTypeBlock();
-
-        initSettingInMultiplesOfBlock();
-
-        initSettingInMultiplesTypeBlock();
-
-        initSettingMaximumDepositTermBlock();
-
-        initSettingMaximumDepositTypeBlock();
-
-        initSettingForPreMatureClosureBlock();
-
-        initSettingApplyPenalInterestBlock();
-
-        initSettingApplyPenalOnBlock();
-
-        initSettingBalanceRequiredForInterestCalculationBlock();
-
-        initSettingWithholdTaxApplicableBlock();
-
-        initSettingTaxGroupBlock();
-
-    }
-
-    protected void initSettingTaxGroupBlock() {
-        this.settingTaxGroupBlock = new WebMarkupBlock("settingTaxGroupBlock", Size.Six_6);
-        add(this.settingTaxGroupBlock);
-        this.settingTaxGroupVContainer = new WebMarkupContainer("settingTaxGroupVContainer");
-        this.settingTaxGroupBlock.add(this.settingTaxGroupVContainer);
-        this.settingTaxGroupView = new ReadOnlyView("settingTaxGroupView", new PropertyModel<>(this, "settingTaxGroupValue"));
-        this.settingTaxGroupVContainer.add(this.settingTaxGroupView);
-    }
-
-    protected void initSettingWithholdTaxApplicableBlock() {
-        this.settingWithholdTaxApplicableBlock = new WebMarkupBlock("settingWithholdTaxApplicableBlock", Size.Six_6);
-        add(this.settingWithholdTaxApplicableBlock);
-        this.settingWithholdTaxApplicableVContainer = new WebMarkupContainer("settingWithholdTaxApplicableVContainer");
-        this.settingWithholdTaxApplicableBlock.add(this.settingWithholdTaxApplicableVContainer);
-        this.settingWithholdTaxApplicableView = new ReadOnlyView("settingWithholdTaxApplicableView", new PropertyModel<>(this, "settingWithholdTaxApplicableValue"));
-        this.settingWithholdTaxApplicableVContainer.add(this.settingWithholdTaxApplicableView);
-    }
-
-    protected void initSettingBalanceRequiredForInterestCalculationBlock() {
-        this.settingBalanceRequiredForInterestCalculationBlock = new WebMarkupBlock("settingBalanceRequiredForInterestCalculationBlock", Size.Three_3);
-        add(this.settingBalanceRequiredForInterestCalculationBlock);
-        this.settingBalanceRequiredForInterestCalculationVContainer = new WebMarkupContainer("settingBalanceRequiredForInterestCalculationVContainer");
-        this.settingBalanceRequiredForInterestCalculationBlock.add(this.settingBalanceRequiredForInterestCalculationVContainer);
-        this.settingBalanceRequiredForInterestCalculationView = new ReadOnlyView("settingBalanceRequiredForInterestCalculationView", new PropertyModel<>(this, "settingBalanceRequiredForInterestCalculationValue"));
-        this.settingBalanceRequiredForInterestCalculationVContainer.add(this.settingBalanceRequiredForInterestCalculationView);
-    }
-
-    protected void initSettingApplyPenalOnBlock() {
-        this.settingApplyPenalOnBlock = new WebMarkupBlock("settingApplyPenalOnBlock", Size.Three_3);
-        add(this.settingApplyPenalOnBlock);
-        this.settingApplyPenalOnVContainer = new WebMarkupContainer("settingApplyPenalOnVContainer");
-        this.settingApplyPenalOnBlock.add(this.settingApplyPenalOnVContainer);
-        this.settingApplyPenalOnView = new ReadOnlyView("settingApplyPenalOnView", new PropertyModel<>(this, "settingApplyPenalOnValue"));
-        this.settingApplyPenalOnVContainer.add(this.settingApplyPenalOnView);
-    }
-
-    protected void initSettingApplyPenalInterestBlock() {
-        this.settingApplyPenalInterestBlock = new WebMarkupBlock("settingApplyPenalInterestBlock", Size.Three_3);
-        add(this.settingApplyPenalInterestBlock);
-        this.settingApplyPenalInterestVContainer = new WebMarkupContainer("settingApplyPenalInterestVContainer");
-        this.settingApplyPenalInterestBlock.add(this.settingApplyPenalInterestVContainer);
-        this.settingApplyPenalInterestView = new ReadOnlyView("settingApplyPenalInterestView", new PropertyModel<>(this, "settingApplyPenalInterestValue"));
-        this.settingApplyPenalInterestVContainer.add(this.settingApplyPenalInterestView);
-    }
-
-    protected void initSettingForPreMatureClosureBlock() {
-        this.settingForPreMatureClosureBlock = new WebMarkupBlock("settingForPreMatureClosureBlock", Size.Three_3);
-        add(this.settingForPreMatureClosureBlock);
-        this.settingForPreMatureClosureVContainer = new WebMarkupContainer("settingForPreMatureClosureVContainer");
-        this.settingForPreMatureClosureBlock.add(this.settingForPreMatureClosureVContainer);
-        this.settingForPreMatureClosureView = new ReadOnlyView("settingForPreMatureClosureView", new PropertyModel<>(this, "settingForPreMatureClosureValue"));
-        this.settingForPreMatureClosureVContainer.add(this.settingForPreMatureClosureView);
-    }
-
-    protected void initSettingMaximumDepositTypeBlock() {
-        this.settingMaximumDepositTypeBlock = new WebMarkupBlock("settingMaximumDepositTypeBlock", Size.Three_3);
-        add(this.settingMaximumDepositTypeBlock);
-        this.settingMaximumDepositTypeVContainer = new WebMarkupContainer("settingMaximumDepositTypeVContainer");
-        this.settingMaximumDepositTypeBlock.add(this.settingMaximumDepositTypeVContainer);
-        this.settingMaximumDepositTypeView = new ReadOnlyView("settingMaximumDepositTypeView", new PropertyModel<>(this, "settingMaximumDepositTypeValue"));
-        this.settingMaximumDepositTypeVContainer.add(this.settingMaximumDepositTypeView);
-    }
-
-    protected void initSettingMaximumDepositTermBlock() {
-        this.settingMaximumDepositTermBlock = new WebMarkupBlock("settingMaximumDepositTermBlock", Size.Three_3);
-        add(this.settingMaximumDepositTermBlock);
-        this.settingMaximumDepositTermVContainer = new WebMarkupContainer("settingMaximumDepositTermVContainer");
-        this.settingMaximumDepositTermBlock.add(this.settingMaximumDepositTermVContainer);
-        this.settingMaximumDepositTermView = new ReadOnlyView("settingMaximumDepositTermView", new PropertyModel<>(this, "settingMaximumDepositTermValue"));
-        this.settingMaximumDepositTermVContainer.add(this.settingMaximumDepositTermView);
-    }
-
-    protected void initSettingInMultiplesTypeBlock() {
-        this.settingInMultiplesTypeBlock = new WebMarkupBlock("settingInMultiplesTypeBlock", Size.Three_3);
-        add(this.settingInMultiplesTypeBlock);
-        this.settingInMultiplesTypeVContainer = new WebMarkupContainer("settingInMultiplesTypeVContainer");
-        this.settingInMultiplesTypeBlock.add(this.settingInMultiplesTypeVContainer);
-        this.settingInMultiplesTypeView = new ReadOnlyView("settingInMultiplesTypeView", new PropertyModel<>(this, "settingInMultiplesTypeValue"));
-        this.settingInMultiplesTypeVContainer.add(this.settingInMultiplesTypeView);
-    }
-
-    protected void initSettingInMultiplesOfBlock() {
-        this.settingInMultiplesOfBlock = new WebMarkupBlock("settingInMultiplesOfBlock", Size.Three_3);
-        add(this.settingInMultiplesOfBlock);
-        this.settingInMultiplesOfVContainer = new WebMarkupContainer("settingInMultiplesOfVContainer");
-        this.settingInMultiplesOfBlock.add(this.settingInMultiplesOfVContainer);
-        this.settingInMultiplesOfView = new ReadOnlyView("settingInMultiplesOfView", new PropertyModel<>(this, "settingInMultiplesOfValue"));
-        this.settingInMultiplesOfVContainer.add(this.settingInMultiplesOfView);
-    }
-
-    protected void initSettingMinimumDepositTypeBlock() {
-        this.settingMinimumDepositTypeBlock = new WebMarkupBlock("settingMinimumDepositTypeBlock", Size.Three_3);
-        add(this.settingMinimumDepositTypeBlock);
-        this.settingMinimumDepositTypeVContainer = new WebMarkupContainer("settingMinimumDepositTypeVContainer");
-        this.settingMinimumDepositTypeBlock.add(this.settingMinimumDepositTypeVContainer);
-        this.settingMinimumDepositTypeView = new ReadOnlyView("settingMinimumDepositTypeView", new PropertyModel<>(this, "settingMinimumDepositTypeValue"));
-        this.settingMinimumDepositTypeVContainer.add(this.settingMinimumDepositTypeView);
-    }
-
-    protected void initSettingMinimumDepositTermBlock() {
-        this.settingMinimumDepositTermBlock = new WebMarkupBlock("settingMinimumDepositTermBlock", Size.Three_3);
-        add(this.settingMinimumDepositTermBlock);
-        this.settingMinimumDepositTermVContainer = new WebMarkupContainer("settingMinimumDepositTermVContainer");
-        this.settingMinimumDepositTermBlock.add(this.settingMinimumDepositTermVContainer);
-        this.settingMinimumDepositTermView = new ReadOnlyView("settingMinimumDepositTermView", new PropertyModel<>(this, "settingMinimumDepositTermValue"));
-        this.settingMinimumDepositTermVContainer.add(this.settingMinimumDepositTermView);
-    }
-
-    protected void initSettingLockInTypeBlock() {
-        this.settingLockInTypeBlock = new WebMarkupBlock("settingLockInTypeBlock", Size.Three_3);
-        add(this.settingLockInTypeBlock);
-        this.settingLockInTypeVContainer = new WebMarkupContainer("settingLockInTypeVContainer");
-        this.settingLockInTypeBlock.add(this.settingLockInTypeVContainer);
-        this.settingLockInTypeView = new ReadOnlyView("settingLockInTypeView", new PropertyModel<>(this, "settingLockInTypeValue"));
-        this.settingLockInTypeVContainer.add(this.settingLockInTypeView);
-    }
-
-    protected void initSettingLockInPeriodBlock() {
         this.settingLockInPeriodBlock = new WebMarkupBlock("settingLockInPeriodBlock", Size.Three_3);
         add(this.settingLockInPeriodBlock);
         this.settingLockInPeriodVContainer = new WebMarkupContainer("settingLockInPeriodVContainer");
         this.settingLockInPeriodBlock.add(this.settingLockInPeriodVContainer);
         this.settingLockInPeriodView = new ReadOnlyView("settingLockInPeriodView", new PropertyModel<>(this, "settingLockInPeriodValue"));
         this.settingLockInPeriodVContainer.add(this.settingLockInPeriodView);
+
+        this.settingLockInTypeBlock = new WebMarkupBlock("settingLockInTypeBlock", Size.Three_3);
+        add(this.settingLockInTypeBlock);
+        this.settingLockInTypeVContainer = new WebMarkupContainer("settingLockInTypeVContainer");
+        this.settingLockInTypeBlock.add(this.settingLockInTypeVContainer);
+        this.settingLockInTypeView = new ReadOnlyView("settingLockInTypeView", new PropertyModel<>(this, "settingLockInTypeValue"));
+        this.settingLockInTypeVContainer.add(this.settingLockInTypeView);
+
+        this.settingMinimumDepositTermBlock = new WebMarkupBlock("settingMinimumDepositTermBlock", Size.Three_3);
+        add(this.settingMinimumDepositTermBlock);
+        this.settingMinimumDepositTermVContainer = new WebMarkupContainer("settingMinimumDepositTermVContainer");
+        this.settingMinimumDepositTermBlock.add(this.settingMinimumDepositTermVContainer);
+        this.settingMinimumDepositTermView = new ReadOnlyView("settingMinimumDepositTermView", new PropertyModel<>(this, "settingMinimumDepositTermValue"));
+        this.settingMinimumDepositTermVContainer.add(this.settingMinimumDepositTermView);
+
+        this.settingMinimumDepositTypeBlock = new WebMarkupBlock("settingMinimumDepositTypeBlock", Size.Three_3);
+        add(this.settingMinimumDepositTypeBlock);
+        this.settingMinimumDepositTypeVContainer = new WebMarkupContainer("settingMinimumDepositTypeVContainer");
+        this.settingMinimumDepositTypeBlock.add(this.settingMinimumDepositTypeVContainer);
+        this.settingMinimumDepositTypeView = new ReadOnlyView("settingMinimumDepositTypeView", new PropertyModel<>(this, "settingMinimumDepositTypeValue"));
+        this.settingMinimumDepositTypeVContainer.add(this.settingMinimumDepositTypeView);
+
+        this.settingInMultiplesOfBlock = new WebMarkupBlock("settingInMultiplesOfBlock", Size.Three_3);
+        add(this.settingInMultiplesOfBlock);
+        this.settingInMultiplesOfVContainer = new WebMarkupContainer("settingInMultiplesOfVContainer");
+        this.settingInMultiplesOfBlock.add(this.settingInMultiplesOfVContainer);
+        this.settingInMultiplesOfView = new ReadOnlyView("settingInMultiplesOfView", new PropertyModel<>(this, "settingInMultiplesOfValue"));
+        this.settingInMultiplesOfVContainer.add(this.settingInMultiplesOfView);
+
+        this.settingInMultiplesTypeBlock = new WebMarkupBlock("settingInMultiplesTypeBlock", Size.Three_3);
+        add(this.settingInMultiplesTypeBlock);
+        this.settingInMultiplesTypeVContainer = new WebMarkupContainer("settingInMultiplesTypeVContainer");
+        this.settingInMultiplesTypeBlock.add(this.settingInMultiplesTypeVContainer);
+        this.settingInMultiplesTypeView = new ReadOnlyView("settingInMultiplesTypeView", new PropertyModel<>(this, "settingInMultiplesTypeValue"));
+        this.settingInMultiplesTypeVContainer.add(this.settingInMultiplesTypeView);
+
+        this.settingMaximumDepositTermBlock = new WebMarkupBlock("settingMaximumDepositTermBlock", Size.Three_3);
+        add(this.settingMaximumDepositTermBlock);
+        this.settingMaximumDepositTermVContainer = new WebMarkupContainer("settingMaximumDepositTermVContainer");
+        this.settingMaximumDepositTermBlock.add(this.settingMaximumDepositTermVContainer);
+        this.settingMaximumDepositTermView = new ReadOnlyView("settingMaximumDepositTermView", new PropertyModel<>(this, "settingMaximumDepositTermValue"));
+        this.settingMaximumDepositTermVContainer.add(this.settingMaximumDepositTermView);
+
+        this.settingMaximumDepositTypeBlock = new WebMarkupBlock("settingMaximumDepositTypeBlock", Size.Three_3);
+        add(this.settingMaximumDepositTypeBlock);
+        this.settingMaximumDepositTypeVContainer = new WebMarkupContainer("settingMaximumDepositTypeVContainer");
+        this.settingMaximumDepositTypeBlock.add(this.settingMaximumDepositTypeVContainer);
+        this.settingMaximumDepositTypeView = new ReadOnlyView("settingMaximumDepositTypeView", new PropertyModel<>(this, "settingMaximumDepositTypeValue"));
+        this.settingMaximumDepositTypeVContainer.add(this.settingMaximumDepositTypeView);
+
+        this.settingForPreMatureClosureBlock = new WebMarkupBlock("settingForPreMatureClosureBlock", Size.Three_3);
+        add(this.settingForPreMatureClosureBlock);
+        this.settingForPreMatureClosureVContainer = new WebMarkupContainer("settingForPreMatureClosureVContainer");
+        this.settingForPreMatureClosureBlock.add(this.settingForPreMatureClosureVContainer);
+        this.settingForPreMatureClosureView = new ReadOnlyView("settingForPreMatureClosureView", new PropertyModel<>(this, "settingForPreMatureClosureValue"));
+        this.settingForPreMatureClosureVContainer.add(this.settingForPreMatureClosureView);
+
+        this.settingApplyPenalInterestBlock = new WebMarkupBlock("settingApplyPenalInterestBlock", Size.Three_3);
+        add(this.settingApplyPenalInterestBlock);
+        this.settingApplyPenalInterestVContainer = new WebMarkupContainer("settingApplyPenalInterestVContainer");
+        this.settingApplyPenalInterestBlock.add(this.settingApplyPenalInterestVContainer);
+        this.settingApplyPenalInterestView = new ReadOnlyView("settingApplyPenalInterestView", new PropertyModel<>(this, "settingApplyPenalInterestValue"));
+        this.settingApplyPenalInterestVContainer.add(this.settingApplyPenalInterestView);
+
+        this.settingApplyPenalOnBlock = new WebMarkupBlock("settingApplyPenalOnBlock", Size.Three_3);
+        add(this.settingApplyPenalOnBlock);
+        this.settingApplyPenalOnVContainer = new WebMarkupContainer("settingApplyPenalOnVContainer");
+        this.settingApplyPenalOnBlock.add(this.settingApplyPenalOnVContainer);
+        this.settingApplyPenalOnView = new ReadOnlyView("settingApplyPenalOnView", new PropertyModel<>(this, "settingApplyPenalOnValue"));
+        this.settingApplyPenalOnVContainer.add(this.settingApplyPenalOnView);
+
+        this.settingWithholdTaxApplicableBlock = new WebMarkupBlock("settingWithholdTaxApplicableBlock", Size.Six_6);
+        add(this.settingWithholdTaxApplicableBlock);
+        this.settingWithholdTaxApplicableVContainer = new WebMarkupContainer("settingWithholdTaxApplicableVContainer");
+        this.settingWithholdTaxApplicableBlock.add(this.settingWithholdTaxApplicableVContainer);
+        this.settingWithholdTaxApplicableView = new ReadOnlyView("settingWithholdTaxApplicableView", new PropertyModel<>(this, "settingWithholdTaxApplicableValue"));
+        this.settingWithholdTaxApplicableVContainer.add(this.settingWithholdTaxApplicableView);
+
+        this.settingTaxGroupBlock = new WebMarkupBlock("settingTaxGroupBlock", Size.Six_6);
+        add(this.settingTaxGroupBlock);
+        this.settingTaxGroupVContainer = new WebMarkupContainer("settingTaxGroupVContainer");
+        this.settingTaxGroupBlock.add(this.settingTaxGroupVContainer);
+        this.settingTaxGroupView = new ReadOnlyView("settingTaxGroupView", new PropertyModel<>(this, "settingTaxGroupValue"));
+        this.settingTaxGroupVContainer.add(this.settingTaxGroupView);
+
     }
 
-    protected void initSettingAllowWithdrawalBlock() {
-        this.settingAllowWithdrawalBlock = new WebMarkupBlock("settingAllowWithdrawalBlock", Size.Six_6);
-        add(this.settingAllowWithdrawalBlock);
-        this.settingAllowWithdrawalVContainer = new WebMarkupContainer("settingAllowWithdrawalVContainer");
-        this.settingAllowWithdrawalBlock.add(this.settingAllowWithdrawalVContainer);
-        this.settingAllowWithdrawalView = new ReadOnlyView("settingAllowWithdrawalView", new PropertyModel<>(this, "settingAllowWithdrawalValue"));
-        this.settingAllowWithdrawalVContainer.add(this.settingAllowWithdrawalView);
-    }
-
-    protected void initSettingAdjustAdvancePaymentBlock() {
-        this.settingAdjustAdvancePaymentBlock = new WebMarkupBlock("settingAdjustAdvancePaymentBlock", Size.Six_6);
-        add(this.settingAdjustAdvancePaymentBlock);
-        this.settingAdjustAdvancePaymentVContainer = new WebMarkupContainer("settingAdjustAdvancePaymentVContainer");
-        this.settingAdjustAdvancePaymentBlock.add(this.settingAdjustAdvancePaymentVContainer);
-        this.settingAdjustAdvancePaymentView = new ReadOnlyView("settingAdjustAdvancePaymentView", new PropertyModel<>(this, "settingAdjustAdvancePaymentValue"));
-        this.settingAdjustAdvancePaymentVContainer.add(this.settingAdjustAdvancePaymentView);
-    }
-
-    protected void initSettingMandatoryDepositBlock() {
-        this.settingMandatoryDepositBlock = new WebMarkupBlock("settingMandatoryDepositBlock", Size.Six_6);
-        add(this.settingMandatoryDepositBlock);
-        this.settingMandatoryDepositVContainer = new WebMarkupContainer("settingMandatoryDepositVContainer");
-        this.settingMandatoryDepositBlock.add(this.settingMandatoryDepositVContainer);
-        this.settingMandatoryDepositView = new ReadOnlyView("settingMandatoryDepositView", new PropertyModel<>(this, "settingMandatoryDepositValue"));
-        this.settingMandatoryDepositVContainer.add(this.settingMandatoryDepositView);
+    protected boolean settingWithholdTaxApplicableFieldUpdate(AjaxRequestTarget target) {
+        boolean visible = this.settingWithholdTaxApplicableValue != null && this.settingWithholdTaxApplicableValue;
+        this.settingTaxGroupVContainer.setVisible(visible);
+        if (target != null) {
+            target.add(this.settingTaxGroupBlock);
+        }
+        return false;
     }
 
     protected void initSectionTerm() {
 
-        initTermDefaultDepositAmountBlock();
-
-        initTermMinimumDepositAmountBlock();
-
-        initTermMaximumDepositAmountBlock();
-
-        initTermInterestCompoundingPeriodBlock();
-
-        initTermInterestPostingPeriodBlock();
-
-        initTermInterestCalculatedUsingBlock();
-
-        initTermDayInYearBlock();
-
-    }
-
-    protected void initTermDayInYearBlock() {
-        this.termDayInYearBlock = new WebMarkupBlock("termDayInYearBlock", Size.Six_6);
-        add(this.termDayInYearBlock);
-        this.termDayInYearVContainer = new WebMarkupContainer("termDayInYearVContainer");
-        this.termDayInYearBlock.add(this.termDayInYearVContainer);
-        this.termDayInYearView = new ReadOnlyView("termDayInYearView", new PropertyModel<>(this, "termDayInYearValue"));
-        this.termDayInYearVContainer.add(this.termDayInYearView);
-    }
-
-    protected void initTermInterestCalculatedUsingBlock() {
-        this.termInterestCalculatedUsingBlock = new WebMarkupBlock("termInterestCalculatedUsingBlock", Size.Six_6);
-        add(this.termInterestCalculatedUsingBlock);
-        this.termInterestCalculatedUsingVContainer = new WebMarkupContainer("termInterestCalculatedUsingVContainer");
-        this.termInterestCalculatedUsingBlock.add(this.termInterestCalculatedUsingVContainer);
-        this.termInterestCalculatedUsingView = new ReadOnlyView("termInterestCalculatedUsingView", new PropertyModel<>(this, "termInterestCalculatedUsingValue"));
-        this.termInterestCalculatedUsingVContainer.add(this.termInterestCalculatedUsingView);
-    }
-
-    protected void initTermInterestPostingPeriodBlock() {
-        this.termInterestPostingPeriodBlock = new WebMarkupBlock("termInterestPostingPeriodBlock", Size.Six_6);
-        add(this.termInterestPostingPeriodBlock);
-        this.termInterestPostingPeriodVContainer = new WebMarkupContainer("termInterestPostingPeriodVContainer");
-        this.termInterestPostingPeriodBlock.add(this.termInterestPostingPeriodVContainer);
-        this.termInterestPostingPeriodView = new ReadOnlyView("termInterestPostingPeriodView", new PropertyModel<>(this, "termInterestPostingPeriodValue"));
-        this.termInterestPostingPeriodVContainer.add(this.termInterestPostingPeriodView);
-    }
-
-    protected void initTermInterestCompoundingPeriodBlock() {
-        this.termInterestCompoundingPeriodBlock = new WebMarkupBlock("termInterestCompoundingPeriodBlock", Size.Six_6);
-        add(this.termInterestCompoundingPeriodBlock);
-        this.termInterestCompoundingPeriodVContainer = new WebMarkupContainer("termInterestCompoundingPeriodVContainer");
-        this.termInterestCompoundingPeriodBlock.add(this.termInterestCompoundingPeriodVContainer);
-        this.termInterestCompoundingPeriodView = new ReadOnlyView("termInterestCompoundingPeriodView", new PropertyModel<>(this, "termInterestCompoundingPeriodValue"));
-        this.termInterestCompoundingPeriodVContainer.add(this.termInterestCompoundingPeriodView);
-    }
-
-    protected void initTermMaximumDepositAmountBlock() {
-        this.termMaximumDepositAmountBlock = new WebMarkupBlock("termMaximumDepositAmountBlock", Size.Six_6);
-        add(this.termMaximumDepositAmountBlock);
-        this.termMaximumDepositAmountVContainer = new WebMarkupContainer("termMaximumDepositAmountVContainer");
-        this.termMaximumDepositAmountBlock.add(this.termMaximumDepositAmountVContainer);
-        this.termMaximumDepositAmountView = new ReadOnlyView("termMaximumDepositAmountView", new PropertyModel<>(this, "termMaximumDepositAmountValue"));
-        this.termMaximumDepositAmountVContainer.add(this.termMaximumDepositAmountView);
-    }
-
-    protected void initTermMinimumDepositAmountBlock() {
-        this.termMinimumDepositAmountBlock = new WebMarkupBlock("termMinimumDepositAmountBlock", Size.Six_6);
-        add(this.termMinimumDepositAmountBlock);
-        this.termMinimumDepositAmountVContainer = new WebMarkupContainer("termMinimumDepositAmountVContainer");
-        this.termMinimumDepositAmountBlock.add(this.termMinimumDepositAmountVContainer);
-        this.termMinimumDepositAmountView = new ReadOnlyView("termMinimumDepositAmountView", new PropertyModel<>(this, "termMinimumDepositAmountValue"));
-        this.termMinimumDepositAmountVContainer.add(this.termMinimumDepositAmountView);
-    }
-
-    protected void initTermDefaultDepositAmountBlock() {
         this.termDefaultDepositAmountBlock = new WebMarkupBlock("termDefaultDepositAmountBlock", Size.Six_6);
         add(this.termDefaultDepositAmountBlock);
         this.termDefaultDepositAmountVContainer = new WebMarkupContainer("termDefaultDepositAmountVContainer");
         this.termDefaultDepositAmountBlock.add(this.termDefaultDepositAmountVContainer);
         this.termDefaultDepositAmountView = new ReadOnlyView("termDefaultDepositAmountView", new PropertyModel<>(this, "termDefaultDepositAmountValue"));
         this.termDefaultDepositAmountVContainer.add(this.termDefaultDepositAmountView);
+
+        this.termMinimumDepositAmountBlock = new WebMarkupBlock("termMinimumDepositAmountBlock", Size.Six_6);
+        add(this.termMinimumDepositAmountBlock);
+        this.termMinimumDepositAmountVContainer = new WebMarkupContainer("termMinimumDepositAmountVContainer");
+        this.termMinimumDepositAmountBlock.add(this.termMinimumDepositAmountVContainer);
+        this.termMinimumDepositAmountView = new ReadOnlyView("termMinimumDepositAmountView", new PropertyModel<>(this, "termMinimumDepositAmountValue"));
+        this.termMinimumDepositAmountVContainer.add(this.termMinimumDepositAmountView);
+
+        this.termMaximumDepositAmountBlock = new WebMarkupBlock("termMaximumDepositAmountBlock", Size.Six_6);
+        add(this.termMaximumDepositAmountBlock);
+        this.termMaximumDepositAmountVContainer = new WebMarkupContainer("termMaximumDepositAmountVContainer");
+        this.termMaximumDepositAmountBlock.add(this.termMaximumDepositAmountVContainer);
+        this.termMaximumDepositAmountView = new ReadOnlyView("termMaximumDepositAmountView", new PropertyModel<>(this, "termMaximumDepositAmountValue"));
+        this.termMaximumDepositAmountVContainer.add(this.termMaximumDepositAmountView);
+
+        this.termInterestCompoundingPeriodBlock = new WebMarkupBlock("termInterestCompoundingPeriodBlock", Size.Six_6);
+        add(this.termInterestCompoundingPeriodBlock);
+        this.termInterestCompoundingPeriodVContainer = new WebMarkupContainer("termInterestCompoundingPeriodVContainer");
+        this.termInterestCompoundingPeriodBlock.add(this.termInterestCompoundingPeriodVContainer);
+        this.termInterestCompoundingPeriodView = new ReadOnlyView("termInterestCompoundingPeriodView", new PropertyModel<>(this, "termInterestCompoundingPeriodValue"));
+        this.termInterestCompoundingPeriodVContainer.add(this.termInterestCompoundingPeriodView);
+
+        this.termInterestPostingPeriodBlock = new WebMarkupBlock("termInterestPostingPeriodBlock", Size.Six_6);
+        add(this.termInterestPostingPeriodBlock);
+        this.termInterestPostingPeriodVContainer = new WebMarkupContainer("termInterestPostingPeriodVContainer");
+        this.termInterestPostingPeriodBlock.add(this.termInterestPostingPeriodVContainer);
+        this.termInterestPostingPeriodView = new ReadOnlyView("termInterestPostingPeriodView", new PropertyModel<>(this, "termInterestPostingPeriodValue"));
+        this.termInterestPostingPeriodVContainer.add(this.termInterestPostingPeriodView);
+
+        this.termInterestCalculatedUsingBlock = new WebMarkupBlock("termInterestCalculatedUsingBlock", Size.Six_6);
+        add(this.termInterestCalculatedUsingBlock);
+        this.termInterestCalculatedUsingVContainer = new WebMarkupContainer("termInterestCalculatedUsingVContainer");
+        this.termInterestCalculatedUsingBlock.add(this.termInterestCalculatedUsingVContainer);
+        this.termInterestCalculatedUsingView = new ReadOnlyView("termInterestCalculatedUsingView", new PropertyModel<>(this, "termInterestCalculatedUsingValue"));
+        this.termInterestCalculatedUsingVContainer.add(this.termInterestCalculatedUsingView);
+
+        this.termDayInYearBlock = new WebMarkupBlock("termDayInYearBlock", Size.Six_6);
+        add(this.termDayInYearBlock);
+        this.termDayInYearVContainer = new WebMarkupContainer("termDayInYearVContainer");
+        this.termDayInYearBlock.add(this.termDayInYearVContainer);
+        this.termDayInYearView = new ReadOnlyView("termDayInYearView", new PropertyModel<>(this, "termDayInYearValue"));
+        this.termDayInYearVContainer.add(this.termDayInYearView);
+
     }
 
     protected void initSectionCurrency() {
 
-        initCurrencyCodeBlock();
+        this.currencyCodeBlock = new WebMarkupBlock("currencyCodeBlock", Size.Six_6);
+        add(this.currencyCodeBlock);
+        this.currencyCodeVContainer = new WebMarkupContainer("currencyCodeVContainer");
+        this.currencyCodeBlock.add(this.currencyCodeVContainer);
+        this.currencyCodeView = new ReadOnlyView("currencyCodeView", new PropertyModel<>(this, "currencyCodeValue"));
+        this.currencyCodeVContainer.add(this.currencyCodeView);
 
-        initCurrencyDecimalPlaceBlock();
+        this.currencyDecimalPlaceBlock = new WebMarkupBlock("currencyDecimalPlaceBlock", Size.Six_6);
+        add(this.currencyDecimalPlaceBlock);
+        this.currencyDecimalPlaceVContainer = new WebMarkupContainer("currencyDecimalPlaceVContainer");
+        this.currencyDecimalPlaceBlock.add(this.currencyDecimalPlaceVContainer);
+        this.currencyDecimalPlaceView = new ReadOnlyView("currencyDecimalPlaceView", new PropertyModel<>(this, "currencyDecimalPlaceValue"));
+        this.currencyDecimalPlaceVContainer.add(this.currencyDecimalPlaceView);
 
-        initCurrencyMultipleOfBlock();
-    }
-
-    protected void initCurrencyMultipleOfBlock() {
         this.currencyMultipleOfBlock = new WebMarkupBlock("currencyMultipleOfBlock", Size.Six_6);
         add(this.currencyMultipleOfBlock);
         this.currencyMultipleOfVContainer = new WebMarkupContainer("currencyMultipleOfVContainer");
@@ -1132,71 +1010,27 @@ public class RecurringDepositPreviewPage extends Page {
         this.currencyMultipleOfVContainer.add(this.currencyMultipleOfView);
     }
 
-    protected void initCurrencyDecimalPlaceBlock() {
-        this.currencyDecimalPlaceBlock = new WebMarkupBlock("currencyDecimalPlaceBlock", Size.Six_6);
-        add(this.currencyDecimalPlaceBlock);
-        this.currencyDecimalPlaceVContainer = new WebMarkupContainer("currencyDecimalPlaceVContainer");
-        this.currencyDecimalPlaceBlock.add(this.currencyDecimalPlaceVContainer);
-        this.currencyDecimalPlaceView = new ReadOnlyView("currencyDecimalPlaceView", new PropertyModel<>(this, "currencyDecimalPlaceValue"));
-        this.currencyDecimalPlaceVContainer.add(this.currencyDecimalPlaceView);
-    }
-
-    protected void initCurrencyCodeBlock() {
-        this.currencyCodeBlock = new WebMarkupBlock("currencyCodeBlock", Size.Six_6);
-        add(this.currencyCodeBlock);
-        this.currencyCodeVContainer = new WebMarkupContainer("currencyCodeVContainer");
-        this.currencyCodeBlock.add(this.currencyCodeVContainer);
-        this.currencyCodeView = new ReadOnlyView("currencyCodeView", new PropertyModel<>(this, "currencyCodeValue"));
-        this.currencyCodeVContainer.add(this.currencyCodeView);
-    }
-
     protected void initSectionDetail() {
-        initDetailProductNameBlock();
-
-        initDetailShortNameBlock();
-
-        initDetailDescriptionBlock();
-    }
-
-    protected void initDetailDescriptionBlock() {
-        this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Six_6);
-        add(this.detailDescriptionBlock);
-        this.detailDescriptionVContainer = new WebMarkupContainer("detailDescriptionVContainer");
-        this.detailDescriptionBlock.add(this.detailDescriptionVContainer);
-        this.detailDescriptionView = new ReadOnlyView("detailDescriptionView", new PropertyModel<>(this, "detailDescriptionValue"));
-        this.detailDescriptionVContainer.add(this.detailDescriptionView);
-    }
-
-    protected void initDetailShortNameBlock() {
-        this.detailShortNameBlock = new WebMarkupBlock("detailShortNameBlock", Size.Six_6);
-        add(this.detailShortNameBlock);
-        this.detailShortNameVContainer = new WebMarkupContainer("detailShortNameVContainer");
-        this.detailShortNameBlock.add(this.detailShortNameVContainer);
-        this.detailShortNameView = new ReadOnlyView("detailShortNameView", new PropertyModel<>(this, "detailShortNameValue"));
-        this.detailShortNameVContainer.add(this.detailShortNameView);
-    }
-
-    protected void initDetailProductNameBlock() {
         this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
         add(this.detailProductNameBlock);
         this.detailProductNameVContainer = new WebMarkupContainer("detailProductNameVContainer");
         this.detailProductNameBlock.add(this.detailProductNameVContainer);
         this.detailProductNameView = new ReadOnlyView("detailProductNameView", new PropertyModel<>(this, "detailProductNameValue"));
         this.detailProductNameVContainer.add(this.detailProductNameView);
-    }
 
-    protected void interestRateChartClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
-        if ("incentives".equals(s)) {
-            List<Map<String, Object>> incentiveValue = (List<Map<String, Object>>) model.get("interestRate");
-            this.popup.setContent(new IncentivePreviewPopup("incentive", this.popup, incentiveValue));
-            this.popup.show(target);
-        }
-    }
+        this.detailShortNameBlock = new WebMarkupBlock("detailShortNameBlock", Size.Six_6);
+        add(this.detailShortNameBlock);
+        this.detailShortNameVContainer = new WebMarkupContainer("detailShortNameVContainer");
+        this.detailShortNameBlock.add(this.detailShortNameVContainer);
+        this.detailShortNameView = new ReadOnlyView("detailShortNameView", new PropertyModel<>(this, "detailShortNameValue"));
+        this.detailShortNameVContainer.add(this.detailShortNameView);
 
-    protected List<ActionItem> interestRateChartAction(String s, Map<String, Object> model) {
-        List<ActionItem> actions = Lists.newArrayList();
-        actions.add(new ActionItem("incentives", Model.of("Incentives"), ItemCss.PRIMARY));
-        return actions;
+        this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Six_6);
+        add(this.detailDescriptionBlock);
+        this.detailDescriptionVContainer = new WebMarkupContainer("detailDescriptionVContainer");
+        this.detailDescriptionBlock.add(this.detailDescriptionVContainer);
+        this.detailDescriptionView = new ReadOnlyView("detailDescriptionView", new PropertyModel<>(this, "detailDescriptionValue"));
+        this.detailDescriptionVContainer.add(this.detailDescriptionView);
     }
 
 }
