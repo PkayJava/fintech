@@ -3711,7 +3711,8 @@ public class LoanCreatePage extends Page {
 
         if (this.chargeValue != null && !this.chargeValue.isEmpty()) {
             for (Map<String, Object> item : this.chargeValue) {
-                builder.withCharges((String) item.get("chargeId"));
+                Option charge = (Option) item.get("charge");
+                builder.withCharges(charge.getId());
             }
         }
 
@@ -3719,7 +3720,8 @@ public class LoanCreatePage extends Page {
 
         if (this.overdueChargeValue != null && !this.overdueChargeValue.isEmpty()) {
             for (Map<String, Object> item : this.overdueChargeValue) {
-                builder.withCharges((String) item.get("chargeId"));
+                Option charge = (Option) item.get("charge");
+                builder.withCharges(charge.getId());
             }
         }
 
@@ -3843,17 +3845,23 @@ public class LoanCreatePage extends Page {
         if (AccountingType.Cash.getDescription().equals(accounting) || AccountingType.Periodic.getDescription().equals(accounting) || AccountingType.Upfront.getDescription().equals(accounting)) {
             if (this.advancedAccountingRuleFundSourceValue != null && !this.advancedAccountingRuleFundSourceValue.isEmpty()) {
                 for (Map<String, Object> item : this.advancedAccountingRuleFundSourceValue) {
-                    builder.withPaymentChannelToFundSourceMappings((String) item.get("paymentId"), (String) item.get("accountId"));
+                    Option payment = (Option) item.get("payment");
+                    Option account = (Option) item.get("account");
+                    builder.withPaymentChannelToFundSourceMappings(payment.getId(), account.getId());
                 }
             }
             if (this.advancedAccountingRuleFeeIncomeValue != null && !this.advancedAccountingRuleFeeIncomeValue.isEmpty()) {
                 for (Map<String, Object> item : this.advancedAccountingRuleFeeIncomeValue) {
-                    builder.withFeeToIncomeAccountMappings((String) item.get("chargeId"), (String) item.get("accountId"));
+                    Option charge = (Option) item.get("charge");
+                    Option account = (Option) item.get("account");
+                    builder.withFeeToIncomeAccountMappings(charge.getId(), account.getId());
                 }
             }
             if (this.advancedAccountingRulePenaltyIncomeValue != null && !this.advancedAccountingRulePenaltyIncomeValue.isEmpty()) {
                 for (Map<String, Object> item : this.advancedAccountingRulePenaltyIncomeValue) {
-                    builder.withPenaltyToIncomeAccountMappings((String) item.get("chargeId"), (String) item.get("accountId"));
+                    Option charge = (Option) item.get("charge");
+                    Option account = (Option) item.get("account");
+                    builder.withPenaltyToIncomeAccountMappings(charge.getId(), account.getId());
                 }
             }
         }

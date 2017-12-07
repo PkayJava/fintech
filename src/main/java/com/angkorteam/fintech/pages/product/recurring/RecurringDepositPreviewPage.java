@@ -376,6 +376,8 @@ public class RecurringDepositPreviewPage extends Page {
 
     @Override
     protected void configureMetaData() {
+        this.cashVContainer.setVisible(AccountingType.Cash.getDescription().equals(this.accountingValue));
+        this.advancedAccountingRuleVContainer.setVisible(AccountingType.Cash.getDescription().equals(this.accountingValue));
     }
 
     @Override
