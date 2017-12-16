@@ -1,12 +1,13 @@
 package com.angkorteam.fintech.widget.center;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-public class CenterPreviewNote implements ITab {
+import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
+
+public class CenterPreviewNote extends ITab {
 
     protected Page itemPage;
 

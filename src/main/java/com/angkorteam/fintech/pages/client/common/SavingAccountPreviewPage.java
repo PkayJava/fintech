@@ -3,7 +3,6 @@ package com.angkorteam.fintech.pages.client.common;
 import java.util.Arrays;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
@@ -18,6 +17,7 @@ import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.fintech.widget.client.AccountPreviewCharge;
 import com.angkorteam.fintech.widget.client.AccountPreviewTransaction;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
+import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingAccountPreviewPage extends Page {
