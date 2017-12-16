@@ -119,7 +119,7 @@ public class LoanBrowsePage extends Page {
             String name = (String) model.get(column);
             PageParameters parameters = new PageParameters();
             parameters.add("loanId", model.get("id"));
-            return new LinkCell(LoanCreatePage.class, parameters, name);
+            return new LinkCell(LoanPreviewPage.class, parameters, name);
         } else if ("shortName".equals(column)) {
             String value = (String) model.get(column);
             return new TextCell(value);

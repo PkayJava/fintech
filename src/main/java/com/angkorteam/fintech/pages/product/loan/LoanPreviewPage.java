@@ -867,84 +867,84 @@ public class LoanPreviewPage extends Page {
         this.upfrontVContainer.add(this.upfrontFundSourceBlock);
         this.upfrontFundSourceVContainer = new WebMarkupContainer("upfrontFundSourceVContainer");
         this.upfrontFundSourceBlock.add(this.upfrontFundSourceVContainer);
-        this.upfrontFundSourceView = new ReadOnlyView("upfrontFundSourceField", new PropertyModel<>(this, "upfrontFundSourceValue"));
+        this.upfrontFundSourceView = new ReadOnlyView("upfrontFundSourceView", new PropertyModel<>(this, "upfrontFundSourceValue"));
         this.upfrontFundSourceVContainer.add(this.upfrontFundSourceView);
 
         this.upfrontLoanPortfolioBlock = new WebMarkupBlock("upfrontLoanPortfolioBlock", Size.Six_6);
         this.upfrontVContainer.add(this.upfrontLoanPortfolioBlock);
         this.upfrontLoanPortfolioVContainer = new WebMarkupContainer("upfrontLoanPortfolioVContainer");
         this.upfrontLoanPortfolioBlock.add(this.upfrontLoanPortfolioVContainer);
-        this.upfrontLoanPortfolioView = new ReadOnlyView("upfrontLoanPortfolioField", new PropertyModel<>(this, "upfrontLoanPortfolioValue"));
+        this.upfrontLoanPortfolioView = new ReadOnlyView("upfrontLoanPortfolioView", new PropertyModel<>(this, "upfrontLoanPortfolioValue"));
         this.upfrontLoanPortfolioVContainer.add(this.upfrontLoanPortfolioView);
 
         this.upfrontInterestReceivableBlock = new WebMarkupBlock("upfrontInterestReceivableBlock", Size.Six_6);
         this.upfrontVContainer.add(this.upfrontInterestReceivableBlock);
         this.upfrontInterestReceivableVContainer = new WebMarkupContainer("upfrontInterestReceivableVContainer");
         this.upfrontInterestReceivableBlock.add(this.upfrontInterestReceivableVContainer);
-        this.upfrontInterestReceivableView = new ReadOnlyView("upfrontInterestReceivableField", new PropertyModel<>(this, "upfrontInterestReceivableValue"));
+        this.upfrontInterestReceivableView = new ReadOnlyView("upfrontInterestReceivableView", new PropertyModel<>(this, "upfrontInterestReceivableValue"));
         this.upfrontInterestReceivableVContainer.add(this.upfrontInterestReceivableView);
 
         this.upfrontFeeReceivableBlock = new WebMarkupBlock("upfrontFeeReceivableBlock", Size.Six_6);
         this.upfrontVContainer.add(this.upfrontFeeReceivableBlock);
         this.upfrontFeeReceivableVContainer = new WebMarkupContainer("upfrontFeeReceivableVContainer");
         this.upfrontFeeReceivableBlock.add(this.upfrontFeeReceivableVContainer);
-        this.upfrontFeeReceivableView = new ReadOnlyView("upfrontFeeReceivableField", new PropertyModel<>(this, "upfrontFeeReceivableValue"));
+        this.upfrontFeeReceivableView = new ReadOnlyView("upfrontFeeReceivableView", new PropertyModel<>(this, "upfrontFeeReceivableValue"));
         this.upfrontFeeReceivableVContainer.add(this.upfrontFeeReceivableView);
 
         this.upfrontPenaltyReceivableBlock = new WebMarkupBlock("upfrontPenaltyReceivableBlock", Size.Six_6);
         this.upfrontVContainer.add(this.upfrontPenaltyReceivableBlock);
         this.upfrontPenaltyReceivableVContainer = new WebMarkupContainer("upfrontPenaltyReceivableVContainer");
         this.upfrontPenaltyReceivableBlock.add(this.upfrontPenaltyReceivableVContainer);
-        this.upfrontPenaltyReceivableView = new ReadOnlyView("upfrontPenaltyReceivableField", new PropertyModel<>(this, "upfrontPenaltyReceivableValue"));
+        this.upfrontPenaltyReceivableView = new ReadOnlyView("upfrontPenaltyReceivableView", new PropertyModel<>(this, "upfrontPenaltyReceivableValue"));
         this.upfrontPenaltyReceivableVContainer.add(this.upfrontPenaltyReceivableView);
 
         this.upfrontTransferInSuspenseBlock = new WebMarkupBlock("upfrontTransferInSuspenseBlock", Size.Six_6);
         this.upfrontVContainer.add(this.upfrontTransferInSuspenseBlock);
         this.upfrontTransferInSuspenseVContainer = new WebMarkupContainer("upfrontTransferInSuspenseVContainer");
         this.upfrontTransferInSuspenseBlock.add(this.upfrontTransferInSuspenseVContainer);
-        this.upfrontTransferInSuspenseView = new ReadOnlyView("upfrontTransferInSuspenseField", new PropertyModel<>(this, "upfrontTransferInSuspenseValue"));
+        this.upfrontTransferInSuspenseView = new ReadOnlyView("upfrontTransferInSuspenseView", new PropertyModel<>(this, "upfrontTransferInSuspenseValue"));
         this.upfrontTransferInSuspenseVContainer.add(this.upfrontTransferInSuspenseView);
 
         this.upfrontIncomeFromInterestBlock = new WebMarkupBlock("upfrontIncomeFromInterestBlock", Size.Six_6);
         this.upfrontVContainer.add(this.upfrontIncomeFromInterestBlock);
         this.upfrontIncomeFromInterestVContainer = new WebMarkupContainer("upfrontIncomeFromInterestVContainer");
         this.upfrontIncomeFromInterestBlock.add(this.upfrontIncomeFromInterestVContainer);
-        this.upfrontIncomeFromInterestView = new ReadOnlyView("upfrontIncomeFromInterestField", new PropertyModel<>(this, "upfrontIncomeFromInterestValue"));
+        this.upfrontIncomeFromInterestView = new ReadOnlyView("upfrontIncomeFromInterestView", new PropertyModel<>(this, "upfrontIncomeFromInterestValue"));
         this.upfrontIncomeFromInterestVContainer.add(this.upfrontIncomeFromInterestView);
 
         this.upfrontIncomeFromFeeBlock = new WebMarkupBlock("upfrontIncomeFromFeeBlock", Size.Six_6);
         this.upfrontVContainer.add(this.upfrontIncomeFromFeeBlock);
         this.upfrontIncomeFromFeeVContainer = new WebMarkupContainer("upfrontIncomeFromFeeVContainer");
         this.upfrontIncomeFromFeeBlock.add(this.upfrontIncomeFromFeeVContainer);
-        this.upfrontIncomeFromFeeView = new ReadOnlyView("upfrontIncomeFromFeeField", new PropertyModel<>(this, "upfrontIncomeFromFeeValue"));
+        this.upfrontIncomeFromFeeView = new ReadOnlyView("upfrontIncomeFromFeeView", new PropertyModel<>(this, "upfrontIncomeFromFeeValue"));
         this.upfrontIncomeFromFeeVContainer.add(this.upfrontIncomeFromFeeView);
 
         this.upfrontIncomeFromPenaltyBlock = new WebMarkupBlock("upfrontIncomeFromPenaltyBlock", Size.Six_6);
         this.upfrontVContainer.add(this.upfrontIncomeFromPenaltyBlock);
         this.upfrontIncomeFromPenaltyVContainer = new WebMarkupContainer("upfrontIncomeFromPenaltyVContainer");
         this.upfrontIncomeFromPenaltyBlock.add(this.upfrontIncomeFromPenaltyVContainer);
-        this.upfrontIncomeFromPenaltyView = new ReadOnlyView("upfrontIncomeFromPenaltyField", new PropertyModel<>(this, "upfrontIncomeFromPenaltyValue"));
+        this.upfrontIncomeFromPenaltyView = new ReadOnlyView("upfrontIncomeFromPenaltyView", new PropertyModel<>(this, "upfrontIncomeFromPenaltyValue"));
         this.upfrontIncomeFromPenaltyVContainer.add(this.upfrontIncomeFromPenaltyView);
 
         this.upfrontIncomeFromRecoveryRepaymentBlock = new WebMarkupBlock("upfrontIncomeFromRecoveryRepaymentBlock", Size.Six_6);
         this.upfrontVContainer.add(this.upfrontIncomeFromRecoveryRepaymentBlock);
         this.upfrontIncomeFromRecoveryRepaymentVContainer = new WebMarkupContainer("upfrontIncomeFromRecoveryRepaymentVContainer");
         this.upfrontIncomeFromRecoveryRepaymentBlock.add(this.upfrontIncomeFromRecoveryRepaymentVContainer);
-        this.upfrontIncomeFromRecoveryRepaymentView = new ReadOnlyView("upfrontIncomeFromRecoveryRepaymentField", new PropertyModel<>(this, "upfrontIncomeFromRecoveryRepaymentValue"));
+        this.upfrontIncomeFromRecoveryRepaymentView = new ReadOnlyView("upfrontIncomeFromRecoveryRepaymentView", new PropertyModel<>(this, "upfrontIncomeFromRecoveryRepaymentValue"));
         this.upfrontIncomeFromRecoveryRepaymentVContainer.add(this.upfrontIncomeFromRecoveryRepaymentView);
 
         this.upfrontLossWrittenOffBlock = new WebMarkupBlock("upfrontLossWrittenOffBlock", Size.Six_6);
         this.upfrontVContainer.add(this.upfrontLossWrittenOffBlock);
         this.upfrontLossWrittenOffVContainer = new WebMarkupContainer("upfrontLossWrittenOffVContainer");
         this.upfrontLossWrittenOffBlock.add(this.upfrontLossWrittenOffVContainer);
-        this.upfrontLossWrittenOffView = new ReadOnlyView("upfrontLossWrittenOffField", new PropertyModel<>(this, "upfrontLossWrittenOffValue"));
+        this.upfrontLossWrittenOffView = new ReadOnlyView("upfrontLossWrittenOffView", new PropertyModel<>(this, "upfrontLossWrittenOffValue"));
         this.upfrontLossWrittenOffVContainer.add(this.upfrontLossWrittenOffView);
 
         this.upfrontOverPaymentLiabilityBlock = new WebMarkupBlock("upfrontOverPaymentLiabilityBlock", Size.Six_6);
         this.upfrontVContainer.add(this.upfrontOverPaymentLiabilityBlock);
         this.upfrontOverPaymentLiabilityVContainer = new WebMarkupContainer("upfrontOverPaymentLiabilityVContainer");
         this.upfrontOverPaymentLiabilityBlock.add(this.upfrontOverPaymentLiabilityVContainer);
-        this.upfrontOverPaymentLiabilityView = new ReadOnlyView("upfrontOverPaymentLiabilityField", new PropertyModel<>(this, "upfrontOverPaymentLiabilityValue"));
+        this.upfrontOverPaymentLiabilityView = new ReadOnlyView("upfrontOverPaymentLiabilityView", new PropertyModel<>(this, "upfrontOverPaymentLiabilityValue"));
         this.upfrontOverPaymentLiabilityVContainer.add(this.upfrontOverPaymentLiabilityView);
     }
 
@@ -961,63 +961,63 @@ public class LoanPreviewPage extends Page {
         this.cashVContainer.add(this.cashFundSourceBlock);
         this.cashFundSourceVContainer = new WebMarkupContainer("cashFundSourceVContainer");
         this.cashFundSourceBlock.add(this.cashFundSourceVContainer);
-        this.cashFundSourceView = new ReadOnlyView("cashFundSourceField", new PropertyModel<>(this, "cashFundSourceValue"));
+        this.cashFundSourceView = new ReadOnlyView("cashFundSourceView", new PropertyModel<>(this, "cashFundSourceValue"));
         this.cashFundSourceVContainer.add(this.cashFundSourceView);
 
         this.cashLoanPortfolioBlock = new WebMarkupBlock("cashLoanPortfolioBlock", Size.Six_6);
         this.cashVContainer.add(this.cashLoanPortfolioBlock);
         this.cashLoanPortfolioVContainer = new WebMarkupContainer("cashLoanPortfolioVContainer");
         this.cashLoanPortfolioBlock.add(this.cashLoanPortfolioVContainer);
-        this.cashLoanPortfolioView = new ReadOnlyView("cashLoanPortfolioField", new PropertyModel<>(this, "cashLoanPortfolioValue"));
+        this.cashLoanPortfolioView = new ReadOnlyView("cashLoanPortfolioView", new PropertyModel<>(this, "cashLoanPortfolioValue"));
         this.cashLoanPortfolioVContainer.add(this.cashLoanPortfolioView);
 
         this.cashTransferInSuspenseBlock = new WebMarkupBlock("cashTransferInSuspenseBlock", Size.Six_6);
         this.cashVContainer.add(this.cashTransferInSuspenseBlock);
         this.cashTransferInSuspenseVContainer = new WebMarkupContainer("cashTransferInSuspenseVContainer");
         this.cashTransferInSuspenseBlock.add(this.cashTransferInSuspenseVContainer);
-        this.cashTransferInSuspenseView = new ReadOnlyView("cashTransferInSuspenseField", new PropertyModel<>(this, "cashTransferInSuspenseValue"));
+        this.cashTransferInSuspenseView = new ReadOnlyView("cashTransferInSuspenseView", new PropertyModel<>(this, "cashTransferInSuspenseValue"));
         this.cashTransferInSuspenseVContainer.add(this.cashTransferInSuspenseView);
 
         this.cashIncomeFromInterestBlock = new WebMarkupBlock("cashIncomeFromInterestBlock", Size.Six_6);
         this.cashVContainer.add(this.cashIncomeFromInterestBlock);
         this.cashIncomeFromInterestVContainer = new WebMarkupContainer("cashIncomeFromInterestVContainer");
         this.cashIncomeFromInterestBlock.add(this.cashIncomeFromInterestVContainer);
-        this.cashIncomeFromInterestView = new ReadOnlyView("cashIncomeFromInterestField", new PropertyModel<>(this, "cashIncomeFromInterestValue"));
+        this.cashIncomeFromInterestView = new ReadOnlyView("cashIncomeFromInterestView", new PropertyModel<>(this, "cashIncomeFromInterestValue"));
         this.cashIncomeFromInterestVContainer.add(this.cashIncomeFromInterestView);
 
         this.cashIncomeFromFeeBlock = new WebMarkupBlock("cashIncomeFromFeeBlock", Size.Six_6);
         this.cashVContainer.add(this.cashIncomeFromFeeBlock);
         this.cashIncomeFromFeeVContainer = new WebMarkupContainer("cashIncomeFromFeeVContainer");
         this.cashIncomeFromFeeBlock.add(this.cashIncomeFromFeeVContainer);
-        this.cashIncomeFromFeeView = new ReadOnlyView("cashIncomeFromFeeField", new PropertyModel<>(this, "cashIncomeFromFeeValue"));
+        this.cashIncomeFromFeeView = new ReadOnlyView("cashIncomeFromFeeView", new PropertyModel<>(this, "cashIncomeFromFeeValue"));
         this.cashIncomeFromFeeVContainer.add(this.cashIncomeFromFeeView);
 
         this.cashIncomeFromPenaltyBlock = new WebMarkupBlock("cashIncomeFromPenaltyBlock", Size.Six_6);
         this.cashVContainer.add(this.cashIncomeFromPenaltyBlock);
         this.cashIncomeFromPenaltyVContainer = new WebMarkupContainer("cashIncomeFromPenaltyVContainer");
         this.cashIncomeFromPenaltyBlock.add(this.cashIncomeFromPenaltyVContainer);
-        this.cashIncomeFromPenaltyView = new ReadOnlyView("cashIncomeFromPenaltyField", new PropertyModel<>(this, "cashIncomeFromPenaltyValue"));
+        this.cashIncomeFromPenaltyView = new ReadOnlyView("cashIncomeFromPenaltyView", new PropertyModel<>(this, "cashIncomeFromPenaltyValue"));
         this.cashIncomeFromPenaltyVContainer.add(this.cashIncomeFromPenaltyView);
 
         this.cashIncomeFromRecoveryRepaymentBlock = new WebMarkupBlock("cashIncomeFromRecoveryRepaymentBlock", Size.Six_6);
         this.cashVContainer.add(this.cashIncomeFromRecoveryRepaymentBlock);
         this.cashIncomeFromRecoveryRepaymentVContainer = new WebMarkupContainer("cashIncomeFromRecoveryRepaymentVContainer");
         this.cashIncomeFromRecoveryRepaymentBlock.add(this.cashIncomeFromRecoveryRepaymentVContainer);
-        this.cashIncomeFromRecoveryRepaymentView = new ReadOnlyView("cashIncomeFromRecoveryRepaymentField", new PropertyModel<>(this, "cashIncomeFromRecoveryRepaymentValue"));
+        this.cashIncomeFromRecoveryRepaymentView = new ReadOnlyView("cashIncomeFromRecoveryRepaymentView", new PropertyModel<>(this, "cashIncomeFromRecoveryRepaymentValue"));
         this.cashIncomeFromRecoveryRepaymentVContainer.add(this.cashIncomeFromRecoveryRepaymentView);
 
         this.cashLossWrittenOffBlock = new WebMarkupBlock("cashLossWrittenOffBlock", Size.Six_6);
         this.cashVContainer.add(this.cashLossWrittenOffBlock);
         this.cashLossWrittenOffVContainer = new WebMarkupContainer("cashLossWrittenOffVContainer");
         this.cashLossWrittenOffBlock.add(this.cashLossWrittenOffVContainer);
-        this.cashLossWrittenOffView = new ReadOnlyView("cashLossWrittenOffField", new PropertyModel<>(this, "cashLossWrittenOffValue"));
+        this.cashLossWrittenOffView = new ReadOnlyView("cashLossWrittenOffView", new PropertyModel<>(this, "cashLossWrittenOffValue"));
         this.cashLossWrittenOffVContainer.add(this.cashLossWrittenOffView);
 
         this.cashOverPaymentLiabilityBlock = new WebMarkupBlock("cashOverPaymentLiabilityBlock", Size.Six_6);
         this.cashVContainer.add(this.cashOverPaymentLiabilityBlock);
         this.cashOverPaymentLiabilityVContainer = new WebMarkupContainer("cashOverPaymentLiabilityVContainer");
         this.cashOverPaymentLiabilityBlock.add(this.cashOverPaymentLiabilityVContainer);
-        this.cashOverPaymentLiabilityView = new ReadOnlyView("cashOverPaymentLiabilityField", new PropertyModel<>(this, "cashOverPaymentLiabilityValue"));
+        this.cashOverPaymentLiabilityView = new ReadOnlyView("cashOverPaymentLiabilityView", new PropertyModel<>(this, "cashOverPaymentLiabilityValue"));
         this.cashOverPaymentLiabilityVContainer.add(this.cashOverPaymentLiabilityView);
     }
 
@@ -1033,84 +1033,84 @@ public class LoanPreviewPage extends Page {
         this.periodicVContainer.add(this.periodicFundSourceBlock);
         this.periodicFundSourceVContainer = new WebMarkupContainer("periodicFundSourceVContainer");
         this.periodicFundSourceBlock.add(this.periodicFundSourceVContainer);
-        this.periodicFundSourceView = new ReadOnlyView("periodicFundSourceField", new PropertyModel<>(this, "periodicFundSourceValue"));
+        this.periodicFundSourceView = new ReadOnlyView("periodicFundSourceView", new PropertyModel<>(this, "periodicFundSourceValue"));
         this.periodicFundSourceVContainer.add(this.periodicFundSourceView);
 
         this.periodicLoanPortfolioBlock = new WebMarkupBlock("periodicLoanPortfolioBlock", Size.Six_6);
         this.periodicVContainer.add(this.periodicLoanPortfolioBlock);
         this.periodicLoanPortfolioVContainer = new WebMarkupContainer("periodicLoanPortfolioVContainer");
         this.periodicLoanPortfolioBlock.add(this.periodicLoanPortfolioVContainer);
-        this.periodicLoanPortfolioView = new ReadOnlyView("periodicLoanPortfolioField", new PropertyModel<>(this, "periodicLoanPortfolioValue"));
+        this.periodicLoanPortfolioView = new ReadOnlyView("periodicLoanPortfolioView", new PropertyModel<>(this, "periodicLoanPortfolioValue"));
         this.periodicLoanPortfolioVContainer.add(this.periodicLoanPortfolioView);
 
         this.periodicInterestReceivableBlock = new WebMarkupBlock("periodicInterestReceivableBlock", Size.Six_6);
         this.periodicVContainer.add(this.periodicInterestReceivableBlock);
         this.periodicInterestReceivableVContainer = new WebMarkupContainer("periodicInterestReceivableVContainer");
         this.periodicInterestReceivableBlock.add(this.periodicInterestReceivableVContainer);
-        this.periodicInterestReceivableView = new ReadOnlyView("periodicInterestReceivableField", new PropertyModel<>(this, "periodicInterestReceivableValue"));
+        this.periodicInterestReceivableView = new ReadOnlyView("periodicInterestReceivableView", new PropertyModel<>(this, "periodicInterestReceivableValue"));
         this.periodicInterestReceivableVContainer.add(this.periodicInterestReceivableView);
 
         this.periodicFeeReceivableBlock = new WebMarkupBlock("periodicFeeReceivableBlock", Size.Six_6);
         this.periodicVContainer.add(this.periodicFeeReceivableBlock);
         this.periodicFeeReceivableVContainer = new WebMarkupContainer("periodicFeeReceivableVContainer");
         this.periodicFeeReceivableBlock.add(this.periodicFeeReceivableVContainer);
-        this.periodicFeeReceivableView = new ReadOnlyView("periodicFeeReceivableField", new PropertyModel<>(this, "periodicFeeReceivableValue"));
+        this.periodicFeeReceivableView = new ReadOnlyView("periodicFeeReceivableView", new PropertyModel<>(this, "periodicFeeReceivableValue"));
         this.periodicFeeReceivableVContainer.add(this.periodicFeeReceivableView);
 
         this.periodicPenaltyReceivableBlock = new WebMarkupBlock("periodicPenaltyReceivableBlock", Size.Six_6);
         this.periodicVContainer.add(this.periodicPenaltyReceivableBlock);
         this.periodicPenaltyReceivableVContainer = new WebMarkupContainer("periodicPenaltyReceivableVContainer");
         this.periodicPenaltyReceivableBlock.add(this.periodicPenaltyReceivableVContainer);
-        this.periodicPenaltyReceivableView = new ReadOnlyView("periodicPenaltyReceivableField", new PropertyModel<>(this, "periodicPenaltyReceivableValue"));
+        this.periodicPenaltyReceivableView = new ReadOnlyView("periodicPenaltyReceivableView", new PropertyModel<>(this, "periodicPenaltyReceivableValue"));
         this.periodicPenaltyReceivableVContainer.add(this.periodicPenaltyReceivableView);
 
         this.periodicTransferInSuspenseBlock = new WebMarkupBlock("periodicTransferInSuspenseBlock", Size.Six_6);
         this.periodicVContainer.add(this.periodicTransferInSuspenseBlock);
         this.periodicTransferInSuspenseVContainer = new WebMarkupContainer("periodicTransferInSuspenseVContainer");
         this.periodicTransferInSuspenseBlock.add(this.periodicTransferInSuspenseVContainer);
-        this.periodicTransferInSuspenseView = new ReadOnlyView("periodicTransferInSuspenseField", new PropertyModel<>(this, "periodicTransferInSuspenseValue"));
+        this.periodicTransferInSuspenseView = new ReadOnlyView("periodicTransferInSuspenseView", new PropertyModel<>(this, "periodicTransferInSuspenseValue"));
         this.periodicTransferInSuspenseVContainer.add(this.periodicTransferInSuspenseView);
 
         this.periodicIncomeFromInterestBlock = new WebMarkupBlock("periodicIncomeFromInterestBlock", Size.Six_6);
         this.periodicVContainer.add(this.periodicIncomeFromInterestBlock);
         this.periodicIncomeFromInterestVContainer = new WebMarkupContainer("periodicIncomeFromInterestVContainer");
         this.periodicIncomeFromInterestBlock.add(this.periodicIncomeFromInterestVContainer);
-        this.periodicIncomeFromInterestView = new ReadOnlyView("periodicIncomeFromInterestField", new PropertyModel<>(this, "periodicIncomeFromInterestValue"));
+        this.periodicIncomeFromInterestView = new ReadOnlyView("periodicIncomeFromInterestView", new PropertyModel<>(this, "periodicIncomeFromInterestValue"));
         this.periodicIncomeFromInterestVContainer.add(this.periodicIncomeFromInterestView);
 
         this.periodicIncomeFromFeeBlock = new WebMarkupBlock("periodicIncomeFromFeeBlock", Size.Six_6);
         this.periodicVContainer.add(this.periodicIncomeFromFeeBlock);
         this.periodicIncomeFromFeeVContainer = new WebMarkupContainer("periodicIncomeFromFeeVContainer");
         this.periodicIncomeFromFeeBlock.add(this.periodicIncomeFromFeeVContainer);
-        this.periodicIncomeFromFeeView = new ReadOnlyView("periodicIncomeFromFeeField", new PropertyModel<>(this, "periodicIncomeFromFeeValue"));
+        this.periodicIncomeFromFeeView = new ReadOnlyView("periodicIncomeFromFeeView", new PropertyModel<>(this, "periodicIncomeFromFeeValue"));
         this.periodicIncomeFromFeeVContainer.add(this.periodicIncomeFromFeeView);
 
         this.periodicIncomeFromPenaltyBlock = new WebMarkupBlock("periodicIncomeFromPenaltyBlock", Size.Six_6);
         this.periodicVContainer.add(this.periodicIncomeFromPenaltyBlock);
         this.periodicIncomeFromPenaltyVContainer = new WebMarkupContainer("periodicIncomeFromPenaltyVContainer");
         this.periodicIncomeFromPenaltyBlock.add(this.periodicIncomeFromPenaltyVContainer);
-        this.periodicIncomeFromPenaltyView = new ReadOnlyView("periodicIncomeFromPenaltyField", new PropertyModel<>(this, "periodicIncomeFromPenaltyValue"));
+        this.periodicIncomeFromPenaltyView = new ReadOnlyView("periodicIncomeFromPenaltyView", new PropertyModel<>(this, "periodicIncomeFromPenaltyValue"));
         this.periodicIncomeFromPenaltyVContainer.add(this.periodicIncomeFromPenaltyView);
 
         this.periodicIncomeFromRecoveryRepaymentBlock = new WebMarkupBlock("periodicIncomeFromRecoveryRepaymentBlock", Size.Six_6);
         this.periodicVContainer.add(this.periodicIncomeFromRecoveryRepaymentBlock);
         this.periodicIncomeFromRecoveryRepaymentVContainer = new WebMarkupContainer("periodicIncomeFromRecoveryRepaymentVContainer");
         this.periodicIncomeFromRecoveryRepaymentBlock.add(this.periodicIncomeFromRecoveryRepaymentVContainer);
-        this.periodicIncomeFromRecoveryRepaymentView = new ReadOnlyView("periodicIncomeFromRecoveryRepaymentField", new PropertyModel<>(this, "periodicIncomeFromRecoveryRepaymentValue"));
+        this.periodicIncomeFromRecoveryRepaymentView = new ReadOnlyView("periodicIncomeFromRecoveryRepaymentView", new PropertyModel<>(this, "periodicIncomeFromRecoveryRepaymentValue"));
         this.periodicIncomeFromRecoveryRepaymentVContainer.add(this.periodicIncomeFromRecoveryRepaymentView);
 
         this.periodicLossWrittenOffBlock = new WebMarkupBlock("periodicLossWrittenOffBlock", Size.Six_6);
         this.periodicVContainer.add(this.periodicLossWrittenOffBlock);
         this.periodicLossWrittenOffVContainer = new WebMarkupContainer("periodicLossWrittenOffVContainer");
         this.periodicLossWrittenOffBlock.add(this.periodicLossWrittenOffVContainer);
-        this.periodicLossWrittenOffView = new ReadOnlyView("periodicLossWrittenOffField", new PropertyModel<>(this, "periodicLossWrittenOffValue"));
+        this.periodicLossWrittenOffView = new ReadOnlyView("periodicLossWrittenOffView", new PropertyModel<>(this, "periodicLossWrittenOffValue"));
         this.periodicLossWrittenOffVContainer.add(this.periodicLossWrittenOffView);
 
         this.periodicOverPaymentLiabilityBlock = new WebMarkupBlock("periodicOverPaymentLiabilityBlock", Size.Six_6);
         this.periodicVContainer.add(this.periodicOverPaymentLiabilityBlock);
         this.periodicOverPaymentLiabilityVContainer = new WebMarkupContainer("periodicOverPaymentLiabilityVContainer");
         this.periodicOverPaymentLiabilityBlock.add(this.periodicOverPaymentLiabilityVContainer);
-        this.periodicOverPaymentLiabilityView = new ReadOnlyView("periodicOverPaymentLiabilityField", new PropertyModel<>(this, "periodicOverPaymentLiabilityValue"));
+        this.periodicOverPaymentLiabilityView = new ReadOnlyView("periodicOverPaymentLiabilityView", new PropertyModel<>(this, "periodicOverPaymentLiabilityValue"));
         this.periodicOverPaymentLiabilityVContainer.add(this.periodicOverPaymentLiabilityView);
 
     }
@@ -1189,63 +1189,63 @@ public class LoanPreviewPage extends Page {
         add(this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock);
         this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountVContainer = new WebMarkupContainer("configurableAllowOverridingSelectTermsAndSettingsInLoanAccountVContainer");
         this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock.add(this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountVContainer);
-        this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountView = new ReadOnlyView("configurableAllowOverridingSelectTermsAndSettingsInLoanAccountField", new PropertyModel<>(this, "configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue"));
+        this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountView = new ReadOnlyView("configurableAllowOverridingSelectTermsAndSettingsInLoanAccountView", new PropertyModel<>(this, "configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue"));
         this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountVContainer.add(this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountView);
 
         this.configurableAmortizationBlock = new WebMarkupBlock("configurableAmortizationBlock", Size.Six_6);
         add(this.configurableAmortizationBlock);
         this.configurableAmortizationVContainer = new WebMarkupContainer("configurableAmortizationVContainer");
         this.configurableAmortizationBlock.add(this.configurableAmortizationVContainer);
-        this.configurableAmortizationView = new ReadOnlyView("configurableAmortizationField", new PropertyModel<>(this, "configurableAmortizationValue"));
+        this.configurableAmortizationView = new ReadOnlyView("configurableAmortizationView", new PropertyModel<>(this, "configurableAmortizationValue"));
         this.configurableAmortizationVContainer.add(this.configurableAmortizationView);
 
         this.configurableInterestMethodBlock = new WebMarkupBlock("configurableInterestMethodBlock", Size.Six_6);
         add(this.configurableInterestMethodBlock);
         this.configurableInterestMethodVContainer = new WebMarkupContainer("configurableInterestMethodVContainer");
         this.configurableInterestMethodBlock.add(this.configurableInterestMethodVContainer);
-        this.configurableInterestMethodView = new ReadOnlyView("configurableInterestMethodField", new PropertyModel<>(this, "configurableInterestMethodValue"));
+        this.configurableInterestMethodView = new ReadOnlyView("configurableInterestMethodView", new PropertyModel<>(this, "configurableInterestMethodValue"));
         this.configurableInterestMethodVContainer.add(this.configurableInterestMethodView);
 
         this.configurableRepaymentStrategyBlock = new WebMarkupBlock("configurableRepaymentStrategyBlock", Size.Six_6);
         add(this.configurableRepaymentStrategyBlock);
         this.configurableRepaymentStrategyVContainer = new WebMarkupContainer("configurableRepaymentStrategyVContainer");
         this.configurableRepaymentStrategyBlock.add(this.configurableRepaymentStrategyVContainer);
-        this.configurableRepaymentStrategyView = new ReadOnlyView("configurableRepaymentStrategyField", new PropertyModel<>(this, "configurableRepaymentStrategyValue"));
+        this.configurableRepaymentStrategyView = new ReadOnlyView("configurableRepaymentStrategyView", new PropertyModel<>(this, "configurableRepaymentStrategyValue"));
         this.configurableRepaymentStrategyVContainer.add(this.configurableRepaymentStrategyView);
 
         this.configurableInterestCalculationPeriodBlock = new WebMarkupBlock("configurableInterestCalculationPeriodBlock", Size.Six_6);
         add(this.configurableInterestCalculationPeriodBlock);
         this.configurableInterestCalculationPeriodVContainer = new WebMarkupContainer("configurableInterestCalculationPeriodVContainer");
         this.configurableInterestCalculationPeriodBlock.add(this.configurableInterestCalculationPeriodVContainer);
-        this.configurableInterestCalculationPeriodView = new ReadOnlyView("configurableInterestCalculationPeriodField", new PropertyModel<>(this, "configurableInterestCalculationPeriodValue"));
+        this.configurableInterestCalculationPeriodView = new ReadOnlyView("configurableInterestCalculationPeriodView", new PropertyModel<>(this, "configurableInterestCalculationPeriodValue"));
         this.configurableInterestCalculationPeriodVContainer.add(this.configurableInterestCalculationPeriodView);
 
         this.configurableArrearsToleranceBlock = new WebMarkupBlock("configurableArrearsToleranceBlock", Size.Six_6);
         add(this.configurableArrearsToleranceBlock);
         this.configurableArrearsToleranceVContainer = new WebMarkupContainer("configurableArrearsToleranceVContainer");
         this.configurableArrearsToleranceBlock.add(this.configurableArrearsToleranceVContainer);
-        this.configurableArrearsToleranceView = new ReadOnlyView("configurableArrearsToleranceField", new PropertyModel<>(this, "configurableArrearsToleranceValue"));
+        this.configurableArrearsToleranceView = new ReadOnlyView("configurableArrearsToleranceView", new PropertyModel<>(this, "configurableArrearsToleranceValue"));
         this.configurableArrearsToleranceVContainer.add(this.configurableArrearsToleranceView);
 
         this.configurableRepaidEveryBlock = new WebMarkupBlock("configurableRepaidEveryBlock", Size.Six_6);
         add(this.configurableRepaidEveryBlock);
         this.configurableRepaidEveryVContainer = new WebMarkupContainer("configurableRepaidEveryVContainer");
         this.configurableRepaidEveryBlock.add(this.configurableRepaidEveryVContainer);
-        this.configurableRepaidEveryView = new ReadOnlyView("configurableRepaidEveryField", new PropertyModel<>(this, "configurableRepaidEveryValue"));
+        this.configurableRepaidEveryView = new ReadOnlyView("configurableRepaidEveryView", new PropertyModel<>(this, "configurableRepaidEveryValue"));
         this.configurableRepaidEveryVContainer.add(this.configurableRepaidEveryView);
 
         this.configurableMoratoriumBlock = new WebMarkupBlock("configurableMoratoriumBlock", Size.Six_6);
         add(this.configurableMoratoriumBlock);
         this.configurableMoratoriumVContainer = new WebMarkupContainer("configurableMoratoriumVContainer");
         this.configurableMoratoriumBlock.add(this.configurableMoratoriumVContainer);
-        this.configurableMoratoriumView = new ReadOnlyView("configurableMoratoriumField", new PropertyModel<>(this, "configurableMoratoriumValue"));
+        this.configurableMoratoriumView = new ReadOnlyView("configurableMoratoriumView", new PropertyModel<>(this, "configurableMoratoriumValue"));
         this.configurableMoratoriumVContainer.add(this.configurableMoratoriumView);
 
         this.configurableOverdueBeforeMovingBlock = new WebMarkupBlock("configurableOverdueBeforeMovingBlock", Size.Six_6);
         add(this.configurableOverdueBeforeMovingBlock);
         this.configurableOverdueBeforeMovingVContainer = new WebMarkupContainer("configurableOverdueBeforeMovingVContainer");
         this.configurableOverdueBeforeMovingBlock.add(this.configurableOverdueBeforeMovingVContainer);
-        this.configurableOverdueBeforeMovingView = new ReadOnlyView("configurableOverdueBeforeMovingField", new PropertyModel<>(this, "configurableOverdueBeforeMovingValue"));
+        this.configurableOverdueBeforeMovingView = new ReadOnlyView("configurableOverdueBeforeMovingView", new PropertyModel<>(this, "configurableOverdueBeforeMovingValue"));
         this.configurableOverdueBeforeMovingVContainer.add(this.configurableOverdueBeforeMovingView);
     }
 
@@ -1255,21 +1255,21 @@ public class LoanPreviewPage extends Page {
         add(this.loanTrancheDetailEnableMultipleDisbursalBlock);
         this.loanTrancheDetailEnableMultipleDisbursalVContainer = new WebMarkupContainer("loanTrancheDetailEnableMultipleDisbursalVContainer");
         this.loanTrancheDetailEnableMultipleDisbursalBlock.add(this.loanTrancheDetailEnableMultipleDisbursalVContainer);
-        this.loanTrancheDetailEnableMultipleDisbursalView = new ReadOnlyView("loanTrancheDetailEnableMultipleDisbursalField", new PropertyModel<>(this, "loanTrancheDetailEnableMultipleDisbursalValue"));
+        this.loanTrancheDetailEnableMultipleDisbursalView = new ReadOnlyView("loanTrancheDetailEnableMultipleDisbursalView", new PropertyModel<>(this, "loanTrancheDetailEnableMultipleDisbursalValue"));
         this.loanTrancheDetailEnableMultipleDisbursalVContainer.add(this.loanTrancheDetailEnableMultipleDisbursalView);
 
         this.loanTrancheDetailMaximumTrancheCountBlock = new WebMarkupBlock("loanTrancheDetailMaximumTrancheCountBlock", Size.Six_6);
         add(this.loanTrancheDetailMaximumTrancheCountBlock);
         this.loanTrancheDetailMaximumTrancheCountVContainer = new WebMarkupContainer("loanTrancheDetailMaximumTrancheCountVContainer");
         this.loanTrancheDetailMaximumTrancheCountBlock.add(this.loanTrancheDetailMaximumTrancheCountVContainer);
-        this.loanTrancheDetailMaximumTrancheCountView = new ReadOnlyView("loanTrancheDetailMaximumTrancheCountField", new PropertyModel<>(this, "loanTrancheDetailMaximumTrancheCountValue"));
+        this.loanTrancheDetailMaximumTrancheCountView = new ReadOnlyView("loanTrancheDetailMaximumTrancheCountView", new PropertyModel<>(this, "loanTrancheDetailMaximumTrancheCountValue"));
         this.loanTrancheDetailMaximumTrancheCountVContainer.add(this.loanTrancheDetailMaximumTrancheCountView);
 
         this.loanTrancheDetailMaximumAllowedOutstandingBalanceBlock = new WebMarkupBlock("loanTrancheDetailMaximumAllowedOutstandingBalanceBlock", Size.Six_6);
         add(this.loanTrancheDetailMaximumAllowedOutstandingBalanceBlock);
         this.loanTrancheDetailMaximumAllowedOutstandingBalanceVContainer = new WebMarkupContainer("loanTrancheDetailMaximumAllowedOutstandingBalanceVContainer");
         this.loanTrancheDetailMaximumAllowedOutstandingBalanceBlock.add(this.loanTrancheDetailMaximumAllowedOutstandingBalanceVContainer);
-        this.loanTrancheDetailMaximumAllowedOutstandingBalanceView = new ReadOnlyView("loanTrancheDetailMaximumAllowedOutstandingBalanceField", new PropertyModel<>(this, "loanTrancheDetailMaximumAllowedOutstandingBalanceValue"));
+        this.loanTrancheDetailMaximumAllowedOutstandingBalanceView = new ReadOnlyView("loanTrancheDetailMaximumAllowedOutstandingBalanceView", new PropertyModel<>(this, "loanTrancheDetailMaximumAllowedOutstandingBalanceValue"));
         this.loanTrancheDetailMaximumAllowedOutstandingBalanceVContainer.add(this.loanTrancheDetailMaximumAllowedOutstandingBalanceView);
     }
 
@@ -1279,28 +1279,28 @@ public class LoanPreviewPage extends Page {
         add(this.guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock);
         this.guaranteeRequirementPlaceGuaranteeFundsOnHoldVContainer = new WebMarkupContainer("guaranteeRequirementPlaceGuaranteeFundsOnHoldVContainer");
         this.guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock.add(this.guaranteeRequirementPlaceGuaranteeFundsOnHoldVContainer);
-        this.guaranteeRequirementPlaceGuaranteeFundsOnHoldView = new ReadOnlyView("guaranteeRequirementPlaceGuaranteeFundsOnHoldField", new PropertyModel<>(this, "guaranteeRequirementPlaceGuaranteeFundsOnHoldValue"));
+        this.guaranteeRequirementPlaceGuaranteeFundsOnHoldView = new ReadOnlyView("guaranteeRequirementPlaceGuaranteeFundsOnHoldView", new PropertyModel<>(this, "guaranteeRequirementPlaceGuaranteeFundsOnHoldValue"));
         this.guaranteeRequirementPlaceGuaranteeFundsOnHoldVContainer.add(this.guaranteeRequirementPlaceGuaranteeFundsOnHoldView);
 
         this.guaranteeRequirementMandatoryGuaranteeBlock = new WebMarkupBlock("guaranteeRequirementMandatoryGuaranteeBlock", Size.Six_6);
         add(this.guaranteeRequirementMandatoryGuaranteeBlock);
         this.guaranteeRequirementMandatoryGuaranteeVContainer = new WebMarkupContainer("guaranteeRequirementMandatoryGuaranteeVContainer");
         this.guaranteeRequirementMandatoryGuaranteeBlock.add(this.guaranteeRequirementMandatoryGuaranteeVContainer);
-        this.guaranteeRequirementMandatoryGuaranteeView = new ReadOnlyView("guaranteeRequirementMandatoryGuaranteeField", new PropertyModel<>(this, "guaranteeRequirementMandatoryGuaranteeValue"));
+        this.guaranteeRequirementMandatoryGuaranteeView = new ReadOnlyView("guaranteeRequirementMandatoryGuaranteeView", new PropertyModel<>(this, "guaranteeRequirementMandatoryGuaranteeValue"));
         this.guaranteeRequirementMandatoryGuaranteeVContainer.add(this.guaranteeRequirementMandatoryGuaranteeView);
 
         this.guaranteeRequirementMinimumGuaranteeBlock = new WebMarkupBlock("guaranteeRequirementMinimumGuaranteeBlock", Size.Six_6);
         add(this.guaranteeRequirementMinimumGuaranteeBlock);
         this.guaranteeRequirementMinimumGuaranteeVContainer = new WebMarkupContainer("guaranteeRequirementMinimumGuaranteeVContainer");
         this.guaranteeRequirementMinimumGuaranteeBlock.add(this.guaranteeRequirementMinimumGuaranteeVContainer);
-        this.guaranteeRequirementMinimumGuaranteeView = new ReadOnlyView("guaranteeRequirementMinimumGuaranteeField", new PropertyModel<>(this, "guaranteeRequirementMinimumGuaranteeValue"));
+        this.guaranteeRequirementMinimumGuaranteeView = new ReadOnlyView("guaranteeRequirementMinimumGuaranteeView", new PropertyModel<>(this, "guaranteeRequirementMinimumGuaranteeValue"));
         this.guaranteeRequirementMinimumGuaranteeVContainer.add(this.guaranteeRequirementMinimumGuaranteeView);
 
         this.guaranteeRequirementMinimumGuaranteeFromGuarantorBlock = new WebMarkupBlock("guaranteeRequirementMinimumGuaranteeFromGuarantorBlock", Size.Six_6);
         add(this.guaranteeRequirementMinimumGuaranteeFromGuarantorBlock);
         this.guaranteeRequirementMinimumGuaranteeFromGuarantorVContainer = new WebMarkupContainer("guaranteeRequirementMinimumGuaranteeFromGuarantorVContainer");
         this.guaranteeRequirementMinimumGuaranteeFromGuarantorBlock.add(this.guaranteeRequirementMinimumGuaranteeFromGuarantorVContainer);
-        this.guaranteeRequirementMinimumGuaranteeFromGuarantorView = new ReadOnlyView("guaranteeRequirementMinimumGuaranteeFromGuarantorField", new PropertyModel<>(this, "guaranteeRequirementMinimumGuaranteeFromGuarantorValue"));
+        this.guaranteeRequirementMinimumGuaranteeFromGuarantorView = new ReadOnlyView("guaranteeRequirementMinimumGuaranteeFromGuarantorView", new PropertyModel<>(this, "guaranteeRequirementMinimumGuaranteeFromGuarantorValue"));
         this.guaranteeRequirementMinimumGuaranteeFromGuarantorVContainer.add(this.guaranteeRequirementMinimumGuaranteeFromGuarantorView);
 
     }
@@ -1311,91 +1311,91 @@ public class LoanPreviewPage extends Page {
         add(this.interestRecalculationRecalculateInterestBlock);
         this.interestRecalculationRecalculateInterestVContainer = new WebMarkupContainer("interestRecalculationRecalculateInterestVContainer");
         this.interestRecalculationRecalculateInterestBlock.add(this.interestRecalculationRecalculateInterestVContainer);
-        this.interestRecalculationRecalculateInterestView = new ReadOnlyView("interestRecalculationRecalculateInterestField", new PropertyModel<>(this, "interestRecalculationRecalculateInterestValue"));
+        this.interestRecalculationRecalculateInterestView = new ReadOnlyView("interestRecalculationRecalculateInterestView", new PropertyModel<>(this, "interestRecalculationRecalculateInterestValue"));
         this.interestRecalculationRecalculateInterestVContainer.add(this.interestRecalculationRecalculateInterestView);
 
         this.interestRecalculationPreClosureInterestCalculationRuleBlock = new WebMarkupBlock("interestRecalculationPreClosureInterestCalculationRuleBlock", Size.Six_6);
         add(this.interestRecalculationPreClosureInterestCalculationRuleBlock);
         this.interestRecalculationPreClosureInterestCalculationRuleVContainer = new WebMarkupContainer("interestRecalculationPreClosureInterestCalculationRuleVContainer");
         this.interestRecalculationPreClosureInterestCalculationRuleBlock.add(this.interestRecalculationPreClosureInterestCalculationRuleVContainer);
-        this.interestRecalculationPreClosureInterestCalculationRuleView = new ReadOnlyView("interestRecalculationPreClosureInterestCalculationRuleField", new PropertyModel<>(this, "interestRecalculationPreClosureInterestCalculationRuleValue"));
+        this.interestRecalculationPreClosureInterestCalculationRuleView = new ReadOnlyView("interestRecalculationPreClosureInterestCalculationRuleView", new PropertyModel<>(this, "interestRecalculationPreClosureInterestCalculationRuleValue"));
         this.interestRecalculationPreClosureInterestCalculationRuleVContainer.add(this.interestRecalculationPreClosureInterestCalculationRuleView);
 
         this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock = new WebMarkupBlock("interestRecalculationAdvancePaymentsAdjustmentTypeBlock", Size.Six_6);
         add(this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock);
         this.interestRecalculationAdvancePaymentsAdjustmentTypeVContainer = new WebMarkupContainer("interestRecalculationAdvancePaymentsAdjustmentTypeVContainer");
         this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeVContainer);
-        this.interestRecalculationAdvancePaymentsAdjustmentTypeView = new ReadOnlyView("interestRecalculationAdvancePaymentsAdjustmentTypeField", new PropertyModel<>(this, "interestRecalculationAdvancePaymentsAdjustmentTypeValue"));
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeView = new ReadOnlyView("interestRecalculationAdvancePaymentsAdjustmentTypeView", new PropertyModel<>(this, "interestRecalculationAdvancePaymentsAdjustmentTypeValue"));
         this.interestRecalculationAdvancePaymentsAdjustmentTypeVContainer.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeView);
 
         this.interestRecalculationCompoundingOnBlock = new WebMarkupBlock("interestRecalculationCompoundingOnBlock", Size.Four_4);
         add(this.interestRecalculationCompoundingOnBlock);
         this.interestRecalculationCompoundingOnVContainer = new WebMarkupContainer("interestRecalculationCompoundingOnVContainer");
         this.interestRecalculationCompoundingOnBlock.add(this.interestRecalculationCompoundingOnVContainer);
-        this.interestRecalculationCompoundingOnView = new ReadOnlyView("interestRecalculationCompoundingOnField", new PropertyModel<>(this, "interestRecalculationCompoundingOnValue"));
+        this.interestRecalculationCompoundingOnView = new ReadOnlyView("interestRecalculationCompoundingOnView", new PropertyModel<>(this, "interestRecalculationCompoundingOnValue"));
         this.interestRecalculationCompoundingOnVContainer.add(this.interestRecalculationCompoundingOnView);
 
         this.interestRecalculationCompoundingBlock = new WebMarkupBlock("interestRecalculationCompoundingBlock", Size.Four_4);
         add(this.interestRecalculationCompoundingBlock);
         this.interestRecalculationCompoundingVContainer = new WebMarkupContainer("interestRecalculationCompoundingVContainer");
         this.interestRecalculationCompoundingBlock.add(this.interestRecalculationCompoundingVContainer);
-        this.interestRecalculationCompoundingView = new ReadOnlyView("interestRecalculationCompoundingField", new PropertyModel<>(this, "interestRecalculationCompoundingValue"));
+        this.interestRecalculationCompoundingView = new ReadOnlyView("interestRecalculationCompoundingView", new PropertyModel<>(this, "interestRecalculationCompoundingValue"));
         this.interestRecalculationCompoundingVContainer.add(this.interestRecalculationCompoundingView);
 
         this.interestRecalculationCompoundingTypeBlock = new WebMarkupBlock("interestRecalculationCompoundingTypeBlock", Size.Four_4);
         add(this.interestRecalculationCompoundingTypeBlock);
         this.interestRecalculationCompoundingTypeVContainer = new WebMarkupContainer("interestRecalculationCompoundingTypeVContainer");
         this.interestRecalculationCompoundingTypeBlock.add(this.interestRecalculationCompoundingTypeVContainer);
-        this.interestRecalculationCompoundingTypeView = new ReadOnlyView("interestRecalculationCompoundingTypeField", new PropertyModel<>(this, "interestRecalculationCompoundingTypeValue"));
+        this.interestRecalculationCompoundingTypeView = new ReadOnlyView("interestRecalculationCompoundingTypeView", new PropertyModel<>(this, "interestRecalculationCompoundingTypeValue"));
         this.interestRecalculationCompoundingTypeVContainer.add(this.interestRecalculationCompoundingTypeView);
 
         this.interestRecalculationCompoundingDayBlock = new WebMarkupBlock("interestRecalculationCompoundingDayBlock", Size.Four_4);
         add(this.interestRecalculationCompoundingDayBlock);
         this.interestRecalculationCompoundingDayVContainer = new WebMarkupContainer("interestRecalculationCompoundingDayVContainer");
         this.interestRecalculationCompoundingDayBlock.add(this.interestRecalculationCompoundingDayVContainer);
-        this.interestRecalculationCompoundingDayView = new ReadOnlyView("interestRecalculationCompoundingDayField", new PropertyModel<>(this, "interestRecalculationCompoundingDayValue"));
+        this.interestRecalculationCompoundingDayView = new ReadOnlyView("interestRecalculationCompoundingDayView", new PropertyModel<>(this, "interestRecalculationCompoundingDayValue"));
         this.interestRecalculationCompoundingDayVContainer.add(this.interestRecalculationCompoundingDayView);
 
         this.interestRecalculationCompoundingIntervalBlock = new WebMarkupBlock("interestRecalculationCompoundingIntervalBlock", Size.Four_4);
         add(this.interestRecalculationCompoundingIntervalBlock);
         this.interestRecalculationCompoundingIntervalVContainer = new WebMarkupContainer("interestRecalculationCompoundingIntervalVContainer");
         this.interestRecalculationCompoundingIntervalBlock.add(this.interestRecalculationCompoundingIntervalVContainer);
-        this.interestRecalculationCompoundingIntervalView = new ReadOnlyView("interestRecalculationCompoundingIntervalField", new PropertyModel<>(this, "interestRecalculationCompoundingIntervalValue"));
+        this.interestRecalculationCompoundingIntervalView = new ReadOnlyView("interestRecalculationCompoundingIntervalView", new PropertyModel<>(this, "interestRecalculationCompoundingIntervalValue"));
         this.interestRecalculationCompoundingIntervalVContainer.add(this.interestRecalculationCompoundingIntervalView);
 
         this.interestRecalculationRecalculateBlock = new WebMarkupBlock("interestRecalculationRecalculateBlock", Size.Four_4);
         add(this.interestRecalculationRecalculateBlock);
         this.interestRecalculationRecalculateVContainer = new WebMarkupContainer("interestRecalculationRecalculateVContainer");
         this.interestRecalculationRecalculateBlock.add(this.interestRecalculationRecalculateVContainer);
-        this.interestRecalculationRecalculateView = new ReadOnlyView("interestRecalculationRecalculateField", new PropertyModel<>(this, "interestRecalculationRecalculateValue"));
+        this.interestRecalculationRecalculateView = new ReadOnlyView("interestRecalculationRecalculateView", new PropertyModel<>(this, "interestRecalculationRecalculateValue"));
         this.interestRecalculationRecalculateVContainer.add(this.interestRecalculationRecalculateView);
 
         this.interestRecalculationRecalculateTypeBlock = new WebMarkupBlock("interestRecalculationRecalculateTypeBlock", Size.Four_4);
         add(this.interestRecalculationRecalculateTypeBlock);
         this.interestRecalculationRecalculateTypeVContainer = new WebMarkupContainer("interestRecalculationRecalculateTypeVContainer");
         this.interestRecalculationRecalculateTypeBlock.add(this.interestRecalculationRecalculateTypeVContainer);
-        this.interestRecalculationRecalculateTypeView = new ReadOnlyView("interestRecalculationRecalculateTypeField", new PropertyModel<>(this, "interestRecalculationRecalculateTypeValue"));
+        this.interestRecalculationRecalculateTypeView = new ReadOnlyView("interestRecalculationRecalculateTypeView", new PropertyModel<>(this, "interestRecalculationRecalculateTypeValue"));
         this.interestRecalculationRecalculateTypeVContainer.add(this.interestRecalculationRecalculateTypeView);
 
         this.interestRecalculationRecalculateDayBlock = new WebMarkupBlock("interestRecalculationRecalculateDayBlock", Size.Four_4);
         add(this.interestRecalculationRecalculateDayBlock);
         this.interestRecalculationRecalculateDayVContainer = new WebMarkupContainer("interestRecalculationRecalculateDayVContainer");
         this.interestRecalculationRecalculateDayBlock.add(this.interestRecalculationRecalculateDayVContainer);
-        this.interestRecalculationRecalculateDayView = new ReadOnlyView("interestRecalculationRecalculateDayField", new PropertyModel<>(this, "interestRecalculationRecalculateDayValue"));
+        this.interestRecalculationRecalculateDayView = new ReadOnlyView("interestRecalculationRecalculateDayView", new PropertyModel<>(this, "interestRecalculationRecalculateDayValue"));
         this.interestRecalculationRecalculateDayVContainer.add(this.interestRecalculationRecalculateDayView);
 
         this.interestRecalculationRecalculateIntervalBlock = new WebMarkupBlock("interestRecalculationRecalculateIntervalBlock", Size.Four_4);
         add(this.interestRecalculationRecalculateIntervalBlock);
         this.interestRecalculationRecalculateIntervalVContainer = new WebMarkupContainer("interestRecalculationRecalculateIntervalVContainer");
         this.interestRecalculationRecalculateIntervalBlock.add(this.interestRecalculationRecalculateIntervalVContainer);
-        this.interestRecalculationRecalculateIntervalView = new ReadOnlyView("interestRecalculationRecalculateIntervalField", new PropertyModel<>(this, "interestRecalculationRecalculateIntervalValue"));
+        this.interestRecalculationRecalculateIntervalView = new ReadOnlyView("interestRecalculationRecalculateIntervalView", new PropertyModel<>(this, "interestRecalculationRecalculateIntervalValue"));
         this.interestRecalculationRecalculateIntervalVContainer.add(this.interestRecalculationRecalculateIntervalView);
 
         this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock = new WebMarkupBlock("interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock", Size.Twelve_12);
         add(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock);
         this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleVContainer = new WebMarkupContainer("interestRecalculationArrearsRecognizationBasedOnOriginalScheduleVContainer");
         this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock.add(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleVContainer);
-        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleView = new ReadOnlyView("interestRecalculationArrearsRecognizationBasedOnOriginalScheduleField", new PropertyModel<>(this, "interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue"));
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleView = new ReadOnlyView("interestRecalculationArrearsRecognizationBasedOnOriginalScheduleView", new PropertyModel<>(this, "interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue"));
         this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleVContainer.add(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleView);
 
     }
@@ -1406,140 +1406,140 @@ public class LoanPreviewPage extends Page {
         add(this.settingAmortizationBlock);
         this.settingAmortizationVContainer = new WebMarkupContainer("settingAmortizationVContainer");
         this.settingAmortizationBlock.add(this.settingAmortizationVContainer);
-        this.settingAmortizationView = new ReadOnlyView("settingAmortizationField", new PropertyModel<>(this, "settingAmortizationValue"));
+        this.settingAmortizationView = new ReadOnlyView("settingAmortizationView", new PropertyModel<>(this, "settingAmortizationValue"));
         this.settingAmortizationVContainer.add(this.settingAmortizationView);
 
         this.settingInterestMethodBlock = new WebMarkupBlock("settingInterestMethodBlock", Size.Six_6);
         add(this.settingInterestMethodBlock);
         this.settingInterestMethodVContainer = new WebMarkupContainer("settingInterestMethodVContainer");
         this.settingInterestMethodBlock.add(this.settingInterestMethodVContainer);
-        this.settingInterestMethodView = new ReadOnlyView("settingInterestMethodField", new PropertyModel<>(this, "settingInterestMethodValue"));
+        this.settingInterestMethodView = new ReadOnlyView("settingInterestMethodView", new PropertyModel<>(this, "settingInterestMethodValue"));
         this.settingInterestMethodVContainer.add(this.settingInterestMethodView);
 
         this.settingInterestCalculationPeriodBlock = new WebMarkupBlock("settingInterestCalculationPeriodBlock", Size.Six_6);
         add(this.settingInterestCalculationPeriodBlock);
         this.settingInterestCalculationPeriodVContainer = new WebMarkupContainer("settingInterestCalculationPeriodVContainer");
         this.settingInterestCalculationPeriodBlock.add(this.settingInterestCalculationPeriodVContainer);
-        this.settingInterestCalculationPeriodView = new ReadOnlyView("settingInterestCalculationPeriodField", new PropertyModel<>(this, "settingInterestCalculationPeriodValue"));
+        this.settingInterestCalculationPeriodView = new ReadOnlyView("settingInterestCalculationPeriodView", new PropertyModel<>(this, "settingInterestCalculationPeriodValue"));
         this.settingInterestCalculationPeriodVContainer.add(this.settingInterestCalculationPeriodView);
 
         this.settingCalculateInterestForExactDaysInPartialPeriodBlock = new WebMarkupBlock("settingCalculateInterestForExactDaysInPartialPeriodBlock", Size.Six_6);
         add(this.settingCalculateInterestForExactDaysInPartialPeriodBlock);
         this.settingCalculateInterestForExactDaysInPartialPeriodVContainer = new WebMarkupContainer("settingCalculateInterestForExactDaysInPartialPeriodVContainer");
         this.settingCalculateInterestForExactDaysInPartialPeriodBlock.add(this.settingCalculateInterestForExactDaysInPartialPeriodVContainer);
-        this.settingCalculateInterestForExactDaysInPartialPeriodView = new ReadOnlyView("settingCalculateInterestForExactDaysInPartialPeriodField", new PropertyModel<>(this, "settingCalculateInterestForExactDaysInPartialPeriodValue"));
+        this.settingCalculateInterestForExactDaysInPartialPeriodView = new ReadOnlyView("settingCalculateInterestForExactDaysInPartialPeriodView", new PropertyModel<>(this, "settingCalculateInterestForExactDaysInPartialPeriodValue"));
         this.settingCalculateInterestForExactDaysInPartialPeriodVContainer.add(this.settingCalculateInterestForExactDaysInPartialPeriodView);
 
         this.settingRepaymentStrategyBlock = new WebMarkupBlock("settingRepaymentStrategyBlock", Size.Six_6);
         add(this.settingRepaymentStrategyBlock);
         this.settingRepaymentStrategyVContainer = new WebMarkupContainer("settingRepaymentStrategyVContainer");
         this.settingRepaymentStrategyBlock.add(this.settingRepaymentStrategyVContainer);
-        this.settingRepaymentStrategyView = new ReadOnlyView("settingRepaymentStrategyField", new PropertyModel<>(this, "settingRepaymentStrategyValue"));
+        this.settingRepaymentStrategyView = new ReadOnlyView("settingRepaymentStrategyView", new PropertyModel<>(this, "settingRepaymentStrategyValue"));
         this.settingRepaymentStrategyVContainer.add(this.settingRepaymentStrategyView);
 
         this.settingMoratoriumPrincipalBlock = new WebMarkupBlock("settingMoratoriumPrincipalBlock", Size.Six_6);
         add(this.settingMoratoriumPrincipalBlock);
         this.settingMoratoriumPrincipalVContainer = new WebMarkupContainer("settingMoratoriumPrincipalVContainer");
         this.settingMoratoriumPrincipalBlock.add(this.settingMoratoriumPrincipalVContainer);
-        this.settingMoratoriumPrincipalView = new ReadOnlyView("settingMoratoriumPrincipalField", new PropertyModel<>(this, "settingMoratoriumPrincipalValue"));
+        this.settingMoratoriumPrincipalView = new ReadOnlyView("settingMoratoriumPrincipalView", new PropertyModel<>(this, "settingMoratoriumPrincipalValue"));
         this.settingMoratoriumPrincipalVContainer.add(this.settingMoratoriumPrincipalView);
 
         this.settingMoratoriumInterestBlock = new WebMarkupBlock("settingMoratoriumInterestBlock", Size.Six_6);
         add(this.settingMoratoriumInterestBlock);
         this.settingMoratoriumInterestVContainer = new WebMarkupContainer("settingMoratoriumInterestVContainer");
         this.settingMoratoriumInterestBlock.add(this.settingMoratoriumInterestVContainer);
-        this.settingMoratoriumInterestView = new ReadOnlyView("settingMoratoriumInterestField", new PropertyModel<>(this, "settingMoratoriumInterestValue"));
+        this.settingMoratoriumInterestView = new ReadOnlyView("settingMoratoriumInterestView", new PropertyModel<>(this, "settingMoratoriumInterestValue"));
         this.settingMoratoriumInterestVContainer.add(this.settingMoratoriumInterestView);
 
         this.settingInterestFreePeriodBlock = new WebMarkupBlock("settingInterestFreePeriodBlock", Size.Six_6);
         add(this.settingInterestFreePeriodBlock);
         this.settingInterestFreePeriodVContainer = new WebMarkupContainer("settingInterestFreePeriodVContainer");
         this.settingInterestFreePeriodBlock.add(this.settingInterestFreePeriodVContainer);
-        this.settingInterestFreePeriodView = new ReadOnlyView("settingInterestFreePeriodField", new PropertyModel<>(this, "settingInterestFreePeriodValue"));
+        this.settingInterestFreePeriodView = new ReadOnlyView("settingInterestFreePeriodView", new PropertyModel<>(this, "settingInterestFreePeriodValue"));
         this.settingInterestFreePeriodVContainer.add(this.settingInterestFreePeriodView);
 
         this.settingArrearsToleranceBlock = new WebMarkupBlock("settingArrearsToleranceBlock", Size.Six_6);
         add(this.settingArrearsToleranceBlock);
         this.settingArrearsToleranceVContainer = new WebMarkupContainer("settingArrearsToleranceVContainer");
         this.settingArrearsToleranceBlock.add(this.settingArrearsToleranceVContainer);
-        this.settingArrearsToleranceView = new ReadOnlyView("settingArrearsToleranceField", new PropertyModel<>(this, "settingArrearsToleranceValue"));
+        this.settingArrearsToleranceView = new ReadOnlyView("settingArrearsToleranceView", new PropertyModel<>(this, "settingArrearsToleranceValue"));
         this.settingArrearsToleranceVContainer.add(this.settingArrearsToleranceView);
 
         this.settingDayInYearBlock = new WebMarkupBlock("settingDayInYearBlock", Size.Six_6);
         add(this.settingDayInYearBlock);
         this.settingDayInYearVContainer = new WebMarkupContainer("settingDayInYearVContainer");
         this.settingDayInYearBlock.add(this.settingDayInYearVContainer);
-        this.settingDayInYearView = new ReadOnlyView("settingDayInYearField", new PropertyModel<>(this, "settingDayInYearValue"));
+        this.settingDayInYearView = new ReadOnlyView("settingDayInYearView", new PropertyModel<>(this, "settingDayInYearValue"));
         this.settingDayInYearVContainer.add(this.settingDayInYearView);
 
         this.settingDayInMonthBlock = new WebMarkupBlock("settingDayInMonthBlock", Size.Six_6);
         add(this.settingDayInMonthBlock);
         this.settingDayInMonthVContainer = new WebMarkupContainer("settingDayInMonthVContainer");
         this.settingDayInMonthBlock.add(this.settingDayInMonthVContainer);
-        this.settingDayInMonthView = new ReadOnlyView("settingDayInMonthField", new PropertyModel<>(this, "settingDayInMonthValue"));
+        this.settingDayInMonthView = new ReadOnlyView("settingDayInMonthView", new PropertyModel<>(this, "settingDayInMonthValue"));
         this.settingDayInMonthVContainer.add(this.settingDayInMonthView);
 
         this.settingAllowFixingOfTheInstallmentAmountBlock = new WebMarkupBlock("settingAllowFixingOfTheInstallmentAmountBlock", Size.Twelve_12);
         add(this.settingAllowFixingOfTheInstallmentAmountBlock);
         this.settingAllowFixingOfTheInstallmentAmountVContainer = new WebMarkupContainer("settingAllowFixingOfTheInstallmentAmountVContainer");
         this.settingAllowFixingOfTheInstallmentAmountBlock.add(this.settingAllowFixingOfTheInstallmentAmountVContainer);
-        this.settingAllowFixingOfTheInstallmentAmountView = new ReadOnlyView("settingAllowFixingOfTheInstallmentAmountField", new PropertyModel<>(this, "settingAllowFixingOfTheInstallmentAmountValue"));
+        this.settingAllowFixingOfTheInstallmentAmountView = new ReadOnlyView("settingAllowFixingOfTheInstallmentAmountView", new PropertyModel<>(this, "settingAllowFixingOfTheInstallmentAmountValue"));
         this.settingAllowFixingOfTheInstallmentAmountVContainer.add(this.settingAllowFixingOfTheInstallmentAmountView);
 
         this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock = new WebMarkupBlock("settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock", Size.Six_6);
         add(this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock);
         this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsVContainer = new WebMarkupContainer("settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsVContainer");
         this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock.add(this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsVContainer);
-        this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsView = new ReadOnlyView("settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsField", new PropertyModel<>(this, "settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue"));
+        this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsView = new ReadOnlyView("settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsView", new PropertyModel<>(this, "settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue"));
         this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsVContainer.add(this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsView);
 
         this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock = new WebMarkupBlock("settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock", Size.Six_6);
         add(this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock);
         this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaVContainer = new WebMarkupContainer("settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaVContainer");
         this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock.add(this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaVContainer);
-        this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaView = new ReadOnlyView("settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaField", new PropertyModel<>(this, "settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue"));
+        this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaView = new ReadOnlyView("settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaView", new PropertyModel<>(this, "settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue"));
         this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaVContainer.add(this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaView);
 
         this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock = new WebMarkupBlock("settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock", Size.Six_6);
         add(this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock);
         this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedVContainer = new WebMarkupContainer("settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedVContainer");
         this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock.add(this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedVContainer);
-        this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedView = new ReadOnlyView("settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField", new PropertyModel<>(this, "settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue"));
+        this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedView = new ReadOnlyView("settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedView", new PropertyModel<>(this, "settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue"));
         this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedVContainer.add(this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedView);
 
         this.settingPrincipalThresholdForLastInstalmentBlock = new WebMarkupBlock("settingPrincipalThresholdForLastInstalmentBlock", Size.Six_6);
         add(this.settingPrincipalThresholdForLastInstalmentBlock);
         this.settingPrincipalThresholdForLastInstalmentVContainer = new WebMarkupContainer("settingPrincipalThresholdForLastInstalmentVContainer");
         this.settingPrincipalThresholdForLastInstalmentBlock.add(this.settingPrincipalThresholdForLastInstalmentVContainer);
-        this.settingPrincipalThresholdForLastInstalmentView = new ReadOnlyView("settingPrincipalThresholdForLastInstalmentField", new PropertyModel<>(this, "settingPrincipalThresholdForLastInstalmentValue"));
+        this.settingPrincipalThresholdForLastInstalmentView = new ReadOnlyView("settingPrincipalThresholdForLastInstalmentView", new PropertyModel<>(this, "settingPrincipalThresholdForLastInstalmentValue"));
         this.settingPrincipalThresholdForLastInstalmentVContainer.add(this.settingPrincipalThresholdForLastInstalmentView);
 
         this.settingVariableInstallmentsAllowedBlock = new WebMarkupBlock("settingVariableInstallmentsAllowedBlock", Size.Six_6);
         add(this.settingVariableInstallmentsAllowedBlock);
         this.settingVariableInstallmentsAllowedVContainer = new WebMarkupContainer("settingVariableInstallmentsAllowedVContainer");
         this.settingVariableInstallmentsAllowedBlock.add(this.settingVariableInstallmentsAllowedVContainer);
-        this.settingVariableInstallmentsAllowedView = new ReadOnlyView("settingVariableInstallmentsAllowedField", new PropertyModel<>(this, "settingVariableInstallmentsAllowedValue"));
+        this.settingVariableInstallmentsAllowedView = new ReadOnlyView("settingVariableInstallmentsAllowedView", new PropertyModel<>(this, "settingVariableInstallmentsAllowedValue"));
         this.settingVariableInstallmentsAllowedVContainer.add(this.settingVariableInstallmentsAllowedView);
 
         this.settingVariableInstallmentsMinimumBlock = new WebMarkupBlock("settingVariableInstallmentsMinimumBlock", Size.Six_6);
         add(this.settingVariableInstallmentsMinimumBlock);
         this.settingVariableInstallmentsMinimumVContainer = new WebMarkupContainer("settingVariableInstallmentsMinimumVContainer");
         this.settingVariableInstallmentsMinimumBlock.add(this.settingVariableInstallmentsMinimumVContainer);
-        this.settingVariableInstallmentsMinimumView = new ReadOnlyView("settingVariableInstallmentsMinimumField", new PropertyModel<>(this, "settingVariableInstallmentsMinimumValue"));
+        this.settingVariableInstallmentsMinimumView = new ReadOnlyView("settingVariableInstallmentsMinimumView", new PropertyModel<>(this, "settingVariableInstallmentsMinimumValue"));
         this.settingVariableInstallmentsMinimumVContainer.add(this.settingVariableInstallmentsMinimumView);
 
         this.settingVariableInstallmentsMaximumBlock = new WebMarkupBlock("settingVariableInstallmentsMaximumBlock", Size.Six_6);
         add(this.settingVariableInstallmentsMaximumBlock);
         this.settingVariableInstallmentsMaximumVContainer = new WebMarkupContainer("settingVariableInstallmentsMaximumVContainer");
         this.settingVariableInstallmentsMaximumBlock.add(this.settingVariableInstallmentsMaximumVContainer);
-        this.settingVariableInstallmentsMaximumView = new ReadOnlyView("settingVariableInstallmentsMaximumField", new PropertyModel<>(this, "settingVariableInstallmentsMaximumValue"));
+        this.settingVariableInstallmentsMaximumView = new ReadOnlyView("settingVariableInstallmentsMaximumView", new PropertyModel<>(this, "settingVariableInstallmentsMaximumValue"));
         this.settingVariableInstallmentsMaximumVContainer.add(this.settingVariableInstallmentsMaximumView);
 
         this.settingAllowedToBeUsedForProvidingTopupLoansBlock = new WebMarkupBlock("settingAllowedToBeUsedForProvidingTopupLoansBlock", Size.Twelve_12);
         add(this.settingAllowedToBeUsedForProvidingTopupLoansBlock);
         this.settingAllowedToBeUsedForProvidingTopupLoansVContainer = new WebMarkupContainer("settingAllowedToBeUsedForProvidingTopupLoansVContainer");
         this.settingAllowedToBeUsedForProvidingTopupLoansBlock.add(this.settingAllowedToBeUsedForProvidingTopupLoansVContainer);
-        this.settingAllowedToBeUsedForProvidingTopupLoansView = new ReadOnlyView("settingAllowedToBeUsedForProvidingTopupLoansField", new PropertyModel<>(this, "settingAllowedToBeUsedForProvidingTopupLoansValue"));
+        this.settingAllowedToBeUsedForProvidingTopupLoansView = new ReadOnlyView("settingAllowedToBeUsedForProvidingTopupLoansView", new PropertyModel<>(this, "settingAllowedToBeUsedForProvidingTopupLoansValue"));
         this.settingAllowedToBeUsedForProvidingTopupLoansVContainer.add(this.settingAllowedToBeUsedForProvidingTopupLoansView);
 
     }
@@ -1550,49 +1550,49 @@ public class LoanPreviewPage extends Page {
         add(this.detailProductNameBlock);
         this.detailProductNameVContainer = new WebMarkupContainer("detailProductNameVContainer");
         this.detailProductNameBlock.add(this.detailProductNameVContainer);
-        this.detailProductNameView = new ReadOnlyView("detailProductNameField", new PropertyModel<>(this, "detailProductNameValue"));
+        this.detailProductNameView = new ReadOnlyView("detailProductNameView", new PropertyModel<>(this, "detailProductNameValue"));
         this.detailProductNameVContainer.add(this.detailProductNameView);
 
         this.detailShortNameBlock = new WebMarkupBlock("detailShortNameBlock", Size.Six_6);
         add(this.detailShortNameBlock);
         this.detailShortNameVContainer = new WebMarkupContainer("detailShortNameVContainer");
         this.detailShortNameBlock.add(this.detailShortNameVContainer);
-        this.detailShortNameView = new ReadOnlyView("detailShortNameField", new PropertyModel<>(this, "detailShortNameValue"));
+        this.detailShortNameView = new ReadOnlyView("detailShortNameView", new PropertyModel<>(this, "detailShortNameValue"));
         this.detailShortNameVContainer.add(this.detailShortNameView);
 
         this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Six_6);
         add(this.detailDescriptionBlock);
         this.detailDescriptionVContainer = new WebMarkupContainer("detailDescriptionVContainer");
         this.detailDescriptionBlock.add(this.detailDescriptionVContainer);
-        this.detailDescriptionView = new ReadOnlyView("detailDescriptionField", new PropertyModel<>(this, "detailDescriptionValue"));
+        this.detailDescriptionView = new ReadOnlyView("detailDescriptionView", new PropertyModel<>(this, "detailDescriptionValue"));
         this.detailDescriptionVContainer.add(this.detailDescriptionView);
 
         this.detailFundBlock = new WebMarkupBlock("detailFundBlock", Size.Six_6);
         add(this.detailFundBlock);
         this.detailFundVContainer = new WebMarkupContainer("detailFundVContainer");
         this.detailFundBlock.add(this.detailFundVContainer);
-        this.detailFundView = new ReadOnlyView("detailFundField", new PropertyModel<>(this, "detailFundValue"));
+        this.detailFundView = new ReadOnlyView("detailFundView", new PropertyModel<>(this, "detailFundValue"));
         this.detailFundVContainer.add(this.detailFundView);
 
         this.detailStartDateBlock = new WebMarkupBlock("detailStartDateBlock", Size.Six_6);
         add(this.detailStartDateBlock);
         this.detailStartDateVContainer = new WebMarkupContainer("detailStartDateVContainer");
         this.detailStartDateBlock.add(this.detailStartDateVContainer);
-        this.detailStartDateView = new ReadOnlyView("detailStartDateField", new PropertyModel<>(this, "detailStartDateValue"));
+        this.detailStartDateView = new ReadOnlyView("detailStartDateView", new PropertyModel<>(this, "detailStartDateValue"));
         this.detailStartDateVContainer.add(this.detailStartDateView);
 
         this.detailCloseDateBlock = new WebMarkupBlock("detailCloseDateBlock", Size.Six_6);
         add(this.detailCloseDateBlock);
         this.detailCloseDateVContainer = new WebMarkupContainer("detailCloseDateVContainer");
         this.detailCloseDateBlock.add(this.detailCloseDateVContainer);
-        this.detailCloseDateView = new ReadOnlyView("detailCloseDateField", new PropertyModel<>(this, "detailCloseDateValue"));
+        this.detailCloseDateView = new ReadOnlyView("detailCloseDateView", new PropertyModel<>(this, "detailCloseDateValue"));
         this.detailCloseDateVContainer.add(this.detailCloseDateView);
 
         this.detailIncludeInCustomerLoanCounterBlock = new WebMarkupBlock("detailIncludeInCustomerLoanCounterBlock", Size.Twelve_12);
         add(this.detailIncludeInCustomerLoanCounterBlock);
         this.detailIncludeInCustomerLoanCounterVContainer = new WebMarkupContainer("detailIncludeInCustomerLoanCounterVContainer");
         this.detailIncludeInCustomerLoanCounterBlock.add(this.detailIncludeInCustomerLoanCounterVContainer);
-        this.detailIncludeInCustomerLoanCounterView = new ReadOnlyView("detailIncludeInCustomerLoanCounterField", new PropertyModel<>(this, "detailIncludeInCustomerLoanCounterValue"));
+        this.detailIncludeInCustomerLoanCounterView = new ReadOnlyView("detailIncludeInCustomerLoanCounterView", new PropertyModel<>(this, "detailIncludeInCustomerLoanCounterValue"));
         this.detailIncludeInCustomerLoanCounterVContainer.add(this.detailIncludeInCustomerLoanCounterView);
     }
 
@@ -1602,28 +1602,28 @@ public class LoanPreviewPage extends Page {
         add(this.currencyCodeBlock);
         this.currencyCodeVContainer = new WebMarkupContainer("currencyCodeVContainer");
         this.currencyCodeBlock.add(this.currencyCodeVContainer);
-        this.currencyCodeView = new ReadOnlyView("currencyCodeField", new PropertyModel<>(this, "currencyCodeValue"));
+        this.currencyCodeView = new ReadOnlyView("currencyCodeView", new PropertyModel<>(this, "currencyCodeValue"));
         this.currencyCodeVContainer.add(this.currencyCodeView);
 
         this.currencyDecimalPlaceBlock = new WebMarkupBlock("currencyDecimalPlaceBlock", Size.Six_6);
         add(this.currencyDecimalPlaceBlock);
         this.currencyDecimalPlaceVContainer = new WebMarkupContainer("currencyDecimalPlaceVContainer");
         this.currencyDecimalPlaceBlock.add(this.currencyDecimalPlaceVContainer);
-        this.currencyDecimalPlaceView = new ReadOnlyView("currencyDecimalPlaceField", new PropertyModel<>(this, "currencyDecimalPlaceValue"));
+        this.currencyDecimalPlaceView = new ReadOnlyView("currencyDecimalPlaceView", new PropertyModel<>(this, "currencyDecimalPlaceValue"));
         this.currencyDecimalPlaceVContainer.add(this.currencyDecimalPlaceView);
 
         this.currencyInMultipleOfBlock = new WebMarkupBlock("currencyInMultipleOfBlock", Size.Six_6);
         add(this.currencyInMultipleOfBlock);
         this.currencyInMultipleOfVContainer = new WebMarkupContainer("currencyInMultipleOfVContainer");
         this.currencyInMultipleOfBlock.add(this.currencyInMultipleOfVContainer);
-        this.currencyInMultipleOfView = new ReadOnlyView("currencyInMultipleOfField", new PropertyModel<>(this, "currencyInMultipleOfValue"));
+        this.currencyInMultipleOfView = new ReadOnlyView("currencyInMultipleOfView", new PropertyModel<>(this, "currencyInMultipleOfValue"));
         this.currencyInMultipleOfVContainer.add(this.currencyInMultipleOfView);
 
         this.currencyInstallmentInMultipleOfBlock = new WebMarkupBlock("currencyInstallmentInMultipleOfBlock", Size.Six_6);
         add(this.currencyInstallmentInMultipleOfBlock);
         this.currencyInstallmentInMultipleOfVContainer = new WebMarkupContainer("currencyInstallmentInMultipleOfVContainer");
         this.currencyInstallmentInMultipleOfBlock.add(this.currencyInstallmentInMultipleOfVContainer);
-        this.currencyInstallmentInMultipleOfView = new ReadOnlyView("currencyInstallmentInMultipleOfField", new PropertyModel<>(this, "currencyInstallmentInMultipleOfValue"));
+        this.currencyInstallmentInMultipleOfView = new ReadOnlyView("currencyInstallmentInMultipleOfView", new PropertyModel<>(this, "currencyInstallmentInMultipleOfValue"));
         this.currencyInstallmentInMultipleOfVContainer.add(this.currencyInstallmentInMultipleOfView);
     }
 
@@ -1633,28 +1633,28 @@ public class LoanPreviewPage extends Page {
         add(this.termVaryBasedOnLoanCycleBlock);
         this.termVaryBasedOnLoanCycleVContainer = new WebMarkupContainer("termVaryBasedOnLoanCycleVContainer");
         this.termVaryBasedOnLoanCycleBlock.add(this.termVaryBasedOnLoanCycleVContainer);
-        this.termVaryBasedOnLoanCycleView = new ReadOnlyView("termVaryBasedOnLoanCycleField", new PropertyModel<>(this, "termVaryBasedOnLoanCycleValue"));
+        this.termVaryBasedOnLoanCycleView = new ReadOnlyView("termVaryBasedOnLoanCycleView", new PropertyModel<>(this, "termVaryBasedOnLoanCycleValue"));
         this.termVaryBasedOnLoanCycleVContainer.add(this.termVaryBasedOnLoanCycleView);
 
         this.termPrincipalMinimumBlock = new WebMarkupBlock("termPrincipalMinimumBlock", Size.Four_4);
         add(this.termPrincipalMinimumBlock);
         this.termPrincipalMinimumVContainer = new WebMarkupContainer("termPrincipalMinimumVContainer");
         this.termPrincipalMinimumBlock.add(this.termPrincipalMinimumVContainer);
-        this.termPrincipalMinimumView = new ReadOnlyView("termPrincipalMinimumField", new PropertyModel<>(this, "termPrincipalMinimumValue"));
+        this.termPrincipalMinimumView = new ReadOnlyView("termPrincipalMinimumView", new PropertyModel<>(this, "termPrincipalMinimumValue"));
         this.termPrincipalMinimumVContainer.add(this.termPrincipalMinimumView);
 
         this.termPrincipalDefaultBlock = new WebMarkupBlock("termPrincipalDefaultBlock", Size.Four_4);
         add(this.termPrincipalDefaultBlock);
         this.termPrincipalDefaultVContainer = new WebMarkupContainer("termPrincipalDefaultVContainer");
         this.termPrincipalDefaultBlock.add(this.termPrincipalDefaultVContainer);
-        this.termPrincipalDefaultView = new ReadOnlyView("termPrincipalDefaultField", new PropertyModel<>(this, "termPrincipalDefaultValue"));
+        this.termPrincipalDefaultView = new ReadOnlyView("termPrincipalDefaultView", new PropertyModel<>(this, "termPrincipalDefaultValue"));
         this.termPrincipalDefaultVContainer.add(this.termPrincipalDefaultView);
 
         this.termPrincipalMaximumBlock = new WebMarkupBlock("termPrincipalMaximumBlock", Size.Four_4);
         add(this.termPrincipalMaximumBlock);
         this.termPrincipalMaximumVContainer = new WebMarkupContainer("termPrincipalMaximumVContainer");
         this.termPrincipalMaximumBlock.add(this.termPrincipalMaximumVContainer);
-        this.termPrincipalMaximumView = new ReadOnlyView("termPrincipalMaximumField", new PropertyModel<>(this, "termPrincipalMaximumValue"));
+        this.termPrincipalMaximumView = new ReadOnlyView("termPrincipalMaximumView", new PropertyModel<>(this, "termPrincipalMaximumValue"));
         this.termPrincipalMaximumVContainer.add(this.termPrincipalMaximumView);
 
         this.termPrincipalByLoanCycleBlock = new WebMarkupBlock("termPrincipalByLoanCycleBlock", Size.Twelve_12);
@@ -1678,21 +1678,21 @@ public class LoanPreviewPage extends Page {
         add(this.termNumberOfRepaymentMinimumBlock);
         this.termNumberOfRepaymentMinimumVContainer = new WebMarkupContainer("termNumberOfRepaymentMinimumVContainer");
         this.termNumberOfRepaymentMinimumBlock.add(this.termNumberOfRepaymentMinimumVContainer);
-        this.termNumberOfRepaymentMinimumView = new ReadOnlyView("termNumberOfRepaymentMinimumField", new PropertyModel<>(this, "termNumberOfRepaymentMinimumValue"));
+        this.termNumberOfRepaymentMinimumView = new ReadOnlyView("termNumberOfRepaymentMinimumView", new PropertyModel<>(this, "termNumberOfRepaymentMinimumValue"));
         this.termNumberOfRepaymentMinimumVContainer.add(this.termNumberOfRepaymentMinimumView);
 
         this.termNumberOfRepaymentDefaultBlock = new WebMarkupBlock("termNumberOfRepaymentDefaultBlock", Size.Four_4);
         add(this.termNumberOfRepaymentDefaultBlock);
         this.termNumberOfRepaymentDefaultVContainer = new WebMarkupContainer("termNumberOfRepaymentDefaultVContainer");
         this.termNumberOfRepaymentDefaultBlock.add(this.termNumberOfRepaymentDefaultVContainer);
-        this.termNumberOfRepaymentDefaultView = new ReadOnlyView("termNumberOfRepaymentDefaultField", new PropertyModel<>(this, "termNumberOfRepaymentDefaultValue"));
+        this.termNumberOfRepaymentDefaultView = new ReadOnlyView("termNumberOfRepaymentDefaultView", new PropertyModel<>(this, "termNumberOfRepaymentDefaultValue"));
         this.termNumberOfRepaymentDefaultVContainer.add(this.termNumberOfRepaymentDefaultView);
 
         this.termNumberOfRepaymentMaximumBlock = new WebMarkupBlock("termNumberOfRepaymentMaximumBlock", Size.Four_4);
         add(this.termNumberOfRepaymentMaximumBlock);
         this.termNumberOfRepaymentMaximumVContainer = new WebMarkupContainer("termNumberOfRepaymentMaximumVContainer");
         this.termNumberOfRepaymentMaximumBlock.add(this.termNumberOfRepaymentMaximumVContainer);
-        this.termNumberOfRepaymentMaximumView = new ReadOnlyView("termNumberOfRepaymentMaximumField", new PropertyModel<>(this, "termNumberOfRepaymentMaximumValue"));
+        this.termNumberOfRepaymentMaximumView = new ReadOnlyView("termNumberOfRepaymentMaximumView", new PropertyModel<>(this, "termNumberOfRepaymentMaximumValue"));
         this.termNumberOfRepaymentMaximumVContainer.add(this.termNumberOfRepaymentMaximumView);
 
         this.termNumberOfRepaymentByLoanCycleBlock = new WebMarkupBlock("termNumberOfRepaymentByLoanCycleBlock", Size.Twelve_12);
@@ -1718,77 +1718,77 @@ public class LoanPreviewPage extends Page {
         add(this.termLinkedToFloatingInterestRatesBlock);
         this.termLinkedToFloatingInterestRatesVContainer = new WebMarkupContainer("termLinkedToFloatingInterestRatesVContainer");
         this.termLinkedToFloatingInterestRatesBlock.add(this.termLinkedToFloatingInterestRatesVContainer);
-        this.termLinkedToFloatingInterestRatesView = new ReadOnlyView("termLinkedToFloatingInterestRatesField", new PropertyModel<>(this, "termLinkedToFloatingInterestRatesValue"));
+        this.termLinkedToFloatingInterestRatesView = new ReadOnlyView("termLinkedToFloatingInterestRatesView", new PropertyModel<>(this, "termLinkedToFloatingInterestRatesValue"));
         this.termLinkedToFloatingInterestRatesVContainer.add(this.termLinkedToFloatingInterestRatesView);
 
         this.termNominalInterestRateMinimumBlock = new WebMarkupBlock("termNominalInterestRateMinimumBlock", Size.Three_3);
         add(this.termNominalInterestRateMinimumBlock);
         this.termNominalInterestRateMinimumVContainer = new WebMarkupContainer("termNominalInterestRateMinimumVContainer");
         this.termNominalInterestRateMinimumBlock.add(this.termNominalInterestRateMinimumVContainer);
-        this.termNominalInterestRateMinimumView = new ReadOnlyView("termNominalInterestRateMinimumField", new PropertyModel<>(this, "termNominalInterestRateMinimumValue"));
+        this.termNominalInterestRateMinimumView = new ReadOnlyView("termNominalInterestRateMinimumView", new PropertyModel<>(this, "termNominalInterestRateMinimumValue"));
         this.termNominalInterestRateMinimumVContainer.add(this.termNominalInterestRateMinimumView);
 
         this.termNominalInterestRateDefaultBlock = new WebMarkupBlock("termNominalInterestRateDefaultBlock", Size.Three_3);
         add(this.termNominalInterestRateDefaultBlock);
         this.termNominalInterestRateDefaultVContainer = new WebMarkupContainer("termNominalInterestRateDefaultVContainer");
         this.termNominalInterestRateDefaultBlock.add(this.termNominalInterestRateDefaultVContainer);
-        this.termNominalInterestRateDefaultView = new ReadOnlyView("termNominalInterestRateDefaultField", new PropertyModel<>(this, "termNominalInterestRateDefaultValue"));
+        this.termNominalInterestRateDefaultView = new ReadOnlyView("termNominalInterestRateDefaultView", new PropertyModel<>(this, "termNominalInterestRateDefaultValue"));
         this.termNominalInterestRateDefaultVContainer.add(this.termNominalInterestRateDefaultView);
 
         this.termNominalInterestRateMaximumBlock = new WebMarkupBlock("termNominalInterestRateMaximumBlock", Size.Three_3);
         add(this.termNominalInterestRateMaximumBlock);
         this.termNominalInterestRateMaximumVContainer = new WebMarkupContainer("termNominalInterestRateMaximumVContainer");
         this.termNominalInterestRateMaximumBlock.add(this.termNominalInterestRateMaximumVContainer);
-        this.termNominalInterestRateMaximumView = new ReadOnlyView("termNominalInterestRateMaximumField", new PropertyModel<>(this, "termNominalInterestRateMaximumValue"));
+        this.termNominalInterestRateMaximumView = new ReadOnlyView("termNominalInterestRateMaximumView", new PropertyModel<>(this, "termNominalInterestRateMaximumValue"));
         this.termNominalInterestRateMaximumVContainer.add(this.termNominalInterestRateMaximumView);
 
         this.termNominalInterestRateTypeBlock = new WebMarkupBlock("termNominalInterestRateTypeBlock", Size.Three_3);
         add(this.termNominalInterestRateTypeBlock);
         this.termNominalInterestRateTypeVContainer = new WebMarkupContainer("termNominalInterestRateTypeVContainer");
         this.termNominalInterestRateTypeBlock.add(this.termNominalInterestRateTypeVContainer);
-        this.termNominalInterestRateTypeView = new ReadOnlyView("termNominalInterestRateTypeField", new PropertyModel<>(this, "termNominalInterestRateTypeValue"));
+        this.termNominalInterestRateTypeView = new ReadOnlyView("termNominalInterestRateTypeView", new PropertyModel<>(this, "termNominalInterestRateTypeValue"));
         this.termNominalInterestRateTypeVContainer.add(this.termNominalInterestRateTypeView);
 
         this.termFloatingInterestRateBlock = new WebMarkupBlock("termFloatingInterestRateBlock", Size.Four_4);
         add(this.termFloatingInterestRateBlock);
         this.termFloatingInterestRateVContainer = new WebMarkupContainer("termFloatingInterestRateVContainer");
         this.termFloatingInterestRateBlock.add(this.termFloatingInterestRateVContainer);
-        this.termFloatingInterestRateView = new ReadOnlyView("termFloatingInterestRateField", new PropertyModel<>(this, "termFloatingInterestRateValue"));
+        this.termFloatingInterestRateView = new ReadOnlyView("termFloatingInterestRateView", new PropertyModel<>(this, "termFloatingInterestRateValue"));
         this.termFloatingInterestRateVContainer.add(this.termFloatingInterestRateView);
 
         this.termFloatingInterestDifferentialBlock = new WebMarkupBlock("termFloatingInterestDifferentialBlock", Size.Four_4);
         add(this.termFloatingInterestDifferentialBlock);
         this.termFloatingInterestDifferentialVContainer = new WebMarkupContainer("termFloatingInterestDifferentialVContainer");
         this.termFloatingInterestDifferentialBlock.add(this.termFloatingInterestDifferentialVContainer);
-        this.termFloatingInterestDifferentialView = new ReadOnlyView("termFloatingInterestDifferentialField", new PropertyModel<>(this, "termFloatingInterestDifferentialValue"));
+        this.termFloatingInterestDifferentialView = new ReadOnlyView("termFloatingInterestDifferentialView", new PropertyModel<>(this, "termFloatingInterestDifferentialValue"));
         this.termFloatingInterestDifferentialVContainer.add(this.termFloatingInterestDifferentialView);
 
         this.termFloatingInterestAllowedBlock = new WebMarkupBlock("termFloatingInterestAllowedBlock", Size.Four_4);
         add(this.termFloatingInterestAllowedBlock);
         this.termFloatingInterestAllowedVContainer = new WebMarkupContainer("termFloatingInterestAllowedVContainer");
         this.termFloatingInterestAllowedBlock.add(this.termFloatingInterestAllowedVContainer);
-        this.termFloatingInterestAllowedView = new ReadOnlyView("termFloatingInterestAllowedField", new PropertyModel<>(this, "termFloatingInterestAllowedValue"));
+        this.termFloatingInterestAllowedView = new ReadOnlyView("termFloatingInterestAllowedView", new PropertyModel<>(this, "termFloatingInterestAllowedValue"));
         this.termFloatingInterestAllowedVContainer.add(this.termFloatingInterestAllowedView);
 
         this.termFloatingInterestMinimumBlock = new WebMarkupBlock("termFloatingInterestMinimumBlock", Size.Four_4);
         add(this.termFloatingInterestMinimumBlock);
         this.termFloatingInterestMinimumVContainer = new WebMarkupContainer("termFloatingInterestMinimumVContainer");
         this.termFloatingInterestMinimumBlock.add(this.termFloatingInterestMinimumVContainer);
-        this.termFloatingInterestMinimumView = new ReadOnlyView("termFloatingInterestMinimumField", new PropertyModel<>(this, "termFloatingInterestMinimumValue"));
+        this.termFloatingInterestMinimumView = new ReadOnlyView("termFloatingInterestMinimumView", new PropertyModel<>(this, "termFloatingInterestMinimumValue"));
         this.termFloatingInterestMinimumVContainer.add(this.termFloatingInterestMinimumView);
 
         this.termFloatingInterestDefaultBlock = new WebMarkupBlock("termFloatingInterestDefaultBlock", Size.Four_4);
         add(this.termFloatingInterestDefaultBlock);
         this.termFloatingInterestDefaultVContainer = new WebMarkupContainer("termFloatingInterestDefaultVContainer");
         this.termFloatingInterestDefaultBlock.add(this.termFloatingInterestDefaultVContainer);
-        this.termFloatingInterestDefaultView = new ReadOnlyView("termFloatingInterestDefaultField", new PropertyModel<>(this, "termFloatingInterestDefaultValue"));
+        this.termFloatingInterestDefaultView = new ReadOnlyView("termFloatingInterestDefaultView", new PropertyModel<>(this, "termFloatingInterestDefaultValue"));
         this.termFloatingInterestDefaultVContainer.add(this.termFloatingInterestDefaultView);
 
         this.termFloatingInterestMaximumBlock = new WebMarkupBlock("termFloatingInterestMaximumBlock", Size.Four_4);
         add(this.termFloatingInterestMaximumBlock);
         this.termFloatingInterestMaximumVContainer = new WebMarkupContainer("termFloatingInterestMaximumVContainer");
         this.termFloatingInterestMaximumBlock.add(this.termFloatingInterestMaximumVContainer);
-        this.termFloatingInterestMaximumView = new ReadOnlyView("termFloatingInterestMaximumField", new PropertyModel<>(this, "termFloatingInterestMaximumValue"));
+        this.termFloatingInterestMaximumView = new ReadOnlyView("termFloatingInterestMaximumView", new PropertyModel<>(this, "termFloatingInterestMaximumValue"));
         this.termFloatingInterestMaximumVContainer.add(this.termFloatingInterestMaximumView);
 
         this.termNominalInterestRateByLoanCycleBlock = new WebMarkupBlock("termNominalInterestRateByLoanCycleBlock", Size.Twelve_12);
@@ -1813,21 +1813,21 @@ public class LoanPreviewPage extends Page {
         add(this.termRepaidEveryBlock);
         this.termRepaidEveryVContainer = new WebMarkupContainer("termRepaidEveryVContainer");
         this.termRepaidEveryBlock.add(this.termRepaidEveryVContainer);
-        this.termRepaidEveryView = new ReadOnlyView("termRepaidEveryField", new PropertyModel<>(this, "termRepaidEveryValue"));
+        this.termRepaidEveryView = new ReadOnlyView("termRepaidEveryView", new PropertyModel<>(this, "termRepaidEveryValue"));
         this.termRepaidEveryVContainer.add(this.termRepaidEveryView);
 
         this.termRepaidTypeBlock = new WebMarkupBlock("termRepaidTypeBlock", Size.Six_6);
         add(this.termRepaidTypeBlock);
         this.termRepaidTypeVContainer = new WebMarkupContainer("termRepaidTypeVContainer");
         this.termRepaidTypeBlock.add(this.termRepaidTypeVContainer);
-        this.termRepaidTypeView = new ReadOnlyView("termRepaidTypeField", new PropertyModel<>(this, "termRepaidTypeValue"));
+        this.termRepaidTypeView = new ReadOnlyView("termRepaidTypeView", new PropertyModel<>(this, "termRepaidTypeValue"));
         this.termRepaidTypeVContainer.add(this.termRepaidTypeView);
 
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock = new WebMarkupBlock("termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock", Size.Six_6);
         add(this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock);
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateVContainer = new WebMarkupContainer("termMinimumDayBetweenDisbursalAndFirstRepaymentDateVContainer");
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock.add(this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateVContainer);
-        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateView = new ReadOnlyView("termMinimumDayBetweenDisbursalAndFirstRepaymentDateField", new PropertyModel<>(this, "termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue"));
+        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateView = new ReadOnlyView("termMinimumDayBetweenDisbursalAndFirstRepaymentDateView", new PropertyModel<>(this, "termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue"));
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateVContainer.add(this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateView);
     }
 
