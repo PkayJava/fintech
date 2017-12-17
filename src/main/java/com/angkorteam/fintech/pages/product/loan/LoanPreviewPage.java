@@ -16,15 +16,26 @@ import org.apache.wicket.model.PropertyModel;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.AccountingType;
+import com.angkorteam.fintech.dto.enums.DayInYear;
+import com.angkorteam.fintech.dto.enums.LoanCycle;
+import com.angkorteam.fintech.dto.enums.LockInType;
+import com.angkorteam.fintech.dto.enums.ProductType;
+import com.angkorteam.fintech.dto.enums.loan.Amortization;
+import com.angkorteam.fintech.dto.enums.loan.DayInMonth;
+import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
+import com.angkorteam.fintech.dto.enums.loan.InterestMethod;
+import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateType;
+import com.angkorteam.fintech.dto.enums.loan.RepaymentStrategy;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
-import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
@@ -188,7 +199,7 @@ public class LoanPreviewPage extends Page {
 
     protected WebMarkupBlock termFloatingInterestRateBlock;
     protected WebMarkupContainer termFloatingInterestRateVContainer;
-    protected Option termFloatingInterestRateValue;
+    protected String termFloatingInterestRateValue;
     protected ReadOnlyView termFloatingInterestRateView;
 
     protected WebMarkupBlock termFloatingInterestDifferentialBlock;
@@ -222,8 +233,6 @@ public class LoanPreviewPage extends Page {
     protected List<Map<String, Object>> termNominalInterestRateByLoanCycleValue = Lists.newArrayList();
     protected DataTable<Map<String, Object>, String> termNominalInterestRateByLoanCycleTable;
     protected ListDataProvider termNominalInterestRateByLoanCycleProvider;
-    protected AjaxLink<Void> termNominalInterestRateByLoanCycleAddLink;
-    protected ModalWindow termNominalInterestRateByLoanCyclePopup;
 
     protected WebMarkupBlock termRepaidEveryBlock;
     protected WebMarkupContainer termRepaidEveryVContainer;
@@ -766,7 +775,7 @@ public class LoanPreviewPage extends Page {
 
         initSectionOverdueCharge();
 
-        initSectionAccounting(); 
+        initSectionAccounting();
 
     }
 
@@ -780,7 +789,185 @@ public class LoanPreviewPage extends Page {
 
     @Override
     protected void initData() {
+        this.loanId = getPageParameters().get("loanId").toString();
+        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        SelectQuery query = new SelectQuery("m_product_loan");
+        query.addJoin("left join m_fund on m_product_loan.fund_id = m_fund.id");
+        query.addJoin("left join m_organisation_currency on m_product_loan.currency_code = m_organisation_currency.code");
+        query.addJoin("left join m_product_loan_floating_rates on m_product_loan_floating_rates.loan_product_id = m_product_loan.id");
+        query.addJoin("left join m_floating_rates on m_product_loan_floating_rates.floating_rates_id = m_floating_rates.id");
+        query.addJoin("left join m_product_loan_variable_installment_config on m_product_loan_variable_installment_config.loan_product_id = m_product_loan.id");
+        query.addJoin("left join m_product_loan_recalculation_details on m_product_loan.id = m_product_loan_recalculation_details.product_id");
 
+        query.addWhere("m_product_loan.id = " + this.loanId);
+
+        // detail section
+        query.addField("m_product_loan.name product");
+        query.addField("m_product_loan.description");
+        query.addField("m_product_loan.short_name");
+        query.addField("m_product_loan.start_date");
+        query.addField("m_product_loan.close_date");
+        query.addField("m_product_loan.include_in_borrower_cycle");
+        query.addField("m_fund.name fund");
+
+        // currency
+        query.addField("concat(m_organisation_currency.name, ' [', m_organisation_currency.code, ']') currency");
+        query.addField("m_product_loan.currency_digits");
+        query.addField("m_product_loan.currency_multiplesof");
+        query.addField("m_product_loan.instalment_amount_in_multiples_of");
+
+        // Terms
+        query.addField("m_product_loan.use_borrower_cycle");
+        query.addField("m_product_loan.min_principal_amount");
+        query.addField("m_product_loan.principal_amount");
+        query.addField("m_product_loan.max_principal_amount");
+
+        query.addField("m_product_loan.min_number_of_repayments");
+        query.addField("m_product_loan.number_of_repayments");
+        query.addField("m_product_loan.max_number_of_repayments");
+        query.addField("m_product_loan.repay_every");
+        query.addField("m_product_loan.repayment_period_frequency_enum");
+
+        query.addField("m_product_loan.min_nominal_interest_rate_per_period");
+        query.addField("m_product_loan.nominal_interest_rate_per_period");
+        query.addField("m_product_loan.max_nominal_interest_rate_per_period");
+        query.addField("m_product_loan.interest_period_frequency_enum");
+
+        query.addField("m_product_loan.is_linked_to_floating_interest_rates");
+
+        query.addField("m_floating_rates.name floating_rate");
+        query.addField("m_product_loan_floating_rates.interest_rate_differential");
+        query.addField("m_product_loan_floating_rates.is_floating_interest_rate_calculation_allowed");
+        query.addField("m_product_loan_floating_rates.min_differential_lending_rate");
+        query.addField("m_product_loan_floating_rates.default_differential_lending_rate");
+        query.addField("m_product_loan_floating_rates.max_differential_lending_rate");
+
+        query.addField("m_product_loan.min_days_between_disbursal_and_first_repayment");
+
+        // setting
+        query.addField("m_product_loan.amortization_method_enum");
+        query.addField("m_product_loan.interest_method_enum");
+        query.addField("m_product_loan.interest_calculated_in_period_enum");
+        query.addField("m_product_loan.allow_partial_period_interest_calcualtion");
+        query.addField("m_product_loan.arrearstolerance_amount");
+        query.addField("m_product_loan.loan_transaction_strategy_id");
+        query.addField("m_product_loan.grace_interest_free_periods");
+        query.addField("m_product_loan.grace_on_arrears_ageing");
+        query.addField("m_product_loan.grace_on_interest_periods");
+        query.addField("m_product_loan.grace_on_principal_periods");
+        query.addField("m_product_loan.account_moves_out_of_npa_only_on_arrears_completion");
+        query.addField("m_product_loan.overdue_days_for_npa");
+        query.addField("m_product_loan.days_in_year_enum");
+        query.addField("m_product_loan.days_in_month_enum");
+        query.addField("m_product_loan.principal_threshold_for_last_installment");
+        query.addField("m_product_loan.can_define_fixed_emi_amount");
+        query.addField("m_product_loan.can_use_for_topup");
+        query.addField("m_product_loan.allow_variabe_installments");
+        query.addField("m_product_loan_variable_installment_config.minimum_gap");
+        query.addField("m_product_loan_variable_installment_config.maximum_gap");
+
+        // re-calculation
+        query.addField("m_product_loan.interest_recalculation_enabled");
+
+        Map<String, Object> loanObject = jdbcTemplate.queryForMap(query.toSQL());
+
+        this.detailProductNameValue = (String) loanObject.get("product");
+        this.detailDescriptionValue = (String) loanObject.get("description");
+        this.detailShortNameValue = (String) loanObject.get("short_name");
+        this.detailFundValue = (String) loanObject.get("fund");
+        this.detailStartDateValue = (Date) loanObject.get("start_date");
+        this.detailCloseDateValue = (Date) loanObject.get("close_date");
+        this.detailIncludeInCustomerLoanCounterValue = (Boolean) loanObject.get("include_in_borrower_cycle");
+
+        this.currencyCodeValue = (String) loanObject.get("currency");
+        this.currencyDecimalPlaceValue = (Long) loanObject.get("currency_digits");
+        this.currencyInMultipleOfValue = (Long) loanObject.get("currency_multiplesof");
+        Double instalment_amount_in_multiples_of = (Double) loanObject.get("instalment_amount_in_multiples_of");
+        this.currencyInstallmentInMultipleOfValue = instalment_amount_in_multiples_of == null ? null : instalment_amount_in_multiples_of.longValue();
+
+        this.termVaryBasedOnLoanCycleValue = (Boolean) loanObject.get("use_borrower_cycle");
+
+        this.termPrincipalMinimumValue = (Double) loanObject.get("min_principal_amount");
+        this.termPrincipalDefaultValue = (Double) loanObject.get("principal_amount");
+        this.termPrincipalMaximumValue = (Double) loanObject.get("max_principal_amount");
+
+        this.termNumberOfRepaymentMinimumValue = (Long) loanObject.get("min_number_of_repayments");
+        this.termNumberOfRepaymentDefaultValue = (Long) loanObject.get("number_of_repayments");
+        this.termNumberOfRepaymentMaximumValue = (Long) loanObject.get("max_number_of_repayments");
+
+        this.termRepaidEveryValue = (Long) loanObject.get("repay_every");
+        this.termRepaidTypeValue = LockInType.optionLiteral(String.valueOf(loanObject.get("repayment_period_frequency_enum")));
+
+        Boolean linkedToFloatingInterestRate = (Boolean) loanObject.get("is_linked_to_floating_interest_rates");
+
+        this.termLinkedToFloatingInterestRatesValue = linkedToFloatingInterestRate;
+
+        if (linkedToFloatingInterestRate) {
+            this.termFloatingInterestRateValue = (String) loanObject.get("floating_rate");
+            this.termFloatingInterestDifferentialValue = (Double) loanObject.get("interest_rate_differential");
+            this.termFloatingInterestAllowedValue = (Boolean) loanObject.get("is_floating_interest_rate_calculation_allowed");
+            this.termFloatingInterestMinimumValue = (Double) loanObject.get("min_differential_lending_rate");
+            this.termFloatingInterestDefaultValue = (Double) loanObject.get("default_differential_lending_rate");
+            this.termFloatingInterestMaximumValue = (Double) loanObject.get("max_differential_lending_rate");
+        } else {
+            this.termNominalInterestRateMinimumValue = (Double) loanObject.get("min_nominal_interest_rate_per_period");
+            this.termNominalInterestRateDefaultValue = (Double) loanObject.get("annual_nominal_interest_rate");
+            this.termNominalInterestRateDefaultValue = (Double) loanObject.get("nominal_interest_rate_per_period");
+            this.termNominalInterestRateMaximumValue = (Double) loanObject.get("max_nominal_interest_rate_per_period");
+            this.termNominalInterestRateTypeValue = NominalInterestRateType.optionLiteral(String.valueOf(loanObject.get("interest_period_frequency_enum")));
+        }
+
+        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue = (Long) loanObject.get("min_days_between_disbursal_and_first_repayment");
+
+        List<Map<String, Object>> borrowersObject = jdbcTemplate.queryForList("select * from m_product_loan_variations_borrower_cycle where loan_product_id = ? order by param_type asc, min_value asc", this.loanId);
+
+        for (Map<String, Object> borrowerObject : borrowersObject) {
+            if (LoanCycle.Principal.getLiteral().equals(borrowerObject.get("param_type"))) {
+                // termPrincipalByLoanCycleValue
+            } else if (LoanCycle.NumberOfRepayment.getLiteral().equals(borrowerObject.get("param_type"))) {
+                // termNumberOfRepaymentByLoanCycleValue
+            } else if (LoanCycle.NominalInterestRate.getLiteral().equals(borrowerObject.get("param_type"))) {
+                // termNominalInterestRateByLoanCycleValue
+            }
+        }
+
+        // RepaymentStrategy
+
+        this.settingAmortizationValue = Amortization.optionLiteral(String.valueOf(loanObject.get("amortization_method_enum")));
+        this.settingInterestMethodValue = InterestMethod.optionLiteral(String.valueOf(loanObject.get("interest_method_enum")));
+        this.settingInterestCalculationPeriodValue = InterestCalculationPeriod.optionLiteral(String.valueOf(loanObject.get("interest_calculated_in_period_enum")));
+        this.settingCalculateInterestForExactDaysInPartialPeriodValue = (Boolean) loanObject.get("allow_partial_period_interest_calcualtion");
+        this.settingRepaymentStrategyValue = RepaymentStrategy.optionLiteral(String.valueOf(loanObject.get("loan_transaction_strategy_id")));
+
+        this.settingMoratoriumPrincipalValue = (Long) loanObject.get("grace_on_principal_periods");
+        this.settingMoratoriumInterestValue = (Long) loanObject.get("grace_on_interest_periods");
+        this.settingInterestFreePeriodValue = (Long) loanObject.get("grace_interest_free_periods");
+        this.settingArrearsToleranceValue = (Double) loanObject.get("arrearstolerance_amount");
+
+        this.settingDayInYearValue = DayInYear.optionLiteral(String.valueOf(loanObject.get("days_in_year_enum")));
+        this.settingDayInMonthValue = DayInMonth.optionLiteral(String.valueOf(loanObject.get("days_in_month_enum")));
+
+        this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue = (Long) loanObject.get("grace_on_arrears_ageing");
+        this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue = (Long) loanObject.get("overdue_days_for_npa");
+        this.settingPrincipalThresholdForLastInstalmentValue = (Double) loanObject.get("principal_threshold_for_last_installment");
+
+        this.settingAllowFixingOfTheInstallmentAmountValue = (Boolean) loanObject.get("can_define_fixed_emi_amount");
+
+        this.settingVariableInstallmentsAllowedValue = (Boolean) loanObject.get("allow_variabe_installments");
+        if (this.settingVariableInstallmentsAllowedValue != null && this.settingVariableInstallmentsAllowedValue) {
+            this.settingVariableInstallmentsMinimumValue = (Long) loanObject.get("minimum_gap");
+            this.settingVariableInstallmentsMaximumValue = (Long) loanObject.get("maximum_gap");
+
+        }
+        this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue = (Boolean) loanObject.get("account_moves_out_of_npa_only_on_arrears_completion");
+        this.settingAllowedToBeUsedForProvidingTopupLoansValue = (Boolean) loanObject.get("can_use_for_topup");
+
+        this.interestRecalculationRecalculateInterestValue = (Boolean) loanObject.get("interest_recalculation_enabled");
+
+        List<Map<String, Object>> configurablesObject = jdbcTemplate.queryForList("select * from m_product_loan_configurable_attributes where loan_product_id = ?", this.loanId);
+        Map<String, Object> guaranteeObject = jdbcTemplate.queryForMap("select * from m_product_loan_guarantee_details where loan_product_id = ?", this.loanId);
+        List<Map<String, Object>> chargesObject = jdbcTemplate.queryForList("select m_charge.* from m_product_loan_charge inner join m_charge on m_product_loan_charge.charge_id = m_charge.id where m_product_loan_charge.product_loan_id = ?", this.loanId);
+        List<Map<String, Object>> accounts = jdbcTemplate.queryForList("select * from acc_product_mapping where product_type = ? and product_id = ?", ProductType.Loan.getLiteral(), this.loanId);
     }
 
     protected void initSectionOverdueCharge() {
@@ -842,7 +1029,7 @@ public class LoanPreviewPage extends Page {
     }
 
     protected void initSectionAccounting() {
-        this.accountingView = new ReadOnlyView("accountingView", new PropertyModel<>(this, "accountingValue")); 
+        this.accountingView = new ReadOnlyView("accountingView", new PropertyModel<>(this, "accountingValue"));
         add(this.accountingView);
 
         initAccountingCash();
@@ -1578,14 +1765,14 @@ public class LoanPreviewPage extends Page {
         add(this.detailStartDateBlock);
         this.detailStartDateVContainer = new WebMarkupContainer("detailStartDateVContainer");
         this.detailStartDateBlock.add(this.detailStartDateVContainer);
-        this.detailStartDateView = new ReadOnlyView("detailStartDateView", new PropertyModel<>(this, "detailStartDateValue"));
+        this.detailStartDateView = new ReadOnlyView("detailStartDateView", new PropertyModel<>(this, "detailStartDateValue"), "yyyy-MM-dd");
         this.detailStartDateVContainer.add(this.detailStartDateView);
 
         this.detailCloseDateBlock = new WebMarkupBlock("detailCloseDateBlock", Size.Six_6);
         add(this.detailCloseDateBlock);
         this.detailCloseDateVContainer = new WebMarkupContainer("detailCloseDateVContainer");
         this.detailCloseDateBlock.add(this.detailCloseDateVContainer);
-        this.detailCloseDateView = new ReadOnlyView("detailCloseDateView", new PropertyModel<>(this, "detailCloseDateValue"));
+        this.detailCloseDateView = new ReadOnlyView("detailCloseDateView", new PropertyModel<>(this, "detailCloseDateValue"), "yyyy-MM-dd");
         this.detailCloseDateVContainer.add(this.detailCloseDateView);
 
         this.detailIncludeInCustomerLoanCounterBlock = new WebMarkupBlock("detailIncludeInCustomerLoanCounterBlock", Size.Twelve_12);
@@ -1636,21 +1823,21 @@ public class LoanPreviewPage extends Page {
         this.termVaryBasedOnLoanCycleView = new ReadOnlyView("termVaryBasedOnLoanCycleView", new PropertyModel<>(this, "termVaryBasedOnLoanCycleValue"));
         this.termVaryBasedOnLoanCycleVContainer.add(this.termVaryBasedOnLoanCycleView);
 
-        this.termPrincipalMinimumBlock = new WebMarkupBlock("termPrincipalMinimumBlock", Size.Four_4);
+        this.termPrincipalMinimumBlock = new WebMarkupBlock("termPrincipalMinimumBlock", Size.Three_3);
         add(this.termPrincipalMinimumBlock);
         this.termPrincipalMinimumVContainer = new WebMarkupContainer("termPrincipalMinimumVContainer");
         this.termPrincipalMinimumBlock.add(this.termPrincipalMinimumVContainer);
         this.termPrincipalMinimumView = new ReadOnlyView("termPrincipalMinimumView", new PropertyModel<>(this, "termPrincipalMinimumValue"));
         this.termPrincipalMinimumVContainer.add(this.termPrincipalMinimumView);
 
-        this.termPrincipalDefaultBlock = new WebMarkupBlock("termPrincipalDefaultBlock", Size.Four_4);
+        this.termPrincipalDefaultBlock = new WebMarkupBlock("termPrincipalDefaultBlock", Size.Three_3);
         add(this.termPrincipalDefaultBlock);
         this.termPrincipalDefaultVContainer = new WebMarkupContainer("termPrincipalDefaultVContainer");
         this.termPrincipalDefaultBlock.add(this.termPrincipalDefaultVContainer);
         this.termPrincipalDefaultView = new ReadOnlyView("termPrincipalDefaultView", new PropertyModel<>(this, "termPrincipalDefaultValue"));
         this.termPrincipalDefaultVContainer.add(this.termPrincipalDefaultView);
 
-        this.termPrincipalMaximumBlock = new WebMarkupBlock("termPrincipalMaximumBlock", Size.Four_4);
+        this.termPrincipalMaximumBlock = new WebMarkupBlock("termPrincipalMaximumBlock", Size.Three_3);
         add(this.termPrincipalMaximumBlock);
         this.termPrincipalMaximumVContainer = new WebMarkupContainer("termPrincipalMaximumVContainer");
         this.termPrincipalMaximumBlock.add(this.termPrincipalMaximumVContainer);
@@ -1674,21 +1861,21 @@ public class LoanPreviewPage extends Page {
         this.termPrincipalByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(this.termPrincipalByLoanCycleTable, this.termPrincipalByLoanCycleProvider));
         this.termPrincipalByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.termPrincipalByLoanCycleTable));
 
-        this.termNumberOfRepaymentMinimumBlock = new WebMarkupBlock("termNumberOfRepaymentMinimumBlock", Size.Four_4);
+        this.termNumberOfRepaymentMinimumBlock = new WebMarkupBlock("termNumberOfRepaymentMinimumBlock", Size.Three_3);
         add(this.termNumberOfRepaymentMinimumBlock);
         this.termNumberOfRepaymentMinimumVContainer = new WebMarkupContainer("termNumberOfRepaymentMinimumVContainer");
         this.termNumberOfRepaymentMinimumBlock.add(this.termNumberOfRepaymentMinimumVContainer);
         this.termNumberOfRepaymentMinimumView = new ReadOnlyView("termNumberOfRepaymentMinimumView", new PropertyModel<>(this, "termNumberOfRepaymentMinimumValue"));
         this.termNumberOfRepaymentMinimumVContainer.add(this.termNumberOfRepaymentMinimumView);
 
-        this.termNumberOfRepaymentDefaultBlock = new WebMarkupBlock("termNumberOfRepaymentDefaultBlock", Size.Four_4);
+        this.termNumberOfRepaymentDefaultBlock = new WebMarkupBlock("termNumberOfRepaymentDefaultBlock", Size.Three_3);
         add(this.termNumberOfRepaymentDefaultBlock);
         this.termNumberOfRepaymentDefaultVContainer = new WebMarkupContainer("termNumberOfRepaymentDefaultVContainer");
         this.termNumberOfRepaymentDefaultBlock.add(this.termNumberOfRepaymentDefaultVContainer);
         this.termNumberOfRepaymentDefaultView = new ReadOnlyView("termNumberOfRepaymentDefaultView", new PropertyModel<>(this, "termNumberOfRepaymentDefaultValue"));
         this.termNumberOfRepaymentDefaultVContainer.add(this.termNumberOfRepaymentDefaultView);
 
-        this.termNumberOfRepaymentMaximumBlock = new WebMarkupBlock("termNumberOfRepaymentMaximumBlock", Size.Four_4);
+        this.termNumberOfRepaymentMaximumBlock = new WebMarkupBlock("termNumberOfRepaymentMaximumBlock", Size.Three_3);
         add(this.termNumberOfRepaymentMaximumBlock);
         this.termNumberOfRepaymentMaximumVContainer = new WebMarkupContainer("termNumberOfRepaymentMaximumVContainer");
         this.termNumberOfRepaymentMaximumBlock.add(this.termNumberOfRepaymentMaximumVContainer);
@@ -1808,15 +1995,14 @@ public class LoanPreviewPage extends Page {
         this.termNominalInterestRateByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(this.termNominalInterestRateByLoanCycleTable, this.termNominalInterestRateByLoanCycleProvider));
         this.termNominalInterestRateByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.termNominalInterestRateByLoanCycleTable));
 
-        this.termRepaidEveryBlock = new WebMarkupBlock("termRepaidEveryBlock", Size.Six_6);
-
+        this.termRepaidEveryBlock = new WebMarkupBlock("termRepaidEveryBlock", Size.One_1);
         add(this.termRepaidEveryBlock);
         this.termRepaidEveryVContainer = new WebMarkupContainer("termRepaidEveryVContainer");
         this.termRepaidEveryBlock.add(this.termRepaidEveryVContainer);
         this.termRepaidEveryView = new ReadOnlyView("termRepaidEveryView", new PropertyModel<>(this, "termRepaidEveryValue"));
         this.termRepaidEveryVContainer.add(this.termRepaidEveryView);
 
-        this.termRepaidTypeBlock = new WebMarkupBlock("termRepaidTypeBlock", Size.Six_6);
+        this.termRepaidTypeBlock = new WebMarkupBlock("termRepaidTypeBlock", Size.Two_2);
         add(this.termRepaidTypeBlock);
         this.termRepaidTypeVContainer = new WebMarkupContainer("termRepaidTypeVContainer");
         this.termRepaidTypeBlock.add(this.termRepaidTypeVContainer);

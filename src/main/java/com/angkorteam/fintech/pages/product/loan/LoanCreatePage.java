@@ -2684,6 +2684,8 @@ public class LoanCreatePage extends Page {
         accountingFieldUpdate(null);
 
         settingVariableInstallmentsAllowedFieldUpdate(null);
+
+        termLinkedToFloatingInterestRatesFieldUpdate(null);
     }
 
     protected void initSectionDetail() {
@@ -2820,7 +2822,7 @@ public class LoanCreatePage extends Page {
         this.termVaryBasedOnLoanCycleFeedback = new TextFeedbackPanel("termVaryBasedOnLoanCycleFeedback", this.termVaryBasedOnLoanCycleField);
         this.termVaryBasedOnLoanCycleIContainer.add(this.termVaryBasedOnLoanCycleFeedback);
 
-        this.termPrincipalMinimumBlock = new WebMarkupBlock("termPrincipalMinimumBlock", Size.Four_4);
+        this.termPrincipalMinimumBlock = new WebMarkupBlock("termPrincipalMinimumBlock", Size.Three_3);
         this.form.add(this.termPrincipalMinimumBlock);
         this.termPrincipalMinimumIContainer = new WebMarkupContainer("termPrincipalMinimumIContainer");
         this.termPrincipalMinimumBlock.add(this.termPrincipalMinimumIContainer);
@@ -2831,7 +2833,7 @@ public class LoanCreatePage extends Page {
         this.termPrincipalMinimumFeedback = new TextFeedbackPanel("termPrincipalMinimumFeedback", this.termPrincipalMinimumField);
         this.termPrincipalMinimumIContainer.add(this.termPrincipalMinimumFeedback);
 
-        this.termPrincipalDefaultBlock = new WebMarkupBlock("termPrincipalDefaultBlock", Size.Four_4);
+        this.termPrincipalDefaultBlock = new WebMarkupBlock("termPrincipalDefaultBlock", Size.Three_3);
         this.form.add(this.termPrincipalDefaultBlock);
         this.termPrincipalDefaultIContainer = new WebMarkupContainer("termPrincipalDefaultIContainer");
         this.termPrincipalDefaultBlock.add(this.termPrincipalDefaultIContainer);
@@ -2842,7 +2844,7 @@ public class LoanCreatePage extends Page {
         this.termPrincipalDefaultFeedback = new TextFeedbackPanel("termPrincipalDefaultFeedback", this.termPrincipalDefaultField);
         this.termPrincipalDefaultIContainer.add(this.termPrincipalDefaultFeedback);
 
-        this.termPrincipalMaximumBlock = new WebMarkupBlock("termPrincipalMaximumBlock", Size.Four_4);
+        this.termPrincipalMaximumBlock = new WebMarkupBlock("termPrincipalMaximumBlock", Size.Three_3);
         this.form.add(this.termPrincipalMaximumBlock);
         this.termPrincipalMaximumIContainer = new WebMarkupContainer("termPrincipalMaximumIContainer");
         this.termPrincipalMaximumBlock.add(this.termPrincipalMaximumIContainer);
@@ -2881,7 +2883,7 @@ public class LoanCreatePage extends Page {
             this.termPrincipalByLoanCycleIContainer.add(this.termPrincipalByLoanCycleAddLink);
         }
 
-        this.termNumberOfRepaymentMinimumBlock = new WebMarkupBlock("termNumberOfRepaymentMinimumBlock", Size.Four_4);
+        this.termNumberOfRepaymentMinimumBlock = new WebMarkupBlock("termNumberOfRepaymentMinimumBlock", Size.Three_3);
         this.form.add(this.termNumberOfRepaymentMinimumBlock);
         this.termNumberOfRepaymentMinimumIContainer = new WebMarkupContainer("termNumberOfRepaymentMinimumIContainer");
         this.termNumberOfRepaymentMinimumBlock.add(this.termNumberOfRepaymentMinimumIContainer);
@@ -2892,7 +2894,7 @@ public class LoanCreatePage extends Page {
         this.termNumberOfRepaymentMinimumFeedback = new TextFeedbackPanel("termNumberOfRepaymentMinimumFeedback", this.termNumberOfRepaymentMinimumField);
         this.termNumberOfRepaymentMinimumIContainer.add(this.termNumberOfRepaymentMinimumFeedback);
 
-        this.termNumberOfRepaymentDefaultBlock = new WebMarkupBlock("termNumberOfRepaymentDefaultBlock", Size.Four_4);
+        this.termNumberOfRepaymentDefaultBlock = new WebMarkupBlock("termNumberOfRepaymentDefaultBlock", Size.Three_3);
         this.form.add(this.termNumberOfRepaymentDefaultBlock);
         this.termNumberOfRepaymentDefaultIContainer = new WebMarkupContainer("termNumberOfRepaymentDefaultIContainer");
         this.termNumberOfRepaymentDefaultBlock.add(this.termNumberOfRepaymentDefaultIContainer);
@@ -2903,7 +2905,7 @@ public class LoanCreatePage extends Page {
         this.termNumberOfRepaymentDefaultFeedback = new TextFeedbackPanel("termNumberOfRepaymentDefaultFeedback", this.termNumberOfRepaymentDefaultField);
         this.termNumberOfRepaymentDefaultIContainer.add(this.termNumberOfRepaymentDefaultFeedback);
 
-        this.termNumberOfRepaymentMaximumBlock = new WebMarkupBlock("termNumberOfRepaymentMaximumBlock", Size.Four_4);
+        this.termNumberOfRepaymentMaximumBlock = new WebMarkupBlock("termNumberOfRepaymentMaximumBlock", Size.Three_3);
         this.form.add(this.termNumberOfRepaymentMaximumBlock);
         this.termNumberOfRepaymentMaximumIContainer = new WebMarkupContainer("termNumberOfRepaymentMaximumIContainer");
         this.termNumberOfRepaymentMaximumBlock.add(this.termNumberOfRepaymentMaximumIContainer);
@@ -3094,7 +3096,7 @@ public class LoanCreatePage extends Page {
             this.termNominalInterestRateByLoanCycleIContainer.add(this.termNominalInterestRateByLoanCycleAddLink);
         }
 
-        this.termRepaidEveryBlock = new WebMarkupBlock("termRepaidEveryBlock", Size.Six_6);
+        this.termRepaidEveryBlock = new WebMarkupBlock("termRepaidEveryBlock", Size.One_1);
         this.form.add(this.termRepaidEveryBlock);
         this.termRepaidEveryIContainer = new WebMarkupContainer("termRepaidEveryIContainer");
         this.termRepaidEveryBlock.add(this.termRepaidEveryIContainer);
@@ -3105,7 +3107,7 @@ public class LoanCreatePage extends Page {
         this.termRepaidEveryFeedback = new TextFeedbackPanel("termRepaidEveryFeedback", this.termRepaidEveryField);
         this.termRepaidEveryIContainer.add(this.termRepaidEveryFeedback);
 
-        this.termRepaidTypeBlock = new WebMarkupBlock("termRepaidTypeBlock", Size.Six_6);
+        this.termRepaidTypeBlock = new WebMarkupBlock("termRepaidTypeBlock", Size.Two_2);
         this.termRepaidTypeProvider = new LockInTypeProvider(LockInType.Day, LockInType.Week, LockInType.Month);
         this.form.add(this.termRepaidTypeBlock);
         this.termRepaidTypeIContainer = new WebMarkupContainer("termRepaidTypeIContainer");
@@ -3293,16 +3295,18 @@ public class LoanCreatePage extends Page {
         this.termFloatingInterestDefaultIContainer.setVisible(!notLinked);
         this.termFloatingInterestMaximumIContainer.setVisible(!notLinked);
 
-        target.add(this.termNominalInterestRateMinimumBlock);
-        target.add(this.termNominalInterestRateDefaultBlock);
-        target.add(this.termNominalInterestRateMaximumBlock);
-        target.add(this.termNominalInterestRateTypeBlock);
-        target.add(this.termFloatingInterestRateBlock);
-        target.add(this.termFloatingInterestDifferentialBlock);
-        target.add(this.termFloatingInterestAllowedBlock);
-        target.add(this.termFloatingInterestMinimumBlock);
-        target.add(this.termFloatingInterestDefaultBlock);
-        target.add(this.termFloatingInterestMaximumBlock);
+        if (target != null) {
+            target.add(this.termNominalInterestRateMinimumBlock);
+            target.add(this.termNominalInterestRateDefaultBlock);
+            target.add(this.termNominalInterestRateMaximumBlock);
+            target.add(this.termNominalInterestRateTypeBlock);
+            target.add(this.termFloatingInterestRateBlock);
+            target.add(this.termFloatingInterestDifferentialBlock);
+            target.add(this.termFloatingInterestAllowedBlock);
+            target.add(this.termFloatingInterestMinimumBlock);
+            target.add(this.termFloatingInterestDefaultBlock);
+            target.add(this.termFloatingInterestMaximumBlock);
+        }
         return false;
     }
 

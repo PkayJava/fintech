@@ -3,19 +3,19 @@ package com.angkorteam.fintech.dto.enums;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 /**
- * Created by socheatkhauv on 7/12/17.
+ * Created by socheatkhauv on 7/15/17.
  */
-public enum ProductType {
+public enum LoanCycle {
 
-    Loan("1", "Loan"),
-    Share("4", "Share"), 
-    Saving("2", "Saving");
+    Principal("1", "Principal"), 
+    NumberOfRepayment("3", "Number of Repayment"), 
+    NominalInterestRate("2", "Nominal Interest Rate");
 
     private String literal;
 
     private String description;
 
-    ProductType(String literal, String description) {
+    LoanCycle(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
@@ -32,8 +32,8 @@ public enum ProductType {
         return new Option(this.name(), this.description);
     }
 
-    public static ProductType parseLiteral(String literal) {
-        for (ProductType value : ProductType.values()) {
+    public static LoanCycle parseLiteral(String literal) {
+        for (LoanCycle value : LoanCycle.values()) {
             if (value.getLiteral().equals(literal)) {
                 return value;
             }
@@ -42,11 +42,10 @@ public enum ProductType {
     }
 
     public static Option optionLiteral(String literal) {
-        ProductType value = parseLiteral(literal);
+        LoanCycle value = parseLiteral(literal);
         if (value == null) {
             return null;
         }
         return value.toOption();
     }
-
 }
