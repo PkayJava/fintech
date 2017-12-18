@@ -20,11 +20,13 @@ import com.angkorteam.fintech.dto.enums.DayInYear;
 import com.angkorteam.fintech.dto.enums.LoanCycle;
 import com.angkorteam.fintech.dto.enums.LockInType;
 import com.angkorteam.fintech.dto.enums.ProductType;
+import com.angkorteam.fintech.dto.enums.loan.AdvancePaymentsAdjustmentType;
 import com.angkorteam.fintech.dto.enums.loan.Amortization;
 import com.angkorteam.fintech.dto.enums.loan.ClosureInterestCalculationRule;
 import com.angkorteam.fintech.dto.enums.loan.DayInMonth;
 import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.enums.loan.InterestMethod;
+import com.angkorteam.fintech.dto.enums.loan.InterestRecalculationCompound;
 import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateType;
 import com.angkorteam.fintech.dto.enums.loan.RepaymentStrategy;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
@@ -976,25 +978,28 @@ public class LoanPreviewPage extends Page {
         this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue = (Boolean) loanObject.get("account_moves_out_of_npa_only_on_arrears_completion");
         this.settingAllowedToBeUsedForProvidingTopupLoansValue = (Boolean) loanObject.get("can_use_for_topup");
 
-        this.interestRecalculationRecalculateInterestValue = (Boolean) loanObject.get("interest_recalculation_enabled");
+        Long interest_recalculation_enabled = (Long) loanObject.get("interest_recalculation_enabled");
+        this.interestRecalculationRecalculateInterestValue = interest_recalculation_enabled == null ? null : interest_recalculation_enabled == 1;
 
         if (this.interestRecalculationRecalculateInterestValue != null && this.interestRecalculationRecalculateInterestValue) {
             this.interestRecalculationPreClosureInterestCalculationRuleValue = ClosureInterestCalculationRule.optionLiteral(String.valueOf(loanObject.get("pre_close_interest_calculation_strategy")));
             this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue = (Boolean) loanObject.get("arrears_based_on_original_schedule");
-
-            // interestRecalculationCompoundingTypeField
-            // interestRecalculationCompoundingOnField
-            // interestRecalculationCompoundingField
-            // interestRecalculationCompoundingDayField
-            // interestRecalculationCompoundingIntervalField
-            // interestRecalculationRecalculateTypeField
+            this.interestRecalculationAdvancePaymentsAdjustmentTypeValue = AdvancePaymentsAdjustmentType.optionLiteral(String.valueOf(loanObject.get("reschedule_strategy_enum")));
+            this.interestRecalculationCompoundingOnValue = InterestRecalculationCompound.optionLiteral(String.valueOf(loanObject.get("compound_type_enum")));
+            
+            
             // interestRecalculationRecalculateField
+            // interestRecalculationRecalculateTypeField
             // interestRecalculationRecalculateDayField
             // interestRecalculationRecalculateIntervalField
-            // interestRecalculationAdvancePaymentsAdjustmentTypeField
+            
+            // interestRecalculationCompoundingField
+            // interestRecalculationCompoundingTypeField
+            // interestRecalculationCompoundingDayField
+            // interestRecalculationCompoundingIntervalField
+            // 
             //
 
-            // query.addField("m_product_loan_recalculation_details.compound_type_enum");
 
             // query.addField("m_product_loan_recalculation_details.compounding_frequency_type_enum");
             // query.addField("m_product_loan_recalculation_details.compounding_frequency_interval");
@@ -1008,7 +1013,6 @@ public class LoanPreviewPage extends Page {
             // query.addField("m_product_loan_recalculation_details.rest_frequency_on_day");
             // query.addField("m_product_loan_recalculation_details.rest_frequency_weekday_enum");
 
-            // query.addField("m_product_loan_recalculation_details.reschedule_strategy_enum");
             // query.addField("m_product_loan_recalculation_details.is_compounding_to_be_posted_as_transaction");
             // query.addField("m_product_loan_recalculation_details.allow_compounding_on_eod");
         }
