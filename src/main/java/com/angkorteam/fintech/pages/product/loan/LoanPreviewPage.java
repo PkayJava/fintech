@@ -869,6 +869,24 @@ public class LoanPreviewPage extends Page {
         // re-calculation
         query.addField("m_product_loan.interest_recalculation_enabled");
 
+        query.addField("m_product_loan_recalculation_details.compound_type_enum");
+        query.addField("m_product_loan_recalculation_details.reschedule_strategy_enum");
+        query.addField("m_product_loan_recalculation_details.rest_frequency_type_enum");
+        query.addField("m_product_loan_recalculation_details.rest_frequency_interval");
+        query.addField("m_product_loan_recalculation_details.arrears_based_on_original_schedule");
+        query.addField("m_product_loan_recalculation_details.pre_close_interest_calculation_strategy");
+        query.addField("m_product_loan_recalculation_details.compounding_frequency_type_enum");
+        query.addField("m_product_loan_recalculation_details.compounding_frequency_interval");
+        query.addField("m_product_loan_recalculation_details.rest_frequency_nth_day_enum");
+        query.addField("m_product_loan_recalculation_details.rest_frequency_on_day");
+        query.addField("m_product_loan_recalculation_details.rest_frequency_weekday_enum");
+        query.addField("m_product_loan_recalculation_details.compounding_frequency_nth_day_enum");
+        query.addField("m_product_loan_recalculation_details.compounding_frequency_on_day");
+        query.addField("m_product_loan_recalculation_details.compound_type_enum");
+        query.addField("m_product_loan_recalculation_details.compounding_frequency_weekday_enum");
+        query.addField("m_product_loan_recalculation_details.is_compounding_to_be_posted_as_transaction");
+        query.addField("m_product_loan_recalculation_details.allow_compounding_on_eod");
+
         Map<String, Object> loanObject = jdbcTemplate.queryForMap(query.toSQL());
 
         this.detailProductNameValue = (String) loanObject.get("product");
