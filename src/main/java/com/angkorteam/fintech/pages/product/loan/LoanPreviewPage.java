@@ -21,6 +21,7 @@ import com.angkorteam.fintech.dto.enums.LoanCycle;
 import com.angkorteam.fintech.dto.enums.LockInType;
 import com.angkorteam.fintech.dto.enums.ProductType;
 import com.angkorteam.fintech.dto.enums.loan.Amortization;
+import com.angkorteam.fintech.dto.enums.loan.ClosureInterestCalculationRule;
 import com.angkorteam.fintech.dto.enums.loan.DayInMonth;
 import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.enums.loan.InterestMethod;
@@ -869,7 +870,6 @@ public class LoanPreviewPage extends Page {
         // re-calculation
         query.addField("m_product_loan.interest_recalculation_enabled");
 
-        query.addField("m_product_loan_recalculation_details.compound_type_enum");
         query.addField("m_product_loan_recalculation_details.reschedule_strategy_enum");
         query.addField("m_product_loan_recalculation_details.rest_frequency_type_enum");
         query.addField("m_product_loan_recalculation_details.rest_frequency_interval");
@@ -916,11 +916,9 @@ public class LoanPreviewPage extends Page {
         this.termRepaidEveryValue = (Long) loanObject.get("repay_every");
         this.termRepaidTypeValue = LockInType.optionLiteral(String.valueOf(loanObject.get("repayment_period_frequency_enum")));
 
-        Boolean linkedToFloatingInterestRate = (Boolean) loanObject.get("is_linked_to_floating_interest_rates");
+        this.termLinkedToFloatingInterestRatesValue = (Boolean) loanObject.get("is_linked_to_floating_interest_rates");
 
-        this.termLinkedToFloatingInterestRatesValue = linkedToFloatingInterestRate;
-
-        if (linkedToFloatingInterestRate) {
+        if (this.termLinkedToFloatingInterestRatesValue != null && this.termLinkedToFloatingInterestRatesValue) {
             this.termFloatingInterestRateValue = (String) loanObject.get("floating_rate");
             this.termFloatingInterestDifferentialValue = (Double) loanObject.get("interest_rate_differential");
             this.termFloatingInterestAllowedValue = (Boolean) loanObject.get("is_floating_interest_rate_calculation_allowed");
@@ -948,8 +946,6 @@ public class LoanPreviewPage extends Page {
                 // termNominalInterestRateByLoanCycleValue
             }
         }
-
-        // RepaymentStrategy
 
         this.settingAmortizationValue = Amortization.optionLiteral(String.valueOf(loanObject.get("amortization_method_enum")));
         this.settingInterestMethodValue = InterestMethod.optionLiteral(String.valueOf(loanObject.get("interest_method_enum")));
@@ -981,6 +977,41 @@ public class LoanPreviewPage extends Page {
         this.settingAllowedToBeUsedForProvidingTopupLoansValue = (Boolean) loanObject.get("can_use_for_topup");
 
         this.interestRecalculationRecalculateInterestValue = (Boolean) loanObject.get("interest_recalculation_enabled");
+
+        if (this.interestRecalculationRecalculateInterestValue != null && this.interestRecalculationRecalculateInterestValue) {
+            this.interestRecalculationPreClosureInterestCalculationRuleValue = ClosureInterestCalculationRule.optionLiteral(String.valueOf(loanObject.get("pre_close_interest_calculation_strategy")));
+            this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue = (Boolean) loanObject.get("arrears_based_on_original_schedule");
+
+            // interestRecalculationCompoundingTypeField
+            // interestRecalculationCompoundingOnField
+            // interestRecalculationCompoundingField
+            // interestRecalculationCompoundingDayField
+            // interestRecalculationCompoundingIntervalField
+            // interestRecalculationRecalculateTypeField
+            // interestRecalculationRecalculateField
+            // interestRecalculationRecalculateDayField
+            // interestRecalculationRecalculateIntervalField
+            // interestRecalculationAdvancePaymentsAdjustmentTypeField
+            //
+
+            // query.addField("m_product_loan_recalculation_details.compound_type_enum");
+
+            // query.addField("m_product_loan_recalculation_details.compounding_frequency_type_enum");
+            // query.addField("m_product_loan_recalculation_details.compounding_frequency_interval");
+            // query.addField("m_product_loan_recalculation_details.compounding_frequency_nth_day_enum");
+            // query.addField("m_product_loan_recalculation_details.compounding_frequency_on_day");
+            // query.addField("m_product_loan_recalculation_details.compounding_frequency_weekday_enum");
+
+            // query.addField("m_product_loan_recalculation_details.rest_frequency_type_enum");
+            // query.addField("m_product_loan_recalculation_details.rest_frequency_interval");
+            // query.addField("m_product_loan_recalculation_details.rest_frequency_nth_day_enum");
+            // query.addField("m_product_loan_recalculation_details.rest_frequency_on_day");
+            // query.addField("m_product_loan_recalculation_details.rest_frequency_weekday_enum");
+
+            // query.addField("m_product_loan_recalculation_details.reschedule_strategy_enum");
+            // query.addField("m_product_loan_recalculation_details.is_compounding_to_be_posted_as_transaction");
+            // query.addField("m_product_loan_recalculation_details.allow_compounding_on_eod");
+        }
 
         List<Map<String, Object>> configurablesObject = jdbcTemplate.queryForList("select * from m_product_loan_configurable_attributes where loan_product_id = ?", this.loanId);
         Map<String, Object> guaranteeObject = jdbcTemplate.queryForMap("select * from m_product_loan_guarantee_details where loan_product_id = ?", this.loanId);
