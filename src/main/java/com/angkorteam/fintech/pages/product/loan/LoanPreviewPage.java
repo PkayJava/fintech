@@ -923,6 +923,8 @@ public class LoanPreviewPage extends Page {
         query.addField("m_product_loan_guarantee_details.minimum_guarantee_from_own_funds");
 
         query.addField("m_product_loan.allow_multiple_disbursals");
+        query.addField("m_product_loan.max_disbursals");
+        query.addField("m_product_loan.max_outstanding_loan_balance");
 
         query.addField("m_product_loan.accounting_type");
 
@@ -1094,14 +1096,16 @@ public class LoanPreviewPage extends Page {
         Map<String, Object> configurablesObject = jdbcTemplate.queryForMap(configurablesQuery.toSQL());
 
         this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue = configurablesObject != null;
-        this.configurableAmortizationValue = (Boolean) configurablesObject.get("amortization_method_enum");
-        this.configurableInterestMethodValue = (Boolean) configurablesObject.get("interest_method_enum");
-        this.configurableRepaymentStrategyValue = (Boolean) configurablesObject.get("loan_transaction_strategy_id");
-        this.configurableInterestCalculationPeriodValue = (Boolean) configurablesObject.get("interest_calculated_in_period_enum");
-        this.configurableArrearsToleranceValue = (Boolean) configurablesObject.get("grace_on_arrears_ageing");
-        this.configurableRepaidEveryValue = (Boolean) configurablesObject.get("repay_every");
-        this.configurableMoratoriumValue = (Boolean) configurablesObject.get("moratorium");
-        this.configurableOverdueBeforeMovingValue = (Boolean) configurablesObject.get("arrearstolerance_amount");
+        if (this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue) {
+            this.configurableAmortizationValue = (Boolean) configurablesObject.get("amortization_method_enum");
+            this.configurableInterestMethodValue = (Boolean) configurablesObject.get("interest_method_enum");
+            this.configurableRepaymentStrategyValue = (Boolean) configurablesObject.get("loan_transaction_strategy_id");
+            this.configurableInterestCalculationPeriodValue = (Boolean) configurablesObject.get("interest_calculated_in_period_enum");
+            this.configurableArrearsToleranceValue = (Boolean) configurablesObject.get("grace_on_arrears_ageing");
+            this.configurableRepaidEveryValue = (Boolean) configurablesObject.get("repay_every");
+            this.configurableMoratoriumValue = (Boolean) configurablesObject.get("moratorium");
+            this.configurableOverdueBeforeMovingValue = (Boolean) configurablesObject.get("arrearstolerance_amount");
+        }
 
         SelectQuery chargeQuery = new SelectQuery("m_charge");
         chargeQuery.addJoin("inner join m_savings_product_charge on m_product_loan_charge.charge_id = m_charge.id");
@@ -1164,25 +1168,45 @@ public class LoanPreviewPage extends Page {
                 }
                 if (financialAccountType != null && mapping.get("gl_account_id") != null && mapping.get("charge_id") == null && mapping.get("payment_type") == null) {
                     if (financialAccountType == FinancialAccountType.SavingReference) {
-                        // this.cashSavingReferenceValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        // this.cashSavingReferenceValue = jdbcTemplate.queryForObject("select id, name
+                        // text from acc_gl_account where id = ?", Option.MAPPER,
+                        // mapping.get("gl_account_id"));
                     } else if (financialAccountType == FinancialAccountType.OverdraftPortfolio) {
-                        // this.cashOverdraftPortfolioValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        // this.cashOverdraftPortfolioValue = jdbcTemplate.queryForObject("select id,
+                        // name text from acc_gl_account where id = ?", Option.MAPPER,
+                        // mapping.get("gl_account_id"));
                     } else if (financialAccountType == FinancialAccountType.SavingControl) {
-                        // this.cashSavingControlValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        // this.cashSavingControlValue = jdbcTemplate.queryForObject("select id, name
+                        // text from acc_gl_account where id = ?", Option.MAPPER,
+                        // mapping.get("gl_account_id"));
                     } else if (financialAccountType == FinancialAccountType.TransferInSuspense) {
-                        // this.cashSavingTransferInSuspenseValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        // this.cashSavingTransferInSuspenseValue = jdbcTemplate.queryForObject("select
+                        // id, name text from acc_gl_account where id = ?", Option.MAPPER,
+                        // mapping.get("gl_account_id"));
                     } else if (financialAccountType == FinancialAccountType.EscheatLiability) {
-                        // this.cashEscheatLiabilityValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        // this.cashEscheatLiabilityValue = jdbcTemplate.queryForObject("select id, name
+                        // text from acc_gl_account where id = ?", Option.MAPPER,
+                        // mapping.get("gl_account_id"));
                     } else if (financialAccountType == FinancialAccountType.InterestOnSaving) {
-                        // this.cashInterestOnSavingValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        // this.cashInterestOnSavingValue = jdbcTemplate.queryForObject("select id, name
+                        // text from acc_gl_account where id = ?", Option.MAPPER,
+                        // mapping.get("gl_account_id"));
                     } else if (financialAccountType == FinancialAccountType.WriteOff) {
-                        // this.cashWriteOffValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        // this.cashWriteOffValue = jdbcTemplate.queryForObject("select id, name text
+                        // from acc_gl_account where id = ?", Option.MAPPER,
+                        // mapping.get("gl_account_id"));
                     } else if (financialAccountType == FinancialAccountType.IncomeFee) {
-                        // this.cashIncomeFromFeeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        // this.cashIncomeFromFeeValue = jdbcTemplate.queryForObject("select id, name
+                        // text from acc_gl_account where id = ?", Option.MAPPER,
+                        // mapping.get("gl_account_id"));
                     } else if (financialAccountType == FinancialAccountType.IncomePenalty) {
-                        // this.cashIncomeFromPenaltyValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        // this.cashIncomeFromPenaltyValue = jdbcTemplate.queryForObject("select id,
+                        // name text from acc_gl_account where id = ?", Option.MAPPER,
+                        // mapping.get("gl_account_id"));
                     } else if (financialAccountType == FinancialAccountType.OverdraftInterestIncome) {
-                        // this.cashOverdraftInterestIncomeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        // this.cashOverdraftInterestIncomeValue = jdbcTemplate.queryForObject("select
+                        // id, name text from acc_gl_account where id = ?", Option.MAPPER,
+                        // mapping.get("gl_account_id"));
                     }
                 }
             }
