@@ -72,6 +72,7 @@ import com.angkorteam.fintech.provider.loan.FrequencyTypeProvider;
 import com.angkorteam.fintech.provider.loan.InterestCalculationPeriodProvider;
 import com.angkorteam.fintech.provider.loan.InterestMethodProvider;
 import com.angkorteam.fintech.provider.loan.InterestRecalculationCompoundProvider;
+import com.angkorteam.fintech.provider.loan.OnDayProvider;
 import com.angkorteam.fintech.provider.loan.RepaymentStrategyProvider;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
@@ -520,11 +521,18 @@ public class LoanCreatePage extends Page {
     protected TextFeedbackPanel interestRecalculationCompoundingTypeFeedback;
 
     protected WebMarkupBlock interestRecalculationCompoundingDayBlock;
+
     protected WebMarkupContainer interestRecalculationCompoundingDayIContainer;
     protected FrequencyDayProvider interestRecalculationCompoundingDayProvider;
     protected Option interestRecalculationCompoundingDayValue;
     protected Select2SingleChoice<Option> interestRecalculationCompoundingDayField;
     protected TextFeedbackPanel interestRecalculationCompoundingDayFeedback;
+
+    protected WebMarkupContainer interestRecalculationCompoundingOnDayIContainer;
+    protected OnDayProvider interestRecalculationCompoundingOnDayProvider;
+    protected Option interestRecalculationCompoundingOnDayValue;
+    protected Select2SingleChoice<Option> interestRecalculationCompoundingOnDayField;
+    protected TextFeedbackPanel interestRecalculationCompoundingOnDayFeedback;
 
     protected WebMarkupBlock interestRecalculationCompoundingIntervalBlock;
     protected WebMarkupContainer interestRecalculationCompoundingIntervalIContainer;
@@ -547,11 +555,18 @@ public class LoanCreatePage extends Page {
     protected TextFeedbackPanel interestRecalculationRecalculateTypeFeedback;
 
     protected WebMarkupBlock interestRecalculationRecalculateDayBlock;
+
     protected WebMarkupContainer interestRecalculationRecalculateDayIContainer;
     protected FrequencyDayProvider interestRecalculationRecalculateDayProvider;
     protected Option interestRecalculationRecalculateDayValue;
     protected Select2SingleChoice<Option> interestRecalculationRecalculateDayField;
     protected TextFeedbackPanel interestRecalculationRecalculateDayFeedback;
+
+    protected WebMarkupContainer interestRecalculationRecalculateOnDayIContainer;
+    protected OnDayProvider interestRecalculationRecalculateOnDayProvider;
+    protected Option interestRecalculationRecalculateOnDayValue;
+    protected Select2SingleChoice<Option> interestRecalculationRecalculateOnDayField;
+    protected TextFeedbackPanel interestRecalculationRecalculateOnDayFeedback;
 
     protected WebMarkupBlock interestRecalculationRecalculateIntervalBlock;
     protected WebMarkupContainer interestRecalculationRecalculateIntervalIContainer;
@@ -2294,7 +2309,7 @@ public class LoanCreatePage extends Page {
         this.interestRecalculationCompoundingTypeProvider = new FrequencyTypeProvider();
         this.interestRecalculationCompoundingTypeField = new Select2SingleChoice<>("interestRecalculationCompoundingTypeField", new PropertyModel<>(this, "interestRecalculationCompoundingTypeValue"), this.interestRecalculationCompoundingTypeProvider);
         this.interestRecalculationCompoundingTypeField.setLabel(Model.of("Frequency type for compounding"));
-        this.interestRecalculationCompoundingTypeField.add(new OnChangeAjaxBehavior());
+        this.interestRecalculationCompoundingTypeField.add(new OnChangeAjaxBehavior(this::interestRecalculationCompoundingFieldUpdate));
         this.interestRecalculationCompoundingTypeIContainer.add(this.interestRecalculationCompoundingTypeField);
         this.interestRecalculationCompoundingTypeFeedback = new TextFeedbackPanel("interestRecalculationCompoundingTypeFeedback", this.interestRecalculationCompoundingTypeField);
         this.interestRecalculationCompoundingTypeIContainer.add(this.interestRecalculationCompoundingTypeFeedback);
@@ -2310,6 +2325,16 @@ public class LoanCreatePage extends Page {
         this.interestRecalculationCompoundingDayIContainer.add(this.interestRecalculationCompoundingDayField);
         this.interestRecalculationCompoundingDayFeedback = new TextFeedbackPanel("interestRecalculationCompoundingDayFeedback", this.interestRecalculationCompoundingDayField);
         this.interestRecalculationCompoundingDayIContainer.add(this.interestRecalculationCompoundingDayFeedback);
+
+        this.interestRecalculationCompoundingOnDayIContainer = new WebMarkupContainer("interestRecalculationCompoundingOnDayIContainer");
+        this.interestRecalculationCompoundingDayBlock.add(this.interestRecalculationCompoundingOnDayIContainer);
+        this.interestRecalculationCompoundingOnDayProvider = new OnDayProvider();
+        this.interestRecalculationCompoundingOnDayField = new Select2SingleChoice<>("interestRecalculationCompoundingOnDayField", new PropertyModel<>(this, "interestRecalculationCompoundingOnDayValue"), this.interestRecalculationCompoundingOnDayProvider);
+        this.interestRecalculationCompoundingOnDayField.setLabel(Model.of("Frequency day for compounding"));
+        this.interestRecalculationCompoundingOnDayField.add(new OnChangeAjaxBehavior());
+        this.interestRecalculationCompoundingOnDayIContainer.add(this.interestRecalculationCompoundingOnDayField);
+        this.interestRecalculationCompoundingOnDayFeedback = new TextFeedbackPanel("interestRecalculationCompoundingOnDayFeedback", this.interestRecalculationCompoundingOnDayField);
+        this.interestRecalculationCompoundingOnDayIContainer.add(this.interestRecalculationCompoundingOnDayFeedback);
 
         this.interestRecalculationCompoundingIntervalBlock = new WebMarkupBlock("interestRecalculationCompoundingIntervalBlock", Size.Four_4);
         this.form.add(this.interestRecalculationCompoundingIntervalBlock);
@@ -2341,7 +2366,7 @@ public class LoanCreatePage extends Page {
         this.interestRecalculationRecalculateTypeProvider = new FrequencyTypeProvider();
         this.interestRecalculationRecalculateTypeField = new Select2SingleChoice<>("interestRecalculationRecalculateTypeField", new PropertyModel<>(this, "interestRecalculationRecalculateTypeValue"), this.interestRecalculationRecalculateTypeProvider);
         this.interestRecalculationRecalculateTypeField.setLabel(Model.of("Frequency type for recalculate"));
-        this.interestRecalculationRecalculateTypeField.add(new OnChangeAjaxBehavior());
+        this.interestRecalculationRecalculateTypeField.add(new OnChangeAjaxBehavior(this::interestRecalculationRecalculateFieldUpdate));
         this.interestRecalculationRecalculateTypeIContainer.add(this.interestRecalculationRecalculateTypeField);
         this.interestRecalculationRecalculateTypeFeedback = new TextFeedbackPanel("interestRecalculationRecalculateTypeFeedback", this.interestRecalculationRecalculateTypeField);
         this.interestRecalculationRecalculateTypeIContainer.add(this.interestRecalculationRecalculateTypeFeedback);
@@ -2357,6 +2382,16 @@ public class LoanCreatePage extends Page {
         this.interestRecalculationRecalculateDayIContainer.add(this.interestRecalculationRecalculateDayField);
         this.interestRecalculationRecalculateDayFeedback = new TextFeedbackPanel("interestRecalculationRecalculateDayFeedback", this.interestRecalculationRecalculateDayField);
         this.interestRecalculationRecalculateDayIContainer.add(this.interestRecalculationRecalculateDayFeedback);
+
+        this.interestRecalculationRecalculateOnDayIContainer = new WebMarkupContainer("interestRecalculationRecalculateOnDayIContainer");
+        this.interestRecalculationRecalculateDayBlock.add(this.interestRecalculationRecalculateOnDayIContainer);
+        this.interestRecalculationRecalculateOnDayProvider = new OnDayProvider();
+        this.interestRecalculationRecalculateOnDayField = new Select2SingleChoice<>("interestRecalculationRecalculateOnDayField", new PropertyModel<>(this, "interestRecalculationRecalculateOnDayValue"), this.interestRecalculationRecalculateOnDayProvider);
+        this.interestRecalculationRecalculateOnDayField.setLabel(Model.of("Frequency day for compounding"));
+        this.interestRecalculationRecalculateOnDayField.add(new OnChangeAjaxBehavior());
+        this.interestRecalculationRecalculateOnDayIContainer.add(this.interestRecalculationRecalculateOnDayField);
+        this.interestRecalculationRecalculateOnDayFeedback = new TextFeedbackPanel("interestRecalculationRecalculateOnDayFeedback", this.interestRecalculationRecalculateOnDayField);
+        this.interestRecalculationRecalculateOnDayIContainer.add(this.interestRecalculationRecalculateOnDayFeedback);
 
         this.interestRecalculationRecalculateIntervalBlock = new WebMarkupBlock("interestRecalculationRecalculateIntervalBlock", Size.Four_4);
         this.form.add(this.interestRecalculationRecalculateIntervalBlock);
@@ -2385,6 +2420,7 @@ public class LoanCreatePage extends Page {
         this.interestRecalculationRecalculateTypeIContainer.setVisible(false);
         this.interestRecalculationRecalculateDayIContainer.setVisible(false);
         this.interestRecalculationRecalculateIntervalIContainer.setVisible(false);
+        this.interestRecalculationRecalculateOnDayIContainer.setVisible(false);
 
         if (this.interestRecalculationRecalculateValue != null) {
             Frequency frequency = Frequency.valueOf(this.interestRecalculationRecalculateValue.getId());
@@ -2396,6 +2432,12 @@ public class LoanCreatePage extends Page {
             }
             if (frequency == Frequency.Monthly) {
                 this.interestRecalculationRecalculateTypeIContainer.setVisible(true);
+
+                if (this.interestRecalculationRecalculateTypeValue != null) {
+                    FrequencyType type = FrequencyType.valueOf(this.interestRecalculationRecalculateTypeValue.getId());
+                    this.interestRecalculationRecalculateDayIContainer.setVisible(type != null && type != FrequencyType.OnDay);
+                    this.interestRecalculationRecalculateOnDayIContainer.setVisible(type != null && type == FrequencyType.OnDay);
+                }
             }
         }
         if (target != null) {
@@ -2407,9 +2449,9 @@ public class LoanCreatePage extends Page {
     }
 
     protected boolean interestRecalculationCompoundingFieldUpdate(AjaxRequestTarget target) {
-
         this.interestRecalculationCompoundingTypeIContainer.setVisible(false);
         this.interestRecalculationCompoundingDayIContainer.setVisible(false);
+        this.interestRecalculationCompoundingOnDayIContainer.setVisible(false);
         this.interestRecalculationCompoundingIntervalIContainer.setVisible(false);
 
         if (this.interestRecalculationCompoundingOnValue != null && InterestRecalculationCompound.valueOf(this.interestRecalculationCompoundingOnValue.getId()) != InterestRecalculationCompound.None) {
@@ -2425,6 +2467,12 @@ public class LoanCreatePage extends Page {
                 }
                 if (frequency == Frequency.Monthly) {
                     this.interestRecalculationCompoundingTypeIContainer.setVisible(true);
+
+                    if (this.interestRecalculationCompoundingTypeValue != null) {
+                        FrequencyType type = FrequencyType.valueOf(this.interestRecalculationCompoundingTypeValue.getId());
+                        this.interestRecalculationCompoundingDayIContainer.setVisible(type != null && type != FrequencyType.OnDay);
+                        this.interestRecalculationCompoundingOnDayIContainer.setVisible(type != null && type == FrequencyType.OnDay);
+                    }
                 }
             }
         } else {
@@ -3574,6 +3622,7 @@ public class LoanCreatePage extends Page {
                 boolean interestRecalculationEnabled = this.interestRecalculationRecalculateInterestValue == null ? false : this.interestRecalculationRecalculateInterestValue;
                 builder.withInterestRecalculationEnabled(interestRecalculationEnabled);
                 if (interestRecalculationEnabled) {
+
                     if (this.interestRecalculationPreClosureInterestCalculationRuleValue != null) {
                         builder.withPreClosureInterestCalculationStrategy(ClosureInterestCalculationRule.valueOf(this.interestRecalculationPreClosureInterestCalculationRuleValue.getId()));
                     }
@@ -3599,10 +3648,20 @@ public class LoanCreatePage extends Page {
                                 } else if (compoundingValue == Frequency.Monthly) {
                                     builder.withRecalculationCompoundingFrequencyInterval(this.interestRecalculationCompoundingIntervalValue);
                                     if (this.interestRecalculationCompoundingTypeValue != null) {
-                                        builder.withRecalculationCompoundingFrequencyNthDayType(FrequencyType.valueOf(this.interestRecalculationCompoundingTypeValue.getId()));
-                                    }
-                                    if (this.interestRecalculationCompoundingDayValue != null) {
-                                        builder.withRecalculationCompoundingFrequencyDayOfWeekType(FrequencyDay.valueOf(this.interestRecalculationCompoundingDayValue.getId()));
+                                        FrequencyType type = FrequencyType.valueOf(this.interestRecalculationCompoundingTypeValue.getId());
+                                        if (type != null) {
+                                            builder.withRecalculationCompoundingFrequencyNthDayType(type);
+                                            if (type == FrequencyType.OnDay) {
+                                                if (this.interestRecalculationCompoundingOnDayValue != null) {
+                                                    builder.withRecalculationCompoundingFrequencyOnDayType(this.interestRecalculationCompoundingOnDayValue.getId());
+                                                }
+                                            } else {
+                                                if (this.interestRecalculationCompoundingDayValue != null) {
+                                                    FrequencyDay day = FrequencyDay.valueOf(this.interestRecalculationCompoundingDayValue.getId());
+                                                    builder.withRecalculationCompoundingFrequencyDayOfWeekType(day);
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -3619,13 +3678,30 @@ public class LoanCreatePage extends Page {
                                 }
                                 builder.withRecalculationRestFrequencyInterval(this.interestRecalculationRecalculateIntervalValue);
                             } else if (recalculateValue == Frequency.Monthly) {
+                                builder.withRecalculationRestFrequencyInterval(this.interestRecalculationRecalculateIntervalValue);
+
+                                if (this.interestRecalculationRecalculateTypeValue != null) {
+                                    FrequencyType type = FrequencyType.valueOf(this.interestRecalculationRecalculateTypeValue.getId());
+                                    if (type != null) {
+                                        builder.withRecalculationRestFrequencyNthDayType(type);
+                                        if (type == FrequencyType.OnDay) {
+                                            if (this.interestRecalculationRecalculateOnDayValue != null) {
+                                                builder.withRecalculationRestFrequencyOnDayType(this.interestRecalculationRecalculateOnDayValue.getId());
+                                            }
+                                        } else {
+                                            if (this.interestRecalculationRecalculateDayValue != null) {
+                                                FrequencyDay day = FrequencyDay.valueOf(this.interestRecalculationRecalculateDayValue.getId());
+                                                builder.withRecalculationRestFrequencyDayOfWeekType(day);
+                                            }
+                                        }
+                                    }
+                                }
                                 if (this.interestRecalculationRecalculateTypeValue != null) {
                                     builder.withRecalculationRestFrequencyNthDayType(FrequencyType.valueOf(this.interestRecalculationRecalculateTypeValue.getId()));
                                 }
                                 if (this.interestRecalculationRecalculateDayValue != null) {
                                     builder.withRecalculationRestFrequencyDayOfWeekType(FrequencyDay.valueOf(this.interestRecalculationRecalculateDayValue.getId()));
                                 }
-                                builder.withRecalculationRestFrequencyInterval(this.interestRecalculationRecalculateIntervalValue);
                             }
                         }
                         builder.withArrearsBasedOnOriginalSchedule(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue == null ? false : this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue);

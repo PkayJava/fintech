@@ -24,6 +24,9 @@ import com.angkorteam.fintech.dto.enums.loan.AdvancePaymentsAdjustmentType;
 import com.angkorteam.fintech.dto.enums.loan.Amortization;
 import com.angkorteam.fintech.dto.enums.loan.ClosureInterestCalculationRule;
 import com.angkorteam.fintech.dto.enums.loan.DayInMonth;
+import com.angkorteam.fintech.dto.enums.loan.Frequency;
+import com.angkorteam.fintech.dto.enums.loan.FrequencyDay;
+import com.angkorteam.fintech.dto.enums.loan.FrequencyType;
 import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.enums.loan.InterestMethod;
 import com.angkorteam.fintech.dto.enums.loan.InterestRecalculationCompound;
@@ -387,9 +390,16 @@ public class LoanPreviewPage extends Page {
     protected ReadOnlyView interestRecalculationCompoundingTypeView;
 
     protected WebMarkupBlock interestRecalculationCompoundingDayBlock;
+
     protected WebMarkupContainer interestRecalculationCompoundingDayVContainer;
     protected Option interestRecalculationCompoundingDayValue;
     protected ReadOnlyView interestRecalculationCompoundingDayView;
+    protected boolean interestRecalculationCompoundingDayVisible;
+
+    protected WebMarkupContainer interestRecalculationCompoundingOnDayVContainer;
+    protected Long interestRecalculationCompoundingOnDayValue;
+    protected ReadOnlyView interestRecalculationCompoundingOnDayView;
+    protected boolean interestRecalculationCompoundingOnDayVisible;
 
     protected WebMarkupBlock interestRecalculationCompoundingIntervalBlock;
     protected WebMarkupContainer interestRecalculationCompoundingIntervalVContainer;
@@ -407,9 +417,16 @@ public class LoanPreviewPage extends Page {
     protected ReadOnlyView interestRecalculationRecalculateTypeView;
 
     protected WebMarkupBlock interestRecalculationRecalculateDayBlock;
+
     protected WebMarkupContainer interestRecalculationRecalculateDayVContainer;
     protected Option interestRecalculationRecalculateDayValue;
     protected ReadOnlyView interestRecalculationRecalculateDayView;
+    protected boolean interestRecalculationRecalculateDayVisible;
+
+    protected WebMarkupContainer interestRecalculationRecalculateOnDayVContainer;
+    protected Long interestRecalculationRecalculateOnDayValue;
+    protected ReadOnlyView interestRecalculationRecalculateOnDayView;
+    protected boolean interestRecalculationRecalculateOnDayVisible;
 
     protected WebMarkupBlock interestRecalculationRecalculateIntervalBlock;
     protected WebMarkupContainer interestRecalculationRecalculateIntervalVContainer;
@@ -788,12 +805,17 @@ public class LoanPreviewPage extends Page {
 
     @Override
     protected void configureMetaData() {
+        this.interestRecalculationRecalculateDayVContainer.setVisible(this.interestRecalculationRecalculateDayVisible);
+        this.interestRecalculationRecalculateOnDayVContainer.setVisible(this.interestRecalculationRecalculateOnDayVisible);
+        this.interestRecalculationCompoundingDayVContainer.setVisible(this.interestRecalculationCompoundingDayVisible);
+        this.interestRecalculationCompoundingOnDayVContainer.setVisible(this.interestRecalculationCompoundingOnDayVisible);
     }
 
     @Override
     protected void initData() {
         this.loanId = getPageParameters().get("loanId").toString();
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+
         SelectQuery query = new SelectQuery("m_product_loan");
         query.addJoin("left join m_fund on m_product_loan.fund_id = m_fund.id");
         query.addJoin("left join m_organisation_currency on m_product_loan.currency_code = m_organisation_currency.code");
@@ -801,6 +823,7 @@ public class LoanPreviewPage extends Page {
         query.addJoin("left join m_floating_rates on m_product_loan_floating_rates.floating_rates_id = m_floating_rates.id");
         query.addJoin("left join m_product_loan_variable_installment_config on m_product_loan_variable_installment_config.loan_product_id = m_product_loan.id");
         query.addJoin("left join m_product_loan_recalculation_details on m_product_loan.id = m_product_loan_recalculation_details.product_id");
+        query.addJoin("left join m_product_loan_guarantee_details on m_product_loan.id = m_product_loan_guarantee_details.loan_product_id");
 
         query.addWhere("m_product_loan.id = " + this.loanId);
 
@@ -888,6 +911,11 @@ public class LoanPreviewPage extends Page {
         query.addField("m_product_loan_recalculation_details.compounding_frequency_weekday_enum");
         query.addField("m_product_loan_recalculation_details.is_compounding_to_be_posted_as_transaction");
         query.addField("m_product_loan_recalculation_details.allow_compounding_on_eod");
+        
+        query.addField("m_product_loan.hold_guarantee_funds");
+        query.addField("m_product_loan_guarantee_details.mandatory_guarantee");
+        query.addField("m_product_loan_guarantee_details.minimum_guarantee_from_guarantor_funds");
+        query.addField("m_product_loan_guarantee_details.minimum_guarantee_from_own_funds");
 
         Map<String, Object> loanObject = jdbcTemplate.queryForMap(query.toSQL());
 
@@ -986,39 +1014,41 @@ public class LoanPreviewPage extends Page {
             this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue = (Boolean) loanObject.get("arrears_based_on_original_schedule");
             this.interestRecalculationAdvancePaymentsAdjustmentTypeValue = AdvancePaymentsAdjustmentType.optionLiteral(String.valueOf(loanObject.get("reschedule_strategy_enum")));
             this.interestRecalculationCompoundingOnValue = InterestRecalculationCompound.optionLiteral(String.valueOf(loanObject.get("compound_type_enum")));
-            
-            
-            // interestRecalculationRecalculateField
-            // interestRecalculationRecalculateTypeField
-            // interestRecalculationRecalculateDayField
-            // interestRecalculationRecalculateIntervalField
-            
-            // interestRecalculationCompoundingField
-            // interestRecalculationCompoundingTypeField
-            // interestRecalculationCompoundingDayField
-            // interestRecalculationCompoundingIntervalField
-            // 
-            //
 
+            FrequencyType compounding_frequency_nth_day_enum = FrequencyType.parseLiteral(String.valueOf(loanObject.get("compounding_frequency_nth_day_enum")));
+            if (compounding_frequency_nth_day_enum != null) {
+                this.interestRecalculationCompoundingTypeValue = compounding_frequency_nth_day_enum.toOption();
+                if (compounding_frequency_nth_day_enum == FrequencyType.OnDay) {
+                    this.interestRecalculationCompoundingOnDayValue = (Long) loanObject.get("compounding_frequency_on_day");
+                    this.interestRecalculationCompoundingOnDayVisible = true;
+                } else {
+                    this.interestRecalculationCompoundingDayValue = FrequencyDay.optionLiteral(String.valueOf(loanObject.get("compounding_frequency_weekday_enum")));
+                    this.interestRecalculationCompoundingDayVisible = true;
+                }
+            }
+            this.interestRecalculationCompoundingValue = Frequency.optionLiteral(String.valueOf(loanObject.get("compounding_frequency_type_enum")));
+            this.interestRecalculationCompoundingIntervalValue = (Long) loanObject.get("compounding_frequency_interval");
 
-            // query.addField("m_product_loan_recalculation_details.compounding_frequency_type_enum");
-            // query.addField("m_product_loan_recalculation_details.compounding_frequency_interval");
-            // query.addField("m_product_loan_recalculation_details.compounding_frequency_nth_day_enum");
-            // query.addField("m_product_loan_recalculation_details.compounding_frequency_on_day");
-            // query.addField("m_product_loan_recalculation_details.compounding_frequency_weekday_enum");
-
-            // query.addField("m_product_loan_recalculation_details.rest_frequency_type_enum");
-            // query.addField("m_product_loan_recalculation_details.rest_frequency_interval");
-            // query.addField("m_product_loan_recalculation_details.rest_frequency_nth_day_enum");
-            // query.addField("m_product_loan_recalculation_details.rest_frequency_on_day");
-            // query.addField("m_product_loan_recalculation_details.rest_frequency_weekday_enum");
+            FrequencyType rest_frequency_nth_day_enum = FrequencyType.parseLiteral(String.valueOf(loanObject.get("rest_frequency_nth_day_enum")));
+            if (rest_frequency_nth_day_enum != null) {
+                this.interestRecalculationRecalculateTypeValue = rest_frequency_nth_day_enum.toOption();
+                if (rest_frequency_nth_day_enum == FrequencyType.OnDay) {
+                    this.interestRecalculationRecalculateOnDayValue = (Long) loanObject.get("rest_frequency_on_day");
+                    this.interestRecalculationRecalculateOnDayVisible = true;
+                } else {
+                    this.interestRecalculationRecalculateDayValue = FrequencyDay.optionLiteral(String.valueOf(loanObject.get("rest_frequency_weekday_enum")));
+                    this.interestRecalculationRecalculateDayVisible = true;
+                }
+            }
+            this.interestRecalculationRecalculateValue = Frequency.optionLiteral(String.valueOf(loanObject.get("rest_frequency_type_enum")));
+            this.interestRecalculationRecalculateIntervalValue = (Long) loanObject.get("rest_frequency_interval");
 
             // query.addField("m_product_loan_recalculation_details.is_compounding_to_be_posted_as_transaction");
             // query.addField("m_product_loan_recalculation_details.allow_compounding_on_eod");
         }
 
-        List<Map<String, Object>> configurablesObject = jdbcTemplate.queryForList("select * from m_product_loan_configurable_attributes where loan_product_id = ?", this.loanId);
         Map<String, Object> guaranteeObject = jdbcTemplate.queryForMap("select * from m_product_loan_guarantee_details where loan_product_id = ?", this.loanId);
+        List<Map<String, Object>> configurablesObject = jdbcTemplate.queryForList("select * from m_product_loan_configurable_attributes where loan_product_id = ?", this.loanId);
         List<Map<String, Object>> chargesObject = jdbcTemplate.queryForList("select m_charge.* from m_product_loan_charge inner join m_charge on m_product_loan_charge.charge_id = m_charge.id where m_product_loan_charge.product_loan_id = ?", this.loanId);
         List<Map<String, Object>> accounts = jdbcTemplate.queryForList("select * from acc_product_mapping where product_type = ? and product_id = ?", ProductType.Loan.getLiteral(), this.loanId);
     }
@@ -1591,10 +1621,16 @@ public class LoanPreviewPage extends Page {
 
         this.interestRecalculationCompoundingDayBlock = new WebMarkupBlock("interestRecalculationCompoundingDayBlock", Size.Four_4);
         add(this.interestRecalculationCompoundingDayBlock);
+
         this.interestRecalculationCompoundingDayVContainer = new WebMarkupContainer("interestRecalculationCompoundingDayVContainer");
         this.interestRecalculationCompoundingDayBlock.add(this.interestRecalculationCompoundingDayVContainer);
         this.interestRecalculationCompoundingDayView = new ReadOnlyView("interestRecalculationCompoundingDayView", new PropertyModel<>(this, "interestRecalculationCompoundingDayValue"));
         this.interestRecalculationCompoundingDayVContainer.add(this.interestRecalculationCompoundingDayView);
+
+        this.interestRecalculationCompoundingOnDayVContainer = new WebMarkupContainer("interestRecalculationCompoundingOnDayVContainer");
+        this.interestRecalculationCompoundingDayBlock.add(this.interestRecalculationCompoundingOnDayVContainer);
+        this.interestRecalculationCompoundingOnDayView = new ReadOnlyView("interestRecalculationCompoundingOnDayView", new PropertyModel<>(this, "interestRecalculationCompoundingOnDayValue"));
+        this.interestRecalculationCompoundingOnDayVContainer.add(this.interestRecalculationCompoundingOnDayView);
 
         this.interestRecalculationCompoundingIntervalBlock = new WebMarkupBlock("interestRecalculationCompoundingIntervalBlock", Size.Four_4);
         add(this.interestRecalculationCompoundingIntervalBlock);
@@ -1619,10 +1655,16 @@ public class LoanPreviewPage extends Page {
 
         this.interestRecalculationRecalculateDayBlock = new WebMarkupBlock("interestRecalculationRecalculateDayBlock", Size.Four_4);
         add(this.interestRecalculationRecalculateDayBlock);
+
         this.interestRecalculationRecalculateDayVContainer = new WebMarkupContainer("interestRecalculationRecalculateDayVContainer");
         this.interestRecalculationRecalculateDayBlock.add(this.interestRecalculationRecalculateDayVContainer);
         this.interestRecalculationRecalculateDayView = new ReadOnlyView("interestRecalculationRecalculateDayView", new PropertyModel<>(this, "interestRecalculationRecalculateDayValue"));
         this.interestRecalculationRecalculateDayVContainer.add(this.interestRecalculationRecalculateDayView);
+
+        this.interestRecalculationRecalculateOnDayVContainer = new WebMarkupContainer("interestRecalculationRecalculateOnDayVContainer");
+        this.interestRecalculationRecalculateDayBlock.add(this.interestRecalculationRecalculateOnDayVContainer);
+        this.interestRecalculationRecalculateOnDayView = new ReadOnlyView("interestRecalculationRecalculateOnDayView", new PropertyModel<>(this, "interestRecalculationRecalculateOnDayValue"));
+        this.interestRecalculationRecalculateOnDayVContainer.add(this.interestRecalculationRecalculateOnDayView);
 
         this.interestRecalculationRecalculateIntervalBlock = new WebMarkupBlock("interestRecalculationRecalculateIntervalBlock", Size.Four_4);
         add(this.interestRecalculationRecalculateIntervalBlock);

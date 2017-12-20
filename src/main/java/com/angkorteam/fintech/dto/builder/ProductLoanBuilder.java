@@ -915,6 +915,24 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
+    private String recalculationCompoundingFrequencyOnDayType;
+    private boolean hasRecalculationCompoundingFrequencyOnDayType;
+
+    public ProductLoanBuilder withRecalculationCompoundingFrequencyOnDayType(String recalculationCompoundingFrequencyOnDayType) {
+        this.recalculationCompoundingFrequencyOnDayType = recalculationCompoundingFrequencyOnDayType;
+        this.hasRecalculationCompoundingFrequencyOnDayType = true;
+        return this;
+    }
+
+    private String recalculationRestFrequencyOnDayType;
+    private boolean hasRecalculationRestFrequencyOnDayType;
+
+    public ProductLoanBuilder withRecalculationRestFrequencyOnDayType(String recalculationRestFrequencyOnDayType) {
+        this.recalculationRestFrequencyOnDayType = recalculationRestFrequencyOnDayType;
+        this.hasRecalculationRestFrequencyOnDayType = true;
+        return this;
+    }
+
     public JsonNode build() {
 
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
@@ -1201,6 +1219,14 @@ public class ProductLoanBuilder implements Serializable {
             } else {
                 object.getObject().put("recalculationRestFrequencyDayOfWeekType", (String) null);
             }
+        }
+
+        if (this.hasRecalculationCompoundingFrequencyOnDayType) {
+            object.getObject().put("recalculationCompoundingFrequencyOnDayType", this.recalculationCompoundingFrequencyOnDayType);
+        }
+
+        if (this.hasRecalculationRestFrequencyOnDayType) {
+            object.getObject().put("recalculationRestFrequencyOnDayType", this.recalculationRestFrequencyOnDayType);
         }
 
         if (this.hasRecalculationRestFrequencyInterval) {
