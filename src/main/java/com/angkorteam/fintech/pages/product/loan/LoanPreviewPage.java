@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages.product.loan;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,10 @@ import org.apache.wicket.model.PropertyModel;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.AccountingType;
+import com.angkorteam.fintech.dto.enums.ChargeCalculation;
+import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.DayInYear;
+import com.angkorteam.fintech.dto.enums.FinancialAccountType;
 import com.angkorteam.fintech.dto.enums.LoanCycle;
 import com.angkorteam.fintech.dto.enums.LockInType;
 import com.angkorteam.fintech.dto.enums.ProductType;
@@ -32,6 +36,7 @@ import com.angkorteam.fintech.dto.enums.loan.InterestMethod;
 import com.angkorteam.fintech.dto.enums.loan.InterestRecalculationCompound;
 import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateType;
 import com.angkorteam.fintech.dto.enums.loan.RepaymentStrategy;
+import com.angkorteam.fintech.dto.enums.loan.WhenType;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.ReadOnlyView;
@@ -911,11 +916,15 @@ public class LoanPreviewPage extends Page {
         query.addField("m_product_loan_recalculation_details.compounding_frequency_weekday_enum");
         query.addField("m_product_loan_recalculation_details.is_compounding_to_be_posted_as_transaction");
         query.addField("m_product_loan_recalculation_details.allow_compounding_on_eod");
-        
+
         query.addField("m_product_loan.hold_guarantee_funds");
         query.addField("m_product_loan_guarantee_details.mandatory_guarantee");
         query.addField("m_product_loan_guarantee_details.minimum_guarantee_from_guarantor_funds");
         query.addField("m_product_loan_guarantee_details.minimum_guarantee_from_own_funds");
+
+        query.addField("m_product_loan.allow_multiple_disbursals");
+
+        query.addField("m_product_loan.accounting_type");
 
         Map<String, Object> loanObject = jdbcTemplate.queryForMap(query.toSQL());
 
@@ -965,15 +974,34 @@ public class LoanPreviewPage extends Page {
 
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue = (Long) loanObject.get("min_days_between_disbursal_and_first_repayment");
 
-        List<Map<String, Object>> borrowersObject = jdbcTemplate.queryForList("select * from m_product_loan_variations_borrower_cycle where loan_product_id = ? order by param_type asc, min_value asc", this.loanId);
+        SelectQuery borrowerQuery = new SelectQuery("m_product_loan_variations_borrower_cycle");
+        borrowerQuery.addWhere("loan_product_id = " + this.loanId);
+        borrowerQuery.addOrderBy("param_type asc");
+        borrowerQuery.addOrderBy("min_value asc");
+
+        borrowerQuery.addField("m_product_loan_variations_borrower_cycle.borrower_cycle_number");
+        borrowerQuery.addField("m_product_loan_variations_borrower_cycle.value_condition");
+        borrowerQuery.addField("m_product_loan_variations_borrower_cycle.param_type");
+        borrowerQuery.addField("m_product_loan_variations_borrower_cycle.default_value");
+        borrowerQuery.addField("m_product_loan_variations_borrower_cycle.max_value");
+        borrowerQuery.addField("m_product_loan_variations_borrower_cycle.min_value");
+
+        List<Map<String, Object>> borrowersObject = jdbcTemplate.queryForList(borrowerQuery.toSQL());
 
         for (Map<String, Object> borrowerObject : borrowersObject) {
+            Map<String, Object> item = new HashMap<>();
+            Option when = WhenType.optionLiteral(String.valueOf(borrowerObject.get("value_condition")));
+            item.put("when", when);
+            item.put("cycle", (Long) borrowerObject.get("borrower_cycle_number"));
+            item.put("default", (Double) borrowerObject.get("default_value"));
+            item.put("maximum", (Double) borrowerObject.get("max_value"));
+            item.put("minimum", (Double) borrowerObject.get("min_value"));
             if (LoanCycle.Principal.getLiteral().equals(borrowerObject.get("param_type"))) {
-                // termPrincipalByLoanCycleValue
+                this.termPrincipalByLoanCycleValue.add(item);
             } else if (LoanCycle.NumberOfRepayment.getLiteral().equals(borrowerObject.get("param_type"))) {
-                // termNumberOfRepaymentByLoanCycleValue
+                this.termNumberOfRepaymentByLoanCycleValue.add(item);
             } else if (LoanCycle.NominalInterestRate.getLiteral().equals(borrowerObject.get("param_type"))) {
-                // termNominalInterestRateByLoanCycleValue
+                this.termNominalInterestRateByLoanCycleValue.add(item);
             }
         }
 
@@ -1047,10 +1075,118 @@ public class LoanPreviewPage extends Page {
             // query.addField("m_product_loan_recalculation_details.allow_compounding_on_eod");
         }
 
-        Map<String, Object> guaranteeObject = jdbcTemplate.queryForMap("select * from m_product_loan_guarantee_details where loan_product_id = ?", this.loanId);
-        List<Map<String, Object>> configurablesObject = jdbcTemplate.queryForList("select * from m_product_loan_configurable_attributes where loan_product_id = ?", this.loanId);
-        List<Map<String, Object>> chargesObject = jdbcTemplate.queryForList("select m_charge.* from m_product_loan_charge inner join m_charge on m_product_loan_charge.charge_id = m_charge.id where m_product_loan_charge.product_loan_id = ?", this.loanId);
-        List<Map<String, Object>> accounts = jdbcTemplate.queryForList("select * from acc_product_mapping where product_type = ? and product_id = ?", ProductType.Loan.getLiteral(), this.loanId);
+        this.guaranteeRequirementPlaceGuaranteeFundsOnHoldValue = (Boolean) loanObject.get("hold_guarantee_funds");
+        this.guaranteeRequirementMandatoryGuaranteeValue = (Double) loanObject.get("mandatory_guarantee");
+        this.guaranteeRequirementMinimumGuaranteeValue = (Double) loanObject.get("minimum_guarantee_from_own_funds");
+        this.guaranteeRequirementMinimumGuaranteeFromGuarantorValue = (Double) loanObject.get("minimum_guarantee_from_guarantor_funds");
+
+        SelectQuery configurablesQuery = new SelectQuery("m_product_loan_configurable_attributes");
+        configurablesQuery.addWhere("loan_product_id = " + this.loanId);
+        configurablesQuery.addField("amortization_method_enum");
+        configurablesQuery.addField("interest_method_enum");
+        configurablesQuery.addField("loan_transaction_strategy_id");
+        configurablesQuery.addField("interest_calculated_in_period_enum");
+        configurablesQuery.addField("arrearstolerance_amount");
+        configurablesQuery.addField("repay_every");
+        configurablesQuery.addField("moratorium");
+        configurablesQuery.addField("grace_on_arrears_ageing");
+
+        Map<String, Object> configurablesObject = jdbcTemplate.queryForMap(configurablesQuery.toSQL());
+
+        this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue = configurablesObject != null;
+        this.configurableAmortizationValue = (Boolean) configurablesObject.get("amortization_method_enum");
+        this.configurableInterestMethodValue = (Boolean) configurablesObject.get("interest_method_enum");
+        this.configurableRepaymentStrategyValue = (Boolean) configurablesObject.get("loan_transaction_strategy_id");
+        this.configurableInterestCalculationPeriodValue = (Boolean) configurablesObject.get("interest_calculated_in_period_enum");
+        this.configurableArrearsToleranceValue = (Boolean) configurablesObject.get("grace_on_arrears_ageing");
+        this.configurableRepaidEveryValue = (Boolean) configurablesObject.get("repay_every");
+        this.configurableMoratoriumValue = (Boolean) configurablesObject.get("moratorium");
+        this.configurableOverdueBeforeMovingValue = (Boolean) configurablesObject.get("arrearstolerance_amount");
+
+        SelectQuery chargeQuery = new SelectQuery("m_charge");
+        chargeQuery.addJoin("inner join m_savings_product_charge on m_product_loan_charge.charge_id = m_charge.id");
+        chargeQuery.addField("concat(m_charge.name, ' [', m_charge.currency_code, ']') name");
+        chargeQuery.addField("m_charge.charge_time_enum");
+        chargeQuery.addField("m_charge.charge_calculation_enum");
+        chargeQuery.addField("m_charge.charge_payment_mode_enum");
+        chargeQuery.addField("m_charge.amount");
+        chargeQuery.addField("m_charge.fee_on_day");
+        chargeQuery.addField("m_charge.fee_interval");
+        chargeQuery.addField("m_charge.fee_on_month");
+        chargeQuery.addField("m_charge.is_penalty");
+        chargeQuery.addField("m_charge.is_active");
+        chargeQuery.addField("m_charge.min_cap");
+        chargeQuery.addField("m_charge.max_cap");
+        chargeQuery.addField("m_charge.fee_frequency");
+        chargeQuery.addField("m_charge.income_or_liability_account_id");
+        chargeQuery.addField("m_charge.tax_group_id");
+        chargeQuery.addWhere("m_product_loan_charge.product_loan_id = '" + this.loanId + "'");
+
+        List<Map<String, Object>> chargeObjects = jdbcTemplate.queryForList(chargeQuery.toSQL());
+
+        for (Map<String, Object> chargeObject : chargeObjects) {
+            Map<String, Object> charge = new HashMap<>();
+            charge.put("name", chargeObject.get("name"));
+            Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
+            charge.put("type", type);
+            Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
+            charge.put("collect", collect);
+            charge.put("amount", chargeObject.get("amount"));
+            this.chargeValue.add(charge);
+        }
+
+        AccountingType accountingType = AccountingType.parseLiteral(String.valueOf(loanObject.get("accounting_type")));
+
+        if (accountingType != null) {
+            this.accountingValue = accountingType.getDescription();
+
+            List<Map<String, Object>> mappings = jdbcTemplate.queryForList("select * from acc_product_mapping where product_id = ? and product_type = ?", this.loanId, ProductType.Loan.getLiteral());
+
+            for (Map<String, Object> mapping : mappings) {
+                FinancialAccountType financialAccountType = FinancialAccountType.parseLiteral(String.valueOf(mapping.get("financial_account_type")));
+                if (financialAccountType == FinancialAccountType.SavingReference && mapping.get("payment_type") != null && mapping.get("charge_id") == null && mapping.get("gl_account_id") != null) {
+                    Map<String, Object> item = new HashMap<>();
+                    item.put("payment", jdbcTemplate.queryForObject("select id, value text from m_payment_type where id = ?", Option.MAPPER, mapping.get("payment_type")));
+                    item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
+                    this.advancedAccountingRuleFundSourceValue.add(item);
+                }
+                if (financialAccountType == FinancialAccountType.IncomeFee && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
+                    Map<String, Object> item = new HashMap<>();
+                    item.put("charge", jdbcTemplate.queryForObject("select id, name text from m_charge where id = ?", Option.MAPPER, mapping.get("charge_id")));
+                    item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
+                    this.advancedAccountingRuleFeeIncomeValue.add(item);
+                }
+                if (financialAccountType == FinancialAccountType.IncomePenalty && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
+                    Map<String, Object> item = new HashMap<>();
+                    item.put("charge", jdbcTemplate.queryForObject("select id, name text from m_charge where id = ?", Option.MAPPER, mapping.get("charge_id")));
+                    item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
+                    this.advancedAccountingRulePenaltyIncomeValue.add(item);
+                }
+                if (financialAccountType != null && mapping.get("gl_account_id") != null && mapping.get("charge_id") == null && mapping.get("payment_type") == null) {
+                    if (financialAccountType == FinancialAccountType.SavingReference) {
+                        // this.cashSavingReferenceValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.OverdraftPortfolio) {
+                        // this.cashOverdraftPortfolioValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.SavingControl) {
+                        // this.cashSavingControlValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.TransferInSuspense) {
+                        // this.cashSavingTransferInSuspenseValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.EscheatLiability) {
+                        // this.cashEscheatLiabilityValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.InterestOnSaving) {
+                        // this.cashInterestOnSavingValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.WriteOff) {
+                        // this.cashWriteOffValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.IncomeFee) {
+                        // this.cashIncomeFromFeeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.IncomePenalty) {
+                        // this.cashIncomeFromPenaltyValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    } else if (financialAccountType == FinancialAccountType.OverdraftInterestIncome) {
+                        // this.cashOverdraftInterestIncomeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                    }
+                }
+            }
+        }
     }
 
     protected void initSectionOverdueCharge() {
