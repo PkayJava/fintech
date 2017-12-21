@@ -9,6 +9,8 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -40,6 +42,7 @@ import com.angkorteam.fintech.dto.enums.loan.WhenType;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.ReadOnlyView;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
@@ -1097,18 +1100,26 @@ public class LoanPreviewPage extends Page {
 
         this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue = configurablesObject != null;
         if (this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue) {
-            this.configurableAmortizationValue = (Boolean) configurablesObject.get("amortization_method_enum");
-            this.configurableInterestMethodValue = (Boolean) configurablesObject.get("interest_method_enum");
-            this.configurableRepaymentStrategyValue = (Boolean) configurablesObject.get("loan_transaction_strategy_id");
-            this.configurableInterestCalculationPeriodValue = (Boolean) configurablesObject.get("interest_calculated_in_period_enum");
-            this.configurableArrearsToleranceValue = (Boolean) configurablesObject.get("grace_on_arrears_ageing");
-            this.configurableRepaidEveryValue = (Boolean) configurablesObject.get("repay_every");
-            this.configurableMoratoriumValue = (Boolean) configurablesObject.get("moratorium");
-            this.configurableOverdueBeforeMovingValue = (Boolean) configurablesObject.get("arrearstolerance_amount");
+            Long amortization_method_enum = (Long) configurablesObject.get("amortization_method_enum");
+            this.configurableAmortizationValue = amortization_method_enum != null && amortization_method_enum == 1;
+            Long interest_method_enum = (Long) configurablesObject.get("interest_method_enum");
+            this.configurableInterestMethodValue = interest_method_enum != null && interest_method_enum == 1;
+            Long loan_transaction_strategy_id = (Long) configurablesObject.get("loan_transaction_strategy_id");
+            this.configurableRepaymentStrategyValue = loan_transaction_strategy_id != null && loan_transaction_strategy_id == 1;
+            Long interest_calculated_in_period_enum = (Long) configurablesObject.get("interest_calculated_in_period_enum");
+            this.configurableInterestCalculationPeriodValue = interest_calculated_in_period_enum != null && interest_calculated_in_period_enum == 1;
+            Long grace_on_arrears_ageing = (Long) configurablesObject.get("grace_on_arrears_ageing");
+            this.configurableArrearsToleranceValue = grace_on_arrears_ageing != null && grace_on_arrears_ageing == 1;
+            Long repay_every = (Long) configurablesObject.get("repay_every");
+            this.configurableRepaidEveryValue = repay_every != null && repay_every == 1;
+            Long moratorium = (Long) configurablesObject.get("moratorium");
+            this.configurableMoratoriumValue = moratorium != null && moratorium == 1;
+            Long arrearstolerance_amount = (Long) configurablesObject.get("arrearstolerance_amount");
+            this.configurableOverdueBeforeMovingValue = arrearstolerance_amount != null && arrearstolerance_amount == 1;
         }
 
         SelectQuery chargeQuery = new SelectQuery("m_charge");
-        chargeQuery.addJoin("inner join m_savings_product_charge on m_product_loan_charge.charge_id = m_charge.id");
+        chargeQuery.addJoin("inner join m_product_loan_charge on m_product_loan_charge.charge_id = m_charge.id");
         chargeQuery.addField("concat(m_charge.name, ' [', m_charge.currency_code, ']') name");
         chargeQuery.addField("m_charge.charge_time_enum");
         chargeQuery.addField("m_charge.charge_calculation_enum");
@@ -1129,6 +1140,7 @@ public class LoanPreviewPage extends Page {
         List<Map<String, Object>> chargeObjects = jdbcTemplate.queryForList(chargeQuery.toSQL());
 
         for (Map<String, Object> chargeObject : chargeObjects) {
+            Boolean is_penalty = (Boolean) chargeObject.get("is_penalty");
             Map<String, Object> charge = new HashMap<>();
             charge.put("name", chargeObject.get("name"));
             Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
@@ -1136,8 +1148,20 @@ public class LoanPreviewPage extends Page {
             Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
             charge.put("collect", collect);
             charge.put("amount", chargeObject.get("amount"));
-            this.chargeValue.add(charge);
+            if (is_penalty != null && is_penalty) {
+                this.overdueChargeValue.add(charge);
+            } else {
+                this.chargeValue.add(charge);
+            }
         }
+
+        query.addField("m_product_loan.allow_multiple_disbursals");
+        query.addField("m_product_loan.max_disbursals");
+        query.addField("m_product_loan.max_outstanding_loan_balance");
+
+        this.loanTrancheDetailEnableMultipleDisbursalValue = (Boolean) loanObject.get("allow_multiple_disbursals");
+        this.loanTrancheDetailMaximumTrancheCountValue = (Long) loanObject.get("max_disbursals");
+        this.loanTrancheDetailMaximumAllowedOutstandingBalanceValue = (Double) loanObject.get("max_outstanding_loan_balance");
 
         AccountingType accountingType = AccountingType.parseLiteral(String.valueOf(loanObject.get("accounting_type")));
 
@@ -1166,6 +1190,21 @@ public class LoanPreviewPage extends Page {
                     item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
                     this.advancedAccountingRulePenaltyIncomeValue.add(item);
                 }
+                
+//                Account Asset/Fund Source       1
+//                Account Asset/Loan Portfolio    2
+//                Account Income/Income From Interest     3
+//                Account Income/Income From Fee  4
+//                Account Income/Income From Penalty      5
+//                Account Expense/Write-Off       6
+//                Account Asset/Interest Receivable       7
+//                Account Asset/Fee Receivable    8
+//                Account Asset/Penalty Receivable        9
+//                Account Asset/Transfer In Suspense      10
+//                Account Liability/Over Payment Liability        11
+//                Account Income/Income From Recovery Repayment   12
+
+                
                 if (financialAccountType != null && mapping.get("gl_account_id") != null && mapping.get("charge_id") == null && mapping.get("payment_type") == null) {
                     if (financialAccountType == FinancialAccountType.SavingReference) {
                         // this.cashSavingReferenceValue = jdbcTemplate.queryForObject("select id, name
