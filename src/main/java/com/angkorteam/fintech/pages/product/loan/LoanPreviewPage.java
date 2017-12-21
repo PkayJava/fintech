@@ -536,6 +536,7 @@ public class LoanPreviewPage extends Page {
 
     protected WebMarkupContainer cashBlock;
     protected WebMarkupContainer cashVContainer;
+    protected AccountingType accountingType;
 
     protected WebMarkupBlock cashFundSourceBlock;
     protected WebMarkupContainer cashFundSourceVContainer;
@@ -814,6 +815,18 @@ public class LoanPreviewPage extends Page {
         this.interestRecalculationRecalculateOnDayVContainer.setVisible(this.interestRecalculationRecalculateOnDayVisible);
         this.interestRecalculationCompoundingDayVContainer.setVisible(this.interestRecalculationCompoundingDayVisible);
         this.interestRecalculationCompoundingOnDayVContainer.setVisible(this.interestRecalculationCompoundingOnDayVisible);
+
+        this.cashVContainer.setVisible(false);
+        this.periodicVContainer.setVisible(false);
+        this.upfrontVContainer.setVisible(false);
+
+        if (accountingType == AccountingType.Cash) {
+            this.cashVContainer.setVisible(true);
+        } else if (accountingType == AccountingType.Periodic) {
+            this.periodicVContainer.setVisible(true);
+        } else if (accountingType == AccountingType.Upfront) {
+            this.upfrontVContainer.setVisible(true);
+        }
     }
 
     @Override
@@ -1160,22 +1173,10 @@ public class LoanPreviewPage extends Page {
         this.loanTrancheDetailMaximumTrancheCountValue = (Long) loanObject.get("max_disbursals");
         this.loanTrancheDetailMaximumAllowedOutstandingBalanceValue = (Double) loanObject.get("max_outstanding_loan_balance");
 
-        AccountingType accountingType = AccountingType.parseLiteral(String.valueOf(loanObject.get("accounting_type")));
+        this.accountingType = AccountingType.parseLiteral(String.valueOf(loanObject.get("accounting_type")));
 
-        this.cashVContainer.setVisible(false);
-        this.periodicVContainer.setVisible(false);
-        this.upfrontVContainer.setVisible(false);
-
-        if (accountingType == AccountingType.Cash) {
-            this.cashVContainer.setVisible(true);
-        } else if (accountingType == AccountingType.Periodic) {
-            this.periodicVContainer.setVisible(true);
-        } else if (accountingType == AccountingType.Upfront) {
-            this.upfrontVContainer.setVisible(true);
-        }
-
-        if (accountingType != null) {
-            this.accountingValue = accountingType.getDescription();
+        if (this.accountingType != null) {
+            this.accountingValue = this.accountingType.getDescription();
 
             List<Map<String, Object>> mappings = jdbcTemplate.queryForList("select * from acc_product_mapping where product_id = ? and product_type = ?", this.loanId, ProductType.Loan.getLiteral());
 
@@ -1289,6 +1290,14 @@ public class LoanPreviewPage extends Page {
                             this.periodicLossWrittenOffValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
                         } else if (accountingType == AccountingType.Upfront) {
                             this.upfrontLossWrittenOffValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        }
+                    } else if (financialAccountType == FinancialAccountType.OverdraftPortfolio11) {
+                        if (accountingType == AccountingType.Cash) {
+                            this.cashOverPaymentLiabilityValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Periodic) {
+                            this.periodicOverPaymentLiabilityValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Upfront) {
+                            this.upfrontOverPaymentLiabilityValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
                         }
                     }
                 }

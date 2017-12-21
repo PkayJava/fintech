@@ -910,7 +910,7 @@ public class LoanCreatePage extends Page {
             Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("type".equals(column) || "collectedOn".equals(column)) {
-            String value = (String) model.get(column);
+            Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("amount".equals(column)) {
             Double value = (Double) model.get(column);
