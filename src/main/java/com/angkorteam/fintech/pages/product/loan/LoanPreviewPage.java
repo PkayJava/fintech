@@ -9,8 +9,6 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -42,7 +40,6 @@ import com.angkorteam.fintech.dto.enums.loan.WhenType;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
@@ -768,7 +765,7 @@ public class LoanPreviewPage extends Page {
 
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Loan Product Create");
+            breadcrumb.setLabel("Loan Product Preview");
             BREADCRUMB.add(breadcrumb);
         }
         return Model.ofList(BREADCRUMB);
@@ -1165,6 +1162,18 @@ public class LoanPreviewPage extends Page {
 
         AccountingType accountingType = AccountingType.parseLiteral(String.valueOf(loanObject.get("accounting_type")));
 
+        this.cashVContainer.setVisible(false);
+        this.periodicVContainer.setVisible(false);
+        this.upfrontVContainer.setVisible(false);
+
+        if (accountingType == AccountingType.Cash) {
+            this.cashVContainer.setVisible(true);
+        } else if (accountingType == AccountingType.Periodic) {
+            this.periodicVContainer.setVisible(true);
+        } else if (accountingType == AccountingType.Upfront) {
+            this.upfrontVContainer.setVisible(true);
+        }
+
         if (accountingType != null) {
             this.accountingValue = accountingType.getDescription();
 
@@ -1172,80 +1181,115 @@ public class LoanPreviewPage extends Page {
 
             for (Map<String, Object> mapping : mappings) {
                 FinancialAccountType financialAccountType = FinancialAccountType.parseLiteral(String.valueOf(mapping.get("financial_account_type")));
-                if (financialAccountType == FinancialAccountType.SavingReference && mapping.get("payment_type") != null && mapping.get("charge_id") == null && mapping.get("gl_account_id") != null) {
+                if (financialAccountType == FinancialAccountType.SavingReference1 && mapping.get("payment_type") != null && mapping.get("charge_id") == null && mapping.get("gl_account_id") != null) {
                     Map<String, Object> item = new HashMap<>();
                     item.put("payment", jdbcTemplate.queryForObject("select id, value text from m_payment_type where id = ?", Option.MAPPER, mapping.get("payment_type")));
                     item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
                     this.advancedAccountingRuleFundSourceValue.add(item);
                 }
-                if (financialAccountType == FinancialAccountType.IncomeFee && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
+                if (financialAccountType == FinancialAccountType.IncomeFee4 && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
                     Map<String, Object> item = new HashMap<>();
                     item.put("charge", jdbcTemplate.queryForObject("select id, name text from m_charge where id = ?", Option.MAPPER, mapping.get("charge_id")));
                     item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
                     this.advancedAccountingRuleFeeIncomeValue.add(item);
                 }
-                if (financialAccountType == FinancialAccountType.IncomePenalty && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
+                if (financialAccountType == FinancialAccountType.IncomePenalty5 && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
                     Map<String, Object> item = new HashMap<>();
                     item.put("charge", jdbcTemplate.queryForObject("select id, name text from m_charge where id = ?", Option.MAPPER, mapping.get("charge_id")));
                     item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
                     this.advancedAccountingRulePenaltyIncomeValue.add(item);
                 }
-                
-//                Account Asset/Fund Source       1
-//                Account Asset/Loan Portfolio    2
-//                Account Income/Income From Interest     3
-//                Account Income/Income From Fee  4
-//                Account Income/Income From Penalty      5
-//                Account Expense/Write-Off       6
-//                Account Asset/Interest Receivable       7
-//                Account Asset/Fee Receivable    8
-//                Account Asset/Penalty Receivable        9
-//                Account Asset/Transfer In Suspense      10
-//                Account Liability/Over Payment Liability        11
-//                Account Income/Income From Recovery Repayment   12
 
-                
                 if (financialAccountType != null && mapping.get("gl_account_id") != null && mapping.get("charge_id") == null && mapping.get("payment_type") == null) {
-                    if (financialAccountType == FinancialAccountType.SavingReference) {
-                        // this.cashSavingReferenceValue = jdbcTemplate.queryForObject("select id, name
-                        // text from acc_gl_account where id = ?", Option.MAPPER,
-                        // mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.OverdraftPortfolio) {
-                        // this.cashOverdraftPortfolioValue = jdbcTemplate.queryForObject("select id,
-                        // name text from acc_gl_account where id = ?", Option.MAPPER,
-                        // mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.SavingControl) {
-                        // this.cashSavingControlValue = jdbcTemplate.queryForObject("select id, name
-                        // text from acc_gl_account where id = ?", Option.MAPPER,
-                        // mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.TransferInSuspense) {
-                        // this.cashSavingTransferInSuspenseValue = jdbcTemplate.queryForObject("select
-                        // id, name text from acc_gl_account where id = ?", Option.MAPPER,
-                        // mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.EscheatLiability) {
-                        // this.cashEscheatLiabilityValue = jdbcTemplate.queryForObject("select id, name
-                        // text from acc_gl_account where id = ?", Option.MAPPER,
-                        // mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.InterestOnSaving) {
-                        // this.cashInterestOnSavingValue = jdbcTemplate.queryForObject("select id, name
-                        // text from acc_gl_account where id = ?", Option.MAPPER,
-                        // mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.WriteOff) {
-                        // this.cashWriteOffValue = jdbcTemplate.queryForObject("select id, name text
-                        // from acc_gl_account where id = ?", Option.MAPPER,
-                        // mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.IncomeFee) {
-                        // this.cashIncomeFromFeeValue = jdbcTemplate.queryForObject("select id, name
-                        // text from acc_gl_account where id = ?", Option.MAPPER,
-                        // mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.IncomePenalty) {
-                        // this.cashIncomeFromPenaltyValue = jdbcTemplate.queryForObject("select id,
-                        // name text from acc_gl_account where id = ?", Option.MAPPER,
-                        // mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.OverdraftInterestIncome) {
-                        // this.cashOverdraftInterestIncomeValue = jdbcTemplate.queryForObject("select
-                        // id, name text from acc_gl_account where id = ?", Option.MAPPER,
-                        // mapping.get("gl_account_id"));
+                    if (financialAccountType == FinancialAccountType.SavingReference1) {
+                        if (accountingType == AccountingType.Cash) {
+                            this.cashFundSourceValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Periodic) {
+                            this.periodicFundSourceValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Upfront) {
+                            this.upfrontFundSourceValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        }
+                    } else if (financialAccountType == FinancialAccountType.SavingControl2) {
+                        if (accountingType == AccountingType.Cash) {
+                            this.cashLoanPortfolioValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Periodic) {
+                            this.periodicLoanPortfolioValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Upfront) {
+                            this.upfrontLoanPortfolioValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        }
+                    } else if (financialAccountType == FinancialAccountType.InterestReceivable7) {
+                        if (accountingType == AccountingType.Cash) {
+
+                        } else if (accountingType == AccountingType.Periodic) {
+                            this.periodicInterestReceivableValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Upfront) {
+                            this.upfrontInterestReceivableValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        }
+
+                    } else if (financialAccountType == FinancialAccountType.FeeReceivable8) {
+                        if (accountingType == AccountingType.Cash) {
+
+                        } else if (accountingType == AccountingType.Periodic) {
+                            this.periodicFeeReceivableValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Upfront) {
+                            this.upfrontFeeReceivableValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        }
+                    } else if (financialAccountType == FinancialAccountType.PenaltyReceivable9) {
+                        if (accountingType == AccountingType.Cash) {
+
+                        } else if (accountingType == AccountingType.Periodic) {
+                            this.periodicPenaltyReceivableValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Upfront) {
+                            this.upfrontPenaltyReceivableValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        }
+                    } else if (financialAccountType == FinancialAccountType.TransferInSuspense10) {
+                        if (accountingType == AccountingType.Cash) {
+                            this.cashTransferInSuspenseValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Periodic) {
+                            this.periodicTransferInSuspenseValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Upfront) {
+                            this.upfrontTransferInSuspenseValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        }
+                    } else if (financialAccountType == FinancialAccountType.InterestOnSaving3) {
+                        if (accountingType == AccountingType.Cash) {
+                            this.cashIncomeFromInterestValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Periodic) {
+                            this.periodicIncomeFromInterestValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Upfront) {
+                            this.upfrontIncomeFromInterestValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        }
+                    } else if (financialAccountType == FinancialAccountType.IncomeFee4) {
+                        if (accountingType == AccountingType.Cash) {
+                            this.cashIncomeFromFeeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Periodic) {
+                            this.periodicIncomeFromFeeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Upfront) {
+                            this.upfrontIncomeFromFeeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        }
+                    } else if (financialAccountType == FinancialAccountType.IncomePenalty5) {
+                        if (accountingType == AccountingType.Cash) {
+                            this.cashIncomeFromPenaltyValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Periodic) {
+                            this.periodicIncomeFromPenaltyValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Upfront) {
+                            this.upfrontIncomeFromPenaltyValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        }
+                    } else if (financialAccountType == FinancialAccountType.OverdraftInterestIncome12) {
+                        if (accountingType == AccountingType.Cash) {
+                            this.cashIncomeFromRecoveryRepaymentValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Periodic) {
+                            this.periodicIncomeFromRecoveryRepaymentValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Upfront) {
+                            this.upfrontIncomeFromRecoveryRepaymentValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        }
+                    } else if (financialAccountType == FinancialAccountType.WriteOff6) {
+                        if (accountingType == AccountingType.Cash) {
+                            this.cashLossWrittenOffValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Periodic) {
+                            this.periodicLossWrittenOffValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        } else if (accountingType == AccountingType.Upfront) {
+                            this.upfrontLossWrittenOffValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        }
                     }
                 }
             }

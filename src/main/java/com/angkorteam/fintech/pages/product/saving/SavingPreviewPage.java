@@ -462,44 +462,44 @@ public class SavingPreviewPage extends Page {
 
             for (Map<String, Object> mapping : mappings) {
                 FinancialAccountType financialAccountType = FinancialAccountType.parseLiteral(String.valueOf(mapping.get("financial_account_type")));
-                if (financialAccountType == FinancialAccountType.SavingReference && mapping.get("payment_type") != null && mapping.get("charge_id") == null && mapping.get("gl_account_id") != null) {
+                if (financialAccountType == FinancialAccountType.SavingReference1 && mapping.get("payment_type") != null && mapping.get("charge_id") == null && mapping.get("gl_account_id") != null) {
                     Map<String, Object> item = new HashMap<>();
                     item.put("payment", jdbcTemplate.queryForObject("select id, value text from m_payment_type where id = ?", Option.MAPPER, mapping.get("payment_type")));
                     item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
                     this.advancedAccountingRuleFundSourceValue.add(item);
                 }
-                if (financialAccountType == FinancialAccountType.IncomeFee && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
+                if (financialAccountType == FinancialAccountType.IncomeFee4 && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
                     Map<String, Object> item = new HashMap<>();
                     item.put("charge", jdbcTemplate.queryForObject("select id, name text from m_charge where id = ?", Option.MAPPER, mapping.get("charge_id")));
                     item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
                     this.advancedAccountingRuleFeeIncomeValue.add(item);
                 }
-                if (financialAccountType == FinancialAccountType.IncomePenalty && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
+                if (financialAccountType == FinancialAccountType.IncomePenalty5 && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
                     Map<String, Object> item = new HashMap<>();
                     item.put("charge", jdbcTemplate.queryForObject("select id, name text from m_charge where id = ?", Option.MAPPER, mapping.get("charge_id")));
                     item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
                     this.advancedAccountingRulePenaltyIncomeValue.add(item);
                 }
                 if (financialAccountType != null && mapping.get("gl_account_id") != null && mapping.get("charge_id") == null && mapping.get("payment_type") == null) {
-                    if (financialAccountType == FinancialAccountType.SavingReference) {
+                    if (financialAccountType == FinancialAccountType.SavingReference1) {
                         this.cashSavingReferenceValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.OverdraftPortfolio) {
+                    } else if (financialAccountType == FinancialAccountType.OverdraftPortfolio11) {
                         this.cashOverdraftPortfolioValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.SavingControl) {
+                    } else if (financialAccountType == FinancialAccountType.SavingControl2) {
                         this.cashSavingControlValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.TransferInSuspense) {
+                    } else if (financialAccountType == FinancialAccountType.TransferInSuspense10) {
                         this.cashSavingTransferInSuspenseValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.EscheatLiability) {
+                    } else if (financialAccountType == FinancialAccountType.EscheatLiability14) {
                         this.cashEscheatLiabilityValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.InterestOnSaving) {
+                    } else if (financialAccountType == FinancialAccountType.InterestOnSaving3) {
                         this.cashInterestOnSavingValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.WriteOff) {
+                    } else if (financialAccountType == FinancialAccountType.WriteOff13) {
                         this.cashWriteOffValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.IncomeFee) {
+                    } else if (financialAccountType == FinancialAccountType.IncomeFee4) {
                         this.cashIncomeFromFeeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.IncomePenalty) {
+                    } else if (financialAccountType == FinancialAccountType.IncomePenalty5) {
                         this.cashIncomeFromPenaltyValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.OverdraftInterestIncome) {
+                    } else if (financialAccountType == FinancialAccountType.OverdraftInterestIncome12) {
                         this.cashOverdraftInterestIncomeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
                     }
                 }

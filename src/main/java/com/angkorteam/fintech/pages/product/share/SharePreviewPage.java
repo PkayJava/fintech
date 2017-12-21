@@ -361,13 +361,13 @@ public class SharePreviewPage extends Page {
             for (Map<String, Object> mapping : mappings) {
                 if (mapping.get("charge_id") == null && mapping.get("payment_type") == null && mapping.get("gl_account_id") != null && mapping.get("financial_account_type") != null) {
                     FinancialAccountType financialAccountType = FinancialAccountType.parseLiteral(String.valueOf(mapping.get("financial_account_type")));
-                    if (financialAccountType == FinancialAccountType.SavingReference) {
+                    if (financialAccountType == FinancialAccountType.SavingReference1) {
                         this.cashShareReferenceValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.SavingControl) {
+                    } else if (financialAccountType == FinancialAccountType.SavingControl2) {
                         this.cashShareSuspenseControlValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.IncomeFee) {
+                    } else if (financialAccountType == FinancialAccountType.IncomeFee4) {
                         this.cashEquityValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
-                    } else if (financialAccountType == FinancialAccountType.InterestOnSaving) {
+                    } else if (financialAccountType == FinancialAccountType.InterestOnSaving3) {
                         this.cashIncomeFromFeeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
                     }
                 }
