@@ -1,5 +1,7 @@
 package com.angkorteam.fintech.pages.client.client;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -927,11 +929,13 @@ public class ClientCreatePage extends Page {
             }
             Date dateOfBirth = (Date) item.get("dateOfBirth");
             f.withDateOfBirth(dateOfBirth);
-            String age = (String) item.get("age");
-            if (age != null && !"".equals(age)) {
-                f.withAge(Long.valueOf(age));
+            if (dateOfBirth != null) {
+                LocalDate start = dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate stop = LocalDate.now();
+                long years = java.time.temporal.ChronoUnit.YEARS.between(start, stop);
+                f.withAge(years);
             }
-            builder.withFamilyMembers(f.build());
+            builder.withFamilyMembers(f.build().getObject());
         }
 
         JsonNode node = null;

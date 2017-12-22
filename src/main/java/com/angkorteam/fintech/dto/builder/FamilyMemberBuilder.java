@@ -4,11 +4,19 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.json.JSONObject;
 
 import com.mashape.unirest.http.JsonNode;
 
 public class FamilyMemberBuilder implements Serializable {
+
+    private String clientId;
+    private boolean hasClientId;
+
+    public FamilyMemberBuilder withClientId(String clientId) {
+        this.clientId = clientId;
+        this.hasClientId = true;
+        return this;
+    }
 
     private String relationshipId;
     private boolean hasRelationshipId;
@@ -136,7 +144,7 @@ public class FamilyMemberBuilder implements Serializable {
         return this;
     }
 
-    public JSONObject build() {
+    public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
 
         if (this.hasDateOfBirth) {
@@ -145,6 +153,10 @@ public class FamilyMemberBuilder implements Serializable {
             } else {
                 object.getObject().put("dateOfBirth", (String) null);
             }
+        }
+
+        if (this.hasClientId) {
+            object.getObject().put("clientId", this.clientId);
         }
 
         if (this.hasDateFormat) {
@@ -199,7 +211,7 @@ public class FamilyMemberBuilder implements Serializable {
             object.getObject().put("relationshipId", this.relationshipId);
         }
 
-        return object.getObject();
+        return object;
     }
 
 }
