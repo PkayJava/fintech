@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
@@ -15,6 +16,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -26,6 +28,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+@AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ClientSignatureUploadPage extends Page {
 
     protected String clientId;

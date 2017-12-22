@@ -41,11 +41,11 @@ public class ClientPreviewNotePanel extends Panel {
     protected Form<Void> form;
     protected Button addButton;
 
-    protected List<IColumn<Map<String, Object>, String>> noteColumn;
     protected String noteValue;
     protected TextField<String> noteField;
     protected TextFeedbackPanel noteFeedback;
 
+    protected List<IColumn<Map<String, Object>, String>> noteColumn;
     protected DataTable<Map<String, Object>, String> noteTable;
     protected JdbcProvider noteProvider;
 
