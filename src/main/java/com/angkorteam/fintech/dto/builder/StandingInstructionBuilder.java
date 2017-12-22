@@ -5,9 +5,35 @@ import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
+import com.angkorteam.fintech.dto.enums.Destination;
+import com.angkorteam.fintech.dto.enums.InstructionType;
+import com.angkorteam.fintech.dto.enums.Priority;
+import com.angkorteam.fintech.dto.enums.RecurrenceFrequency;
+import com.angkorteam.fintech.dto.enums.RecurrenceType;
+import com.angkorteam.fintech.dto.enums.StandAccountType;
+import com.angkorteam.fintech.dto.enums.Status;
+import com.angkorteam.fintech.dto.enums.TransferType;
 import com.mashape.unirest.http.JsonNode;
 
 public class StandingInstructionBuilder implements Serializable {
+
+    private String name;
+    private boolean hasName;
+
+    public StandingInstructionBuilder withName(String name) {
+        this.name = name;
+        this.hasName = true;
+        return this;
+    }
+
+    private TransferType transferType;
+    private boolean hasTransferType;
+
+    public StandingInstructionBuilder withTransferType(TransferType transferType) {
+        this.transferType = transferType;
+        this.hasTransferType = true;
+        return this;
+    }
 
     private String id;
     private boolean hasId;
@@ -18,20 +44,32 @@ public class StandingInstructionBuilder implements Serializable {
     private String fromClientId;
     private boolean hasFromClientId;
 
-    private String fromAccountType;
+    private StandAccountType fromAccountType;
     private boolean hasFromAccountType;
 
-    private String name;
-    private boolean hasName;
+    public StandingInstructionBuilder withFromAccountType(StandAccountType fromAccountType) {
+        this.fromAccountType = fromAccountType;
+        this.hasFromAccountType = true;
+        return this;
+    }
 
-    private String transferType;
-    private boolean hasTransferType;
-
-    private String priority;
+    private Priority priority;
     private boolean hasPriority;
 
-    private String status;
+    public StandingInstructionBuilder withPriority(Priority priority) {
+        this.priority = priority;
+        this.hasPriority = true;
+        return this;
+    }
+
+    private Status status;
     private boolean hasStatus;
+
+    public StandingInstructionBuilder withStatus(Status status) {
+        this.status = status;
+        this.hasStatus = true;
+        return this;
+    }
 
     private String fromAccountId;
     private boolean hasFromAccountId;
@@ -42,13 +80,19 @@ public class StandingInstructionBuilder implements Serializable {
     private String toClientId;
     private boolean hasToClientId;
 
-    private String toAccountType;
+    private StandAccountType toAccountType;
     private boolean hasToAccountType;
+
+    public StandingInstructionBuilder withToAccountType(StandAccountType toAccountType) {
+        this.toAccountType = toAccountType;
+        this.hasToAccountType = true;
+        return this;
+    }
 
     private String toAccountId;
     private boolean hasToAccountId;
 
-    private String instructionType;
+    private InstructionType instructionType;
     private boolean hasInstructionType;
 
     private double amount;
@@ -57,14 +101,26 @@ public class StandingInstructionBuilder implements Serializable {
     private Date validFrom;
     private boolean hasValidFrom;
 
-    private String recurrenceType;
+    private RecurrenceType recurrenceType;
     private boolean hasRecurrenceType;
+
+    public StandingInstructionBuilder withRecurrenceType(RecurrenceType recurrenceType) {
+        this.recurrenceType = recurrenceType;
+        this.hasRecurrenceType = true;
+        return this;
+    }
 
     private String recurrenceInterval;
     private boolean hasRecurrenceInterval;
 
-    private String recurrenceFrequency;
+    private RecurrenceFrequency recurrenceFrequency;
     private boolean hasRecurrenceFrequency;
+
+    public StandingInstructionBuilder withRecurrenceFrequency(RecurrenceFrequency recurrenceFrequency) {
+        this.recurrenceFrequency = recurrenceFrequency;
+        this.hasRecurrenceFrequency = true;
+        return this;
+    }
 
     private String locale = "en";
     private boolean hasLocale = true;
@@ -78,10 +134,22 @@ public class StandingInstructionBuilder implements Serializable {
     private String monthDayFormat = "dd MMMM";
     private boolean hasMonthDayFormat = true;
 
+    private Destination destination;
+    private boolean hasDestination;
+
+    public StandingInstructionBuilder withDestination(Destination destination) {
+        this.destination = destination;
+        this.hasDestination = true;
+        return this;
+    }
+
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
         if (this.hasId) {
             object.getObject().put("id", this.id);
+        }
+        if (this.hasDestination) {
+            object.getObject().put("destination", this.destination.getLiteral());
         }
         if (this.hasFromOfficeId) {
             object.getObject().put("fromOfficeId", this.fromOfficeId);
@@ -90,19 +158,19 @@ public class StandingInstructionBuilder implements Serializable {
             object.getObject().put("fromClientId", this.fromClientId);
         }
         if (this.hasFromAccountType) {
-            object.getObject().put("fromAccountType", this.fromAccountType);
+            object.getObject().put("fromAccountType", this.fromAccountType.getLiteral());
         }
         if (this.hasName) {
             object.getObject().put("name", this.name);
         }
         if (this.hasTransferType) {
-            object.getObject().put("transferType", this.transferType);
+            object.getObject().put("transferType", this.transferType.getLiteral());
         }
         if (this.hasPriority) {
-            object.getObject().put("priority", this.priority);
+            object.getObject().put("priority", this.priority.getLiteral());
         }
         if (this.hasStatus) {
-            object.getObject().put("status", this.status);
+            object.getObject().put("status", this.status.getLiteral());
         }
         if (this.hasFromAccountId) {
             object.getObject().put("fromAccountId", this.fromAccountId);
@@ -114,13 +182,13 @@ public class StandingInstructionBuilder implements Serializable {
             object.getObject().put("toClientId", this.toClientId);
         }
         if (this.hasToAccountType) {
-            object.getObject().put("toAccountType", this.toAccountType);
+            object.getObject().put("toAccountType", this.toAccountType.getLiteral());
         }
         if (this.hasToAccountId) {
             object.getObject().put("toAccountId", this.toAccountId);
         }
         if (this.hasInstructionType) {
-            object.getObject().put("instructionType", this.instructionType);
+            object.getObject().put("instructionType", this.instructionType.getLiteral());
         }
         if (this.hasAmount) {
             object.getObject().put("amount", this.amount);
@@ -133,13 +201,13 @@ public class StandingInstructionBuilder implements Serializable {
             }
         }
         if (this.hasRecurrenceType) {
-            object.getObject().put("recurrenceType", this.recurrenceType);
+            object.getObject().put("recurrenceType", this.recurrenceType.getLiteral());
         }
         if (this.hasRecurrenceInterval) {
             object.getObject().put("recurrenceInterval", this.recurrenceInterval);
         }
         if (this.hasRecurrenceFrequency) {
-            object.getObject().put("recurrenceFrequency", this.recurrenceFrequency);
+            object.getObject().put("recurrenceFrequency", this.recurrenceFrequency.getLiteral());
         }
         if (this.hasLocale) {
             object.getObject().put("locale", this.locale);
@@ -174,36 +242,6 @@ public class StandingInstructionBuilder implements Serializable {
         return this;
     }
 
-    public StandingInstructionBuilder withFromAccountType(String fromAccountType) {
-        this.fromAccountType = fromAccountType;
-        this.hasFromAccountType = true;
-        return this;
-    }
-
-    public StandingInstructionBuilder withName(String name) {
-        this.name = name;
-        this.hasName = true;
-        return this;
-    }
-
-    public StandingInstructionBuilder withTransferType(String transferType) {
-        this.transferType = transferType;
-        this.hasTransferType = true;
-        return this;
-    }
-
-    public StandingInstructionBuilder withPriority(String priority) {
-        this.priority = priority;
-        this.hasPriority = true;
-        return this;
-    }
-
-    public StandingInstructionBuilder withStatus(String status) {
-        this.status = status;
-        this.hasStatus = true;
-        return this;
-    }
-
     public StandingInstructionBuilder withFromAccountId(String fromAccountId) {
         this.fromAccountId = fromAccountId;
         this.hasFromAccountId = true;
@@ -222,19 +260,13 @@ public class StandingInstructionBuilder implements Serializable {
         return this;
     }
 
-    public StandingInstructionBuilder withToAccountType(String toAccountType) {
-        this.toAccountType = toAccountType;
-        this.hasToAccountType = true;
-        return this;
-    }
-
     public StandingInstructionBuilder withToAccountId(String toAccountId) {
         this.toAccountId = toAccountId;
         this.hasToAccountId = true;
         return this;
     }
 
-    public StandingInstructionBuilder withInstructionType(String instructionType) {
+    public StandingInstructionBuilder withInstructionType(InstructionType instructionType) {
         this.instructionType = instructionType;
         this.hasInstructionType = true;
         return this;
@@ -252,21 +284,9 @@ public class StandingInstructionBuilder implements Serializable {
         return this;
     }
 
-    public StandingInstructionBuilder withRecurrenceType(String recurrenceType) {
-        this.recurrenceType = recurrenceType;
-        this.hasRecurrenceType = true;
-        return this;
-    }
-
     public StandingInstructionBuilder withRecurrenceInterval(String recurrenceInterval) {
         this.recurrenceInterval = recurrenceInterval;
         this.hasRecurrenceInterval = true;
-        return this;
-    }
-
-    public StandingInstructionBuilder withRecurrenceFrequency(String recurrenceFrequency) {
-        this.recurrenceFrequency = recurrenceFrequency;
-        this.hasRecurrenceFrequency = true;
         return this;
     }
 
