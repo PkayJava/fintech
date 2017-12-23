@@ -825,7 +825,8 @@ public class SavingAccountCreatePage extends Page {
         this.interestPostingPeriodValue = InterestPostingPeriod.optionLiteral(String.valueOf(savingProductObject.get("interest_posting_period_enum")));
         this.interestCalculatedUsingValue = InterestCalculatedUsing.optionLiteral(String.valueOf(savingProductObject.get("interest_calculation_type_enum")));
         this.dayInYearValue = DayInYear.optionLiteral(String.valueOf(savingProductObject.get("interest_calculation_days_in_year_type_enum")));
-        this.lockInPeriodValue = (Long) savingProductObject.get("lockin_period_frequency");
+        Double lockin_period_frequency = (Double) savingProductObject.get("lockin_period_frequency");
+        this.lockInPeriodValue = lockin_period_frequency != null ? lockin_period_frequency.longValue() : null;
         this.lockInTypeValue = LockInType.optionLiteral(String.valueOf(savingProductObject.get("lockin_period_frequency_enum")));
 
         Long applyWithdrawalFeeForTransferValue = (Long) savingProductObject.get("withdrawal_fee_for_transfer");
