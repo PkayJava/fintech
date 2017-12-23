@@ -10,7 +10,7 @@ import com.angkorteam.fintech.dto.enums.InstructionType;
 import com.angkorteam.fintech.dto.enums.Priority;
 import com.angkorteam.fintech.dto.enums.RecurrenceFrequency;
 import com.angkorteam.fintech.dto.enums.RecurrenceType;
-import com.angkorteam.fintech.dto.enums.StandAccountType;
+import com.angkorteam.fintech.dto.enums.StandingInstructionAccountType;
 import com.angkorteam.fintech.dto.enums.Status;
 import com.angkorteam.fintech.dto.enums.TransferType;
 import com.mashape.unirest.http.JsonNode;
@@ -44,10 +44,10 @@ public class StandingInstructionBuilder implements Serializable {
     private String fromClientId;
     private boolean hasFromClientId;
 
-    private StandAccountType fromAccountType;
+    private StandingInstructionAccountType fromAccountType;
     private boolean hasFromAccountType;
 
-    public StandingInstructionBuilder withFromAccountType(StandAccountType fromAccountType) {
+    public StandingInstructionBuilder withFromAccountType(StandingInstructionAccountType fromAccountType) {
         this.fromAccountType = fromAccountType;
         this.hasFromAccountType = true;
         return this;
@@ -80,10 +80,10 @@ public class StandingInstructionBuilder implements Serializable {
     private String toClientId;
     private boolean hasToClientId;
 
-    private StandAccountType toAccountType;
+    private StandingInstructionAccountType toAccountType;
     private boolean hasToAccountType;
 
-    public StandingInstructionBuilder withToAccountType(StandAccountType toAccountType) {
+    public StandingInstructionBuilder withToAccountType(StandingInstructionAccountType toAccountType) {
         this.toAccountType = toAccountType;
         this.hasToAccountType = true;
         return this;

@@ -33,7 +33,7 @@ public class ClientStandingInstructionBrowsePage extends Page {
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;
-    
+
     protected BookmarkablePageLink<Void> createLink;
 
     @Override
@@ -73,10 +73,10 @@ public class ClientStandingInstructionBrowsePage extends Page {
 
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         add(this.dataTable);
-        
+
         PageParameters parameters = new PageParameters();
         parameters.add("clientId", this.clientId);
-        this.createLink = new BookmarkablePageLink<>("createLink", ClientIdentityCreatePage.class, parameters);
+        this.createLink = new BookmarkablePageLink<>("createLink", ClientStandingInstructionCreatePage.class, parameters);
         add(this.createLink);
 
     }

@@ -5,14 +5,16 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 /**
  * Created by socheatkhauv on 7/12/17.
  */
-public enum StandAccountType {
+public enum StandingInstructionAccountType {
 
-    SavingAccount("2", "Saving Account");    
+    LoanAccount("1", "Loan Account"),
+    SavingAccount("2", "Saving Account");
+    
     private String literal;
 
     private String description;
 
-    StandAccountType(String literal, String description) {
+    StandingInstructionAccountType(String literal, String description) {
         this.literal = literal;
         this.description = description;
     }
@@ -29,8 +31,8 @@ public enum StandAccountType {
         return new Option(this.name(), this.description);
     }
 
-    public static StandAccountType parseLiteral(String literal) {
-        for (StandAccountType value : StandAccountType.values()) {
+    public static StandingInstructionAccountType parseLiteral(String literal) {
+        for (StandingInstructionAccountType value : StandingInstructionAccountType.values()) {
             if (value.getLiteral().equals(literal)) {
                 return value;
             }
@@ -39,7 +41,7 @@ public enum StandAccountType {
     }
 
     public static Option optionLiteral(String literal) {
-        StandAccountType value = parseLiteral(literal);
+        StandingInstructionAccountType value = parseLiteral(literal);
         if (value == null) {
             return null;
         }
