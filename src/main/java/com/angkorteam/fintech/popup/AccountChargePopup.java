@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
+import com.angkorteam.fintech.dto.enums.ChargeType;
+import com.angkorteam.fintech.dto.enums.ProductPopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -84,11 +86,14 @@ public class AccountChargePopup extends PopupPanel {
 
     protected String currencyCode;
 
-    public AccountChargePopup(String name, ModalWindow window, Map<String, Object> model, String currencyCode) {
+    protected ProductPopup productPopup;
+
+    public AccountChargePopup(String name, ModalWindow window, ProductPopup productPopup, Map<String, Object> model, String currencyCode) {
         super(name, window);
         this.model = model;
         this.window = window;
         this.currencyCode = currencyCode;
+        this.productPopup = productPopup;
     }
 
     @Override
@@ -106,9 +111,19 @@ public class AccountChargePopup extends PopupPanel {
 
         this.chargeValue = new PropertyModel<>(this.model, "chargeValue");
         this.chargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
+
         this.chargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
-        this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = 2");
+
+        if (this.productPopup == ProductPopup.Share) {
+            this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.Share.getLiteral());
+        } else if (this.productPopup == ProductPopup.Loan) {
+            this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.Loan.getLiteral());
+        } else if (this.productPopup == ProductPopup.Fixed || this.productPopup == ProductPopup.Saving || this.productPopup == ProductPopup.Recurring) {
+            this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.SavingDeposit.getLiteral());
+        }
+
         this.chargeProvider.applyWhere("is_active", "is_active = 1");
+
         this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Six_6);
         this.form.add(this.chargeBlock);
         this.chargeIContainer = new WebMarkupContainer("chargeIContainer");

@@ -1,5 +1,6 @@
-package com.angkorteam.fintech.pages.client.client;
+package com.angkorteam.fintech.pages.client.common;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -8,7 +9,10 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
+import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
@@ -20,9 +24,11 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class LoanSelectionPage extends Page {
+public class LoanAccountSelectionPage extends Page {
 
+    protected ClientEnum client;
     protected String clientId;
+    protected String groupId;
 
     protected Form<Void> form;
     protected Button okayButton;
@@ -38,9 +44,6 @@ public class LoanSelectionPage extends Page {
 
     @Override
     protected void initComponent() {
-        PageParameters parameters = new PageParameters();
-        parameters.add("clientId", this.clientId);
-
         this.form = new Form<>("form");
         add(this.form);
 
@@ -48,7 +51,16 @@ public class LoanSelectionPage extends Page {
         this.okayButton.setOnSubmit(this::okayButtonSubmit);
         this.form.add(this.okayButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
+        PageParameters parameters = new PageParameters();
+        if (this.client == ClientEnum.Client) {
+            parameters.add("clientId", this.clientId);
+            this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
+        } else if (this.client == ClientEnum.Group) {
+            parameters.add("groupId", this.groupId);
+            this.closeLink = new BookmarkablePageLink<>("closeLink", GroupPreviewPage.class, parameters);
+        } else {
+            throw new WicketRuntimeException("Unknown " + this.client);
+        }
         this.form.add(this.closeLink);
 
         initLoanBlock();
@@ -79,14 +91,23 @@ public class LoanSelectionPage extends Page {
 
     @Override
     protected void initData() {
+        this.client = ClientEnum.valueOf(getPageParameters().get("client").toString());
         this.clientId = getPageParameters().get("clientId").toString();
+        this.groupId = getPageParameters().get("groupId").toString();
     }
 
     protected void okayButtonSubmit(Button button) {
         PageParameters parameters = new PageParameters();
-        parameters.add("clientId", this.clientId);
+        parameters.add("client", this.client.name());
         parameters.add("loanId", this.loanValue.getId());
-        setResponsePage(LoanCreatePage.class, parameters);
+        if (this.client == ClientEnum.Client) {
+            parameters.add("clientId", this.clientId);
+        } else if (this.client == ClientEnum.Group) {
+            parameters.add("groupId", this.groupId);
+        } else {
+            throw new WicketRuntimeException("Unknown " + this.client);
+        }
+        setResponsePage(LoanAccountCreatePage.class, parameters);
     }
 
 }

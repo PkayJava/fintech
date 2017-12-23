@@ -34,6 +34,7 @@ import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
 import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
 import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
 import com.angkorteam.fintech.dto.enums.LockInType;
+import com.angkorteam.fintech.dto.enums.ProductPopup;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
@@ -719,7 +720,7 @@ public class SavingAccountCreatePage extends Page {
             this.popupModel.put("chargeTypeValue", model.get("type"));
             this.popupModel.put("chargeValue", model.get("name"));
             this.popupModel.put("collectedOnValue", model.get("collectedOn"));
-            this.chargePopup.setContent(new AccountChargePopup("charge", this.chargePopup, this.popupModel, this.currencyValue));
+            this.chargePopup.setContent(new AccountChargePopup("charge", this.chargePopup, ProductPopup.Saving, this.popupModel, this.currencyValue));
             this.chargePopup.show(target);
         }
     }
@@ -733,7 +734,7 @@ public class SavingAccountCreatePage extends Page {
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.chargePopup.setContent(new AccountChargePopup("charge", this.chargePopup, this.popupModel, this.currencyValue));
+        this.chargePopup.setContent(new AccountChargePopup("charge", this.chargePopup, ProductPopup.Saving, this.popupModel, this.currencyValue));
         this.chargePopup.show(target);
         return false;
     }

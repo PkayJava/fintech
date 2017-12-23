@@ -749,7 +749,7 @@ public class RecurringDepositPreviewPage extends Page {
         this.chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeColumn));
         this.chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeColumn));
         this.chargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::chargeColumn));
-        this.chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeColumn));
+//        this.chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeColumn));
         this.chargeProvider = new ListDataProvider(this.chargeValue);
         this.chargeTable = new DataTable<>("chargeTable", this.chargeColumn, this.chargeProvider, 20);
         add(this.chargeTable);

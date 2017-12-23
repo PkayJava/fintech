@@ -1,13 +1,16 @@
-package com.angkorteam.fintech.pages.client.client;
+package com.angkorteam.fintech.pages.client.common;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -23,13 +26,24 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeFrequency;
+import com.angkorteam.fintech.dto.enums.ChargeTime;
+import com.angkorteam.fintech.dto.enums.ProductPopup;
+import com.angkorteam.fintech.dto.enums.loan.AdvancePaymentsAdjustmentType;
 import com.angkorteam.fintech.dto.enums.loan.Amortization;
+import com.angkorteam.fintech.dto.enums.loan.ClosureInterestCalculationRule;
+import com.angkorteam.fintech.dto.enums.loan.Frequency;
+import com.angkorteam.fintech.dto.enums.loan.FrequencyDay;
+import com.angkorteam.fintech.dto.enums.loan.FrequencyType;
 import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.enums.loan.InterestMethod;
+import com.angkorteam.fintech.dto.enums.loan.InterestRecalculationCompound;
 import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateType;
 import com.angkorteam.fintech.dto.enums.loan.RepaymentStrategy;
+import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
 import com.angkorteam.fintech.popup.AccountChargePopup;
 import com.angkorteam.fintech.popup.CollateralPopup;
 import com.angkorteam.fintech.provider.ChargeFrequencyProvider;
@@ -45,6 +59,7 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -67,9 +82,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class LoanCreatePage extends Page {
+public class LoanAccountCreatePage extends Page {
 
+    protected ClientEnum client;
     protected String clientId;
+    protected String groupId;
     protected String loanId;
     protected String officeId;
 
@@ -179,6 +196,12 @@ public class LoanCreatePage extends Page {
     protected TextField<Long> numberOfRepaymentField;
     protected TextFeedbackPanel numberOfRepaymentFeedback;
 
+    protected WebMarkupBlock installmentAmountBlock;
+    protected WebMarkupContainer installmentAmountIContainer;
+    protected Long installmentAmountValue;
+    protected TextField<Double> installmentAmountField;
+    protected TextFeedbackPanel installmentAmountFeedback;
+
     protected WebMarkupBlock repaidEveryBlock;
     protected WebMarkupContainer repaidEveryVContainer;
     protected Long repaidEveryValue;
@@ -277,12 +300,98 @@ public class LoanCreatePage extends Page {
     protected Long onArrearsAgingValue;
     protected ReadOnlyView onArrearsAgingView;
 
+    protected WebMarkupBlock interestRecalculationRecalculateInterestBlock;
+    protected WebMarkupContainer interestRecalculationRecalculateInterestVContainer;
+    protected Boolean interestRecalculationRecalculateInterestValue;
+    protected ReadOnlyView interestRecalculationRecalculateInterestView;
+
+    protected WebMarkupBlock interestRecalculationPreClosureInterestCalculationRuleBlock;
+    protected WebMarkupContainer interestRecalculationPreClosureInterestCalculationRuleVContainer;
+    protected Option interestRecalculationPreClosureInterestCalculationRuleValue;
+    protected ReadOnlyView interestRecalculationPreClosureInterestCalculationRuleView;
+
+    protected WebMarkupBlock interestRecalculationAdvancePaymentsAdjustmentTypeBlock;
+    protected WebMarkupContainer interestRecalculationAdvancePaymentsAdjustmentTypeVContainer;
+    protected Option interestRecalculationAdvancePaymentsAdjustmentTypeValue;
+    protected ReadOnlyView interestRecalculationAdvancePaymentsAdjustmentTypeView;
+
+    protected WebMarkupBlock interestRecalculationCompoundingOnBlock;
+    protected WebMarkupContainer interestRecalculationCompoundingOnVContainer;
+    protected Option interestRecalculationCompoundingOnValue;
+    protected ReadOnlyView interestRecalculationCompoundingOnView;
+
+    protected WebMarkupBlock interestRecalculationCompoundingBlock;
+    protected WebMarkupContainer interestRecalculationCompoundingVContainer;
+    protected Option interestRecalculationCompoundingValue;
+    protected ReadOnlyView interestRecalculationCompoundingView;
+
+    protected WebMarkupBlock interestRecalculationCompoundingTypeBlock;
+    protected WebMarkupContainer interestRecalculationCompoundingTypeVContainer;
+    protected Option interestRecalculationCompoundingTypeValue;
+    protected ReadOnlyView interestRecalculationCompoundingTypeView;
+
+    protected WebMarkupBlock interestRecalculationCompoundingDayBlock;
+    protected WebMarkupContainer interestRecalculationCompoundingDayVContainer;
+    protected Option interestRecalculationCompoundingDayValue;
+    protected ReadOnlyView interestRecalculationCompoundingDayView;
+    protected boolean interestRecalculationCompoundingDayVisible;
+
+    protected WebMarkupBlock interestRecalculationCompoundingOnDayBlock;
+    protected WebMarkupContainer interestRecalculationCompoundingOnDayVContainer;
+    protected Long interestRecalculationCompoundingOnDayValue;
+    protected ReadOnlyView interestRecalculationCompoundingOnDayView;
+    protected boolean interestRecalculationCompoundingOnDayVisible;
+
+    protected WebMarkupBlock interestRecalculationRecalculateBlock;
+    protected WebMarkupContainer interestRecalculationRecalculateVContainer;
+    protected Option interestRecalculationRecalculateValue;
+    protected ReadOnlyView interestRecalculationRecalculateView;
+
+    protected WebMarkupBlock interestRecalculationRecalculateTypeBlock;
+    protected WebMarkupContainer interestRecalculationRecalculateTypeVContainer;
+    protected Option interestRecalculationRecalculateTypeValue;
+    protected ReadOnlyView interestRecalculationRecalculateTypeView;
+
+    protected WebMarkupBlock interestRecalculationRecalculateDayBlock;
+    protected WebMarkupContainer interestRecalculationRecalculateDayVContainer;
+    protected Option interestRecalculationRecalculateDayValue;
+    protected ReadOnlyView interestRecalculationRecalculateDayView;
+    protected boolean interestRecalculationRecalculateDayVisible;
+
+    protected WebMarkupBlock interestRecalculationRecalculateOnDayBlock;
+    protected WebMarkupContainer interestRecalculationRecalculateOnDayVContainer;
+    protected Long interestRecalculationRecalculateOnDayValue;
+    protected ReadOnlyView interestRecalculationRecalculateOnDayView;
+    protected boolean interestRecalculationRecalculateOnDayVisible;
+
+    protected WebMarkupBlock interestRecalculationRecalculateIntervalBlock;
+    protected WebMarkupContainer interestRecalculationRecalculateIntervalVContainer;
+    protected Long interestRecalculationRecalculateIntervalValue;
+    protected ReadOnlyView interestRecalculationRecalculateIntervalView;
+
+    protected WebMarkupBlock interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock;
+    protected WebMarkupContainer interestRecalculationArrearsRecognizationBasedOnOriginalScheduleVContainer;
+    protected Boolean interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue;
+    protected ReadOnlyView interestRecalculationArrearsRecognizationBasedOnOriginalScheduleView;
+
+    protected WebMarkupBlock interestRecalculationCompoundingIntervalBlock;
+    protected WebMarkupContainer interestRecalculationCompoundingIntervalVContainer;
+    protected Long interestRecalculationCompoundingIntervalValue;
+    protected ReadOnlyView interestRecalculationCompoundingIntervalView;
+
     protected List<Map<String, Object>> chargeValue = Lists.newLinkedList();
     protected DataTable<Map<String, Object>, String> chargeTable;
     protected ListDataProvider chargeProvider;
     protected AjaxLink<Void> chargeAddLink;
     protected ModalWindow chargePopup;
     protected List<IColumn<Map<String, Object>, String>> chargeColumn;
+
+    // Overdue Charges
+
+    protected List<IColumn<Map<String, Object>, String>> overdueChargeColumn;
+    protected List<Map<String, Object>> overdueChargeValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> overdueChargeTable;
+    protected ListDataProvider overdueChargeProvider;
 
     protected List<Map<String, Object>> collateralValue;
     protected DataTable<Map<String, Object>, String> collateralTable;
@@ -378,7 +487,118 @@ public class LoanCreatePage extends Page {
 
         initOnArrearsAgingBlock();
 
-        // Table
+        this.installmentAmountBlock = new WebMarkupBlock("installmentAmountBlock", Size.Six_6);
+        this.form.add(this.installmentAmountBlock);
+        this.installmentAmountIContainer = new WebMarkupContainer("installmentAmountIContainer");
+        this.installmentAmountBlock.add(this.installmentAmountIContainer);
+        this.installmentAmountField = new TextField<>("installmentAmountField", new PropertyModel<>(this, "installmentAmountValue"));
+        this.installmentAmountField.setLabel(Model.of("Installment Amount"));
+        this.installmentAmountField.setRequired(false);
+        this.installmentAmountIContainer.add(this.installmentAmountField);
+        this.installmentAmountFeedback = new TextFeedbackPanel("installmentAmountFeedback", this.installmentAmountField);
+        this.installmentAmountIContainer.add(this.installmentAmountFeedback);
+
+        this.interestRecalculationRecalculateInterestBlock = new WebMarkupBlock("interestRecalculationRecalculateInterestBlock", Size.Twelve_12);
+        this.form.add(this.interestRecalculationRecalculateInterestBlock);
+        this.interestRecalculationRecalculateInterestVContainer = new WebMarkupContainer("interestRecalculationRecalculateInterestVContainer");
+        this.interestRecalculationRecalculateInterestBlock.add(this.interestRecalculationRecalculateInterestVContainer);
+        this.interestRecalculationRecalculateInterestView = new ReadOnlyView("interestRecalculationRecalculateInterestView", new PropertyModel<>(this, "interestRecalculationRecalculateInterestValue"));
+        this.interestRecalculationRecalculateInterestVContainer.add(this.interestRecalculationRecalculateInterestView);
+
+        this.interestRecalculationPreClosureInterestCalculationRuleBlock = new WebMarkupBlock("interestRecalculationPreClosureInterestCalculationRuleBlock", Size.Six_6);
+        this.form.add(this.interestRecalculationPreClosureInterestCalculationRuleBlock);
+        this.interestRecalculationPreClosureInterestCalculationRuleVContainer = new WebMarkupContainer("interestRecalculationPreClosureInterestCalculationRuleVContainer");
+        this.interestRecalculationPreClosureInterestCalculationRuleBlock.add(this.interestRecalculationPreClosureInterestCalculationRuleVContainer);
+        this.interestRecalculationPreClosureInterestCalculationRuleView = new ReadOnlyView("interestRecalculationPreClosureInterestCalculationRuleView", new PropertyModel<>(this, "interestRecalculationPreClosureInterestCalculationRuleValue"));
+        this.interestRecalculationPreClosureInterestCalculationRuleVContainer.add(this.interestRecalculationPreClosureInterestCalculationRuleView);
+
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock = new WebMarkupBlock("interestRecalculationAdvancePaymentsAdjustmentTypeBlock", Size.Six_6);
+        this.form.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock);
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeVContainer = new WebMarkupContainer("interestRecalculationAdvancePaymentsAdjustmentTypeVContainer");
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeBlock.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeVContainer);
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeView = new ReadOnlyView("interestRecalculationAdvancePaymentsAdjustmentTypeView", new PropertyModel<>(this, "interestRecalculationAdvancePaymentsAdjustmentTypeValue"));
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeVContainer.add(this.interestRecalculationAdvancePaymentsAdjustmentTypeView);
+
+        this.interestRecalculationCompoundingOnBlock = new WebMarkupBlock("interestRecalculationCompoundingOnBlock", Size.Four_4);
+        this.form.add(this.interestRecalculationCompoundingOnBlock);
+        this.interestRecalculationCompoundingOnVContainer = new WebMarkupContainer("interestRecalculationCompoundingOnVContainer");
+        this.interestRecalculationCompoundingOnBlock.add(this.interestRecalculationCompoundingOnVContainer);
+        this.interestRecalculationCompoundingOnView = new ReadOnlyView("interestRecalculationCompoundingOnView", new PropertyModel<>(this, "interestRecalculationCompoundingOnValue"));
+        this.interestRecalculationCompoundingOnVContainer.add(this.interestRecalculationCompoundingOnView);
+
+        this.interestRecalculationCompoundingBlock = new WebMarkupBlock("interestRecalculationCompoundingBlock", Size.Four_4);
+        this.form.add(this.interestRecalculationCompoundingBlock);
+        this.interestRecalculationCompoundingVContainer = new WebMarkupContainer("interestRecalculationCompoundingVContainer");
+        this.interestRecalculationCompoundingBlock.add(this.interestRecalculationCompoundingVContainer);
+        this.interestRecalculationCompoundingView = new ReadOnlyView("interestRecalculationCompoundingView", new PropertyModel<>(this, "interestRecalculationCompoundingValue"));
+        this.interestRecalculationCompoundingVContainer.add(this.interestRecalculationCompoundingView);
+
+        this.interestRecalculationCompoundingTypeBlock = new WebMarkupBlock("interestRecalculationCompoundingTypeBlock", Size.Four_4);
+        this.form.add(this.interestRecalculationCompoundingTypeBlock);
+        this.interestRecalculationCompoundingTypeVContainer = new WebMarkupContainer("interestRecalculationCompoundingTypeVContainer");
+        this.interestRecalculationCompoundingTypeBlock.add(this.interestRecalculationCompoundingTypeVContainer);
+        this.interestRecalculationCompoundingTypeView = new ReadOnlyView("interestRecalculationCompoundingTypeView", new PropertyModel<>(this, "interestRecalculationCompoundingTypeValue"));
+        this.interestRecalculationCompoundingTypeVContainer.add(this.interestRecalculationCompoundingTypeView);
+
+        this.interestRecalculationCompoundingDayBlock = new WebMarkupBlock("interestRecalculationCompoundingDayBlock", Size.Four_4);
+        this.form.add(this.interestRecalculationCompoundingDayBlock);
+        this.interestRecalculationCompoundingDayVContainer = new WebMarkupContainer("interestRecalculationCompoundingDayVContainer");
+        this.interestRecalculationCompoundingDayBlock.add(this.interestRecalculationCompoundingDayVContainer);
+        this.interestRecalculationCompoundingDayView = new ReadOnlyView("interestRecalculationCompoundingDayView", new PropertyModel<>(this, "interestRecalculationCompoundingDayValue"));
+        this.interestRecalculationCompoundingDayVContainer.add(this.interestRecalculationCompoundingDayView);
+
+        this.interestRecalculationCompoundingOnDayVContainer = new WebMarkupContainer("interestRecalculationCompoundingOnDayVContainer");
+        this.interestRecalculationCompoundingDayBlock.add(this.interestRecalculationCompoundingOnDayVContainer);
+        this.interestRecalculationCompoundingOnDayView = new ReadOnlyView("interestRecalculationCompoundingOnDayView", new PropertyModel<>(this, "interestRecalculationCompoundingOnDayValue"));
+        this.interestRecalculationCompoundingOnDayVContainer.add(this.interestRecalculationCompoundingOnDayView);
+
+        this.interestRecalculationCompoundingIntervalBlock = new WebMarkupBlock("interestRecalculationCompoundingIntervalBlock", Size.Four_4);
+        this.form.add(this.interestRecalculationCompoundingIntervalBlock);
+        this.interestRecalculationCompoundingIntervalVContainer = new WebMarkupContainer("interestRecalculationCompoundingIntervalVContainer");
+        this.interestRecalculationCompoundingIntervalBlock.add(this.interestRecalculationCompoundingIntervalVContainer);
+        this.interestRecalculationCompoundingIntervalView = new ReadOnlyView("interestRecalculationCompoundingIntervalView", new PropertyModel<>(this, "interestRecalculationCompoundingIntervalValue"));
+        this.interestRecalculationCompoundingIntervalVContainer.add(this.interestRecalculationCompoundingIntervalView);
+
+        this.interestRecalculationRecalculateBlock = new WebMarkupBlock("interestRecalculationRecalculateBlock", Size.Four_4);
+        this.form.add(this.interestRecalculationRecalculateBlock);
+        this.interestRecalculationRecalculateVContainer = new WebMarkupContainer("interestRecalculationRecalculateVContainer");
+        this.interestRecalculationRecalculateBlock.add(this.interestRecalculationRecalculateVContainer);
+        this.interestRecalculationRecalculateView = new ReadOnlyView("interestRecalculationRecalculateView", new PropertyModel<>(this, "interestRecalculationRecalculateValue"));
+        this.interestRecalculationRecalculateVContainer.add(this.interestRecalculationRecalculateView);
+
+        this.interestRecalculationRecalculateTypeBlock = new WebMarkupBlock("interestRecalculationRecalculateTypeBlock", Size.Four_4);
+        this.form.add(this.interestRecalculationRecalculateTypeBlock);
+        this.interestRecalculationRecalculateTypeVContainer = new WebMarkupContainer("interestRecalculationRecalculateTypeVContainer");
+        this.interestRecalculationRecalculateTypeBlock.add(this.interestRecalculationRecalculateTypeVContainer);
+        this.interestRecalculationRecalculateTypeView = new ReadOnlyView("interestRecalculationRecalculateTypeView", new PropertyModel<>(this, "interestRecalculationRecalculateTypeValue"));
+        this.interestRecalculationRecalculateTypeVContainer.add(this.interestRecalculationRecalculateTypeView);
+
+        this.interestRecalculationRecalculateDayBlock = new WebMarkupBlock("interestRecalculationRecalculateDayBlock", Size.Four_4);
+        this.form.add(this.interestRecalculationRecalculateDayBlock);
+        this.interestRecalculationRecalculateDayVContainer = new WebMarkupContainer("interestRecalculationRecalculateDayVContainer");
+        this.interestRecalculationRecalculateDayBlock.add(this.interestRecalculationRecalculateDayVContainer);
+        this.interestRecalculationRecalculateDayView = new ReadOnlyView("interestRecalculationRecalculateDayView", new PropertyModel<>(this, "interestRecalculationRecalculateDayValue"));
+        this.interestRecalculationRecalculateDayVContainer.add(this.interestRecalculationRecalculateDayView);
+
+        this.interestRecalculationRecalculateOnDayVContainer = new WebMarkupContainer("interestRecalculationRecalculateOnDayVContainer");
+        this.interestRecalculationRecalculateDayBlock.add(this.interestRecalculationRecalculateOnDayVContainer);
+        this.interestRecalculationRecalculateOnDayView = new ReadOnlyView("interestRecalculationRecalculateOnDayView", new PropertyModel<>(this, "interestRecalculationRecalculateOnDayValue"));
+        this.interestRecalculationRecalculateOnDayVContainer.add(this.interestRecalculationRecalculateOnDayView);
+
+        this.interestRecalculationRecalculateIntervalBlock = new WebMarkupBlock("interestRecalculationRecalculateIntervalBlock", Size.Four_4);
+        this.form.add(this.interestRecalculationRecalculateIntervalBlock);
+        this.interestRecalculationRecalculateIntervalVContainer = new WebMarkupContainer("interestRecalculationRecalculateIntervalVContainer");
+        this.interestRecalculationRecalculateIntervalBlock.add(this.interestRecalculationRecalculateIntervalVContainer);
+        this.interestRecalculationRecalculateIntervalView = new ReadOnlyView("interestRecalculationRecalculateIntervalView", new PropertyModel<>(this, "interestRecalculationRecalculateIntervalValue"));
+        this.interestRecalculationRecalculateIntervalVContainer.add(this.interestRecalculationRecalculateIntervalView);
+
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock = new WebMarkupBlock("interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock", Size.Twelve_12);
+        this.form.add(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock);
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleVContainer = new WebMarkupContainer("interestRecalculationArrearsRecognizationBasedOnOriginalScheduleVContainer");
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock.add(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleVContainer);
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleView = new ReadOnlyView("interestRecalculationArrearsRecognizationBasedOnOriginalScheduleView", new PropertyModel<>(this, "interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue"));
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleVContainer.add(this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleView);
+
         this.chargePopup = new ModalWindow("chargePopup");
         add(this.chargePopup);
         this.chargePopup.setOnClose(this::chargePopupClose);
@@ -401,11 +621,22 @@ public class LoanCreatePage extends Page {
         this.chargeAddLink.setOnClick(this::chargeAddLinkClick);
         this.form.add(this.chargeAddLink);
 
-        // Table
-
         this.collateralPopup = new ModalWindow("collateralPopup");
         add(this.collateralPopup);
         this.collateralPopup.setOnClose(this::collateralPopupClose);
+
+        this.overdueChargeColumn = Lists.newArrayList();
+        this.overdueChargeColumn.add(new TextColumn(Model.of("Name"), "name", "name", this::overdueChargeColumn));
+        this.overdueChargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::overdueChargeColumn));
+        this.overdueChargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::overdueChargeColumn));
+        this.overdueChargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::overdueChargeColumn));
+        // this.overdueChargeColumn.add(new TextColumn(Model.of("Date"), "date", "date",
+        // this::overdueChargeColumn));
+        this.overdueChargeProvider = new ListDataProvider(this.overdueChargeValue);
+        this.overdueChargeTable = new DataTable<>("overdueChargeTable", this.overdueChargeColumn, this.overdueChargeProvider, 20);
+        this.form.add(this.overdueChargeTable);
+        this.overdueChargeTable.addTopToolbar(new HeadersToolbar<>(this.overdueChargeTable, this.overdueChargeProvider));
+        this.overdueChargeTable.addBottomToolbar(new NoRecordsToolbar(this.overdueChargeTable));
 
         this.collateralValue = new ArrayList<>();
         this.collateralColumn = new LinkedList<>();
@@ -439,6 +670,25 @@ public class LoanCreatePage extends Page {
             this.repaidOnIContainer.setVisible(false);
             this.repaidDayIContainer.setVisible(false);
         }
+
+        this.interestRecalculationRecalculateDayVContainer.setVisible(this.interestRecalculationRecalculateDayVisible);
+        this.interestRecalculationRecalculateOnDayVContainer.setVisible(this.interestRecalculationRecalculateOnDayVisible);
+        this.interestRecalculationCompoundingDayVContainer.setVisible(this.interestRecalculationCompoundingDayVisible);
+        this.interestRecalculationCompoundingOnDayVContainer.setVisible(this.interestRecalculationCompoundingOnDayVisible);
+    }
+
+    protected ItemPanel overdueChargeColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("name".equals(column) || "date".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("type".equals(column) || "collect".equals(column)) {
+            Option value = (Option) model.get(column);
+            return new TextCell(value);
+        } else if ("amount".equals(column)) {
+            Number value = (Number) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
     protected void initOnArrearsAgingBlock() {
@@ -478,7 +728,7 @@ public class LoanCreatePage extends Page {
     }
 
     protected void initInterestFreePeriodBlock() {
-        this.interestFreePeriodBlock = new WebMarkupContainer("interestFreePeriodBlock");
+        this.interestFreePeriodBlock = new WebMarkupBlock("interestFreePeriodBlock", Size.Six_6);
         this.form.add(this.interestFreePeriodBlock);
         this.interestFreePeriodIContainer = new WebMarkupContainer("interestFreePeriodIContainer");
         this.interestFreePeriodBlock.add(this.interestFreePeriodIContainer);
@@ -906,67 +1156,112 @@ public class LoanCreatePage extends Page {
     }
 
     protected ItemPanel chargeColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("name".equals(column)) {
-            Option value = (Option) model.get(column);
-            return new TextCell(value);
-        } else if ("type".equals(column) || "collectedOn".equals(column)) {
+        if ("name".equals(column) || "type".equals(column) || "collectedOn".equals(column)) {
             Option value = (Option) model.get(column);
             return new TextCell(value);
         } else if ("amount".equals(column)) {
             Double value = (Double) model.get(column);
             return new TextCell(value, "#,###,##0.00");
         } else if ("date".equals(column)) {
-            Date value = (Date) model.get(column);
-            return new TextCell(value, "dd MMMM");
+            ChargeTime chargeTime = ChargeTime.parseLiteral(String.valueOf(model.get("chargeTime")));
+            if (chargeTime == ChargeTime.AnnualFee || chargeTime == ChargeTime.MonthlyFee) {
+                Date value = (Date) model.get("dayMonth");
+                return new TextCell(value, "dd MMMM");
+            } else if (chargeTime == ChargeTime.WeeklyFee || chargeTime == ChargeTime.SpecifiedDueDate) {
+                Date value = (Date) model.get("date");
+                return new TextCell(value, "yyyy-MM-dd");
+            } else {
+                return new TextCell("");
+            }
         } else if ("repaymentEvery".equals(column)) {
-            Long value = (Long) model.get(column);
-            return new TextCell(value);
+            ChargeTime chargeTime = ChargeTime.parseLiteral(String.valueOf(model.get("chargeTime")));
+            if (chargeTime == ChargeTime.MonthlyFee || chargeTime == ChargeTime.WeeklyFee) {
+                Long value = (Long) model.get(column);
+                return new TextCell(value);
+            } else {
+                return new TextCell("");
+            }
         }
         throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected void chargeClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
-        int index = -1;
-        for (int i = 0; i < this.chargeValue.size(); i++) {
-            Map<String, Object> column = this.chargeValue.get(i);
-            if (model.get("uuid").equals(column.get("uuid"))) {
-                index = i;
-                break;
+    protected void chargeClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
+        if ("delete".equals(column)) {
+            int index = -1;
+            for (int i = 0; i < this.chargeValue.size(); i++) {
+                Map<String, Object> value = this.chargeValue.get(i);
+                if (model.get("uuid").equals(value.get("uuid"))) {
+                    index = i;
+                    break;
+                }
             }
+            if (index >= 0) {
+                this.chargeValue.remove(index);
+            }
+            target.add(this.chargeTable);
+        } else if ("update".equals(column)) {
+            this.popupModel.clear();
+            this.popupModel.put("uuid", model.get("uuid"));
+            this.popupModel.put("chargeValue", model.get("charge"));
+            this.popupModel.put("amountValue", model.get("amount"));
+            this.popupModel.put("dateValue", model.get("date"));
+            this.popupModel.put("repaymentEveryValue", model.get("repaymentEvery"));
+            this.popupModel.put("chargeTypeValue", model.get("type"));
+            this.popupModel.put("chargeValue", model.get("name"));
+            this.popupModel.put("collectedOnValue", model.get("collectedOn"));
+            this.chargePopup.setContent(new AccountChargePopup("charge", this.chargePopup, ProductPopup.Saving, this.popupModel, this.currencyValue));
+            this.chargePopup.show(target);
         }
-        if (index >= 0) {
-            this.chargeValue.remove(index);
-        }
-        target.add(this.chargeTable);
     }
 
     protected List<ActionItem> chargeAction(String s, Map<String, Object> model) {
-        return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        List<ActionItem> actions = Lists.newArrayList();
+        actions.add(new ActionItem("update", Model.of("Update"), ItemCss.PRIMARY));
+        actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
+        return actions;
     }
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.chargePopup.setContent(new AccountChargePopup("charge", this.chargePopup, this.popupModel, this.currencyValue));
+        this.chargePopup.setContent(new AccountChargePopup("charge", this.chargePopup, ProductPopup.Loan, this.popupModel, this.currencyValue));
         this.chargePopup.show(target);
         return false;
     }
 
     protected void chargePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
-        Map<String, Object> item = Maps.newHashMap();
-        item.put("uuid", UUID.randomUUID().toString());
+        Map<String, Object> item = null;
+        if (this.popupModel.get("uuid") != null) {
+            for (int i = 0; i < this.chargeValue.size(); i++) {
+                item = this.chargeValue.get(i);
+                if (this.popupModel.get("uuid").equals(item.get("uuid"))) {
+                    break;
+                }
+            }
+        } else {
+            item = Maps.newHashMap();
+            item.put("uuid", UUID.randomUUID().toString());
+            this.chargeValue.add(item);
+        }
         item.put("charge", this.popupModel.get("chargeValue"));
+        item.put("chargeTime", this.popupModel.get("chargeTime"));
         item.put("amount", this.popupModel.get("amountValue"));
         item.put("date", this.popupModel.get("dateValue"));
+        item.put("dayMonth", this.popupModel.get("dayMonthValue"));
         item.put("repaymentEvery", this.popupModel.get("repaymentEveryValue"));
         item.put("type", this.popupModel.get("chargeTypeValue"));
         item.put("name", this.popupModel.get("chargeValue"));
         item.put("collectedOn", this.popupModel.get("collectedOnValue"));
-        this.chargeValue.add(item);
         target.add(this.chargeTable);
     }
 
     @Override
     protected void initData() {
+        this.client = ClientEnum.valueOf(getPageParameters().get("client").toString());
+
+        this.clientId = getPageParameters().get("clientId").toString();
+        this.groupId = getPageParameters().get("groupId").toString();
+        this.loanId = getPageParameters().get("loanId").toString();
+
         this.popupModel = Maps.newHashMap();
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
@@ -974,11 +1269,117 @@ public class LoanCreatePage extends Page {
         this.submittedOnValue = DateTime.now().toDate();
         this.externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
 
-        this.clientId = getPageParameters().get("clientId").toString();
-        this.loanId = getPageParameters().get("loanId").toString();
-
         Map<String, Object> clientObject = jdbcTemplate.queryForMap("select * from m_client where id = ?", this.clientId);
-        Map<String, Object> loanObject = jdbcTemplate.queryForMap("select * from m_product_loan where id = ?", this.loanId);
+
+        SelectQuery query = new SelectQuery("m_product_loan");
+        query.addJoin("left join m_fund on m_product_loan.fund_id = m_fund.id");
+        query.addJoin("left join m_organisation_currency on m_product_loan.currency_code = m_organisation_currency.code");
+        query.addJoin("left join m_product_loan_floating_rates on m_product_loan_floating_rates.loan_product_id = m_product_loan.id");
+        query.addJoin("left join m_floating_rates on m_product_loan_floating_rates.floating_rates_id = m_floating_rates.id");
+        query.addJoin("left join m_product_loan_variable_installment_config on m_product_loan_variable_installment_config.loan_product_id = m_product_loan.id");
+        query.addJoin("left join m_product_loan_recalculation_details on m_product_loan.id = m_product_loan_recalculation_details.product_id");
+        query.addJoin("left join m_product_loan_guarantee_details on m_product_loan.id = m_product_loan_guarantee_details.loan_product_id");
+
+        query.addWhere("m_product_loan.id = " + this.loanId);
+
+        // detail section
+        query.addField("m_product_loan.name product");
+        query.addField("m_product_loan.description");
+        query.addField("m_product_loan.name");
+        query.addField("m_product_loan.short_name");
+        query.addField("m_product_loan.start_date");
+        query.addField("m_product_loan.close_date");
+        query.addField("m_product_loan.include_in_borrower_cycle");
+        query.addField("m_fund.id fund_id");
+
+        // currency
+        query.addField("m_organisation_currency.code currency_code");
+        query.addField("m_product_loan.currency_digits");
+        query.addField("m_product_loan.currency_multiplesof");
+        query.addField("m_product_loan.instalment_amount_in_multiples_of");
+
+        // Terms
+        query.addField("m_product_loan.use_borrower_cycle");
+        query.addField("m_product_loan.min_principal_amount");
+        query.addField("m_product_loan.principal_amount");
+        query.addField("m_product_loan.max_principal_amount");
+
+        query.addField("m_product_loan.min_number_of_repayments");
+        query.addField("m_product_loan.number_of_repayments");
+        query.addField("m_product_loan.max_number_of_repayments");
+        query.addField("m_product_loan.repay_every");
+        query.addField("m_product_loan.repayment_period_frequency_enum");
+
+        query.addField("m_product_loan.min_nominal_interest_rate_per_period");
+        query.addField("m_product_loan.nominal_interest_rate_per_period");
+        query.addField("m_product_loan.max_nominal_interest_rate_per_period");
+        query.addField("m_product_loan.interest_period_frequency_enum");
+
+        query.addField("m_product_loan.is_linked_to_floating_interest_rates");
+
+        query.addField("m_floating_rates.name floating_rate");
+        query.addField("m_product_loan_floating_rates.interest_rate_differential");
+        query.addField("m_product_loan_floating_rates.is_floating_interest_rate_calculation_allowed");
+        query.addField("m_product_loan_floating_rates.min_differential_lending_rate");
+        query.addField("m_product_loan_floating_rates.default_differential_lending_rate");
+        query.addField("m_product_loan_floating_rates.max_differential_lending_rate");
+
+        query.addField("m_product_loan.min_days_between_disbursal_and_first_repayment");
+
+        // setting
+        query.addField("m_product_loan.amortization_method_enum");
+        query.addField("m_product_loan.interest_method_enum");
+        query.addField("m_product_loan.interest_calculated_in_period_enum");
+        query.addField("m_product_loan.allow_partial_period_interest_calcualtion");
+        query.addField("m_product_loan.arrearstolerance_amount");
+        query.addField("m_product_loan.loan_transaction_strategy_id");
+        query.addField("m_product_loan.grace_interest_free_periods");
+        query.addField("m_product_loan.grace_on_arrears_ageing");
+        query.addField("m_product_loan.grace_on_interest_periods");
+        query.addField("m_product_loan.grace_on_principal_periods");
+        query.addField("m_product_loan.account_moves_out_of_npa_only_on_arrears_completion");
+        query.addField("m_product_loan.overdue_days_for_npa");
+        query.addField("m_product_loan.days_in_year_enum");
+        query.addField("m_product_loan.days_in_month_enum");
+        query.addField("m_product_loan.principal_threshold_for_last_installment");
+        query.addField("m_product_loan.can_define_fixed_emi_amount");
+        query.addField("m_product_loan.can_use_for_topup");
+        query.addField("m_product_loan.allow_variabe_installments");
+        query.addField("m_product_loan_variable_installment_config.minimum_gap");
+        query.addField("m_product_loan_variable_installment_config.maximum_gap");
+
+        // re-calculation
+        query.addField("m_product_loan.interest_recalculation_enabled");
+
+        query.addField("m_product_loan_recalculation_details.reschedule_strategy_enum");
+        query.addField("m_product_loan_recalculation_details.rest_frequency_type_enum");
+        query.addField("m_product_loan_recalculation_details.rest_frequency_interval");
+        query.addField("m_product_loan_recalculation_details.arrears_based_on_original_schedule");
+        query.addField("m_product_loan_recalculation_details.pre_close_interest_calculation_strategy");
+        query.addField("m_product_loan_recalculation_details.compounding_frequency_type_enum");
+        query.addField("m_product_loan_recalculation_details.compounding_frequency_interval");
+        query.addField("m_product_loan_recalculation_details.rest_frequency_nth_day_enum");
+        query.addField("m_product_loan_recalculation_details.rest_frequency_on_day");
+        query.addField("m_product_loan_recalculation_details.rest_frequency_weekday_enum");
+        query.addField("m_product_loan_recalculation_details.compounding_frequency_nth_day_enum");
+        query.addField("m_product_loan_recalculation_details.compounding_frequency_on_day");
+        query.addField("m_product_loan_recalculation_details.compound_type_enum");
+        query.addField("m_product_loan_recalculation_details.compounding_frequency_weekday_enum");
+        query.addField("m_product_loan_recalculation_details.is_compounding_to_be_posted_as_transaction");
+        query.addField("m_product_loan_recalculation_details.allow_compounding_on_eod");
+
+        query.addField("m_product_loan.hold_guarantee_funds");
+        query.addField("m_product_loan_guarantee_details.mandatory_guarantee");
+        query.addField("m_product_loan_guarantee_details.minimum_guarantee_from_guarantor_funds");
+        query.addField("m_product_loan_guarantee_details.minimum_guarantee_from_own_funds");
+
+        query.addField("m_product_loan.allow_multiple_disbursals");
+        query.addField("m_product_loan.max_disbursals");
+        query.addField("m_product_loan.max_outstanding_loan_balance");
+
+        query.addField("m_product_loan.accounting_type");
+
+        Map<String, Object> loanObject = jdbcTemplate.queryForMap(query.toSQL());
 
         this.officeId = String.valueOf(clientObject.get("office_id"));
 
@@ -1046,6 +1447,135 @@ public class LoanCreatePage extends Page {
         this.onArrearsAgingValue = (Long) loanObject.get("grace_on_arrears_ageing");
         this.onInterestPaymentValue = (Long) loanObject.get("grace_on_interest_periods");
         this.onPrincipalPaymentValue = (Long) loanObject.get("grace_on_principal_periods");
+
+        Long interest_recalculation_enabled = (Long) loanObject.get("interest_recalculation_enabled");
+        this.interestRecalculationRecalculateInterestValue = interest_recalculation_enabled == null ? null : interest_recalculation_enabled == 1;
+
+        if (this.interestRecalculationRecalculateInterestValue != null && this.interestRecalculationRecalculateInterestValue) {
+            this.interestRecalculationPreClosureInterestCalculationRuleValue = ClosureInterestCalculationRule.optionLiteral(String.valueOf(loanObject.get("pre_close_interest_calculation_strategy")));
+            this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleValue = (Boolean) loanObject.get("arrears_based_on_original_schedule");
+            this.interestRecalculationAdvancePaymentsAdjustmentTypeValue = AdvancePaymentsAdjustmentType.optionLiteral(String.valueOf(loanObject.get("reschedule_strategy_enum")));
+            this.interestRecalculationCompoundingOnValue = InterestRecalculationCompound.optionLiteral(String.valueOf(loanObject.get("compound_type_enum")));
+
+            FrequencyType compounding_frequency_nth_day_enum = FrequencyType.parseLiteral(String.valueOf(loanObject.get("compounding_frequency_nth_day_enum")));
+            if (compounding_frequency_nth_day_enum != null) {
+                this.interestRecalculationCompoundingTypeValue = compounding_frequency_nth_day_enum.toOption();
+                if (compounding_frequency_nth_day_enum == FrequencyType.OnDay) {
+                    this.interestRecalculationCompoundingOnDayValue = (Long) loanObject.get("compounding_frequency_on_day");
+                    this.interestRecalculationCompoundingOnDayVisible = true;
+                } else {
+                    this.interestRecalculationCompoundingDayValue = FrequencyDay.optionLiteral(String.valueOf(loanObject.get("compounding_frequency_weekday_enum")));
+                    this.interestRecalculationCompoundingDayVisible = true;
+                }
+            }
+            this.interestRecalculationCompoundingValue = Frequency.optionLiteral(String.valueOf(loanObject.get("compounding_frequency_type_enum")));
+            this.interestRecalculationCompoundingIntervalValue = (Long) loanObject.get("compounding_frequency_interval");
+
+            FrequencyType rest_frequency_nth_day_enum = FrequencyType.parseLiteral(String.valueOf(loanObject.get("rest_frequency_nth_day_enum")));
+            if (rest_frequency_nth_day_enum != null) {
+                this.interestRecalculationRecalculateTypeValue = rest_frequency_nth_day_enum.toOption();
+                if (rest_frequency_nth_day_enum == FrequencyType.OnDay) {
+                    this.interestRecalculationRecalculateOnDayValue = (Long) loanObject.get("rest_frequency_on_day");
+                    this.interestRecalculationRecalculateOnDayVisible = true;
+                } else {
+                    this.interestRecalculationRecalculateDayValue = FrequencyDay.optionLiteral(String.valueOf(loanObject.get("rest_frequency_weekday_enum")));
+                    this.interestRecalculationRecalculateDayVisible = true;
+                }
+            }
+            this.interestRecalculationRecalculateValue = Frequency.optionLiteral(String.valueOf(loanObject.get("rest_frequency_type_enum")));
+            this.interestRecalculationRecalculateIntervalValue = (Long) loanObject.get("rest_frequency_interval");
+
+            // query.addField("m_product_loan_recalculation_details.is_compounding_to_be_posted_as_transaction");
+            // query.addField("m_product_loan_recalculation_details.allow_compounding_on_eod");
+        }
+
+        SelectQuery chargeQuery = new SelectQuery("m_charge");
+        chargeQuery.addJoin("inner join m_product_loan_charge on m_product_loan_charge.charge_id = m_charge.id");
+        chargeQuery.addField("m_charge.name");
+        chargeQuery.addField("m_charge.charge_time_enum");
+        chargeQuery.addField("m_charge.id");
+        chargeQuery.addField("m_charge.charge_calculation_enum");
+        chargeQuery.addField("m_charge.charge_payment_mode_enum");
+        chargeQuery.addField("m_charge.amount");
+        chargeQuery.addField("m_charge.fee_on_day");
+        chargeQuery.addField("m_charge.fee_interval");
+        chargeQuery.addField("m_charge.fee_on_month");
+        chargeQuery.addField("m_charge.is_penalty");
+        chargeQuery.addField("m_charge.is_active");
+        chargeQuery.addField("m_charge.min_cap");
+        chargeQuery.addField("m_charge.max_cap");
+        chargeQuery.addField("m_charge.fee_frequency");
+        chargeQuery.addField("m_charge.income_or_liability_account_id");
+        chargeQuery.addField("m_charge.tax_group_id");
+        chargeQuery.addWhere("m_product_loan_charge.product_loan_id = '" + this.loanId + "'");
+
+        List<Map<String, Object>> chargeObjects = jdbcTemplate.queryForList(chargeQuery.toSQL());
+
+        for (Map<String, Object> chargeObject : chargeObjects) {
+            Boolean is_penalty = (Boolean) chargeObject.get("is_penalty");
+            Map<String, Object> charge = new HashMap<>();
+            charge.put("name", chargeObject.get("name"));
+            Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
+            charge.put("type", type);
+            Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
+            charge.put("collect", collect);
+            charge.put("amount", chargeObject.get("amount"));
+            if (is_penalty != null && is_penalty) {
+                this.overdueChargeValue.add(charge);
+            } else {
+                Map<String, Object> popupModel = Maps.newHashMap();
+
+                popupModel.put("chargeTime", chargeObject.get("charge_time_enum"));
+                Long collectedOn = (Long) chargeObject.get("charge_time_enum");
+                if (collectedOn != null) {
+                    popupModel.put("collectedOnValue", ChargeTime.optionLiteral(String.valueOf(collectedOn)));
+                } else {
+                    popupModel.put("collectedOnValue", null);
+                }
+
+                Double amount = (Double) chargeObject.get("amount");
+                if (amount != null) {
+                    popupModel.put("amountValue", amount);
+                } else {
+                    popupModel.put("amountValue", null);
+                }
+
+                Long charge_calculation_enum = (Long) chargeObject.get("charge_calculation_enum");
+                if (type != null) {
+                    popupModel.put("chargeTypeValue", ChargeCalculation.optionLiteral(String.valueOf(charge_calculation_enum)));
+                } else {
+                    popupModel.put("chargeTypeValue", null);
+                }
+
+                Long repaymentEveryValue = (Long) chargeObject.get("fee_interval");
+                popupModel.put("repaymentEveryValue", repaymentEveryValue);
+
+                Long month = (Long) chargeObject.get("fee_on_month");
+                Long day = (Long) chargeObject.get("fee_on_day");
+                if (day != null && month != null) {
+                    try {
+                        popupModel.put("dayMonthValue", DateUtils.parseDate(day + "/" + month, "d/M"));
+                    } catch (ParseException e) {
+                    }
+                }
+
+                popupModel.put("chargeValue", new Option(String.valueOf(chargeObject.get("id")), (String) chargeObject.get("name")));
+
+                Map<String, Object> item = Maps.newHashMap();
+                item.put("uuid", UUID.randomUUID().toString());
+                item.put("charge", popupModel.get("chargeValue"));
+                item.put("chargeTime", popupModel.get("chargeTime"));
+                item.put("amount", popupModel.get("amountValue"));
+                item.put("date", popupModel.get("dateValue"));
+                item.put("dayMonth", popupModel.get("dayMonthValue"));
+                item.put("repaymentEvery", popupModel.get("repaymentEveryValue"));
+                item.put("type", popupModel.get("chargeTypeValue"));
+                item.put("name", popupModel.get("chargeValue"));
+                item.put("collectedOn", popupModel.get("collectedOnValue"));
+
+                this.chargeValue.add(item);
+            }
+        }
 
     }
 
