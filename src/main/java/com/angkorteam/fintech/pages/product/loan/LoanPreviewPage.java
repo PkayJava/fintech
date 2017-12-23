@@ -827,6 +827,23 @@ public class LoanPreviewPage extends Page {
         } else if (accountingType == AccountingType.Upfront) {
             this.upfrontVContainer.setVisible(true);
         }
+
+        boolean notLinked = this.termLinkedToFloatingInterestRatesValue == null ? true : !this.termLinkedToFloatingInterestRatesValue;
+        this.termNominalInterestRateMinimumVContainer.setVisible(notLinked);
+        this.termNominalInterestRateDefaultVContainer.setVisible(notLinked);
+        this.termNominalInterestRateMaximumVContainer.setVisible(notLinked);
+        this.termNominalInterestRateTypeVContainer.setVisible(notLinked);
+
+        this.termFloatingInterestRateVContainer.setVisible(!notLinked);
+        this.termFloatingInterestDifferentialVContainer.setVisible(!notLinked);
+        this.termFloatingInterestAllowedVContainer.setVisible(!notLinked);
+        this.termFloatingInterestMinimumVContainer.setVisible(!notLinked);
+        this.termFloatingInterestDefaultVContainer.setVisible(!notLinked);
+        this.termFloatingInterestMaximumVContainer.setVisible(!notLinked);
+
+        this.termPrincipalByLoanCycleVContainer.setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
+        this.termNumberOfRepaymentByLoanCycleVContainer.setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
+        this.termNominalInterestRateByLoanCycleVContainer.setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
     }
 
     @Override
@@ -1011,11 +1028,12 @@ public class LoanPreviewPage extends Page {
             item.put("default", (Double) borrowerObject.get("default_value"));
             item.put("maximum", (Double) borrowerObject.get("max_value"));
             item.put("minimum", (Double) borrowerObject.get("min_value"));
-            if (LoanCycle.Principal.getLiteral().equals(borrowerObject.get("param_type"))) {
+            String param_type = String.valueOf(borrowerObject.get("param_type"));
+            if (LoanCycle.Principal.getLiteral().equals(param_type)) {
                 this.termPrincipalByLoanCycleValue.add(item);
-            } else if (LoanCycle.NumberOfRepayment.getLiteral().equals(borrowerObject.get("param_type"))) {
+            } else if (LoanCycle.NumberOfRepayment.getLiteral().equals(param_type)) {
                 this.termNumberOfRepaymentByLoanCycleValue.add(item);
-            } else if (LoanCycle.NominalInterestRate.getLiteral().equals(borrowerObject.get("param_type"))) {
+            } else if (LoanCycle.NominalInterestRate.getLiteral().equals(param_type)) {
                 this.termNominalInterestRateByLoanCycleValue.add(item);
             }
         }
@@ -2329,11 +2347,11 @@ public class LoanPreviewPage extends Page {
         this.termNominalInterestRateByLoanCycleBlock.add(this.termNominalInterestRateByLoanCycleVContainer);
 
         List<IColumn<Map<String, Object>, String>> termNominalInterestRateByLoanCycleColumn = Lists.newArrayList();
-        termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("When"), "when", "when", this::termNominalInterestRateByLoanCycleWhenColumn));
-        termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle", this::termNominalInterestRateByLoanCycleCycleColumn));
-        termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum", this::termNominalInterestRateByLoanCycleMinimumColumn));
-        termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Default"), "default", "default", this::termNominalInterestRateByLoanCycleDefaultColumn));
-        termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum", this::termNominalInterestRateByLoanCycleMaximumColumn));
+        termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("When"), "when", "when", this::termNominalInterestRateByLoanCycleColumn));
+        termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle", this::termNominalInterestRateByLoanCycleColumn));
+        termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum", this::termNominalInterestRateByLoanCycleColumn));
+        termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Default"), "default", "default", this::termNominalInterestRateByLoanCycleColumn));
+        termNominalInterestRateByLoanCycleColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum", this::termNominalInterestRateByLoanCycleColumn));
         this.termNominalInterestRateByLoanCycleProvider = new ListDataProvider(this.termNominalInterestRateByLoanCycleValue);
         this.termNominalInterestRateByLoanCycleTable = new DataTable<>("termNominalInterestRateByLoanCycleTable", termNominalInterestRateByLoanCycleColumn, this.termNominalInterestRateByLoanCycleProvider, 20);
         this.termNominalInterestRateByLoanCycleVContainer.add(this.termNominalInterestRateByLoanCycleTable);
@@ -2362,29 +2380,18 @@ public class LoanPreviewPage extends Page {
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateVContainer.add(this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateView);
     }
 
-    protected ItemPanel termNominalInterestRateByLoanCycleWhenColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        String value = (String) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel termNominalInterestRateByLoanCycleMinimumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double value = (Double) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel termNominalInterestRateByLoanCycleDefaultColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double value = (Double) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel termNominalInterestRateByLoanCycleMaximumColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Double value = (Double) model.get(jdbcColumn);
-        return new TextCell(value);
-    }
-
-    protected ItemPanel termNominalInterestRateByLoanCycleCycleColumn(String jdbcColumn, IModel<String> display, Map<String, Object> model) {
-        Long value = (Long) model.get(jdbcColumn);
-        return new TextCell(value);
+    protected ItemPanel termNominalInterestRateByLoanCycleColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("when".equals(column)) {
+            Option value = (Option) model.get(column);
+            return new TextCell(value);
+        } else if ("cycle".equals(column)) {
+            Long value = (Long) model.get(column);
+            return new TextCell(value);
+        } else if ("minimum".equals(column) || "default".equals(column) || "maximum".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
     protected List<ActionItem> termNominalInterestRateByLoanCycleActionItem(String s, Map<String, Object> model) {
