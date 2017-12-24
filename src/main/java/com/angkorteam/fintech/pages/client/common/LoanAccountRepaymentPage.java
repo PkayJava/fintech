@@ -1,12 +1,14 @@
 package com.angkorteam.fintech.pages.client.common;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
@@ -19,7 +21,7 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.saving.WithdrawBuilder;
+import com.angkorteam.fintech.helper.loan.RepaymentBuilder;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
 import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
@@ -27,6 +29,8 @@ import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
@@ -37,7 +41,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingAccountWithdrawPage extends Page {
+public class LoanAccountRepaymentPage extends Page {
 
     protected ClientEnum client;
 
@@ -45,7 +49,7 @@ public class SavingAccountWithdrawPage extends Page {
     protected String groupId;
     protected String centerId;
 
-    protected String accountId;
+    protected String loanId;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -106,6 +110,12 @@ public class SavingAccountWithdrawPage extends Page {
     protected TextField<String> bankField;
     protected TextFeedbackPanel bankFeedback;
 
+    protected WebMarkupBlock noteBlock;
+    protected WebMarkupContainer noteIContainer;
+    protected String noteValue;
+    protected TextArea<String> noteField;
+    protected TextFeedbackPanel noteFeedback;
+
     @Override
     protected void initComponent() {
         this.form = new Form<>("form");
@@ -147,6 +157,8 @@ public class SavingAccountWithdrawPage extends Page {
         initReceiptBlock();
 
         initBankBlock();
+
+        initNoteBlock();
     }
 
     @Override
@@ -156,6 +168,18 @@ public class SavingAccountWithdrawPage extends Page {
     @Override
     protected void configureMetaData() {
         paymentDetailFieldUpdate(null);
+    }
+
+    protected void initNoteBlock() {
+        this.noteBlock = new WebMarkupBlock("noteBlock", Size.Six_6);
+        this.form.add(this.noteBlock);
+        this.noteIContainer = new WebMarkupContainer("noteIContainer");
+        this.noteBlock.add(this.noteIContainer);
+        this.noteField = new TextArea<>("noteField", new PropertyModel<>(this, "noteValue"));
+        this.noteField.setLabel(Model.of("Note"));
+        this.noteIContainer.add(this.noteField);
+        this.noteFeedback = new TextFeedbackPanel("noteFeedback", this.noteField);
+        this.noteIContainer.add(this.noteFeedback);
     }
 
     protected void initBankBlock() {
@@ -278,8 +302,14 @@ public class SavingAccountWithdrawPage extends Page {
         this.groupId = getPageParameters().get("groupId").toString();
         this.centerId = getPageParameters().get("centerId").toString();
 
-        this.accountId = getPageParameters().get("accountId").toString();
+        this.loanId = getPageParameters().get("loanId").toString();
         this.transactionDateValue = DateTime.now().toDate();
+
+        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        Map<String, Object> repaymentObject = jdbcTemplate.queryForMap("select duedate, ((principal_amount + interest_amount) - (principal_completed_derived + interest_completed_derived)) continue_amount, (principal_amount + interest_amount) amount from m_loan_repayment_schedule where loan_id = ? and completed_derived = 0 ORDER BY installment asc LIMIT 1", this.loanId);
+
+        this.transactionAmountValue = (Double) (repaymentObject.get("continue_amount") == null ? repaymentObject.get("amount") : repaymentObject.get("continue_amount"));
+        this.transactionDateValue = (Date) repaymentObject.get("duedate");
     }
 
     protected boolean paymentDetailFieldUpdate(AjaxRequestTarget target) {
@@ -300,8 +330,8 @@ public class SavingAccountWithdrawPage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        WithdrawBuilder builder = new WithdrawBuilder();
-        builder.withId(this.accountId);
+        RepaymentBuilder builder = new RepaymentBuilder();
+        builder.withId(this.loanId);
         builder.withTransactionDate(this.transactionDateValue);
         builder.withTransactionAmount(this.transactionAmountValue);
         if (this.paymentTypeValue != null) {
@@ -317,7 +347,7 @@ public class SavingAccountWithdrawPage extends Page {
 
         JsonNode node = null;
         try {
-            node = ClientHelper.withdrawSavingAccount((Session) getSession(), builder.build());
+            node = ClientHelper.repaymentLoanAccount((Session) getSession(), builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

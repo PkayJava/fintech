@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.helper.acount;
+package com.angkorteam.fintech.helper.saving;
 
 import java.io.Serializable;
 import java.util.Date;

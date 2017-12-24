@@ -1,18 +1,17 @@
-package com.angkorteam.fintech.helper.acount;
+package com.angkorteam.fintech.helper.loan;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.mashape.unirest.http.JsonNode;
 
-public class WithdrawBuilder implements Serializable {
+public class RepaymentBuilder {
 
     private String id;
     private boolean hasId;
 
-    public WithdrawBuilder withId(String id) {
+    public RepaymentBuilder withId(String id) {
         this.id = id;
         this.hasId = true;
         return this;
@@ -21,7 +20,7 @@ public class WithdrawBuilder implements Serializable {
     private String locale = "en";
     private boolean hasLocale = true;
 
-    public WithdrawBuilder withLocale(String locale) {
+    public RepaymentBuilder withLocale(String locale) {
         this.locale = locale;
         this.hasLocale = true;
         return this;
@@ -30,7 +29,7 @@ public class WithdrawBuilder implements Serializable {
     private String dateFormat = "yyyy-MM-dd";
     private boolean hasDateFormat = true;
 
-    public WithdrawBuilder withDateFormat(String dateFormat) {
+    public RepaymentBuilder withDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
         this.hasDateFormat = true;
         return this;
@@ -39,7 +38,7 @@ public class WithdrawBuilder implements Serializable {
     private String paymentTypeId;
     private boolean hasPaymentTypeId;
 
-    public WithdrawBuilder withPaymentTypeId(String paymentTypeId) {
+    public RepaymentBuilder withPaymentTypeId(String paymentTypeId) {
         this.paymentTypeId = paymentTypeId;
         this.hasPaymentTypeId = true;
         return this;
@@ -48,7 +47,7 @@ public class WithdrawBuilder implements Serializable {
     private Date transactionDate;
     private boolean hasTransactionDate;
 
-    public WithdrawBuilder withTransactionDate(Date transactionDate) {
+    public RepaymentBuilder withTransactionDate(Date transactionDate) {
         this.transactionDate = transactionDate;
         this.hasTransactionDate = true;
         return this;
@@ -57,7 +56,7 @@ public class WithdrawBuilder implements Serializable {
     private Double transactionAmount;
     private boolean hasTransactionAmount;
 
-    public WithdrawBuilder withTransactionAmount(Double transactionAmount) {
+    public RepaymentBuilder withTransactionAmount(Double transactionAmount) {
         this.transactionAmount = transactionAmount;
         this.hasTransactionAmount = true;
         return this;
@@ -66,7 +65,7 @@ public class WithdrawBuilder implements Serializable {
     private String accountNumber;
     private boolean hasAccountNumber;
 
-    public WithdrawBuilder withAccountNumber(String accountNumber) {
+    public RepaymentBuilder withAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
         this.hasAccountNumber = true;
         return this;
@@ -75,7 +74,7 @@ public class WithdrawBuilder implements Serializable {
     private String checkNumber;
     private boolean hasCheckNumber;
 
-    public WithdrawBuilder withCheckNumber(String checkNumber) {
+    public RepaymentBuilder withCheckNumber(String checkNumber) {
         this.checkNumber = checkNumber;
         this.hasCheckNumber = true;
         return this;
@@ -84,7 +83,7 @@ public class WithdrawBuilder implements Serializable {
     private String routingCode;
     private boolean hasRoutingCode;
 
-    public WithdrawBuilder withRoutingCode(String routingCode) {
+    public RepaymentBuilder withRoutingCode(String routingCode) {
         this.routingCode = routingCode;
         this.hasRoutingCode = true;
         return this;
@@ -93,7 +92,7 @@ public class WithdrawBuilder implements Serializable {
     private String receiptNumber;
     private boolean hasReceiptNumber;
 
-    public WithdrawBuilder withReceiptNumber(String receiptNumber) {
+    public RepaymentBuilder withReceiptNumber(String receiptNumber) {
         this.receiptNumber = receiptNumber;
         this.hasReceiptNumber = true;
         return this;
@@ -102,14 +101,27 @@ public class WithdrawBuilder implements Serializable {
     private String bankNumber;
     private boolean hasBankNumber;
 
-    public WithdrawBuilder withBankNumber(String bankNumber) {
+    public RepaymentBuilder withBankNumber(String bankNumber) {
         this.bankNumber = bankNumber;
         this.hasBankNumber = true;
         return this;
     }
 
+    private String note;
+    private boolean hasNote;
+
+    public RepaymentBuilder withNote(String note) {
+        this.note = note;
+        this.hasNote = true;
+        return this;
+    }
+
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
+
+        if (this.hasNote) {
+            object.getObject().put("note", this.note);
+        }
 
         if (this.hasBankNumber) {
             object.getObject().put("bankNumber", this.bankNumber);
@@ -161,4 +173,5 @@ public class WithdrawBuilder implements Serializable {
 
         return object;
     }
+
 }

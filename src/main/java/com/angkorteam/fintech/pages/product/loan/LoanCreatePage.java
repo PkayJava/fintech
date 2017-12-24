@@ -2855,7 +2855,7 @@ public class LoanCreatePage extends Page {
         this.currencyInstallmentInMultipleOfField = new TextField<>("currencyInstallmentInMultipleOfField", new PropertyModel<>(this, "currencyInstallmentInMultipleOfValue"));
         this.currencyInstallmentInMultipleOfField.setLabel(Model.of("Installment in multiple of"));
         this.currencyInstallmentInMultipleOfField.add(new OnChangeAjaxBehavior());
-        this.currencyInstallmentInMultipleOfField.add(RangeValidator.minimum((int) 1));
+        this.currencyInstallmentInMultipleOfField.add(RangeValidator.minimum((long) 1));
         this.currencyInstallmentInMultipleOfIContainer.add(this.currencyInstallmentInMultipleOfField);
         this.currencyInstallmentInMultipleOfFeedback = new TextFeedbackPanel("currencyInstallmentInMultipleOfFeedback", this.currencyInstallmentInMultipleOfField);
         this.currencyInstallmentInMultipleOfIContainer.add(this.currencyInstallmentInMultipleOfFeedback);

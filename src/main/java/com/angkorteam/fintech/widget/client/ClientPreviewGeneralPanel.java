@@ -30,6 +30,7 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.builder.client.client.ClientChargeWaiveBuilder;
 import com.angkorteam.fintech.dto.builder.client.client.ClientUnassignStaffBuilder;
+import com.angkorteam.fintech.dto.constant.LoanTypeEnum;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.pages.client.client.ChargeOverviewPage;
 import com.angkorteam.fintech.pages.client.client.ChargePayPage;
@@ -44,6 +45,9 @@ import com.angkorteam.fintech.pages.client.client.ClientStandingInstructionCreat
 import com.angkorteam.fintech.pages.client.client.ClientTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientUndoTransferPage;
 import com.angkorteam.fintech.pages.client.client.ClientWebcamPage;
+import com.angkorteam.fintech.pages.client.common.LoanAccountApprovePage;
+import com.angkorteam.fintech.pages.client.common.LoanAccountDisbursePage;
+import com.angkorteam.fintech.pages.client.common.LoanAccountRepaymentPage;
 import com.angkorteam.fintech.pages.client.common.LoanAccountSelectionPage;
 import com.angkorteam.fintech.pages.client.common.SavingAccountActivatePage;
 import com.angkorteam.fintech.pages.client.common.SavingAccountApprovePage;
@@ -115,6 +119,10 @@ public class ClientPreviewGeneralPanel extends Panel {
     protected DataTable<Map<String, Object>, String> upcomingChargeTable;
     protected JdbcProvider upcomingChargeProvider;
     protected List<IColumn<Map<String, Object>, String>> upcomingChargeColumn;
+
+    protected DataTable<Map<String, Object>, String> loanAccountTable;
+    protected JdbcProvider loanAccountProvider;
+    protected List<IColumn<Map<String, Object>, String>> loanAccountColumn;
 
     protected Label clientNameView;
     protected String clientNameValue;
@@ -213,6 +221,8 @@ public class ClientPreviewGeneralPanel extends Panel {
 
         initSavingAccountTable();
 
+        initLoanAccountTable();
+
         initUpcomingChargeTable();
 
         this.clientNameView = new Label("clientNameView", new PropertyModel<>(this, "clientNameValue"));
@@ -248,6 +258,35 @@ public class ClientPreviewGeneralPanel extends Panel {
 
         this.savingAccountTable = new DefaultDataTable<>("savingAccountTable", savingAccountColumn, this.savingAccountProvider, 20);
         add(this.savingAccountTable);
+    }
+
+    protected void initLoanAccountTable() {
+        this.loanAccountProvider = new JdbcProvider("m_loan");
+        this.loanAccountProvider.applyJoin("m_product_loan", "inner join m_product_loan on m_loan.product_id = m_product_loan.id");
+        this.loanAccountProvider.boardField("m_loan.account_no", "account", String.class);
+        this.loanAccountProvider.boardField("m_product_loan.name", "product", String.class);
+        this.loanAccountProvider.boardField("m_loan.principal_disbursed_derived", "original_loan", Double.class);
+        this.loanAccountProvider.boardField("m_loan.total_outstanding_derived", "loan_balance", Double.class);
+        this.loanAccountProvider.boardField("m_loan.total_repayment_derived", "amount_paid", Double.class);
+        this.loanAccountProvider.boardField("m_loan.loan_type_enum", "type", Long.class);
+        this.loanAccountProvider.boardField("m_loan.loan_status_id", "status", Long.class);
+        this.loanAccountProvider.boardField("m_loan.id", "id", Long.class);
+        this.loanAccountProvider.applyWhere("client_id", "m_loan.client_id = '" + this.clientId + "'");
+
+        this.loanAccountProvider.selectField("id", Long.class);
+        this.loanAccountProvider.selectField("status", Long.class);
+
+        this.loanAccountColumn = Lists.newArrayList();
+        this.loanAccountColumn.add(new TextFilterColumn(this.loanAccountProvider, ItemClass.String, Model.of("Account #"), "account", "account", this::loanAccountColumn));
+        this.loanAccountColumn.add(new TextFilterColumn(this.loanAccountProvider, ItemClass.String, Model.of("Loan Account"), "product", "product", this::loanAccountColumn));
+        this.loanAccountColumn.add(new TextFilterColumn(this.loanAccountProvider, ItemClass.Double, Model.of("Original Loan"), "original_loan", "original_loan", this::loanAccountColumn));
+        this.loanAccountColumn.add(new TextFilterColumn(this.loanAccountProvider, ItemClass.Double, Model.of("Loan Balance"), "loan_balance", "loan_balance", this::loanAccountColumn));
+        this.loanAccountColumn.add(new TextFilterColumn(this.loanAccountProvider, ItemClass.Double, Model.of("Amount Paid"), "amount_paid", "amount_paid", this::loanAccountColumn));
+        this.loanAccountColumn.add(new TextFilterColumn(this.loanAccountProvider, ItemClass.Long, Model.of("Type"), "type", "type", this::loanAccountColumn));
+        this.loanAccountColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::loanAccountAction, this::loanAccountClick));
+
+        this.loanAccountTable = new DefaultDataTable<>("loanAccountTable", loanAccountColumn, this.loanAccountProvider, 20);
+        add(this.loanAccountTable);
     }
 
     protected void initUpcomingChargeTable() {
@@ -507,6 +546,68 @@ public class ClientPreviewGeneralPanel extends Panel {
             Double value = (Double) model.get(column);
             return new TextCell(value == null ? 0 : value, "#,###,##0.00");
         }
+        throw new WicketRuntimeException("Unknown " + column);
+    }
+
+    protected List<ActionItem> loanAccountAction(String s, Map<String, Object> model) {
+        List<ActionItem> actions = Lists.newArrayList();
+        Long status = (Long) model.get("status");
+        if (status == 100) {
+            actions.add(new ActionItem("Approve", Model.of("Approve"), ItemCss.PRIMARY));
+        } else if (status == 200) {
+            actions.add(new ActionItem("Disburse", Model.of("Disburse"), ItemCss.PRIMARY));
+        } else if (status == 300) {
+            actions.add(new ActionItem("Make Repayment", Model.of("Make Repayment"), ItemCss.PRIMARY));
+        }
+        return actions;
+    }
+
+    protected void loanAccountClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
+        if ("Approve".equals(column)) {
+            String loanId = String.valueOf(model.get("id"));
+            PageParameters parameters = new PageParameters();
+            parameters.add("clientId", this.clientId);
+            parameters.add("client", ClientEnum.Client.name());
+            parameters.add("loanId", loanId);
+            setResponsePage(LoanAccountApprovePage.class, parameters);
+        } else if ("Disburse".equals(column)) {
+            String loanId = String.valueOf(model.get("id"));
+            PageParameters parameters = new PageParameters();
+            parameters.add("clientId", this.clientId);
+            parameters.add("client", ClientEnum.Client.name());
+            parameters.add("loanId", loanId);
+            setResponsePage(LoanAccountDisbursePage.class, parameters);
+        } else if ("Make Repayment".equals(column)) {
+            String loanId = String.valueOf(model.get("id"));
+            PageParameters parameters = new PageParameters();
+            parameters.add("clientId", this.clientId);
+            parameters.add("client", ClientEnum.Client.name());
+            parameters.add("loanId", loanId);
+            setResponsePage(LoanAccountRepaymentPage.class, parameters);
+        }
+
+    }
+
+    protected ItemPanel loanAccountColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("account".equals(column) || "product".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        } else if ("original_loan".equals(column) || "loan_balance".equals(column) || "amount_paid".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value, "#,###,##0.00");
+        } else if ("type".equals(column)) {
+            Long value = (Long) model.get(column);
+            if (value == 1) {
+                return new TextCell(LoanTypeEnum.Individual.getShortDescription());
+            } else if (value == 2) {
+                return new TextCell(LoanTypeEnum.Group.getShortDescription());
+            } else if (value == 3) {
+                return new TextCell(LoanTypeEnum.JLG.getShortDescription());
+            } else {
+                return new TextCell("Invalid");
+            }
+        }
+
         throw new WicketRuntimeException("Unknown " + column);
     }
 

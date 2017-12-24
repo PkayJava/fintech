@@ -26,8 +26,10 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.LoanAccountBuilder;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeFrequency;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
@@ -42,8 +44,11 @@ import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.enums.loan.InterestMethod;
 import com.angkorteam.fintech.dto.enums.loan.InterestRecalculationCompound;
 import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateType;
+import com.angkorteam.fintech.dto.enums.loan.RepaidOn;
 import com.angkorteam.fintech.dto.enums.loan.RepaymentStrategy;
+import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
+import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
 import com.angkorteam.fintech.popup.AccountChargePopup;
 import com.angkorteam.fintech.popup.CollateralPopup;
 import com.angkorteam.fintech.provider.ChargeFrequencyProvider;
@@ -80,6 +85,8 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanAccountCreatePage extends Page {
@@ -209,7 +216,7 @@ public class LoanAccountCreatePage extends Page {
 
     protected WebMarkupBlock repaidTypeBlock;
     protected WebMarkupContainer repaidTypeVContainer;
-    protected String repaidTypeValue;
+    protected Option repaidTypeValue;
     protected ReadOnlyView repaidTypeView;
 
     protected RepaidOnProvider repaidOnProvider;
@@ -251,22 +258,22 @@ public class LoanAccountCreatePage extends Page {
 
     protected WebMarkupBlock interestMethodBlock;
     protected WebMarkupContainer interestMethodVContainer;
-    protected String interestMethodValue;
+    protected Option interestMethodValue;
     protected ReadOnlyView interestMethodView;
 
     protected WebMarkupBlock amortizationBlock;
     protected WebMarkupContainer amortizationVContainer;
-    protected String amortizationValue;
+    protected Option amortizationValue;
     protected ReadOnlyView amortizationView;
 
     protected WebMarkupBlock interestCalculationPeriodBlock;
     protected WebMarkupContainer interestCalculationPeriodVContainer;
-    protected String interestCalculationPeriodValue;
+    protected Option interestCalculationPeriodValue;
     protected ReadOnlyView interestCalculationPeriodView;
 
     protected WebMarkupBlock calculateInterestForExactDayInPartialPeriodBlock;
     protected WebMarkupContainer calculateInterestForExactDayInPartialPeriodVContainer;
-    protected String calculateInterestForExactDayInPartialPeriodValue;
+    protected Boolean calculateInterestForExactDayInPartialPeriodValue;
     protected ReadOnlyView calculateInterestForExactDayInPartialPeriodView;
 
     protected WebMarkupBlock arrearsToleranceBlock;
@@ -282,7 +289,7 @@ public class LoanAccountCreatePage extends Page {
 
     protected WebMarkupBlock repaymentStrategyBlock;
     protected WebMarkupContainer repaymentStrategyVContainer;
-    protected String repaymentStrategyValue;
+    protected Option repaymentStrategyValue;
     protected ReadOnlyView repaymentStrategyView;
 
     protected WebMarkupBlock onPrincipalPaymentBlock;
@@ -663,7 +670,7 @@ public class LoanAccountCreatePage extends Page {
 
     @Override
     protected void configureMetaData() {
-        if (ChargeFrequency.Month.getDescription().equals(this.repaidTypeValue)) {
+        if (ChargeFrequency.Month.toOption().equals(this.repaidTypeValue)) {
             this.repaidOnIContainer.setVisible(true);
             this.repaidDayIContainer.setVisible(true);
         } else {
@@ -675,6 +682,27 @@ public class LoanAccountCreatePage extends Page {
         this.interestRecalculationRecalculateOnDayVContainer.setVisible(this.interestRecalculationRecalculateOnDayVisible);
         this.interestRecalculationCompoundingDayVContainer.setVisible(this.interestRecalculationCompoundingDayVisible);
         this.interestRecalculationCompoundingOnDayVContainer.setVisible(this.interestRecalculationCompoundingOnDayVisible);
+
+        boolean recalculateInterest = this.interestRecalculationRecalculateInterestValue != null && this.interestRecalculationRecalculateInterestValue;
+
+        this.interestRecalculationRecalculateInterestVContainer.setVisible(recalculateInterest);
+        this.interestRecalculationPreClosureInterestCalculationRuleVContainer.setVisible(recalculateInterest);
+        this.interestRecalculationAdvancePaymentsAdjustmentTypeVContainer.setVisible(recalculateInterest);
+        this.interestRecalculationCompoundingOnVContainer.setVisible(recalculateInterest);
+        this.interestRecalculationCompoundingVContainer.setVisible(recalculateInterest);
+        this.interestRecalculationCompoundingTypeVContainer.setVisible(recalculateInterest);
+        this.interestRecalculationCompoundingDayVContainer.setVisible(recalculateInterest);
+        this.interestRecalculationCompoundingOnDayVContainer.setVisible(recalculateInterest);
+        this.interestRecalculationRecalculateVContainer.setVisible(recalculateInterest);
+        this.interestRecalculationRecalculateTypeVContainer.setVisible(recalculateInterest);
+        this.interestRecalculationRecalculateDayVContainer.setVisible(recalculateInterest);
+        this.interestRecalculationRecalculateOnDayVContainer.setVisible(recalculateInterest);
+        this.interestRecalculationRecalculateIntervalVContainer.setVisible(recalculateInterest);
+        this.interestRecalculationArrearsRecognizationBasedOnOriginalScheduleVContainer.setVisible(recalculateInterest);
+        this.interestRecalculationCompoundingIntervalVContainer.setVisible(recalculateInterest);
+
+        this.overdueChargeTable.setVisible(!this.overdueChargeValue.isEmpty());
+
     }
 
     protected ItemPanel overdueChargeColumn(String column, IModel<String> display, Map<String, Object> model) {
@@ -1067,6 +1095,7 @@ public class LoanAccountCreatePage extends Page {
     protected void initLoanOfficerBlock() {
         this.loanOfficerProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
         this.loanOfficerProvider.applyWhere("is_active", "is_active = 1");
+        this.loanOfficerProvider.applyWhere("is_loan_officer", "is_loan_officer = 1");
         this.loanOfficerProvider.applyWhere("office_id", "office_id = " + this.officeId);
         this.loanOfficerBlock = new WebMarkupBlock("loanOfficerBlock", Size.Six_6);
         this.form.add(this.loanOfficerBlock);
@@ -1411,7 +1440,7 @@ public class LoanAccountCreatePage extends Page {
 
         this.loanTypeValue = chargeFrequency == null ? null : chargeFrequency.toOption();
 
-        this.repaidTypeValue = chargeFrequency == null ? "" : chargeFrequency.getDescription();
+        this.repaidTypeValue = chargeFrequency == null ? null : chargeFrequency.toOption();
 
         this.firstRepaymentOnValue = DateTime.now().toDate();
         this.interestChargedFromValue = DateTime.now().toDate();
@@ -1421,24 +1450,15 @@ public class LoanAccountCreatePage extends Page {
         NominalInterestRateType nominalInterestTypeValue = NominalInterestRateType.parseLiteral(String.valueOf(loanObject.get("interest_period_frequency_enum")));
         this.nominalInterestTypeValue = nominalInterestTypeValue == null ? "" : nominalInterestTypeValue.getDescription();
 
-        InterestMethod interestMethodValue = InterestMethod.parseLiteral(String.valueOf(loanObject.get("interest_method_enum")));
-        this.interestMethodValue = interestMethodValue == null ? "" : interestMethodValue.getDescription();
+        this.interestMethodValue = InterestMethod.optionLiteral(String.valueOf(loanObject.get("interest_method_enum")));
 
-        Amortization amortizationValue = Amortization.parseLiteral(String.valueOf(loanObject.get("amortization_method_enum")));
-        this.amortizationValue = amortizationValue == null ? "" : amortizationValue.getDescription();
+        this.amortizationValue = Amortization.optionLiteral(String.valueOf(loanObject.get("amortization_method_enum")));
 
-        InterestCalculationPeriod interestCalculationPeriodValue = InterestCalculationPeriod.parseLiteral(String.valueOf(loanObject.get("interest_calculated_in_period_enum")));
-        this.interestCalculationPeriodValue = interestCalculationPeriodValue == null ? "" : interestCalculationPeriodValue.getDescription();
+        this.interestCalculationPeriodValue = InterestCalculationPeriod.optionLiteral(String.valueOf(loanObject.get("interest_calculated_in_period_enum")));
 
-        Boolean calculateInterestForExactDayInPartialPeriodValue = (Boolean) loanObject.get("allow_partial_period_interest_calcualtion");
-        if (calculateInterestForExactDayInPartialPeriodValue != null && calculateInterestForExactDayInPartialPeriodValue) {
-            this.calculateInterestForExactDayInPartialPeriodValue = "Yes";
-        } else {
-            this.calculateInterestForExactDayInPartialPeriodValue = "No";
-        }
+        this.calculateInterestForExactDayInPartialPeriodValue = (Boolean) loanObject.get("allow_partial_period_interest_calcualtion");
 
-        RepaymentStrategy repaymentStrategyValue = RepaymentStrategy.parseLiteral(String.valueOf(loanObject.get("loan_transaction_strategy_id")));
-        this.repaymentStrategyValue = repaymentStrategyValue == null ? "" : repaymentStrategyValue.getDescription();
+        this.repaymentStrategyValue = RepaymentStrategy.optionLiteral(String.valueOf(loanObject.get("loan_transaction_strategy_id")));
 
         this.arrearsToleranceValue = (Double) loanObject.get("arrearstolerance_amount");
 
@@ -1581,9 +1601,112 @@ public class LoanAccountCreatePage extends Page {
 
     protected void saveButtonSubmit(Button button) {
 
-        PageParameters parameters = new PageParameters();
-        parameters.add("clientId", this.clientId);
-        setResponsePage(ClientPreviewPage.class, parameters);
+        LoanAccountBuilder builder = new LoanAccountBuilder();
+
+        builder.withClientId(this.clientId);
+        builder.withProductId(this.loanId);
+        if (this.loanOfficerValue != null) {
+            builder.withLoanOfficerId(this.loanOfficerValue.getId());
+        }
+        if (this.loanPurposeValue != null) {
+            builder.withLoanPurposeId(this.loanPurposeValue.getId());
+        }
+        if (this.fundValue != null) {
+            builder.withFundId(this.fundValue.getId());
+        }
+        builder.withSubmittedOnDate(this.submittedOnValue);
+        builder.withExpectedDisbursementDate(this.disbursementOnValue);
+        builder.withExternalId(this.externalIdValue);
+
+        if (this.linkSavingAccountValue != null) {
+            builder.withLinkAccountId(this.linkSavingAccountValue.getId());
+            builder.withCreateStandingInstructionAtDisbursement(this.createStandingInstructionAtDisbursementValue);
+        }
+
+        builder.withPrincipal(this.principalValue);
+        builder.withLoanTermFrequency(this.loanTermValue);
+        if (this.loanTypeValue != null) {
+            builder.withLoanTermFrequencyType(ChargeFrequency.valueOf(this.loanTypeValue.getId()));
+        }
+
+        builder.withNumberOfRepayments(this.numberOfRepaymentValue);
+        builder.withRepaymentEvery(this.repaidEveryValue);
+        if (this.repaidTypeValue != null) {
+            builder.withRepaymentFrequencyType(ChargeFrequency.valueOf(this.repaidTypeValue.getId()));
+        }
+        if (this.repaidOnValue != null) {
+            builder.withRepaymentFrequencyNthDayType(RepaidOn.valueOf(this.repaidOnValue.getId()));
+        }
+        if (this.repaidDayValue != null) {
+            builder.withRepaymentFrequencyDayOfWeekType(FrequencyDay.valueOf(this.repaidDayValue.getId()));
+        }
+
+        builder.withRepaymentsStartingFromDate(this.firstRepaymentOnValue);
+        builder.withInterestChargedFromDate(this.interestChargedFromValue);
+
+        builder.withInterestRatePerPeriod(this.nominalInterestRateValue);
+        if (this.interestMethodValue != null) {
+            builder.withInterestType(InterestMethod.valueOf(this.interestMethodValue.getId()));
+        }
+        if (this.amortizationValue != null) {
+            builder.withAmortizationType(Amortization.valueOf(this.amortizationValue.getId()));
+        }
+        if (this.interestCalculationPeriodValue != null) {
+            InterestCalculationPeriod period = InterestCalculationPeriod.valueOf(this.interestCalculationPeriodValue.getId());
+            builder.withInterestCalculationPeriodType(period);
+            if (period == InterestCalculationPeriod.Daily) {
+                builder.withAllowPartialPeriodInterestCalcualtion(this.calculateInterestForExactDayInPartialPeriodValue != null && this.calculateInterestForExactDayInPartialPeriodValue);
+            }
+        }
+        builder.withInArrearsTolerance(this.arrearsToleranceValue);
+        builder.withGraceOnInterestCharged(this.interestFreePeriodValue);
+        if (this.repaymentStrategyValue != null) {
+            builder.withTransactionProcessingStrategyId(RepaymentStrategy.valueOf(this.repaymentStrategyValue.getId()));
+        }
+
+        builder.withGraceOnPrincipalPayment(this.onPrincipalPaymentValue);
+        builder.withGraceOnInterestPayment(this.onInterestPaymentValue);
+        builder.withGraceOnArrearsAgeing(this.onArrearsAgingValue);
+
+        for (Map<String, Object> charge : this.chargeValue) {
+            String chargeId = ((Option) charge.get("charge")).getId();
+            Double amount = (Double) charge.get("amount");
+            Date feeOnMonthDay = (Date) charge.get("dayMonth");
+            Date dueDate = (Date) charge.get("date");
+            Long feeInterval = (Long) charge.get("repaymentEvery");
+            builder.withCharge(chargeId, amount, feeOnMonthDay, dueDate, feeInterval);
+        }
+
+        for (Map<String, Object> collateral : this.collateralValue) {
+            Option type = (Option) collateral.get("collateral");
+            Double value = (Double) collateral.get("value");
+            String description = (String) collateral.get("description");
+            builder.withCollateral(type != null ? type.getId() : null, value, description);
+        }
+
+        JsonNode node = null;
+        JsonNode request = builder.build();
+        try {
+            node = ClientHelper.createLoanAccount((Session) getSession(), request);
+        } catch (UnirestException e) {
+            error(e.getMessage());
+            return;
+        }
+        if (reportError(node)) {
+            return;
+        }
+
+        if (this.client == ClientEnum.Client) {
+            PageParameters parameters = new PageParameters();
+            parameters.add("clientId", this.clientId);
+            setResponsePage(ClientPreviewPage.class, parameters);
+        } else if (this.client == ClientEnum.Group) {
+            PageParameters parameters = new PageParameters();
+            parameters.add("groupId", this.groupId);
+            setResponsePage(GroupPreviewPage.class, parameters);
+        } else {
+            throw new WicketRuntimeException("Unknown " + this.client);
+        }
 
     }
 }

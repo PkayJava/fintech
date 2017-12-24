@@ -14,29 +14,54 @@
 								More &nbsp;&nbsp;<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu">
-								<wicket:enclosure child="clientScreenReportLink"><li><a wicket:id="clientScreenReportLink">Client Screen Report</a></li></wicket:enclosure>
-								<wicket:enclosure child="clientUploadSignatureLink"><li><a wicket:id="clientUploadSignatureLink">Client Upload Signature</a></li></wicket:enclosure>
-								<wicket:enclosure child="viewStandingInstructionLink"><li><a wicket:id="viewStandingInstructionLink">View Standing Instruction</a></li></wicket:enclosure>
-								<wicket:enclosure child="createStandingInstructionLink"><li><a wicket:id="createStandingInstructionLink">Create Standing Instruction</a></li></wicket:enclosure>
-								<wicket:enclosure child="newShareLink"><li><a wicket:id="newShareLink">New Share Account</a></li></wicket:enclosure>
-								<wicket:enclosure child="newFixedLink"><li><a wicket:id="newFixedLink">New Fixed Deposit</a></li></wicket:enclosure>
-								<wicket:enclosure child="newRecurringLink"><li><a wicket:id="newRecurringLink">New Recurring Deposit</a></li></wicket:enclosure>
-								<wicket:enclosure child="chargeOverviewLink"><li><a wicket:id="chargeOverviewLink">Charge Overview</a></li></wicket:enclosure>
-								<wicket:enclosure child="surveyLink"><li><a wicket:id="surveyLink">Survey</a></li></wicket:enclosure>
+								<wicket:enclosure child="clientScreenReportLink">
+									<li><a wicket:id="clientScreenReportLink">Client
+											Screen Report</a></li>
+								</wicket:enclosure>
+								<wicket:enclosure child="clientUploadSignatureLink">
+									<li><a wicket:id="clientUploadSignatureLink">Client
+											Upload Signature</a></li>
+								</wicket:enclosure>
+								<wicket:enclosure child="viewStandingInstructionLink">
+									<li><a wicket:id="viewStandingInstructionLink">View
+											Standing Instruction</a></li>
+								</wicket:enclosure>
+								<wicket:enclosure child="createStandingInstructionLink">
+									<li><a wicket:id="createStandingInstructionLink">Create
+											Standing Instruction</a></li>
+								</wicket:enclosure>
+								<wicket:enclosure child="newShareLink">
+									<li><a wicket:id="newShareLink">New Share Account</a></li>
+								</wicket:enclosure>
+								<wicket:enclosure child="newFixedLink">
+									<li><a wicket:id="newFixedLink">New Fixed Deposit</a></li>
+								</wicket:enclosure>
+								<wicket:enclosure child="newRecurringLink">
+									<li><a wicket:id="newRecurringLink">New Recurring
+											Deposit</a></li>
+								</wicket:enclosure>
+								<wicket:enclosure child="chargeOverviewLink">
+									<li><a wicket:id="chargeOverviewLink">Charge Overview</a></li>
+								</wicket:enclosure>
+								<wicket:enclosure child="surveyLink">
+									<li><a wicket:id="surveyLink">Survey</a></li>
+								</wicket:enclosure>
 							</ul>
 						</div>
-						<a wicket:id="editLink" class="btn btn-info">Edit</a>
-						<a wicket:id="newLoanLink" class="btn btn-info">New Loan</a>
-						<a wicket:id="newSavingLink" class="btn btn-info">New Saving</a>
-						<a wicket:id="newChargeLink" class="btn btn-info">Add Charge</a>
-						<a wicket:id="acceptTransferLink" class="btn btn-info">Accept Transfer</a>
-						<a wicket:id="rejectTransferLink" class="btn btn-info">Reject Transfer</a>
-						<a wicket:id="undoTransferLink" class="btn btn-info">Undo Transfer</a>
-						<a wicket:id="transferClientLink" class="btn btn-info">Transfer Client</a>
-						<a wicket:id="closeLink" class="btn btn-info">Close</a>
-						<a wicket:id="defaultSavingLink" class="btn btn-info">Update Default Saving</a>
-						<a wicket:id="assignStaffLink" class="btn btn-info">Assign Staff</a>
-						<a wicket:id="unassignStaffLink" class="btn btn-info">Unassign Staff</a>
+						<a wicket:id="editLink" class="btn btn-info">Edit</a> <a
+							wicket:id="newLoanLink" class="btn btn-info">New Loan</a> <a
+							wicket:id="newSavingLink" class="btn btn-info">New Saving</a> <a
+							wicket:id="newChargeLink" class="btn btn-info">Add Charge</a> <a
+							wicket:id="acceptTransferLink" class="btn btn-info">Accept
+							Transfer</a> <a wicket:id="rejectTransferLink" class="btn btn-info">Reject
+							Transfer</a> <a wicket:id="undoTransferLink" class="btn btn-info">Undo
+							Transfer</a> <a wicket:id="transferClientLink" class="btn btn-info">Transfer
+							Client</a> <a wicket:id="closeLink" class="btn btn-info">Close</a> <a
+							wicket:id="defaultSavingLink" class="btn btn-info">Update
+							Default Saving</a> <a wicket:id="assignStaffLink"
+							class="btn btn-info">Assign Staff</a> <a
+							wicket:id="unassignStaffLink" class="btn btn-info">Unassign
+							Staff</a>
 					</div>
 				</div>
 			</div>
@@ -68,7 +93,9 @@
 								<h3 class="box-title">Loan Account Overview</h3>
 							</div>
 							<!-- /.box-header -->
-							<div class="box-body"></div>
+							<div class="box-body">
+								<table wicket:id="loanAccountTable"></table>
+							</div>
 							<!-- /.box-body -->
 						</div>
 						<!-- /.box -->

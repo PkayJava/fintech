@@ -7,6 +7,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
@@ -19,7 +20,7 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.saving.WithdrawBuilder;
+import com.angkorteam.fintech.helper.loan.DisburseBuilder;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
 import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
@@ -27,6 +28,8 @@ import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
@@ -37,7 +40,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class SavingAccountWithdrawPage extends Page {
+public class LoanAccountDisbursePage extends Page {
 
     protected ClientEnum client;
 
@@ -45,17 +48,17 @@ public class SavingAccountWithdrawPage extends Page {
     protected String groupId;
     protected String centerId;
 
-    protected String accountId;
+    protected String loanId;
 
     protected Form<Void> form;
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock transactionDateBlock;
-    protected WebMarkupContainer transactionDateIContainer;
-    protected Date transactionDateValue;
-    protected DateTextField transactionDateField;
-    protected TextFeedbackPanel transactionDateFeedback;
+    protected WebMarkupBlock disbursedOnBlock;
+    protected WebMarkupContainer disbursedOnIContainer;
+    protected Date disbursedOnValue;
+    protected DateTextField disbursedOnField;
+    protected TextFeedbackPanel disbursedOnFeedback;
 
     protected WebMarkupBlock transactionAmountBlock;
     protected WebMarkupContainer transactionAmountIContainer;
@@ -106,6 +109,12 @@ public class SavingAccountWithdrawPage extends Page {
     protected TextField<String> bankField;
     protected TextFeedbackPanel bankFeedback;
 
+    protected WebMarkupBlock noteBlock;
+    protected WebMarkupContainer noteIContainer;
+    protected String noteValue;
+    protected TextArea<String> noteField;
+    protected TextFeedbackPanel noteFeedback;
+
     @Override
     protected void initComponent() {
         this.form = new Form<>("form");
@@ -130,7 +139,7 @@ public class SavingAccountWithdrawPage extends Page {
         }
         this.form.add(this.closeLink);
 
-        initTransactionDateBlock();
+        initDisbursedOnBlock();
 
         initTransactionAmountBlock();
 
@@ -147,6 +156,8 @@ public class SavingAccountWithdrawPage extends Page {
         initReceiptBlock();
 
         initBankBlock();
+
+        initNoteBlock();
     }
 
     @Override
@@ -156,6 +167,18 @@ public class SavingAccountWithdrawPage extends Page {
     @Override
     protected void configureMetaData() {
         paymentDetailFieldUpdate(null);
+    }
+
+    protected void initNoteBlock() {
+        this.noteBlock = new WebMarkupBlock("noteBlock", Size.Six_6);
+        this.form.add(this.noteBlock);
+        this.noteIContainer = new WebMarkupContainer("noteIContainer");
+        this.noteBlock.add(this.noteIContainer);
+        this.noteField = new TextArea<>("noteField", new PropertyModel<>(this, "noteValue"));
+        this.noteField.setLabel(Model.of("Note"));
+        this.noteIContainer.add(this.noteField);
+        this.noteFeedback = new TextFeedbackPanel("noteFeedback", this.noteField);
+        this.noteIContainer.add(this.noteFeedback);
     }
 
     protected void initBankBlock() {
@@ -257,17 +280,17 @@ public class SavingAccountWithdrawPage extends Page {
         this.transactionAmountIContainer.add(this.transactionAmountFeedback);
     }
 
-    protected void initTransactionDateBlock() {
-        this.transactionDateBlock = new WebMarkupBlock("transactionDateBlock", Size.Six_6);
-        this.form.add(this.transactionDateBlock);
-        this.transactionDateIContainer = new WebMarkupContainer("transactionDateIContainer");
-        this.transactionDateBlock.add(this.transactionDateIContainer);
-        this.transactionDateField = new DateTextField("transactionDateField", new PropertyModel<>(this, "transactionDateValue"));
-        this.transactionDateField.setLabel(Model.of("Transaction Date"));
-        this.transactionDateField.setRequired(false);
-        this.transactionDateIContainer.add(this.transactionDateField);
-        this.transactionDateFeedback = new TextFeedbackPanel("transactionDateFeedback", this.transactionDateField);
-        this.transactionDateIContainer.add(this.transactionDateFeedback);
+    protected void initDisbursedOnBlock() {
+        this.disbursedOnBlock = new WebMarkupBlock("disbursedOnBlock", Size.Six_6);
+        this.form.add(this.disbursedOnBlock);
+        this.disbursedOnIContainer = new WebMarkupContainer("disbursedOnIContainer");
+        this.disbursedOnBlock.add(this.disbursedOnIContainer);
+        this.disbursedOnField = new DateTextField("disbursedOnField", new PropertyModel<>(this, "disbursedOnValue"));
+        this.disbursedOnField.setLabel(Model.of("Disbursed On"));
+        this.disbursedOnField.setRequired(false);
+        this.disbursedOnIContainer.add(this.disbursedOnField);
+        this.disbursedOnFeedback = new TextFeedbackPanel("disbursedOnFeedback", this.disbursedOnField);
+        this.disbursedOnIContainer.add(this.disbursedOnFeedback);
     }
 
     @Override
@@ -278,8 +301,11 @@ public class SavingAccountWithdrawPage extends Page {
         this.groupId = getPageParameters().get("groupId").toString();
         this.centerId = getPageParameters().get("centerId").toString();
 
-        this.accountId = getPageParameters().get("accountId").toString();
-        this.transactionDateValue = DateTime.now().toDate();
+        this.loanId = getPageParameters().get("loanId").toString();
+        this.disbursedOnValue = DateTime.now().toDate();
+
+        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        this.transactionAmountValue = jdbcTemplate.queryForObject("select principal_amount from m_loan where id = ?", Double.class, this.loanId);
     }
 
     protected boolean paymentDetailFieldUpdate(AjaxRequestTarget target) {
@@ -300,9 +326,9 @@ public class SavingAccountWithdrawPage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        WithdrawBuilder builder = new WithdrawBuilder();
-        builder.withId(this.accountId);
-        builder.withTransactionDate(this.transactionDateValue);
+        DisburseBuilder builder = new DisburseBuilder();
+        builder.withId(this.loanId);
+        builder.withActualDisbursementDate(this.disbursedOnValue);
         builder.withTransactionAmount(this.transactionAmountValue);
         if (this.paymentTypeValue != null) {
             builder.withPaymentTypeId(this.paymentTypeValue.getId());
@@ -317,7 +343,7 @@ public class SavingAccountWithdrawPage extends Page {
 
         JsonNode node = null;
         try {
-            node = ClientHelper.withdrawSavingAccount((Session) getSession(), builder.build());
+            node = ClientHelper.disburseLoanAccount((Session) getSession(), builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;
