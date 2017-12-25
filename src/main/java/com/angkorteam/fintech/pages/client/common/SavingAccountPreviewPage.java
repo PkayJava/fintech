@@ -14,8 +14,8 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
-import com.angkorteam.fintech.widget.client.AccountPreviewCharge;
-import com.angkorteam.fintech.widget.client.AccountPreviewTransaction;
+import com.angkorteam.fintech.widget.client.client.AccountPreviewCharge;
+import com.angkorteam.fintech.widget.client.client.AccountPreviewTransaction;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 

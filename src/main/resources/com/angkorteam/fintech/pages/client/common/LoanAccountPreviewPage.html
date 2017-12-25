@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+	<wicket:extend>
+
+		<div class="box box-primary">
+
+			<div class="box-header with-border">
+				<h3 class="box-title">Loan Account Detail</h3>
+			</div>
+
+			<div class="box-body">
+				<div class="row">
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="pull-right">
+							<div class="btn-group">
+								<div class="btn-group">
+									<button type="button" class="btn btn-info dropdown-toggle"
+										data-toggle="dropdown" aria-expanded="false">
+										More &nbsp;&nbsp;<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu">
+										<li><a href="#">Waive Interest</a></li>
+										<li><a href="#">Reschedule</a></li>
+										<li><a href="#">Write-Off</a></li>
+										<li><a href="#">Close (as reschedule)</a></li>
+										<li><a href="#">Close</a></li>
+										<li><a href="#">Add Loan Charge</a></li>
+										<li><a href="#">Assign Loan Officer</a></li>
+										<li><a href="#">Withdrawn By Client</a></li>
+										<li><a href="#">Delete</a></li>
+										<li><a href="#">Add Collateral</a></li>
+										<li><a href="#">View Guarantor</a></li>
+										<li><a href="#">Create Guarantor</a></li>
+										<li><a href="#">Recover From Guarantor</a></li>
+										<li><a href="#">Loan Screen Reports</a></li>
+									</ul>
+								</div>
+								<a href="#" class="btn btn-info">Prepay Loan</a> <a href="#"
+									class="btn btn-info">Foreclosure</a> <a href="#"
+									class="btn btn-info">Make Repayment</a> <a href="#"
+									class="btn btn-info">Undo Disbursal</a> <a href="#"
+									class="btn btn-info">Add Loan Charge</a> <a href="#"
+									class="btn btn-info">Change Loan Officer</a> <a href="#"
+									class="btn btn-info">Disburse</a> <a href="#"
+									class="btn btn-info">Disburse To Saving Account</a> <a href="#"
+									class="btn btn-info">Undo Approval</a> <a href="#"
+									class="btn btn-info">Approve</a> <a href="#"
+									class="btn btn-info">Modify Application</a> <a href="#"
+									class="btn btn-info">Reject</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<br />
+
+				<div class="row">
+					<div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+						<h4>Current Balance: <strong wicket:id="currentBalanceView"></strong></h4>
+
+						<div class="box">
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<table class="table table-striped">
+									<tbody>
+										<tr>
+											<th>#</th>
+											<th>Original</th>
+											<th>Paid</th>
+											<th>Waived</th>
+											<th>Written Off</th>
+											<th>Outstanding</th>
+											<th>Overdue</th>
+										</tr>
+										<tr>
+											<td><strong>Principal</strong></td>
+											<td wicket:id="originalPrincipalView"></td>
+											<td wicket:id="paidPrincipalView"></td>
+											<td wicket:id="waivedPrincipalView"></td>
+											<td wicket:id="writtenPrincipalView"></td>
+											<td wicket:id="outstandingPrincipalView"></td>
+											<td wicket:id="overduePrincipalView"></td>
+										</tr>
+										<tr>
+											<td><strong>Interest</strong></td>
+											<td wicket:id="originalInterestView"></td>
+											<td wicket:id="paidInterestView"></td>
+											<td wicket:id="waivedInterestView"></td>
+											<td wicket:id="writtenInterestView"></td>
+											<td wicket:id="outstandingInterestView"></td>
+											<td wicket:id="overdueInterestView"></td>
+										</tr>
+										<tr>
+											<td><strong>Fee</strong></td>
+											<td wicket:id="originalFeeView"></td>
+											<td wicket:id="paidFeeView"></td>
+											<td wicket:id="waivedFeeView"></td>
+											<td wicket:id="writtenFeeView"></td>
+											<td wicket:id="outstandingFeeView"></td>
+											<td wicket:id="overdueFeeView"></td>
+										</tr>
+										<tr>
+											<td><strong>Penalty</strong></td>
+											<td wicket:id="originalPenaltyView"></td>
+											<td wicket:id="paidPenaltyView"></td>
+											<td wicket:id="waivedPenaltyView"></td>
+											<td wicket:id="writtenPenaltyView"></td>
+											<td wicket:id="outstandingPenaltyView"></td>
+											<td wicket:id="overduePenaltyView"></td>
+										</tr>
+										<tr>
+											<td><strong>Total</strong></td>
+											<td wicket:id="originalTotalView"></td>
+											<td wicket:id="paidTotalView"></td>
+											<td wicket:id="waivedTotalView"></td>
+											<td wicket:id="writtenTotalView"></td>
+											<td wicket:id="outstandingTotalView"></td>
+											<td wicket:id="overdueTotalView"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- /.box-body -->
+						</div>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						<div class="box box-primary">
+							<div class="box-header">
+								<h3 class="box-title">Loan Detail</h3>
+							</div>
+							<div class="box-body box-profile">
+								<div class="form-group">
+									<label>Disbursement Date</label>
+									<div wicket:id="disbursedDateView" class="form-control"></div>
+								</div>
+								<div class="form-group">
+									<label>Loan Purpose</label>
+									<div wicket:id="loanPurposeView" class="form-control"></div>
+								</div>
+								<div class="form-group">
+									<label>Loan Officer</label>
+									<div wicket:id="loanOfficerView" class="form-control"></div>
+								</div>
+								<div class="form-group">
+									<label>Currency</label>
+									<div wicket:id="currencyView" class="form-control"></div>
+								</div>
+								<div class="form-group">
+									<label>External Id</label>
+									<div wicket:id="externalIdView" class="form-control"></div>
+								</div>
+								<div class="form-group">
+									<label>Proposed Amount</label>
+									<div wicket:id="proposedAmountView" class="form-control"></div>
+								</div>
+								<div class="form-group">
+									<label>Approved Amount</label>
+									<div wicket:id="approvedAmountView" class="form-control"></div>
+								</div>
+								<div class="form-group">
+									<label>Disburse Amount</label>
+									<div wicket:id="disbursedAmountView" class="form-control"></div>
+								</div>
+							</div>
+							<!-- /.box-body -->
+							<div class="box-header">
+								<h3 class="box-title">Performance History</h3>
+							</div>
+							<div class="box-body box-profile">
+								<ul class="list-group list-group-unbordered">
+									<li class="list-group-item"><b># of Repayments</b> <a class="pull-right" wicket:id="numberRepaymentView"></a></li>
+									<li class="list-group-item"><b>Maturity Date</b> <a class="pull-right" wicket:id="maturityDateView"></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div wicket:id="tab"></div>
+			</div>
+		</div>
+
+	</wicket:extend>
+</body>
+
+</html>

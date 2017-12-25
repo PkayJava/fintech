@@ -7,11 +7,11 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.widget.client.ClientPreviewDocument;
-import com.angkorteam.fintech.widget.client.ClientPreviewFamilyMember;
-import com.angkorteam.fintech.widget.client.ClientPreviewGeneral;
-import com.angkorteam.fintech.widget.client.ClientPreviewIdentity;
-import com.angkorteam.fintech.widget.client.ClientPreviewNote;
+import com.angkorteam.fintech.widget.client.client.ClientPreviewDocument;
+import com.angkorteam.fintech.widget.client.client.ClientPreviewFamilyMember;
+import com.angkorteam.fintech.widget.client.client.ClientPreviewGeneral;
+import com.angkorteam.fintech.widget.client.client.ClientPreviewIdentity;
+import com.angkorteam.fintech.widget.client.client.ClientPreviewNote;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 

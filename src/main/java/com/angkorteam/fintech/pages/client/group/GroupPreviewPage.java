@@ -7,9 +7,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.widget.group.GroupPreviewCommittee;
-import com.angkorteam.fintech.widget.group.GroupPreviewGeneral;
-import com.angkorteam.fintech.widget.group.GroupPreviewNote;
+import com.angkorteam.fintech.widget.client.group.GroupPreviewCommittee;
+import com.angkorteam.fintech.widget.client.group.GroupPreviewGeneral;
+import com.angkorteam.fintech.widget.client.group.GroupPreviewNote;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 
