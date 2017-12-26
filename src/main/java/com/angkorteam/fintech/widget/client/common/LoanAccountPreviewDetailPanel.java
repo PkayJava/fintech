@@ -52,19 +52,19 @@ public class LoanAccountPreviewDetailPanel extends Panel {
     protected String interestValue;
     protected ReadOnlyView interestView;
 
-    protected WebMarkupBlock graceOnPrincipalPaymentBlock;
-    protected WebMarkupContainer graceOnPrincipalPaymentVContainer;
-    protected String graceOnPrincipalPaymentValue;
-    protected ReadOnlyView graceOnPrincipalPaymentView;
+    protected WebMarkupBlock graceOnPrinciplePaymentBlock;
+    protected WebMarkupContainer graceOnPrinciplePaymentVContainer;
+    protected Double graceOnPrinciplePaymentValue;
+    protected ReadOnlyView graceOnPrinciplePaymentView;
 
     protected WebMarkupBlock graceOnInterestPaymentBlock;
     protected WebMarkupContainer graceOnInterestPaymentVContainer;
-    protected String graceOnInterestPaymentValue;
+    protected Double graceOnInterestPaymentValue;
     protected ReadOnlyView graceOnInterestPaymentView;
 
     protected WebMarkupBlock graceOnArrearAgeingBlock;
     protected WebMarkupContainer graceOnArrearAgeingVContainer;
-    protected String graceOnArrearAgeingValue;
+    protected Double graceOnArrearAgeingValue;
     protected ReadOnlyView graceOnArrearAgeingView;
 
     protected WebMarkupBlock fundSourceBlock;
@@ -74,57 +74,57 @@ public class LoanAccountPreviewDetailPanel extends Panel {
 
     protected WebMarkupBlock interestFreePeriodBlock;
     protected WebMarkupContainer interestFreePeriodVContainer;
-    protected String interestFreePeriodValue;
+    protected Double interestFreePeriodValue;
     protected ReadOnlyView interestFreePeriodView;
 
     protected WebMarkupBlock interestCalculationPeriodBlock;
     protected WebMarkupContainer interestCalculationPeriodVContainer;
-    protected String interestCalculationPeriodValue;
+    protected Option interestCalculationPeriodValue;
     protected ReadOnlyView interestCalculationPeriodView;
 
     protected WebMarkupBlock allowPartialInterestCalcualtionBlock;
     protected WebMarkupContainer allowPartialInterestCalcualtionVContainer;
-    protected String allowPartialInterestCalcualtionValue;
+    protected Boolean allowPartialInterestCalcualtionValue;
     protected ReadOnlyView allowPartialInterestCalcualtionView;
 
     protected WebMarkupBlock interestTypeBlock;
     protected WebMarkupContainer interestTypeVContainer;
-    protected String interestTypeValue;
+    protected Option interestTypeValue;
     protected ReadOnlyView interestTypeView;
 
     protected WebMarkupBlock recalculateInterestBlock;
     protected WebMarkupContainer recalculateInterestVContainer;
-    protected String recalculateInterestValue;
+    protected Boolean recalculateInterestValue;
     protected ReadOnlyView recalculateInterestView;
 
     protected WebMarkupBlock submittedOnBlock;
     protected WebMarkupContainer submittedOnVContainer;
-    protected String submittedOnValue;
+    protected Date submittedOnValue;
     protected ReadOnlyView submittedOnView;
 
     protected WebMarkupBlock approvedOnBlock;
     protected WebMarkupContainer approvedOnVContainer;
-    protected String approvedOnValue;
+    protected Date approvedOnValue;
     protected ReadOnlyView approvedOnView;
 
     protected WebMarkupBlock disbursedOnBlock;
     protected WebMarkupContainer disbursedOnVContainer;
-    protected String disbursedOnValue;
+    protected Date disbursedOnValue;
     protected ReadOnlyView disbursedOnView;
 
     protected WebMarkupBlock matureOnBlock;
     protected WebMarkupContainer matureOnVContainer;
-    protected String matureOnValue;
+    protected Date matureOnValue;
     protected ReadOnlyView matureOnView;
 
     protected WebMarkupBlock dayInMonthBlock;
     protected WebMarkupContainer dayInMonthVContainer;
-    protected String dayInMonthValue;
+    protected Option dayInMonthValue;
     protected ReadOnlyView dayInMonthView;
 
     protected WebMarkupBlock dayInYearBlock;
     protected WebMarkupContainer dayInYearVContainer;
-    protected String dayInYearValue;
+    protected Option dayInYearValue;
     protected ReadOnlyView dayInYearView;
 
     public LoanAccountPreviewDetailPanel(String id, Page itemPage) {
@@ -149,7 +149,7 @@ public class LoanAccountPreviewDetailPanel extends Panel {
         loanAccoutDetailQuery.addField("m_loan.nominal_interest_rate_per_period");
         loanAccoutDetailQuery.addField("m_loan.interest_method_enum");
         loanAccoutDetailQuery.addField("m_loan.interest_period_frequency_enum");
-        loanAccoutDetailQuery.addField("m_loan.grace_on_principal_periods");
+        loanAccoutDetailQuery.addField("m_loan.grace_on_principle_periods");
         loanAccoutDetailQuery.addField("m_loan.grace_on_interest_periods");
         loanAccoutDetailQuery.addField("m_loan.grace_on_arrears_ageing");
         loanAccoutDetailQuery.addField("m_fund.name fund");
@@ -210,148 +210,47 @@ public class LoanAccountPreviewDetailPanel extends Panel {
 
         Option amortization_method_enum = Amortization.optionLiteral(String.valueOf(loanAccountDetailObject.get("amortization_method_enum")));
         Double nominal_interest_rate_per_period = (Double) loanAccountDetailObject.get("nominal_interest_rate_per_period");
-        InterestMethod interest_method_enum = InterestMethod.parseLiteral(String.valueOf(loanAccountDetailObject.get("interest_method_enum")));
         NominalInterestRateType interest_period_frequency_enum = NominalInterestRateType.parseLiteral(String.valueOf(loanAccountDetailObject.get("interest_period_frequency_enum")));
-        Double grace_on_principal_periods = (Double) loanAccountDetailObject.get("grace_on_principal_periods");
+        Option interest_method_enum = InterestMethod.optionLiteral(String.valueOf(loanAccountDetailObject.get("interest_method_enum")));
+        Double grace_on_principle_periods = (Double) loanAccountDetailObject.get("grace_on_principle_periods");
         Double grace_on_interest_periods = (Double) loanAccountDetailObject.get("grace_on_interest_periods");
         Double grace_on_arrears_ageing = (Double) loanAccountDetailObject.get("grace_on_arrears_ageing");
         String fund = (String) loanAccountDetailObject.get("fund");
         Double grace_interest_free_periods = (Double) loanAccountDetailObject.get("grace_interest_free_periods");
-        InterestCalculationPeriod interest_calculated_in_period_enum = InterestCalculationPeriod.parseLiteral(String.valueOf(loanAccountDetailObject.get("interest_calculated_in_period_enum")));
+        Option interest_calculated_in_period_enum = InterestCalculationPeriod.optionLiteral(String.valueOf(loanAccountDetailObject.get("interest_calculated_in_period_enum")));
         Boolean allow_partial_period_interest_calcualtion = (Boolean) loanAccountDetailObject.get("allow_partial_period_interest_calcualtion");
         Date submittedon_date = (Date) loanAccountDetailObject.get("submittedon_date");
         Date approvedon_date = (Date) loanAccountDetailObject.get("approvedon_date");
         Date disbursedon_date = (Date) loanAccountDetailObject.get("disbursedon_date");
         Date maturedon_date = (Date) loanAccountDetailObject.get("maturedon_date");
         Boolean interest_recalculation_enabled = (Long) loanAccountDetailObject.get("interest_recalculation_enabled") == 1 ? true : false;
-        DayInYear days_in_year_enum = DayInYear.parseLiteral(String.valueOf(loanAccountDetailObject.get("days_in_year_enum")));
-        DayInMonth days_in_month_enum = DayInMonth.parseLiteral(String.valueOf(loanAccountDetailObject.get("days_in_month_enum")));
+        Option days_in_year_enum = DayInYear.optionLiteral(String.valueOf(loanAccountDetailObject.get("days_in_year_enum")));
+        Option days_in_month_enum = DayInMonth.optionLiteral(String.valueOf(loanAccountDetailObject.get("days_in_month_enum")));
 
         this.repaymentValue = String.valueOf(number_of_repayments) + " every " + String.valueOf(repay_every) + " " + repayment_period_frequency_enum.getDescription() + " On " + frequencyType.getDescription() + " " + frequencyDay.getDescription();
 
         this.amortizationValue = amortization_method_enum;
 
-        // <div wicket:id="interestBlock" class="form-group">
-        // <wicket:container wicket:id="interestVContainer">
-        // <label>Interest</label>
-        // <div wicket:id="interestView" class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div class="clearfix"></div>
-        //
-        // <!-- Row -->
-        // <div wicket:id="graceOnPrincipalPaymentBlock" class="form-group">
-        // <wicket:container wicket:id="graceOnPrincipalPaymentVContainer">
-        // <label>Grace: On Principal Payment</label>
-        // <div wicket:id="graceOnPrincipalPaymentView"
-        // class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div wicket:id="graceOnInterestPaymentBlock" class="form-group">
-        // <wicket:container wicket:id="graceOnInterestPaymentVContainer">
-        // <label>Grace: On Interest Payment</label>
-        // <div wicket:id="graceOnInterestPaymentView" class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div wicket:id="graceOnArrearAgeingBlock" class="form-group">
-        // <wicket:container wicket:id="graceOnArrearAgeingVContainer">
-        // <label>Grace: On Arrear Ageing</label>
-        // <div wicket:id="graceOnArrearAgeingView" class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div class="clearfix"></div>
-        //
-        // <!-- Row -->
-        // <div wicket:id="fundSourceBlock" class="form-group">
-        // <wicket:container wicket:id="fundSourceVContainer">
-        // <label>Fund Source</label>
-        // <div wicket:id="fundSourceView" class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div wicket:id="interestFreePeriodBlock" class="form-group">
-        // <wicket:container wicket:id="interestFreePeriodVContainer">
-        // <label>Interest Free Period</label>
-        // <div wicket:id="interestFreePeriodView" class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div class="clearfix"></div>
-        //
-        // <!-- Row -->
-        // <div wicket:id="interestCalculationPeriodBlock" class="form-group">
-        // <wicket:container wicket:id="interestCalculationPeriodVContainer">
-        // <label>Interest Calculation Period</label>
-        // <div wicket:id="interestCalculationPeriodView"
-        // class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div wicket:id="allowPartialInterestCalcualtionBlock"
-        // class="form-group">
-        // <wicket:container
-        // wicket:id="allowPartialInterestCalcualtionVContainer">
-        // <label>Allow Partial Interest Calcualtion With Same As
-        // Repayment</label>
-        // <div wicket:id="allowPartialInterestCalcualtionView"
-        // class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div class="clearfix"></div>
-        //
-        // <!-- Row -->
-        // <div wicket:id="interestTypeBlock" class="form-group">
-        // <wicket:container wicket:id="interestTypeVContainer">
-        // <label>Interest Type</label>
-        // <div wicket:id="interestTypeView" class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div wicket:id="recalculateInterestBlock" class="form-group">
-        // <wicket:container wicket:id="recalculateInterestVContainer">
-        // <label>Recalculate Interest</label>
-        // <div wicket:id="recalculateInterestView" class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div class="clearfix"></div>
-        //
-        // <!-- Row -->
-        // <div wicket:id="submittedOnBlock" class="form-group">
-        // <wicket:container wicket:id="submittedOnVContainer">
-        // <label>Submitted On</label>
-        // <div wicket:id="submittedOnView" class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div wicket:id="approvedOnBlock" class="form-group">
-        // <wicket:container wicket:id="approvedOnVContainer">
-        // <label>Approved On</label>
-        // <div wicket:id="approvedOnView" class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div wicket:id="disbursedOnBlock" class="form-group">
-        // <wicket:container wicket:id="disbursedOnVContainer">
-        // <label>Disbursed On</label>
-        // <div wicket:id="disbursedOnView" class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div wicket:id="matureOnBlock" class="form-group">
-        // <wicket:container wicket:id="matureOnVContainer">
-        // <label>Mature On</label>
-        // <div wicket:id="matureOnView" class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div class="clearfix"></div>
-        //
-        // <!-- Row -->
-        // <div wicket:id="dayInMonthBlock" class="form-group">
-        // <wicket:container wicket:id="dayInMonthVContainer">
-        // <label>Day In Month</label>
-        // <div wicket:id="dayInMonthView" class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div wicket:id="dayInYearBlock" class="form-group">
-        // <wicket:container wicket:id="dayInYearVContainer">
-        // <label>Day In Year</label>
-        // <div wicket:id="dayInYearView" class="form-control" />
-        // </wicket:container>
-        // </div>
-        // <div class="clearfix"></div>
+        this.interestValue = String.valueOf(nominal_interest_rate_per_period) + " per " + interest_period_frequency_enum.getDescription() + " - " + interest_method_enum.getText();
+        this.graceOnPrinciplePaymentValue = grace_on_principle_periods;
+        this.graceOnInterestPaymentValue = grace_on_interest_periods;
+        this.graceOnArrearAgeingValue = grace_on_arrears_ageing;
+        this.fundSourceValue = fund;
+        this.interestFreePeriodValue = grace_interest_free_periods;
+        this.interestCalculationPeriodValue = interest_calculated_in_period_enum;
+        this.allowPartialInterestCalcualtionValue = allow_partial_period_interest_calcualtion;
+
+        this.interestTypeValue = interest_method_enum;
+
+        this.recalculateInterestValue = interest_recalculation_enabled;
+
+        this.submittedOnValue = submittedon_date;
+        this.approvedOnValue = approvedon_date;
+        this.disbursedOnValue = disbursedon_date;
+        this.matureOnValue = maturedon_date;
+
+        this.dayInMonthValue = days_in_month_enum;
+        this.dayInYearValue = days_in_year_enum;
 
     }
 
@@ -385,12 +284,12 @@ public class LoanAccountPreviewDetailPanel extends Panel {
         this.interestView = new ReadOnlyView("interestView", new PropertyModel<>(this, "interestValue"));
         this.interestVContainer.add(this.interestView);
 
-        this.graceOnPrincipalPaymentBlock = new WebMarkupBlock("graceOnPrincipalPaymentBlock", Size.Four_4);
-        add(this.graceOnPrincipalPaymentBlock);
-        this.graceOnPrincipalPaymentVContainer = new WebMarkupContainer("graceOnPrincipalPaymentVContainer");
-        this.graceOnPrincipalPaymentBlock.add(this.graceOnPrincipalPaymentVContainer);
-        this.graceOnPrincipalPaymentView = new ReadOnlyView("graceOnPrincipalPaymentView", new PropertyModel<>(this, "graceOnPrincipalPaymentValue"));
-        this.graceOnPrincipalPaymentVContainer.add(this.graceOnPrincipalPaymentView);
+        this.graceOnPrinciplePaymentBlock = new WebMarkupBlock("graceOnPrinciplePaymentBlock", Size.Four_4);
+        add(this.graceOnPrinciplePaymentBlock);
+        this.graceOnPrinciplePaymentVContainer = new WebMarkupContainer("graceOnPrinciplePaymentVContainer");
+        this.graceOnPrinciplePaymentBlock.add(this.graceOnPrinciplePaymentVContainer);
+        this.graceOnPrinciplePaymentView = new ReadOnlyView("graceOnPrinciplePaymentView", new PropertyModel<>(this, "graceOnPrinciplePaymentValue"));
+        this.graceOnPrinciplePaymentVContainer.add(this.graceOnPrinciplePaymentView);
 
         this.graceOnInterestPaymentBlock = new WebMarkupBlock("graceOnInterestPaymentBlock", Size.Four_4);
         add(this.graceOnInterestPaymentBlock);

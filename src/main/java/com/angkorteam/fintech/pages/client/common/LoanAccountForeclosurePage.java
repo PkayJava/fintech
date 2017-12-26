@@ -1,13 +1,11 @@
 package com.angkorteam.fintech.pages.client.common;
 
 import java.util.Date;
-import java.util.Map;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -19,10 +17,11 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.loan.ApproveBuilder;
+import com.angkorteam.fintech.helper.loan.ForeclosureBuilder;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
 import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
+import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
@@ -35,7 +34,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class LoanAccountDisburseSavingPage extends Page {
+public class LoanAccountForeclosurePage extends Page {
 
     protected ClientEnum client;
 
@@ -49,29 +48,42 @@ public class LoanAccountDisburseSavingPage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock approvedOnBlock;
-    protected WebMarkupContainer approvedOnIContainer;
-    protected Date approvedOnValue;
-    protected DateTextField approvedOnField;
-    protected TextFeedbackPanel approvedOnFeedback;
-
-    protected WebMarkupBlock expectedDisbursementOnBlock;
-    protected WebMarkupContainer expectedDisbursementOnIContainer;
-    protected Date expectedDisbursementOnValue;
-    protected DateTextField expectedDisbursementOnField;
-    protected TextFeedbackPanel expectedDisbursementOnFeedback;
-
-    protected WebMarkupBlock approvedAmountBlock;
-    protected WebMarkupContainer approvedAmountIContainer;
-    protected Double approvedAmountValue;
-    protected TextField<Double> approvedAmountField;
-    protected TextFeedbackPanel approvedAmountFeedback;
+    protected WebMarkupBlock transactionDateBlock;
+    protected WebMarkupContainer transactionDateIContainer;
+    protected DateTextField transactionDateField;
+    protected TextFeedbackPanel transactionDateFeedback;
+    protected Date transactionDateValue;
 
     protected WebMarkupBlock noteBlock;
     protected WebMarkupContainer noteIContainer;
     protected String noteValue;
     protected TextArea<String> noteField;
     protected TextFeedbackPanel noteFeedback;
+
+    protected WebMarkupBlock principleBlock;
+    protected WebMarkupContainer principleVContainer;
+    protected ReadOnlyView principleView;
+    protected Double principleValue;
+
+    protected WebMarkupBlock interestBlock;
+    protected WebMarkupContainer interestVContainer;
+    protected ReadOnlyView interestView;
+    protected Double interestValue;
+
+    protected WebMarkupBlock feeAmountBlock;
+    protected WebMarkupContainer feeAmountVContainer;
+    protected ReadOnlyView feeAmountView;
+    protected Double feeAmountValue;
+
+    protected WebMarkupBlock penaltyAmountBlock;
+    protected WebMarkupContainer penaltyAmountVContainer;
+    protected ReadOnlyView penaltyAmountView;
+    protected Double penaltyAmountValue;
+
+    protected WebMarkupBlock transactionAmountBlock;
+    protected WebMarkupContainer transactionAmountVContainer;
+    protected ReadOnlyView transactionAmountView;
+    protected Double transactionAmountValue;
 
     @Override
     protected void initComponent() {
@@ -97,13 +109,45 @@ public class LoanAccountDisburseSavingPage extends Page {
         }
         this.form.add(this.closeLink);
 
-        initApprovedOnBlock();
-
-        initExpectedDisbursementOnBlock();
-
-        initApprovedAmount();
+        initTransactionDateBlock();
 
         initNoteBlock();
+
+        this.principleBlock = new WebMarkupBlock("principleBlock", Size.Six_6);
+        this.form.add(this.principleBlock);
+        this.principleVContainer = new WebMarkupContainer("principleVContainer");
+        this.principleBlock.add(this.principleVContainer);
+        this.principleView = new ReadOnlyView("principleView", new PropertyModel<>(this, "principleValue"));
+        this.principleVContainer.add(this.principleView);
+
+        this.interestBlock = new WebMarkupBlock("interestBlock", Size.Six_6);
+        this.form.add(this.interestBlock);
+        this.interestVContainer = new WebMarkupContainer("interestVContainer");
+        this.interestBlock.add(this.interestVContainer);
+        this.interestView = new ReadOnlyView("interestView", new PropertyModel<>(this, "interestValue"));
+        this.interestVContainer.add(this.interestView);
+
+        this.feeAmountBlock = new WebMarkupBlock("feeAmountBlock", Size.Six_6);
+        this.form.add(this.feeAmountBlock);
+        this.feeAmountVContainer = new WebMarkupContainer("feeAmountVContainer");
+        this.feeAmountBlock.add(this.feeAmountVContainer);
+        this.feeAmountView = new ReadOnlyView("feeAmountView", new PropertyModel<>(this, "feeAmountValue"));
+        this.feeAmountVContainer.add(this.feeAmountView);
+
+        this.penaltyAmountBlock = new WebMarkupBlock("penaltyAmountBlock", Size.Six_6);
+        this.form.add(this.penaltyAmountBlock);
+        this.penaltyAmountVContainer = new WebMarkupContainer("penaltyAmountVContainer");
+        this.penaltyAmountBlock.add(this.penaltyAmountVContainer);
+        this.penaltyAmountView = new ReadOnlyView("penaltyAmountView", new PropertyModel<>(this, "penaltyAmountValue"));
+        this.penaltyAmountVContainer.add(this.penaltyAmountView);
+
+        this.transactionAmountBlock = new WebMarkupBlock("transactionAmountBlock", Size.Six_6);
+        this.form.add(this.transactionAmountBlock);
+        this.transactionAmountVContainer = new WebMarkupContainer("transactionAmountVContainer");
+        this.transactionAmountBlock.add(this.transactionAmountVContainer);
+        this.transactionAmountView = new ReadOnlyView("transactionAmountView", new PropertyModel<>(this, "transactionAmountValue"));
+        this.transactionAmountVContainer.add(this.transactionAmountView);
+
     }
 
     @Override
@@ -112,42 +156,6 @@ public class LoanAccountDisburseSavingPage extends Page {
 
     @Override
     protected void configureMetaData() {
-    }
-
-    protected void initApprovedAmount() {
-        this.approvedAmountBlock = new WebMarkupBlock("approvedAmountBlock", Size.Six_6);
-        this.form.add(this.approvedAmountBlock);
-        this.approvedAmountIContainer = new WebMarkupContainer("approvedAmountIContainer");
-        this.approvedAmountBlock.add(this.approvedAmountIContainer);
-        this.approvedAmountField = new TextField<>("approvedAmountField", new PropertyModel<>(this, "approvedAmountValue"));
-        this.approvedAmountField.setLabel(Model.of("Approved Amount"));
-        this.approvedAmountIContainer.add(this.approvedAmountField);
-        this.approvedAmountFeedback = new TextFeedbackPanel("approvedAmountFeedback", this.approvedAmountField);
-        this.approvedAmountIContainer.add(this.approvedAmountFeedback);
-    }
-
-    protected void initExpectedDisbursementOnBlock() {
-        this.expectedDisbursementOnBlock = new WebMarkupBlock("expectedDisbursementOnBlock", Size.Six_6);
-        this.form.add(this.expectedDisbursementOnBlock);
-        this.expectedDisbursementOnIContainer = new WebMarkupContainer("expectedDisbursementOnIContainer");
-        this.expectedDisbursementOnBlock.add(this.expectedDisbursementOnIContainer);
-        this.expectedDisbursementOnField = new DateTextField("expectedDisbursementOnField", new PropertyModel<>(this, "expectedDisbursementOnValue"));
-        this.expectedDisbursementOnField.setLabel(Model.of("Expected Disbursement On"));
-        this.expectedDisbursementOnIContainer.add(this.expectedDisbursementOnField);
-        this.expectedDisbursementOnFeedback = new TextFeedbackPanel("expectedDisbursementOnFeedback", this.expectedDisbursementOnField);
-        this.expectedDisbursementOnIContainer.add(this.expectedDisbursementOnFeedback);
-    }
-
-    protected void initApprovedOnBlock() {
-        this.approvedOnBlock = new WebMarkupBlock("approvedOnBlock", Size.Six_6);
-        this.form.add(this.approvedOnBlock);
-        this.approvedOnIContainer = new WebMarkupContainer("approvedOnIContainer");
-        this.approvedOnBlock.add(this.approvedOnIContainer);
-        this.approvedOnField = new DateTextField("approvedOnField", new PropertyModel<>(this, "approvedOnValue"));
-        this.approvedOnField.setLabel(Model.of("Approved On"));
-        this.approvedOnIContainer.add(this.approvedOnField);
-        this.approvedOnFeedback = new TextFeedbackPanel("approvedOnFeedback", this.approvedOnField);
-        this.approvedOnIContainer.add(this.approvedOnFeedback);
     }
 
     protected void initNoteBlock() {
@@ -162,6 +170,19 @@ public class LoanAccountDisburseSavingPage extends Page {
         this.noteIContainer.add(this.noteFeedback);
     }
 
+    protected void initTransactionDateBlock() {
+        this.transactionDateBlock = new WebMarkupBlock("transactionDateBlock", Size.Six_6);
+        this.form.add(this.transactionDateBlock);
+        this.transactionDateIContainer = new WebMarkupContainer("transactionDateIContainer");
+        this.transactionDateBlock.add(this.transactionDateIContainer);
+        this.transactionDateField = new DateTextField("transactionDateField", new PropertyModel<>(this, "transactionDateValue"));
+        this.transactionDateField.setLabel(Model.of("Transaction Date"));
+        this.transactionDateField.setRequired(false);
+        this.transactionDateIContainer.add(this.transactionDateField);
+        this.transactionDateFeedback = new TextFeedbackPanel("transactionDateFeedback", this.transactionDateField);
+        this.transactionDateIContainer.add(this.transactionDateFeedback);
+    }
+
     @Override
     protected void initData() {
         this.client = ClientEnum.valueOf(getPageParameters().get("client").toString());
@@ -171,25 +192,20 @@ public class LoanAccountDisburseSavingPage extends Page {
         this.centerId = getPageParameters().get("centerId").toString();
 
         this.loanId = getPageParameters().get("loanId").toString();
-        this.approvedOnValue = DateTime.now().toDate();
+        this.transactionDateValue = DateTime.now().toDate();
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> loanObject = jdbcTemplate.queryForMap("select principle_amount_proposed, expected_disbursedon_date from m_loan where id = ?", this.loanId);
-        this.approvedAmountValue = (Double) loanObject.get("principle_amount_proposed");
-        this.expectedDisbursementOnValue = (Date) loanObject.get("expected_disbursedon_date");
     }
 
     protected void saveButtonSubmit(Button button) {
-        ApproveBuilder builder = new ApproveBuilder();
+        ForeclosureBuilder builder = new ForeclosureBuilder();
         builder.withId(this.loanId);
+        builder.withTransactionDate(this.transactionDateValue);
         builder.withNote(this.noteValue);
-        builder.withApprovedOnDate(this.approvedOnValue);
-        builder.withExpectedDisbursementDate(this.expectedDisbursementOnValue);
-        builder.withApprovedLoanAmount(this.approvedAmountValue);
 
         JsonNode node = null;
         try {
-            node = ClientHelper.approveLoanAccount((Session) getSession(), builder.build());
+            node = ClientHelper.foreclosureLoanAccount((Session) getSession(), builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

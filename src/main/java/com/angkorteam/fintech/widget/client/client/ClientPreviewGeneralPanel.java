@@ -266,7 +266,7 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.loanAccountProvider.applyJoin("m_product_loan", "inner join m_product_loan on m_loan.product_id = m_product_loan.id");
         this.loanAccountProvider.boardField("m_loan.account_no", "account", String.class);
         this.loanAccountProvider.boardField("m_product_loan.name", "product", String.class);
-        this.loanAccountProvider.boardField("m_loan.principal_disbursed_derived", "original_loan", Double.class);
+        this.loanAccountProvider.boardField("m_loan.principle_disbursed_derived", "original_loan", Double.class);
         this.loanAccountProvider.boardField("m_loan.total_outstanding_derived", "loan_balance", Double.class);
         this.loanAccountProvider.boardField("m_loan.total_repayment_derived", "amount_paid", Double.class);
         this.loanAccountProvider.boardField("m_loan.loan_type_enum", "type", Long.class);

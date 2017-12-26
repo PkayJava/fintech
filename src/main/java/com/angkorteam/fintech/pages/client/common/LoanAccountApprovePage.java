@@ -174,8 +174,8 @@ public class LoanAccountApprovePage extends Page {
         this.approvedOnValue = DateTime.now().toDate();
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> loanObject = jdbcTemplate.queryForMap("select principal_amount_proposed, expected_disbursedon_date from m_loan where id = ?", this.loanId);
-        this.approvedAmountValue = (Double) loanObject.get("principal_amount_proposed");
+        Map<String, Object> loanObject = jdbcTemplate.queryForMap("select principle_amount_proposed, expected_disbursedon_date from m_loan where id = ?", this.loanId);
+        this.approvedAmountValue = (Double) loanObject.get("principle_amount_proposed");
         this.expectedDisbursementOnValue = (Date) loanObject.get("expected_disbursedon_date");
     }
 

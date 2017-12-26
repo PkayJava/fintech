@@ -1,7 +1,6 @@
 package com.angkorteam.fintech.pages.client.common;
 
 import java.util.Date;
-import java.util.Map;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -21,11 +20,12 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.loan.RepaymentBuilder;
+import com.angkorteam.fintech.helper.loan.PrepayBuilder;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
 import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
@@ -41,7 +41,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class LoanAccountRepaymentPage extends Page {
+public class LoanAccountPrepayPage extends Page {
 
     protected ClientEnum client;
 
@@ -66,6 +66,16 @@ public class LoanAccountRepaymentPage extends Page {
     protected Double transactionAmountValue;
     protected TextField<Double> transactionAmountField;
     protected TextFeedbackPanel transactionAmountFeedback;
+
+    protected WebMarkupBlock principleBlock;
+    protected WebMarkupContainer principleVContainer;
+    protected ReadOnlyView principleView;
+    protected Double principleValue;
+
+    protected WebMarkupBlock interestAmountBlock;
+    protected WebMarkupContainer interestAmountVContainer;
+    protected ReadOnlyView interestAmountView;
+    protected Double interestAmountValue;
 
     protected SingleChoiceProvider paymentTypeProvider;
     protected WebMarkupBlock paymentTypeBlock;
@@ -159,6 +169,20 @@ public class LoanAccountRepaymentPage extends Page {
         initBankBlock();
 
         initNoteBlock();
+
+        this.principleBlock = new WebMarkupBlock("principleBlock", Size.Six_6);
+        this.form.add(this.principleBlock);
+        this.principleVContainer = new WebMarkupContainer("principleVContainer");
+        this.principleBlock.add(this.principleVContainer);
+        this.principleView = new ReadOnlyView("principleView", new PropertyModel<>(this, "principleValue"));
+        this.principleVContainer.add(this.principleView);
+
+        this.interestAmountBlock = new WebMarkupBlock("interestAmountBlock", Size.Six_6);
+        this.form.add(this.interestAmountBlock);
+        this.interestAmountVContainer = new WebMarkupContainer("interestAmountVContainer");
+        this.interestAmountBlock.add(this.interestAmountVContainer);
+        this.interestAmountView = new ReadOnlyView("interestAmountView", new PropertyModel<>(this, "interestAmountValue"));
+        this.interestAmountVContainer.add(this.interestAmountView);
     }
 
     @Override
@@ -306,10 +330,7 @@ public class LoanAccountRepaymentPage extends Page {
         this.transactionDateValue = DateTime.now().toDate();
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> repaymentObject = jdbcTemplate.queryForMap("select duedate, ((principle_amount + interest_amount) - (principle_completed_derived + interest_completed_derived)) continue_amount, (principle_amount + interest_amount) amount from m_loan_repayment_schedule where loan_id = ? and completed_derived = 0 ORDER BY installment asc LIMIT 1", this.loanId);
-
-        this.transactionAmountValue = (Double) (repaymentObject.get("continue_amount") == null ? repaymentObject.get("amount") : repaymentObject.get("continue_amount"));
-        this.transactionDateValue = (Date) repaymentObject.get("duedate");
+        this.transactionAmountValue = jdbcTemplate.queryForObject("select principle_amount from m_loan where id = ?", Double.class, this.loanId);
     }
 
     protected boolean paymentDetailFieldUpdate(AjaxRequestTarget target) {
@@ -330,7 +351,7 @@ public class LoanAccountRepaymentPage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        RepaymentBuilder builder = new RepaymentBuilder();
+        PrepayBuilder builder = new PrepayBuilder();
         builder.withId(this.loanId);
         builder.withTransactionDate(this.transactionDateValue);
         builder.withTransactionAmount(this.transactionAmountValue);
@@ -344,10 +365,11 @@ public class LoanAccountRepaymentPage extends Page {
             builder.withReceiptNumber(this.receiptValue);
             builder.withBankNumber(this.bankValue);
         }
+        builder.withNote(this.noteValue);
 
         JsonNode node = null;
         try {
-            node = ClientHelper.repaymentLoanAccount((Session) getSession(), builder.build());
+            node = ClientHelper.prepayLoanAccount((Session) getSession(), builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;

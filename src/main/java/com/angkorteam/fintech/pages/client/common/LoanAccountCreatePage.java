@@ -178,11 +178,11 @@ public class LoanAccountCreatePage extends Page {
     protected Double installmentInMultiplesOfValue;
     protected ReadOnlyView installmentInMultiplesOfView;
 
-    protected WebMarkupBlock principalBlock;
-    protected WebMarkupContainer principalIContainer;
-    protected Double principalValue;
-    protected TextField<Double> principalField;
-    protected TextFeedbackPanel principalFeedback;
+    protected WebMarkupBlock principleBlock;
+    protected WebMarkupContainer principleIContainer;
+    protected Double principleValue;
+    protected TextField<Double> principleField;
+    protected TextFeedbackPanel principleFeedback;
 
     protected WebMarkupBlock loanTermBlock;
     protected WebMarkupContainer loanTermIContainer;
@@ -292,10 +292,10 @@ public class LoanAccountCreatePage extends Page {
     protected Option repaymentStrategyValue;
     protected ReadOnlyView repaymentStrategyView;
 
-    protected WebMarkupBlock onPrincipalPaymentBlock;
-    protected WebMarkupContainer onPrincipalPaymentVContainer;
-    protected Long onPrincipalPaymentValue;
-    protected ReadOnlyView onPrincipalPaymentView;
+    protected WebMarkupBlock onPrinciplePaymentBlock;
+    protected WebMarkupContainer onPrinciplePaymentVContainer;
+    protected Long onPrinciplePaymentValue;
+    protected ReadOnlyView onPrinciplePaymentView;
 
     protected WebMarkupBlock onInterestPaymentBlock;
     protected WebMarkupContainer onInterestPaymentVContainer;
@@ -450,7 +450,7 @@ public class LoanAccountCreatePage extends Page {
 
         initInstallmentInMultiplesOfBlock();
 
-        initPrincipalBlock();
+        initPrincipleBlock();
 
         initLoanTermBlock();
 
@@ -488,7 +488,7 @@ public class LoanAccountCreatePage extends Page {
 
         initRepaymentStrategyBlock();
 
-        initOnPrincipalPaymentBlock();
+        initOnPrinciplePaymentBlock();
 
         initOnInterestPaymentBlock();
 
@@ -737,13 +737,13 @@ public class LoanAccountCreatePage extends Page {
         this.onInterestPaymentVContainer.add(this.onInterestPaymentView);
     }
 
-    protected void initOnPrincipalPaymentBlock() {
-        this.onPrincipalPaymentBlock = new WebMarkupBlock("onPrincipalPaymentBlock", Size.Four_4);
-        this.form.add(this.onPrincipalPaymentBlock);
-        this.onPrincipalPaymentVContainer = new WebMarkupContainer("onPrincipalPaymentVContainer");
-        this.onPrincipalPaymentBlock.add(this.onPrincipalPaymentVContainer);
-        this.onPrincipalPaymentView = new ReadOnlyView("onPrincipalPaymentView", new PropertyModel<>(this, "onPrincipalPaymentValue"));
-        this.onPrincipalPaymentVContainer.add(this.onPrincipalPaymentView);
+    protected void initOnPrinciplePaymentBlock() {
+        this.onPrinciplePaymentBlock = new WebMarkupBlock("onPrinciplePaymentBlock", Size.Four_4);
+        this.form.add(this.onPrinciplePaymentBlock);
+        this.onPrinciplePaymentVContainer = new WebMarkupContainer("onPrinciplePaymentVContainer");
+        this.onPrinciplePaymentBlock.add(this.onPrinciplePaymentVContainer);
+        this.onPrinciplePaymentView = new ReadOnlyView("onPrinciplePaymentView", new PropertyModel<>(this, "onPrinciplePaymentValue"));
+        this.onPrinciplePaymentVContainer.add(this.onPrinciplePaymentView);
     }
 
     protected void initRepaymentStrategyBlock() {
@@ -947,17 +947,17 @@ public class LoanAccountCreatePage extends Page {
         this.loanTermIContainer.add(this.loanTermFeedback);
     }
 
-    protected void initPrincipalBlock() {
-        this.principalBlock = new WebMarkupBlock("principalBlock", Size.Four_4);
-        this.form.add(this.principalBlock);
-        this.principalIContainer = new WebMarkupContainer("principalIContainer");
-        this.principalBlock.add(this.principalIContainer);
-        this.principalField = new TextField<>("principalField", new PropertyModel<>(this, "principalValue"));
-        this.principalField.setLabel(Model.of("Principal"));
-        this.principalField.setRequired(false);
-        this.principalIContainer.add(this.principalField);
-        this.principalFeedback = new TextFeedbackPanel("principalFeedback", this.principalField);
-        this.principalIContainer.add(this.principalFeedback);
+    protected void initPrincipleBlock() {
+        this.principleBlock = new WebMarkupBlock("principleBlock", Size.Four_4);
+        this.form.add(this.principleBlock);
+        this.principleIContainer = new WebMarkupContainer("principleIContainer");
+        this.principleBlock.add(this.principleIContainer);
+        this.principleField = new TextField<>("principleField", new PropertyModel<>(this, "principleValue"));
+        this.principleField.setLabel(Model.of("Principle"));
+        this.principleField.setRequired(false);
+        this.principleIContainer.add(this.principleField);
+        this.principleFeedback = new TextFeedbackPanel("principleFeedback", this.principleField);
+        this.principleIContainer.add(this.principleFeedback);
     }
 
     protected void initInstallmentInMultiplesOfBlock() {
@@ -1329,9 +1329,9 @@ public class LoanAccountCreatePage extends Page {
 
         // Terms
         query.addField("m_product_loan.use_borrower_cycle");
-        query.addField("m_product_loan.min_principal_amount");
-        query.addField("m_product_loan.principal_amount");
-        query.addField("m_product_loan.max_principal_amount");
+        query.addField("m_product_loan.min_principle_amount");
+        query.addField("m_product_loan.principle_amount");
+        query.addField("m_product_loan.max_principle_amount");
 
         query.addField("m_product_loan.min_number_of_repayments");
         query.addField("m_product_loan.number_of_repayments");
@@ -1365,12 +1365,12 @@ public class LoanAccountCreatePage extends Page {
         query.addField("m_product_loan.grace_interest_free_periods");
         query.addField("m_product_loan.grace_on_arrears_ageing");
         query.addField("m_product_loan.grace_on_interest_periods");
-        query.addField("m_product_loan.grace_on_principal_periods");
+        query.addField("m_product_loan.grace_on_principle_periods");
         query.addField("m_product_loan.account_moves_out_of_npa_only_on_arrears_completion");
         query.addField("m_product_loan.overdue_days_for_npa");
         query.addField("m_product_loan.days_in_year_enum");
         query.addField("m_product_loan.days_in_month_enum");
-        query.addField("m_product_loan.principal_threshold_for_last_installment");
+        query.addField("m_product_loan.principle_threshold_for_last_installment");
         query.addField("m_product_loan.can_define_fixed_emi_amount");
         query.addField("m_product_loan.can_use_for_topup");
         query.addField("m_product_loan.allow_variabe_installments");
@@ -1427,7 +1427,7 @@ public class LoanAccountCreatePage extends Page {
         this.currencyInMultiplesOfValue = (Long) loanObject.get("currency_multiplesof");
         this.installmentInMultiplesOfValue = (Double) loanObject.get("instalment_amount_in_multiples_of");
 
-        this.principalValue = (Double) loanObject.get("principal_amount");
+        this.principleValue = (Double) loanObject.get("principle_amount");
 
         this.numberOfRepaymentValue = (Long) loanObject.get("number_of_repayments");
         this.repaidEveryValue = (Long) loanObject.get("repay_every");
@@ -1466,7 +1466,7 @@ public class LoanAccountCreatePage extends Page {
 
         this.onArrearsAgingValue = (Long) loanObject.get("grace_on_arrears_ageing");
         this.onInterestPaymentValue = (Long) loanObject.get("grace_on_interest_periods");
-        this.onPrincipalPaymentValue = (Long) loanObject.get("grace_on_principal_periods");
+        this.onPrinciplePaymentValue = (Long) loanObject.get("grace_on_principle_periods");
 
         Long interest_recalculation_enabled = (Long) loanObject.get("interest_recalculation_enabled");
         this.interestRecalculationRecalculateInterestValue = interest_recalculation_enabled == null ? null : interest_recalculation_enabled == 1;
@@ -1623,7 +1623,7 @@ public class LoanAccountCreatePage extends Page {
             builder.withCreateStandingInstructionAtDisbursement(this.createStandingInstructionAtDisbursementValue);
         }
 
-        builder.withPrincipal(this.principalValue);
+        builder.withPrinciple(this.principleValue);
         builder.withLoanTermFrequency(this.loanTermValue);
         if (this.loanTypeValue != null) {
             builder.withLoanTermFrequencyType(ChargeFrequency.valueOf(this.loanTypeValue.getId()));
@@ -1664,7 +1664,7 @@ public class LoanAccountCreatePage extends Page {
             builder.withTransactionProcessingStrategyId(RepaymentStrategy.valueOf(this.repaymentStrategyValue.getId()));
         }
 
-        builder.withGraceOnPrincipalPayment(this.onPrincipalPaymentValue);
+        builder.withGraceOnPrinciplePayment(this.onPrinciplePaymentValue);
         builder.withGraceOnInterestPayment(this.onInterestPaymentValue);
         builder.withGraceOnArrearsAgeing(this.onArrearsAgingValue);
 

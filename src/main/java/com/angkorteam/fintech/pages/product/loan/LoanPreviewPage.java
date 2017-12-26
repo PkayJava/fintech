@@ -133,29 +133,29 @@ public class LoanPreviewPage extends Page {
     protected Boolean termVaryBasedOnLoanCycleValue;
     protected ReadOnlyView termVaryBasedOnLoanCycleView;
 
-    // Row 2 : Principal
-    protected WebMarkupBlock termPrincipalMinimumBlock;
-    protected WebMarkupContainer termPrincipalMinimumVContainer;
-    protected Double termPrincipalMinimumValue;
-    protected ReadOnlyView termPrincipalMinimumView;
+    // Row 2 : Principle
+    protected WebMarkupBlock termPrincipleMinimumBlock;
+    protected WebMarkupContainer termPrincipleMinimumVContainer;
+    protected Double termPrincipleMinimumValue;
+    protected ReadOnlyView termPrincipleMinimumView;
 
-    protected WebMarkupBlock termPrincipalDefaultBlock;
-    protected WebMarkupContainer termPrincipalDefaultVContainer;
-    protected Double termPrincipalDefaultValue;
-    protected ReadOnlyView termPrincipalDefaultView;
+    protected WebMarkupBlock termPrincipleDefaultBlock;
+    protected WebMarkupContainer termPrincipleDefaultVContainer;
+    protected Double termPrincipleDefaultValue;
+    protected ReadOnlyView termPrincipleDefaultView;
 
-    protected WebMarkupBlock termPrincipalMaximumBlock;
-    protected WebMarkupContainer termPrincipalMaximumVContainer;
-    protected Double termPrincipalMaximumValue;
-    protected ReadOnlyView termPrincipalMaximumView;
+    protected WebMarkupBlock termPrincipleMaximumBlock;
+    protected WebMarkupContainer termPrincipleMaximumVContainer;
+    protected Double termPrincipleMaximumValue;
+    protected ReadOnlyView termPrincipleMaximumView;
 
-    // Row 2 (Optional) : Principal by loan cycle
-    protected WebMarkupBlock termPrincipalByLoanCycleBlock;
-    protected WebMarkupContainer termPrincipalByLoanCycleVContainer;
-    protected List<Map<String, Object>> termPrincipalByLoanCycleValue = Lists.newArrayList();
-    protected DataTable<Map<String, Object>, String> termPrincipalByLoanCycleTable;
-    protected List<IColumn<Map<String, Object>, String>> termPrincipalByLoanCycleColumn;
-    protected ListDataProvider termPrincipalByLoanCycleProvider;
+    // Row 2 (Optional) : Principle by loan cycle
+    protected WebMarkupBlock termPrincipleByLoanCycleBlock;
+    protected WebMarkupContainer termPrincipleByLoanCycleVContainer;
+    protected List<Map<String, Object>> termPrincipleByLoanCycleValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> termPrincipleByLoanCycleTable;
+    protected List<IColumn<Map<String, Object>, String>> termPrincipleByLoanCycleColumn;
+    protected ListDataProvider termPrincipleByLoanCycleProvider;
 
     // Row 3 : Number of repayments
     protected WebMarkupBlock termNumberOfRepaymentMinimumBlock;
@@ -287,10 +287,10 @@ public class LoanPreviewPage extends Page {
     protected Option settingRepaymentStrategyValue;
     protected ReadOnlyView settingRepaymentStrategyView;
 
-    protected WebMarkupBlock settingMoratoriumPrincipalBlock;
-    protected WebMarkupContainer settingMoratoriumPrincipalVContainer;
-    protected Long settingMoratoriumPrincipalValue;
-    protected ReadOnlyView settingMoratoriumPrincipalView;
+    protected WebMarkupBlock settingMoratoriumPrincipleBlock;
+    protected WebMarkupContainer settingMoratoriumPrincipleVContainer;
+    protected Long settingMoratoriumPrincipleValue;
+    protected ReadOnlyView settingMoratoriumPrincipleView;
 
     protected WebMarkupBlock settingMoratoriumInterestBlock;
     protected WebMarkupContainer settingMoratoriumInterestVContainer;
@@ -337,10 +337,10 @@ public class LoanPreviewPage extends Page {
     protected Boolean settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue;
     protected ReadOnlyView settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedView;
 
-    protected WebMarkupBlock settingPrincipalThresholdForLastInstalmentBlock;
-    protected WebMarkupContainer settingPrincipalThresholdForLastInstalmentVContainer;
-    protected Double settingPrincipalThresholdForLastInstalmentValue;
-    protected ReadOnlyView settingPrincipalThresholdForLastInstalmentView;
+    protected WebMarkupBlock settingPrincipleThresholdForLastInstalmentBlock;
+    protected WebMarkupContainer settingPrincipleThresholdForLastInstalmentVContainer;
+    protected Double settingPrincipleThresholdForLastInstalmentValue;
+    protected ReadOnlyView settingPrincipleThresholdForLastInstalmentView;
 
     protected WebMarkupBlock settingVariableInstallmentsAllowedBlock;
     protected WebMarkupContainer settingVariableInstallmentsAllowedVContainer;
@@ -841,7 +841,7 @@ public class LoanPreviewPage extends Page {
         this.termFloatingInterestDefaultVContainer.setVisible(!notLinked);
         this.termFloatingInterestMaximumVContainer.setVisible(!notLinked);
 
-        this.termPrincipalByLoanCycleVContainer.setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
+        this.termPrincipleByLoanCycleVContainer.setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
         this.termNumberOfRepaymentByLoanCycleVContainer.setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
         this.termNominalInterestRateByLoanCycleVContainer.setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
     }
@@ -879,9 +879,9 @@ public class LoanPreviewPage extends Page {
 
         // Terms
         query.addField("m_product_loan.use_borrower_cycle");
-        query.addField("m_product_loan.min_principal_amount");
-        query.addField("m_product_loan.principal_amount");
-        query.addField("m_product_loan.max_principal_amount");
+        query.addField("m_product_loan.min_principle_amount");
+        query.addField("m_product_loan.principle_amount");
+        query.addField("m_product_loan.max_principle_amount");
 
         query.addField("m_product_loan.min_number_of_repayments");
         query.addField("m_product_loan.number_of_repayments");
@@ -915,12 +915,12 @@ public class LoanPreviewPage extends Page {
         query.addField("m_product_loan.grace_interest_free_periods");
         query.addField("m_product_loan.grace_on_arrears_ageing");
         query.addField("m_product_loan.grace_on_interest_periods");
-        query.addField("m_product_loan.grace_on_principal_periods");
+        query.addField("m_product_loan.grace_on_principle_periods");
         query.addField("m_product_loan.account_moves_out_of_npa_only_on_arrears_completion");
         query.addField("m_product_loan.overdue_days_for_npa");
         query.addField("m_product_loan.days_in_year_enum");
         query.addField("m_product_loan.days_in_month_enum");
-        query.addField("m_product_loan.principal_threshold_for_last_installment");
+        query.addField("m_product_loan.principle_threshold_for_last_installment");
         query.addField("m_product_loan.can_define_fixed_emi_amount");
         query.addField("m_product_loan.can_use_for_topup");
         query.addField("m_product_loan.allow_variabe_installments");
@@ -976,9 +976,9 @@ public class LoanPreviewPage extends Page {
 
         this.termVaryBasedOnLoanCycleValue = (Boolean) loanObject.get("use_borrower_cycle");
 
-        this.termPrincipalMinimumValue = (Double) loanObject.get("min_principal_amount");
-        this.termPrincipalDefaultValue = (Double) loanObject.get("principal_amount");
-        this.termPrincipalMaximumValue = (Double) loanObject.get("max_principal_amount");
+        this.termPrincipleMinimumValue = (Double) loanObject.get("min_principle_amount");
+        this.termPrincipleDefaultValue = (Double) loanObject.get("principle_amount");
+        this.termPrincipleMaximumValue = (Double) loanObject.get("max_principle_amount");
 
         this.termNumberOfRepaymentMinimumValue = (Long) loanObject.get("min_number_of_repayments");
         this.termNumberOfRepaymentDefaultValue = (Long) loanObject.get("number_of_repayments");
@@ -1029,8 +1029,8 @@ public class LoanPreviewPage extends Page {
             item.put("maximum", (Double) borrowerObject.get("max_value"));
             item.put("minimum", (Double) borrowerObject.get("min_value"));
             String param_type = String.valueOf(borrowerObject.get("param_type"));
-            if (LoanCycle.Principal.getLiteral().equals(param_type)) {
-                this.termPrincipalByLoanCycleValue.add(item);
+            if (LoanCycle.Principle.getLiteral().equals(param_type)) {
+                this.termPrincipleByLoanCycleValue.add(item);
             } else if (LoanCycle.NumberOfRepayment.getLiteral().equals(param_type)) {
                 this.termNumberOfRepaymentByLoanCycleValue.add(item);
             } else if (LoanCycle.NominalInterestRate.getLiteral().equals(param_type)) {
@@ -1044,7 +1044,7 @@ public class LoanPreviewPage extends Page {
         this.settingCalculateInterestForExactDaysInPartialPeriodValue = (Boolean) loanObject.get("allow_partial_period_interest_calcualtion");
         this.settingRepaymentStrategyValue = RepaymentStrategy.optionLiteral(String.valueOf(loanObject.get("loan_transaction_strategy_id")));
 
-        this.settingMoratoriumPrincipalValue = (Long) loanObject.get("grace_on_principal_periods");
+        this.settingMoratoriumPrincipleValue = (Long) loanObject.get("grace_on_principle_periods");
         this.settingMoratoriumInterestValue = (Long) loanObject.get("grace_on_interest_periods");
         this.settingInterestFreePeriodValue = (Long) loanObject.get("grace_interest_free_periods");
         this.settingArrearsToleranceValue = (Double) loanObject.get("arrearstolerance_amount");
@@ -1054,7 +1054,7 @@ public class LoanPreviewPage extends Page {
 
         this.settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsValue = (Long) loanObject.get("grace_on_arrears_ageing");
         this.settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaValue = (Long) loanObject.get("overdue_days_for_npa");
-        this.settingPrincipalThresholdForLastInstalmentValue = (Double) loanObject.get("principal_threshold_for_last_installment");
+        this.settingPrincipleThresholdForLastInstalmentValue = (Double) loanObject.get("principle_threshold_for_last_installment");
 
         this.settingAllowFixingOfTheInstallmentAmountValue = (Boolean) loanObject.get("can_define_fixed_emi_amount");
 
@@ -1987,12 +1987,12 @@ public class LoanPreviewPage extends Page {
         this.settingRepaymentStrategyView = new ReadOnlyView("settingRepaymentStrategyView", new PropertyModel<>(this, "settingRepaymentStrategyValue"));
         this.settingRepaymentStrategyVContainer.add(this.settingRepaymentStrategyView);
 
-        this.settingMoratoriumPrincipalBlock = new WebMarkupBlock("settingMoratoriumPrincipalBlock", Size.Six_6);
-        add(this.settingMoratoriumPrincipalBlock);
-        this.settingMoratoriumPrincipalVContainer = new WebMarkupContainer("settingMoratoriumPrincipalVContainer");
-        this.settingMoratoriumPrincipalBlock.add(this.settingMoratoriumPrincipalVContainer);
-        this.settingMoratoriumPrincipalView = new ReadOnlyView("settingMoratoriumPrincipalView", new PropertyModel<>(this, "settingMoratoriumPrincipalValue"));
-        this.settingMoratoriumPrincipalVContainer.add(this.settingMoratoriumPrincipalView);
+        this.settingMoratoriumPrincipleBlock = new WebMarkupBlock("settingMoratoriumPrincipleBlock", Size.Six_6);
+        add(this.settingMoratoriumPrincipleBlock);
+        this.settingMoratoriumPrincipleVContainer = new WebMarkupContainer("settingMoratoriumPrincipleVContainer");
+        this.settingMoratoriumPrincipleBlock.add(this.settingMoratoriumPrincipleVContainer);
+        this.settingMoratoriumPrincipleView = new ReadOnlyView("settingMoratoriumPrincipleView", new PropertyModel<>(this, "settingMoratoriumPrincipleValue"));
+        this.settingMoratoriumPrincipleVContainer.add(this.settingMoratoriumPrincipleView);
 
         this.settingMoratoriumInterestBlock = new WebMarkupBlock("settingMoratoriumInterestBlock", Size.Six_6);
         add(this.settingMoratoriumInterestBlock);
@@ -2057,12 +2057,12 @@ public class LoanPreviewPage extends Page {
         this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedView = new ReadOnlyView("settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedView", new PropertyModel<>(this, "settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedValue"));
         this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedVContainer.add(this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedView);
 
-        this.settingPrincipalThresholdForLastInstalmentBlock = new WebMarkupBlock("settingPrincipalThresholdForLastInstalmentBlock", Size.Six_6);
-        add(this.settingPrincipalThresholdForLastInstalmentBlock);
-        this.settingPrincipalThresholdForLastInstalmentVContainer = new WebMarkupContainer("settingPrincipalThresholdForLastInstalmentVContainer");
-        this.settingPrincipalThresholdForLastInstalmentBlock.add(this.settingPrincipalThresholdForLastInstalmentVContainer);
-        this.settingPrincipalThresholdForLastInstalmentView = new ReadOnlyView("settingPrincipalThresholdForLastInstalmentView", new PropertyModel<>(this, "settingPrincipalThresholdForLastInstalmentValue"));
-        this.settingPrincipalThresholdForLastInstalmentVContainer.add(this.settingPrincipalThresholdForLastInstalmentView);
+        this.settingPrincipleThresholdForLastInstalmentBlock = new WebMarkupBlock("settingPrincipleThresholdForLastInstalmentBlock", Size.Six_6);
+        add(this.settingPrincipleThresholdForLastInstalmentBlock);
+        this.settingPrincipleThresholdForLastInstalmentVContainer = new WebMarkupContainer("settingPrincipleThresholdForLastInstalmentVContainer");
+        this.settingPrincipleThresholdForLastInstalmentBlock.add(this.settingPrincipleThresholdForLastInstalmentVContainer);
+        this.settingPrincipleThresholdForLastInstalmentView = new ReadOnlyView("settingPrincipleThresholdForLastInstalmentView", new PropertyModel<>(this, "settingPrincipleThresholdForLastInstalmentValue"));
+        this.settingPrincipleThresholdForLastInstalmentVContainer.add(this.settingPrincipleThresholdForLastInstalmentView);
 
         this.settingVariableInstallmentsAllowedBlock = new WebMarkupBlock("settingVariableInstallmentsAllowedBlock", Size.Six_6);
         add(this.settingVariableInstallmentsAllowedBlock);
@@ -2186,43 +2186,43 @@ public class LoanPreviewPage extends Page {
         this.termVaryBasedOnLoanCycleView = new ReadOnlyView("termVaryBasedOnLoanCycleView", new PropertyModel<>(this, "termVaryBasedOnLoanCycleValue"));
         this.termVaryBasedOnLoanCycleVContainer.add(this.termVaryBasedOnLoanCycleView);
 
-        this.termPrincipalMinimumBlock = new WebMarkupBlock("termPrincipalMinimumBlock", Size.Three_3);
-        add(this.termPrincipalMinimumBlock);
-        this.termPrincipalMinimumVContainer = new WebMarkupContainer("termPrincipalMinimumVContainer");
-        this.termPrincipalMinimumBlock.add(this.termPrincipalMinimumVContainer);
-        this.termPrincipalMinimumView = new ReadOnlyView("termPrincipalMinimumView", new PropertyModel<>(this, "termPrincipalMinimumValue"));
-        this.termPrincipalMinimumVContainer.add(this.termPrincipalMinimumView);
+        this.termPrincipleMinimumBlock = new WebMarkupBlock("termPrincipleMinimumBlock", Size.Three_3);
+        add(this.termPrincipleMinimumBlock);
+        this.termPrincipleMinimumVContainer = new WebMarkupContainer("termPrincipleMinimumVContainer");
+        this.termPrincipleMinimumBlock.add(this.termPrincipleMinimumVContainer);
+        this.termPrincipleMinimumView = new ReadOnlyView("termPrincipleMinimumView", new PropertyModel<>(this, "termPrincipleMinimumValue"));
+        this.termPrincipleMinimumVContainer.add(this.termPrincipleMinimumView);
 
-        this.termPrincipalDefaultBlock = new WebMarkupBlock("termPrincipalDefaultBlock", Size.Three_3);
-        add(this.termPrincipalDefaultBlock);
-        this.termPrincipalDefaultVContainer = new WebMarkupContainer("termPrincipalDefaultVContainer");
-        this.termPrincipalDefaultBlock.add(this.termPrincipalDefaultVContainer);
-        this.termPrincipalDefaultView = new ReadOnlyView("termPrincipalDefaultView", new PropertyModel<>(this, "termPrincipalDefaultValue"));
-        this.termPrincipalDefaultVContainer.add(this.termPrincipalDefaultView);
+        this.termPrincipleDefaultBlock = new WebMarkupBlock("termPrincipleDefaultBlock", Size.Three_3);
+        add(this.termPrincipleDefaultBlock);
+        this.termPrincipleDefaultVContainer = new WebMarkupContainer("termPrincipleDefaultVContainer");
+        this.termPrincipleDefaultBlock.add(this.termPrincipleDefaultVContainer);
+        this.termPrincipleDefaultView = new ReadOnlyView("termPrincipleDefaultView", new PropertyModel<>(this, "termPrincipleDefaultValue"));
+        this.termPrincipleDefaultVContainer.add(this.termPrincipleDefaultView);
 
-        this.termPrincipalMaximumBlock = new WebMarkupBlock("termPrincipalMaximumBlock", Size.Three_3);
-        add(this.termPrincipalMaximumBlock);
-        this.termPrincipalMaximumVContainer = new WebMarkupContainer("termPrincipalMaximumVContainer");
-        this.termPrincipalMaximumBlock.add(this.termPrincipalMaximumVContainer);
-        this.termPrincipalMaximumView = new ReadOnlyView("termPrincipalMaximumView", new PropertyModel<>(this, "termPrincipalMaximumValue"));
-        this.termPrincipalMaximumVContainer.add(this.termPrincipalMaximumView);
+        this.termPrincipleMaximumBlock = new WebMarkupBlock("termPrincipleMaximumBlock", Size.Three_3);
+        add(this.termPrincipleMaximumBlock);
+        this.termPrincipleMaximumVContainer = new WebMarkupContainer("termPrincipleMaximumVContainer");
+        this.termPrincipleMaximumBlock.add(this.termPrincipleMaximumVContainer);
+        this.termPrincipleMaximumView = new ReadOnlyView("termPrincipleMaximumView", new PropertyModel<>(this, "termPrincipleMaximumValue"));
+        this.termPrincipleMaximumVContainer.add(this.termPrincipleMaximumView);
 
-        this.termPrincipalByLoanCycleBlock = new WebMarkupBlock("termPrincipalByLoanCycleBlock", Size.Twelve_12);
-        add(this.termPrincipalByLoanCycleBlock);
-        this.termPrincipalByLoanCycleVContainer = new WebMarkupContainer("termPrincipalByLoanCycleVContainer");
-        this.termPrincipalByLoanCycleBlock.add(this.termPrincipalByLoanCycleVContainer);
+        this.termPrincipleByLoanCycleBlock = new WebMarkupBlock("termPrincipleByLoanCycleBlock", Size.Twelve_12);
+        add(this.termPrincipleByLoanCycleBlock);
+        this.termPrincipleByLoanCycleVContainer = new WebMarkupContainer("termPrincipleByLoanCycleVContainer");
+        this.termPrincipleByLoanCycleBlock.add(this.termPrincipleByLoanCycleVContainer);
 
-        this.termPrincipalByLoanCycleColumn = Lists.newArrayList();
-        this.termPrincipalByLoanCycleColumn.add(new TextColumn(Model.of("When"), "when", "when", this::termPrincipalByLoanCycleColumn));
-        this.termPrincipalByLoanCycleColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle", this::termPrincipalByLoanCycleColumn));
-        this.termPrincipalByLoanCycleColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum", this::termPrincipalByLoanCycleColumn));
-        this.termPrincipalByLoanCycleColumn.add(new TextColumn(Model.of("Default"), "default", "default", this::termPrincipalByLoanCycleColumn));
-        this.termPrincipalByLoanCycleColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum", this::termPrincipalByLoanCycleColumn));
-        this.termPrincipalByLoanCycleProvider = new ListDataProvider(this.termPrincipalByLoanCycleValue);
-        this.termPrincipalByLoanCycleTable = new DataTable<>("termPrincipalByLoanCycleTable", this.termPrincipalByLoanCycleColumn, this.termPrincipalByLoanCycleProvider, 20);
-        this.termPrincipalByLoanCycleVContainer.add(this.termPrincipalByLoanCycleTable);
-        this.termPrincipalByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(this.termPrincipalByLoanCycleTable, this.termPrincipalByLoanCycleProvider));
-        this.termPrincipalByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.termPrincipalByLoanCycleTable));
+        this.termPrincipleByLoanCycleColumn = Lists.newArrayList();
+        this.termPrincipleByLoanCycleColumn.add(new TextColumn(Model.of("When"), "when", "when", this::termPrincipleByLoanCycleColumn));
+        this.termPrincipleByLoanCycleColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle", this::termPrincipleByLoanCycleColumn));
+        this.termPrincipleByLoanCycleColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum", this::termPrincipleByLoanCycleColumn));
+        this.termPrincipleByLoanCycleColumn.add(new TextColumn(Model.of("Default"), "default", "default", this::termPrincipleByLoanCycleColumn));
+        this.termPrincipleByLoanCycleColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum", this::termPrincipleByLoanCycleColumn));
+        this.termPrincipleByLoanCycleProvider = new ListDataProvider(this.termPrincipleByLoanCycleValue);
+        this.termPrincipleByLoanCycleTable = new DataTable<>("termPrincipleByLoanCycleTable", this.termPrincipleByLoanCycleColumn, this.termPrincipleByLoanCycleProvider, 20);
+        this.termPrincipleByLoanCycleVContainer.add(this.termPrincipleByLoanCycleTable);
+        this.termPrincipleByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(this.termPrincipleByLoanCycleTable, this.termPrincipleByLoanCycleProvider));
+        this.termPrincipleByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.termPrincipleByLoanCycleTable));
 
         this.termNumberOfRepaymentMinimumBlock = new WebMarkupBlock("termNumberOfRepaymentMinimumBlock", Size.Three_3);
         add(this.termNumberOfRepaymentMinimumBlock);
@@ -2414,7 +2414,7 @@ public class LoanPreviewPage extends Page {
         throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected ItemPanel termPrincipalByLoanCycleColumn(String column, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel termPrincipleByLoanCycleColumn(String column, IModel<String> display, Map<String, Object> model) {
         if ("when".equals(column)) {
             Option value = (Option) model.get(column);
             return new TextCell(value);

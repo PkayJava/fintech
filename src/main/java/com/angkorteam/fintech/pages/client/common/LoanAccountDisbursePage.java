@@ -305,7 +305,7 @@ public class LoanAccountDisbursePage extends Page {
         this.disbursedOnValue = DateTime.now().toDate();
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        this.transactionAmountValue = jdbcTemplate.queryForObject("select principal_amount from m_loan where id = ?", Double.class, this.loanId);
+        this.transactionAmountValue = jdbcTemplate.queryForObject("select principle_amount from m_loan where id = ?", Double.class, this.loanId);
     }
 
     protected boolean paymentDetailFieldUpdate(AjaxRequestTarget target) {
@@ -340,6 +340,7 @@ public class LoanAccountDisbursePage extends Page {
             builder.withReceiptNumber(this.receiptValue);
             builder.withBankNumber(this.bankValue);
         }
+        builder.withNote(this.noteValue);
 
         JsonNode node = null;
         try {

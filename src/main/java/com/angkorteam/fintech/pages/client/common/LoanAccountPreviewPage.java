@@ -39,23 +39,23 @@ public class LoanAccountPreviewPage extends Page {
     protected LabelView currentBalanceView;
     protected Double currentBalanceValue;
 
-    protected LabelView originalPrincipalView;
-    protected Double originalPrincipalValue;
+    protected LabelView originalPrincipleView;
+    protected Double originalPrincipleValue;
 
-    protected LabelView paidPrincipalView;
-    protected Double paidPrincipalValue;
+    protected LabelView paidPrincipleView;
+    protected Double paidPrincipleValue;
 
-    protected LabelView waivedPrincipalView;
-    protected Double waivedPrincipalValue;
+    protected LabelView waivedPrincipleView;
+    protected Double waivedPrincipleValue;
 
-    protected LabelView writtenPrincipalView;
-    protected Double writtenPrincipalValue;
+    protected LabelView writtenPrincipleView;
+    protected Double writtenPrincipleValue;
 
-    protected LabelView outstandingPrincipalView;
-    protected Double outstandingPrincipalValue;
+    protected LabelView outstandingPrincipleView;
+    protected Double outstandingPrincipleValue;
 
-    protected LabelView overduePrincipalView;
-    protected Double overduePrincipalValue;
+    protected LabelView overduePrincipleView;
+    protected Double overduePrincipleValue;
 
     protected LabelView originalInterestView;
     protected Double originalInterestValue;
@@ -167,23 +167,23 @@ public class LoanAccountPreviewPage extends Page {
         this.currentBalanceView = new LabelView("currentBalanceView", new PropertyModel<>(this, "currentBalanceValue"));
         add(this.currentBalanceView);
 
-        this.originalPrincipalView = new LabelView("originalPrincipalView", new PropertyModel<>(this, "originalPrincipalValue"));
-        add(this.originalPrincipalView);
+        this.originalPrincipleView = new LabelView("originalPrincipleView", new PropertyModel<>(this, "originalPrincipleValue"));
+        add(this.originalPrincipleView);
 
-        this.paidPrincipalView = new LabelView("paidPrincipalView", new PropertyModel<>(this, "paidPrincipalValue"));
-        add(this.paidPrincipalView);
+        this.paidPrincipleView = new LabelView("paidPrincipleView", new PropertyModel<>(this, "paidPrincipleValue"));
+        add(this.paidPrincipleView);
 
-        this.waivedPrincipalView = new LabelView("waivedPrincipalView", new PropertyModel<>(this, "waivedPrincipalValue"));
-        add(this.waivedPrincipalView);
+        this.waivedPrincipleView = new LabelView("waivedPrincipleView", new PropertyModel<>(this, "waivedPrincipleValue"));
+        add(this.waivedPrincipleView);
 
-        this.writtenPrincipalView = new LabelView("writtenPrincipalView", new PropertyModel<>(this, "writtenPrincipalValue"));
-        add(this.writtenPrincipalView);
+        this.writtenPrincipleView = new LabelView("writtenPrincipleView", new PropertyModel<>(this, "writtenPrincipleValue"));
+        add(this.writtenPrincipleView);
 
-        this.outstandingPrincipalView = new LabelView("outstandingPrincipalView", new PropertyModel<>(this, "outstandingPrincipalValue"));
-        add(this.outstandingPrincipalView);
+        this.outstandingPrincipleView = new LabelView("outstandingPrincipleView", new PropertyModel<>(this, "outstandingPrincipleValue"));
+        add(this.outstandingPrincipleView);
 
-        this.overduePrincipalView = new LabelView("overduePrincipalView", new PropertyModel<>(this, "overduePrincipalValue"));
-        add(this.overduePrincipalView);
+        this.overduePrincipleView = new LabelView("overduePrincipleView", new PropertyModel<>(this, "overduePrincipleValue"));
+        add(this.overduePrincipleView);
 
         this.originalInterestView = new LabelView("originalInterestView", new PropertyModel<>(this, "originalInterestValue"));
         add(this.originalInterestView);
@@ -319,43 +319,43 @@ public class LoanAccountPreviewPage extends Page {
         loanDetailQuery.addField("loanpurpose.code_value loan_purpose");
         loanDetailQuery.addField("concat(m_organisation_currency.name, ' [', m_loan.currency_code, ']') currency");
         loanDetailQuery.addField("m_loan.external_id");
-        loanDetailQuery.addField("m_loan.principal_amount_proposed proposed_amount");
-        loanDetailQuery.addField("m_loan.approved_principal approved_amount");
-        loanDetailQuery.addField("m_loan.principal_amount disbursed_amount");
+        loanDetailQuery.addField("m_loan.principle_amount_proposed proposed_amount");
+        loanDetailQuery.addField("m_loan.approved_principle approved_amount");
+        loanDetailQuery.addField("m_loan.principle_amount disbursed_amount");
         loanDetailQuery.addField("m_loan.number_of_repayments");
         loanDetailQuery.addField("m_loan.maturedon_date");
 
-        loanDetailQuery.addField("m_loan.principal_disbursed_derived original_principal");
+        loanDetailQuery.addField("m_loan.principle_disbursed_derived original_principle");
         loanDetailQuery.addField("m_loan.interest_charged_derived original_interest");
         loanDetailQuery.addField("m_loan.fee_charges_charged_derived original_fee");
         loanDetailQuery.addField("m_loan.penalty_charges_charged_derived original_penalty");
         loanDetailQuery.addField("m_loan.total_expected_repayment_derived original_total");
 
-        loanDetailQuery.addField("m_loan.principal_repaid_derived paid_principal");
+        loanDetailQuery.addField("m_loan.principle_repaid_derived paid_principle");
         loanDetailQuery.addField("m_loan.interest_repaid_derived paid_interest");
         loanDetailQuery.addField("m_loan.fee_charges_repaid_derived paid_fee");
         loanDetailQuery.addField("m_loan.penalty_charges_repaid_derived paid_penalty");
         loanDetailQuery.addField("m_loan.total_repayment_derived paid_total");
 
-        loanDetailQuery.addField("null waived_principal");
+        loanDetailQuery.addField("null waived_principle");
         loanDetailQuery.addField("m_loan.interest_waived_derived waived_interest");
         loanDetailQuery.addField("m_loan.fee_charges_waived_derived waived_fee");
         loanDetailQuery.addField("m_loan.penalty_charges_waived_derived waived_penalty");
         loanDetailQuery.addField("m_loan.total_waived_derived waived_total");
 
-        loanDetailQuery.addField("m_loan.principal_writtenoff_derived writtenoff_principal");
+        loanDetailQuery.addField("m_loan.principle_writtenoff_derived writtenoff_principle");
         loanDetailQuery.addField("m_loan.interest_writtenoff_derived writtenoff_interest");
         loanDetailQuery.addField("m_loan.fee_charges_writtenoff_derived writtenoff_fee");
         loanDetailQuery.addField("m_loan.penalty_charges_writtenoff_derived writtenoff_penalty");
         loanDetailQuery.addField("m_loan.total_writtenoff_derived writtenoff_total");
 
-        loanDetailQuery.addField("m_loan.principal_outstanding_derived outstanding_principal");
+        loanDetailQuery.addField("m_loan.principle_outstanding_derived outstanding_principle");
         loanDetailQuery.addField("m_loan.interest_outstanding_derived outstanding_interest");
         loanDetailQuery.addField("m_loan.fee_charges_outstanding_derived outstanding_fee");
         loanDetailQuery.addField("m_loan.penalty_charges_outstanding_derived outstanding_penalty");
         loanDetailQuery.addField("m_loan.total_outstanding_derived outstanding_total");
 
-        loanDetailQuery.addField("0.0 overdue_principal");
+        loanDetailQuery.addField("0.0 overdue_principle");
         loanDetailQuery.addField("0.0 overdue_interest");
         loanDetailQuery.addField("0.0 overdue_fee");
         loanDetailQuery.addField("0.0 overdue_penalty");
@@ -369,12 +369,12 @@ public class LoanAccountPreviewPage extends Page {
 
         this.currentBalanceValue = (Double) loanDetailObject.get("outstanding_total");
 
-        this.originalPrincipalValue = (Double) loanDetailObject.get("original_principal");
-        this.paidPrincipalValue = (Double) loanDetailObject.get("paid_principal");
-        this.waivedPrincipalValue = (Double) loanDetailObject.get("waived_principal");
-        this.writtenPrincipalValue = (Double) loanDetailObject.get("writtenoff_principal");
-        this.outstandingPrincipalValue = (Double) loanDetailObject.get("outstanding_principal");
-        this.overduePrincipalValue = (Double) loanDetailObject.get("overdue_principal");
+        this.originalPrincipleValue = (Double) loanDetailObject.get("original_principle");
+        this.paidPrincipleValue = (Double) loanDetailObject.get("paid_principle");
+        this.waivedPrincipleValue = (Double) loanDetailObject.get("waived_principle");
+        this.writtenPrincipleValue = (Double) loanDetailObject.get("writtenoff_principle");
+        this.outstandingPrincipleValue = (Double) loanDetailObject.get("outstanding_principle");
+        this.overduePrincipleValue = (Double) loanDetailObject.get("overdue_principle");
 
         this.originalInterestValue = (Double) loanDetailObject.get("original_interest");
         this.paidInterestValue = (Double) loanDetailObject.get("paid_interest");

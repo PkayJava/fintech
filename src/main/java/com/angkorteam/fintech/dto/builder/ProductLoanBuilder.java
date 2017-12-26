@@ -193,30 +193,30 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private Double minPrincipal;
-    private boolean hasMinPrincipal;
+    private Double minPrinciple;
+    private boolean hasMinPrinciple;
 
-    public ProductLoanBuilder withMinPrincipal(Double minPrincipal) {
-        this.minPrincipal = minPrincipal;
-        this.hasMinPrincipal = true;
+    public ProductLoanBuilder withMinPrinciple(Double minPrinciple) {
+        this.minPrinciple = minPrinciple;
+        this.hasMinPrinciple = true;
         return this;
     }
 
-    private Double maxPrincipal;
-    private boolean hasMaxPrincipal;
+    private Double maxPrinciple;
+    private boolean hasMaxPrinciple;
 
-    public ProductLoanBuilder withMaxPrincipal(Double maxPrincipal) {
-        this.maxPrincipal = maxPrincipal;
-        this.hasMaxPrincipal = true;
+    public ProductLoanBuilder withMaxPrinciple(Double maxPrinciple) {
+        this.maxPrinciple = maxPrinciple;
+        this.hasMaxPrinciple = true;
         return this;
     }
 
-    private Double principal;
-    private boolean hasPrincipal;
+    private Double principle;
+    private boolean hasPrinciple;
 
-    public ProductLoanBuilder withPrincipal(Double principal) {
-        this.principal = principal;
-        this.hasPrincipal = true;
+    public ProductLoanBuilder withPrinciple(Double principle) {
+        this.principle = principle;
+        this.hasPrinciple = true;
         return this;
     }
 
@@ -373,18 +373,18 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private List<Map<String, Object>> principalVariationsForBorrowerCycle = Lists.newArrayList();
-    private boolean hasPrincipalVariationsForBorrowerCycle;
+    private List<Map<String, Object>> principleVariationsForBorrowerCycle = Lists.newArrayList();
+    private boolean hasPrincipleVariationsForBorrowerCycle;
 
-    public ProductLoanBuilder withPrincipalVariationsForBorrowerCycle(WhenType valueConditionType, Long borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
+    public ProductLoanBuilder withPrincipleVariationsForBorrowerCycle(WhenType valueConditionType, Long borrowerCycleNumber, Double minValue, Double defaultValue, Double maxValue) {
         Map<String, Object> cycle = Maps.newHashMap();
         cycle.put("valueConditionType", valueConditionType.getLiteral());
         cycle.put("borrowerCycleNumber", borrowerCycleNumber);
         cycle.put("minValue", minValue);
         cycle.put("defaultValue", defaultValue);
         cycle.put("maxValue", maxValue);
-        this.principalVariationsForBorrowerCycle.add(cycle);
-        this.hasPrincipalVariationsForBorrowerCycle = true;
+        this.principleVariationsForBorrowerCycle.add(cycle);
+        this.hasPrincipleVariationsForBorrowerCycle = true;
         return this;
     }
 
@@ -463,12 +463,12 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private Long graceOnPrincipalPayment;
-    private boolean hasGraceOnPrincipalPayment;
+    private Long graceOnPrinciplePayment;
+    private boolean hasGraceOnPrinciplePayment;
 
-    public ProductLoanBuilder withGraceOnPrincipalPayment(Long graceOnPrincipalPayment) {
-        this.graceOnPrincipalPayment = graceOnPrincipalPayment;
-        this.hasGraceOnPrincipalPayment = true;
+    public ProductLoanBuilder withGraceOnPrinciplePayment(Long graceOnPrinciplePayment) {
+        this.graceOnPrinciplePayment = graceOnPrinciplePayment;
+        this.hasGraceOnPrinciplePayment = true;
         return this;
     }
 
@@ -526,12 +526,12 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
-    private Double principalThresholdForLastInstallment;
-    private boolean hasPrincipalThresholdForLastInstallment;
+    private Double principleThresholdForLastInstallment;
+    private boolean hasPrincipleThresholdForLastInstallment;
 
-    public ProductLoanBuilder withPrincipalThresholdForLastInstallment(Double principalThresholdForLastInstallment) {
-        this.principalThresholdForLastInstallment = principalThresholdForLastInstallment;
-        this.hasPrincipalThresholdForLastInstallment = true;
+    public ProductLoanBuilder withPrincipleThresholdForLastInstallment(Double principleThresholdForLastInstallment) {
+        this.principleThresholdForLastInstallment = principleThresholdForLastInstallment;
+        this.hasPrincipleThresholdForLastInstallment = true;
         return this;
     }
 
@@ -962,8 +962,8 @@ public class ProductLoanBuilder implements Serializable {
             errors.add("numberOfRepayments is required");
         }
 
-        if (this.principal == null) {
-            errors.add("principal is required");
+        if (this.principle == null) {
+            errors.add("principle is required");
         }
 
         if (this.repaymentEvery == null) {
@@ -1309,8 +1309,8 @@ public class ProductLoanBuilder implements Serializable {
             object.getObject().put("minimumGap", this.minimumGap);
         }
 
-        if (this.hasPrincipalThresholdForLastInstallment) {
-            object.getObject().put("principalThresholdForLastInstallment", this.principalThresholdForLastInstallment);
+        if (this.hasPrincipleThresholdForLastInstallment) {
+            object.getObject().put("principleThresholdForLastInstallment", this.principleThresholdForLastInstallment);
         }
 
         if (this.hasOverdueDaysForNPA) {
@@ -1337,8 +1337,8 @@ public class ProductLoanBuilder implements Serializable {
             object.getObject().put("graceOnInterestPayment", this.graceOnInterestPayment);
         }
 
-        if (this.hasGraceOnPrincipalPayment) {
-            object.getObject().put("graceOnPrincipalPayment", this.graceOnPrincipalPayment);
+        if (this.hasGraceOnPrinciplePayment) {
+            object.getObject().put("graceOnPrinciplePayment", this.graceOnPrinciplePayment);
         }
 
         if (this.hasInterestCalculationPeriodType) {
@@ -1377,8 +1377,8 @@ public class ProductLoanBuilder implements Serializable {
             object.getObject().put("numberOfRepaymentVariationsForBorrowerCycle", this.numberOfRepaymentVariationsForBorrowerCycle);
         }
 
-        if (this.hasPrincipalVariationsForBorrowerCycle) {
-            object.getObject().put("principalVariationsForBorrowerCycle", this.principalVariationsForBorrowerCycle);
+        if (this.hasPrincipleVariationsForBorrowerCycle) {
+            object.getObject().put("principleVariationsForBorrowerCycle", this.principleVariationsForBorrowerCycle);
         }
 
         if (this.hasMinDifferentialLendingRate) {
@@ -1445,20 +1445,20 @@ public class ProductLoanBuilder implements Serializable {
             object.getObject().put("numberOfRepayments", this.numberOfRepayments);
         }
 
-        if (this.hasPrincipal) {
-            object.getObject().put("principal", this.principal);
+        if (this.hasPrinciple) {
+            object.getObject().put("principle", this.principle);
         }
 
         if (this.hasUseBorrowerCycle) {
             object.getObject().put("useBorrowerCycle", this.useBorrowerCycle);
         }
 
-        if (this.hasMaxPrincipal) {
-            object.getObject().put("maxPrincipal", this.maxPrincipal);
+        if (this.hasMaxPrinciple) {
+            object.getObject().put("maxPrinciple", this.maxPrinciple);
         }
 
-        if (this.hasMinPrincipal) {
-            object.getObject().put("minPrincipal", this.minPrincipal);
+        if (this.hasMinPrinciple) {
+            object.getObject().put("minPrinciple", this.minPrinciple);
         }
 
         if (this.hasInMultiplesOf) {

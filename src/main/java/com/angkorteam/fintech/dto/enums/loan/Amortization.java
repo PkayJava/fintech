@@ -5,7 +5,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 public enum Amortization {
     
     EqualInstallment("1", "Equal Installments"), 
-    EqualPrincipalPayment("0", "Equal Principal Payments");
+    EqualPrinciplePayment("0", "Equal Principle Payments");
 
     private String literal;
 

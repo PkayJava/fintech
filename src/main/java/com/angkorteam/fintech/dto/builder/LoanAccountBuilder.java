@@ -85,12 +85,12 @@ public class LoanAccountBuilder implements Serializable {
         return this;
     }
 
-    private Double principal;
-    private boolean hasPrincipal;
+    private Double principle;
+    private boolean hasPrinciple;
 
-    public LoanAccountBuilder withPrincipal(Double principal) {
-        this.principal = principal;
-        this.hasPrincipal = true;
+    public LoanAccountBuilder withPrinciple(Double principle) {
+        this.principle = principle;
+        this.hasPrinciple = true;
         return this;
     }
 
@@ -353,12 +353,12 @@ public class LoanAccountBuilder implements Serializable {
         return this;
     }
 
-    private Long graceOnPrincipalPayment;
-    private boolean hasGraceOnPrincipalPayment;
+    private Long graceOnPrinciplePayment;
+    private boolean hasGraceOnPrinciplePayment;
 
-    public LoanAccountBuilder withGraceOnPrincipalPayment(Long graceOnPrincipalPayment) {
-        this.graceOnPrincipalPayment = graceOnPrincipalPayment;
-        this.hasGraceOnPrincipalPayment = true;
+    public LoanAccountBuilder withGraceOnPrinciplePayment(Long graceOnPrinciplePayment) {
+        this.graceOnPrinciplePayment = graceOnPrinciplePayment;
+        this.hasGraceOnPrinciplePayment = true;
         return this;
     }
 
@@ -391,8 +391,8 @@ public class LoanAccountBuilder implements Serializable {
             object.getObject().put("graceOnInterestPayment", this.graceOnInterestPayment);
         }
 
-        if (this.hasGraceOnPrincipalPayment) {
-            object.getObject().put("graceOnPrincipalPayment", this.graceOnPrincipalPayment);
+        if (this.hasGraceOnPrinciplePayment) {
+            object.getObject().put("graceOnPrinciplePayment", this.graceOnPrinciplePayment);
         }
 
         if (this.hasGraceOnInterestCharged) {
@@ -503,8 +503,8 @@ public class LoanAccountBuilder implements Serializable {
             object.getObject().put("charges", this.charges);
         }
 
-        if (this.hasPrincipal) {
-            object.getObject().put("principal", this.principal);
+        if (this.hasPrinciple) {
+            object.getObject().put("principle", this.principle);
         }
 
         if (this.hasFundId) {

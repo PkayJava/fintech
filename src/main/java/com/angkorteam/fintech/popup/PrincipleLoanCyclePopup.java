@@ -15,7 +15,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
-public class PrincipalLoanCyclePopup extends PopupPanel {
+public class PrincipleLoanCyclePopup extends PopupPanel {
 
     protected ModalWindow window;
 
@@ -40,7 +40,7 @@ public class PrincipalLoanCyclePopup extends PopupPanel {
 
     protected Map<String, Object> model;
 
-    public PrincipalLoanCyclePopup(String name, ModalWindow window, Map<String, Object> model) {
+    public PrincipleLoanCyclePopup(String name, ModalWindow window, Map<String, Object> model) {
         super(name, window);
         this.model = model;
         this.window = window;

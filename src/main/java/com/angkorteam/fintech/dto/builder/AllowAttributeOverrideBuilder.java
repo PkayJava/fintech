@@ -24,13 +24,13 @@ public class AllowAttributeOverrideBuilder implements Serializable {
         return this;
     }
 
-    private boolean graceOnPrincipalAndInterestPayment;
-    private boolean hasGraceOnPrincipalAndInterestPayment;
+    private boolean graceOnPrincipleAndInterestPayment;
+    private boolean hasGraceOnPrincipleAndInterestPayment;
 
-    public AllowAttributeOverrideBuilder withGraceOnPrincipalAndInterestPayment(
-            boolean graceOnPrincipalAndInterestPayment) {
-        this.graceOnPrincipalAndInterestPayment = graceOnPrincipalAndInterestPayment;
-        this.hasGraceOnPrincipalAndInterestPayment = true;
+    public AllowAttributeOverrideBuilder withGraceOnPrincipleAndInterestPayment(
+            boolean graceOnPrincipleAndInterestPayment) {
+        this.graceOnPrincipleAndInterestPayment = graceOnPrincipleAndInterestPayment;
+        this.hasGraceOnPrincipleAndInterestPayment = true;
         return this;
     }
 
@@ -102,8 +102,8 @@ public class AllowAttributeOverrideBuilder implements Serializable {
             object.getObject().put("inArrearsTolerance", this.inArrearsTolerance);
         }
 
-        if (this.hasGraceOnPrincipalAndInterestPayment) {
-            object.getObject().put("graceOnPrincipalAndInterestPayment", this.graceOnPrincipalAndInterestPayment);
+        if (this.hasGraceOnPrincipleAndInterestPayment) {
+            object.getObject().put("graceOnPrincipleAndInterestPayment", this.graceOnPrincipleAndInterestPayment);
         }
 
         if (this.hasGraceOnArrearsAgeing) {

@@ -55,7 +55,7 @@ import com.angkorteam.fintech.popup.InterestLoanCyclePopup;
 import com.angkorteam.fintech.popup.OverdueChargePopup;
 import com.angkorteam.fintech.popup.PaymentTypePopup;
 import com.angkorteam.fintech.popup.PenaltyChargePopup;
-import com.angkorteam.fintech.popup.PrincipalLoanCyclePopup;
+import com.angkorteam.fintech.popup.PrincipleLoanCyclePopup;
 import com.angkorteam.fintech.popup.RepaymentLoanCyclePopup;
 import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.provider.DayInYearProvider;
@@ -194,34 +194,34 @@ public class LoanCreatePage extends Page {
     protected CheckBox termVaryBasedOnLoanCycleField;
     protected TextFeedbackPanel termVaryBasedOnLoanCycleFeedback;
 
-    // Row 2 : Principal
-    protected WebMarkupBlock termPrincipalMinimumBlock;
-    protected WebMarkupContainer termPrincipalMinimumIContainer;
-    protected Double termPrincipalMinimumValue;
-    protected TextField<Double> termPrincipalMinimumField;
-    protected TextFeedbackPanel termPrincipalMinimumFeedback;
+    // Row 2 : Principle
+    protected WebMarkupBlock termPrincipleMinimumBlock;
+    protected WebMarkupContainer termPrincipleMinimumIContainer;
+    protected Double termPrincipleMinimumValue;
+    protected TextField<Double> termPrincipleMinimumField;
+    protected TextFeedbackPanel termPrincipleMinimumFeedback;
 
-    protected WebMarkupBlock termPrincipalDefaultBlock;
-    protected WebMarkupContainer termPrincipalDefaultIContainer;
-    protected Double termPrincipalDefaultValue;
-    protected TextField<Double> termPrincipalDefaultField;
-    protected TextFeedbackPanel termPrincipalDefaultFeedback;
+    protected WebMarkupBlock termPrincipleDefaultBlock;
+    protected WebMarkupContainer termPrincipleDefaultIContainer;
+    protected Double termPrincipleDefaultValue;
+    protected TextField<Double> termPrincipleDefaultField;
+    protected TextFeedbackPanel termPrincipleDefaultFeedback;
 
-    protected WebMarkupBlock termPrincipalMaximumBlock;
-    protected WebMarkupContainer termPrincipalMaximumIContainer;
-    protected Double termPrincipalMaximumValue;
-    protected TextField<Double> termPrincipalMaximumField;
-    protected TextFeedbackPanel termPrincipalMaximumFeedback;
+    protected WebMarkupBlock termPrincipleMaximumBlock;
+    protected WebMarkupContainer termPrincipleMaximumIContainer;
+    protected Double termPrincipleMaximumValue;
+    protected TextField<Double> termPrincipleMaximumField;
+    protected TextFeedbackPanel termPrincipleMaximumFeedback;
 
-    // Row 2 (Optional) : Principal by loan cycle
-    protected WebMarkupBlock termPrincipalByLoanCycleBlock;
-    protected WebMarkupContainer termPrincipalByLoanCycleIContainer;
-    protected List<Map<String, Object>> termPrincipalByLoanCycleValue = Lists.newArrayList();
-    protected DataTable<Map<String, Object>, String> termPrincipalByLoanCycleTable;
-    protected List<IColumn<Map<String, Object>, String>> termPrincipalByLoanCycleColumn;
-    protected ListDataProvider termPrincipalByLoanCycleProvider;
-    protected AjaxLink<Void> termPrincipalByLoanCycleAddLink;
-    protected ModalWindow termPrincipalByLoanCyclePopup;
+    // Row 2 (Optional) : Principle by loan cycle
+    protected WebMarkupBlock termPrincipleByLoanCycleBlock;
+    protected WebMarkupContainer termPrincipleByLoanCycleIContainer;
+    protected List<Map<String, Object>> termPrincipleByLoanCycleValue = Lists.newArrayList();
+    protected DataTable<Map<String, Object>, String> termPrincipleByLoanCycleTable;
+    protected List<IColumn<Map<String, Object>, String>> termPrincipleByLoanCycleColumn;
+    protected ListDataProvider termPrincipleByLoanCycleProvider;
+    protected AjaxLink<Void> termPrincipleByLoanCycleAddLink;
+    protected ModalWindow termPrincipleByLoanCyclePopup;
 
     // Row 3 : Number of repayments
     protected WebMarkupBlock termNumberOfRepaymentMinimumBlock;
@@ -386,11 +386,11 @@ public class LoanCreatePage extends Page {
     protected Select2SingleChoice<Option> settingRepaymentStrategyField;
     protected TextFeedbackPanel settingRepaymentStrategyFeedback;
 
-    protected WebMarkupBlock settingMoratoriumPrincipalBlock;
-    protected WebMarkupContainer settingMoratoriumPrincipalIContainer;
-    protected Long settingMoratoriumPrincipalValue;
-    protected TextField<Long> settingMoratoriumPrincipalField;
-    protected TextFeedbackPanel settingMoratoriumPrincipalFeedback;
+    protected WebMarkupBlock settingMoratoriumPrincipleBlock;
+    protected WebMarkupContainer settingMoratoriumPrincipleIContainer;
+    protected Long settingMoratoriumPrincipleValue;
+    protected TextField<Long> settingMoratoriumPrincipleField;
+    protected TextFeedbackPanel settingMoratoriumPrincipleFeedback;
 
     protected WebMarkupBlock settingMoratoriumInterestBlock;
     protected WebMarkupContainer settingMoratoriumInterestIContainer;
@@ -448,11 +448,11 @@ public class LoanCreatePage extends Page {
     protected CheckBox settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField;
     protected TextFeedbackPanel settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback;
 
-    protected WebMarkupBlock settingPrincipalThresholdForLastInstalmentBlock;
-    protected WebMarkupContainer settingPrincipalThresholdForLastInstalmentIContainer;
-    protected Double settingPrincipalThresholdForLastInstalmentValue;
-    protected TextField<Double> settingPrincipalThresholdForLastInstalmentField;
-    protected TextFeedbackPanel settingPrincipalThresholdForLastInstalmentFeedback;
+    protected WebMarkupBlock settingPrincipleThresholdForLastInstalmentBlock;
+    protected WebMarkupContainer settingPrincipleThresholdForLastInstalmentIContainer;
+    protected Double settingPrincipleThresholdForLastInstalmentValue;
+    protected TextField<Double> settingPrincipleThresholdForLastInstalmentField;
+    protected TextFeedbackPanel settingPrincipleThresholdForLastInstalmentFeedback;
 
     protected WebMarkupBlock settingVariableInstallmentsAllowedBlock;
     protected WebMarkupContainer settingVariableInstallmentsAllowedIContainer;
@@ -1055,7 +1055,7 @@ public class LoanCreatePage extends Page {
         this.detailShortNameValue = generator.generate(4);
         this.currencyDecimalPlaceValue = 2l;
         this.currencyInMultipleOfValue = 1l;
-        this.termPrincipalDefaultValue = 100d;
+        this.termPrincipleDefaultValue = 100d;
         this.termNumberOfRepaymentDefaultValue = 12l;
         this.termRepaidEveryValue = 1l;
         this.termRepaidTypeValue = LockInType.Month.toOption();
@@ -1064,7 +1064,7 @@ public class LoanCreatePage extends Page {
         this.settingAmortizationValue = Amortization.EqualInstallment.toOption();
         this.settingInterestMethodValue = InterestMethod.DecliningBalance.toOption();
         this.settingInterestCalculationPeriodValue = InterestCalculationPeriod.SameAsPayment.toOption();
-        this.settingRepaymentStrategyValue = RepaymentStrategy.Interest_Principal_Penalty_Fee.toOption();
+        this.settingRepaymentStrategyValue = RepaymentStrategy.Interest_Principle_Penalty_Fee.toOption();
         this.accountingValue = AccountingType.None.getDescription();
         this.interestRecalculationRecalculateInterestValue = false;
         this.settingDayInYearValue = DayInYear.Actual.toOption();
@@ -1079,7 +1079,7 @@ public class LoanCreatePage extends Page {
         this.currencyCodeField.setRequired(true);
         this.currencyDecimalPlaceField.setRequired(true);
         this.currencyInMultipleOfField.setRequired(true);
-        this.termPrincipalDefaultField.setRequired(true);
+        this.termPrincipleDefaultField.setRequired(true);
         this.termNumberOfRepaymentDefaultField.setRequired(true);
         this.termRepaidEveryField.setRequired(true);
         this.termRepaidTypeField.setRequired(true);
@@ -2356,7 +2356,7 @@ public class LoanCreatePage extends Page {
         this.interestRecalculationRecalculateBlock.add(this.interestRecalculationRecalculateIContainer);
         this.interestRecalculationRecalculateProvider = new FrequencyProvider();
         this.interestRecalculationRecalculateField = new Select2SingleChoice<>("interestRecalculationRecalculateField", new PropertyModel<>(this, "interestRecalculationRecalculateValue"), this.interestRecalculationRecalculateProvider);
-        this.interestRecalculationRecalculateField.setLabel(Model.of("Frequency for recalculate Outstanding Principal"));
+        this.interestRecalculationRecalculateField.setLabel(Model.of("Frequency for recalculate Outstanding Principle"));
         this.interestRecalculationRecalculateField.add(new OnChangeAjaxBehavior(this::interestRecalculationRecalculateFieldUpdate));
         this.interestRecalculationRecalculateIContainer.add(this.interestRecalculationRecalculateField);
         this.interestRecalculationRecalculateFeedback = new TextFeedbackPanel("interestRecalculationRecalculateFeedback", this.interestRecalculationRecalculateField);
@@ -2550,16 +2550,16 @@ public class LoanCreatePage extends Page {
         this.settingRepaymentStrategyFeedback = new TextFeedbackPanel("settingRepaymentStrategyFeedback", this.settingRepaymentStrategyField);
         this.settingRepaymentStrategyIContainer.add(this.settingRepaymentStrategyFeedback);
 
-        this.settingMoratoriumPrincipalBlock = new WebMarkupBlock("settingMoratoriumPrincipalBlock", Size.Six_6);
-        this.form.add(this.settingMoratoriumPrincipalBlock);
-        this.settingMoratoriumPrincipalIContainer = new WebMarkupContainer("settingMoratoriumPrincipalIContainer");
-        this.settingMoratoriumPrincipalBlock.add(this.settingMoratoriumPrincipalIContainer);
-        this.settingMoratoriumPrincipalField = new TextField<>("settingMoratoriumPrincipalField", new PropertyModel<>(this, "settingMoratoriumPrincipalValue"));
-        this.settingMoratoriumPrincipalField.setLabel(Model.of("Moratorium principal"));
-        this.settingMoratoriumPrincipalField.add(new OnChangeAjaxBehavior());
-        this.settingMoratoriumPrincipalIContainer.add(this.settingMoratoriumPrincipalField);
-        this.settingMoratoriumPrincipalFeedback = new TextFeedbackPanel("settingMoratoriumPrincipalFeedback", this.settingMoratoriumPrincipalField);
-        this.settingMoratoriumPrincipalIContainer.add(this.settingMoratoriumPrincipalFeedback);
+        this.settingMoratoriumPrincipleBlock = new WebMarkupBlock("settingMoratoriumPrincipleBlock", Size.Six_6);
+        this.form.add(this.settingMoratoriumPrincipleBlock);
+        this.settingMoratoriumPrincipleIContainer = new WebMarkupContainer("settingMoratoriumPrincipleIContainer");
+        this.settingMoratoriumPrincipleBlock.add(this.settingMoratoriumPrincipleIContainer);
+        this.settingMoratoriumPrincipleField = new TextField<>("settingMoratoriumPrincipleField", new PropertyModel<>(this, "settingMoratoriumPrincipleValue"));
+        this.settingMoratoriumPrincipleField.setLabel(Model.of("Moratorium principle"));
+        this.settingMoratoriumPrincipleField.add(new OnChangeAjaxBehavior());
+        this.settingMoratoriumPrincipleIContainer.add(this.settingMoratoriumPrincipleField);
+        this.settingMoratoriumPrincipleFeedback = new TextFeedbackPanel("settingMoratoriumPrincipleFeedback", this.settingMoratoriumPrincipleField);
+        this.settingMoratoriumPrincipleIContainer.add(this.settingMoratoriumPrincipleFeedback);
 
         this.settingMoratoriumInterestBlock = new WebMarkupBlock("settingMoratoriumInterestBlock", Size.Six_6);
         this.form.add(this.settingMoratoriumInterestBlock);
@@ -2660,16 +2660,16 @@ public class LoanCreatePage extends Page {
         this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback = new TextFeedbackPanel("settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback", this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedField);
         this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedIContainer.add(this.settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedFeedback);
 
-        this.settingPrincipalThresholdForLastInstalmentBlock = new WebMarkupBlock("settingPrincipalThresholdForLastInstalmentBlock", Size.Six_6);
-        this.form.add(this.settingPrincipalThresholdForLastInstalmentBlock);
-        this.settingPrincipalThresholdForLastInstalmentIContainer = new WebMarkupContainer("settingPrincipalThresholdForLastInstalmentIContainer");
-        this.settingPrincipalThresholdForLastInstalmentBlock.add(this.settingPrincipalThresholdForLastInstalmentIContainer);
-        this.settingPrincipalThresholdForLastInstalmentField = new TextField<>("settingPrincipalThresholdForLastInstalmentField", new PropertyModel<>(this, "settingPrincipalThresholdForLastInstalmentValue"));
-        this.settingPrincipalThresholdForLastInstalmentField.setLabel(Model.of("Principal Threshold (%) for Last Installment"));
-        this.settingPrincipalThresholdForLastInstalmentField.add(new OnChangeAjaxBehavior());
-        this.settingPrincipalThresholdForLastInstalmentIContainer.add(this.settingPrincipalThresholdForLastInstalmentField);
-        this.settingPrincipalThresholdForLastInstalmentFeedback = new TextFeedbackPanel("settingPrincipalThresholdForLastInstalmentFeedback", this.settingPrincipalThresholdForLastInstalmentField);
-        this.settingPrincipalThresholdForLastInstalmentIContainer.add(this.settingPrincipalThresholdForLastInstalmentFeedback);
+        this.settingPrincipleThresholdForLastInstalmentBlock = new WebMarkupBlock("settingPrincipleThresholdForLastInstalmentBlock", Size.Six_6);
+        this.form.add(this.settingPrincipleThresholdForLastInstalmentBlock);
+        this.settingPrincipleThresholdForLastInstalmentIContainer = new WebMarkupContainer("settingPrincipleThresholdForLastInstalmentIContainer");
+        this.settingPrincipleThresholdForLastInstalmentBlock.add(this.settingPrincipleThresholdForLastInstalmentIContainer);
+        this.settingPrincipleThresholdForLastInstalmentField = new TextField<>("settingPrincipleThresholdForLastInstalmentField", new PropertyModel<>(this, "settingPrincipleThresholdForLastInstalmentValue"));
+        this.settingPrincipleThresholdForLastInstalmentField.setLabel(Model.of("Principle Threshold (%) for Last Installment"));
+        this.settingPrincipleThresholdForLastInstalmentField.add(new OnChangeAjaxBehavior());
+        this.settingPrincipleThresholdForLastInstalmentIContainer.add(this.settingPrincipleThresholdForLastInstalmentField);
+        this.settingPrincipleThresholdForLastInstalmentFeedback = new TextFeedbackPanel("settingPrincipleThresholdForLastInstalmentFeedback", this.settingPrincipleThresholdForLastInstalmentField);
+        this.settingPrincipleThresholdForLastInstalmentIContainer.add(this.settingPrincipleThresholdForLastInstalmentFeedback);
 
         this.settingVariableInstallmentsAllowedBlock = new WebMarkupBlock("settingVariableInstallmentsAllowedBlock", Size.Six_6);
         this.form.add(this.settingVariableInstallmentsAllowedBlock);
@@ -2873,65 +2873,65 @@ public class LoanCreatePage extends Page {
         this.termVaryBasedOnLoanCycleFeedback = new TextFeedbackPanel("termVaryBasedOnLoanCycleFeedback", this.termVaryBasedOnLoanCycleField);
         this.termVaryBasedOnLoanCycleIContainer.add(this.termVaryBasedOnLoanCycleFeedback);
 
-        this.termPrincipalMinimumBlock = new WebMarkupBlock("termPrincipalMinimumBlock", Size.Three_3);
-        this.form.add(this.termPrincipalMinimumBlock);
-        this.termPrincipalMinimumIContainer = new WebMarkupContainer("termPrincipalMinimumIContainer");
-        this.termPrincipalMinimumBlock.add(this.termPrincipalMinimumIContainer);
-        this.termPrincipalMinimumField = new TextField<>("termPrincipalMinimumField", new PropertyModel<>(this, "termPrincipalMinimumValue"));
-        this.termPrincipalMinimumField.setLabel(Model.of("Principal Minimum"));
-        this.termPrincipalMinimumField.add(new OnChangeAjaxBehavior());
-        this.termPrincipalMinimumIContainer.add(this.termPrincipalMinimumField);
-        this.termPrincipalMinimumFeedback = new TextFeedbackPanel("termPrincipalMinimumFeedback", this.termPrincipalMinimumField);
-        this.termPrincipalMinimumIContainer.add(this.termPrincipalMinimumFeedback);
+        this.termPrincipleMinimumBlock = new WebMarkupBlock("termPrincipleMinimumBlock", Size.Three_3);
+        this.form.add(this.termPrincipleMinimumBlock);
+        this.termPrincipleMinimumIContainer = new WebMarkupContainer("termPrincipleMinimumIContainer");
+        this.termPrincipleMinimumBlock.add(this.termPrincipleMinimumIContainer);
+        this.termPrincipleMinimumField = new TextField<>("termPrincipleMinimumField", new PropertyModel<>(this, "termPrincipleMinimumValue"));
+        this.termPrincipleMinimumField.setLabel(Model.of("Principle Minimum"));
+        this.termPrincipleMinimumField.add(new OnChangeAjaxBehavior());
+        this.termPrincipleMinimumIContainer.add(this.termPrincipleMinimumField);
+        this.termPrincipleMinimumFeedback = new TextFeedbackPanel("termPrincipleMinimumFeedback", this.termPrincipleMinimumField);
+        this.termPrincipleMinimumIContainer.add(this.termPrincipleMinimumFeedback);
 
-        this.termPrincipalDefaultBlock = new WebMarkupBlock("termPrincipalDefaultBlock", Size.Three_3);
-        this.form.add(this.termPrincipalDefaultBlock);
-        this.termPrincipalDefaultIContainer = new WebMarkupContainer("termPrincipalDefaultIContainer");
-        this.termPrincipalDefaultBlock.add(this.termPrincipalDefaultIContainer);
-        this.termPrincipalDefaultField = new TextField<>("termPrincipalDefaultField", new PropertyModel<>(this, "termPrincipalDefaultValue"));
-        this.termPrincipalDefaultField.setLabel(Model.of("Principal Default"));
-        this.termPrincipalDefaultField.add(new OnChangeAjaxBehavior());
-        this.termPrincipalDefaultIContainer.add(this.termPrincipalDefaultField);
-        this.termPrincipalDefaultFeedback = new TextFeedbackPanel("termPrincipalDefaultFeedback", this.termPrincipalDefaultField);
-        this.termPrincipalDefaultIContainer.add(this.termPrincipalDefaultFeedback);
+        this.termPrincipleDefaultBlock = new WebMarkupBlock("termPrincipleDefaultBlock", Size.Three_3);
+        this.form.add(this.termPrincipleDefaultBlock);
+        this.termPrincipleDefaultIContainer = new WebMarkupContainer("termPrincipleDefaultIContainer");
+        this.termPrincipleDefaultBlock.add(this.termPrincipleDefaultIContainer);
+        this.termPrincipleDefaultField = new TextField<>("termPrincipleDefaultField", new PropertyModel<>(this, "termPrincipleDefaultValue"));
+        this.termPrincipleDefaultField.setLabel(Model.of("Principle Default"));
+        this.termPrincipleDefaultField.add(new OnChangeAjaxBehavior());
+        this.termPrincipleDefaultIContainer.add(this.termPrincipleDefaultField);
+        this.termPrincipleDefaultFeedback = new TextFeedbackPanel("termPrincipleDefaultFeedback", this.termPrincipleDefaultField);
+        this.termPrincipleDefaultIContainer.add(this.termPrincipleDefaultFeedback);
 
-        this.termPrincipalMaximumBlock = new WebMarkupBlock("termPrincipalMaximumBlock", Size.Three_3);
-        this.form.add(this.termPrincipalMaximumBlock);
-        this.termPrincipalMaximumIContainer = new WebMarkupContainer("termPrincipalMaximumIContainer");
-        this.termPrincipalMaximumBlock.add(this.termPrincipalMaximumIContainer);
-        this.termPrincipalMaximumField = new TextField<>("termPrincipalMaximumField", new PropertyModel<>(this, "termPrincipalMaximumValue"));
-        this.termPrincipalMaximumField.setLabel(Model.of("Principal Maximum"));
-        this.termPrincipalMaximumField.add(new OnChangeAjaxBehavior());
-        this.termPrincipalMaximumIContainer.add(this.termPrincipalMaximumField);
-        this.termPrincipalMaximumFeedback = new TextFeedbackPanel("termPrincipalMaximumFeedback", this.termPrincipalMaximumField);
-        this.termPrincipalMaximumIContainer.add(this.termPrincipalMaximumFeedback);
+        this.termPrincipleMaximumBlock = new WebMarkupBlock("termPrincipleMaximumBlock", Size.Three_3);
+        this.form.add(this.termPrincipleMaximumBlock);
+        this.termPrincipleMaximumIContainer = new WebMarkupContainer("termPrincipleMaximumIContainer");
+        this.termPrincipleMaximumBlock.add(this.termPrincipleMaximumIContainer);
+        this.termPrincipleMaximumField = new TextField<>("termPrincipleMaximumField", new PropertyModel<>(this, "termPrincipleMaximumValue"));
+        this.termPrincipleMaximumField.setLabel(Model.of("Principle Maximum"));
+        this.termPrincipleMaximumField.add(new OnChangeAjaxBehavior());
+        this.termPrincipleMaximumIContainer.add(this.termPrincipleMaximumField);
+        this.termPrincipleMaximumFeedback = new TextFeedbackPanel("termPrincipleMaximumFeedback", this.termPrincipleMaximumField);
+        this.termPrincipleMaximumIContainer.add(this.termPrincipleMaximumFeedback);
 
         {
-            this.termPrincipalByLoanCyclePopup = new ModalWindow("termPrincipalByLoanCyclePopup");
-            add(this.termPrincipalByLoanCyclePopup);
-            this.termPrincipalByLoanCyclePopup.setOnClose(this::termPrincipalByLoanCyclePopupClose);
+            this.termPrincipleByLoanCyclePopup = new ModalWindow("termPrincipleByLoanCyclePopup");
+            add(this.termPrincipleByLoanCyclePopup);
+            this.termPrincipleByLoanCyclePopup.setOnClose(this::termPrincipleByLoanCyclePopupClose);
 
-            this.termPrincipalByLoanCycleBlock = new WebMarkupBlock("termPrincipalByLoanCycleBlock", Size.Twelve_12);
-            this.form.add(this.termPrincipalByLoanCycleBlock);
-            this.termPrincipalByLoanCycleIContainer = new WebMarkupContainer("termPrincipalByLoanCycleIContainer");
-            this.termPrincipalByLoanCycleBlock.add(this.termPrincipalByLoanCycleIContainer);
+            this.termPrincipleByLoanCycleBlock = new WebMarkupBlock("termPrincipleByLoanCycleBlock", Size.Twelve_12);
+            this.form.add(this.termPrincipleByLoanCycleBlock);
+            this.termPrincipleByLoanCycleIContainer = new WebMarkupContainer("termPrincipleByLoanCycleIContainer");
+            this.termPrincipleByLoanCycleBlock.add(this.termPrincipleByLoanCycleIContainer);
 
-            this.termPrincipalByLoanCycleColumn = Lists.newArrayList();
-            this.termPrincipalByLoanCycleColumn.add(new TextColumn(Model.of("When"), "when", "when", this::termPrincipalByLoanCycleColumn));
-            this.termPrincipalByLoanCycleColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle", this::termPrincipalByLoanCycleColumn));
-            this.termPrincipalByLoanCycleColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum", this::termPrincipalByLoanCycleColumn));
-            this.termPrincipalByLoanCycleColumn.add(new TextColumn(Model.of("Default"), "default", "default", this::termPrincipalByLoanCycleColumn));
-            this.termPrincipalByLoanCycleColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum", this::termPrincipalByLoanCycleColumn));
-            this.termPrincipalByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::termPrincipalByLoanCycleAction, this::termPrincipalByLoanCycleClick));
-            this.termPrincipalByLoanCycleProvider = new ListDataProvider(this.termPrincipalByLoanCycleValue);
-            this.termPrincipalByLoanCycleTable = new DataTable<>("termPrincipalByLoanCycleTable", this.termPrincipalByLoanCycleColumn, this.termPrincipalByLoanCycleProvider, 20);
-            this.termPrincipalByLoanCycleIContainer.add(this.termPrincipalByLoanCycleTable);
-            this.termPrincipalByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(this.termPrincipalByLoanCycleTable, this.termPrincipalByLoanCycleProvider));
-            this.termPrincipalByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.termPrincipalByLoanCycleTable));
+            this.termPrincipleByLoanCycleColumn = Lists.newArrayList();
+            this.termPrincipleByLoanCycleColumn.add(new TextColumn(Model.of("When"), "when", "when", this::termPrincipleByLoanCycleColumn));
+            this.termPrincipleByLoanCycleColumn.add(new TextColumn(Model.of("Loan Cycle"), "cycle", "cycle", this::termPrincipleByLoanCycleColumn));
+            this.termPrincipleByLoanCycleColumn.add(new TextColumn(Model.of("Min"), "minimum", "minimum", this::termPrincipleByLoanCycleColumn));
+            this.termPrincipleByLoanCycleColumn.add(new TextColumn(Model.of("Default"), "default", "default", this::termPrincipleByLoanCycleColumn));
+            this.termPrincipleByLoanCycleColumn.add(new TextColumn(Model.of("Max"), "maximum", "maximum", this::termPrincipleByLoanCycleColumn));
+            this.termPrincipleByLoanCycleColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::termPrincipleByLoanCycleAction, this::termPrincipleByLoanCycleClick));
+            this.termPrincipleByLoanCycleProvider = new ListDataProvider(this.termPrincipleByLoanCycleValue);
+            this.termPrincipleByLoanCycleTable = new DataTable<>("termPrincipleByLoanCycleTable", this.termPrincipleByLoanCycleColumn, this.termPrincipleByLoanCycleProvider, 20);
+            this.termPrincipleByLoanCycleIContainer.add(this.termPrincipleByLoanCycleTable);
+            this.termPrincipleByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(this.termPrincipleByLoanCycleTable, this.termPrincipleByLoanCycleProvider));
+            this.termPrincipleByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.termPrincipleByLoanCycleTable));
 
-            this.termPrincipalByLoanCycleAddLink = new AjaxLink<>("termPrincipalByLoanCycleAddLink");
-            this.termPrincipalByLoanCycleAddLink.setOnClick(this::termPrincipalByLoanCycleAddLinkClick);
-            this.termPrincipalByLoanCycleIContainer.add(this.termPrincipalByLoanCycleAddLink);
+            this.termPrincipleByLoanCycleAddLink = new AjaxLink<>("termPrincipleByLoanCycleAddLink");
+            this.termPrincipleByLoanCycleAddLink.setOnClick(this::termPrincipleByLoanCycleAddLinkClick);
+            this.termPrincipleByLoanCycleIContainer.add(this.termPrincipleByLoanCycleAddLink);
         }
 
         this.termNumberOfRepaymentMinimumBlock = new WebMarkupBlock("termNumberOfRepaymentMinimumBlock", Size.Three_3);
@@ -3266,10 +3266,10 @@ public class LoanCreatePage extends Page {
         return actions;
     }
 
-    protected boolean termPrincipalByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+    protected boolean termPrincipleByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.termPrincipalByLoanCyclePopup.setContent(new PrincipalLoanCyclePopup("termPrincipalByLoanCycle", this.termPrincipalByLoanCyclePopup, this.popupModel));
-        this.termPrincipalByLoanCyclePopup.show(target);
+        this.termPrincipleByLoanCyclePopup.setContent(new PrincipleLoanCyclePopup("termPrincipleByLoanCycle", this.termPrincipleByLoanCyclePopup, this.popupModel));
+        this.termPrincipleByLoanCyclePopup.show(target);
         return false;
     }
 
@@ -3286,7 +3286,7 @@ public class LoanCreatePage extends Page {
         target.add(this.termNominalInterestRateByLoanCycleBlock);
     }
 
-    protected ItemPanel termPrincipalByLoanCycleColumn(String column, IModel<String> display, Map<String, Object> model) {
+    protected ItemPanel termPrincipleByLoanCycleColumn(String column, IModel<String> display, Map<String, Object> model) {
         if ("when".equals(column)) {
             Option value = (Option) model.get(column);
             return new TextCell(value);
@@ -3300,22 +3300,22 @@ public class LoanCreatePage extends Page {
         throw new WicketRuntimeException("Unknown " + column);
     }
 
-    protected void termPrincipalByLoanCycleClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void termPrincipleByLoanCycleClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         int index = -1;
-        for (int i = 0; i < this.termPrincipalByLoanCycleValue.size(); i++) {
-            Map<String, Object> column = this.termPrincipalByLoanCycleValue.get(i);
+        for (int i = 0; i < this.termPrincipleByLoanCycleValue.size(); i++) {
+            Map<String, Object> column = this.termPrincipleByLoanCycleValue.get(i);
             if (model.get("uuid").equals(column.get("uuid"))) {
                 index = i;
                 break;
             }
         }
         if (index >= 0) {
-            this.termPrincipalByLoanCycleValue.remove(index);
+            this.termPrincipleByLoanCycleValue.remove(index);
         }
-        target.add(this.termPrincipalByLoanCycleTable);
+        target.add(this.termPrincipleByLoanCycleTable);
     }
 
-    protected List<ActionItem> termPrincipalByLoanCycleAction(String s, Map<String, Object> model) {
+    protected List<ActionItem> termPrincipleByLoanCycleAction(String s, Map<String, Object> model) {
         List<ActionItem> actions = Lists.newArrayList();
         actions.add(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
         return actions;
@@ -3378,11 +3378,11 @@ public class LoanCreatePage extends Page {
     }
 
     protected boolean termVaryBasedOnLoanCycleFieldUpdate(AjaxRequestTarget target) {
-        this.termPrincipalByLoanCycleIContainer.setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
+        this.termPrincipleByLoanCycleIContainer.setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
         this.termNumberOfRepaymentByLoanCycleIContainer.setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
         this.termNominalInterestRateByLoanCycleIContainer.setVisible(this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue);
         if (target != null) {
-            target.add(this.termPrincipalByLoanCycleBlock);
+            target.add(this.termPrincipleByLoanCycleBlock);
             target.add(this.termNumberOfRepaymentByLoanCycleBlock);
             target.add(this.termNominalInterestRateByLoanCycleBlock);
         }
@@ -3413,7 +3413,7 @@ public class LoanCreatePage extends Page {
         target.add(this.termNumberOfRepaymentByLoanCycleBlock);
     }
 
-    protected void termPrincipalByLoanCyclePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
+    protected void termPrincipleByLoanCyclePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", generator.externalId());
@@ -3422,8 +3422,8 @@ public class LoanCreatePage extends Page {
         item.put("minimum", this.popupModel.get("minimumValue"));
         item.put("default", this.popupModel.get("defaultValue"));
         item.put("maximum", this.popupModel.get("maximumValue"));
-        this.termPrincipalByLoanCycleValue.add(item);
-        target.add(this.termPrincipalByLoanCycleBlock);
+        this.termPrincipleByLoanCycleValue.add(item);
+        target.add(this.termPrincipleByLoanCycleBlock);
     }
 
     protected void fundSourcePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
@@ -3528,9 +3528,9 @@ public class LoanCreatePage extends Page {
 
         boolean useBorrowerCycle = this.termVaryBasedOnLoanCycleValue == null ? false : this.termVaryBasedOnLoanCycleValue;
         builder.withUseBorrowerCycle(useBorrowerCycle);
-        builder.withMinPrincipal(this.termPrincipalMinimumValue);
-        builder.withPrincipal(this.termPrincipalDefaultValue);
-        builder.withMaxPrincipal(this.termPrincipalMaximumValue);
+        builder.withMinPrinciple(this.termPrincipleMinimumValue);
+        builder.withPrinciple(this.termPrincipleDefaultValue);
+        builder.withMaxPrinciple(this.termPrincipleMaximumValue);
         builder.withMinNumberOfRepayments(this.termNumberOfRepaymentMinimumValue);
         builder.withNumberOfRepayments(this.termNumberOfRepaymentDefaultValue);
         builder.withMaxNumberOfRepayments(this.termNumberOfRepaymentMaximumValue);
@@ -3557,14 +3557,14 @@ public class LoanCreatePage extends Page {
         }
 
         if (useBorrowerCycle) {
-            if (this.termPrincipalByLoanCycleValue != null) {
-                for (Map<String, Object> item : this.termPrincipalByLoanCycleValue) {
+            if (this.termPrincipleByLoanCycleValue != null) {
+                for (Map<String, Object> item : this.termPrincipleByLoanCycleValue) {
                     WhenType valueConditionType = (WhenType) item.get("valueConditionType");
                     Long borrowerCycleNumber = (Long) item.get("cycle");
                     Double minValue = (Double) item.get("minimum");
                     Double defaultValue = (Double) item.get("default");
                     Double maxValue = (Double) item.get("maximum");
-                    builder.withPrincipalVariationsForBorrowerCycle(valueConditionType, borrowerCycleNumber, minValue, defaultValue, maxValue);
+                    builder.withPrincipleVariationsForBorrowerCycle(valueConditionType, borrowerCycleNumber, minValue, defaultValue, maxValue);
                 }
             }
             if (this.termNumberOfRepaymentByLoanCycleValue != null) {
@@ -3704,7 +3704,7 @@ public class LoanCreatePage extends Page {
                 builder.withInterestRecalculationEnabled(false);
             }
         }
-        builder.withGraceOnPrincipalPayment(this.settingMoratoriumPrincipalValue);
+        builder.withGraceOnPrinciplePayment(this.settingMoratoriumPrincipleValue);
         builder.withGraceOnInterestPayment(this.settingMoratoriumInterestValue);
         builder.withGraceOnInterestCharged(this.settingInterestFreePeriodValue);
         builder.withInArrearsTolerance(this.settingArrearsToleranceValue);
@@ -3733,7 +3733,7 @@ public class LoanCreatePage extends Page {
             builder.withDaysInMonthType(DayInMonth.valueOf(this.settingDayInMonthValue.getId()));
         }
 
-        builder.withPrincipalThresholdForLastInstallment(this.settingPrincipalThresholdForLastInstalmentValue);
+        builder.withPrincipleThresholdForLastInstallment(this.settingPrincipleThresholdForLastInstalmentValue);
 
         // Guarantee Requirements
 
@@ -3761,7 +3761,7 @@ public class LoanCreatePage extends Page {
             allowAttributeOverrideBuilder.withAmortizationType(this.configurableAmortizationValue == null ? false : this.configurableAmortizationValue);
             allowAttributeOverrideBuilder.withTransactionProcessingStrategyId(this.configurableRepaymentStrategyValue == null ? false : this.configurableRepaymentStrategyValue);
             allowAttributeOverrideBuilder.withInArrearsTolerance(this.configurableArrearsToleranceValue == null ? false : this.configurableArrearsToleranceValue);
-            allowAttributeOverrideBuilder.withGraceOnPrincipalAndInterestPayment(this.configurableMoratoriumValue == null ? false : this.configurableMoratoriumValue);
+            allowAttributeOverrideBuilder.withGraceOnPrincipleAndInterestPayment(this.configurableMoratoriumValue == null ? false : this.configurableMoratoriumValue);
             allowAttributeOverrideBuilder.withInterestType(this.configurableInterestMethodValue == null ? false : this.configurableInterestMethodValue);
             allowAttributeOverrideBuilder.withInterestCalculationPeriodType(this.configurableInterestCalculationPeriodValue == null ? false : this.configurableInterestCalculationPeriodValue);
             allowAttributeOverrideBuilder.withRepaymentEvery(this.configurableRepaidEveryValue == null ? false : this.configurableRepaidEveryValue);
@@ -3769,7 +3769,7 @@ public class LoanCreatePage extends Page {
         } else {
             allowAttributeOverrideBuilder.withAmortizationType(false);
             allowAttributeOverrideBuilder.withGraceOnArrearsAgeing(false);
-            allowAttributeOverrideBuilder.withGraceOnPrincipalAndInterestPayment(false);
+            allowAttributeOverrideBuilder.withGraceOnPrincipleAndInterestPayment(false);
             allowAttributeOverrideBuilder.withInArrearsTolerance(false);
             allowAttributeOverrideBuilder.withInterestCalculationPeriodType(false);
             allowAttributeOverrideBuilder.withInterestType(false);
