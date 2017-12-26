@@ -27,7 +27,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class LoanAccountUndoApprovePage extends Page {
+public class LoanAccountUndoApprovalPage extends Page {
 
     protected ClientEnum client;
 

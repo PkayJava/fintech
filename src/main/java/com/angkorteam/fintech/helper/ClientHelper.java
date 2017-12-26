@@ -59,22 +59,27 @@ public class ClientHelper {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/loans/" + id + "?command=disburse", object);
     }
-    
+
     public static JsonNode undoDisburseLoanAccount(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/loans/" + id + "?command=undodisbursal", object);
     }
-    
+
     public static JsonNode undoApprovalLoanAccount(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/loans/" + id + "?command=undoapproval", object);
+    }
+
+    public static JsonNode rejectLoanAccount(IMifos session, JsonNode object) throws UnirestException {
+        String id = (String) object.getObject().remove("id");
+        return Helper.performServerPost(session, "/api/v1/loans/" + id + "?command=reject", object);
     }
 
     public static JsonNode foreclosureLoanAccount(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/loans/" + id + "/transactions?command=foreclosure", object);
     }
-    
+
     public static JsonNode prepayLoanAccount(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/loans/" + id + "/transactions?command=repayment", object);
