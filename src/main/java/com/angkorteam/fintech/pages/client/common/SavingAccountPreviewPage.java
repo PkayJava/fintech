@@ -14,8 +14,8 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
-import com.angkorteam.fintech.widget.client.client.AccountPreviewCharge;
-import com.angkorteam.fintech.widget.client.client.AccountPreviewTransaction;
+import com.angkorteam.fintech.widget.client.common.SavingAccountPreviewCharge;
+import com.angkorteam.fintech.widget.client.common.SavingAccountPreviewTransaction;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 
@@ -230,12 +230,18 @@ public class SavingAccountPreviewPage extends Page {
         this.totalInterestEarnedView = new ReadOnlyView("totalInterestEarnedView", new PropertyModel<>(this, "totalInterestEarnedValue"));
         this.totalInterestEarnedVContainer.add(this.totalInterestEarnedView);
 
-        this.tab = new AjaxTabbedPanel<>("tab", Arrays.asList(new AccountPreviewTransaction(this), new AccountPreviewCharge(this)));
+        this.tab = new AjaxTabbedPanel<>("tab", Arrays.asList(new SavingAccountPreviewTransaction(this), new SavingAccountPreviewCharge(this)));
         add(this.tab);
 
         PageParameters parameters = new PageParameters();
         parameters.add("client", this.client.name());
-        parameters.add("clientId", this.clientId);
+        if (this.client == ClientEnum.Client) {
+            parameters.add("clientId", this.clientId);
+        } else if (this.client == ClientEnum.Center) {
+            parameters.add("centerId", this.centerId);
+        } else if (this.client == ClientEnum.Group) {
+            parameters.add("groupId", this.groupId);
+        }
         parameters.add("accountId", this.accountId);
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", SavingAccountClosePage.class, parameters);

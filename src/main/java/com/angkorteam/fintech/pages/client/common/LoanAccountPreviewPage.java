@@ -12,11 +12,13 @@ import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.widget.LabelView;
 import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.client.client.ClientPreviewDocument;
-import com.angkorteam.fintech.widget.client.client.ClientPreviewFamilyMember;
-import com.angkorteam.fintech.widget.client.client.ClientPreviewGeneral;
-import com.angkorteam.fintech.widget.client.client.ClientPreviewIdentity;
-import com.angkorteam.fintech.widget.client.client.ClientPreviewNote;
+import com.angkorteam.fintech.widget.client.common.LoanAccountPreviewCharge;
+import com.angkorteam.fintech.widget.client.common.LoanAccountPreviewDetail;
+import com.angkorteam.fintech.widget.client.common.LoanAccountPreviewDocument;
+import com.angkorteam.fintech.widget.client.common.LoanAccountPreviewLoanCollateral;
+import com.angkorteam.fintech.widget.client.common.LoanAccountPreviewNote;
+import com.angkorteam.fintech.widget.client.common.LoanAccountPreviewRepaymentSchedule;
+import com.angkorteam.fintech.widget.client.common.LoanAccountPreviewTransaction;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.spring.JdbcTemplate;
@@ -285,7 +287,7 @@ public class LoanAccountPreviewPage extends Page {
         this.disbursedDateView = new ReadOnlyView("disbursedDateView", new PropertyModel<>(this, "disbursedDateValue"), "yyyy-MM-dd");
         add(this.disbursedDateView);
 
-        this.tab = new AjaxTabbedPanel<>("tab", Arrays.asList(new ClientPreviewGeneral(this), new ClientPreviewFamilyMember(this), new ClientPreviewIdentity(this), new ClientPreviewDocument(this), new ClientPreviewNote(this)));
+        this.tab = new AjaxTabbedPanel<>("tab", Arrays.asList(new LoanAccountPreviewDetail(this), new LoanAccountPreviewRepaymentSchedule(this), new LoanAccountPreviewTransaction(this), new LoanAccountPreviewLoanCollateral(this), new LoanAccountPreviewCharge(this), new LoanAccountPreviewDocument(this), new LoanAccountPreviewNote(this)));
         add(this.tab);
     }
 

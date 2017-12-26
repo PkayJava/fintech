@@ -1,27 +1,28 @@
-package com.angkorteam.fintech.widget.client.center;
+package com.angkorteam.fintech.widget.client.common;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-public class AccountPreviewCharge implements ITab {
+import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
+
+public class LoanAccountPreviewDocument extends ITab {
 
     protected Page itemPage;
 
-    public AccountPreviewCharge(Page itemPage) {
+    public LoanAccountPreviewDocument(Page itemPage) {
         this.itemPage = itemPage;
     }
-
+    
     @Override
     public IModel<String> getTitle() {
-        return Model.of("Charge");
+        return Model.of("Loan Document");
     }
 
     @Override
     public WebMarkupContainer getPanel(String containerId) {
-        return new AccountPreviewChargePanel(containerId, this.itemPage);
+        return new LoanAccountPreviewDocumentPanel(containerId, this.itemPage);
     }
 
     @Override

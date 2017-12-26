@@ -1,16 +1,17 @@
-package com.angkorteam.fintech.widget.client.center;
+package com.angkorteam.fintech.widget.client.common;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-public class AccountPreviewTransaction implements ITab {
+import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
+
+public class SavingAccountPreviewTransaction extends ITab {
 
     protected Page itemPage;
 
-    public AccountPreviewTransaction(Page itemPage) {
+    public SavingAccountPreviewTransaction(Page itemPage) {
         this.itemPage = itemPage;
     }
 
@@ -21,7 +22,7 @@ public class AccountPreviewTransaction implements ITab {
 
     @Override
     public WebMarkupContainer getPanel(String containerId) {
-        return new AccountPreviewTransactionPanel(containerId, this.itemPage);
+        return new SavingAccountPreviewTransactionPanel(containerId, this.itemPage);
     }
 
     @Override

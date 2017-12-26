@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.widget.client.center;
+package com.angkorteam.fintech.widget.client.common;
 
 import java.util.Date;
 import java.util.List;
@@ -27,7 +27,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
 
-public class AccountPreviewChargePanel extends Panel {
+public class SavingAccountPreviewChargePanel extends Panel {
 
     protected String accountId;
 
@@ -38,7 +38,7 @@ public class AccountPreviewChargePanel extends Panel {
     protected JdbcProvider dataProvider;
     protected FilterForm<Map<String, String>> dataFilterForm;
 
-    public AccountPreviewChargePanel(String id, Page itemPage) {
+    public SavingAccountPreviewChargePanel(String id, Page itemPage) {
         super(id);
         this.itemPage = itemPage;
     }

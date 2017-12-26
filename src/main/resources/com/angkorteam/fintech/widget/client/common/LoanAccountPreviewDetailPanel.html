@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<wicket:panel>
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="box box-primary">
+
+					<div class="box-body">
+
+						<!-- Row -->
+						<div wicket:id="repaymentStrategyBlock" class="form-group">
+							<wicket:container wicket:id="repaymentStrategyVContainer">
+								<label>Repayment Strategy</label>
+								<div wicket:id="repaymentStrategyView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div wicket:id="repaymentBlock" class="form-group">
+							<wicket:container wicket:id="repaymentVContainer">
+								<label>Repayment</label>
+								<div wicket:id="repaymentView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="amortizationBlock" class="form-group">
+							<wicket:container wicket:id="amortizationVContainer">
+								<label>Amortization</label>
+								<div wicket:id="amortizationView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div wicket:id="interestBlock" class="form-group">
+							<wicket:container wicket:id="interestVContainer">
+								<label>Interest</label>
+								<div wicket:id="interestView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="graceOnPrincipalPaymentBlock" class="form-group">
+							<wicket:container wicket:id="graceOnPrincipalPaymentVContainer">
+								<label>Grace: On Principal Payment</label>
+								<div wicket:id="graceOnPrincipalPaymentView"
+									class="form-control" />
+							</wicket:container>
+						</div>
+						<div wicket:id="graceOnInterestPaymentBlock" class="form-group">
+							<wicket:container wicket:id="graceOnInterestPaymentVContainer">
+								<label>Grace: On Interest Payment</label>
+								<div wicket:id="graceOnInterestPaymentView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div wicket:id="graceOnArrearAgeingBlock" class="form-group">
+							<wicket:container wicket:id="graceOnArrearAgeingVContainer">
+								<label>Grace: On Arrear Ageing</label>
+								<div wicket:id="graceOnArrearAgeingView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="fundSourceBlock" class="form-group">
+							<wicket:container wicket:id="fundSourceVContainer">
+								<label>Fund Source</label>
+								<div wicket:id="fundSourceView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div wicket:id="interestFreePeriodBlock" class="form-group">
+							<wicket:container wicket:id="interestFreePeriodVContainer">
+								<label>Interest Free Period</label>
+								<div wicket:id="interestFreePeriodView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="interestCalculationPeriodBlock" class="form-group">
+							<wicket:container wicket:id="interestCalculationPeriodVContainer">
+								<label>Interest Calculation Period</label>
+								<div wicket:id="interestCalculationPeriodView"
+									class="form-control" />
+							</wicket:container>
+						</div>
+						<div wicket:id="allowPartialInterestCalcualtionBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="allowPartialInterestCalcualtionVContainer">
+								<label>Allow Partial Interest Calcualtion With Same As
+									Repayment</label>
+								<div wicket:id="allowPartialInterestCalcualtionView"
+									class="form-control" />
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="interestTypeBlock" class="form-group">
+							<wicket:container wicket:id="interestTypeVContainer">
+								<label>Interest Type</label>
+								<div wicket:id="interestTypeView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div wicket:id="recalculateInterestBlock" class="form-group">
+							<wicket:container wicket:id="recalculateInterestVContainer">
+								<label>Recalculate Interest</label>
+								<div wicket:id="recalculateInterestView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="submittedOnBlock" class="form-group">
+							<wicket:container wicket:id="submittedOnVContainer">
+								<label>Submitted On</label>
+								<div wicket:id="submittedOnView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div wicket:id="approvedOnBlock" class="form-group">
+							<wicket:container wicket:id="approvedOnVContainer">
+								<label>Approved On</label>
+								<div wicket:id="approvedOnView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div wicket:id="disbursedOnBlock" class="form-group">
+							<wicket:container wicket:id="disbursedOnVContainer">
+								<label>Disbursed On</label>
+								<div wicket:id="disbursedOnView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div wicket:id="matureOnBlock" class="form-group">
+							<wicket:container wicket:id="matureOnVContainer">
+								<label>Mature On</label>
+								<div wicket:id="matureOnView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="dayInMonthBlock" class="form-group">
+							<wicket:container wicket:id="dayInMonthVContainer">
+								<label>Day In Month</label>
+								<div wicket:id="dayInMonthView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div wicket:id="dayInYearBlock" class="form-group">
+							<wicket:container wicket:id="dayInYearVContainer">
+								<label>Day In Year</label>
+								<div wicket:id="dayInYearView" class="form-control" />
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</wicket:panel>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.widget.client.client;
+package com.angkorteam.fintech.widget.client.common;
 
 import java.util.Date;
 import java.util.List;
@@ -27,7 +27,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
 
-public class AccountPreviewTransactionPanel extends Panel {
+public class SavingAccountPreviewTransactionPanel extends Panel {
 
     public static final String DEPOSIT = "1";
     public static final String WITHDRAW = "2";
@@ -42,7 +42,7 @@ public class AccountPreviewTransactionPanel extends Panel {
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
     protected FilterForm<Map<String, String>> dataFilterForm;
 
-    public AccountPreviewTransactionPanel(String id, Page itemPage) {
+    public SavingAccountPreviewTransactionPanel(String id, Page itemPage) {
         super(id);
         this.itemPage = itemPage;
     }

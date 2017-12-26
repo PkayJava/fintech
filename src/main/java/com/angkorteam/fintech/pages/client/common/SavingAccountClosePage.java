@@ -326,6 +326,7 @@ public class SavingAccountClosePage extends Page {
 
     @Override
     protected void initData() {
+        this.client = ClientEnum.valueOf(getPageParameters().get("client").toString());
         this.clientId = getPageParameters().get("clientId").toString();
         this.accountId = getPageParameters().get("accountId").toString();
         this.closedOnValue = DateTime.now().toDate();
