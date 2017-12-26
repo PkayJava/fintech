@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
@@ -66,18 +67,19 @@ public class LoanAccountRejectPage extends Page {
         this.form.add(this.saveButton);
 
         PageParameters parameters = new PageParameters();
+        parameters.add("client", this.client.name());
+        parameters.add("loanId", this.loanId);
         if (this.client == ClientEnum.Client) {
             parameters.add("clientId", this.clientId);
-            this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
-        } else if (this.client == ClientEnum.Group) {
-            parameters.add("groupId", this.groupId);
-            this.closeLink = new BookmarkablePageLink<>("closeLink", GroupPreviewPage.class, parameters);
         } else if (this.client == ClientEnum.Center) {
             parameters.add("centerId", this.centerId);
-            this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
+        } else if (this.client == ClientEnum.Group) {
+            parameters.add("groupId", this.groupId);
         } else {
             throw new WicketRuntimeException("Unknown " + this.client);
         }
+
+        this.closeLink = new BookmarkablePageLink<>("closeLink", LoanAccountPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
         this.rejectedOnBlock = new WebMarkupBlock("rejectedOnBlock", Size.Six_6);
@@ -123,6 +125,7 @@ public class LoanAccountRejectPage extends Page {
         this.centerId = getPageParameters().get("centerId").toString();
 
         this.loanId = getPageParameters().get("loanId").toString();
+        this.rejectedOnValue = DateTime.now().toDate();
     }
 
     protected void saveButtonSubmit(Button button) {

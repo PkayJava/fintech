@@ -20,9 +20,6 @@ import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.helper.loan.ApproveBuilder;
-import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
-import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
-import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
@@ -83,18 +80,19 @@ public class LoanAccountApprovePage extends Page {
         this.form.add(this.saveButton);
 
         PageParameters parameters = new PageParameters();
+        parameters.add("client", this.client.name());
+        parameters.add("loanId", this.loanId);
         if (this.client == ClientEnum.Client) {
             parameters.add("clientId", this.clientId);
-            this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
-        } else if (this.client == ClientEnum.Group) {
-            parameters.add("groupId", this.groupId);
-            this.closeLink = new BookmarkablePageLink<>("closeLink", GroupPreviewPage.class, parameters);
         } else if (this.client == ClientEnum.Center) {
             parameters.add("centerId", this.centerId);
-            this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
+        } else if (this.client == ClientEnum.Group) {
+            parameters.add("groupId", this.groupId);
         } else {
             throw new WicketRuntimeException("Unknown " + this.client);
         }
+
+        this.closeLink = new BookmarkablePageLink<>("closeLink", LoanAccountPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
         initApprovedOnBlock();
@@ -174,8 +172,8 @@ public class LoanAccountApprovePage extends Page {
         this.approvedOnValue = DateTime.now().toDate();
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> loanObject = jdbcTemplate.queryForMap("select principle_amount_proposed, expected_disbursedon_date from m_loan where id = ?", this.loanId);
-        this.approvedAmountValue = (Double) loanObject.get("principle_amount_proposed");
+        Map<String, Object> loanObject = jdbcTemplate.queryForMap("select principal_amount_proposed, expected_disbursedon_date from m_loan where id = ?", this.loanId);
+        this.approvedAmountValue = (Double) loanObject.get("principal_amount_proposed");
         this.expectedDisbursementOnValue = (Date) loanObject.get("expected_disbursedon_date");
     }
 
@@ -198,21 +196,19 @@ public class LoanAccountApprovePage extends Page {
             return;
         }
 
+        PageParameters parameters = new PageParameters();
+        parameters.add("client", this.client.name());
+        parameters.add("loanId", this.loanId);
         if (this.client == ClientEnum.Client) {
-            PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
-            setResponsePage(ClientPreviewPage.class, parameters);
         } else if (this.client == ClientEnum.Center) {
-            PageParameters parameters = new PageParameters();
             parameters.add("centerId", this.centerId);
-            setResponsePage(CenterPreviewPage.class, parameters);
         } else if (this.client == ClientEnum.Group) {
-            PageParameters parameters = new PageParameters();
             parameters.add("groupId", this.groupId);
-            setResponsePage(GroupPreviewPage.class, parameters);
         } else {
             throw new WicketRuntimeException("Unknown " + this.client);
         }
+        setResponsePage(LoanAccountPreviewPage.class, parameters);
     }
 
 }

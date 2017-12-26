@@ -17,41 +17,41 @@
 				<div class="row">
 					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div class="pull-right">
-							<div class="btn-group">
+							<div class="btn-group" wicket:id="buttonGroups">
 								<div class="btn-group">
 									<button type="button" class="btn btn-info dropdown-toggle"
 										data-toggle="dropdown" aria-expanded="false">
 										More &nbsp;&nbsp;<span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu">
-										<li><a href="#">Waive Interest</a></li>
-										<li><a href="#">Reschedule</a></li>
-										<li><a href="#">Write-Off</a></li>
-										<li><a href="#">Close (as reschedule)</a></li>
-										<li><a href="#">Close</a></li>
-										<li><a href="#">Add Loan Charge</a></li>
-										<li><a href="#">Assign Loan Officer</a></li>
-										<li><a href="#">Withdrawn By Client</a></li>
-										<li><a href="#">Delete</a></li>
-										<li><a href="#">Add Collateral</a></li>
-										<li><a href="#">View Guarantor</a></li>
-										<li><a href="#">Create Guarantor</a></li>
-										<li><a href="#">Recover From Guarantor</a></li>
-										<li><a href="#">Loan Screen Reports</a></li>
+										<li wicket:enclosure="moreWaiveInterest"><a wicket:id="moreWaiveInterest">Waive Interest</a></li>
+										<li wicket:enclosure="moreReschedule"><a wicket:id="moreReschedule">Reschedule</a></li>
+										<li wicket:enclosure="moreWriteOff"><a wicket:id="moreWriteOff">Write-Off</a></li>
+										<li wicket:enclosure="moreCloseAsReschedule"><a wicket:id="moreCloseAsReschedule">Close (as reschedule)</a></li>
+										<li wicket:enclosure="moreClose"><a wicket:id="moreClose">Close</a></li>
+										<li wicket:enclosure="moreAddLoanCharge"><a wicket:id="moreAddLoanCharge">Add Loan Charge</a></li>
+										<li wicket:enclosure="moreAssignLoanOfficer"><a wicket:id="moreAssignLoanOfficer">Assign Loan Officer</a></li>
+										<li wicket:enclosure="moreChangeLoanOfficer"><a wicket:id="moreChangeLoanOfficer">Change Loan Officer</a></li>
+										<li wicket:enclosure="moreWithdrawnByClient"><a wicket:id="moreWithdrawnByClient">Withdrawn By Client</a></li>
+										<li wicket:enclosure="moreDelete"><a wicket:id="moreDelete">Delete</a></li>
+										<li wicket:enclosure="moreAddCollateral"><a wicket:id="moreAddCollateral">Add Collateral</a></li>
+										<li wicket:enclosure="moreViewGuarantor"><a wicket:id="moreViewGuarantor">View Guarantor</a></li>
+										<li wicket:enclosure="moreRecoverFromGuarantor"><a wicket:id="moreRecoverFromGuarantor">Recover From Guarantor</a></li>
+										<li wicket:enclosure="moreLoanScreenReport"><a wicket:id="moreLoanScreenReport">Loan Screen Reports</a></li>
 									</ul>
 								</div>
-								<a href="#" class="btn btn-info">Prepay Loan</a> <a href="#"
-									class="btn btn-info">Foreclosure</a> <a href="#"
-									class="btn btn-info">Make Repayment</a> <a href="#"
-									class="btn btn-info">Undo Disbursal</a> <a href="#"
-									class="btn btn-info">Add Loan Charge</a> <a href="#"
-									class="btn btn-info">Change Loan Officer</a> <a href="#"
-									class="btn btn-info">Disburse</a> <a href="#"
-									class="btn btn-info">Disburse To Saving Account</a> <a href="#"
-									class="btn btn-info">Undo Approval</a> <a href="#"
-									class="btn btn-info">Approve</a> <a href="#"
-									class="btn btn-info">Modify Application</a> <a href="#"
-									class="btn btn-info">Reject</a>
+								<a wicket:id="menuPrepayLoan" class="btn btn-info">Prepay Loan</a>
+								<a wicket:id="menuForeclosure" href="#" class="btn btn-info">Foreclosure</a>
+								<a wicket:id="menuMakeRepayment" class="btn btn-info">Make Repayment</a>
+								<a wicket:id="menuUndoDisbursal" class="btn btn-info">Undo Disbursal</a>
+								<a wicket:id="menuAddLoanCharge" class="btn btn-info">Add Loan Charge</a>
+								<a wicket:id="menuChangeLoanOfficer" class="btn btn-info">Change Loan Officer</a>
+								<a wicket:id="menuDisburse" class="btn btn-info">Disburse</a>
+								<a wicket:id="menuDisburseToSaving" class="btn btn-info">Disburse To Saving Account</a>
+								<a wicket:id="menuUndoApprove" class="btn btn-info">Undo Approval</a>
+								<a wicket:id="menuApprove" class="btn btn-info">Approve</a>
+								<a wicket:id="menuModifyApplication" class="btn btn-info">Modify Application</a>
+								<a wicket:id="menuReject" class="btn btn-info">Reject</a>
 							</div>
 						</div>
 					</div>
@@ -78,13 +78,13 @@
 											<th>Overdue</th>
 										</tr>
 										<tr>
-											<td><strong>Principal</strong></td>
-											<td wicket:id="originalPrincipalView"></td>
-											<td wicket:id="paidPrincipalView"></td>
-											<td wicket:id="waivedPrincipalView"></td>
-											<td wicket:id="writtenPrincipalView"></td>
-											<td wicket:id="outstandingPrincipalView"></td>
-											<td wicket:id="overduePrincipalView"></td>
+											<td><strong>Principle</strong></td>
+											<td wicket:id="originalPrincipleView"></td>
+											<td wicket:id="paidPrincipleView"></td>
+											<td wicket:id="waivedPrincipleView"></td>
+											<td wicket:id="writtenPrincipleView"></td>
+											<td wicket:id="outstandingPrincipleView"></td>
+											<td wicket:id="overduePrincipleView"></td>
 										</tr>
 										<tr>
 											<td><strong>Interest</strong></td>

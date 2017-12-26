@@ -95,6 +95,11 @@ public class ClientHelper {
         return Helper.performServerPost(session, "/api/v1/loans/" + id + "/transactions?command=writeoff", object);
     }
 
+    public static JsonNode addChargeLoanAccount(IMifos session, JsonNode object) throws UnirestException {
+        String loanId = (String) object.getObject().remove("loanId");
+        return Helper.performServerPost(session, "/api/v1/loans/" + loanId + "/charges", object);
+    }
+
     public static JsonNode closeAsScheduleLoanAccount(IMifos session, JsonNode object) throws UnirestException {
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPost(session, "/api/v1/loans/" + id + "/transactions?command=close-rescheduled", object);

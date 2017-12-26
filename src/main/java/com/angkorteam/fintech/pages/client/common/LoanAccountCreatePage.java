@@ -1329,9 +1329,9 @@ public class LoanAccountCreatePage extends Page {
 
         // Terms
         query.addField("m_product_loan.use_borrower_cycle");
-        query.addField("m_product_loan.min_principle_amount");
-        query.addField("m_product_loan.principle_amount");
-        query.addField("m_product_loan.max_principle_amount");
+        query.addField("m_product_loan.min_principal_amount");
+        query.addField("m_product_loan.principal_amount");
+        query.addField("m_product_loan.max_principal_amount");
 
         query.addField("m_product_loan.min_number_of_repayments");
         query.addField("m_product_loan.number_of_repayments");
@@ -1365,12 +1365,12 @@ public class LoanAccountCreatePage extends Page {
         query.addField("m_product_loan.grace_interest_free_periods");
         query.addField("m_product_loan.grace_on_arrears_ageing");
         query.addField("m_product_loan.grace_on_interest_periods");
-        query.addField("m_product_loan.grace_on_principle_periods");
+        query.addField("m_product_loan.grace_on_principal_periods");
         query.addField("m_product_loan.account_moves_out_of_npa_only_on_arrears_completion");
         query.addField("m_product_loan.overdue_days_for_npa");
         query.addField("m_product_loan.days_in_year_enum");
         query.addField("m_product_loan.days_in_month_enum");
-        query.addField("m_product_loan.principle_threshold_for_last_installment");
+        query.addField("m_product_loan.principal_threshold_for_last_installment");
         query.addField("m_product_loan.can_define_fixed_emi_amount");
         query.addField("m_product_loan.can_use_for_topup");
         query.addField("m_product_loan.allow_variabe_installments");
@@ -1427,7 +1427,7 @@ public class LoanAccountCreatePage extends Page {
         this.currencyInMultiplesOfValue = (Long) loanObject.get("currency_multiplesof");
         this.installmentInMultiplesOfValue = (Double) loanObject.get("instalment_amount_in_multiples_of");
 
-        this.principleValue = (Double) loanObject.get("principle_amount");
+        this.principleValue = (Double) loanObject.get("principal_amount");
 
         this.numberOfRepaymentValue = (Long) loanObject.get("number_of_repayments");
         this.repaidEveryValue = (Long) loanObject.get("repay_every");
@@ -1466,7 +1466,7 @@ public class LoanAccountCreatePage extends Page {
 
         this.onArrearsAgingValue = (Long) loanObject.get("grace_on_arrears_ageing");
         this.onInterestPaymentValue = (Long) loanObject.get("grace_on_interest_periods");
-        this.onPrinciplePaymentValue = (Long) loanObject.get("grace_on_principle_periods");
+        this.onPrinciplePaymentValue = (Long) loanObject.get("grace_on_principal_periods");
 
         Long interest_recalculation_enabled = (Long) loanObject.get("interest_recalculation_enabled");
         this.interestRecalculationRecalculateInterestValue = interest_recalculation_enabled == null ? null : interest_recalculation_enabled == 1;

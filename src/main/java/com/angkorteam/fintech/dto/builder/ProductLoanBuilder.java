@@ -1310,7 +1310,7 @@ public class ProductLoanBuilder implements Serializable {
         }
 
         if (this.hasPrincipleThresholdForLastInstallment) {
-            object.getObject().put("principleThresholdForLastInstallment", this.principleThresholdForLastInstallment);
+            object.getObject().put("principalThresholdForLastInstallment", this.principleThresholdForLastInstallment);
         }
 
         if (this.hasOverdueDaysForNPA) {
@@ -1338,7 +1338,7 @@ public class ProductLoanBuilder implements Serializable {
         }
 
         if (this.hasGraceOnPrinciplePayment) {
-            object.getObject().put("graceOnPrinciplePayment", this.graceOnPrinciplePayment);
+            object.getObject().put("graceOnPrincipalPayment", this.graceOnPrinciplePayment);
         }
 
         if (this.hasInterestCalculationPeriodType) {
@@ -1378,7 +1378,7 @@ public class ProductLoanBuilder implements Serializable {
         }
 
         if (this.hasPrincipleVariationsForBorrowerCycle) {
-            object.getObject().put("principleVariationsForBorrowerCycle", this.principleVariationsForBorrowerCycle);
+            object.getObject().put("principalVariationsForBorrowerCycle", this.principleVariationsForBorrowerCycle);
         }
 
         if (this.hasMinDifferentialLendingRate) {
@@ -1446,7 +1446,7 @@ public class ProductLoanBuilder implements Serializable {
         }
 
         if (this.hasPrinciple) {
-            object.getObject().put("principle", this.principle);
+            object.getObject().put("principal", this.principle);
         }
 
         if (this.hasUseBorrowerCycle) {
@@ -1454,11 +1454,11 @@ public class ProductLoanBuilder implements Serializable {
         }
 
         if (this.hasMaxPrinciple) {
-            object.getObject().put("maxPrinciple", this.maxPrinciple);
+            object.getObject().put("maxPrincipal", this.maxPrinciple);
         }
 
         if (this.hasMinPrinciple) {
-            object.getObject().put("minPrinciple", this.minPrinciple);
+            object.getObject().put("minPrincipal", this.minPrinciple);
         }
 
         if (this.hasInMultiplesOf) {

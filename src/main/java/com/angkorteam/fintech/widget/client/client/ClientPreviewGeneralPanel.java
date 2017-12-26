@@ -266,13 +266,15 @@ public class ClientPreviewGeneralPanel extends Panel {
         this.loanAccountProvider.applyJoin("m_product_loan", "inner join m_product_loan on m_loan.product_id = m_product_loan.id");
         this.loanAccountProvider.boardField("m_loan.account_no", "account", String.class);
         this.loanAccountProvider.boardField("m_product_loan.name", "product", String.class);
-        this.loanAccountProvider.boardField("m_loan.principle_disbursed_derived", "original_loan", Double.class);
+        this.loanAccountProvider.boardField("m_loan.principal_disbursed_derived", "original_loan", Double.class);
         this.loanAccountProvider.boardField("m_loan.total_outstanding_derived", "loan_balance", Double.class);
         this.loanAccountProvider.boardField("m_loan.total_repayment_derived", "amount_paid", Double.class);
         this.loanAccountProvider.boardField("m_loan.loan_type_enum", "type", Long.class);
         this.loanAccountProvider.boardField("m_loan.loan_status_id", "status", Long.class);
         this.loanAccountProvider.boardField("m_loan.id", "id", Long.class);
+
         this.loanAccountProvider.applyWhere("client_id", "m_loan.client_id = '" + this.clientId + "'");
+        this.loanAccountProvider.applyWhere("loan_status_id", "m_loan.loan_status_id in (100,200,300)");
 
         this.loanAccountProvider.selectField("id", Long.class);
         this.loanAccountProvider.selectField("status", Long.class);

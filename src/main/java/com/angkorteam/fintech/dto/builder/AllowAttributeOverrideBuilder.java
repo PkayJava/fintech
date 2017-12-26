@@ -103,7 +103,7 @@ public class AllowAttributeOverrideBuilder implements Serializable {
         }
 
         if (this.hasGraceOnPrincipleAndInterestPayment) {
-            object.getObject().put("graceOnPrincipleAndInterestPayment", this.graceOnPrincipleAndInterestPayment);
+            object.getObject().put("graceOnPrincipalAndInterestPayment", this.graceOnPrincipleAndInterestPayment);
         }
 
         if (this.hasGraceOnArrearsAgeing) {

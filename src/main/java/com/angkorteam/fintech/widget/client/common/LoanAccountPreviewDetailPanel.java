@@ -3,6 +3,7 @@ package com.angkorteam.fintech.widget.client.common;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.PropertyModel;
@@ -138,8 +139,8 @@ public class LoanAccountPreviewDetailPanel extends Panel {
 
         SelectQuery loanAccoutDetailQuery = new SelectQuery("m_loan");
         loanAccoutDetailQuery.addJoin("left join m_fund on m_loan.fund_id = m_fund.id");
-        loanAccoutDetailQuery.addJoin("inner join m_calendar_instance on m_calendar_instance.entity_id = m_loan.id");
-        loanAccoutDetailQuery.addJoin("inner join m_calendar on m_calendar_instance.calendar_id = m_calendar.id");
+        loanAccoutDetailQuery.addJoin("left join m_calendar_instance on m_calendar_instance.entity_id = m_loan.id");
+        loanAccoutDetailQuery.addJoin("left join m_calendar on m_calendar_instance.calendar_id = m_calendar.id");
 
         loanAccoutDetailQuery.addField("m_loan.loan_transaction_strategy_id");
         loanAccoutDetailQuery.addField("m_loan.number_of_repayments");
@@ -149,7 +150,7 @@ public class LoanAccountPreviewDetailPanel extends Panel {
         loanAccoutDetailQuery.addField("m_loan.nominal_interest_rate_per_period");
         loanAccoutDetailQuery.addField("m_loan.interest_method_enum");
         loanAccoutDetailQuery.addField("m_loan.interest_period_frequency_enum");
-        loanAccoutDetailQuery.addField("m_loan.grace_on_principle_periods");
+        loanAccoutDetailQuery.addField("m_loan.grace_on_principal_periods");
         loanAccoutDetailQuery.addField("m_loan.grace_on_interest_periods");
         loanAccoutDetailQuery.addField("m_loan.grace_on_arrears_ageing");
         loanAccoutDetailQuery.addField("m_fund.name fund");
@@ -212,7 +213,7 @@ public class LoanAccountPreviewDetailPanel extends Panel {
         Double nominal_interest_rate_per_period = (Double) loanAccountDetailObject.get("nominal_interest_rate_per_period");
         NominalInterestRateType interest_period_frequency_enum = NominalInterestRateType.parseLiteral(String.valueOf(loanAccountDetailObject.get("interest_period_frequency_enum")));
         Option interest_method_enum = InterestMethod.optionLiteral(String.valueOf(loanAccountDetailObject.get("interest_method_enum")));
-        Double grace_on_principle_periods = (Double) loanAccountDetailObject.get("grace_on_principle_periods");
+        Double grace_on_principal_periods = (Double) loanAccountDetailObject.get("grace_on_principal_periods");
         Double grace_on_interest_periods = (Double) loanAccountDetailObject.get("grace_on_interest_periods");
         Double grace_on_arrears_ageing = (Double) loanAccountDetailObject.get("grace_on_arrears_ageing");
         String fund = (String) loanAccountDetailObject.get("fund");
@@ -227,12 +228,16 @@ public class LoanAccountPreviewDetailPanel extends Panel {
         Option days_in_year_enum = DayInYear.optionLiteral(String.valueOf(loanAccountDetailObject.get("days_in_year_enum")));
         Option days_in_month_enum = DayInMonth.optionLiteral(String.valueOf(loanAccountDetailObject.get("days_in_month_enum")));
 
-        this.repaymentValue = String.valueOf(number_of_repayments) + " every " + String.valueOf(repay_every) + " " + repayment_period_frequency_enum.getDescription() + " On " + frequencyType.getDescription() + " " + frequencyDay.getDescription();
+        if (frequencyType != null && frequencyDay != null) {
+            this.repaymentValue = String.valueOf(number_of_repayments) + " every " + String.valueOf(repay_every) + "/" + repayment_period_frequency_enum.getDescription() + " On " + frequencyType.getDescription() + " " + frequencyDay.getDescription();
+        } else {
+            this.repaymentValue = String.valueOf(number_of_repayments) + " every " + String.valueOf(repay_every) + "/" + repayment_period_frequency_enum.getDescription();
+        }
 
         this.amortizationValue = amortization_method_enum;
 
-        this.interestValue = String.valueOf(nominal_interest_rate_per_period) + " per " + interest_period_frequency_enum.getDescription() + " - " + interest_method_enum.getText();
-        this.graceOnPrinciplePaymentValue = grace_on_principle_periods;
+        this.interestValue = String.valueOf(nominal_interest_rate_per_period) + " " + StringUtils.lowerCase(interest_period_frequency_enum.getDescription()) + " - " + interest_method_enum.getText();
+        this.graceOnPrinciplePaymentValue = grace_on_principal_periods;
         this.graceOnInterestPaymentValue = grace_on_interest_periods;
         this.graceOnArrearAgeingValue = grace_on_arrears_ageing;
         this.fundSourceValue = fund;

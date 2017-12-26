@@ -392,7 +392,7 @@ public class LoanAccountBuilder implements Serializable {
         }
 
         if (this.hasGraceOnPrinciplePayment) {
-            object.getObject().put("graceOnPrinciplePayment", this.graceOnPrinciplePayment);
+            object.getObject().put("graceOnPrincipalPayment", this.graceOnPrinciplePayment);
         }
 
         if (this.hasGraceOnInterestCharged) {
@@ -504,7 +504,7 @@ public class LoanAccountBuilder implements Serializable {
         }
 
         if (this.hasPrinciple) {
-            object.getObject().put("principle", this.principle);
+            object.getObject().put("principal", this.principle);
         }
 
         if (this.hasFundId) {
