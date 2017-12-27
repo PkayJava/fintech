@@ -37,6 +37,7 @@ import com.angkorteam.fintech.dto.enums.LockInType;
 import com.angkorteam.fintech.dto.enums.ProductPopup;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
+import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
 import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
 import com.angkorteam.fintech.popup.AccountChargePopup;
@@ -52,6 +53,7 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -85,7 +87,12 @@ public class SavingAccountCreatePage extends Page {
     protected String centerId;
 
     protected String savingId;
+    protected String savingName;
     protected String officeId;
+
+    protected String clientDisplayName;
+    protected String centerDisplayName;
+    protected String groupDisplayName;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -249,6 +256,63 @@ public class SavingAccountCreatePage extends Page {
     protected ModalWindow chargePopup;
 
     protected Map<String, Object> popupModel;
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Clients");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Clients");
+            breadcrumb.setPage(ClientBrowsePage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageParameters parameters = new PageParameters();
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+                breadcrumb.setLabel(this.clientDisplayName);
+                breadcrumb.setPage(ClientPreviewPage.class);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+                breadcrumb.setLabel(this.groupDisplayName);
+                breadcrumb.setPage(GroupPreviewPage.class);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+                breadcrumb.setLabel(this.centerDisplayName);
+                breadcrumb.setPage(CenterPreviewPage.class);
+            }
+            breadcrumb.setParameters(parameters);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageParameters parameters = new PageParameters();
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("client", this.client.name());
+            breadcrumb.setLabel(this.savingName);
+            breadcrumb.setPage(SavingAccountSelectionPage.class);
+            breadcrumb.setParameters(parameters);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Create");
+            BREADCRUMB.add(breadcrumb);
+        }
+        return Model.ofList(BREADCRUMB);
+    }
 
     @Override
     protected void initComponent() {
@@ -802,16 +866,20 @@ public class SavingAccountCreatePage extends Page {
         this.externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
 
         if (this.client == ClientEnum.Client) {
-            Map<String, Object> clientObject = jdbcTemplate.queryForMap("select * from m_client where id = ?", this.clientId);
+            Map<String, Object> clientObject = jdbcTemplate.queryForMap("select office_id, display_name from m_client where id = ?", this.clientId);
             this.officeId = String.valueOf(clientObject.get("office_id"));
+            this.clientDisplayName = (String) clientObject.get("display_name");
         } else if (this.client == ClientEnum.Group) {
-            Map<String, Object> groupObject = jdbcTemplate.queryForMap("select * from m_group where id = ?", this.groupId);
+            Map<String, Object> groupObject = jdbcTemplate.queryForMap("select office_id, display_name from m_group where id = ?", this.groupId);
             this.officeId = String.valueOf(groupObject.get("office_id"));
+            this.groupDisplayName = (String) groupObject.get("display_name");
         } else if (this.client == ClientEnum.Center) {
-            Map<String, Object> centerObject = jdbcTemplate.queryForMap("select * from m_group where id = ?", this.centerId);
+            Map<String, Object> centerObject = jdbcTemplate.queryForMap("select office_id, display_name from m_group where id = ?", this.centerId);
             this.officeId = String.valueOf(centerObject.get("office_id"));
+            this.centerDisplayName = (String) centerObject.get("display_name");
         }
         Map<String, Object> savingProductObject = jdbcTemplate.queryForMap("select * from m_savings_product where id = ?", this.savingId);
+        this.savingName = (String) savingProductObject.get("name");
         this.productValue = (String) savingProductObject.get("name");
         this.currencyValue = (String) savingProductObject.get("currency_code");
         this.decimalPlacesValue = (Long) savingProductObject.get("currency_digits");

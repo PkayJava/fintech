@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.client.client;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -10,6 +11,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -23,8 +25,11 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
@@ -32,6 +37,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 public class ClientSignatureUploadPage extends Page {
 
     protected String clientId;
+
+    protected String clientDisplayName;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -85,6 +92,40 @@ public class ClientSignatureUploadPage extends Page {
     @Override
     protected void initData() {
         this.clientId = getPageParameters().get("clientId").toString();
+        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select display_name from m_client where id = ?", this.clientId);
+        this.clientDisplayName = (String) clientObject.get("display_name");
+    }
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Clients");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Clients");
+            breadcrumb.setPage(ClientBrowsePage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageParameters parameters = new PageParameters();
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            parameters.add("clientId", this.clientId);
+            breadcrumb.setLabel(this.clientDisplayName);
+            breadcrumb.setPage(ClientPreviewPage.class);
+            breadcrumb.setParameters(parameters);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Upload Signature");
+            BREADCRUMB.add(breadcrumb);
+        }
+        return Model.ofList(BREADCRUMB);
     }
 
     protected void saveButtonSubmit(Button button) {

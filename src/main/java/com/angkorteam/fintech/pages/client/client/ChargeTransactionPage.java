@@ -25,6 +25,7 @@ import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -44,6 +45,9 @@ public class ChargeTransactionPage extends Page {
 
     protected String clientId;
     protected String chargeId;
+
+    protected String clientDisplayName;
+    protected String chargeName;
 
     protected BookmarkablePageLink<Void> closeLink;
 
@@ -103,9 +107,12 @@ public class ChargeTransactionPage extends Page {
         this.clientId = getPageParameters().get("clientId").toString();
         this.chargeId = getPageParameters().get("chargeId").toString();
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select display_name from m_client where id = ?", this.clientId);
+        this.clientDisplayName = (String) clientObject.get("display_name");
         Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select * from m_client_charge inner join m_charge on m_client_charge.charge_id = m_charge.id inner join m_currency on m_currency.code = m_charge.currency_code where m_client_charge.id = ?", this.chargeId);
 
         this.chargeValue = (String) chargeObject.get("m_charge.name");
+        this.chargeName = (String) chargeObject.get("m_charge.name");
 
         this.currencyValue = (String) chargeObject.get("m_currency.name");
         this.dueDateValue = (Date) chargeObject.get("m_client_charge.charge_due_date");
@@ -117,6 +124,46 @@ public class ChargeTransactionPage extends Page {
         this.paidValue = chargeObject.get("m_client_charge.amount_paid_derived") == null ? 0 : (Double) chargeObject.get("m_client_charge.amount_paid_derived");
         this.waivedValue = chargeObject.get("m_client_charge.amount_waived_derived") == null ? 0 : (Double) chargeObject.get("m_client_charge.amount_waived_derived");
         this.outstandingValue = chargeObject.get("m_client_charge.amount_outstanding_derived") == null ? 0 : (Double) chargeObject.get("m_client_charge.amount_outstanding_derived");
+    }
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Clients");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Clients");
+            breadcrumb.setPage(ClientBrowsePage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("clientId", this.clientId);
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel(this.clientDisplayName);
+            breadcrumb.setPage(ClientPreviewPage.class);
+            breadcrumb.setParameters(parameters);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("clientId", this.clientId);
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Charge Overview");
+            breadcrumb.setParameters(parameters);
+            breadcrumb.setPage(ChargeOverviewPage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel(this.chargeName);
+            BREADCRUMB.add(breadcrumb);
+        }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
@@ -143,8 +190,6 @@ public class ChargeTransactionPage extends Page {
         this.dataProvider.boardField("m_client_transaction.amount", "amount", Double.class);
 
         this.dataProvider.applyWhere("client_charge_id", "m_client_charge_paid_by.client_charge_id = " + this.chargeId);
-        // this.dataProvider.applyWhere("client_id", "m_client_charge.client_id = " +
-        // this.clientId);
 
         this.dataProvider.selectField("id", Long.class);
 
@@ -220,7 +265,6 @@ public class ChargeTransactionPage extends Page {
         this.outstandingBlock.add(this.outstandingVContainer);
         this.outstandingView = new ReadOnlyView("outstandingView", new PropertyModel<>(this, "outstandingValue"), "#,###,##0.00");
         this.outstandingVContainer.add(this.outstandingView);
-
     }
 
     @Override

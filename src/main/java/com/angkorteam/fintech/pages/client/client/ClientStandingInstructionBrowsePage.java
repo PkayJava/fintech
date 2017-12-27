@@ -17,6 +17,9 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.InstructionType;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.Calendar;
@@ -30,6 +33,8 @@ public class ClientStandingInstructionBrowsePage extends Page {
 
     protected String clientId;
 
+    protected String clientDisplayName;
+
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;
@@ -38,7 +43,41 @@ public class ClientStandingInstructionBrowsePage extends Page {
 
     @Override
     protected void initData() {
+        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         this.clientId = getPageParameters().get("clientId").toString();
+        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select office_id, display_name from m_client where id = ?", this.clientId);
+        this.clientDisplayName = (String) clientObject.get("display_name");
+    }
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Clients");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Clients");
+            breadcrumb.setPage(ClientBrowsePage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageParameters parameters = new PageParameters();
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            parameters.add("clientId", this.clientId);
+            breadcrumb.setLabel(this.clientDisplayName);
+            breadcrumb.setPage(ClientPreviewPage.class);
+            breadcrumb.setParameters(parameters);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Standing Instruction");
+            BREADCRUMB.add(breadcrumb);
+        }
+        return Model.ofList(BREADCRUMB);
     }
 
     @Override
