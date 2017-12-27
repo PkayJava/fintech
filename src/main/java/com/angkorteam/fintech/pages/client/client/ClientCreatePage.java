@@ -259,7 +259,7 @@ public class ClientCreatePage extends Page {
         }
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Client Create");
+            breadcrumb.setLabel("Create");
             BREADCRUMB.add(breadcrumb);
         }
         return Model.ofList(BREADCRUMB);

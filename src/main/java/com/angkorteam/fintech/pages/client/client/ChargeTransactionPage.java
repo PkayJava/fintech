@@ -107,8 +107,10 @@ public class ChargeTransactionPage extends Page {
         this.clientId = getPageParameters().get("clientId").toString();
         this.chargeId = getPageParameters().get("chargeId").toString();
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        
         Map<String, Object> clientObject = jdbcTemplate.queryForMap("select display_name from m_client where id = ?", this.clientId);
         this.clientDisplayName = (String) clientObject.get("display_name");
+
         Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select * from m_client_charge inner join m_charge on m_client_charge.charge_id = m_charge.id inner join m_currency on m_currency.code = m_charge.currency_code where m_client_charge.id = ?", this.chargeId);
 
         this.chargeValue = (String) chargeObject.get("m_charge.name");

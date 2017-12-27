@@ -22,7 +22,6 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.GroupBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
 import com.angkorteam.fintech.popup.ClientPopup;
 import com.angkorteam.fintech.popup.OfficePopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -64,6 +63,8 @@ public class GroupCreatePage extends Page {
 
     protected String centerId;
     protected String officeId;
+
+    protected String centerDisplayName;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -130,8 +131,17 @@ public class GroupCreatePage extends Page {
         }
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Groups");
-            breadcrumb.setPage(GroupBrowsePage.class);
+            breadcrumb.setLabel("Centers");
+            breadcrumb.setPage(CenterBrowsePage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("centerId", this.centerId);
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel(this.centerDisplayName);
+            breadcrumb.setPage(CenterPreviewPage.class);
+            breadcrumb.setParameters(parameters);
             BREADCRUMB.add(breadcrumb);
         }
         {
@@ -299,7 +309,9 @@ public class GroupCreatePage extends Page {
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         this.externalIdValue = generator.externalId();
         this.centerId = getPageParameters().get("centerId").toString();
-        this.officeId = jdbcTemplate.queryForObject("select office_id from m_group where id = ?", String.class, this.centerId);
+        Map<String, Object> centerObject = jdbcTemplate.queryForMap("select office_id, display_name from m_group where id = ?", this.centerId);
+        this.officeId = String.valueOf(centerObject.get("office_id"));
+        this.centerDisplayName = (String) centerObject.get("display_name");
         this.officeValue = jdbcTemplate.queryForObject("select name from m_office where id = ?", String.class, this.officeId);
     }
 

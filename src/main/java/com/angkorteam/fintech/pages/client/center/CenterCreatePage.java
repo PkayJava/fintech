@@ -134,7 +134,7 @@ public class CenterCreatePage extends Page {
         }
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Group Create");
+            breadcrumb.setLabel("Create");
             BREADCRUMB.add(breadcrumb);
         }
         return Model.ofList(BREADCRUMB);

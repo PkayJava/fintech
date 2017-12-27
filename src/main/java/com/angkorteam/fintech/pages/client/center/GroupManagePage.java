@@ -46,6 +46,8 @@ public class GroupManagePage extends Page {
     protected String centerId;
     protected String officeId;
 
+    protected String centerDisplayName;
+
     protected DataTable<Map<String, Object>, String> associatedGroupTable;
     protected JdbcProvider associatedGroupProvider;
     protected List<IColumn<Map<String, Object>, String>> associatedGroupColumn;
@@ -67,10 +69,6 @@ public class GroupManagePage extends Page {
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        this.centerId = getPageParameters().get("centerId").toString();
-        String centerValue = jdbcTemplate.queryForObject("SELECT display_name FROM m_group where id = ?", String.class, this.centerId);
-
         List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
@@ -87,9 +85,9 @@ public class GroupManagePage extends Page {
             PageParameters parameters = new PageParameters();
             parameters.add("centerId", this.centerId);
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel(centerValue);
-            breadcrumb.setParameters(parameters);
+            breadcrumb.setLabel(this.centerDisplayName);
             breadcrumb.setPage(CenterPreviewPage.class);
+            breadcrumb.setParameters(parameters);
             BREADCRUMB.add(breadcrumb);
         }
         {
@@ -97,7 +95,6 @@ public class GroupManagePage extends Page {
             breadcrumb.setLabel("Group Manage");
             BREADCRUMB.add(breadcrumb);
         }
-
         return Model.ofList(BREADCRUMB);
     }
 
@@ -177,7 +174,9 @@ public class GroupManagePage extends Page {
     protected void initData() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         this.centerId = getPageParameters().get("centerId").toString();
-        this.officeId = jdbcTemplate.queryForObject("select office_id from m_group where id = ?", String.class, this.centerId);
+        Map<String, Object> centerObject = jdbcTemplate.queryForMap("select office_id, display_name from m_group where id = ?", this.centerId);
+        this.officeId = String.valueOf(centerObject.get("office_id"));
+        this.centerDisplayName = (String) centerObject.get("display_name");
         this.officeValue = jdbcTemplate.queryForObject("select name from m_office where id = ?", String.class, this.officeId);
     }
 
