@@ -110,34 +110,34 @@ public class GroupPreviewGeneralPanel extends Panel {
 
     protected void savingAccountClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
         if ("Approve".equals(column)) {
-            String accountId = (String) model.get("id");
+            String savingId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("groupId", this.groupId);
-            parameters.add("accountId", accountId);
+            parameters.add("savingId", savingId);
             // setResponsePage(SavingAccountApprovePage.class, parameters);
         } else if ("Undo Approve".equals(column)) {
-            String accountId = (String) model.get("id");
+            String savingId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("groupId", this.groupId);
-            parameters.add("accountId", accountId);
+            parameters.add("savingId", savingId);
             // setResponsePage(SavingAccountUndoApprovePage.class, parameters);
         } else if ("Activate".equals(column)) {
-            String accountId = (String) model.get("id");
+            String savingId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("groupId", this.groupId);
-            parameters.add("accountId", accountId);
+            parameters.add("savingId", savingId);
             // setResponsePage(SavingAccountActivatePage.class, parameters);
         } else if ("Deposit".equals(column)) {
-            String accountId = (String) model.get("id");
+            String savingId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("groupId", this.groupId);
-            parameters.add("accountId", accountId);
+            parameters.add("savingId", savingId);
             // setResponsePage(SavingAccountDepositPage.class, parameters);
         } else if ("Withdraw".equals(column)) {
-            String accountId = (String) model.get("id");
+            String savingId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("groupId", this.groupId);
-            parameters.add("accountId", accountId);
+            parameters.add("savingId", savingId);
             // setResponsePage(SavingAccountWithdrawPage.class, parameters);
         }
     }
@@ -147,7 +147,7 @@ public class GroupPreviewGeneralPanel extends Panel {
             String value = (String) model.get(column);
             PageParameters parameters = new PageParameters();
             parameters.add("groupId", this.groupId);
-            parameters.add("accountId", model.get("id"));
+            parameters.add("savingId", model.get("id"));
             // return new LinkCell(SavingAccountPreviewPage.class, parameters, value);
             return new TextCell(value);
         } else if ("product".equals(column)) {

@@ -89,7 +89,6 @@ public class SavingAccountCreatePage extends Page {
     protected String centerId;
 
     protected String savingId;
-    protected String savingName;
     protected String officeId;
 
     protected String clientDisplayName;
@@ -317,7 +316,7 @@ public class SavingAccountCreatePage extends Page {
                 parameters.add("centerId", this.centerId);
             }
             parameters.add("client", this.client.name());
-            breadcrumb.setLabel(this.savingName);
+            breadcrumb.setLabel("Saving Selection");
             breadcrumb.setPage(SavingAccountSelectionPage.class);
             breadcrumb.setParameters(parameters);
             BREADCRUMB.add(breadcrumb);
@@ -894,8 +893,8 @@ public class SavingAccountCreatePage extends Page {
             this.officeId = String.valueOf(centerObject.get("office_id"));
             this.centerDisplayName = (String) centerObject.get("display_name");
         }
+        
         Map<String, Object> savingProductObject = jdbcTemplate.queryForMap("select * from m_savings_product where id = ?", this.savingId);
-        this.savingName = (String) savingProductObject.get("name");
         this.productValue = (String) savingProductObject.get("name");
         this.currencyValue = (String) savingProductObject.get("currency_code");
         this.decimalPlacesValue = (Long) savingProductObject.get("currency_digits");

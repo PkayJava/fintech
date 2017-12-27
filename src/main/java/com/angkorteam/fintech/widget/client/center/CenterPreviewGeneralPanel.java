@@ -164,39 +164,39 @@ public class CenterPreviewGeneralPanel extends Panel {
 
     protected void savingAccountActionClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
         if ("Approve".equals(column)) {
-            String accountId = (String) model.get("id");
+            String savingId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("client", ClientEnum.Center.name());
             parameters.add("centerId", this.centerId);
-            parameters.add("accountId", accountId);
+            parameters.add("savingId", savingId);
             setResponsePage(SavingAccountApprovePage.class, parameters);
         } else if ("Undo Approve".equals(column)) {
-            String accountId = (String) model.get("id");
+            String savingId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("client", ClientEnum.Center.name());
             parameters.add("centerId", this.centerId);
-            parameters.add("accountId", accountId);
+            parameters.add("savingId", savingId);
             setResponsePage(SavingAccountUndoApprovePage.class, parameters);
         } else if ("Activate".equals(column)) {
-            String accountId = (String) model.get("id");
+            String savingId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("client", ClientEnum.Center.name());
             parameters.add("centerId", this.centerId);
-            parameters.add("accountId", accountId);
+            parameters.add("savingId", savingId);
             setResponsePage(SavingAccountActivatePage.class, parameters);
         } else if ("Deposit".equals(column)) {
-            String accountId = (String) model.get("id");
+            String savingId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("client", ClientEnum.Center.name());
             parameters.add("centerId", this.centerId);
-            parameters.add("accountId", accountId);
+            parameters.add("savingId", savingId);
             setResponsePage(SavingAccountDepositPage.class, parameters);
         } else if ("Withdraw".equals(column)) {
-            String accountId = (String) model.get("id");
+            String savingId = (String) model.get("id");
             PageParameters parameters = new PageParameters();
             parameters.add("client", ClientEnum.Center.name());
             parameters.add("centerId", this.centerId);
-            parameters.add("accountId", accountId);
+            parameters.add("savingId", savingId);
             setResponsePage(SavingAccountWithdrawPage.class, parameters);
         }
     }
@@ -207,7 +207,7 @@ public class CenterPreviewGeneralPanel extends Panel {
             PageParameters parameters = new PageParameters();
             parameters.add("client", ClientEnum.Center.name());
             parameters.add("centerId", this.centerId);
-            parameters.add("accountId", model.get("id"));
+            parameters.add("savingId", model.get("id"));
             return new LinkCell(SavingAccountPreviewPage.class, parameters, value);
         } else if ("product".equals(column)) {
             String value = (String) model.get(column);

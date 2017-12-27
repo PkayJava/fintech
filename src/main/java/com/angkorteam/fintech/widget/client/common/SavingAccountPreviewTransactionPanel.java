@@ -33,7 +33,7 @@ public class SavingAccountPreviewTransactionPanel extends Panel {
     public static final String WITHDRAW = "2";
     public static final String PAY_CHARGE = "3";
 
-    protected String accountId;
+    protected String savingId;
 
     protected Page itemPage;
 
@@ -56,7 +56,7 @@ public class SavingAccountPreviewTransactionPanel extends Panel {
         this.dataProvider.boardField("IF(transaction_type_enum in (1), amount, null)", "credit", Double.class);
         this.dataProvider.boardField("IF(transaction_type_enum in (2,7), amount, null)", "debit", Double.class);
         this.dataProvider.boardField("running_balance_derived", "balance", Double.class);
-        this.dataProvider.applyWhere("savings_account_id", "savings_account_id = " + this.accountId);
+        this.dataProvider.applyWhere("savings_account_id", "savings_account_id = " + this.savingId);
         this.dataProvider.setSort("id", SortOrder.DESCENDING);
 
         this.dataColumn = Lists.newArrayList();
@@ -85,7 +85,7 @@ public class SavingAccountPreviewTransactionPanel extends Panel {
 
     @Override
     protected void initData() {
-        this.accountId = new PropertyModel<String>(this.itemPage, "accountId").getObject();
+        this.savingId = new PropertyModel<String>(this.itemPage, "savingId").getObject();
     }
 
     protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {

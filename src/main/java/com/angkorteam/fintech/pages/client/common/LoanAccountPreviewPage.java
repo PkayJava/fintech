@@ -16,7 +16,12 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
+import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
+import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
+import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
+import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
 import com.angkorteam.fintech.widget.LabelView;
 import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.client.common.LoanAccountPreviewCharge;
@@ -50,6 +55,7 @@ public class LoanAccountPreviewPage extends Page {
     protected String centerDisplayName;
 
     protected String loanId;
+    protected String loanAccountNo;
     protected Long officerId;
 
     protected LabelView currentBalanceView;
@@ -250,8 +256,8 @@ public class LoanAccountPreviewPage extends Page {
         this.menuApprove.setVisible("100".equals(this.loanStatus));
         this.menuModifyApplication.setVisible("100".equals(this.loanStatus));
         this.menuReject.setVisible("100".equals(this.loanStatus));
-        this.menuAssignLoanOfficer.setVisible(this.officerId != null && "200".equals(this.loanStatus));
-        this.menuUnAssignLoanOfficer.setVisible(this.officerId == null && "200".equals(this.loanStatus));
+        this.menuAssignLoanOfficer.setVisible("200".equals(this.loanStatus));
+        this.menuUnAssignLoanOfficer.setVisible(this.officerId != null && "200".equals(this.loanStatus));
         this.menuDisburse.setVisible("200".equals(this.loanStatus));
         this.menuDisburseToSaving.setVisible("200".equals(this.loanStatus));
         this.menuUndoApprove.setVisible("200".equals(this.loanStatus));
@@ -261,8 +267,8 @@ public class LoanAccountPreviewPage extends Page {
         this.moreWriteOff.setVisible("300".equals(this.loanStatus));
         this.moreClose.setVisible("300".equals(this.loanStatus));
         this.moreCloseAsReschedule.setVisible("300".equals(this.loanStatus));
-        this.moreAssignLoanOfficer.setVisible(this.officerId != null && "100".equals(this.loanStatus));
-        this.moreUnAssignLoanOfficer.setVisible(this.officerId == null && "100".equals(this.loanStatus));
+        this.moreAssignLoanOfficer.setVisible("100".equals(this.loanStatus));
+        this.moreUnAssignLoanOfficer.setVisible(this.officerId != null && "100".equals(this.loanStatus));
         this.moreWithdrawnByClient.setVisible("100".equals(this.loanStatus));
         this.moreAddCollateral.setVisible("100".equals(this.loanStatus));
         this.moreViewGuarantor.setVisible("100".equals(this.loanStatus) || "200".equals(this.loanStatus) || "300".equals(this.loanStatus));
@@ -487,10 +493,10 @@ public class LoanAccountPreviewPage extends Page {
                 parameters.add("centerId", this.centerId);
             }
             parameters.add("loanId", this.loanId);
-            this.menuUnAssignLoanOfficer = new BookmarkablePageLink<>("menuUnAssignLoanOfficer", LoanOfficerUnAssignPage.class);
+            this.menuUnAssignLoanOfficer = new BookmarkablePageLink<>("menuUnAssignLoanOfficer", LoanOfficerUnAssignPage.class, parameters);
             this.buttonGroups.add(this.menuUnAssignLoanOfficer);
 
-            this.moreUnAssignLoanOfficer = new BookmarkablePageLink<>("moreUnAssignLoanOfficer", LoanOfficerUnAssignPage.class);
+            this.moreUnAssignLoanOfficer = new BookmarkablePageLink<>("moreUnAssignLoanOfficer", LoanOfficerUnAssignPage.class, parameters);
             this.buttonGroups.add(this.moreUnAssignLoanOfficer);
         }
 
@@ -506,10 +512,10 @@ public class LoanAccountPreviewPage extends Page {
             }
             parameters.add("loanId", this.loanId);
 
-            this.menuAssignLoanOfficer = new BookmarkablePageLink<>("menuAssignLoanOfficer", LoanOfficerAssignPage.class);
+            this.menuAssignLoanOfficer = new BookmarkablePageLink<>("menuAssignLoanOfficer", LoanOfficerAssignPage.class, parameters);
             this.buttonGroups.add(this.menuAssignLoanOfficer);
 
-            this.moreAssignLoanOfficer = new BookmarkablePageLink<>("moreAssignLoanOfficer", LoanOfficerAssignPage.class);
+            this.moreAssignLoanOfficer = new BookmarkablePageLink<>("moreAssignLoanOfficer", LoanOfficerAssignPage.class, parameters);
             this.buttonGroups.add(this.moreAssignLoanOfficer);
         }
 
@@ -539,7 +545,7 @@ public class LoanAccountPreviewPage extends Page {
                 parameters.add("centerId", this.centerId);
             }
             parameters.add("loanId", this.loanId);
-            this.menuDisburseToSaving = new BookmarkablePageLink<>("menuDisburseToSaving", LoanAccountDisburseSavingPage.class);
+            this.menuDisburseToSaving = new BookmarkablePageLink<>("menuDisburseToSaving", LoanAccountDisburseSavingPage.class, parameters);
             this.buttonGroups.add(this.menuDisburseToSaving);
         }
 
@@ -770,6 +776,7 @@ public class LoanAccountPreviewPage extends Page {
         loanDetailQuery.addField("m_loan.number_of_repayments");
         loanDetailQuery.addField("m_loan.maturedon_date");
         loanDetailQuery.addField("m_loan.loan_officer_id");
+        loanDetailQuery.addField("m_loan.account_no");
 
         loanDetailQuery.addField("m_loan.principal_disbursed_derived original_principle");
         loanDetailQuery.addField("m_loan.interest_charged_derived original_interest");
@@ -864,6 +871,18 @@ public class LoanAccountPreviewPage extends Page {
         this.loanOfficerValue = (String) loanDetailObject.get("loan_officer");
         this.loanPurposeValue = (String) loanDetailObject.get("loan_purpose");
         this.disbursedDateValue = (Date) loanDetailObject.get("disbursedon_date");
+
+        if (this.client == ClientEnum.Client) {
+            this.clientDisplayName = jdbcTemplate.queryForObject("select display_name from m_client where id = ?", String.class, this.clientId);
+        }
+        if (this.client == ClientEnum.Group) {
+            this.groupDisplayName = jdbcTemplate.queryForObject("select display_name from m_group where id = ?", String.class, this.groupId);
+        }
+        if (this.client == ClientEnum.Center) {
+            this.centerDisplayName = jdbcTemplate.queryForObject("select display_name from m_group where id = ?", String.class, this.centerId);
+        }
+
+        this.loanAccountNo = (String) loanDetailObject.get("account_no");
     }
 
     @Override
@@ -871,18 +890,51 @@ public class LoanAccountPreviewPage extends Page {
         List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Clients");
+            if (this.client == ClientEnum.Client) {
+                breadcrumb.setLabel("Clients");
+            } else if (this.client == ClientEnum.Group) {
+                breadcrumb.setLabel("Groups");
+            } else if (this.client == ClientEnum.Center) {
+                breadcrumb.setLabel("Centers");
+            }
             BREADCRUMB.add(breadcrumb);
         }
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Clients");
-            breadcrumb.setPage(ClientBrowsePage.class);
+            if (this.client == ClientEnum.Client) {
+                breadcrumb.setLabel("Clients");
+                breadcrumb.setPage(ClientBrowsePage.class);
+            } else if (this.client == ClientEnum.Group) {
+                breadcrumb.setLabel("Groups");
+                breadcrumb.setPage(GroupBrowsePage.class);
+            } else if (this.client == ClientEnum.Center) {
+                breadcrumb.setLabel("Centers");
+                breadcrumb.setPage(CenterBrowsePage.class);
+            }
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageParameters parameters = new PageParameters();
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+                breadcrumb.setLabel(this.clientDisplayName);
+                breadcrumb.setPage(ClientPreviewPage.class);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+                breadcrumb.setLabel(this.groupDisplayName);
+                breadcrumb.setPage(GroupPreviewPage.class);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+                breadcrumb.setLabel(this.centerDisplayName);
+                breadcrumb.setPage(CenterPreviewPage.class);
+            }
+            breadcrumb.setParameters(parameters);
             BREADCRUMB.add(breadcrumb);
         }
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel(this.clientDisplayName);
+            breadcrumb.setLabel(this.loanAccountNo);
             BREADCRUMB.add(breadcrumb);
         }
         return Model.ofList(BREADCRUMB);

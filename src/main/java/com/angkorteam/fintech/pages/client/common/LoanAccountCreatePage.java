@@ -47,7 +47,11 @@ import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateType;
 import com.angkorteam.fintech.dto.enums.loan.RepaidOn;
 import com.angkorteam.fintech.dto.enums.loan.RepaymentStrategy;
 import com.angkorteam.fintech.helper.ClientHelper;
+import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
+import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
+import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
+import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
 import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
 import com.angkorteam.fintech.popup.AccountChargePopup;
 import com.angkorteam.fintech.popup.CollateralPopup;
@@ -65,6 +69,7 @@ import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -92,8 +97,15 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 public class LoanAccountCreatePage extends Page {
 
     protected ClientEnum client;
+
     protected String clientId;
     protected String groupId;
+    protected String centerId;
+
+    protected String clientDisplayName;
+    protected String centerDisplayName;
+    protected String groupDisplayName;
+
     protected String loanId;
     protected String officeId;
 
@@ -1289,6 +1301,8 @@ public class LoanAccountCreatePage extends Page {
 
         this.clientId = getPageParameters().get("clientId").toString();
         this.groupId = getPageParameters().get("groupId").toString();
+        this.centerId = getPageParameters().get("centerId").toString();
+
         this.loanId = getPageParameters().get("loanId").toString();
 
         this.popupModel = Maps.newHashMap();
@@ -1297,8 +1311,6 @@ public class LoanAccountCreatePage extends Page {
 
         this.submittedOnValue = DateTime.now().toDate();
         this.externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
-
-        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select * from m_client where id = ?", this.clientId);
 
         SelectQuery query = new SelectQuery("m_product_loan");
         query.addJoin("left join m_fund on m_product_loan.fund_id = m_fund.id");
@@ -1410,7 +1422,19 @@ public class LoanAccountCreatePage extends Page {
 
         Map<String, Object> loanObject = jdbcTemplate.queryForMap(query.toSQL());
 
-        this.officeId = String.valueOf(clientObject.get("office_id"));
+        if (this.client == ClientEnum.Client) {
+            Map<String, Object> clientObject = jdbcTemplate.queryForMap("select office_id, display_name from m_client where id = ?", this.clientId);
+            this.clientDisplayName = (String) clientObject.get("display_name");
+            this.officeId = String.valueOf(clientObject.get("office_id"));
+        } else if (this.client == ClientEnum.Group) {
+            Map<String, Object> groupObject = jdbcTemplate.queryForMap("select office_id, display_name from m_group where id = ?", this.groupId);
+            this.groupDisplayName = (String) groupObject.get("display_name");
+            this.officeId = String.valueOf(groupObject.get("office_id"));
+        } else if (this.client == ClientEnum.Center) {
+            Map<String, Object> centerObject = jdbcTemplate.queryForMap("select office_id, display_name from m_group where id = ?", this.centerId);
+            this.centerDisplayName = (String) centerObject.get("display_name");
+            this.officeId = String.valueOf(centerObject.get("office_id"));
+        }
 
         this.productValue = (String) loanObject.get("name");
 
@@ -1597,6 +1621,77 @@ public class LoanAccountCreatePage extends Page {
             }
         }
 
+    }
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            if (this.client == ClientEnum.Client) {
+                breadcrumb.setLabel("Clients");
+            } else if (this.client == ClientEnum.Group) {
+                breadcrumb.setLabel("Groups");
+            } else if (this.client == ClientEnum.Center) {
+                breadcrumb.setLabel("Centers");
+            }
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            if (this.client == ClientEnum.Client) {
+                breadcrumb.setLabel("Clients");
+                breadcrumb.setPage(ClientBrowsePage.class);
+            } else if (this.client == ClientEnum.Group) {
+                breadcrumb.setLabel("Groups");
+                breadcrumb.setPage(GroupBrowsePage.class);
+            } else if (this.client == ClientEnum.Center) {
+                breadcrumb.setLabel("Centers");
+                breadcrumb.setPage(CenterBrowsePage.class);
+            }
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageParameters parameters = new PageParameters();
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+                breadcrumb.setLabel(this.clientDisplayName);
+                breadcrumb.setPage(ClientPreviewPage.class);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+                breadcrumb.setLabel(this.groupDisplayName);
+                breadcrumb.setPage(GroupPreviewPage.class);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+                breadcrumb.setLabel(this.centerDisplayName);
+                breadcrumb.setPage(CenterPreviewPage.class);
+            }
+            breadcrumb.setParameters(parameters);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageParameters parameters = new PageParameters();
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("client", this.client.name());
+            breadcrumb.setLabel("Loan Selection");
+            breadcrumb.setPage(LoanAccountSelectionPage.class);
+            breadcrumb.setParameters(parameters);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Create");
+            BREADCRUMB.add(breadcrumb);
+        }
+        return Model.ofList(BREADCRUMB);
     }
 
     protected void saveButtonSubmit(Button button) {

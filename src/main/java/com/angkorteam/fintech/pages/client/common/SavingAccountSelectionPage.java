@@ -181,7 +181,7 @@ public class SavingAccountSelectionPage extends Page {
         }
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Saving Product Selection");
+            breadcrumb.setLabel("Saving Selection");
             BREADCRUMB.add(breadcrumb);
         }
         return Model.ofList(BREADCRUMB);

@@ -42,7 +42,6 @@ public class ChargeCreatePage extends Page {
     protected String chargeId;
 
     protected String clientDisplayName;
-    protected String chargeName;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -91,7 +90,6 @@ public class ChargeCreatePage extends Page {
         this.chargeTypeValue = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
         this.chargeCalculationValue = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
         this.chargeValue = (String) chargeObject.get("name");
-        this.chargeName = (String) chargeObject.get("name");
         this.amountValue = (Double) chargeObject.get("amount");
     }
 
@@ -122,7 +120,7 @@ public class ChargeCreatePage extends Page {
             PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel(this.chargeName);
+            breadcrumb.setLabel("Charge Selection");
             breadcrumb.setPage(ChargeSelectionPage.class);
             breadcrumb.setParameters(parameters);
             BREADCRUMB.add(breadcrumb);
