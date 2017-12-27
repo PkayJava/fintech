@@ -69,11 +69,22 @@ public class Helper {
         return performServerGet(session.getIdentifier(), session.getToken(), url);
     }
 
+    public static JsonNode performServerGetJsonNode(IMifos session, String url) throws UnirestException {
+        return performServerGetJsonNode(session.getIdentifier(), session.getToken(), url);
+    }
+
     public static HttpResponse<InputStream> performServerGet(String identifier, String token, String url) throws UnirestException {
         MifosDataSourceManager mifos = SpringBean.getBean(MifosDataSourceManager.class);
         String mifosUrl = mifos.getMifosUrl() + url;
         HttpResponse<InputStream> response = Unirest.get(mifosUrl).header("Authorization", "Basic " + token).header("Fineract-Platform-TenantId", identifier).asBinary();
         return response;
+    }
+
+    public static JsonNode performServerGetJsonNode(String identifier, String token, String url) throws UnirestException {
+        MifosDataSourceManager mifos = SpringBean.getBean(MifosDataSourceManager.class);
+        String mifosUrl = mifos.getMifosUrl() + url;
+        HttpResponse<JsonNode> response = Unirest.get(mifosUrl).header("Authorization", "Basic " + token).header("Fineract-Platform-TenantId", identifier).asJson();
+        return response.getBody();
     }
 
     public static JsonNode performServerDelete(IMifos session, String url) throws UnirestException {
