@@ -28,8 +28,8 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.google.common.collect.Lists;
 
 public class SavingAccountPreviewChargePanel extends Panel {
-
-    protected String accountId;
+    
+    protected String savingId;
 
     protected Page itemPage;
 
@@ -59,7 +59,7 @@ public class SavingAccountPreviewChargePanel extends Panel {
         this.dataProvider.boardField("m_savings_account_charge.amount_waived_derived", "waived", Double.class);
         this.dataProvider.boardField("m_savings_account_charge.amount_outstanding_derived", "outstanding", Double.class);
         this.dataProvider.boardField("case m_savings_account_charge.is_active when 1 then 'Yes' when 0 then 'No' else concat(m_savings_account_charge.is_active, '') end", "active", String.class);
-        this.dataProvider.applyWhere("savings_account_id", "m_savings_account_charge.savings_account_id = " + this.accountId);
+        this.dataProvider.applyWhere("savings_account_id", "m_savings_account_charge.savings_account_id = " + this.savingId);
 
         this.dataColumn = Lists.newArrayList();
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
@@ -92,7 +92,7 @@ public class SavingAccountPreviewChargePanel extends Panel {
 
     @Override
     protected void initData() {
-        this.accountId = new PropertyModel<String>(this.itemPage, "accountId").getObject();
+        this.savingId = new PropertyModel<String>(this.itemPage, "savingId").getObject();
     }
 
     protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {

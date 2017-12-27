@@ -2,17 +2,21 @@ package com.angkorteam.fintech.pages.client.common;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.fintech.widget.LabelView;
 import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.client.common.LoanAccountPreviewCharge;
@@ -24,9 +28,11 @@ import com.angkorteam.fintech.widget.client.common.LoanAccountPreviewRepaymentSc
 import com.angkorteam.fintech.widget.client.common.LoanAccountPreviewTransaction;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
+import com.google.common.collect.Lists;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanAccountPreviewPage extends Page {
@@ -38,6 +44,10 @@ public class LoanAccountPreviewPage extends Page {
     protected String clientId;
     protected String groupId;
     protected String centerId;
+
+    protected String clientDisplayName;
+    protected String groupDisplayName;
+    protected String centerDisplayName;
 
     protected String loanId;
     protected Long officerId;
@@ -854,6 +864,28 @@ public class LoanAccountPreviewPage extends Page {
         this.loanOfficerValue = (String) loanDetailObject.get("loan_officer");
         this.loanPurposeValue = (String) loanDetailObject.get("loan_purpose");
         this.disbursedDateValue = (Date) loanDetailObject.get("disbursedon_date");
+    }
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Clients");
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel("Clients");
+            breadcrumb.setPage(ClientBrowsePage.class);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel(this.clientDisplayName);
+            BREADCRUMB.add(breadcrumb);
+        }
+        return Model.ofList(BREADCRUMB);
     }
 
 }

@@ -15,9 +15,11 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.DepositType;
+import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
+import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
 import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -135,13 +137,27 @@ public class SavingAccountSelectionPage extends Page {
         List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Clients");
+            if (this.client == ClientEnum.Client) {
+                breadcrumb.setLabel("Clients");
+            } else if (this.client == ClientEnum.Group) {
+                breadcrumb.setLabel("Groups");
+            } else if (this.client == ClientEnum.Center) {
+                breadcrumb.setLabel("Centers");
+            }
             BREADCRUMB.add(breadcrumb);
         }
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Clients");
-            breadcrumb.setPage(ClientBrowsePage.class);
+            if (this.client == ClientEnum.Client) {
+                breadcrumb.setLabel("Clients");
+                breadcrumb.setPage(ClientBrowsePage.class);
+            } else if (this.client == ClientEnum.Group) {
+                breadcrumb.setLabel("Groups");
+                breadcrumb.setPage(GroupBrowsePage.class);
+            } else if (this.client == ClientEnum.Center) {
+                breadcrumb.setLabel("Centers");
+                breadcrumb.setPage(CenterBrowsePage.class);
+            }
             BREADCRUMB.add(breadcrumb);
         }
         {

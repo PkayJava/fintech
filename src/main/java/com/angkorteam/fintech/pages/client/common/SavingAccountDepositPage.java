@@ -45,7 +45,7 @@ public class SavingAccountDepositPage extends Page {
     protected String groupId;
     protected String centerId;
 
-    protected String accountId;
+    protected String savingId;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -278,7 +278,7 @@ public class SavingAccountDepositPage extends Page {
         this.groupId = getPageParameters().get("groupId").toString();
         this.centerId = getPageParameters().get("centerId").toString();
 
-        this.accountId = getPageParameters().get("accountId").toString();
+        this.savingId = getPageParameters().get("savingId").toString();
         this.transactionDateValue = DateTime.now().toDate();
     }
 
@@ -301,7 +301,7 @@ public class SavingAccountDepositPage extends Page {
 
     protected void saveButtonSubmit(Button button) {
         DepositBuilder builder = new DepositBuilder();
-        builder.withId(this.accountId);
+        builder.withId(this.savingId);
         builder.withTransactionDate(this.transactionDateValue);
         builder.withTransactionAmount(this.transactionAmountValue);
         if (this.paymentTypeValue != null) {

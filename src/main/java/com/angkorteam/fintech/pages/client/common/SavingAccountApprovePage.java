@@ -39,7 +39,7 @@ public class SavingAccountApprovePage extends Page {
     protected String groupId;
     protected String centerId;
 
-    protected String accountId;
+    protected String savingId;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -126,13 +126,13 @@ public class SavingAccountApprovePage extends Page {
         this.groupId = getPageParameters().get("groupId").toString();
         this.centerId = getPageParameters().get("centerId").toString();
 
-        this.accountId = getPageParameters().get("accountId").toString();
+        this.savingId = getPageParameters().get("savingId").toString();
         this.approvedOnValue = DateTime.now().toDate();
     }
 
     protected void saveButtonSubmit(Button button) {
         ApproveBuilder builder = new ApproveBuilder();
-        builder.withId(this.accountId);
+        builder.withId(this.savingId);
         builder.withNote(this.noteValue);
         builder.withApprovedOnDate(this.approvedOnValue);
 

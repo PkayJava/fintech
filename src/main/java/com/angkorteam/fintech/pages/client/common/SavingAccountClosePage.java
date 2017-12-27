@@ -47,7 +47,7 @@ public class SavingAccountClosePage extends Page {
     protected String groupId;
     protected String centerId;
 
-    protected String accountId;
+    protected String savingId;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -328,7 +328,7 @@ public class SavingAccountClosePage extends Page {
     protected void initData() {
         this.client = ClientEnum.valueOf(getPageParameters().get("client").toString());
         this.clientId = getPageParameters().get("clientId").toString();
-        this.accountId = getPageParameters().get("accountId").toString();
+        this.savingId = getPageParameters().get("savingId").toString();
         this.closedOnValue = DateTime.now().toDate();
         this.postInterestValue = true;
     }
@@ -365,7 +365,7 @@ public class SavingAccountClosePage extends Page {
     protected void saveButtonSubmit(Button button) {
         CloseBuilder builder = new CloseBuilder();
 
-        builder.withId(this.accountId);
+        builder.withId(this.savingId);
 
         builder.withPostInterestValidationOnClosure(this.postInterestValue == null ? false : this.postInterestValue);
         builder.withClosedOnDate(this.closedOnValue);

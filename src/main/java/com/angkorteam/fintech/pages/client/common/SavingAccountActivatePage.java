@@ -38,7 +38,7 @@ public class SavingAccountActivatePage extends Page {
     protected String groupId;
     protected String centerId;
 
-    protected String accountId;
+    protected String savingId;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -106,13 +106,13 @@ public class SavingAccountActivatePage extends Page {
         this.groupId = getPageParameters().get("groupId").toString();
         this.centerId = getPageParameters().get("centerId").toString();
 
-        this.accountId = getPageParameters().get("accountId").toString();
+        this.savingId = getPageParameters().get("savingId").toString();
         this.activatedOnValue = DateTime.now().toDate();
     }
 
     protected void saveButtonSubmit(Button button) {
         ActivateBuilder builder = new ActivateBuilder();
-        builder.withId(this.accountId);
+        builder.withId(this.savingId);
         builder.withActivatedOnDate(this.activatedOnValue);
 
         JsonNode node = null;

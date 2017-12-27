@@ -36,9 +36,11 @@ import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
 import com.angkorteam.fintech.dto.enums.LockInType;
 import com.angkorteam.fintech.dto.enums.ProductPopup;
 import com.angkorteam.fintech.helper.ClientHelper;
+import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
+import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
 import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
 import com.angkorteam.fintech.popup.AccountChargePopup;
 import com.angkorteam.fintech.provider.DayInYearProvider;
@@ -262,13 +264,27 @@ public class SavingAccountCreatePage extends Page {
         List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Clients");
+            if (this.client == ClientEnum.Client) {
+                breadcrumb.setLabel("Clients");
+            } else if (this.client == ClientEnum.Group) {
+                breadcrumb.setLabel("Groups");
+            } else if (this.client == ClientEnum.Center) {
+                breadcrumb.setLabel("Centers");
+            }
             BREADCRUMB.add(breadcrumb);
         }
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Clients");
-            breadcrumb.setPage(ClientBrowsePage.class);
+            if (this.client == ClientEnum.Client) {
+                breadcrumb.setLabel("Clients");
+                breadcrumb.setPage(ClientBrowsePage.class);
+            } else if (this.client == ClientEnum.Group) {
+                breadcrumb.setLabel("Groups");
+                breadcrumb.setPage(GroupBrowsePage.class);
+            } else if (this.client == ClientEnum.Center) {
+                breadcrumb.setLabel("Centers");
+                breadcrumb.setPage(CenterBrowsePage.class);
+            }
             BREADCRUMB.add(breadcrumb);
         }
         {

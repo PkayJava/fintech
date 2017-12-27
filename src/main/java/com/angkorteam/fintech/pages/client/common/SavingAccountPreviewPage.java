@@ -1,23 +1,37 @@
 package com.angkorteam.fintech.pages.client.common;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
+import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
+import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
+import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
+import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
+import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
 import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.fintech.widget.client.common.SavingAccountPreviewCharge;
 import com.angkorteam.fintech.widget.client.common.SavingAccountPreviewTransaction;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
+import com.google.common.collect.Lists;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingAccountPreviewPage extends Page {
@@ -28,7 +42,11 @@ public class SavingAccountPreviewPage extends Page {
     protected String groupId;
     protected String centerId;
 
-    protected String accountId;
+    protected String savingId;
+    protected String savingAccountNo;
+    protected String clientDisplayName;
+    protected String groupDisplayName;
+    protected String centerDisplayName;
 
     protected WebMarkupBlock interestEarnedBlock;
     protected WebMarkupContainer interestEarnedVContainer;
@@ -115,6 +133,61 @@ public class SavingAccountPreviewPage extends Page {
     protected BookmarkablePageLink<Void> closeLink;
     protected BookmarkablePageLink<Void> depositLink;
     protected BookmarkablePageLink<Void> withdrawLink;
+
+    @Override
+    public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
+        List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            if (this.client == ClientEnum.Client) {
+                breadcrumb.setLabel("Clients");
+            } else if (this.client == ClientEnum.Group) {
+                breadcrumb.setLabel("Groups");
+            } else if (this.client == ClientEnum.Center) {
+                breadcrumb.setLabel("Centers");
+            }
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            if (this.client == ClientEnum.Client) {
+                breadcrumb.setLabel("Clients");
+                breadcrumb.setPage(ClientBrowsePage.class);
+            } else if (this.client == ClientEnum.Group) {
+                breadcrumb.setLabel("Groups");
+                breadcrumb.setPage(GroupBrowsePage.class);
+            } else if (this.client == ClientEnum.Center) {
+                breadcrumb.setLabel("Centers");
+                breadcrumb.setPage(CenterBrowsePage.class);
+            }
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageParameters parameters = new PageParameters();
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+                breadcrumb.setLabel(this.clientDisplayName);
+                breadcrumb.setPage(ClientPreviewPage.class);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+                breadcrumb.setLabel(this.groupDisplayName);
+                breadcrumb.setPage(GroupPreviewPage.class);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+                breadcrumb.setLabel(this.centerDisplayName);
+                breadcrumb.setPage(CenterPreviewPage.class);
+            }
+            breadcrumb.setParameters(parameters);
+            BREADCRUMB.add(breadcrumb);
+        }
+        {
+            PageBreadcrumb breadcrumb = new PageBreadcrumb();
+            breadcrumb.setLabel(this.savingAccountNo);
+            BREADCRUMB.add(breadcrumb);
+        }
+        return Model.ofList(BREADCRUMB);
+    }
 
     @Override
     protected void initComponent() {
@@ -242,7 +315,7 @@ public class SavingAccountPreviewPage extends Page {
         } else if (this.client == ClientEnum.Group) {
             parameters.add("groupId", this.groupId);
         }
-        parameters.add("accountId", this.accountId);
+        parameters.add("savingId", this.savingId);
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", SavingAccountClosePage.class, parameters);
         add(this.closeLink);
@@ -270,7 +343,22 @@ public class SavingAccountPreviewPage extends Page {
         this.groupId = getPageParameters().get("groupId").toString();
         this.centerId = getPageParameters().get("centerId").toString();
 
-        this.accountId = getPageParameters().get("accountId").toString();
+        this.savingId = getPageParameters().get("savingId").toString();
+
+        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        if (this.client == ClientEnum.Client) {
+            this.clientDisplayName = jdbcTemplate.queryForObject("select display_name from m_client where id = ?", String.class, this.clientId);
+        }
+        if (this.client == ClientEnum.Group) {
+            this.groupDisplayName = jdbcTemplate.queryForObject("select display_name from m_group where id = ?", String.class, this.groupId);
+        }
+        if (this.client == ClientEnum.Center) {
+            this.centerDisplayName = jdbcTemplate.queryForObject("select display_name from m_group where id = ?", String.class, this.centerId);
+        }
+
+        Map<String, Object> savingObject = jdbcTemplate.queryForMap("select account_no from m_savings_account where id = ?", this.savingId);
+
+        this.savingAccountNo = (String) savingObject.get("account_no");
     }
 
 }
