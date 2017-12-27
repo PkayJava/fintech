@@ -138,18 +138,19 @@ public class LoanAccountReschedulePage extends Page {
         this.form.add(this.saveButton);
 
         PageParameters parameters = new PageParameters();
+        parameters.add("client", this.client.name());
+        parameters.add("loanId", this.loanId);
         if (this.client == ClientEnum.Client) {
             parameters.add("clientId", this.clientId);
-            this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
-        } else if (this.client == ClientEnum.Group) {
-            parameters.add("groupId", this.groupId);
-            this.closeLink = new BookmarkablePageLink<>("closeLink", GroupPreviewPage.class, parameters);
         } else if (this.client == ClientEnum.Center) {
             parameters.add("centerId", this.centerId);
-            this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
+        } else if (this.client == ClientEnum.Group) {
+            parameters.add("groupId", this.groupId);
         } else {
             throw new WicketRuntimeException("Unknown " + this.client);
         }
+
+        this.closeLink = new BookmarkablePageLink<>("closeLink", LoanAccountPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
         this.rescheduleFromInstallmentOnBlock = new WebMarkupBlock("rescheduleFromInstallmentOnBlock", Size.Six_6);

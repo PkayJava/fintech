@@ -40,6 +40,7 @@ public class LoanAccountPreviewPage extends Page {
     protected String centerId;
 
     protected String loanId;
+    protected Long officerId;
 
     protected LabelView currentBalanceView;
     protected Double currentBalanceValue;
@@ -176,7 +177,8 @@ public class LoanAccountPreviewPage extends Page {
     protected BookmarkablePageLink<Void> menuUndoApprove;
     protected BookmarkablePageLink<Void> menuDisburseToSaving;
     protected BookmarkablePageLink<Void> menuDisburse;
-    protected BookmarkablePageLink<Void> menuChangeLoanOfficer;
+    protected BookmarkablePageLink<Void> menuAssignLoanOfficer;
+    protected BookmarkablePageLink<Void> menuUnAssignLoanOfficer;
     protected BookmarkablePageLink<Void> menuUndoDisbursal;
     protected BookmarkablePageLink<Void> menuMakeRepayment;
     protected BookmarkablePageLink<Void> menuForeclosure;
@@ -188,9 +190,8 @@ public class LoanAccountPreviewPage extends Page {
     protected BookmarkablePageLink<Void> moreCloseAsReschedule;
     protected BookmarkablePageLink<Void> moreClose;
     protected BookmarkablePageLink<Void> moreAssignLoanOfficer;
-    protected BookmarkablePageLink<Void> moreChangeLoanOfficer;
+    protected BookmarkablePageLink<Void> moreUnAssignLoanOfficer;
     protected BookmarkablePageLink<Void> moreWithdrawnByClient;
-    protected BookmarkablePageLink<Void> moreDelete;
     protected BookmarkablePageLink<Void> moreAddCollateral;
     protected BookmarkablePageLink<Void> moreViewGuarantor;
     protected BookmarkablePageLink<Void> moreRecoverFromGuarantor;
@@ -207,7 +208,8 @@ public class LoanAccountPreviewPage extends Page {
         this.menuUndoApprove.setVisible(false);
         this.menuDisburseToSaving.setVisible(false);
         this.menuDisburse.setVisible(false);
-        this.menuChangeLoanOfficer.setVisible(false);
+        this.menuAssignLoanOfficer.setVisible(false);
+        this.menuUnAssignLoanOfficer.setVisible(false);
         this.menuUndoDisbursal.setVisible(false);
         this.menuMakeRepayment.setVisible(false);
         this.menuForeclosure.setVisible(false);
@@ -219,31 +221,44 @@ public class LoanAccountPreviewPage extends Page {
         this.moreCloseAsReschedule.setVisible(false);
         this.moreClose.setVisible(false);
         this.moreAssignLoanOfficer.setVisible(false);
+        this.moreUnAssignLoanOfficer.setVisible(false);
         this.moreWithdrawnByClient.setVisible(false);
-        this.moreDelete.setVisible(false);
         this.moreAddCollateral.setVisible(false);
         this.moreViewGuarantor.setVisible(false);
         this.moreRecoverFromGuarantor.setVisible(false);
         this.moreLoanScreenReport.setVisible(false);
-        this.moreChangeLoanOfficer.setVisible(false);
 
-        this.menuAddLoanCharge.setVisible("100".equals(this.loanStatus));
+        // 100 mean created
+        // 200 mean approved
+        // 300 mean disbursed
+
+        this.menuPrepayLoan.setVisible("300".equals(this.loanStatus));
+        this.menuForeclosure.setVisible("300".equals(this.loanStatus));
+        this.menuMakeRepayment.setVisible("300".equals(this.loanStatus));
+        this.menuUndoDisbursal.setVisible("300".equals(this.loanStatus));
+        this.menuAddLoanCharge.setVisible("100".equals(this.loanStatus) || "300".equals(this.loanStatus));
         this.menuApprove.setVisible("100".equals(this.loanStatus));
         this.menuModifyApplication.setVisible("100".equals(this.loanStatus));
         this.menuReject.setVisible("100".equals(this.loanStatus));
-        this.menuChangeLoanOfficer.setVisible("200".equals(this.loanStatus));
+        this.menuAssignLoanOfficer.setVisible(this.officerId != null && "200".equals(this.loanStatus));
+        this.menuUnAssignLoanOfficer.setVisible(this.officerId == null && "200".equals(this.loanStatus));
         this.menuDisburse.setVisible("200".equals(this.loanStatus));
         this.menuDisburseToSaving.setVisible("200".equals(this.loanStatus));
         this.menuUndoApprove.setVisible("200".equals(this.loanStatus));
 
-        this.moreChangeLoanOfficer.setVisible("100".equals(this.loanStatus));
+        this.moreWaiveInterest.setVisible("300".equals(this.loanStatus));
+        this.moreReschedule.setVisible("300".equals(this.loanStatus));
+        this.moreWriteOff.setVisible("300".equals(this.loanStatus));
+        this.moreClose.setVisible("300".equals(this.loanStatus));
+        this.moreCloseAsReschedule.setVisible("300".equals(this.loanStatus));
+        this.moreAssignLoanOfficer.setVisible(this.officerId != null && "100".equals(this.loanStatus));
+        this.moreUnAssignLoanOfficer.setVisible(this.officerId == null && "100".equals(this.loanStatus));
         this.moreWithdrawnByClient.setVisible("100".equals(this.loanStatus));
-        this.moreDelete.setVisible("100".equals(this.loanStatus));
         this.moreAddCollateral.setVisible("100".equals(this.loanStatus));
-        this.moreViewGuarantor.setVisible("100".equals(this.loanStatus) || "200".equals(this.loanStatus));
-        this.moreLoanScreenReport.setVisible("100".equals(this.loanStatus) || "200".equals(this.loanStatus));
+        this.moreViewGuarantor.setVisible("100".equals(this.loanStatus) || "200".equals(this.loanStatus) || "300".equals(this.loanStatus));
+        this.moreLoanScreenReport.setVisible("100".equals(this.loanStatus) || "200".equals(this.loanStatus) || "300".equals(this.loanStatus));
         this.moreAddLoanCharge.setVisible("200".equals(this.loanStatus));
-
+        this.moreRecoverFromGuarantor.setVisible("300".equals(this.loanStatus));
     }
 
     @Override
@@ -253,65 +268,221 @@ public class LoanAccountPreviewPage extends Page {
         this.buttonGroups.setOutputMarkupId(true);
         add(this.buttonGroups);
 
-        this.moreWaiveInterest = new BookmarkablePageLink<>("moreWaiveInterest", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.moreWaiveInterest);
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.moreWaiveInterest = new BookmarkablePageLink<>("moreWaiveInterest", LoanAccountWaiveInterestPage.class, parameters);
+            this.buttonGroups.add(this.moreWaiveInterest);
+        }
 
-        this.moreReschedule = new BookmarkablePageLink<>("moreReschedule", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.moreReschedule);
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.moreReschedule = new BookmarkablePageLink<>("moreReschedule", LoanAccountReschedulePage.class, parameters);
+            this.buttonGroups.add(this.moreReschedule);
+        }
 
-        this.moreWriteOff = new BookmarkablePageLink<>("moreWriteOff", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.moreWriteOff);
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.moreWriteOff = new BookmarkablePageLink<>("moreWriteOff", LoanAccountWriteOffPage.class, parameters);
+            this.buttonGroups.add(this.moreWriteOff);
+        }
 
-        this.moreCloseAsReschedule = new BookmarkablePageLink<>("moreCloseAsReschedule", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.moreCloseAsReschedule);
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.moreCloseAsReschedule = new BookmarkablePageLink<>("moreCloseAsReschedule", LoanAccountCloseAsSchedulePage.class, parameters);
+            this.buttonGroups.add(this.moreCloseAsReschedule);
+        }
 
-        this.moreClose = new BookmarkablePageLink<>("moreClose", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.moreClose);
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.moreClose = new BookmarkablePageLink<>("moreClose", LoanAccountClosePage.class, parameters);
+            this.buttonGroups.add(this.moreClose);
+        }
 
-        this.moreAssignLoanOfficer = new BookmarkablePageLink<>("moreAssignLoanOfficer", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.moreAssignLoanOfficer);
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.moreWithdrawnByClient = new BookmarkablePageLink<>("moreWithdrawnByClient", LoanChargeCreatePage.class);
+            this.buttonGroups.add(this.moreWithdrawnByClient);
+        }
 
-        this.moreWithdrawnByClient = new BookmarkablePageLink<>("moreWithdrawnByClient", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.moreWithdrawnByClient);
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.moreAddCollateral = new BookmarkablePageLink<>("moreAddCollateral", LoanCollateralCreatePage.class, parameters);
+            this.buttonGroups.add(this.moreAddCollateral);
+        }
 
-        this.moreDelete = new BookmarkablePageLink<>("moreDelete", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.moreDelete);
-
-        this.moreAddCollateral = new BookmarkablePageLink<>("moreAddCollateral", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.moreAddCollateral);
-
-        this.moreViewGuarantor = new BookmarkablePageLink<>("moreViewGuarantor", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.moreViewGuarantor);
-
-        this.moreRecoverFromGuarantor = new BookmarkablePageLink<>("moreRecoverFromGuarantor", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.moreRecoverFromGuarantor);
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.moreViewGuarantor = new BookmarkablePageLink<>("moreViewGuarantor", LoanGuarantorBrowsePage.class, parameters);
+            this.buttonGroups.add(this.moreViewGuarantor);
+        }
 
         this.moreLoanScreenReport = new BookmarkablePageLink<>("moreLoanScreenReport", LoanChargeCreatePage.class);
         this.buttonGroups.add(this.moreLoanScreenReport);
 
-        this.menuPrepayLoan = new BookmarkablePageLink<>("menuPrepayLoan", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.menuPrepayLoan);
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.moreRecoverFromGuarantor = new BookmarkablePageLink<>("moreRecoverFromGuarantor", LoanAccountRecoverGuaranteePage.class, parameters);
+            this.buttonGroups.add(this.moreRecoverFromGuarantor);
+        }
 
-        this.menuForeclosure = new BookmarkablePageLink<>("menuForeclosure", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.menuForeclosure);
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.menuPrepayLoan = new BookmarkablePageLink<>("menuPrepayLoan", LoanAccountPrepayPage.class, parameters);
+            this.buttonGroups.add(this.menuPrepayLoan);
+        }
 
-        this.menuMakeRepayment = new BookmarkablePageLink<>("menuMakeRepayment", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.menuMakeRepayment);
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.menuForeclosure = new BookmarkablePageLink<>("menuForeclosure", LoanAccountForeclosurePage.class, parameters);
+            this.buttonGroups.add(this.menuForeclosure);
+        }
 
-        this.menuUndoDisbursal = new BookmarkablePageLink<>("menuUndoDisbursal", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.menuUndoDisbursal);
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.menuMakeRepayment = new BookmarkablePageLink<>("menuMakeRepayment", LoanAccountRepaymentPage.class, parameters);
+            this.buttonGroups.add(this.menuMakeRepayment);
+        }
 
-        this.menuChangeLoanOfficer = new BookmarkablePageLink<>("menuChangeLoanOfficer", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.menuChangeLoanOfficer);
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.menuUndoDisbursal = new BookmarkablePageLink<>("menuUndoDisbursal", LoanAccountUndoDisbursePage.class, parameters);
+            this.buttonGroups.add(this.menuUndoDisbursal);
+        }
 
-        this.moreChangeLoanOfficer = new BookmarkablePageLink<>("moreChangeLoanOfficer", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.moreChangeLoanOfficer);
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.menuUnAssignLoanOfficer = new BookmarkablePageLink<>("menuUnAssignLoanOfficer", LoanOfficerUnAssignPage.class);
+            this.buttonGroups.add(this.menuUnAssignLoanOfficer);
 
-        this.menuDisburse = new BookmarkablePageLink<>("menuDisburse", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.menuDisburse);
-
-        this.menuDisburseToSaving = new BookmarkablePageLink<>("menuDisburseToSaving", LoanChargeCreatePage.class);
-        this.buttonGroups.add(this.menuDisburseToSaving);
+            this.moreUnAssignLoanOfficer = new BookmarkablePageLink<>("moreUnAssignLoanOfficer", LoanOfficerUnAssignPage.class);
+            this.buttonGroups.add(this.moreUnAssignLoanOfficer);
+        }
 
         {
             PageParameters parameters = new PageParameters();
@@ -325,11 +496,71 @@ public class LoanAccountPreviewPage extends Page {
             }
             parameters.add("loanId", this.loanId);
 
-            this.menuUndoApprove = new BookmarkablePageLink<>("menuUndoApprove", LoanAccountApprovePage.class, parameters);
-            this.buttonGroups.add(this.menuUndoApprove);
+            this.menuAssignLoanOfficer = new BookmarkablePageLink<>("menuAssignLoanOfficer", LoanOfficerAssignPage.class);
+            this.buttonGroups.add(this.menuAssignLoanOfficer);
 
+            this.moreAssignLoanOfficer = new BookmarkablePageLink<>("moreAssignLoanOfficer", LoanOfficerAssignPage.class);
+            this.buttonGroups.add(this.moreAssignLoanOfficer);
+        }
+
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.menuDisburse = new BookmarkablePageLink<>("menuDisburse", LoanAccountDisbursePage.class, parameters);
+            this.buttonGroups.add(this.menuDisburse);
+        }
+
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.menuDisburseToSaving = new BookmarkablePageLink<>("menuDisburseToSaving", LoanAccountDisburseSavingPage.class);
+            this.buttonGroups.add(this.menuDisburseToSaving);
+        }
+
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
             this.menuApprove = new BookmarkablePageLink<>("menuApprove", LoanAccountApprovePage.class, parameters);
             this.buttonGroups.add(this.menuApprove);
+        }
+
+        {
+            PageParameters parameters = new PageParameters();
+            parameters.add("client", this.client.name());
+            if (this.client == ClientEnum.Client) {
+                parameters.add("clientId", this.clientId);
+            } else if (this.client == ClientEnum.Group) {
+                parameters.add("groupId", this.groupId);
+            } else if (this.client == ClientEnum.Center) {
+                parameters.add("centerId", this.centerId);
+            }
+            parameters.add("loanId", this.loanId);
+            this.menuUndoApprove = new BookmarkablePageLink<>("menuUndoApprove", LoanAccountUndoApprovalPage.class, parameters);
+            this.buttonGroups.add(this.menuUndoApprove);
         }
 
         {
@@ -528,6 +759,7 @@ public class LoanAccountPreviewPage extends Page {
         loanDetailQuery.addField("m_loan.principal_amount disbursed_amount");
         loanDetailQuery.addField("m_loan.number_of_repayments");
         loanDetailQuery.addField("m_loan.maturedon_date");
+        loanDetailQuery.addField("m_loan.loan_officer_id");
 
         loanDetailQuery.addField("m_loan.principal_disbursed_derived original_principle");
         loanDetailQuery.addField("m_loan.interest_charged_derived original_interest");
@@ -572,6 +804,8 @@ public class LoanAccountPreviewPage extends Page {
         Map<String, Object> loanDetailObject = jdbcTemplate.queryForMap(loanDetailQuery.toSQL());
 
         this.loanStatus = String.valueOf(loanDetailObject.get("loan_status_id"));
+
+        this.officerId = (Long) loanDetailObject.get("loan_officer_id");
 
         this.currentBalanceValue = (Double) loanDetailObject.get("outstanding_total");
 

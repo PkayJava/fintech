@@ -25,8 +25,6 @@ import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.ChargeType;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.helper.loan.LoanChargeBuilder;
-import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
-import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;

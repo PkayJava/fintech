@@ -19,10 +19,7 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.loan.ApproveBuilder;
-import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
-import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
-import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
+import com.angkorteam.fintech.helper.loan.DisburseSavingBuilder;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
@@ -49,23 +46,17 @@ public class LoanAccountDisburseSavingPage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock approvedOnBlock;
-    protected WebMarkupContainer approvedOnIContainer;
-    protected Date approvedOnValue;
-    protected DateTextField approvedOnField;
-    protected TextFeedbackPanel approvedOnFeedback;
+    protected WebMarkupBlock disbursedOnBlock;
+    protected WebMarkupContainer disbursedOnIContainer;
+    protected Date disbursedOnValue;
+    protected DateTextField disbursedOnField;
+    protected TextFeedbackPanel disbursedOnFeedback;
 
-    protected WebMarkupBlock expectedDisbursementOnBlock;
-    protected WebMarkupContainer expectedDisbursementOnIContainer;
-    protected Date expectedDisbursementOnValue;
-    protected DateTextField expectedDisbursementOnField;
-    protected TextFeedbackPanel expectedDisbursementOnFeedback;
-
-    protected WebMarkupBlock approvedAmountBlock;
-    protected WebMarkupContainer approvedAmountIContainer;
-    protected Double approvedAmountValue;
-    protected TextField<Double> approvedAmountField;
-    protected TextFeedbackPanel approvedAmountFeedback;
+    protected WebMarkupBlock transactionAmountBlock;
+    protected WebMarkupContainer transactionAmountIContainer;
+    protected Double transactionAmountValue;
+    protected TextField<Double> transactionAmountField;
+    protected TextFeedbackPanel transactionAmountFeedback;
 
     protected WebMarkupBlock noteBlock;
     protected WebMarkupContainer noteIContainer;
@@ -83,74 +74,41 @@ public class LoanAccountDisburseSavingPage extends Page {
         this.form.add(this.saveButton);
 
         PageParameters parameters = new PageParameters();
+        parameters.add("client", this.client.name());
+        parameters.add("loanId", this.loanId);
         if (this.client == ClientEnum.Client) {
             parameters.add("clientId", this.clientId);
-            this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
-        } else if (this.client == ClientEnum.Group) {
-            parameters.add("groupId", this.groupId);
-            this.closeLink = new BookmarkablePageLink<>("closeLink", GroupPreviewPage.class, parameters);
         } else if (this.client == ClientEnum.Center) {
             parameters.add("centerId", this.centerId);
-            this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
+        } else if (this.client == ClientEnum.Group) {
+            parameters.add("groupId", this.groupId);
         } else {
             throw new WicketRuntimeException("Unknown " + this.client);
         }
+
+        this.closeLink = new BookmarkablePageLink<>("closeLink", LoanAccountPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        initApprovedOnBlock();
+        this.transactionAmountBlock = new WebMarkupBlock("transactionAmountBlock", Size.Six_6);
+        this.form.add(this.transactionAmountBlock);
+        this.transactionAmountIContainer = new WebMarkupContainer("transactionAmountIContainer");
+        this.transactionAmountBlock.add(this.transactionAmountIContainer);
+        this.transactionAmountField = new TextField<>("transactionAmountField", new PropertyModel<>(this, "transactionAmountValue"));
+        this.transactionAmountField.setLabel(Model.of("Transaction Amount"));
+        this.transactionAmountIContainer.add(this.transactionAmountField);
+        this.transactionAmountFeedback = new TextFeedbackPanel("transactionAmountFeedback", this.transactionAmountField);
+        this.transactionAmountIContainer.add(this.transactionAmountFeedback);
 
-        initExpectedDisbursementOnBlock();
+        this.disbursedOnBlock = new WebMarkupBlock("disbursedOnBlock", Size.Six_6);
+        this.form.add(this.disbursedOnBlock);
+        this.disbursedOnIContainer = new WebMarkupContainer("disbursedOnIContainer");
+        this.disbursedOnBlock.add(this.disbursedOnIContainer);
+        this.disbursedOnField = new DateTextField("disbursedOnField", new PropertyModel<>(this, "disbursedOnValue"));
+        this.disbursedOnField.setLabel(Model.of("Disbursed On"));
+        this.disbursedOnIContainer.add(this.disbursedOnField);
+        this.disbursedOnFeedback = new TextFeedbackPanel("disbursedOnFeedback", this.disbursedOnField);
+        this.disbursedOnIContainer.add(this.disbursedOnFeedback);
 
-        initApprovedAmount();
-
-        initNoteBlock();
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
-    protected void configureMetaData() {
-    }
-
-    protected void initApprovedAmount() {
-        this.approvedAmountBlock = new WebMarkupBlock("approvedAmountBlock", Size.Six_6);
-        this.form.add(this.approvedAmountBlock);
-        this.approvedAmountIContainer = new WebMarkupContainer("approvedAmountIContainer");
-        this.approvedAmountBlock.add(this.approvedAmountIContainer);
-        this.approvedAmountField = new TextField<>("approvedAmountField", new PropertyModel<>(this, "approvedAmountValue"));
-        this.approvedAmountField.setLabel(Model.of("Approved Amount"));
-        this.approvedAmountIContainer.add(this.approvedAmountField);
-        this.approvedAmountFeedback = new TextFeedbackPanel("approvedAmountFeedback", this.approvedAmountField);
-        this.approvedAmountIContainer.add(this.approvedAmountFeedback);
-    }
-
-    protected void initExpectedDisbursementOnBlock() {
-        this.expectedDisbursementOnBlock = new WebMarkupBlock("expectedDisbursementOnBlock", Size.Six_6);
-        this.form.add(this.expectedDisbursementOnBlock);
-        this.expectedDisbursementOnIContainer = new WebMarkupContainer("expectedDisbursementOnIContainer");
-        this.expectedDisbursementOnBlock.add(this.expectedDisbursementOnIContainer);
-        this.expectedDisbursementOnField = new DateTextField("expectedDisbursementOnField", new PropertyModel<>(this, "expectedDisbursementOnValue"));
-        this.expectedDisbursementOnField.setLabel(Model.of("Expected Disbursement On"));
-        this.expectedDisbursementOnIContainer.add(this.expectedDisbursementOnField);
-        this.expectedDisbursementOnFeedback = new TextFeedbackPanel("expectedDisbursementOnFeedback", this.expectedDisbursementOnField);
-        this.expectedDisbursementOnIContainer.add(this.expectedDisbursementOnFeedback);
-    }
-
-    protected void initApprovedOnBlock() {
-        this.approvedOnBlock = new WebMarkupBlock("approvedOnBlock", Size.Six_6);
-        this.form.add(this.approvedOnBlock);
-        this.approvedOnIContainer = new WebMarkupContainer("approvedOnIContainer");
-        this.approvedOnBlock.add(this.approvedOnIContainer);
-        this.approvedOnField = new DateTextField("approvedOnField", new PropertyModel<>(this, "approvedOnValue"));
-        this.approvedOnField.setLabel(Model.of("Approved On"));
-        this.approvedOnIContainer.add(this.approvedOnField);
-        this.approvedOnFeedback = new TextFeedbackPanel("approvedOnFeedback", this.approvedOnField);
-        this.approvedOnIContainer.add(this.approvedOnFeedback);
-    }
-
-    protected void initNoteBlock() {
         this.noteBlock = new WebMarkupBlock("noteBlock", Size.Six_6);
         this.form.add(this.noteBlock);
         this.noteIContainer = new WebMarkupContainer("noteIContainer");
@@ -163,6 +121,14 @@ public class LoanAccountDisburseSavingPage extends Page {
     }
 
     @Override
+    protected void configureRequiredValidation() {
+    }
+
+    @Override
+    protected void configureMetaData() {
+    }
+
+    @Override
     protected void initData() {
         this.client = ClientEnum.valueOf(getPageParameters().get("client").toString());
 
@@ -171,25 +137,22 @@ public class LoanAccountDisburseSavingPage extends Page {
         this.centerId = getPageParameters().get("centerId").toString();
 
         this.loanId = getPageParameters().get("loanId").toString();
-        this.approvedOnValue = DateTime.now().toDate();
+        this.disbursedOnValue = DateTime.now().toDate();
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         Map<String, Object> loanObject = jdbcTemplate.queryForMap("select principle_amount_proposed, expected_disbursedon_date from m_loan where id = ?", this.loanId);
-        this.approvedAmountValue = (Double) loanObject.get("principle_amount_proposed");
-        this.expectedDisbursementOnValue = (Date) loanObject.get("expected_disbursedon_date");
     }
 
     protected void saveButtonSubmit(Button button) {
-        ApproveBuilder builder = new ApproveBuilder();
+        DisburseSavingBuilder builder = new DisburseSavingBuilder();
         builder.withId(this.loanId);
         builder.withNote(this.noteValue);
-        builder.withApprovedOnDate(this.approvedOnValue);
-        builder.withExpectedDisbursementDate(this.expectedDisbursementOnValue);
-        builder.withApprovedLoanAmount(this.approvedAmountValue);
+        builder.withActualDisbursementDate(this.disbursedOnValue);
+        builder.withTransactionAmount(this.transactionAmountValue);
 
         JsonNode node = null;
         try {
-            node = ClientHelper.approveLoanAccount((Session) getSession(), builder.build());
+            node = ClientHelper.disburseToSavingLoanAccount((Session) getSession(), builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;
@@ -198,21 +161,19 @@ public class LoanAccountDisburseSavingPage extends Page {
             return;
         }
 
+        PageParameters parameters = new PageParameters();
+        parameters.add("client", this.client.name());
+        parameters.add("loanId", this.loanId);
         if (this.client == ClientEnum.Client) {
-            PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
-            setResponsePage(ClientPreviewPage.class, parameters);
         } else if (this.client == ClientEnum.Center) {
-            PageParameters parameters = new PageParameters();
             parameters.add("centerId", this.centerId);
-            setResponsePage(CenterPreviewPage.class, parameters);
         } else if (this.client == ClientEnum.Group) {
-            PageParameters parameters = new PageParameters();
             parameters.add("groupId", this.groupId);
-            setResponsePage(GroupPreviewPage.class, parameters);
         } else {
             throw new WicketRuntimeException("Unknown " + this.client);
         }
+        setResponsePage(LoanAccountPreviewPage.class, parameters);
     }
 
 }

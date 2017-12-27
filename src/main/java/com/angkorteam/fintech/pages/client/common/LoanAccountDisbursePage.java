@@ -21,9 +21,6 @@ import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.helper.loan.DisburseBuilder;
-import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
-import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
-import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
@@ -125,18 +122,19 @@ public class LoanAccountDisbursePage extends Page {
         this.form.add(this.saveButton);
 
         PageParameters parameters = new PageParameters();
+        parameters.add("client", this.client.name());
+        parameters.add("loanId", this.loanId);
         if (this.client == ClientEnum.Client) {
             parameters.add("clientId", this.clientId);
-            this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
-        } else if (this.client == ClientEnum.Group) {
-            parameters.add("groupId", this.groupId);
-            this.closeLink = new BookmarkablePageLink<>("closeLink", GroupPreviewPage.class, parameters);
         } else if (this.client == ClientEnum.Center) {
             parameters.add("centerId", this.centerId);
-            this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
+        } else if (this.client == ClientEnum.Group) {
+            parameters.add("groupId", this.groupId);
         } else {
             throw new WicketRuntimeException("Unknown " + this.client);
         }
+
+        this.closeLink = new BookmarkablePageLink<>("closeLink", LoanAccountPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
         initDisbursedOnBlock();
@@ -353,21 +351,19 @@ public class LoanAccountDisbursePage extends Page {
             return;
         }
 
+        PageParameters parameters = new PageParameters();
+        parameters.add("client", this.client.name());
+        parameters.add("loanId", this.loanId);
         if (this.client == ClientEnum.Client) {
-            PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
-            setResponsePage(ClientPreviewPage.class, parameters);
         } else if (this.client == ClientEnum.Center) {
-            PageParameters parameters = new PageParameters();
             parameters.add("centerId", this.centerId);
-            setResponsePage(CenterPreviewPage.class, parameters);
         } else if (this.client == ClientEnum.Group) {
-            PageParameters parameters = new PageParameters();
             parameters.add("groupId", this.groupId);
-            setResponsePage(GroupPreviewPage.class, parameters);
         } else {
             throw new WicketRuntimeException("Unknown " + this.client);
         }
+        setResponsePage(LoanAccountPreviewPage.class, parameters);
     }
 
 }

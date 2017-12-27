@@ -1,12 +1,12 @@
 package com.angkorteam.fintech.pages.client.common;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -18,10 +18,7 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.loan.WaiveInterestBuilder;
-import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
-import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
-import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
+import com.angkorteam.fintech.helper.loan.WithdrawBuilder;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
@@ -34,7 +31,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class LoanAccountWaiveInterestPage extends Page {
+public class LoanAccountWithdrawPage extends Page {
 
     protected ClientEnum client;
 
@@ -48,17 +45,11 @@ public class LoanAccountWaiveInterestPage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock interestWaivedOnBlock;
-    protected WebMarkupContainer interestWaivedOnIContainer;
-    protected Date interestWaivedOnValue;
-    protected DateTextField interestWaivedOnField;
-    protected TextFeedbackPanel interestWaivedOnFeedback;
-
-    protected WebMarkupBlock transactionAmountBlock;
-    protected WebMarkupContainer transactionAmountIContainer;
-    protected Double transactionAmountValue;
-    protected TextField<Double> transactionAmountField;
-    protected TextFeedbackPanel transactionAmountFeedback;
+    protected WebMarkupBlock withdrawnOnBlock;
+    protected WebMarkupContainer withdrawnOnIContainer;
+    protected Date withdrawnOnValue;
+    protected DateTextField withdrawnOnField;
+    protected TextFeedbackPanel withdrawnOnFeedback;
 
     protected WebMarkupBlock noteBlock;
     protected WebMarkupContainer noteIContainer;
@@ -91,22 +82,16 @@ public class LoanAccountWaiveInterestPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", LoanAccountPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        initInterestWaivedOnBlock();
+        this.withdrawnOnBlock = new WebMarkupBlock("withdrawnOnBlock", Size.Six_6);
+        this.form.add(this.withdrawnOnBlock);
+        this.withdrawnOnIContainer = new WebMarkupContainer("withdrawnOnIContainer");
+        this.withdrawnOnBlock.add(this.withdrawnOnIContainer);
+        this.withdrawnOnField = new DateTextField("withdrawnOnField", new PropertyModel<>(this, "withdrawnOnValue"));
+        this.withdrawnOnField.setLabel(Model.of("Withdrawn On"));
+        this.withdrawnOnIContainer.add(this.withdrawnOnField);
+        this.withdrawnOnFeedback = new TextFeedbackPanel("withdrawnOnFeedback", this.withdrawnOnField);
+        this.withdrawnOnIContainer.add(this.withdrawnOnFeedback);
 
-        initTransactionAmountBlock();
-
-        initNoteBlock();
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
-    protected void configureMetaData() {
-    }
-
-    protected void initNoteBlock() {
         this.noteBlock = new WebMarkupBlock("noteBlock", Size.Six_6);
         this.form.add(this.noteBlock);
         this.noteIContainer = new WebMarkupContainer("noteIContainer");
@@ -118,30 +103,12 @@ public class LoanAccountWaiveInterestPage extends Page {
         this.noteIContainer.add(this.noteFeedback);
     }
 
-    protected void initTransactionAmountBlock() {
-        this.transactionAmountBlock = new WebMarkupBlock("transactionAmountBlock", Size.Six_6);
-        this.form.add(this.transactionAmountBlock);
-        this.transactionAmountIContainer = new WebMarkupContainer("transactionAmountIContainer");
-        this.transactionAmountBlock.add(this.transactionAmountIContainer);
-        this.transactionAmountField = new TextField<>("transactionAmountField", new PropertyModel<>(this, "transactionAmountValue"));
-        this.transactionAmountField.setLabel(Model.of("Transaction Amount"));
-        this.transactionAmountField.setRequired(false);
-        this.transactionAmountIContainer.add(this.transactionAmountField);
-        this.transactionAmountFeedback = new TextFeedbackPanel("transactionAmountFeedback", this.transactionAmountField);
-        this.transactionAmountIContainer.add(this.transactionAmountFeedback);
+    @Override
+    protected void configureRequiredValidation() {
     }
 
-    protected void initInterestWaivedOnBlock() {
-        this.interestWaivedOnBlock = new WebMarkupBlock("interestWaivedOnBlock", Size.Six_6);
-        this.form.add(this.interestWaivedOnBlock);
-        this.interestWaivedOnIContainer = new WebMarkupContainer("interestWaivedOnIContainer");
-        this.interestWaivedOnBlock.add(this.interestWaivedOnIContainer);
-        this.interestWaivedOnField = new DateTextField("interestWaivedOnField", new PropertyModel<>(this, "interestWaivedOnValue"));
-        this.interestWaivedOnField.setLabel(Model.of("Interest Waived On"));
-        this.interestWaivedOnField.setRequired(false);
-        this.interestWaivedOnIContainer.add(this.interestWaivedOnField);
-        this.interestWaivedOnFeedback = new TextFeedbackPanel("interestWaivedOnFeedback", this.interestWaivedOnField);
-        this.interestWaivedOnIContainer.add(this.interestWaivedOnFeedback);
+    @Override
+    protected void configureMetaData() {
     }
 
     @Override
@@ -153,22 +120,21 @@ public class LoanAccountWaiveInterestPage extends Page {
         this.centerId = getPageParameters().get("centerId").toString();
 
         this.loanId = getPageParameters().get("loanId").toString();
-        this.interestWaivedOnValue = DateTime.now().toDate();
+        this.withdrawnOnValue = DateTime.now().toDate();
 
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        this.transactionAmountValue = jdbcTemplate.queryForObject("select principle_amount from m_loan where id = ?", Double.class, this.loanId);
+        Map<String, Object> loanObject = jdbcTemplate.queryForMap("select principle_amount_proposed, expected_disbursedon_date from m_loan where id = ?", this.loanId);
     }
 
     protected void saveButtonSubmit(Button button) {
-        WaiveInterestBuilder builder = new WaiveInterestBuilder();
+        WithdrawBuilder builder = new WithdrawBuilder();
         builder.withId(this.loanId);
-        builder.withTransactionDate(this.interestWaivedOnValue);
-        builder.withTransactionAmount(this.transactionAmountValue);
         builder.withNote(this.noteValue);
+        builder.withWithdrawnOnDateDate(this.withdrawnOnValue);
 
         JsonNode node = null;
         try {
-            node = ClientHelper.waiveInterestLoanAccount((Session) getSession(), builder.build());
+            node = ClientHelper.withdrawLoanAccount((Session) getSession(), builder.build());
         } catch (UnirestException e) {
             error(e.getMessage());
             return;
@@ -177,21 +143,19 @@ public class LoanAccountWaiveInterestPage extends Page {
             return;
         }
 
+        PageParameters parameters = new PageParameters();
+        parameters.add("client", this.client.name());
+        parameters.add("loanId", this.loanId);
         if (this.client == ClientEnum.Client) {
-            PageParameters parameters = new PageParameters();
             parameters.add("clientId", this.clientId);
-            setResponsePage(ClientPreviewPage.class, parameters);
         } else if (this.client == ClientEnum.Center) {
-            PageParameters parameters = new PageParameters();
             parameters.add("centerId", this.centerId);
-            setResponsePage(CenterPreviewPage.class, parameters);
         } else if (this.client == ClientEnum.Group) {
-            PageParameters parameters = new PageParameters();
             parameters.add("groupId", this.groupId);
-            setResponsePage(GroupPreviewPage.class, parameters);
         } else {
             throw new WicketRuntimeException("Unknown " + this.client);
         }
+        setResponsePage(LoanAccountPreviewPage.class, parameters);
     }
 
 }
