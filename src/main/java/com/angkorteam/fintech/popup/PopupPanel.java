@@ -10,8 +10,8 @@ public abstract class PopupPanel extends com.angkorteam.framework.wicket.extensi
 
     @Override
     protected final void onInitialize() {
-        super.onInitialize();
         initData();
+        super.onInitialize();
         initComponent();
         configureRequiredValidation();
         configureMetaData();

@@ -33,7 +33,7 @@ public class TriggerProgram {
         dataSourceManager.setMifosUrl(mifosUrl);
         dataSourceManager.afterPropertiesSet();
 
-        boolean fileout = false;
+        boolean fileout = true;
 
         DataSource dataSource = dataSourceManager.getDataSource(Constants.AID);
 

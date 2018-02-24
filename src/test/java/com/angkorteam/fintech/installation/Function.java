@@ -328,7 +328,7 @@ public class Function {
 
             System.out.println(table);
 
-            ResultSet resultSet = connection.createStatement().executeQuery("select * from " + table);
+            ResultSet resultSet = connection.createStatement().executeQuery("select * from " + table + " limit 1");
             ResultSetMetaData metaData = resultSet.getMetaData();
 
             boolean hasId = false;
