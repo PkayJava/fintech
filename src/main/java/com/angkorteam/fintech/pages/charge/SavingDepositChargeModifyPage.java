@@ -7,6 +7,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MOrganisationCurrency;
+import com.angkorteam.fintech.ddl.MTaxGroup;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -155,33 +160,58 @@ public class SavingDepositChargeModifyPage extends Page {
         PageParameters parameters = getPageParameters();
         this.chargeId = parameters.get("chargeId").toString("");
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select * from m_charge where id = ?", this.chargeId);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-        this.nameValue = (String) chargeObject.get("name");
+        SelectQuery selectQuery = null;
 
-        this.currencyValue = jdbcTemplate.queryForObject("select code id, concat(name,' [', code,']') text from m_organisation_currency where code = ?", Option.MAPPER, chargeObject.get("currency_code"));
+        selectQuery = new SelectQuery(MCharge.NAME);
+        selectQuery.addWhere(MCharge.Field.ID + " = :" + MCharge.Field.ID, this.chargeId);
+        selectQuery.addField(MCharge.Field.NAME);
+        selectQuery.addField(MCharge.Field.CURRENCY_CODE);
+        selectQuery.addField(MCharge.Field.CHARGE_CALCULATION_ENUM);
+        selectQuery.addField(MCharge.Field.CHARGE_TIME_ENUM);
+        selectQuery.addField(MCharge.Field.FEE_ON_DAY);
+        selectQuery.addField(MCharge.Field.FEE_ON_MONTH);
+        selectQuery.addField(MCharge.Field.FEE_INTERVAL);
+        selectQuery.addField(MCharge.Field.AMOUNT);
+        selectQuery.addField(MCharge.Field.IS_ACTIVE);
+        selectQuery.addField(MCharge.Field.IS_PENALTY);
+        selectQuery.addField(MCharge.Field.TAX_GROUP_ID);
 
-        String charge_time_enum = String.valueOf(chargeObject.get("charge_time_enum"));
+        Map<String, Object> chargeObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
+        this.nameValue = (String) chargeObject.get(MCharge.Field.NAME);
+
+        selectQuery = new SelectQuery(MOrganisationCurrency.NAME);
+        selectQuery.addField(MOrganisationCurrency.Field.CODE + " as id");
+        selectQuery.addField("concat(" + MOrganisationCurrency.Field.NAME + ",' [', " + MOrganisationCurrency.Field.CODE + ",']') text");
+        selectQuery.addWhere(MOrganisationCurrency.Field.CODE + " = :" + MOrganisationCurrency.Field.CODE, chargeObject.get(MCharge.Field.CURRENCY_CODE));
+        this.currencyValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
+        String charge_time_enum = String.valueOf(chargeObject.get(MCharge.Field.CHARGE_TIME_ENUM));
         this.chargeTimeValue = ChargeTime.optionLiteral(charge_time_enum);
 
-        String charge_calculation_enum = String.valueOf(chargeObject.get("charge_calculation_enum"));
+        String charge_calculation_enum = String.valueOf(chargeObject.get(MCharge.Field.CHARGE_CALCULATION_ENUM));
         this.chargeCalculationValue = ChargeCalculation.optionLiteral(charge_calculation_enum);
 
         try {
-            this.dueDateValue = DATE_FORMAT.parse(String.valueOf(chargeObject.get("fee_on_day")) + "/" + String.valueOf(chargeObject.get("fee_on_month")));
+            this.dueDateValue = DATE_FORMAT.parse(String.valueOf(chargeObject.get(MCharge.Field.FEE_ON_DAY)) + "/" + String.valueOf(chargeObject.get(MCharge.Field.FEE_ON_MONTH)));
         } catch (ParseException e) {
         }
 
-        this.repeatEveryValue = (Long) chargeObject.get("fee_interval");
+        this.repeatEveryValue = (Long) chargeObject.get(MCharge.Field.FEE_INTERVAL);
 
-        this.amountValue = (Double) chargeObject.get("amount");
+        this.amountValue = (Double) chargeObject.get(MCharge.Field.AMOUNT);
 
-        this.activeValue = (Boolean) chargeObject.get("is_active");
+        this.activeValue = (Boolean) chargeObject.get(MCharge.Field.IS_ACTIVE);
 
-        this.penaltyValue = (Boolean) chargeObject.get("is_penalty");
+        this.penaltyValue = (Boolean) chargeObject.get(MCharge.Field.IS_PENALTY);
 
-        this.taxGroupValue = jdbcTemplate.queryForObject("select id, name text from m_tax_group where id = ?", Option.MAPPER, chargeObject.get("tax_group_id"));
+        selectQuery = new SelectQuery(MTaxGroup.NAME);
+        selectQuery.addField(MTaxGroup.Field.ID);
+        selectQuery.addField(MTaxGroup.Field.NAME + " as text");
+        selectQuery.addWhere(MTaxGroup.Field.ID + " = :" + MTaxGroup.Field.ID, chargeObject.get(MCharge.Field.TAX_GROUP_ID));
+        this.taxGroupValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
     }
 
     @Override
@@ -223,7 +253,7 @@ public class SavingDepositChargeModifyPage extends Page {
         this.form.add(this.taxGroupBlock);
         this.taxGroupIContainer = new WebMarkupContainer("taxGroupIContainer");
         this.taxGroupBlock.add(this.taxGroupIContainer);
-        this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
+        this.taxGroupProvider = new SingleChoiceProvider(MTaxGroup.NAME, MTaxGroup.Field.ID, MTaxGroup.Field.NAME);
         this.taxGroupField = new Select2SingleChoice<>("taxGroupField", new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
         this.taxGroupField.setLabel(Model.of("Tax Group"));
         this.taxGroupField.add(new OnChangeAjaxBehavior());
