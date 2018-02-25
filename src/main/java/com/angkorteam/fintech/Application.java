@@ -16,8 +16,10 @@ import org.apache.wicket.request.resource.PackageResourceReference;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.angkorteam.fintech.ddl.AccRuleTags;
 import com.angkorteam.fintech.pages.LoginPage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
+import com.angkorteam.framework.ReferenceUtilities;
 import com.angkorteam.framework.ResourceScope;
 import com.google.common.collect.Maps;
 
@@ -44,7 +46,7 @@ public class Application extends AuthenticatedWebApplication {
             guard.addPattern("+*.ogg");
             guard.addPattern("+*.mp3");
         }
-        getJavaScriptLibrarySettings().setJQueryReference(new PackageResourceReference(ResourceScope.class, "AdminLTE/plugins/jQuery/jquery-3.1.1.min.js"));
+        getJavaScriptLibrarySettings().setJQueryReference(new PackageResourceReference(ResourceScope.class, ReferenceUtilities.J_QUERY_JS));
     }
 
     @Override

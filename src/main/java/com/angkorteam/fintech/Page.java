@@ -5,7 +5,6 @@ import java.util.MissingResourceException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -37,7 +36,6 @@ import com.angkorteam.framework.models.PageLogo;
 import com.angkorteam.framework.models.SideMenu;
 import com.angkorteam.framework.models.UserInfo;
 import com.angkorteam.framework.wicket.DashboardPage;
-import com.angkorteam.framework.wicket.markup.html.panel.FeedbackPanel;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 
@@ -47,8 +45,6 @@ import com.mashape.unirest.http.JsonNode;
 public abstract class Page extends DashboardPage {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Page.class);
-
-    private FeedbackPanel feedbackPanel;
 
     public Page() {
     }
@@ -70,10 +66,7 @@ public abstract class Page extends DashboardPage {
     @Override
     protected final void onInitialize() {
         initData();
-        super.onInitialize();
-        this.feedbackPanel = new FeedbackPanel("feedbackPanel", this::report);
-        this.add(this.feedbackPanel);
-        this.setOutputMarkupId(true);
+        super.onInitialize(); 
         initComponent();
         configureRequiredValidation();
         configureMetaData();
@@ -86,13 +79,6 @@ public abstract class Page extends DashboardPage {
     protected abstract void configureRequiredValidation();
 
     protected abstract void configureMetaData();
-
-    private boolean report(FeedbackMessage feedbackMessage) {
-        if (feedbackMessage.getReporter() instanceof org.apache.wicket.Page) {
-            return true;
-        }
-        return false;
-    }
 
     public boolean reportError(JsonNode node) {
         if (node.getObject().has("errors")) {
