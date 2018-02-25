@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.MPaymentType;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -293,7 +296,7 @@ public class JournalPostPage extends Page {
         this.form.add(this.paymentTypeBlock);
         this.paymentTypeIContainer = new WebMarkupContainer("paymentTypeIContainer");
         this.paymentTypeBlock.add(this.paymentTypeIContainer);
-        this.paymentTypeProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
+        this.paymentTypeProvider = new SingleChoiceProvider(MPaymentType.NAME, MPaymentType.Field.ID, MPaymentType.Field.VALUE);
         this.paymentTypeField = new Select2SingleChoice<>("paymentTypeField", new PropertyModel<>(this, "paymentTypeValue"), this.paymentTypeProvider);
         this.paymentTypeIContainer.add(this.paymentTypeField);
         this.paymentTypeFeedback = new TextFeedbackPanel("paymentTypeFeedback", this.paymentTypeField);
@@ -385,7 +388,7 @@ public class JournalPostPage extends Page {
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.officeIContainer.add(this.officeField);
@@ -430,8 +433,8 @@ public class JournalPostPage extends Page {
         this.debitForm.add(this.debitAccountNameBlock);
         this.debitAccountNameIContainer = new WebMarkupContainer("debitAccountNameIContainer");
         this.debitAccountNameBlock.add(this.debitAccountNameIContainer);
-        this.debitAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.debitAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.debitAccountNameProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.NAME, AccGLAccount.Field.NAME);
+        this.debitAccountNameProvider.applyWhere("usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.debitAccountNameField = new Select2SingleChoice<>("debitAccountNameField", new PropertyModel<>(this, "debitAccountNameValue"), this.debitAccountNameProvider);
         this.debitAccountNameField.setRequired(true);
         this.debitAccountNameIContainer.add(this.debitAccountNameField);
@@ -456,8 +459,8 @@ public class JournalPostPage extends Page {
         this.creditForm.add(this.creditAccountNameBlock);
         this.creditAccountNameIContainer = new WebMarkupContainer("creditAccountNameIContainer");
         this.creditAccountNameBlock.add(this.creditAccountNameIContainer);
-        this.creditAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.creditAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.creditAccountNameProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.creditAccountNameProvider.applyWhere("usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.creditAccountNameField = new Select2SingleChoice<>("creditAccountNameField", new PropertyModel<>(this, "creditAccountNameValue"), this.creditAccountNameProvider);
         this.creditAccountNameField.setRequired(true);
         this.creditAccountNameIContainer.add(this.creditAccountNameField);

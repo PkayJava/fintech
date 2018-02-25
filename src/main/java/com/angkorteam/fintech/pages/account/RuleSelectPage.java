@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.account;
 
 import java.util.List;
 
+import com.angkorteam.fintech.ddl.AccAccountingRule;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
@@ -73,7 +74,7 @@ public class RuleSelectPage extends Page {
         this.form.add(this.ruleBlock);
         this.ruleIContainer = new WebMarkupContainer("ruleIContainer");
         this.ruleBlock.add(this.ruleIContainer);
-        this.ruleProvider = new SingleChoiceProvider("acc_accounting_rule", "id", "name");
+        this.ruleProvider = new SingleChoiceProvider(AccAccountingRule.NAME, AccAccountingRule.Field.ID, AccAccountingRule.Field.NAME);
         this.ruleField = new Select2SingleChoice<>("ruleField", new PropertyModel<>(this, "ruleValue"),
                 this.ruleProvider);
         this.ruleField.setRequired(true);

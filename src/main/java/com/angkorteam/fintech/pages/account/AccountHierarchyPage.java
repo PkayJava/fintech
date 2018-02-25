@@ -103,8 +103,8 @@ public class AccountHierarchyPage extends Page {
         }
     }
 
-    protected Component accountCreateLabel(String s, IModel<Map<String, Object>> mapIModel) {
-        return new Label(s, (String) mapIModel.getObject().get("name"));
+    protected Component accountCreateLabel(String s, IModel<Map<String, Object>> model) {
+        return new Label(s, (String) model.getObject().get("name"));
     }
 
 }

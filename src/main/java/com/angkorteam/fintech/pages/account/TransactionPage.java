@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.AccGLJournalEntry;
+import com.angkorteam.fintech.ddl.MAppUser;
+import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -114,17 +118,17 @@ public class TransactionPage extends Page {
         this.transactionId = parameters.get("transactionId").toString("");
 
         JdbcNamed jdbcNamed = SpringBean.getBean(JdbcNamed.class);
-        SelectQuery selectQuery = new SelectQuery("acc_gl_journal_entry");
-        selectQuery.addJoin(JoinType.LeftJoin, "acc_gl_account", "acc_gl_journal_entry.account_id = acc_gl_account.id");
-        selectQuery.addJoin(JoinType.LeftJoin, "m_office", "acc_gl_journal_entry.office_id = m_office.id");
-        selectQuery.addJoin(JoinType.LeftJoin, "m_appuser", "acc_gl_journal_entry.createdby_id = m_appuser.id");
-        selectQuery.addField("acc_gl_journal_entry.id");
-        selectQuery.addField("m_office.name office");
-        selectQuery.addField("acc_gl_journal_entry.entry_date transaction_date");
-        selectQuery.addField("acc_gl_journal_entry.created_date created_date");
-        selectQuery.addField("acc_gl_journal_entry.transaction_id transaction_id");
-        selectQuery.addField("m_appuser.username created_by");
-        selectQuery.addWhere("acc_gl_journal_entry.transaction_id = :transaction_id", this.transactionId);
+        SelectQuery selectQuery = new SelectQuery(AccGLJournalEntry.NAME);
+        selectQuery.addJoin(JoinType.LeftJoin, AccGLAccount.NAME, AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ACCOUNT_ID + " = " + AccGLAccount.NAME + "." + AccGLAccount.Field.ID);
+        selectQuery.addJoin(JoinType.LeftJoin, MOffice.NAME, AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
+        selectQuery.addJoin(JoinType.LeftJoin, MAppUser.NAME, AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.CREATED_BY_ID + " = " + MAppUser.NAME + "." + MAppUser.Field.ID);
+        selectQuery.addField(AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ID);
+        selectQuery.addField(MOffice.NAME + "." + MOffice.Field.NAME + " as office");
+        selectQuery.addField(AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ENTRY_DATE + " as transaction_date");
+        selectQuery.addField(AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.CREATED_DATE + " as created_date");
+        selectQuery.addField(AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.TRANSACTION_ID + " as transaction_id");
+        selectQuery.addField(MAppUser.NAME + "." + MAppUser.Field.USERNAME + " as created_by");
+        selectQuery.addWhere(AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.TRANSACTION_ID + " = :" + AccGLJournalEntry.Field.TRANSACTION_ID, this.transactionId);
         selectQuery.setLimit(0l, 1l);
 
         Map<String, Object> entry = jdbcNamed.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
@@ -176,22 +180,22 @@ public class TransactionPage extends Page {
         this.entryIContainer = new WebMarkupContainer("entryIContainer");
         this.entryBlock.add(this.entryIContainer);
 
-        this.entryProvider = new JdbcProvider("acc_gl_journal_entry");
-        this.entryProvider.applyJoin("acc_gl_account", "LEFT JOIN acc_gl_account ON acc_gl_journal_entry.account_id = acc_gl_account.id");
-        this.entryProvider.applyJoin("m_office", "LEFT JOIN m_office ON acc_gl_journal_entry.office_id = m_office.id");
-        this.entryProvider.applyJoin("m_appuser", "LEFT JOIN m_appuser ON acc_gl_journal_entry.createdby_id = m_appuser.id");
+        this.entryProvider = new JdbcProvider(AccGLJournalEntry.NAME);
+        this.entryProvider.applyJoin("acc_gl_account", "LEFT JOIN " + AccGLAccount.NAME + " ON " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ACCOUNT_ID + " = " + AccGLAccount.NAME + "." + AccGLAccount.Field.ID);
+        this.entryProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " ON " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
+        this.entryProvider.applyJoin("m_appuser", "LEFT JOIN " + MAppUser.NAME + " ON " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.CREATED_BY_ID + " = " + MAppUser.NAME + "." + MAppUser.Field.ID);
 
-        this.entryProvider.boardField("acc_gl_journal_entry.id", "id", Long.class);
-        this.entryProvider.boardField("acc_gl_account.name", "account_name", String.class);
-        this.entryProvider.boardField("m_office.name", "office", String.class);
-        this.entryProvider.boardField("acc_gl_journal_entry.entry_date", "transaction_date", Date.class);
-        this.entryProvider.boardField("acc_gl_journal_entry.transaction_id", "transaction_id", Long.class);
-        this.entryProvider.boardField("CASE acc_gl_account.classification_enum WHEN 1 THEN 'Asset' WHEN 2 THEN 'Liability' WHEN 3 THEN 'Equity' WHEN 4 THEN 'Income' WHEN 5 THEN 'Expense' END", "account_type", String.class);
-        this.entryProvider.boardField("m_appuser.username", "created_by", String.class);
-        this.entryProvider.boardField("if(acc_gl_journal_entry.type_enum = 1, NULL, acc_gl_journal_entry.amount)", "debit_amount", Double.class);
-        this.entryProvider.boardField("if(acc_gl_journal_entry.type_enum = 1, acc_gl_journal_entry.amount, NULL)", "credit_amount", Double.class);
+        this.entryProvider.boardField(AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ID, "id", Long.class);
+        this.entryProvider.boardField(AccGLAccount.NAME + "." + AccGLAccount.Field.NAME, "account_name", String.class);
+        this.entryProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "office", String.class);
+        this.entryProvider.boardField(AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ENTRY_DATE, "transaction_date", Date.class);
+        this.entryProvider.boardField(AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.TRANSACTION_ID, "transaction_id", Long.class);
+        this.entryProvider.boardField("CASE " + AccGLAccount.NAME + "." + AccGLAccount.Field.CLASSIFICATION_ENUM + " WHEN 1 THEN 'Asset' WHEN 2 THEN 'Liability' WHEN 3 THEN 'Equity' WHEN 4 THEN 'Income' WHEN 5 THEN 'Expense' END", "account_type", String.class);
+        this.entryProvider.boardField(MAppUser.NAME + "." + MAppUser.Field.USERNAME, "created_by", String.class);
+        this.entryProvider.boardField("if(" + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.TYPE_ENUM + " = 1, NULL, " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.AMOUNT + ")", "debit_amount", Double.class);
+        this.entryProvider.boardField("if(" + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.TYPE_ENUM + " = 1, " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.AMOUNT + ", NULL)", "credit_amount", Double.class);
 
-        this.entryProvider.applyWhere("transaction_id", "acc_gl_journal_entry.transaction_id = '" + this.transactionId + "'");
+        this.entryProvider.applyWhere("transaction_id", AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.TRANSACTION_ID + " = '" + this.transactionId + "'");
 
         this.entryColumn = Lists.newArrayList();
         this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Entry ID"), "id", "id", this::entryColumn));

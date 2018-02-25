@@ -17,6 +17,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.AccGLAccount;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.helper.GLAccountHelper;
@@ -96,30 +97,39 @@ public class AccountBrowsePage extends Page {
 
         List<String> classification_enum = Lists.newArrayList();
         for (AccountType accountType : AccountType.values()) {
-            classification_enum.add("when " + accountType.getLiteral() + " then '" + accountType.getDescription() + "'");
+            classification_enum
+                    .add("when " + accountType.getLiteral() + " then '" + accountType.getDescription() + "'");
         }
 
         this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("acc_gl_account");
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("name", "name", String.class);
-        this.dataProvider.boardField("gl_code", "gl_code", String.class);
-        this.dataProvider.boardField("case classification_enum " + StringUtils.join(classification_enum, " ") + " end", "classification_enum", String.class);
-        this.dataProvider.boardField("account_usage", "account_usage", Long.class);
-        this.dataProvider.boardField("disabled", "disabled", Boolean.class);
-        this.dataProvider.boardField("manual_journal_entries_allowed", "manual_journal_entries_allowed", Boolean.class);
+        this.dataProvider = new JdbcProvider(AccGLAccount.NAME);
+        this.dataProvider.boardField(AccGLAccount.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(AccGLAccount.Field.NAME, "name", String.class);
+        this.dataProvider.boardField(AccGLAccount.Field.GL_CODE, "gl_code", String.class);
+        this.dataProvider.boardField("case " + AccGLAccount.Field.CLASSIFICATION_ENUM + " "
+                + StringUtils.join(classification_enum, " ") + " end", "classification_enum", String.class);
+        this.dataProvider.boardField(AccGLAccount.Field.ACCOUNT_USAGE, "account_usage", Long.class);
+        this.dataProvider.boardField(AccGLAccount.Field.DISABLED, "disabled", Boolean.class);
+        this.dataProvider.boardField(AccGLAccount.Field.MANUAL_JOURNAL_ENTRIES_ALLOWED,
+                "manual_journal_entries_allowed", Boolean.class);
 
         this.dataProvider.selectField("id", Long.class);
 
         this.dataColumn = Lists.newArrayList();
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Account"), "name", "name", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("GL Code"), "gl_code", "gl_code", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Account Type"), "classification_enum", "classification_enum", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Is Disabled ?"), "disabled", "disabled", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Is Manual Entries Allowed ?"), "manual_journal_entries_allowed", "manual_journal_entries_allowed", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Account"), "name", "name",
+                this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("GL Code"), "gl_code",
+                "gl_code", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Account Type"),
+                "classification_enum", "classification_enum", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Is Disabled ?"),
+                "disabled", "disabled", this::dataColumn));
+        this.dataColumn
+                .add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Is Manual Entries Allowed ?"),
+                        "manual_journal_entries_allowed", "manual_journal_entries_allowed", this::dataColumn));
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 
         this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);

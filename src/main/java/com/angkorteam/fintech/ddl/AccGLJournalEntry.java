@@ -10,6 +10,10 @@ public interface AccGLJournalEntry {
 
         public static final String ACCOUNT_ID = "account_id";
 
+        public static final String OFFICE_ID = "office_id";
+
+        public static final String REVERSAL_ID = "reversal_id";
+
         public static final String CURRENCY_CODE = "currency_code";
 
         public static final String TRANSACTION_ID = "transaction_id";

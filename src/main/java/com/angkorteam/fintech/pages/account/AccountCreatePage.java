@@ -15,6 +15,9 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.MCode;
+import com.angkorteam.fintech.ddl.MCodeValue;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.GLAccountBuilder;
 import com.angkorteam.fintech.dto.enums.AccountType;
@@ -147,10 +150,12 @@ public class AccountCreatePage extends Page {
             AccountType accountType = AccountType.valueOf(this.accountTypeValue.getId());
             this.tagValue = null;
             this.parentValue = null;
-            this.tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + accountType.getTag() + "')");
+            this.tagProvider.applyWhere("code", MCodeValue.Field.CODE_ID + " in (select " + MCode.Field.ID + " from "
+                    + MCode.NAME + " where " + MCode.Field.CODE_NAME + " = '" + accountType.getTag() + "')");
             this.tagProvider.setDisabled(false);
             this.parentProvider.setDisabled(false);
-            this.parentProvider.applyWhere("classification_enum", "classification_enum = '" + accountType.getLiteral() + "'");
+            this.parentProvider.applyWhere("classification_enum",
+                    AccGLAccount.Field.CLASSIFICATION_ENUM + " = '" + accountType.getLiteral() + "'");
         }
     }
 
@@ -190,7 +195,8 @@ public class AccountCreatePage extends Page {
         this.accountTypeIContainer = new WebMarkupContainer("accountTypeIContainer");
         this.accountTypeBlock.add(this.accountTypeIContainer);
         this.accountTypeProvider = new AccountTypeProvider();
-        this.accountTypeField = new Select2SingleChoice<>("accountTypeField", new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
+        this.accountTypeField = new Select2SingleChoice<>("accountTypeField",
+                new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
         this.accountTypeField.setLabel(Model.of("Account Type"));
         this.accountTypeField.add(new OnChangeAjaxBehavior(this::accountTypeFieldUpdate));
         this.accountTypeIContainer.add(this.accountTypeField);
@@ -226,7 +232,7 @@ public class AccountCreatePage extends Page {
         this.form.add(this.tagBlock);
         this.tagIContainer = new WebMarkupContainer("tagIContainer");
         this.tagBlock.add(this.tagIContainer);
-        this.tagProvider = new SingleChoiceProvider("m_code_value", "id", "code_value");
+        this.tagProvider = new SingleChoiceProvider(MCodeValue.NAME, MCodeValue.Field.ID, MCodeValue.Field.CODE_VALUE);
         this.tagProvider.setDisabled(true);
         this.tagField = new Select2SingleChoice<>("tagField", new PropertyModel<>(this, "tagValue"), this.tagProvider);
         this.tagField.setLabel(Model.of("Tag"));
@@ -241,7 +247,8 @@ public class AccountCreatePage extends Page {
         this.accountUsageIContainer = new WebMarkupContainer("accountUsageIContainer");
         this.accountUsageBlock.add(this.accountUsageIContainer);
         this.accountUsageProvider = new AccountUsageProvider();
-        this.accountUsageField = new Select2SingleChoice<>("accountUsageField", new PropertyModel<>(this, "accountUsageValue"), this.accountUsageProvider);
+        this.accountUsageField = new Select2SingleChoice<>("accountUsageField",
+                new PropertyModel<>(this, "accountUsageValue"), this.accountUsageProvider);
         this.accountUsageField.setLabel(Model.of("Account Usage"));
         this.accountUsageIContainer.add(this.accountUsageField);
         this.accountUsageFeedback = new TextFeedbackPanel("accountUsageFeedback", this.accountUsageField);
@@ -277,10 +284,13 @@ public class AccountCreatePage extends Page {
         this.form.add(this.parentBlock);
         this.parentIContainer = new WebMarkupContainer("parentIContainer");
         this.parentBlock.add(this.parentIContainer);
-        this.parentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.parentProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID,
+                AccGLAccount.Field.NAME);
         this.parentProvider.setDisabled(true);
-        this.parentProvider.applyWhere("account_usage", "account_usage = '" + AccountUsage.Header.getLiteral() + "'");
-        this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"), this.parentProvider);
+        this.parentProvider.applyWhere("account_usage",
+                AccGLAccount.Field.ACCOUNT_USAGE + " = '" + AccountUsage.Header.getLiteral() + "'");
+        this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"),
+                this.parentProvider);
         this.parentField.setLabel(Model.of("Parent Account"));
         this.parentIContainer.add(this.parentField);
         this.parentFeedback = new TextFeedbackPanel("parentFeedback", this.parentField);

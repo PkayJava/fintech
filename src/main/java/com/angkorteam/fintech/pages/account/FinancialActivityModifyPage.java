@@ -3,6 +3,10 @@ package com.angkorteam.fintech.pages.account;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.AccGLFinancialActivityAccount;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -89,13 +93,25 @@ public class FinancialActivityModifyPage extends Page {
 
     @Override
     protected void initData() {
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
         PageParameters parameters = getPageParameters();
         this.financialActivityId = parameters.get("financialActivityId").toString("");
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> financialActivityObject = jdbcTemplate.queryForMap("select * from acc_gl_financial_activity_account where id = ?", this.financialActivityId);
-        this.financialActivityValue = FinancialActivityTypeEnum.optionLiteral(String.valueOf(financialActivityObject.get("financial_activity_type")));
-        if (financialActivityObject.get("gl_account_id") != null) {
-            this.accountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, financialActivityObject.get("gl_account_id"));
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(AccGLFinancialActivityAccount.NAME);
+        selectQuery.addWhere(AccGLFinancialActivityAccount.Field.ID + " = :" + AccGLFinancialActivityAccount.Field.ID, this.financialActivityId);
+        selectQuery.addField(AccGLFinancialActivityAccount.Field.GL_ACCOUNT_ID);
+        selectQuery.addField(AccGLFinancialActivityAccount.Field.FINANCIAL_ACTIVITY_TYPE);
+
+        Map<String, Object> financialActivityObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+        this.financialActivityValue = FinancialActivityTypeEnum.optionLiteral(String.valueOf(financialActivityObject.get(AccGLFinancialActivityAccount.Field.FINANCIAL_ACTIVITY_TYPE)));
+        if (financialActivityObject.get(AccGLFinancialActivityAccount.Field.GL_ACCOUNT_ID) != null) {
+            selectQuery = new SelectQuery(AccGLAccount.NAME);
+            selectQuery.addField(AccGLAccount.Field.ID);
+            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, financialActivityObject.get(AccGLFinancialActivityAccount.Field.GL_ACCOUNT_ID));
+            this.accountValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
         }
     }
 
@@ -145,8 +161,8 @@ public class FinancialActivityModifyPage extends Page {
         this.form.add(this.accountBlock);
         this.accountIContainer = new WebMarkupContainer("accountIContainer");
         this.accountBlock.add(this.accountIContainer);
-        this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.accountProvider.applyWhere("usage", AccountUsage.Detail.getLiteral());
+        this.accountProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accountProvider.applyWhere("usage", AccGLAccount.Field.ACCOUNT_USAGE + " = '" + AccountUsage.Detail.getLiteral() + "'");
         this.accountProvider.setDisabled(true);
         this.accountField = new Select2SingleChoice<>("accountField", new PropertyModel<>(this, "accountValue"), this.accountProvider);
         this.accountIContainer.add(this.accountField);
@@ -162,7 +178,7 @@ public class FinancialActivityModifyPage extends Page {
             FinancialActivityTypeEnum a = FinancialActivityTypeEnum.valueOf(this.financialActivityValue.getId());
             AccountType classification_enum = a.getAccountType();
             this.accountProvider.setDisabled(false);
-            this.accountProvider.applyWhere("classification_enum", "classification_enum = " + classification_enum.getLiteral());
+            this.accountProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = '" + classification_enum.getLiteral() + "'");
         }
         if (target != null) {
             target.add(this.form);
