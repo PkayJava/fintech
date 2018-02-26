@@ -3,6 +3,9 @@ package com.angkorteam.fintech.pages.service;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.CExternalServiceProperties;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
@@ -87,12 +90,21 @@ public class S3ConfigurationPage extends Page {
 
     @Override
     protected void initData() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        List<Map<String, Object>> temps = jdbcTemplate.queryForList("select name, value from c_external_service_properties where external_service_id = ?", ServiceType.S3.getLiteral());
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(CExternalServiceProperties.NAME);
+        selectQuery.addField(CExternalServiceProperties.Field.NAME);
+        selectQuery.addField(CExternalServiceProperties.Field.VALUE);
+        selectQuery.addWhere(CExternalServiceProperties.Field.EXTERNAL_SERVICE_ID + " = :" + CExternalServiceProperties.Field.EXTERNAL_SERVICE_ID, ServiceType.S3.getLiteral());
+
+        List<Map<String, Object>> temps = named.queryForList(selectQuery.toSQL(), selectQuery.getParam());
         Map<String, Object> params = Maps.newHashMap();
         for (Map<String, Object> temp : temps) {
-            params.put((String) temp.get("name"), temp.get("value"));
+            params.put((String) temp.get(CExternalServiceProperties.Field.NAME), temp.get(CExternalServiceProperties.Field.VALUE));
         }
+
         this.s3AccessKeyValue = (String) params.get("s3_access_key");
         this.s3BucketNameValue = (String) params.get("s3_bucket_name");
         this.s3SecretKeyValue = (String) params.get("s3_secret_key");
