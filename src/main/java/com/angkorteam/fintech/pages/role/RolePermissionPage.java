@@ -1,8 +1,34 @@
 package com.angkorteam.fintech.pages.role;
 
-import java.util.List;
-import java.util.Map;
-
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MPermission;
+import com.angkorteam.fintech.ddl.MRolePermission;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.helper.RoleHelper;
+import com.angkorteam.fintech.pages.SystemDashboardPage;
+import com.angkorteam.fintech.provider.JdbcProvider;
+import com.angkorteam.fintech.provider.MultipleChoiceProvider;
+import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.spring.JdbcNamed;
+import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -15,37 +41,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.helper.RoleHelper;
-import com.angkorteam.fintech.pages.SystemDashboardPage;
-import com.angkorteam.fintech.provider.JdbcProvider;
-import com.angkorteam.fintech.provider.MultipleChoiceProvider;
-import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
-import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
-import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -126,8 +123,8 @@ public class RolePermissionPage extends Page {
         this.form.add(this.permissionBlock);
         this.permissionIContainer = new WebMarkupContainer("permissionIContainer");
         this.permissionBlock.add(this.permissionIContainer);
-        this.permissionProvider = new MultipleChoiceProvider("m_permission", "code", "code", "concat(code,' ', '[', grouping,']',  ' ', '[', IF(entity_name is NULL , 'N/A', entity_name), ']',' ', '[' , IF(action_name is NULL , 'N/A', action_name),']')");
-        this.permissionProvider.applyWhere("id", "id not IN (SELECT permission_id from m_role_permission where  role_id = " + this.roleId + ")");
+        this.permissionProvider = new MultipleChoiceProvider(MPermission.NAME, MPermission.Field.CODE, MPermission.Field.CODE, "concat(" + MPermission.Field.CODE + ",' ', '[', " + MPermission.Field.GROUPING + ",']',  ' ', '[', IF(" + MPermission.Field.ENTITY_NAME + " is NULL , 'N/A', " + MPermission.Field.ENTITY_NAME + "), ']',' ', '[' , IF(" + MPermission.Field.ACTION_NAME + " is NULL , 'N/A', " + MPermission.Field.ACTION_NAME + "),']')");
+        this.permissionProvider.applyWhere("id", MPermission.Field.ID + " NOT IN (SELECT " + MRolePermission.Field.PERMISSION_ID + " from " + MRolePermission.NAME + " where " + MRolePermission.Field.ROLE_ID + " = " + this.roleId + ")");
         this.permissionField = new Select2MultipleChoice<>("permissionField", new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
         this.permissionField.setRequired(true);
         this.permissionIContainer.add(this.permissionField);
@@ -140,13 +137,13 @@ public class RolePermissionPage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_role_permission");
-        this.dataProvider.applyJoin("m_permission", "INNER JOIN m_permission ON m_role_permission.permission_id = m_permission.id");
-        this.dataProvider.applyWhere("role", "m_role_permission.role_id = " + this.roleId);
-        this.dataProvider.boardField("m_permission.grouping", "grouping", String.class);
-        this.dataProvider.boardField("m_permission.code", "code", String.class);
-        this.dataProvider.boardField("m_permission.entity_name", "entity_name", String.class);
-        this.dataProvider.boardField("m_permission.action_name", "action_name", String.class);
+        this.dataProvider = new JdbcProvider(MRolePermission.NAME);
+        this.dataProvider.applyJoin("m_permission", "INNER JOIN " + MPermission.NAME + " ON " + MRolePermission.NAME + "." + MRolePermission.Field.PERMISSION_ID + " = " + MPermission.NAME + "." + MPermission.Field.ID);
+        this.dataProvider.applyWhere("role", MRolePermission.NAME + "." + MRolePermission.Field.ROLE_ID + " = " + this.roleId);
+        this.dataProvider.boardField(MPermission.NAME + "." + MPermission.Field.GROUPING, "grouping", String.class);
+        this.dataProvider.boardField(MPermission.NAME + "." + MPermission.Field.CODE, "code", String.class);
+        this.dataProvider.boardField(MPermission.NAME + "." + MPermission.Field.ENTITY_NAME, "entity_name", String.class);
+        this.dataProvider.boardField(MPermission.NAME + "." + MPermission.Field.ACTION_NAME, "action_name", String.class);
         this.dataProvider.setSort("grouping", SortOrder.ASCENDING);
 
         this.dataColumn = Lists.newArrayList();
@@ -175,10 +172,20 @@ public class RolePermissionPage extends Page {
     protected void dataClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
         if ("delete".equals(column)) {
             String falseCode = (String) model.get("code");
-            JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+            JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-            List<String> trueCodes = jdbcTemplate.queryForList("select m_permission.code from m_role_permission INNER JOIN m_permission ON m_role_permission.permission_id = m_permission.id where m_role_permission.role_id = ?", String.class, this.roleId);
-            List<String> allCodes = jdbcTemplate.queryForList("select code from m_permission", String.class);
+            SelectQuery selectQuery = null;
+
+            selectQuery = new SelectQuery(MRolePermission.NAME);
+            selectQuery.addJoin("INNER JOIN " + MPermission.NAME + " ON " + MRolePermission.NAME + "." + MRolePermission.Field.PERMISSION_ID + " = " + MPermission.NAME + "." + MPermission.Field.ID);
+            selectQuery.addField(MPermission.NAME + "." + MPermission.Field.CODE);
+            selectQuery.addWhere(MRolePermission.NAME + "." + MRolePermission.Field.ROLE_ID + " = :" + MRolePermission.Field.ROLE_ID, this.roleId);
+            List<String> trueCodes = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), String.class);
+
+            selectQuery = new SelectQuery(MPermission.NAME);
+            selectQuery.addField(MPermission.Field.CODE);
+            List<String> allCodes = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), String.class);
+
             Map<String, Boolean> permissions = Maps.newHashMap();
             for (String code : allCodes) {
                 permissions.put(code, false);
@@ -210,10 +217,20 @@ public class RolePermissionPage extends Page {
     }
 
     protected void addButtonSubmit(Button button) {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-        List<String> trueCodes = jdbcTemplate.queryForList("select m_permission.code from m_role_permission INNER JOIN m_permission ON m_role_permission.permission_id = m_permission.id where m_role_permission.role_id = ?", String.class, this.roleId);
-        List<String> allCodes = jdbcTemplate.queryForList("select code from m_permission", String.class);
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MRolePermission.NAME);
+        selectQuery.addJoin("INNER JOIN " + MPermission.NAME + " ON " + MRolePermission.NAME + "." + MRolePermission.Field.PERMISSION_ID + " = " + MPermission.NAME + "." + MPermission.Field.ID);
+        selectQuery.addField(MPermission.NAME + "." + MPermission.Field.CODE);
+        selectQuery.addWhere(MRolePermission.NAME + "." + MRolePermission.Field.ROLE_ID + " = :" + MRolePermission.Field.ROLE_ID, this.roleId);
+        List<String> trueCodes = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), String.class);
+
+        selectQuery = new SelectQuery(MPermission.NAME);
+        selectQuery.addField(MPermission.Field.CODE);
+        List<String> allCodes = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), String.class);
+
         Map<String, Boolean> permissions = Maps.newHashMap();
         for (String code : allCodes) {
             permissions.put(code, false);

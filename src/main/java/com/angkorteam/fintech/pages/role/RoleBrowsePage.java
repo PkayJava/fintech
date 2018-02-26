@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.role;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MRole;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -102,11 +103,11 @@ public class RoleBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_role");
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("description", "description", String.class);
-        this.dataProvider.boardField("is_disabled", "disabled", Boolean.class);
-        this.dataProvider.boardField("name", "name", String.class);
+        this.dataProvider = new JdbcProvider(MRole.NAME);
+        this.dataProvider.boardField(MRole.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MRole.Field.DESCRIPTION, "description", String.class);
+        this.dataProvider.boardField(MRole.Field.IS_DISABLED, "disabled", Boolean.class);
+        this.dataProvider.boardField(MRole.Field.NAME, "name", String.class);
 
         this.dataColumn = Lists.newArrayList();
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("ID"), "id", "id", this::dataColumn));
