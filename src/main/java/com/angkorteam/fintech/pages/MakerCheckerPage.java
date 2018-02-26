@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MPermission;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -113,8 +114,8 @@ public class MakerCheckerPage extends Page {
         this.form.add(this.permissionBlock);
         this.permissionIContainer = new WebMarkupContainer("permissionIContainer");
         this.permissionBlock.add(this.permissionIContainer);
-        this.permissionProvider = new MultipleChoiceProvider("m_permission", "code", "code", "concat(code,' ', '[', grouping,']',  ' ', '[', IF(entity_name is NULL , 'N/A', entity_name), ']',' ', '[' , IF(action_name is NULL , 'N/A', action_name),']')");
-        this.permissionProvider.applyWhere("maker", "can_maker_checker = 0");
+        this.permissionProvider = new MultipleChoiceProvider(MPermission.NAME, MPermission.Field.CODE, MPermission.Field.CODE, "concat(" + MPermission.Field.CODE + ",' ', '[', " + MPermission.Field.GROUPING + ",']',  ' ', '[', IF(" + MPermission.Field.ENTITY_NAME + " is NULL , 'N/A', " + MPermission.Field.ENTITY_NAME + "), ']',' ', '[' , IF(" + MPermission.Field.ACTION_NAME + " is NULL , 'N/A', " + MPermission.Field.ACTION_NAME + "),']')");
+        this.permissionProvider.applyWhere("maker", MPermission.Field.CAN_MAKER_CHECKER + " = 0");
         this.permissionField = new Select2MultipleChoice<>("permissionField", new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
         this.permissionField.setRequired(true);
         this.permissionIContainer.add(this.permissionField);
@@ -127,12 +128,12 @@ public class MakerCheckerPage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_permission");
-        this.dataProvider.boardField("m_permission.grouping", "grouping", String.class);
-        this.dataProvider.boardField("m_permission.code", "code", String.class);
-        this.dataProvider.boardField("m_permission.entity_name", "entity_name", String.class);
-        this.dataProvider.boardField("m_permission.action_name", "action_name", String.class);
-        this.dataProvider.boardField("m_permission.can_maker_checker", "can_maker_checker", String.class);
+        this.dataProvider = new JdbcProvider(MPermission.NAME);
+        this.dataProvider.boardField(MPermission.Field.GROUPING, "grouping", String.class);
+        this.dataProvider.boardField(MPermission.Field.CODE, "code", String.class);
+        this.dataProvider.boardField(MPermission.Field.ENTITY_NAME, "entity_name", String.class);
+        this.dataProvider.boardField(MPermission.Field.ACTION_NAME, "action_name", String.class);
+        this.dataProvider.boardField(MPermission.Field.CAN_MAKER_CHECKER, "can_maker_checker", String.class);
         this.dataProvider.setSort("grouping", SortOrder.ASCENDING);
 
         this.dataColumn = Lists.newArrayList();

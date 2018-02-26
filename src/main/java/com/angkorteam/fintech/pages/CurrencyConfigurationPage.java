@@ -3,6 +3,10 @@ package com.angkorteam.fintech.pages;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MCurrency;
+import com.angkorteam.fintech.ddl.MOrganisationCurrency;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -112,8 +116,8 @@ public class CurrencyConfigurationPage extends Page {
         this.form.add(this.currencyBlock);
         this.currencyIContainer = new WebMarkupContainer("currencyIContainer");
         this.currencyBlock.add(this.currencyIContainer);
-        this.currencyProvider = new SingleChoiceProvider("m_currency", "code", "name", "concat(name,' [', code,']')");
-        this.currencyProvider.applyWhere("code", "code not in (select code from m_organisation_currency)");
+        this.currencyProvider = new SingleChoiceProvider(MCurrency.NAME, MCurrency.Field.CODE, MCurrency.Field.NAME, "concat(" + MCurrency.Field.NAME + ",' [', " + MCurrency.Field.CODE + ",']')");
+        this.currencyProvider.applyWhere("code", MCurrency.Field.CODE + " NOT IN (select " + MOrganisationCurrency.Field.CODE + " from " + MOrganisationCurrency.NAME + ")");
         this.currencyField = new Select2SingleChoice<>("currencyField", new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
         this.currencyField.setRequired(true);
         this.currencyIContainer.add(this.currencyField);
@@ -126,11 +130,11 @@ public class CurrencyConfigurationPage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_organisation_currency");
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("code", "code", String.class);
-        this.dataProvider.boardField("name", "name", String.class);
-        this.dataProvider.boardField("display_symbol", "symbol", String.class);
+        this.dataProvider = new JdbcProvider(MOrganisationCurrency.NAME);
+        this.dataProvider.boardField(MOrganisationCurrency.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MOrganisationCurrency.Field.CODE, "code", String.class);
+        this.dataProvider.boardField(MOrganisationCurrency.Field.NAME, "name", String.class);
+        this.dataProvider.boardField(MOrganisationCurrency.Field.DISPLAY_SYMBOL, "symbol", String.class);
         this.dataProvider.setSort("name", SortOrder.ASCENDING);
 
         this.dataColumn = Lists.newArrayList();
@@ -157,8 +161,12 @@ public class CurrencyConfigurationPage extends Page {
     }
 
     protected void dataClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        List<String> codes = jdbcTemplate.queryForList("select code from m_organisation_currency where code not in (?)", String.class, model.get("code"));
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MOrganisationCurrency.NAME);
+        selectQuery.addField(MOrganisationCurrency.Field.CODE);
+        selectQuery.addWhere(MOrganisationCurrency.Field.CODE + " NOT IN (:code)", "code", model.get("code"));
+        List<String> codes = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), String.class);
         try {
             CurrencyHelper.update((Session) getSession(), codes);
         } catch (UnirestException e) {
@@ -171,8 +179,11 @@ public class CurrencyConfigurationPage extends Page {
     }
 
     protected void addButtonSubmit(Button button) {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        List<String> temp = jdbcTemplate.queryForList("select code from m_organisation_currency", String.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MOrganisationCurrency.NAME);
+        selectQuery.addField(MOrganisationCurrency.Field.CODE);
+        List<String> temp = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), String.class);
         List<String> codes = Lists.newArrayList(temp);
         codes.add(this.currencyValue.getId());
 

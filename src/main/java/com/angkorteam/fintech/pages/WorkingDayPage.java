@@ -3,6 +3,9 @@ package com.angkorteam.fintech.pages;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MWorkingDays;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -270,11 +273,19 @@ public class WorkingDayPage extends Page {
 
     @Override
     protected void initData() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-        Map<String, Object> object = jdbcTemplate.queryForMap("select * from m_working_days limit 1");
+        SelectQuery selectQuery = null;
 
-        String recurrence = (String) object.get("recurrence");
+        selectQuery = new SelectQuery(MWorkingDays.NAME);
+        selectQuery.addField(MWorkingDays.Field.RECURRENCE);
+        selectQuery.addField(MWorkingDays.Field.REPAYMENT_RESCHEDULING_ENUM);
+        selectQuery.addField(MWorkingDays.Field.EXTEND_TERM_DAILY_REPAYMENTS);
+        selectQuery.setLimit(0l, 1l);
+
+        Map<String, Object> object = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
+        String recurrence = (String) object.get(MWorkingDays.Field.RECURRENCE);
         String[] recurrenceSegments = StringUtils.split(recurrence, ';');
         String days = recurrenceSegments[2];
         this.mondayValue = days.contains("MO");
@@ -284,8 +295,8 @@ public class WorkingDayPage extends Page {
         this.fridayValue = days.contains("FR");
         this.saturdayValue = days.contains("ST");
         this.sundayValue = days.contains("SU");
-        this.repaymentOptionValue = RepaymentOption.optionLiteral(String.valueOf(object.get("repayment_rescheduling_enum")));
-        this.repaymentExtendTermValue = (Boolean) object.get("extend_term_daily_repayments");
+        this.repaymentOptionValue = RepaymentOption.optionLiteral(String.valueOf(object.get(MWorkingDays.Field.REPAYMENT_RESCHEDULING_ENUM)));
+        this.repaymentExtendTermValue = (Boolean) object.get(MWorkingDays.Field.EXTEND_TERM_DAILY_REPAYMENTS);
     }
 
     protected void saveButtonSubmit(Button button) {

@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.CConfiguration;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -139,7 +140,7 @@ public class GlobalConfigurationPage extends Page {
         this.form.add(this.nameBlock);
         this.nameIContainer = new WebMarkupContainer("nameIContainer");
         this.nameBlock.add(this.nameIContainer);
-        this.nameProvider = new SingleChoiceProvider("c_configuration", "id", "name");
+        this.nameProvider = new SingleChoiceProvider(CConfiguration.NAME, CConfiguration.Field.ID, CConfiguration.Field.NAME);
         this.nameField = new Select2SingleChoice<>("nameField", new PropertyModel<>(this, "nameValue"), this.nameProvider);
         this.nameField.setRequired(true);
         this.nameIContainer.add(this.nameField);
@@ -153,11 +154,11 @@ public class GlobalConfigurationPage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
 
-        this.dataProvider = new JdbcProvider("c_configuration");
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("name", "name", String.class);
-        this.dataProvider.boardField("enabled", "enabled", Boolean.class);
-        this.dataProvider.boardField("value", "value", Long.class);
+        this.dataProvider = new JdbcProvider(CConfiguration.NAME);
+        this.dataProvider.boardField(CConfiguration.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(CConfiguration.Field.NAME, "name", String.class);
+        this.dataProvider.boardField(CConfiguration.Field.ENABLED, "enabled", Boolean.class);
+        this.dataProvider.boardField(CConfiguration.Field.VALUE, "value", Long.class);
 
         this.dataProvider.setSort("name", SortOrder.ASCENDING);
 
