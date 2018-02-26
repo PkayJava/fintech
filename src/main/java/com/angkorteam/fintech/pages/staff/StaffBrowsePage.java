@@ -3,6 +3,8 @@ package com.angkorteam.fintech.pages.staff;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.MStaff;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -86,14 +88,14 @@ public class StaffBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_staff");
-        this.dataProvider.applyJoin("m_office", "LEFT JOIN m_office ON m_staff.office_id = m_office.id");
-        this.dataProvider.boardField("m_staff.id", "id", Long.class);
-        this.dataProvider.boardField("m_staff.firstname", "firstname", String.class);
-        this.dataProvider.boardField("m_staff.lastname", "lastname", String.class);
-        this.dataProvider.boardField("m_staff.is_loan_officer", "loan_officer", Boolean.class);
-        this.dataProvider.boardField("m_staff.is_active", "active", Boolean.class);
-        this.dataProvider.boardField("m_office.name", "office", String.class);
+        this.dataProvider = new JdbcProvider(MStaff.NAME);
+        this.dataProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " ON " + MStaff.NAME + "." + MStaff.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
+        this.dataProvider.boardField(MStaff.NAME + "." + MStaff.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MStaff.NAME + "." + MStaff.Field.FIRST_NAME, "firstname", String.class);
+        this.dataProvider.boardField(MStaff.NAME + "." + MStaff.Field.LAST_NAME, "lastname", String.class);
+        this.dataProvider.boardField(MStaff.NAME + "." + MStaff.Field.IS_LOAN_OFFICER, "loan_officer", Boolean.class);
+        this.dataProvider.boardField(MStaff.NAME + "." + MStaff.Field.IS_ACTIVE, "active", Boolean.class);
+        this.dataProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "office", String.class);
 
         this.dataColumn = Lists.newArrayList();
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("ID"), "id", "id", this::dataColumn));

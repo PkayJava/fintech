@@ -1,8 +1,30 @@
 package com.angkorteam.fintech.pages.staff;
 
-import java.util.List;
-import java.util.Map;
-
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.*;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.AppUserBuilder;
+import com.angkorteam.fintech.helper.AppUserHelper;
+import com.angkorteam.fintech.provider.MultipleChoiceProvider;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.widget.ReadOnlyView;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.spring.JdbcNamed;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -15,29 +37,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.builder.AppUserBuilder;
-import com.angkorteam.fintech.helper.AppUserHelper;
-import com.angkorteam.fintech.provider.MultipleChoiceProvider;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
-import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
-import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleChoice;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.List;
+import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class UserModifyPage extends Page {
@@ -138,16 +139,45 @@ public class UserModifyPage extends Page {
         PageParameters parameters = getPageParameters();
         this.userId = parameters.get("userId").toString("");
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> userObject = jdbcTemplate.queryForMap("select * from m_appuser where id = ?", this.userId);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-        this.firstNameValue = (String) userObject.get("firstname");
-        this.emailValue = (String) userObject.get("email");
-        this.lastNameValue = (String) userObject.get("lastname");
-        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", Option.MAPPER, userObject.get("office_id"));
-        this.permissionValue = jdbcTemplate.query("select m_role.id, m_role.name text from m_appuser_role inner join m_role on m_appuser_role.role_id = m_role.id where m_appuser_role.appuser_id = ?", Option.MAPPER, userObject.get("id"));
-        this.staffValue = jdbcTemplate.queryForObject("select id, display_name text from m_staff where id = ?", Option.MAPPER, userObject.get("staff_id"));
-        this.loginValue = (String) userObject.get("username");
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MAppUser.NAME);
+        selectQuery.addWhere(MAppUser.Field.ID + " = :" + MAppUser.Field.ID, this.userId);
+        selectQuery.addField(MAppUser.Field.ID);
+        selectQuery.addField(MAppUser.Field.STAFF_ID);
+        selectQuery.addField(MAppUser.Field.OFFICE_ID);
+        selectQuery.addField(MAppUser.Field.FIRST_NAME);
+        selectQuery.addField(MAppUser.Field.EMAIL);
+        selectQuery.addField(MAppUser.Field.LAST_NAME);
+        selectQuery.addField(MAppUser.Field.USERNAME);
+        Map<String, Object> userObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
+        this.firstNameValue = (String) userObject.get(MAppUser.Field.FIRST_NAME);
+        this.emailValue = (String) userObject.get(MAppUser.Field.EMAIL);
+        this.lastNameValue = (String) userObject.get(MAppUser.Field.LAST_NAME);
+
+        selectQuery = new SelectQuery(MOffice.NAME);
+        selectQuery.addWhere(MOffice.Field.ID + " = :" + MOffice.Field.ID, userObject.get(MAppUser.Field.OFFICE_ID));
+        selectQuery.addField(MOffice.Field.ID);
+        selectQuery.addField(MOffice.Field.NAME + " as text");
+        this.officeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
+        selectQuery = new SelectQuery(MAppUserRole.NAME);
+        selectQuery.addJoin("INNER JOIN " + MRole.NAME + " ON " + MAppUserRole.NAME + "." + MAppUserRole.Field.ROLE_ID + " = " + MRole.NAME + "." + MRole.Field.ID);
+        selectQuery.addField(MRole.NAME + "." + MRole.Field.ID);
+        selectQuery.addField(MRole.NAME + "." + MRole.Field.NAME + " as text");
+        selectQuery.addWhere(MAppUserRole.NAME + "." + MAppUserRole.Field.APP_USER_ID + " = :" + MAppUserRole.Field.APP_USER_ID, userObject.get(MAppUser.Field.ID));
+        this.permissionValue = named.query(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
+        selectQuery = new SelectQuery(MStaff.NAME);
+        selectQuery.addField(MStaff.Field.ID);
+        selectQuery.addField(MStaff.Field.DISPLAY_NAME + " as text");
+        selectQuery.addWhere(MStaff.Field.ID + " = :" + MStaff.Field.ID, userObject.get(MAppUser.Field.STAFF_ID));
+        this.staffValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
+        this.loginValue = (String) userObject.get(MAppUser.Field.USERNAME);
     }
 
     @Override
@@ -246,7 +276,7 @@ public class UserModifyPage extends Page {
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.add(new OnChangeAjaxBehavior(this::officeFieldUpdate));
         this.officeField.setRequired(true);
@@ -260,7 +290,7 @@ public class UserModifyPage extends Page {
         this.form.add(this.permissionBlock);
         this.permissionIContainer = new WebMarkupContainer("permissionIContainer");
         this.permissionBlock.add(this.permissionIContainer);
-        this.permissionProvider = new MultipleChoiceProvider("m_role", "id", "name");
+        this.permissionProvider = new MultipleChoiceProvider(MRole.NAME, MRole.Field.ID, MRole.Field.NAME);
         this.permissionField = new Select2MultipleChoice<>("permissionField", new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
         this.permissionField.add(new OnChangeAjaxBehavior());
         this.permissionField.setRequired(true);
@@ -274,7 +304,7 @@ public class UserModifyPage extends Page {
         this.form.add(this.staffBlock);
         this.staffIContainer = new WebMarkupContainer("staffIContainer");
         this.staffBlock.add(this.staffIContainer);
-        this.staffProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
+        this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.Field.ID, MStaff.Field.DISPLAY_NAME);
         this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.add(new OnChangeAjaxBehavior());
         this.staffIContainer.add(this.staffField);
@@ -320,13 +350,13 @@ public class UserModifyPage extends Page {
 
     @Override
     protected void configureMetaData() {
-        this.staffProvider.applyWhere("office", "office_id = " + this.officeValue.getId());
+        this.staffProvider.applyWhere("office", MStaff.Field.OFFICE_ID + " = " + this.officeValue.getId());
     }
 
     protected boolean officeFieldUpdate(AjaxRequestTarget target) {
         this.staffValue = null;
         this.staffProvider.setDisabled(false);
-        this.staffProvider.applyWhere("office", "office_id = " + this.officeValue.getId());
+        this.staffProvider.applyWhere("office", MStaff.Field.OFFICE_ID + " = " + this.officeValue.getId());
         target.add(this.form);
         return false;
     }
