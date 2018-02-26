@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.MTaxComponent;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
@@ -42,7 +46,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class TaxComponentModifyPage extends Page {
 
-    protected String tagId;
+    protected String taxId;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -113,14 +117,31 @@ public class TaxComponentModifyPage extends Page {
     @Override
     protected void initData() {
         PageParameters parameters = getPageParameters();
-        this.tagId = parameters.get("taxId").toString("");
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> taxObject = jdbcTemplate.queryForMap("select * from m_tax_component where id = ?", this.tagId);
-        this.nameValue = (String) taxObject.get("name");
-        this.percentageValue = (Double) taxObject.get("percentage");
-        this.accountTypeValue = AccountType.optionLiteral(String.valueOf(taxObject.get("credit_account_type_enum")));
-        this.accountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account WHERE id = ?", Option.MAPPER, taxObject.get("credit_account_id"));
-        this.startDateValue = (Date) taxObject.get("start_date");
+        this.taxId = parameters.get("taxId").toString("");
+
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MTaxComponent.NAME);
+        selectQuery.addWhere(MTaxComponent.Field.ID + " = :" + MTaxComponent.Field.ID, this.taxId);
+        selectQuery.addField(MTaxComponent.Field.NAME);
+        selectQuery.addField(MTaxComponent.Field.PERCENTAGE);
+        selectQuery.addField(MTaxComponent.Field.CREDIT_ACCOUNT_TYPE_ENUM);
+        selectQuery.addField(MTaxComponent.Field.CREDIT_ACCOUNT_ID);
+        selectQuery.addField(MTaxComponent.Field.START_DATE);
+        Map<String, Object> taxObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
+        this.nameValue = (String) taxObject.get(MTaxComponent.Field.NAME);
+        this.percentageValue = (Double) taxObject.get(MTaxComponent.Field.PERCENTAGE);
+        this.accountTypeValue = AccountType.optionLiteral(String.valueOf(taxObject.get(MTaxComponent.Field.CREDIT_ACCOUNT_TYPE_ENUM)));
+
+        selectQuery = new SelectQuery(AccGLAccount.NAME);
+        selectQuery.addField(AccGLAccount.Field.ID);
+        selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+        selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, taxObject.get(MTaxComponent.Field.CREDIT_ACCOUNT_ID));
+        this.accountValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+        this.startDateValue = (Date) taxObject.get(MTaxComponent.Field.START_DATE);
     }
 
     @Override
@@ -211,7 +232,7 @@ public class TaxComponentModifyPage extends Page {
 
     protected void saveButtonSubmit(Button button) {
         TaxComponentBuilder builder = new TaxComponentBuilder();
-        builder.withId(this.tagId);
+        builder.withId(this.taxId);
         builder.withName(this.nameValue);
         builder.withPercentage(this.percentageValue);
         builder.withStartDate(this.startDateValue);

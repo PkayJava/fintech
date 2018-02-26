@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.tax;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MTaxGroup;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -90,9 +91,9 @@ public class TaxGroupBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_tax_group");
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("name", "name", String.class);
+        this.dataProvider = new JdbcProvider(MTaxGroup.NAME);
+        this.dataProvider.boardField(MTaxGroup.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MTaxGroup.Field.NAME, "name", String.class);
 
         this.dataProvider.selectField("id", Long.class);
 

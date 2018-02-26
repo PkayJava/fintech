@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MTaxComponent;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -92,10 +93,10 @@ public class TaxComponentBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_tax_component");
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("percentage", "percentage", BigDecimal.class);
-        this.dataProvider.boardField("name", "name", String.class);
+        this.dataProvider = new JdbcProvider(MTaxComponent.NAME);
+        this.dataProvider.boardField(MTaxComponent.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MTaxComponent.Field.PERCENTAGE, "percentage", BigDecimal.class);
+        this.dataProvider.boardField(MTaxComponent.Field.NAME, "name", String.class);
 
         this.dataProvider.selectField("id", Long.class);
 
