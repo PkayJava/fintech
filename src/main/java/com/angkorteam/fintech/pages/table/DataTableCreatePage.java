@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.table;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MCode;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -254,7 +255,7 @@ public class DataTableCreatePage extends Page {
         this.columnForm.add(this.codeBlock);
         this.codeIContainer = new WebMarkupContainer("codeIContainer");
         this.codeBlock.add(this.codeIContainer);
-        this.codeProvider = new SingleChoiceProvider("m_code", "code_name", "code_name");
+        this.codeProvider = new SingleChoiceProvider(MCode.NAME, MCode.Field.CODE_NAME);
         this.codeField = new Select2SingleChoice<>("codeField", new PropertyModel<>(this, "codeValue"), this.codeProvider);
         this.codeIContainer.add(this.codeField);
         this.codeFeedback = new TextFeedbackPanel("codeFeedback", this.codeField);

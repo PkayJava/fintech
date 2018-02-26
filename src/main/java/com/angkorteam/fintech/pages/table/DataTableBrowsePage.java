@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.table;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.XRegisteredTable;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -82,10 +83,10 @@ public class DataTableBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("x_registered_table");
-        this.dataProvider.boardField("registered_table_name", "table_name", String.class);
-        this.dataProvider.boardField("application_table_name", "associated", String.class);
-        this.dataProvider.boardField("category", "category", Long.class);
+        this.dataProvider = new JdbcProvider(XRegisteredTable.NAME);
+        this.dataProvider.boardField(XRegisteredTable.Field.REGISTERED_TABLE_NAME, "table_name", String.class);
+        this.dataProvider.boardField(XRegisteredTable.Field.APPLICATION_TABLE_NAME, "associated", String.class);
+        this.dataProvider.boardField(XRegisteredTable.Field.CATEGORY, "category", Long.class);
 
         this.dataColumn = Lists.newArrayList();
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Table Name"), "table_name", "table_name", this::dataColumn));
