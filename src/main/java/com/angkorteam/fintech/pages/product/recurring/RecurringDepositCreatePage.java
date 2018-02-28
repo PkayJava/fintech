@@ -4,6 +4,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MTaxGroup;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -535,9 +540,9 @@ public class RecurringDepositCreatePage extends Page {
         this.cashIContainer.add(this.cashSavingReferenceBlock);
         this.cashSavingReferenceIContainer = new WebMarkupContainer("cashSavingReferenceIContainer");
         this.cashSavingReferenceBlock.add(this.cashSavingReferenceIContainer);
-        this.cashSavingReferenceProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashSavingReferenceProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashSavingReferenceProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
+        this.cashSavingReferenceProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashSavingReferenceProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashSavingReferenceProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
         this.cashSavingReferenceField = new Select2SingleChoice<>("cashSavingReferenceField", new PropertyModel<>(this, "cashSavingReferenceValue"), this.cashSavingReferenceProvider);
         this.cashSavingReferenceField.setLabel(Model.of("Saving reference"));
         this.cashSavingReferenceField.add(new OnChangeAjaxBehavior());
@@ -549,9 +554,9 @@ public class RecurringDepositCreatePage extends Page {
         this.cashIContainer.add(this.cashSavingControlBlock);
         this.cashSavingControlIContainer = new WebMarkupContainer("cashSavingControlIContainer");
         this.cashSavingControlBlock.add(this.cashSavingControlIContainer);
-        this.cashSavingControlProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashSavingControlProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashSavingControlProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
+        this.cashSavingControlProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashSavingControlProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashSavingControlProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Liability.getLiteral());
         this.cashSavingControlField = new Select2SingleChoice<>("cashSavingControlField", new PropertyModel<>(this, "cashSavingControlValue"), this.cashSavingControlProvider);
         this.cashSavingControlField.setLabel(Model.of("Saving control"));
         this.cashSavingControlField.add(new OnChangeAjaxBehavior());
@@ -563,9 +568,9 @@ public class RecurringDepositCreatePage extends Page {
         this.cashIContainer.add(this.cashSavingTransferInSuspenseBlock);
         this.cashSavingTransferInSuspenseIContainer = new WebMarkupContainer("cashSavingTransferInSuspenseIContainer");
         this.cashSavingTransferInSuspenseBlock.add(this.cashSavingTransferInSuspenseIContainer);
-        this.cashSavingTransferInSuspenseProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashSavingTransferInSuspenseProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashSavingTransferInSuspenseProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
+        this.cashSavingTransferInSuspenseProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashSavingTransferInSuspenseProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashSavingTransferInSuspenseProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Liability.getLiteral());
         this.cashSavingTransferInSuspenseField = new Select2SingleChoice<>("cashSavingTransferInSuspenseField", new PropertyModel<>(this, "cashSavingTransferInSuspenseValue"), this.cashSavingTransferInSuspenseProvider);
         this.cashSavingTransferInSuspenseField.setLabel(Model.of("Saving transfers in suspense"));
         this.cashSavingTransferInSuspenseField.add(new OnChangeAjaxBehavior());
@@ -577,9 +582,9 @@ public class RecurringDepositCreatePage extends Page {
         this.cashIContainer.add(this.cashInterestOnSavingBlock);
         this.cashInterestOnSavingIContainer = new WebMarkupContainer("cashInterestOnSavingIContainer");
         this.cashInterestOnSavingBlock.add(this.cashInterestOnSavingIContainer);
-        this.cashInterestOnSavingProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashInterestOnSavingProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashInterestOnSavingProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Expense.getLiteral());
+        this.cashInterestOnSavingProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashInterestOnSavingProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashInterestOnSavingProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Expense.getLiteral());
         this.cashInterestOnSavingField = new Select2SingleChoice<>("cashInterestOnSavingField", new PropertyModel<>(this, "cashInterestOnSavingValue"), this.cashInterestOnSavingProvider);
         this.cashInterestOnSavingField.setLabel(Model.of("Interest on savings"));
         this.cashInterestOnSavingField.add(new OnChangeAjaxBehavior());
@@ -591,9 +596,9 @@ public class RecurringDepositCreatePage extends Page {
         this.cashIContainer.add(this.cashIncomeFromFeeBlock);
         this.cashIncomeFromFeeIContainer = new WebMarkupContainer("cashIncomeFromFeeIContainer");
         this.cashIncomeFromFeeBlock.add(this.cashIncomeFromFeeIContainer);
-        this.cashIncomeFromFeeProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashIncomeFromFeeProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashIncomeFromFeeProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
+        this.cashIncomeFromFeeProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashIncomeFromFeeProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromFeeProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
         this.cashIncomeFromFeeField = new Select2SingleChoice<>("cashIncomeFromFeeField", new PropertyModel<>(this, "cashIncomeFromFeeValue"), this.cashIncomeFromFeeProvider);
         this.cashIncomeFromFeeField.setLabel(Model.of("Income from fees"));
         this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
@@ -605,9 +610,9 @@ public class RecurringDepositCreatePage extends Page {
         this.cashIContainer.add(this.cashIncomeFromPenaltyBlock);
         this.cashIncomeFromPenaltyIContainer = new WebMarkupContainer("cashIncomeFromPenaltyIContainer");
         this.cashIncomeFromPenaltyBlock.add(this.cashIncomeFromPenaltyIContainer);
-        this.cashIncomeFromPenaltyProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashIncomeFromPenaltyProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashIncomeFromPenaltyProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
+        this.cashIncomeFromPenaltyProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashIncomeFromPenaltyProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromPenaltyProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
         this.cashIncomeFromPenaltyField = new Select2SingleChoice<>("cashIncomeFromPenaltyField", new PropertyModel<>(this, "cashIncomeFromPenaltyValue"), this.cashIncomeFromPenaltyProvider);
         this.cashIncomeFromPenaltyField.setLabel(Model.of("Income from penalties"));
         this.cashIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
@@ -882,15 +887,25 @@ public class RecurringDepositCreatePage extends Page {
                 return;
             }
         }
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, charge_calculation_enum, charge_time_enum, amount from m_charge where id = ?", charge.getId());
-        Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
-        Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MCharge.NAME);
+        selectQuery.addField(MCharge.Field.ID);
+        selectQuery.addField(MCharge.Field.NAME);
+        selectQuery.addField(MCharge.Field.CHARGE_CALCULATION_ENUM);
+        selectQuery.addField(MCharge.Field.CHARGE_TIME_ENUM);
+        selectQuery.addField(MCharge.Field.AMOUNT);
+        selectQuery.addWhere(MCharge.Field.ID + " = :" + MCharge.Field.ID, charge.getId());
+        Map<String, Object> chargeObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
+        Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get(MCharge.Field.CHARGE_CALCULATION_ENUM)));
+        Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get(MCharge.Field.CHARGE_TIME_ENUM)));
         item.put("uuid", charge.getId());
         item.put("charge", charge);
-        item.put("name", chargeObject.get("name"));
+        item.put("name", chargeObject.get(MCharge.Field.NAME));
         item.put("type", type);
-        item.put("amount", chargeObject.get("amount"));
+        item.put("amount", chargeObject.get(MCharge.Field.AMOUNT));
         item.put("collect", collect);
         item.put("date", "");
         this.chargeValue.add(item);
@@ -1142,7 +1157,7 @@ public class RecurringDepositCreatePage extends Page {
         this.form.add(this.settingTaxGroupBlock);
         this.settingTaxGroupIContainer = new WebMarkupContainer("settingTaxGroupIContainer");
         this.settingTaxGroupBlock.add(this.settingTaxGroupIContainer);
-        this.settingTaxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
+        this.settingTaxGroupProvider = new SingleChoiceProvider(MTaxGroup.NAME, MTaxGroup.Field.ID, MTaxGroup.Field.NAME);
         this.settingTaxGroupField = new Select2SingleChoice<>("settingTaxGroupField", new PropertyModel<>(this, "settingTaxGroupValue"), this.settingTaxGroupProvider);
         this.settingTaxGroupField.setLabel(Model.of("Tax Group"));
         this.settingTaxGroupField.add(new OnChangeAjaxBehavior());

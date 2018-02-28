@@ -1,31 +1,9 @@
 package com.angkorteam.fintech.pages.product.saving;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.*;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.enums.AccountingType;
-import com.angkorteam.fintech.dto.enums.ChargeCalculation;
-import com.angkorteam.fintech.dto.enums.ChargeTime;
-import com.angkorteam.fintech.dto.enums.DayInYear;
-import com.angkorteam.fintech.dto.enums.FinancialAccountType;
-import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
-import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
-import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
-import com.angkorteam.fintech.dto.enums.LockInType;
-import com.angkorteam.fintech.dto.enums.ProductType;
+import com.angkorteam.fintech.dto.enums.*;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.ReadOnlyView;
@@ -36,7 +14,7 @@ import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -46,6 +24,19 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingPreviewPage extends Page {
@@ -357,150 +348,236 @@ public class SavingPreviewPage extends Page {
     protected void initData() {
         this.savingId = getPageParameters().get("savingId").toString();
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        SelectQuery savingProductQuery = new SelectQuery("m_savings_product");
-        savingProductQuery.addJoin("inner join m_organisation_currency on m_savings_product.currency_code = m_organisation_currency.code");
-        savingProductQuery.addField("m_savings_product.name");
-        savingProductQuery.addField("m_savings_product.short_name");
-        savingProductQuery.addField("m_savings_product.description");
-        savingProductQuery.addField("concat(m_organisation_currency.name, ' [', m_organisation_currency.code, ']') currency");
-        savingProductQuery.addField("m_savings_product.currency_digits");
-        savingProductQuery.addField("m_savings_product.currency_multiplesof");
-        savingProductQuery.addField("m_savings_product.nominal_annual_interest_rate");
-        savingProductQuery.addField("m_savings_product.interest_compounding_period_enum");
-        savingProductQuery.addField("m_savings_product.interest_posting_period_enum");
-        savingProductQuery.addField("m_savings_product.interest_calculation_type_enum");
-        savingProductQuery.addField("m_savings_product.interest_calculation_days_in_year_type_enum");
-        savingProductQuery.addField("m_savings_product.min_required_opening_balance");
-        savingProductQuery.addField("m_savings_product.lockin_period_frequency");
-        savingProductQuery.addField("m_savings_product.lockin_period_frequency_enum");
-        savingProductQuery.addField("m_savings_product.withdrawal_fee_for_transfer");
-        savingProductQuery.addField("m_savings_product.enforce_min_required_balance");
-        savingProductQuery.addField("m_savings_product.min_required_balance");
-        savingProductQuery.addField("m_savings_product.min_balance_for_interest_calculation");
-        savingProductQuery.addField("m_savings_product.withhold_tax");
-        savingProductQuery.addField("m_savings_product.tax_group_id");
-        savingProductQuery.addField("m_savings_product.is_dormancy_tracking_active");
-        savingProductQuery.addField("m_savings_product.days_to_inactive");
-        savingProductQuery.addField("m_savings_product.days_to_dormancy");
-        savingProductQuery.addField("m_savings_product.days_to_escheat");
-        savingProductQuery.addField("m_savings_product.accounting_type");
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-        savingProductQuery.addWhere("m_savings_product.id = '" + this.savingId + "'");
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MSavingsProduct.NAME);
+        selectQuery.addJoin("INNER JOIN " + MOrganisationCurrency.NAME + " ON " + MSavingsProduct.NAME + "." + MSavingsProduct.Field.CURRENCY_CODE + " = " + MOrganisationCurrency.NAME + "." + MOrganisationCurrency.Field.NAME);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.NAME);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.SHORT_NAME);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.DESCRIPTION);
+        selectQuery.addField("concat(" + MOrganisationCurrency.NAME + "." + MOrganisationCurrency.Field.NAME + ", ' [', " + MOrganisationCurrency.NAME + "." + MOrganisationCurrency.Field.CODE + ", ']') currency");
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.CURRENCY_DIGITS);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.CURRENCY_MULTIPLES_OF);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.NOMINAL_ANNUAL_INTEREST_RATE);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.INTEREST_COMPOUNDING_PERIOD_ENUM);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.INTEREST_POSTING_PERIOD_ENUM);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.INTEREST_CALCULATION_TYPE_ENUM);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.INTEREST_CALCULATION_DAYS_IN_YEAR_TYPE_ENUM);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.MIN_REQUIRED_OPENING_BALANCE);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.LOCKIN_PERIOD_FREQUENCY);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.LOCKIN_PERIOD_FREQUENCY_ENUM);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.WITHDRAWAL_FEE_FOR_TRANSFER);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.ENFORCE_MIN_REQUIRED_BALANCE);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.MIN_REQUIRED_BALANCE);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.MIN_BALANCE_FOR_INTEREST_CALCULATION);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.WITHHOLD_TAX);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.TAX_GROUP_ID);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.IS_DORMANCY_TRACKING_ACTIVE);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.DAYS_TO_INACTIVE);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.DAYS_TO_DORMANCY);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.DAYS_TO_ESCHEAT);
+        selectQuery.addField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.ACCOUNTING_TYPE);
+        selectQuery.addWhere(MSavingsProduct.NAME + "." + MSavingsProduct.Field.ID + " = '" + this.savingId + "'");
 
-        Map<String, Object> savingObject = jdbcTemplate.queryForMap(savingProductQuery.toSQL());
-        this.detailProductNameValue = (String) savingObject.get("name");
-        this.detailShortNameValue = (String) savingObject.get("short_name");
-        this.detailDescriptionValue = (String) savingObject.get("description");
+        Map<String, Object> savingObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+        this.detailProductNameValue = (String) savingObject.get(MSavingsProduct.Field.NAME);
+        this.detailShortNameValue = (String) savingObject.get(MSavingsProduct.Field.SHORT_NAME);
+        this.detailDescriptionValue = (String) savingObject.get(MSavingsProduct.Field.DESCRIPTION);
 
         this.currencyCodeValue = (String) savingObject.get("currency");
-        this.currencyMultipleOfValue = (Long) savingObject.get("currency_multiplesof");
-        this.currencyDecimalPlaceValue = (Long) savingObject.get("currency_digits");
-        
-        this.termNominalAnnualInterestValue = (Double) savingObject.get("nominal_annual_interest_rate");
-        this.termInterestCompoundingPeriodValue = InterestCompoundingPeriod.optionLiteral(String.valueOf(savingObject.get("interest_compounding_period_enum")));
-        this.termInterestPostingPeriodValue = InterestPostingPeriod.optionLiteral(String.valueOf(savingObject.get("interest_posting_period_enum")));
-        this.termInterestCalculatedUsingValue = InterestCalculatedUsing.optionLiteral(String.valueOf(savingObject.get("interest_calculation_type_enum")));
-        this.termDayInYearValue = DayInYear.optionLiteral(String.valueOf(savingObject.get("interest_calculation_days_in_year_type_enum")));
+        this.currencyMultipleOfValue = (Long) savingObject.get(MSavingsProduct.Field.CURRENCY_MULTIPLES_OF);
+        this.currencyDecimalPlaceValue = (Long) savingObject.get(MSavingsProduct.Field.CURRENCY_DIGITS);
 
-        this.settingMinimumOpeningBalanceValue = (Double) savingObject.get("min_required_opening_balance");
-        Double lockin_period_frequency = (Double) savingObject.get("lockin_period_frequency");
+        this.termNominalAnnualInterestValue = (Double) savingObject.get(MSavingsProduct.Field.NOMINAL_ANNUAL_INTEREST_RATE);
+        this.termInterestCompoundingPeriodValue = InterestCompoundingPeriod.optionLiteral(String.valueOf(savingObject.get(MSavingsProduct.Field.INTEREST_COMPOUNDING_PERIOD_ENUM)));
+        this.termInterestPostingPeriodValue = InterestPostingPeriod.optionLiteral(String.valueOf(savingObject.get(MSavingsProduct.Field.INTEREST_POSTING_PERIOD_ENUM)));
+        this.termInterestCalculatedUsingValue = InterestCalculatedUsing.optionLiteral(String.valueOf(savingObject.get(MSavingsProduct.Field.INTEREST_CALCULATION_TYPE_ENUM)));
+        this.termDayInYearValue = DayInYear.optionLiteral(String.valueOf(savingObject.get(MSavingsProduct.Field.INTEREST_CALCULATION_DAYS_IN_YEAR_TYPE_ENUM)));
+
+        this.settingMinimumOpeningBalanceValue = (Double) savingObject.get(MSavingsProduct.Field.MIN_REQUIRED_OPENING_BALANCE);
+        Double lockin_period_frequency = (Double) savingObject.get(MSavingsProduct.Field.LOCKIN_PERIOD_FREQUENCY);
         this.settingLockInPeriodValue = lockin_period_frequency == null ? null : lockin_period_frequency.longValue();
-        this.settingLockInTypeValue = LockInType.optionLiteral(String.valueOf(savingObject.get("lockin_period_frequency_enum")));
-        Long withdrawal_fee_for_transfer = (Long) savingObject.get("withdrawal_fee_for_transfer");
+        this.settingLockInTypeValue = LockInType.optionLiteral(String.valueOf(savingObject.get(MSavingsProduct.Field.LOCKIN_PERIOD_FREQUENCY_ENUM)));
+        Long withdrawal_fee_for_transfer = (Long) savingObject.get(MSavingsProduct.Field.WITHDRAWAL_FEE_FOR_TRANSFER);
         this.settingApplyWithdrawalFeeForTransferValue = withdrawal_fee_for_transfer != null && withdrawal_fee_for_transfer == 1l;
-        this.settingEnforceMinimumBalanceValue = (Boolean) savingObject.get("enforce_min_required_balance");
-        this.settingMinimumBalanceValue = (Double) savingObject.get("min_required_balance");
-        this.settingBalanceRequiredForInterestCalculationValue = (Double) savingObject.get("min_balance_for_interest_calculation");
-        Long withhold_tax = (Long) savingObject.get("withhold_tax");
+        this.settingEnforceMinimumBalanceValue = (Boolean) savingObject.get(MSavingsProduct.Field.ENFORCE_MIN_REQUIRED_BALANCE);
+        this.settingMinimumBalanceValue = (Double) savingObject.get(MSavingsProduct.Field.MIN_REQUIRED_BALANCE);
+        this.settingBalanceRequiredForInterestCalculationValue = (Double) savingObject.get(MSavingsProduct.Field.MIN_BALANCE_FOR_INTEREST_CALCULATION);
+        Long withhold_tax = (Long) savingObject.get(MSavingsProduct.Field.WITHHOLD_TAX);
         this.settingWithholdTaxApplicableValue = withhold_tax != null && withhold_tax == 1;
-        this.settingTaxGroupValue = jdbcTemplate.queryForObject("select name from m_tax_group where id = ?", String.class, savingObject.get("tax_group_id"));
-        Long is_dormancy_tracking_active = (Long) savingObject.get("is_dormancy_tracking_active");
+
+        selectQuery = new SelectQuery(MTaxGroup.NAME);
+        selectQuery.addWhere(MTaxGroup.Field.ID + " = :" + MTaxGroup.Field.ID, savingObject.get(MSavingsProduct.Field.TAX_GROUP_ID));
+        selectQuery.addField(MTaxGroup.NAME);
+        this.settingTaxGroupValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
+
+        Long is_dormancy_tracking_active = (Long) savingObject.get(MSavingsProduct.Field.IS_DORMANCY_TRACKING_ACTIVE);
         this.settingEnableDormancyTrackingValue = is_dormancy_tracking_active != null && is_dormancy_tracking_active == 1;
-        this.settingNumberOfDaysToDormantSubStatusValue = (Long) savingObject.get("days_to_dormancy");
-        this.settingNumberOfDaysToInactiveSubStatusValue = (Long) savingObject.get("days_to_inactive");
-        this.settingNumberOfDaysToEscheatValue = (Long) savingObject.get("days_to_escheat");
+        this.settingNumberOfDaysToDormantSubStatusValue = (Long) savingObject.get(MSavingsProduct.Field.DAYS_TO_DORMANCY);
+        this.settingNumberOfDaysToInactiveSubStatusValue = (Long) savingObject.get(MSavingsProduct.Field.DAYS_TO_INACTIVE);
+        this.settingNumberOfDaysToEscheatValue = (Long) savingObject.get(MSavingsProduct.Field.DAYS_TO_ESCHEAT);
 
-        SelectQuery chargeQuery = new SelectQuery("m_charge");
-        chargeQuery.addJoin("inner join m_savings_product_charge on m_savings_product_charge.charge_id = m_charge.id");
-        chargeQuery.addField("concat(m_charge.name, ' [', m_charge.currency_code, ']') name");
-        chargeQuery.addField("m_charge.charge_time_enum");
-        chargeQuery.addField("m_charge.charge_calculation_enum");
-        chargeQuery.addField("m_charge.charge_payment_mode_enum");
-        chargeQuery.addField("m_charge.amount");
-        chargeQuery.addField("m_charge.fee_on_day");
-        chargeQuery.addField("m_charge.fee_interval");
-        chargeQuery.addField("m_charge.fee_on_month");
-        chargeQuery.addField("m_charge.is_penalty");
-        chargeQuery.addField("m_charge.is_active");
-        chargeQuery.addField("m_charge.min_cap");
-        chargeQuery.addField("m_charge.max_cap");
-        chargeQuery.addField("m_charge.fee_frequency");
-        chargeQuery.addField("m_charge.income_or_liability_account_id");
-        chargeQuery.addField("m_charge.tax_group_id");
-        chargeQuery.addWhere("m_savings_product_charge.savings_product_id = '" + this.savingId + "'");
+        selectQuery = new SelectQuery(MCharge.NAME);
+        selectQuery.addJoin("INNER JOIN " + MSavingsProductCharge.NAME + " ON " + MSavingsProductCharge.NAME + "." + MSavingsProductCharge.Field.CHARGE_ID + " = " + MCharge.NAME + "." + MCharge.Field.ID);
+        selectQuery.addField("concat(" + MCharge.NAME + "." + MCharge.Field.NAME + ", ' [', " + MCharge.NAME + "." + MCharge.Field.CURRENCY_CODE + ", ']') AS " + MCharge.Field.NAME);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.CHARGE_TIME_ENUM);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.CHARGE_CALCULATION_ENUM);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.CHARGE_PAYMENT_MODE_ENUM);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.AMOUNT);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.FEE_ON_DAY);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.FEE_INTERVAL);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.FEE_ON_MONTH);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.IS_PENALTY);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.IS_ACTIVE);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.MIN_CAP);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.MAX_CAP);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.FEE_FREQUENCY);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.INCOME_OR_LIABILITY_ACCOUNT_ID);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.TAX_GROUP_ID);
+        selectQuery.addWhere(MSavingsProductCharge.NAME + "." + MSavingsProductCharge.Field.SAVINGS_PRODUCT_ID + " = '" + this.savingId + "'");
 
-        List<Map<String, Object>> chargeObjects = jdbcTemplate.queryForList(chargeQuery.toSQL());
+        List<Map<String, Object>> chargeObjects = named.queryForList(selectQuery.toSQL(), selectQuery.getParam());
 
         for (Map<String, Object> chargeObject : chargeObjects) {
             Map<String, Object> charge = new HashMap<>();
-            charge.put("name", chargeObject.get("name"));
-            Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
+            charge.put("name", chargeObject.get(MCharge.Field.NAME));
+            Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get(MCharge.Field.CHARGE_CALCULATION_ENUM)));
             charge.put("type", type);
-            Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
+            Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get(MCharge.Field.CHARGE_TIME_ENUM)));
             charge.put("collect", collect);
-            charge.put("amount", chargeObject.get("amount"));
+            charge.put("amount", chargeObject.get(MCharge.Field.AMOUNT));
             this.chargeValue.add(charge);
         }
 
-        AccountingType accountingType = AccountingType.parseLiteral(String.valueOf(savingObject.get("accounting_type")));
+        AccountingType accountingType = AccountingType.parseLiteral(String.valueOf(savingObject.get(MSavingsProduct.Field.ACCOUNTING_TYPE)));
 
         if (accountingType != null) {
             this.accountingValue = accountingType.getDescription();
 
-            List<Map<String, Object>> mappings = jdbcTemplate.queryForList("select * from acc_product_mapping where product_id = ? and product_type = ?", this.savingId, ProductType.Saving.getLiteral());
+            selectQuery = new SelectQuery(AccProductMapping.NAME);
+            selectQuery.addWhere(AccProductMapping.Field.PRODUCT_ID + " = :" + AccProductMapping.Field.PRODUCT_ID, this.savingId);
+            selectQuery.addWhere(AccProductMapping.Field.PRODUCT_TYPE + " = :" + AccProductMapping.Field.PRODUCT_TYPE, ProductType.Saving.getLiteral());
+            selectQuery.addField(AccProductMapping.Field.FINANCIAL_ACCOUNT_TYPE);
+            selectQuery.addField(AccProductMapping.Field.CHARGE_ID);
+            selectQuery.addField(AccProductMapping.Field.PAYMENT_TYPE);
+            selectQuery.addField(AccProductMapping.Field.GL_ACCOUNT_ID);
+            List<Map<String, Object>> mappings = named.queryForList(selectQuery.toSQL(), selectQuery.getParam());
 
             for (Map<String, Object> mapping : mappings) {
-                FinancialAccountType financialAccountType = FinancialAccountType.parseLiteral(String.valueOf(mapping.get("financial_account_type")));
-                if (financialAccountType == FinancialAccountType.SavingReference1 && mapping.get("payment_type") != null && mapping.get("charge_id") == null && mapping.get("gl_account_id") != null) {
+                FinancialAccountType financialAccountType = FinancialAccountType.parseLiteral(String.valueOf(mapping.get(AccProductMapping.Field.FINANCIAL_ACCOUNT_TYPE)));
+                if (financialAccountType == FinancialAccountType.SavingReference1 && mapping.get(AccProductMapping.Field.PAYMENT_TYPE) != null && mapping.get(AccProductMapping.Field.CHARGE_ID) == null && mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID) != null) {
                     Map<String, Object> item = new HashMap<>();
-                    item.put("payment", jdbcTemplate.queryForObject("select id, value text from m_payment_type where id = ?", Option.MAPPER, mapping.get("payment_type")));
-                    item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
+
+                    selectQuery = new SelectQuery(MPaymentType.NAME);
+                    selectQuery.addWhere(MPaymentType.Field.ID + " = :" + MPaymentType.Field.ID, mapping.get(AccProductMapping.Field.PAYMENT_TYPE));
+                    selectQuery.addField(MPaymentType.Field.ID);
+                    selectQuery.addField(MPaymentType.Field.VALUE + " as text");
+                    item.put("payment", named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER));
+
+                    selectQuery = new SelectQuery(AccGLAccount.NAME);
+                    selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                    selectQuery.addField(AccGLAccount.Field.ID);
+                    selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                    item.put("account", named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER));
+
                     this.advancedAccountingRuleFundSourceValue.add(item);
                 }
-                if (financialAccountType == FinancialAccountType.IncomeFee4 && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
+                if (financialAccountType == FinancialAccountType.IncomeFee4 && mapping.get(AccProductMapping.Field.PAYMENT_TYPE) == null && mapping.get(AccProductMapping.Field.CHARGE_ID) != null && mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID) != null) {
                     Map<String, Object> item = new HashMap<>();
-                    item.put("charge", jdbcTemplate.queryForObject("select id, name text from m_charge where id = ?", Option.MAPPER, mapping.get("charge_id")));
-                    item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
+
+                    selectQuery = new SelectQuery(MCharge.NAME);
+                    selectQuery.addWhere(MCharge.Field.ID + " = :" + MCharge.Field.ID, mapping.get(AccProductMapping.Field.CHARGE_ID));
+                    selectQuery.addField(MCharge.Field.ID);
+                    selectQuery.addField(MCharge.Field.NAME + " as text");
+                    item.put("charge", named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER));
+
+                    selectQuery = new SelectQuery(AccGLAccount.NAME);
+                    selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                    selectQuery.addField(AccGLAccount.Field.ID);
+                    selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                    item.put("account", named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER));
+
                     this.advancedAccountingRuleFeeIncomeValue.add(item);
                 }
-                if (financialAccountType == FinancialAccountType.IncomePenalty5 && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
+                if (financialAccountType == FinancialAccountType.IncomePenalty5 && mapping.get(AccProductMapping.Field.PAYMENT_TYPE) == null && mapping.get(AccProductMapping.Field.CHARGE_ID) != null && mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID) != null) {
                     Map<String, Object> item = new HashMap<>();
-                    item.put("charge", jdbcTemplate.queryForObject("select id, name text from m_charge where id = ?", Option.MAPPER, mapping.get("charge_id")));
-                    item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
+
+                    selectQuery = new SelectQuery(MCharge.NAME);
+                    selectQuery.addWhere(MCharge.Field.ID + " = :" + MCharge.Field.ID, mapping.get(AccProductMapping.Field.CHARGE_ID));
+                    selectQuery.addField(MCharge.Field.ID);
+                    selectQuery.addField(MCharge.Field.NAME + " as text");
+                    item.put("charge", named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER));
+
+                    selectQuery = new SelectQuery(AccGLAccount.NAME);
+                    selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                    selectQuery.addField(AccGLAccount.Field.ID);
+                    selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                    item.put("account", named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER));
+
                     this.advancedAccountingRulePenaltyIncomeValue.add(item);
                 }
                 if (financialAccountType != null && mapping.get("gl_account_id") != null && mapping.get("charge_id") == null && mapping.get("payment_type") == null) {
                     if (financialAccountType == FinancialAccountType.SavingReference1) {
-                        this.cashSavingReferenceValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        selectQuery = new SelectQuery(AccGLAccount.NAME);
+                        selectQuery.addField(AccGLAccount.Field.ID);
+                        selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                        selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                        this.cashSavingReferenceValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                     } else if (financialAccountType == FinancialAccountType.OverdraftPortfolio11) {
-                        this.cashOverdraftPortfolioValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        selectQuery = new SelectQuery(AccGLAccount.NAME);
+                        selectQuery.addField(AccGLAccount.Field.ID);
+                        selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                        selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                        this.cashOverdraftPortfolioValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                     } else if (financialAccountType == FinancialAccountType.SavingControl2) {
-                        this.cashSavingControlValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        selectQuery = new SelectQuery(AccGLAccount.NAME);
+                        selectQuery.addField(AccGLAccount.Field.ID);
+                        selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                        selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                        this.cashSavingControlValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                     } else if (financialAccountType == FinancialAccountType.TransferInSuspense10) {
-                        this.cashSavingTransferInSuspenseValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        selectQuery = new SelectQuery(AccGLAccount.NAME);
+                        selectQuery.addField(AccGLAccount.Field.ID);
+                        selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                        selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                        this.cashSavingTransferInSuspenseValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                     } else if (financialAccountType == FinancialAccountType.EscheatLiability14) {
-                        this.cashEscheatLiabilityValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        selectQuery = new SelectQuery(AccGLAccount.NAME);
+                        selectQuery.addField(AccGLAccount.Field.ID);
+                        selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                        selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                        this.cashEscheatLiabilityValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                     } else if (financialAccountType == FinancialAccountType.InterestOnSaving3) {
-                        this.cashInterestOnSavingValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        selectQuery = new SelectQuery(AccGLAccount.NAME);
+                        selectQuery.addField(AccGLAccount.Field.ID);
+                        selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                        selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                        this.cashInterestOnSavingValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                     } else if (financialAccountType == FinancialAccountType.WriteOff13) {
-                        this.cashWriteOffValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        selectQuery = new SelectQuery(AccGLAccount.NAME);
+                        selectQuery.addField(AccGLAccount.Field.ID);
+                        selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                        selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                        this.cashWriteOffValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                     } else if (financialAccountType == FinancialAccountType.IncomeFee4) {
-                        this.cashIncomeFromFeeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        selectQuery = new SelectQuery(AccGLAccount.NAME);
+                        selectQuery.addField(AccGLAccount.Field.ID);
+                        selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                        selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                        this.cashIncomeFromFeeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                     } else if (financialAccountType == FinancialAccountType.IncomePenalty5) {
-                        this.cashIncomeFromPenaltyValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        selectQuery = new SelectQuery(AccGLAccount.NAME);
+                        selectQuery.addField(AccGLAccount.Field.ID);
+                        selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                        selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                        this.cashIncomeFromPenaltyValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                     } else if (financialAccountType == FinancialAccountType.OverdraftInterestIncome12) {
-                        this.cashOverdraftInterestIncomeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                        selectQuery = new SelectQuery(AccGLAccount.NAME);
+                        selectQuery.addField(AccGLAccount.Field.ID);
+                        selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                        selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                        this.cashOverdraftInterestIncomeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                     }
                 }
             }

@@ -37,7 +37,7 @@
 		<junit.version>4.12</junit.version>
 		<!-- allowed values: R7, 1.0, 1.5, 2.0 or none -->
 		<wtp.version>none</wtp.version>
-		<frmk.version>2.0.6</frmk.version>
+		<frmk.version>2.0.7</frmk.version>
 		<guava.version>24.0-jre</guava.version>
 		<spring.version>5.0.4.RELEASE</spring.version>
 		<mysql.version>5.1.45</mysql.version>

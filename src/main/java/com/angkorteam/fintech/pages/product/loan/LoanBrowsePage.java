@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MProductLoan;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -80,12 +81,12 @@ public class LoanBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_product_loan");
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("name", "name", String.class);
-        this.dataProvider.boardField("short_name", "shortName", String.class);
-        this.dataProvider.boardField("close_date", "expiryDate", Date.class);
-        this.dataProvider.boardField("if(close_date >= date(now()), 'Active','Inactive')", "status", String.class);
+        this.dataProvider = new JdbcProvider(MProductLoan.NAME);
+        this.dataProvider.boardField(MProductLoan.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MProductLoan.Field.NAME, "name", String.class);
+        this.dataProvider.boardField(MProductLoan.Field.SHORT_NAME, "shortName", String.class);
+        this.dataProvider.boardField(MProductLoan.Field.CLOSE_DATE, "expiryDate", Date.class);
+        this.dataProvider.boardField("if(" + MProductLoan.Field.CLOSE_DATE + " >= date(now()), 'Active','Inactive')", "status", String.class);
 
         this.dataProvider.selectField("id", Long.class);
 

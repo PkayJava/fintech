@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.product.share;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MShareProduct;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -84,11 +85,11 @@ public class ShareBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_share_product");
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("name", "name", String.class);
-        this.dataProvider.boardField("short_name", "shortName", String.class);
-        this.dataProvider.boardField("total_shares", "totalShares", Long.class);
+        this.dataProvider = new JdbcProvider(MShareProduct.NAME);
+        this.dataProvider.boardField(MShareProduct.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MShareProduct.Field.NAME, "name", String.class);
+        this.dataProvider.boardField(MShareProduct.Field.SHORT_NAME, "shortName", String.class);
+        this.dataProvider.boardField(MShareProduct.Field.TOTAL_SHARES, "totalShares", Long.class);
 
         this.dataProvider.selectField("id", Long.class);
 
