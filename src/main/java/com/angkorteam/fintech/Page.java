@@ -3,6 +3,7 @@ package com.angkorteam.fintech;
 import java.util.List;
 import java.util.MissingResourceException;
 
+import com.angkorteam.fintech.pages.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -16,12 +17,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.angkorteam.fintech.pages.AccountingPage;
-import com.angkorteam.fintech.pages.LoginPage;
-import com.angkorteam.fintech.pages.LogoutPage;
-import com.angkorteam.fintech.pages.OrganizationDashboardPage;
-import com.angkorteam.fintech.pages.ProductDashboardPage;
-import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
@@ -66,7 +61,7 @@ public abstract class Page extends DashboardPage {
     @Override
     protected final void onInitialize() {
         initData();
-        super.onInitialize(); 
+        super.onInitialize();
         initComponent();
         configureRequiredValidation();
         configureMetaData();
@@ -233,6 +228,8 @@ public abstract class Page extends DashboardPage {
     @Override
     public IModel<List<NavBarMenu>> buildNavBarMenu() {
 
+        NavBarMenu simulatorMenu = new NavBarMenu().buildTypeIcon(SimulatorPage.class, null, Emoji.fa_dashboard, "Simulator", null);
+
         NavBarMenu clientsMenu = new NavBarMenu().buildTypeIcon(Emoji.fa_dashboard, "Clients", null, new NavBarMenuItem().buildTypeIcon(ClientBrowsePage.class, null, Emoji.fa_dashboard, "Clients"), new NavBarMenuItem().buildTypeIcon(GroupBrowsePage.class, null, Emoji.fa_dashboard, "Groups"), new NavBarMenuItem().buildTypeIcon(CenterBrowsePage.class, null, Emoji.fa_dashboard, "Centers"));
 
         NavBarMenu accountingMenu = new NavBarMenu().buildTypeIcon(AccountingPage.class, null, Emoji.fa_dashboard, "Accounting", null);
@@ -243,7 +240,7 @@ public abstract class Page extends DashboardPage {
 
         NavBarMenu profileMenu = new NavBarMenu().buildTypeIcon(Emoji.fa_dashboard, "Profile", null, new NavBarMenuItem().buildTypeIcon(LogoutPage.class, null, Emoji.fa_sign_out, "Logout"));
 
-        List<NavBarMenu> menus = Lists.newArrayList(clientsMenu, accountingMenu, reportsMenu, adminMenu, profileMenu);
+        List<NavBarMenu> menus = Lists.newArrayList(simulatorMenu, clientsMenu, accountingMenu, reportsMenu, adminMenu, profileMenu);
         return Model.ofList(menus);
     }
 
