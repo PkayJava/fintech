@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -181,6 +182,9 @@ public class JUnitWicketTester extends WicketTester {
     public JdbcTemplate getJdbcTemplate() {
         MifosDataSourceManager manager = SpringBean.getBean(MifosDataSourceManager.class);
         DataSource dataSource = manager.getDataSource(Constants.AID);
+        if (dataSource instanceof BasicDataSource) {
+            ((BasicDataSource) dataSource).setDefaultAutoCommit(true);
+        }
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         return jdbcTemplate;
     }

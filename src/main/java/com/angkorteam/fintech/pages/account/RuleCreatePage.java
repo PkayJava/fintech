@@ -2,6 +2,9 @@ package com.angkorteam.fintech.pages.account;
 
 import java.util.List;
 
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.MCodeValue;
+import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -179,8 +182,8 @@ public class RuleCreatePage extends Page {
         this.form.add(this.creditTagBlock);
         this.creditTagIContainer = new WebMarkupContainer("creditTagIContainer");
         this.creditTagBlock.add(this.creditTagIContainer);
-        this.creditTagProvider = new MultipleChoiceProvider("m_code_value", "id", "code_value");
-        this.creditTagProvider.applyWhere("code_id", "code_id in (7,8,9,10,11)");
+        this.creditTagProvider = new MultipleChoiceProvider(MCodeValue.NAME, MCodeValue.Field.ID, MCodeValue.Field.CODE_VALUE);
+        this.creditTagProvider.applyWhere("code_id", MCodeValue.Field.CODE_ID + " IN (7,8,9,10,11)");
         this.creditTagField = new Select2MultipleChoice<>("creditTagField", new PropertyModel<>(this, "creditTagValue"), this.creditTagProvider);
         this.creditTagIContainer.add(this.creditTagField);
         this.creditTagFeedback = new TextFeedbackPanel("creditTagFeedback", this.creditTagField);
@@ -192,8 +195,8 @@ public class RuleCreatePage extends Page {
         this.form.add(this.creditAccountBlock);
         this.creditAccountIContainer = new WebMarkupContainer("creditAccountIContainer");
         this.creditAccountBlock.add(this.creditAccountIContainer);
-        this.creditAccountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.creditAccountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.creditAccountProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.creditAccountProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.creditAccountField = new Select2SingleChoice<>("creditAccountField", new PropertyModel<>(this, "creditAccountValue"), this.creditAccountProvider);
         this.creditAccountIContainer.add(this.creditAccountField);
         this.creditAccountFeedback = new TextFeedbackPanel("creditAccountFeedback", this.creditAccountField);
@@ -217,8 +220,8 @@ public class RuleCreatePage extends Page {
         this.form.add(this.debitTagBlock);
         this.debitTagIContainer = new WebMarkupContainer("debitTagIContainer");
         this.debitTagBlock.add(this.debitTagIContainer);
-        this.debitTagProvider = new MultipleChoiceProvider("m_code_value", "id", "code_value");
-        this.debitTagProvider.applyWhere("code_id", "code_id in (7,8,9,10,11)");
+        this.debitTagProvider = new MultipleChoiceProvider(MCodeValue.NAME, MCodeValue.Field.ID, MCodeValue.Field.CODE_VALUE);
+        this.debitTagProvider.applyWhere("code_id", MCodeValue.Field.CODE_ID + " IN (7,8,9,10,11)");
         this.debitTagField = new Select2MultipleChoice<>("debitTagField", new PropertyModel<>(this, "debitTagValue"), this.debitTagProvider);
         this.debitTagIContainer.add(this.debitTagField);
         this.debitTagFeedback = new TextFeedbackPanel("debitTagFeedback", this.debitTagField);
@@ -230,8 +233,8 @@ public class RuleCreatePage extends Page {
         this.form.add(this.debitAccountBlock);
         this.debitAccountIContainer = new WebMarkupContainer("debitAccountIContainer");
         this.debitAccountBlock.add(this.debitAccountIContainer);
-        this.debitAccountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.debitAccountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.debitAccountProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.debitAccountProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.debitAccountField = new Select2SingleChoice<>("debitAccountField", new PropertyModel<>(this, "debitAccountValue"), this.debitAccountProvider);
         this.debitAccountIContainer.add(this.debitAccountField);
         this.debitAccountFeedback = new TextFeedbackPanel("debitAccountFeedback", this.debitAccountField);
@@ -255,7 +258,7 @@ public class RuleCreatePage extends Page {
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.officeIContainer.add(this.officeField);

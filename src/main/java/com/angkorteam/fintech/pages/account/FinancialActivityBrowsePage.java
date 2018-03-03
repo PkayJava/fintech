@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.AccGLFinancialActivityAccount;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -89,11 +91,11 @@ public class FinancialActivityBrowsePage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
 
-        this.dataProvider = new JdbcProvider("acc_gl_financial_activity_account");
-        this.dataProvider.applyJoin("acc_gl_account", "LEFT JOIN acc_gl_account ON acc_gl_financial_activity_account.gl_account_id = acc_gl_account.id");
-        this.dataProvider.boardField("acc_gl_financial_activity_account.id", "id", Long.class);
-        this.dataProvider.boardField("acc_gl_account.name", "account", String.class);
-        this.dataProvider.boardField("acc_gl_financial_activity_account.financial_activity_type", "type", Long.class);
+        this.dataProvider = new JdbcProvider(AccGLFinancialActivityAccount.NAME);
+        this.dataProvider.applyJoin("acc_gl_account", "LEFT JOIN " + AccGLAccount.NAME + " ON " + AccGLFinancialActivityAccount.NAME + "." + AccGLFinancialActivityAccount.Field.GL_ACCOUNT_ID + " = " + AccGLAccount.NAME + "." + AccGLAccount.Field.ID);
+        this.dataProvider.boardField(AccGLFinancialActivityAccount.NAME + "." + AccGLFinancialActivityAccount.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(AccGLAccount.NAME + "." + AccGLAccount.Field.NAME, "account", String.class);
+        this.dataProvider.boardField(AccGLFinancialActivityAccount.NAME + "." + AccGLFinancialActivityAccount.Field.FINANCIAL_ACTIVITY_TYPE, "type", Long.class);
 
         this.dataProvider.selectField("id", Long.class);
 

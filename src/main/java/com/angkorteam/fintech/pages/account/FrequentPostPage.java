@@ -1,25 +1,8 @@
 package com.angkorteam.fintech.pages.account;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.*;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.GLEntryBuilder;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
@@ -33,9 +16,10 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
@@ -55,6 +39,23 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by socheatkhauv on 7/11/17.
@@ -217,49 +218,77 @@ public class FrequentPostPage extends Page {
         this.referenceNumberValue = generator.externalId();
         this.transactionDateValue = new Date();
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
 
         PageParameters parameters = getPageParameters();
         this.ruleId = parameters.get("ruleId").toString("");
 
-        Map<String, Object> ruleObject = jdbcTemplate.queryForMap("select * from acc_accounting_rule where id = ?", this.ruleId);
+        selectQuery = new SelectQuery(AccAccountingRule.NAME);
+        selectQuery.addWhere(AccAccountingRule.Field.ID + " = :" + AccAccountingRule.Field.ID, this.ruleId);
+        selectQuery.addField(AccAccountingRule.Field.DEBIT_ACCOUNT_ID);
+        selectQuery.addField(AccAccountingRule.Field.CREDIT_ACCOUNT_ID);
+        selectQuery.addField(AccAccountingRule.Field.OFFICE_ID);
+        Map<String, Object> ruleObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
-        if (ruleObject.get("debit_account_id") != null) {
-            this.debitAccountNameValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, ruleObject.get("debit_account_id"));
+        if (ruleObject.get(AccAccountingRule.Field.DEBIT_ACCOUNT_ID) != null) {
+            selectQuery = new SelectQuery(AccGLAccount.NAME);
+            selectQuery.addField(AccGLAccount.Field.ID);
+            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, ruleObject.get(AccAccountingRule.Field.DEBIT_ACCOUNT_ID));
+            this.debitAccountNameValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
         }
 
-        if (ruleObject.get("credit_account_id") != null) {
-            this.creditAccountNameValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, ruleObject.get("credit_account_id"));
+        if (ruleObject.get(AccAccountingRule.Field.CREDIT_ACCOUNT_ID) != null) {
+            selectQuery = new SelectQuery(AccGLAccount.NAME);
+            selectQuery.addField(AccGLAccount.Field.ID);
+            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, ruleObject.get(AccAccountingRule.Field.CREDIT_ACCOUNT_ID));
+            this.creditAccountNameValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
         }
 
-        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", Option.MAPPER, ruleObject.get("office_id"));
+        selectQuery = new SelectQuery(MOffice.NAME);
+        selectQuery.addField(MOffice.Field.ID);
+        selectQuery.addField(MOffice.Field.NAME + " as text");
+        selectQuery.addWhere(MOffice.Field.ID + " = :" + MOffice.Field.ID, ruleObject.get(AccAccountingRule.Field.OFFICE_ID));
+
+        this.officeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
 
     }
 
     @Override
     protected void configureMetaData() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+        SelectQuery selectQuery = null;
         if (this.debitAccountNameValue != null) {
-            this.debitAccountNameProvider.applyWhere("id", "id = " + debitAccountNameValue.getId());
+            this.debitAccountNameProvider.applyWhere("id", AccGLAccount.Field.ID + " = " + debitAccountNameValue.getId());
         } else {
-            List<String> tags = jdbcTemplate.queryForList("SELECT tag_id FROM acc_rule_tags WHERE acc_type_enum = " + RuleBrowsePage.DEBIT + " and acc_rule_id = ?", String.class, this.ruleId);
+            selectQuery = new SelectQuery(AccRuleTags.NAME);
+            selectQuery.addField(AccRuleTags.Field.ID);
+            selectQuery.addWhere(AccRuleTags.Field.ACC_TYPE_ENUM + " = :" + AccRuleTags.Field.ACC_TYPE_ENUM, RuleBrowsePage.DEBIT);
+            selectQuery.addWhere(AccRuleTags.Field.ACC_RULE_ID + " = :" + AccRuleTags.Field.ACC_RULE_ID, this.ruleId);
+            List<String> tags = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), String.class);
             if (tags != null && !tags.isEmpty()) {
-                this.debitAccountNameProvider.applyWhere("tag", "tag_id in (" + StringUtils.join(tags, ",") + ")");
+                this.debitAccountNameProvider.applyWhere("tag", AccGLAccount.Field.TAG_ID + " IN (" + StringUtils.join(tags, ",") + ")");
             }
         }
 
         if (this.creditAccountNameValue != null) {
-            this.creditAccountNameProvider.applyWhere("id", "id = " + this.creditAccountNameValue.getId());
+            this.creditAccountNameProvider.applyWhere("id", AccGLAccount.Field.ID + " = " + this.creditAccountNameValue.getId());
         } else {
-            List<String> tags = jdbcTemplate.queryForList("SELECT tag_id FROM acc_rule_tags WHERE acc_type_enum = " + RuleBrowsePage.CREDIT + " and acc_rule_id = ?", String.class, this.ruleId);
+            selectQuery = new SelectQuery(AccRuleTags.NAME);
+            selectQuery.addField(AccRuleTags.Field.ID);
+            selectQuery.addWhere(AccRuleTags.Field.ACC_TYPE_ENUM + " = :" + AccRuleTags.Field.ACC_TYPE_ENUM, RuleBrowsePage.CREDIT);
+            selectQuery.addWhere(AccRuleTags.Field.ACC_RULE_ID + " = :" + AccRuleTags.Field.ACC_RULE_ID, this.ruleId);
+            List<String> tags = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), String.class);
             if (tags != null && !tags.isEmpty()) {
-                this.creditAccountNameProvider.applyWhere("tag", "tag_id in (" + StringUtils.join(tags, ",") + ")");
+                this.creditAccountNameProvider.applyWhere("tag", AccGLAccount.Field.TAG_ID + " IN (" + StringUtils.join(tags, ",") + ")");
             }
         }
 
         if (this.officeValue != null) {
-            this.officeProvider.applyWhere("id", "id = " + this.officeValue.getId());
+            this.officeProvider.applyWhere("id", MOffice.Field.ID + " = " + this.officeValue.getId());
         }
     }
 
@@ -330,7 +359,7 @@ public class FrequentPostPage extends Page {
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.officeIContainer.add(this.officeField);
@@ -414,7 +443,7 @@ public class FrequentPostPage extends Page {
         this.form.add(this.paymentTypeBlock);
         this.paymentTypeIContainer = new WebMarkupContainer("paymentTypeIContainer");
         this.paymentTypeBlock.add(this.paymentTypeIContainer);
-        this.paymentTypeProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
+        this.paymentTypeProvider = new SingleChoiceProvider(MPaymentType.NAME, MPaymentType.Field.ID, MPaymentType.Field.VALUE);
         this.paymentTypeField = new Select2SingleChoice<>("paymentTypeField", new PropertyModel<>(this, "paymentTypeValue"), this.paymentTypeProvider);
         this.paymentTypeIContainer.add(this.paymentTypeField);
         this.paymentTypeFeedback = new TextFeedbackPanel("paymentTypeFeedback", this.paymentTypeField);
@@ -492,8 +521,8 @@ public class FrequentPostPage extends Page {
         this.creditForm.add(this.creditAccountNameBlock);
         this.creditAccountNameIContainer = new WebMarkupContainer("creditAccountNameIContainer");
         this.creditAccountNameBlock.add(this.creditAccountNameIContainer);
-        this.creditAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.creditAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.creditAccountNameProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.creditAccountNameProvider.applyWhere("usage", AccGLAccount.Field.ACCOUNT_USAGE + " = '" + AccountUsage.Detail.getLiteral() + "'");
         this.creditAccountNameField = new Select2SingleChoice<>("creditAccountNameField", new PropertyModel<>(this, "creditAccountNameValue"), this.creditAccountNameProvider);
         this.creditAccountNameField.setRequired(true);
         this.creditAccountNameIContainer.add(this.creditAccountNameField);
@@ -506,8 +535,8 @@ public class FrequentPostPage extends Page {
         this.debitForm.add(this.debitAccountNameBlock);
         this.debitAccountNameIContainer = new WebMarkupContainer("debitAccountNameIContainer");
         this.debitAccountNameBlock.add(this.debitAccountNameIContainer);
-        this.debitAccountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.debitAccountNameProvider.applyWhere("usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.debitAccountNameProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.debitAccountNameProvider.applyWhere("usage", AccGLAccount.Field.ACCOUNT_USAGE + " = '" + AccountUsage.Detail.getLiteral() + "'");
         this.debitAccountNameField = new Select2SingleChoice<>("debitAccountNameField", new PropertyModel<>(this, "debitAccountNameValue"), this.debitAccountNameProvider);
         this.debitAccountNameField.setRequired(true);
         this.debitAccountNameIContainer.add(this.debitAccountNameField);

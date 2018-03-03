@@ -10,6 +10,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.angkorteam.fintech.ddl.Tenants;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -105,7 +106,7 @@ public class LoginPage extends WebPage {
         this.form = new Form<>("form");
         this.add(this.form);
 
-        this.identifierProvider = new MifosSingleChoiceProvider("tenants", "identifier", "name");
+        this.identifierProvider = new MifosSingleChoiceProvider(Tenants.NAME, Tenants.Field.IDENTIFIER, Tenants.Field.NAME);
         this.identifierField = new Select2SingleChoice<>("identifierField", new PropertyModel<>(this, "identifierValue"), this.identifierProvider);
         this.identifierField.add(new OnChangeAjaxBehavior());
         this.identifierField.setRequired(true);

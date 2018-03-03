@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.charge;
 import java.util.Date;
 import java.util.List;
 
+import com.angkorteam.fintech.ddl.MTaxGroup;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -182,7 +183,7 @@ public class SavingDepositChargeCreatePage extends Page {
         this.form.add(this.taxGroupBlock);
         this.taxGroupIContainer = new WebMarkupContainer("taxGroupIContainer");
         this.taxGroupBlock.add(this.taxGroupIContainer);
-        this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
+        this.taxGroupProvider = new SingleChoiceProvider(MTaxGroup.NAME, MTaxGroup.Field.ID, MTaxGroup.Field.NAME);
         this.taxGroupField = new Select2SingleChoice<>("taxGroupField", new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
         this.taxGroupField.setLabel(Model.of("Tax Group"));
         this.taxGroupField.add(new OnChangeAjaxBehavior());

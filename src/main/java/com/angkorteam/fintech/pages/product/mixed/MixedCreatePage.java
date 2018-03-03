@@ -2,6 +2,8 @@ package com.angkorteam.fintech.pages.product.mixed;
 
 import java.util.List;
 
+import com.angkorteam.fintech.ddl.MProductLoan;
+import com.angkorteam.fintech.ddl.MProductMix;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -107,7 +109,7 @@ public class MixedCreatePage extends Page {
         this.form.add(this.restrictedBlock);
         this.restrictedIContainer = new WebMarkupContainer("restrictedIContainer");
         this.restrictedBlock.add(this.restrictedIContainer);
-        this.restrictedProvider = new MultipleChoiceProvider("m_product_loan", "id", "name");
+        this.restrictedProvider = new MultipleChoiceProvider(MProductLoan.NAME, MProductLoan.Field.ID, MProductLoan.Field.NAME);
         this.restrictedField = new Select2MultipleChoice<>("restrictedField", new PropertyModel<>(this, "restrictedValue"), this.restrictedProvider);
         this.restrictedField.setLabel(Model.of("Restricted"));
         this.restrictedField.setRequired(false);
@@ -122,8 +124,8 @@ public class MixedCreatePage extends Page {
         this.form.add(this.productBlock);
         this.productIContainer = new WebMarkupContainer("productIContainer");
         this.productBlock.add(this.productIContainer);
-        this.productProvider = new SingleChoiceProvider("m_product_loan", "id", "name");
-        this.productProvider.applyWhere("product", "m_product_loan.id not in (select product_id from m_product_mix)");
+        this.productProvider = new SingleChoiceProvider(MProductLoan.NAME, MProductLoan.Field.ID, MProductLoan.Field.NAME);
+        this.productProvider.applyWhere("product", MProductLoan.NAME + "." + MProductLoan.Field.ID + " NOT IN (SELECT " + MProductMix.Field.PRODUCT_ID + " FROM " + MProductMix.NAME + ")");
         this.productField = new Select2SingleChoice<>("productField", new PropertyModel<>(this, "productValue"), this.productProvider);
         this.productField.setLabel(Model.of("Product"));
         this.productField.setRequired(false);

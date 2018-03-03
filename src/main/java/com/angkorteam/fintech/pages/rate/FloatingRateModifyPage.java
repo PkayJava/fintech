@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MFloatingRates;
+import com.angkorteam.fintech.ddl.MFloatingRatesPeriods;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -145,15 +149,31 @@ public class FloatingRateModifyPage extends Page {
         this.popupModel = Maps.newHashMap();
         PageParameters parameters = getPageParameters();
         this.rateId = parameters.get("rateId").toString("");
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        Map<String, Object> rateObject = jdbcTemplate.queryForMap("select * from m_floating_rates where id = ?", this.rateId);
-        this.nameValue = (String) rateObject.get("name");
-        this.activeValue = (Boolean) rateObject.get("is_active");
-        this.baseLendingValue = (Boolean) rateObject.get("is_base_lending_rate");
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MFloatingRates.NAME);
+        selectQuery.addWhere(MFloatingRates.Field.ID + " = :" + MFloatingRates.Field.ID, this.rateId);
+        selectQuery.addField(MFloatingRates.Field.NAME);
+        selectQuery.addField(MFloatingRates.Field.IS_ACTIVE);
+        selectQuery.addField(MFloatingRates.Field.IS_BASE_LENDING_RATE);
+
+        Map<String, Object> rateObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+        this.nameValue = (String) rateObject.get(MFloatingRates.Field.NAME);
+        this.activeValue = (Boolean) rateObject.get(MFloatingRates.Field.IS_ACTIVE);
+        this.baseLendingValue = (Boolean) rateObject.get(MFloatingRates.Field.IS_BASE_LENDING_RATE);
 
         this.rateValue.clear();
-        List<Map<String, Object>> rates = jdbcTemplate.queryForList("select id, from_date fromDate, concat(id, '') uuid, interest_rate interestRate, is_differential_to_base_lending_rate differential from m_floating_rates_periods where floating_rates_id = ? order by id desc", this.rateId);
+        selectQuery = new SelectQuery(MFloatingRatesPeriods.NAME);
+        selectQuery.addField(MFloatingRatesPeriods.Field.ID);
+        selectQuery.addField(MFloatingRatesPeriods.Field.FROM_DATE + " as fromDate");
+        selectQuery.addField("concat(" + MFloatingRatesPeriods.Field.ID + ", '')" + " as uuid");
+        selectQuery.addField(MFloatingRatesPeriods.Field.INTEREST_RATE + " as interestRate");
+        selectQuery.addField(MFloatingRatesPeriods.Field.IS_DIFFERENTIAL_TO_BASE_LENDING_RATE + " as differential");
+        selectQuery.addWhere(MFloatingRatesPeriods.Field.FLOATING_RATES_ID + " = :" + MFloatingRatesPeriods.Field.FLOATING_RATES_ID, this.rateId);
+        List<Map<String, Object>> rates = named.queryForList(selectQuery.toSQL(), selectQuery.getParam());
         List<String> dates = Lists.newArrayList();
         for (Map<String, Object> rate : rates) {
             String date = DateFormatUtils.format((Date) rate.get("fromDate"), "yyyy-MM-dd");

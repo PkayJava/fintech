@@ -8,6 +8,7 @@ import org.junit.runner.notification.RunListener;
 import org.springframework.web.context.ContextLoaderListener;
 
 import com.angkorteam.fintech.Constants;
+import com.angkorteam.framework.spring.JdbcTemplate;
 
 public class JUnit extends RunListener {
 
@@ -27,8 +28,9 @@ public class JUnit extends RunListener {
         ContextLoaderListener listener = new ContextLoaderListener();
         listener.initWebApplicationContext(servletContext);
         wicket = new JUnitWicketTester();
-        wicket.getJdbcTemplate().update("update m_appuser set username = ?, email = ? where id = ?", Constants.UID, "pkayjava@gmail.com", "1");
-        wicket.getJdbcTemplate().update("update m_appuser set email = ? where id = ?", "system@angkorteam.com", "2");
+        JdbcTemplate jdbcTemplate = wicket.getJdbcTemplate();
+        jdbcTemplate.update("update m_appuser set username = ?, email = ? where id = ?", Constants.UID, "pkayjava@gmail.com", "1");
+        jdbcTemplate.update("update m_appuser set email = ? where id = ?", "system@angkorteam.com", "2");
     }
 
     public void testRunFinished(Result result) throws Exception {

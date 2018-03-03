@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.product.fixed;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MSavingsProduct;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -79,11 +80,11 @@ public class FixedDepositBrowsePage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
 
-        this.dataProvider = new JdbcProvider("m_savings_product");
-        this.dataProvider.applyWhere("deposit_type_enum", "deposit_type_enum = " + DepositType.Fixed.getLiteral());
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("name", "name", String.class);
-        this.dataProvider.boardField("short_name", "shortName", String.class);
+        this.dataProvider = new JdbcProvider(MSavingsProduct.NAME);
+        this.dataProvider.applyWhere("deposit_type_enum", MSavingsProduct.Field.DEPOSIT_TYPE_ENUM + " = " + DepositType.Fixed.getLiteral());
+        this.dataProvider.boardField(MSavingsProduct.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MSavingsProduct.Field.NAME, "name", String.class);
+        this.dataProvider.boardField(MSavingsProduct.Field.SHORT_NAME, "shortName", String.class);
 
         this.dataProvider.selectField("id", Long.class);
 

@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.MTellers;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -100,14 +102,14 @@ public class TellerBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_tellers");
-        this.dataProvider.applyJoin("m_office", "LEFT JOIN m_office on m_tellers.office_id = m_office.id");
-        this.dataProvider.boardField("m_tellers.id", "id", Long.class);
-        this.dataProvider.boardField("m_office.name", "branch", String.class);
-        this.dataProvider.boardField("m_tellers.name", "name", String.class);
-        this.dataProvider.boardField("case m_tellers.state when 300 then 'Active' when 400 then 'Inactive' end", "state", Long.class);
-        this.dataProvider.boardField("m_tellers.valid_from", "valid_from", Date.class);
-        this.dataProvider.boardField("m_tellers.valid_to", "valid_to", Date.class);
+        this.dataProvider = new JdbcProvider(MTellers.NAME);
+        this.dataProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " on " + MTellers.NAME + "." + MTellers.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
+        this.dataProvider.boardField(MTellers.NAME + "." + MTellers.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MTellers.NAME + "." + MTellers.Field.NAME, "name", String.class);
+        this.dataProvider.boardField("case " + MTellers.NAME + "." + MTellers.Field.STATE + " when 300 then 'Active' when 400 then 'Inactive' end", "state", Long.class);
+        this.dataProvider.boardField(MTellers.NAME + "." + MTellers.Field.VALID_FROM, "valid_from", Date.class);
+        this.dataProvider.boardField(MTellers.NAME + "." + MTellers.Field.VALID_TO, "valid_to", Date.class);
+        this.dataProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "branch", String.class);
 
         this.dataProvider.selectField("id", Long.class);
 

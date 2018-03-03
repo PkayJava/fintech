@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.MStaff;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -117,14 +121,33 @@ public class StaffModifyPage extends Page {
     protected void initData() {
         PageParameters parameters = getPageParameters();
         this.staffId = parameters.get("staffId").toString("");
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> staffObject = jdbcTemplate.queryForMap("select * from m_staff where id = ?", this.staffId);
-        this.firstNameValue = (String) staffObject.get("firstname");
-        this.lastNameValue = (String) staffObject.get("lastname");
-        this.joinedDateValue = (Date) staffObject.get("joining_date");
-        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", Option.MAPPER, staffObject.get("office_id"));
-        this.mobileNoValue = (String) staffObject.get("mobile_no");
-        this.loanOfficerValue = (Boolean) staffObject.get("is_loan_officer");
+
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MStaff.NAME);
+        selectQuery.addWhere(MStaff.Field.ID + " = :" + MStaff.Field.ID, this.staffId);
+        selectQuery.addField(MStaff.Field.FIRST_NAME);
+        selectQuery.addField(MStaff.Field.LAST_NAME);
+        selectQuery.addField(MStaff.Field.JOINING_DATE);
+        selectQuery.addField(MStaff.Field.OFFICE_ID);
+        selectQuery.addField(MStaff.Field.MOBILE_NO);
+        selectQuery.addField(MStaff.Field.IS_LOAN_OFFICER);
+        Map<String, Object> staffObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
+        this.firstNameValue = (String) staffObject.get(MStaff.Field.FIRST_NAME);
+        this.lastNameValue = (String) staffObject.get(MStaff.Field.LAST_NAME);
+        this.joinedDateValue = (Date) staffObject.get(MStaff.Field.JOINING_DATE);
+
+        selectQuery = new SelectQuery(MOffice.NAME);
+        selectQuery.addField(MOffice.Field.ID);
+        selectQuery.addField(MOffice.Field.NAME + " as text");
+        selectQuery.addWhere(MOffice.Field.ID + " = :" + MOffice.Field.ID, staffObject.get(MStaff.Field.ID));
+        this.officeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
+        this.mobileNoValue = (String) staffObject.get(MStaff.Field.MOBILE_NO);
+        this.loanOfficerValue = (Boolean) staffObject.get(MStaff.Field.IS_LOAN_OFFICER);
     }
 
     @Override
@@ -181,7 +204,7 @@ public class StaffModifyPage extends Page {
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.officeIContainer.add(this.officeField);

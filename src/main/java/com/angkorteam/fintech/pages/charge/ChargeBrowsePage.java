@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.charge;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MCharge;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -104,13 +105,13 @@ public class ChargeBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_charge");
-        this.dataProvider.applyWhere("is_deleted", "is_deleted = 0");
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("name", "name", String.class);
-        this.dataProvider.boardField("case charge_applies_to_enum when " + ChargeType.Client.getLiteral() + " then '" + ChargeType.Client.getDescription() + "' when " + ChargeType.Loan.getLiteral() + " then '" + ChargeType.Loan.getDescription() + "' when " + ChargeType.SavingDeposit.getLiteral() + " then '" + ChargeType.SavingDeposit.getDescription() + "' when " + ChargeType.Share.getLiteral() + " then '" + ChargeType.Share.getDescription() + "' else 'N/A' end", "charge_apply", String.class);
-        this.dataProvider.boardField("is_penalty", "penalty", Boolean.class);
-        this.dataProvider.boardField("is_active", "active", Boolean.class);
+        this.dataProvider = new JdbcProvider(MCharge.NAME);
+        this.dataProvider.applyWhere("is_deleted", MCharge.Field.IS_DELETED + " = 0");
+        this.dataProvider.boardField(MCharge.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MCharge.Field.NAME, "name", String.class);
+        this.dataProvider.boardField("case " + MCharge.Field.CHARGE_APPLIES_TO_ENUM + " when " + ChargeType.Client.getLiteral() + " then '" + ChargeType.Client.getDescription() + "' when " + ChargeType.Loan.getLiteral() + " then '" + ChargeType.Loan.getDescription() + "' when " + ChargeType.SavingDeposit.getLiteral() + " then '" + ChargeType.SavingDeposit.getDescription() + "' when " + ChargeType.Share.getLiteral() + " then '" + ChargeType.Share.getDescription() + "' else 'N/A' end", "charge_apply", String.class);
+        this.dataProvider.boardField(MCharge.Field.IS_PENALTY, "penalty", Boolean.class);
+        this.dataProvider.boardField(MCharge.Field.IS_ACTIVE, "active", Boolean.class);
 
         this.dataProvider.selectField("id", Long.class);
 
@@ -161,7 +162,7 @@ public class ChargeBrowsePage extends Page {
                 return new BadgeCell(BadgeType.Danger, Model.of("No"));
             }
         }
-        throw new WicketRuntimeException("Unknow " + column);
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
 }

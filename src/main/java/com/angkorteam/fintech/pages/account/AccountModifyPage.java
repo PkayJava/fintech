@@ -3,6 +3,11 @@ package com.angkorteam.fintech.pages.account;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.MCode;
+import com.angkorteam.fintech.ddl.MCodeValue;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -130,18 +135,45 @@ public class AccountModifyPage extends Page {
 
     @Override
     protected void initData() {
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
         PageParameters parameters = getPageParameters();
         this.accountId = parameters.get("accountId").toString("");
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> account = jdbcTemplate.queryForMap("select id,name,parent_id,gl_code, manual_journal_entries_allowed, concat(account_usage,'') account_usage, classification_enum, tag_id,description from acc_gl_account where id = ?", accountId);
-        this.accountTypeValue = AccountType.optionLiteral(String.valueOf(account.get("classification_enum")));
-        this.parentValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, account.get("parent_id"));
-        this.glCodeValue = (String) account.get("gl_code");
-        this.accountNameValue = (String) account.get("name");
-        this.accountUsageValue = AccountUsage.optionLiteral(String.valueOf(account.get("account_usage")));
-        this.tagValue = jdbcTemplate.queryForObject("select id, code_value text from m_code_value where id = ?", Option.MAPPER, account.get("tag_id"));
-        this.manualAllowValue = (Boolean) account.get("manual_journal_entries_allowed");
-        this.descriptionValue = (String) account.get("description");
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(AccGLAccount.NAME);
+        selectQuery.addWhere(AccGLAccount.Field.ID + " = :", AccGLAccount.Field.ID, this.accountId);
+        selectQuery.addField(AccGLAccount.Field.ID);
+        selectQuery.addField(AccGLAccount.Field.NAME);
+        selectQuery.addField(AccGLAccount.Field.PARENT_ID);
+        selectQuery.addField(AccGLAccount.Field.GL_CODE);
+        selectQuery.addField(AccGLAccount.Field.MANUAL_JOURNAL_ENTRIES_ALLOWED);
+        selectQuery.addField("concat(" + AccGLAccount.Field.ACCOUNT_USAGE + ",'') " + AccGLAccount.Field.ACCOUNT_USAGE);
+        selectQuery.addField(AccGLAccount.Field.CLASSIFICATION_ENUM);
+        selectQuery.addField(AccGLAccount.Field.TAG_ID);
+        selectQuery.addField(AccGLAccount.Field.DESCRIPTION);
+
+        Map<String, Object> account = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+        this.accountTypeValue = AccountType.optionLiteral(String.valueOf(account.get(AccGLAccount.Field.CLASSIFICATION_ENUM)));
+
+        selectQuery = new SelectQuery(AccGLAccount.NAME);
+        selectQuery.addField(AccGLAccount.Field.ID);
+        selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+        selectQuery.addWhere(AccGLAccount.Field.ID + " = :", AccGLAccount.Field.ID, account.get(AccGLAccount.Field.PARENT_ID));
+        this.parentValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
+        this.glCodeValue = (String) account.get(AccGLAccount.Field.GL_CODE);
+        this.accountNameValue = (String) account.get(AccGLAccount.Field.NAME);
+        this.accountUsageValue = AccountUsage.optionLiteral(String.valueOf(account.get(AccGLAccount.Field.ACCOUNT_USAGE)));
+
+        selectQuery = new SelectQuery(MCodeValue.NAME);
+        selectQuery.addField(MCodeValue.Field.ID);
+        selectQuery.addField(MCodeValue.Field.CODE_VALUE + " as text");
+        selectQuery.addWhere(MCodeValue.Field.ID + " = :" + MCodeValue.Field.ID, account.get(AccGLAccount.Field.TAG_ID));
+
+        this.tagValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+        this.manualAllowValue = (Boolean) account.get(AccGLAccount.Field.MANUAL_JOURNAL_ENTRIES_ALLOWED);
+        this.descriptionValue = (String) account.get(AccGLAccount.Field.DESCRIPTION);
     }
 
     @Override
@@ -216,7 +248,7 @@ public class AccountModifyPage extends Page {
         this.form.add(this.tagBlock);
         this.tagIContainer = new WebMarkupContainer("tagIContainer");
         this.tagBlock.add(this.tagIContainer);
-        this.tagProvider = new SingleChoiceProvider("m_code_value", "id", "code_value");
+        this.tagProvider = new SingleChoiceProvider(MCodeValue.NAME, MCodeValue.Field.ID, MCodeValue.Field.CODE_VALUE);
         this.tagField = new Select2SingleChoice<>("tagField", new PropertyModel<>(this, "tagValue"), this.tagProvider);
         this.tagField.setLabel(Model.of("Tag"));
         this.tagIContainer.add(this.tagField);
@@ -266,8 +298,8 @@ public class AccountModifyPage extends Page {
         this.form.add(this.parentBlock);
         this.parentIContainer = new WebMarkupContainer("parentIContainer");
         this.parentBlock.add(this.parentIContainer);
-        this.parentProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.parentProvider.applyWhere("account_usage", "account_usage = '" + AccountUsage.Header.getLiteral() + "'");
+        this.parentProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.parentProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = '" + AccountUsage.Header.getLiteral() + "'");
         this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"), this.parentProvider);
         this.parentField.setLabel(Model.of("Parent Account"));
         this.parentIContainer.add(this.parentField);
@@ -292,8 +324,8 @@ public class AccountModifyPage extends Page {
             this.tagProvider.removeWhere("code");
         } else {
             AccountType temp = AccountType.valueOf(this.accountTypeValue.getId());
-            this.tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + temp.getTag() + "')");
-            this.parentProvider.applyWhere("classification_enum", "classification_enum = '" + this.accountTypeValue.getId() + "'");
+            this.tagProvider.applyWhere("code", MCodeValue.Field.CODE_ID + " in (select " + MCode.Field.ID + " from " + MCode.NAME + " where " + MCode.Field.CODE_NAME + " = '" + temp.getTag() + "')");
+            this.parentProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = '" + this.accountTypeValue.getId() + "'");
         }
     }
 
@@ -306,10 +338,10 @@ public class AccountModifyPage extends Page {
             AccountType temp = AccountType.valueOf(this.accountTypeValue.getId());
             this.tagValue = null;
             this.parentValue = null;
-            this.tagProvider.applyWhere("code", "code_id in (select id from m_code where code_name = '" + temp.getTag() + "')");
+            this.tagProvider.applyWhere("code", MCodeValue.Field.CODE_ID + " in (select " + MCode.Field.ID + " from " + MCode.NAME + " where " + MCode.Field.CODE_NAME + " = '" + temp.getTag() + "')");
             this.tagProvider.setDisabled(false);
             this.parentProvider.setDisabled(false);
-            this.parentProvider.applyWhere("classification_enum", "classification_enum = '" + this.accountTypeValue.getId() + "'");
+            this.parentProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = '" + this.accountTypeValue.getId() + "'");
         }
         if (target != null) {
             target.add(this.tagBlock);

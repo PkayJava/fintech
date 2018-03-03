@@ -1,24 +1,10 @@
 package com.angkorteam.fintech.pages.tax;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MTaxComponent;
+import com.angkorteam.fintech.ddl.MTaxGroup;
+import com.angkorteam.fintech.ddl.MTaxGroupMappings;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.TaxGroupBuilder;
 import com.angkorteam.fintech.helper.TaxGroupHelper;
@@ -32,9 +18,10 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -54,6 +41,22 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by socheatkhauv on 7/16/17.
@@ -140,13 +143,29 @@ public class TaxGroupModifyPage extends Page {
         PageParameters parameters = getPageParameters();
         this.taxId = parameters.get("taxId").toString("");
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-        Map<String, Object> taxObject = jdbcTemplate.queryForMap("select * from m_tax_group where id = ?", this.taxId);
+        SelectQuery selectQuery = null;
 
-        this.nameValue = (String) taxObject.get("name");
+        selectQuery = new SelectQuery(MTaxGroup.NAME);
+        selectQuery.addField(MTaxGroup.Field.NAME);
+        selectQuery.addWhere(MTaxGroup.Field.ID + " = :" + MTaxGroup.Field.ID, this.taxId);
+        Map<String, Object> taxObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
-        List<Map<String, Object>> groups = jdbcTemplate.queryForList("SELECT if(m_tax_group_mappings.end_date is null, 'Y', 'N') allow, m_tax_group_mappings.id, concat(m_tax_group_mappings.id, '') AS uuid, concat(m_tax_component.id, '') taxComponentId, m_tax_component.name tax, m_tax_group_mappings.start_date startDate, m_tax_group_mappings.end_date endDate FROM m_tax_group_mappings INNER join m_tax_component on m_tax_group_mappings.tax_component_id = m_tax_component.id WHERE tax_group_id = ?", this.taxId);
+        this.nameValue = (String) taxObject.get(MTaxGroup.Field.NAME);
+
+        selectQuery = new SelectQuery(MTaxGroupMappings.NAME);
+        selectQuery.addJoin("INNER JOIN " + MTaxComponent.NAME + " ON " + MTaxGroupMappings.NAME + "." + MTaxGroupMappings.Field.TAX_COMPONENT_ID + " = " + MTaxComponent.NAME + "." + MTaxComponent.Field.ID);
+        selectQuery.addField("IF(" + MTaxGroupMappings.NAME + "." + MTaxGroupMappings.Field.END_DATE + " IS NULL, 'Y', 'N') allow");
+        selectQuery.addField(MTaxGroupMappings.NAME + "." + MTaxGroupMappings.Field.ID);
+        selectQuery.addField("CONCAT(" + MTaxGroupMappings.NAME + "." + MTaxGroupMappings.Field.ID + ", '') AS uuid");
+        selectQuery.addField("CONCAT(" + MTaxComponent.NAME + "." + MTaxComponent.Field.ID + ", '') AS taxComponentId");
+        selectQuery.addField("CONCAT(" + MTaxComponent.NAME + "." + MTaxComponent.Field.NAME + ", '') AS tax");
+        selectQuery.addField("CONCAT(" + MTaxGroupMappings.NAME + "." + MTaxGroupMappings.Field.START_DATE + ", '') AS startDate");
+        selectQuery.addField("CONCAT(" + MTaxGroupMappings.NAME + "." + MTaxGroupMappings.Field.END_DATE + ", '') AS endDate");
+        selectQuery.addWhere(MTaxGroupMappings.Field.TAX_GROUP_ID + " = :" + MTaxGroupMappings.Field.TAX_GROUP_ID, this.taxId);
+
+        List<Map<String, Object>> groups = named.queryForList(selectQuery.toSQL(), selectQuery.getParam());
         this.taxComponentValue.addAll(groups);
     }
 
@@ -195,7 +214,7 @@ public class TaxGroupModifyPage extends Page {
         this.taxForm.add(this.taxBlock);
         this.taxIContainer = new WebMarkupContainer("taxIContainer");
         this.taxBlock.add(this.taxIContainer);
-        this.taxProvider = new SingleChoiceProvider("m_tax_component", "id", "name");
+        this.taxProvider = new SingleChoiceProvider(MTaxComponent.NAME, MTaxComponent.Field.ID, MTaxComponent.Field.NAME);
         this.taxField = new Select2SingleChoice<>("taxField", new PropertyModel<>(this, "taxValue"), this.taxProvider);
         this.taxIContainer.add(this.taxField);
         this.taxFeedback = new TextFeedbackPanel("taxFeedback", this.taxField);

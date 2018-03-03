@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.account;
 import java.util.Date;
 import java.util.List;
 
+import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -143,7 +144,7 @@ public class ClosureCreatePage extends Page {
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeIContainer.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);

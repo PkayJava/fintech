@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.AccGLClosure;
+import com.angkorteam.fintech.ddl.MAppUser;
+import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -86,14 +89,14 @@ public class ClosureBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("acc_gl_closure");
-        this.dataProvider.applyJoin("m_office", "LEFT JOIN m_office ON acc_gl_closure.office_id = m_office.id");
-        this.dataProvider.applyJoin("m_appuser", "LEFT JOIN m_appuser on acc_gl_closure.createdby_id = m_appuser.id");
-        this.dataProvider.boardField("acc_gl_closure.id", "id", Long.class);
-        this.dataProvider.boardField("m_office.name", "office", String.class);
-        this.dataProvider.boardField("acc_gl_closure.closing_date", "closing_date", Date.class);
-        this.dataProvider.boardField("acc_gl_closure.comments", "comment", String.class);
-        this.dataProvider.boardField("m_appuser.username", "created_by", String.class);
+        this.dataProvider = new JdbcProvider(AccGLClosure.NAME);
+        this.dataProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " ON " + AccGLClosure.NAME + "." + AccGLClosure.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
+        this.dataProvider.applyJoin("m_appuser", "LEFT JOIN " + MAppUser.NAME + " ON " + AccGLClosure.NAME + "." + AccGLClosure.Field.CREATED_BY_ID + " = " + MAppUser.NAME + "." + MAppUser.Field.ID);
+        this.dataProvider.boardField(AccGLClosure.NAME + "." + AccGLClosure.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "office", String.class);
+        this.dataProvider.boardField(AccGLClosure.NAME + "." + AccGLClosure.Field.CLOSING_DATE, "closing_date", Date.class);
+        this.dataProvider.boardField(AccGLClosure.NAME + "." + AccGLClosure.Field.COMMENTS, "comment", String.class);
+        this.dataProvider.boardField(MAppUser.NAME + "." + MAppUser.Field.USERNAME, "created_by", String.class);
 
         this.dataProvider.selectField("id", Long.class);
 

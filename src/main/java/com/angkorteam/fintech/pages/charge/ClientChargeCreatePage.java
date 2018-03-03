@@ -2,6 +2,8 @@ package com.angkorteam.fintech.pages.charge;
 
 import java.util.List;
 
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.MTaxGroup;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -182,9 +184,9 @@ public class ClientChargeCreatePage extends Page {
         this.form.add(this.incomeChargeBlock);
         this.incomeChargeIContainer = new WebMarkupContainer("incomeChargeIContainer");
         this.incomeChargeBlock.add(this.incomeChargeIContainer);
-        this.incomeChargeProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.incomeChargeProvider.applyWhere("classification_enum", "classification_enum in (" + AccountType.Liability.getLiteral() + ", " + AccountType.Income.getLiteral() + ")");
-        this.incomeChargeProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.incomeChargeProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.incomeChargeProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " IN (" + AccountType.Liability.getLiteral() + ", " + AccountType.Income.getLiteral() + ")");
+        this.incomeChargeProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.incomeChargeField = new Select2SingleChoice<>("incomeChargeField", new PropertyModel<>(this, "incomeChargeValue"), this.incomeChargeProvider);
         this.incomeChargeField.setLabel(Model.of("Income from charge"));
         this.incomeChargeField.add(new OnChangeAjaxBehavior());
@@ -198,7 +200,7 @@ public class ClientChargeCreatePage extends Page {
         this.form.add(this.taxGroupBlock);
         this.taxGroupIContainer = new WebMarkupContainer("taxGroupIContainer");
         this.taxGroupBlock.add(this.taxGroupIContainer);
-        this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
+        this.taxGroupProvider = new SingleChoiceProvider(MTaxGroup.NAME, MTaxGroup.Field.ID, MTaxGroup.Field.NAME);
         this.taxGroupField = new Select2SingleChoice<>("taxGroupField", new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
         this.taxGroupField.setLabel(Model.of("Tax Group"));
         this.taxGroupField.add(new OnChangeAjaxBehavior());

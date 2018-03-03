@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -382,9 +386,9 @@ public class ShareCreatePage extends Page {
         this.cashIContainer.add(this.cashShareReferenceBlock);
         this.cashShareReferenceIContainer = new WebMarkupContainer("cashShareReferenceIContainer");
         this.cashShareReferenceBlock.add(this.cashShareReferenceIContainer);
-        this.cashShareReferenceProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashShareReferenceProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashShareReferenceProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
+        this.cashShareReferenceProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashShareReferenceProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashShareReferenceProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
         this.cashShareReferenceField = new Select2SingleChoice<>("cashShareReferenceField", new PropertyModel<>(this, "cashShareReferenceValue"), this.cashShareReferenceProvider);
         this.cashShareReferenceField.setLabel(Model.of("Share reference"));
         this.cashShareReferenceField.add(new OnChangeAjaxBehavior());
@@ -396,9 +400,9 @@ public class ShareCreatePage extends Page {
         this.cashIContainer.add(this.cashShareSuspenseControlBlock);
         this.cashShareSuspenseControlIContainer = new WebMarkupContainer("cashShareSuspenseControlIContainer");
         this.cashShareSuspenseControlBlock.add(this.cashShareSuspenseControlIContainer);
-        this.cashShareSuspenseControlProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashShareSuspenseControlProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashShareSuspenseControlProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Liability.getLiteral());
+        this.cashShareSuspenseControlProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashShareSuspenseControlProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashShareSuspenseControlProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Liability.getLiteral());
         this.cashShareSuspenseControlField = new Select2SingleChoice<>("cashShareSuspenseControlField", new PropertyModel<>(this, "cashShareSuspenseControlValue"), this.cashShareSuspenseControlProvider);
         this.cashShareSuspenseControlField.setLabel(Model.of("Share Suspense control"));
         this.cashShareSuspenseControlField.add(new OnChangeAjaxBehavior());
@@ -410,9 +414,9 @@ public class ShareCreatePage extends Page {
         this.cashIContainer.add(this.cashEquityBlock);
         this.cashEquityIContainer = new WebMarkupContainer("cashEquityIContainer");
         this.cashEquityBlock.add(this.cashEquityIContainer);
-        this.cashEquityProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashEquityProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashEquityProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Equity.getLiteral());
+        this.cashEquityProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashEquityProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashEquityProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Equity.getLiteral());
         this.cashEquityField = new Select2SingleChoice<>("cashEquityField", new PropertyModel<>(this, "cashEquityValue"), this.cashEquityProvider);
         this.cashEquityField.setLabel(Model.of("Equity"));
         this.cashEquityField.add(new OnChangeAjaxBehavior());
@@ -424,9 +428,9 @@ public class ShareCreatePage extends Page {
         this.cashIContainer.add(this.cashIncomeFromFeeBlock);
         this.cashIncomeFromFeeIContainer = new WebMarkupContainer("cashIncomeFromFeeIContainer");
         this.cashIncomeFromFeeBlock.add(this.cashIncomeFromFeeIContainer);
-        this.cashIncomeFromFeeProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.cashIncomeFromFeeProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.cashIncomeFromFeeProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Income.getLiteral());
+        this.cashIncomeFromFeeProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashIncomeFromFeeProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromFeeProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
         this.cashIncomeFromFeeField = new Select2SingleChoice<>("cashIncomeFromFeeField", new PropertyModel<>(this, "cashIncomeFromFeeValue"), this.cashIncomeFromFeeProvider);
         this.cashIncomeFromFeeField.setLabel(Model.of("Income from fees"));
         this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
@@ -552,15 +556,26 @@ public class ShareCreatePage extends Page {
                 return;
             }
         }
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select id, name, charge_calculation_enum, charge_time_enum, amount from m_charge where id = ?", charge.getId());
-        Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
-        Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
+
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MCharge.NAME);
+        selectQuery.addWhere(MCharge.Field.ID + " = :" + MCharge.Field.ID, charge.getId());
+        selectQuery.addField(MCharge.Field.ID);
+        selectQuery.addField(MCharge.Field.NAME);
+        selectQuery.addField(MCharge.Field.CHARGE_CALCULATION_ENUM);
+        selectQuery.addField(MCharge.Field.CHARGE_TIME_ENUM);
+        selectQuery.addField(MCharge.Field.AMOUNT);
+
+        Map<String, Object> chargeObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+        Option type = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get(MCharge.Field.CHARGE_CALCULATION_ENUM)));
+        Option collect = ChargeTime.optionLiteral(String.valueOf(chargeObject.get(MCharge.Field.CHARGE_TIME_ENUM)));
         item.put("uuid", charge.getId());
         item.put("charge", charge);
-        item.put("name", chargeObject.get("name"));
+        item.put("name", chargeObject.get(MCharge.Field.NAME));
         item.put("type", type);
-        item.put("amount", chargeObject.get("amount"));
+        item.put("amount", chargeObject.get(MCharge.Field.AMOUNT));
         item.put("collect", collect);
         item.put("date", "");
         this.chargeValue.add(item);

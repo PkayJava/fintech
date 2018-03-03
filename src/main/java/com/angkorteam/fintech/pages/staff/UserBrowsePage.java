@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MAppUser;
+import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -85,14 +87,14 @@ public class UserBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_appuser");
-        this.dataProvider.applyJoin("m_office", "LEFT JOIN m_office ON m_appuser.office_id = m_office.id");
-        this.dataProvider.boardField("m_appuser.id", "id", Long.class);
-        this.dataProvider.boardField("m_appuser.username", "username", String.class);
-        this.dataProvider.boardField("m_appuser.firstname", "firstname", String.class);
-        this.dataProvider.boardField("m_appuser.lastname", "lastname", String.class);
-        this.dataProvider.boardField("m_appuser.email", "email", String.class);
-        this.dataProvider.boardField("m_office.name", "office", String.class);
+        this.dataProvider = new JdbcProvider(MAppUser.NAME);
+        this.dataProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " ON " + MAppUser.NAME + "." + MAppUser.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
+        this.dataProvider.boardField(MAppUser.NAME + "." + MAppUser.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MAppUser.NAME + "." + MAppUser.Field.USERNAME, "username", String.class);
+        this.dataProvider.boardField(MAppUser.NAME + "." + MAppUser.Field.FIRST_NAME, "firstname", String.class);
+        this.dataProvider.boardField(MAppUser.NAME + "." + MAppUser.Field.LAST_NAME, "lastname", String.class);
+        this.dataProvider.boardField(MAppUser.NAME + "." + MAppUser.Field.EMAIL, "email", String.class);
+        this.dataProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "office", String.class);
 
         this.dataProvider.selectField("id", Long.class);
 

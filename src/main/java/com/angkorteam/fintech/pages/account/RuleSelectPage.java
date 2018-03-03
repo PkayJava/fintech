@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.account;
 
 import java.util.List;
 
+import com.angkorteam.fintech.ddl.AccAccountingRule;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
@@ -69,11 +70,21 @@ public class RuleSelectPage extends Page {
         this.form = new Form<>("form");
         add(this.form);
 
+        this.ruleBlock = new WebMarkupBlock("ruleBlock", Size.Twelve_12);
+        this.form.add(this.ruleBlock);
+        this.ruleIContainer = new WebMarkupContainer("ruleIContainer");
+        this.ruleBlock.add(this.ruleIContainer);
+        this.ruleProvider = new SingleChoiceProvider(AccAccountingRule.NAME, AccAccountingRule.Field.ID, AccAccountingRule.Field.NAME);
+        this.ruleField = new Select2SingleChoice<>("ruleField", new PropertyModel<>(this, "ruleValue"),
+                this.ruleProvider);
+        this.ruleField.setRequired(true);
+        this.ruleIContainer.add(this.ruleField);
+        this.ruleFeedback = new TextFeedbackPanel("ruleFeedback", this.ruleField);
+        this.ruleIContainer.add(this.ruleFeedback);
+
         this.nextButton = new Button("nextButton");
         this.nextButton.setOnSubmit(this::nextButtonClick);
         this.form.add(this.nextButton);
-
-        initRuleBlock();
     }
 
     @Override
@@ -82,19 +93,6 @@ public class RuleSelectPage extends Page {
 
     @Override
     protected void configureMetaData() {
-    }
-
-    protected void initRuleBlock() {
-        this.ruleBlock = new WebMarkupBlock("ruleBlock", Size.Twelve_12);
-        this.form.add(this.ruleBlock);
-        this.ruleIContainer = new WebMarkupContainer("ruleIContainer");
-        this.ruleBlock.add(this.ruleIContainer);
-        this.ruleProvider = new SingleChoiceProvider("acc_accounting_rule", "id", "name");
-        this.ruleField = new Select2SingleChoice<>("ruleField", new PropertyModel<>(this, "ruleValue"), this.ruleProvider);
-        this.ruleField.setRequired(true);
-        this.ruleIContainer.add(this.ruleField);
-        this.ruleFeedback = new TextFeedbackPanel("ruleFeedback", this.ruleField);
-        this.ruleIContainer.add(this.ruleFeedback);
     }
 
     protected void nextButtonClick(Button button) {

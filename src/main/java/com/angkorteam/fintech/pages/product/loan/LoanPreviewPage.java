@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.*;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -828,7 +830,7 @@ public class LoanPreviewPage extends Page {
             this.upfrontVContainer.setVisible(true);
         }
 
-        boolean notLinked = this.termLinkedToFloatingInterestRatesValue == null ? true : !this.termLinkedToFloatingInterestRatesValue;
+        boolean notLinked = this.termLinkedToFloatingInterestRatesValue == null || !this.termLinkedToFloatingInterestRatesValue;
         this.termNominalInterestRateMinimumVContainer.setVisible(notLinked);
         this.termNominalInterestRateDefaultVContainer.setVisible(notLinked);
         this.termNominalInterestRateMaximumVContainer.setVisible(notLinked);
@@ -849,116 +851,118 @@ public class LoanPreviewPage extends Page {
     @Override
     protected void initData() {
         this.loanId = getPageParameters().get("loanId").toString();
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        SelectQuery query = new SelectQuery("m_product_loan");
-        query.addJoin("left join m_fund on m_product_loan.fund_id = m_fund.id");
-        query.addJoin("left join m_organisation_currency on m_product_loan.currency_code = m_organisation_currency.code");
-        query.addJoin("left join m_product_loan_floating_rates on m_product_loan_floating_rates.loan_product_id = m_product_loan.id");
-        query.addJoin("left join m_floating_rates on m_product_loan_floating_rates.floating_rates_id = m_floating_rates.id");
-        query.addJoin("left join m_product_loan_variable_installment_config on m_product_loan_variable_installment_config.loan_product_id = m_product_loan.id");
-        query.addJoin("left join m_product_loan_recalculation_details on m_product_loan.id = m_product_loan_recalculation_details.product_id");
-        query.addJoin("left join m_product_loan_guarantee_details on m_product_loan.id = m_product_loan_guarantee_details.loan_product_id");
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-        query.addWhere("m_product_loan.id = " + this.loanId);
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MProductLoan.NAME);
+        selectQuery.addJoin("LEFT JOIN " + MFund.NAME + " ON " + MProductLoan.NAME + "." + MProductLoan.Field.FUND_ID + " = " + MFund.NAME + "." + MFund.Field.ID);
+        selectQuery.addJoin("LEFT JOIN " + MOrganisationCurrency.NAME + " ON " + MProductLoan.NAME + "." + MProductLoan.Field.CURRENCY_CODE + " = " + MOrganisationCurrency.NAME + "." + MOrganisationCurrency.Field.CODE);
+        selectQuery.addJoin("LEFT JOIN " + MProductLoanFloatingRates.NAME + " ON " + MProductLoanFloatingRates.NAME + "." + MProductLoanFloatingRates.Field.LOAN_PRODUCT_ID + " = " + MProductLoan.NAME + "." + MProductLoan.Field.ID);
+        selectQuery.addJoin("LEFT JOIN " + MFloatingRates.NAME + " ON " + MProductLoanFloatingRates.NAME + "." + MProductLoanFloatingRates.Field.FLOATING_RATES_ID + " = " + MFloatingRates.NAME + "." + MFloatingRates.Field.ID);
+        selectQuery.addJoin("LEFT JOIN " + MProductLoanVariableInstallmentConfig.NAME + " ON " + MProductLoanVariableInstallmentConfig.NAME + "." + MProductLoanVariableInstallmentConfig.Field.LOAN_PRODUCT_ID + " = " + MProductLoan.NAME + "." + MProductLoan.Field.ID);
+        selectQuery.addJoin("LEFT JOIN " + MProductLoanRecalculationDetails.NAME + " ON " + MProductLoan.NAME + "." + MProductLoan.Field.ID + " = " + MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.PRODUCT_ID);
+        selectQuery.addJoin("LEFT JOIN " + MProductLoanGuaranteeDetails.NAME + " ON " + MProductLoan.NAME + "." + MProductLoan.Field.ID + " = " + MProductLoanGuaranteeDetails.NAME + "." + MProductLoanGuaranteeDetails.Field.LOAN_PRODUCT_ID);
+
+        selectQuery.addWhere(MProductLoan.NAME + "." + MProductLoan.Field.ID + " = " + this.loanId);
 
         // detail section
-        query.addField("m_product_loan.name product");
-        query.addField("m_product_loan.description");
-        query.addField("m_product_loan.short_name");
-        query.addField("m_product_loan.start_date");
-        query.addField("m_product_loan.close_date");
-        query.addField("m_product_loan.include_in_borrower_cycle");
-        query.addField("m_fund.name fund");
+        selectQuery.addField(MProductLoan.NAME + ".name as product");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.DESCRIPTION);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.SHORT_NAME);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.START_DATE);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.CLOSE_DATE);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.INCLUDE_IN_BORROWER_CYCLE);
+        selectQuery.addField(MFund.NAME + ".name fund");
 
         // currency
-        query.addField("concat(m_organisation_currency.name, ' [', m_organisation_currency.code, ']') currency");
-        query.addField("m_product_loan.currency_digits");
-        query.addField("m_product_loan.currency_multiplesof");
-        query.addField("m_product_loan.instalment_amount_in_multiples_of");
+        selectQuery.addField("CONCAT(" + MOrganisationCurrency.NAME + "." + MOrganisationCurrency.Field.NAME + ", ' [', " + MOrganisationCurrency.NAME + "." + MOrganisationCurrency.Field.CODE + ", ']') currency");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.CURRENCY_DIGITS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.CURRENCY_MULTIPLES_OF);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.INSTALMENT_AMOUNT_IN_MULTIPLES_OF);
 
         // Terms
-        query.addField("m_product_loan.use_borrower_cycle");
-        query.addField("m_product_loan.min_principal_amount");
-        query.addField("m_product_loan.principal_amount");
-        query.addField("m_product_loan.max_principal_amount");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.USE_BORROWER_CYCLE);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MIN_PRINCIPAL_AMOUNT);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.PRINCIPAL_AMOUNT);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MAX_PRINCIPAL_AMOUNT);
 
-        query.addField("m_product_loan.min_number_of_repayments");
-        query.addField("m_product_loan.number_of_repayments");
-        query.addField("m_product_loan.max_number_of_repayments");
-        query.addField("m_product_loan.repay_every");
-        query.addField("m_product_loan.repayment_period_frequency_enum");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MIN_NUMBER_OF_REPAYMENTS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.NUMBER_OF_REPAYMENTS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MAX_NUMBER_OF_REPAYMENTS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.REPAY_EVERY);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.REPAYMENT_PERIOD_FREQUENCY_ENUM);
 
-        query.addField("m_product_loan.min_nominal_interest_rate_per_period");
-        query.addField("m_product_loan.nominal_interest_rate_per_period");
-        query.addField("m_product_loan.max_nominal_interest_rate_per_period");
-        query.addField("m_product_loan.interest_period_frequency_enum");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MIN_NOMINAL_INTEREST_RATE_PER_PERIOD);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.NOMINAL_INTEREST_RATE_PER_PERIOD);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MAX_NOMINAL_INTEREST_RATE_PER_PERIOD);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.INTEREST_PERIOD_FREQUENCY_ENUM);
 
-        query.addField("m_product_loan.is_linked_to_floating_interest_rates");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.IS_LINKED_TO_FLOATING_INTEREST_RATES);
 
-        query.addField("m_floating_rates.name floating_rate");
-        query.addField("m_product_loan_floating_rates.interest_rate_differential");
-        query.addField("m_product_loan_floating_rates.is_floating_interest_rate_calculation_allowed");
-        query.addField("m_product_loan_floating_rates.min_differential_lending_rate");
-        query.addField("m_product_loan_floating_rates.default_differential_lending_rate");
-        query.addField("m_product_loan_floating_rates.max_differential_lending_rate");
+        selectQuery.addField(MFloatingRates.NAME + "." + MFloatingRates.Field.NAME + " as floating_rate");
+        selectQuery.addField(MProductLoanFloatingRates.NAME + "." + MProductLoanFloatingRates.Field.INTEREST_RATE_DIFFERENTIAL);
+        selectQuery.addField(MProductLoanFloatingRates.NAME + "." + MProductLoanFloatingRates.Field.IS_FLOATING_INTEREST_RATE_CALCULATION_ALLOWED);
+        selectQuery.addField(MProductLoanFloatingRates.NAME + "." + MProductLoanFloatingRates.Field.MIN_DIFFERENTIAL_LENDING_RATE);
+        selectQuery.addField(MProductLoanFloatingRates.NAME + "." + MProductLoanFloatingRates.Field.DEFAULT_DIFFERENTIAL_LENDING_RATE);
+        selectQuery.addField(MProductLoanFloatingRates.NAME + "." + MProductLoanFloatingRates.Field.MAX_DIFFERENTIAL_LENDING_RATE);
 
-        query.addField("m_product_loan.min_days_between_disbursal_and_first_repayment");
+        selectQuery.addField(MProductLoan.NAME + ".min_days_between_disbursal_and_first_repayment");
 
         // setting
-        query.addField("m_product_loan.amortization_method_enum");
-        query.addField("m_product_loan.interest_method_enum");
-        query.addField("m_product_loan.interest_calculated_in_period_enum");
-        query.addField("m_product_loan.allow_partial_period_interest_calcualtion");
-        query.addField("m_product_loan.arrearstolerance_amount");
-        query.addField("m_product_loan.loan_transaction_strategy_id");
-        query.addField("m_product_loan.grace_interest_free_periods");
-        query.addField("m_product_loan.grace_on_arrears_ageing");
-        query.addField("m_product_loan.grace_on_interest_periods");
-        query.addField("m_product_loan.grace_on_principal_periods");
-        query.addField("m_product_loan.account_moves_out_of_npa_only_on_arrears_completion");
-        query.addField("m_product_loan.overdue_days_for_npa");
-        query.addField("m_product_loan.days_in_year_enum");
-        query.addField("m_product_loan.days_in_month_enum");
-        query.addField("m_product_loan.principal_threshold_for_last_installment");
-        query.addField("m_product_loan.can_define_fixed_emi_amount");
-        query.addField("m_product_loan.can_use_for_topup");
-        query.addField("m_product_loan.allow_variabe_installments");
-        query.addField("m_product_loan_variable_installment_config.minimum_gap");
-        query.addField("m_product_loan_variable_installment_config.maximum_gap");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.AMORTIZATION_METHOD_ENUM);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.INTEREST_METHOD_ENUM);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.INTEREST_CALCULATED_IN_PERIOD_ENUM);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.ALLOW_PARTIAL_PERIOD_INTEREST_CALCUALTION);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.ARREARS_TOLERANCE_AMOUNT);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.LOAN_TRANSACTION_STRATEGY_ID);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.GRACE_INTEREST_FREE_PERIODS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.GRACE_ON_ARREARS_AGEING);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.GRACE_ON_INTEREST_PERIODS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.GRACE_ON_PRINCIPAL_PERIODS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.ACCOUNT_MOVES_OUT_OF_NPA_ONLY_ON_ARREARS_COMPLETION);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.OVERDUE_DAYS_FOR_NPA);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.DAYS_IN_YEAR_ENUM);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.DAYS_IN_MONTH_ENUM);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.PRINCIPAL_THRESHOLD_FOR_LAST_INSTALLMENT);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.CAN_DEFINE_FIXED_EMI_AMOUNT);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.CAN_USE_FOR_TOPUP);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.ALLOW_VARIABE_INSTALLMENTS);
+        selectQuery.addField(MProductLoanVariableInstallmentConfig.NAME + "." + MProductLoanVariableInstallmentConfig.Field.MINIMUM_GAP);
+        selectQuery.addField(MProductLoanVariableInstallmentConfig.NAME + "." + MProductLoanVariableInstallmentConfig.Field.MAXIMUM_GAP);
 
         // re-calculation
-        query.addField("m_product_loan.interest_recalculation_enabled");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.INTEREST_RECALCULATION_ENABLED);
 
-        query.addField("m_product_loan_recalculation_details.reschedule_strategy_enum");
-        query.addField("m_product_loan_recalculation_details.rest_frequency_type_enum");
-        query.addField("m_product_loan_recalculation_details.rest_frequency_interval");
-        query.addField("m_product_loan_recalculation_details.arrears_based_on_original_schedule");
-        query.addField("m_product_loan_recalculation_details.pre_close_interest_calculation_strategy");
-        query.addField("m_product_loan_recalculation_details.compounding_frequency_type_enum");
-        query.addField("m_product_loan_recalculation_details.compounding_frequency_interval");
-        query.addField("m_product_loan_recalculation_details.rest_frequency_nth_day_enum");
-        query.addField("m_product_loan_recalculation_details.rest_frequency_on_day");
-        query.addField("m_product_loan_recalculation_details.rest_frequency_weekday_enum");
-        query.addField("m_product_loan_recalculation_details.compounding_frequency_nth_day_enum");
-        query.addField("m_product_loan_recalculation_details.compounding_frequency_on_day");
-        query.addField("m_product_loan_recalculation_details.compound_type_enum");
-        query.addField("m_product_loan_recalculation_details.compounding_frequency_weekday_enum");
-        query.addField("m_product_loan_recalculation_details.is_compounding_to_be_posted_as_transaction");
-        query.addField("m_product_loan_recalculation_details.allow_compounding_on_eod");
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.RESCHEDULE_STRATEGY_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.REST_FREQUENCY_TYPE_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.REST_FREQUENCY_INTERVAL);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.ARREARS_BASED_ON_ORIGINAL_SCHEDULE);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.PRE_CLOSE_INTEREST_CALCULATION_STRATEGY);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.COMPOUNDING_FREQUENCY_TYPE_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.COMPOUNDING_FREQUENCY_INTERVAL);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.REST_FREQUENCY_NTH_DAY_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.REST_FREQUENCY_ON_DAY);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.REST_FREQUENCY_WEEKDAY_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.COMPOUNDING_FREQUENCY_NTH_DAY_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.COMPOUNDING_FREQUENCY_ON_DAY);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.COMPOUND_TYPE_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.COMPOUNDING_FREQUENCY_WEEKDAY_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.IS_COMPOUNDING_TO_BE_POSTED_AS_TRANSACTION);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.ALLOW_COMPOUNDING_ON_EOD);
 
-        query.addField("m_product_loan.hold_guarantee_funds");
-        query.addField("m_product_loan_guarantee_details.mandatory_guarantee");
-        query.addField("m_product_loan_guarantee_details.minimum_guarantee_from_guarantor_funds");
-        query.addField("m_product_loan_guarantee_details.minimum_guarantee_from_own_funds");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.HOLD_GUARANTEE_FUNDS);
+        selectQuery.addField(MProductLoanGuaranteeDetails.NAME + "." + MProductLoanGuaranteeDetails.Field.MANDATORY_GUARANTEE);
+        selectQuery.addField(MProductLoanGuaranteeDetails.NAME + "." + MProductLoanGuaranteeDetails.Field.MINIMUM_GUARANTEE_FROM_GUARANTOR_FUNDS);
+        selectQuery.addField(MProductLoanGuaranteeDetails.NAME + "." + MProductLoanGuaranteeDetails.Field.MINIMUM_GUARANTEE_FROM_OWN_FUNDS);
 
-        query.addField("m_product_loan.allow_multiple_disbursals");
-        query.addField("m_product_loan.max_disbursals");
-        query.addField("m_product_loan.max_outstanding_loan_balance");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.ALLOW_MULTIPLE_DISBURSALS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MAX_DISBURSALS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MAX_OUTSTANDING_LOAN_BALANCE);
 
-        query.addField("m_product_loan.accounting_type");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.ACCOUNTING_TYPE);
 
-        Map<String, Object> loanObject = jdbcTemplate.queryForMap(query.toSQL());
+        Map<String, Object> loanObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
         this.detailProductNameValue = (String) loanObject.get("product");
         this.detailDescriptionValue = (String) loanObject.get("description");
@@ -1006,28 +1010,27 @@ public class LoanPreviewPage extends Page {
 
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue = (Long) loanObject.get("min_days_between_disbursal_and_first_repayment");
 
-        SelectQuery borrowerQuery = new SelectQuery("m_product_loan_variations_borrower_cycle");
-        borrowerQuery.addWhere("loan_product_id = " + this.loanId);
-        borrowerQuery.addOrderBy("param_type asc");
-        borrowerQuery.addOrderBy("min_value asc");
+        selectQuery = new SelectQuery(MProductLoanVariationsBorrowerCycle.NAME);
+        selectQuery.addWhere(MProductLoanVariationsBorrowerCycle.Field.LOAN_PRODUCT_ID + " = " + this.loanId);
+        selectQuery.addOrderBy(MProductLoanVariationsBorrowerCycle.Field.PARAM_TYPE + " ASC");
+        selectQuery.addOrderBy(MProductLoanVariationsBorrowerCycle.Field.MIN_VALUE + " ASC");
 
-        borrowerQuery.addField("m_product_loan_variations_borrower_cycle.borrower_cycle_number");
-        borrowerQuery.addField("m_product_loan_variations_borrower_cycle.value_condition");
-        borrowerQuery.addField("m_product_loan_variations_borrower_cycle.param_type");
-        borrowerQuery.addField("m_product_loan_variations_borrower_cycle.default_value");
-        borrowerQuery.addField("m_product_loan_variations_borrower_cycle.max_value");
-        borrowerQuery.addField("m_product_loan_variations_borrower_cycle.min_value");
+        selectQuery.addField(MProductLoanVariationsBorrowerCycle.NAME + "." + MProductLoanVariationsBorrowerCycle.Field.BORROWER_CYCLE_NUMBER);
+        selectQuery.addField(MProductLoanVariationsBorrowerCycle.NAME + "." + MProductLoanVariationsBorrowerCycle.Field.VALUE_CONDITION);
+        selectQuery.addField(MProductLoanVariationsBorrowerCycle.NAME + "." + MProductLoanVariationsBorrowerCycle.Field.PARAM_TYPE);
+        selectQuery.addField(MProductLoanVariationsBorrowerCycle.NAME + "." + MProductLoanVariationsBorrowerCycle.Field.DEFAULT_VALUE);
+        selectQuery.addField(MProductLoanVariationsBorrowerCycle.NAME + "." + MProductLoanVariationsBorrowerCycle.Field.MAX_VALUE);
+        selectQuery.addField(MProductLoanVariationsBorrowerCycle.NAME + "." + MProductLoanVariationsBorrowerCycle.Field.MIN_VALUE);
+        List<Map<String, Object>> borrowerObjects = named.queryForList(selectQuery.toSQL(), selectQuery.getParam());
 
-        List<Map<String, Object>> borrowersObject = jdbcTemplate.queryForList(borrowerQuery.toSQL());
-
-        for (Map<String, Object> borrowerObject : borrowersObject) {
+        for (Map<String, Object> borrowerObject : borrowerObjects) {
             Map<String, Object> item = new HashMap<>();
             Option when = WhenType.optionLiteral(String.valueOf(borrowerObject.get("value_condition")));
             item.put("when", when);
-            item.put("cycle", (Long) borrowerObject.get("borrower_cycle_number"));
-            item.put("default", (Double) borrowerObject.get("default_value"));
-            item.put("maximum", (Double) borrowerObject.get("max_value"));
-            item.put("minimum", (Double) borrowerObject.get("min_value"));
+            item.put("cycle", borrowerObject.get("borrower_cycle_number"));
+            item.put("default", borrowerObject.get("default_value"));
+            item.put("maximum", borrowerObject.get("max_value"));
+            item.put("minimum", borrowerObject.get("min_value"));
             String param_type = String.valueOf(borrowerObject.get("param_type"));
             if (LoanCycle.Principle.getLiteral().equals(param_type)) {
                 this.termPrincipleByLoanCycleValue.add(item);
@@ -1113,18 +1116,17 @@ public class LoanPreviewPage extends Page {
         this.guaranteeRequirementMinimumGuaranteeValue = (Double) loanObject.get("minimum_guarantee_from_own_funds");
         this.guaranteeRequirementMinimumGuaranteeFromGuarantorValue = (Double) loanObject.get("minimum_guarantee_from_guarantor_funds");
 
-        SelectQuery configurablesQuery = new SelectQuery("m_product_loan_configurable_attributes");
-        configurablesQuery.addWhere("loan_product_id = " + this.loanId);
-        configurablesQuery.addField("amortization_method_enum");
-        configurablesQuery.addField("interest_method_enum");
-        configurablesQuery.addField("loan_transaction_strategy_id");
-        configurablesQuery.addField("interest_calculated_in_period_enum");
-        configurablesQuery.addField("arrearstolerance_amount");
-        configurablesQuery.addField("repay_every");
-        configurablesQuery.addField("moratorium");
-        configurablesQuery.addField("grace_on_arrears_ageing");
-
-        Map<String, Object> configurablesObject = jdbcTemplate.queryForMap(configurablesQuery.toSQL());
+        selectQuery = new SelectQuery(MProductLoanConfigurableAttributes.NAME);
+        selectQuery.addWhere(MProductLoanConfigurableAttributes.Field.LOAN_PRODUCT_ID + " = " + this.loanId);
+        selectQuery.addField(MProductLoanConfigurableAttributes.Field.AMORTIZATION_METHOD_ENUM);
+        selectQuery.addField(MProductLoanConfigurableAttributes.Field.INTEREST_METHOD_ENUM);
+        selectQuery.addField(MProductLoanConfigurableAttributes.Field.LOAN_TRANSACTION_STRATEGY_ID);
+        selectQuery.addField(MProductLoanConfigurableAttributes.Field.INTEREST_CALCULATED_IN_PERIOD_ENUM);
+        selectQuery.addField(MProductLoanConfigurableAttributes.Field.ARREARS_TOLERANCE_AMOUNT);
+        selectQuery.addField(MProductLoanConfigurableAttributes.Field.REPAY_EVERY);
+        selectQuery.addField(MProductLoanConfigurableAttributes.Field.MORATORIUM);
+        selectQuery.addField(MProductLoanConfigurableAttributes.Field.GRACE_ON_ARREARS_AGEING);
+        Map<String, Object> configurablesObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
         this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue = configurablesObject != null;
         if (this.configurableAllowOverridingSelectTermsAndSettingsInLoanAccountValue) {
@@ -1146,26 +1148,25 @@ public class LoanPreviewPage extends Page {
             this.configurableOverdueBeforeMovingValue = arrearstolerance_amount != null && arrearstolerance_amount == 1;
         }
 
-        SelectQuery chargeQuery = new SelectQuery("m_charge");
-        chargeQuery.addJoin("inner join m_product_loan_charge on m_product_loan_charge.charge_id = m_charge.id");
-        chargeQuery.addField("concat(m_charge.name, ' [', m_charge.currency_code, ']') name");
-        chargeQuery.addField("m_charge.charge_time_enum");
-        chargeQuery.addField("m_charge.charge_calculation_enum");
-        chargeQuery.addField("m_charge.charge_payment_mode_enum");
-        chargeQuery.addField("m_charge.amount");
-        chargeQuery.addField("m_charge.fee_on_day");
-        chargeQuery.addField("m_charge.fee_interval");
-        chargeQuery.addField("m_charge.fee_on_month");
-        chargeQuery.addField("m_charge.is_penalty");
-        chargeQuery.addField("m_charge.is_active");
-        chargeQuery.addField("m_charge.min_cap");
-        chargeQuery.addField("m_charge.max_cap");
-        chargeQuery.addField("m_charge.fee_frequency");
-        chargeQuery.addField("m_charge.income_or_liability_account_id");
-        chargeQuery.addField("m_charge.tax_group_id");
-        chargeQuery.addWhere("m_product_loan_charge.product_loan_id = '" + this.loanId + "'");
-
-        List<Map<String, Object>> chargeObjects = jdbcTemplate.queryForList(chargeQuery.toSQL());
+        SelectQuery chargeQuery = new SelectQuery(MCharge.NAME);
+        chargeQuery.addJoin("INNER JOIN " + MProductLoanCharge.NAME + " ON " + MProductLoanCharge.NAME + "." + MProductLoanCharge.Field.CHARGE_ID + " = " + MCharge.NAME + "." + MCharge.Field.ID);
+        chargeQuery.addField("CONCAT(" + MCharge.NAME + "." + MCharge.Field.NAME + ", ' [', " + MCharge.NAME + "." + MCharge.Field.CURRENCY_CODE + ", ']') AS " + MCharge.Field.NAME);
+        chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.CHARGE_TIME_ENUM);
+        chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.CHARGE_CALCULATION_ENUM);
+        chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.CHARGE_PAYMENT_MODE_ENUM);
+        chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.AMOUNT);
+        chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.FEE_ON_DAY);
+        chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.FEE_INTERVAL);
+        chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.FEE_ON_MONTH);
+        chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.IS_PENALTY);
+        chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.IS_ACTIVE);
+        chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.MIN_CAP);
+        chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.MAX_CAP);
+        chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.FEE_FREQUENCY);
+        chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.INCOME_OR_LIABILITY_ACCOUNT_ID);
+        chargeQuery.addField(MCharge.NAME + "." + MCharge.Field.TAX_GROUP_ID);
+        chargeQuery.addWhere(MProductLoanCharge.NAME + "." + MProductLoanCharge.Field.PRODUCT_LOAN_ID + " = '" + this.loanId + "'");
+        List<Map<String, Object>> chargeObjects = named.queryForList(selectQuery.toSQL(), selectQuery.getParam());
 
         for (Map<String, Object> chargeObject : chargeObjects) {
             Boolean is_penalty = (Boolean) chargeObject.get("is_penalty");
@@ -1192,126 +1193,298 @@ public class LoanPreviewPage extends Page {
         if (this.accountingType != null) {
             this.accountingValue = this.accountingType.getDescription();
 
-            List<Map<String, Object>> mappings = jdbcTemplate.queryForList("select * from acc_product_mapping where product_id = ? and product_type = ?", this.loanId, ProductType.Loan.getLiteral());
+            selectQuery = new SelectQuery(AccProductMapping.NAME);
+            selectQuery.addWhere(AccProductMapping.Field.PRODUCT_ID + " = :" + AccProductMapping.Field.PRODUCT_ID, this.loanId);
+            selectQuery.addWhere(AccProductMapping.Field.PRODUCT_TYPE + " = :" + AccProductMapping.Field.PRODUCT_TYPE, ProductType.Loan.getLiteral());
+            selectQuery.addField(AccProductMapping.Field.FINANCIAL_ACCOUNT_TYPE);
+            selectQuery.addField(AccProductMapping.Field.CHARGE_ID);
+            selectQuery.addField(AccProductMapping.Field.PAYMENT_TYPE);
+            selectQuery.addField(AccProductMapping.Field.GL_ACCOUNT_ID);
+            List<Map<String, Object>> mappings = named.queryForList(selectQuery.toSQL(), selectQuery.getParam());
 
             for (Map<String, Object> mapping : mappings) {
-                FinancialAccountType financialAccountType = FinancialAccountType.parseLiteral(String.valueOf(mapping.get("financial_account_type")));
-                if (financialAccountType == FinancialAccountType.SavingReference1 && mapping.get("payment_type") != null && mapping.get("charge_id") == null && mapping.get("gl_account_id") != null) {
+                FinancialAccountType financialAccountType = FinancialAccountType.parseLiteral(String.valueOf(mapping.get(AccProductMapping.Field.FINANCIAL_ACCOUNT_TYPE)));
+                if (financialAccountType == FinancialAccountType.SavingReference1 && mapping.get(AccProductMapping.Field.PAYMENT_TYPE) != null && mapping.get(AccProductMapping.Field.CHARGE_ID) == null && mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID) != null) {
                     Map<String, Object> item = new HashMap<>();
-                    item.put("payment", jdbcTemplate.queryForObject("select id, value text from m_payment_type where id = ?", Option.MAPPER, mapping.get("payment_type")));
-                    item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
+
+                    selectQuery = new SelectQuery(MPaymentType.NAME);
+                    selectQuery.addWhere(MPaymentType.Field.ID + " = :" + MPaymentType.Field.ID, mapping.get(AccProductMapping.Field.PAYMENT_TYPE));
+                    selectQuery.addField(MPaymentType.Field.ID);
+                    selectQuery.addField(MPaymentType.Field.VALUE + " as text");
+                    item.put("payment", named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER));
+
+                    selectQuery = new SelectQuery(AccGLAccount.NAME);
+                    selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                    selectQuery.addField(AccGLAccount.Field.ID);
+                    selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                    item.put("account", named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER));
+
                     this.advancedAccountingRuleFundSourceValue.add(item);
                 }
-                if (financialAccountType == FinancialAccountType.IncomeFee4 && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
+                if (financialAccountType == FinancialAccountType.IncomeFee4 && mapping.get(AccProductMapping.Field.PAYMENT_TYPE) == null && mapping.get(AccProductMapping.Field.CHARGE_ID) != null && mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID) != null) {
                     Map<String, Object> item = new HashMap<>();
-                    item.put("charge", jdbcTemplate.queryForObject("select id, name text from m_charge where id = ?", Option.MAPPER, mapping.get("charge_id")));
-                    item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
+
+                    selectQuery = new SelectQuery(MCharge.NAME);
+                    selectQuery.addWhere(MCharge.Field.ID + " = :" + MCharge.Field.ID, mapping.get(AccProductMapping.Field.CHARGE_ID));
+                    selectQuery.addField(MCharge.Field.ID);
+                    selectQuery.addField(MCharge.Field.NAME + " as text");
+                    item.put("charge", named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER));
+
+                    selectQuery = new SelectQuery(AccGLAccount.NAME);
+                    selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                    selectQuery.addField(AccGLAccount.Field.ID);
+                    selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                    item.put("account", named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER));
+
                     this.advancedAccountingRuleFeeIncomeValue.add(item);
                 }
-                if (financialAccountType == FinancialAccountType.IncomePenalty5 && mapping.get("payment_type") == null && mapping.get("charge_id") != null && mapping.get("gl_account_id") != null) {
+                if (financialAccountType == FinancialAccountType.IncomePenalty5 && mapping.get(AccProductMapping.Field.PAYMENT_TYPE) == null && mapping.get(AccProductMapping.Field.CHARGE_ID) != null && mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID) != null) {
                     Map<String, Object> item = new HashMap<>();
-                    item.put("charge", jdbcTemplate.queryForObject("select id, name text from m_charge where id = ?", Option.MAPPER, mapping.get("charge_id")));
-                    item.put("account", jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id")));
+
+                    selectQuery = new SelectQuery(MCharge.NAME);
+                    selectQuery.addWhere(MCharge.Field.ID + " = :" + MCharge.Field.ID, mapping.get(AccProductMapping.Field.CHARGE_ID));
+                    selectQuery.addField(MCharge.Field.ID);
+                    selectQuery.addField(MCharge.Field.NAME + " as text");
+                    item.put("charge", named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER));
+
+                    selectQuery = new SelectQuery(AccGLAccount.NAME);
+                    selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                    selectQuery.addField(AccGLAccount.Field.ID);
+                    selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                    item.put("account", named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER));
+
                     this.advancedAccountingRulePenaltyIncomeValue.add(item);
                 }
 
-                if (financialAccountType != null && mapping.get("gl_account_id") != null && mapping.get("charge_id") == null && mapping.get("payment_type") == null) {
+                if (financialAccountType != null && mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID) != null && mapping.get(AccProductMapping.Field.CHARGE_ID) == null && mapping.get(AccProductMapping.Field.PAYMENT_TYPE) == null) {
                     if (financialAccountType == FinancialAccountType.SavingReference1) {
                         if (accountingType == AccountingType.Cash) {
-                            this.cashFundSourceValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.cashFundSourceValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Periodic) {
-                            this.periodicFundSourceValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.periodicFundSourceValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Upfront) {
-                            this.upfrontFundSourceValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.upfrontFundSourceValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         }
                     } else if (financialAccountType == FinancialAccountType.SavingControl2) {
                         if (accountingType == AccountingType.Cash) {
-                            this.cashLoanPortfolioValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.cashLoanPortfolioValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Periodic) {
-                            this.periodicLoanPortfolioValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.periodicLoanPortfolioValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Upfront) {
-                            this.upfrontLoanPortfolioValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.upfrontLoanPortfolioValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         }
                     } else if (financialAccountType == FinancialAccountType.InterestReceivable7) {
                         if (accountingType == AccountingType.Cash) {
 
                         } else if (accountingType == AccountingType.Periodic) {
-                            this.periodicInterestReceivableValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.periodicInterestReceivableValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Upfront) {
-                            this.upfrontInterestReceivableValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.upfrontInterestReceivableValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         }
 
                     } else if (financialAccountType == FinancialAccountType.FeeReceivable8) {
                         if (accountingType == AccountingType.Cash) {
 
                         } else if (accountingType == AccountingType.Periodic) {
-                            this.periodicFeeReceivableValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.periodicFeeReceivableValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Upfront) {
-                            this.upfrontFeeReceivableValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.upfrontFeeReceivableValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         }
                     } else if (financialAccountType == FinancialAccountType.PenaltyReceivable9) {
                         if (accountingType == AccountingType.Cash) {
 
                         } else if (accountingType == AccountingType.Periodic) {
-                            this.periodicPenaltyReceivableValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.periodicPenaltyReceivableValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Upfront) {
-                            this.upfrontPenaltyReceivableValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.upfrontPenaltyReceivableValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         }
                     } else if (financialAccountType == FinancialAccountType.TransferInSuspense10) {
                         if (accountingType == AccountingType.Cash) {
-                            this.cashTransferInSuspenseValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.cashTransferInSuspenseValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Periodic) {
-                            this.periodicTransferInSuspenseValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.periodicTransferInSuspenseValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Upfront) {
-                            this.upfrontTransferInSuspenseValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.upfrontTransferInSuspenseValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         }
                     } else if (financialAccountType == FinancialAccountType.InterestOnSaving3) {
                         if (accountingType == AccountingType.Cash) {
-                            this.cashIncomeFromInterestValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.cashIncomeFromInterestValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Periodic) {
-                            this.periodicIncomeFromInterestValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.periodicIncomeFromInterestValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Upfront) {
-                            this.upfrontIncomeFromInterestValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.upfrontIncomeFromInterestValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         }
                     } else if (financialAccountType == FinancialAccountType.IncomeFee4) {
                         if (accountingType == AccountingType.Cash) {
-                            this.cashIncomeFromFeeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.cashIncomeFromFeeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Periodic) {
-                            this.periodicIncomeFromFeeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.periodicIncomeFromFeeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Upfront) {
-                            this.upfrontIncomeFromFeeValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.upfrontIncomeFromFeeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         }
                     } else if (financialAccountType == FinancialAccountType.IncomePenalty5) {
                         if (accountingType == AccountingType.Cash) {
-                            this.cashIncomeFromPenaltyValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.cashIncomeFromPenaltyValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Periodic) {
-                            this.periodicIncomeFromPenaltyValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.periodicIncomeFromPenaltyValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Upfront) {
-                            this.upfrontIncomeFromPenaltyValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.upfrontIncomeFromPenaltyValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         }
                     } else if (financialAccountType == FinancialAccountType.OverdraftInterestIncome12) {
                         if (accountingType == AccountingType.Cash) {
-                            this.cashIncomeFromRecoveryRepaymentValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.cashIncomeFromRecoveryRepaymentValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Periodic) {
-                            this.periodicIncomeFromRecoveryRepaymentValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.periodicIncomeFromRecoveryRepaymentValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Upfront) {
-                            this.upfrontIncomeFromRecoveryRepaymentValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.upfrontIncomeFromRecoveryRepaymentValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         }
                     } else if (financialAccountType == FinancialAccountType.WriteOff6) {
                         if (accountingType == AccountingType.Cash) {
-                            this.cashLossWrittenOffValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.cashLossWrittenOffValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Periodic) {
-                            this.periodicLossWrittenOffValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.periodicLossWrittenOffValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Upfront) {
-                            this.upfrontLossWrittenOffValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.upfrontLossWrittenOffValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         }
                     } else if (financialAccountType == FinancialAccountType.OverdraftPortfolio11) {
                         if (accountingType == AccountingType.Cash) {
-                            this.cashOverPaymentLiabilityValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.cashOverPaymentLiabilityValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Periodic) {
-                            this.periodicOverPaymentLiabilityValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.periodicOverPaymentLiabilityValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         } else if (accountingType == AccountingType.Upfront) {
-                            this.upfrontOverPaymentLiabilityValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, mapping.get("gl_account_id"));
+                            selectQuery = new SelectQuery(AccGLAccount.NAME);
+                            selectQuery.addField(AccGLAccount.Field.ID);
+                            selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+                            selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, mapping.get(AccProductMapping.Field.GL_ACCOUNT_ID));
+                            this.upfrontOverPaymentLiabilityValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
                         }
                     }
                 }

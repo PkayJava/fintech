@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.AccGLJournalEntry;
+import com.angkorteam.fintech.ddl.MAppUser;
+import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -192,20 +196,20 @@ public class SearchJournalPage extends Page {
         add(this.entryBlock);
         this.entryIContainer = new WebMarkupContainer("entryIContainer");
         this.entryBlock.add(this.entryIContainer);
-        this.entryProvider = new JdbcProvider("acc_gl_journal_entry");
-        this.entryProvider.applyJoin("acc_gl_account", "LEFT JOIN acc_gl_account ON acc_gl_journal_entry.account_id = acc_gl_account.id");
-        this.entryProvider.applyJoin("m_office", "LEFT JOIN m_office ON acc_gl_journal_entry.office_id = m_office.id");
-        this.entryProvider.applyJoin("m_appuser", "LEFT JOIN m_appuser ON acc_gl_journal_entry.createdby_id = m_appuser.id");
+        this.entryProvider = new JdbcProvider(AccGLJournalEntry.NAME);
+        this.entryProvider.applyJoin("acc_gl_account", "LEFT JOIN " + AccGLAccount.NAME + " ON " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ACCOUNT_ID + " = " + AccGLAccount.NAME + "." + AccGLAccount.Field.ID);
+        this.entryProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " ON " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
+        this.entryProvider.applyJoin("m_appuser", "LEFT JOIN " + MAppUser.NAME + " ON " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.CREATED_BY_ID + " = " + MAppUser.NAME + "." + MAppUser.Field.ID);
 
-        this.entryProvider.boardField("acc_gl_journal_entry.id", "id", Long.class);
-        this.entryProvider.boardField("acc_gl_account.name", "account_name", String.class);
-        this.entryProvider.boardField("m_office.name", "office", String.class);
-        this.entryProvider.boardField("acc_gl_journal_entry.entry_date", "transaction_date", Date.class);
-        this.entryProvider.boardField("acc_gl_journal_entry.transaction_id", "transaction_id", Long.class);
-        this.entryProvider.boardField("CASE acc_gl_account.classification_enum WHEN 1 THEN 'Asset' WHEN 2 THEN 'Liability' WHEN 3 THEN 'Equity' WHEN 4 THEN 'Income' WHEN 5 THEN 'Expense' END", "account_type", String.class);
-        this.entryProvider.boardField("m_appuser.username", "created_by", String.class);
-        this.entryProvider.boardField("if(acc_gl_journal_entry.type_enum = 1, NULL, acc_gl_journal_entry.amount)", "debit_amount", Double.class);
-        this.entryProvider.boardField("if(acc_gl_journal_entry.type_enum = 1, acc_gl_journal_entry.amount, NULL)", "credit_amount", Double.class);
+        this.entryProvider.boardField(AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ID, "id", Long.class);
+        this.entryProvider.boardField(AccGLAccount.NAME + "." + AccGLAccount.Field.NAME, "account_name", String.class);
+        this.entryProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "office", String.class);
+        this.entryProvider.boardField(AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ENTRY_DATE, "transaction_date", Date.class);
+        this.entryProvider.boardField(AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.TRANSACTION_ID, "transaction_id", Long.class);
+        this.entryProvider.boardField("CASE " + AccGLAccount.NAME + "." + AccGLAccount.Field.CLASSIFICATION_ENUM + " WHEN 1 THEN 'Asset' WHEN 2 THEN 'Liability' WHEN 3 THEN 'Equity' WHEN 4 THEN 'Income' WHEN 5 THEN 'Expense' END", "account_type", String.class);
+        this.entryProvider.boardField(MAppUser.NAME + "." + MAppUser.Field.USERNAME, "created_by", String.class);
+        this.entryProvider.boardField("if(" + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.TYPE_ENUM + " = 1, NULL, " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.AMOUNT + ")", "debit_amount", Double.class);
+        this.entryProvider.boardField("if(" + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.TYPE_ENUM + " = 1, " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.AMOUNT + ", NULL)", "credit_amount", Double.class);
 
         this.entryColumn = Lists.newArrayList();
         this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("ID"), "id", "id", this::entryColumn));
@@ -242,7 +246,7 @@ public class SearchJournalPage extends Page {
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeIContainer.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
@@ -254,7 +258,7 @@ public class SearchJournalPage extends Page {
         this.form.add(this.accountNameBlock);
         this.accountNameIContainer = new WebMarkupContainer("accountNameIContainer");
         this.accountNameBlock.add(this.accountNameIContainer);
-        this.accountNameProvider = new SingleChoiceProvider("acc_gl_account", "id", "name", "concat(name,' [', gl_code, ']')");
+        this.accountNameProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME, "concat(" + AccGLAccount.Field.NAME + ",' [', " + AccGLAccount.Field.GL_CODE + ", ']')");
         this.accountNameField = new Select2SingleChoice<>("accountNameField", new PropertyModel<>(this, "accountNameValue"), this.accountNameProvider);
         this.accountNameIContainer.add(this.accountNameField);
         this.accountNameFeedback = new TextFeedbackPanel("accountNameFeedback", this.accountNameField);
@@ -285,42 +289,42 @@ public class SearchJournalPage extends Page {
 
     protected void searchButtonSubmit(Button button) {
         if (this.officeValue != null) {
-            this.entryProvider.applyWhere("office", "m_office.id = " + this.officeValue.getId());
+            this.entryProvider.applyWhere("office", MOffice.NAME + "." + MOffice.Field.ID + " = " + this.officeValue.getId());
         } else {
             this.entryProvider.removeWhere("office");
         }
         if (this.accountNameValue != null) {
-            this.entryProvider.applyWhere("account", "acc_gl_account.id = " + this.accountNameValue.getId());
+            this.entryProvider.applyWhere("account", AccGLAccount.NAME + "." + AccGLAccount.Field.ID + " = " + this.accountNameValue.getId());
         } else {
             this.entryProvider.removeWhere("account");
         }
         if (this.manualValue != null) {
             if (JournalEntry.Manual.name().equals(this.manualValue.getId())) {
-                this.entryProvider.applyWhere("manual", "acc_gl_journal_entry.manual_entry = " + JournalEntry.Manual.getLiteral());
+                this.entryProvider.applyWhere("manual", AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.MANUAL_ENTRY + " = " + JournalEntry.Manual.getLiteral());
             } else if (JournalEntry.System.name().equals(this.manualValue.getId())) {
-                this.entryProvider.applyWhere("manual", "acc_gl_journal_entry.manual_entry = " + JournalEntry.System.getLiteral());
+                this.entryProvider.applyWhere("manual", AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.MANUAL_ENTRY + " = " + JournalEntry.System.getLiteral());
             }
         } else {
             this.entryProvider.removeWhere("manual");
         }
         if (this.fromDateValue != null && this.toDateValue != null) {
             if (this.fromDateValue.before(this.toDateValue)) {
-                this.entryProvider.applyWhere("transaction_date", "acc_gl_journal_entry.entry_date between '" + DateFormatUtils.format(this.fromDateValue, "yyyy-MM-dd") + "' and '" + DateFormatUtils.format(this.toDateValue, "yyyy-MM-dd") + "'");
+                this.entryProvider.applyWhere("transaction_date", AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ENTRY_DATE + " between '" + DateFormatUtils.format(this.fromDateValue, "yyyy-MM-dd") + "' and '" + DateFormatUtils.format(this.toDateValue, "yyyy-MM-dd") + "'");
             } else {
-                this.entryProvider.applyWhere("transaction_date", "acc_gl_journal_entry.entry_date between '" + DateFormatUtils.format(this.toDateValue, "yyyy-MM-dd") + "' and '" + DateFormatUtils.format(this.fromDateValue, "yyyy-MM-dd") + "'");
+                this.entryProvider.applyWhere("transaction_date", AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ENTRY_DATE + " between '" + DateFormatUtils.format(this.toDateValue, "yyyy-MM-dd") + "' and '" + DateFormatUtils.format(this.fromDateValue, "yyyy-MM-dd") + "'");
             }
         } else if (this.fromDateValue == null && this.toDateValue == null) {
             this.entryProvider.removeWhere("transaction_date");
         } else {
             if (this.toDateValue != null) {
-                this.entryProvider.applyWhere("transaction_date", "acc_gl_journal_entry.entry_date <= '" + DateFormatUtils.format(this.toDateValue, "yyyy-MM-dd") + "'");
+                this.entryProvider.applyWhere("transaction_date", AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ENTRY_DATE + " <= '" + DateFormatUtils.format(this.toDateValue, "yyyy-MM-dd") + "'");
             }
             if (this.fromDateValue != null) {
-                this.entryProvider.applyWhere("transaction_date", "acc_gl_journal_entry.entry_date >= '" + DateFormatUtils.format(this.fromDateValue, "yyyy-MM-dd") + "'");
+                this.entryProvider.applyWhere("transaction_date", AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ENTRY_DATE + " >= '" + DateFormatUtils.format(this.fromDateValue, "yyyy-MM-dd") + "'");
             }
         }
         if (this.transactionNumberValue != null) {
-            this.entryProvider.applyWhere("transactionNumber", "transaction_id = '" + this.transactionNumberValue + "'");
+            this.entryProvider.applyWhere("transactionNumber", AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.TRANSACTION_ID + " = '" + this.transactionNumberValue + "'");
         } else {
             this.entryProvider.removeWhere("transactionNumber");
         }

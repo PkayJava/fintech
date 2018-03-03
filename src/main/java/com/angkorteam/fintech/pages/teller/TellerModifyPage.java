@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.MTellers;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -120,14 +124,32 @@ public class TellerModifyPage extends Page {
     protected void initData() {
         PageParameters parameters = getPageParameters();
         this.tellerId = parameters.get("tellerId").toString("");
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> tellerObject = jdbcTemplate.queryForMap("select * from m_tellers where id = ?", this.tellerId);
-        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", Option.MAPPER, tellerObject.get("office_id"));
-        this.statusValue = TellerStatus.optionLiteral(String.valueOf(tellerObject.get("state")));
-        this.nameValue = (String) tellerObject.get("name");
-        this.startDateValue = (Date) tellerObject.get("valid_from");
-        this.endDateValue = (Date) tellerObject.get("valid_to");
-        this.descriptionValue = (String) tellerObject.get("description");
+
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MTellers.NAME);
+        selectQuery.addWhere(MTellers.Field.ID + " = :" + MTellers.Field.ID, this.tellerId);
+        selectQuery.addField(MTellers.Field.OFFICE_ID);
+        selectQuery.addField(MTellers.Field.STATE);
+        selectQuery.addField(MTellers.Field.NAME);
+        selectQuery.addField(MTellers.Field.VALID_FROM);
+        selectQuery.addField(MTellers.Field.VALID_TO);
+        selectQuery.addField(MTellers.Field.DESCRIPTION);
+        Map<String, Object> tellerObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
+        selectQuery = new SelectQuery(MOffice.NAME);
+        selectQuery.addField(MOffice.Field.ID);
+        selectQuery.addField(MOffice.Field.NAME + " as text");
+        selectQuery.addWhere(MOffice.Field.ID + " = :" + MOffice.Field.ID, tellerObject.get(MTellers.Field.OFFICE_ID));
+        this.officeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
+        this.statusValue = TellerStatus.optionLiteral(String.valueOf(tellerObject.get(MTellers.Field.STATE)));
+        this.nameValue = (String) tellerObject.get(MTellers.Field.NAME);
+        this.startDateValue = (Date) tellerObject.get(MTellers.Field.VALID_FROM);
+        this.endDateValue = (Date) tellerObject.get(MTellers.Field.VALID_TO);
+        this.descriptionValue = (String) tellerObject.get(MTellers.Field.DEBIT_ACCOUNT_ID);
     }
 
     @Override
@@ -228,7 +250,7 @@ public class TellerModifyPage extends Page {
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.officeIContainer.add(this.officeField);

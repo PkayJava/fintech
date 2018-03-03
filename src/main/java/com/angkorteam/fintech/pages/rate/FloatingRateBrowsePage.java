@@ -3,6 +3,8 @@ package com.angkorteam.fintech.pages.rate;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MAppUser;
+import com.angkorteam.fintech.ddl.MFloatingRates;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -86,13 +88,13 @@ public class FloatingRateBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_floating_rates");
-        this.dataProvider.applyJoin("m_appuser", "INNER join m_appuser on m_floating_rates.createdby_id = m_appuser.id");
-        this.dataProvider.boardField("m_floating_rates.id", "id", Long.class);
-        this.dataProvider.boardField("m_floating_rates.name", "name", String.class);
-        this.dataProvider.boardField("m_appuser.username", "createdBy", String.class);
-        this.dataProvider.boardField("m_floating_rates.is_base_lending_rate", "base_lending_rate", Boolean.class);
-        this.dataProvider.boardField("m_floating_rates.is_active", "active", Boolean.class);
+        this.dataProvider = new JdbcProvider(MFloatingRates.NAME);
+        this.dataProvider.applyJoin("m_appuser", "INNER JOIN " + MAppUser.NAME + " ON " + MFloatingRates.NAME + "." + MFloatingRates.Field.CREATED_BY_ID + " = " + MAppUser.NAME + "." + MAppUser.Field.ID);
+        this.dataProvider.boardField(MFloatingRates.NAME + "." + MFloatingRates.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MFloatingRates.NAME + "." + MFloatingRates.Field.NAME, "name", String.class);
+        this.dataProvider.boardField(MAppUser.NAME + "." + MAppUser.Field.USERNAME, "createdBy", String.class);
+        this.dataProvider.boardField(MFloatingRates.NAME + "." + MFloatingRates.Field.IS_BASE_LENDING_RATE, "base_lending_rate", Boolean.class);
+        this.dataProvider.boardField(MFloatingRates.NAME + "." + MFloatingRates.Field.IS_ACTIVE, "active", Boolean.class);
 
         this.dataProvider.selectField("id", Long.class);
 

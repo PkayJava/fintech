@@ -2,6 +2,9 @@ package com.angkorteam.fintech.pages.staff;
 
 import java.util.List;
 
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.MRole;
+import com.angkorteam.fintech.ddl.MStaff;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -246,7 +249,7 @@ public class UserCreatePage extends Page {
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.add(new OnChangeAjaxBehavior(this::officeFieldUpdate));
         this.officeField.setRequired(true);
@@ -260,7 +263,7 @@ public class UserCreatePage extends Page {
         this.form.add(this.permissionBlock);
         this.permissionIContainer = new WebMarkupContainer("permissionIContainer");
         this.permissionBlock.add(this.permissionIContainer);
-        this.permissionProvider = new MultipleChoiceProvider("m_role", "id", "name");
+        this.permissionProvider = new MultipleChoiceProvider(MRole.NAME, MRole.Field.ID, MRole.Field.NAME);
         this.permissionField = new Select2MultipleChoice<>("permissionField", new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
         this.permissionField.add(new OnChangeAjaxBehavior());
         this.permissionField.setRequired(true);
@@ -274,7 +277,7 @@ public class UserCreatePage extends Page {
         this.form.add(this.staffBlock);
         this.staffIContainer = new WebMarkupContainer("staffIContainer");
         this.staffBlock.add(this.staffIContainer);
-        this.staffProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
+        this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.Field.ID, MStaff.Field.DISPLAY_NAME);
         this.staffProvider.setDisabled(true);
         this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.add(new OnChangeAjaxBehavior());
@@ -312,7 +315,7 @@ public class UserCreatePage extends Page {
     protected boolean officeFieldUpdate(AjaxRequestTarget target) {
         this.staffValue = null;
         this.staffProvider.setDisabled(false);
-        this.staffProvider.applyWhere("office", "office_id = " + this.officeValue.getId());
+        this.staffProvider.applyWhere("office", MStaff.Field.OFFICE_ID + " = " + this.officeValue.getId());
         if (target != null) {
             target.add(this.form);
         }

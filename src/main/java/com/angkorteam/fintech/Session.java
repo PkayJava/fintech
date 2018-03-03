@@ -1,9 +1,10 @@
 package com.angkorteam.fintech;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.servlet.http.HttpSession;
-
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.Language;
+import com.angkorteam.fintech.helper.LoginHelper;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
@@ -13,11 +14,8 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.Language;
-import com.angkorteam.fintech.helper.LoginHelper;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import javax.servlet.http.HttpSession;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Session extends AbstractAuthenticatedWebSession implements IMifos {
 
@@ -28,8 +26,12 @@ public class Session extends AbstractAuthenticatedWebSession implements IMifos {
     private String token;
 
     private String identifier;
-    
+
     private Language language = Language.English;
+
+    public static final String IDENTIFIER = "mifos_identifier";
+
+    public static final String TOKEN = "mifos_token";
 
     public Session(Request request) {
         super(request);
@@ -39,7 +41,7 @@ public class Session extends AbstractAuthenticatedWebSession implements IMifos {
     public String getToken() {
         return token;
     }
-    
+
     public Language getLanguage() {
         return this.language;
     }
@@ -62,8 +64,8 @@ public class Session extends AbstractAuthenticatedWebSession implements IMifos {
                     }
                 }
                 this.identifier = identifier;
-                session.setAttribute("mifos_identifier", this.identifier);
-                session.setAttribute("mifos_token", this.token);
+                session.setAttribute(IDENTIFIER, this.identifier);
+                session.setAttribute(TOKEN, this.token);
                 this.roles.add(Function.ALL_FUNCTION);
                 LOGGER.info("identifier {} token {}", this.identifier, this.token);
                 return true;
@@ -73,8 +75,8 @@ public class Session extends AbstractAuthenticatedWebSession implements IMifos {
         } catch (UnirestException e) {
             e.printStackTrace();
         }
-        System.out.println("token : " + this.token);
-        System.out.println("identifier : " + this.identifier);
+        LOGGER.info("token : " + this.token);
+        LOGGER.info("identifier : " + this.identifier);
         return false;
     }
 

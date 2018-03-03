@@ -3,6 +3,9 @@ package com.angkorteam.fintech.pages.account;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.*;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -137,19 +140,61 @@ public class RuleModifyPage extends Page {
         PageParameters parameters = getPageParameters();
         this.ruleId = parameters.get("ruleId").toString("");
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-        Map<String, Object> ruleObject = jdbcTemplate.queryForMap("select * from acc_accounting_rule where id = ?", this.ruleId);
+        SelectQuery selectQuery = null;
 
-        this.ruleNameValue = (String) ruleObject.get("name");
-        this.descriptionValue = (String) ruleObject.get("description");
-        this.officeValue = jdbcTemplate.queryForObject("select id, name text from m_office where id = ?", Option.MAPPER, ruleObject.get("office_id"));
-        this.debitAccountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, ruleObject.get("debit_account_id"));
-        this.debitTagValue = jdbcTemplate.query("SELECT m_code_value.id, m_code_value.code_value text FROM acc_rule_tags INNER JOIN m_code_value ON acc_rule_tags.tag_id = m_code_value.id WHERE acc_type_enum = " + RuleBrowsePage.DEBIT + " and acc_rule_tags.acc_rule_id = ?", Option.MAPPER, ruleObject.get("id"));
-        this.multipleDebitValue = (Boolean) ruleObject.get("allow_multiple_debits");
-        this.creditAccountValue = jdbcTemplate.queryForObject("select id, name text from acc_gl_account where id = ?", Option.MAPPER, ruleObject.get("credit_account_id"));
-        this.creditTagValue = jdbcTemplate.query("SELECT m_code_value.id, m_code_value.code_value text FROM acc_rule_tags INNER JOIN m_code_value ON acc_rule_tags.tag_id = m_code_value.id WHERE acc_type_enum = " + RuleBrowsePage.CREDIT + " and acc_rule_tags.acc_rule_id = ?", Option.MAPPER, ruleObject.get("id"));
-        this.multipleCreditValue = (Boolean) ruleObject.get("allow_multiple_credits");
+        selectQuery = new SelectQuery(AccAccountingRule.NAME);
+        selectQuery.addWhere(AccAccountingRule.Field.ID + " = :" + AccAccountingRule.Field.ID, this.ruleId);
+        selectQuery.addField(AccAccountingRule.Field.ID);
+        selectQuery.addField(AccAccountingRule.Field.NAME);
+        selectQuery.addField(AccAccountingRule.Field.DESCRIPTION);
+        selectQuery.addField(AccAccountingRule.Field.OFFICE_ID);
+        selectQuery.addField(AccAccountingRule.Field.DEBIT_ACCOUNT_ID);
+        selectQuery.addField(AccAccountingRule.Field.ALLOW_MULTIPLE_DEBITS);
+        selectQuery.addField(AccAccountingRule.Field.ALLOW_MULTIPLE_CREDITS);
+        Map<String, Object> ruleObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
+        this.ruleNameValue = (String) ruleObject.get(AccAccountingRule.Field.NAME);
+        this.descriptionValue = (String) ruleObject.get(AccAccountingRule.Field.DESCRIPTION);
+
+        selectQuery = new SelectQuery(MOffice.NAME);
+        selectQuery.addField(MOffice.Field.ID);
+        selectQuery.addField(MOffice.Field.NAME + " as text");
+        selectQuery.addWhere(MOffice.Field.ID + " = :" + MOffice.Field.ID, ruleObject.get(AccAccountingRule.Field.OFFICE_ID));
+        this.officeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
+        selectQuery = new SelectQuery(AccGLAccount.NAME);
+        selectQuery.addField(AccGLAccount.Field.ID);
+        selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+        selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, ruleObject.get(AccAccountingRule.Field.DEBIT_ACCOUNT_ID));
+        this.debitAccountValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
+        selectQuery = new SelectQuery(AccRuleTags.NAME);
+        selectQuery.addField(MCodeValue.NAME + "." + MCodeValue.Field.ID);
+        selectQuery.addField(MCodeValue.NAME + "." + MCodeValue.Field.CODE_VALUE + " as text");
+        selectQuery.addJoin("INNER JOIN " + MCodeValue.NAME + " ON " + AccRuleTags.NAME + "." + AccRuleTags.Field.TAG_ID + " = " + MCodeValue.NAME + "." + MCodeValue.Field.ID);
+        selectQuery.addWhere(AccRuleTags.NAME + "." + AccRuleTags.Field.ACC_TYPE_ENUM + " = " + RuleBrowsePage.DEBIT);
+        selectQuery.addWhere(AccRuleTags.NAME + "." + AccRuleTags.Field.ACC_RULE_ID + " = :" + AccRuleTags.Field.ACC_RULE_ID, ruleObject.get(AccAccountingRule.Field.ID));
+        this.debitTagValue = named.query(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
+        selectQuery = new SelectQuery(AccRuleTags.NAME);
+        selectQuery.addField(MCodeValue.NAME + "." + MCodeValue.Field.ID);
+        selectQuery.addField(MCodeValue.NAME + "." + MCodeValue.Field.CODE_VALUE + " as text");
+        selectQuery.addJoin("INNER JOIN " + MCodeValue.NAME + " ON " + AccRuleTags.NAME + "." + AccRuleTags.Field.TAG_ID + " = " + MCodeValue.NAME + "." + MCodeValue.Field.ID);
+        selectQuery.addWhere(AccRuleTags.NAME + "." + AccRuleTags.Field.ACC_TYPE_ENUM + " = " + RuleBrowsePage.CREDIT);
+        selectQuery.addWhere(AccRuleTags.NAME + "." + AccRuleTags.Field.ACC_RULE_ID + " = :" + AccRuleTags.Field.ACC_RULE_ID, ruleObject.get(AccAccountingRule.Field.ID));
+        this.creditTagValue = named.query(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
+        this.multipleDebitValue = (Boolean) ruleObject.get(AccAccountingRule.Field.ALLOW_MULTIPLE_DEBITS);
+        this.multipleCreditValue = (Boolean) ruleObject.get(AccAccountingRule.Field.ALLOW_MULTIPLE_CREDITS);
+
+        selectQuery = new SelectQuery(AccGLAccount.NAME);
+        selectQuery.addField(AccGLAccount.Field.ID);
+        selectQuery.addField(AccGLAccount.Field.NAME + " as text");
+        selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, ruleObject.get(AccAccountingRule.Field.CREDIT_ACCOUNT_ID));
+        this.creditAccountValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
     }
 
     @Override
@@ -201,8 +246,8 @@ public class RuleModifyPage extends Page {
         this.form.add(this.creditTagBlock);
         this.creditTagIContainer = new WebMarkupContainer("creditTagIContainer");
         this.creditTagBlock.add(this.creditTagIContainer);
-        this.creditTagProvider = new MultipleChoiceProvider("m_code_value", "id", "code_value");
-        this.creditTagProvider.applyWhere("code_id", "code_id in (7,8,9,10,11)");
+        this.creditTagProvider = new MultipleChoiceProvider(MCodeValue.NAME, MCodeValue.Field.ID, MCodeValue.Field.CODE_VALUE);
+        this.creditTagProvider.applyWhere("code_id", MCodeValue.Field.CODE_ID + " IN (7,8,9,10,11)");
         this.creditTagField = new Select2MultipleChoice<>("creditTagField", new PropertyModel<>(this, "creditTagValue"), this.creditTagProvider);
         this.creditTagIContainer.add(this.creditTagField);
         this.creditTagFeedback = new TextFeedbackPanel("creditTagFeedback", this.creditTagField);
@@ -214,8 +259,8 @@ public class RuleModifyPage extends Page {
         this.form.add(this.creditAccountBlock);
         this.creditAccountIContainer = new WebMarkupContainer("creditAccountIContainer");
         this.creditAccountBlock.add(this.creditAccountIContainer);
-        this.creditAccountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.creditAccountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.creditAccountProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.creditAccountProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.creditAccountField = new Select2SingleChoice<>("creditAccountField", new PropertyModel<>(this, "creditAccountValue"), this.creditAccountProvider);
         this.creditAccountIContainer.add(this.creditAccountField);
         this.creditAccountFeedback = new TextFeedbackPanel("creditAccountFeedback", this.creditAccountField);
@@ -239,8 +284,8 @@ public class RuleModifyPage extends Page {
         this.form.add(this.debitTagBlock);
         this.debitTagIContainer = new WebMarkupContainer("debitTagIContainer");
         this.debitTagBlock.add(this.debitTagIContainer);
-        this.debitTagProvider = new MultipleChoiceProvider("m_code_value", "id", "code_value");
-        this.debitTagProvider.applyWhere("code_id", "code_id in (7,8,9,10,11)");
+        this.debitTagProvider = new MultipleChoiceProvider(MCodeValue.NAME, MCodeValue.Field.ID, MCodeValue.Field.CODE_VALUE);
+        this.debitTagProvider.applyWhere("code_id", MCodeValue.Field.CODE_ID + " IN (7,8,9,10,11)");
         this.debitTagField = new Select2MultipleChoice<>("debitTagField", new PropertyModel<>(this, "debitTagValue"), this.debitTagProvider);
         this.debitTagIContainer.add(this.debitTagField);
         this.debitTagFeedback = new TextFeedbackPanel("debitTagFeedback", this.debitTagField);
@@ -252,8 +297,8 @@ public class RuleModifyPage extends Page {
         this.form.add(this.debitAccountBlock);
         this.debitAccountIContainer = new WebMarkupContainer("debitAccountIContainer");
         this.debitAccountBlock.add(this.debitAccountIContainer);
-        this.debitAccountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.debitAccountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.debitAccountProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.debitAccountProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.debitAccountField = new Select2SingleChoice<>("debitAccountField", new PropertyModel<>(this, "debitAccountValue"), this.debitAccountProvider);
         this.debitAccountIContainer.add(this.debitAccountField);
         this.debitAccountFeedback = new TextFeedbackPanel("debitAccountFeedback", this.debitAccountField);
@@ -277,7 +322,7 @@ public class RuleModifyPage extends Page {
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.officeIContainer.add(this.officeField);

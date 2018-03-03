@@ -3,6 +3,11 @@ package com.angkorteam.fintech.pages.charge;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MOrganisationCurrency;
+import com.angkorteam.fintech.ddl.MTaxGroup;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -155,7 +160,7 @@ public class ShareChargeModifyPage extends Page {
         this.form.add(this.taxGroupBlock);
         this.taxGroupIContainer = new WebMarkupContainer("taxGroupIContainer");
         this.taxGroupBlock.add(this.taxGroupIContainer);
-        this.taxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
+        this.taxGroupProvider = new SingleChoiceProvider(MTaxGroup.NAME, MTaxGroup.Field.ID, MTaxGroup.Field.NAME);
         this.taxGroupField = new Select2SingleChoice<>("taxGroupField", new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
         this.taxGroupField.setLabel(Model.of("Tax Group"));
         this.taxGroupIContainer.add(this.taxGroupField);
@@ -258,27 +263,49 @@ public class ShareChargeModifyPage extends Page {
     @Override
     protected void initData() {
 
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
         PageParameters parameters = getPageParameters();
         this.chargeId = parameters.get("chargeId").toString("");
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select * from m_charge where id = ?", this.chargeId);
+        selectQuery = new SelectQuery(MCharge.NAME);
+        selectQuery.addWhere(MCharge.Field.ID + " = :" + MCharge.Field.ID, this.chargeId);
+        selectQuery.addField(MCharge.Field.NAME);
+        selectQuery.addField(MCharge.Field.CURRENCY_CODE);
+        selectQuery.addField(MCharge.Field.CHARGE_TIME_ENUM);
+        selectQuery.addField(MCharge.Field.CHARGE_CALCULATION_ENUM);
+        selectQuery.addField(MCharge.Field.AMOUNT);
+        selectQuery.addField(MCharge.Field.IS_ACTIVE);
+        selectQuery.addField(MCharge.Field.TAX_GROUP_ID);
 
-        this.nameValue = (String) chargeObject.get("name");
+        Map<String, Object> chargeObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
-        this.currencyValue = jdbcTemplate.queryForObject("select code id, concat(name,' [', code,']') text from m_organisation_currency where code = ?", Option.MAPPER, chargeObject.get("currency_code"));
 
-        String charge_time_enum = String.valueOf(chargeObject.get("charge_time_enum"));
+        this.nameValue = (String) chargeObject.get(MCharge.Field.NAME);
+
+        selectQuery = new SelectQuery(MOrganisationCurrency.NAME);
+        selectQuery.addField(MOrganisationCurrency.Field.CODE + " as id");
+        selectQuery.addField("concat(" + MOrganisationCurrency.Field.NAME + ",' [', " + MOrganisationCurrency.Field.CODE + ",']') text");
+        selectQuery.addWhere(MOrganisationCurrency.Field.CODE + " = :" + MOrganisationCurrency.Field.CODE, chargeObject.get(MCharge.Field.CURRENCY_CODE));
+        this.currencyValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
+        String charge_time_enum = String.valueOf(chargeObject.get(MCharge.Field.CHARGE_TIME_ENUM));
         this.chargeTimeValue = ChargeTime.optionLiteral(charge_time_enum);
 
-        String charge_calculation_enum = String.valueOf(chargeObject.get("charge_calculation_enum"));
+        String charge_calculation_enum = String.valueOf(chargeObject.get(MCharge.Field.CHARGE_CALCULATION_ENUM));
         this.chargeCalculationValue = ChargeCalculation.optionLiteral(charge_calculation_enum);
 
-        this.amountValue = (Double) chargeObject.get("amount");
+        this.amountValue = (Double) chargeObject.get(MCharge.Field.AMOUNT);
 
-        this.activeValue = (Boolean) chargeObject.get("is_active");
+        this.activeValue = (Boolean) chargeObject.get(MCharge.Field.IS_ACTIVE);
 
-        this.taxGroupValue = jdbcTemplate.queryForObject("select id, name text from m_tax_group where id = ?", Option.MAPPER, chargeObject.get("tax_group_id"));
+        selectQuery = new SelectQuery(MTaxGroup.NAME);
+        selectQuery.addField(MTaxGroup.Field.ID);
+        selectQuery.addField(MTaxGroup.Field.NAME + " as text");
+        selectQuery.addWhere(MTaxGroup.Field.ID + " = :" + MTaxGroup.Field.ID, chargeObject.get(MCharge.Field.TAX_GROUP_ID));
+        this.taxGroupValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
 
     }
 

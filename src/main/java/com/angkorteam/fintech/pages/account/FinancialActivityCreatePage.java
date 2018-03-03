@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.account;
 
 import java.util.List;
 
+import com.angkorteam.fintech.ddl.AccGLAccount;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -128,8 +129,8 @@ public class FinancialActivityCreatePage extends Page {
         this.form.add(this.accountBlock);
         this.accountIContainer = new WebMarkupContainer("accountIContainer");
         this.accountBlock.add(this.accountIContainer);
-        this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.accountProvider.applyWhere("usage", AccountUsage.Detail.getLiteral());
+        this.accountProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accountProvider.applyWhere("usage", AccGLAccount.Field.ACCOUNT_USAGE + " = '" + AccountUsage.Detail.getLiteral() + "'");
         this.accountProvider.setDisabled(true);
         this.accountField = new Select2SingleChoice<>("accountField", new PropertyModel<>(this, "accountValue"), this.accountProvider);
         this.accountIContainer.add(this.accountField);
@@ -150,7 +151,7 @@ public class FinancialActivityCreatePage extends Page {
             }
             this.accountValue = null;
             this.accountProvider.setDisabled(false);
-            this.accountProvider.applyWhere("classification_enum", "classification_enum = " + classification_enum.getLiteral());
+            this.accountProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = '" + classification_enum.getLiteral() + "'");
         }
         if (target != null) {
             target.add(this.form);

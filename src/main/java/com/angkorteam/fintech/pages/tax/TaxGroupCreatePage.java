@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MTaxComponent;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -201,7 +202,7 @@ public class TaxGroupCreatePage extends Page {
         this.taxForm.add(this.taxBlock);
         this.taxIContainer = new WebMarkupContainer("taxIContainer");
         this.taxBlock.add(this.taxIContainer);
-        this.taxProvider = new SingleChoiceProvider("m_tax_component", "id", "name");
+        this.taxProvider = new SingleChoiceProvider(MTaxComponent.NAME, MTaxComponent.Field.ID, MTaxComponent.Field.NAME);
         this.taxField = new Select2SingleChoice<>("taxField", new PropertyModel<>(this, "taxValue"), this.taxProvider);
         this.taxIContainer.add(this.taxField);
         this.taxFeedback = new TextFeedbackPanel("taxFeedback", this.taxField);

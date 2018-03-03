@@ -1,8 +1,22 @@
 package com.angkorteam.fintech.pages.account;
 
-import java.util.List;
-import java.util.Map;
-
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.*;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.helper.AccountingRuleHelper;
+import com.angkorteam.fintech.pages.AccountingPage;
+import com.angkorteam.fintech.provider.JdbcProvider;
+import com.angkorteam.fintech.table.LinkCell;
+import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -14,28 +28,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.helper.AccountingRuleHelper;
-import com.angkorteam.fintech.pages.AccountingPage;
-import com.angkorteam.fintech.provider.JdbcProvider;
-import com.angkorteam.fintech.table.LinkCell;
-import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by socheatkhauv on 7/5/17.
@@ -98,23 +92,23 @@ public class RuleBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("acc_accounting_rule");
-        this.dataProvider.applyJoin("m_office", "LEFT JOIN m_office ON acc_accounting_rule.office_id = m_office.id");
-        this.dataProvider.applyJoin("acc_gl_account_debit", "LEFT JOIN acc_gl_account debit ON acc_accounting_rule.debit_account_id = debit.id");
-        this.dataProvider.applyJoin("acc_gl_account_credit", "LEFT JOIN acc_gl_account credit ON acc_accounting_rule.credit_account_id = credit.id");
-        this.dataProvider.applyJoin("acc_rule", "LEFT JOIN acc_rule_tags debit_tag on acc_accounting_rule.id = debit_tag.acc_rule_id and debit_tag.acc_type_enum = " + DEBIT);
-        this.dataProvider.applyJoin("m_code_value_debit", "LEFT JOIN m_code_value debit_tag_code on debit_tag.tag_id = debit_tag_code.id");
-        this.dataProvider.applyJoin("acc_rule_tags", "LEFT JOIN acc_rule_tags credit_tag on acc_accounting_rule.id = credit_tag.acc_rule_id and credit_tag.acc_type_enum = " + CREDIT);
-        this.dataProvider.applyJoin("m_code_value_credit", "LEFT JOIN m_code_value credit_tag_code on credit_tag.tag_id = credit_tag_code.id");
-        this.dataProvider.setGroupBy("acc_accounting_rule.id");
+        this.dataProvider = new JdbcProvider(AccAccountingRule.NAME);
+        this.dataProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
+        this.dataProvider.applyJoin("acc_gl_account_debit", "LEFT JOIN " + AccGLAccount.NAME + " debit ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.DEBIT_ACCOUNT_ID + " = debit." + AccGLAccount.Field.ID);
+        this.dataProvider.applyJoin("acc_gl_account_credit", "LEFT JOIN " + AccGLAccount.NAME + " credit ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.CREDIT_ACCOUNT_ID + " = credit." + AccGLAccount.Field.ID);
+        this.dataProvider.applyJoin("acc_rule_debit", "LEFT JOIN " + AccRuleTags.NAME + " debit_tag on " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID + " = debit_tag." + AccRuleTags.Field.ACC_RULE_ID + " and debit_tag." + AccRuleTags.Field.ACC_TYPE_ENUM + " = " + DEBIT);
+        this.dataProvider.applyJoin("acc_rule_credit", "LEFT JOIN " + AccRuleTags.NAME + " credit_tag on " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID + " = credit_tag." + AccRuleTags.Field.ACC_RULE_ID + " and credit_tag." + AccRuleTags.Field.ACC_TYPE_ENUM + " = " + CREDIT);
+        this.dataProvider.applyJoin("m_code_value_debit", "LEFT JOIN " + MCodeValue.NAME + " debit_tag_code on debit_tag." + AccRuleTags.Field.TAG_ID + " = debit_tag_code." + MCodeValue.Field.ID);
+        this.dataProvider.applyJoin("m_code_value_credit", "LEFT JOIN " + MCodeValue.NAME + " credit_tag_code on credit_tag." + AccRuleTags.Field.TAG_ID + " = credit_tag_code." + MCodeValue.Field.ID);
+        this.dataProvider.setGroupBy(AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID);
 
-        this.dataProvider.boardField("max(acc_accounting_rule.id)", "id", Long.class);
-        this.dataProvider.boardField("max(acc_accounting_rule.name)", "rule_name", String.class);
-        this.dataProvider.boardField("max(m_office.name)", "office_name", String.class);
-        this.dataProvider.boardField("group_concat(debit_tag_code.code_value SEPARATOR ', ')", "debit_tags", String.class);
-        this.dataProvider.boardField("max(debit.name)", "debit_account", String.class);
-        this.dataProvider.boardField("group_concat(credit_tag_code.code_value SEPARATOR ', ')", "credit_tags", String.class);
-        this.dataProvider.boardField("max(credit.name)", "credit_account", String.class);
+        this.dataProvider.boardField("max(" + AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID + ")", "id", Long.class);
+        this.dataProvider.boardField("max(" + AccAccountingRule.NAME + "." + AccAccountingRule.Field.NAME + ")", "rule_name", String.class);
+        this.dataProvider.boardField("max(" + MOffice.NAME + "." + MOffice.Field.NAME + ")", "office_name", String.class);
+        this.dataProvider.boardField("group_concat(debit_tag_code." + MCodeValue.Field.CODE_VALUE + " SEPARATOR ', ')", "debit_tags", String.class);
+        this.dataProvider.boardField("max(debit." + AccGLAccount.Field.NAME + ")", "debit_account", String.class);
+        this.dataProvider.boardField("group_concat(credit_tag_code." + MCodeValue.Field.CODE_VALUE + " SEPARATOR ', ')", "credit_tags", String.class);
+        this.dataProvider.boardField("max(credit." + AccGLAccount.Field.NAME + ")", "credit_account", String.class);
 
         this.dataProvider.selectField("id", Long.class);
 

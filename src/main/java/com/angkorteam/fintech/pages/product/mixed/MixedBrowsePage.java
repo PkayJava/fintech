@@ -3,6 +3,8 @@ package com.angkorteam.fintech.pages.product.mixed;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MProductLoan;
+import com.angkorteam.fintech.ddl.MProductMix;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -77,11 +79,11 @@ public class MixedBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_product_loan");
-        this.dataProvider.applyJoin("m_product_mix", "INNER JOIN m_product_mix ON m_product_loan.id = m_product_mix.product_id");
-        this.dataProvider.setGroupBy("m_product_loan.id");
-        this.dataProvider.boardField("m_product_loan.id", "id", Long.class);
-        this.dataProvider.boardField("MAX(m_product_loan.name)", "name", String.class);
+        this.dataProvider = new JdbcProvider(MProductLoan.NAME);
+        this.dataProvider.applyJoin("m_product_mix", "INNER JOIN " + MProductMix.NAME + " ON " + MProductLoan.NAME + "." + MProductLoan.Field.ID + " = " + MProductMix.NAME + "." + MProductMix.Field.PRODUCT_ID);
+        this.dataProvider.setGroupBy(MProductLoan.NAME + "." + MProductLoan.Field.ID);
+        this.dataProvider.boardField(MProductLoan.NAME + "." + MProductLoan.Field.ID, "id", Long.class);
+        this.dataProvider.boardField("MAX(" + MProductLoan.NAME + "." + MProductLoan.Field.NAME + ")", MProductLoan.Field.NAME, String.class);
 
         this.dataProvider.selectField("id", Long.class);
 

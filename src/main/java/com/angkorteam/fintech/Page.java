@@ -3,9 +3,9 @@ package com.angkorteam.fintech;
 import java.util.List;
 import java.util.MissingResourceException;
 
+import com.angkorteam.fintech.pages.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -17,12 +17,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.angkorteam.fintech.pages.AccountingPage;
-import com.angkorteam.fintech.pages.LoginPage;
-import com.angkorteam.fintech.pages.LogoutPage;
-import com.angkorteam.fintech.pages.OrganizationDashboardPage;
-import com.angkorteam.fintech.pages.ProductDashboardPage;
-import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
@@ -37,7 +31,6 @@ import com.angkorteam.framework.models.PageLogo;
 import com.angkorteam.framework.models.SideMenu;
 import com.angkorteam.framework.models.UserInfo;
 import com.angkorteam.framework.wicket.DashboardPage;
-import com.angkorteam.framework.wicket.markup.html.panel.FeedbackPanel;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 
@@ -47,8 +40,6 @@ import com.mashape.unirest.http.JsonNode;
 public abstract class Page extends DashboardPage {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Page.class);
-
-    private FeedbackPanel feedbackPanel;
 
     public Page() {
     }
@@ -71,9 +62,6 @@ public abstract class Page extends DashboardPage {
     protected final void onInitialize() {
         initData();
         super.onInitialize();
-        this.feedbackPanel = new FeedbackPanel("feedbackPanel", this::report);
-        this.add(this.feedbackPanel);
-        this.setOutputMarkupId(true);
         initComponent();
         configureRequiredValidation();
         configureMetaData();
@@ -86,13 +74,6 @@ public abstract class Page extends DashboardPage {
     protected abstract void configureRequiredValidation();
 
     protected abstract void configureMetaData();
-
-    private boolean report(FeedbackMessage feedbackMessage) {
-        if (feedbackMessage.getReporter() instanceof org.apache.wicket.Page) {
-            return true;
-        }
-        return false;
-    }
 
     public boolean reportError(JsonNode node) {
         if (node.getObject().has("errors")) {
@@ -247,6 +228,8 @@ public abstract class Page extends DashboardPage {
     @Override
     public IModel<List<NavBarMenu>> buildNavBarMenu() {
 
+        NavBarMenu simulatorMenu = new NavBarMenu().buildTypeIcon(SimulatorPage.class, null, Emoji.fa_dashboard, "Simulator", null);
+
         NavBarMenu clientsMenu = new NavBarMenu().buildTypeIcon(Emoji.fa_dashboard, "Clients", null, new NavBarMenuItem().buildTypeIcon(ClientBrowsePage.class, null, Emoji.fa_dashboard, "Clients"), new NavBarMenuItem().buildTypeIcon(GroupBrowsePage.class, null, Emoji.fa_dashboard, "Groups"), new NavBarMenuItem().buildTypeIcon(CenterBrowsePage.class, null, Emoji.fa_dashboard, "Centers"));
 
         NavBarMenu accountingMenu = new NavBarMenu().buildTypeIcon(AccountingPage.class, null, Emoji.fa_dashboard, "Accounting", null);
@@ -257,7 +240,7 @@ public abstract class Page extends DashboardPage {
 
         NavBarMenu profileMenu = new NavBarMenu().buildTypeIcon(Emoji.fa_dashboard, "Profile", null, new NavBarMenuItem().buildTypeIcon(LogoutPage.class, null, Emoji.fa_sign_out, "Logout"));
 
-        List<NavBarMenu> menus = Lists.newArrayList(clientsMenu, accountingMenu, reportsMenu, adminMenu, profileMenu);
+        List<NavBarMenu> menus = Lists.newArrayList(simulatorMenu, clientsMenu, accountingMenu, reportsMenu, adminMenu, profileMenu);
         return Model.ofList(menus);
     }
 
