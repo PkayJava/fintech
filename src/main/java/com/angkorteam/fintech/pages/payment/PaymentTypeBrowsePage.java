@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.payment;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MPaymentType;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -102,12 +103,12 @@ public class PaymentTypeBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_payment_type");
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("value", "name", String.class);
-        this.dataProvider.boardField("description", "description", String.class);
-        this.dataProvider.boardField("is_cash_payment", "cash", Boolean.class);
-        this.dataProvider.boardField("order_position", "position", Long.class);
+        this.dataProvider = new JdbcProvider(MPaymentType.NAME);
+        this.dataProvider.boardField(MPaymentType.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MPaymentType.Field.VALUE, "name", String.class);
+        this.dataProvider.boardField(MPaymentType.Field.DESCRIPTION, "description", String.class);
+        this.dataProvider.boardField(MPaymentType.Field.IS_CASH_PAYMENT, "cash", Boolean.class);
+        this.dataProvider.boardField(MPaymentType.Field.ORDER_POSITION, "position", Long.class);
 
         this.dataColumn = Lists.newArrayList();
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("ID"), "id", "id", this::dataColumn));
@@ -125,7 +126,7 @@ public class PaymentTypeBrowsePage extends Page {
         this.dataFilterForm.add(this.dataTable);
     }
 
-    protected void dataClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
+    protected void dataClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
         Long id = (Long) model.get("id");
         try {
             PaymentTypeHelper.delete((Session) getSession(), String.valueOf(id));
@@ -134,7 +135,7 @@ public class PaymentTypeBrowsePage extends Page {
         target.add(this.dataTable);
     }
 
-    protected List<ActionItem> dataAction(String s, Map<String, Object> model) {
+    protected List<ActionItem> dataAction(String column, Map<String, Object> model) {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 

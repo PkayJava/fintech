@@ -3,6 +3,9 @@ package com.angkorteam.fintech.pages.payment;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MPaymentType;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -100,9 +103,18 @@ public class PaymentTypeModifyPage extends Page {
         PageParameters parameters = getPageParameters();
         this.paymentTypeId = parameters.get("paymentTypeId").toString("");
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-        Map<String, Object> object = jdbcTemplate.queryForMap("select * from m_payment_type where id = ?", this.paymentTypeId);
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MPaymentType.NAME);
+        selectQuery.addField(MPaymentType.Field.DESCRIPTION);
+        selectQuery.addField(MPaymentType.Field.VALUE);
+        selectQuery.addField(MPaymentType.Field.IS_CASH_PAYMENT);
+        selectQuery.addField(MPaymentType.Field.ORDER_POSITION);
+        selectQuery.addWhere(MPaymentType.Field.ID + " = :" + MPaymentType.Field.ID, this.paymentTypeId);
+
+        Map<String, Object> object = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.descriptionValue = (String) object.get("description");
         this.nameValue = (String) object.get("value");
         this.cashValue = (Boolean) object.get("is_cash_payment");
