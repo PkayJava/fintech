@@ -1,24 +1,8 @@
 package com.angkorteam.fintech.pages.hook;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.repeater.RepeatingView;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MPermission;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.HookBuilder;
 import com.angkorteam.fintech.helper.HookHelper;
@@ -31,8 +15,10 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
@@ -52,6 +38,22 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -231,12 +233,17 @@ public class HookCreatePage extends Page {
     }
 
     protected void initGroupingBlock() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
         this.groupingBlock = new WebMarkupBlock("groupingBlock", Size.Four_4);
         this.form.add(this.groupingBlock);
         this.groupingIContainer = new WebMarkupContainer("groupingIContainer");
         this.groupingBlock.add(this.groupingIContainer);
-        this.groupingProvider = jdbcTemplate.query("select max(grouping) id, max(grouping) text from m_permission GROUP BY grouping", Option.MAPPER);
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MPermission.NAME);
+        selectQuery.addGroupBy(MPermission.Field.GROUPING);
+        selectQuery.addField("max(" + MPermission.Field.GROUPING + ") as id");
+        selectQuery.addField("max(" + MPermission.Field.GROUPING + ") as text");
+        this.groupingProvider = named.query(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
         this.groupingField = new DropDownChoice<>("groupingField", new PropertyModel<>(this, "groupingValue"), new PropertyModel<>(this, "groupingProvider"), new OptionChoiceRenderer());
         this.groupingField.setRequired(true);
         this.groupingField.add(new OnChangeAjaxBehavior(this::groupingFieldUpdate));
@@ -299,8 +306,14 @@ public class HookCreatePage extends Page {
 
     protected boolean entityNameFieldUpdate(AjaxRequestTarget target) {
         if (this.entityNameValue != null) {
-            JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-            this.actionNameProvider = jdbcTemplate.query("select max(action_name) id, max(action_name) text from m_permission WHERE  entity_name = ? GROUP BY action_name", Option.MAPPER, this.entityNameValue.getId());
+            JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+            SelectQuery selectQuery = null;
+            selectQuery = new SelectQuery(MPermission.NAME);
+            selectQuery.addField("max(" + MPermission.Field.ACTION_NAME + ") as id");
+            selectQuery.addField("max(" + MPermission.Field.ACTION_NAME + ") as text");
+            selectQuery.addWhere(MPermission.Field.ENTITY_NAME + " = :" + MPermission.Field.ENTITY_NAME, this.entityNameValue.getId());
+            selectQuery.addGroupBy(MPermission.Field.ACTION_NAME);
+            this.actionNameProvider = named.query(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
         } else {
             if (this.actionNameProvider != null) {
                 this.actionNameProvider.clear();
@@ -312,8 +325,14 @@ public class HookCreatePage extends Page {
 
     protected boolean groupingFieldUpdate(AjaxRequestTarget target) {
         if (this.groupingValue != null) {
-            JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-            this.entityNameProvider = jdbcTemplate.query("select max(entity_name) id, max(entity_name) text from m_permission WHERE  grouping = ? GROUP BY entity_name", Option.MAPPER, this.groupingValue.getId());
+            JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+            SelectQuery selectQuery = null;
+            selectQuery = new SelectQuery(MPermission.NAME);
+            selectQuery.addField("max(" + MPermission.Field.ENTITY_NAME + ") as id");
+            selectQuery.addField("max(" + MPermission.Field.ENTITY_NAME + ") as text");
+            selectQuery.addWhere(MPermission.Field.GROUPING + " = :" + MPermission.Field.GROUPING, this.groupingValue.getId());
+            selectQuery.addGroupBy(MPermission.Field.ENTITY_NAME);
+            this.entityNameProvider = named.query(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
         } else {
             if (this.entityNameProvider != null) {
                 this.entityNameProvider.clear();

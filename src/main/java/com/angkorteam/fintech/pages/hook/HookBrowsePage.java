@@ -3,6 +3,8 @@ package com.angkorteam.fintech.pages.hook;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MHook;
+import com.angkorteam.fintech.ddl.MHookTemplates;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -113,7 +115,7 @@ public class HookBrowsePage extends Page {
         this.form.add(this.templateBlock);
         this.templateIContainer = new WebMarkupContainer("templateIContainer");
         this.templateBlock.add(this.templateIContainer);
-        this.templateProvider = new SingleChoiceProvider("m_hook_templates", "id", "name");
+        this.templateProvider = new SingleChoiceProvider(MHookTemplates.NAME, MHookTemplates.Field.ID, MHookTemplates.Field.NAME);
         this.templateField = new Select2SingleChoice<>("templateField", new PropertyModel<>(this, "templateValue"), this.templateProvider);
         this.templateField.setRequired(true);
         this.templateIContainer.add(this.templateField);
@@ -126,12 +128,12 @@ public class HookBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_hook");
-        this.dataProvider.applyJoin("m_hook_templates", "left JOIN m_hook_templates ON m_hook.template_id = m_hook_templates.id");
-        this.dataProvider.boardField("m_hook.id", "id", Long.class);
-        this.dataProvider.boardField("m_hook.name", "name", String.class);
-        this.dataProvider.boardField("m_hook_templates.name", "template", String.class);
-        this.dataProvider.boardField("m_hook.is_active", "active", Long.class);
+        this.dataProvider = new JdbcProvider(MHook.NAME);
+        this.dataProvider.applyJoin("m_hook_templates", "LEFT JOIN " + MHookTemplates.NAME + " ON " + MHook.NAME + "." + MHook.Field.TEMPLATE_ID + " = " + MHookTemplates.NAME + "." + MHookTemplates.Field.ID);
+        this.dataProvider.boardField(MHook.NAME + "." + MHook.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MHook.NAME + "." + MHook.Field.NAME, "name", String.class);
+        this.dataProvider.boardField(MHookTemplates.NAME + "." + MHookTemplates.Field.NAME, "template", String.class);
+        this.dataProvider.boardField(MHook.NAME + "." + MHook.Field.IS_ACTIVE, "active", Long.class);
 
         this.dataProvider.selectField("id", Long.class);
 

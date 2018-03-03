@@ -3,6 +3,9 @@ package com.angkorteam.fintech.pages.hook;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.*;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -150,21 +153,42 @@ public class HookModifyPage extends Page {
         PageParameters parameters = getPageParameters();
         this.hookId = parameters.get("hookId").toString("");
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-        Map<String, Object> hookObject = jdbcTemplate.queryForMap("select * from m_hook where id = ?", this.hookId);
-        Map<String, Object> templateObject = jdbcTemplate.queryForMap("select * from m_hook_templates where id = ?", hookObject.get("template_id"));
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MHook.NAME);
+        selectQuery.addWhere(MHook.Field.ID + " = :" + MHook.Field.ID, this.hookId);
+        selectQuery.addField(MHook.Field.TEMPLATE_ID);
+        selectQuery.addField(MHook.Field.NAME);
+        selectQuery.addField(MHook.Field.IS_ACTIVE);
+        Map<String, Object> hookObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
+        selectQuery = new SelectQuery(MHookTemplates.NAME);
+        selectQuery.addField(MHookTemplates.Field.ID);
+        selectQuery.addField(MHookTemplates.Field.NAME);
+        selectQuery.addWhere(MHookTemplates.Field.ID + " = :" + MHookTemplates.Field.ID, hookObject.get("template_id"));
+        Map<String, Object> templateObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
         this.configValue = Maps.newHashMap();
-        List<Map<String, Object>> configurations = jdbcTemplate.queryForList("select * from m_hook_configuration where hook_id = ?", this.hookId);
+        selectQuery = new SelectQuery(MHookConfiguration.NAME);
+        selectQuery.addField(MHookConfiguration.Field.FIELD_NAME);
+        selectQuery.addField(MHookConfiguration.Field.FIELD_VALUE);
+        selectQuery.addWhere(MHookConfiguration.Field.HOOK_ID + " = :" + MHookConfiguration.Field.HOOK_ID, this.hookId);
+        List<Map<String, Object>> configurations = named.queryForList(selectQuery.toSQL(), selectQuery.getParam());
         for (Map<String, Object> configuration : configurations) {
             this.configValue.put((String) configuration.get("field_name"), (String) configuration.get("field_value"));
         }
         this.templateId = String.valueOf(templateObject.get("id"));
         this.templateValue = (String) templateObject.get("name");
         this.dataValue = Lists.newArrayList();
-        List<Map<String, Object>> events = jdbcTemplate.queryForList("select * from m_hook_registered_events where hook_id = ?", this.hookId);
+        selectQuery = new SelectQuery(MHookRegisteredEvents.NAME);
+        selectQuery.addField(MHookRegisteredEvents.Field.ENTITY_NAME);
+        selectQuery.addField(MHookRegisteredEvents.Field.ACTION_NAME);
+        selectQuery.addWhere(MHookRegisteredEvents.Field.HOOK_ID + " = :" + MHookRegisteredEvents.Field.HOOK_ID, this.hookId);
+        List<Map<String, Object>> events = named.queryForList(selectQuery.toSQL(), selectQuery.getParam());
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         for (Map<String, Object> event : events) {
-            StringGenerator generator = SpringBean.getBean(StringGenerator.class);
             Map<String, Object> temp = Maps.newHashMap();
             temp.put("uuid", generator.externalId());
             temp.put("entity_name", event.get("entity_name"));
@@ -173,12 +197,16 @@ public class HookModifyPage extends Page {
         }
         this.nameValue = (String) hookObject.get("name");
         this.activeValue = hookObject.get("is_active") != null && String.valueOf(hookObject.get("is_active")).equals("1");
-        this.templateValue = jdbcTemplate.queryForObject("SELECT name from m_hook_templates where id = ?", String.class, this.templateId);
+
+        selectQuery = new SelectQuery(MHookTemplates.NAME);
+        selectQuery.addField(MHookTemplates.Field.NAME);
+        selectQuery.addWhere(MHookTemplates.Field.ID + " = :" + MHookTemplates.Field.ID, this.templateId);
+        this.templateValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
     }
 
     @Override
     protected void initComponent() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
         this.form = new Form<>("form");
         add(this.form);
@@ -208,10 +236,17 @@ public class HookModifyPage extends Page {
 
         this.configField = new RepeatingView("configField");
         this.hookForm.add(this.configField);
-        List<Map<String, Object>> temps = jdbcTemplate.queryForList("select * from m_hook_schema where hook_template_id = ?", this.templateId);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MHookSchema.NAME);
+        selectQuery.addField(MHookSchema.Field.FIELD_NAME);
+        selectQuery.addWhere(MHookSchema.Field.HOOK_TEMPLATE_ID + " = :" + MHookSchema.Field.HOOK_TEMPLATE_ID, this.templateId);
+
+        List<Map<String, Object>> temps = named.queryForList(selectQuery.toSQL(), selectQuery.getParam());
         for (Map<String, Object> temp : temps) {
             String id = this.configField.newChildId();
-            HookFieldWidget field = new HookFieldWidget(id, (String) temp.get("field_name"), this.configValue);
+            HookFieldWidget field = new HookFieldWidget(id, (String) temp.get(MHookSchema.Field.FIELD_NAME), this.configValue);
             this.configField.add(field);
         }
 
@@ -246,12 +281,20 @@ public class HookModifyPage extends Page {
     }
 
     protected void initGroupingBlock() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
         this.groupingBlock = new WebMarkupBlock("groupingBlock", Size.Four_4);
         this.form.add(this.groupingBlock);
         this.groupingIContainer = new WebMarkupContainer("groupingIContainer");
         this.groupingBlock.add(this.groupingIContainer);
-        this.groupingProvider = jdbcTemplate.query("select max(grouping) id, max(grouping) text from m_permission GROUP BY grouping", Option.MAPPER);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MPermission.NAME);
+        selectQuery.addField("MAX(" + MPermission.Field.GROUPING + ") as id");
+        selectQuery.addField("MAX(" + MPermission.Field.GROUPING + ") as text");
+        selectQuery.addGroupBy(MPermission.Field.GROUPING);
+        this.groupingProvider = named.query(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
         this.groupingField = new DropDownChoice<>("groupingField", new PropertyModel<>(this, "groupingValue"), new PropertyModel<>(this, "groupingProvider"), new OptionChoiceRenderer());
         this.groupingField.setRequired(true);
         this.groupingField.add(new OnChangeAjaxBehavior(this::groupingFieldUpdate));
@@ -322,8 +365,16 @@ public class HookModifyPage extends Page {
 
     protected boolean groupingFieldUpdate(AjaxRequestTarget target) {
         if (this.groupingValue != null) {
-            JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-            this.entityNameProvider = jdbcTemplate.query("select max(entity_name) id, max(entity_name) text from m_permission WHERE  grouping = ? GROUP BY entity_name", Option.MAPPER, this.groupingValue.getId());
+            JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+            SelectQuery selectQuery = null;
+
+            selectQuery = new SelectQuery(MPermission.NAME);
+            selectQuery.addField("MAX(" + MPermission.Field.ENTITY_NAME + ") as id");
+            selectQuery.addField("MAX(" + MPermission.Field.ENTITY_NAME + ") as text");
+            selectQuery.addGroupBy(MPermission.Field.ENTITY_NAME);
+            selectQuery.addWhere(MPermission.Field.GROUPING + " = :" + MPermission.Field.GROUPING, this.groupingValue.getId());
+            this.entityNameProvider = named.query(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
         } else {
             if (this.entityNameProvider != null) {
                 this.entityNameProvider.clear();
@@ -338,8 +389,15 @@ public class HookModifyPage extends Page {
 
     protected boolean entityNameFieldUpdate(AjaxRequestTarget target) {
         if (this.entityNameValue != null) {
-            JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-            this.actionNameProvider = jdbcTemplate.query("select max(action_name) id, max(action_name) text from m_permission WHERE  entity_name = ? GROUP BY action_name", Option.MAPPER, this.entityNameValue.getId());
+            JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+            SelectQuery selectQuery = null;
+            selectQuery = new SelectQuery(MPermission.NAME);
+            selectQuery.addField("MAX(" + MPermission.Field.ACTION_NAME + ") as id");
+            selectQuery.addField("MAX(" + MPermission.Field.ACTION_NAME + ") as text");
+            selectQuery.addGroupBy(MPermission.Field.ACTION_NAME);
+            selectQuery.addWhere(MPermission.Field.ENTITY_NAME + " = :" + MPermission.Field.ENTITY_NAME, this.entityNameValue.getId());
+            this.actionNameProvider = named.query(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
         } else {
             if (this.actionNameProvider != null) {
                 this.actionNameProvider.clear();
