@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.office;
 import java.util.Date;
 import java.util.List;
 
+import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
@@ -150,7 +151,7 @@ public class OfficeCreatePage extends Page {
         this.form.add(this.parentBlock);
         this.parentIContainer = new WebMarkupContainer("parentIContainer");
         this.parentBlock.add(this.parentIContainer);
-        this.parentProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.parentProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"), this.parentProvider);
         this.parentField.setRequired(true);
         this.parentIContainer.add(this.parentField);

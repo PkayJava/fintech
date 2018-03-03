@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
@@ -154,7 +157,7 @@ public class OfficeModifyPage extends Page {
         this.form.add(this.parentBlock);
         this.parentIContainer = new WebMarkupContainer("parentIContainer");
         this.parentBlock.add(this.parentIContainer);
-        this.parentProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.parentProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"), this.parentProvider);
         this.parentField.setRequired(true);
         this.parentIContainer.add(this.parentField);
@@ -166,12 +169,27 @@ public class OfficeModifyPage extends Page {
     protected void initData() {
         PageParameters parameters = getPageParameters();
         this.officeId = parameters.get("officeId").toString("");
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> object = jdbcTemplate.queryForMap("select * from m_office where id = ?", this.officeId);
+
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MOffice.NAME);
+        selectQuery.addField(MOffice.Field.EXTERNAL_ID);
+        selectQuery.addField(MOffice.Field.NAME);
+        selectQuery.addField(MOffice.Field.OPENING_DATE);
+        selectQuery.addWhere(MOffice.Field.ID + " = :" + MOffice.Field.ID, this.officeId);
+        Map<String, Object> object = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
         this.externalIdValue = (String) object.get("external_id");
         this.nameValue = (String) object.get("name");
         this.openingDateValue = (Date) object.get("opening_date");
-        this.parentValue = jdbcTemplate.queryForObject("select id, name as text from m_office where id = ?", Option.MAPPER, object.get("parent_id"));
+
+        selectQuery = new SelectQuery(MOffice.NAME);
+        selectQuery.addWhere(MOffice.Field.ID + " = :" + MOffice.Field.ID, object.get("parent_id"));
+        selectQuery.addField(MOffice.Field.ID);
+        selectQuery.addField(MOffice.Field.NAME + " as text");
+        this.parentValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
     }
 
     protected void saveButtonSubmit(Button button) {

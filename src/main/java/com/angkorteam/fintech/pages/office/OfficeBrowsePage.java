@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -93,14 +94,14 @@ public class OfficeBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_office office");
-        this.dataProvider.applyJoin("m_office", "LEFT JOIN m_office parent ON office.parent_id = parent.id");
-        this.dataProvider.boardField("office.id", "id", Long.class);
-        this.dataProvider.boardField("office.external_id", "external_id", String.class);
-        this.dataProvider.boardField("office.parent_id", "parent_id", Long.class);
-        this.dataProvider.boardField("office.name", "name", String.class);
-        this.dataProvider.boardField("parent.name", "parent_name", String.class);
-        this.dataProvider.boardField("office.opening_date", "opening_date", Calendar.Date);
+        this.dataProvider = new JdbcProvider(MOffice.NAME + " office");
+        this.dataProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " parent ON office." + MOffice.Field.PARENT_ID + " = parent." + MOffice.Field.ID);
+        this.dataProvider.boardField("office." + MOffice.Field.ID, "id", Long.class);
+        this.dataProvider.boardField("office." + MOffice.Field.EXTERNAL_ID, "external_id", String.class);
+        this.dataProvider.boardField("office." + MOffice.Field.PARENT_ID, "parent_id", Long.class);
+        this.dataProvider.boardField("office." + MOffice.Field.NAME, "name", String.class);
+        this.dataProvider.boardField("parent." + MOffice.Field.NAME, "parent_name", String.class);
+        this.dataProvider.boardField("office." + MOffice.Field.OPENING_DATE, "opening_date", Calendar.Date);
 
         this.dataProvider.selectField("parent_id", Long.class);
 
