@@ -1,8 +1,31 @@
 package com.angkorteam.fintech.pages.code;
 
-import java.util.List;
-import java.util.Map;
-
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MCode;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.CodeValueBuilder;
+import com.angkorteam.fintech.helper.CodeHelper;
+import com.angkorteam.fintech.pages.SystemDashboardPage;
+import com.angkorteam.fintech.provider.JdbcProvider;
+import com.angkorteam.fintech.table.BadgeCell;
+import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
+import com.angkorteam.framework.BadgeType;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.spring.JdbcNamed;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -17,36 +40,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.builder.CodeValueBuilder;
-import com.angkorteam.fintech.helper.CodeHelper;
-import com.angkorteam.fintech.pages.SystemDashboardPage;
-import com.angkorteam.fintech.provider.JdbcProvider;
-import com.angkorteam.fintech.table.BadgeCell;
-import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
-import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
-import com.angkorteam.framework.BadgeType;
-import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -55,6 +50,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 public class ValueBrowsePage extends Page {
 
     protected String codeId;
+    protected String codeName;
 
     protected WebMarkupBlock dataBlock;
     protected WebMarkupContainer dataIContainer;
@@ -111,10 +107,8 @@ public class ValueBrowsePage extends Page {
             BREADCRUMB.add(breadcrumb);
         }
         {
-            JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-            String codeName = jdbcTemplate.queryForObject("select code_name from m_code where id = ?", String.class, this.codeId);
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel(codeName);
+            breadcrumb.setLabel(this.codeName);
             BREADCRUMB.add(breadcrumb);
         }
 
@@ -125,6 +119,12 @@ public class ValueBrowsePage extends Page {
     protected void initData() {
         PageParameters parameters = getPageParameters();
         this.codeId = parameters.get("codeId").toString("");
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MCode.NAME);
+        selectQuery.addField(MCode.Field.CODE_NAME);
+        selectQuery.addWhere(MCode.Field.ID + " = :" + MCode.Field.ID, this.codeId);
+        this.codeName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
     }
 
     @Override

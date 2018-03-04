@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.code;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MCode;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
@@ -127,10 +128,10 @@ public class CodeBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_code");
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("code_name", "code_name", String.class);
-        this.dataProvider.boardField("is_system_defined", "system", Boolean.class);
+        this.dataProvider = new JdbcProvider(MCode.NAME);
+        this.dataProvider.boardField(MCode.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MCode.Field.CODE_NAME, "code_name", String.class);
+        this.dataProvider.boardField(MCode.Field.IS_SYSTEM_DEFINED, "system", Boolean.class);
         this.dataProvider.setSort("code_name", SortOrder.ASCENDING);
 
         this.dataProvider.selectField("id", Long.class);
