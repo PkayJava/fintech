@@ -2,6 +2,7 @@ package com.angkorteam.fintech.pages.entity;
 
 import java.util.List;
 
+import com.angkorteam.fintech.ddl.XRegisteredTable;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -159,7 +160,7 @@ public class CheckerCreatePage extends Page {
         this.form.add(this.datatableBlock);
         this.datatableIContainer = new WebMarkupContainer("datatableIContainer");
         this.datatableBlock.add(this.datatableIContainer);
-        this.datatableProvider = new SingleChoiceProvider("x_registered_table", "application_table_name", "registered_table_name");
+        this.datatableProvider = new SingleChoiceProvider(XRegisteredTable.NAME, XRegisteredTable.Field.APPLICATION_TABLE_NAME, XRegisteredTable.Field.REGISTERED_TABLE_NAME);
         this.datatableProvider.setDisabled(true);
         this.datatableField = new Select2SingleChoice<>("datatableField", new PropertyModel<>(this, "datatableValue"), this.datatableProvider);
         this.datatableField.setRequired(true);
@@ -195,7 +196,7 @@ public class CheckerCreatePage extends Page {
         if (this.entityValue != null) {
             EntityType entityType = EntityType.valueOf(this.entityValue.getId());
             this.datatableProvider.setDisabled(false);
-            this.datatableProvider.applyWhere("application_table_name", "application_table_name = '" + entityType.getLiteral() + "'");
+            this.datatableProvider.applyWhere("application_table_name", XRegisteredTable.Field.APPLICATION_TABLE_NAME + " = '" + entityType.getLiteral() + "'");
         } else {
             this.datatableProvider.setDisabled(true);
         }

@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.entity;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MEntityDataTableCheck;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -114,13 +115,13 @@ public class CheckerBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_entity_datatable_check");
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("case application_table_name " + StringUtils.join(entity, " ") + " end", "entity", String.class);
-        this.dataProvider.boardField("case system_defined when 0 then 'No' else 'Yes' end", "system", String.class);
-        this.dataProvider.boardField("case status_enum " + StringUtils.join(status, " ") + " end", "status", String.class);
-        this.dataProvider.boardField("x_registered_table_name", "dataTable", String.class);
-        this.dataProvider.boardField("product_id", "product", Long.class);
+        this.dataProvider = new JdbcProvider(MEntityDataTableCheck.NAME);
+        this.dataProvider.boardField(MEntityDataTableCheck.Field.ID, "id", Long.class);
+        this.dataProvider.boardField("case " + MEntityDataTableCheck.Field.APPLICATION_TABLE_NAME + " " + StringUtils.join(entity, " ") + " end", "entity", String.class);
+        this.dataProvider.boardField("case " + MEntityDataTableCheck.Field.SYSTEM_DEFINED + " when 0 then 'No' else 'Yes' end", "system", String.class);
+        this.dataProvider.boardField("case " + MEntityDataTableCheck.Field.STATUS_ENUM + " " + StringUtils.join(status, " ") + " end", "status", String.class);
+        this.dataProvider.boardField(MEntityDataTableCheck.Field.X_REGISTERED_TABLE_NAME, "dataTable", String.class);
+        this.dataProvider.boardField(MEntityDataTableCheck.Field.PRODUCT_ID, "product", Long.class);
 
         this.dataProvider.selectField("id", Long.class);
 
