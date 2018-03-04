@@ -3,6 +3,9 @@ package com.angkorteam.fintech.pages.fund;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MFund;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
@@ -86,11 +89,18 @@ public class FundModifyPage extends Page {
         PageParameters parameters = getPageParameters();
         this.fundId = parameters.get("fundId").toString("");
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-        Map<String, Object> fundObject = jdbcTemplate.queryForMap("select * from m_fund where id = ?", this.fundId);
-        this.externalIdValue = (String) fundObject.get("external_id");
-        this.nameValue = (String) fundObject.get("name");
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MFund.NAME);
+        selectQuery.addField(MFund.Field.EXTERNAL_ID);
+        selectQuery.addField(MFund.Field.NAME);
+        selectQuery.addWhere(MFund.Field.ID + " = :" + MFund.Field.ID, this.fundId);
+
+        Map<String, Object> fundObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+        this.externalIdValue = (String) fundObject.get(MFund.Field.EXTERNAL_ID);
+        this.nameValue = (String) fundObject.get(MFund.Field.NAME);
     }
 
     @Override

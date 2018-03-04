@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.fund;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MFund;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -91,10 +92,10 @@ public class FundBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_fund");
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("external_id", "external_id", String.class);
-        this.dataProvider.boardField("name", "name", String.class);
+        this.dataProvider = new JdbcProvider(MFund.NAME);
+        this.dataProvider.boardField(MFund.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MFund.Field.EXTERNAL_ID, "external_id", String.class);
+        this.dataProvider.boardField(MFund.Field.NAME, "name", String.class);
 
         this.dataColumn = Lists.newArrayList();
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("ID"), "id", "id", this::dataColumn));
