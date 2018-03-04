@@ -50,7 +50,7 @@ public class MifosDataSourceFactoryBean implements FactoryBean<DataSource>, Init
         if (this.manager == null) {
             throw new Exception("manager is required");
         }
-        String identifier = (String) this.session.getAttribute("mifos_identifier");
+        String identifier = (String) this.session.getAttribute(Session.IDENTIFIER);
         if (identifier != null && !"".equals(identifier)) {
             this.dataSource = new HttpServletRequestDataSource(this.manager.getDataSource(identifier));
         } else {
