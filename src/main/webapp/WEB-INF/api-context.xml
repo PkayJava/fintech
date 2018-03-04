@@ -43,10 +43,6 @@
 
     <mvc:resources mapping="/resource/**" location="file:${resource.repo}/" cache-period="604800" order="-1"/>
 
-    <mvc:cors>
-        <mvc:mapping path="/**"/>
-    </mvc:cors>
-
     <task:annotation-driven executor="executor" scheduler="scheduler"/>
 
     <bean id="pathMatcher" class="org.springframework.util.AntPathMatcher">

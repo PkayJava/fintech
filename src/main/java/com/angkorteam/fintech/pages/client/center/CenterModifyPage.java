@@ -3,6 +3,10 @@ package com.angkorteam.fintech.pages.client.center;
 import java.util.Date;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.fintech.ddl.MStaff;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
@@ -128,9 +132,9 @@ public class CenterModifyPage extends Page {
         this.form.add(this.staffBlock);
         this.staffIContainer = new WebMarkupContainer("staffIContainer");
         this.staffBlock.add(this.staffIContainer);
-        this.staffProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
-        this.staffProvider.applyWhere("office_id", "office_id = " + this.officeId);
-        this.staffProvider.applyWhere("is_active", "is_active = 1");
+        this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.Field.ID, MStaff.Field.DISPLAY_NAME);
+        this.staffProvider.applyWhere("office_id", MStaff.Field.OFFICE_ID + " = " + this.officeId);
+        this.staffProvider.applyWhere("is_active", MStaff.Field.IS_ACTIVE + " = 1");
         this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
@@ -155,12 +159,27 @@ public class CenterModifyPage extends Page {
 
     @Override
     protected void initData() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         this.centerId = getPageParameters().get("centerId").toString();
-        Map<String, Object> centerObject = jdbcTemplate.queryForMap("select * from m_group where id = ?", this.centerId);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MGroup.NAME);
+        selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.centerId);
+        selectQuery.addField(MGroup.Field.OFFICE_ID);
+        selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+        selectQuery.addField(MGroup.Field.STAFF_ID);
+        selectQuery.addField(MGroup.Field.EXTERNAL_ID);
+        selectQuery.addField(MGroup.Field.ACTIVATION_DATE);
+        Map<String, Object> centerObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.officeId = String.valueOf(centerObject.get("office_id"));
         this.nameValue = (String) centerObject.get("display_name");
-        this.staffValue = jdbcTemplate.queryForObject("select id, display_name as text from m_staff where id = ?", Option.MAPPER, centerObject.get("staff_id"));
+
+        selectQuery = new SelectQuery(MStaff.NAME);
+        selectQuery.addWhere(MStaff.Field.ID + " = :" + MStaff.Field.ID, centerObject.get("staff_id"));
+        selectQuery.addField(MStaff.Field.ID);
+        selectQuery.addField(MStaff.Field.DISPLAY_NAME + " AS text");
+        this.staffValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
         this.externalIdValue = (String) centerObject.get("external_id");
         this.activationDateValue = (Date) centerObject.get("activation_date");
     }

@@ -1,23 +1,11 @@
 package com.angkorteam.fintech.pages.client.center;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.MStaff;
+import com.angkorteam.fintech.ddl.REnumValue;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.CenterBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
@@ -55,6 +43,21 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class CenterCreatePage extends Page {
@@ -272,8 +275,8 @@ public class CenterCreatePage extends Page {
         this.form.add(this.staffBlock);
         this.staffIContainer = new WebMarkupContainer("staffIContainer");
         this.staffBlock.add(this.staffIContainer);
-        this.staffProvider = new SingleChoiceProvider("m_staff", "m_staff.id", "m_staff.display_name");
-        this.staffProvider.applyJoin("m_office", "inner join m_office on m_staff.office_id = m_office.id");
+        this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.NAME + "." + MStaff.Field.ID, MStaff.NAME + "." + MStaff.Field.DISPLAY_NAME);
+        this.staffProvider.applyJoin("m_office", "INNER JOIN " + MOffice.NAME + " ON " + MStaff.NAME + "." + MStaff.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
         this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
@@ -287,7 +290,7 @@ public class CenterCreatePage extends Page {
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setLabel(Model.of("Office"));
         this.officeField.add(new OnChangeAjaxBehavior(this::officeFieldUpdate));
@@ -351,13 +354,13 @@ public class CenterCreatePage extends Page {
     protected void groupPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         if (this.popupModel.get("groupValue") != null) {
             JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
-            SelectQuery query = new SelectQuery("m_group");
-            query.addJoin("LEFT JOIN r_enum_value status on status.enum_id = m_group.status_enum and status.enum_name = 'status_enum'");
-            query.addField("concat(m_group.id,'') uuid");
-            query.addField("m_group.display_name displayName");
-            query.addField("m_group.account_no account");
-            query.addField("status.enum_value status");
-            query.addWhere("m_group.id = :id", ((Option) this.popupModel.get("groupValue")).getId());
+            SelectQuery query = new SelectQuery(MGroup.NAME);
+            query.addJoin("LEFT JOIN " + REnumValue.NAME + " status on status." + REnumValue.Field.ENUM_ID + " = " + MGroup.NAME + "." + MGroup.Field.STATUS_ENUM + " and status." + REnumValue.Field.ENUM_NAME + " = 'status_enum'");
+            query.addField("CONCAT(" + MGroup.NAME + "." + MGroup.Field.ID + ",'') uuid");
+            query.addField(MGroup.NAME + "." + MGroup.Field.DISPLAY_NAME + " displayName");
+            query.addField(MGroup.NAME + "." + MGroup.Field.ACCOUNT_NO + " account");
+            query.addField("status." + REnumValue.Field.ENUM_VALUE + " status");
+            query.addWhere(MGroup.NAME + "." + MGroup.Field.ID + " = :" + MGroup.Field.ID, ((Option) this.popupModel.get("groupValue")).getId());
             Map<String, Object> group = named.queryForMap(query.toSQL(), query.getParam());
             this.groupValue.add(group);
             target.add(this.groupTable);
@@ -381,7 +384,7 @@ public class CenterCreatePage extends Page {
             this.staffProvider.setDisabled(true);
         } else {
             this.staffProvider.setDisabled(false);
-            this.staffProvider.applyWhere("office", "m_office.id = " + this.officeValue.getId());
+            this.staffProvider.applyWhere("office", MOffice.NAME + "." + MOffice.Field.ID + " = " + this.officeValue.getId());
         }
         this.staffIContainer.setVisible(visible);
         if (target != null) {

@@ -1,8 +1,5 @@
 package com.angkorteam.fintech;
 
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.helper.LoginHelper;
-import com.angkorteam.framework.SpringBean;
 import com.google.gson.Gson;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -13,18 +10,17 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.WicketRuntimeException;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import javax.servlet.ServletContext;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -34,20 +30,19 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
-public class ProxyAPI {
+public class ProxyAPI implements Filter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProxyAPI.class);
 
-    @CrossOrigin
     @RequestMapping(path = "/**")
-    public void doProxy(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException, UnirestException {
-        if ("/v1/authentication".equals(request.getPathInfo())) {
+    public void doProxy(HttpServletRequest request, HttpServletResponse response) throws IOException, UnirestException {
+        HttpSession session = request.getSession(true);
+        ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
+        String infoPath = request.getPathInfo();
+        if ("/v1/authentication".equals(infoPath)) {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             String identifier = request.getHeader("Fineract-Platform-TenantId");
@@ -57,7 +52,7 @@ public class ProxyAPI {
             if (username == null || "".equals(username) || password == null || "".equals(password) || identifier == null || "".equals(identifier)) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             } else {
-                MifosDataSourceManager mifos = SpringBean.getBean(MifosDataSourceManager.class);
+                MifosDataSourceManager mifos = applicationContext.getBean(MifosDataSourceManager.class);
                 String mifosUrl = mifos.getMifosUrl() + "/api/v1/authentication?username=" + username + "&password=" + password;
                 HttpResponse<InputStream> resp = Unirest.post(mifosUrl).header("Fineract-Platform-TenantId", identifier).header("Content-Type", "application/json").asBinary();
                 IOUtils.copy(resp.getBody(), response.getOutputStream());
@@ -67,16 +62,15 @@ public class ProxyAPI {
             return;
         } else {
             ServletContext servletContext = request.getServletContext();
-            String identifier = (String) session.getAttribute(Session.IDENTIFIER);
-            String token = (String) session.getAttribute(Session.TOKEN);
-            if (identifier == null || "".equals(identifier) || token == null || "".equals(token)) {
+            String identifier = request.getHeader("Fineract-Platform-TenantId");
+            String authorization = request.getHeader("Authorization");
+            if (identifier == null || "".equals(identifier) || authorization == null || "".equals(authorization)) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
                 return;
             }
-            MifosDataSourceManager mifos = SpringBean.getBean(MifosDataSourceManager.class);
-            Gson gson = SpringBean.getBean(Gson.class);
-            String pathInfo = request.getPathInfo();
-            if (pathInfo == null || "".equals(pathInfo) || "/".equals(pathInfo)) {
+            MifosDataSourceManager mifos = applicationContext.getBean(MifosDataSourceManager.class);
+            Gson gson = applicationContext.getBean(Gson.class);
+            if (infoPath == null || "".equals(infoPath) || "/".equals(infoPath)) {
                 response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
                 Map<String, String> json = new HashMap<>();
                 json.put("server-time", DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
@@ -121,37 +115,105 @@ public class ProxyAPI {
             }
             String mifosUrl = null;
             if (request.getQueryString() != null && !"".equals(request.getQueryString())) {
-                mifosUrl = mifos.getMifosUrl() + "/api" + request.getPathInfo() + "?" + request.getQueryString();
+                mifosUrl = mifos.getMifosUrl() + "/api" + infoPath + "?" + request.getQueryString();
             } else {
-                mifosUrl = mifos.getMifosUrl() + "/api" + request.getPathInfo();
+                mifosUrl = mifos.getMifosUrl() + "/api" + infoPath;
             }
             LOGGER.info("mifos url {}", mifosUrl);
             if (request.getMethod().equalsIgnoreCase("POST")) {
-                byte[] bytes = IOUtils.toByteArray(request.getInputStream());
-                HttpResponse<InputStream> resp = Unirest.post(mifosUrl).header("Authorization", "Basic " + token).header("Fineract-Platform-TenantId", identifier).header("Content-Type", request.getContentType()).body(bytes).asBinary();
-                IOUtils.copy(resp.getBody(), response.getOutputStream());
-                response.setContentType(resp.getHeaders().getFirst("Content-Type"));
-                response.setStatus(resp.getStatus());
+                if (request.getContentType() != null && !"".equals(request.getContentType())) {
+                    byte[] bytes = IOUtils.toByteArray(request.getInputStream());
+                    HttpResponse<InputStream> resp = Unirest.post(mifosUrl).header("Accept", request.getHeader("Accept")).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", request.getContentType()).body(bytes).asBinary();
+                    IOUtils.copy(resp.getBody(), response.getOutputStream());
+                    response.setContentType(resp.getHeaders().getFirst("Content-Type"));
+                    response.setStatus(resp.getStatus());
+                } else {
+                    byte[] bytes = IOUtils.toByteArray(request.getInputStream());
+                    HttpResponse<InputStream> resp = Unirest.post(mifosUrl).header("Accept", request.getHeader("Accept")).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).body(bytes).asBinary();
+                    IOUtils.copy(resp.getBody(), response.getOutputStream());
+                    response.setContentType(resp.getHeaders().getFirst("Content-Type"));
+                    response.setStatus(resp.getStatus());
+                }
             } else if (request.getMethod().equalsIgnoreCase("PUT")) {
-                byte[] bytes = IOUtils.toByteArray(request.getInputStream());
-                HttpResponse<InputStream> resp = Unirest.put(mifosUrl).header("Authorization", "Basic " + token).header("Fineract-Platform-TenantId", identifier).header("Content-Type", request.getContentType()).body(bytes).asBinary();
-                IOUtils.copy(resp.getBody(), response.getOutputStream());
-                response.setContentType(resp.getHeaders().getFirst("Content-Type"));
-                response.setStatus(resp.getStatus());
+                if (request.getContentType() != null && !"".equals(request.getContentType())) {
+                    byte[] bytes = IOUtils.toByteArray(request.getInputStream());
+                    HttpResponse<InputStream> resp = Unirest.put(mifosUrl).header("Accept", request.getHeader("Accept")).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", request.getContentType()).body(bytes).asBinary();
+                    IOUtils.copy(resp.getBody(), response.getOutputStream());
+                    response.setContentType(resp.getHeaders().getFirst("Content-Type"));
+                    response.setStatus(resp.getStatus());
+                } else {
+                    byte[] bytes = IOUtils.toByteArray(request.getInputStream());
+                    HttpResponse<InputStream> resp = Unirest.put(mifosUrl).header("Accept", request.getHeader("Accept")).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).body(bytes).asBinary();
+                    IOUtils.copy(resp.getBody(), response.getOutputStream());
+                    response.setContentType(resp.getHeaders().getFirst("Content-Type"));
+                    response.setStatus(resp.getStatus());
+                }
             } else if (request.getMethod().equalsIgnoreCase("DELETE")) {
-                HttpResponse<InputStream> resp = Unirest.delete(mifosUrl).header("Authorization", "Basic " + token).header("Fineract-Platform-TenantId", identifier).header("Content-Type", request.getContentType()).asBinary();
-                IOUtils.copy(resp.getBody(), response.getOutputStream());
-                response.setContentType(resp.getHeaders().getFirst("Content-Type"));
-                response.setStatus(resp.getStatus());
+                if (request.getContentType() != null && !"".equals(request.getContentType())) {
+                    HttpResponse<InputStream> resp = Unirest.delete(mifosUrl).header("Accept", request.getHeader("Accept")).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", request.getContentType()).asBinary();
+                    IOUtils.copy(resp.getBody(), response.getOutputStream());
+                    response.setContentType(resp.getHeaders().getFirst("Content-Type"));
+                    response.setStatus(resp.getStatus());
+                } else {
+                    HttpResponse<InputStream> resp = Unirest.delete(mifosUrl).header("Accept", request.getHeader("Accept")).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).asBinary();
+                    IOUtils.copy(resp.getBody(), response.getOutputStream());
+                    response.setContentType(resp.getHeaders().getFirst("Content-Type"));
+                    response.setStatus(resp.getStatus());
+                }
             } else if (request.getMethod().equalsIgnoreCase("GET")) {
-                HttpResponse<InputStream> resp = Unirest.get(mifosUrl).header("Authorization", "Basic " + token).header("Fineract-Platform-TenantId", identifier).header("Content-Type", request.getContentType()).asBinary();
-                IOUtils.copy(resp.getBody(), response.getOutputStream());
-                response.setContentType(resp.getHeaders().getFirst("Content-Type"));
-                response.setStatus(resp.getStatus());
+                if (request.getContentType() != null && !"".equals(request.getContentType())) {
+                    HttpResponse<InputStream> resp = Unirest.get(mifosUrl).header("Accept", request.getHeader("Accept")).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", request.getContentType()).asBinary();
+                    IOUtils.copy(resp.getBody(), response.getOutputStream());
+                    response.setContentType(resp.getHeaders().getFirst("Content-Type"));
+                    response.setStatus(resp.getStatus());
+                } else {
+                    HttpResponse<InputStream> resp = Unirest.get(mifosUrl).header("Accept", request.getHeader("Accept")).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).asBinary();
+                    IOUtils.copy(resp.getBody(), response.getOutputStream());
+                    response.setContentType(resp.getHeaders().getFirst("Content-Type"));
+                    response.setStatus(resp.getStatus());
+                }
+
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
         }
     }
 
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
+        if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
+            String method = req.getHeader("Access-Control-Request-Method");
+            String header = req.getHeader("Access-Control-Request-Headers");
+            resp.addHeader("Allow", "OPTIONS");
+            resp.addHeader("Allow", method);
+            resp.addHeader("Access-Control-Allow-Origin", "*");
+            resp.addHeader("Access-Control-Allow-Methods", "GET");
+            resp.addHeader("Access-Control-Allow-Methods", "POST");
+            resp.addHeader("Access-Control-Allow-Methods", "PUT");
+            resp.addHeader("Access-Control-Allow-Methods", "DELETE");
+            resp.addHeader("Access-Control-Allow-Methods", "OPTIONS");
+            resp.addHeader("Access-Control-Allow-Headers", header);
+            return;
+        } else {
+            resp.addHeader("Access-Control-Allow-Origin", "*");
+            resp.addHeader("Access-Control-Allow-Methods", "GET");
+            resp.addHeader("Access-Control-Allow-Methods", "POST");
+            resp.addHeader("Access-Control-Allow-Methods", "PUT");
+            resp.addHeader("Access-Control-Allow-Methods", "DELETE");
+            resp.addHeader("Access-Control-Allow-Methods", "OPTIONS");
+            chain.doFilter(request, response);
+        }
+    }
+
+    @Override
+    public void destroy() {
+
+    }
 }

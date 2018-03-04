@@ -3,6 +3,8 @@ package com.angkorteam.fintech.pages.client.center;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -91,16 +93,16 @@ public class CenterBrowsePage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
 
-        this.dataProvider = new JdbcProvider("m_group");
-        this.dataProvider.applyJoin("m_office", "left join m_office on m_group.office_id = m_office.id ");
-        this.dataProvider.boardField("m_group.id", "id", Long.class);
-        this.dataProvider.boardField("m_group.account_no", "account", String.class);
-        this.dataProvider.boardField("m_group.display_name", "name", String.class);
-        this.dataProvider.boardField("m_office.name", "office", String.class);
-        this.dataProvider.boardField("m_group.external_id", "externalId", String.class);
-        this.dataProvider.boardField("case m_group.status_enum " + StringUtils.join(status, " ") + " end", "status", String.class);
+        this.dataProvider = new JdbcProvider(MGroup.NAME);
+        this.dataProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " ON " + MGroup.NAME + "." + MGroup.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
+        this.dataProvider.boardField(MGroup.NAME + "." + MGroup.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MGroup.NAME + "." + MGroup.Field.ACCOUNT_NO, "account", String.class);
+        this.dataProvider.boardField(MGroup.NAME + "." + MGroup.Field.DISPLAY_NAME, "name", String.class);
+        this.dataProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "office", String.class);
+        this.dataProvider.boardField(MGroup.NAME + "." + MGroup.Field.EXTERNAL_ID, "externalId", String.class);
+        this.dataProvider.boardField("case " + MGroup.NAME + "." + MGroup.Field.STATUS_ENUM + " " + StringUtils.join(status, " ") + " end", "status", String.class);
 
-        this.dataProvider.applyWhere("level_id", "m_group.level_id = 1");
+        this.dataProvider.applyWhere("level_id", MGroup.NAME + "." + MGroup.Field.LEVEL_ID + " = 1");
 
         this.dataProvider.selectField("id", Long.class);
 

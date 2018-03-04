@@ -29,6 +29,10 @@
             <param-name>applicationClassName</param-name>
             <param-value>com.angkorteam.fintech.Application</param-value>
         </init-param>
+        <init-param>
+            <param-name>ignorePaths</param-name>
+            <param-value>/api</param-value>
+        </init-param>
     </filter>
 
     <filter-mapping>
@@ -42,6 +46,15 @@
     </filter>
     <filter-mapping>
         <filter-name>multipartFilter</filter-name>
+        <servlet-name>API</servlet-name>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>cors</filter-name>
+        <filter-class>com.angkorteam.fintech.ProxyAPI</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>cors</filter-name>
         <servlet-name>API</servlet-name>
     </filter-mapping>
 

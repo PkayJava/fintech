@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -32,8 +35,14 @@ public class CenterPreviewPage extends Page {
     protected void initData() {
         PageParameters parameters = getPageParameters();
         this.centerId = parameters.get("centerId").toString();
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> centerObject = jdbcTemplate.queryForMap("select display_name from m_group where id = ?", this.centerId);
+
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MGroup.NAME);
+        selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+        selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.centerId);
+        Map<String, Object> centerObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.centerDisplayName = (String) centerObject.get("display_name");
     }
 
