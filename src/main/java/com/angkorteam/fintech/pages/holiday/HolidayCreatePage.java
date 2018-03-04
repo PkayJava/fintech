@@ -3,6 +3,7 @@ package com.angkorteam.fintech.pages.holiday;
 import java.util.Date;
 import java.util.List;
 
+import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -129,7 +130,7 @@ public class HolidayCreatePage extends Page {
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new MultipleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new MultipleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.officeField = new Select2MultipleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.officeIContainer.add(this.officeField);

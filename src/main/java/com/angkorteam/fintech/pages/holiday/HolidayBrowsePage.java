@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MHoliday;
+import com.angkorteam.fintech.ddl.MHolidayOffice;
+import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -117,8 +120,8 @@ public class HolidayBrowsePage extends Page {
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
-        this.officeProvider.applyWhere("id", "id IN (select office_id from m_holiday_office)");
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
+        this.officeProvider.applyWhere("id", MOffice.Field.ID + " IN (select " + MHolidayOffice.Field.OFFICE_ID + " from " + MHolidayOffice.NAME + ")");
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeIContainer.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
@@ -131,14 +134,14 @@ public class HolidayBrowsePage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider("m_holiday");
-        this.dataProvider.applyJoin("m_holiday_office", "LEFT JOIN m_holiday_office ON m_holiday.id = m_holiday_office.holiday_id");
-        this.dataProvider.setGroupBy("m_holiday.id");
-        this.dataProvider.boardField("m_holiday.id", "id", Long.class);
-        this.dataProvider.boardField("m_holiday.name", "name", String.class);
-        this.dataProvider.boardField("m_holiday.status_enum", "status_enum", Long.class);
-        this.dataProvider.boardField("m_holiday.from_date", "from_date", Calendar.Date);
-        this.dataProvider.boardField("m_holiday.to_date", "to_date", Calendar.Date);
-        this.dataProvider.boardField("m_holiday.repayments_rescheduled_to", "repayments_rescheduled_to", Calendar.Date);
+        this.dataProvider.applyJoin("m_holiday_office", "LEFT JOIN " + MHolidayOffice.NAME + " ON " + MHoliday.NAME + "." + MHoliday.Field.ID + " = " + MHolidayOffice.NAME + "." + MHolidayOffice.Field.HOLIDAY_ID);
+        this.dataProvider.setGroupBy(MHoliday.NAME + "." + MHoliday.Field.ID);
+        this.dataProvider.boardField(MHoliday.NAME + "." + MHoliday.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MHoliday.NAME + "." + MHoliday.Field.NAME, "name", String.class);
+        this.dataProvider.boardField(MHoliday.NAME + "." + MHoliday.Field.STATUS_ENUM, "status_enum", Long.class);
+        this.dataProvider.boardField(MHoliday.NAME + "." + MHoliday.Field.FROM_DATE, "from_date", Calendar.Date);
+        this.dataProvider.boardField(MHoliday.NAME + "." + MHoliday.Field.TO_DATE, "to_date", Calendar.Date);
+        this.dataProvider.boardField(MHoliday.NAME + "." + MHoliday.Field.REPAYMENTS_RESCHEDULED_TO, "repayments_rescheduled_to", Calendar.Date);
 
         this.dataColumn = Lists.newArrayList();
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("ID"), "id", "id", this::dataColumn));
@@ -160,7 +163,7 @@ public class HolidayBrowsePage extends Page {
         if (this.officeValue == null) {
             this.dataProvider.removeWhere("office");
         } else {
-            this.dataProvider.applyWhere("office", "m_holiday_office.office_id = " + this.officeValue.getId());
+            this.dataProvider.applyWhere("office", MHolidayOffice.NAME + "." + MHolidayOffice.Field.OFFICE_ID + " = " + this.officeValue.getId());
         }
     }
 
