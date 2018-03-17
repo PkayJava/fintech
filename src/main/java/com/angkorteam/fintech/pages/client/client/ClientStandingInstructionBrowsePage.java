@@ -4,6 +4,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MAccountTransferDetails;
+import com.angkorteam.fintech.ddl.MAccountTransferStandingInstructions;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MSavingsAccount;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -43,9 +49,14 @@ public class ClientStandingInstructionBrowsePage extends Page {
 
     @Override
     protected void initData() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         this.clientId = getPageParameters().get("clientId").toString();
-        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select office_id, display_name from m_client where id = ?", this.clientId);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MClient.NAME);
+        selectQuery.addField(MClient.Field.DISPLAY_NAME);
+        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.clientDisplayName = (String) clientObject.get("display_name");
     }
 
@@ -82,25 +93,24 @@ public class ClientStandingInstructionBrowsePage extends Page {
 
     @Override
     protected void initComponent() {
+        this.dataProvider = new JdbcProvider(MAccountTransferDetails.NAME);
+        this.dataProvider.applyJoin("from_client", "INNER JOIN " + MClient.NAME + " from_client ON " + MAccountTransferDetails.NAME + "." + MAccountTransferDetails.Field.FROM_CLIENT_ID + " = from_client." + MClient.Field.ID);
+        this.dataProvider.applyJoin("to_client", "INNER JOIN " + MClient.NAME + " to_client ON " + MAccountTransferDetails.NAME + "." + MAccountTransferDetails.Field.TO_CLIENT_ID + " = to_client." + MClient.Field.ID);
+        this.dataProvider.applyJoin("from_account", "INNER JOIN " + MSavingsAccount.NAME + " from_account ON from_account." + MSavingsAccount.Field.ID + " = " + MAccountTransferDetails.NAME + "." + MAccountTransferDetails.Field.FROM_SAVINGS_ACCOUNT_ID);
+        this.dataProvider.applyJoin("to_account", "INNER JOIN " + MSavingsAccount.NAME + " to_account ON to_account." + MSavingsAccount.Field.ID + " = " + MAccountTransferDetails.NAME + "." + MAccountTransferDetails.Field.TO_SAVINGS_ACCOUNT_ID);
+        this.dataProvider.applyJoin("m_account_transfer_standing_instructions", "INNER JOIN " + MAccountTransferStandingInstructions.NAME + " ON " + MAccountTransferDetails.NAME + "." + MAccountTransferDetails.Field.ID + " = " + MAccountTransferStandingInstructions.NAME + "." + MAccountTransferStandingInstructions.Field.ACCOUNT_TRANSFER_DETAILS_ID);
 
-        this.dataProvider = new JdbcProvider("m_account_transfer_details");
-        this.dataProvider.applyJoin("from_client", "inner join m_client from_client on m_account_transfer_details.from_client_id = from_client.id");
-        this.dataProvider.applyJoin("to_client", "inner join m_client to_client on m_account_transfer_details.to_client_id = to_client.id");
-        this.dataProvider.applyJoin("from_account", "inner join m_savings_account from_account on from_account.id = m_account_transfer_details.from_savings_account_id");
-        this.dataProvider.applyJoin("to_account", "inner join m_savings_account to_account on to_account.id = m_account_transfer_details.to_savings_account_id");
-        this.dataProvider.applyJoin("m_account_transfer_standing_instructions", "inner join m_account_transfer_standing_instructions on m_account_transfer_details.id = m_account_transfer_standing_instructions.account_transfer_details_id");
-
-        this.dataProvider.boardField("from_account.account_no", "account_no", String.class);
-        this.dataProvider.boardField("to_client.display_name", "beneficiary_name", String.class);
-        this.dataProvider.boardField("to_account.account_no", "beneficiary_account", String.class);
-        this.dataProvider.boardField("m_account_transfer_standing_instructions.amount", "amount", Double.class);
-        this.dataProvider.boardField("m_account_transfer_standing_instructions.instruction_type", "instruction_type", Long.class);
-        this.dataProvider.boardField("m_account_transfer_standing_instructions.valid_from", "valid_from", Calendar.Date);
-        this.dataProvider.boardField("m_account_transfer_standing_instructions.valid_till", "valid_till", Calendar.Date);
+        this.dataProvider.boardField("from_account." + MSavingsAccount.Field.ACCOUNT_NO, "account_no", String.class);
+        this.dataProvider.boardField("to_client." + MClient.Field.DISPLAY_NAME, "beneficiary_name", String.class);
+        this.dataProvider.boardField("to_account." + MSavingsAccount.Field.ACCOUNT_NO, "beneficiary_account", String.class);
+        this.dataProvider.boardField(MAccountTransferStandingInstructions.NAME + "." + MAccountTransferStandingInstructions.Field.AMOUNT, "amount", Double.class);
+        this.dataProvider.boardField(MAccountTransferStandingInstructions.NAME + "." + MAccountTransferStandingInstructions.Field.INSTRUCTION_TYPE, "instruction_type", Long.class);
+        this.dataProvider.boardField(MAccountTransferStandingInstructions.NAME + "." + MAccountTransferStandingInstructions.Field.VALID_FROM, "valid_from", Calendar.Date);
+        this.dataProvider.boardField(MAccountTransferStandingInstructions.NAME + "." + MAccountTransferStandingInstructions.Field.VALID_TILL, "valid_till", Calendar.Date);
 
         this.dataProvider.selectField("instruction_type", Long.class);
 
-        this.dataProvider.applyWhere("client_id", "from_client.id = '" + this.clientId + "'");
+        this.dataProvider.applyWhere("client_id", "from_client." + MClient.Field.ID + " = '" + this.clientId + "'");
 
         this.dataColumn = Lists.newArrayList();
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Account"), "account_no", "account_no", this::dataColumn));

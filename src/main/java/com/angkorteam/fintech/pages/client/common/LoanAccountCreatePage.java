@@ -1,32 +1,8 @@
 package com.angkorteam.fintech.pages.client.common;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.joda.time.DateTime;
-
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.*;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.LoanAccountBuilder;
@@ -34,18 +10,7 @@ import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeFrequency;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.ProductPopup;
-import com.angkorteam.fintech.dto.enums.loan.AdvancePaymentsAdjustmentType;
-import com.angkorteam.fintech.dto.enums.loan.Amortization;
-import com.angkorteam.fintech.dto.enums.loan.ClosureInterestCalculationRule;
-import com.angkorteam.fintech.dto.enums.loan.Frequency;
-import com.angkorteam.fintech.dto.enums.loan.FrequencyDay;
-import com.angkorteam.fintech.dto.enums.loan.FrequencyType;
-import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
-import com.angkorteam.fintech.dto.enums.loan.InterestMethod;
-import com.angkorteam.fintech.dto.enums.loan.InterestRecalculationCompound;
-import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateType;
-import com.angkorteam.fintech.dto.enums.loan.RepaidOn;
-import com.angkorteam.fintech.dto.enums.loan.RepaymentStrategy;
+import com.angkorteam.fintech.dto.enums.loan.*;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
@@ -71,7 +36,7 @@ import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -92,6 +57,24 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.joda.time.DateTime;
+
+import java.text.ParseException;
+import java.util.*;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanAccountCreatePage extends Page {
@@ -355,7 +338,6 @@ public class LoanAccountCreatePage extends Page {
     protected ReadOnlyView interestRecalculationCompoundingDayView;
     protected boolean interestRecalculationCompoundingDayVisible;
 
-    protected WebMarkupBlock interestRecalculationCompoundingOnDayBlock;
     protected WebMarkupContainer interestRecalculationCompoundingOnDayVContainer;
     protected Long interestRecalculationCompoundingOnDayValue;
     protected ReadOnlyView interestRecalculationCompoundingOnDayView;
@@ -377,7 +359,6 @@ public class LoanAccountCreatePage extends Page {
     protected ReadOnlyView interestRecalculationRecalculateDayView;
     protected boolean interestRecalculationRecalculateDayVisible;
 
-    protected WebMarkupBlock interestRecalculationRecalculateOnDayBlock;
     protected WebMarkupContainer interestRecalculationRecalculateOnDayVContainer;
     protected Long interestRecalculationRecalculateOnDayValue;
     protected ReadOnlyView interestRecalculationRecalculateOnDayView;
@@ -1021,10 +1002,10 @@ public class LoanAccountCreatePage extends Page {
     }
 
     protected void initLinkSavingAccountBlock() {
-        this.linkSavingAccountProvider = new SingleChoiceProvider("m_savings_account", "m_savings_account.id", "m_savings_account.account_no", "concat(m_savings_account.account_no, ' => ', m_savings_product.name)");
-        this.linkSavingAccountProvider.applyJoin("m_savings_product", "INNER JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
-        this.linkSavingAccountProvider.applyWhere("status_enum", "m_savings_account.status_enum = 300");
-        this.linkSavingAccountProvider.applyWhere("client_id", "m_savings_account.client_id = " + this.clientId);
+        this.linkSavingAccountProvider = new SingleChoiceProvider(MSavingsAccount.NAME, MSavingsAccount.NAME + "." + MSavingsAccount.Field.ID, MSavingsAccount.NAME + "." + MSavingsAccount.Field.ACCOUNT_NO, "CONCAT(" + MSavingsAccount.NAME + "." + MSavingsAccount.Field.ACCOUNT_NO + ", ' => ', " + MSavingsProduct.NAME + "." + MSavingsProduct.Field.NAME + ")");
+        this.linkSavingAccountProvider.applyJoin("m_savings_product", "INNER JOIN " + MSavingsProduct.NAME + " ON " + MSavingsAccount.NAME + "." + MSavingsAccount.Field.PRODUCT_ID + " = " + MSavingsProduct.NAME + "." + MSavingsProduct.Field.ID);
+        this.linkSavingAccountProvider.applyWhere("status_enum", MSavingsAccount.NAME + "." + MSavingsAccount.Field.STATUS_ENUM + " = 300");
+        this.linkSavingAccountProvider.applyWhere("client_id", MSavingsAccount.NAME + "." + MSavingsAccount.Field.CLIENT_ID + " = " + this.clientId);
         this.linkSavingAccountBlock = new WebMarkupBlock("linkSavingAccountBlock", Size.Six_6);
         this.form.add(this.linkSavingAccountBlock);
         this.linkSavingAccountIContainer = new WebMarkupContainer("linkSavingAccountIContainer");
@@ -1105,10 +1086,10 @@ public class LoanAccountCreatePage extends Page {
     }
 
     protected void initLoanOfficerBlock() {
-        this.loanOfficerProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
-        this.loanOfficerProvider.applyWhere("is_active", "is_active = 1");
-        this.loanOfficerProvider.applyWhere("is_loan_officer", "is_loan_officer = 1");
-        this.loanOfficerProvider.applyWhere("office_id", "office_id = " + this.officeId);
+        this.loanOfficerProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.Field.ID, MStaff.Field.DISPLAY_NAME);
+        this.loanOfficerProvider.applyWhere("is_active", MStaff.Field.IS_ACTIVE + " = 1");
+        this.loanOfficerProvider.applyWhere("is_loan_officer", MStaff.Field.IS_LOAN_OFFICER + " = 1");
+        this.loanOfficerProvider.applyWhere("office_id", MStaff.Field.OFFICE_ID + " = " + this.officeId);
         this.loanOfficerBlock = new WebMarkupBlock("loanOfficerBlock", Size.Six_6);
         this.form.add(this.loanOfficerBlock);
         this.loanOfficerIContainer = new WebMarkupContainer("loanOfficerIContainer");
@@ -1306,139 +1287,155 @@ public class LoanAccountCreatePage extends Page {
         this.loanId = getPageParameters().get("loanId").toString();
 
         this.popupModel = Maps.newHashMap();
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
 
         this.submittedOnValue = DateTime.now().toDate();
         this.externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
 
-        SelectQuery query = new SelectQuery("m_product_loan");
-        query.addJoin("left join m_fund on m_product_loan.fund_id = m_fund.id");
-        query.addJoin("left join m_organisation_currency on m_product_loan.currency_code = m_organisation_currency.code");
-        query.addJoin("left join m_product_loan_floating_rates on m_product_loan_floating_rates.loan_product_id = m_product_loan.id");
-        query.addJoin("left join m_floating_rates on m_product_loan_floating_rates.floating_rates_id = m_floating_rates.id");
-        query.addJoin("left join m_product_loan_variable_installment_config on m_product_loan_variable_installment_config.loan_product_id = m_product_loan.id");
-        query.addJoin("left join m_product_loan_recalculation_details on m_product_loan.id = m_product_loan_recalculation_details.product_id");
-        query.addJoin("left join m_product_loan_guarantee_details on m_product_loan.id = m_product_loan_guarantee_details.loan_product_id");
-
-        query.addWhere("m_product_loan.id = " + this.loanId);
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MProductLoan.NAME);
+        selectQuery.addJoin("LEFT JOIN " + MFund.NAME + " ON " + MProductLoan.NAME + "." + MProductLoan.Field.FUND_ID + " = " + MFund.NAME + "." + MFund.Field.ID);
+        selectQuery.addJoin("LEFT JOIN " + MOrganisationCurrency.NAME + " ON " + MProductLoan.NAME + "." + MProductLoan.Field.CURRENCY_CODE + " = " + MOrganisationCurrency.NAME + "." + MOrganisationCurrency.Field.CODE);
+        selectQuery.addJoin("LEFT JOIN " + MProductLoanFloatingRates.NAME + " ON " + MProductLoanFloatingRates.NAME + "." + MProductLoanFloatingRates.Field.LOAN_PRODUCT_ID + " = " + MProductLoan.NAME + "." + MProductLoan.Field.ID);
+        selectQuery.addJoin("LEFT JOIN " + MFloatingRates.NAME + " ON " + MProductLoanFloatingRates.NAME + "." + MProductLoanFloatingRates.Field.FLOATING_RATES_ID + " = " + MFloatingRates.NAME + "." + MFloatingRates.Field.ID);
+        selectQuery.addJoin("LEFT JOIN " + MProductLoanVariableInstallmentConfig.NAME + " ON " + MProductLoanVariableInstallmentConfig.NAME + "." + MProductLoanVariableInstallmentConfig.Field.LOAN_PRODUCT_ID + " = " + MProductLoan.NAME + "." + MProductLoan.Field.ID);
+        selectQuery.addJoin("LEFT JOIN " + MProductLoanRecalculationDetails.NAME + " ON " + MProductLoan.NAME + "." + MProductLoan.Field.ID + " = " + MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.PRODUCT_ID);
+        selectQuery.addJoin("LEFT JOIN " + MProductLoanGuaranteeDetails.NAME + " ON " + MProductLoan.NAME + "." + MProductLoan.Field.ID + " = " + MProductLoanGuaranteeDetails.NAME + "." + MProductLoanGuaranteeDetails.Field.LOAN_PRODUCT_ID);
+        selectQuery.addWhere(MProductLoan.NAME + "." + MProductLoan.Field.ID + " = " + this.loanId);
 
         // detail section
-        query.addField("m_product_loan.name product");
-        query.addField("m_product_loan.description");
-        query.addField("m_product_loan.name");
-        query.addField("m_product_loan.short_name");
-        query.addField("m_product_loan.start_date");
-        query.addField("m_product_loan.close_date");
-        query.addField("m_product_loan.include_in_borrower_cycle");
-        query.addField("m_fund.id fund_id");
+        selectQuery.addField("m_product_loan.name product");
+        selectQuery.addField("m_product_loan.description");
+        selectQuery.addField("m_product_loan.name");
+        selectQuery.addField("m_product_loan.short_name");
+        selectQuery.addField("m_product_loan.start_date");
+        selectQuery.addField("m_product_loan.close_date");
+        selectQuery.addField("m_product_loan.include_in_borrower_cycle");
+        selectQuery.addField("m_fund.id fund_id");
 
         // currency
-        query.addField("m_organisation_currency.code currency_code");
-        query.addField("m_product_loan.currency_digits");
-        query.addField("m_product_loan.currency_multiplesof");
-        query.addField("m_product_loan.instalment_amount_in_multiples_of");
+        selectQuery.addField("m_organisation_currency.code currency_code");
+        selectQuery.addField("m_product_loan.currency_digits");
+        selectQuery.addField("m_product_loan.currency_multiplesof");
+        selectQuery.addField("m_product_loan.instalment_amount_in_multiples_of");
 
         // Terms
-        query.addField("m_product_loan.use_borrower_cycle");
-        query.addField("m_product_loan.min_principal_amount");
-        query.addField("m_product_loan.principal_amount");
-        query.addField("m_product_loan.max_principal_amount");
+        selectQuery.addField("m_product_loan.use_borrower_cycle");
+        selectQuery.addField("m_product_loan.min_principal_amount");
+        selectQuery.addField("m_product_loan.principal_amount");
+        selectQuery.addField("m_product_loan.max_principal_amount");
 
-        query.addField("m_product_loan.min_number_of_repayments");
-        query.addField("m_product_loan.number_of_repayments");
-        query.addField("m_product_loan.max_number_of_repayments");
-        query.addField("m_product_loan.repay_every");
-        query.addField("m_product_loan.repayment_period_frequency_enum");
+        selectQuery.addField("m_product_loan.min_number_of_repayments");
+        selectQuery.addField("m_product_loan.number_of_repayments");
+        selectQuery.addField("m_product_loan.max_number_of_repayments");
+        selectQuery.addField("m_product_loan.repay_every");
+        selectQuery.addField("m_product_loan.repayment_period_frequency_enum");
 
-        query.addField("m_product_loan.min_nominal_interest_rate_per_period");
-        query.addField("m_product_loan.nominal_interest_rate_per_period");
-        query.addField("m_product_loan.max_nominal_interest_rate_per_period");
-        query.addField("m_product_loan.interest_period_frequency_enum");
+        selectQuery.addField("m_product_loan.min_nominal_interest_rate_per_period");
+        selectQuery.addField("m_product_loan.nominal_interest_rate_per_period");
+        selectQuery.addField("m_product_loan.max_nominal_interest_rate_per_period");
+        selectQuery.addField("m_product_loan.interest_period_frequency_enum");
 
-        query.addField("m_product_loan.is_linked_to_floating_interest_rates");
+        selectQuery.addField("m_product_loan.is_linked_to_floating_interest_rates");
 
-        query.addField("m_floating_rates.name floating_rate");
-        query.addField("m_product_loan_floating_rates.interest_rate_differential");
-        query.addField("m_product_loan_floating_rates.is_floating_interest_rate_calculation_allowed");
-        query.addField("m_product_loan_floating_rates.min_differential_lending_rate");
-        query.addField("m_product_loan_floating_rates.default_differential_lending_rate");
-        query.addField("m_product_loan_floating_rates.max_differential_lending_rate");
+        selectQuery.addField("m_floating_rates.name floating_rate");
+        selectQuery.addField("m_product_loan_floating_rates.interest_rate_differential");
+        selectQuery.addField("m_product_loan_floating_rates.is_floating_interest_rate_calculation_allowed");
+        selectQuery.addField("m_product_loan_floating_rates.min_differential_lending_rate");
+        selectQuery.addField("m_product_loan_floating_rates.default_differential_lending_rate");
+        selectQuery.addField("m_product_loan_floating_rates.max_differential_lending_rate");
 
-        query.addField("m_product_loan.min_days_between_disbursal_and_first_repayment");
+        selectQuery.addField("m_product_loan.min_days_between_disbursal_and_first_repayment");
 
         // setting
-        query.addField("m_product_loan.amortization_method_enum");
-        query.addField("m_product_loan.interest_method_enum");
-        query.addField("m_product_loan.interest_calculated_in_period_enum");
-        query.addField("m_product_loan.allow_partial_period_interest_calcualtion");
-        query.addField("m_product_loan.arrearstolerance_amount");
-        query.addField("m_product_loan.loan_transaction_strategy_id");
-        query.addField("m_product_loan.grace_interest_free_periods");
-        query.addField("m_product_loan.grace_on_arrears_ageing");
-        query.addField("m_product_loan.grace_on_interest_periods");
-        query.addField("m_product_loan.grace_on_principal_periods");
-        query.addField("m_product_loan.account_moves_out_of_npa_only_on_arrears_completion");
-        query.addField("m_product_loan.overdue_days_for_npa");
-        query.addField("m_product_loan.days_in_year_enum");
-        query.addField("m_product_loan.days_in_month_enum");
-        query.addField("m_product_loan.principal_threshold_for_last_installment");
-        query.addField("m_product_loan.can_define_fixed_emi_amount");
-        query.addField("m_product_loan.can_use_for_topup");
-        query.addField("m_product_loan.allow_variabe_installments");
-        query.addField("m_product_loan_variable_installment_config.minimum_gap");
-        query.addField("m_product_loan_variable_installment_config.maximum_gap");
+        selectQuery.addField("m_product_loan.amortization_method_enum");
+        selectQuery.addField("m_product_loan.interest_method_enum");
+        selectQuery.addField("m_product_loan.interest_calculated_in_period_enum");
+        selectQuery.addField("m_product_loan.allow_partial_period_interest_calcualtion");
+        selectQuery.addField("m_product_loan.arrearstolerance_amount");
+        selectQuery.addField("m_product_loan.loan_transaction_strategy_id");
+        selectQuery.addField("m_product_loan.grace_interest_free_periods");
+        selectQuery.addField("m_product_loan.grace_on_arrears_ageing");
+        selectQuery.addField("m_product_loan.grace_on_interest_periods");
+        selectQuery.addField("m_product_loan.grace_on_principal_periods");
+        selectQuery.addField("m_product_loan.account_moves_out_of_npa_only_on_arrears_completion");
+        selectQuery.addField("m_product_loan.overdue_days_for_npa");
+        selectQuery.addField("m_product_loan.days_in_year_enum");
+        selectQuery.addField("m_product_loan.days_in_month_enum");
+        selectQuery.addField("m_product_loan.principal_threshold_for_last_installment");
+        selectQuery.addField("m_product_loan.can_define_fixed_emi_amount");
+        selectQuery.addField("m_product_loan.can_use_for_topup");
+        selectQuery.addField("m_product_loan.allow_variabe_installments");
+        selectQuery.addField("m_product_loan_variable_installment_config.minimum_gap");
+        selectQuery.addField("m_product_loan_variable_installment_config.maximum_gap");
 
         // re-calculation
-        query.addField("m_product_loan.interest_recalculation_enabled");
+        selectQuery.addField("m_product_loan.interest_recalculation_enabled");
 
-        query.addField("m_product_loan_recalculation_details.reschedule_strategy_enum");
-        query.addField("m_product_loan_recalculation_details.rest_frequency_type_enum");
-        query.addField("m_product_loan_recalculation_details.rest_frequency_interval");
-        query.addField("m_product_loan_recalculation_details.arrears_based_on_original_schedule");
-        query.addField("m_product_loan_recalculation_details.pre_close_interest_calculation_strategy");
-        query.addField("m_product_loan_recalculation_details.compounding_frequency_type_enum");
-        query.addField("m_product_loan_recalculation_details.compounding_frequency_interval");
-        query.addField("m_product_loan_recalculation_details.rest_frequency_nth_day_enum");
-        query.addField("m_product_loan_recalculation_details.rest_frequency_on_day");
-        query.addField("m_product_loan_recalculation_details.rest_frequency_weekday_enum");
-        query.addField("m_product_loan_recalculation_details.compounding_frequency_nth_day_enum");
-        query.addField("m_product_loan_recalculation_details.compounding_frequency_on_day");
-        query.addField("m_product_loan_recalculation_details.compound_type_enum");
-        query.addField("m_product_loan_recalculation_details.compounding_frequency_weekday_enum");
-        query.addField("m_product_loan_recalculation_details.is_compounding_to_be_posted_as_transaction");
-        query.addField("m_product_loan_recalculation_details.allow_compounding_on_eod");
+        selectQuery.addField("m_product_loan_recalculation_details.reschedule_strategy_enum");
+        selectQuery.addField("m_product_loan_recalculation_details.rest_frequency_type_enum");
+        selectQuery.addField("m_product_loan_recalculation_details.rest_frequency_interval");
+        selectQuery.addField("m_product_loan_recalculation_details.arrears_based_on_original_schedule");
+        selectQuery.addField("m_product_loan_recalculation_details.pre_close_interest_calculation_strategy");
+        selectQuery.addField("m_product_loan_recalculation_details.compounding_frequency_type_enum");
+        selectQuery.addField("m_product_loan_recalculation_details.compounding_frequency_interval");
+        selectQuery.addField("m_product_loan_recalculation_details.rest_frequency_nth_day_enum");
+        selectQuery.addField("m_product_loan_recalculation_details.rest_frequency_on_day");
+        selectQuery.addField("m_product_loan_recalculation_details.rest_frequency_weekday_enum");
+        selectQuery.addField("m_product_loan_recalculation_details.compounding_frequency_nth_day_enum");
+        selectQuery.addField("m_product_loan_recalculation_details.compounding_frequency_on_day");
+        selectQuery.addField("m_product_loan_recalculation_details.compound_type_enum");
+        selectQuery.addField("m_product_loan_recalculation_details.compounding_frequency_weekday_enum");
+        selectQuery.addField("m_product_loan_recalculation_details.is_compounding_to_be_posted_as_transaction");
+        selectQuery.addField("m_product_loan_recalculation_details.allow_compounding_on_eod");
 
-        query.addField("m_product_loan.hold_guarantee_funds");
-        query.addField("m_product_loan_guarantee_details.mandatory_guarantee");
-        query.addField("m_product_loan_guarantee_details.minimum_guarantee_from_guarantor_funds");
-        query.addField("m_product_loan_guarantee_details.minimum_guarantee_from_own_funds");
+        selectQuery.addField("m_product_loan.hold_guarantee_funds");
+        selectQuery.addField("m_product_loan_guarantee_details.mandatory_guarantee");
+        selectQuery.addField("m_product_loan_guarantee_details.minimum_guarantee_from_guarantor_funds");
+        selectQuery.addField("m_product_loan_guarantee_details.minimum_guarantee_from_own_funds");
 
-        query.addField("m_product_loan.allow_multiple_disbursals");
-        query.addField("m_product_loan.max_disbursals");
-        query.addField("m_product_loan.max_outstanding_loan_balance");
+        selectQuery.addField("m_product_loan.allow_multiple_disbursals");
+        selectQuery.addField("m_product_loan.max_disbursals");
+        selectQuery.addField("m_product_loan.max_outstanding_loan_balance");
 
-        query.addField("m_product_loan.accounting_type");
+        selectQuery.addField("m_product_loan.accounting_type");
 
-        Map<String, Object> loanObject = jdbcTemplate.queryForMap(query.toSQL());
+        Map<String, Object> loanObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
         if (this.client == ClientEnum.Client) {
-            Map<String, Object> clientObject = jdbcTemplate.queryForMap("select office_id, display_name from m_client where id = ?", this.clientId);
+            selectQuery = new SelectQuery(MClient.NAME);
+            selectQuery.addField(MClient.Field.OFFICE_ID);
+            selectQuery.addField(MClient.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+            Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
             this.clientDisplayName = (String) clientObject.get("display_name");
             this.officeId = String.valueOf(clientObject.get("office_id"));
         } else if (this.client == ClientEnum.Group) {
-            Map<String, Object> groupObject = jdbcTemplate.queryForMap("select office_id, display_name from m_group where id = ?", this.groupId);
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.OFFICE_ID);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.groupId);
+            Map<String, Object> groupObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
             this.groupDisplayName = (String) groupObject.get("display_name");
             this.officeId = String.valueOf(groupObject.get("office_id"));
         } else if (this.client == ClientEnum.Center) {
-            Map<String, Object> centerObject = jdbcTemplate.queryForMap("select office_id, display_name from m_group where id = ?", this.centerId);
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.OFFICE_ID);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.groupId);
+            Map<String, Object> centerObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
             this.centerDisplayName = (String) centerObject.get("display_name");
             this.officeId = String.valueOf(centerObject.get("office_id"));
         }
 
         this.productValue = (String) loanObject.get("name");
 
-        this.fundValue = jdbcTemplate.queryForObject("select id, name text from m_fund where id = ?", Option.MAPPER, loanObject.get("fund_id"));
+        selectQuery = new SelectQuery(MFund.NAME);
+        selectQuery.addField(MFund.Field.ID);
+        selectQuery.addField(MFund.Field.NAME + " as text");
+        selectQuery.addWhere(MFund.Field.ID + " = :" + MFund.Field.ID, loanObject.get("fund_id"));
+        this.fundValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
 
         this.submittedOnValue = DateTime.now().toDate();
         this.disbursementOnValue = DateTime.now().toDate();
@@ -1533,27 +1530,27 @@ public class LoanAccountCreatePage extends Page {
             // query.addField("m_product_loan_recalculation_details.allow_compounding_on_eod");
         }
 
-        SelectQuery chargeQuery = new SelectQuery("m_charge");
-        chargeQuery.addJoin("inner join m_product_loan_charge on m_product_loan_charge.charge_id = m_charge.id");
-        chargeQuery.addField("m_charge.name");
-        chargeQuery.addField("m_charge.charge_time_enum");
-        chargeQuery.addField("m_charge.id");
-        chargeQuery.addField("m_charge.charge_calculation_enum");
-        chargeQuery.addField("m_charge.charge_payment_mode_enum");
-        chargeQuery.addField("m_charge.amount");
-        chargeQuery.addField("m_charge.fee_on_day");
-        chargeQuery.addField("m_charge.fee_interval");
-        chargeQuery.addField("m_charge.fee_on_month");
-        chargeQuery.addField("m_charge.is_penalty");
-        chargeQuery.addField("m_charge.is_active");
-        chargeQuery.addField("m_charge.min_cap");
-        chargeQuery.addField("m_charge.max_cap");
-        chargeQuery.addField("m_charge.fee_frequency");
-        chargeQuery.addField("m_charge.income_or_liability_account_id");
-        chargeQuery.addField("m_charge.tax_group_id");
-        chargeQuery.addWhere("m_product_loan_charge.product_loan_id = '" + this.loanId + "'");
+        selectQuery = new SelectQuery(MCharge.NAME);
+        selectQuery.addJoin("INNER JOIN " + MProductLoanCharge.NAME + " ON " + MProductLoanCharge.NAME + "." + MProductLoanCharge.Field.CHARGE_ID + " = " + MCharge.NAME + "." + MCharge.Field.ID);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.NAME);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.CHARGE_TIME_ENUM);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.ID);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.CHARGE_CALCULATION_ENUM);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.CHARGE_PAYMENT_MODE_ENUM);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.AMOUNT);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.FEE_ON_DAY);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.FEE_INTERVAL);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.FEE_ON_MONTH);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.IS_PENALTY);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.IS_ACTIVE);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.MIN_CAP);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.MAX_CAP);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.FEE_FREQUENCY);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.INCOME_OR_LIABILITY_ACCOUNT_ID);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.TAX_GROUP_ID);
+        selectQuery.addWhere(MProductLoanCharge.NAME + "." + MProductLoanCharge.Field.PRODUCT_LOAN_ID + " = '" + this.loanId + "'");
 
-        List<Map<String, Object>> chargeObjects = jdbcTemplate.queryForList(chargeQuery.toSQL());
+        List<Map<String, Object>> chargeObjects = named.queryForList(selectQuery.toSQL(), selectQuery.getParam());
 
         for (Map<String, Object> chargeObject : chargeObjects) {
             Boolean is_penalty = (Boolean) chargeObject.get("is_penalty");

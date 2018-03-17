@@ -17,6 +17,7 @@ import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MPaymentType;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
@@ -229,7 +230,7 @@ public class SavingAccountClosePage extends Page {
     }
 
     protected void initPaymentTypeBlock() {
-        this.paymentTypeProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
+        this.paymentTypeProvider = new SingleChoiceProvider(MPaymentType.NAME, MPaymentType.Field.ID, MPaymentType.Field.VALUE);
         this.paymentTypeBlock = new WebMarkupBlock("paymentTypeBlock", Size.Six_6);
         this.form.add(this.paymentTypeBlock);
         this.paymentTypeIContainer = new WebMarkupContainer("paymentTypeIContainer");

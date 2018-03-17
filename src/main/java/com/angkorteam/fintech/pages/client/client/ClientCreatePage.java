@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.MSavingsProduct;
+import com.angkorteam.fintech.ddl.MStaff;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -399,8 +402,8 @@ public class ClientCreatePage extends Page {
         this.form.add(this.savingsAccountBlock);
         this.savingsAccountIContainer = new WebMarkupContainer("savingsAccountIContainer");
         this.savingsAccountBlock.add(this.savingsAccountIContainer);
-        this.savingsAccountProvider = new SingleChoiceProvider("m_savings_product", "id", "name");
-        this.savingsAccountProvider.applyWhere("deposit_type_enum", "deposit_type_enum = " + DepositType.Saving.getLiteral());
+        this.savingsAccountProvider = new SingleChoiceProvider(MSavingsProduct.NAME, MSavingsProduct.Field.ID, MSavingsProduct.Field.NAME);
+        this.savingsAccountProvider.applyWhere("deposit_type_enum", MSavingsProduct.Field.DEPOSIT_TYPE_ENUM + " = " + DepositType.Saving.getLiteral());
         this.savingsAccountField = new Select2SingleChoice<>("savingsAccountField", new PropertyModel<>(this, "savingsAccountValue"), this.savingsAccountProvider);
         this.savingsAccountField.setLabel(Model.of("Savings Account"));
         this.savingsAccountField.add(new OnChangeAjaxBehavior());
@@ -690,8 +693,8 @@ public class ClientCreatePage extends Page {
         this.form.add(this.staffBlock);
         this.staffIContainer = new WebMarkupContainer("staffIContainer");
         this.staffBlock.add(this.staffIContainer);
-        this.staffProvider = new SingleChoiceProvider("m_staff", "m_staff.id", "m_staff.display_name");
-        this.staffProvider.applyJoin("m_office", "inner join m_office on m_staff.office_id = m_office.id");
+        this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.NAME + "." + MStaff.Field.ID, MStaff.NAME + "." + MStaff.Field.DISPLAY_NAME);
+        this.staffProvider.applyJoin("m_office", "INNER JOIN " + MOffice.NAME + " ON " + MStaff.NAME + "." + MStaff.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
         this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
@@ -799,7 +802,7 @@ public class ClientCreatePage extends Page {
             this.staffProvider.setDisabled(true);
         } else {
             this.staffProvider.setDisabled(false);
-            this.staffProvider.applyWhere("office", "m_office.id = " + this.officeValue.getId());
+            this.staffProvider.applyWhere("office", MOffice.NAME + "." + MOffice.Field.ID + " = " + this.officeValue.getId());
         }
         this.staffIContainer.setVisible(visible);
         if (target != null) {

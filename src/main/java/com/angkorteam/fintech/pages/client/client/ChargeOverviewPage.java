@@ -4,6 +4,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MClientCharge;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -51,9 +56,15 @@ public class ChargeOverviewPage extends Page {
 
     @Override
     protected void initData() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         this.clientId = getPageParameters().get("clientId").toString();
-        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select display_name from m_client where id = ?", this.clientId);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MClient.NAME);
+        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+        selectQuery.addField(MClient.Field.DISPLAY_NAME);
+        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.clientDisplayName = (String) clientObject.get("display_name");
     }
 
@@ -101,19 +112,18 @@ public class ChargeOverviewPage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
 
-        this.dataProvider = new JdbcProvider("m_client_charge");
-        this.dataProvider.applyJoin("m_charge", "inner join m_charge on m_client_charge.charge_id = m_charge.id");
+        this.dataProvider = new JdbcProvider(MClientCharge.NAME);
+        this.dataProvider.applyJoin("m_charge", "INNER JOIN " + MCharge.NAME + " ON " + MClientCharge.NAME + "." + MClientCharge.Field.CHARGE_ID + " = " + MCharge.NAME + "." + MCharge.Field.ID);
+        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MCharge.NAME + "." + MCharge.Field.NAME, "name", String.class);
+        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.CHARGE_DUE_DATE, "due_date", Calendar.Date);
+        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT, "due", Double.class);
+        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_PAID_DERIVED, "paid", Double.class);
+        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_WAIVED_DERIVED, "waived", Double.class);
+        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_OUTSTANDING_DERIVED, "outstanding", Double.class);
 
-        this.dataProvider.boardField("m_client_charge.id", "id", Long.class);
-        this.dataProvider.boardField("m_charge.name", "name", String.class);
-        this.dataProvider.boardField("m_client_charge.charge_due_date", "due_date", Calendar.Date);
-        this.dataProvider.boardField("m_client_charge.amount", "due", Double.class);
-        this.dataProvider.boardField("m_client_charge.amount_paid_derived", "paid", Double.class);
-        this.dataProvider.boardField("m_client_charge.amount_waived_derived", "waived", Double.class);
-        this.dataProvider.boardField("m_client_charge.amount_outstanding_derived", "outstanding", Double.class);
-
-        this.dataProvider.applyWhere("amount_outstanding_derived", "m_client_charge.amount_outstanding_derived = 0");
-        this.dataProvider.applyWhere("client_id", "m_client_charge.client_id = " + this.clientId);
+        this.dataProvider.applyWhere("amount_outstanding_derived", MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_OUTSTANDING_DERIVED + " = 0");
+        this.dataProvider.applyWhere("client_id", MClientCharge.NAME + "." + MClientCharge.Field.CLIENT_ID + " = " + this.clientId);
 
         this.dataProvider.selectField("id", Long.class);
 

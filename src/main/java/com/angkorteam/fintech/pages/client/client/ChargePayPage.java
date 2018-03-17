@@ -1,9 +1,26 @@
 package com.angkorteam.fintech.pages.client.client;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MClientCharge;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.client.client.ClientChargePayBuilder;
+import com.angkorteam.fintech.helper.ClientHelper;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.spring.JdbcNamed;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
@@ -14,23 +31,9 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.joda.time.DateTime;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.builder.client.client.ClientChargePayBuilder;
-import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
-import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
-import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ChargePayPage extends Page {
@@ -114,13 +117,30 @@ public class ChargePayPage extends Page {
         this.clientId = getPageParameters().get("clientId").toString();
         this.chargeId = getPageParameters().get("chargeId").toString();
         this.transactionDateValue = DateTime.now().toDate();
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
 
-        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select office_id, display_name from m_client where id = ?", this.clientId);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MClient.NAME);
+        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+        selectQuery.addField(MClient.Field.OFFICE_ID);
+        selectQuery.addField(MClient.Field.DISPLAY_NAME);
+        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
         this.clientDisplayName = (String) clientObject.get("display_name");
 
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select * from m_client_charge where id = ?", this.chargeId);
-        this.chargeName = (String) chargeObject.get("name");
+        selectQuery = new SelectQuery(MClientCharge.NAME);
+        selectQuery.addField(MClientCharge.Field.AMOUNT_OUTSTANDING_DERIVED);
+        selectQuery.addField(MClientCharge.Field.AMOUNT);
+        selectQuery.addWhere(MClientCharge.Field.CHARGE_ID + " = :" + MClientCharge.Field.CHARGE_ID, this.chargeId);
+        Map<String, Object> chargeObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
+        selectQuery = new SelectQuery(MCharge.NAME);
+        selectQuery.addField(MCharge.Field.NAME);
+        selectQuery.addWhere(MCharge.Field.ID + " = :" + MCharge.Field.ID, this.chargeId);
+        this.chargeName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
+
         this.amountValue = chargeObject.get("amount_outstanding_derived") == null ? (Double) chargeObject.get("amount") : (Double) chargeObject.get("amount_outstanding_derived");
     }
 

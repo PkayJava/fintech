@@ -14,6 +14,12 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MCodeValue;
+import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.fintech.ddl.MLoan;
+import com.angkorteam.fintech.ddl.MOrganisationCurrency;
+import com.angkorteam.fintech.ddl.MStaff;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
@@ -34,7 +40,7 @@ import com.angkorteam.fintech.widget.client.common.LoanAccountPreviewTransaction
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 import com.google.common.collect.Lists;
@@ -758,67 +764,68 @@ public class LoanAccountPreviewPage extends Page {
 
         this.loanId = getPageParameters().get("loanId").toString();
 
-        SelectQuery loanDetailQuery = new SelectQuery("m_loan");
-        loanDetailQuery.addJoin("left join m_code_value loanpurpose on m_loan.loanpurpose_cv_id = loanpurpose.id");
-        loanDetailQuery.addJoin("left join m_staff on m_loan.loan_officer_id = m_staff.id");
-        loanDetailQuery.addJoin("left join m_organisation_currency on m_organisation_currency.code = m_loan.currency_code");
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MLoan.NAME);
+        selectQuery.addJoin("LEFT JOIN " + MCodeValue.NAME + " loanpurpose ON " + MLoan.NAME + "." + MLoan.Field.LOAN_PURPOSE_CV_ID + " = loanpurpose." + MCodeValue.Field.ID);
+        selectQuery.addJoin("LEFT JOIN " + MStaff.NAME + " ON " + MLoan.NAME + "." + MLoan.Field.LOAN_OFFICER_ID + " = " + MStaff.NAME + "." + MStaff.Field.ID);
+        selectQuery.addJoin("LEFT JOIN " + MOrganisationCurrency.NAME + " ON " + MOrganisationCurrency.NAME + "." + MOrganisationCurrency.Field.CODE + " = " + MLoan.NAME + "." + MLoan.Field.CURRENCY_CODE);
 
-        loanDetailQuery.addField("m_loan.loan_status_id");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.LOAN_STATUS_ID);
 
-        loanDetailQuery.addField("m_loan.disbursedon_date");
-        loanDetailQuery.addField("m_staff.display_name loan_officer");
-        loanDetailQuery.addField("loanpurpose.code_value loan_purpose");
-        loanDetailQuery.addField("concat(m_organisation_currency.name, ' [', m_loan.currency_code, ']') currency");
-        loanDetailQuery.addField("m_loan.external_id");
-        loanDetailQuery.addField("m_loan.principal_amount_proposed proposed_amount");
-        loanDetailQuery.addField("m_loan.approved_principal approved_amount");
-        loanDetailQuery.addField("m_loan.principal_amount disbursed_amount");
-        loanDetailQuery.addField("m_loan.number_of_repayments");
-        loanDetailQuery.addField("m_loan.maturedon_date");
-        loanDetailQuery.addField("m_loan.loan_officer_id");
-        loanDetailQuery.addField("m_loan.account_no");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.DISBURSED_ON_DATE);
+        selectQuery.addField(MStaff.NAME + "." + MStaff.Field.DISPLAY_NAME + " loan_officer");
+        selectQuery.addField("loanpurpose." + MCodeValue.Field.CODE_VALUE + " loan_purpose");
+        selectQuery.addField("CONCAT(" + MOrganisationCurrency.NAME + "." + MOrganisationCurrency.Field.NAME + ", ' [', " + MLoan.NAME + "." + MLoan.Field.CURRENCY_CODE + ", ']') currency");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.EXTERNAL_ID);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.PRINCIPAL_AMOUNT_PROPOSED + " proposed_amount");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.APPROVED_PRINCIPAL + " approved_amount");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.PRINCIPAL_AMOUNT + " disbursed_amount");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.NUMBER_OF_REPAYMENTS);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.MATURED_ON_DATE);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.LOAN_OFFICER_ID);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.ACCOUNT_NO);
 
-        loanDetailQuery.addField("m_loan.principal_disbursed_derived original_principle");
-        loanDetailQuery.addField("m_loan.interest_charged_derived original_interest");
-        loanDetailQuery.addField("m_loan.fee_charges_charged_derived original_fee");
-        loanDetailQuery.addField("m_loan.penalty_charges_charged_derived original_penalty");
-        loanDetailQuery.addField("m_loan.total_expected_repayment_derived original_total");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.PRINCIPAL_DISBURSED_DERIVED + " original_principle");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.INTEREST_CHARGED_DERIVED + " original_interest");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.FEE_CHARGES_CHARGED_DERIVED + " original_fee");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.PENALTY_CHARGES_CHARGED_DERIVED + " original_penalty");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.TOTAL_EXPECTED_REPAYMENT_DERIVED + " original_total");
 
-        loanDetailQuery.addField("m_loan.principal_repaid_derived paid_principle");
-        loanDetailQuery.addField("m_loan.interest_repaid_derived paid_interest");
-        loanDetailQuery.addField("m_loan.fee_charges_repaid_derived paid_fee");
-        loanDetailQuery.addField("m_loan.penalty_charges_repaid_derived paid_penalty");
-        loanDetailQuery.addField("m_loan.total_repayment_derived paid_total");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.PRINCIPAL_REPAID_DERIVED + " paid_principle");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.INTEREST_REPAID_DERIVED + " paid_interest");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.FEE_CHARGES_REPAID_DERIVED + " paid_fee");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.PENALTY_CHARGES_REPAID_DERIVED + " paid_penalty");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.TOTAL_REPAYMENT_DERIVED + " paid_total");
 
-        loanDetailQuery.addField("null waived_principle");
-        loanDetailQuery.addField("m_loan.interest_waived_derived waived_interest");
-        loanDetailQuery.addField("m_loan.fee_charges_waived_derived waived_fee");
-        loanDetailQuery.addField("m_loan.penalty_charges_waived_derived waived_penalty");
-        loanDetailQuery.addField("m_loan.total_waived_derived waived_total");
+        selectQuery.addField("NULL waived_principle");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.INTEREST_WAIVED_DERIVED + " waived_interest");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.FEE_CHARGES_WAIVED_DERIVED + " waived_fee");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.PENALTY_CHARGES_WAIVED_DERIVED + " waived_penalty");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.TOTAL_WAIVED_DERIVED + " waived_total");
 
-        loanDetailQuery.addField("m_loan.principal_writtenoff_derived writtenoff_principle");
-        loanDetailQuery.addField("m_loan.interest_writtenoff_derived writtenoff_interest");
-        loanDetailQuery.addField("m_loan.fee_charges_writtenoff_derived writtenoff_fee");
-        loanDetailQuery.addField("m_loan.penalty_charges_writtenoff_derived writtenoff_penalty");
-        loanDetailQuery.addField("m_loan.total_writtenoff_derived writtenoff_total");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.PRINCIPAL_WRITTEN_OFF_DERIVED + " writtenoff_principle");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.INTEREST_WRITTEN_OFF_DERIVED + " writtenoff_interest");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.FEE_CHARGES_WRITTEN_OFF_DERIVED + " writtenoff_fee");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.PENALTY_CHARGES_WRITTEN_OFF_DERIVED + " writtenoff_penalty");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.TOTAL_WRITTEN_OFF_DERIVED + " writtenoff_total");
 
-        loanDetailQuery.addField("m_loan.principal_outstanding_derived outstanding_principle");
-        loanDetailQuery.addField("m_loan.interest_outstanding_derived outstanding_interest");
-        loanDetailQuery.addField("m_loan.fee_charges_outstanding_derived outstanding_fee");
-        loanDetailQuery.addField("m_loan.penalty_charges_outstanding_derived outstanding_penalty");
-        loanDetailQuery.addField("m_loan.total_outstanding_derived outstanding_total");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.PRINCIPAL_OUTSTANDING_DERIVED + " outstanding_principle");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.INTEREST_OUTSTANDING_DERIVED + " outstanding_interest");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.FEE_CHARGES_OUTSTANDING_DERIVED + " outstanding_fee");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.PENALTY_CHARGES_OUTSTANDING_DERIVED + " outstanding_penalty");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.TOTAL_OUTSTANDING_DERIVED + " outstanding_total");
 
-        loanDetailQuery.addField("0.0 overdue_principle");
-        loanDetailQuery.addField("0.0 overdue_interest");
-        loanDetailQuery.addField("0.0 overdue_fee");
-        loanDetailQuery.addField("0.0 overdue_penalty");
-        loanDetailQuery.addField("0.0 overdue_total");
+        selectQuery.addField("0.0 overdue_principle");
+        selectQuery.addField("0.0 overdue_interest");
+        selectQuery.addField("0.0 overdue_fee");
+        selectQuery.addField("0.0 overdue_penalty");
+        selectQuery.addField("0.0 overdue_total");
 
-        loanDetailQuery.addWhere("m_loan.id = '" + this.loanId + "'");
+        selectQuery.addWhere(MLoan.NAME + "." + MLoan.Field.ID + " = '" + this.loanId + "'");
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-        Map<String, Object> loanDetailObject = jdbcTemplate.queryForMap(loanDetailQuery.toSQL());
+        Map<String, Object> loanDetailObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
         this.loanStatus = String.valueOf(loanDetailObject.get("loan_status_id"));
 
@@ -873,13 +880,26 @@ public class LoanAccountPreviewPage extends Page {
         this.disbursedDateValue = (Date) loanDetailObject.get("disbursedon_date");
 
         if (this.client == ClientEnum.Client) {
-            this.clientDisplayName = jdbcTemplate.queryForObject("select display_name from m_client where id = ?", String.class, this.clientId);
-        }
-        if (this.client == ClientEnum.Group) {
-            this.groupDisplayName = jdbcTemplate.queryForObject("select display_name from m_group where id = ?", String.class, this.groupId);
-        }
-        if (this.client == ClientEnum.Center) {
-            this.centerDisplayName = jdbcTemplate.queryForObject("select display_name from m_group where id = ?", String.class, this.centerId);
+            selectQuery = new SelectQuery(MClient.NAME);
+            selectQuery.addField(MClient.Field.OFFICE_ID);
+            selectQuery.addField(MClient.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+            Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+            this.clientDisplayName = (String) clientObject.get("display_name");
+        } else if (this.client == ClientEnum.Group) {
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.OFFICE_ID);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.groupId);
+            Map<String, Object> groupObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+            this.groupDisplayName = (String) groupObject.get("display_name");
+        } else if (this.client == ClientEnum.Center) {
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.OFFICE_ID);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.centerId);
+            Map<String, Object> centerObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+            this.centerDisplayName = (String) centerObject.get("display_name");
         }
 
         this.loanAccountNo = (String) loanDetailObject.get("account_no");

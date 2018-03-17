@@ -3,6 +3,9 @@ package com.angkorteam.fintech.pages.client.client;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -134,8 +137,14 @@ public class ClientWebcamPage extends Page {
     @Override
     protected void initData() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        this.clientId = getPageParameters().get("clientId").toString();
-        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select display_name from m_client where id = ?", this.clientId);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MClient.NAME);
+        selectQuery.addField(MClient.Field.DISPLAY_NAME);
+        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.clientDisplayName = (String) clientObject.get("display_name");
     }
 

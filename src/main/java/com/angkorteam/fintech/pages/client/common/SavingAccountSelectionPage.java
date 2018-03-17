@@ -12,6 +12,9 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.fintech.ddl.MSavingsProduct;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.DepositType;
@@ -26,8 +29,9 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -101,8 +105,8 @@ public class SavingAccountSelectionPage extends Page {
         this.form.add(this.savingBlock);
         this.savingIContainer = new WebMarkupContainer("savingIContainer");
         this.savingBlock.add(this.savingIContainer);
-        this.savingProvider = new SingleChoiceProvider("m_savings_product", "id", "name");
-        this.savingProvider.applyWhere("deposit_type_enum", "deposit_type_enum = " + DepositType.Saving.getLiteral());
+        this.savingProvider = new SingleChoiceProvider(MSavingsProduct.NAME, MSavingsProduct.Field.ID, MSavingsProduct.Field.NAME);
+        this.savingProvider.applyWhere("deposit_type_enum", MSavingsProduct.Field.DEPOSIT_TYPE_ENUM + " = " + DepositType.Saving.getLiteral());
         this.savingField = new Select2SingleChoice<>("savingField", new PropertyModel<>(this, "savingValue"), this.savingProvider);
         this.savingField.setLabel(Model.of("Product"));
         this.savingField.add(new OnChangeAjaxBehavior());
@@ -120,15 +124,23 @@ public class SavingAccountSelectionPage extends Page {
         this.groupId = getPageParameters().get("groupId").toString();
         this.centerId = getPageParameters().get("centerId").toString();
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+        SelectQuery selectQuery = null;
         if (this.client == ClientEnum.Client) {
-            this.clientDisplayName = jdbcTemplate.queryForObject("select display_name from m_client where id = ?", String.class, this.clientId);
-        }
-        if (this.client == ClientEnum.Group) {
-            this.groupDisplayName = jdbcTemplate.queryForObject("select display_name from m_group where id = ?", String.class, this.groupId);
-        }
-        if (this.client == ClientEnum.Center) {
-            this.centerDisplayName = jdbcTemplate.queryForObject("select display_name from m_group where id = ?", String.class, this.centerId);
+            selectQuery = new SelectQuery(MClient.NAME);
+            selectQuery.addField(MClient.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+            this.clientDisplayName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
+        } else if (this.client == ClientEnum.Group) {
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.groupId);
+            this.groupDisplayName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
+        } else if (this.client == ClientEnum.Center) {
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.centerId);
+            this.centerDisplayName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
         }
     }
 

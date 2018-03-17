@@ -1,8 +1,27 @@
 package com.angkorteam.fintech.pages.client.client;
 
-import java.util.List;
-import java.util.Map;
-
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.client.client.ClientTransferBuilder;
+import com.angkorteam.fintech.helper.ClientHelper;
+import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.spring.JdbcNamed;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -12,25 +31,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.builder.client.client.ClientTransferBuilder;
-import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
-import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
-import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.List;
+import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ClientTransferPage extends Page {
@@ -132,7 +134,7 @@ public class ClientTransferPage extends Page {
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setRequired(true);
         this.officeIContainer.add(this.officeField);
@@ -142,11 +144,22 @@ public class ClientTransferPage extends Page {
 
     @Override
     protected void initData() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
         this.clientId = getPageParameters().get("clientId").toString();
-        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select office_id, display_name from m_client where id = ?", this.clientId);
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MClient.NAME);
+        selectQuery.addField(MClient.Field.OFFICE_ID);
+        selectQuery.addField(MClient.Field.DISPLAY_NAME);
+        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
         this.clientDisplayName = (String) clientObject.get("display_name");
-        this.officeValue = jdbcTemplate.queryForObject("select id, name as text from m_office where id = ?", Option.MAPPER, clientObject.get("office_id"));
+
+        selectQuery = new SelectQuery(MOffice.NAME);
+        selectQuery.addWhere(MOffice.Field.ID + " = :" + MOffice.Field.ID, clientObject.get("office_id"));
+        selectQuery.addField(MOffice.Field.ID + " as id");
+        selectQuery.addField(MOffice.Field.NAME + " as text");
+        this.officeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
     }
 
     protected void saveButtonSubmit(Button button) {

@@ -17,6 +17,8 @@ import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MLoan;
+import com.angkorteam.fintech.ddl.MPaymentType;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
@@ -30,7 +32,8 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
@@ -279,7 +282,7 @@ public class LoanAccountRecoveryPage extends Page {
     }
 
     protected void initPaymentTypeBlock() {
-        this.paymentTypeProvider = new SingleChoiceProvider("m_payment_type", "id", "value");
+        this.paymentTypeProvider = new SingleChoiceProvider(MPaymentType.NAME, MPaymentType.Field.ID, MPaymentType.Field.VALUE);
         this.paymentTypeBlock = new WebMarkupBlock("paymentTypeBlock", Size.Six_6);
         this.form.add(this.paymentTypeBlock);
         this.paymentTypeIContainer = new WebMarkupContainer("paymentTypeIContainer");
@@ -329,8 +332,15 @@ public class LoanAccountRecoveryPage extends Page {
         this.loanId = getPageParameters().get("loanId").toString();
         this.transactionDateValue = DateTime.now().toDate();
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        this.transactionAmountValue = jdbcTemplate.queryForObject("select principle_amount from m_loan where id = ?", Double.class, this.loanId);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MLoan.NAME);
+        selectQuery.addField(MLoan.Field.PRINCIPAL_AMOUNT);
+        selectQuery.addWhere(MLoan.Field.ID + " = :" + MLoan.Field.ID, this.loanId);
+
+        this.transactionAmountValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Double.class);
     }
 
     protected boolean paymentDetailFieldUpdate(AjaxRequestTarget target) {

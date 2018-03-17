@@ -3,6 +3,9 @@ package com.angkorteam.fintech.pages.client.client;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.MStaff;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -90,16 +93,16 @@ public class ClientBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_client");
-        this.dataProvider.applyJoin("m_office", "left join m_office on m_client.office_id = m_office.id ");
-        this.dataProvider.applyJoin("m_staff", "left join m_staff on m_client.staff_id = m_staff.id ");
-        this.dataProvider.boardField("m_client.id", "id", Long.class);
-        this.dataProvider.boardField("m_client.account_no", "account", String.class);
-        this.dataProvider.boardField("m_client.display_name", "name", String.class);
-        this.dataProvider.boardField("m_client.external_id", "externalId", String.class);
-        this.dataProvider.boardField("m_staff.display_name", "staff", String.class);
-        this.dataProvider.boardField("m_office.name", "office", String.class);
-        this.dataProvider.boardField("case m_client.status_enum " + StringUtils.join(status, " ") + " end", "status", String.class);
+        this.dataProvider = new JdbcProvider(MClient.NAME);
+        this.dataProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " ON " + MClient.NAME + "." + MClient.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
+        this.dataProvider.applyJoin("m_staff", "LEFT JOIN " + MStaff.NAME + " ON " + MClient.NAME + "." + MClient.Field.STAFF_ID + " = " + MStaff.NAME + "." + MStaff.Field.ID);
+        this.dataProvider.boardField(MClient.NAME + "." + MClient.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MClient.NAME + "." + MClient.Field.ACCOUNT_NO, "account", String.class);
+        this.dataProvider.boardField(MClient.NAME + "." + MClient.Field.DISPLAY_NAME, "name", String.class);
+        this.dataProvider.boardField(MClient.NAME + "." + MClient.Field.EXTERNAL_ID, "externalId", String.class);
+        this.dataProvider.boardField(MStaff.NAME + "." + MStaff.Field.DISPLAY_NAME, "staff", String.class);
+        this.dataProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "office", String.class);
+        this.dataProvider.boardField("case " + MClient.NAME + "." + MClient.Field.STATUS_ENUM + " " + StringUtils.join(status, " ") + " end", "status", String.class);
 
         this.dataProvider.selectField("id", Long.class);
 

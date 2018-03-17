@@ -15,6 +15,7 @@ import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MLoan;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
@@ -23,7 +24,8 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -122,8 +124,16 @@ public class LoanAccountWithdrawPage extends Page {
         this.loanId = getPageParameters().get("loanId").toString();
         this.withdrawnOnValue = DateTime.now().toDate();
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> loanObject = jdbcTemplate.queryForMap("select principle_amount_proposed, expected_disbursedon_date from m_loan where id = ?", this.loanId);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MLoan.NAME);
+        selectQuery.addField(MLoan.Field.PRINCIPAL_AMOUNT_PROPOSED);
+        selectQuery.addField(MLoan.Field.EXPECTED_DISBURSED_ON_DATE);
+        selectQuery.addWhere(MLoan.Field.ID + " = :" + MLoan.Field.ID, this.loanId);
+
+        Map<String, Object> loanObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
     }
 
     protected void saveButtonSubmit(Button button) {

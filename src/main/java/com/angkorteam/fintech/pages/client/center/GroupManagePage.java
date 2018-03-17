@@ -3,6 +3,11 @@ package com.angkorteam.fintech.pages.client.center;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.REnumValue;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -100,18 +105,18 @@ public class GroupManagePage extends Page {
 
     @Override
     protected void initComponent() {
-        this.associatedGroupProvider = new JdbcProvider("m_group");
-        this.associatedGroupProvider.applyJoin("m_office", "left join m_office on m_group.office_id = m_office.id ");
-        this.associatedGroupProvider.applyJoin("r_enum_value", "LEFT JOIN r_enum_value ON  m_group.status_enum = r_enum_value.enum_id AND r_enum_value.enum_name = 'status_enum'");
-        this.associatedGroupProvider.boardField("m_group.id", "id", Long.class);
-        this.associatedGroupProvider.boardField("m_group.account_no", "account", String.class);
-        this.associatedGroupProvider.boardField("m_group.display_name", "name", String.class);
-        this.associatedGroupProvider.boardField("m_office.name", "office", String.class);
-        this.associatedGroupProvider.boardField("m_group.external_id", "externalId", String.class);
-        this.associatedGroupProvider.boardField("r_enum_value.enum_value", "status", String.class);
-        this.associatedGroupProvider.applyWhere("office_id", "m_office.id = " + this.officeId);
-        this.associatedGroupProvider.applyWhere("parent_id", "m_group.parent_id = " + this.centerId);
-        this.associatedGroupProvider.applyWhere("level_id", "m_group.level_id = 2");
+        this.associatedGroupProvider = new JdbcProvider(MGroup.NAME);
+        this.associatedGroupProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " ON " + MGroup.NAME + "." + MGroup.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
+        this.associatedGroupProvider.applyJoin("r_enum_value", "LEFT JOIN " + REnumValue.NAME + " ON " + MGroup.NAME + "." + MGroup.Field.STATUS_ENUM + " = " + REnumValue.NAME + "." + REnumValue.Field.ENUM_ID + " AND " + REnumValue.NAME + "." + REnumValue.Field.ENUM_NAME + " = 'status_enum'");
+        this.associatedGroupProvider.boardField(MGroup.NAME + "." + MGroup.Field.ID, "id", Long.class);
+        this.associatedGroupProvider.boardField(MGroup.NAME + "." + MGroup.Field.ACCOUNT_NO, "account", String.class);
+        this.associatedGroupProvider.boardField(MGroup.NAME + "." + MGroup.Field.DISPLAY_NAME, "name", String.class);
+        this.associatedGroupProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "office", String.class);
+        this.associatedGroupProvider.boardField(MGroup.NAME + "." + MGroup.Field.EXTERNAL_ID, "externalId", String.class);
+        this.associatedGroupProvider.boardField(REnumValue.NAME + "." + REnumValue.Field.ENUM_VALUE, "status", String.class);
+        this.associatedGroupProvider.applyWhere("office_id", MOffice.NAME + "." + MOffice.Field.ID + " = " + this.officeId);
+        this.associatedGroupProvider.applyWhere("parent_id", MGroup.NAME + "." + MGroup.Field.PARENT_ID + " = " + this.centerId);
+        this.associatedGroupProvider.applyWhere("level_id", MGroup.NAME + "." + MGroup.Field.LEVEL_ID + " = 2");
 
         this.associatedGroupProvider.selectField("id", Long.class);
 
@@ -149,9 +154,9 @@ public class GroupManagePage extends Page {
         this.form.add(this.groupBlock);
         this.groupIContainer = new WebMarkupContainer("groupIContainer");
         this.groupBlock.add(this.groupIContainer);
-        this.groupProvider = new SingleChoiceProvider("m_group", "id", "display_name");
-        this.groupProvider.applyWhere("level_id", "level_id = 2");
-        this.groupProvider.applyWhere("parent_id", "(parent_id is NULL or parent_id != " + this.centerId + ")");
+        this.groupProvider = new SingleChoiceProvider(MGroup.NAME, MGroup.Field.ID, MGroup.Field.DISPLAY_NAME);
+        this.groupProvider.applyWhere("level_id", MGroup.Field.LEVEL_ID + " = 2");
+        this.groupProvider.applyWhere("parent_id", "(" + MGroup.Field.PARENT_ID + " IS NULL OR " + MGroup.Field.PARENT_ID + " != " + this.centerId + ")");
         this.groupField = new Select2SingleChoice<>("groupField", new PropertyModel<>(this, "groupValue"), this.groupProvider);
         this.groupField.setLabel(Model.of("Group"));
         this.groupField.add(new OnChangeAjaxBehavior());
@@ -172,12 +177,25 @@ public class GroupManagePage extends Page {
 
     @Override
     protected void initData() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         this.centerId = getPageParameters().get("centerId").toString();
-        Map<String, Object> centerObject = jdbcTemplate.queryForMap("select office_id, display_name from m_group where id = ?", this.centerId);
+
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MGroup.NAME);
+        selectQuery.addField(MGroup.Field.OFFICE_ID);
+        selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+        selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.centerId);
+        Map<String, Object> centerObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
         this.officeId = String.valueOf(centerObject.get("office_id"));
         this.centerDisplayName = (String) centerObject.get("display_name");
-        this.officeValue = jdbcTemplate.queryForObject("select name from m_office where id = ?", String.class, this.officeId);
+
+        selectQuery = new SelectQuery(MOffice.NAME);
+        selectQuery.addField(MOffice.Field.NAME);
+        selectQuery.addWhere(MOffice.Field.ID + " = :" + MOffice.Field.ID, this.officeId);
+        this.officeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
     }
 
     protected void addButtonSubmit(Button button) {

@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.pages.client.group;
 
+import com.angkorteam.fintech.ddl.MSavingsProduct;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
@@ -55,8 +56,8 @@ public class GroupLoanPage extends Page {
         this.productIContainer = new WebMarkupContainer("productIContainer");
         this.productBlock.add(this.productIContainer);
 
-        this.productProvider = new SingleChoiceProvider("m_savings_product", "id", "name");
-        this.productProvider.applyWhere("deposit_type_enum", "deposit_type_enum = " + DepositType.Saving.getLiteral());
+        this.productProvider = new SingleChoiceProvider(MSavingsProduct.NAME, MSavingsProduct.Field.ID, MSavingsProduct.Field.NAME);
+        this.productProvider.applyWhere("deposit_type_enum", MSavingsProduct.Field.DEPOSIT_TYPE_ENUM + " = " + DepositType.Saving.getLiteral());
         this.productField = new Select2SingleChoice<>("productField", new PropertyModel<>(this, "productValue"), this.productProvider);
         this.productField.setLabel(Model.of("Product"));
         this.productField.add(new OnChangeAjaxBehavior());

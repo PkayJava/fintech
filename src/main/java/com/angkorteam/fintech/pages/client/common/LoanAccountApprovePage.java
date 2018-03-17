@@ -18,6 +18,9 @@ import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.fintech.ddl.MLoan;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
@@ -32,8 +35,9 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -186,19 +190,34 @@ public class LoanAccountApprovePage extends Page {
         this.loanId = getPageParameters().get("loanId").toString();
         this.approvedOnValue = DateTime.now().toDate();
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> loanObject = jdbcTemplate.queryForMap("select account_no, principal_amount_proposed, expected_disbursedon_date from m_loan where id = ?", this.loanId);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MLoan.NAME);
+        selectQuery.addField(MLoan.Field.ACCOUNT_NO);
+        selectQuery.addField(MLoan.Field.PRINCIPAL_AMOUNT_PROPOSED);
+        selectQuery.addField(MLoan.Field.EXPECTED_DISBURSED_ON_DATE);
+        selectQuery.addWhere(MLoan.Field.ID + " = :" + MLoan.Field.ID, this.loanId);
+        Map<String, Object> loanObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.approvedAmountValue = (Double) loanObject.get("principal_amount_proposed");
         this.expectedDisbursementOnValue = (Date) loanObject.get("expected_disbursedon_date");
 
         if (this.client == ClientEnum.Client) {
-            this.clientDisplayName = jdbcTemplate.queryForObject("select display_name from m_client where id = ?", String.class, this.clientId);
-        }
-        if (this.client == ClientEnum.Group) {
-            this.groupDisplayName = jdbcTemplate.queryForObject("select display_name from m_group where id = ?", String.class, this.groupId);
-        }
-        if (this.client == ClientEnum.Center) {
-            this.centerDisplayName = jdbcTemplate.queryForObject("select display_name from m_group where id = ?", String.class, this.centerId);
+            selectQuery = new SelectQuery(MClient.NAME);
+            selectQuery.addField(MClient.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+            this.clientDisplayName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
+        } else if (this.client == ClientEnum.Group) {
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.groupId);
+            this.groupDisplayName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
+        } else if (this.client == ClientEnum.Center) {
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.centerId);
+            this.centerDisplayName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
         }
 
         this.loanAccountNo = (String) loanObject.get("account_no");

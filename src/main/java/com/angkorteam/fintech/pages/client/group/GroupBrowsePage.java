@@ -1,18 +1,9 @@
 package com.angkorteam.fintech.pages.client.group;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.REnumValue;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
@@ -25,6 +16,17 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import java.util.List;
+import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class GroupBrowsePage extends Page {
@@ -58,17 +60,17 @@ public class GroupBrowsePage extends Page {
 
     @Override
     protected void initComponent() {
-        this.dataProvider = new JdbcProvider("m_group");
-        this.dataProvider.applyJoin("m_office", "left join m_office on m_group.office_id = m_office.id");
-        this.dataProvider.applyJoin("r_enum_value", "LEFT JOIN r_enum_value ON  m_group.status_enum = r_enum_value.enum_id AND r_enum_value.enum_name = 'status_enum'");
-        this.dataProvider.boardField("m_group.id", "id", Long.class);
-        this.dataProvider.boardField("m_group.account_no", "account", String.class);
-        this.dataProvider.boardField("m_group.display_name", "name", String.class);
-        this.dataProvider.boardField("m_office.name", "office", String.class);
-        this.dataProvider.boardField("m_group.external_id", "externalId", String.class);
-        this.dataProvider.boardField("r_enum_value.enum_value", "status", String.class);
+        this.dataProvider = new JdbcProvider(MGroup.NAME);
+        this.dataProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " ON " + MGroup.NAME + "." + MGroup.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
+        this.dataProvider.applyJoin("r_enum_value", "LEFT JOIN " + REnumValue.NAME + " ON " + MGroup.NAME + "." + MGroup.Field.STATUS_ENUM + " = " + REnumValue.NAME + "." + REnumValue.Field.ENUM_ID + " AND " + REnumValue.NAME + "." + REnumValue.Field.ENUM_NAME + " = 'status_enum'");
+        this.dataProvider.boardField(MGroup.NAME + "." + MGroup.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MGroup.NAME + "." + MGroup.Field.ACCOUNT_NO, "account", String.class);
+        this.dataProvider.boardField(MGroup.NAME + "." + MGroup.Field.DISPLAY_NAME, "name", String.class);
+        this.dataProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "office", String.class);
+        this.dataProvider.boardField(MGroup.NAME + "." + MGroup.Field.EXTERNAL_ID, "externalId", String.class);
+        this.dataProvider.boardField(REnumValue.NAME + "." + REnumValue.Field.ENUM_VALUE, "status", String.class);
 
-        this.dataProvider.applyWhere("level_id", "m_group.level_id = 2");
+        this.dataProvider.applyWhere("level_id", MGroup.NAME + "." + MGroup.Field.LEVEL_ID + " = 2");
 
         this.dataProvider.selectField("id", Long.class);
 

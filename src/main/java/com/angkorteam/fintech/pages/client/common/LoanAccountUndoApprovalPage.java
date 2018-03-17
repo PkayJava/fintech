@@ -15,6 +15,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.fintech.ddl.MLoan;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
@@ -31,7 +34,7 @@ import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
@@ -122,23 +125,36 @@ public class LoanAccountUndoApprovalPage extends Page {
 
         this.loanId = getPageParameters().get("loanId").toString();
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-        SelectQuery loanQuery = new SelectQuery("m_loan");
-        loanQuery.addWhere("id = '" + this.loanId + "'");
-        loanQuery.addField("account_no");
-        loanQuery.addField("loan_officer_id");
-        Map<String, Object> loanObject = jdbcTemplate.queryForMap(loanQuery.toSQL());
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MLoan.NAME);
+        selectQuery.addWhere(MLoan.Field.ID + " = '" + this.loanId + "'");
+        selectQuery.addField(MLoan.Field.ACCOUNT_NO);
+        selectQuery.addField(MLoan.Field.LOAN_OFFICER_ID);
+        Map<String, Object> loanObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.loanAccountNo = (String) loanObject.get("account_no");
 
         if (this.client == ClientEnum.Client) {
-            Map<String, Object> clientObject = jdbcTemplate.queryForMap("select office_id, display_name from m_client where id = ?", this.clientId);
+            selectQuery = new SelectQuery(MClient.NAME);
+            selectQuery.addField(MClient.Field.OFFICE_ID);
+            selectQuery.addField(MClient.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+            Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
             this.clientDisplayName = (String) clientObject.get("display_name");
         } else if (this.client == ClientEnum.Group) {
-            Map<String, Object> groupObject = jdbcTemplate.queryForMap("select office_id, display_name from m_group where id = ?", this.groupId);
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.OFFICE_ID);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.groupId);
+            Map<String, Object> groupObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
             this.groupDisplayName = (String) groupObject.get("display_name");
         } else if (this.client == ClientEnum.Center) {
-            Map<String, Object> centerObject = jdbcTemplate.queryForMap("select office_id, display_name from m_group where id = ?", this.centerId);
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.OFFICE_ID);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.centerId);
+            Map<String, Object> centerObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
             this.centerDisplayName = (String) centerObject.get("display_name");
         }
     }

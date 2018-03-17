@@ -3,6 +3,10 @@ package com.angkorteam.fintech.pages.client.client;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MStaff;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -116,9 +120,9 @@ public class ClientAssignStaffPage extends Page {
         this.form.add(this.staffBlock);
         this.staffIContainer = new WebMarkupContainer("staffIContainer");
         this.staffBlock.add(this.staffIContainer);
-        this.staffProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
-        this.staffProvider.applyWhere("is_active", "is_active = 1");
-        this.staffProvider.applyWhere("office_id", "office_id = " + this.officeId);
+        this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.Field.ID, MStaff.Field.DISPLAY_NAME);
+        this.staffProvider.applyWhere("is_active", MStaff.Field.IS_ACTIVE + " = 1");
+        this.staffProvider.applyWhere("office_id", MStaff.Field.OFFICE_ID + " = " + this.officeId);
         this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
@@ -130,9 +134,17 @@ public class ClientAssignStaffPage extends Page {
 
     @Override
     protected void initData() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         this.clientId = getPageParameters().get("clientId").toString();
-        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select office_id, display_name from m_client where id = ?", this.clientId);
+
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MClient.NAME);
+        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+        selectQuery.addField(MClient.Field.OFFICE_ID);
+        selectQuery.addField(MClient.Field.DISPLAY_NAME);
+        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.officeId = String.valueOf(clientObject.get("office_id"));
         this.clientDisplayName = (String) clientObject.get("display_name");
     }

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.*;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -284,8 +285,8 @@ public class GroupCreatePage extends Page {
         this.form.add(this.staffBlock);
         this.staffIContainer = new WebMarkupContainer("staffIContainer");
         this.staffBlock.add(this.staffIContainer);
-        this.staffProvider = new SingleChoiceProvider("m_staff", "m_staff.id", "m_staff.display_name");
-        this.staffProvider.applyWhere("office_id", "m_staff.office_id = " + this.officeId);
+        this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.NAME + "." + MStaff.Field.ID, MStaff.NAME + "." + MStaff.Field.DISPLAY_NAME);
+        this.staffProvider.applyWhere("office_id", MStaff.NAME + "." + MStaff.Field.OFFICE_ID + " = " + this.officeId);
         this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
@@ -305,14 +306,26 @@ public class GroupCreatePage extends Page {
 
     @Override
     protected void initData() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
         StringGenerator generator = SpringBean.getBean(StringGenerator.class);
         this.externalIdValue = generator.externalId();
         this.centerId = getPageParameters().get("centerId").toString();
-        Map<String, Object> centerObject = jdbcTemplate.queryForMap("select office_id, display_name from m_group where id = ?", this.centerId);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MGroup.NAME);
+        selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.centerId);
+        selectQuery.addField(MGroup.Field.OFFICE_ID);
+        selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+        Map<String, Object> centerObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
         this.officeId = String.valueOf(centerObject.get("office_id"));
         this.centerDisplayName = (String) centerObject.get("display_name");
-        this.officeValue = jdbcTemplate.queryForObject("select name from m_office where id = ?", String.class, this.officeId);
+
+        selectQuery = new SelectQuery(MOffice.NAME);
+        selectQuery.addWhere(MOffice.Field.ID + " = :" + MOffice.Field.ID, this.officeId);
+        selectQuery.addField(MOffice.Field.NAME);
+        this.officeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
     }
 
     protected boolean clientAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
@@ -357,17 +370,18 @@ public class GroupCreatePage extends Page {
     protected void clientPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         if (this.popupModel.get("clientValue") != null) {
             JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
-            SelectQuery query = new SelectQuery("m_client");
-            query.addJoin("LEFT JOIN m_code_value gender_code on m_client.gender_cv_id = gender_code.id");
-            query.addJoin("LEFT JOIN r_enum_value status on status.enum_id = m_client.status_enum and status.enum_name = 'status_enum'");
-            query.addField("concat(m_client.id,'') uuid");
-            query.addField("m_client.display_name displayName");
-            query.addField("m_client.mobile_no mobileNumber");
-            query.addField("gender_code.code_description gender");
-            query.addField("m_client.account_no account");
-            query.addField("status.enum_value status");
-            query.addWhere("m_client.id = :id", ((Option) this.popupModel.get("clientValue")).getId());
-            Map<String, Object> client = named.queryForMap(query.toSQL(), query.getParam());
+            SelectQuery selectQuery = null;
+            selectQuery = new SelectQuery(MClient.NAME);
+            selectQuery.addJoin("LEFT JOIN " + MCodeValue.NAME + " gender_code ON " + MClient.NAME + "." + MClient.Field.GENDER_CV_ID + " = gender_code." + MCodeValue.Field.ID);
+            selectQuery.addJoin("LEFT JOIN " + REnumValue.NAME + " status ON status." + REnumValue.Field.ENUM_ID + " = " + MClient.NAME + "." + MClient.Field.STATUS_ENUM + " AND status." + REnumValue.Field.ENUM_NAME + " = 'status_enum'");
+            selectQuery.addField("CONCAT(" + MClient.NAME + "." + MClient.Field.ID + ",'') uuid");
+            selectQuery.addField(MClient.NAME + "." + MClient.Field.DISPLAY_NAME + " displayName");
+            selectQuery.addField(MClient.NAME + "." + MClient.Field.MOBILE_NO + " mobileNumber");
+            selectQuery.addField("gender_code." + MCodeValue.Field.CODE_DESCRIPTION + " gender");
+            selectQuery.addField(MClient.NAME + "." + MClient.Field.ACCOUNT_NO + " account");
+            selectQuery.addField("status." + REnumValue.Field.ENUM_VALUE + " status");
+            selectQuery.addWhere(MClient.NAME + "." + MClient.Field.ID + " = :" + MClient.Field.ID, ((Option) this.popupModel.get("clientValue")).getId());
+            Map<String, Object> client = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
             this.clientValue.add(client);
             target.add(this.clientTable);
         }

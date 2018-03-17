@@ -13,6 +13,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MCodeValue;
+import com.angkorteam.fintech.ddl.MGuarantor;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -58,14 +60,14 @@ public class LoanGuarantorBrowsePage extends Page {
     @Override
     protected void initComponent() {
 
-        this.dataProvider = new JdbcProvider("m_guarantor");
-        this.dataProvider.applyJoin("relationship", "inner join m_code_value relationship on relationship.id = m_guarantor.client_reln_cv_id");
-        this.dataProvider.boardField("m_guarantor.id", "id", Long.class);
-        this.dataProvider.boardField("m_guarantor.firstname", "firstname", String.class);
-        this.dataProvider.boardField("m_guarantor.lastname", "lastname", String.class);
-        this.dataProvider.boardField("relationship.code_value", "relationship", String.class);
+        this.dataProvider = new JdbcProvider(MGuarantor.NAME);
+        this.dataProvider.applyJoin("relationship", "INNER JOIN " + MCodeValue.NAME + " relationship ON relationship." + MCodeValue.Field.ID + " = " + MGuarantor.NAME + "." + MGuarantor.Field.CLIENT_RELN_CV_ID);
+        this.dataProvider.boardField(MGuarantor.NAME + "." + MGuarantor.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MGuarantor.NAME + "." + MGuarantor.Field.FIRST_NAME, "firstname", String.class);
+        this.dataProvider.boardField(MGuarantor.NAME + "." + MGuarantor.Field.LAST_NAME, "lastname", String.class);
+        this.dataProvider.boardField("relationship." + MCodeValue.Field.CODE_VALUE, "relationship", String.class);
 
-        this.dataProvider.applyWhere("loan_id", "m_guarantor.loan_id = '" + this.loanId + "'");
+        this.dataProvider.applyWhere("loan_id", MGuarantor.NAME + "." + MGuarantor.Field.LOAN_ID + " = '" + this.loanId + "'");
 
         this.dataProvider.selectField("id", Long.class);
 

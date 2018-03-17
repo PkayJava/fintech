@@ -24,6 +24,13 @@ import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.fintech.ddl.MSavingsProduct;
+import com.angkorteam.fintech.ddl.MSavingsProductCharge;
+import com.angkorteam.fintech.ddl.MStaff;
+import com.angkorteam.fintech.ddl.MTaxGroup;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.SavingAccountBuilder;
@@ -55,9 +62,10 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -697,9 +705,9 @@ public class SavingAccountCreatePage extends Page {
     }
 
     protected void initOfficerBlock() {
-        this.officerProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
-        this.officerProvider.applyWhere("is_active", "is_active = 1");
-        this.officerProvider.applyWhere("office_id", "office_id = " + this.officeId);
+        this.officerProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.Field.ID, MStaff.Field.DISPLAY_NAME);
+        this.officerProvider.applyWhere("is_active", MStaff.Field.IS_ACTIVE + " = 1");
+        this.officerProvider.applyWhere("office_id", MStaff.Field.OFFICE_ID + " = " + this.officeId);
         this.officerBlock = new WebMarkupBlock("officerBlock", Size.Six_6);
         this.form.add(this.officerBlock);
         this.officerIContainer = new WebMarkupContainer("officerIContainer");
@@ -875,26 +883,67 @@ public class SavingAccountCreatePage extends Page {
 
         this.savingId = getPageParameters().get("savingId").toString();
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        // TODO @review
 
         this.submittedOnValue = DateTime.now().toDate();
         this.externalIdValue = StringUtils.upperCase(UUID.randomUUID().toString());
 
+        SelectQuery selectQuery = null;
+
         if (this.client == ClientEnum.Client) {
-            Map<String, Object> clientObject = jdbcTemplate.queryForMap("select office_id, display_name from m_client where id = ?", this.clientId);
+            selectQuery = new SelectQuery(MClient.NAME);
+            selectQuery.addField(MClient.Field.OFFICE_ID);
+            selectQuery.addField(MClient.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+            Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
             this.officeId = String.valueOf(clientObject.get("office_id"));
             this.clientDisplayName = (String) clientObject.get("display_name");
         } else if (this.client == ClientEnum.Group) {
-            Map<String, Object> groupObject = jdbcTemplate.queryForMap("select office_id, display_name from m_group where id = ?", this.groupId);
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.OFFICE_ID);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MClient.Field.ID, this.groupId);
+            Map<String, Object> groupObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
             this.officeId = String.valueOf(groupObject.get("office_id"));
             this.groupDisplayName = (String) groupObject.get("display_name");
         } else if (this.client == ClientEnum.Center) {
-            Map<String, Object> centerObject = jdbcTemplate.queryForMap("select office_id, display_name from m_group where id = ?", this.centerId);
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.OFFICE_ID);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MClient.Field.ID, this.centerId);
+            Map<String, Object> centerObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
             this.officeId = String.valueOf(centerObject.get("office_id"));
             this.centerDisplayName = (String) centerObject.get("display_name");
         }
-        
-        Map<String, Object> savingProductObject = jdbcTemplate.queryForMap("select * from m_savings_product where id = ?", this.savingId);
+
+        selectQuery = new SelectQuery(MSavingsProduct.NAME);
+        selectQuery.addWhere(MSavingsProduct.Field.ID + " = :" + MSavingsProduct.Field.ID, this.savingId);
+        selectQuery.addField(MSavingsProduct.Field.NAME);
+        selectQuery.addField(MSavingsProduct.Field.CURRENCY_CODE);
+        selectQuery.addField(MSavingsProduct.Field.CURRENCY_DIGITS);
+        selectQuery.addField(MSavingsProduct.Field.CURRENCY_MULTIPLES_OF);
+        selectQuery.addField(MSavingsProduct.Field.NOMINAL_ANNUAL_INTEREST_RATE);
+        selectQuery.addField(MSavingsProduct.Field.NOMINAL_ANNUAL_INTEREST_RATE_OVERDRAFT);
+        selectQuery.addField(MSavingsProduct.Field.INTEREST_COMPOUNDING_PERIOD_ENUM);
+        selectQuery.addField(MSavingsProduct.Field.INTEREST_POSTING_PERIOD_ENUM);
+        selectQuery.addField(MSavingsProduct.Field.INTEREST_CALCULATION_TYPE_ENUM);
+        selectQuery.addField(MSavingsProduct.Field.INTEREST_CALCULATION_DAYS_IN_YEAR_TYPE_ENUM);
+        selectQuery.addField(MSavingsProduct.Field.LOCKIN_PERIOD_FREQUENCY);
+        selectQuery.addField(MSavingsProduct.Field.LOCKIN_PERIOD_FREQUENCY_ENUM);
+        selectQuery.addField(MSavingsProduct.Field.WITHDRAWAL_FEE_FOR_TRANSFER);
+        selectQuery.addField(MSavingsProduct.Field.MIN_REQUIRED_OPENING_BALANCE);
+        selectQuery.addField(MSavingsProduct.Field.ALLOW_OVERDRAFT);
+        selectQuery.addField(MSavingsProduct.Field.OVERDRAFT_LIMIT);
+        selectQuery.addField(MSavingsProduct.Field.MIN_OVERDRAFT_FOR_INTEREST_CALCULATION);
+        selectQuery.addField(MSavingsProduct.Field.ENFORCE_MIN_REQUIRED_BALANCE);
+        selectQuery.addField(MSavingsProduct.Field.MIN_REQUIRED_BALANCE);
+        selectQuery.addField(MSavingsProduct.Field.MIN_BALANCE_FOR_INTEREST_CALCULATION);
+        selectQuery.addField(MSavingsProduct.Field.WITHHOLD_TAX);
+        selectQuery.addField(MSavingsProduct.Field.TAX_GROUP_ID);
+        Map<String, Object> savingProductObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
         this.productValue = (String) savingProductObject.get("name");
         this.currencyValue = (String) savingProductObject.get("currency_code");
         this.decimalPlacesValue = (Long) savingProductObject.get("currency_digits");
@@ -930,9 +979,24 @@ public class SavingAccountCreatePage extends Page {
         this.balanceRequiredForInterestCalculationValue = (Double) savingProductObject.get("min_balance_for_interest_calculation");
 
         this.withHoldValue = savingProductObject.get("withhold_tax") == null ? false : ((Long) savingProductObject.get("withhold_tax")) == 1;
-        this.taxGroupValue = (String) jdbcTemplate.queryForObject("select name from m_tax_group where id = ?", String.class, savingProductObject.get("tax_group_id"));
 
-        List<Map<String, Object>> charges = jdbcTemplate.queryForList("select m_charge.* from m_savings_product_charge inner join m_charge ON m_savings_product_charge.charge_id = m_charge.id where m_savings_product_charge.savings_product_id = ?", this.savingId);
+        selectQuery = new SelectQuery(MTaxGroup.NAME);
+        selectQuery.addWhere(MTaxGroup.Field.ID + " = :" + MTaxGroup.Field.ID, savingProductObject.get("tax_group_id"));
+        selectQuery.addField(MTaxGroup.Field.NAME);
+        this.taxGroupValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
+
+        selectQuery = new SelectQuery(MSavingsProductCharge.NAME);
+        selectQuery.addJoin("INNER JOIN " + MCharge.NAME + " ON " + MSavingsProductCharge.NAME + "." + MSavingsProductCharge.Field.CHARGE_ID + " = " + MCharge.NAME + "." + MCharge.Field.ID);
+        selectQuery.addWhere(MSavingsProductCharge.NAME + "." + MSavingsProductCharge.Field.SAVINGS_PRODUCT_ID + " = :" + MSavingsProductCharge.Field.SAVINGS_PRODUCT_ID, this.savingId);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.ID);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.NAME);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.AMOUNT);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.CHARGE_TIME_ENUM);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.CHARGE_CALCULATION_ENUM);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.FEE_INTERVAL);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.FEE_ON_DAY);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.FEE_ON_MONTH);
+        List<Map<String, Object>> charges = named.queryForList(selectQuery.toSQL(), selectQuery.getParam());
         if (charges != null && !charges.isEmpty()) {
             for (Map<String, Object> chargeObject : charges) {
                 Map<String, Object> item = Maps.newHashMap();

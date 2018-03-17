@@ -12,6 +12,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MCharge;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
@@ -98,7 +99,7 @@ public class LoanCollateralCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", LoanAccountPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.collateralTypeProvider = new SingleChoiceProvider("m_charge", "id", "name");
+        this.collateralTypeProvider = new SingleChoiceProvider(MCharge.NAME, MCharge.Field.ID, MCharge.Field.NAME);
         this.collateralTypeBlock = new WebMarkupBlock("collateralTypeBlock", Size.Six_6);
         this.form.add(this.collateralTypeBlock);
         this.collateralTypeIContainer = new WebMarkupContainer("collateralTypeIContainer");

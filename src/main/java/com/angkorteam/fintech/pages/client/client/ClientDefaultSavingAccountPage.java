@@ -3,6 +3,11 @@ package com.angkorteam.fintech.pages.client.client;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MSavingsAccount;
+import com.angkorteam.fintech.ddl.MSavingsProduct;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -82,10 +87,10 @@ public class ClientDefaultSavingAccountPage extends Page {
         this.form.add(this.savingBlock);
         this.savingIContainer = new WebMarkupContainer("savingIContainer");
         this.savingBlock.add(this.savingIContainer);
-        this.savingProvider = new SingleChoiceProvider("m_savings_account", "m_savings_account.id", "m_savings_account.account_no", "concat(m_savings_account.account_no, ' => ', m_savings_product.name)");
-        this.savingProvider.applyJoin("m_savings_product", "INNER JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
-        this.savingProvider.applyWhere("status_enum", "m_savings_account.status_enum = 300");
-        this.savingProvider.applyWhere("client_id", "m_savings_account.client_id = " + this.clientId);
+        this.savingProvider = new SingleChoiceProvider(MSavingsAccount.NAME, MSavingsAccount.NAME + "." + MSavingsAccount.Field.ID, MSavingsAccount.NAME + "." + MSavingsAccount.Field.ACCOUNT_NO, "CONCAT(" + MSavingsAccount.NAME + "." + MSavingsAccount.Field.ACCOUNT_NO + ", ' => ', " + MSavingsProduct.NAME + "." + MSavingsProduct.Field.NAME + ")");
+        this.savingProvider.applyJoin("m_savings_product", "INNER JOIN " + MSavingsProduct.NAME + " ON " + MSavingsAccount.NAME + "." + MSavingsAccount.Field.PRODUCT_ID + " = " + MSavingsProduct.NAME + "." + MSavingsProduct.Field.ID);
+        this.savingProvider.applyWhere("status_enum", MSavingsAccount.NAME + "." + MSavingsAccount.Field.STATUS_ENUM + " = 300");
+        this.savingProvider.applyWhere("client_id", MSavingsAccount.NAME + "." + MSavingsAccount.Field.CLIENT_ID + " = " + this.clientId);
         this.savingField = new Select2SingleChoice<>("savingField", new PropertyModel<>(this, "savingValue"), this.savingProvider);
         this.savingField.setRequired(true);
         this.savingField.setLabel(Model.of("Saving Account"));
@@ -96,10 +101,22 @@ public class ClientDefaultSavingAccountPage extends Page {
 
     @Override
     protected void initData() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
         this.clientId = getPageParameters().get("clientId").toString();
-        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select default_savings_account, display_name from m_client where id = ?", this.clientId);
-        this.savingValue = jdbcTemplate.queryForObject("select m_savings_account.id id, concat(m_savings_account.account_no, ' => ', m_savings_product.name) text from m_savings_account INNER JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id where m_savings_account.id = ?", Option.MAPPER, clientObject.get("default_savings_account"));
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MClient.NAME);
+        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+        selectQuery.addField(MClient.Field.DEFAULT_SAVINGS_ACCOUNT);
+        selectQuery.addField(MClient.Field.DISPLAY_NAME);
+        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
+        selectQuery = new SelectQuery(MSavingsAccount.NAME);
+        selectQuery.addField(MSavingsAccount.NAME + "." + MSavingsAccount.Field.ID + " as id");
+        selectQuery.addField("CONCAT(" + MSavingsAccount.NAME + "." + MSavingsAccount.Field.ACCOUNT_NO + ", ' => ', " + MSavingsProduct.NAME + "." + MSavingsProduct.Field.NAME + ") as text");
+        selectQuery.addJoin("INNER JOIN " + MSavingsProduct.NAME + " ON " + MSavingsAccount.NAME + "." + MSavingsAccount.Field.PRODUCT_ID + " = " + MSavingsProduct.NAME + "." + MSavingsProduct.Field.ID);
+        this.savingValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
         this.clientDisplayName = (String) clientObject.get("display_name");
     }
 

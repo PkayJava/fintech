@@ -19,6 +19,10 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.fintech.ddl.MLoan;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
@@ -40,7 +44,7 @@ import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
@@ -111,23 +115,39 @@ public class LoanChargeCreatePage extends Page {
 
         this.loanId = getPageParameters().get("loanId").toString();
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        SelectQuery loanQuery = new SelectQuery("m_loan");
-        loanQuery.addWhere("id = '" + this.loanId + "'");
-        loanQuery.addField("currency_code");
-        loanQuery.addField("account_no");
-        Map<String, Object> loanObject = jdbcTemplate.queryForMap(loanQuery.toSQL());
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MLoan.NAME);
+        selectQuery.addWhere(MLoan.Field.ID + " = '" + this.loanId + "'");
+        selectQuery.addField(MLoan.Field.CURRENCY_CODE);
+        selectQuery.addField(MLoan.Field.ACCOUNT_NO);
+        Map<String, Object> loanObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
         this.currencyCode = (String) loanObject.get("currency_code");
 
         if (this.client == ClientEnum.Client) {
-            this.clientDisplayName = jdbcTemplate.queryForObject("select display_name from m_client where id = ?", String.class, this.clientId);
-        }
-        if (this.client == ClientEnum.Group) {
-            this.groupDisplayName = jdbcTemplate.queryForObject("select display_name from m_group where id = ?", String.class, this.groupId);
-        }
-        if (this.client == ClientEnum.Center) {
-            this.centerDisplayName = jdbcTemplate.queryForObject("select display_name from m_group where id = ?", String.class, this.centerId);
+            selectQuery = new SelectQuery(MClient.NAME);
+            selectQuery.addField(MClient.Field.OFFICE_ID);
+            selectQuery.addField(MClient.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+            Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+            this.clientDisplayName = (String) clientObject.get("display_name");
+        } else if (this.client == ClientEnum.Group) {
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.OFFICE_ID);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.groupId);
+            Map<String, Object> groupObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+            this.groupDisplayName = (String) groupObject.get("display_name");
+        } else if (this.client == ClientEnum.Center) {
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.OFFICE_ID);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.centerId);
+            Map<String, Object> centerObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+            this.centerDisplayName = (String) centerObject.get("display_name");
         }
 
         this.loanAccountNo = (String) loanObject.get("account_no");
@@ -236,11 +256,11 @@ public class LoanChargeCreatePage extends Page {
         charge_time_enum.add("'" + ChargeTime.InstallmentFee.getLiteral() + "'");
         charge_time_enum.add("'" + ChargeTime.TrancheDisbursement.getLiteral() + "'");
 
-        this.chargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
-        this.chargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
-        this.chargeProvider.applyWhere("is_active", "is_active = 1");
-        this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = '" + ChargeType.Loan.getLiteral() + "'");
-        this.chargeProvider.applyWhere("charge_time_enum", "charge_time_enum in (" + StringUtils.join(charge_time_enum, ", ") + ")");
+        this.chargeProvider = new SingleChoiceProvider(MCharge.NAME, MCharge.Field.ID, MCharge.Field.NAME);
+        this.chargeProvider.applyWhere("currency_code", MCharge.Field.CURRENCY_CODE + " = '" + this.currencyCode + "'");
+        this.chargeProvider.applyWhere("is_active", MCharge.Field.IS_ACTIVE + " = 1");
+        this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = '" + ChargeType.Loan.getLiteral() + "'");
+        this.chargeProvider.applyWhere("charge_time_enum", MCharge.Field.CHARGE_TIME_ENUM + " IN (" + StringUtils.join(charge_time_enum, ", ") + ")");
         this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Six_6);
         this.form.add(this.chargeBlock);
         this.chargeIContainer = new WebMarkupContainer("chargeIContainer");
@@ -309,8 +329,15 @@ public class LoanChargeCreatePage extends Page {
         this.dueDateIContainer.setVisible(false);
 
         if (this.chargeValue != null) {
-            JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-            Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select charge_time_enum, charge_calculation_enum from m_charge where id = ?", this.chargeValue.getId());
+            JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+            SelectQuery selectQuery = null;
+
+            selectQuery = new SelectQuery(MCharge.NAME);
+            selectQuery.addField(MCharge.Field.CHARGE_TIME_ENUM);
+            selectQuery.addField(MCharge.Field.CHARGE_CALCULATION_ENUM);
+            selectQuery.addWhere(MCharge.Field.ID + " = :" + MCharge.Field.ID, this.chargeValue.getId());
+            Map<String, Object> chargeObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
             ChargeTime chargeTime = ChargeTime.parseLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
             ChargeCalculation chargeCalculation = ChargeCalculation.parseLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));
             this.chargeCalculationValue = chargeCalculation.getDescription();

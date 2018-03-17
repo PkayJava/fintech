@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.*;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -264,8 +265,8 @@ public class GroupCreatePage extends Page {
         this.form.add(this.staffBlock);
         this.staffIContainer = new WebMarkupContainer("staffIContainer");
         this.staffBlock.add(this.staffIContainer);
-        this.staffProvider = new SingleChoiceProvider("m_staff", "m_staff.id", "m_staff.display_name");
-        this.staffProvider.applyJoin("m_office", "inner join m_office on m_staff.office_id = m_office.id");
+        this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.NAME + "." + MStaff.Field.ID, MStaff.NAME + "." + MStaff.Field.DISPLAY_NAME);
+        this.staffProvider.applyJoin("m_office", "INNER JOIN " + MOffice.NAME + " ON " + MStaff.NAME + "." + MStaff.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
         this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
@@ -279,7 +280,7 @@ public class GroupCreatePage extends Page {
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider("m_office", "id", "name");
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.setLabel(Model.of("Office"));
         this.officeField.add(new OnChangeAjaxBehavior(this::officeFieldUpdate));
@@ -340,16 +341,16 @@ public class GroupCreatePage extends Page {
     protected void clientPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         if (this.popupModel.get("clientValue") != null) {
             JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
-            SelectQuery query = new SelectQuery("m_client");
-            query.addJoin("LEFT JOIN m_code_value gender_code on m_client.gender_cv_id = gender_code.id");
-            query.addJoin("LEFT JOIN r_enum_value status on status.enum_id = m_client.status_enum and status.enum_name = 'status_enum'");
-            query.addField("concat(m_client.id,'') uuid");
-            query.addField("m_client.display_name displayName");
-            query.addField("m_client.mobile_no mobileNumber");
-            query.addField("gender_code.code_description gender");
-            query.addField("m_client.account_no account");
-            query.addField("status.enum_value status");
-            query.addWhere("m_client.id = :id", ((Option) this.popupModel.get("clientValue")).getId());
+            SelectQuery query = new SelectQuery(MClient.NAME);
+            query.addJoin("LEFT JOIN " + MCodeValue.NAME + " gender_code ON " + MClient.NAME + "." + MClient.Field.GENDER_CV_ID + " = gender_code." + MCodeValue.Field.ID);
+            query.addJoin("LEFT JOIN " + REnumValue.NAME + " status on status." + REnumValue.Field.ENUM_ID + " = " + MClient.NAME + "." + MClient.Field.STATUS_ENUM + " and status." + REnumValue.Field.ENUM_NAME + " = 'status_enum'");
+            query.addField("concat(" + MClient.NAME + "." + MClient.Field.ID + ",'') uuid");
+            query.addField(MClient.NAME + "." + MClient.Field.DISPLAY_NAME + " displayName");
+            query.addField(MClient.NAME + "." + MClient.Field.MOBILE_NO + " mobileNumber");
+            query.addField("gender_code." + MCodeValue.Field.CODE_DESCRIPTION + " gender");
+            query.addField(MClient.NAME + "." + MClient.Field.ACCOUNT_NO + " account");
+            query.addField("status." + REnumValue.Field.ENUM_VALUE + " status");
+            query.addWhere(MClient.NAME + "." + MClient.Field.ID + " = :id", ((Option) this.popupModel.get("clientValue")).getId());
             Map<String, Object> client = named.queryForMap(query.toSQL(), query.getParam());
             this.clientValue.add(client);
             target.add(this.clientTable);
@@ -373,7 +374,7 @@ public class GroupCreatePage extends Page {
             this.staffProvider.setDisabled(true);
         } else {
             this.staffProvider.setDisabled(false);
-            this.staffProvider.applyWhere("office", "m_office.id = " + this.officeValue.getId());
+            this.staffProvider.applyWhere("office", MOffice.NAME + "." + MOffice.Field.ID + " = " + this.officeValue.getId());
         }
         this.staffIContainer.setVisible(visible);
         if (target != null) {

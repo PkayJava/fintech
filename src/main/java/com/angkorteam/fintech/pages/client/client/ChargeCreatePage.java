@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
@@ -80,12 +84,23 @@ public class ChargeCreatePage extends Page {
         this.clientId = getPageParameters().get("clientId").toString();
         this.chargeId = getPageParameters().get("chargeId").toString();
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select office_id, display_name from m_client where id = ?", this.clientId);
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MClient.NAME);
+        selectQuery.addField(MClient.Field.OFFICE_ID);
+        selectQuery.addField(MClient.Field.DISPLAY_NAME);
+        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
         this.clientDisplayName = (String) clientObject.get("display_name");
 
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select * from m_charge where id = ?", this.chargeId);
+        selectQuery = new SelectQuery(MCharge.NAME);
+        selectQuery.addWhere(MCharge.Field.ID + " = :" + MCharge.Field.ID, this.chargeId);
+        selectQuery.addField(MCharge.Field.NAME);
+        selectQuery.addField(MCharge.Field.AMOUNT);
+        Map<String, Object> chargeObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
         this.chargeTypeValue = ChargeTime.optionLiteral(String.valueOf(chargeObject.get("charge_time_enum")));
         this.chargeCalculationValue = ChargeCalculation.optionLiteral(String.valueOf(chargeObject.get("charge_calculation_enum")));

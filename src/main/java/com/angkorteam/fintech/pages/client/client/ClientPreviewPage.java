@@ -3,6 +3,9 @@ package com.angkorteam.fintech.pages.client.client;
 import java.util.Arrays;
 import java.util.List;
 
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -56,8 +59,13 @@ public class ClientPreviewPage extends Page {
     protected void initData() {
         PageParameters parameters = getPageParameters();
         this.clientId = parameters.get("clientId").toString();
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        this.clientDisplayName = jdbcTemplate.queryForObject("select display_name from m_client where id = ?", String.class, this.clientId);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MClient.NAME);
+        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+        selectQuery.addField(MClient.Field.DISPLAY_NAME);
+        this.clientDisplayName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
     }
 
     @Override

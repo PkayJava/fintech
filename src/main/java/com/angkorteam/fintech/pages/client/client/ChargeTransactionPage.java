@@ -1,9 +1,27 @@
 package com.angkorteam.fintech.pages.client.client;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.*;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.enums.ChargeCalculation;
+import com.angkorteam.fintech.dto.enums.ChargeTime;
+import com.angkorteam.fintech.provider.JdbcProvider;
+import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.ReadOnlyView;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.spring.JdbcNamed;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.Calendar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.google.common.collect.Lists;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
@@ -15,26 +33,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.enums.ChargeCalculation;
-import com.angkorteam.fintech.dto.enums.ChargeTime;
-import com.angkorteam.fintech.provider.JdbcProvider;
-import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
-import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
-import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.Calendar;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.google.common.collect.Lists;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ChargeTransactionPage extends Page {
@@ -106,12 +107,31 @@ public class ChargeTransactionPage extends Page {
     protected void initData() {
         this.clientId = getPageParameters().get("clientId").toString();
         this.chargeId = getPageParameters().get("chargeId").toString();
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        
-        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select display_name from m_client where id = ?", this.clientId);
+
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MClient.NAME);
+        selectQuery.addField(MClient.Field.DISPLAY_NAME);
+        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.clientDisplayName = (String) clientObject.get("display_name");
 
-        Map<String, Object> chargeObject = jdbcTemplate.queryForMap("select * from m_client_charge inner join m_charge on m_client_charge.charge_id = m_charge.id inner join m_currency on m_currency.code = m_charge.currency_code where m_client_charge.id = ?", this.chargeId);
+        selectQuery = new SelectQuery(MClientCharge.NAME);
+        selectQuery.addJoin("INNER JOIN " + MCharge.NAME + " ON " + MClientCharge.NAME + "." + MClientCharge.Field.CHARGE_ID + " = " + MCharge.NAME + "." + MCharge.Field.ID);
+        selectQuery.addJoin("INNER JOIN " + MCurrency.NAME + " ON " + MCurrency.NAME + "." + MCurrency.Field.CODE + " = " + MCharge.NAME + "." + MCharge.Field.CURRENCY_CODE);
+        selectQuery.addWhere(MClientCharge.NAME + "." + MClientCharge.Field.ID + " = :" + MClientCharge.Field.ID, this.chargeId);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.NAME);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.CHARGE_TIME_ENUM);
+        selectQuery.addField(MCharge.NAME + "." + MCharge.Field.CHARGE_CALCULATION_ENUM);
+        selectQuery.addField(MCurrency.NAME + "." + MCurrency.Field.NAME);
+        selectQuery.addField(MClientCharge.NAME + "." + MClientCharge.Field.CHARGE_DUE_DATE);
+        selectQuery.addField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT);
+        selectQuery.addField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_PAID_DERIVED);
+        selectQuery.addField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_WAIVED_DERIVED);
+        selectQuery.addField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_OUTSTANDING_DERIVED);
+        Map<String, Object> chargeObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
         this.chargeValue = (String) chargeObject.get("m_charge.name");
         this.chargeName = (String) chargeObject.get("m_charge.name");
@@ -181,17 +201,15 @@ public class ChargeTransactionPage extends Page {
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
 
-        this.dataProvider = new JdbcProvider("m_client_charge_paid_by");
-        this.dataProvider.applyJoin("m_client_transaction", "INNER JOIN m_client_transaction ON m_client_charge_paid_by.client_transaction_id = m_client_transaction.id");
-        this.dataProvider.applyJoin("m_office", "INNER JOIN m_office ON m_office.id = m_client_transaction.office_id");
-
-        this.dataProvider.boardField("m_client_transaction.id", "id", Long.class);
-        this.dataProvider.boardField("m_office.name", "office", String.class);
-        this.dataProvider.boardField("case m_client_transaction.transaction_type_enum when 1 then 'Paid' when 2 then 'Waived' else concat(m_client_transaction.transaction_type_enum, '') end", "transaction_type", String.class);
-        this.dataProvider.boardField("m_client_transaction.transaction_date", "transaction_date", Calendar.Date);
-        this.dataProvider.boardField("m_client_transaction.amount", "amount", Double.class);
-
-        this.dataProvider.applyWhere("client_charge_id", "m_client_charge_paid_by.client_charge_id = " + this.chargeId);
+        this.dataProvider = new JdbcProvider(MClientChargePaidBy.NAME);
+        this.dataProvider.applyJoin("m_client_transaction", "INNER JOIN " + MClientTransaction.NAME + " ON " + MClientChargePaidBy.NAME + "." + MClientChargePaidBy.Field.CLIENT_TRANSACTION_ID + " = " + MClientTransaction.NAME + "." + MClientTransaction.Field.ID);
+        this.dataProvider.applyJoin("m_office", "INNER JOIN " + MOffice.NAME + " ON " + MOffice.NAME + "." + MOffice.Field.ID + " = " + MClientTransaction.NAME + "." + MClientTransaction.Field.OFFICE_ID);
+        this.dataProvider.boardField(MClientTransaction.NAME + "." + MClientTransaction.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "office", String.class);
+        this.dataProvider.boardField("case " + MClientTransaction.NAME + "." + MClientTransaction.Field.TRANSACTION_TYPE_ENUM + " when 1 then 'Paid' when 2 then 'Waived' else concat(" + MClientTransaction.NAME + "." + MClientTransaction.Field.TRANSACTION_TYPE_ENUM + ", '') end", "transaction_type", String.class);
+        this.dataProvider.boardField(MClientTransaction.NAME + "." + MClientTransaction.Field.TRANSACTION_DATE, "transaction_date", Calendar.Date);
+        this.dataProvider.boardField(MClientTransaction.NAME + "." + MClientTransaction.Field.AMOUNT, "amount", Double.class);
+        this.dataProvider.applyWhere("client_charge_id", MClientChargePaidBy.NAME + "." + MClientChargePaidBy.Field.CLIENT_CHARGE_ID + " = " + this.chargeId);
 
         this.dataProvider.selectField("id", Long.class);
 

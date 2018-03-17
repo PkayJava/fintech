@@ -13,6 +13,9 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.fintech.ddl.MSavingsAccount;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
@@ -27,8 +30,9 @@ import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.fintech.widget.client.common.SavingAccountPreviewCharge;
 import com.angkorteam.fintech.widget.client.common.SavingAccountPreviewTransaction;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 import com.google.common.collect.Lists;
@@ -345,18 +349,31 @@ public class SavingAccountPreviewPage extends Page {
 
         this.savingId = getPageParameters().get("savingId").toString();
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
         if (this.client == ClientEnum.Client) {
-            this.clientDisplayName = jdbcTemplate.queryForObject("select display_name from m_client where id = ?", String.class, this.clientId);
-        }
-        if (this.client == ClientEnum.Group) {
-            this.groupDisplayName = jdbcTemplate.queryForObject("select display_name from m_group where id = ?", String.class, this.groupId);
-        }
-        if (this.client == ClientEnum.Center) {
-            this.centerDisplayName = jdbcTemplate.queryForObject("select display_name from m_group where id = ?", String.class, this.centerId);
+            selectQuery = new SelectQuery(MClient.NAME);
+            selectQuery.addField(MClient.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+            this.clientDisplayName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
+        } else if (this.client == ClientEnum.Group) {
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.groupId);
+            this.groupDisplayName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
+        } else if (this.client == ClientEnum.Center) {
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.DISPLAY_NAME);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MGroup.Field.ID, this.centerId);
+            this.centerDisplayName = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
         }
 
-        Map<String, Object> savingObject = jdbcTemplate.queryForMap("select account_no from m_savings_account where id = ?", this.savingId);
+        selectQuery = new SelectQuery(MSavingsAccount.NAME);
+        selectQuery.addField(MSavingsAccount.Field.ACCOUNT_NO);
+        selectQuery.addWhere(MSavingsAccount.Field.ID + " = :" + MSavingsAccount.Field.ID, this.savingId);
+        Map<String, Object> savingObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
         this.savingAccountNo = (String) savingObject.get("account_no");
     }

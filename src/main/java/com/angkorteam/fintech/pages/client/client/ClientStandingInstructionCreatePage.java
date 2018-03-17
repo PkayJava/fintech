@@ -1,9 +1,30 @@
 package com.angkorteam.fintech.pages.client.client;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MSavingsAccount;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.enums.Destination;
+import com.angkorteam.fintech.dto.enums.StandingInstructionAccountType;
+import com.angkorteam.fintech.dto.enums.TransferType;
+import com.angkorteam.fintech.provider.*;
+import com.angkorteam.fintech.widget.ReadOnlyView;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.spring.JdbcNamed;
+import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
+import com.angkorteam.framework.wicket.markup.html.form.DayMonthTextField;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.google.common.collect.Lists;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -14,35 +35,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.enums.Destination;
-import com.angkorteam.fintech.dto.enums.StandingInstructionAccountType;
-import com.angkorteam.fintech.dto.enums.TransferType;
-import com.angkorteam.fintech.provider.ClientDepositAccountProvider;
-import com.angkorteam.fintech.provider.DestinationProvider;
-import com.angkorteam.fintech.provider.InstructionTypeProvider;
-import com.angkorteam.fintech.provider.OfficeProvider;
-import com.angkorteam.fintech.provider.PriorityProvider;
-import com.angkorteam.fintech.provider.RecurrenceFrequencyProvider;
-import com.angkorteam.fintech.provider.RecurrenceTypeProvider;
-import com.angkorteam.fintech.provider.StatusProvider;
-import com.angkorteam.fintech.provider.TransferTypeProvider;
-import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
-import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
-import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
-import com.angkorteam.framework.wicket.markup.html.form.DayMonthTextField;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.google.common.collect.Lists;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ClientStandingInstructionCreatePage extends Page {
@@ -190,11 +185,15 @@ public class ClientStandingInstructionCreatePage extends Page {
 
     @Override
     protected void initData() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
         this.clientId = getPageParameters().get("clientId").toString();
         this.destinationValue = Destination.OwnAccount.toOption();
         this.fromAccountTypeValue = StandingInstructionAccountType.SavingAccount.toOption();
-        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select display_name from m_client where m_client.id = ?", this.clientId);
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MClient.NAME);
+        selectQuery.addField(MClient.Field.DISPLAY_NAME);
+        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.applicantValue = (String) clientObject.get("display_name");
         this.clientDisplayName = (String) clientObject.get("display_name");
     }
@@ -313,7 +312,7 @@ public class ClientStandingInstructionCreatePage extends Page {
         this.fromAccountTypeVContainer.add(this.fromAccountTypeView);
 
         this.fromAccountProvider = new ClientDepositAccountProvider();
-        this.fromAccountProvider.applyWhere("client_id", "m_savings_account.client_id = '" + this.clientId + "'");
+        this.fromAccountProvider.applyWhere("client_id", MSavingsAccount.NAME + "." + MSavingsAccount.Field.CLIENT_ID + " = '" + this.clientId + "'");
         this.fromAccountBlock = new WebMarkupBlock("fromAccountBlock", Size.Six_6);
         this.form.add(this.fromAccountBlock);
         this.fromAccountIContainer = new WebMarkupContainer("fromAccountIContainer");

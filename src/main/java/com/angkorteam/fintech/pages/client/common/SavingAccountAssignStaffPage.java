@@ -11,6 +11,9 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.fintech.ddl.MStaff;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
@@ -21,7 +24,8 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
@@ -107,10 +111,10 @@ public class SavingAccountAssignStaffPage extends Page {
         this.form.add(this.officerBlock);
         this.officerIContainer = new WebMarkupContainer("officerIContainer");
         this.officerBlock.add(this.officerIContainer);
-        this.officerProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
-        this.officerProvider.applyWhere("is_active", "is_active = 1");
-        this.officerProvider.applyWhere("is_loan_officer", "is_loan_officer = 1");
-        this.officerProvider.applyWhere("office_id", "office_id = " + this.officeId);
+        this.officerProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.Field.ID, MStaff.Field.DISPLAY_NAME);
+        this.officerProvider.applyWhere("is_active", MStaff.Field.IS_ACTIVE + " = 1");
+        this.officerProvider.applyWhere("is_loan_officer", MStaff.Field.IS_LOAN_OFFICER + " = 1");
+        this.officerProvider.applyWhere("office_id", MStaff.Field.OFFICE_ID + " = " + this.officeId);
         this.officerField = new Select2SingleChoice<>("officerField", new PropertyModel<>(this, "officerValue"), this.officerProvider);
         this.officerField.setLabel(Model.of("Officer"));
         this.officerField.add(new OnChangeAjaxBehavior());
@@ -136,15 +140,27 @@ public class SavingAccountAssignStaffPage extends Page {
         this.groupId = getPageParameters().get("groupId").toString();
         this.centerId = getPageParameters().get("centerId").toString();
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
         this.savingId = getPageParameters().get("savingId").toString();
 
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
         if (this.client == ClientEnum.Client) {
-            this.officeId = jdbcTemplate.queryForObject("select office_id from m_client where id = ?", String.class, this.clientId);
+            selectQuery = new SelectQuery(MClient.NAME);
+            selectQuery.addField(MClient.Field.OFFICE_ID);
+            selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+            this.officeId = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
         } else if (this.client == ClientEnum.Group) {
-            this.officeId = jdbcTemplate.queryForObject("select office_id from m_group where id = ?", String.class, this.groupId);
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.OFFICE_ID);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MClient.Field.ID, this.groupId);
+            this.officeId = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
         } else if (this.client == ClientEnum.Center) {
-            this.officeId = jdbcTemplate.queryForObject("select office_id from m_group where id = ?", String.class, this.centerId);
+            selectQuery = new SelectQuery(MGroup.NAME);
+            selectQuery.addField(MGroup.Field.OFFICE_ID);
+            selectQuery.addWhere(MGroup.Field.ID + " = :" + MClient.Field.ID, this.centerId);
+            this.officeId = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
         }
     }
 
