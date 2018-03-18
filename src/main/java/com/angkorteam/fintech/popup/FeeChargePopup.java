@@ -7,6 +7,8 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.MCharge;
 import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.dto.enums.ChargeType;
@@ -75,15 +77,15 @@ public class FeeChargePopup extends PopupPanel {
         this.chargeIContainer = new WebMarkupContainer("chargeIContainer");
         this.chargeBlock.add(this.chargeIContainer);
         this.chargeValue = new PropertyModel<>(this.model, "chargeValue");
-        this.chargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
+        this.chargeProvider = new SingleChoiceProvider(MCharge.NAME, MCharge.Field.ID, MCharge.Field.NAME);
         if (this.productPopup == ProductPopup.Saving || this.productPopup == ProductPopup.Recurring || this.productPopup == ProductPopup.Fixed) {
-            this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.SavingDeposit.getLiteral());
+            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.SavingDeposit.getLiteral());
         } else if (this.productPopup == ProductPopup.Loan) {
-            this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.Loan.getLiteral());
+            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.Loan.getLiteral());
         }
-        this.chargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
-        this.chargeProvider.applyWhere("is_penalty", "is_penalty = 0");
-        this.chargeProvider.applyWhere("is_active", "is_active = 1");
+        this.chargeProvider.applyWhere("currency_code", MCharge.Field.CURRENCY_CODE + " = '" + this.currencyCode + "'");
+        this.chargeProvider.applyWhere("is_penalty", MCharge.Field.IS_PENALTY + " = 0");
+        this.chargeProvider.applyWhere("is_active", MCharge.Field.IS_ACTIVE + " = 1");
         this.chargeField = new Select2SingleChoice<>("chargeField", this.chargeValue, this.chargeProvider);
         this.chargeField.setLabel(Model.of("Charge"));
         this.chargeIContainer.add(this.chargeField);
@@ -95,9 +97,9 @@ public class FeeChargePopup extends PopupPanel {
         this.accountIContainer = new WebMarkupContainer("accountIContainer");
         this.accountBlock.add(this.accountIContainer);
         this.accountValue = new PropertyModel<>(this.model, "accountValue");
-        this.accountProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.accountProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.accountProvider.applyWhere("classification_enum", "classification_enum in (" + AccountType.Income.getLiteral() + ")");
+        this.accountProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accountProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.accountProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " IN (" + AccountType.Income.getLiteral() + ")");
         this.accountField = new Select2SingleChoice<>("accountField", this.accountValue, this.accountProvider);
         this.accountField.setLabel(Model.of("Account"));
         this.accountIContainer.add(this.accountField);

@@ -60,8 +60,8 @@ public class ClientPreviewFamilyMemberPanel extends com.angkorteam.fintech.widge
         this.memberProvider.boardField(MFamilyMembers.NAME + "." + MFamilyMembers.Field.MOBILE_NUMBER, "mobile_number", String.class);
         this.memberProvider.boardField("gender." + MCodeValue.Field.CODE_DESCRIPTION, "gender_description", String.class);
         this.memberProvider.boardField("relationship." + MCodeValue.Field.CODE_DESCRIPTION, "relationship_description", String.class);
-        this.memberProvider.boardField(MFamilyMembers.NAME + ".is_dependent", "dependent", Boolean.class);
-        this.memberProvider.boardField(MFamilyMembers.NAME + ".date_of_birth", "date_of_birth", Calendar.Date);
+        this.memberProvider.boardField(MFamilyMembers.NAME + "." + MFamilyMembers.Field.IS_DEPENDENT, "dependent", Boolean.class);
+        this.memberProvider.boardField(MFamilyMembers.NAME + "." + MFamilyMembers.Field.DATE_OF_BIRTH, "date_of_birth", Calendar.Date);
         this.memberProvider.applyWhere("client_id", MFamilyMembers.NAME + "." + MFamilyMembers.Field.CLIENT_ID + " = '" + this.clientId + "'");
 
         this.memberColumn = Lists.newArrayList();

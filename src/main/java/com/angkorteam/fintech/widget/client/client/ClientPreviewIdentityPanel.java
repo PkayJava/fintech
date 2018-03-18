@@ -14,6 +14,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import com.angkorteam.fintech.ddl.MClientIdentifier;
+import com.angkorteam.fintech.ddl.MCodeValue;
 import com.angkorteam.fintech.pages.client.client.ClientIdentityCreatePage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
@@ -52,14 +54,14 @@ public class ClientPreviewIdentityPanel extends Panel {
 
     @Override
     protected void initComponent() {
-        this.dataProvider = new JdbcProvider("m_client_identifier");
-        this.dataProvider.applyJoin("m_code_value", "LEFT JOIN m_code_value document_type on m_client_identifier.document_type_id = document_type.id");
-        this.dataProvider.boardField("m_client_identifier.description", "description", String.class);
-        this.dataProvider.boardField("document_type.code_value", "type", String.class);
-        this.dataProvider.boardField("m_client_identifier.document_key", "documentKey", String.class);
-        this.dataProvider.boardField("m_client_identifier.id", "id", Long.class);
-        this.dataProvider.boardField("case m_client_identifier.status when 200 then 'Active' when 100 then 'Inactive' else concat(m_client_identifier.status,'') end", "status", String.class);
-        this.dataProvider.applyWhere("client_id", "m_client_identifier.client_id = " + this.clientId);
+        this.dataProvider = new JdbcProvider(MClientIdentifier.NAME);
+        this.dataProvider.applyJoin("m_code_value", "LEFT JOIN " + MCodeValue.NAME + " document_type ON " + MClientIdentifier.NAME + "." + MClientIdentifier.Field.DOCUMENT_TYPE_ID + " = document_type." + MCodeValue.Field.ID);
+        this.dataProvider.boardField(MClientIdentifier.NAME + "." + MClientIdentifier.Field.DESCRIPTION, "description", String.class);
+        this.dataProvider.boardField("document_type." + MCodeValue.Field.CODE_VALUE, "type", String.class);
+        this.dataProvider.boardField(MClientIdentifier.NAME + "." + MClientIdentifier.Field.DOCUMENT_KEY, "documentKey", String.class);
+        this.dataProvider.boardField(MClientIdentifier.NAME + "." + MClientIdentifier.Field.ID, "id", Long.class);
+        this.dataProvider.boardField("case " + MClientIdentifier.NAME + "." + MClientIdentifier.Field.STATUS + " WHEN 200 THEN 'Active' WHEN 100 THEN 'Inactive' ELSE CONCAT(" + MClientIdentifier.NAME + "." + MClientIdentifier.Field.STATUS + ",'') END", "status", String.class);
+        this.dataProvider.applyWhere("client_id", MClientIdentifier.NAME + "." + MClientIdentifier.Field.CLIENT_ID + " = " + this.clientId);
         this.dataProvider.setSort("documentKey", SortOrder.DESCENDING);
         this.dataProvider.selectField("id", Long.class);
 

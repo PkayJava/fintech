@@ -9,6 +9,7 @@ import org.apache.wicket.extensions.markup.html.repeater.util.SortableTreeProvid
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import com.angkorteam.fintech.ddl.AccGLAccount;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.google.common.collect.Lists;
@@ -35,7 +36,7 @@ public class AccountHierarchyProvider extends SortableTreeProvider<Map<String, O
             return true;
         } else {
             JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-            int count = jdbcTemplate.queryForObject("select count(*) from acc_gl_account where parent_id = ?", int.class, node.get("id"));
+            int count = jdbcTemplate.queryForObject("select count(*) from " + AccGLAccount.NAME + " where " + AccGLAccount.Field.PARENT_ID + " = ?", int.class, node.get("id"));
             return count > 0;
         }
     }
@@ -54,35 +55,35 @@ public class AccountHierarchyProvider extends SortableTreeProvider<Map<String, O
                 }
                 return roots.iterator();
             } else if ("Asset".equals(node.get("name"))) {
-                List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from acc_gl_account where parent_id is null and classification_enum = 1");
+                List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from " + AccGLAccount.NAME + " where " + AccGLAccount.Field.PARENT_ID + " is null and " + AccGLAccount.Field.CLASSIFICATION_ENUM + " = 1");
                 if (children == null) {
                     return new java.util.ArrayList<Map<String, Object>>().listIterator();
                 } else {
                     return children.iterator();
                 }
             } else if ("Liability".equals(node.get("name"))) {
-                List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from acc_gl_account where parent_id is null and classification_enum = 2");
+                List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from " + AccGLAccount.NAME + " where " + AccGLAccount.Field.PARENT_ID + " is null and " + AccGLAccount.Field.CLASSIFICATION_ENUM + " = 2");
                 if (children == null) {
                     return new java.util.ArrayList<Map<String, Object>>().listIterator();
                 } else {
                     return children.iterator();
                 }
             } else if ("Equity".equals(node.get("name"))) {
-                List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from acc_gl_account where parent_id is null and classification_enum = 3");
+                List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from " + AccGLAccount.NAME + " where " + AccGLAccount.Field.PARENT_ID + " is null and " + AccGLAccount.Field.CLASSIFICATION_ENUM + " = 3");
                 if (children == null) {
                     return new java.util.ArrayList<Map<String, Object>>().listIterator();
                 } else {
                     return children.iterator();
                 }
             } else if ("Income".equals(node.get("name"))) {
-                List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from acc_gl_account where parent_id is null and classification_enum = 4");
+                List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from " + AccGLAccount.NAME + " where " + AccGLAccount.Field.PARENT_ID + " is null and " + AccGLAccount.Field.CLASSIFICATION_ENUM + " = 4");
                 if (children == null) {
                     return new java.util.ArrayList<Map<String, Object>>().listIterator();
                 } else {
                     return children.iterator();
                 }
             } else if ("Expense".equals(node.get("name"))) {
-                List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from acc_gl_account where parent_id is null and classification_enum = 5");
+                List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from " + AccGLAccount.NAME + " where " + AccGLAccount.Field.PARENT_ID + " is null and " + AccGLAccount.Field.CLASSIFICATION_ENUM + " = 5");
                 if (children == null) {
                     return new java.util.ArrayList<Map<String, Object>>().listIterator();
                 } else {

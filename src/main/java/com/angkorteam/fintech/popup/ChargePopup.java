@@ -7,6 +7,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import com.angkorteam.fintech.ddl.MCharge;
 import com.angkorteam.fintech.dto.enums.ChargeType;
 import com.angkorteam.fintech.dto.enums.ProductPopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -65,17 +66,17 @@ public class ChargePopup extends PopupPanel {
         this.form.add(this.chargeBlock);
         this.chargeIContainer = new WebMarkupContainer("chargeIContainer");
         this.chargeBlock.add(this.chargeIContainer);
-        this.chargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
+        this.chargeProvider = new SingleChoiceProvider(MCharge.NAME, MCharge.Field.ID, MCharge.Field.NAME);
         if (this.productPopup == ProductPopup.Share) {
-            this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.Share.getLiteral());
+            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.Share.getLiteral());
         } else if (this.productPopup == ProductPopup.Loan) {
-            this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.Loan.getLiteral());
+            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.Loan.getLiteral());
         } else if (this.productPopup == ProductPopup.Fixed || this.productPopup == ProductPopup.Saving || this.productPopup == ProductPopup.Recurring) {
-            this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.SavingDeposit.getLiteral());
+            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.SavingDeposit.getLiteral());
         }
-        this.chargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
-        this.chargeProvider.applyWhere("is_penalty", "is_penalty = 0");
-        this.chargeProvider.applyWhere("is_active", "is_active = 1");
+        this.chargeProvider.applyWhere("currency_code", MCharge.Field.CURRENCY_CODE + " = '" + this.currencyCode + "'");
+        this.chargeProvider.applyWhere("is_penalty", MCharge.Field.IS_PENALTY + " = 0");
+        this.chargeProvider.applyWhere("is_active", MCharge.Field.IS_ACTIVE + " = 1");
         this.chargeValue = new PropertyModel<>(this.model, "chargeValue");
         this.chargeField = new Select2SingleChoice<>("chargeField", this.chargeValue, this.chargeProvider);
         this.chargeField.setLabel(Model.of("Charge"));

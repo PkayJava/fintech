@@ -7,6 +7,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import com.angkorteam.fintech.ddl.MCharge;
 import com.angkorteam.fintech.dto.enums.ChargeType;
 import com.angkorteam.fintech.dto.enums.ProductPopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -64,15 +65,15 @@ public class OverdueChargePopup extends PopupPanel {
         this.form.add(this.overdueChargeBlock);
         this.overdueChargeIContainer = new WebMarkupContainer("overdueChargeIContainer");
         this.overdueChargeBlock.add(this.overdueChargeIContainer);
-        this.overdueChargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
+        this.overdueChargeProvider = new SingleChoiceProvider(MCharge.NAME, MCharge.Field.ID, MCharge.Field.NAME);
         if (this.productPopup == ProductPopup.Saving) {
-            this.overdueChargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.SavingDeposit.getLiteral());
+            this.overdueChargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.SavingDeposit.getLiteral());
         } else if (this.productPopup == ProductPopup.Loan) {
-            this.overdueChargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.Loan.getLiteral());
+            this.overdueChargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.Loan.getLiteral());
         }
-        this.overdueChargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
-        this.overdueChargeProvider.applyWhere("is_penalty", "is_penalty = 1");
-        this.overdueChargeProvider.applyWhere("is_active", "is_active = 1");
+        this.overdueChargeProvider.applyWhere("currency_code", MCharge.Field.CURRENCY_CODE + " = '" + this.currencyCode + "'");
+        this.overdueChargeProvider.applyWhere("is_penalty", MCharge.Field.IS_PENALTY + " = 1");
+        this.overdueChargeProvider.applyWhere("is_active", MCharge.Field.IS_ACTIVE + " = 1");
         this.overdueChargeField = new Select2SingleChoice<>("overdueChargeField", new PropertyModel<>(this.model, "overdueChargeValue"), this.overdueChargeProvider);
         this.overdueChargeField.setLabel(Model.of("Overdue Charge"));
         this.overdueChargeIContainer.add(this.overdueChargeField);

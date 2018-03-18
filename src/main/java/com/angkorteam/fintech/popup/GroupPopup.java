@@ -7,6 +7,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import com.angkorteam.fintech.ddl.MGroup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
@@ -71,9 +72,9 @@ public class GroupPopup extends PopupPanel {
         this.form.add(this.groupBlock);
         this.groupIContainer = new WebMarkupContainer("groupIContainer");
         this.groupBlock.add(this.groupIContainer);
-        this.groupProvider = new SingleChoiceProvider("m_group", "id", "display_name");
-        this.groupProvider.applyWhere("office_id", "office_id = " + this.officeId);
-        this.groupProvider.applyWhere("level_id", "level_id = " + 2);
+        this.groupProvider = new SingleChoiceProvider(MGroup.NAME, MGroup.Field.ID, MGroup.Field.DISPLAY_NAME);
+        this.groupProvider.applyWhere("office_id", MGroup.Field.OFFICE_ID + " = " + this.officeId);
+        this.groupProvider.applyWhere("level_id", MGroup.Field.LEVEL_ID + " = " + 2);
         this.groupField = new Select2SingleChoice<>("groupField", new PropertyModel<>(this.model, "groupValue"), this.groupProvider);
         this.groupField.setLabel(Model.of("Group"));
         this.groupIContainer.add(this.groupField);

@@ -8,6 +8,7 @@ import org.apache.wicket.extensions.markup.html.repeater.util.SortableTreeProvid
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import com.angkorteam.fintech.ddl.MOffice;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcTemplate;
 
@@ -19,7 +20,7 @@ public class OfficeHierarchyProvider extends SortableTreeProvider<Map<String, Ob
     @Override
     public Iterator<? extends Map<String, Object>> getRoots() {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        List<Map<String, Object>> roots = jdbcTemplate.queryForList("select * from m_office where parent_id is NULL");
+        List<Map<String, Object>> roots = jdbcTemplate.queryForList("select * from " + MOffice.NAME + " where " + MOffice.Field.PARENT_ID + " is NULL");
         if (roots == null) {
             return new java.util.ArrayList<Map<String, Object>>().listIterator();
         } else {
@@ -30,14 +31,14 @@ public class OfficeHierarchyProvider extends SortableTreeProvider<Map<String, Ob
     @Override
     public boolean hasChildren(Map<String, Object> node) {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        int count = jdbcTemplate.queryForObject("select count(*) from m_office where parent_id = ?", int.class, node.get("id"));
+        int count = jdbcTemplate.queryForObject("select count(*) from " + MOffice.NAME + " where " + MOffice.Field.PARENT_ID + " = ?", int.class, node.get("id"));
         return count > 0;
     }
 
     @Override
     public Iterator<? extends Map<String, Object>> getChildren(Map<String, Object> node) {
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from m_office where parent_id = ?", node.get("id"));
+        List<Map<String, Object>> children = jdbcTemplate.queryForList("select * from " + MOffice.NAME + " where " + MOffice.Field.PARENT_ID + " = ?", node.get("id"));
         if (children == null) {
             return new java.util.ArrayList<Map<String, Object>>().listIterator();
         } else {

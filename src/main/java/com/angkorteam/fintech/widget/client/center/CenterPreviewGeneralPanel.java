@@ -14,6 +14,9 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.fintech.ddl.MSavingsAccount;
+import com.angkorteam.fintech.ddl.MSavingsProduct;
+import com.angkorteam.fintech.ddl.REnumValue;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.pages.client.center.CenterClosePage;
 import com.angkorteam.fintech.pages.client.center.CenterModifyPage;
@@ -78,13 +81,14 @@ public class CenterPreviewGeneralPanel extends Panel {
     protected void initComponent() {
 
         this.groupProvider = new JdbcProvider(MGroup.NAME);
-        this.groupProvider.applyJoin("r_enum_value", "LEFT JOIN r_enum_value ON m_group.status_enum = r_enum_value.enum_id AND r_enum_value.enum_name = 'status_enum'");
-        this.groupProvider.boardField("m_group.id", "id", Long.class);
-        this.groupProvider.boardField("m_group.display_name", "displayName", String.class);
-        this.groupProvider.boardField("m_group.account_no", "account", String.class);
-        this.groupProvider.boardField("r_enum_value.enum_value", "status", String.class);
-        this.groupProvider.applyWhere("level_id", "m_group.level_id = 2");
-        this.groupProvider.applyWhere("parent_id", "m_group.parent_id = " + this.centerId);
+        this.groupProvider.applyJoin("r_enum_value", "LEFT JOIN " + REnumValue.NAME + " ON " + MGroup.NAME + "." + MGroup.Field.STATUS_ENUM + " = " + REnumValue.NAME + "." + REnumValue.Field.ENUM_ID + " AND " + REnumValue.NAME + "." + REnumValue.Field.ENUM_NAME + " = 'status_enum'");
+        this.groupProvider.boardField(MGroup.NAME + "." + MGroup.Field.ID, "id", Long.class);
+        this.groupProvider.boardField(MGroup.NAME + "." + MGroup.Field.DISPLAY_NAME, "displayName", String.class);
+        this.groupProvider.boardField(MGroup.NAME + "." + MGroup.Field.ACCOUNT_NO, "account", String.class);
+        this.groupProvider.boardField(REnumValue.NAME + "." + REnumValue.Field.ENUM_VALUE, "status", String.class);
+
+        this.groupProvider.applyWhere("level_id", MGroup.NAME + "." + MGroup.Field.LEVEL_ID + " = 2");
+        this.groupProvider.applyWhere("parent_id", MGroup.NAME + "." + MGroup.Field.PARENT_ID + " = " + this.centerId);
 
         this.groupProvider.selectField("id", Long.class);
 
@@ -118,14 +122,14 @@ public class CenterPreviewGeneralPanel extends Panel {
         this.closeLink = new BookmarkablePageLink<>("closeLink", CenterClosePage.class, parameters);
         add(this.closeLink);
 
-        this.savingAccountProvider = new JdbcProvider("m_savings_account");
-        this.savingAccountProvider.applyJoin("m_savings_product", "LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
-        this.savingAccountProvider.boardField("concat(m_savings_account.id,'')", "id", String.class);
-        this.savingAccountProvider.boardField("m_savings_account.account_no", "account", String.class);
-        this.savingAccountProvider.boardField("m_savings_product.name", "product", String.class);
-        this.savingAccountProvider.boardField("m_savings_account.status_enum", "status", String.class);
-        this.savingAccountProvider.boardField("m_savings_account.account_balance_derived", "balance", Double.class);
-        this.savingAccountProvider.applyWhere("group_id", "m_savings_account.group_id = " + this.centerId);
+        this.savingAccountProvider = new JdbcProvider(MSavingsAccount.NAME);
+        this.savingAccountProvider.applyJoin("m_savings_product", "LEFT JOIN " + MSavingsProduct.NAME + " ON " + MSavingsAccount.NAME + "." + MSavingsAccount.Field.PRODUCT_ID + " = " + MSavingsProduct.NAME + "." + MSavingsProduct.Field.ID);
+        this.savingAccountProvider.boardField("CONCAT(" + MSavingsAccount.NAME + "." + MSavingsAccount.Field.ID + ",'')", "id", String.class);
+        this.savingAccountProvider.boardField(MSavingsAccount.NAME + "." + MSavingsAccount.Field.ACCOUNT_NO, "account", String.class);
+        this.savingAccountProvider.boardField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.NAME, "product", String.class);
+        this.savingAccountProvider.boardField(MSavingsAccount.NAME + "." + MSavingsAccount.Field.STATUS_ENUM, "status", String.class);
+        this.savingAccountProvider.boardField(MSavingsAccount.NAME + "." + MSavingsAccount.Field.ACCOUNT_BALANCE_DERIVED, "balance", Double.class);
+        this.savingAccountProvider.applyWhere("group_id", MSavingsAccount.NAME + "." + MSavingsAccount.Field.GROUP_ID + " = " + this.centerId);
 
         this.savingAccountProvider.selectField("id", String.class);
         this.savingAccountProvider.selectField("status", String.class);

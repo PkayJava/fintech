@@ -1,14 +1,17 @@
 package com.angkorteam.fintech.provider;
 
+import com.angkorteam.fintech.ddl.MCode;
+import com.angkorteam.fintech.ddl.MCodeValue;
 import com.angkorteam.fintech.dto.Dropdown;
 
 public class ProfessionProvider extends SingleChoiceProvider {
 
     public ProfessionProvider() {
-        super("m_code_value", "m_code_value.id", "m_code_value.code_description");
-        applyJoin("m_code", "inner join m_code ON m_code_value.code_id = m_code.id");
-        applyWhere("code_name", "m_code.code_name = '" + Dropdown.Profession + "'");
-        applyWhere("is_active", "m_code_value.is_active = 1");
+        super(MCodeValue.NAME, MCodeValue.NAME + "." + MCodeValue.Field.ID, MCodeValue.NAME + "." + MCodeValue.Field.CODE_VALUE, MCodeValue.NAME + "." + MCodeValue.Field.ORDER_POSITION + " asc");
+        applyJoin("m_code", "INNER JOIN " + MCode.NAME + " ON " + MCodeValue.NAME + "." + MCodeValue.Field.CODE_ID + " = " + MCode.NAME + "." + MCode.Field.ID);
+        applyWhere("code_name", MCode.NAME + "." + MCode.Field.CODE_NAME + " = '" + Dropdown.Profession + "'");
+        applyWhere("is_active", MCodeValue.NAME + "." + MCodeValue.Field.IS_ACTIVE + " = 1");
+
     }
 
 }

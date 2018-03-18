@@ -27,7 +27,9 @@ import org.slf4j.LoggerFactory;
 import com.angkorteam.fintech.Application;
 import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MCharge;
 import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MClientCharge;
 import com.angkorteam.fintech.ddl.MLoan;
 import com.angkorteam.fintech.ddl.MProductLoan;
 import com.angkorteam.fintech.ddl.MSavingsAccount;
@@ -70,7 +72,6 @@ import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.spring.JdbcNamed;
-import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -299,20 +300,20 @@ public class ClientPreviewGeneralPanel extends Panel {
     }
 
     protected void initUpcomingChargeTable() {
-        this.upcomingChargeProvider = new JdbcProvider("m_client_charge");
-        this.upcomingChargeProvider.applyJoin("m_charge", "INNER JOIN m_charge ON m_client_charge.charge_id = m_charge.id");
+        this.upcomingChargeProvider = new JdbcProvider(MClientCharge.NAME);
+        this.upcomingChargeProvider.applyJoin("m_charge", "INNER JOIN " + MCharge.NAME + " ON " + MClientCharge.NAME + "." + MClientCharge.Field.CHARGE_ID + " = " + MCharge.NAME + "." + MCharge.Field.ID);
 
-        this.upcomingChargeProvider.boardField("m_client_charge.id", "id", Long.class);
-        this.upcomingChargeProvider.boardField("m_charge.name", "name", String.class);
-        this.upcomingChargeProvider.boardField("m_client_charge.charge_due_date", "due_date", Calendar.Date);
-        this.upcomingChargeProvider.boardField("m_client_charge.amount", "due", Double.class);
-        this.upcomingChargeProvider.boardField("m_client_charge.amount_paid_derived", "paid", Double.class);
-        this.upcomingChargeProvider.boardField("m_client_charge.amount_waived_derived", "waived", Double.class);
-        this.upcomingChargeProvider.boardField("m_client_charge.amount_outstanding_derived", "outstanding", Double.class);
+        this.upcomingChargeProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.ID, "id", Long.class);
+        this.upcomingChargeProvider.boardField(MCharge.NAME + "." + MCharge.Field.NAME, "name", String.class);
+        this.upcomingChargeProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.CHARGE_DUE_DATE, "due_date", Calendar.Date);
+        this.upcomingChargeProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT, "due", Double.class);
+        this.upcomingChargeProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_PAID_DERIVED, "paid", Double.class);
+        this.upcomingChargeProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_WAIVED_DERIVED, "waived", Double.class);
+        this.upcomingChargeProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_OUTSTANDING_DERIVED, "outstanding", Double.class);
 
-        this.upcomingChargeProvider.applyWhere("amount_outstanding_derived", "m_client_charge.amount_outstanding_derived > 0");
-        this.upcomingChargeProvider.applyWhere("is_active", "m_client_charge.is_active = 1");
-        this.upcomingChargeProvider.applyWhere("client_id", "m_client_charge.client_id = " + this.clientId);
+        this.upcomingChargeProvider.applyWhere("amount_outstanding_derived", MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_OUTSTANDING_DERIVED + " > 0");
+        this.upcomingChargeProvider.applyWhere("is_active", MClientCharge.NAME + "." + MClientCharge.Field.IS_ACTIVE + " = 1");
+        this.upcomingChargeProvider.applyWhere("client_id", MClientCharge.NAME + "." + MClientCharge.Field.CLIENT_ID + " = " + this.clientId);
 
         this.upcomingChargeProvider.selectField("id", Long.class);
 
@@ -441,8 +442,17 @@ public class ClientPreviewGeneralPanel extends Panel {
     @Override
     protected void initData() {
         this.clientId = new PropertyModel<String>(this.itemPage, "clientId").getObject();
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select * from m_client where id = ?", this.clientId);
+
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+
+        selectQuery = new SelectQuery(MClient.NAME);
+        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+        selectQuery.addField(MClient.Field.DISPLAY_NAME);
+        selectQuery.addField(MClient.Field.IMAGE_ID);
+
+        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.clientNameValue = (String) clientObject.get("display_name");
         if (clientObject.get("image_id") != null) {
             try {

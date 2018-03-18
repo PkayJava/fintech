@@ -15,6 +15,8 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.WorkingPage;
+import com.angkorteam.fintech.ddl.MAppUser;
+import com.angkorteam.fintech.ddl.MNote;
 import com.angkorteam.fintech.dto.builder.client.center.CenterNoteBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -73,13 +75,14 @@ public class CenterPreviewNotePanel extends Panel {
         this.noteFeedback = new TextFeedbackPanel("noteFeedback", this.noteField);
         this.form.add(this.noteFeedback);
 
-        this.noteProvider = new JdbcProvider("m_note");
-        this.noteProvider.applyJoin("m_appuser", "LEFT JOIN m_appuser on m_note.createdby_id = m_appuser.id");
-        this.noteProvider.boardField("m_note.note", "comment", String.class);
-        this.noteProvider.boardField("m_appuser.username", "createdBy", String.class);
-        this.noteProvider.boardField("m_note.created_date", "createdOn", String.class);
-        this.noteProvider.applyWhere("note_type_enum", "m_note.note_type_enum = 600");
-        this.noteProvider.applyWhere("group_id", "m_note.group_id = " + this.centerId);
+        this.noteProvider = new JdbcProvider(MNote.NAME);
+        this.noteProvider.applyJoin("m_appuser", "LEFT JOIN " + MAppUser.NAME + " ON " + MNote.NAME + "." + MNote.Field.CREATED_BY_ID + " = " + MAppUser.NAME + "." + MAppUser.Field.ID);
+        this.noteProvider.boardField(MNote.NAME + "." + MNote.Field.NOTE, "comment", String.class);
+        this.noteProvider.boardField(MNote.NAME + "." + MNote.Field.CREATED_DATE, "createdOn", String.class);
+        this.noteProvider.boardField(MAppUser.NAME + "." + MAppUser.Field.USERNAME, "createdBy", String.class);
+
+        this.noteProvider.applyWhere("note_type_enum", MNote.NAME + "." + MNote.Field.NOTE_TYPE_ENUM + " = 600");
+        this.noteProvider.applyWhere("group_id", MNote.NAME + "." + MNote.Field.GROUP_ID + " = " + this.centerId);
 
         this.noteProvider.setSort("createdOn", SortOrder.DESCENDING);
 

@@ -6,6 +6,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import com.angkorteam.fintech.ddl.MClient;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
@@ -50,8 +51,8 @@ public class ClientPopup extends PopupPanel {
         this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
-        this.clientProvider = new SingleChoiceProvider("m_client", "id", "display_name");
-        this.clientProvider.applyWhere("office_id", "office_id = " + this.officeId);
+        this.clientProvider = new SingleChoiceProvider(MClient.NAME, MClient.Field.ID, MClient.Field.DISPLAY_NAME);
+        this.clientProvider.applyWhere("office_id", MClient.Field.OFFICE_ID + " = " + this.officeId);
         this.clientField = new Select2SingleChoice<>("clientField", new PropertyModel<>(this.model, "clientValue"), this.clientProvider);
         this.clientField.setLabel(Model.of("Client"));
         this.form.add(this.clientField);

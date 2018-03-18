@@ -13,6 +13,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.angkorteam.fintech.ddl.MCharge;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.ChargeType;
@@ -110,19 +111,19 @@ public class AccountChargePopup extends PopupPanel {
         this.form.add(this.okayButton);
 
         this.chargeValue = new PropertyModel<>(this.model, "chargeValue");
-        this.chargeProvider = new SingleChoiceProvider("m_charge", "id", "name");
+        this.chargeProvider = new SingleChoiceProvider(MCharge.NAME, MCharge.Field.ID, MCharge.Field.NAME);
 
-        this.chargeProvider.applyWhere("currency_code", "currency_code = '" + this.currencyCode + "'");
+        this.chargeProvider.applyWhere("currency_code", MCharge.Field.CURRENCY_CODE + " = '" + this.currencyCode + "'");
 
         if (this.productPopup == ProductPopup.Share) {
-            this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.Share.getLiteral());
+            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.Share.getLiteral());
         } else if (this.productPopup == ProductPopup.Loan) {
-            this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.Loan.getLiteral());
+            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.Loan.getLiteral());
         } else if (this.productPopup == ProductPopup.Fixed || this.productPopup == ProductPopup.Saving || this.productPopup == ProductPopup.Recurring) {
-            this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.SavingDeposit.getLiteral());
+            this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.SavingDeposit.getLiteral());
         }
 
-        this.chargeProvider.applyWhere("is_active", "is_active = 1");
+        this.chargeProvider.applyWhere("is_active", MCharge.Field.IS_ACTIVE + " = 1");
 
         this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Six_6);
         this.form.add(this.chargeBlock);
