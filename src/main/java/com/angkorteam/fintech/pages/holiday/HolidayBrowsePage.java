@@ -133,7 +133,7 @@ public class HolidayBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_holiday");
+        this.dataProvider = new JdbcProvider(MHoliday.NAME);
         this.dataProvider.applyJoin("m_holiday_office", "LEFT JOIN " + MHolidayOffice.NAME + " ON " + MHoliday.NAME + "." + MHoliday.Field.ID + " = " + MHolidayOffice.NAME + "." + MHolidayOffice.Field.HOLIDAY_ID);
         this.dataProvider.setGroupBy(MHoliday.NAME + "." + MHoliday.Field.ID);
         this.dataProvider.boardField(MHoliday.NAME + "." + MHoliday.Field.ID, "id", Long.class);

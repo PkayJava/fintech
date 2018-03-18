@@ -1336,101 +1336,101 @@ public class LoanAccountCreatePage extends Page {
         selectQuery.addWhere(MProductLoan.NAME + "." + MProductLoan.Field.ID + " = " + this.loanId);
 
         // detail section
-        selectQuery.addField("m_product_loan.name product");
-        selectQuery.addField("m_product_loan.description");
-        selectQuery.addField("m_product_loan.name");
-        selectQuery.addField("m_product_loan.short_name");
-        selectQuery.addField("m_product_loan.start_date");
-        selectQuery.addField("m_product_loan.close_date");
-        selectQuery.addField("m_product_loan.include_in_borrower_cycle");
-        selectQuery.addField("m_fund.id fund_id");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.NAME);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.DESCRIPTION);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.SHORT_NAME);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.START_DATE);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.CLOSE_DATE);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.INCLUDE_IN_BORROWER_CYCLE);
+        selectQuery.addField(MFund.NAME + "." + MFund.Field.ID + " fund_id");
 
         // currency
-        selectQuery.addField("m_organisation_currency.code currency_code");
-        selectQuery.addField("m_product_loan.currency_digits");
-        selectQuery.addField("m_product_loan.currency_multiplesof");
-        selectQuery.addField("m_product_loan.instalment_amount_in_multiples_of");
+        selectQuery.addField(MOrganisationCurrency.NAME + "." + MOrganisationCurrency.Field.CODE + " currency_code");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.CURRENCY_DIGITS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.CURRENCY_MULTIPLES_OF);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.INSTALMENT_AMOUNT_IN_MULTIPLES_OF);
 
         // Terms
-        selectQuery.addField("m_product_loan.use_borrower_cycle");
-        selectQuery.addField("m_product_loan.min_principal_amount");
-        selectQuery.addField("m_product_loan.principal_amount");
-        selectQuery.addField("m_product_loan.max_principal_amount");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.USE_BORROWER_CYCLE);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MIN_PRINCIPAL_AMOUNT);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.PRINCIPAL_AMOUNT);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MAX_PRINCIPAL_AMOUNT);
 
-        selectQuery.addField("m_product_loan.min_number_of_repayments");
-        selectQuery.addField("m_product_loan.number_of_repayments");
-        selectQuery.addField("m_product_loan.max_number_of_repayments");
-        selectQuery.addField("m_product_loan.repay_every");
-        selectQuery.addField("m_product_loan.repayment_period_frequency_enum");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MIN_NUMBER_OF_REPAYMENTS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.NUMBER_OF_REPAYMENTS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MAX_NUMBER_OF_REPAYMENTS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.REPAY_EVERY);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.REPAYMENT_PERIOD_FREQUENCY_ENUM);
 
-        selectQuery.addField("m_product_loan.min_nominal_interest_rate_per_period");
-        selectQuery.addField("m_product_loan.nominal_interest_rate_per_period");
-        selectQuery.addField("m_product_loan.max_nominal_interest_rate_per_period");
-        selectQuery.addField("m_product_loan.interest_period_frequency_enum");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MIN_NOMINAL_INTEREST_RATE_PER_PERIOD);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.NOMINAL_INTEREST_RATE_PER_PERIOD);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MAX_NOMINAL_INTEREST_RATE_PER_PERIOD);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.INTEREST_PERIOD_FREQUENCY_ENUM);
 
-        selectQuery.addField("m_product_loan.is_linked_to_floating_interest_rates");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.IS_LINKED_TO_FLOATING_INTEREST_RATES);
 
-        selectQuery.addField("m_floating_rates.name floating_rate");
-        selectQuery.addField("m_product_loan_floating_rates.interest_rate_differential");
-        selectQuery.addField("m_product_loan_floating_rates.is_floating_interest_rate_calculation_allowed");
-        selectQuery.addField("m_product_loan_floating_rates.min_differential_lending_rate");
-        selectQuery.addField("m_product_loan_floating_rates.default_differential_lending_rate");
-        selectQuery.addField("m_product_loan_floating_rates.max_differential_lending_rate");
+        selectQuery.addField(MFloatingRates.NAME + "." + MFloatingRates.Field.NAME + " floating_rate");
+        selectQuery.addField(MProductLoanFloatingRates.NAME + "." + MProductLoanFloatingRates.Field.INTEREST_RATE_DIFFERENTIAL);
+        selectQuery.addField(MProductLoanFloatingRates.NAME + "." + MProductLoanFloatingRates.Field.IS_FLOATING_INTEREST_RATE_CALCULATION_ALLOWED);
+        selectQuery.addField(MProductLoanFloatingRates.NAME + "." + MProductLoanFloatingRates.Field.MIN_DIFFERENTIAL_LENDING_RATE);
+        selectQuery.addField(MProductLoanFloatingRates.NAME + "." + MProductLoanFloatingRates.Field.DEFAULT_DIFFERENTIAL_LENDING_RATE);
+        selectQuery.addField(MProductLoanFloatingRates.NAME + "." + MProductLoanFloatingRates.Field.MAX_DIFFERENTIAL_LENDING_RATE);
 
-        selectQuery.addField("m_product_loan.min_days_between_disbursal_and_first_repayment");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MIN_DAYS_BETWEEN_DISBURSAL_AND_FIRST_REPAYMENT);
 
         // setting
-        selectQuery.addField("m_product_loan.amortization_method_enum");
-        selectQuery.addField("m_product_loan.interest_method_enum");
-        selectQuery.addField("m_product_loan.interest_calculated_in_period_enum");
-        selectQuery.addField("m_product_loan.allow_partial_period_interest_calcualtion");
-        selectQuery.addField("m_product_loan.arrearstolerance_amount");
-        selectQuery.addField("m_product_loan.loan_transaction_strategy_id");
-        selectQuery.addField("m_product_loan.grace_interest_free_periods");
-        selectQuery.addField("m_product_loan.grace_on_arrears_ageing");
-        selectQuery.addField("m_product_loan.grace_on_interest_periods");
-        selectQuery.addField("m_product_loan.grace_on_principal_periods");
-        selectQuery.addField("m_product_loan.account_moves_out_of_npa_only_on_arrears_completion");
-        selectQuery.addField("m_product_loan.overdue_days_for_npa");
-        selectQuery.addField("m_product_loan.days_in_year_enum");
-        selectQuery.addField("m_product_loan.days_in_month_enum");
-        selectQuery.addField("m_product_loan.principal_threshold_for_last_installment");
-        selectQuery.addField("m_product_loan.can_define_fixed_emi_amount");
-        selectQuery.addField("m_product_loan.can_use_for_topup");
-        selectQuery.addField("m_product_loan.allow_variabe_installments");
-        selectQuery.addField("m_product_loan_variable_installment_config.minimum_gap");
-        selectQuery.addField("m_product_loan_variable_installment_config.maximum_gap");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.AMORTIZATION_METHOD_ENUM);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.INTEREST_METHOD_ENUM);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.INTEREST_CALCULATED_IN_PERIOD_ENUM);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.ALLOW_PARTIAL_PERIOD_INTEREST_CALCUALTION);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.ARREARS_TOLERANCE_AMOUNT);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.LOAN_TRANSACTION_STRATEGY_ID);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.GRACE_INTEREST_FREE_PERIODS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.GRACE_ON_ARREARS_AGEING);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.GRACE_ON_INTEREST_PERIODS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.GRACE_ON_PRINCIPAL_PERIODS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.ACCOUNT_MOVES_OUT_OF_NPA_ONLY_ON_ARREARS_COMPLETION);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.OVERDUE_DAYS_FOR_NPA);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.DAYS_IN_YEAR_ENUM);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.DAYS_IN_MONTH_ENUM);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.PRINCIPAL_THRESHOLD_FOR_LAST_INSTALLMENT);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.CAN_DEFINE_FIXED_EMI_AMOUNT);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.CAN_USE_FOR_TOPUP);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.ALLOW_VARIABE_INSTALLMENTS);
+
+        selectQuery.addField(MProductLoanVariableInstallmentConfig.NAME + "." + MProductLoanVariableInstallmentConfig.Field.MINIMUM_GAP);
+        selectQuery.addField(MProductLoanVariableInstallmentConfig.NAME + "." + MProductLoanVariableInstallmentConfig.Field.MAXIMUM_GAP);
 
         // re-calculation
-        selectQuery.addField("m_product_loan.interest_recalculation_enabled");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.INTEREST_RECALCULATION_ENABLED);
 
-        selectQuery.addField("m_product_loan_recalculation_details.reschedule_strategy_enum");
-        selectQuery.addField("m_product_loan_recalculation_details.rest_frequency_type_enum");
-        selectQuery.addField("m_product_loan_recalculation_details.rest_frequency_interval");
-        selectQuery.addField("m_product_loan_recalculation_details.arrears_based_on_original_schedule");
-        selectQuery.addField("m_product_loan_recalculation_details.pre_close_interest_calculation_strategy");
-        selectQuery.addField("m_product_loan_recalculation_details.compounding_frequency_type_enum");
-        selectQuery.addField("m_product_loan_recalculation_details.compounding_frequency_interval");
-        selectQuery.addField("m_product_loan_recalculation_details.rest_frequency_nth_day_enum");
-        selectQuery.addField("m_product_loan_recalculation_details.rest_frequency_on_day");
-        selectQuery.addField("m_product_loan_recalculation_details.rest_frequency_weekday_enum");
-        selectQuery.addField("m_product_loan_recalculation_details.compounding_frequency_nth_day_enum");
-        selectQuery.addField("m_product_loan_recalculation_details.compounding_frequency_on_day");
-        selectQuery.addField("m_product_loan_recalculation_details.compound_type_enum");
-        selectQuery.addField("m_product_loan_recalculation_details.compounding_frequency_weekday_enum");
-        selectQuery.addField("m_product_loan_recalculation_details.is_compounding_to_be_posted_as_transaction");
-        selectQuery.addField("m_product_loan_recalculation_details.allow_compounding_on_eod");
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.RESCHEDULE_STRATEGY_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.REST_FREQUENCY_TYPE_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.REST_FREQUENCY_INTERVAL);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.ARREARS_BASED_ON_ORIGINAL_SCHEDULE);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.PRE_CLOSE_INTEREST_CALCULATION_STRATEGY);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.COMPOUNDING_FREQUENCY_TYPE_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.COMPOUNDING_FREQUENCY_INTERVAL);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.REST_FREQUENCY_NTH_DAY_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.REST_FREQUENCY_ON_DAY);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.REST_FREQUENCY_WEEKDAY_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.COMPOUNDING_FREQUENCY_NTH_DAY_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.COMPOUNDING_FREQUENCY_ON_DAY);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.COMPOUND_TYPE_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.COMPOUNDING_FREQUENCY_WEEKDAY_ENUM);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.IS_COMPOUNDING_TO_BE_POSTED_AS_TRANSACTION);
+        selectQuery.addField(MProductLoanRecalculationDetails.NAME + "." + MProductLoanRecalculationDetails.Field.ALLOW_COMPOUNDING_ON_EOD);
 
-        selectQuery.addField("m_product_loan.hold_guarantee_funds");
-        selectQuery.addField("m_product_loan_guarantee_details.mandatory_guarantee");
-        selectQuery.addField("m_product_loan_guarantee_details.minimum_guarantee_from_guarantor_funds");
-        selectQuery.addField("m_product_loan_guarantee_details.minimum_guarantee_from_own_funds");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.HOLD_GUARANTEE_FUNDS);
+        selectQuery.addField(MProductLoanGuaranteeDetails.NAME + "." + MProductLoanGuaranteeDetails.Field.MANDATORY_GUARANTEE);
+        selectQuery.addField(MProductLoanGuaranteeDetails.NAME + "." + MProductLoanGuaranteeDetails.Field.MINIMUM_GUARANTEE_FROM_GUARANTOR_FUNDS);
+        selectQuery.addField(MProductLoanGuaranteeDetails.NAME + "." + MProductLoanGuaranteeDetails.Field.MINIMUM_GUARANTEE_FROM_OWN_FUNDS);
 
-        selectQuery.addField("m_product_loan.allow_multiple_disbursals");
-        selectQuery.addField("m_product_loan.max_disbursals");
-        selectQuery.addField("m_product_loan.max_outstanding_loan_balance");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.ALLOW_MULTIPLE_DISBURSALS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MAX_DISBURSALS);
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.MAX_OUTSTANDING_LOAN_BALANCE);
 
-        selectQuery.addField("m_product_loan.accounting_type");
+        selectQuery.addField(MProductLoan.NAME + "." + MProductLoan.Field.ACCOUNTING_TYPE);
 
         Map<String, Object> loanObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 

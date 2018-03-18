@@ -27,6 +27,7 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.ddl.AccGLAccount;
 import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MTaxGroup;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.ProductFixedDepositBuilder;
 import com.angkorteam.fintech.dto.builder.ProductFixedDepositBuilder.IncentiveBuilder;
@@ -1234,7 +1235,7 @@ public class FixedDepositCreatePage extends Page {
         this.form.add(this.settingTaxGroupBlock);
         this.settingTaxGroupIContainer = new WebMarkupContainer("settingTaxGroupIContainer");
         this.settingTaxGroupBlock.add(this.settingTaxGroupIContainer);
-        this.settingTaxGroupProvider = new SingleChoiceProvider("m_tax_group", "id", "name");
+        this.settingTaxGroupProvider = new SingleChoiceProvider(MTaxGroup.NAME, MTaxGroup.Field.ID, MTaxGroup.Field.NAME);
         this.settingTaxGroupField = new Select2SingleChoice<>("settingTaxGroupField", new PropertyModel<>(this, "settingTaxGroupValue"), this.settingTaxGroupProvider);
         this.settingTaxGroupField.setLabel(Model.of("Tax Group"));
         this.settingTaxGroupField.add(new OnChangeAjaxBehavior());

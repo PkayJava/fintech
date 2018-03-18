@@ -1,30 +1,9 @@
 package com.angkorteam.fintech.pages.client.client;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.ddl.MClient;
-import com.angkorteam.fintech.ddl.MSavingsAccount;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.enums.Destination;
-import com.angkorteam.fintech.dto.enums.StandingInstructionAccountType;
-import com.angkorteam.fintech.dto.enums.TransferType;
-import com.angkorteam.fintech.provider.*;
-import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
-import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
-import com.angkorteam.framework.SpringBean;
-import com.angkorteam.framework.jdbc.SelectQuery;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcNamed;
-import com.angkorteam.framework.spring.JdbcTemplate;
-import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
-import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
-import com.angkorteam.framework.wicket.markup.html.form.DayMonthTextField;
-import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
-import com.google.common.collect.Lists;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -35,9 +14,39 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.MSavingsAccount;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.enums.Destination;
+import com.angkorteam.fintech.dto.enums.StandingInstructionAccountType;
+import com.angkorteam.fintech.dto.enums.TransferType;
+import com.angkorteam.fintech.provider.ClientDepositAccountProvider;
+import com.angkorteam.fintech.provider.DestinationProvider;
+import com.angkorteam.fintech.provider.InstructionTypeProvider;
+import com.angkorteam.fintech.provider.OfficeProvider;
+import com.angkorteam.fintech.provider.PriorityProvider;
+import com.angkorteam.fintech.provider.RecurrenceFrequencyProvider;
+import com.angkorteam.fintech.provider.RecurrenceTypeProvider;
+import com.angkorteam.fintech.provider.StatusProvider;
+import com.angkorteam.fintech.provider.TransferTypeProvider;
+import com.angkorteam.fintech.widget.ReadOnlyView;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
+import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.spring.JdbcNamed;
+import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
+import com.angkorteam.framework.wicket.markup.html.form.Button;
+import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
+import com.angkorteam.framework.wicket.markup.html.form.DayMonthTextField;
+import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
+import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+import com.google.common.collect.Lists;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ClientStandingInstructionCreatePage extends Page {
@@ -498,7 +507,7 @@ public class ClientStandingInstructionCreatePage extends Page {
     }
 
     protected boolean destinationFieldUpdate(AjaxRequestTarget target) {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
         Destination destination = null;
         if (this.destinationValue != null) {
             destination = Destination.valueOf(this.destinationValue.getId());
@@ -515,8 +524,20 @@ public class ClientStandingInstructionCreatePage extends Page {
             this.toOfficeIContainer.setVisible(true);
         }
         if (destination == Destination.OwnAccount) {
-            this.toOfficeValue = jdbcTemplate.queryForObject("select m_office.id, m_office.name text from m_client inner join m_office on m_client.office_id = m_office.id where m_client.id = ?", Option.MAPPER, this.clientId);
-            this.beneficiaryValue = jdbcTemplate.queryForObject("select id, display_name text from m_client where m_client.id = ?", Option.MAPPER, this.clientId);
+            SelectQuery selectQuery = null;
+
+            selectQuery = new SelectQuery(MClient.NAME);
+            selectQuery.addJoin("INNER JOIN " + MOffice.NAME + " ON " + MClient.NAME + "." + MClient.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
+            selectQuery.addField(MOffice.NAME + "." + MOffice.Field.ID);
+            selectQuery.addField(MOffice.NAME + "." + MOffice.Field.NAME + " as text");
+            selectQuery.addWhere(MClient.NAME + "." + MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+            this.toOfficeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
+
+            selectQuery = new SelectQuery(MClient.NAME);
+            selectQuery.addField(MClient.Field.ID);
+            selectQuery.addField(MClient.Field.DISPLAY_NAME + " as text");
+            selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+            this.beneficiaryValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
             this.toOfficeVContainer.setVisible(true);
             this.toOfficeIContainer.setVisible(false);
             this.beneficiaryVContainer.setVisible(true);

@@ -20,6 +20,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.ddl.MCode;
+import com.angkorteam.fintech.ddl.MCodeValue;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.CodeValueBuilder;
 import com.angkorteam.fintech.helper.CodeHelper;
@@ -169,13 +170,14 @@ public class ValueBrowsePage extends Page {
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider("m_code_value");
-        this.dataProvider.applyWhere("code", "code_id = " + this.codeId);
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("code_value", "code_value", String.class);
-        this.dataProvider.boardField("code_description", "code_description", String.class);
-        this.dataProvider.boardField("order_position", "order_position", Long.class);
-        this.dataProvider.boardField("is_active", "active", Boolean.class);
+        this.dataProvider = new JdbcProvider(MCodeValue.NAME);
+        this.dataProvider.boardField(MCodeValue.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MCodeValue.Field.CODE_VALUE, "code_value", String.class);
+        this.dataProvider.boardField(MCodeValue.Field.CODE_DESCRIPTION, "code_description", String.class);
+        this.dataProvider.boardField(MCodeValue.Field.ORDER_POSITION, "order_position", Long.class);
+        this.dataProvider.boardField(MCodeValue.Field.IS_ACTIVE, "active", Boolean.class);
+
+        this.dataProvider.applyWhere("code", MCodeValue.Field.CODE_ID + " = " + this.codeId);
 
         this.dataProvider.setSort("code_value", SortOrder.ASCENDING);
 

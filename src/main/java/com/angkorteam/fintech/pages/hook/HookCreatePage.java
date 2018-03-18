@@ -19,6 +19,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MHookSchema;
+import com.angkorteam.fintech.ddl.MHookTemplates;
 import com.angkorteam.fintech.ddl.MPermission;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.HookBuilder;
@@ -151,7 +153,7 @@ public class HookCreatePage extends Page {
         PageParameters parameters = getPageParameters();
         this.templateId = parameters.get("templateId").toString("");
         JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        this.templateValue = jdbcTemplate.queryForObject("SELECT name from m_hook_templates where id = ?", String.class, this.templateId);
+        this.templateValue = jdbcTemplate.queryForObject("SELECT " + MHookTemplates.Field.NAME + " from " + MHookTemplates.NAME + " where " + MHookTemplates.Field.ID + " = ?", String.class, this.templateId);
         this.dataValue = Lists.newArrayList();
     }
 
@@ -187,7 +189,7 @@ public class HookCreatePage extends Page {
 
         this.configField = new RepeatingView("configField");
         this.hookForm.add(this.configField);
-        List<Map<String, Object>> temps = jdbcTemplate.queryForList("select * from m_hook_schema where hook_template_id = ?", this.templateId);
+        List<Map<String, Object>> temps = jdbcTemplate.queryForList("select " + MHookSchema.Field.FIELD_NAME + " from " + MHookSchema.NAME + " where " + MHookSchema.Field.HOOK_TEMPLATE_ID + " = ?", this.templateId);
         for (Map<String, Object> temp : temps) {
             String id = this.configField.newChildId();
             HookFieldWidget field = new HookFieldWidget(id, (String) temp.get("field_name"), this.configValue);

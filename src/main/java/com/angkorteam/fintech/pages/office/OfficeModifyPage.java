@@ -174,6 +174,7 @@ public class OfficeModifyPage extends Page {
 
         selectQuery = new SelectQuery(MOffice.NAME);
         selectQuery.addField(MOffice.Field.EXTERNAL_ID);
+        selectQuery.addField(MOffice.Field.PARENT_ID);
         selectQuery.addField(MOffice.Field.NAME);
         selectQuery.addField(MOffice.Field.OPENING_DATE);
         selectQuery.addWhere(MOffice.Field.ID + " = :" + MOffice.Field.ID, this.officeId);

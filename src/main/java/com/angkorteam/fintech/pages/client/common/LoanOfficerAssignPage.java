@@ -116,10 +116,10 @@ public class LoanOfficerAssignPage extends Page {
         this.assignmentDateFeedback = new TextFeedbackPanel("assignmentDateFeedback", this.assignmentDateField);
         this.assignmentDateIContainer.add(this.assignmentDateFeedback);
 
-        this.officerProvider = new SingleChoiceProvider("m_staff", "id", "display_name");
-        this.officerProvider.applyWhere("is_active", "is_active = 1");
-        this.officerProvider.applyWhere("is_loan_officer", "is_loan_officer = 1");
-        this.officerProvider.applyWhere("office_id", "office_id = " + this.officeId);
+        this.officerProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.Field.ID, MStaff.Field.DISPLAY_NAME);
+        this.officerProvider.applyWhere("is_active", MStaff.Field.IS_ACTIVE + " = 1");
+        this.officerProvider.applyWhere("is_loan_officer", MStaff.Field.IS_LOAN_OFFICER + " = 1");
+        this.officerProvider.applyWhere("office_id", MStaff.Field.OFFICE_ID + " = " + this.officeId);
         this.officerBlock = new WebMarkupBlock("officerBlock", Size.Six_6);
         this.form.add(this.officerBlock);
         this.officerIContainer = new WebMarkupContainer("officerIContainer");

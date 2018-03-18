@@ -24,6 +24,7 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.ddl.AccGLAccount;
 import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MFloatingRates;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.AllowAttributeOverrideBuilder;
 import com.angkorteam.fintech.dto.builder.ProductLoanBuilder;
@@ -3058,7 +3059,7 @@ public class LoanCreatePage extends Page {
         this.form.add(this.termFloatingInterestRateBlock);
         this.termFloatingInterestRateIContainer = new WebMarkupContainer("termFloatingInterestRateIContainer");
         this.termFloatingInterestRateBlock.add(this.termFloatingInterestRateIContainer);
-        this.termFloatingInterestRateProvider = new SingleChoiceProvider("m_floating_rates", "id", "name");
+        this.termFloatingInterestRateProvider = new SingleChoiceProvider(MFloatingRates.NAME, MFloatingRates.Field.ID, MFloatingRates.Field.NAME);
         this.termFloatingInterestRateField = new Select2SingleChoice<>("termFloatingInterestRateField", new PropertyModel<>(this, "termFloatingInterestRateValue"), this.termFloatingInterestRateProvider);
         this.termFloatingInterestRateField.setLabel(Model.of("Floating interest rate"));
         this.termFloatingInterestRateField.add(new OnChangeAjaxBehavior());

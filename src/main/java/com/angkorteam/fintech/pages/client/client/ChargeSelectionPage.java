@@ -1,6 +1,18 @@
 package com.angkorteam.fintech.pages.client.client;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MCharge;
 import com.angkorteam.fintech.ddl.MClient;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.ChargeType;
@@ -17,16 +29,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import java.util.List;
-import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ChargeSelectionPage extends Page {
@@ -78,9 +80,9 @@ public class ChargeSelectionPage extends Page {
         this.form.add(this.chargeBlock);
         this.chargeIContainer = new WebMarkupContainer("chargeIContainer");
         this.chargeBlock.add(this.chargeIContainer);
-        this.chargeProvider = new SingleChoiceProvider("m_charge", "id", "name", "concat(name, ' [', currency_code, ']')");
-        this.chargeProvider.applyWhere("charge_applies_to_enum", "charge_applies_to_enum = " + ChargeType.Client.getLiteral());
-        this.chargeProvider.applyWhere("is_active", "is_active = 1");
+        this.chargeProvider = new SingleChoiceProvider(MCharge.NAME, MCharge.Field.ID, MCharge.Field.NAME, "CONCAT(" + MCharge.Field.NAME + ", ' [', " + MCharge.Field.CURRENCY_CODE + ", ']')");
+        this.chargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.Client.getLiteral());
+        this.chargeProvider.applyWhere("is_active", MCharge.Field.IS_ACTIVE + " = 1");
         this.chargeField = new Select2SingleChoice<>("chargeField", new PropertyModel<>(this, "chargeValue"), this.chargeProvider);
         this.chargeField.setLabel(Model.of("Charge"));
         this.chargeIContainer.add(this.chargeField);
