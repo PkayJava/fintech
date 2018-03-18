@@ -3,7 +3,6 @@ package com.angkorteam.fintech;
 import java.util.List;
 import java.util.MissingResourceException;
 
-import com.angkorteam.fintech.pages.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -17,6 +16,13 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.angkorteam.fintech.pages.AccountingPage;
+import com.angkorteam.fintech.pages.LoginPage;
+import com.angkorteam.fintech.pages.LogoutPage;
+import com.angkorteam.fintech.pages.OrganizationDashboardPage;
+import com.angkorteam.fintech.pages.ProductDashboardPage;
+import com.angkorteam.fintech.pages.SimulatorPage;
+import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
