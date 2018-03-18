@@ -403,12 +403,18 @@ public class DataTableCreatePage extends Page {
         Map<String, Object> column = Maps.newHashMap();
         column.put("uuid", generator.externalId());
         column.put("name", this.nameValue);
+        ColumnType columnType = null;
         if (this.typeValue != null) {
-            column.put("type", ColumnType.valueOf(this.typeValue.getId()).getLiteral());
+            columnType = ColumnType.valueOf(this.typeValue.getId());
+        }
+        if (columnType != null) {
+            column.put("type", columnType.getLiteral());
+        }
+        if (columnType == ColumnType.String) {
+            column.put("length", this.lengthValue);
         }
         column.put("mandatory", this.mandatoryValue);
-        column.put("length", this.lengthValue);
-        if (this.codeValue != null) {
+        if (columnType == ColumnType.DropDown && this.codeValue != null) {
             column.put("code", this.codeValue.getId());
         }
         this.columnValue.add(column);
