@@ -156,11 +156,14 @@ public class UserModifyPage extends Page {
         selectQuery.addField(MAppUser.Field.EMAIL);
         selectQuery.addField(MAppUser.Field.LAST_NAME);
         selectQuery.addField(MAppUser.Field.USERNAME);
+        selectQuery.addField(MAppUser.Field.PASSWORD_NEVER_EXPIRES);
         Map<String, Object> userObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
         this.firstNameValue = (String) userObject.get(MAppUser.Field.FIRST_NAME);
         this.emailValue = (String) userObject.get(MAppUser.Field.EMAIL);
         this.lastNameValue = (String) userObject.get(MAppUser.Field.LAST_NAME);
+        Long overridePasswordExpiryPolicyValue = (Long) userObject.get(MAppUser.Field.PASSWORD_NEVER_EXPIRES);
+        this.overridePasswordExpiryPolicyValue = overridePasswordExpiryPolicyValue == null ? false : overridePasswordExpiryPolicyValue == 1;
 
         selectQuery = new SelectQuery(MOffice.NAME);
         selectQuery.addWhere(MOffice.Field.ID + " = :" + MOffice.Field.ID, userObject.get(MAppUser.Field.OFFICE_ID));
@@ -276,7 +279,7 @@ public class UserModifyPage extends Page {
     }
 
     protected void initOfficeBlock() {
-        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Twelve_12);
+        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Six_6);
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
@@ -304,7 +307,7 @@ public class UserModifyPage extends Page {
     }
 
     protected void initStaffBlock() {
-        this.staffBlock = new WebMarkupBlock("staffBlock", Size.Twelve_12);
+        this.staffBlock = new WebMarkupBlock("staffBlock", Size.Six_6);
         this.form.add(this.staffBlock);
         this.staffIContainer = new WebMarkupContainer("staffIContainer");
         this.staffBlock.add(this.staffIContainer);

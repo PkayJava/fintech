@@ -68,6 +68,12 @@ public class UserCreatePage extends Page {
     protected TextField<String> loginField;
     protected TextFeedbackPanel loginFeedback;
 
+    protected WebMarkupBlock autoGeneratePasswordBlock;
+    protected WebMarkupContainer autoGeneratePasswordIContainer;
+    protected Boolean autoGeneratePasswordValue;
+    protected CheckBox autoGeneratePasswordField;
+    protected TextFeedbackPanel autoGeneratePasswordFeedback;
+
     protected WebMarkupBlock passwordBlock;
     protected WebMarkupContainer passwordIContainer;
     protected String passwordValue;
@@ -163,17 +169,54 @@ public class UserCreatePage extends Page {
 
         initLoginBlock();
 
-        initOverridePasswordExpiryPolicyBlock();
+        this.autoGeneratePasswordBlock = new WebMarkupBlock("autoGeneratePasswordBlock", Size.Six_6);
+        this.form.add(this.autoGeneratePasswordBlock);
+        this.autoGeneratePasswordIContainer = new WebMarkupContainer("autoGeneratePasswordIContainer");
+        this.autoGeneratePasswordBlock.add(this.autoGeneratePasswordIContainer);
+        this.autoGeneratePasswordField = new CheckBox("autoGeneratePasswordField", new PropertyModel<>(this, "autoGeneratePasswordValue"));
+        this.autoGeneratePasswordField.add(new OnChangeAjaxBehavior(this::autoGeneratePasswordFieldUpdate));
+        this.autoGeneratePasswordIContainer.add(this.autoGeneratePasswordField);
+        this.autoGeneratePasswordFeedback = new TextFeedbackPanel("autoGeneratePasswordFeedback", this.autoGeneratePasswordField);
+        this.autoGeneratePasswordIContainer.add(this.autoGeneratePasswordFeedback);
 
-        this.form.add(new EqualInputValidator(this.passwordField, this.repeatPasswordField));
+        initOverridePasswordExpiryPolicyBlock();
+    }
+
+    protected boolean autoGeneratePasswordFieldUpdate(AjaxRequestTarget target) {
+        if (this.autoGeneratePasswordValue != null && this.autoGeneratePasswordValue) {
+            this.passwordIContainer.setVisible(false);
+            this.repeatPasswordIContainer.setVisible(false);
+        } else {
+            this.passwordIContainer.setVisible(true);
+            this.repeatPasswordIContainer.setVisible(true);
+        }
+        if (target != null) {
+            target.add(this.passwordBlock);
+            target.add(this.repeatPasswordBlock);
+        }
+        return false;
     }
 
     @Override
     protected void configureRequiredValidation() {
+        this.overridePasswordExpiryPolicyField.setRequired(true);
+        this.loginField.setRequired(true);
+        this.autoGeneratePasswordField.setRequired(true);
+        this.permissionField.setRequired(true);
+        this.officeField.setRequired(true);
+        this.lastNameField.setRequired(true);
+        this.emailField.setRequired(true);
+        this.firstNameField.setRequired(true);
+        this.passwordField.setRequired(true);
+        this.repeatPasswordField.setRequired(true);
     }
 
     @Override
     protected void configureMetaData() {
+        this.staffProvider.setDisabled(true);
+        this.form.add(new EqualInputValidator(this.passwordField, this.repeatPasswordField));
+
+        autoGeneratePasswordFieldUpdate(null);
     }
 
     protected void initFirstNameBlock() {
@@ -182,7 +225,6 @@ public class UserCreatePage extends Page {
         this.firstNameIContainer = new WebMarkupContainer("firstNameIContainer");
         this.firstNameBlock.add(this.firstNameIContainer);
         this.firstNameField = new TextField<>("firstNameField", new PropertyModel<>(this, "firstNameValue"));
-        this.firstNameField.setRequired(true);
         this.firstNameField.add(new OnChangeAjaxBehavior());
         this.firstNameIContainer.add(this.firstNameField);
         this.firstNameFeedback = new TextFeedbackPanel("firstNameFeedback", this.firstNameField);
@@ -195,7 +237,6 @@ public class UserCreatePage extends Page {
         this.passwordIContainer = new WebMarkupContainer("passwordIContainer");
         this.passwordBlock.add(this.passwordIContainer);
         this.passwordField = new PasswordTextField("passwordField", new PropertyModel<>(this, "passwordValue"));
-        this.passwordField.setRequired(false);
         this.passwordField.setResetPassword(false);
         this.passwordField.add(new OnChangeAjaxBehavior());
         this.passwordIContainer.add(this.passwordField);
@@ -209,7 +250,6 @@ public class UserCreatePage extends Page {
         this.repeatPasswordIContainer = new WebMarkupContainer("repeatPasswordIContainer");
         this.repeatPasswordBlock.add(this.repeatPasswordIContainer);
         this.repeatPasswordField = new PasswordTextField("repeatPasswordField", new PropertyModel<>(this, "repeatPasswordValue"));
-        this.repeatPasswordField.setRequired(false);
         this.repeatPasswordField.setResetPassword(false);
         this.repeatPasswordField.add(new OnChangeAjaxBehavior());
         this.repeatPasswordIContainer.add(this.repeatPasswordField);
@@ -223,7 +263,6 @@ public class UserCreatePage extends Page {
         this.emailIContainer = new WebMarkupContainer("emailIContainer");
         this.emailBlock.add(this.emailIContainer);
         this.emailField = new TextField<>("emailField", new PropertyModel<>(this, "emailValue"));
-        this.emailField.setRequired(true);
         this.emailField.add(new OnChangeAjaxBehavior());
         this.emailIContainer.add(this.emailField);
         this.emailFeedback = new TextFeedbackPanel("emailFeedback", this.emailField);
@@ -236,7 +275,6 @@ public class UserCreatePage extends Page {
         this.lastNameIContainer = new WebMarkupContainer("lastNameIContainer");
         this.lastNameBlock.add(this.lastNameIContainer);
         this.lastNameField = new TextField<>("lastNameField", new PropertyModel<>(this, "lastNameValue"));
-        this.lastNameField.setRequired(true);
         this.lastNameField.add(new OnChangeAjaxBehavior());
         this.lastNameIContainer.add(this.lastNameField);
         this.lastNameFeedback = new TextFeedbackPanel("lastNameFeedback", this.lastNameField);
@@ -244,14 +282,13 @@ public class UserCreatePage extends Page {
     }
 
     protected void initOfficeBlock() {
-        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Twelve_12);
+        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Six_6);
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
         this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
         this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
         this.officeField.add(new OnChangeAjaxBehavior(this::officeFieldUpdate));
-        this.officeField.setRequired(true);
         this.officeIContainer.add(this.officeField);
         this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
         this.officeIContainer.add(this.officeFeedback);
@@ -265,19 +302,17 @@ public class UserCreatePage extends Page {
         this.permissionProvider = new MultipleChoiceProvider(MRole.NAME, MRole.Field.ID, MRole.Field.NAME);
         this.permissionField = new Select2MultipleChoice<>("permissionField", new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
         this.permissionField.add(new OnChangeAjaxBehavior());
-        this.permissionField.setRequired(true);
         this.permissionIContainer.add(this.permissionField);
         this.permissionFeedback = new TextFeedbackPanel("permissionFeedback", this.permissionField);
         this.permissionIContainer.add(this.permissionFeedback);
     }
 
     protected void initStaffBlock() {
-        this.staffBlock = new WebMarkupBlock("staffBlock", Size.Twelve_12);
+        this.staffBlock = new WebMarkupBlock("staffBlock", Size.Six_6);
         this.form.add(this.staffBlock);
         this.staffIContainer = new WebMarkupContainer("staffIContainer");
         this.staffBlock.add(this.staffIContainer);
         this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.Field.ID, MStaff.Field.DISPLAY_NAME);
-        this.staffProvider.setDisabled(true);
         this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.add(new OnChangeAjaxBehavior());
         this.staffIContainer.add(this.staffField);
@@ -292,19 +327,17 @@ public class UserCreatePage extends Page {
         this.loginBlock.add(this.loginIContainer);
         this.loginField = new TextField<>("loginField", new PropertyModel<>(this, "loginValue"));
         this.loginField.add(new OnChangeAjaxBehavior());
-        this.loginField.setRequired(true);
         this.loginIContainer.add(this.loginField);
         this.loginFeedback = new TextFeedbackPanel("loginFeedback", this.loginField);
         this.loginIContainer.add(this.loginFeedback);
     }
 
     protected void initOverridePasswordExpiryPolicyBlock() {
-        this.overridePasswordExpiryPolicyBlock = new WebMarkupBlock("overridePasswordExpiryPolicyBlock", Size.Twelve_12);
+        this.overridePasswordExpiryPolicyBlock = new WebMarkupBlock("overridePasswordExpiryPolicyBlock", Size.Six_6);
         this.form.add(this.overridePasswordExpiryPolicyBlock);
         this.overridePasswordExpiryPolicyIContainer = new WebMarkupContainer("overridePasswordExpiryPolicyIContainer");
         this.overridePasswordExpiryPolicyBlock.add(this.overridePasswordExpiryPolicyIContainer);
         this.overridePasswordExpiryPolicyField = new CheckBox("overridePasswordExpiryPolicyField", new PropertyModel<>(this, "overridePasswordExpiryPolicyValue"));
-        this.overridePasswordExpiryPolicyField.setRequired(true);
         this.overridePasswordExpiryPolicyField.add(new OnChangeAjaxBehavior());
         this.overridePasswordExpiryPolicyIContainer.add(this.overridePasswordExpiryPolicyField);
         this.overridePasswordExpiryPolicyFeedback = new TextFeedbackPanel("overridePasswordExpiryPolicyFeedback", this.overridePasswordExpiryPolicyField);
@@ -316,7 +349,7 @@ public class UserCreatePage extends Page {
         this.staffProvider.setDisabled(false);
         this.staffProvider.applyWhere("office", MStaff.Field.OFFICE_ID + " = " + this.officeValue.getId());
         if (target != null) {
-            target.add(this.form);
+            target.add(this.staffBlock);
         }
         return false;
     }
@@ -327,12 +360,12 @@ public class UserCreatePage extends Page {
         builder.withLastname(this.lastNameValue);
         builder.withEmail(this.emailValue);
         builder.withUsername(this.loginValue);
-        if (this.passwordValue != null && !"".equals(this.passwordValue)) {
+        if (this.autoGeneratePasswordValue != null && this.autoGeneratePasswordValue) {
+            builder.withSendPasswordToEmail(true);
+        } else {
             builder.withSendPasswordToEmail(false);
             builder.withPassword(this.passwordValue);
             builder.withRepeatPassword(this.repeatPasswordValue);
-        } else {
-            builder.withSendPasswordToEmail(true);
         }
         builder.withPasswordNeverExpires(this.overridePasswordExpiryPolicyValue);
         if (this.officeValue != null) {

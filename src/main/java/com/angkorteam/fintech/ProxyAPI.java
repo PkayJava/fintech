@@ -144,98 +144,152 @@ public class ProxyAPI implements Filter {
 
             boolean handled = true;
 
+            UnirestException unirestException = null;
+
             if (method.equals("POST")) {
                 if (requestContentType != null && !"".equals(requestContentType)) {
-                    if ("application/json".equals(requestContentType)) {
+                    if ("application/json".equals(requestContentType) || "application/json;charset=utf-8".equals(requestContentType)) {
                         requestBody = IOUtils.toString(request.getInputStream(), "UTF-8");
-                        resp = Unirest.post(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).body(requestBody).asString();
-                        responseContentType = StringUtils.lowerCase(resp.getHeaders().getFirst("Content-Type"));
-                        response.getWriter().write(resp.getBody());
-                        response.setContentType(responseContentType);
-                        response.setStatus(resp.getStatus());
+                        try {
+                            resp = Unirest.post(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).body(requestBody).asString();
+                            responseContentType = StringUtils.lowerCase(resp.getHeaders().getFirst("Content-Type"));
+                            response.getWriter().write(resp.getBody());
+                            response.setContentType(responseContentType);
+                            response.setStatus(resp.getStatus());
+                        } catch (UnirestException e) {
+                            unirestException = e;
+                        }
                     } else {
                         byte[] bytes = IOUtils.toByteArray(request.getInputStream());
-                        HttpResponse<InputStream> temp = Unirest.post(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).body(bytes).asBinary();
-                        IOUtils.copy(temp.getBody(), response.getOutputStream());
-                        response.setContentType(temp.getHeaders().getFirst("Content-Type"));
-                        response.setStatus(temp.getStatus());
+                        try {
+                            HttpResponse<InputStream> temp = Unirest.post(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).body(bytes).asBinary();
+                            IOUtils.copy(temp.getBody(), response.getOutputStream());
+                            response.setContentType(temp.getHeaders().getFirst("Content-Type"));
+                            response.setStatus(temp.getStatus());
+                        } catch (UnirestException e) {
+                            unirestException = e;
+                        }
                     }
                 } else {
                     byte[] bytes = IOUtils.toByteArray(request.getInputStream());
-                    HttpResponse<InputStream> temp = Unirest.post(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).body(bytes).asBinary();
-                    IOUtils.copy(temp.getBody(), response.getOutputStream());
-                    response.setContentType(temp.getHeaders().getFirst("Content-Type"));
-                    response.setStatus(temp.getStatus());
+                    try {
+                        HttpResponse<InputStream> temp = Unirest.post(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).body(bytes).asBinary();
+                        IOUtils.copy(temp.getBody(), response.getOutputStream());
+                        response.setContentType(temp.getHeaders().getFirst("Content-Type"));
+                        response.setStatus(temp.getStatus());
+                    } catch (UnirestException e) {
+                        unirestException = e;
+                    }
                 }
             } else if (method.equals("PUT")) {
                 if (requestContentType != null && !"".equals(requestContentType)) {
-                    if ("application/json".equals(requestContentType)) {
+                    if ("application/json".equals(requestContentType) || "application/json;charset=utf-8".equals(responseContentType)) {
                         requestBody = IOUtils.toString(request.getInputStream(), "UTF-8");
-                        resp = Unirest.put(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).body(requestBody).asString();
-                        responseContentType = StringUtils.lowerCase(resp.getHeaders().getFirst("Content-Type"));
-                        response.getWriter().write(resp.getBody());
-                        response.setContentType(responseContentType);
-                        response.setStatus(resp.getStatus());
+                        try {
+                            resp = Unirest.put(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).body(requestBody).asString();
+                            responseContentType = StringUtils.lowerCase(resp.getHeaders().getFirst("Content-Type"));
+                            response.getWriter().write(resp.getBody());
+                            response.setContentType(responseContentType);
+                            response.setStatus(resp.getStatus());
+                        } catch (UnirestException e) {
+                            unirestException = e;
+                        }
                     } else {
                         byte[] bytes = IOUtils.toByteArray(request.getInputStream());
-                        HttpResponse<InputStream> temp = Unirest.put(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).body(bytes).asBinary();
-                        IOUtils.copy(temp.getBody(), response.getOutputStream());
-                        response.setContentType(temp.getHeaders().getFirst("Content-Type"));
-                        response.setStatus(temp.getStatus());
+                        try {
+                            HttpResponse<InputStream> temp = Unirest.put(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).body(bytes).asBinary();
+                            IOUtils.copy(temp.getBody(), response.getOutputStream());
+                            response.setContentType(temp.getHeaders().getFirst("Content-Type"));
+                            response.setStatus(temp.getStatus());
+                        } catch (UnirestException e) {
+                            unirestException = e;
+                        }
                     }
                 } else {
                     byte[] bytes = IOUtils.toByteArray(request.getInputStream());
-                    HttpResponse<InputStream> temp = Unirest.put(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).body(bytes).asBinary();
-                    IOUtils.copy(temp.getBody(), response.getOutputStream());
-                    response.setContentType(temp.getHeaders().getFirst("Content-Type"));
-                    response.setStatus(temp.getStatus());
+                    try {
+                        HttpResponse<InputStream> temp = Unirest.put(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).body(bytes).asBinary();
+                        IOUtils.copy(temp.getBody(), response.getOutputStream());
+                        response.setContentType(temp.getHeaders().getFirst("Content-Type"));
+                        response.setStatus(temp.getStatus());
+                    } catch (UnirestException e) {
+                        unirestException = e;
+                    }
                 }
             } else if (method.equals("DELETE")) {
                 if (requestContentType != null && !"".equals(requestContentType)) {
-                    if ("application/json".equals(requestContentType)) {
-                        resp = Unirest.delete(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).asString();
-                        responseContentType = StringUtils.lowerCase(resp.getHeaders().getFirst("Content-Type"));
-                        response.getWriter().write(resp.getBody());
-                        response.setContentType(responseContentType);
-                        response.setStatus(resp.getStatus());
+                    if ("application/json".equals(requestContentType) || "application/json;charset=utf-8".equals(responseContentType)) {
+                        try {
+                            resp = Unirest.delete(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).asString();
+                            responseContentType = StringUtils.lowerCase(resp.getHeaders().getFirst("Content-Type"));
+                            response.getWriter().write(resp.getBody());
+                            response.setContentType(responseContentType);
+                            response.setStatus(resp.getStatus());
+                        } catch (UnirestException e) {
+                            unirestException = e;
+                        }
                     } else {
-                        HttpResponse<InputStream> temp = Unirest.delete(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).asBinary();
+                        try {
+                            HttpResponse<InputStream> temp = Unirest.delete(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).asBinary();
+                            IOUtils.copy(temp.getBody(), response.getOutputStream());
+                            response.setContentType(temp.getHeaders().getFirst("Content-Type"));
+                            response.setStatus(temp.getStatus());
+                        } catch (UnirestException e) {
+                            unirestException = e;
+                        }
+                    }
+                } else {
+                    try {
+                        HttpResponse<InputStream> temp = Unirest.delete(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).asBinary();
                         IOUtils.copy(temp.getBody(), response.getOutputStream());
                         response.setContentType(temp.getHeaders().getFirst("Content-Type"));
                         response.setStatus(temp.getStatus());
+                    } catch (UnirestException e) {
+                        unirestException = e;
                     }
-                } else {
-                    HttpResponse<InputStream> temp = Unirest.delete(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).asBinary();
-                    IOUtils.copy(temp.getBody(), response.getOutputStream());
-                    response.setContentType(temp.getHeaders().getFirst("Content-Type"));
-                    response.setStatus(temp.getStatus());
                 }
             } else if (method.equals("GET")) {
                 if (requestContentType != null && !"".equals(requestContentType)) {
-                    if (requestContentType.equals("application/json")) {
-                        resp = Unirest.get(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).asString();
-                        responseContentType = StringUtils.lowerCase(resp.getHeaders().getFirst("Content-Type"));
-                        response.getWriter().write(resp.getBody());
-                        response.setContentType(responseContentType);
-                        response.setStatus(resp.getStatus());
+                    if ("application/json".equals(requestContentType) || "application/json;charset=utf-8".equals(responseContentType)) {
+                        try {
+                            resp = Unirest.get(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).asString();
+                            responseContentType = StringUtils.lowerCase(resp.getHeaders().getFirst("Content-Type"));
+                            response.getWriter().write(resp.getBody());
+                            response.setContentType(responseContentType);
+                            response.setStatus(resp.getStatus());
+                        } catch (UnirestException e) {
+                            unirestException = e;
+                        }
                     } else {
-                        HttpResponse<InputStream> temp = Unirest.get(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).asBinary();
-                        IOUtils.copy(temp.getBody(), response.getOutputStream());
-                        response.setContentType(temp.getHeaders().getFirst("Content-Type"));
-                        response.setStatus(temp.getStatus());
+                        try {
+                            HttpResponse<InputStream> temp = Unirest.get(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).asBinary();
+                            IOUtils.copy(temp.getBody(), response.getOutputStream());
+                            response.setContentType(temp.getHeaders().getFirst("Content-Type"));
+                            response.setStatus(temp.getStatus());
+                        } catch (UnirestException e) {
+                            unirestException = e;
+                        }
                     }
                 } else {
-                    if (accept.contains("application/json")) {
-                        resp = Unirest.get(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).asString();
-                        responseContentType = StringUtils.lowerCase(resp.getHeaders().getFirst("Content-Type"));
-                        response.getWriter().write(resp.getBody());
-                        response.setContentType(responseContentType);
-                        response.setStatus(resp.getStatus());
+                    if ("application/json".equals(requestContentType) || "application/json;charset=utf-8".equals(responseContentType)) {
+                        try {
+                            resp = Unirest.get(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).asString();
+                            responseContentType = StringUtils.lowerCase(resp.getHeaders().getFirst("Content-Type"));
+                            response.getWriter().write(resp.getBody());
+                            response.setContentType(responseContentType);
+                            response.setStatus(resp.getStatus());
+                        } catch (UnirestException e) {
+                            unirestException = e;
+                        }
                     } else {
-                        HttpResponse<InputStream> temp = Unirest.get(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).asBinary();
-                        IOUtils.copy(temp.getBody(), response.getOutputStream());
-                        response.setContentType(temp.getHeaders().getFirst("Content-Type"));
-                        response.setStatus(temp.getStatus());
+                        try {
+                            HttpResponse<InputStream> temp = Unirest.get(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).asBinary();
+                            IOUtils.copy(temp.getBody(), response.getOutputStream());
+                            response.setContentType(temp.getHeaders().getFirst("Content-Type"));
+                            response.setStatus(temp.getStatus());
+                        } catch (UnirestException e) {
+                            unirestException = e;
+                        }
                     }
                 }
             } else {
@@ -245,36 +299,44 @@ public class ProxyAPI implements Filter {
             if (!handled) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             } else {
-                if (resp != null) {
-                    JdbcNamed named = applicationContext.getBean(JdbcNamed.class);
-                    String uuid = named.queryForObject("select uuid() from dual", new HashMap<>(), String.class);
-                    InsertQuery insertQuery = null;
-                    insertQuery = new InsertQuery("tbl_proxy");
-                    insertQuery.addValue("id = :id", uuid);
-                    insertQuery.addValue("path = :path", mifosUrl);
-                    insertQuery.addValue("method = :method", method);
-                    insertQuery.addValue("accept = :accept", accept);
-                    insertQuery.addValue("request_content_type = :request_content_type", requestContentType);
-                    if (requestBody != null) {
-                        insertQuery.addValue("request_body = :request_body", requestBody);
-                    }
-                    insertQuery.addValue("response_body = :response_body", resp.getBody());
-                    insertQuery.addValue("response_status = :response_status", resp.getStatus());
-                    insertQuery.addValue("response_status_text = :response_status_text", resp.getStatusText());
-                    insertQuery.addValue("response_content_type = :response_content_type", responseContentType);
-                    insertQuery.addValue("created_datetime = :created_datetime", new Date());
-                    named.update(insertQuery.toSQL(), insertQuery.getParam());
 
-                    Enumeration<String> headers = request.getHeaderNames();
-                    while (headers.hasMoreElements()) {
-                        insertQuery = new InsertQuery("tbl_proxy_request_header");
-                        String header = headers.nextElement();
-                        insertQuery.addValue("id = uuid()");
-                        insertQuery.addValue("proxy_id = :proxy_id", uuid);
-                        insertQuery.addValue("h_name = :h_name", header);
-                        insertQuery.addValue("h_value = :h_value", request.getHeader(header));
-                        named.update(insertQuery.toSQL(), insertQuery.getParam());
+                JdbcNamed named = applicationContext.getBean(JdbcNamed.class);
+                String uuid = named.queryForObject("select uuid() from dual", new HashMap<>(), String.class);
+                InsertQuery insertQuery = null;
+                insertQuery = new InsertQuery("tbl_proxy");
+                insertQuery.addValue("id = :id", uuid);
+                insertQuery.addValue("path = :path", mifosUrl);
+                insertQuery.addValue("method = :method", method);
+                insertQuery.addValue("accept = :accept", accept);
+                insertQuery.addValue("request_content_type = :request_content_type", requestContentType);
+                if (requestBody != null) {
+                    insertQuery.addValue("request_body = :request_body", requestBody);
+                }
+                insertQuery.addValue("created_datetime = :created_datetime", new Date());
+                if (unirestException != null) {
+                    insertQuery.addValue("response_status = :response_status", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    insertQuery.addValue("response_status_text = :response_status_text", unirestException.getMessage());
+                } else {
+                    if (resp != null) {
+                        insertQuery.addValue("response_body = :response_body", resp.getBody());
+                        insertQuery.addValue("response_status = :response_status", resp.getStatus());
+                        insertQuery.addValue("response_status_text = :response_status_text", resp.getStatusText());
+                        insertQuery.addValue("response_content_type = :response_content_type", responseContentType);
                     }
+                }
+                named.update(insertQuery.toSQL(), insertQuery.getParam());
+
+                Enumeration<String> headers = request.getHeaderNames();
+                while (headers.hasMoreElements()) {
+                    insertQuery = new InsertQuery("tbl_proxy_request_header");
+                    String header = headers.nextElement();
+                    insertQuery.addValue("id = uuid()");
+                    insertQuery.addValue("proxy_id = :proxy_id", uuid);
+                    insertQuery.addValue("h_name = :h_name", header);
+                    insertQuery.addValue("h_value = :h_value", request.getHeader(header));
+                    named.update(insertQuery.toSQL(), insertQuery.getParam());
+                }
+                if (resp != null) {
                     for (Map.Entry<String, List<String>> header : resp.getHeaders().entrySet()) {
                         if (header.getValue() != null && !header.getValue().isEmpty()) {
                             insertQuery = new InsertQuery("tbl_proxy_response_header");
