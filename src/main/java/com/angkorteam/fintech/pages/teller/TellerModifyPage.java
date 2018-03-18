@@ -147,7 +147,7 @@ public class TellerModifyPage extends Page {
         this.nameValue = (String) tellerObject.get(MTellers.Field.NAME);
         this.startDateValue = (Date) tellerObject.get(MTellers.Field.VALID_FROM);
         this.endDateValue = (Date) tellerObject.get(MTellers.Field.VALID_TO);
-        this.descriptionValue = (String) tellerObject.get(MTellers.Field.DEBIT_ACCOUNT_ID);
+        this.descriptionValue = (String) tellerObject.get(MTellers.Field.DESCRIPTION);
     }
 
     @Override

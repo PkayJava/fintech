@@ -5,8 +5,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 public enum TellerStatus {
 
     Active("300", "Active"), 
-    Inactive("400", "Inactive"),
-    Closed("600", "Closed");
+    Inactive("400", "Inactive");
     
     public static final String ID = "teller_status";
 

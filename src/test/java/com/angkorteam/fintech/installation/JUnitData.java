@@ -243,7 +243,6 @@ public class JUnitData implements IMifos {
 
     protected void setupTeller(IMifos session, JdbcTemplate jdbcTemplate) throws UnirestException, ParseException {
         final String TELLER_INACTIVE = "JUNIT_TELLER_400";
-        final String TELLER_CLOSED = "JUNIT_TELLER_600";
         String officeId = jdbcTemplate.queryForObject("select id from m_office where name = ?", String.class, OFFICE);
         Date startDate = Function.DATE_FORMAT.parse("2017-01-01");
         if (!jdbcTemplate.queryForObject("select count(*) from m_tellers where name = ?", Boolean.class, TELLER)) {
@@ -260,15 +259,6 @@ public class JUnitData implements IMifos {
             builder.withDescription(TELLER_INACTIVE);
             builder.withName(TELLER_INACTIVE);
             builder.withStatus(TellerStatus.Inactive);
-            builder.withOfficeId(officeId);
-            builder.withStartDate(startDate);
-            TellerHelper.create(session, builder.build());
-        }
-        if (!jdbcTemplate.queryForObject("select count(*) from m_tellers where name = ?", Boolean.class, TELLER_CLOSED)) {
-            TellerBuilder builder = new TellerBuilder();
-            builder.withDescription(TELLER_CLOSED);
-            builder.withName(TELLER_CLOSED);
-            builder.withStatus(TellerStatus.Closed);
             builder.withOfficeId(officeId);
             builder.withStartDate(startDate);
             TellerHelper.create(session, builder.build());

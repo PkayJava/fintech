@@ -11,6 +11,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
@@ -112,6 +113,9 @@ public class TellerCreatePage extends Page {
 
     @Override
     protected void initData() {
+        this.startDateValue = DateTime.now().toDate();
+        this.endDateValue = DateTime.now().plusYears(1).toDate();
+        this.statusValue = TellerStatus.Active.toOption();
     }
 
     @Override
