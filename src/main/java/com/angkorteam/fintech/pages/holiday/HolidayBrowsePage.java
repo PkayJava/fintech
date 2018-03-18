@@ -4,9 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.MHoliday;
-import com.angkorteam.fintech.ddl.MHolidayOffice;
-import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -18,6 +15,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MHoliday;
+import com.angkorteam.fintech.ddl.MHolidayOffice;
+import com.angkorteam.fintech.ddl.MOffice;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -138,17 +138,17 @@ public class HolidayBrowsePage extends Page {
         this.dataProvider.setGroupBy(MHoliday.NAME + "." + MHoliday.Field.ID);
         this.dataProvider.boardField(MHoliday.NAME + "." + MHoliday.Field.ID, "id", Long.class);
         this.dataProvider.boardField(MHoliday.NAME + "." + MHoliday.Field.NAME, "name", String.class);
-        this.dataProvider.boardField(MHoliday.NAME + "." + MHoliday.Field.STATUS_ENUM, "status_enum", Long.class);
+        this.dataProvider.boardField("CASE " + MHoliday.NAME + "." + MHoliday.Field.STATUS_ENUM + " WHEN 100 THEN 'Pending for activation' WHEN 300 THEN 'Active' ELSE CONCAT(" + MHoliday.NAME + "." + MHoliday.Field.STATUS_ENUM + ",'') END", "status_enum", Long.class);
         this.dataProvider.boardField(MHoliday.NAME + "." + MHoliday.Field.FROM_DATE, "from_date", Calendar.Date);
         this.dataProvider.boardField(MHoliday.NAME + "." + MHoliday.Field.TO_DATE, "to_date", Calendar.Date);
-        this.dataProvider.boardField(MHoliday.NAME + "." + MHoliday.Field.REPAYMENTS_RESCHEDULED_TO, "repayments_rescheduled_to", Calendar.Date);
+        this.dataProvider.boardField("CASE " + MHoliday.NAME + "." + MHoliday.Field.RESCHEDULING_TYPE + " WHEN 1 THEN 'Next Repayment date' WHEN 2 THEN DATE_FORMAT(" + MHoliday.NAME + "." + MHoliday.Field.REPAYMENTS_RESCHEDULED_TO + ", '%e/%m/%Y') ELSE 'N/A' END", "repayments_rescheduled_to", String.class);
 
         this.dataColumn = Lists.newArrayList();
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("ID"), "id", "id", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Start Date"), "from_date", "from_date", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("End Date"), "to_date", "to_date", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Alternate Working Day"), "repayments_rescheduled_to", "repayments_rescheduled_to", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Repayments Scheduled To"), "repayments_rescheduled_to", "repayments_rescheduled_to", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Status"), "status_enum", "status_enum", this::dataColumn));
 
         this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
@@ -168,13 +168,13 @@ public class HolidayBrowsePage extends Page {
     }
 
     protected ItemPanel dataColumn(String column, IModel<String> display, Map<String, Object> model) {
-        if ("id".equals(column) || "status_enum".equals(column)) {
+        if ("id".equals(column)) {
             Long value = (Long) model.get(column);
             return new TextCell(value);
-        } else if ("name".equals(column)) {
+        } else if ("name".equals(column) || "status_enum".equals(column) || "repayments_rescheduled_to".equals(column)) {
             String value = (String) model.get(column);
             return new TextCell(value);
-        } else if ("from_date".equals(column) || "to_date".equals(column) || "repayments_rescheduled_to".equals(column)) {
+        } else if ("from_date".equals(column) || "to_date".equals(column)) {
             Date value = (Date) model.get(column);
             return new TextCell(value, "dd/MM/yyyy");
         }
