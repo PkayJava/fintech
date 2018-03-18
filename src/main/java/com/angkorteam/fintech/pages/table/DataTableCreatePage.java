@@ -3,7 +3,6 @@ package com.angkorteam.fintech.pages.table;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.MCode;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -17,6 +16,7 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MCode;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.DataTableBuilder;
 import com.angkorteam.fintech.dto.enums.ColumnType;
@@ -53,7 +53,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -386,13 +385,8 @@ public class DataTableCreatePage extends Page {
             }
         }
 
-        JsonNode node = null;
-        try {
-            node = DataTableHelper.create((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = DataTableHelper.create((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

@@ -3,11 +3,6 @@ package com.angkorteam.fintech.pages.charge;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.MCharge;
-import com.angkorteam.fintech.ddl.MOrganisationCurrency;
-import com.angkorteam.fintech.ddl.MTaxGroup;
-import com.angkorteam.framework.jdbc.SelectQuery;
-import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -20,6 +15,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MOrganisationCurrency;
+import com.angkorteam.fintech.ddl.MTaxGroup;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.ChargeBuilder;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
@@ -34,8 +32,9 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -43,7 +42,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ShareChargeModifyPage extends Page {
@@ -282,7 +280,6 @@ public class ShareChargeModifyPage extends Page {
 
         Map<String, Object> chargeObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
-
         this.nameValue = (String) chargeObject.get(MCharge.Field.NAME);
 
         selectQuery = new SelectQuery(MOrganisationCurrency.NAME);
@@ -338,13 +335,8 @@ public class ShareChargeModifyPage extends Page {
             builder.withTaxGroupId(null);
         }
 
-        JsonNode node = null;
-        try {
-            node = ChargeHelper.update((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ChargeHelper.update((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

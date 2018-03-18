@@ -1,17 +1,18 @@
-package com.angkorteam.fintech.helper.loan;
+package com.angkorteam.fintech.dto.builder.saving;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.mashape.unirest.http.JsonNode;
 
-public class RecoveryBuilder {
+public class DepositBuilder implements Serializable {
 
     private String id;
     private boolean hasId;
 
-    public RecoveryBuilder withId(String id) {
+    public DepositBuilder withId(String id) {
         this.id = id;
         this.hasId = true;
         return this;
@@ -20,7 +21,7 @@ public class RecoveryBuilder {
     private String locale = "en";
     private boolean hasLocale = true;
 
-    public RecoveryBuilder withLocale(String locale) {
+    public DepositBuilder withLocale(String locale) {
         this.locale = locale;
         this.hasLocale = true;
         return this;
@@ -29,7 +30,7 @@ public class RecoveryBuilder {
     private String dateFormat = "yyyy-MM-dd";
     private boolean hasDateFormat = true;
 
-    public RecoveryBuilder withDateFormat(String dateFormat) {
+    public DepositBuilder withDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
         this.hasDateFormat = true;
         return this;
@@ -38,7 +39,7 @@ public class RecoveryBuilder {
     private String paymentTypeId;
     private boolean hasPaymentTypeId;
 
-    public RecoveryBuilder withPaymentTypeId(String paymentTypeId) {
+    public DepositBuilder withPaymentTypeId(String paymentTypeId) {
         this.paymentTypeId = paymentTypeId;
         this.hasPaymentTypeId = true;
         return this;
@@ -47,7 +48,7 @@ public class RecoveryBuilder {
     private Date transactionDate;
     private boolean hasTransactionDate;
 
-    public RecoveryBuilder withTransactionDate(Date transactionDate) {
+    public DepositBuilder withTransactionDate(Date transactionDate) {
         this.transactionDate = transactionDate;
         this.hasTransactionDate = true;
         return this;
@@ -56,7 +57,7 @@ public class RecoveryBuilder {
     private Double transactionAmount;
     private boolean hasTransactionAmount;
 
-    public RecoveryBuilder withTransactionAmount(Double transactionAmount) {
+    public DepositBuilder withTransactionAmount(Double transactionAmount) {
         this.transactionAmount = transactionAmount;
         this.hasTransactionAmount = true;
         return this;
@@ -65,7 +66,7 @@ public class RecoveryBuilder {
     private String accountNumber;
     private boolean hasAccountNumber;
 
-    public RecoveryBuilder withAccountNumber(String accountNumber) {
+    public DepositBuilder withAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
         this.hasAccountNumber = true;
         return this;
@@ -74,7 +75,7 @@ public class RecoveryBuilder {
     private String checkNumber;
     private boolean hasCheckNumber;
 
-    public RecoveryBuilder withCheckNumber(String checkNumber) {
+    public DepositBuilder withCheckNumber(String checkNumber) {
         this.checkNumber = checkNumber;
         this.hasCheckNumber = true;
         return this;
@@ -83,7 +84,7 @@ public class RecoveryBuilder {
     private String routingCode;
     private boolean hasRoutingCode;
 
-    public RecoveryBuilder withRoutingCode(String routingCode) {
+    public DepositBuilder withRoutingCode(String routingCode) {
         this.routingCode = routingCode;
         this.hasRoutingCode = true;
         return this;
@@ -92,7 +93,7 @@ public class RecoveryBuilder {
     private String receiptNumber;
     private boolean hasReceiptNumber;
 
-    public RecoveryBuilder withReceiptNumber(String receiptNumber) {
+    public DepositBuilder withReceiptNumber(String receiptNumber) {
         this.receiptNumber = receiptNumber;
         this.hasReceiptNumber = true;
         return this;
@@ -101,27 +102,14 @@ public class RecoveryBuilder {
     private String bankNumber;
     private boolean hasBankNumber;
 
-    public RecoveryBuilder withBankNumber(String bankNumber) {
+    public DepositBuilder withBankNumber(String bankNumber) {
         this.bankNumber = bankNumber;
         this.hasBankNumber = true;
         return this;
     }
 
-    private String note;
-    private boolean hasNote;
-
-    public RecoveryBuilder withNote(String note) {
-        this.note = note;
-        this.hasNote = true;
-        return this;
-    }
-
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
-
-        if (this.hasNote) {
-            object.getObject().put("note", this.note);
-        }
 
         if (this.hasBankNumber) {
             object.getObject().put("bankNumber", this.bankNumber);
@@ -173,5 +161,4 @@ public class RecoveryBuilder {
 
         return object;
     }
-
 }

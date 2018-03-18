@@ -1,22 +1,8 @@
 package com.angkorteam.fintech.pages.account;
 
-import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.ddl.*;
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.helper.AccountingRuleHelper;
-import com.angkorteam.fintech.pages.AccountingPage;
-import com.angkorteam.fintech.provider.JdbcProvider;
-import com.angkorteam.fintech.table.LinkCell;
-import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
-import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
-import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -28,8 +14,32 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import java.util.List;
-import java.util.Map;
+import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.AccAccountingRule;
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.AccRuleTags;
+import com.angkorteam.fintech.ddl.MCodeValue;
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.helper.AccountingRuleHelper;
+import com.angkorteam.fintech.pages.AccountingPage;
+import com.angkorteam.fintech.provider.JdbcProvider;
+import com.angkorteam.fintech.table.LinkCell;
+import com.angkorteam.fintech.table.TextCell;
+import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.framework.models.PageBreadcrumb;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
+import com.google.common.collect.Lists;
+import com.mashape.unirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 7/5/17.
@@ -132,11 +142,8 @@ public class RuleBrowsePage extends Page {
     protected void dataClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
         if ("delete".equals(column)) {
             Long value = (Long) model.get("id");
-            JsonNode node = null;
-            try {
-                node = AccountingRuleHelper.delete((Session) getSession(), String.valueOf(value));
-            } catch (UnirestException e) {
-            }
+            JsonNode node = AccountingRuleHelper.delete((Session) getSession(), String.valueOf(value));
+
             reportError(node, target);
             target.add(this.dataTable);
         } else if ("post".equals(column)) {

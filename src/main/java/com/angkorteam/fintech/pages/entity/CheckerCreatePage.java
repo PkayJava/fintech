@@ -2,7 +2,6 @@ package com.angkorteam.fintech.pages.entity;
 
 import java.util.List;
 
-import com.angkorteam.fintech.ddl.XRegisteredTable;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -13,6 +12,7 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.XRegisteredTable;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.EntityCheckBuilder;
 import com.angkorteam.fintech.dto.enums.EntityStatus;
@@ -33,7 +33,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 7/15/17.
@@ -215,13 +214,8 @@ public class CheckerCreatePage extends Page {
         builder.withEntity(EntityType.valueOf(this.entityValue.getId()).getLiteral());
         builder.withStatus(EntityStatus.valueOf(this.statusValue.getId()));
 
-        JsonNode node = null;
-        try {
-            node = EntityCheckHelper.create((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = EntityCheckHelper.create((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

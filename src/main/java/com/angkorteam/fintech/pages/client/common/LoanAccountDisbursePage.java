@@ -1,5 +1,23 @@
 package com.angkorteam.fintech.pages.client.common;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.joda.time.DateTime;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.ddl.MClient;
@@ -8,8 +26,8 @@ import com.angkorteam.fintech.ddl.MLoan;
 import com.angkorteam.fintech.ddl.MPaymentType;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.loan.DisburseBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.loan.DisburseBuilder;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
@@ -32,24 +50,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.joda.time.DateTime;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanAccountDisbursePage extends Page {
@@ -324,7 +324,6 @@ public class LoanAccountDisbursePage extends Page {
 
         JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-
         SelectQuery selectQuery = null;
         selectQuery = new SelectQuery(MLoan.NAME);
         selectQuery.addWhere(MLoan.Field.ID + " = '" + this.loanId + "'");
@@ -466,13 +465,8 @@ public class LoanAccountDisbursePage extends Page {
         }
         builder.withNote(this.noteValue);
 
-        JsonNode node = null;
-        try {
-            node = ClientHelper.disburseLoanAccount((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ClientHelper.disburseLoanAccount((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

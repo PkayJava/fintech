@@ -24,7 +24,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -134,13 +133,8 @@ public class RoleCreatePage extends Page {
         builder.withName(this.nameValue);
         builder.withDescription(this.descriptionValue);
 
-        JsonNode node = null;
-        try {
-            node = RoleHelper.create((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = RoleHelper.create((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

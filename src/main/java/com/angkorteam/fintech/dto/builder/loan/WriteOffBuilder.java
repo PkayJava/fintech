@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.helper.saving;
+package com.angkorteam.fintech.dto.builder.loan;
 
 import java.util.Date;
 
@@ -6,39 +6,21 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.mashape.unirest.http.JsonNode;
 
-public class ApproveBuilder {
+public class WriteOffBuilder {
 
     private String id;
     private boolean hasId;
 
-    public ApproveBuilder withId(String id) {
+    public WriteOffBuilder withId(String id) {
         this.id = id;
         this.hasId = true;
-        return this;
-    }
-
-    private Date approvedOnDate;
-    private boolean hasApprovedOnDate;
-
-    public ApproveBuilder withApprovedOnDate(Date approvedOnDate) {
-        this.approvedOnDate = approvedOnDate;
-        this.hasApprovedOnDate = true;
-        return this;
-    }
-
-    private String note;
-    private boolean hasNote;
-
-    public ApproveBuilder withNote(String note) {
-        this.note = note;
-        this.hasNote = true;
         return this;
     }
 
     private String locale = "en";
     private boolean hasLocale = true;
 
-    public ApproveBuilder withLocale(String locale) {
+    public WriteOffBuilder withLocale(String locale) {
         this.locale = locale;
         this.hasLocale = true;
         return this;
@@ -47,29 +29,47 @@ public class ApproveBuilder {
     private String dateFormat = "yyyy-MM-dd";
     private boolean hasDateFormat = true;
 
-    public ApproveBuilder withDateFormat(String dateFormat) {
+    public WriteOffBuilder withDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
         this.hasDateFormat = true;
+        return this;
+    }
+
+    private Date transactionDate;
+    private boolean hasTransactionDate;
+
+    public WriteOffBuilder withTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
+        this.hasTransactionDate = true;
+        return this;
+    }
+
+    private String note;
+    private boolean hasNote;
+
+    public WriteOffBuilder withNote(String note) {
+        this.note = note;
+        this.hasNote = true;
         return this;
     }
 
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
 
-        if (this.hasId) {
-            object.getObject().put("id", this.id);
-        }
-
         if (this.hasNote) {
             object.getObject().put("note", this.note);
         }
 
-        if (this.hasApprovedOnDate) {
-            if (this.approvedOnDate != null) {
-                object.getObject().put("approvedOnDate", DateFormatUtils.format(this.approvedOnDate, this.dateFormat));
+        if (this.hasTransactionDate) {
+            if (this.transactionDate != null) {
+                object.getObject().put("transactionDate", DateFormatUtils.format(this.transactionDate, this.dateFormat));
             } else {
-                object.getObject().put("approvedOnDate", (String) null);
+                object.getObject().put("transactionDate", (String) null);
             }
+        }
+
+        if (this.hasId) {
+            object.getObject().put("id", this.id);
         }
 
         if (this.hasLocale) {

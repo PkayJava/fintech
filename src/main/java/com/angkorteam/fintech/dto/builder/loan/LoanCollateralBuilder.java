@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.helper.loan;
+package com.angkorteam.fintech.dto.builder.loan;
 
 import com.mashape.unirest.http.JsonNode;
 

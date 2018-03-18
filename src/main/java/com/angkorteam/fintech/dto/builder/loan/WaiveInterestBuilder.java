@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.helper.loan;
+package com.angkorteam.fintech.dto.builder.loan;
 
 import java.util.Date;
 
@@ -6,12 +6,12 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.mashape.unirest.http.JsonNode;
 
-public class CloseBuilder {
+public class WaiveInterestBuilder {
 
     private String id;
     private boolean hasId;
 
-    public CloseBuilder withId(String id) {
+    public WaiveInterestBuilder withId(String id) {
         this.id = id;
         this.hasId = true;
         return this;
@@ -20,7 +20,7 @@ public class CloseBuilder {
     private String locale = "en";
     private boolean hasLocale = true;
 
-    public CloseBuilder withLocale(String locale) {
+    public WaiveInterestBuilder withLocale(String locale) {
         this.locale = locale;
         this.hasLocale = true;
         return this;
@@ -29,7 +29,7 @@ public class CloseBuilder {
     private String dateFormat = "yyyy-MM-dd";
     private boolean hasDateFormat = true;
 
-    public CloseBuilder withDateFormat(String dateFormat) {
+    public WaiveInterestBuilder withDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
         this.hasDateFormat = true;
         return this;
@@ -38,16 +38,25 @@ public class CloseBuilder {
     private Date transactionDate;
     private boolean hasTransactionDate;
 
-    public CloseBuilder withTransactionDate(Date transactionDate) {
+    public WaiveInterestBuilder withTransactionDate(Date transactionDate) {
         this.transactionDate = transactionDate;
         this.hasTransactionDate = true;
+        return this;
+    }
+
+    private Double transactionAmount;
+    private boolean hasTransactionAmount;
+
+    public WaiveInterestBuilder withTransactionAmount(Double transactionAmount) {
+        this.transactionAmount = transactionAmount;
+        this.hasTransactionAmount = true;
         return this;
     }
 
     private String note;
     private boolean hasNote;
 
-    public CloseBuilder withNote(String note) {
+    public WaiveInterestBuilder withNote(String note) {
         this.note = note;
         this.hasNote = true;
         return this;
@@ -66,6 +75,10 @@ public class CloseBuilder {
             } else {
                 object.getObject().put("transactionDate", (String) null);
             }
+        }
+
+        if (this.hasTransactionAmount) {
+            object.getObject().put("transactionAmount", this.transactionAmount);
         }
 
         if (this.hasId) {

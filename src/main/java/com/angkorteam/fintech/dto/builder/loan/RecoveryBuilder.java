@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.helper.loan;
+package com.angkorteam.fintech.dto.builder.loan;
 
 import java.util.Date;
 
@@ -6,12 +6,12 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.mashape.unirest.http.JsonNode;
 
-public class PrepayBuilder {
+public class RecoveryBuilder {
 
     private String id;
     private boolean hasId;
 
-    public PrepayBuilder withId(String id) {
+    public RecoveryBuilder withId(String id) {
         this.id = id;
         this.hasId = true;
         return this;
@@ -20,7 +20,7 @@ public class PrepayBuilder {
     private String locale = "en";
     private boolean hasLocale = true;
 
-    public PrepayBuilder withLocale(String locale) {
+    public RecoveryBuilder withLocale(String locale) {
         this.locale = locale;
         this.hasLocale = true;
         return this;
@@ -29,7 +29,7 @@ public class PrepayBuilder {
     private String dateFormat = "yyyy-MM-dd";
     private boolean hasDateFormat = true;
 
-    public PrepayBuilder withDateFormat(String dateFormat) {
+    public RecoveryBuilder withDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
         this.hasDateFormat = true;
         return this;
@@ -38,7 +38,7 @@ public class PrepayBuilder {
     private String paymentTypeId;
     private boolean hasPaymentTypeId;
 
-    public PrepayBuilder withPaymentTypeId(String paymentTypeId) {
+    public RecoveryBuilder withPaymentTypeId(String paymentTypeId) {
         this.paymentTypeId = paymentTypeId;
         this.hasPaymentTypeId = true;
         return this;
@@ -47,7 +47,7 @@ public class PrepayBuilder {
     private Date transactionDate;
     private boolean hasTransactionDate;
 
-    public PrepayBuilder withTransactionDate(Date transactionDate) {
+    public RecoveryBuilder withTransactionDate(Date transactionDate) {
         this.transactionDate = transactionDate;
         this.hasTransactionDate = true;
         return this;
@@ -56,7 +56,7 @@ public class PrepayBuilder {
     private Double transactionAmount;
     private boolean hasTransactionAmount;
 
-    public PrepayBuilder withTransactionAmount(Double transactionAmount) {
+    public RecoveryBuilder withTransactionAmount(Double transactionAmount) {
         this.transactionAmount = transactionAmount;
         this.hasTransactionAmount = true;
         return this;
@@ -65,7 +65,7 @@ public class PrepayBuilder {
     private String accountNumber;
     private boolean hasAccountNumber;
 
-    public PrepayBuilder withAccountNumber(String accountNumber) {
+    public RecoveryBuilder withAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
         this.hasAccountNumber = true;
         return this;
@@ -74,7 +74,7 @@ public class PrepayBuilder {
     private String checkNumber;
     private boolean hasCheckNumber;
 
-    public PrepayBuilder withCheckNumber(String checkNumber) {
+    public RecoveryBuilder withCheckNumber(String checkNumber) {
         this.checkNumber = checkNumber;
         this.hasCheckNumber = true;
         return this;
@@ -83,7 +83,7 @@ public class PrepayBuilder {
     private String routingCode;
     private boolean hasRoutingCode;
 
-    public PrepayBuilder withRoutingCode(String routingCode) {
+    public RecoveryBuilder withRoutingCode(String routingCode) {
         this.routingCode = routingCode;
         this.hasRoutingCode = true;
         return this;
@@ -92,7 +92,7 @@ public class PrepayBuilder {
     private String receiptNumber;
     private boolean hasReceiptNumber;
 
-    public PrepayBuilder withReceiptNumber(String receiptNumber) {
+    public RecoveryBuilder withReceiptNumber(String receiptNumber) {
         this.receiptNumber = receiptNumber;
         this.hasReceiptNumber = true;
         return this;
@@ -101,7 +101,7 @@ public class PrepayBuilder {
     private String bankNumber;
     private boolean hasBankNumber;
 
-    public PrepayBuilder withBankNumber(String bankNumber) {
+    public RecoveryBuilder withBankNumber(String bankNumber) {
         this.bankNumber = bankNumber;
         this.hasBankNumber = true;
         return this;
@@ -110,7 +110,7 @@ public class PrepayBuilder {
     private String note;
     private boolean hasNote;
 
-    public PrepayBuilder withNote(String note) {
+    public RecoveryBuilder withNote(String note) {
         this.note = note;
         this.hasNote = true;
         return this;

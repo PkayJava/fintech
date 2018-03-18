@@ -1,9 +1,6 @@
-package com.angkorteam.fintech.helper.loan;
+package com.angkorteam.fintech.dto.builder.saving;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -29,39 +26,12 @@ public class ApproveBuilder {
         return this;
     }
 
-    private Date expectedDisbursementDate;
-    private boolean hasExpectedDisbursementDate;
-
-    public ApproveBuilder withExpectedDisbursementDate(Date expectedDisbursementDate) {
-        this.expectedDisbursementDate = expectedDisbursementDate;
-        this.hasExpectedDisbursementDate = true;
-        return this;
-    }
-
     private String note;
     private boolean hasNote;
 
     public ApproveBuilder withNote(String note) {
         this.note = note;
         this.hasNote = true;
-        return this;
-    }
-
-    private Double approvedLoanAmount;
-    private boolean hasApprovedLoanAmount;
-
-    public ApproveBuilder withApprovedLoanAmount(Double approvedLoanAmount) {
-        this.approvedLoanAmount = approvedLoanAmount;
-        this.hasApprovedLoanAmount = true;
-        return this;
-    }
-
-    private List<Map<String, Object>> disbursementData = new ArrayList<>();
-    private boolean hasDisbursementData;
-
-    public ApproveBuilder withdisbursementData(List<Map<String, Object>> disbursementData) {
-        this.disbursementData = disbursementData;
-        this.hasDisbursementData = true;
         return this;
     }
 
@@ -90,24 +60,8 @@ public class ApproveBuilder {
             object.getObject().put("id", this.id);
         }
 
-        if (this.hasDisbursementData) {
-            object.getObject().put("disbursementData", this.disbursementData);
-        }
-
         if (this.hasNote) {
             object.getObject().put("note", this.note);
-        }
-
-        if (this.hasApprovedLoanAmount) {
-            object.getObject().put("approvedLoanAmount", this.approvedLoanAmount);
-        }
-
-        if (this.hasExpectedDisbursementDate) {
-            if (this.expectedDisbursementDate != null) {
-                object.getObject().put("expectedDisbursementDate", DateFormatUtils.format(this.expectedDisbursementDate, this.dateFormat));
-            } else {
-                object.getObject().put("expectedDisbursementDate", (String) null);
-            }
         }
 
         if (this.hasApprovedOnDate) {

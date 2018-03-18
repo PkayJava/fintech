@@ -14,6 +14,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import com.angkorteam.fintech.ddl.MSavingsAccountTransaction;
 import com.angkorteam.fintech.pages.client.center.TransactionPreviewPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
@@ -49,14 +50,14 @@ public class SavingAccountPreviewTransactionPanel extends Panel {
 
     @Override
     protected void initComponent() {
-        this.dataProvider = new JdbcProvider("m_savings_account_transaction");
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.boardField("transaction_date", "transactionDate", Date.class);
-        this.dataProvider.boardField("case transaction_type_enum when 1 then 'Deposit' when 2 then 'Withdraw' when 7  then 'Fee Charge' else concat(transaction_type_enum,'') end", "transactionType", String.class);
-        this.dataProvider.boardField("IF(transaction_type_enum in (1), amount, null)", "credit", Double.class);
-        this.dataProvider.boardField("IF(transaction_type_enum in (2,7), amount, null)", "debit", Double.class);
-        this.dataProvider.boardField("running_balance_derived", "balance", Double.class);
-        this.dataProvider.applyWhere("savings_account_id", "savings_account_id = " + this.savingId);
+        this.dataProvider = new JdbcProvider(MSavingsAccountTransaction.NAME);
+        this.dataProvider.boardField(MSavingsAccountTransaction.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MSavingsAccountTransaction.Field.TRANSACTION_DATE, "transactionDate", Date.class);
+        this.dataProvider.boardField("CASE " + MSavingsAccountTransaction.Field.TRANSACTION_TYPE_ENUM + " WHEN 1 THEN 'Deposit' WHEN 2 THEN 'Withdraw' WHEN 7 THEN 'Fee Charge' ELSE CONCAT(" + MSavingsAccountTransaction.Field.TRANSACTION_TYPE_ENUM + ",'') END", "transactionType", String.class);
+        this.dataProvider.boardField("IF(" + MSavingsAccountTransaction.Field.TRANSACTION_TYPE_ENUM + " IN (1), " + MSavingsAccountTransaction.Field.AMOUNT + ", null)", "credit", Double.class);
+        this.dataProvider.boardField("IF(" + MSavingsAccountTransaction.Field.TRANSACTION_TYPE_ENUM + " IN (2,7), " + MSavingsAccountTransaction.Field.AMOUNT + ", null)", "debit", Double.class);
+        this.dataProvider.boardField(MSavingsAccountTransaction.Field.RUNNING_BALANCE_DERIVED, "balance", Double.class);
+        this.dataProvider.applyWhere("savings_account_id", MSavingsAccountTransaction.Field.SAVINGS_ACCOUNT_ID + " = " + this.savingId);
         this.dataProvider.setSort("id", SortOrder.DESCENDING);
 
         this.dataColumn = Lists.newArrayList();

@@ -3,10 +3,6 @@ package com.angkorteam.fintech.pages;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.MCurrency;
-import com.angkorteam.fintech.ddl.MOrganisationCurrency;
-import com.angkorteam.framework.jdbc.SelectQuery;
-import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -20,6 +16,8 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MCurrency;
+import com.angkorteam.fintech.ddl.MOrganisationCurrency;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.CurrencyHelper;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -29,8 +27,9 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
@@ -46,7 +45,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -167,10 +165,8 @@ public class CurrencyConfigurationPage extends Page {
         selectQuery.addField(MOrganisationCurrency.Field.CODE);
         selectQuery.addWhere(MOrganisationCurrency.Field.CODE + " NOT IN (:code)", "code", model.get("code"));
         List<String> codes = named.queryForList(selectQuery.toSQL(), selectQuery.getParam(), String.class);
-        try {
-            CurrencyHelper.update((Session) getSession(), codes);
-        } catch (UnirestException e) {
-        }
+        CurrencyHelper.update((Session) getSession(), codes);
+
         setResponsePage(CurrencyConfigurationPage.class);
     }
 
@@ -187,13 +183,8 @@ public class CurrencyConfigurationPage extends Page {
         List<String> codes = Lists.newArrayList(temp);
         codes.add(this.currencyValue.getId());
 
-        JsonNode node = null;
-        try {
-            node = CurrencyHelper.update((Session) getSession(), codes);
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = CurrencyHelper.update((Session) getSession(), codes);
+
         if (reportError(node)) {
             return;
         }

@@ -2,7 +2,6 @@ package com.angkorteam.fintech.helper;
 
 import com.angkorteam.fintech.IMifos;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -20,18 +19,18 @@ public class CodeHelper {
     public static final String CODE_VALUE_DESCRIPTION_ATTRIBUTE_NAME = "description";
     public static final String CODE_VALUE_POSITION_ATTRIBUTE_NAME = "position";
 
-    public static JsonNode create(IMifos session, String name) throws UnirestException {
+    public static JsonNode create(IMifos session, String name) {
         JsonNode node = new com.angkorteam.fintech.dto.JsonNode();
         node.getObject().put("name", name);
         return Helper.performServerPost(session, "/api/v1/codes", node);
     }
 
-    public static JsonNode createValue(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode createValue(IMifos session, JsonNode object) {
         String codeId = (String) object.getObject().remove("codeId");
         return Helper.performServerPost(session, "/api/v1/codes" + "/" + codeId + "/codevalues", object);
     }
 
-    public static JsonNode updateValue(IMifos session, JsonNode object) throws UnirestException {
+    public static JsonNode updateValue(IMifos session, JsonNode object) {
         String codeId = (String) object.getObject().remove("codeId");
         String id = (String) object.getObject().remove("id");
         return Helper.performServerPut(session, "/api/v1/codes" + "/" + codeId + "/codevalues/" + id, object);

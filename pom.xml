@@ -40,6 +40,7 @@
 		<frmk.version>2.0.9</frmk.version>
 		<guava.version>24.0-jre</guava.version>
 		<spring.version>5.0.4.RELEASE</spring.version>
+		<spring.integration.version>5.0.3.RELEASE</spring.integration.version>
 		<mysql.version>5.1.45</mysql.version>
 		<dbcp2.version>2.2.0</dbcp2.version>
 		<configuration.version>1.10</configuration.version>
@@ -53,11 +54,18 @@
 		<spring-data.version>3.0.0.RELEASE</spring-data.version>
 		<io.version>2.6</io.version>
 		<reflection.version>0.9.11</reflection.version>
+		<tomcat.version>9.0.6</tomcat.version>
 	</properties>
 	<dependencies>
 
 		<!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-elasticsearch</artifactId> 
 			<version>${spring-data.version}</version> </dependency> -->
+
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>${reflection.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -165,8 +173,6 @@
 			<version>${wicket.version}</version>
 		</dependency>
 
-		<!-- SPRING DEPENDENCIES -->
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>

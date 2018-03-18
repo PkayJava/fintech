@@ -25,11 +25,11 @@ import com.angkorteam.fintech.ddl.MGroup;
 import com.angkorteam.fintech.ddl.MLoan;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.loan.LoanChargeBuilder;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.ChargeType;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.loan.LoanChargeBuilder;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
@@ -53,7 +53,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanChargeCreatePage extends Page {
@@ -376,13 +375,8 @@ public class LoanChargeCreatePage extends Page {
             }
         }
 
-        JsonNode node = null;
-        try {
-            node = ClientHelper.addChargeLoanAccount((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ClientHelper.addChargeLoanAccount((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

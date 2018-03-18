@@ -1,11 +1,9 @@
 package com.angkorteam.fintech;
 
-import com.angkorteam.fintech.pages.LoginPage;
-import com.angkorteam.fintech.pages.SimulatorPage;
-import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
-import com.angkorteam.framework.ReferenceUtilities;
-import com.angkorteam.framework.ResourceScope;
-import com.google.common.collect.Maps;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Map;
+
 import org.apache.commons.configuration.XMLPropertiesConfiguration;
 import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
@@ -18,9 +16,12 @@ import org.apache.wicket.request.resource.PackageResourceReference;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Map;
+import com.angkorteam.fintech.pages.LoginPage;
+import com.angkorteam.fintech.pages.SimulatorPage;
+import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
+import com.angkorteam.framework.ReferenceUtilities;
+import com.angkorteam.framework.ResourceScope;
+import com.google.common.collect.Maps;
 
 /**
  * Created by socheatkhauv on 6/11/17.

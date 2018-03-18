@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.helper.loan;
+package com.angkorteam.fintech.dto.builder.loan;
 
 import java.util.Date;
 
@@ -6,12 +6,12 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.mashape.unirest.http.JsonNode;
 
-public class WithdrawBuilder {
+public class ForeclosureBuilder {
 
     private String id;
     private boolean hasId;
 
-    public WithdrawBuilder withId(String id) {
+    public ForeclosureBuilder withId(String id) {
         this.id = id;
         this.hasId = true;
         return this;
@@ -20,7 +20,7 @@ public class WithdrawBuilder {
     private String locale = "en";
     private boolean hasLocale = true;
 
-    public WithdrawBuilder withLocale(String locale) {
+    public ForeclosureBuilder withLocale(String locale) {
         this.locale = locale;
         this.hasLocale = true;
         return this;
@@ -29,25 +29,25 @@ public class WithdrawBuilder {
     private String dateFormat = "yyyy-MM-dd";
     private boolean hasDateFormat = true;
 
-    public WithdrawBuilder withDateFormat(String dateFormat) {
+    public ForeclosureBuilder withDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
         this.hasDateFormat = true;
         return this;
     }
 
-    private Date withdrawnOnDateDate;
-    private boolean hasWithdrawnOnDateDate;
+    private Date transactionDate;
+    private boolean hasTransactionDate;
 
-    public WithdrawBuilder withWithdrawnOnDateDate(Date withdrawnOnDateDate) {
-        this.withdrawnOnDateDate = withdrawnOnDateDate;
-        this.hasWithdrawnOnDateDate = true;
+    public ForeclosureBuilder withTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
+        this.hasTransactionDate = true;
         return this;
     }
 
     private String note;
     private boolean hasNote;
 
-    public WithdrawBuilder withNote(String note) {
+    public ForeclosureBuilder withNote(String note) {
         this.note = note;
         this.hasNote = true;
         return this;
@@ -60,11 +60,11 @@ public class WithdrawBuilder {
             object.getObject().put("note", this.note);
         }
 
-        if (this.hasWithdrawnOnDateDate) {
-            if (this.withdrawnOnDateDate != null) {
-                object.getObject().put("withdrawnOnDateDate", DateFormatUtils.format(this.withdrawnOnDateDate, this.dateFormat));
+        if (this.hasTransactionDate) {
+            if (this.transactionDate != null) {
+                object.getObject().put("transactionDate", DateFormatUtils.format(this.transactionDate, this.dateFormat));
             } else {
-                object.getObject().put("withdrawnOnDateDate", (String) null);
+                object.getObject().put("transactionDate", (String) null);
             }
         }
 

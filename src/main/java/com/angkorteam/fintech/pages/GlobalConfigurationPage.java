@@ -3,7 +3,6 @@ package com.angkorteam.fintech.pages;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.CConfiguration;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -19,6 +18,7 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.CConfiguration;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.GlobalConfigurationHelper;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -45,7 +45,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -187,13 +186,8 @@ public class GlobalConfigurationPage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
-        JsonNode node = null;
-        try {
-            node = GlobalConfigurationHelper.updateValueForGlobalConfiguration((Session) getSession(), this.nameValue.getId(), String.valueOf(this.valueValue));
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = GlobalConfigurationHelper.updateValueForGlobalConfiguration((Session) getSession(), this.nameValue.getId(), String.valueOf(this.valueValue));
+
         if (reportError(node)) {
             return;
         }
@@ -201,17 +195,15 @@ public class GlobalConfigurationPage extends Page {
     }
 
     protected void dataClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
-        try {
-            Long id = (Long) model.get("id");
-            if ("enable".equals(s)) {
-                GlobalConfigurationHelper.updateEnabledFlagForGlobalConfiguration((Session) getSession(), String.valueOf(id), true);
-                target.add(this.dataTable);
-            } else if ("disable".equals(s)) {
-                GlobalConfigurationHelper.updateEnabledFlagForGlobalConfiguration((Session) getSession(), String.valueOf(id), false);
-                target.add(this.dataTable);
-            }
-        } catch (UnirestException e) {
+        Long id = (Long) model.get("id");
+        if ("enable".equals(s)) {
+            GlobalConfigurationHelper.updateEnabledFlagForGlobalConfiguration((Session) getSession(), String.valueOf(id), true);
+            target.add(this.dataTable);
+        } else if ("disable".equals(s)) {
+            GlobalConfigurationHelper.updateEnabledFlagForGlobalConfiguration((Session) getSession(), String.valueOf(id), false);
+            target.add(this.dataTable);
         }
+
     }
 
     protected List<ActionItem> dataAction(String s, Map<String, Object> model) {

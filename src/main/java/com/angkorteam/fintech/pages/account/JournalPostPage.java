@@ -4,9 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.AccGLAccount;
-import com.angkorteam.fintech.ddl.MOffice;
-import com.angkorteam.fintech.ddl.MPaymentType;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -21,6 +18,9 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.MPaymentType;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.GLEntryBuilder;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
@@ -54,7 +54,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/30/17.
@@ -594,13 +593,8 @@ public class JournalPostPage extends Page {
             builder.withDebit((String) item.get("id"), (Double) item.get("amount"));
         }
 
-        JsonNode node = null;
-        try {
-            node = GLAccountHelper.postEntry((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = GLAccountHelper.postEntry((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

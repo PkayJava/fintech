@@ -3,8 +3,6 @@ package com.angkorteam.fintech.pages.hook;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.MHook;
-import com.angkorteam.fintech.ddl.MHookTemplates;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -18,6 +16,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MHook;
+import com.angkorteam.fintech.ddl.MHookTemplates;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.HookHelper;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
@@ -45,7 +45,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -161,10 +160,8 @@ public class HookBrowsePage extends Page {
 
     protected void dataClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         Long id = (Long) model.get("id");
-        try {
-            HookHelper.delete((Session) getSession(), String.valueOf(id));
-        } catch (UnirestException e) {
-        }
+        HookHelper.delete((Session) getSession(), String.valueOf(id));
+
         target.add(this.dataTable);
     }
 

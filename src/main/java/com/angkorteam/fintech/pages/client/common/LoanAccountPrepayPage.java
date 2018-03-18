@@ -26,9 +26,9 @@ import com.angkorteam.fintech.ddl.MLoan;
 import com.angkorteam.fintech.ddl.MPaymentType;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.loan.PrepayBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.helper.TemplateHelper;
-import com.angkorteam.fintech.helper.loan.PrepayBuilder;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
@@ -52,7 +52,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanAccountPrepayPage extends Page {
@@ -361,15 +360,11 @@ public class LoanAccountPrepayPage extends Page {
         Map<String, Object> loanObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.loanAccountNo = (String) loanObject.get("account_no");
 
-        try {
-            JsonNode node = TemplateHelper.retrieveLoanAccountPrepay((Session) getSession(), this.loanId);
-            this.transactionDateValue = new LocalDate(node.getObject().getJSONArray("date").getInt(0), node.getObject().getJSONArray("date").getInt(1), node.getObject().getJSONArray("date").getInt(2)).toDate();
-            this.transactionAmountValue = node.getObject().getDouble("amount");
-            this.principleValue = node.getObject().getDouble("principalPortion");
-            this.interestAmountValue = node.getObject().getDouble("interestPortion");
-        } catch (UnirestException e) {
-            throw new WicketRuntimeException(e);
-        }
+        JsonNode node = TemplateHelper.retrieveLoanAccountPrepay((Session) getSession(), this.loanId);
+        this.transactionDateValue = new LocalDate(node.getObject().getJSONArray("date").getInt(0), node.getObject().getJSONArray("date").getInt(1), node.getObject().getJSONArray("date").getInt(2)).toDate();
+        this.transactionAmountValue = node.getObject().getDouble("amount");
+        this.principleValue = node.getObject().getDouble("principalPortion");
+        this.interestAmountValue = node.getObject().getDouble("interestPortion");
 
         if (this.client == ClientEnum.Client) {
             selectQuery = new SelectQuery(MClient.NAME);
@@ -502,13 +497,8 @@ public class LoanAccountPrepayPage extends Page {
         }
         builder.withNote(this.noteValue);
 
-        JsonNode node = null;
-        try {
-            node = ClientHelper.prepayLoanAccount((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ClientHelper.prepayLoanAccount((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

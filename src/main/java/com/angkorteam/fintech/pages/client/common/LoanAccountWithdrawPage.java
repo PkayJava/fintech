@@ -18,8 +18,8 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.ddl.MLoan;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.loan.WithdrawBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.loan.WithdrawBuilder;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
@@ -30,7 +30,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanAccountWithdrawPage extends Page {
@@ -142,13 +141,8 @@ public class LoanAccountWithdrawPage extends Page {
         builder.withNote(this.noteValue);
         builder.withWithdrawnOnDateDate(this.withdrawnOnValue);
 
-        JsonNode node = null;
-        try {
-            node = ClientHelper.withdrawLoanAccount((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ClientHelper.withdrawLoanAccount((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

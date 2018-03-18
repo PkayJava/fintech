@@ -13,7 +13,6 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 7/2/17.
@@ -72,11 +71,9 @@ public class ReversePopup extends PopupPanel {
 
     protected boolean reverseButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
         this.window.setSignalId(ajaxButton.getId());
-        try {
-            GLAccountHelper.reverseEntry((Session) getSession(), this.transactionId, this.reasonValue);
-            this.window.close(target);
-        } catch (UnirestException e) {
-        }
+        GLAccountHelper.reverseEntry((Session) getSession(), this.transactionId, this.reasonValue);
+        this.window.close(target);
+
         return true;
     }
 

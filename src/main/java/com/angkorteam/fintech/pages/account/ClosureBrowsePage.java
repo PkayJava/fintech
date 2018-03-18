@@ -5,9 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.AccGLClosure;
-import com.angkorteam.fintech.ddl.MAppUser;
-import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -20,6 +17,9 @@ import org.apache.wicket.model.Model;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.AccGLClosure;
+import com.angkorteam.fintech.ddl.MAppUser;
+import com.angkorteam.fintech.ddl.MOffice;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.AccountingClosureHelper;
 import com.angkorteam.fintech.pages.AccountingPage;
@@ -38,7 +38,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 7/12/17.
@@ -125,11 +124,8 @@ public class ClosureBrowsePage extends Page {
 
     protected void dataClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
         Long value = (Long) model.get("id");
-        JsonNode node = null;
-        try {
-            node = AccountingClosureHelper.delete((Session) getSession(), String.valueOf(value));
-        } catch (UnirestException e) {
-        }
+        JsonNode node = AccountingClosureHelper.delete((Session) getSession(), String.valueOf(value));
+
         reportError(node, target);
         target.add(this.dataTable);
     }

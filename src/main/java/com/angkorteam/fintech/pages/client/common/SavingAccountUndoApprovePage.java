@@ -13,8 +13,8 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.saving.UndoApproveBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.saving.UndoApproveBuilder;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
 import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
@@ -22,7 +22,6 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingAccountUndoApprovePage extends Page {
@@ -108,13 +107,8 @@ public class SavingAccountUndoApprovePage extends Page {
         builder.withId(this.savingId);
         builder.withNote(this.noteValue);
 
-        JsonNode node = null;
-        try {
-            node = ClientHelper.undoApproveSavingAccount((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ClientHelper.undoApproveSavingAccount((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

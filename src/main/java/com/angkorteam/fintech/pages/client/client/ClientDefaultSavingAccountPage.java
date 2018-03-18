@@ -3,11 +3,6 @@ package com.angkorteam.fintech.pages.client.client;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.MClient;
-import com.angkorteam.fintech.ddl.MSavingsAccount;
-import com.angkorteam.fintech.ddl.MSavingsProduct;
-import com.angkorteam.framework.jdbc.SelectQuery;
-import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -18,6 +13,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MSavingsAccount;
+import com.angkorteam.fintech.ddl.MSavingsProduct;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.client.client.ClientDefaulSavingAccountBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
@@ -26,15 +24,15 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ClientDefaultSavingAccountPage extends Page {
@@ -158,13 +156,8 @@ public class ClientDefaultSavingAccountPage extends Page {
             builder.withSavingsAccountId(this.savingValue.getId());
         }
 
-        JsonNode node = null;
-        try {
-            node = ClientHelper.defaultSavingAccountClient((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ClientHelper.defaultSavingAccountClient((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

@@ -20,8 +20,8 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.ddl.MPaymentType;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.saving.CloseBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.saving.CloseBuilder;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
 import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
@@ -37,7 +37,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingAccountClosePage extends Page {
@@ -385,14 +384,9 @@ public class SavingAccountClosePage extends Page {
 
         builder.withNote(this.noteValue);
 
-        JsonNode node = null;
         JsonNode request = builder.build();
-        try {
-            node = ClientHelper.closeSavingAccount((Session) getSession(), request);
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ClientHelper.closeSavingAccount((Session) getSession(), request);
+
         if (reportError(node)) {
             return;
         }

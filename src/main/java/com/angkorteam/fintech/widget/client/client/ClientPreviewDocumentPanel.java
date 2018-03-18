@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MDocument;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.pages.client.client.ClientDocumentUploadPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -44,7 +45,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class ClientPreviewDocumentPanel extends Panel {
 
@@ -72,13 +72,15 @@ public class ClientPreviewDocumentPanel extends Panel {
 
     @Override
     protected void initComponent() {
-        this.dataProvider = new JdbcProvider("m_document");
-        this.dataProvider.boardField("description", "description", String.class);
-        this.dataProvider.boardField("name", "name", String.class);
-        this.dataProvider.boardField("file_name", "filename", String.class);
-        this.dataProvider.boardField("id", "id", Long.class);
-        this.dataProvider.applyWhere("parent_entity_type", "parent_entity_type = 'clients'");
-        this.dataProvider.applyWhere("parent_entity_id", "parent_entity_id = " + this.clientId);
+        this.dataProvider = new JdbcProvider(MDocument.NAME);
+        this.dataProvider.boardField(MDocument.Field.DESCRIPTION, "description", String.class);
+        this.dataProvider.boardField(MDocument.Field.NAME, "name", String.class);
+        this.dataProvider.boardField(MDocument.Field.FILE_NAME, "filename", String.class);
+        this.dataProvider.boardField(MDocument.Field.ID, "id", Long.class);
+
+        this.dataProvider.applyWhere("parent_entity_type", MDocument.Field.PARENT_ENTITY_TYPE + " = 'clients'");
+        this.dataProvider.applyWhere("parent_entity_id", MDocument.Field.PARENT_ENTITY_ID + " = " + this.clientId);
+
         this.dataProvider.selectField("id", Long.class);
 
         this.dataColumn = Lists.newArrayList();
@@ -129,7 +131,7 @@ public class ClientPreviewDocumentPanel extends Panel {
             HttpResponse<InputStream> response = ClientHelper.retrieveClientDocument((Session) getSession(), this.clientId, String.valueOf(id));
             FileUtils.copyInputStreamToFile(response.getBody(), file);
             response.getBody().close();
-        } catch (UnirestException | IOException e) {
+        } catch (IOException e) {
             LOGGER.info(e.getMessage(), e);
         }
 

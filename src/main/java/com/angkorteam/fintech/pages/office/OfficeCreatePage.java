@@ -3,7 +3,6 @@ package com.angkorteam.fintech.pages.office;
 import java.util.Date;
 import java.util.List;
 
-import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
@@ -15,6 +14,7 @@ import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MOffice;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.OfficeBuilder;
 import com.angkorteam.fintech.helper.OfficeHelper;
@@ -33,7 +33,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/25/17.
@@ -176,13 +175,8 @@ public class OfficeCreatePage extends Page {
         builder.withOpeningDate(this.openingDateValue);
         builder.withExternalId(this.externalIdValue);
 
-        JsonNode node = null;
-        try {
-            node = OfficeHelper.create((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = OfficeHelper.create((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

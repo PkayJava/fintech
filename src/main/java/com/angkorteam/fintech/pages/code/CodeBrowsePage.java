@@ -3,7 +3,6 @@ package com.angkorteam.fintech.pages.code;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.MCode;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
@@ -18,6 +17,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MCode;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.CodeHelper;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
@@ -38,7 +38,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -149,13 +148,8 @@ public class CodeBrowsePage extends Page {
     }
 
     protected void addButtonSubmit(Button button) {
-        JsonNode node = null;
-        try {
-            node = CodeHelper.create((Session) getSession(), this.nameValue);
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = CodeHelper.create((Session) getSession(), this.nameValue);
+
         if (reportError(node)) {
             return;
         }

@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.helper.loan;
+package com.angkorteam.fintech.dto.builder.loan;
 
 import java.util.Date;
 
@@ -6,12 +6,12 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.mashape.unirest.http.JsonNode;
 
-public class ForeclosureBuilder {
+public class CloseBuilder {
 
     private String id;
     private boolean hasId;
 
-    public ForeclosureBuilder withId(String id) {
+    public CloseBuilder withId(String id) {
         this.id = id;
         this.hasId = true;
         return this;
@@ -20,7 +20,7 @@ public class ForeclosureBuilder {
     private String locale = "en";
     private boolean hasLocale = true;
 
-    public ForeclosureBuilder withLocale(String locale) {
+    public CloseBuilder withLocale(String locale) {
         this.locale = locale;
         this.hasLocale = true;
         return this;
@@ -29,7 +29,7 @@ public class ForeclosureBuilder {
     private String dateFormat = "yyyy-MM-dd";
     private boolean hasDateFormat = true;
 
-    public ForeclosureBuilder withDateFormat(String dateFormat) {
+    public CloseBuilder withDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
         this.hasDateFormat = true;
         return this;
@@ -38,7 +38,7 @@ public class ForeclosureBuilder {
     private Date transactionDate;
     private boolean hasTransactionDate;
 
-    public ForeclosureBuilder withTransactionDate(Date transactionDate) {
+    public CloseBuilder withTransactionDate(Date transactionDate) {
         this.transactionDate = transactionDate;
         this.hasTransactionDate = true;
         return this;
@@ -47,7 +47,7 @@ public class ForeclosureBuilder {
     private String note;
     private boolean hasNote;
 
-    public ForeclosureBuilder withNote(String note) {
+    public CloseBuilder withNote(String note) {
         this.note = note;
         this.hasNote = true;
         return this;

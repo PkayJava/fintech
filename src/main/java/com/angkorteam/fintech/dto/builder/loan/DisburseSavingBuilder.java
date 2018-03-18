@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.helper.loan;
+package com.angkorteam.fintech.dto.builder.loan;
 
 import java.util.Date;
 
@@ -6,12 +6,12 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.mashape.unirest.http.JsonNode;
 
-public class WaiveInterestBuilder {
+public class DisburseSavingBuilder {
 
     private String id;
     private boolean hasId;
 
-    public WaiveInterestBuilder withId(String id) {
+    public DisburseSavingBuilder withId(String id) {
         this.id = id;
         this.hasId = true;
         return this;
@@ -20,7 +20,7 @@ public class WaiveInterestBuilder {
     private String locale = "en";
     private boolean hasLocale = true;
 
-    public WaiveInterestBuilder withLocale(String locale) {
+    public DisburseSavingBuilder withLocale(String locale) {
         this.locale = locale;
         this.hasLocale = true;
         return this;
@@ -29,25 +29,25 @@ public class WaiveInterestBuilder {
     private String dateFormat = "yyyy-MM-dd";
     private boolean hasDateFormat = true;
 
-    public WaiveInterestBuilder withDateFormat(String dateFormat) {
+    public DisburseSavingBuilder withDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
         this.hasDateFormat = true;
         return this;
     }
 
-    private Date transactionDate;
-    private boolean hasTransactionDate;
+    private Date actualDisbursementDate;
+    private boolean hasActualDisbursementDate;
 
-    public WaiveInterestBuilder withTransactionDate(Date transactionDate) {
-        this.transactionDate = transactionDate;
-        this.hasTransactionDate = true;
+    public DisburseSavingBuilder withActualDisbursementDate(Date actualDisbursementDate) {
+        this.actualDisbursementDate = actualDisbursementDate;
+        this.hasActualDisbursementDate = true;
         return this;
     }
 
     private Double transactionAmount;
     private boolean hasTransactionAmount;
 
-    public WaiveInterestBuilder withTransactionAmount(Double transactionAmount) {
+    public DisburseSavingBuilder withTransactionAmount(Double transactionAmount) {
         this.transactionAmount = transactionAmount;
         this.hasTransactionAmount = true;
         return this;
@@ -56,7 +56,7 @@ public class WaiveInterestBuilder {
     private String note;
     private boolean hasNote;
 
-    public WaiveInterestBuilder withNote(String note) {
+    public DisburseSavingBuilder withNote(String note) {
         this.note = note;
         this.hasNote = true;
         return this;
@@ -69,16 +69,16 @@ public class WaiveInterestBuilder {
             object.getObject().put("note", this.note);
         }
 
-        if (this.hasTransactionDate) {
-            if (this.transactionDate != null) {
-                object.getObject().put("transactionDate", DateFormatUtils.format(this.transactionDate, this.dateFormat));
-            } else {
-                object.getObject().put("transactionDate", (String) null);
-            }
-        }
-
         if (this.hasTransactionAmount) {
             object.getObject().put("transactionAmount", this.transactionAmount);
+        }
+
+        if (this.hasActualDisbursementDate) {
+            if (this.actualDisbursementDate != null) {
+                object.getObject().put("actualDisbursementDate", DateFormatUtils.format(this.actualDisbursementDate, this.dateFormat));
+            } else {
+                object.getObject().put("actualDisbursementDate", (String) null);
+            }
         }
 
         if (this.hasId) {

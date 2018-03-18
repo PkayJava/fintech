@@ -13,15 +13,14 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.loan.UndoDisburseBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.loan.UndoDisburseBuilder;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanAccountUndoDisbursePage extends Page {
@@ -108,13 +107,8 @@ public class LoanAccountUndoDisbursePage extends Page {
         builder.withId(this.loanId);
         builder.withNote(this.noteValue);
 
-        JsonNode node = null;
-        try {
-            node = ClientHelper.undoDisburseLoanAccount((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ClientHelper.undoDisburseLoanAccount((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

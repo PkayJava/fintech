@@ -1,5 +1,22 @@
 package com.angkorteam.fintech.pages.code;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.ddl.MCode;
@@ -20,28 +37,17 @@ import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.*;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemClass;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -249,13 +255,8 @@ public class ValueBrowsePage extends Page {
         builder.withPosition(this.positionValue);
         builder.withActive(this.activeValue);
 
-        JsonNode node = null;
-        try {
-            node = CodeHelper.createValue((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = CodeHelper.createValue((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }
@@ -268,22 +269,20 @@ public class ValueBrowsePage extends Page {
 
     protected void dataClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         Long id = (Long) model.get("id");
-        try {
-            if ("disable".equals(s)) {
-                CodeValueBuilder builder = new CodeValueBuilder();
-                builder.withId(String.valueOf(id));
-                builder.withCodeId(this.codeId);
-                builder.withActive(false);
-                CodeHelper.updateValue((Session) getSession(), builder.build());
-            } else if ("enable".equals(s)) {
-                CodeValueBuilder builder = new CodeValueBuilder();
-                builder.withId(String.valueOf(id));
-                builder.withCodeId(this.codeId);
-                builder.withActive(true);
-                CodeHelper.updateValue((Session) getSession(), builder.build());
-            }
-        } catch (UnirestException e) {
+        if ("disable".equals(s)) {
+            CodeValueBuilder builder = new CodeValueBuilder();
+            builder.withId(String.valueOf(id));
+            builder.withCodeId(this.codeId);
+            builder.withActive(false);
+            CodeHelper.updateValue((Session) getSession(), builder.build());
+        } else if ("enable".equals(s)) {
+            CodeValueBuilder builder = new CodeValueBuilder();
+            builder.withId(String.valueOf(id));
+            builder.withCodeId(this.codeId);
+            builder.withActive(true);
+            CodeHelper.updateValue((Session) getSession(), builder.build());
         }
+
         target.add(this.dataTable);
     }
 

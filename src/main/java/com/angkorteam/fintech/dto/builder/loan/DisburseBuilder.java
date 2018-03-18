@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.helper.loan;
+package com.angkorteam.fintech.dto.builder.loan;
 
 import java.util.Date;
 
@@ -6,12 +6,12 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.mashape.unirest.http.JsonNode;
 
-public class RepaymentBuilder {
+public class DisburseBuilder {
 
     private String id;
     private boolean hasId;
 
-    public RepaymentBuilder withId(String id) {
+    public DisburseBuilder withId(String id) {
         this.id = id;
         this.hasId = true;
         return this;
@@ -20,7 +20,7 @@ public class RepaymentBuilder {
     private String locale = "en";
     private boolean hasLocale = true;
 
-    public RepaymentBuilder withLocale(String locale) {
+    public DisburseBuilder withLocale(String locale) {
         this.locale = locale;
         this.hasLocale = true;
         return this;
@@ -29,7 +29,7 @@ public class RepaymentBuilder {
     private String dateFormat = "yyyy-MM-dd";
     private boolean hasDateFormat = true;
 
-    public RepaymentBuilder withDateFormat(String dateFormat) {
+    public DisburseBuilder withDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
         this.hasDateFormat = true;
         return this;
@@ -38,25 +38,25 @@ public class RepaymentBuilder {
     private String paymentTypeId;
     private boolean hasPaymentTypeId;
 
-    public RepaymentBuilder withPaymentTypeId(String paymentTypeId) {
+    public DisburseBuilder withPaymentTypeId(String paymentTypeId) {
         this.paymentTypeId = paymentTypeId;
         this.hasPaymentTypeId = true;
         return this;
     }
 
-    private Date transactionDate;
-    private boolean hasTransactionDate;
+    private Date actualDisbursementDate;
+    private boolean hasActualDisbursementDate;
 
-    public RepaymentBuilder withTransactionDate(Date transactionDate) {
-        this.transactionDate = transactionDate;
-        this.hasTransactionDate = true;
+    public DisburseBuilder withActualDisbursementDate(Date actualDisbursementDate) {
+        this.actualDisbursementDate = actualDisbursementDate;
+        this.hasActualDisbursementDate = true;
         return this;
     }
 
     private Double transactionAmount;
     private boolean hasTransactionAmount;
 
-    public RepaymentBuilder withTransactionAmount(Double transactionAmount) {
+    public DisburseBuilder withTransactionAmount(Double transactionAmount) {
         this.transactionAmount = transactionAmount;
         this.hasTransactionAmount = true;
         return this;
@@ -65,7 +65,7 @@ public class RepaymentBuilder {
     private String accountNumber;
     private boolean hasAccountNumber;
 
-    public RepaymentBuilder withAccountNumber(String accountNumber) {
+    public DisburseBuilder withAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
         this.hasAccountNumber = true;
         return this;
@@ -74,7 +74,7 @@ public class RepaymentBuilder {
     private String checkNumber;
     private boolean hasCheckNumber;
 
-    public RepaymentBuilder withCheckNumber(String checkNumber) {
+    public DisburseBuilder withCheckNumber(String checkNumber) {
         this.checkNumber = checkNumber;
         this.hasCheckNumber = true;
         return this;
@@ -83,7 +83,7 @@ public class RepaymentBuilder {
     private String routingCode;
     private boolean hasRoutingCode;
 
-    public RepaymentBuilder withRoutingCode(String routingCode) {
+    public DisburseBuilder withRoutingCode(String routingCode) {
         this.routingCode = routingCode;
         this.hasRoutingCode = true;
         return this;
@@ -92,7 +92,7 @@ public class RepaymentBuilder {
     private String receiptNumber;
     private boolean hasReceiptNumber;
 
-    public RepaymentBuilder withReceiptNumber(String receiptNumber) {
+    public DisburseBuilder withReceiptNumber(String receiptNumber) {
         this.receiptNumber = receiptNumber;
         this.hasReceiptNumber = true;
         return this;
@@ -101,7 +101,7 @@ public class RepaymentBuilder {
     private String bankNumber;
     private boolean hasBankNumber;
 
-    public RepaymentBuilder withBankNumber(String bankNumber) {
+    public DisburseBuilder withBankNumber(String bankNumber) {
         this.bankNumber = bankNumber;
         this.hasBankNumber = true;
         return this;
@@ -110,7 +110,7 @@ public class RepaymentBuilder {
     private String note;
     private boolean hasNote;
 
-    public RepaymentBuilder withNote(String note) {
+    public DisburseBuilder withNote(String note) {
         this.note = note;
         this.hasNote = true;
         return this;
@@ -147,11 +147,11 @@ public class RepaymentBuilder {
             object.getObject().put("transactionAmount", this.transactionAmount);
         }
 
-        if (this.hasTransactionDate) {
-            if (this.transactionDate != null) {
-                object.getObject().put("transactionDate", DateFormatUtils.format(this.transactionDate, this.dateFormat));
+        if (this.hasActualDisbursementDate) {
+            if (this.actualDisbursementDate != null) {
+                object.getObject().put("actualDisbursementDate", DateFormatUtils.format(this.actualDisbursementDate, this.dateFormat));
             } else {
-                object.getObject().put("transactionDate", (String) null);
+                object.getObject().put("actualDisbursementDate", (String) null);
             }
         }
 

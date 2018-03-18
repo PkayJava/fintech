@@ -3,7 +3,6 @@ package com.angkorteam.fintech.pages.entity;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.MEntityDataTableCheck;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -17,6 +16,7 @@ import org.apache.wicket.model.Model;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MEntityDataTableCheck;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.EntityStatus;
 import com.angkorteam.fintech.dto.enums.EntityType;
@@ -40,7 +40,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 7/15/17.
@@ -143,11 +142,8 @@ public class CheckerBrowsePage extends Page {
 
     protected void dataClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         Long id = (Long) model.get("id");
-        JsonNode node = null;
-        try {
-            EntityCheckHelper.delete((Session) getSession(), String.valueOf(id));
-        } catch (UnirestException e) {
-        }
+        JsonNode node = EntityCheckHelper.delete((Session) getSession(), String.valueOf(id));
+
         reportError(node, target);
         target.add(this.dataTable);
     }

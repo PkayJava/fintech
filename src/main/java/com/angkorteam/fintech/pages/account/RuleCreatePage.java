@@ -2,9 +2,6 @@ package com.angkorteam.fintech.pages.account;
 
 import java.util.List;
 
-import com.angkorteam.fintech.ddl.AccGLAccount;
-import com.angkorteam.fintech.ddl.MCodeValue;
-import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -17,6 +14,9 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.MCodeValue;
+import com.angkorteam.fintech.ddl.MOffice;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.AccountRuleBuilder;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
@@ -35,7 +35,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleC
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 7/3/17.
@@ -312,13 +311,8 @@ public class RuleCreatePage extends Page {
             builder.withAllowMultipleCreditEntries(this.multipleCreditValue);
         }
 
-        JsonNode node = null;
-        try {
-            node = AccountingRuleHelper.create((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = AccountingRuleHelper.create((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

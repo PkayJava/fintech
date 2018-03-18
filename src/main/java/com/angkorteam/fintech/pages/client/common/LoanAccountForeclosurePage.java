@@ -1,5 +1,20 @@
 package com.angkorteam.fintech.pages.client.common;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.joda.time.LocalDate;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.ddl.MClient;
@@ -7,9 +22,9 @@ import com.angkorteam.fintech.ddl.MGroup;
 import com.angkorteam.fintech.ddl.MLoan;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.loan.ForeclosureBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.helper.TemplateHelper;
-import com.angkorteam.fintech.helper.loan.ForeclosureBuilder;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
@@ -29,21 +44,6 @@ import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.joda.time.LocalDate;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanAccountForeclosurePage extends Page {
@@ -224,17 +224,13 @@ public class LoanAccountForeclosurePage extends Page {
         Map<String, Object> loanObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.loanAccountNo = (String) loanObject.get("account_no");
 
-        try {
-            JsonNode node = TemplateHelper.retrieveLoanAccountPrepay((Session) getSession(), this.loanId);
-            this.transactionDateValue = new LocalDate(node.getObject().getJSONArray("date").getInt(0), node.getObject().getJSONArray("date").getInt(1), node.getObject().getJSONArray("date").getInt(2)).toDate();
-            this.principleValue = node.getObject().getDouble("amount");
-            this.interestValue = node.getObject().getDouble("interestPortion");
-            this.feeAmountValue = node.getObject().getDouble("feeChargesPortion");
-            this.penaltyAmountValue = node.getObject().getDouble("penaltyChargesPortion");
-            this.transactionAmountValue = node.getObject().getDouble("outstandingLoanBalance");
-        } catch (UnirestException e) {
-            throw new WicketRuntimeException(e);
-        }
+        JsonNode node = TemplateHelper.retrieveLoanAccountPrepay((Session) getSession(), this.loanId);
+        this.transactionDateValue = new LocalDate(node.getObject().getJSONArray("date").getInt(0), node.getObject().getJSONArray("date").getInt(1), node.getObject().getJSONArray("date").getInt(2)).toDate();
+        this.principleValue = node.getObject().getDouble("amount");
+        this.interestValue = node.getObject().getDouble("interestPortion");
+        this.feeAmountValue = node.getObject().getDouble("feeChargesPortion");
+        this.penaltyAmountValue = node.getObject().getDouble("penaltyChargesPortion");
+        this.transactionAmountValue = node.getObject().getDouble("outstandingLoanBalance");
 
         if (this.client == ClientEnum.Client) {
             selectQuery = new SelectQuery(MClient.NAME);
@@ -339,13 +335,8 @@ public class LoanAccountForeclosurePage extends Page {
         builder.withTransactionDate(this.transactionDateValue);
         builder.withNote(this.noteValue);
 
-        JsonNode node = null;
-        try {
-            node = ClientHelper.foreclosureLoanAccount((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ClientHelper.foreclosureLoanAccount((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

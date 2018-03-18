@@ -1,13 +1,13 @@
-package com.angkorteam.fintech.helper.loan;
+package com.angkorteam.fintech.dto.builder.loan;
 
 import com.mashape.unirest.http.JsonNode;
 
-public class UndoDisburseBuilder {
+public class UndoApprovalBuilder {
 
     private String id;
     private boolean hasId;
 
-    public UndoDisburseBuilder withId(String id) {
+    public UndoApprovalBuilder withId(String id) {
         this.id = id;
         this.hasId = true;
         return this;
@@ -16,7 +16,7 @@ public class UndoDisburseBuilder {
     private String note;
     private boolean hasNote;
 
-    public UndoDisburseBuilder withNote(String note) {
+    public UndoApprovalBuilder withNote(String note) {
         this.note = note;
         this.hasNote = true;
         return this;

@@ -2,8 +2,6 @@ package com.angkorteam.fintech.pages.product.mixed;
 
 import java.util.List;
 
-import com.angkorteam.fintech.ddl.MProductLoan;
-import com.angkorteam.fintech.ddl.MProductMix;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -13,6 +11,8 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MProductLoan;
+import com.angkorteam.fintech.ddl.MProductMix;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.MixedBuilder;
 import com.angkorteam.fintech.helper.MixedHelper;
@@ -31,7 +31,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleC
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class MixedCreatePage extends Page {
@@ -156,13 +155,8 @@ public class MixedCreatePage extends Page {
             }
         }
 
-        JsonNode node = null;
-        try {
-            node = MixedHelper.create((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = MixedHelper.create((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

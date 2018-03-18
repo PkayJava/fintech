@@ -8,6 +8,10 @@ import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.PropertyModel;
 
+import com.angkorteam.fintech.ddl.MCalendar;
+import com.angkorteam.fintech.ddl.MCalendarInstance;
+import com.angkorteam.fintech.ddl.MFund;
+import com.angkorteam.fintech.ddl.MLoan;
 import com.angkorteam.fintech.dto.enums.DayInYear;
 import com.angkorteam.fintech.dto.enums.LockInType;
 import com.angkorteam.fintech.dto.enums.loan.Amortization;
@@ -24,6 +28,7 @@ import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
@@ -137,40 +142,41 @@ public class LoanAccountPreviewDetailPanel extends Panel {
     protected void initData() {
         this.loanId = new PropertyModel<String>(this.itemPage, "loanId").getObject();
 
-        SelectQuery loanAccoutDetailQuery = new SelectQuery("m_loan");
-        loanAccoutDetailQuery.addJoin("left join m_fund on m_loan.fund_id = m_fund.id");
-        loanAccoutDetailQuery.addJoin("left join m_calendar_instance on m_calendar_instance.entity_id = m_loan.id");
-        loanAccoutDetailQuery.addJoin("left join m_calendar on m_calendar_instance.calendar_id = m_calendar.id");
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MLoan.NAME);
+        selectQuery.addJoin("LEFT JOIN " + MFund.NAME + " ON " + MLoan.NAME + "." + MLoan.Field.FUND_ID + " = " + MFund.NAME + "." + MFund.Field.ID);
+        selectQuery.addJoin("LEFT JOIN " + MCalendarInstance.NAME + " ON " + MCalendarInstance.NAME + "." + MCalendarInstance.Field.ENTITY_ID + " = " + MLoan.NAME + "." + MLoan.Field.ID);
+        selectQuery.addJoin("LEFT JOIN " + MCalendar.NAME + " ON " + MCalendarInstance.NAME + "." + MCalendarInstance.Field.CALENDAR_ID + " = " + MCalendar.NAME + "." + MCalendar.Field.ID);
 
-        loanAccoutDetailQuery.addField("m_loan.loan_transaction_strategy_id");
-        loanAccoutDetailQuery.addField("m_loan.number_of_repayments");
-        loanAccoutDetailQuery.addField("m_loan.repay_every");
-        loanAccoutDetailQuery.addField("m_loan.repayment_period_frequency_enum");
-        loanAccoutDetailQuery.addField("m_loan.amortization_method_enum");
-        loanAccoutDetailQuery.addField("m_loan.nominal_interest_rate_per_period");
-        loanAccoutDetailQuery.addField("m_loan.interest_method_enum");
-        loanAccoutDetailQuery.addField("m_loan.interest_period_frequency_enum");
-        loanAccoutDetailQuery.addField("m_loan.grace_on_principal_periods");
-        loanAccoutDetailQuery.addField("m_loan.grace_on_interest_periods");
-        loanAccoutDetailQuery.addField("m_loan.grace_on_arrears_ageing");
-        loanAccoutDetailQuery.addField("m_fund.name fund");
-        loanAccoutDetailQuery.addField("m_loan.grace_interest_free_periods");
-        loanAccoutDetailQuery.addField("m_loan.interest_calculated_in_period_enum");
-        loanAccoutDetailQuery.addField("m_loan.allow_partial_period_interest_calcualtion");
-        loanAccoutDetailQuery.addField("m_loan.submittedon_date");
-        loanAccoutDetailQuery.addField("m_loan.approvedon_date");
-        loanAccoutDetailQuery.addField("m_loan.disbursedon_date");
-        loanAccoutDetailQuery.addField("m_loan.maturedon_date");
-        loanAccoutDetailQuery.addField("m_loan.interest_recalculation_enabled");
-        loanAccoutDetailQuery.addField("m_loan.days_in_year_enum");
-        loanAccoutDetailQuery.addField("m_loan.days_in_month_enum");
-        loanAccoutDetailQuery.addField("m_calendar.recurrence");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.LOAN_TRANSACTION_STRATEGY_ID);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.NUMBER_OF_REPAYMENTS);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.REPAY_EVERY);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.REPAYMENT_PERIOD_FREQUENCY_ENUM);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.AMORTIZATION_METHOD_ENUM);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.NOMINAL_INTEREST_RATE_PER_PERIOD);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.INTEREST_METHOD_ENUM);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.INTEREST_PERIOD_FREQUENCY_ENUM);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.GRACE_ON_PRINCIPAL_PERIODS);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.GRACE_ON_INTEREST_PERIODS);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.GRACE_ON_ARREARS_AGEING);
+        selectQuery.addField(MFund.NAME + "." + MFund.Field.NAME + " fund");
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.GRACE_INTEREST_FREE_PERIODS);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.INTEREST_CALCULATED_IN_PERIOD_ENUM);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.ALLOW_PARTIAL_PERIOD_INTEREST_CALCUALTION);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.SUBMITTED_ON_DATE);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.APPROVED_ON_DATE);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.DISBURSED_ON_DATE);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.MATURED_ON_DATE);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.INTEREST_RECALCULATION_ENABLED);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.DAYS_IN_YEAR_ENUM);
+        selectQuery.addField(MLoan.NAME + "." + MLoan.Field.DAYS_IN_MONTH_ENUM);
+        selectQuery.addField(MCalendar.NAME + "." + MCalendar.Field.RECURRENCE);
 
-        loanAccoutDetailQuery.addWhere("m_loan.id = '" + this.loanId + "'");
+        selectQuery.addWhere(MLoan.NAME + "." + MLoan.Field.ID + " = '" + this.loanId + "'");
 
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 
-        Map<String, Object> loanAccountDetailObject = jdbcTemplate.queryForMap(loanAccoutDetailQuery.toSQL());
+        Map<String, Object> loanAccountDetailObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
         this.repaymentStrategyValue = RepaymentStrategy.optionLiteral(String.valueOf(loanAccountDetailObject.get("loan_transaction_strategy_id")));
         Long number_of_repayments = (Long) loanAccountDetailObject.get("number_of_repayments");

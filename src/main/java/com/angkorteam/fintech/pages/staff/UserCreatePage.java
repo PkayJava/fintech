@@ -2,9 +2,6 @@ package com.angkorteam.fintech.pages.staff;
 
 import java.util.List;
 
-import com.angkorteam.fintech.ddl.MOffice;
-import com.angkorteam.fintech.ddl.MRole;
-import com.angkorteam.fintech.ddl.MStaff;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -19,6 +16,9 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.MRole;
+import com.angkorteam.fintech.ddl.MStaff;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.AppUserBuilder;
 import com.angkorteam.fintech.helper.AppUserHelper;
@@ -36,7 +36,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleC
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class UserCreatePage extends Page {
@@ -348,13 +347,8 @@ public class UserCreatePage extends Page {
             builder.withStaffId(this.staffValue.getId());
         }
 
-        JsonNode node = null;
-        try {
-            node = AppUserHelper.create((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = AppUserHelper.create((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

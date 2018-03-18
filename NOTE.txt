@@ -1,0 +1,7 @@
+http://killbill.io/
+https://www.elastic.co/
+http://activemq.apache.org/
+https://www.jooq.org/
+https://www.mysql.com/
+https://spring.io/
+https://projects.spring.io/spring-integration/

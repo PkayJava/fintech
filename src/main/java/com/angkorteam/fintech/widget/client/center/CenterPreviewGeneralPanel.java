@@ -13,6 +13,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import com.angkorteam.fintech.ddl.MGroup;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.pages.client.center.CenterClosePage;
 import com.angkorteam.fintech.pages.client.center.CenterModifyPage;
@@ -76,7 +77,7 @@ public class CenterPreviewGeneralPanel extends Panel {
     @Override
     protected void initComponent() {
 
-        this.groupProvider = new JdbcProvider("m_group");
+        this.groupProvider = new JdbcProvider(MGroup.NAME);
         this.groupProvider.applyJoin("r_enum_value", "LEFT JOIN r_enum_value ON m_group.status_enum = r_enum_value.enum_id AND r_enum_value.enum_name = 'status_enum'");
         this.groupProvider.boardField("m_group.id", "id", Long.class);
         this.groupProvider.boardField("m_group.display_name", "displayName", String.class);

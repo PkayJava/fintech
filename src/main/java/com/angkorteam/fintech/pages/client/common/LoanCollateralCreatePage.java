@@ -15,8 +15,8 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.ddl.MCharge;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.loan.LoanCollateralBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.loan.LoanCollateralBuilder;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
@@ -26,7 +26,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanCollateralCreatePage extends Page {
@@ -151,13 +150,8 @@ public class LoanCollateralCreatePage extends Page {
             builder.withCollateralTypeId(this.collateralTypeValue.getId());
         }
 
-        JsonNode node = null;
-        try {
-            node = ClientHelper.addCollateralLoanAccount((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ClientHelper.addCollateralLoanAccount((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

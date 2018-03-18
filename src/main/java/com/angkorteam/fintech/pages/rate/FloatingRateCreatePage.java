@@ -47,7 +47,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FloatingRateCreatePage extends Page {
@@ -331,13 +330,8 @@ public class FloatingRateCreatePage extends Page {
             builder.withRatePeriod((Date) rate.get("fromDate"), (Double) rate.get("interestRate"), (Boolean) rate.get("differential"));
         }
 
-        JsonNode node = null;
-        try {
-            node = FloatingRateHelper.create((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = FloatingRateHelper.create((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

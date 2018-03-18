@@ -150,12 +150,10 @@ public class AccountCreatePage extends Page {
             AccountType accountType = AccountType.valueOf(this.accountTypeValue.getId());
             this.tagValue = null;
             this.parentValue = null;
-            this.tagProvider.applyWhere("code", MCodeValue.Field.CODE_ID + " in (select " + MCode.Field.ID + " from "
-                    + MCode.NAME + " where " + MCode.Field.CODE_NAME + " = '" + accountType.getTag() + "')");
+            this.tagProvider.applyWhere("code", MCodeValue.Field.CODE_ID + " in (select " + MCode.Field.ID + " from " + MCode.NAME + " where " + MCode.Field.CODE_NAME + " = '" + accountType.getTag() + "')");
             this.tagProvider.setDisabled(false);
             this.parentProvider.setDisabled(false);
-            this.parentProvider.applyWhere("classification_enum",
-                    AccGLAccount.Field.CLASSIFICATION_ENUM + " = '" + accountType.getLiteral() + "'");
+            this.parentProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = '" + accountType.getLiteral() + "'");
         }
     }
 
@@ -195,8 +193,7 @@ public class AccountCreatePage extends Page {
         this.accountTypeIContainer = new WebMarkupContainer("accountTypeIContainer");
         this.accountTypeBlock.add(this.accountTypeIContainer);
         this.accountTypeProvider = new AccountTypeProvider();
-        this.accountTypeField = new Select2SingleChoice<>("accountTypeField",
-                new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
+        this.accountTypeField = new Select2SingleChoice<>("accountTypeField", new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
         this.accountTypeField.setLabel(Model.of("Account Type"));
         this.accountTypeField.add(new OnChangeAjaxBehavior(this::accountTypeFieldUpdate));
         this.accountTypeIContainer.add(this.accountTypeField);
@@ -247,8 +244,7 @@ public class AccountCreatePage extends Page {
         this.accountUsageIContainer = new WebMarkupContainer("accountUsageIContainer");
         this.accountUsageBlock.add(this.accountUsageIContainer);
         this.accountUsageProvider = new AccountUsageProvider();
-        this.accountUsageField = new Select2SingleChoice<>("accountUsageField",
-                new PropertyModel<>(this, "accountUsageValue"), this.accountUsageProvider);
+        this.accountUsageField = new Select2SingleChoice<>("accountUsageField", new PropertyModel<>(this, "accountUsageValue"), this.accountUsageProvider);
         this.accountUsageField.setLabel(Model.of("Account Usage"));
         this.accountUsageIContainer.add(this.accountUsageField);
         this.accountUsageFeedback = new TextFeedbackPanel("accountUsageFeedback", this.accountUsageField);
@@ -284,13 +280,10 @@ public class AccountCreatePage extends Page {
         this.form.add(this.parentBlock);
         this.parentIContainer = new WebMarkupContainer("parentIContainer");
         this.parentBlock.add(this.parentIContainer);
-        this.parentProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID,
-                AccGLAccount.Field.NAME);
+        this.parentProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
         this.parentProvider.setDisabled(true);
-        this.parentProvider.applyWhere("account_usage",
-                AccGLAccount.Field.ACCOUNT_USAGE + " = '" + AccountUsage.Header.getLiteral() + "'");
-        this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"),
-                this.parentProvider);
+        this.parentProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = '" + AccountUsage.Header.getLiteral() + "'");
+        this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"), this.parentProvider);
         this.parentField.setLabel(Model.of("Parent Account"));
         this.parentIContainer.add(this.parentField);
         this.parentFeedback = new TextFeedbackPanel("parentFeedback", this.parentField);
@@ -324,13 +317,8 @@ public class AccountCreatePage extends Page {
             builder.withUsage(AccountUsage.valueOf(this.accountUsageValue.getId()));
         }
 
-        JsonNode node = null;
-        try {
-            node = GLAccountHelper.create((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = GLAccountHelper.create((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

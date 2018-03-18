@@ -13,6 +13,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import com.angkorteam.fintech.ddl.MCodeValue;
+import com.angkorteam.fintech.ddl.MFamilyMembers;
 import com.angkorteam.fintech.pages.client.client.ClientFamilyMemberCreatePage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
@@ -49,18 +51,18 @@ public class ClientPreviewFamilyMemberPanel extends com.angkorteam.fintech.widge
     @Override
     protected void initComponent() {
 
-        this.memberProvider = new JdbcProvider("m_family_members");
-        this.memberProvider.applyJoin("relationship", "left join m_code_value relationship on m_family_members.relationship_cv_id = relationship.id");
-        this.memberProvider.applyJoin("gender", "left join m_code_value gender on m_family_members.gender_cv_id = gender.id");
-        this.memberProvider.boardField("m_family_members.firstname", "first_name", String.class);
-        this.memberProvider.boardField("m_family_members.middlename", "middle_name", String.class);
-        this.memberProvider.boardField("m_family_members.lastname", "last_name", String.class);
-        this.memberProvider.boardField("m_family_members.mobile_number", "mobile_number", String.class);
-        this.memberProvider.boardField("gender.code_description", "gender_description", String.class);
-        this.memberProvider.boardField("relationship.code_description", "relationship_description", String.class);
-        this.memberProvider.boardField("m_family_members.is_dependent", "dependent", Boolean.class);
-        this.memberProvider.boardField("m_family_members.date_of_birth", "date_of_birth", Calendar.Date);
-        this.memberProvider.applyWhere("client_id", "m_family_members.client_id = '" + this.clientId + "'");
+        this.memberProvider = new JdbcProvider(MFamilyMembers.NAME);
+        this.memberProvider.applyJoin("relationship", "LEFT JOIN " + MCodeValue.NAME + " relationship ON " + MFamilyMembers.NAME + "." + MFamilyMembers.Field.RELATIONSHIP_CV_ID + " = relationship." + MCodeValue.Field.ID);
+        this.memberProvider.applyJoin("gender", "LEFT JOIN " + MCodeValue.NAME + " gender ON " + MFamilyMembers.NAME + "." + MFamilyMembers.Field.GENDER_CV_ID + " = gender." + MCodeValue.Field.ID);
+        this.memberProvider.boardField(MFamilyMembers.NAME + "." + MFamilyMembers.Field.FIRST_NAME, "first_name", String.class);
+        this.memberProvider.boardField(MFamilyMembers.NAME + "." + MFamilyMembers.Field.MIDDLE_NAME, "middle_name", String.class);
+        this.memberProvider.boardField(MFamilyMembers.NAME + "." + MFamilyMembers.Field.LAST_NAME, "last_name", String.class);
+        this.memberProvider.boardField(MFamilyMembers.NAME + "." + MFamilyMembers.Field.MOBILE_NUMBER, "mobile_number", String.class);
+        this.memberProvider.boardField("gender." + MCodeValue.Field.CODE_DESCRIPTION, "gender_description", String.class);
+        this.memberProvider.boardField("relationship." + MCodeValue.Field.CODE_DESCRIPTION, "relationship_description", String.class);
+        this.memberProvider.boardField(MFamilyMembers.NAME + ".is_dependent", "dependent", Boolean.class);
+        this.memberProvider.boardField(MFamilyMembers.NAME + ".date_of_birth", "date_of_birth", Calendar.Date);
+        this.memberProvider.applyWhere("client_id", MFamilyMembers.NAME + "." + MFamilyMembers.Field.CLIENT_ID + " = '" + this.clientId + "'");
 
         this.memberColumn = Lists.newArrayList();
         this.memberColumn.add(new TextFilterColumn(this.memberProvider, ItemClass.String, Model.of("First Name"), "first_name", "first_name", this::memberColumn));

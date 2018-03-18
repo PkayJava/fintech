@@ -25,7 +25,6 @@ import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -103,13 +102,8 @@ public class AccrualAccountingPage extends Page {
     protected void saveButtonSubmit(Button button) {
         AccrualBuilder builder = new AccrualBuilder();
         builder.withTillDate(this.tillDateValue);
-        JsonNode node = null;
-        try {
-            node = AccrualHelper.submit((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = AccrualHelper.submit((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

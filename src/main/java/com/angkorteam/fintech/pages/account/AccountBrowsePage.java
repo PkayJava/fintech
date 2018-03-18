@@ -41,7 +41,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -97,8 +96,7 @@ public class AccountBrowsePage extends Page {
 
         List<String> classification_enum = Lists.newArrayList();
         for (AccountType accountType : AccountType.values()) {
-            classification_enum
-                    .add("when " + accountType.getLiteral() + " then '" + accountType.getDescription() + "'");
+            classification_enum.add("when " + accountType.getLiteral() + " then '" + accountType.getDescription() + "'");
         }
 
         this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
@@ -109,27 +107,19 @@ public class AccountBrowsePage extends Page {
         this.dataProvider.boardField(AccGLAccount.Field.ID, "id", Long.class);
         this.dataProvider.boardField(AccGLAccount.Field.NAME, "name", String.class);
         this.dataProvider.boardField(AccGLAccount.Field.GL_CODE, "gl_code", String.class);
-        this.dataProvider.boardField("case " + AccGLAccount.Field.CLASSIFICATION_ENUM + " "
-                + StringUtils.join(classification_enum, " ") + " end", "classification_enum", String.class);
+        this.dataProvider.boardField("case " + AccGLAccount.Field.CLASSIFICATION_ENUM + " " + StringUtils.join(classification_enum, " ") + " end", "classification_enum", String.class);
         this.dataProvider.boardField(AccGLAccount.Field.ACCOUNT_USAGE, "account_usage", Long.class);
         this.dataProvider.boardField(AccGLAccount.Field.DISABLED, "disabled", Boolean.class);
-        this.dataProvider.boardField(AccGLAccount.Field.MANUAL_JOURNAL_ENTRIES_ALLOWED,
-                "manual_journal_entries_allowed", Boolean.class);
+        this.dataProvider.boardField(AccGLAccount.Field.MANUAL_JOURNAL_ENTRIES_ALLOWED, "manual_journal_entries_allowed", Boolean.class);
 
         this.dataProvider.selectField("id", Long.class);
 
         this.dataColumn = Lists.newArrayList();
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Account"), "name", "name",
-                this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("GL Code"), "gl_code",
-                "gl_code", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Account Type"),
-                "classification_enum", "classification_enum", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Is Disabled ?"),
-                "disabled", "disabled", this::dataColumn));
-        this.dataColumn
-                .add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Is Manual Entries Allowed ?"),
-                        "manual_journal_entries_allowed", "manual_journal_entries_allowed", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Account"), "name", "name", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("GL Code"), "gl_code", "gl_code", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Account Type"), "classification_enum", "classification_enum", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Is Disabled ?"), "disabled", "disabled", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Is Manual Entries Allowed ?"), "manual_journal_entries_allowed", "manual_journal_entries_allowed", this::dataColumn));
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 
         this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
@@ -153,27 +143,18 @@ public class AccountBrowsePage extends Page {
     protected void dataClick(String link, Map<String, Object> model, AjaxRequestTarget target) {
         Long id = (Long) model.get("id");
         if ("delete".equals(link)) {
-            JsonNode node = null;
-            try {
-                node = GLAccountHelper.delete((Session) getSession(), String.valueOf(id));
-            } catch (UnirestException e) {
-            }
+            JsonNode node = GLAccountHelper.delete((Session) getSession(), String.valueOf(id));
+
             reportError(node, target);
             target.add(this.dataTable);
         } else if ("enable".equals(link)) {
-            JsonNode node = null;
-            try {
-                node = GLAccountHelper.enable((Session) getSession(), String.valueOf(id));
-            } catch (UnirestException e) {
-            }
+            JsonNode node = GLAccountHelper.enable((Session) getSession(), String.valueOf(id));
+
             reportError(node, target);
             target.add(this.dataTable);
         } else if ("disable".equals(link)) {
-            JsonNode node = null;
-            try {
-                node = GLAccountHelper.disable((Session) getSession(), String.valueOf(id));
-            } catch (UnirestException e) {
-            }
+            JsonNode node = GLAccountHelper.disable((Session) getSession(), String.valueOf(id));
+
             reportError(node, target);
             target.add(this.dataTable);
         }

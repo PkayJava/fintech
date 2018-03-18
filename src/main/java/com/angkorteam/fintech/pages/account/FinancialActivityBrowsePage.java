@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.AccGLAccount;
-import com.angkorteam.fintech.ddl.AccGLFinancialActivityAccount;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -19,6 +17,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.AccGLFinancialActivityAccount;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.constant.FinancialActivityTypeEnum;
 import com.angkorteam.fintech.helper.FinancialActivityHelper;
@@ -39,7 +39,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 7/12/17.
@@ -127,11 +126,8 @@ public class FinancialActivityBrowsePage extends Page {
             parameters.add("financialActivityId", value);
             setResponsePage(FinancialActivityModifyPage.class, parameters);
         } else if ("delete".equals(column)) {
-            JsonNode node = null;
-            try {
-                FinancialActivityHelper.delete((Session) getSession(), String.valueOf(value));
-            } catch (UnirestException e) {
-            }
+            JsonNode node = FinancialActivityHelper.delete((Session) getSession(), String.valueOf(value));
+
             reportError(node, target);
             target.add(this.dataTable);
         }

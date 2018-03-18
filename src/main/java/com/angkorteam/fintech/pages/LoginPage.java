@@ -10,7 +10,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.angkorteam.fintech.ddl.Tenants;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -25,6 +24,7 @@ import org.xml.sax.SAXException;
 
 import com.angkorteam.fintech.Application;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.Tenants;
 import com.angkorteam.fintech.provider.MifosSingleChoiceProvider;
 import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.framework.ReferenceUtilities;

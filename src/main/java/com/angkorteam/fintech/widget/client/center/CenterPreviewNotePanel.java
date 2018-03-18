@@ -30,7 +30,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class CenterPreviewNotePanel extends Panel {
 
@@ -120,13 +119,8 @@ public class CenterPreviewNotePanel extends Panel {
         builder.withCenterId(this.centerId);
         builder.withNote(this.noteValue);
 
-        JsonNode node = null;
-        try {
-            node = ClientHelper.postCenterNote((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ClientHelper.postCenterNote((Session) getSession(), builder.build());
+
         if (itemPage instanceof com.angkorteam.fintech.Page) {
             if (((com.angkorteam.fintech.Page) itemPage).reportError(node)) {
                 return;

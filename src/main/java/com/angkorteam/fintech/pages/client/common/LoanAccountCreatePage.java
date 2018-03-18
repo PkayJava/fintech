@@ -1,8 +1,47 @@
 package com.angkorteam.fintech.pages.client.common;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.joda.time.DateTime;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.ddl.*;
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MFloatingRates;
+import com.angkorteam.fintech.ddl.MFund;
+import com.angkorteam.fintech.ddl.MGroup;
+import com.angkorteam.fintech.ddl.MOrganisationCurrency;
+import com.angkorteam.fintech.ddl.MProductLoan;
+import com.angkorteam.fintech.ddl.MProductLoanCharge;
+import com.angkorteam.fintech.ddl.MProductLoanFloatingRates;
+import com.angkorteam.fintech.ddl.MProductLoanGuaranteeDetails;
+import com.angkorteam.fintech.ddl.MProductLoanRecalculationDetails;
+import com.angkorteam.fintech.ddl.MProductLoanVariableInstallmentConfig;
+import com.angkorteam.fintech.ddl.MSavingsAccount;
+import com.angkorteam.fintech.ddl.MSavingsProduct;
+import com.angkorteam.fintech.ddl.MStaff;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.LoanAccountBuilder;
@@ -10,7 +49,18 @@ import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeFrequency;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.ProductPopup;
-import com.angkorteam.fintech.dto.enums.loan.*;
+import com.angkorteam.fintech.dto.enums.loan.AdvancePaymentsAdjustmentType;
+import com.angkorteam.fintech.dto.enums.loan.Amortization;
+import com.angkorteam.fintech.dto.enums.loan.ClosureInterestCalculationRule;
+import com.angkorteam.fintech.dto.enums.loan.Frequency;
+import com.angkorteam.fintech.dto.enums.loan.FrequencyDay;
+import com.angkorteam.fintech.dto.enums.loan.FrequencyType;
+import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
+import com.angkorteam.fintech.dto.enums.loan.InterestMethod;
+import com.angkorteam.fintech.dto.enums.loan.InterestRecalculationCompound;
+import com.angkorteam.fintech.dto.enums.loan.NominalInterestRateType;
+import com.angkorteam.fintech.dto.enums.loan.RepaidOn;
+import com.angkorteam.fintech.dto.enums.loan.RepaymentStrategy;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
@@ -56,25 +106,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.joda.time.DateTime;
-
-import java.text.ParseException;
-import java.util.*;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanAccountCreatePage extends Page {
@@ -1776,14 +1807,9 @@ public class LoanAccountCreatePage extends Page {
             builder.withCollateral(type != null ? type.getId() : null, value, description);
         }
 
-        JsonNode node = null;
         JsonNode request = builder.build();
-        try {
-            node = ClientHelper.createLoanAccount((Session) getSession(), request);
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ClientHelper.createLoanAccount((Session) getSession(), request);
+
         if (reportError(node)) {
             return;
         }

@@ -12,6 +12,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MSavingsAccountCharge;
 import com.angkorteam.fintech.pages.client.center.ChargePreviewPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.BadgeCell;
@@ -28,7 +30,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.google.common.collect.Lists;
 
 public class SavingAccountPreviewChargePanel extends Panel {
-    
+
     protected String savingId;
 
     protected Page itemPage;
@@ -45,21 +47,23 @@ public class SavingAccountPreviewChargePanel extends Panel {
 
     @Override
     protected void initComponent() {
-        this.dataProvider = new JdbcProvider("m_savings_account_charge");
-        this.dataProvider.applyJoin("m_charge", "INNER JOIN m_charge ON m_savings_account_charge.charge_id = m_charge.id");
-        this.dataProvider.boardField("m_savings_account_charge.id", "id", Long.class);
-        this.dataProvider.boardField("m_charge.name", "name", String.class);
-        this.dataProvider.boardField("case m_savings_account_charge.is_penalty when 1 then 'Penalty' when 0 then 'Fee' else concat(m_savings_account_charge.is_penalty,'') end", "chargeType", String.class);
-        this.dataProvider.boardField("case m_savings_account_charge.charge_time_enum when 7 then 'Monthly' else concat(m_savings_account_charge.charge_time_enum, '') end", "paymentDueAt", String.class);
-        this.dataProvider.boardField("m_savings_account_charge.charge_due_date", "dueAsOf", Date.class);
-        this.dataProvider.boardField("concat(lpad(m_savings_account_charge.fee_on_day, 2, 0), ' ', CASE m_savings_account_charge.fee_on_month WHEN 1 THEN 'Jan' WHEN 2 THEN 'Feb' WHEN 3 THEN 'Mar' WHEN 4 THEN 'Apr' WHEN 5 THEN 'May' WHEN 6 THEN 'Jun' WHEN 7 THEN 'Jul' WHEN 8 THEN 'Aug' WHEN 9 THEN 'Sep' WHEN 10 THEN 'Oct' WHEN 11 THEN 'Nov' WHEN 12 THEN 'Dec' ELSE m_savings_account_charge.fee_on_month END)", "repeatOn", String.class);
-        this.dataProvider.boardField("case m_savings_account_charge.charge_calculation_enum when 1 then 'Flat' else concat(m_savings_account_charge.charge_calculation_enum, '') end", "calculationType", String.class);
-        this.dataProvider.boardField("m_savings_account_charge.amount", "due", Double.class);
-        this.dataProvider.boardField("m_savings_account_charge.amount_paid_derived", "paid", Double.class);
-        this.dataProvider.boardField("m_savings_account_charge.amount_waived_derived", "waived", Double.class);
-        this.dataProvider.boardField("m_savings_account_charge.amount_outstanding_derived", "outstanding", Double.class);
-        this.dataProvider.boardField("case m_savings_account_charge.is_active when 1 then 'Yes' when 0 then 'No' else concat(m_savings_account_charge.is_active, '') end", "active", String.class);
-        this.dataProvider.applyWhere("savings_account_id", "m_savings_account_charge.savings_account_id = " + this.savingId);
+
+        this.dataProvider = new JdbcProvider(MSavingsAccountCharge.NAME);
+        this.dataProvider.applyJoin("m_charge", "INNER JOIN " + MCharge.NAME + " ON " + MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.CHARGE_ID + " = " + MCharge.NAME + "." + MCharge.Field.ID);
+
+        this.dataProvider.boardField(MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MCharge.NAME + "." + MCharge.Field.NAME, "name", String.class);
+        this.dataProvider.boardField("CASE " + MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.IS_PENALTY + " WHEN 1 THEN 'Penalty' WHEN 0 THEN 'Fee' ELSE CONCAT(" + MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.IS_PENALTY + ",'') END", "chargeType", String.class);
+        this.dataProvider.boardField("CASE " + MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.CHARGE_TIME_ENUM + " WHEN 7 THEN 'Monthly' ELSE CONCAT(" + MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.CHARGE_TIME_ENUM + ", '') END", "paymentDueAt", String.class);
+        this.dataProvider.boardField("" + MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.CHARGE_DUE_DATE, "dueAsOf", Date.class);
+        this.dataProvider.boardField("CONCAT(lpad(" + MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.FEE_ON_DAY + ", 2, 0), ' ', CASE " + MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.FEE_ON_MONTH + " WHEN 1 THEN 'Jan' WHEN 2 THEN 'Feb' WHEN 3 THEN 'Mar' WHEN 4 THEN 'Apr' WHEN 5 THEN 'May' WHEN 6 THEN 'Jun' WHEN 7 THEN 'Jul' WHEN 8 THEN 'Aug' WHEN 9 THEN 'Sep' WHEN 10 THEN 'Oct' WHEN 11 THEN 'Nov' WHEN 12 THEN 'Dec' ELSE " + MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.FEE_ON_MONTH + " END)", "repeatOn", String.class);
+        this.dataProvider.boardField("CASE " + MSavingsAccountCharge.NAME + ".charge_calculation_enum WHEN 1 THEN 'Flat' ELSE CONCAT(" + MSavingsAccountCharge.NAME + ".charge_calculation_enum, '') END", "calculationType", String.class);
+        this.dataProvider.boardField(MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.AMOUNT, "due", Double.class);
+        this.dataProvider.boardField(MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.AMOUNT_PAID_DERIVED, "paid", Double.class);
+        this.dataProvider.boardField(MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.AMOUNT_WAIVED_DERIVED, "waived", Double.class);
+        this.dataProvider.boardField(MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.AMOUNT_OUTSTANDING_DERIVED, "outstanding", Double.class);
+        this.dataProvider.boardField("CASE " + MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.IS_ACTIVE + " WHEN 1 THEN 'Yes' WHEN 0 THEN 'No' ELSE CONCAT(" + MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.IS_ACTIVE + ", '') END", "active", String.class);
+        this.dataProvider.applyWhere("savings_account_id", MSavingsAccountCharge.NAME + "." + MSavingsAccountCharge.Field.SAVINGS_ACCOUNT_ID + " = " + this.savingId);
 
         this.dataColumn = Lists.newArrayList();
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));

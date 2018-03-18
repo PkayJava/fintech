@@ -1,10 +1,9 @@
 package com.angkorteam.fintech;
 
-import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.Language;
-import com.angkorteam.fintech.helper.LoginHelper;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.servlet.http.HttpSession;
+
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
@@ -14,8 +13,10 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpSession;
-import java.util.concurrent.atomic.AtomicBoolean;
+import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.Language;
+import com.angkorteam.fintech.helper.LoginHelper;
+import com.mashape.unirest.http.JsonNode;
 
 public class Session extends AbstractAuthenticatedWebSession implements IMifos {
 
@@ -47,37 +48,32 @@ public class Session extends AbstractAuthenticatedWebSession implements IMifos {
     }
 
     protected boolean authenticate(HttpSession session, String identifier, String username, String password) {
-        try {
-            JsonNode tokenObject = LoginHelper.authenticate(identifier, username, password);
-            if (tokenObject.getObject().has("base64EncodedAuthenticationKey")) {
-                this.token = tokenObject.getObject().getString("base64EncodedAuthenticationKey");
-                if (tokenObject.getObject().has("roles")) {
-                    JSONArray array = tokenObject.getObject().getJSONArray("roles");
-                    if (array != null) {
-                        for (int i = 0; i < array.length(); i++) {
-                            JSONObject object = (JSONObject) array.get(i);
-                            String role = object.getString("name");
-                            if (role != null && !"".equals(role)) {
-                                this.roles.add(role);
-                            }
+
+        JsonNode tokenObject = LoginHelper.authenticate(identifier, username, password);
+        if (tokenObject.getObject().has("base64EncodedAuthenticationKey")) {
+            this.token = tokenObject.getObject().getString("base64EncodedAuthenticationKey");
+            if (tokenObject.getObject().has("roles")) {
+                JSONArray array = tokenObject.getObject().getJSONArray("roles");
+                if (array != null) {
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject object = (JSONObject) array.get(i);
+                        String role = object.getString("name");
+                        if (role != null && !"".equals(role)) {
+                            this.roles.add(role);
                         }
                     }
                 }
-                this.identifier = identifier;
-                session.setAttribute(IDENTIFIER, this.identifier);
-                session.setAttribute(TOKEN, this.token);
-                this.roles.add(Function.ALL_FUNCTION);
-                LOGGER.info("identifier {} token {}", this.identifier, this.token);
-                return true;
-            } else {
-                return false;
             }
-        } catch (UnirestException e) {
-            e.printStackTrace();
+            this.identifier = identifier;
+            session.setAttribute(IDENTIFIER, this.identifier);
+            session.setAttribute(TOKEN, this.token);
+            this.roles.add(Function.ALL_FUNCTION);
+            LOGGER.info("identifier {} token {}", this.identifier, this.token);
+            return true;
+        } else {
+            return false;
         }
-        LOGGER.info("token : " + this.token);
-        LOGGER.info("identifier : " + this.identifier);
-        return false;
+
     }
 
     public String getIdentifier() {

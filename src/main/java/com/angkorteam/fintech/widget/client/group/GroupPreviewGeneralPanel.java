@@ -13,6 +13,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import com.angkorteam.fintech.ddl.MSavingsAccount;
+import com.angkorteam.fintech.ddl.MSavingsProduct;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.pages.client.common.SavingAccountSelectionPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -63,14 +65,14 @@ public class GroupPreviewGeneralPanel extends Panel {
         PageParameters parameters = new PageParameters();
         parameters.add("groupId", this.groupId);
 
-        this.savingAccountProvider = new JdbcProvider("m_savings_account");
-        this.savingAccountProvider.applyJoin("m_savings_product", "LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
-        this.savingAccountProvider.boardField("concat(m_savings_account.id,'')", "id", String.class);
-        this.savingAccountProvider.boardField("m_savings_account.account_no", "account", String.class);
-        this.savingAccountProvider.boardField("m_savings_product.name", "product", String.class);
-        this.savingAccountProvider.boardField("m_savings_account.status_enum", "status", String.class);
-        this.savingAccountProvider.boardField("m_savings_account.account_balance_derived", "balance", Double.class);
-        this.savingAccountProvider.applyWhere("group_id", "m_savings_account.group_id = " + this.groupId);
+        this.savingAccountProvider = new JdbcProvider(MSavingsAccount.NAME);
+        this.savingAccountProvider.applyJoin("m_savings_product", "LEFT JOIN " + MSavingsProduct.NAME + " ON " + MSavingsAccount.NAME + "." + MSavingsAccount.Field.PRODUCT_ID + " = " + MSavingsProduct.NAME + "." + MSavingsProduct.Field.ID);
+        this.savingAccountProvider.boardField("CONCAT(" + MSavingsAccount.NAME + "." + MSavingsAccount.Field.ID + ",'')", "id", String.class);
+        this.savingAccountProvider.boardField(MSavingsAccount.NAME + "." + MSavingsAccount.Field.ACCOUNT_NO, "account", String.class);
+        this.savingAccountProvider.boardField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.NAME, "product", String.class);
+        this.savingAccountProvider.boardField(MSavingsAccount.NAME + "." + MSavingsAccount.Field.STATUS_ENUM, "status", String.class);
+        this.savingAccountProvider.boardField(MSavingsAccount.NAME + "." + MSavingsAccount.Field.ACCOUNT_BALANCE_DERIVED, "balance", Double.class);
+        this.savingAccountProvider.applyWhere("group_id", MSavingsAccount.NAME + "." + MSavingsAccount.Field.GROUP_ID + " = " + this.groupId);
 
         this.savingAccountProvider.selectField("id", String.class);
         this.savingAccountProvider.selectField("status", String.class);

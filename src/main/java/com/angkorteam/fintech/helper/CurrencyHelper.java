@@ -7,14 +7,13 @@ import org.json.JSONObject;
 
 import com.angkorteam.fintech.IMifos;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/26/17.
  */
 public class CurrencyHelper {
 
-    public static JsonNode update(IMifos session, List<String> currencies) throws UnirestException {
+    public static JsonNode update(IMifos session, List<String> currencies) {
         JSONArray array = new JSONArray(currencies);
         JsonNode body = new com.angkorteam.fintech.dto.JsonNode(new JSONObject());
         body.getObject().put("currencies", array);

@@ -3,7 +3,6 @@ package com.angkorteam.fintech.pages;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.MPasswordValidationPolicy;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -16,6 +15,7 @@ import org.apache.wicket.model.Model;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MPasswordValidationPolicy;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.PasswordPreferencesHelper;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -35,7 +35,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/26/17.
@@ -121,10 +120,8 @@ public class PasswordPreferencesPage extends Page {
 
     protected void dataClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
         Long id = (Long) model.get("id");
-        try {
-            PasswordPreferencesHelper.update((Session) getSession(), String.valueOf(id));
-        } catch (UnirestException e) {
-        }
+        PasswordPreferencesHelper.update((Session) getSession(), String.valueOf(id));
+
         target.add(this.dataTable);
     }
 

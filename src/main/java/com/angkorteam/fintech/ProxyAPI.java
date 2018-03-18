@@ -121,11 +121,11 @@ public class ProxyAPI implements Filter {
             } else {
                 mifosUrl = mifos.getMifosUrl() + "/api" + infoPath;
             }
-            LOGGER.info("mifos url {}", mifosUrl);
             String requestContentType = StringUtils.lowerCase(request.getContentType());
             String method = StringUtils.upperCase(request.getMethod());
             String accept = StringUtils.lowerCase(request.getHeader("Accept"));
 
+            LOGGER.info("{} => {}", String.format("%0$-6s", method), mifosUrl);
             HttpResponse<String> resp = null;
             String responseContentType = null;
             String requestBody = null;

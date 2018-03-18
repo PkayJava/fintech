@@ -3,10 +3,6 @@ package com.angkorteam.fintech.pages.service;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.CExternalService;
-import com.angkorteam.fintech.ddl.CExternalServiceProperties;
-import com.angkorteam.framework.jdbc.SelectQuery;
-import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -18,6 +14,7 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.CExternalServiceProperties;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.ExternalServiceBuilder;
 import com.angkorteam.fintech.dto.enums.ServiceType;
@@ -28,14 +25,14 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class EMailConfigurationPage extends Page {
@@ -226,13 +223,8 @@ public class EMailConfigurationPage extends Page {
         builder.withUsername(this.usernameValue);
         builder.withUseTls(this.useTlsValue);
 
-        JsonNode node = null;
-        try {
-            node = ServiceHelper.update((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ServiceHelper.update((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

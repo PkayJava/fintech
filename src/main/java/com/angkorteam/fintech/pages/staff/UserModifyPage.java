@@ -1,8 +1,27 @@
 package com.angkorteam.fintech.pages.staff;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.validation.EqualInputValidator;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.ddl.*;
+import com.angkorteam.fintech.ddl.MAppUser;
+import com.angkorteam.fintech.ddl.MAppUserRole;
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.MRole;
+import com.angkorteam.fintech.ddl.MStaff;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.AppUserBuilder;
 import com.angkorteam.fintech.helper.AppUserHelper;
@@ -24,21 +43,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2MultipleC
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.validation.EqualInputValidator;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import java.util.List;
-import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class UserModifyPage extends Page {
@@ -367,13 +371,8 @@ public class UserModifyPage extends Page {
         builder.withPassword(this.passwordValue);
         builder.withRepeatPassword(this.repeatPasswordValue);
 
-        JsonNode node = null;
-        try {
-            node = AppUserHelper.update((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = AppUserHelper.update((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }
@@ -402,13 +401,8 @@ public class UserModifyPage extends Page {
             builder.withStaffId(null);
         }
 
-        JsonNode node = null;
-        try {
-            node = AppUserHelper.update((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = AppUserHelper.update((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.MOffice;
-import com.angkorteam.fintech.ddl.MTellers;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -19,6 +17,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MOffice;
+import com.angkorteam.fintech.ddl.MTellers;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.TellerHelper;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
@@ -38,7 +38,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 7/13/17.
@@ -131,10 +130,8 @@ public class TellerBrowsePage extends Page {
 
     protected void actionClick(String s, Map<String, Object> model, AjaxRequestTarget target) {
         Long id = (Long) model.get("id");
-        try {
-            TellerHelper.delete((Session) getSession(), String.valueOf(id));
-        } catch (UnirestException e) {
-        }
+        TellerHelper.delete((Session) getSession(), String.valueOf(id));
+
         target.add(this.dataTable);
     }
 

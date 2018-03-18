@@ -22,8 +22,8 @@ import com.angkorteam.fintech.ddl.MLoan;
 import com.angkorteam.fintech.ddl.MStaff;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.dto.builder.loan.LoanOfficerUnAssignBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
-import com.angkorteam.fintech.helper.loan.LoanOfficerUnAssignBuilder;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
@@ -43,7 +43,6 @@ import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class LoanOfficerUnAssignPage extends Page {
@@ -252,13 +251,8 @@ public class LoanOfficerUnAssignPage extends Page {
         builder.withLoanId(this.loanId);
         builder.withUnassignedDate(this.unassignedOnValue);
 
-        JsonNode node = null;
-        try {
-            node = ClientHelper.unassignOfficerLoanAccount((Session) getSession(), builder.build());
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ClientHelper.unassignOfficerLoanAccount((Session) getSession(), builder.build());
+
         if (reportError(node)) {
             return;
         }

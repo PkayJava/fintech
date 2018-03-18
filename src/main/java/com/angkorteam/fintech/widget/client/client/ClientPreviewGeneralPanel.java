@@ -27,6 +27,11 @@ import org.slf4j.LoggerFactory;
 import com.angkorteam.fintech.Application;
 import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.Session;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MLoan;
+import com.angkorteam.fintech.ddl.MProductLoan;
+import com.angkorteam.fintech.ddl.MSavingsAccount;
+import com.angkorteam.fintech.ddl.MSavingsProduct;
 import com.angkorteam.fintech.dto.ClientEnum;
 import com.angkorteam.fintech.dto.builder.client.client.ClientChargeWaiveBuilder;
 import com.angkorteam.fintech.dto.builder.client.client.ClientUnassignStaffBuilder;
@@ -63,6 +68,8 @@ import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -77,7 +84,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class ClientPreviewGeneralPanel extends Panel {
 
@@ -239,14 +245,14 @@ public class ClientPreviewGeneralPanel extends Panel {
     }
 
     protected void initSavingAccountTable() {
-        this.savingAccountProvider = new JdbcProvider("m_savings_account");
-        this.savingAccountProvider.applyJoin("m_code_value", "LEFT JOIN m_savings_product ON m_savings_account.product_id = m_savings_product.id");
-        this.savingAccountProvider.boardField("concat(m_savings_account.id,'')", "id", String.class);
-        this.savingAccountProvider.boardField("m_savings_account.account_no", "account", String.class);
-        this.savingAccountProvider.boardField("m_savings_product.name", "product", String.class);
-        this.savingAccountProvider.boardField("m_savings_account.status_enum", "status", String.class);
-        this.savingAccountProvider.boardField("m_savings_account.account_balance_derived", "balance", Double.class);
-        this.savingAccountProvider.applyWhere("client_id", "m_savings_account.client_id = " + this.clientId);
+        this.savingAccountProvider = new JdbcProvider(MSavingsAccount.NAME);
+        this.savingAccountProvider.applyJoin("m_code_value", "LEFT JOIN " + MSavingsProduct.NAME + " ON " + MSavingsAccount.NAME + "." + MSavingsAccount.Field.PRODUCT_ID + " = " + MSavingsProduct.NAME + "." + MSavingsProduct.Field.ID);
+        this.savingAccountProvider.boardField("CONCAT(" + MSavingsAccount.NAME + "." + MSavingsAccount.Field.ID + ",'')", "id", String.class);
+        this.savingAccountProvider.boardField(MSavingsAccount.NAME + "." + MSavingsAccount.Field.ACCOUNT_NO, "account", String.class);
+        this.savingAccountProvider.boardField(MSavingsProduct.NAME + "." + MSavingsProduct.Field.NAME, "product", String.class);
+        this.savingAccountProvider.boardField(MSavingsAccount.NAME + "." + MSavingsAccount.Field.STATUS_ENUM, "status", String.class);
+        this.savingAccountProvider.boardField(MSavingsAccount.NAME + "." + MSavingsAccount.Field.ACCOUNT_BALANCE_DERIVED, "balance", Double.class);
+        this.savingAccountProvider.applyWhere("client_id", MSavingsAccount.NAME + "." + MSavingsAccount.Field.CLIENT_ID + " = " + this.clientId);
 
         this.savingAccountProvider.selectField("id", String.class);
         this.savingAccountProvider.selectField("status", String.class);
@@ -262,19 +268,19 @@ public class ClientPreviewGeneralPanel extends Panel {
     }
 
     protected void initLoanAccountTable() {
-        this.loanAccountProvider = new JdbcProvider("m_loan");
-        this.loanAccountProvider.applyJoin("m_product_loan", "inner join m_product_loan on m_loan.product_id = m_product_loan.id");
-        this.loanAccountProvider.boardField("m_loan.account_no", "account", String.class);
-        this.loanAccountProvider.boardField("m_product_loan.name", "product", String.class);
-        this.loanAccountProvider.boardField("m_loan.principal_disbursed_derived", "original_loan", Double.class);
-        this.loanAccountProvider.boardField("m_loan.total_outstanding_derived", "loan_balance", Double.class);
-        this.loanAccountProvider.boardField("m_loan.total_repayment_derived", "amount_paid", Double.class);
-        this.loanAccountProvider.boardField("m_loan.loan_type_enum", "type", Long.class);
-        this.loanAccountProvider.boardField("m_loan.loan_status_id", "status", Long.class);
-        this.loanAccountProvider.boardField("m_loan.id", "id", Long.class);
+        this.loanAccountProvider = new JdbcProvider(MLoan.NAME);
+        this.loanAccountProvider.applyJoin("m_product_loan", "INNER JOIN " + MProductLoan.NAME + " ON " + MLoan.NAME + "." + MLoan.Field.PRODUCT_ID + " = " + MProductLoan.NAME + "." + MProductLoan.Field.ID);
+        this.loanAccountProvider.boardField(MLoan.NAME + "." + MLoan.Field.ACCOUNT_NO, "account", String.class);
+        this.loanAccountProvider.boardField(MProductLoan.NAME + "." + MProductLoan.Field.NAME, "product", String.class);
+        this.loanAccountProvider.boardField(MLoan.NAME + "." + MLoan.Field.PRINCIPAL_DISBURSED_DERIVED, "original_loan", Double.class);
+        this.loanAccountProvider.boardField(MLoan.NAME + "." + MLoan.Field.TOTAL_OUTSTANDING_DERIVED, "loan_balance", Double.class);
+        this.loanAccountProvider.boardField(MLoan.NAME + "." + MLoan.Field.TOTAL_REPAYMENT_DERIVED, "amount_paid", Double.class);
+        this.loanAccountProvider.boardField(MLoan.NAME + "." + MLoan.Field.LOAN_TYPE_ENUM, "type", Long.class);
+        this.loanAccountProvider.boardField(MLoan.NAME + "." + MLoan.Field.LOAN_STATUS_ID, "status", Long.class);
+        this.loanAccountProvider.boardField(MLoan.NAME + "." + MLoan.Field.ID, "id", Long.class);
 
-        this.loanAccountProvider.applyWhere("client_id", "m_loan.client_id = '" + this.clientId + "'");
-        this.loanAccountProvider.applyWhere("loan_status_id", "m_loan.loan_status_id in (100,200,300)");
+        this.loanAccountProvider.applyWhere("client_id", MLoan.NAME + "." + MLoan.Field.CLIENT_ID + " = '" + this.clientId + "'");
+        this.loanAccountProvider.applyWhere("loan_status_id", MLoan.NAME + "." + MLoan.Field.LOAN_STATUS_ID + " IN (100,200,300)");
 
         this.loanAccountProvider.selectField("id", Long.class);
         this.loanAccountProvider.selectField("status", Long.class);
@@ -294,7 +300,7 @@ public class ClientPreviewGeneralPanel extends Panel {
 
     protected void initUpcomingChargeTable() {
         this.upcomingChargeProvider = new JdbcProvider("m_client_charge");
-        this.upcomingChargeProvider.applyJoin("m_charge", "inner join m_charge on m_client_charge.charge_id = m_charge.id");
+        this.upcomingChargeProvider.applyJoin("m_charge", "INNER JOIN m_charge ON m_client_charge.charge_id = m_charge.id");
 
         this.upcomingChargeProvider.boardField("m_client_charge.id", "id", Long.class);
         this.upcomingChargeProvider.boardField("m_charge.name", "name", String.class);
@@ -329,8 +335,15 @@ public class ClientPreviewGeneralPanel extends Panel {
 
     @Override
     protected void configureMetaData() {
-        JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-        Map<String, Object> clientObject = jdbcTemplate.queryForMap("select * from m_client where id = ?", this.clientId);
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MClient.NAME);
+        selectQuery.addField(MClient.Field.STAFF_ID);
+        selectQuery.addField(MClient.Field.STATUS_ENUM);
+        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
         Long statusEnum = (Long) clientObject.get("status_enum");
 
         // status enum
@@ -397,17 +410,22 @@ public class ClientPreviewGeneralPanel extends Panel {
 
     protected void clientUnassignStaffPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
         if ("confirmButton".equals(signalId)) {
-            JdbcTemplate jdbcTemplate = SpringBean.getBean(JdbcTemplate.class);
-            String staffId = jdbcTemplate.queryForObject("select staff_id from m_client where id = ?", String.class, this.clientId);
+            JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+            SelectQuery selectQuery = null;
+            selectQuery = new SelectQuery(MClient.NAME);
+            selectQuery.addField(MClient.Field.STAFF_ID);
+            selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+            String staffId = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
             ClientUnassignStaffBuilder builder = new ClientUnassignStaffBuilder();
             builder.withId(this.clientId);
             builder.withStaffId(staffId);
-            try {
-                ClientHelper.unassignStaffClient((Session) getSession(), builder.build());
-            } catch (UnirestException e) {
-                LOGGER.info(e.getMessage(), e);
-            }
-            Map<String, Object> clientObject = jdbcTemplate.queryForMap("select staff_id from m_client where id = ?", this.clientId);
+            ClientHelper.unassignStaffClient((Session) getSession(), builder.build());
+            selectQuery = new SelectQuery(MClient.NAME);
+            selectQuery.addField(MClient.Field.STAFF_ID);
+            selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+            Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
             this.assignStaffLink.setVisible(clientObject.get("staff_id") == null);
             this.unassignStaffLink.setVisible(clientObject.get("staff_id") != null);
             target.add(this.buttonGroups);
@@ -431,7 +449,7 @@ public class ClientPreviewGeneralPanel extends Panel {
                 HttpResponse<InputStream> response = ClientHelper.retrieveClientImage((Session) getSession(), this.clientId);
                 this.clientImageValue = IOUtils.toString(response.getBody(), "UTF-8");
                 response.getBody().close();
-            } catch (UnirestException | IOException e) {
+            } catch (IOException e) {
                 LOGGER.info(e.getMessage(), e);
             }
         } else {
@@ -529,11 +547,9 @@ public class ClientPreviewGeneralPanel extends Panel {
             builder.withChargeId(String.valueOf(model.get("id")));
             builder.withResourceType("2");
             builder.withClientId(this.clientId);
-            try {
-                ClientHelper.postClientChargeWaive((IMifos) getSession(), builder.build());
-            } catch (UnirestException e) {
-                throw new WicketRuntimeException(e);
-            }
+
+            ClientHelper.postClientChargeWaive((IMifos) getSession(), builder.build());
+
             target.add(this.upcomingChargeTable);
         }
     }

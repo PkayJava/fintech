@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.helper.loan;
+package com.angkorteam.fintech.dto.builder.loan;
 
 import java.util.Date;
 
@@ -6,12 +6,12 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.mashape.unirest.http.JsonNode;
 
-public class RejectBuilder {
+public class WithdrawBuilder {
 
     private String id;
     private boolean hasId;
 
-    public RejectBuilder withId(String id) {
+    public WithdrawBuilder withId(String id) {
         this.id = id;
         this.hasId = true;
         return this;
@@ -20,7 +20,7 @@ public class RejectBuilder {
     private String locale = "en";
     private boolean hasLocale = true;
 
-    public RejectBuilder withLocale(String locale) {
+    public WithdrawBuilder withLocale(String locale) {
         this.locale = locale;
         this.hasLocale = true;
         return this;
@@ -29,25 +29,25 @@ public class RejectBuilder {
     private String dateFormat = "yyyy-MM-dd";
     private boolean hasDateFormat = true;
 
-    public RejectBuilder withDateFormat(String dateFormat) {
+    public WithdrawBuilder withDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
         this.hasDateFormat = true;
         return this;
     }
 
-    private Date rejectedOnDate;
-    private boolean hasRejectedOnDate;
+    private Date withdrawnOnDateDate;
+    private boolean hasWithdrawnOnDateDate;
 
-    public RejectBuilder withRejectedOnDate(Date rejectedOnDate) {
-        this.rejectedOnDate = rejectedOnDate;
-        this.hasRejectedOnDate = true;
+    public WithdrawBuilder withWithdrawnOnDateDate(Date withdrawnOnDateDate) {
+        this.withdrawnOnDateDate = withdrawnOnDateDate;
+        this.hasWithdrawnOnDateDate = true;
         return this;
     }
 
     private String note;
     private boolean hasNote;
 
-    public RejectBuilder withNote(String note) {
+    public WithdrawBuilder withNote(String note) {
         this.note = note;
         this.hasNote = true;
         return this;
@@ -60,11 +60,11 @@ public class RejectBuilder {
             object.getObject().put("note", this.note);
         }
 
-        if (this.hasRejectedOnDate) {
-            if (this.rejectedOnDate != null) {
-                object.getObject().put("rejectedOnDate", DateFormatUtils.format(this.rejectedOnDate, this.dateFormat));
+        if (this.hasWithdrawnOnDateDate) {
+            if (this.withdrawnOnDateDate != null) {
+                object.getObject().put("withdrawnOnDateDate", DateFormatUtils.format(this.withdrawnOnDateDate, this.dateFormat));
             } else {
-                object.getObject().put("rejectedOnDate", (String) null);
+                object.getObject().put("withdrawnOnDateDate", (String) null);
             }
         }
 

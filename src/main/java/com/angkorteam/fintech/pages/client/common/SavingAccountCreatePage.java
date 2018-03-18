@@ -85,7 +85,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SavingAccountCreatePage extends Page {
@@ -1089,14 +1088,9 @@ public class SavingAccountCreatePage extends Page {
             builder.withGroupId(this.centerId);
         }
 
-        JsonNode node = null;
         JsonNode request = builder.build();
-        try {
-            node = ClientHelper.createSavingAccount((Session) getSession(), request);
-        } catch (UnirestException e) {
-            error(e.getMessage());
-            return;
-        }
+        JsonNode node = ClientHelper.createSavingAccount((Session) getSession(), request);
+
         if (reportError(node)) {
             return;
         }
