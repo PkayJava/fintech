@@ -2,7 +2,7 @@ package com.angkorteam.fintech.ddl;
 
 public interface MRolePermission {
 
-    public static final String NAME = "m_role";
+    public static final String NAME = "m_role_permission";
 
     public interface Field {
 

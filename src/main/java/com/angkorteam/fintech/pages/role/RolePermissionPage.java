@@ -128,7 +128,7 @@ public class RolePermissionPage extends Page {
         this.form.add(this.permissionBlock);
         this.permissionIContainer = new WebMarkupContainer("permissionIContainer");
         this.permissionBlock.add(this.permissionIContainer);
-        this.permissionProvider = new MultipleChoiceProvider(MPermission.NAME, MPermission.Field.CODE, MPermission.Field.CODE, "concat(" + MPermission.Field.CODE + ",' ', '[', " + MPermission.Field.GROUPING + ",']',  ' ', '[', IF(" + MPermission.Field.ENTITY_NAME + " is NULL , 'N/A', " + MPermission.Field.ENTITY_NAME + "), ']',' ', '[' , IF(" + MPermission.Field.ACTION_NAME + " is NULL , 'N/A', " + MPermission.Field.ACTION_NAME + "),']')");
+        this.permissionProvider = new MultipleChoiceProvider(MPermission.NAME, MPermission.Field.CODE, MPermission.Field.CODE, "CONCAT(" + MPermission.Field.CODE + ",' ', '[', " + MPermission.Field.GROUPING + ",']',  ' ', '[', IF(" + MPermission.Field.ENTITY_NAME + " is NULL , 'N/A', " + MPermission.Field.ENTITY_NAME + "), ']',' ', '[' , IF(" + MPermission.Field.ACTION_NAME + " is NULL , 'N/A', " + MPermission.Field.ACTION_NAME + "),']')");
         this.permissionProvider.applyWhere("id", MPermission.Field.ID + " NOT IN (SELECT " + MRolePermission.Field.PERMISSION_ID + " from " + MRolePermission.NAME + " where " + MRolePermission.Field.ROLE_ID + " = " + this.roleId + ")");
         this.permissionField = new Select2MultipleChoice<>("permissionField", new PropertyModel<>(this, "permissionValue"), this.permissionProvider);
         this.permissionField.setRequired(true);
