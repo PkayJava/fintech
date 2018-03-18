@@ -127,6 +127,7 @@ public class StaffModifyPage extends Page {
         selectQuery = new SelectQuery(MStaff.NAME);
         selectQuery.addWhere(MStaff.Field.ID + " = :" + MStaff.Field.ID, this.staffId);
         selectQuery.addField(MStaff.Field.FIRST_NAME);
+        selectQuery.addField(MStaff.Field.ID);
         selectQuery.addField(MStaff.Field.LAST_NAME);
         selectQuery.addField(MStaff.Field.JOINING_DATE);
         selectQuery.addField(MStaff.Field.OFFICE_ID);
