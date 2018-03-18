@@ -291,7 +291,7 @@ public class WorkingDayPage extends Page {
         this.wednesdayValue = days.contains("WE");
         this.thursdayValue = days.contains("TH");
         this.fridayValue = days.contains("FR");
-        this.saturdayValue = days.contains("ST");
+        this.saturdayValue = days.contains("SA");
         this.sundayValue = days.contains("SU");
         this.repaymentOptionValue = RepaymentOption.optionLiteral(String.valueOf(object.get(MWorkingDays.Field.REPAYMENT_RESCHEDULING_ENUM)));
         this.repaymentExtendTermValue = (Boolean) object.get(MWorkingDays.Field.EXTEND_TERM_DAILY_REPAYMENTS);
