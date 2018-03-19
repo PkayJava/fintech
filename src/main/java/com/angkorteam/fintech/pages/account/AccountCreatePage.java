@@ -38,7 +38,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
  * Created by socheatkhauv on 6/27/17.
@@ -136,7 +135,6 @@ public class AccountCreatePage extends Page {
         this.accountNameField.setRequired(true);
         this.descriptionField.setRequired(true);
         this.manualAllowField.setRequired(true);
-        this.tagField.setRequired(true);
         this.accountUsageField.setRequired(true);
     }
 

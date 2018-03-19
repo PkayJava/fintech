@@ -140,7 +140,7 @@ public class AccountModifyPage extends Page {
         SelectQuery selectQuery = null;
 
         selectQuery = new SelectQuery(AccGLAccount.NAME);
-        selectQuery.addWhere(AccGLAccount.Field.ID + " = :", AccGLAccount.Field.ID, this.accountId);
+        selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, this.accountId);
         selectQuery.addField(AccGLAccount.Field.ID);
         selectQuery.addField(AccGLAccount.Field.NAME);
         selectQuery.addField(AccGLAccount.Field.PARENT_ID);
@@ -157,7 +157,7 @@ public class AccountModifyPage extends Page {
         selectQuery = new SelectQuery(AccGLAccount.NAME);
         selectQuery.addField(AccGLAccount.Field.ID);
         selectQuery.addField(AccGLAccount.Field.NAME + " as text");
-        selectQuery.addWhere(AccGLAccount.Field.ID + " = :", AccGLAccount.Field.ID, account.get(AccGLAccount.Field.PARENT_ID));
+        selectQuery.addWhere(AccGLAccount.Field.ID + " = :" + AccGLAccount.Field.ID, account.get(AccGLAccount.Field.PARENT_ID));
         this.parentValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
 
         this.glCodeValue = (String) account.get(AccGLAccount.Field.GL_CODE);
@@ -312,7 +312,6 @@ public class AccountModifyPage extends Page {
         this.accountNameField.setRequired(true);
         this.descriptionField.setRequired(true);
         this.manualAllowField.setRequired(true);
-        this.tagField.setRequired(true);
         this.accountUsageField.setRequired(true);
     }
 
