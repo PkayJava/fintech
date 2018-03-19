@@ -183,7 +183,7 @@ public class ProxyAPI implements Filter {
                 }
             } else if (method.equals("PUT")) {
                 if (requestContentType != null && !"".equals(requestContentType)) {
-                    if ("application/json".equals(requestContentType) || "application/json;charset=utf-8".equals(responseContentType)) {
+                    if ("application/json".equals(requestContentType) || "application/json;charset=utf-8".equals(requestContentType)) {
                         requestBody = IOUtils.toString(request.getInputStream(), "UTF-8");
                         try {
                             resp = Unirest.put(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).body(requestBody).asString();
@@ -218,7 +218,7 @@ public class ProxyAPI implements Filter {
                 }
             } else if (method.equals("DELETE")) {
                 if (requestContentType != null && !"".equals(requestContentType)) {
-                    if ("application/json".equals(requestContentType) || "application/json;charset=utf-8".equals(responseContentType)) {
+                    if ("application/json".equals(requestContentType) || "application/json;charset=utf-8".equals(requestContentType)) {
                         try {
                             resp = Unirest.delete(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).asString();
                             responseContentType = StringUtils.lowerCase(resp.getHeaders().getFirst("Content-Type"));
@@ -250,7 +250,7 @@ public class ProxyAPI implements Filter {
                 }
             } else if (method.equals("GET")) {
                 if (requestContentType != null && !"".equals(requestContentType)) {
-                    if ("application/json".equals(requestContentType) || "application/json;charset=utf-8".equals(responseContentType)) {
+                    if ("application/json".equals(requestContentType) || "application/json;charset=utf-8".equals(requestContentType)) {
                         try {
                             resp = Unirest.get(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).header("Content-Type", requestContentType).asString();
                             responseContentType = StringUtils.lowerCase(resp.getHeaders().getFirst("Content-Type"));
@@ -271,7 +271,7 @@ public class ProxyAPI implements Filter {
                         }
                     }
                 } else {
-                    if ("application/json".equals(requestContentType) || "application/json;charset=utf-8".equals(responseContentType)) {
+                    if ("application/json".equals(requestContentType) || "application/json;charset=utf-8".equals(requestContentType)) {
                         try {
                             resp = Unirest.get(mifosUrl).header("Accept", accept).header("Authorization", authorization).header("Fineract-Platform-TenantId", identifier).asString();
                             responseContentType = StringUtils.lowerCase(resp.getHeaders().getFirst("Content-Type"));

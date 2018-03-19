@@ -220,6 +220,8 @@ public class LoanChargeModifyPage extends Page {
         this.chargeFrequencyValue = ChargeFrequency.optionLiteral(fee_frequency);
 
         this.frequencyIntervalValue = (Long) chargeObject.get(MCharge.Field.FEE_INTERVAL);
+
+        this.feeFrequencyValue = this.chargeFrequencyValue != null || this.frequencyIntervalValue != null;
     }
 
     @Override
@@ -434,6 +436,7 @@ public class LoanChargeModifyPage extends Page {
     @Override
     protected void configureMetaData() {
         chargeTimeFieldUpdate(null);
+        feeFrequencyUpdate(null);
     }
 
     protected boolean feeFrequencyUpdate(AjaxRequestTarget target) {
