@@ -91,7 +91,6 @@ public class DataTableCreatePage extends Page {
     protected AjaxLink<Void> columnAddLink;
 
     protected ModalWindow columnPopup;
-
     protected Map<String, Object> popupModel;
 
     @Override
@@ -124,12 +123,11 @@ public class DataTableCreatePage extends Page {
 
     @Override
     protected void initData() {
+        this.popupModel = new HashMap<>();
     }
 
     @Override
     protected void initComponent() {
-        this.popupModel = new HashMap<>();
-
         this.form = new Form<>("form");
         add(this.form);
 

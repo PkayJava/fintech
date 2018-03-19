@@ -1,6 +1,7 @@
 package com.angkorteam.fintech.pages.rate;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.FloatingRateBuilder;
 import com.angkorteam.fintech.helper.FloatingRateHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
+import com.angkorteam.fintech.popup.FloatingRatePeriodPopup;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
@@ -32,7 +34,8 @@ import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
-import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
+import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
@@ -42,7 +45,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -50,27 +52,6 @@ import com.mashape.unirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FloatingRateCreatePage extends Page {
-
-    protected Form<Void> rateForm;
-    protected AjaxButton addButton;
-
-    protected WebMarkupBlock fromDateBlock;
-    protected WebMarkupContainer fromDateIContainer;
-    protected Date fromDateValue;
-    protected DateTextField fromDateField;
-    protected TextFeedbackPanel fromDateFeedback;
-
-    protected WebMarkupBlock interestRateBlock;
-    protected WebMarkupContainer interestRateIContainer;
-    protected Double interestRateValue;
-    protected TextField<Double> interestRateField;
-    protected TextFeedbackPanel interestRateFeedback;
-
-    protected WebMarkupBlock differentialBlock;
-    protected WebMarkupContainer differentialIContainer;
-    protected Boolean differentialValue;
-    protected CheckBox differentialField;
-    protected TextFeedbackPanel differentialFeedback;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -100,6 +81,11 @@ public class FloatingRateCreatePage extends Page {
     protected DataTable<Map<String, Object>, String> rateTable;
     protected ListDataProvider rateProvider;
     protected List<IColumn<Map<String, Object>, String>> rateColumn;
+
+    protected AjaxLink<Void> rateAddLink;
+
+    protected ModalWindow ratePopup;
+    protected Map<String, Object> popupModel;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -131,25 +117,14 @@ public class FloatingRateCreatePage extends Page {
 
     @Override
     protected void initData() {
+        this.popupModel = new HashMap<>();
     }
 
     @Override
     protected void initComponent() {
-        this.rateForm = new Form<>("rateForm");
-        add(this.rateForm);
-
-        this.addButton = new AjaxButton("addButton");
-        this.addButton.setOnSubmit(this::addButtonSubmit);
-        this.rateForm.add(this.addButton);
 
         this.form = new Form<>("form");
         add(this.form);
-
-        initFromDateBlock();
-
-        initInterestRateBlock();
-
-        initDifferentialBlock();
 
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
@@ -165,6 +140,21 @@ public class FloatingRateCreatePage extends Page {
         initBaseLendingBlock();
 
         initRateBlock();
+
+        this.ratePopup = new ModalWindow("ratePopup");
+        add(this.ratePopup);
+        this.ratePopup.setOnClose(this::ratePopupClose);
+    }
+
+    protected void ratePopupClose(String popupName, String signalId, AjaxRequestTarget target) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
+        Map<String, Object> rate = Maps.newHashMap();
+        rate.put("uuid", generator.externalId());
+        rate.put("fromDate", this.popupModel.get("fromDateValue"));
+        rate.put("interestRate", this.popupModel.get("interestRateValue"));
+        rate.put("differential", this.popupModel.get("differentialValue"));
+        this.rateValue.add(rate);
+        target.add(this.rateTable);
     }
 
     protected void initRateBlock() {
@@ -182,6 +172,17 @@ public class FloatingRateCreatePage extends Page {
         this.rateIContainer.add(this.rateTable);
         this.rateTable.addTopToolbar(new HeadersToolbar<>(this.rateTable, this.rateProvider));
         this.rateTable.addBottomToolbar(new NoRecordsToolbar(this.rateTable));
+
+        this.rateAddLink = new AjaxLink<>("rateAddLink");
+        this.rateAddLink.setOnClick(this::rateAddLinkClick);
+        this.rateIContainer.add(this.rateAddLink);
+    }
+
+    protected boolean rateAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.popupModel.clear();
+        this.ratePopup.setContent(new FloatingRatePeriodPopup("ratePopup", this.ratePopup, this.popupModel));
+        this.ratePopup.show(target);
+        return false;
     }
 
     protected void initBaseLendingBlock() {
@@ -218,42 +219,6 @@ public class FloatingRateCreatePage extends Page {
         this.nameIContainer.add(this.nameField);
         this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
         this.nameIContainer.add(this.nameFeedback);
-    }
-
-    protected void initDifferentialBlock() {
-        this.differentialBlock = new WebMarkupBlock("differentialBlock", Size.Four_4);
-        this.rateForm.add(this.differentialBlock);
-        this.differentialIContainer = new WebMarkupContainer("differentialIContainer");
-        this.differentialBlock.add(this.differentialIContainer);
-        this.differentialField = new CheckBox("differentialField", new PropertyModel<>(this, "differentialValue"));
-        this.differentialField.setRequired(true);
-        this.differentialIContainer.add(this.differentialField);
-        this.differentialFeedback = new TextFeedbackPanel("differentialFeedback", this.differentialField);
-        this.differentialIContainer.add(this.differentialFeedback);
-    }
-
-    protected void initInterestRateBlock() {
-        this.interestRateBlock = new WebMarkupBlock("interestRateBlock", Size.Four_4);
-        this.rateForm.add(this.interestRateBlock);
-        this.interestRateIContainer = new WebMarkupContainer("interestRateIContainer");
-        this.interestRateBlock.add(this.interestRateIContainer);
-        this.interestRateField = new TextField<>("interestRateField", new PropertyModel<>(this, "interestRateValue"));
-        this.interestRateField.setRequired(true);
-        this.interestRateIContainer.add(this.interestRateField);
-        this.interestRateFeedback = new TextFeedbackPanel("interestRateFeedback", this.interestRateField);
-        this.interestRateIContainer.add(this.interestRateFeedback);
-    }
-
-    protected void initFromDateBlock() {
-        this.fromDateBlock = new WebMarkupBlock("fromDateBlock", Size.Four_4);
-        this.rateForm.add(this.fromDateBlock);
-        this.fromDateIContainer = new WebMarkupContainer("fromDateIContainer");
-        this.fromDateBlock.add(this.fromDateIContainer);
-        this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this, "fromDateValue"));
-        this.fromDateField.setRequired(true);
-        this.fromDateIContainer.add(this.fromDateField);
-        this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
-        this.fromDateIContainer.add(this.fromDateFeedback);
     }
 
     @Override
@@ -303,22 +268,6 @@ public class FloatingRateCreatePage extends Page {
             }
         }
         throw new WicketRuntimeException("Unknown " + column);
-    }
-
-    protected boolean addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
-        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
-        Map<String, Object> rate = Maps.newHashMap();
-        rate.put("uuid", generator.externalId());
-        rate.put("fromDate", this.fromDateValue);
-        rate.put("interestRate", this.interestRateValue);
-        rate.put("differential", this.differentialValue);
-        this.rateValue.add(rate);
-        this.fromDateValue = null;
-        this.interestRateValue = null;
-        this.differentialValue = null;
-        target.add(this.form);
-        target.add(this.rateForm);
-        return false;
     }
 
     protected void saveButtonSubmit(Button button) {
