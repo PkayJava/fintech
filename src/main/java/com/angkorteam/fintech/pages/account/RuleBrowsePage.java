@@ -106,10 +106,10 @@ public class RuleBrowsePage extends Page {
         this.dataProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
         this.dataProvider.applyJoin("acc_gl_account_debit", "LEFT JOIN " + AccGLAccount.NAME + " debit ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.DEBIT_ACCOUNT_ID + " = debit." + AccGLAccount.Field.ID);
         this.dataProvider.applyJoin("acc_gl_account_credit", "LEFT JOIN " + AccGLAccount.NAME + " credit ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.CREDIT_ACCOUNT_ID + " = credit." + AccGLAccount.Field.ID);
-        this.dataProvider.applyJoin("acc_rule_debit", "LEFT JOIN " + AccRuleTags.NAME + " debit_tag on " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID + " = debit_tag." + AccRuleTags.Field.ACC_RULE_ID + " and debit_tag." + AccRuleTags.Field.ACC_TYPE_ENUM + " = " + DEBIT);
-        this.dataProvider.applyJoin("acc_rule_credit", "LEFT JOIN " + AccRuleTags.NAME + " credit_tag on " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID + " = credit_tag." + AccRuleTags.Field.ACC_RULE_ID + " and credit_tag." + AccRuleTags.Field.ACC_TYPE_ENUM + " = " + CREDIT);
-        this.dataProvider.applyJoin("m_code_value_debit", "LEFT JOIN " + MCodeValue.NAME + " debit_tag_code on debit_tag." + AccRuleTags.Field.TAG_ID + " = debit_tag_code." + MCodeValue.Field.ID);
-        this.dataProvider.applyJoin("m_code_value_credit", "LEFT JOIN " + MCodeValue.NAME + " credit_tag_code on credit_tag." + AccRuleTags.Field.TAG_ID + " = credit_tag_code." + MCodeValue.Field.ID);
+        this.dataProvider.applyJoin("acc_rule_debit", "LEFT JOIN " + AccRuleTags.NAME + " debit_tag ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID + " = debit_tag." + AccRuleTags.Field.ACC_RULE_ID + " and debit_tag." + AccRuleTags.Field.ACC_TYPE_ENUM + " = " + DEBIT);
+        this.dataProvider.applyJoin("acc_rule_credit", "LEFT JOIN " + AccRuleTags.NAME + " credit_tag ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID + " = credit_tag." + AccRuleTags.Field.ACC_RULE_ID + " and credit_tag." + AccRuleTags.Field.ACC_TYPE_ENUM + " = " + CREDIT);
+        this.dataProvider.applyJoin("m_code_value_debit", "LEFT JOIN " + MCodeValue.NAME + " debit_tag_code ON debit_tag." + AccRuleTags.Field.TAG_ID + " = debit_tag_code." + MCodeValue.Field.ID);
+        this.dataProvider.applyJoin("m_code_value_credit", "LEFT JOIN " + MCodeValue.NAME + " credit_tag_code ON credit_tag." + AccRuleTags.Field.TAG_ID + " = credit_tag_code." + MCodeValue.Field.ID);
         this.dataProvider.setGroupBy(AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID);
 
         this.dataProvider.boardField("max(" + AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID + ")", "id", Long.class);
