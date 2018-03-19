@@ -155,6 +155,7 @@ public class RuleModifyPage extends Page {
         selectQuery.addField(AccAccountingRule.Field.DEBIT_ACCOUNT_ID);
         selectQuery.addField(AccAccountingRule.Field.ALLOW_MULTIPLE_DEBITS);
         selectQuery.addField(AccAccountingRule.Field.ALLOW_MULTIPLE_CREDITS);
+        selectQuery.addField(AccAccountingRule.Field.CREDIT_ACCOUNT_ID);
         Map<String, Object> ruleObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
 
         this.ruleNameValue = (String) ruleObject.get(AccAccountingRule.Field.NAME);
