@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.joda.time.DateTime;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
@@ -85,6 +86,7 @@ public class ClosureCreatePage extends Page {
 
     @Override
     protected void initData() {
+        this.closingDateValue = DateTime.now().toDate();
     }
 
     @Override
