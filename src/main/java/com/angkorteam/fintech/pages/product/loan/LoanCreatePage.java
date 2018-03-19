@@ -971,6 +971,7 @@ public class LoanCreatePage extends Page {
     protected List<Map<String, Object>> overdueChargeValue = Lists.newArrayList();
     protected DataTable<Map<String, Object>, String> overdueChargeTable;
     protected ListDataProvider overdueChargeProvider;
+
     protected ModalWindow overdueChargePopup;
 
     protected Map<String, Object> popupModel;
