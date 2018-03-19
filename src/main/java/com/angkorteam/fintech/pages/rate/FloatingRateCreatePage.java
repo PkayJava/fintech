@@ -284,7 +284,7 @@ public class FloatingRateCreatePage extends Page {
         if (reportError(node)) {
             return;
         }
-        setResponsePage(FloatingRateCreatePage.class);
+        setResponsePage(FloatingRateBrowsePage.class);
     }
 
 }
