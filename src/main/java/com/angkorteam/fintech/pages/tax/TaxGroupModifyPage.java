@@ -219,7 +219,7 @@ public class TaxGroupModifyPage extends Page {
 
     protected boolean taxComponentAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.modalWindow.setContent(new TaxComponentCreatePopup("add", this.popupModel));
+        this.modalWindow.setContent(new TaxComponentCreatePopup("create", this.popupModel));
         this.modalWindow.show(target);
         return false;
     }
