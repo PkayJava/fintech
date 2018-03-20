@@ -40,7 +40,7 @@ public class TaxComponentBuilder implements Serializable {
     public JsonNode build() {
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
         if (this.hasCreditAccountId) {
-            object.getObject().put("creditAccountId", this.creditAccountId);
+            object.getObject().put("creditAcountId", this.creditAccountId);
         }
         if (this.hasCreditAccountType) {
             if (this.creditAccountType != null) {

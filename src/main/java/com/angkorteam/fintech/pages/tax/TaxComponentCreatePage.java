@@ -216,7 +216,9 @@ public class TaxComponentCreatePage extends Page {
         this.accountValue = null;
         this.accountProvider.setDisabled(false);
         this.accountProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.valueOf(this.accountTypeValue.getId()).getLiteral());
-        target.add(this.form);
+        if (target != null) {
+            target.add(this.accountBlock);
+        }
         return false;
     }
 
