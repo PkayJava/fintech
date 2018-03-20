@@ -1,9 +1,54 @@
 package com.angkorteam.fintech.pages.product.fixed;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.ddl.*;
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.AccProductMapping;
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MCodeValue;
+import com.angkorteam.fintech.ddl.MDepositProductInterestRateChart;
+import com.angkorteam.fintech.ddl.MDepositProductTermAndPreClosure;
+import com.angkorteam.fintech.ddl.MInterestIncentives;
+import com.angkorteam.fintech.ddl.MInterestRateChart;
+import com.angkorteam.fintech.ddl.MInterestRateSlab;
+import com.angkorteam.fintech.ddl.MOrganisationCurrency;
+import com.angkorteam.fintech.ddl.MPaymentType;
+import com.angkorteam.fintech.ddl.MSavingsProduct;
+import com.angkorteam.fintech.ddl.MSavingsProductCharge;
+import com.angkorteam.fintech.ddl.MTaxGroup;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.enums.*;
+import com.angkorteam.fintech.dto.enums.AccountingType;
+import com.angkorteam.fintech.dto.enums.ApplyPenalOn;
+import com.angkorteam.fintech.dto.enums.Attribute;
+import com.angkorteam.fintech.dto.enums.ChargeCalculation;
+import com.angkorteam.fintech.dto.enums.ChargeTime;
+import com.angkorteam.fintech.dto.enums.DayInYear;
+import com.angkorteam.fintech.dto.enums.FinancialAccountType;
+import com.angkorteam.fintech.dto.enums.InterestCalculatedUsing;
+import com.angkorteam.fintech.dto.enums.InterestCompoundingPeriod;
+import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
+import com.angkorteam.fintech.dto.enums.LockInType;
+import com.angkorteam.fintech.dto.enums.OperandType;
+import com.angkorteam.fintech.dto.enums.Operator;
+import com.angkorteam.fintech.dto.enums.ProductType;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.popup.IncentivePreviewPopup;
 import com.angkorteam.fintech.provider.LockInTypeProvider;
@@ -27,20 +72,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FixedDepositPreviewPage extends Page {
@@ -781,7 +812,8 @@ public class FixedDepositPreviewPage extends Page {
         this.chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeColumn));
         this.chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeColumn));
         this.chargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::chargeColumn));
-//        this.chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeColumn));
+        // this.chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date",
+        // this::chargeColumn));
         this.chargeProvider = new ListDataProvider(this.chargeValue);
         this.chargeTable = new DataTable<>("chargeTable", this.chargeColumn, this.chargeProvider, 20);
         add(this.chargeTable);
@@ -888,7 +920,7 @@ public class FixedDepositPreviewPage extends Page {
     protected void interestRateChartClick(String link, Map<String, Object> model, AjaxRequestTarget target) {
         if ("incentives".equals(link)) {
             List<Map<String, Object>> incentiveValue = (List<Map<String, Object>>) model.get("interestRate");
-            this.popup.setContent(new IncentivePreviewPopup("incentive", this.popup, incentiveValue));
+            this.popup.setContent(new IncentivePreviewPopup("incentive", incentiveValue));
             this.popup.show(target);
         }
     }

@@ -14,7 +14,6 @@ import com.angkorteam.fintech.provider.ProfessionProvider;
 import com.angkorteam.fintech.provider.RelationshipProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -24,8 +23,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
  * Created by socheatkhauv on 7/2/17.
  */
 public class FamilyMemberPopup extends PopupPanel {
-
-    protected ModalWindow window;
 
     protected Form<Void> form;
     protected AjaxButton okayButton;
@@ -67,12 +64,8 @@ public class FamilyMemberPopup extends PopupPanel {
     protected DateTextField dateOfBirthField;
     protected TextFeedbackPanel dateOfBirthFeedback;
 
-    protected Map<String, Object> model;
-
-    public FamilyMemberPopup(String name, ModalWindow window, Map<String, Object> model) {
-        super(name, window);
-        this.model = model;
-        this.window = window;
+    public FamilyMemberPopup(String name, Map<String, Object> model) {
+        super(name, model);
     }
 
     @Override

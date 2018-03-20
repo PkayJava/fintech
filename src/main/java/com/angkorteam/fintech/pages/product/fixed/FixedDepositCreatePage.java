@@ -708,10 +708,10 @@ public class FixedDepositCreatePage extends Page {
     protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.penaltyIncomePopup.setContent(new PenaltyChargePopup("penaltyCharge", this.penaltyIncomePopup, ProductPopup.Fixed, this.popupModel, this.currencyCodeValue.getId()));
+            this.penaltyIncomePopup.setContent(new PenaltyChargePopup("penaltyCharge", this.popupModel, ProductPopup.Fixed, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
         } else {
-            this.penaltyIncomePopup.setContent(new CurrencyPopup("currency", this.penaltyIncomePopup));
+            this.penaltyIncomePopup.setContent(new CurrencyPopup("currency"));
             this.penaltyIncomePopup.show(target);
         }
         return false;
@@ -751,10 +751,10 @@ public class FixedDepositCreatePage extends Page {
     protected boolean advancedAccountingRuleFeeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.feeIncomePopup.setContent(new FeeChargePopup("feeCharge", this.feeIncomePopup, ProductPopup.Fixed, this.popupModel, this.currencyCodeValue.getId()));
+            this.feeIncomePopup.setContent(new FeeChargePopup("feeCharge", this.popupModel, ProductPopup.Fixed, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
         } else {
-            this.feeIncomePopup.setContent(new CurrencyPopup("currency", this.feeIncomePopup));
+            this.feeIncomePopup.setContent(new CurrencyPopup("currency"));
             this.feeIncomePopup.show(target);
         }
         return false;
@@ -803,7 +803,7 @@ public class FixedDepositCreatePage extends Page {
     }
 
     protected boolean advancedAccountingRuleFundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.fundSourcePopup.setContent(new PaymentTypePopup("paymentType", this.fundSourcePopup, this.popupModel));
+        this.fundSourcePopup.setContent(new PaymentTypePopup("paymentType", this.popupModel));
         this.fundSourcePopup.show(target);
         return false;
     }
@@ -898,10 +898,10 @@ public class FixedDepositCreatePage extends Page {
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.chargePopup.setContent(new ChargePopup("charge", this.chargePopup, ProductPopup.Fixed, this.popupModel, this.currencyCodeValue.getId()));
+            this.chargePopup.setContent(new ChargePopup("charge", this.popupModel, ProductPopup.Fixed, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
-            this.chargePopup.setContent(new CurrencyPopup("currency", this.chargePopup));
+            this.chargePopup.setContent(new CurrencyPopup("currency"));
             this.chargePopup.show(target);
         }
         return false;
@@ -1049,7 +1049,7 @@ public class FixedDepositCreatePage extends Page {
 
     protected boolean interestRateChartAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.interestRateChartPopup.setContent(new InterestRateChartPopup("interestRateChart", this.interestRateChartPopup, this.popupModel));
+        this.interestRateChartPopup.setContent(new InterestRateChartPopup("interestRateChart", this.popupModel));
         this.interestRateChartPopup.show(target);
         return false;
     }
@@ -1087,7 +1087,7 @@ public class FixedDepositCreatePage extends Page {
             target.add(this.interestRateChartTable);
         } else if ("incentives".equals(link)) {
             List<Map<String, Object>> incentiveValue = (List<Map<String, Object>>) model.get("interestRate");
-            this.incentivePopup.setContent(new IncentivePopup("incentive", this.incentivePopup, incentiveValue));
+            this.incentivePopup.setContent(new IncentivePopup("incentive", incentiveValue));
             this.incentivePopup.show(target);
         }
     }

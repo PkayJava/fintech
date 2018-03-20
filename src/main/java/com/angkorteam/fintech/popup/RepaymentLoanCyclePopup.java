@@ -10,14 +10,11 @@ import org.apache.wicket.model.PropertyModel;
 import com.angkorteam.fintech.provider.WhenProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 public class RepaymentLoanCyclePopup extends PopupPanel {
-
-    protected ModalWindow window;
 
     protected Form<Void> form;
     protected AjaxButton okayButton;
@@ -38,12 +35,8 @@ public class RepaymentLoanCyclePopup extends PopupPanel {
     protected TextField<Double> maximumField;
     protected TextFeedbackPanel maximumFeedback;
 
-    protected Map<String, Object> model;
-
-    public RepaymentLoanCyclePopup(String name, ModalWindow window, Map<String, Object> model) {
-        super(name, window);
-        this.model = model;
-        this.window = window;
+    public RepaymentLoanCyclePopup(String name, Map<String, Object> model) {
+        super(name, model);
     }
 
     @Override

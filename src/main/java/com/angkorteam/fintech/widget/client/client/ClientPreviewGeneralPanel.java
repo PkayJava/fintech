@@ -434,7 +434,7 @@ public class ClientPreviewGeneralPanel extends Panel {
     }
 
     protected boolean unassignStaffLinkClick(AjaxLink<Void> ajaxLink, AjaxRequestTarget target) {
-        this.clientUnassignStaffPopup.setContent(new ClientUnassignStaffPopup(this.clientUnassignStaffPopup.getContentId(), this.clientUnassignStaffPopup, this));
+        this.clientUnassignStaffPopup.setContent(new ClientUnassignStaffPopup("clientUnassignStaffPopup"));
         this.clientUnassignStaffPopup.show(target);
         return false;
     }

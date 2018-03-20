@@ -17,13 +17,12 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
-import com.angkorteam.fintech.ddl.MTaxComponent;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.TaxGroupBuilder;
 import com.angkorteam.fintech.helper.TaxGroupHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.pages.TaxDashboardPage;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.popup.TaxComponentCreatePopup;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -32,7 +31,8 @@ import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
-import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
+import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
@@ -42,10 +42,8 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
@@ -55,22 +53,6 @@ import com.mashape.unirest.http.JsonNode;
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class TaxGroupCreatePage extends Page {
-
-    protected Form<Void> taxForm;
-    protected AjaxButton addButton;
-
-    protected WebMarkupBlock taxBlock;
-    protected WebMarkupContainer taxIContainer;
-    protected SingleChoiceProvider taxProvider;
-    protected Option taxValue;
-    protected Select2SingleChoice<Option> taxField;
-    protected TextFeedbackPanel taxFeedback;
-
-    protected WebMarkupBlock startDateBlock;
-    protected WebMarkupContainer startDateIContainer;
-    protected Date startDateValue;
-    protected DateTextField startDateField;
-    protected TextFeedbackPanel startDateFeedback;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -88,6 +70,11 @@ public class TaxGroupCreatePage extends Page {
     protected DataTable<Map<String, Object>, String> taxComponentTable;
     protected ListDataProvider taxComponentProvider;
     protected List<IColumn<Map<String, Object>, String>> taxComponentColumn;
+
+    protected AjaxLink<Void> taxComponentAddLink;
+
+    protected ModalWindow popup;
+    protected Map<String, Object> popupModel;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -125,23 +112,14 @@ public class TaxGroupCreatePage extends Page {
 
     @Override
     protected void initData() {
+        this.popupModel = Maps.newHashMap();
     }
 
     @Override
     protected void initComponent() {
-        this.taxForm = new Form<>("taxForm");
-        add(this.taxForm);
-
-        this.addButton = new AjaxButton("addButton");
-        this.addButton.setOnSubmit(this::addButtonSubmit);
-        this.taxForm.add(this.addButton);
 
         this.form = new Form<>("form");
         add(this.form);
-
-        initTaxBlock();
-
-        initStartDateBlock();
 
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
@@ -153,6 +131,21 @@ public class TaxGroupCreatePage extends Page {
         initNameBlock();
 
         initTaxComponentBlock();
+
+        this.popup = new ModalWindow("popup");
+        add(this.popup);
+        this.popup.setOnClose(this::popupClose);
+    }
+
+    protected void popupClose(String popupName, String signalId, AjaxRequestTarget target) {
+        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
+        Map<String, Object> tax = Maps.newHashMap();
+        tax.put("uuid", generator.externalId());
+        tax.put("taxComponentId", ((Option) this.popupModel.get("taxValue")).getId());
+        tax.put("tax", ((Option) this.popupModel.get("taxValue")).getText());
+        tax.put("startDate", this.popupModel.get("startDateValue"));
+        this.taxComponentValue.add(tax);
+        target.add(this.taxComponentTable);
     }
 
     protected void initTaxComponentBlock() {
@@ -170,6 +163,17 @@ public class TaxGroupCreatePage extends Page {
         this.taxComponentIContainer.add(this.taxComponentTable);
         this.taxComponentTable.addTopToolbar(new HeadersToolbar<>(this.taxComponentTable, this.taxComponentProvider));
         this.taxComponentTable.addBottomToolbar(new NoRecordsToolbar(this.taxComponentTable));
+
+        this.taxComponentAddLink = new AjaxLink<>("taxComponentAddLink");
+        this.taxComponentAddLink.setOnClick(this::taxComponentAddLinkClick);
+        this.taxComponentIContainer.add(this.taxComponentAddLink);
+    }
+
+    protected boolean taxComponentAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.popupModel.clear();
+        this.popup.setContent(new TaxComponentCreatePopup("add", this.popupModel));
+        this.popup.show(target);
+        return false;
     }
 
     protected void initNameBlock() {
@@ -184,51 +188,12 @@ public class TaxGroupCreatePage extends Page {
         this.nameIContainer.add(this.nameFeedback);
     }
 
-    protected void initStartDateBlock() {
-        this.startDateBlock = new WebMarkupBlock("startDateBlock", Size.Six_6);
-        this.taxForm.add(this.startDateBlock);
-        this.startDateIContainer = new WebMarkupContainer("startDateIContainer");
-        this.startDateBlock.add(this.startDateIContainer);
-        this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
-        this.startDateField.setRequired(true);
-        this.startDateIContainer.add(this.startDateField);
-        this.startDateFeedback = new TextFeedbackPanel("startDateFeedback", this.startDateField);
-        this.startDateIContainer.add(this.startDateFeedback);
-    }
-
-    protected void initTaxBlock() {
-        this.taxBlock = new WebMarkupBlock("taxBlock", Size.Six_6);
-        this.taxForm.add(this.taxBlock);
-        this.taxIContainer = new WebMarkupContainer("taxIContainer");
-        this.taxBlock.add(this.taxIContainer);
-        this.taxProvider = new SingleChoiceProvider(MTaxComponent.NAME, MTaxComponent.Field.ID, MTaxComponent.Field.NAME);
-        this.taxField = new Select2SingleChoice<>("taxField", new PropertyModel<>(this, "taxValue"), this.taxProvider);
-        this.taxIContainer.add(this.taxField);
-        this.taxFeedback = new TextFeedbackPanel("taxFeedback", this.taxField);
-        this.taxIContainer.add(this.taxFeedback);
-    }
-
     @Override
     protected void configureRequiredValidation() {
     }
 
     @Override
     protected void configureMetaData() {
-    }
-
-    protected boolean addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
-        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
-        Map<String, Object> tax = Maps.newHashMap();
-        tax.put("uuid", generator.externalId());
-        tax.put("taxComponentId", this.taxValue.getId());
-        tax.put("tax", this.taxValue.getText());
-        tax.put("startDate", this.startDateValue);
-        this.taxComponentValue.add(tax);
-        this.taxValue = null;
-        this.startDateValue = null;
-        target.add(this.form);
-        target.add(this.taxForm);
-        return false;
     }
 
     protected ItemPanel taxComponentColumn(String column, IModel<String> display, Map<String, Object> model) {

@@ -719,7 +719,7 @@ public class ClientCreatePage extends Page {
     protected boolean familyMemberAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         this.popupModel.put("dateOfBirthValue", DateTime.now().minusYears(18).toDate());
-        this.familyMemberPopup.setContent(new FamilyMemberPopup(this.familyMemberPopup.getContentId(), this.familyMemberPopup, this.popupModel));
+        this.familyMemberPopup.setContent(new FamilyMemberPopup("familyMemberPopup", this.popupModel));
         this.familyMemberPopup.show(target);
         return false;
     }

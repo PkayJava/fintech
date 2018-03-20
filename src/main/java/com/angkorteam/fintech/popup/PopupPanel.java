@@ -1,11 +1,11 @@
 package com.angkorteam.fintech.popup;
 
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import java.util.Map;
 
 public abstract class PopupPanel extends com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.PopupPanel {
 
-    public PopupPanel(String name, ModalWindow window) {
-        super(name, window);
+    public PopupPanel(String name, Map<String, Object> model) {
+        super(name, model);
     }
 
     @Override

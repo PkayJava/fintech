@@ -27,7 +27,6 @@ import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.DayMonthTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -37,9 +36,6 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleCho
 public class AccountChargePopup extends PopupPanel {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(AccountChargePopup.class);
-
-    protected ModalWindow window;
-    protected Map<String, Object> model;
 
     protected Form<Void> form;
     protected AjaxButton okayButton;
@@ -89,10 +85,8 @@ public class AccountChargePopup extends PopupPanel {
 
     protected ProductPopup productPopup;
 
-    public AccountChargePopup(String name, ModalWindow window, ProductPopup productPopup, Map<String, Object> model, String currencyCode) {
-        super(name, window);
-        this.model = model;
-        this.window = window;
+    public AccountChargePopup(String name, Map<String, Object> model, ProductPopup productPopup, String currencyCode) {
+        super(name, model);
         this.currencyCode = currencyCode;
         this.productPopup = productPopup;
     }

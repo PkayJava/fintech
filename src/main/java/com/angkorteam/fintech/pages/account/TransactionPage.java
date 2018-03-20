@@ -4,10 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.AccGLAccount;
-import com.angkorteam.fintech.ddl.AccGLJournalEntry;
-import com.angkorteam.fintech.ddl.MAppUser;
-import com.angkorteam.fintech.ddl.MOffice;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -19,6 +15,10 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.AccGLJournalEntry;
+import com.angkorteam.fintech.ddl.MAppUser;
+import com.angkorteam.fintech.ddl.MOffice;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.popup.ReversePopup;
@@ -274,7 +274,7 @@ public class TransactionPage extends Page {
     }
 
     protected boolean reverseButtonClick(AjaxLink<Void> button, AjaxRequestTarget target) {
-        this.commentPopup.setContent(new ReversePopup(this.commentPopup.getContentId(), this.commentPopup, this.popupModel, this.transactionId));
+        this.commentPopup.setContent(new ReversePopup("commentPopup", this.popupModel, this.transactionId));
         this.commentPopup.show(target);
         return false;
     }

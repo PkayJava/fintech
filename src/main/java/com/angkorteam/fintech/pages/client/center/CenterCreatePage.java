@@ -315,10 +315,10 @@ public class CenterCreatePage extends Page {
     protected boolean groupAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.officeValue == null) {
-            this.groupPopup.setContent(new OfficePopup("office", this.groupPopup));
+            this.groupPopup.setContent(new OfficePopup("office"));
             this.groupPopup.show(target);
         } else {
-            this.groupPopup.setContent(new GroupPopup(this.groupPopup.getContentId(), this.groupPopup, this.popupModel, this.officeValue.getId()));
+            this.groupPopup.setContent(new GroupPopup("groupPopup", this.popupModel, this.officeValue.getId()));
             this.groupPopup.show(target);
         }
         return false;

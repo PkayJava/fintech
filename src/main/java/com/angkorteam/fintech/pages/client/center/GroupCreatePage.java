@@ -334,10 +334,10 @@ public class GroupCreatePage extends Page {
     protected boolean clientAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.officeValue == null) {
-            this.clientPopup.setContent(new OfficePopup("office", this.clientPopup));
+            this.clientPopup.setContent(new OfficePopup("office"));
             this.clientPopup.show(target);
         } else {
-            this.clientPopup.setContent(new ClientPopup("client", this.clientPopup, this.popupModel, this.officeId));
+            this.clientPopup.setContent(new ClientPopup("client", this.popupModel, this.officeId));
             this.clientPopup.show(target);
         }
         return false;

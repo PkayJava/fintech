@@ -17,14 +17,11 @@ import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 public class ColumnPopup extends PopupPanel {
-
-    protected ModalWindow window;
 
     protected Form<Void> form;
     protected AjaxButton okayButton;
@@ -61,12 +58,8 @@ public class ColumnPopup extends PopupPanel {
     protected Select2SingleChoice<Option> codeField;
     protected TextFeedbackPanel codeFeedback;
 
-    protected Map<String, Object> model;
-
-    public ColumnPopup(String name, ModalWindow window, Map<String, Object> model) {
-        super(name, window);
-        this.model = model;
-        this.window = window;
+    public ColumnPopup(String name, Map<String, Object> model) {
+        super(name, model);
     }
 
     @Override

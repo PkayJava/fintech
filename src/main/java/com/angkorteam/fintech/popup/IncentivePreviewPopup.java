@@ -11,7 +11,6 @@ import org.apache.wicket.model.Model;
 import com.angkorteam.fintech.dto.enums.Attribute;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.share.provider.ListDataProvider;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
@@ -19,19 +18,17 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 public class IncentivePreviewPopup extends PopupPanel {
-
-    protected ModalWindow window;
 
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
     protected List<Map<String, Object>> dataValue;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected ListDataProvider dataProvider;
 
-    public IncentivePreviewPopup(String name, ModalWindow window, List<Map<String, Object>> incentiveValue) {
-        super(name, window);
-        this.window = window;
+    public IncentivePreviewPopup(String name, List<Map<String, Object>> incentiveValue) {
+        super(name, Maps.newHashMap());
         this.dataValue = incentiveValue;
     }
 

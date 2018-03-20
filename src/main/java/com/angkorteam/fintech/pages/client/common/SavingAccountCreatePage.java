@@ -806,7 +806,7 @@ public class SavingAccountCreatePage extends Page {
             this.popupModel.put("chargeTypeValue", model.get("type"));
             this.popupModel.put("chargeValue", model.get("name"));
             this.popupModel.put("collectedOnValue", model.get("collectedOn"));
-            this.chargePopup.setContent(new AccountChargePopup("charge", this.chargePopup, ProductPopup.Saving, this.popupModel, this.currencyValue));
+            this.chargePopup.setContent(new AccountChargePopup("charge", this.popupModel, ProductPopup.Saving, this.currencyValue));
             this.chargePopup.show(target);
         }
     }
@@ -820,7 +820,7 @@ public class SavingAccountCreatePage extends Page {
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.chargePopup.setContent(new AccountChargePopup("charge", this.chargePopup, ProductPopup.Saving, this.popupModel, this.currencyValue));
+        this.chargePopup.setContent(new AccountChargePopup("charge", this.popupModel, ProductPopup.Saving, this.currencyValue));
         this.chargePopup.show(target);
         return false;
     }

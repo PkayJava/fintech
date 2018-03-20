@@ -180,7 +180,7 @@ public class FloatingRateCreatePage extends Page {
 
     protected boolean rateAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.ratePopup.setContent(new FloatingRatePeriodPopup("ratePopup", this.ratePopup, this.popupModel));
+        this.ratePopup.setContent(new FloatingRatePeriodPopup("ratePopup", this.popupModel));
         this.ratePopup.show(target);
         return false;
     }

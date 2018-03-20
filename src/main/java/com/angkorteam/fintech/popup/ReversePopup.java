@@ -11,15 +11,12 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 
 /**
  * Created by socheatkhauv on 7/2/17.
  */
 public class ReversePopup extends PopupPanel {
-
-    protected ModalWindow window;
 
     protected String transactionId;
 
@@ -30,12 +27,8 @@ public class ReversePopup extends PopupPanel {
     protected TextArea<String> reasonField;
     protected TextFeedbackPanel reasonFeedback;
 
-    protected Map<String, Object> model;
-
-    public ReversePopup(String name, ModalWindow window, Map<String, Object> model, String transactionId) {
-        super(name, window);
-        this.model = model;
-        this.window = window;
+    public ReversePopup(String name, Map<String, Object> model, String transactionId) {
+        super(name, model);
         this.transactionId = transactionId;
     }
 

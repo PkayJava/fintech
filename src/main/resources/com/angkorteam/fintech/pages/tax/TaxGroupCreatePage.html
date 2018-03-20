@@ -4,47 +4,11 @@
 </head>
 <body>
 	<wicket:extend>
-		<form role="form" wicket:id="taxForm">
-			<div class="box box-primary">
-				<div class="box-header with-border">
-					<h3 class="box-title">Tax Component</h3>
-					<div class="box-tools pull-right">
-						<button type="button" class="btn btn-box-tool"
-							data-widget="collapse">
-							<i class="fa fa-expand"></i>
-						</button>
-					</div>
-				</div>
-				<div class="box-body">
-					<!-- Row -->
-					<div wicket:id="taxBlock" class="form-group">
-						<wicket:container wicket:id="taxIContainer">
-							<label wicket:for="taxField">Tax Component</label>
-							<select wicket:id="taxField" class="form-control"></select>
-							<span wicket:id="taxFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="startDateBlock" class="form-group">
-						<wicket:container wicket:id="startDateIContainer">
-							<label wicket:for="startDateField">Start Date</label>
-							<input wicket:id="startDateField" type="text"
-								class="form-control" />
-							<span wicket:id="startDateFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
-				</div>
-				<div class="box-footer">
-					<button wicket:id="addButton" type="submit" class="btn btn-info">Add
-						More</button>
-				</div>
-			</div>
-		</form>
 
 		<form role="form" wicket:id="form">
 			<div class="box box-primary">
 				<div class="box-header with-border">
-					<h3 class="box-title">Tax Group Configuration</h3>
+					<h3 class="box-title">Create Tax Group</h3>
 				</div>
 				<div class="box-body">
 					<!-- Row -->
@@ -67,6 +31,10 @@
 								<div class="box-body">
 									<table wicket:id="taxComponentTable"></table>
 								</div>
+								<div class="box-footer">
+									<a wicket:id="taxComponentAddLink"
+										class="btn btn-default pull-right">Add</a>
+								</div>
 							</div>
 						</wicket:container>
 					</div>
@@ -78,6 +46,8 @@
 				</div>
 			</div>
 		</form>
+
+		<div wicket:id="popup" />
 
 	</wicket:extend>
 </body>

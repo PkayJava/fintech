@@ -4,22 +4,17 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 import com.angkorteam.fintech.popup.PopupPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
+import com.google.common.collect.Maps;
 
 public class ClientUnassignStaffPopup extends PopupPanel {
-
-    protected ModalWindow window;
-    protected Object model;
 
     protected Form<Void> form;
     protected AjaxButton cancelButton;
     protected AjaxButton confirmButton;
 
-    public ClientUnassignStaffPopup(String name, ModalWindow window, Object model) {
-        super(name, window);
-        this.model = model;
-        this.window = window;
+    public ClientUnassignStaffPopup(String name) {
+        super(name, Maps.newHashMap());
     }
 
     @Override
@@ -49,14 +44,12 @@ public class ClientUnassignStaffPopup extends PopupPanel {
     }
 
     protected boolean cancelButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
-        this.window.setSignalId(ajaxButton.getId());
-        this.window.close(target);
+        closeWindow(ajaxButton.getId(), target);
         return true;
     }
 
     protected boolean confirmButtonSubmit(AjaxButton ajaxButton, AjaxRequestTarget target) {
-        this.window.setSignalId(ajaxButton.getId());
-        this.window.close(target);
+        closeWindow(ajaxButton.getId(), target);
         return true;
     }
 

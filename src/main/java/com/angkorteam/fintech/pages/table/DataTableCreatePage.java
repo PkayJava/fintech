@@ -234,7 +234,7 @@ public class DataTableCreatePage extends Page {
 
     protected boolean columnAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.columnPopup.setContent(new ColumnPopup("columnPopup", this.columnPopup, this.popupModel));
+        this.columnPopup.setContent(new ColumnPopup("columnPopup", this.popupModel));
         this.columnPopup.show(target);
         return false;
     }

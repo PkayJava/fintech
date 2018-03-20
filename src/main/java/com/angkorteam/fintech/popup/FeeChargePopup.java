@@ -18,14 +18,11 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 public class FeeChargePopup extends PopupPanel {
-
-    protected ModalWindow window;
 
     protected Form<Void> form;
     protected AjaxButton okayButton;
@@ -46,14 +43,10 @@ public class FeeChargePopup extends PopupPanel {
 
     protected String currencyCode;
 
-    protected Map<String, Object> model;
-
     protected ProductPopup productPopup;
 
-    public FeeChargePopup(String name, ModalWindow window, ProductPopup productPopup, Map<String, Object> model, String currencyCode) {
-        super(name, window);
-        this.model = model;
-        this.window = window;
+    public FeeChargePopup(String name, Map<String, Object> model, ProductPopup productPopup, String currencyCode) {
+        super(name, model);
         this.currencyCode = currencyCode;
         this.productPopup = productPopup;
     }

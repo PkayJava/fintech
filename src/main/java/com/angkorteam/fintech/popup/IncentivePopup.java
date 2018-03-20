@@ -27,7 +27,6 @@ import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
@@ -43,8 +42,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 public class IncentivePopup extends PopupPanel {
-
-    protected ModalWindow window;
 
     protected Form<Void> form;
     protected AjaxButton addButton;
@@ -92,9 +89,8 @@ public class IncentivePopup extends PopupPanel {
     protected DataTable<Map<String, Object>, String> dataTable;
     protected ListDataProvider dataProvider;
 
-    public IncentivePopup(String name, ModalWindow window, List<Map<String, Object>> incentiveValue) {
-        super(name, window);
-        this.window = window;
+    public IncentivePopup(String name, List<Map<String, Object>> incentiveValue) {
+        super(name, Maps.newHashMap());
         this.dataValue = incentiveValue;
     }
 

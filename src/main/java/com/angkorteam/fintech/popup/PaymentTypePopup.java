@@ -13,14 +13,11 @@ import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 public class PaymentTypePopup extends PopupPanel {
-
-    protected ModalWindow window;
 
     protected Form<Void> form;
     protected AjaxButton okayButton;
@@ -35,12 +32,8 @@ public class PaymentTypePopup extends PopupPanel {
     protected Select2SingleChoice<Option> accountField;
     protected TextFeedbackPanel accountFeedback;
 
-    protected Map<String, Object> model;
-
-    public PaymentTypePopup(String name, ModalWindow window, Map<String, Object> model) {
-        super(name, window);
-        this.model = model;
-        this.window = window;
+    public PaymentTypePopup(String name, Map<String, Object> model) {
+        super(name, model);
     }
 
     @Override

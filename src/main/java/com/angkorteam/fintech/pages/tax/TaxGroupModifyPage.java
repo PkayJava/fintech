@@ -27,8 +27,8 @@ import com.angkorteam.fintech.dto.builder.TaxGroupBuilder;
 import com.angkorteam.fintech.helper.TaxGroupHelper;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.pages.TaxDashboardPage;
-import com.angkorteam.fintech.popup.TaxGroupModifyPopup;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.popup.TaxComponentCreatePopup;
+import com.angkorteam.fintech.popup.TaxComponentPopup;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -39,7 +39,7 @@ import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.spring.JdbcNamed;
-import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
+import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
@@ -50,10 +50,8 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.JsonNode;
@@ -65,22 +63,6 @@ import com.mashape.unirest.http.JsonNode;
 public class TaxGroupModifyPage extends Page {
 
     protected String taxId;
-
-    protected Form<Void> taxForm;
-    protected AjaxButton addButton;
-
-    protected WebMarkupBlock taxBlock;
-    protected WebMarkupContainer taxIContainer;
-    protected SingleChoiceProvider taxProvider;
-    protected Option taxValue;
-    protected Select2SingleChoice<Option> taxField;
-    protected TextFeedbackPanel taxFeedback;
-
-    protected WebMarkupBlock startDateBlock;
-    protected WebMarkupContainer startDateIContainer;
-    protected Date startDateValue;
-    protected DateTextField startDateField;
-    protected TextFeedbackPanel startDateFeedback;
 
     protected Form<Void> form;
     protected Button saveButton;
@@ -98,7 +80,10 @@ public class TaxGroupModifyPage extends Page {
     protected DataTable<Map<String, Object>, String> taxComponentTable;
     protected ListDataProvider taxComponentProvider;
     protected List<IColumn<Map<String, Object>, String>> taxComponentColumn;
-    protected ModalWindow taxComponentPopup;
+
+    protected AjaxLink<Void> taxComponentAddLink;
+
+    protected ModalWindow modalWindow;
 
     protected Map<String, Object> popupModel;
 
@@ -161,8 +146,8 @@ public class TaxGroupModifyPage extends Page {
         selectQuery.addField("CONCAT(" + MTaxGroupMappings.NAME + "." + MTaxGroupMappings.Field.ID + ", '') AS uuid");
         selectQuery.addField("CONCAT(" + MTaxComponent.NAME + "." + MTaxComponent.Field.ID + ", '') AS taxComponentId");
         selectQuery.addField("CONCAT(" + MTaxComponent.NAME + "." + MTaxComponent.Field.NAME + ", '') AS tax");
-        selectQuery.addField("CONCAT(" + MTaxGroupMappings.NAME + "." + MTaxGroupMappings.Field.START_DATE + ", '') AS startDate");
-        selectQuery.addField("CONCAT(" + MTaxGroupMappings.NAME + "." + MTaxGroupMappings.Field.END_DATE + ", '') AS endDate");
+        selectQuery.addField(MTaxGroupMappings.NAME + "." + MTaxGroupMappings.Field.START_DATE + " AS startDate");
+        selectQuery.addField(MTaxGroupMappings.NAME + "." + MTaxGroupMappings.Field.END_DATE + " AS endDate");
         selectQuery.addWhere(MTaxGroupMappings.Field.TAX_GROUP_ID + " = :" + MTaxGroupMappings.Field.TAX_GROUP_ID, this.taxId);
 
         List<Map<String, Object>> groups = named.queryForList(selectQuery.toSQL(), selectQuery.getParam());
@@ -171,19 +156,9 @@ public class TaxGroupModifyPage extends Page {
 
     @Override
     protected void initComponent() {
-        this.taxForm = new Form<>("taxForm");
-        add(this.taxForm);
-
-        this.addButton = new AjaxButton("addButton");
-        this.addButton.setOnSubmit(this::addButtonSubmit);
-        this.taxForm.add(this.addButton);
 
         this.form = new Form<>("form");
         add(this.form);
-
-        initTaxBlock();
-
-        initStartDateBlock();
 
         this.saveButton = new Button("saveButton");
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
@@ -195,6 +170,10 @@ public class TaxGroupModifyPage extends Page {
         initNameBlock();
 
         initTaxComponentBlock();
+
+        this.modalWindow = new ModalWindow("modalWindow");
+        add(this.modalWindow);
+        this.modalWindow.setOnClose(this::modalWindowClose);
     }
 
     @Override
@@ -203,49 +182,6 @@ public class TaxGroupModifyPage extends Page {
 
     @Override
     protected void configureMetaData() {
-    }
-
-    protected void initTaxForm() {
-
-    }
-
-    protected void initTaxBlock() {
-        this.taxBlock = new WebMarkupBlock("taxBlock", Size.Six_6);
-        this.taxForm.add(this.taxBlock);
-        this.taxIContainer = new WebMarkupContainer("taxIContainer");
-        this.taxBlock.add(this.taxIContainer);
-        this.taxProvider = new SingleChoiceProvider(MTaxComponent.NAME, MTaxComponent.Field.ID, MTaxComponent.Field.NAME);
-        this.taxField = new Select2SingleChoice<>("taxField", new PropertyModel<>(this, "taxValue"), this.taxProvider);
-        this.taxIContainer.add(this.taxField);
-        this.taxFeedback = new TextFeedbackPanel("taxFeedback", this.taxField);
-        this.taxIContainer.add(this.taxFeedback);
-    }
-
-    protected void initStartDateBlock() {
-        this.startDateBlock = new WebMarkupBlock("startDateBlock", Size.Six_6);
-        this.taxForm.add(this.startDateBlock);
-        this.startDateIContainer = new WebMarkupContainer("startDateIContainer");
-        this.startDateBlock.add(this.startDateIContainer);
-        this.startDateField = new DateTextField("startDateField", new PropertyModel<>(this, "startDateValue"));
-        this.startDateField.setRequired(true);
-        this.startDateIContainer.add(this.startDateField);
-        this.startDateFeedback = new TextFeedbackPanel("startDateFeedback", this.startDateField);
-        this.startDateIContainer.add(this.startDateFeedback);
-    }
-
-    protected boolean addButtonSubmit(AjaxButton button, AjaxRequestTarget target) {
-        StringGenerator generator = SpringBean.getBean(StringGenerator.class);
-        Map<String, Object> tax = Maps.newHashMap();
-        tax.put("uuid", generator.externalId());
-        tax.put("taxComponentId", this.taxValue.getId());
-        tax.put("tax", this.taxValue.getText());
-        tax.put("startDate", this.startDateValue);
-        this.taxComponentValue.add(tax);
-        this.taxValue = null;
-        this.startDateValue = null;
-        target.add(this.form);
-        target.add(this.taxForm);
-        return false;
     }
 
     protected void initNameBlock() {
@@ -276,19 +212,37 @@ public class TaxGroupModifyPage extends Page {
         this.taxComponentTable.addTopToolbar(new HeadersToolbar<>(this.taxComponentTable, this.taxComponentProvider));
         this.taxComponentTable.addBottomToolbar(new NoRecordsToolbar(this.taxComponentTable));
 
-        this.taxComponentPopup = new ModalWindow("taxComponentPopup");
-        this.taxComponentIContainer.add(this.taxComponentPopup);
-        this.taxComponentPopup.setOnClose(this::taxComponentPopupClose);
+        this.taxComponentAddLink = new AjaxLink<>("taxComponentAddLink");
+        this.taxComponentAddLink.setOnClick(this::taxComponentAddLinkClick);
+        this.taxComponentIContainer.add(this.taxComponentAddLink);
     }
 
-    protected void taxComponentPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
-        for (Map<String, Object> item : this.taxComponentValue) {
-            if (this.popupModel.get("idValue").equals(item.get("id"))) {
-                item.put("endDate", this.popupModel.get("endDateValue"));
-                break;
+    protected boolean taxComponentAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
+        this.popupModel.clear();
+        this.modalWindow.setContent(new TaxComponentCreatePopup("add", this.popupModel));
+        this.modalWindow.show(target);
+        return false;
+    }
+
+    protected void modalWindowClose(String popupName, String signalId, AjaxRequestTarget target) {
+        if ("update".equals(popupName)) {
+            for (Map<String, Object> item : this.taxComponentValue) {
+                if (this.popupModel.get("idValue").equals(item.get("id"))) {
+                    item.put("endDate", this.popupModel.get("endDateValue"));
+                    break;
+                }
             }
+            target.add(this.taxComponentTable);
+        } else if ("create".equals(popupName)) {
+            StringGenerator generator = SpringBean.getBean(StringGenerator.class);
+            Map<String, Object> tax = Maps.newHashMap();
+            tax.put("uuid", generator.externalId());
+            tax.put("taxComponentId", ((Option) this.popupModel.get("taxValue")).getId());
+            tax.put("tax", ((Option) this.popupModel.get("taxValue")).getText());
+            tax.put("startDate", this.popupModel.get("startDateValue"));
+            this.taxComponentValue.add(tax);
+            target.add(this.taxComponentTable);
         }
-        target.add(this.taxComponentTable);
     }
 
     protected ItemPanel taxComponentColumn(String column, IModel<String> display, Map<String, Object> model) {
@@ -321,8 +275,8 @@ public class TaxGroupModifyPage extends Page {
             this.popupModel.put("idValue", model.get("id"));
             this.popupModel.put("endDateValue", model.get("endDate"));
             this.popupModel.put("startDateValue", DateFormatUtils.format((Date) model.get("startDate"), "yyyy-MM-dd"));
-            this.taxComponentPopup.setContent(new TaxGroupModifyPopup(this.taxComponentPopup.getContentId(), this.taxComponentPopup, this.popupModel));
-            this.taxComponentPopup.show(target);
+            this.modalWindow.setContent(new TaxComponentPopup("update", this.popupModel));
+            this.modalWindow.show(target);
         }
     }
 
@@ -349,7 +303,7 @@ public class TaxGroupModifyPage extends Page {
         }
 
         JsonNode node = TaxGroupHelper.update((Session) getSession(), builder.build());
-        
+
         if (reportError(node)) {
             return;
         }

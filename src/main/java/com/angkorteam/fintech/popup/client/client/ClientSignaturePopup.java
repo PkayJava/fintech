@@ -1,17 +1,13 @@
 package com.angkorteam.fintech.popup.client.client;
 
+import java.util.Map;
+
 import com.angkorteam.fintech.popup.PopupPanel;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 
 public class ClientSignaturePopup extends PopupPanel {
 
-    protected ModalWindow window;
-    protected Object model;
-
-    public ClientSignaturePopup(String name, ModalWindow window, Object model) {
-        super(name, window);
-        this.model = model;
-        this.window = window;
+    public ClientSignaturePopup(String name, Map<String, Object> model) {
+        super(name, model);
     }
 
     @Override

@@ -213,7 +213,7 @@ public class FloatingRateModifyPage extends Page {
 
     protected boolean rateAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.ratePopup.setContent(new FloatingRatePeriodPopup("newRatePopup", this.ratePopup, this.popupModel));
+        this.ratePopup.setContent(new FloatingRatePeriodPopup("newRatePopup", this.popupModel));
         this.ratePopup.show(target);
         return false;
     }
@@ -306,7 +306,7 @@ public class FloatingRateModifyPage extends Page {
             this.popupModel.put("fromDateValue", model.get("fromDate"));
             this.popupModel.put("interestRateValue", (Double) model.get("interestRate"));
             this.popupModel.put("differentialValue", model.get("differential"));
-            this.ratePopup.setContent(new FloatingRatePeriodPopup("modifyRatePopup", this.ratePopup, this.popupModel));
+            this.ratePopup.setContent(new FloatingRatePeriodPopup("modifyRatePopup", this.popupModel));
             this.ratePopup.show(target);
         }
     }

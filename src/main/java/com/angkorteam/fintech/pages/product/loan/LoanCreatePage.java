@@ -1141,10 +1141,10 @@ public class LoanCreatePage extends Page {
     protected boolean overdueChargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.overdueChargePopup.setContent(new OverdueChargePopup("overdueCharge", this.overdueChargePopup, ProductPopup.Loan, this.popupModel, this.currencyCodeValue.getId()));
+            this.overdueChargePopup.setContent(new OverdueChargePopup("overdueCharge", this.popupModel, ProductPopup.Loan, this.currencyCodeValue.getId()));
             this.overdueChargePopup.show(target);
         } else {
-            this.overdueChargePopup.setContent(new CurrencyPopup("currency", this.overdueChargePopup));
+            this.overdueChargePopup.setContent(new CurrencyPopup("currency"));
             this.overdueChargePopup.show(target);
         }
         return false;
@@ -1213,10 +1213,10 @@ public class LoanCreatePage extends Page {
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.chargePopup.setContent(new ChargePopup("charge", this.chargePopup, ProductPopup.Loan, this.popupModel, this.currencyCodeValue.getId()));
+            this.chargePopup.setContent(new ChargePopup("charge", this.popupModel, ProductPopup.Loan, this.currencyCodeValue.getId()));
             this.chargePopup.show(target);
         } else {
-            this.chargePopup.setContent(new CurrencyPopup("currency", this.chargePopup));
+            this.chargePopup.setContent(new CurrencyPopup("currency"));
             this.chargePopup.show(target);
         }
         return false;
@@ -1843,10 +1843,10 @@ public class LoanCreatePage extends Page {
     protected boolean advancedAccountingRuleFeeIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.feeIncomePopup.setContent(new FeeChargePopup("feeCharge", this.feeIncomePopup, ProductPopup.Loan, this.popupModel, this.currencyCodeValue.getId()));
+            this.feeIncomePopup.setContent(new FeeChargePopup("feeCharge", this.popupModel, ProductPopup.Loan, this.currencyCodeValue.getId()));
             this.feeIncomePopup.show(target);
         } else {
-            this.feeIncomePopup.setContent(new CurrencyPopup("currency", this.feeIncomePopup));
+            this.feeIncomePopup.setContent(new CurrencyPopup("currency"));
             this.feeIncomePopup.show(target);
         }
         return false;
@@ -1884,10 +1884,10 @@ public class LoanCreatePage extends Page {
     protected boolean advancedAccountingRulePenaltyIncomeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.currencyCodeValue != null) {
-            this.penaltyIncomePopup.setContent(new PenaltyChargePopup("penaltyCharge", this.penaltyIncomePopup, ProductPopup.Loan, this.popupModel, this.currencyCodeValue.getId()));
+            this.penaltyIncomePopup.setContent(new PenaltyChargePopup("penaltyCharge", this.popupModel, ProductPopup.Loan, this.currencyCodeValue.getId()));
             this.penaltyIncomePopup.show(target);
         } else {
-            this.penaltyIncomePopup.setContent(new CurrencyPopup("currency", this.penaltyIncomePopup));
+            this.penaltyIncomePopup.setContent(new CurrencyPopup("currency"));
             this.penaltyIncomePopup.show(target);
         }
         return false;
@@ -1924,7 +1924,7 @@ public class LoanCreatePage extends Page {
 
     protected boolean advancedAccountingRuleFundSourceAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.fundSourcePopup.setContent(new PaymentTypePopup("paymentType", this.fundSourcePopup, this.popupModel));
+        this.fundSourcePopup.setContent(new PaymentTypePopup("paymentType", this.popupModel));
         this.fundSourcePopup.show(target);
         return false;
     }
@@ -3188,7 +3188,7 @@ public class LoanCreatePage extends Page {
 
     protected boolean termNominalInterestRateByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.termNominalInterestRateByLoanCyclePopup.setContent(new InterestLoanCyclePopup("termNominalInterestRateByLoanCycle", this.termNominalInterestRateByLoanCyclePopup, this.popupModel));
+        this.termNominalInterestRateByLoanCyclePopup.setContent(new InterestLoanCyclePopup("termNominalInterestRateByLoanCycle", this.popupModel));
         this.termNominalInterestRateByLoanCyclePopup.show(target);
         return false;
     }
@@ -3244,7 +3244,7 @@ public class LoanCreatePage extends Page {
 
     protected boolean termNumberOfRepaymentByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.termNumberOfRepaymentByLoanCyclePopup.setContent(new RepaymentLoanCyclePopup("termNumberOfRepaymentByLoanCycle", this.termNumberOfRepaymentByLoanCyclePopup, this.popupModel));
+        this.termNumberOfRepaymentByLoanCyclePopup.setContent(new RepaymentLoanCyclePopup("termNumberOfRepaymentByLoanCycle", this.popupModel));
         this.termNumberOfRepaymentByLoanCyclePopup.show(target);
         return false;
     }
@@ -3272,7 +3272,7 @@ public class LoanCreatePage extends Page {
 
     protected boolean termPrincipleByLoanCycleAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.termPrincipleByLoanCyclePopup.setContent(new PrincipleLoanCyclePopup("termPrincipleByLoanCycle", this.termPrincipleByLoanCyclePopup, this.popupModel));
+        this.termPrincipleByLoanCyclePopup.setContent(new PrincipleLoanCyclePopup("termPrincipleByLoanCycle", this.popupModel));
         this.termPrincipleByLoanCyclePopup.show(target);
         return false;
     }

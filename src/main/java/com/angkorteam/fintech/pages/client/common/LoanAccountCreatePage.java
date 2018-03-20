@@ -1189,7 +1189,7 @@ public class LoanAccountCreatePage extends Page {
 
     protected boolean collateralAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.collateralPopup.setContent(new CollateralPopup("collateral", this.collateralPopup, this.popupModel));
+        this.collateralPopup.setContent(new CollateralPopup("collateral", this.popupModel));
         this.collateralPopup.show(target);
         return false;
     }
@@ -1262,7 +1262,7 @@ public class LoanAccountCreatePage extends Page {
             this.popupModel.put("chargeTypeValue", model.get("type"));
             this.popupModel.put("chargeValue", model.get("name"));
             this.popupModel.put("collectedOnValue", model.get("collectedOn"));
-            this.chargePopup.setContent(new AccountChargePopup("charge", this.chargePopup, ProductPopup.Saving, this.popupModel, this.currencyValue));
+            this.chargePopup.setContent(new AccountChargePopup("charge", this.popupModel, ProductPopup.Saving, this.currencyValue));
             this.chargePopup.show(target);
         }
     }
@@ -1276,7 +1276,7 @@ public class LoanAccountCreatePage extends Page {
 
     protected boolean chargeAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
-        this.chargePopup.setContent(new AccountChargePopup("charge", this.chargePopup, ProductPopup.Loan, this.popupModel, this.currencyValue));
+        this.chargePopup.setContent(new AccountChargePopup("charge", this.popupModel, ProductPopup.Loan, this.currencyValue));
         this.chargePopup.show(target);
         return false;
     }

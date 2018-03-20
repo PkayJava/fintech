@@ -13,13 +13,10 @@ import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.wicket.ajax.markup.html.form.AjaxButton;
-import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 
-public class TaxGroupModifyPopup extends PopupPanel {
-
-    protected ModalWindow window;
+public class TaxComponentPopup extends PopupPanel {
 
     protected Form<Void> form;
     protected AjaxButton saveButton;
@@ -35,12 +32,8 @@ public class TaxGroupModifyPopup extends PopupPanel {
     protected TextFeedbackPanel endDateFeedback;
     protected PropertyModel<Date> endDateValue;
 
-    protected Map<String, Object> model;
-
-    public TaxGroupModifyPopup(String name, ModalWindow window, Map<String, Object> model) {
-        super(name, window);
-        this.model = model;
-        this.window = window;
+    public TaxComponentPopup(String name, Map<String, Object> model) {
+        super(name, model);
     }
 
     @Override
