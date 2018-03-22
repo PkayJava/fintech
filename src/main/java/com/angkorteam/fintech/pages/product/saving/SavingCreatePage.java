@@ -86,46 +86,15 @@ public class SavingCreatePage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    // Detail
-
-    protected WebMarkupBlock detailProductNameBlock;
-    protected WebMarkupContainer detailProductNameIContainer;
+    // Details
     protected String detailProductNameValue;
-    protected TextField<String> detailProductNameField;
-    protected TextFeedbackPanel detailProductNameFeedback;
-
-    protected WebMarkupBlock detailShortNameBlock;
-    protected WebMarkupContainer detailShortNameIContainer;
     protected String detailShortNameValue;
-    protected TextField<String> detailShortNameField;
-    protected TextFeedbackPanel detailShortNameFeedback;
-
-    protected WebMarkupBlock detailDescriptionBlock;
-    protected WebMarkupContainer detailDescriptionIContainer;
     protected String detailDescriptionValue;
-    protected TextField<String> detailDescriptionField;
-    protected TextFeedbackPanel detailDescriptionFeedback;
 
     // Currency
-
-    protected WebMarkupBlock currencyCodeBlock;
-    protected WebMarkupContainer currencyCodeIContainer;
     protected Option currencyCodeValue;
-    protected Select2SingleChoice<Option> currencyCodeField;
-    protected CurrencyProvider currencyCodeProvider;
-    protected TextFeedbackPanel currencyCodeFeedback;
-
-    protected WebMarkupBlock currencyDecimalPlaceBlock;
-    protected WebMarkupContainer currencyDecimalPlaceIContainer;
     protected Long currencyDecimalPlaceValue;
-    protected TextField<Long> currencyDecimalPlaceField;
-    protected TextFeedbackPanel currencyDecimalPlaceFeedback;
-
-    protected WebMarkupBlock currencyMultipleOfBlock;
-    protected WebMarkupContainer currencyMultipleOfIContainer;
     protected Long currencyMultipleOfValue;
-    protected TextField<Long> currencyMultipleOfField;
-    protected TextFeedbackPanel currencyMultipleOfFeedback;
 
     // Terms
 
@@ -416,12 +385,6 @@ public class SavingCreatePage extends Page {
 
     @Override
     protected void configureRequiredValidation() {
-        this.detailProductNameField.setRequired(true);
-        this.detailShortNameField.setRequired(true);
-        this.detailDescriptionField.setRequired(true);
-        this.currencyCodeField.setRequired(true);
-        this.currencyDecimalPlaceField.setRequired(true);
-        this.currencyMultipleOfField.setRequired(true);
         this.termNominalAnnualInterestField.setRequired(true);
         this.termInterestCompoundingPeriodField.setRequired(true);
         this.termInterestCalculatedUsingField.setRequired(true);
@@ -453,10 +416,6 @@ public class SavingCreatePage extends Page {
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
         this.form.add(this.closeLink);
-
-        initSectionDetail();
-
-        initSectionCurrency();
 
         initSectionTerm();
 
@@ -1361,99 +1320,6 @@ public class SavingCreatePage extends Page {
         this.termNominalAnnualInterestIContainer.add(this.termNominalAnnualInterestField);
         this.termNominalAnnualInterestFeedback = new TextFeedbackPanel("termNominalAnnualInterestFeedback", this.termNominalAnnualInterestField);
         this.termNominalAnnualInterestIContainer.add(this.termNominalAnnualInterestFeedback);
-    }
-
-    protected void initSectionCurrency() {
-
-        initCurrencyCodeBlock();
-
-        initCurrencyDecimalPlaceBlock();
-
-        initCurrencyMultipleOfBlock();
-    }
-
-    protected void initCurrencyMultipleOfBlock() {
-        this.currencyMultipleOfBlock = new WebMarkupBlock("currencyMultipleOfBlock", Size.Six_6);
-        this.form.add(this.currencyMultipleOfBlock);
-        this.currencyMultipleOfIContainer = new WebMarkupContainer("currencyMultipleOfIContainer");
-        this.currencyMultipleOfBlock.add(this.currencyMultipleOfIContainer);
-        this.currencyMultipleOfField = new TextField<>("currencyMultipleOfField", new PropertyModel<>(this, "currencyMultipleOfValue"));
-        this.currencyMultipleOfField.setLabel(Model.of("Multiples of"));
-        this.currencyMultipleOfField.add(new OnChangeAjaxBehavior());
-        this.currencyMultipleOfIContainer.add(this.currencyMultipleOfField);
-        this.currencyMultipleOfFeedback = new TextFeedbackPanel("currencyMultipleOfFeedback", this.currencyMultipleOfField);
-        this.currencyMultipleOfIContainer.add(this.currencyMultipleOfFeedback);
-    }
-
-    protected void initCurrencyDecimalPlaceBlock() {
-        this.currencyDecimalPlaceBlock = new WebMarkupBlock("currencyDecimalPlaceBlock", Size.Six_6);
-        this.form.add(this.currencyDecimalPlaceBlock);
-        this.currencyDecimalPlaceIContainer = new WebMarkupContainer("currencyDecimalPlaceIContainer");
-        this.currencyDecimalPlaceBlock.add(this.currencyDecimalPlaceIContainer);
-        this.currencyDecimalPlaceField = new TextField<>("currencyDecimalPlaceField", new PropertyModel<>(this, "currencyDecimalPlaceValue"));
-        this.currencyDecimalPlaceField.setLabel(Model.of("Decimal places"));
-        this.currencyDecimalPlaceField.add(new OnChangeAjaxBehavior());
-        this.currencyDecimalPlaceIContainer.add(this.currencyDecimalPlaceField);
-        this.currencyDecimalPlaceFeedback = new TextFeedbackPanel("currencyDecimalPlaceFeedback", this.currencyDecimalPlaceField);
-        this.currencyDecimalPlaceIContainer.add(this.currencyDecimalPlaceFeedback);
-    }
-
-    protected void initCurrencyCodeBlock() {
-        this.currencyCodeBlock = new WebMarkupBlock("currencyCodeBlock", Size.Six_6);
-        this.form.add(this.currencyCodeBlock);
-        this.currencyCodeIContainer = new WebMarkupContainer("currencyCodeIContainer");
-        this.currencyCodeBlock.add(this.currencyCodeIContainer);
-        this.currencyCodeProvider = new CurrencyProvider();
-        this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", new PropertyModel<>(this, "currencyCodeValue"), this.currencyCodeProvider);
-        this.currencyCodeField.setLabel(Model.of("Currency"));
-        this.currencyCodeField.add(new OnChangeAjaxBehavior());
-        this.currencyCodeIContainer.add(this.currencyCodeField);
-        this.currencyCodeFeedback = new TextFeedbackPanel("currencyCodeFeedback", this.currencyCodeField);
-        this.currencyCodeIContainer.add(this.currencyCodeFeedback);
-    }
-
-    protected void initSectionDetail() {
-        initDetailProductNameBlock();
-
-        initDetailShortNameBlock();
-
-        initDetailDescriptionBlock();
-    }
-
-    protected void initDetailDescriptionBlock() {
-        this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Six_6);
-        this.form.add(this.detailDescriptionBlock);
-        this.detailDescriptionIContainer = new WebMarkupContainer("detailDescriptionIContainer");
-        this.detailDescriptionBlock.add(this.detailDescriptionIContainer);
-        this.detailDescriptionField = new TextField<>("detailDescriptionField", new PropertyModel<>(this, "detailDescriptionValue"));
-        this.detailDescriptionField.setLabel(Model.of("Description"));
-        this.detailDescriptionIContainer.add(this.detailDescriptionField);
-        this.detailDescriptionFeedback = new TextFeedbackPanel("detailDescriptionFeedback", this.detailDescriptionField);
-        this.detailDescriptionIContainer.add(this.detailDescriptionFeedback);
-    }
-
-    protected void initDetailShortNameBlock() {
-        this.detailShortNameBlock = new WebMarkupBlock("detailShortNameBlock", Size.Six_6);
-        this.form.add(this.detailShortNameBlock);
-        this.detailShortNameIContainer = new WebMarkupContainer("detailShortNameIContainer");
-        this.detailShortNameBlock.add(this.detailShortNameIContainer);
-        this.detailShortNameField = new TextField<>("detailShortNameField", new PropertyModel<>(this, "detailShortNameValue"));
-        this.detailShortNameField.setLabel(Model.of("Short Name"));
-        this.detailShortNameIContainer.add(this.detailShortNameField);
-        this.detailShortNameFeedback = new TextFeedbackPanel("detailShortNameFeedback", this.detailShortNameField);
-        this.detailShortNameIContainer.add(this.detailShortNameFeedback);
-    }
-
-    protected void initDetailProductNameBlock() {
-        this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
-        this.form.add(this.detailProductNameBlock);
-        this.detailProductNameIContainer = new WebMarkupContainer("detailProductNameIContainer");
-        this.detailProductNameBlock.add(this.detailProductNameIContainer);
-        this.detailProductNameField = new TextField<>("detailProductNameField", new PropertyModel<>(this, "detailProductNameValue"));
-        this.detailProductNameField.setLabel(Model.of("Product Name"));
-        this.detailProductNameIContainer.add(this.detailProductNameField);
-        this.detailProductNameFeedback = new TextFeedbackPanel("detailProductNameFeedback", this.detailProductNameField);
-        this.detailProductNameIContainer.add(this.detailProductNameFeedback);
     }
 
     protected boolean settingOverdraftAllowedFieldUpdate(AjaxRequestTarget target) {

@@ -3,11 +3,9 @@
 <body>
 	<wicket:panel>
 		<form role="form" wicket:id="form">
-			<div class="box box-primary">
-				<div class="box-header with-border">
-					<h3 class="box-title">Charge</h3>
-				</div>
-				<div class="box-body">
+
+			<div class="modal-content">
+				<div class="modal-body">
 					<!-- Row -->
 					<div wicket:id="chargeBlock" class="form-group">
 						<wicket:container wicket:id="chargeIContainer">
@@ -82,12 +80,12 @@
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 					</div>
 					<div class="clearfix"></div>
-
 				</div>
-				<div class="box-footer">
+				<div class="modal-footer">
 					<button wicket:id="okayButton" type="submit" class="btn btn-info">Okay</button>
 				</div>
 			</div>
+
 		</form>
 	</wicket:panel>
 </body>

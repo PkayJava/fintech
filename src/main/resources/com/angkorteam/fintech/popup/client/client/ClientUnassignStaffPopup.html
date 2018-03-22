@@ -3,11 +3,8 @@
 <body>
 	<wicket:panel>
 		<form role="form" wicket:id="form">
-			<div class="box box-primary">
-				<div class="box-header with-border">
-					<h3 class="box-title">Information</h3>
-				</div>
-				<div class="box-body">
+			<div class="modal-content">
+				<div class="modal-body">
 					<!-- Row -->
 					<div
 						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -15,9 +12,10 @@
 					</div>
 					<div class="clearfix"></div>
 				</div>
-				<div class="box-footer">
+				<div class="modal-footer">
 					<button wicket:id="cancelButton" type="submit" class="btn btn-info">Cancel</button>
-					<button wicket:id="confirmButton" type="submit" class="btn btn-info">Confirm</button>
+					<button wicket:id="confirmButton" type="submit"
+						class="btn btn-info">Confirm</button>
 				</div>
 			</div>
 		</form>

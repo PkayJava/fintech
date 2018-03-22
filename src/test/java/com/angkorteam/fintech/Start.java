@@ -4,7 +4,6 @@ import java.lang.management.ManagementFactory;
 
 import javax.management.MBeanServer;
 
-import org.apache.poi.ss.formula.functions.Finance;
 import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;

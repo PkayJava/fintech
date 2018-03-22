@@ -3,12 +3,9 @@
 <body>
 	<wicket:panel>
 		<form role="form" wicket:id="form">
-			<div class="box box-primary">
-				<div class="box-header with-border">
-					<h3 class="box-title">Interest Rate Chart</h3>
-				</div>
-				<div class="box-body">
 
+			<div class="modal-content">
+				<div class="modal-body">
 					<!-- Row -->
 					<div
 						class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -23,8 +20,8 @@
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 						<label wicket:for="periodFromField">Period From</label> <input
-							wicket:id="periodFromField" type="text" class="form-control" /> <span
-							wicket:id="periodFromFeedback" class="help-block"></span>
+							wicket:id="periodFromField" type="text" class="form-control" />
+						<span wicket:id="periodFromFeedback" class="help-block"></span>
 					</div>
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -39,8 +36,8 @@
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
 						<label wicket:for="amountRangeFromField">Amount Range From</label>
 						<input wicket:id="amountRangeFromField" type="text"
-							class="form-control" /> <span wicket:id="amountRangeFromFeedback"
-							class="help-block"></span>
+							class="form-control" /> <span
+							wicket:id="amountRangeFromFeedback" class="help-block"></span>
 					</div>
 					<div
 						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -67,12 +64,12 @@
 						<span wicket:id="descriptionFeedback" class="help-block"></span>
 					</div>
 					<div class="clearfix"></div>
-
 				</div>
-				<div class="box-footer">
+				<div class="modal-footer">
 					<button wicket:id="okayButton" type="submit" class="btn btn-info">Okay</button>
 				</div>
 			</div>
+
 		</form>
 	</wicket:panel>
 </body>

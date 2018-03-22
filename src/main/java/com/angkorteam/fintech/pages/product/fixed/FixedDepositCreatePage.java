@@ -949,18 +949,10 @@ public class FixedDepositCreatePage extends Page {
 
         // Table
         this.interestRateChartPopup = new ModalWindow("interestRateChartPopup");
-        this.interestRateChartPopup.setHeightUnit("px");
-        this.interestRateChartPopup.setWidthUnit("px");
-        this.interestRateChartPopup.setInitialHeight(600);
-        this.interestRateChartPopup.setInitialWidth(1000);
         add(this.interestRateChartPopup);
         this.interestRateChartPopup.setOnClose(this::interestRateChartPopupClose);
 
         this.incentivePopup = new ModalWindow("incentivePopup");
-        this.incentivePopup.setHeightUnit("px");
-        this.incentivePopup.setWidthUnit("px");
-        this.incentivePopup.setInitialHeight(600);
-        this.incentivePopup.setInitialWidth(1100);
         add(this.incentivePopup);
         this.incentivePopup.setOnClose(this::incentivePopupClose);
 

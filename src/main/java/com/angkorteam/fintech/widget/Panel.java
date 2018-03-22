@@ -14,8 +14,8 @@ public abstract class Panel extends org.apache.wicket.markup.html.panel.Panel {
 
     @Override
     protected final void onInitialize() {
-        super.onInitialize();
         initData();
+        super.onInitialize();
         initComponent();
         configureRequiredValidation();
         configureMetaData();
