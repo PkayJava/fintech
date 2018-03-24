@@ -29,5 +29,10 @@ public class GroupPreviewCommittee extends ITab {
     public boolean isVisible() {
         return true;
     }
+    
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 }

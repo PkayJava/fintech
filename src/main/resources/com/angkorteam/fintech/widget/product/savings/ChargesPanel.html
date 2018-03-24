@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<wicket:panel>
+		<form role="form" wicket:id="form">
+			<div class="box-primary">
+
+				<div class="box-body">
+					<!-- Row -->
+					<div wicket:id="chargeBlock" class="form-group">
+						<wicket:container wicket:id="chargeIContainer">
+							<table wicket:id="chargeTable"></table>
+							<a wicket:id="chargeAddLink" class="btn btn-default">Add</a>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+
+				<div class="box-footer">
+					<a wicket:id="backLink" class="btn btn-info">Back</a>
+					<button wicket:id="nextButton" type="submit" class="btn btn-info">Next</button>
+					<a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
+				</div>
+			</div>
+		</form>
+
+		<div wicket:id="modalWindow"></div>
+
+	</wicket:panel>
+</body>
+</html>

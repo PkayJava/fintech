@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<wicket:panel>
+		<form role="form" wicket:id="form">
+			<div class="box-primary">
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Details</h3>
+				</div>
+
+				<div class="box-body">
+					<!-- Row -->
+					<div wicket:id="detailProductNameBlock" class="form-group">
+						<wicket:container wicket:id="detailProductNameVContainer">
+							<label>Name</label>
+							<div wicket:id="detailProductNameView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="detailShortNameBlock" class="form-group">
+						<wicket:container wicket:id="detailShortNameVContainer">
+							<label>Short Name</label>
+							<div wicket:id="detailShortNameView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="detailDescriptionBlock" class="form-group">
+						<wicket:container wicket:id="detailDescriptionVContainer">
+							<label>Description</label>
+							<div wicket:id="detailDescriptionView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Items</h3>
+				</div>
+
+				<div class="box-body">
+					<!-- Row -->
+					<div wicket:id="currencyCodeBlock" class="form-group">
+						<wicket:container wicket:id="currencyCodeVContainer">
+							<label>Currency</label>
+							<div wicket:id="currencyCodeView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="currencyDecimalPlaceBlock" class="form-group">
+						<wicket:container wicket:id="currencyDecimalPlaceVContainer">
+							<label>Decimal Places</label>
+							<div wicket:id="currencyDecimalPlaceView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="currencyMultipleOfBlock" class="form-group">
+						<wicket:container wicket:id="currencyMultipleOfVContainer">
+							<label>Multiple of</label>
+							<div wicket:id="currencyMultipleOfView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="termNominalAnnualInterestBlock" class="form-group">
+						<wicket:container wicket:id="termNominalAnnualInterestVContainer">
+							<label>Nominal annual interest</label>
+							<div wicket:id="termNominalAnnualInterestView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="termInterestCompoundingPeriodBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="termInterestCompoundingPeriodVContainer">
+							<label>Interest Compounding Period</label>
+							<div wicket:id="termInterestCompoundingPeriodView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="termInterestPostingPeriodBlock" class="form-group">
+						<wicket:container wicket:id="termInterestPostingPeriodVContainer">
+							<label>Interest Posting Period</label>
+							<div wicket:id="termInterestPostingPeriodView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="termInterestCalculatedUsingBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="termInterestCalculatedUsingVContainer">
+							<label>Interest Calculated Using</label>
+							<div wicket:id="termInterestCalculatedUsingView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="termDayInYearBlock" class="form-group">
+						<wicket:container wicket:id="termDayInYearVContainer">
+							<label>Days in Year</label>
+							<div wicket:id="termDayInYearView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Settings</h3>
+				</div>
+
+				<div class="box-body">
+
+					<!-- Row -->
+					<div wicket:id="settingMinimumOpeningBalanceBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingMinimumOpeningBalanceVContainer">
+							<label>Minimum Opening Balance</label>
+							<div wicket:id="settingMinimumOpeningBalanceView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingLockInPeriodBlock" class="form-group">
+						<wicket:container wicket:id="settingLockInPeriodVContainer">
+							<label>Lock-in Period</label>
+							<div wicket:id="settingLockInPeriodView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingLockInTypeBlock" class="form-group">
+						<wicket:container wicket:id="settingLockInTypeVContainer">
+							<label>&nbsp;</label>
+							<div wicket:id="settingLockInTypeView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="settingApplyWithdrawalFeeForTransferBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingApplyWithdrawalFeeForTransferVContainer">
+							<label>Apply Withdrawal fee for transfers</label>
+							<div wicket:id="settingApplyWithdrawalFeeForTransferView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingEnforceMinimumBalanceBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingEnforceMinimumBalanceVContainer">
+							<label>Enforce minimum balance</label>
+							<div wicket:id="settingEnforceMinimumBalanceView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="settingBalanceRequiredForInterestCalculationBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingBalanceRequiredForInterestCalculationVContainer">
+							<label>Balance Required For Interest Calculation</label>
+							<div wicket:id="settingBalanceRequiredForInterestCalculationView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingMinimumBalanceBlock" class="form-group">
+						<wicket:container wicket:id="settingMinimumBalanceVContainer">
+							<label>Minimum balance</label>
+							<div wicket:id="settingMinimumBalanceView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="settingOverdraftAllowedBlock" class="form-group">
+						<wicket:container wicket:id="settingOverdraftAllowedVContainer">
+							<label>Overdraft Allowed</label>
+							<div wicket:id="settingOverdraftAllowedView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingMaximumOverdraftAmountLimitBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingMaximumOverdraftAmountLimitVContainer">
+							<label>Maximum Overdraft Amount Limit</label>
+							<div wicket:id="settingMaximumOverdraftAmountLimitView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingNominalAnnualInterestForOverdraftBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingNominalAnnualInterestForOverdraftVContainer">
+							<label>Nominal annual interest for overdraft</label>
+							<div wicket:id="settingNominalAnnualInterestForOverdraftView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div
+						wicket:id="settingMinOverdraftRequiredForInterestCalculationBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingMinOverdraftRequiredForInterestCalculationVContainer">
+							<label>Min Overdraft Required For Interest Calculation</label>
+							<div
+								wicket:id="settingMinOverdraftRequiredForInterestCalculationView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="settingWithholdTaxApplicableBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingWithholdTaxApplicableVContainer">
+							<label>Is Withhold tax applicable</label>
+							<div wicket:id="settingWithholdTaxApplicableView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingTaxGroupBlock" class="form-group">
+						<wicket:container wicket:id="settingTaxGroupVContainer">
+							<label>Tax Group</label>
+							<div wicket:id="settingTaxGroupView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="settingEnableDormancyTrackingBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingEnableDormancyTrackingVContainer">
+							<label>Enable Dormancy Tracking</label>
+							<div wicket:id="settingEnableDormancyTrackingView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingNumberOfDaysToInactiveSubStatusBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingNumberOfDaysToInactiveSubStatusVContainer">
+							<label>Number of Days to Inactive sub-status</label>
+							<div wicket:id="settingNumberOfDaysToInactiveSubStatusView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingNumberOfDaysToDormantSubStatusBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingNumberOfDaysToDormantSubStatusVContainer">
+							<label>Number of Days to Dormant sub-status</label>
+							<div wicket:id="settingNumberOfDaysToDormantSubStatusView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingNumberOfDaysToEscheatBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingNumberOfDaysToEscheatVContainer">
+							<label>Number of Days to Escheat</label>
+							<div wicket:id="settingNumberOfDaysToEscheatView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Charges</h3>
+				</div>
+
+				<div class="box-body">
+					<!-- Row -->
+					<div wicket:id="chargeBlock" class="form-group">
+						<wicket:container wicket:id="chargeVContainer">
+							<table wicket:id="chargeTable"></table>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">
+						Accounting :
+						<wicket:container wicket:id="accountingLabel" />
+					</h3>
+				</div>
+
+				<wicket:container wicket:id="cashMaster">
+
+					<div class="box-body">
+						<!-- Row -->
+						<div wicket:id="cashSavingReferenceBlock" class="form-group">
+							<wicket:container wicket:id="cashSavingReferenceVContainer">
+								<label>Savings Reference (Assets)</label>
+								<div wicket:id="cashSavingReferenceView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="cashOverdraftPortfolioBlock" class="form-group">
+							<wicket:container wicket:id="cashOverdraftPortfolioVContainer">
+								<label>Overdraft Portfolio (Assets)</label>
+								<div wicket:id="cashOverdraftPortfolioView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="cashSavingControlBlock" class="form-group">
+							<wicket:container wicket:id="cashSavingControlVContainer">
+								<label>Savings Control (Liabilities)</label>
+								<div wicket:id="cashSavingControlView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="cashSavingTransferInSuspenseBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="cashSavingTransferInSuspenseVContainer">
+								<label>Savings Transfers in Suspense (Liabilities)</label>
+								<div wicket:id="cashSavingTransferInSuspenseView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="cashInterestOnSavingBlock" class="form-group">
+							<wicket:container wicket:id="cashInterestOnSavingVContainer">
+								<label>Interest on Savings (Expenses)</label>
+								<div wicket:id="cashInterestOnSavingView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="cashWriteOffBlock" class="form-group">
+							<wicket:container wicket:id="cashWriteOffVContainer">
+								<label>Write-Off (Expenses)</label>
+								<div wicket:id="cashWriteOffView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="cashIncomeFromFeeBlock" class="form-group">
+							<wicket:container wicket:id="cashIncomeFromFeeVContainer">
+								<label>Income From Fees (Income)</label>
+								<div wicket:id="cashIncomeFromFeeView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="cashIncomeFromPenaltyBlock" class="form-group">
+							<wicket:container wicket:id="cashIncomeFromPenaltyVContainer">
+								<label>Income From Penalties (Income)</label>
+								<div wicket:id="cashIncomeFromPenaltyView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="cashOverdraftInterestIncomeBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="cashOverdraftInterestIncomeVContainer">
+								<label>Overdraft Interest Income (Income)</label>
+								<div wicket:id="cashOverdraftInterestIncomeView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="cashEscheatLiabilityBlock" class="form-group">
+							<wicket:container wicket:id="cashEscheatLiabilityVContainer">
+								<label>Escheat Liability (Liabilities)</label>
+								<div wicket:id="cashEscheatLiabilityView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div
+							class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						</div>
+						<div
+							class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						</div>
+						<div class="clearfix"></div>
+					</div>
+
+				</wicket:container>
+
+				<wicket:container wicket:id="advancedAccountingRuleMaster">
+
+					<div class="box-header with-border">
+						<h3 class="box-title">Advanced Accounting Rule</h3>
+					</div>
+
+					<div class="box-body">
+
+						<!-- Row -->
+						<div
+							class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<wicket:container
+								wicket:id="advancedAccountingRuleFundSourceBlock">
+								<wicket:container
+									wicket:id="advancedAccountingRuleFundSourceVContainer">
+									<h4>Configure Fund Sources for Payment Channels</h4>
+									<table wicket:id="advancedAccountingRuleFundSourceTable"></table>
+								</wicket:container>
+							</wicket:container>
+
+							<wicket:container
+								wicket:id="advancedAccountingRuleFeeIncomeBlock">
+								<wicket:container
+									wicket:id="advancedAccountingRuleFeeIncomeVContainer">
+									<h4>Map Fees to Income Accounts</h4>
+									<table wicket:id="advancedAccountingRuleFeeIncomeTable"></table>
+								</wicket:container>
+							</wicket:container>
+
+							<wicket:container
+								wicket:id="advancedAccountingRulePenaltyIncomeBlock">
+								<wicket:container
+									wicket:id="advancedAccountingRulePenaltyIncomeVContainer">
+									<h4>Map Penalties to Specific Income Accounts</h4>
+									<table wicket:id="advancedAccountingRulePenaltyIncomeTable"></table>
+								</wicket:container>
+							</wicket:container>
+
+						</div>
+
+						<div class="clearfix"></div>
+
+					</div>
+
+				</wicket:container>
+
+				<div class="box-footer">
+					<a wicket:id="backLink" class="btn btn-info">Back</a>
+					<button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+					<a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
+				</div>
+			</div>
+		</form>
+
+	</wicket:panel>
+</body>
+</html>

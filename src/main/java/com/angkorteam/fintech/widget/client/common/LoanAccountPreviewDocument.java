@@ -30,4 +30,9 @@ public class LoanAccountPreviewDocument extends ITab {
         return true;
     }
 
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 }
