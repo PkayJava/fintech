@@ -174,16 +174,12 @@ public class TermsPanel extends Panel {
     }
 
     @Override
-    protected void configureRequiredValidation() {
+    protected void configureMetaData() {
         this.termNominalAnnualInterestField.setRequired(true);
         this.termInterestCompoundingPeriodField.setRequired(true);
         this.termInterestCalculatedUsingField.setRequired(true);
         this.termDayInYearField.setRequired(true);
         this.termInterestPostingPeriodField.setRequired(true);
-    }
-
-    @Override
-    protected void configureMetaData() {
     }
 
 }

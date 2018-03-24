@@ -1,19 +1,15 @@
 package com.angkorteam.fintech.dto.constant;
 
 public enum GLAccountTypeEnum {
-    
-    Asset("1", "Asset"),
-    Liability("2", "Liability"),
-    Equity("3", "Equity"),
-    Income("4", "Income"),
-    Expense("5", "Expense");
-    
+
+    Asset("1", "Asset"), Liability("2", "Liability"), Equity("3", "Equity"), Income("4", "Income"), Expense("5", "Expense");
+
     public static final String ID = "glaccount_type_enum";
 
     private final String literal;
 
     private final String description;
-    
+
     private final Long enumType;
 
     GLAccountTypeEnum(String literal, String description) {
@@ -33,7 +29,7 @@ public enum GLAccountTypeEnum {
     public String getDescription() {
         return description;
     }
-    
+
     public Long getEnumType() {
         return enumType;
     }

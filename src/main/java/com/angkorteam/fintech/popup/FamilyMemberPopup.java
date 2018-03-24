@@ -154,10 +154,6 @@ public class FamilyMemberPopup extends PopupPanel {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
     }
 

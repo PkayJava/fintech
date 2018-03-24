@@ -1,16 +1,15 @@
 package com.angkorteam.fintech.dto.constant;
 
 public enum AmortizationMethodEnum {
-    
-    PrinciplePayments("0", "Equal Principle Payments"),
-    Installments("1", "Equal Installments");
-    
+
+    PrinciplePayments("0", "Equal Principle Payments"), Installments("1", "Equal Installments");
+
     public static final String ID = "amortization_method_enum";
 
     private final String literal;
 
     private final String description;
-    
+
     private final Long enumType;
 
     AmortizationMethodEnum(String literal, String description) {
@@ -30,9 +29,9 @@ public enum AmortizationMethodEnum {
     public String getDescription() {
         return description;
     }
-    
+
     public Long getEnumType() {
         return enumType;
     }
-    
+
 }

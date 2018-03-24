@@ -4,11 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum RepaidOn {
 
-    First("1", "First"), 
-    Second("2", "Second"), 
-    Third("3", "Third"), 
-    Fourth("4", "Fourth"), 
-    Last("-1", "Last");
+    First("1", "First"), Second("2", "Second"), Third("3", "Third"), Fourth("4", "Fourth"), Last("-1", "Last");
 
     private String literal;
 

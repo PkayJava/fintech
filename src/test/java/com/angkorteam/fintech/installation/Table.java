@@ -20,27 +20,27 @@ public class Table {
     private String name;
 
     public List<Field> getFields() {
-	return fields;
+        return fields;
     }
 
     public void setFields(List<Field> fields) {
-	this.fields = fields;
+        this.fields = fields;
     }
 
     public List<String> getComments() {
-	return comments;
+        return comments;
     }
 
     public void setComments(List<String> comments) {
-	this.comments = comments;
+        this.comments = comments;
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
     }
 
 }

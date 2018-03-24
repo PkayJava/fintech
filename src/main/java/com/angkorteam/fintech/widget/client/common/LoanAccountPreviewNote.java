@@ -14,7 +14,7 @@ public class LoanAccountPreviewNote extends ITab {
     public LoanAccountPreviewNote(Page itemPage) {
         this.itemPage = itemPage;
     }
-    
+
     @Override
     public IModel<String> getTitle() {
         return Model.of("Note");
@@ -29,7 +29,7 @@ public class LoanAccountPreviewNote extends ITab {
     public boolean isVisible() {
         return true;
     }
-    
+
     @Override
     public boolean isEnabled() {
         return true;

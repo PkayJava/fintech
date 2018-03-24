@@ -4,8 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum LegalForm {
 
-    Person("1", "Person"), 
-    Entity("2", "Entity");
+    Person("1", "Person"), Entity("2", "Entity");
 
     private String literal;
 

@@ -4,8 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum InterestMethod {
 
-    Flat("1", "Flat"), 
-    DecliningBalance("0", "Declining Balance");
+    Flat("1", "Flat"), DecliningBalance("0", "Declining Balance");
 
     private String literal;
 

@@ -613,10 +613,6 @@ public class PreviewPanel extends Panel {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
         PropertyModel<String> accountingValue = new PropertyModel<>(this.itemPage, "accountingValue");
         if (AccountingType.None.getDescription().equals(accountingValue.getObject())) {

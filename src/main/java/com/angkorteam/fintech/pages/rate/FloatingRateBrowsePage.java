@@ -3,8 +3,6 @@ package com.angkorteam.fintech.pages.rate;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.MAppUser;
-import com.angkorteam.fintech.ddl.MFloatingRates;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -16,6 +14,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MAppUser;
+import com.angkorteam.fintech.ddl.MFloatingRates;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -110,10 +110,6 @@ public class FloatingRateBrowsePage extends Page {
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
         this.dataFilterForm.add(this.dataTable);
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
     }
 
     @Override

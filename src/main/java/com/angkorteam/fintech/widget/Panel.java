@@ -17,15 +17,12 @@ public abstract class Panel extends org.apache.wicket.markup.html.panel.Panel {
         initData();
         super.onInitialize();
         initComponent();
-        configureRequiredValidation();
         configureMetaData();
     }
 
     protected abstract void initData();
 
     protected abstract void initComponent();
-
-    protected abstract void configureRequiredValidation();
 
     protected abstract void configureMetaData();
 

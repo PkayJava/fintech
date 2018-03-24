@@ -12,32 +12,32 @@ public class MixedBuilder implements Serializable {
     private boolean hasLoanId;
 
     public MixedBuilder withLoanId(String loanId) {
-	this.loanId = loanId;
-	this.hasLoanId = true;
-	return this;
+        this.loanId = loanId;
+        this.hasLoanId = true;
+        return this;
     }
 
     private List<Long> restrictedProducts = Lists.newArrayList();
     private boolean hasRestrictedProducts;
 
     public MixedBuilder withRestrictedProduct(Long restrictedProduct) {
-	this.restrictedProducts.add(restrictedProduct);
-	this.hasRestrictedProducts = true;
-	return this;
+        this.restrictedProducts.add(restrictedProduct);
+        this.hasRestrictedProducts = true;
+        return this;
     }
 
     public JsonNode build() {
-	JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
+        JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
 
-	if (this.hasLoanId) {
-	    object.getObject().put("loanId", this.loanId);
-	}
+        if (this.hasLoanId) {
+            object.getObject().put("loanId", this.loanId);
+        }
 
-	if (this.hasRestrictedProducts) {
-	    object.getObject().put("restrictedProducts", this.restrictedProducts);
-	}
+        if (this.hasRestrictedProducts) {
+            object.getObject().put("restrictedProducts", this.restrictedProducts);
+        }
 
-	return object;
+        return object;
     }
 
 }

@@ -339,10 +339,6 @@ public class SettingsPanel extends Panel {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
         settingOverdraftAllowedFieldUpdate(null);
 

@@ -1,9 +1,35 @@
 package com.angkorteam.fintech.pages.product.share;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.ddl.*;
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.AccProductMapping;
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MOrganisationCurrency;
+import com.angkorteam.fintech.ddl.MShareProduct;
+import com.angkorteam.fintech.ddl.MShareProductCharge;
+import com.angkorteam.fintech.ddl.MShareProductMarketPrice;
 import com.angkorteam.fintech.dto.Function;
-import com.angkorteam.fintech.dto.enums.*;
+import com.angkorteam.fintech.dto.enums.AccountingType;
+import com.angkorteam.fintech.dto.enums.ChargeCalculation;
+import com.angkorteam.fintech.dto.enums.ChargeTime;
+import com.angkorteam.fintech.dto.enums.FinancialAccountType;
+import com.angkorteam.fintech.dto.enums.LockInType;
+import com.angkorteam.fintech.dto.enums.ProductType;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.ReadOnlyView;
@@ -21,20 +47,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SharePreviewPage extends Page {
@@ -238,10 +250,6 @@ public class SharePreviewPage extends Page {
         initSectionCharge();
 
         initSectionAccounting();
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
     }
 
     @Override
@@ -490,7 +498,8 @@ public class SharePreviewPage extends Page {
         this.chargeColumn.add(new TextColumn(Model.of("Type"), "type", "type", this::chargeColumn));
         this.chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeColumn));
         this.chargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::chargeColumn));
-//        this.chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date", this::chargeColumn));
+        // this.chargeColumn.add(new TextColumn(Model.of("Date"), "date", "date",
+        // this::chargeColumn));
         this.chargeProvider = new ListDataProvider(this.chargeValue);
         this.chargeTable = new DataTable<>("chargeTable", this.chargeColumn, this.chargeProvider, 20);
         this.chargeVContainer.add(this.chargeTable);

@@ -315,7 +315,7 @@ public class ShareCreatePage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
+    protected void configureMetaData() {
         this.detailProductNameField.setRequired(true);
         this.detailShortNameField.setRequired(true);
         this.detailDescriptionField.setRequired(true);
@@ -327,10 +327,6 @@ public class ShareCreatePage extends Page {
         this.settingSharePerClientDefaultField.setRequired(true);
         this.termShareToBeIssuedField.setRequired(true);
         this.accountingField.setRequired(true);
-    }
-
-    @Override
-    protected void configureMetaData() {
         accountingFieldUpdate(null);
     }
 

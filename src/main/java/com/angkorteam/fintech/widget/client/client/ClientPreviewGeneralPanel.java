@@ -331,10 +331,6 @@ public class ClientPreviewGeneralPanel extends Panel {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
         JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
 

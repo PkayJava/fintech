@@ -157,10 +157,6 @@ public class ColumnPopup extends PopupPanel {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
         typeFieldUpdate(null);
     }

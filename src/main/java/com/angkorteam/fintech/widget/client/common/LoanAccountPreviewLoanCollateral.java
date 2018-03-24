@@ -14,7 +14,7 @@ public class LoanAccountPreviewLoanCollateral extends ITab {
     public LoanAccountPreviewLoanCollateral(Page itemPage) {
         this.itemPage = itemPage;
     }
-    
+
     @Override
     public IModel<String> getTitle() {
         return Model.of("Loan Collateral");
@@ -29,7 +29,7 @@ public class LoanAccountPreviewLoanCollateral extends ITab {
     public boolean isVisible() {
         return true;
     }
-    
+
     @Override
     public boolean isEnabled() {
         return true;

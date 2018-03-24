@@ -4,8 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum OperandType {
 
-    Fixed("2", "Fixed"), 
-    Incentive("3", "Incentive");
+    Fixed("2", "Fixed"), Incentive("3", "Incentive");
 
     private String literal;
 

@@ -352,10 +352,6 @@ public class UserModifyPage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
         this.staffProvider.applyWhere("office", MStaff.Field.OFFICE_ID + " = " + this.officeValue.getId());
     }

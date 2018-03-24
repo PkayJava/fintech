@@ -4,10 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum Operator {
 
-    LessThan("1", "Less Than"), 
-    Equal("2", "Equal"), 
-    GreaterThan("3", "Greater Than"), 
-    NotEqual("4", "Not Equal");
+    LessThan("1", "Less Than"), Equal("2", "Equal"), GreaterThan("3", "Greater Than"), NotEqual("4", "Not Equal");
 
     private String literal;
 

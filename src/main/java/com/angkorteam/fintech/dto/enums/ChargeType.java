@@ -10,10 +10,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum ChargeType {
 
-    Loan("1", "Loan", new ChargeTime[] { ChargeTime.Disbursement, ChargeTime.SpecifiedDueDate, ChargeTime.InstallmentFee, ChargeTime.OverdraftFee, ChargeTime.TrancheDisbursement }, new ChargeCalculation[] { ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount, ChargeCalculation.LoanAmountInterest, ChargeCalculation.Interest }), 
-    SavingDeposit("2", "Savings and Deposits", new ChargeTime[] { ChargeTime.SpecifiedDueDate, ChargeTime.SavingsActivation, ChargeTime.WithdrawalFee, ChargeTime.AnnualFee, ChargeTime.MonthlyFee, ChargeTime.WeeklyFee, ChargeTime.OverdraftFee, ChargeTime.SavingNoActivityFee }, new ChargeCalculation[] { ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount }), 
-    Client("3", "Client", new ChargeTime[] { ChargeTime.SpecifiedDueDate }, new ChargeCalculation[] { ChargeCalculation.Flat }), 
-    Share("4", "Shares", new ChargeTime[] { ChargeTime.ShareAccountActivate, ChargeTime.SharePurchase, ChargeTime.ShareRedeem }, new ChargeCalculation[] { ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount });
+    Loan("1", "Loan", new ChargeTime[] { ChargeTime.Disbursement, ChargeTime.SpecifiedDueDate, ChargeTime.InstallmentFee, ChargeTime.OverdraftFee, ChargeTime.TrancheDisbursement }, new ChargeCalculation[] { ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount, ChargeCalculation.LoanAmountInterest, ChargeCalculation.Interest }), SavingDeposit("2", "Savings and Deposits", new ChargeTime[] { ChargeTime.SpecifiedDueDate, ChargeTime.SavingsActivation, ChargeTime.WithdrawalFee, ChargeTime.AnnualFee, ChargeTime.MonthlyFee, ChargeTime.WeeklyFee, ChargeTime.OverdraftFee, ChargeTime.SavingNoActivityFee }, new ChargeCalculation[] { ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount }), Client("3", "Client", new ChargeTime[] { ChargeTime.SpecifiedDueDate }, new ChargeCalculation[] { ChargeCalculation.Flat }), Share("4", "Shares", new ChargeTime[] { ChargeTime.ShareAccountActivate, ChargeTime.SharePurchase, ChargeTime.ShareRedeem }, new ChargeCalculation[] { ChargeCalculation.Flat, ChargeCalculation.ApprovedAmount });
 
     private String literal;
 

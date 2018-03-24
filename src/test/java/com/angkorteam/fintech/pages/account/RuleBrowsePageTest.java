@@ -12,16 +12,16 @@ public class RuleBrowsePageTest {
 
     @Before
     public void before() {
-	this.wicket = JUnit.getWicket();
+        this.wicket = JUnit.getWicket();
     }
 
     @Test
     public void visitPage() {
-	this.wicket.login();
+        this.wicket.login();
 
-	this.wicket.startPage(RuleBrowsePage.class);
+        this.wicket.startPage(RuleBrowsePage.class);
 
-	this.wicket.assertRenderedPage(RuleBrowsePage.class);
+        this.wicket.assertRenderedPage(RuleBrowsePage.class);
     }
 
 }

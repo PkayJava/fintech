@@ -572,11 +572,6 @@ public class FrequentPostPage extends Page {
         this.debitAmountIContainer.add(this.debitAmountFeedback);
     }
 
-    @Override
-    protected void configureRequiredValidation() {
-
-    }
-
     protected ItemPanel debitColumn(String column, IModel<String> display, Map<String, Object> model) {
         if ("name".equals(column)) {
             String value = (String) model.get(column);

@@ -7,10 +7,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum AccountingType {
 
-    None("1", "None"), 
-    Cash("2", "Cash"), 
-    Periodic("3", "Periodic"), 
-    Upfront("4", "Upfront");
+    None("1", "None"), Cash("2", "Cash"), Periodic("3", "Periodic"), Upfront("4", "Upfront");
 
     private String literal;
 

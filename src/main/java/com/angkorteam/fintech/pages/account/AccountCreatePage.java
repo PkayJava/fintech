@@ -129,17 +129,14 @@ public class AccountCreatePage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
+    protected void configureMetaData() {
         this.accountTypeField.setRequired(true);
         this.glCodeField.setRequired(true);
         this.accountNameField.setRequired(true);
         this.descriptionField.setRequired(true);
         this.manualAllowField.setRequired(true);
         this.accountUsageField.setRequired(true);
-    }
 
-    @Override
-    protected void configureMetaData() {
         if (this.accountTypeValue == null) {
             this.tagValue = null;
             this.parentValue = null;

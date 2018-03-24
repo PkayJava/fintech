@@ -14,7 +14,7 @@ public class LoanAccountPreviewRepaymentSchedule extends ITab {
     public LoanAccountPreviewRepaymentSchedule(Page itemPage) {
         this.itemPage = itemPage;
     }
-    
+
     @Override
     public IModel<String> getTitle() {
         return Model.of("Repayment Schedule");
@@ -29,7 +29,7 @@ public class LoanAccountPreviewRepaymentSchedule extends ITab {
     public boolean isVisible() {
         return true;
     }
-    
+
     @Override
     public boolean isEnabled() {
         return true;

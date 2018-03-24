@@ -112,10 +112,6 @@ public class FinancialActivityBrowsePage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
     }
 

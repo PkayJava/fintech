@@ -382,12 +382,8 @@ public class AccountingPanel extends Panel {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-        this.accountingField.setRequired(true);
-    }
-
-    @Override
     protected void configureMetaData() {
+        this.accountingField.setRequired(true);
         PropertyModel<Boolean> settingEnableDormancyTrackingValue = new PropertyModel<>(this.itemPage, "settingEnableDormancyTrackingValue");
         this.cashEscheatLiabilityIContainer.setVisible(settingEnableDormancyTrackingValue.getObject() != null && settingEnableDormancyTrackingValue.getObject());
         accountingFieldUpdate(null);

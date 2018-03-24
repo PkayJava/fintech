@@ -2,17 +2,14 @@ package com.angkorteam.fintech.dto.constant;
 
 public enum TermPeriodFrequencyEnum {
 
-    Day("0", "Day"),
-    Week("1", "Week"),
-    Month("2", "Month"),
-    Year("3", "Year");
-    
+    Day("0", "Day"), Week("1", "Week"), Month("2", "Month"), Year("3", "Year");
+
     public static final String ID = "term_period_frequency_enum";
 
     private final String literal;
 
     private final String description;
-    
+
     private final Long enumType;
 
     TermPeriodFrequencyEnum(String literal, String description) {
@@ -32,7 +29,7 @@ public enum TermPeriodFrequencyEnum {
     public String getDescription() {
         return description;
     }
-    
+
     public Long getEnumType() {
         return enumType;
     }

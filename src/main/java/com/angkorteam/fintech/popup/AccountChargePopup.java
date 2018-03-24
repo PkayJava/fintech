@@ -195,10 +195,6 @@ public class AccountChargePopup extends PopupPanel {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
         chargeFieldUpdate(null);
     }

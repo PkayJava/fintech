@@ -119,10 +119,6 @@ public class FundModifyPage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
     }
 

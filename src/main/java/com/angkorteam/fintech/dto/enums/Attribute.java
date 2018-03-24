@@ -4,10 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum Attribute {
 
-    Gender("2", "Gender"), 
-    Age("3", "Age"), 
-    ClientType("4", "Client Type"), 
-    ClientClassification("5", "Client Classification");
+    Gender("2", "Gender"), Age("3", "Age"), ClientType("4", "Client Type"), ClientClassification("5", "Client Classification");
 
     private String literal;
 

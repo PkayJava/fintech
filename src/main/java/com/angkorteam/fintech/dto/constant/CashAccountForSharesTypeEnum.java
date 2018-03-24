@@ -1,18 +1,15 @@
 package com.angkorteam.fintech.dto.constant;
 
 public enum CashAccountForSharesTypeEnum {
-    
-    SharesReference("1", "Shares Reference"),
-    SharesSuspense("2", "Shares Suspense"),
-    IncomeFromFees("3", "Income From Fees"),
-    SharesEquity("4", "Shares Equity");
-    
+
+    SharesReference("1", "Shares Reference"), SharesSuspense("2", "Shares Suspense"), IncomeFromFees("3", "Income From Fees"), SharesEquity("4", "Shares Equity");
+
     public static final String ID = "cash_account_for_shares_type_enum";
 
     private final String literal;
 
     private final String description;
-    
+
     private final Long enumType;
 
     CashAccountForSharesTypeEnum(String literal, String description) {
@@ -32,7 +29,7 @@ public enum CashAccountForSharesTypeEnum {
     public String getDescription() {
         return description;
     }
-    
+
     public Long getEnumType() {
         return enumType;
     }

@@ -4,10 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum InterestPostingPeriod {
 
-    Monthly("4", "Monthly"), 
-    Quarterly("5", "Quarterly"), 
-    BiAnnual("6", "BiAnnual"), 
-    Annually("7", "Annually");
+    Monthly("4", "Monthly"), Quarterly("5", "Quarterly"), BiAnnual("6", "BiAnnual"), Annually("7", "Annually");
 
     private String literal;
 

@@ -4,8 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum DayInMonth {
 
-    Actual("1", "Actual"), 
-    D30("30", "30 Days");
+    Actual("1", "Actual"), D30("30", "30 Days");
 
     private String literal;
 

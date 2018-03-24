@@ -1,5 +1,17 @@
 package com.angkorteam.fintech.pages.client.group;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.ddl.MGroup;
 import com.angkorteam.fintech.ddl.MOffice;
@@ -16,17 +28,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import java.util.List;
-import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class GroupBrowsePage extends Page {
@@ -90,10 +91,6 @@ public class GroupBrowsePage extends Page {
 
         this.createLink = new BookmarkablePageLink<>("createLink", GroupCreatePage.class);
         add(this.createLink);
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
     }
 
     @Override

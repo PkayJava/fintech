@@ -7,8 +7,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum AccountUsage {
 
-    Detail("1", "Detail"), 
-    Header("2", "Header");
+    Detail("1", "Detail"), Header("2", "Header");
 
     private String literal;
 

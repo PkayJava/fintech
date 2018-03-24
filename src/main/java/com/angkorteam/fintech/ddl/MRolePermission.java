@@ -8,7 +8,7 @@ public interface MRolePermission {
 
         public static final String ROLE_ID = "role_id";
 
-        public static final String PERMISSION_ID = "permission_id"; 
+        public static final String PERMISSION_ID = "permission_id";
 
     }
 

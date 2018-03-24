@@ -94,10 +94,6 @@ public class CollateralPopup extends PopupPanel {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
     }
 

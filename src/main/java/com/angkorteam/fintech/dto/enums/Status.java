@@ -7,9 +7,8 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum Status {
 
-    Active("1", "Active"),
-    Disabled("2", "Disabled");
-    
+    Active("1", "Active"), Disabled("2", "Disabled");
+
     private String literal;
 
     private String description;

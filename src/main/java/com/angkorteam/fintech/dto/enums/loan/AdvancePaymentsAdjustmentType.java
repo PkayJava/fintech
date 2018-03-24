@@ -4,9 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum AdvancePaymentsAdjustmentType {
 
-    ReduceEMIAmount("3", "Reduce EMI amount"), 
-    ReduceNumberOfInstallments("2", "Reduce number of installments"), 
-    RescheduleNextRepayments("1", "Reschedule next repayments");
+    ReduceEMIAmount("3", "Reduce EMI amount"), ReduceNumberOfInstallments("2", "Reduce number of installments"), RescheduleNextRepayments("1", "Reschedule next repayments");
 
     private String literal;
 

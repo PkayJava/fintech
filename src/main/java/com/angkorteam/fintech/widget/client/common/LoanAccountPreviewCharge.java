@@ -8,7 +8,7 @@ import org.apache.wicket.model.Model;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 
 public class LoanAccountPreviewCharge extends ITab {
-    
+
     protected Page itemPage;
 
     public LoanAccountPreviewCharge(Page itemPage) {
@@ -29,7 +29,7 @@ public class LoanAccountPreviewCharge extends ITab {
     public boolean isVisible() {
         return true;
     }
-    
+
     @Override
     public boolean isEnabled() {
         return true;

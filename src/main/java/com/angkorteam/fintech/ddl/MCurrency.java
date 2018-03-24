@@ -19,7 +19,7 @@ public interface MCurrency {
         public static final String NAME = "name";
 
         public static final String INTERNATIONALIZED_NAME_CODE = "internationalized_name_code";
-        
+
     }
 
 }

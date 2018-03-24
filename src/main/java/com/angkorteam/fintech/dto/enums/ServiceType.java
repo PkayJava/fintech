@@ -4,9 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum ServiceType {
 
-    S3("1", "Amazon S3"), 
-    SMTP("2", "SMTP"), 
-    SMS("3", "SMS");
+    S3("1", "Amazon S3"), SMTP("2", "SMTP"), SMS("3", "SMS");
 
     private String literal;
 

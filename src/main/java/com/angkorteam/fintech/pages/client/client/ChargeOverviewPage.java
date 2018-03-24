@@ -4,11 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.MCharge;
-import com.angkorteam.fintech.ddl.MClient;
-import com.angkorteam.fintech.ddl.MClientCharge;
-import com.angkorteam.framework.jdbc.SelectQuery;
-import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -20,6 +15,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MClientCharge;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
@@ -27,8 +25,9 @@ import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.Calendar;
@@ -141,10 +140,6 @@ public class ChargeOverviewPage extends Page {
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
         this.dataFilterForm.add(this.dataTable);
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
     }
 
     @Override

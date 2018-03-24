@@ -198,7 +198,7 @@ public class UserCreatePage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
+    protected void configureMetaData() {
         this.overridePasswordExpiryPolicyField.setRequired(true);
         this.loginField.setRequired(true);
         this.autoGeneratePasswordField.setRequired(true);
@@ -209,10 +209,6 @@ public class UserCreatePage extends Page {
         this.firstNameField.setRequired(true);
         this.passwordField.setRequired(true);
         this.repeatPasswordField.setRequired(true);
-    }
-
-    @Override
-    protected void configureMetaData() {
         this.staffProvider.setDisabled(true);
         this.form.add(new EqualInputValidator(this.passwordField, this.repeatPasswordField));
 

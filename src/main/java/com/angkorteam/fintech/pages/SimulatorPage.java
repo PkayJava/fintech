@@ -1,5 +1,20 @@
 package com.angkorteam.fintech.pages;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.springframework.http.MediaType;
+
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
@@ -11,20 +26,6 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.springframework.http.MediaType;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Arrays;
-import java.util.List;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class SimulatorPage extends Page {
@@ -84,13 +85,9 @@ public class SimulatorPage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
+    protected void configureMetaData() {
         this.urlField.setRequired(true);
         this.methodField.setRequired(true);
-    }
-
-    @Override
-    protected void configureMetaData() {
     }
 
     @Override

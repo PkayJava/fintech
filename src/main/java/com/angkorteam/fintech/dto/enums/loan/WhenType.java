@@ -4,8 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum WhenType {
 
-    Equals("2", "Equals"), 
-    GreaterThen("3", "Greater Then");
+    Equals("2", "Equals"), GreaterThen("3", "Greater Then");
 
     private String literal;
 

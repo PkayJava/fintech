@@ -52,10 +52,6 @@ public class IncentivePreviewPopup extends PopupPanel {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
     }
 

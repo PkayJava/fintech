@@ -3,9 +3,8 @@ package com.angkorteam.fintech.dto.enums.loan;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum Amortization {
-    
-    EqualInstallment("1", "Equal Installments"), 
-    EqualPrinciplePayment("0", "Equal Principle Payments");
+
+    EqualInstallment("1", "Equal Installments"), EqualPrinciplePayment("0", "Equal Principle Payments");
 
     private String literal;
 

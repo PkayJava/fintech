@@ -7,11 +7,8 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum Priority {
 
-    Urgent("1", "Urgent Priority"),
-    High("2", "High Priority"),
-    Medium("3", "Medium Priority"),
-    Low("4", "Low Priority");
-    
+    Urgent("1", "Urgent Priority"), High("2", "High Priority"), Medium("3", "Medium Priority"), Low("4", "Low Priority");
+
     private String literal;
 
     private String description;

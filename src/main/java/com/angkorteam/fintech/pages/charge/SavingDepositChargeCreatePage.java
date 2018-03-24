@@ -321,10 +321,6 @@ public class SavingDepositChargeCreatePage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
         chargeTimeFieldUpdate(null);
     }

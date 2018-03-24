@@ -1,16 +1,15 @@
 package com.angkorteam.fintech.dto.constant;
 
 public enum InterestMethodEnum {
-    
-    DecliningBalance("0", "Declining Balance"),
-    Flat("1", "Flat");
-    
+
+    DecliningBalance("0", "Declining Balance"), Flat("1", "Flat");
+
     public static final String ID = "interest_method_enum";
 
     private final String literal;
 
     private final String description;
-    
+
     private final Long enumType;
 
     InterestMethodEnum(String literal, String description) {
@@ -30,7 +29,7 @@ public enum InterestMethodEnum {
     public String getDescription() {
         return description;
     }
-    
+
     public Long getEnumType() {
         return enumType;
     }

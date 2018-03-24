@@ -87,10 +87,6 @@ public class SavingAccountPreviewChargePanel extends Panel {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
     }
 

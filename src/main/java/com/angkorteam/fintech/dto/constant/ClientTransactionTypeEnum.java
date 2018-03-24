@@ -1,16 +1,15 @@
 package com.angkorteam.fintech.dto.constant;
 
 public enum ClientTransactionTypeEnum {
-    
-    PayCharge("1", "Pay Charge"),
-    WaiveCharge("2      ", "Waive Charge");
-    
+
+    PayCharge("1", "Pay Charge"), WaiveCharge("2      ", "Waive Charge");
+
     public static final String ID = "client_transaction_type_enum";
-    
+
     private final String literal;
 
     private final String description;
-    
+
     private final Long enumType;
 
     ClientTransactionTypeEnum(String literal, String description) {
@@ -30,7 +29,7 @@ public enum ClientTransactionTypeEnum {
     public String getDescription() {
         return description;
     }
-    
+
     public Long getEnumType() {
         return enumType;
     }

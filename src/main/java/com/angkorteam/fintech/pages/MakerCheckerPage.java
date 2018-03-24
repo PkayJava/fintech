@@ -152,10 +152,6 @@ public class MakerCheckerPage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
     }
 

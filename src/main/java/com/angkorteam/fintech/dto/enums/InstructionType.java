@@ -7,9 +7,8 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum InstructionType {
 
-    Fixed("1", "Fixed"),
-    Dues("2", "Dues");
-    
+    Fixed("1", "Fixed"), Dues("2", "Dues");
+
     private String literal;
 
     private String description;

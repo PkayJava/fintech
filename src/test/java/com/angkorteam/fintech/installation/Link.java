@@ -12,27 +12,27 @@ public class Link {
     private String toId;
 
     public List<String> getComments() {
-	return comments;
+        return comments;
     }
 
     public void setComments(List<String> comments) {
-	this.comments = comments;
+        this.comments = comments;
     }
 
     public String getFromId() {
-	return fromId;
+        return fromId;
     }
 
     public void setFromId(String fromId) {
-	this.fromId = fromId;
+        this.fromId = fromId;
     }
 
     public String getToId() {
-	return toId;
+        return toId;
     }
 
     public void setToId(String toId) {
-	this.toId = toId;
+        this.toId = toId;
     }
 
 }

@@ -116,14 +116,10 @@ public class CurrencyPanel extends Panel {
     }
 
     @Override
-    protected void configureRequiredValidation() {
+    protected void configureMetaData() {
         this.currencyCodeField.setRequired(true);
         this.currencyDecimalPlaceField.setRequired(true);
         this.currencyMultipleOfField.setRequired(true);
-    }
-
-    @Override
-    protected void configureMetaData() {
     }
 
     protected void nextButtonSubmit(Button button) {

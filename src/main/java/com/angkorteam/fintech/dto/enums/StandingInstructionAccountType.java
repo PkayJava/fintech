@@ -7,9 +7,8 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum StandingInstructionAccountType {
 
-    LoanAccount("1", "Loan Account"),
-    SavingAccount("2", "Saving Account");
-    
+    LoanAccount("1", "Loan Account"), SavingAccount("2", "Saving Account");
+
     private String literal;
 
     private String description;

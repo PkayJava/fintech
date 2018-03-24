@@ -7,11 +7,8 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum RecurrenceFrequency {
 
-    Day("0", "Days"),
-    Week("1", "Weeks"),
-    Month("2", "Months"),
-    Year("3", "Years");
-    
+    Day("0", "Days"), Week("1", "Weeks"), Month("2", "Months"), Year("3", "Years");
+
     private String literal;
 
     private String description;

@@ -1,7 +1,28 @@
 package com.angkorteam.fintech.pages.client.client;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
 import com.angkorteam.fintech.Page;
-import com.angkorteam.fintech.ddl.*;
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MClientCharge;
+import com.angkorteam.fintech.ddl.MClientChargePaidBy;
+import com.angkorteam.fintech.ddl.MClientTransaction;
+import com.angkorteam.fintech.ddl.MCurrency;
+import com.angkorteam.fintech.ddl.MOffice;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
@@ -22,20 +43,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class ChargeTransactionPage extends Page {
@@ -285,10 +292,6 @@ public class ChargeTransactionPage extends Page {
         this.outstandingBlock.add(this.outstandingVContainer);
         this.outstandingView = new ReadOnlyView("outstandingView", new PropertyModel<>(this, "outstandingValue"), "#,###,##0.00");
         this.outstandingVContainer.add(this.outstandingView);
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
     }
 
     @Override

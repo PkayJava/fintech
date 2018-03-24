@@ -181,10 +181,6 @@ public class IncentivePopup extends PopupPanel {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
         attributeFieldUpdate(null);
     }

@@ -211,10 +211,6 @@ public class GroupCreatePage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
         activeFieldUpdate(null);
     }

@@ -3,7 +3,6 @@ package com.angkorteam.fintech.pages.table;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.XRegisteredTable;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -14,6 +13,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.XRegisteredTable;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -99,10 +99,6 @@ public class DataTableBrowsePage extends Page {
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
         this.dataFilterForm.add(this.dataTable);
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
     }
 
     @Override

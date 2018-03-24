@@ -10,8 +10,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum ChargePayment {
 
-    RegularMode("0", "Regular Mode"), 
-    AccountTransferMode("1", "Account Transfer Mode");
+    RegularMode("0", "Regular Mode"), AccountTransferMode("1", "Account Transfer Mode");
 
     private String literal;
 

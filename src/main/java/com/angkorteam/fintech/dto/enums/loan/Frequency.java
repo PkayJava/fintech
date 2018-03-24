@@ -4,10 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum Frequency {
 
-    Same("1", "Same as repayment period"), 
-    Daily("2", "Daily"), 
-    Weekly("3", "Weekly"), 
-    Monthly("4", "Monthly");
+    Same("1", "Same as repayment period"), Daily("2", "Daily"), Weekly("3", "Weekly"), Monthly("4", "Monthly");
 
     private String literal;
 

@@ -7,9 +7,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum ProductType {
 
-    Loan("1", "Loan"),
-    Share("4", "Share"), 
-    Saving("2", "Saving");
+    Loan("1", "Loan"), Share("4", "Share"), Saving("2", "Saving");
 
     private String literal;
 

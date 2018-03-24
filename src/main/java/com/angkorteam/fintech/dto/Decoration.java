@@ -2,9 +2,7 @@ package com.angkorteam.fintech.dto;
 
 public enum Decoration {
 
-    Fa("fa"),
-    Check("fa-check"),
-    TextYellow("text-yellow");
+    Fa("fa"), Check("fa-check"), TextYellow("text-yellow");
 
     private final String css;
 

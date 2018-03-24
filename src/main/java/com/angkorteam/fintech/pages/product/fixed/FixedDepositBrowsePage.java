@@ -3,7 +3,6 @@ package com.angkorteam.fintech.pages.product.fixed;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.MSavingsProduct;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -15,6 +14,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MSavingsProduct;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.DepositType;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
@@ -101,11 +101,6 @@ public class FixedDepositBrowsePage extends Page {
 
         this.createLink = new BookmarkablePageLink<>("createLink", FixedDepositCreatePage.class);
         add(this.createLink);
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
-
     }
 
     @Override

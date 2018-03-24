@@ -7,7 +7,7 @@ import com.angkorteam.fintech.junit.JUnit;
 import com.angkorteam.fintech.junit.JUnitWicketTester;
 
 public class FinancialActivityCreatePageTest {
-    
+
     private JUnitWicketTester wicket;
 
     @Before

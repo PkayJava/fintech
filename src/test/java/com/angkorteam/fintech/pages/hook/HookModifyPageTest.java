@@ -14,7 +14,7 @@ public class HookModifyPageTest {
     public void before() {
         this.wicket = JUnit.getWicket();
     }
- 
+
     @Ignore
     public void visitPage() {
         this.wicket.login();

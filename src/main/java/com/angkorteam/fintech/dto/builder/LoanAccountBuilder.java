@@ -41,13 +41,13 @@ public class LoanAccountBuilder implements Serializable {
     }
 
     private String monthDayFormat = "dd MMMM";
-//    private boolean hasMonthDayFormat = true;
-//
-//    public LoanAccountBuilder withMonthDayFormat(String monthDayFormat) {
-//        this.monthDayFormat = monthDayFormat;
-//        this.hasMonthDayFormat = true;
-//        return this;
-//    }
+    // private boolean hasMonthDayFormat = true;
+    //
+    // public LoanAccountBuilder withMonthDayFormat(String monthDayFormat) {
+    // this.monthDayFormat = monthDayFormat;
+    // this.hasMonthDayFormat = true;
+    // return this;
+    // }
 
     private String clientId;
     private boolean hasClientId;
@@ -523,9 +523,9 @@ public class LoanAccountBuilder implements Serializable {
             object.getObject().put("clientId", this.clientId);
         }
 
-//        if (this.hasMonthDayFormat) {
-//            object.getObject().put("monthDayFormat", this.monthDayFormat);
-//        }
+        // if (this.hasMonthDayFormat) {
+        // object.getObject().put("monthDayFormat", this.monthDayFormat);
+        // }
 
         if (this.hasDateFormat) {
             object.getObject().put("dateFormat", this.dateFormat);

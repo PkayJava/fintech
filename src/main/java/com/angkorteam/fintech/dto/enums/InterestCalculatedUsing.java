@@ -4,8 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum InterestCalculatedUsing {
 
-    DailyBalance("1", "Daily Balance"), 
-    AverageDailyBalance("2", "Average Daily Balance");
+    DailyBalance("1", "Daily Balance"), AverageDailyBalance("2", "Average Daily Balance");
 
     private String literal;
 

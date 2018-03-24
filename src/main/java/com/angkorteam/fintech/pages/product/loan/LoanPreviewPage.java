@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.*;
-import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -17,6 +15,21 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.AccGLAccount;
+import com.angkorteam.fintech.ddl.AccProductMapping;
+import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.ddl.MFloatingRates;
+import com.angkorteam.fintech.ddl.MFund;
+import com.angkorteam.fintech.ddl.MOrganisationCurrency;
+import com.angkorteam.fintech.ddl.MPaymentType;
+import com.angkorteam.fintech.ddl.MProductLoan;
+import com.angkorteam.fintech.ddl.MProductLoanCharge;
+import com.angkorteam.fintech.ddl.MProductLoanConfigurableAttributes;
+import com.angkorteam.fintech.ddl.MProductLoanFloatingRates;
+import com.angkorteam.fintech.ddl.MProductLoanGuaranteeDetails;
+import com.angkorteam.fintech.ddl.MProductLoanRecalculationDetails;
+import com.angkorteam.fintech.ddl.MProductLoanVariableInstallmentConfig;
+import com.angkorteam.fintech.ddl.MProductLoanVariationsBorrowerCycle;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.AccountingType;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
@@ -48,7 +61,7 @@ import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.share.provider.ListDataProvider;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
@@ -805,10 +818,6 @@ public class LoanPreviewPage extends Page {
 
         initSectionAccounting();
 
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
     }
 
     @Override

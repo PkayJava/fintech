@@ -101,14 +101,10 @@ public class DetailsPanel extends Panel {
     }
 
     @Override
-    protected void configureRequiredValidation() {
+    protected void configureMetaData() {
         this.detailProductNameField.setRequired(true);
         this.detailShortNameField.setRequired(true);
         this.detailDescriptionField.setRequired(true);
-    }
-
-    @Override
-    protected void configureMetaData() {
     }
 
     protected void nextButtonSubmit(Button button) {

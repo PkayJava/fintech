@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<wicket:panel>
+		<form role="form" wicket:id="form">
+			<div class="box-primary">
+
+				<div class="box-body">
+
+					<!-- Row -->
+					<div wicket:id="detailProductNameBlock" class="form-group">
+						<wicket:container wicket:id="detailProductNameIContainer">
+							<label wicket:for="detailProductNameField">Product Name</label>
+							<input wicket:id="detailProductNameField" type="text"
+								class="form-control" />
+							<span wicket:id="detailProductNameFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="detailShortNameBlock" class="form-group">
+						<wicket:container wicket:id="detailShortNameIContainer">
+							<label wicket:for="detailShortNameField">Short Name</label>
+							<input wicket:id="detailShortNameField" type="text"
+								class="form-control" />
+							<span wicket:id="detailShortNameFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="detailDescriptionBlock" class="form-group">
+						<wicket:container wicket:id="detailDescriptionIContainer">
+							<label wicket:for="detailDescriptionField">Description</label>
+							<input wicket:id="detailDescriptionField" type="text"
+								class="form-control" />
+							<span wicket:id="detailDescriptionFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="detailFundBlock" class="form-group">
+						<wicket:container wicket:id="detailFundIContainer">
+							<label wicket:for="detailFundField">Fund</label>
+							<select wicket:id="detailFundField" class="form-control"></select>
+							<span wicket:id="detailFundFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="detailStartDateBlock" class="form-group">
+						<wicket:container wicket:id="detailStartDateIContainer">
+							<label wicket:for="detailStartDateField">Start Date</label>
+							<input wicket:id="detailStartDateField" type="text"
+								class="form-control" />
+							<span wicket:id="detailStartDateFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="detailCloseDateBlock" class="form-group">
+						<wicket:container wicket:id="detailCloseDateIContainer">
+							<label wicket:for="detailCloseDateField">Close Date</label>
+							<input wicket:id="detailCloseDateField" type="text"
+								class="form-control" />
+							<span wicket:id="detailCloseDateFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="detailIncludeInCustomerLoanCounterBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="detailIncludeInCustomerLoanCounterIContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox"
+									wicket:id="detailIncludeInCustomerLoanCounterField"> Is
+									Include in customer loan counter ?
+							</label>
+							</span>
+							<span wicket:id="detailIncludeInCustomerLoanCounterFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+				</div>
+
+				<div class="box-footer">
+					<button wicket:id="nextButton" type="submit" class="btn btn-info">Next</button>
+					<a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
+				</div>
+			</div>
+		</form>
+	</wicket:panel>
+</body>
+</html>

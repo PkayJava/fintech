@@ -5,10 +5,6 @@ package com.angkorteam.fintech.dto.enums;
  */
 public enum ProductPopup {
 
-    Fixed,
-    Share,
-    Loan,
-    Recurring,
-    Saving;
+    Fixed, Share, Loan, Recurring, Saving;
 
 }

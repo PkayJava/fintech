@@ -7,9 +7,8 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum Destination {
 
-    OwnAccount("1", "Own Account"),
-    WithInBank("2", "With In Bank");
-    
+    OwnAccount("1", "Own Account"), WithInBank("2", "With In Bank");
+
     private String literal;
 
     private String description;

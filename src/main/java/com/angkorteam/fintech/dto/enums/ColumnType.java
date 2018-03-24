@@ -7,14 +7,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum ColumnType {
 
-    String("String", "String"), 
-    Number("Number", "Number"), 
-    Decimal("Decimal", "Decimal"), 
-    Boolean("Boolean", "Boolean"), 
-    Date("Date", "Date"), 
-    DateTime("DateTime", "Date & Time"), 
-    Text("Text", "Text"), 
-    DropDown("DropDown", "Drop Down");
+    String("String", "String"), Number("Number", "Number"), Decimal("Decimal", "Decimal"), Boolean("Boolean", "Boolean"), Date("Date", "Date"), DateTime("DateTime", "Date & Time"), Text("Text", "Text"), DropDown("DropDown", "Drop Down");
 
     private String literal;
 

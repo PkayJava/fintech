@@ -4,8 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum NominalInterestRateType {
 
-    Month("2", "Per month"), 
-    Year("3", "Per year");
+    Month("2", "Per month"), Year("3", "Per year");
 
     private String literal;
 

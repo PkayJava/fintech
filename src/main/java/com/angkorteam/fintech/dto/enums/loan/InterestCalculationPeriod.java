@@ -4,8 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum InterestCalculationPeriod {
 
-    Daily("0", "Daily"), 
-    SameAsPayment("1", "Same as payment");
+    Daily("0", "Daily"), SameAsPayment("1", "Same as payment");
 
     private String literal;
 

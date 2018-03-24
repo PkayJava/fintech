@@ -181,10 +181,6 @@ public class LoanAccountRepaymentPage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
         paymentDetailFieldUpdate(null);
     }

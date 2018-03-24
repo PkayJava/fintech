@@ -18,7 +18,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.RangeValidator;
-import org.apache.wicket.validation.validator.StringValidator;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
@@ -62,7 +61,6 @@ import com.angkorteam.fintech.popup.PrincipleLoanCyclePopup;
 import com.angkorteam.fintech.popup.RepaymentLoanCyclePopup;
 import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.provider.DayInYearProvider;
-import com.angkorteam.fintech.provider.FundProvider;
 import com.angkorteam.fintech.provider.LockInTypeProvider;
 import com.angkorteam.fintech.provider.NominalInterestRateTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -101,7 +99,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
-import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
@@ -118,48 +115,13 @@ public class LoanCreatePage extends Page {
 
     // Detail
 
-    protected WebMarkupBlock detailProductNameBlock;
-    protected WebMarkupContainer detailProductNameIContainer;
     protected String detailProductNameValue;
-    protected TextField<String> detailProductNameField;
-    protected TextFeedbackPanel detailProductNameFeedback;
-
-    protected WebMarkupBlock detailShortNameBlock;
-    protected WebMarkupContainer detailShortNameIContainer;
     protected String detailShortNameValue;
-    protected TextField<String> detailShortNameField;
-    protected TextFeedbackPanel detailShortNameFeedback;
-
-    protected WebMarkupBlock detailDescriptionBlock;
-    protected WebMarkupContainer detailDescriptionIContainer;
     protected String detailDescriptionValue;
-    protected TextField<String> detailDescriptionField;
-    protected TextFeedbackPanel detailDescriptionFeedback;
-
-    protected WebMarkupBlock detailFundBlock;
-    protected WebMarkupContainer detailFundIContainer;
-    protected FundProvider detailFundProvider;
     protected Option detailFundValue;
-    protected Select2SingleChoice<Option> detailFundField;
-    protected TextFeedbackPanel detailFundFeedback;
-
-    protected WebMarkupBlock detailStartDateBlock;
-    protected WebMarkupContainer detailStartDateIContainer;
     protected Date detailStartDateValue;
-    protected DateTextField detailStartDateField;
-    protected TextFeedbackPanel detailStartDateFeedback;
-
-    protected WebMarkupBlock detailCloseDateBlock;
-    protected WebMarkupContainer detailCloseDateIContainer;
     protected Date detailCloseDateValue;
-    protected DateTextField detailCloseDateField;
-    protected TextFeedbackPanel detailCloseDateFeedback;
-
-    protected WebMarkupBlock detailIncludeInCustomerLoanCounterBlock;
-    protected WebMarkupContainer detailIncludeInCustomerLoanCounterIContainer;
     protected Boolean detailIncludeInCustomerLoanCounterValue;
-    protected CheckBox detailIncludeInCustomerLoanCounterField;
-    protected TextFeedbackPanel detailIncludeInCustomerLoanCounterFeedback;
 
     // Currency
 
@@ -1017,8 +979,6 @@ public class LoanCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", LoanBrowsePage.class);
         this.form.add(this.closeLink);
 
-        initSectionDetail();
-
         initSectionCurrency();
 
         initSectionTerms();
@@ -1042,10 +1002,6 @@ public class LoanCreatePage extends Page {
         initSectionDefault();
 
         initSectionValidationRule();
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
     }
 
     @Override
@@ -1076,10 +1032,6 @@ public class LoanCreatePage extends Page {
     }
 
     protected void initSectionValidationRule() {
-        this.detailProductNameField.setRequired(true);
-        this.detailShortNameField.setRequired(true);
-        this.detailShortNameField.add(StringValidator.exactLength(4));
-
         this.currencyCodeField.setRequired(true);
         this.currencyDecimalPlaceField.setRequired(true);
         this.currencyInMultipleOfField.setRequired(true);
@@ -2741,79 +2693,6 @@ public class LoanCreatePage extends Page {
         settingVariableInstallmentsAllowedFieldUpdate(null);
 
         termLinkedToFloatingInterestRatesFieldUpdate(null);
-    }
-
-    protected void initSectionDetail() {
-
-        this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
-        this.form.add(this.detailProductNameBlock);
-        this.detailProductNameIContainer = new WebMarkupContainer("detailProductNameIContainer");
-        this.detailProductNameBlock.add(this.detailProductNameIContainer);
-        this.detailProductNameField = new TextField<>("detailProductNameField", new PropertyModel<>(this, "detailProductNameValue"));
-        this.detailProductNameField.setLabel(Model.of("Product Name"));
-        this.detailProductNameIContainer.add(this.detailProductNameField);
-        this.detailProductNameFeedback = new TextFeedbackPanel("detailProductNameFeedback", this.detailProductNameField);
-        this.detailProductNameIContainer.add(this.detailProductNameFeedback);
-
-        this.detailShortNameBlock = new WebMarkupBlock("detailShortNameBlock", Size.Six_6);
-        this.form.add(this.detailShortNameBlock);
-        this.detailShortNameIContainer = new WebMarkupContainer("detailShortNameIContainer");
-        this.detailShortNameBlock.add(this.detailShortNameIContainer);
-        this.detailShortNameField = new TextField<>("detailShortNameField", new PropertyModel<>(this, "detailShortNameValue"));
-        this.detailShortNameField.setLabel(Model.of("Short Name"));
-        this.detailShortNameIContainer.add(this.detailShortNameField);
-        this.detailShortNameFeedback = new TextFeedbackPanel("detailShortNameFeedback", this.detailShortNameField);
-        this.detailShortNameIContainer.add(this.detailShortNameFeedback);
-
-        this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Six_6);
-        this.form.add(this.detailDescriptionBlock);
-        this.detailDescriptionIContainer = new WebMarkupContainer("detailDescriptionIContainer");
-        this.detailDescriptionBlock.add(this.detailDescriptionIContainer);
-        this.detailDescriptionField = new TextField<>("detailDescriptionField", new PropertyModel<>(this, "detailDescriptionValue"));
-        this.detailDescriptionField.setLabel(Model.of("Description"));
-        this.detailDescriptionIContainer.add(this.detailDescriptionField);
-        this.detailDescriptionFeedback = new TextFeedbackPanel("detailDescriptionFeedback", this.detailDescriptionField);
-        this.detailDescriptionIContainer.add(this.detailDescriptionFeedback);
-
-        this.detailFundProvider = new FundProvider();
-        this.detailFundBlock = new WebMarkupBlock("detailFundBlock", Size.Six_6);
-        this.form.add(this.detailFundBlock);
-        this.detailFundIContainer = new WebMarkupContainer("detailFundIContainer");
-        this.detailFundBlock.add(this.detailFundIContainer);
-        this.detailFundField = new Select2SingleChoice<>("detailFundField", new PropertyModel<>(this, "detailFundValue"), this.detailFundProvider);
-        this.detailFundField.setLabel(Model.of("Fund"));
-        this.detailFundIContainer.add(this.detailFundField);
-        this.detailFundFeedback = new TextFeedbackPanel("detailFundFeedback", this.detailFundField);
-        this.detailFundIContainer.add(this.detailFundFeedback);
-
-        this.detailStartDateBlock = new WebMarkupBlock("detailStartDateBlock", Size.Six_6);
-        this.form.add(this.detailStartDateBlock);
-        this.detailStartDateIContainer = new WebMarkupContainer("detailStartDateIContainer");
-        this.detailStartDateBlock.add(this.detailStartDateIContainer);
-        this.detailStartDateField = new DateTextField("detailStartDateField", new PropertyModel<>(this, "detailStartDateValue"));
-        this.detailStartDateField.setLabel(Model.of("Start Date"));
-        this.detailStartDateIContainer.add(this.detailStartDateField);
-        this.detailStartDateFeedback = new TextFeedbackPanel("detailStartDateFeedback", this.detailStartDateField);
-        this.detailStartDateIContainer.add(this.detailStartDateFeedback);
-
-        this.detailCloseDateBlock = new WebMarkupBlock("detailCloseDateBlock", Size.Six_6);
-        this.form.add(this.detailCloseDateBlock);
-        this.detailCloseDateIContainer = new WebMarkupContainer("detailCloseDateIContainer");
-        this.detailCloseDateBlock.add(this.detailCloseDateIContainer);
-        this.detailCloseDateField = new DateTextField("detailCloseDateField", new PropertyModel<>(this, "detailCloseDateValue"));
-        this.detailCloseDateField.setLabel(Model.of("Close Date"));
-        this.detailCloseDateIContainer.add(this.detailCloseDateField);
-        this.detailCloseDateFeedback = new TextFeedbackPanel("detailCloseDateFeedback", this.detailCloseDateField);
-        this.detailCloseDateIContainer.add(this.detailCloseDateFeedback);
-
-        this.detailIncludeInCustomerLoanCounterBlock = new WebMarkupBlock("detailIncludeInCustomerLoanCounterBlock", Size.Twelve_12);
-        this.form.add(this.detailIncludeInCustomerLoanCounterBlock);
-        this.detailIncludeInCustomerLoanCounterIContainer = new WebMarkupContainer("detailIncludeInCustomerLoanCounterIContainer");
-        this.detailIncludeInCustomerLoanCounterBlock.add(this.detailIncludeInCustomerLoanCounterIContainer);
-        this.detailIncludeInCustomerLoanCounterField = new CheckBox("detailIncludeInCustomerLoanCounterField", new PropertyModel<>(this, "detailIncludeInCustomerLoanCounterValue"));
-        this.detailIncludeInCustomerLoanCounterIContainer.add(this.detailIncludeInCustomerLoanCounterField);
-        this.detailIncludeInCustomerLoanCounterFeedback = new TextFeedbackPanel("detailIncludeInCustomerLoanCounterFeedback", this.detailIncludeInCustomerLoanCounterField);
-        this.detailIncludeInCustomerLoanCounterIContainer.add(this.detailIncludeInCustomerLoanCounterFeedback);
     }
 
     protected void initSectionCurrency() {

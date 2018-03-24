@@ -7,9 +7,8 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum TransferType {
 
-    AccountTransfer("1", "Account Transfer"),
-    LoanRepayment("2", "Loan Repayment");
-    
+    AccountTransfer("1", "Account Transfer"), LoanRepayment("2", "Loan Repayment");
+
     private String literal;
 
     private String description;

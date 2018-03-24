@@ -150,10 +150,6 @@ public class SavingAccountWithdrawPage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
         paymentDetailFieldUpdate(null);
     }

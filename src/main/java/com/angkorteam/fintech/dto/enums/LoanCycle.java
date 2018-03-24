@@ -7,9 +7,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum LoanCycle {
 
-    Principle("1", "Principle"), 
-    NumberOfRepayment("3", "Number of Repayment"), 
-    NominalInterestRate("2", "Nominal Interest Rate");
+    Principle("1", "Principle"), NumberOfRepayment("3", "Number of Repayment"), NominalInterestRate("2", "Nominal Interest Rate");
 
     private String literal;
 

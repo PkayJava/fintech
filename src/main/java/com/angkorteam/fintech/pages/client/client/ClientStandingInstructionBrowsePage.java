@@ -4,12 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.MAccountTransferDetails;
-import com.angkorteam.fintech.ddl.MAccountTransferStandingInstructions;
-import com.angkorteam.fintech.ddl.MClient;
-import com.angkorteam.fintech.ddl.MSavingsAccount;
-import com.angkorteam.framework.jdbc.SelectQuery;
-import com.angkorteam.framework.spring.JdbcNamed;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -19,13 +13,18 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MAccountTransferDetails;
+import com.angkorteam.fintech.ddl.MAccountTransferStandingInstructions;
+import com.angkorteam.fintech.ddl.MClient;
+import com.angkorteam.fintech.ddl.MSavingsAccount;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.InstructionType;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.framework.SpringBean;
+import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.spring.JdbcTemplate;
+import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.Calendar;
@@ -144,10 +143,6 @@ public class ClientStandingInstructionBrowsePage extends Page {
             return new TextCell(value, "yyyy-MM-dd");
         }
         throw new WicketRuntimeException("Unknown " + column);
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
     }
 
     @Override

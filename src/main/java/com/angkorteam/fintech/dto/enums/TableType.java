@@ -6,13 +6,8 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  * Created by socheatkhauv on 7/12/17.
  */
 public enum TableType {
-    
-    Client("m_client", "Client"), 
-    Group("m_group", "Group"), 
-    SavingsAccount("m_savings_account", "Savings Account"), 
-    Loan("m_loan", "Loan"), 
-    Center("m_center", "Center"), 
-    Office("m_office", "Office");
+
+    Client("m_client", "Client"), Group("m_group", "Group"), SavingsAccount("m_savings_account", "Savings Account"), Loan("m_loan", "Loan"), Center("m_center", "Center"), Office("m_office", "Office");
 
     private String literal;
 

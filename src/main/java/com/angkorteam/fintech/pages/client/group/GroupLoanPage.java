@@ -1,6 +1,5 @@
 package com.angkorteam.fintech.pages.client.group;
 
-import com.angkorteam.fintech.ddl.MSavingsProduct;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
@@ -8,6 +7,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MSavingsProduct;
 import com.angkorteam.fintech.dto.enums.DepositType;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -65,10 +65,6 @@ public class GroupLoanPage extends Page {
         this.productIContainer.add(this.productField);
         this.productFeedback = new TextFeedbackPanel("productFeedback", this.productField);
         this.productIContainer.add(this.productFeedback);
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
     }
 
     @Override

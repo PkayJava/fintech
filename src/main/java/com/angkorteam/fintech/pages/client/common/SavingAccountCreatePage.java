@@ -742,10 +742,6 @@ public class SavingAccountCreatePage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
         overdraftAllowedFieldUpdate(null);
         this.withHoldIContainer.setVisible(this.withHoldValue != null && this.withHoldValue);

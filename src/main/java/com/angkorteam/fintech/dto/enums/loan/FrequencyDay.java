@@ -4,13 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum FrequencyDay {
 
-    Sunday("7", "Sunday"), 
-    Monday("1", "Monday"), 
-    Tuesday("2", "Tuesday"), 
-    Wednesday("3", "Wednesday"), 
-    Thursday("4", "Thursday"), 
-    Friday("5", "Friday"), 
-    Saturday("6", "Saturday");
+    Sunday("7", "Sunday"), Monday("1", "Monday"), Tuesday("2", "Tuesday"), Wednesday("3", "Wednesday"), Thursday("4", "Thursday"), Friday("5", "Friday"), Saturday("6", "Saturday");
 
     private String literal;
 

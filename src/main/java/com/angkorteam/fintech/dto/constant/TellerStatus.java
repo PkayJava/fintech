@@ -4,15 +4,14 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum TellerStatus {
 
-    Active("300", "Active"), 
-    Inactive("400", "Inactive");
-    
+    Active("300", "Active"), Inactive("400", "Inactive");
+
     public static final String ID = "teller_status";
 
     private final String literal;
 
     private final String description;
-    
+
     private final Long enumType;
 
     TellerStatus(String literal, String description) {
@@ -32,11 +31,11 @@ public enum TellerStatus {
     public String getDescription() {
         return description;
     }
-    
+
     public Long getEnumType() {
         return enumType;
     }
-    
+
     public Option toOption() {
         return new Option(this.name(), this.description);
     }

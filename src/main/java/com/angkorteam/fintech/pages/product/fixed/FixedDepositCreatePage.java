@@ -454,7 +454,7 @@ public class FixedDepositCreatePage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
+    protected void configureMetaData() {
         this.detailProductNameField.setRequired(true);
         this.detailShortNameField.setRequired(true);
         this.detailShortNameField.add(StringValidator.exactLength(4));
@@ -475,10 +475,6 @@ public class FixedDepositCreatePage extends Page {
         this.termDefaultDepositAmountField.setRequired(true);
 
         this.accountingField.setRequired(true);
-    }
-
-    @Override
-    protected void configureMetaData() {
         settingWithholdTaxApplicableFieldUpdate(null);
         accountingFieldUpdate(null);
     }

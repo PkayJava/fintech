@@ -29,7 +29,6 @@ import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.spring.JdbcNamed;
-import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public class LoanAccountPreviewDetailPanel extends Panel {
@@ -399,10 +398,6 @@ public class LoanAccountPreviewDetailPanel extends Panel {
         this.dayInYearBlock.add(this.dayInYearVContainer);
         this.dayInYearView = new ReadOnlyView("dayInYearView", new PropertyModel<>(this, "dayInYearValue"));
         this.dayInYearVContainer.add(this.dayInYearView);
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
     }
 
     @Override

@@ -4,9 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum DepositType {
 
-    Recurring("300", "Recurring"), 
-    Saving("100", "Saving"), 
-    Fixed("200", "Fixed");
+    Recurring("300", "Recurring"), Saving("100", "Saving"), Fixed("200", "Fixed");
 
     private String literal;
 

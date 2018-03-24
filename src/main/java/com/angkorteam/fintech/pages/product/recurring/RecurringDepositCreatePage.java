@@ -468,7 +468,8 @@ public class RecurringDepositCreatePage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
+    protected void configureMetaData() {
+
         this.detailProductNameField.setRequired(true);
         this.detailShortNameField.setRequired(true);
         this.detailDescriptionField.setRequired(true);
@@ -482,11 +483,6 @@ public class RecurringDepositCreatePage extends Page {
         this.settingMinimumDepositTypeField.setRequired(true);
         this.accountingField.setRequired(true);
         this.termDefaultDepositAmountField.setRequired(true);
-    }
-
-    @Override
-    protected void configureMetaData() {
-
         settingWithholdTaxApplicableFieldUpdate(null);
 
         accountingFieldUpdate(null);

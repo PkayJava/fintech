@@ -751,10 +751,6 @@ public class LoanAccountPreviewPage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void initData() {
         this.client = ClientEnum.valueOf(getPageParameters().get("client").toString());
 

@@ -7,9 +7,8 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum RecurrenceType {
 
-    Periodic("1", "Periodic Recurrence"),
-    PerDue("2", "As Per Dues Recurrence");
-    
+    Periodic("1", "Periodic Recurrence"), PerDue("2", "As Per Dues Recurrence");
+
     private String literal;
 
     private String description;

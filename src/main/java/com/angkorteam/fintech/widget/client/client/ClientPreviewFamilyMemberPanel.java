@@ -99,10 +99,6 @@ public class ClientPreviewFamilyMemberPanel extends com.angkorteam.fintech.widge
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
     }
 

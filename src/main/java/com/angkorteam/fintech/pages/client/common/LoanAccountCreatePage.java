@@ -688,11 +688,6 @@ public class LoanAccountCreatePage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-
-    }
-
-    @Override
     protected void configureMetaData() {
         if (ChargeFrequency.Month.toOption().equals(this.repaidTypeValue)) {
             this.repaidOnIContainer.setVisible(true);

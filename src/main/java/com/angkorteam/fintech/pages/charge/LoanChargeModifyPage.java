@@ -430,10 +430,6 @@ public class LoanChargeModifyPage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
         chargeTimeFieldUpdate(null);
         feeFrequencyUpdate(null);

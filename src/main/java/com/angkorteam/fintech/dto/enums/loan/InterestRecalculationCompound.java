@@ -4,10 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum InterestRecalculationCompound {
 
-    None("0", "None"), 
-    Fee("2", "Fee"), 
-    Interest("1", "Interest"), 
-    FeeAndInterest("3", "Fee and Interest");
+    None("0", "None"), Fee("2", "Fee"), Interest("1", "Interest"), FeeAndInterest("3", "Fee and Interest");
 
     private String literal;
 

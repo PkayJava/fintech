@@ -7,8 +7,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum JournalEntry {
 
-    Manual("1", "Manual Entries"), 
-    System("2", "System Entries");
+    Manual("1", "Manual Entries"), System("2", "System Entries");
 
     private String literal;
 

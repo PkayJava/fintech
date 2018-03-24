@@ -27,8 +27,7 @@ public class AllowAttributeOverrideBuilder implements Serializable {
     private boolean graceOnPrincipleAndInterestPayment;
     private boolean hasGraceOnPrincipleAndInterestPayment;
 
-    public AllowAttributeOverrideBuilder withGraceOnPrincipleAndInterestPayment(
-            boolean graceOnPrincipleAndInterestPayment) {
+    public AllowAttributeOverrideBuilder withGraceOnPrincipleAndInterestPayment(boolean graceOnPrincipleAndInterestPayment) {
         this.graceOnPrincipleAndInterestPayment = graceOnPrincipleAndInterestPayment;
         this.hasGraceOnPrincipleAndInterestPayment = true;
         return this;

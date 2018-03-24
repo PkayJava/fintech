@@ -626,7 +626,8 @@ public class RecurringDepositCreatePageTest {
         AjaxLink<?> chargeAddLink = this.wicket.getComponentFromLastRenderedPage("form:chargeAddLink", AjaxLink.class);
         this.wicket.executeAjaxLink(chargeAddLink);
 
-//        Assert.assertEquals("exected currencyPopup to be shown", page.currencyPopup.isShown(), true);
+        // Assert.assertEquals("exected currencyPopup to be shown",
+        // page.currencyPopup.isShown(), true);
     }
 
     @Test
@@ -818,7 +819,8 @@ public class RecurringDepositCreatePageTest {
         AjaxLink<?> advancedAccountingRulePenaltyIncomeAddLink = this.wicket.getComponentFromLastRenderedPage("form:advancedAccountingRuleBlock:advancedAccountingRuleContainer:advancedAccountingRulePenaltyIncomeAddLink", AjaxLink.class);
         this.wicket.executeAjaxLink(advancedAccountingRulePenaltyIncomeAddLink);
 
-//        Assert.assertEquals("exected currencyPopup to be shown", page.currencyPopup.isShown(), true);
+        // Assert.assertEquals("exected currencyPopup to be shown",
+        // page.currencyPopup.isShown(), true);
 
     }
 
@@ -882,7 +884,8 @@ public class RecurringDepositCreatePageTest {
         AjaxLink<?> advancedAccountingRuleFeeIncomeAddLink = this.wicket.getComponentFromLastRenderedPage("form:advancedAccountingRuleBlock:advancedAccountingRuleContainer:advancedAccountingRuleFeeIncomeAddLink", AjaxLink.class);
         this.wicket.executeAjaxLink(advancedAccountingRuleFeeIncomeAddLink);
 
-//        Assert.assertEquals("exected currencyPopup to be shown", page.currencyPopup.isShown(), true);
+        // Assert.assertEquals("exected currencyPopup to be shown",
+        // page.currencyPopup.isShown(), true);
 
     }
 
@@ -1041,6 +1044,7 @@ public class RecurringDepositCreatePageTest {
 
         this.wicket.startPage(page);
 
-//        Assert.assertEquals("exected settingWithholdTaxApplicableContainer to be visibled", page.settingWithholdTaxApplicableContainer.isVisible(), true);
+        // Assert.assertEquals("exected settingWithholdTaxApplicableContainer to be
+        // visibled", page.settingWithholdTaxApplicableContainer.isVisible(), true);
     }
 }

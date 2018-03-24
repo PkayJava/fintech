@@ -4,11 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum InterestCompoundingPeriod {
 
-    Daily("1", "Daily"), 
-    Monthly("4", "Monthly"), 
-    Quarterly("5", "Quarterly"), 
-    SemiAnnual("6", "Semi-Annual"), 
-    Annually("7", "Annually");
+    Daily("1", "Daily"), Monthly("4", "Monthly"), Quarterly("5", "Quarterly"), SemiAnnual("6", "Semi-Annual"), Annually("7", "Annually");
 
     private String literal;
 

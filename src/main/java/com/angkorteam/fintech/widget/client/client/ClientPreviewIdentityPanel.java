@@ -85,10 +85,6 @@ public class ClientPreviewIdentityPanel extends Panel {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
     }
 

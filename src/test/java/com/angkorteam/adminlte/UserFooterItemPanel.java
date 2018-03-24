@@ -1,7 +1,8 @@
 package com.angkorteam.adminlte;
 
-import com.angkorteam.framework.panels.UserFooterPanel;
 import org.apache.wicket.model.IModel;
+
+import com.angkorteam.framework.panels.UserFooterPanel;
 
 /**
  * Created by socheatkhauv on 6/13/17.

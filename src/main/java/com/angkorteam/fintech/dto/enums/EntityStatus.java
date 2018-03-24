@@ -7,14 +7,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
  */
 public enum EntityStatus {
 
-    Create("100", "Create"), 
-    Approve("200", "Approve"), 
-    Activate("300", "Activate"), 
-    Withdrawn("400", "Withdrawn"), 
-    Rejected("500", "Rejected"), 
-    Close("600", "Close"), 
-    WriteOff("601", "Write Off"), 
-    Disburse("800", "Disburse");
+    Create("100", "Create"), Approve("200", "Approve"), Activate("300", "Activate"), Withdrawn("400", "Withdrawn"), Rejected("500", "Rejected"), Close("600", "Close"), WriteOff("601", "Write Off"), Disburse("800", "Disburse");
 
     private String literal;
 

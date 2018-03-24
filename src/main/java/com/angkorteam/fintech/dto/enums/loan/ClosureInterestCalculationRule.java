@@ -4,8 +4,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum ClosureInterestCalculationRule {
 
-    PreClosureDate("1", "Calculate till pre closure date"), 
-    RestFrequencyDate("2", "Calculate till rest frequency date");
+    PreClosureDate("1", "Calculate till pre closure date"), RestFrequencyDate("2", "Calculate till rest frequency date");
 
     private String literal;
 

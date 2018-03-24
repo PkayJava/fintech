@@ -67,11 +67,6 @@ public class ChargeSelectionPage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-        this.chargeField.setRequired(true);
-    }
-
-    @Override
     protected void configureMetaData() {
     }
 

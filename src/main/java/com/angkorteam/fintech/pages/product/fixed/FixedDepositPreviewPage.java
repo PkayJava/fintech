@@ -367,10 +367,6 @@ public class FixedDepositPreviewPage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-    }
-
-    @Override
     protected void configureMetaData() {
         this.cashVContainer.setVisible(AccountingType.Cash.getDescription().equals(this.accountingValue));
         this.advancedAccountingRuleVContainer.setVisible(AccountingType.Cash.getDescription().equals(this.accountingValue));

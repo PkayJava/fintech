@@ -3,9 +3,8 @@ package com.angkorteam.fintech.dto.enums;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 
 public enum ApplyPenalOn {
-    
-    WholeTerm("1", "Whole term"), 
-    TillPrematureWithdrawal("2", "Till Premature Withdrawal");
+
+    WholeTerm("1", "Whole term"), TillPrematureWithdrawal("2", "Till Premature Withdrawal");
 
     private String literal;
 

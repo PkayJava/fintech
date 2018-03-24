@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.angkorteam.fintech.ddl.MProductLoan;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -16,6 +15,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.MProductLoan;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
@@ -105,10 +105,6 @@ public class LoanBrowsePage extends Page {
 
         this.createLink = new BookmarkablePageLink<>("createLink", LoanCreatePage.class);
         add(this.createLink);
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
     }
 
     @Override

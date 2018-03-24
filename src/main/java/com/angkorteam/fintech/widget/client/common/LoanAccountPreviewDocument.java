@@ -14,7 +14,7 @@ public class LoanAccountPreviewDocument extends ITab {
     public LoanAccountPreviewDocument(Page itemPage) {
         this.itemPage = itemPage;
     }
-    
+
     @Override
     public IModel<String> getTitle() {
         return Model.of("Loan Document");

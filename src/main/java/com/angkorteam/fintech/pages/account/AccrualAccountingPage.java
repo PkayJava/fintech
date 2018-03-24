@@ -91,12 +91,8 @@ public class AccrualAccountingPage extends Page {
     }
 
     @Override
-    protected void configureRequiredValidation() {
-        this.tillDateField.setRequired(true);
-    }
-
-    @Override
     protected void configureMetaData() {
+        this.tillDateField.setRequired(true);
     }
 
     protected void saveButtonSubmit(Button button) {

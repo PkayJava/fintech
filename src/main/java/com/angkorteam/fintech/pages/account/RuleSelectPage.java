@@ -2,7 +2,6 @@ package com.angkorteam.fintech.pages.account;
 
 import java.util.List;
 
-import com.angkorteam.fintech.ddl.AccAccountingRule;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
@@ -13,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.angkorteam.fintech.Page;
+import com.angkorteam.fintech.ddl.AccAccountingRule;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -75,8 +75,7 @@ public class RuleSelectPage extends Page {
         this.ruleIContainer = new WebMarkupContainer("ruleIContainer");
         this.ruleBlock.add(this.ruleIContainer);
         this.ruleProvider = new SingleChoiceProvider(AccAccountingRule.NAME, AccAccountingRule.Field.ID, AccAccountingRule.Field.NAME);
-        this.ruleField = new Select2SingleChoice<>("ruleField", new PropertyModel<>(this, "ruleValue"),
-                this.ruleProvider);
+        this.ruleField = new Select2SingleChoice<>("ruleField", new PropertyModel<>(this, "ruleValue"), this.ruleProvider);
         this.ruleField.setRequired(true);
         this.ruleIContainer.add(this.ruleField);
         this.ruleFeedback = new TextFeedbackPanel("ruleFeedback", this.ruleField);
@@ -85,10 +84,6 @@ public class RuleSelectPage extends Page {
         this.nextButton = new Button("nextButton");
         this.nextButton.setOnSubmit(this::nextButtonClick);
         this.form.add(this.nextButton);
-    }
-
-    @Override
-    protected void configureRequiredValidation() {
     }
 
     @Override
