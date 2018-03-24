@@ -189,6 +189,10 @@ public class AccountingPanel extends Panel {
         this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
         this.form.add(this.closeLink);
 
+        this.modalWindow = new ModalWindow("modalWindow");
+        add(this.modalWindow);
+        this.modalWindow.setOnClose(this::modalWindowClose);
+
         this.cashBlock = new WebMarkupContainer("cashBlock");
         this.cashBlock.setOutputMarkupId(true);
         this.form.add(this.cashBlock);
@@ -375,10 +379,6 @@ public class AccountingPanel extends Panel {
         this.advancedAccountingRuleFundSourceAddLink = new AjaxLink<>("advancedAccountingRuleFundSourceAddLink");
         this.advancedAccountingRuleFundSourceAddLink.setOnClick(this::advancedAccountingRuleFundSourceAddLinkClick);
         this.advancedAccountingRuleIContainer.add(this.advancedAccountingRuleFundSourceAddLink);
-
-        this.modalWindow = new ModalWindow("modalWindow");
-        add(this.modalWindow);
-        this.modalWindow.setOnClose(this::modalWindowClose);
     }
 
     @Override

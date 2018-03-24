@@ -8,6 +8,7 @@
 			<div class="box-primary">
 
 				<div class="box-body">
+
 					<!-- Row -->
 					<div wicket:id="currencyCodeBlock" class="form-group">
 						<wicket:container wicket:id="currencyCodeIContainer">
@@ -19,7 +20,7 @@
 					<div wicket:id="currencyDecimalPlaceBlock" class="form-group">
 						<wicket:container wicket:id="currencyDecimalPlaceIContainer">
 							<label wicket:for="currencyDecimalPlaceField">Decimal
-								Places</label>
+								Places </label>
 							<input wicket:id="currencyDecimalPlaceField" type="text"
 								class="form-control" />
 							<span wicket:id="currencyDecimalPlaceFeedback" class="help-block"></span>
@@ -28,16 +29,26 @@
 					<div class="clearfix"></div>
 
 					<!-- Row -->
-					<div wicket:id="currencyMultipleOfBlock" class="form-group">
-						<wicket:container wicket:id="currencyMultipleOfIContainer">
-							<label wicket:for="currencyMultipleOfField">Multiple of</label>
-							<input wicket:id="currencyMultipleOfField" type="text"
+					<div wicket:id="currencyInMultipleOfBlock" class="form-group">
+						<wicket:container wicket:id="currencyInMultipleOfIContainer">
+							<label wicket:for="currencyInMultipleOfField">Currency in
+								multiple of</label>
+							<input wicket:id="currencyInMultipleOfField" type="text"
 								class="form-control" />
-							<span wicket:id="currencyMultipleOfFeedback" class="help-block"></span>
+							<span wicket:id="currencyInMultipleOfFeedback" class="help-block"></span>
 						</wicket:container>
 					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					<div wicket:id="currencyInstallmentInMultipleOfBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="currencyInstallmentInMultipleOfIContainer">
+							<label wicket:for="currencyInstallmentInMultipleOfField">Installment
+								in multiple of</label>
+							<input wicket:id="currencyInstallmentInMultipleOfField"
+								type="text" class="form-control" />
+							<span wicket:id="currencyInstallmentInMultipleOfFeedback"
+								class="help-block"></span>
+						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
 

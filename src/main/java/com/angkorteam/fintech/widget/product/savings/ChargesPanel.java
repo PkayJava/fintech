@@ -109,6 +109,10 @@ public class ChargesPanel extends Panel {
         this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
         this.form.add(this.closeLink);
 
+        this.modalWindow = new ModalWindow("modalWindow");
+        add(this.modalWindow);
+        this.modalWindow.setOnClose(this::modalWindowClose);
+
         this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Twelve_12);
         this.form.add(this.chargeBlock);
         this.chargeIContainer = new WebMarkupContainer("chargeIContainer");
@@ -121,10 +125,6 @@ public class ChargesPanel extends Panel {
         this.chargeAddLink = new AjaxLink<>("chargeAddLink");
         this.chargeAddLink.setOnClick(this::chargeAddLinkClick);
         this.chargeIContainer.add(this.chargeAddLink);
-
-        this.modalWindow = new ModalWindow("modalWindow");
-        add(this.modalWindow);
-        this.modalWindow.setOnClose(this::modalWindowClose);
     }
 
     @Override
