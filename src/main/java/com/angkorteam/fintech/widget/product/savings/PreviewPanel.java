@@ -638,7 +638,7 @@ public class PreviewPanel extends Panel {
         this.settingNominalAnnualInterestForOverdraftVContainer.setVisible(settingOverdraftAllowedValue.getObject() != null && settingOverdraftAllowedValue.getObject());
         this.settingMinOverdraftRequiredForInterestCalculationVContainer.setVisible(settingOverdraftAllowedValue.getObject() != null && settingOverdraftAllowedValue.getObject());
 
-        this.saveButton.setVisible(this.errorTerm.getObject() && this.errorDetail.getObject() && this.errorCharge.getObject() && this.errorAccounting.getObject() && this.errorCurrency.getObject() && this.errorSetting.getObject());
+        this.saveButton.setVisible(!this.errorTerm.getObject() && !this.errorDetail.getObject() && !this.errorCharge.getObject() && !this.errorAccounting.getObject() && !this.errorCurrency.getObject() && !this.errorSetting.getObject());
     }
 
     protected ItemPanel advancedAccountingRuleFeeIncomeColumn(String column, IModel<String> display, Map<String, Object> model) {
