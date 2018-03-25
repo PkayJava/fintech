@@ -8,10 +8,147 @@
 			<div class="box-primary">
 
 				<div class="box-header with-border">
-					<h3 class="box-title">Preview</h3>
+					<h3 class="box-title">Details</h3>
+				</div>
+
+				<div class="box-body">
+					<!-- Row -->
+					<div wicket:id="detailProductNameBlock" class="form-group">
+						<wicket:container wicket:id="detailProductNameVContainer">
+							<label>Name</label>
+							<div wicket:id="detailProductNameView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="detailShortNameBlock" class="form-group">
+						<wicket:container wicket:id="detailShortNameVContainer">
+							<label>Short Name</label>
+							<div wicket:id="detailShortNameView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="detailDescriptionBlock" class="form-group">
+						<wicket:container wicket:id="detailDescriptionVContainer">
+							<label>Description</label>
+							<div wicket:id="detailDescriptionView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Items</h3>
+				</div>
+
+				<div class="box-body">
+					<!-- Row -->
+					<div wicket:id="currencyCodeBlock" class="form-group">
+						<wicket:container wicket:id="currencyCodeVContainer">
+							<label>Currency</label>
+							<div wicket:id="currencyCodeView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="currencyDecimalPlaceBlock" class="form-group">
+						<wicket:container wicket:id="currencyDecimalPlaceVContainer">
+							<label>Decimal Places</label>
+							<div wicket:id="currencyDecimalPlaceView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="currencyMultipleOfBlock" class="form-group">
+						<wicket:container wicket:id="currencyMultipleOfVContainer">
+							<label>Multiple of</label>
+							<div wicket:id="currencyMultipleOfView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Settings</h3>
 				</div>
 
 				<div class="box-body"></div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Interest Rate Chart</h3>
+				</div>
+
+				<div class="box-body"></div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Charges</h3>
+				</div>
+
+				<div class="box-body">
+					<!-- Row -->
+					<div wicket:id="chargeBlock" class="form-group">
+						<wicket:container wicket:id="chargeVContainer">
+							<table wicket:id="chargeTable"></table>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">
+						Accounting :
+						<wicket:container wicket:id="accountingLabel" />
+					</h3>
+				</div>
+
+				<wicket:container wicket:id="cashMaster">
+
+
+
+				</wicket:container>
+
+				<wicket:container wicket:id="advancedAccountingRuleMaster">
+
+					<div class="box-header with-border">
+						<h3 class="box-title">Advanced Accounting Rule</h3>
+					</div>
+
+					<div class="box-body">
+
+						<!-- Row -->
+						<div
+							class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<wicket:container
+								wicket:id="advancedAccountingRuleFundSourceBlock">
+								<wicket:container
+									wicket:id="advancedAccountingRuleFundSourceVContainer">
+									<h4>Configure Fund Sources for Payment Channels</h4>
+									<table wicket:id="advancedAccountingRuleFundSourceTable"></table>
+								</wicket:container>
+							</wicket:container>
+
+							<wicket:container
+								wicket:id="advancedAccountingRuleFeeIncomeBlock">
+								<wicket:container
+									wicket:id="advancedAccountingRuleFeeIncomeVContainer">
+									<h4>Map Fees to Income Accounts</h4>
+									<table wicket:id="advancedAccountingRuleFeeIncomeTable"></table>
+								</wicket:container>
+							</wicket:container>
+
+							<wicket:container
+								wicket:id="advancedAccountingRulePenaltyIncomeBlock">
+								<wicket:container
+									wicket:id="advancedAccountingRulePenaltyIncomeVContainer">
+									<h4>Map Penalties to Specific Income Accounts</h4>
+									<table wicket:id="advancedAccountingRulePenaltyIncomeTable"></table>
+								</wicket:container>
+							</wicket:container>
+
+						</div>
+
+						<div class="clearfix"></div>
+
+					</div>
+
+				</wicket:container>
 
 				<div class="box-footer">
 					<a wicket:id="backLink" class="btn btn-info">Back</a>

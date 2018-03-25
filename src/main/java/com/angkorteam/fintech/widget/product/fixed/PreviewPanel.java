@@ -54,6 +54,8 @@ public class PreviewPanel extends Panel {
     protected AjaxLink<Void> backLink;
     protected BookmarkablePageLink<Void> closeLink;
 
+    // Details
+
     protected WebMarkupBlock detailProductNameBlock;
     protected WebMarkupContainer detailProductNameVContainer;
     protected ReadOnlyView detailProductNameView;
@@ -65,6 +67,8 @@ public class PreviewPanel extends Panel {
     protected WebMarkupBlock detailDescriptionBlock;
     protected WebMarkupContainer detailDescriptionVContainer;
     protected ReadOnlyView detailDescriptionView;
+
+    // Items
 
     protected WebMarkupBlock currencyCodeBlock;
     protected WebMarkupContainer currencyCodeVContainer;
@@ -78,93 +82,11 @@ public class PreviewPanel extends Panel {
     protected WebMarkupContainer currencyMultipleOfVContainer;
     protected ReadOnlyView currencyMultipleOfView;
 
-    protected WebMarkupBlock termNominalAnnualInterestBlock;
-    protected WebMarkupContainer termNominalAnnualInterestVContainer;
-    protected ReadOnlyView termNominalAnnualInterestView;
+    // Settings
 
-    protected WebMarkupBlock termInterestCompoundingPeriodBlock;
-    protected WebMarkupContainer termInterestCompoundingPeriodVContainer;
-    protected ReadOnlyView termInterestCompoundingPeriodView;
+    // Interest Rate Chart
 
-    protected WebMarkupBlock termInterestPostingPeriodBlock;
-    protected WebMarkupContainer termInterestPostingPeriodVContainer;
-    protected ReadOnlyView termInterestPostingPeriodView;
-
-    protected WebMarkupBlock termInterestCalculatedUsingBlock;
-    protected WebMarkupContainer termInterestCalculatedUsingVContainer;
-    protected ReadOnlyView termInterestCalculatedUsingView;
-
-    protected WebMarkupBlock termDayInYearBlock;
-    protected WebMarkupContainer termDayInYearVContainer;
-    protected ReadOnlyView termDayInYearView;
-
-    protected WebMarkupBlock settingMinimumOpeningBalanceBlock;
-    protected WebMarkupContainer settingMinimumOpeningBalanceVContainer;
-    protected ReadOnlyView settingMinimumOpeningBalanceView;
-
-    protected WebMarkupBlock settingLockInPeriodBlock;
-    protected WebMarkupContainer settingLockInPeriodVContainer;
-    protected ReadOnlyView settingLockInPeriodView;
-
-    protected WebMarkupBlock settingLockInTypeBlock;
-    protected WebMarkupContainer settingLockInTypeVContainer;
-    protected ReadOnlyView settingLockInTypeView;
-
-    protected WebMarkupBlock settingApplyWithdrawalFeeForTransferBlock;
-    protected WebMarkupContainer settingApplyWithdrawalFeeForTransferVContainer;
-    protected ReadOnlyView settingApplyWithdrawalFeeForTransferView;
-
-    protected WebMarkupBlock settingEnforceMinimumBalanceBlock;
-    protected WebMarkupContainer settingEnforceMinimumBalanceVContainer;
-    protected ReadOnlyView settingEnforceMinimumBalanceView;
-
-    protected WebMarkupBlock settingBalanceRequiredForInterestCalculationBlock;
-    protected WebMarkupContainer settingBalanceRequiredForInterestCalculationVContainer;
-    protected ReadOnlyView settingBalanceRequiredForInterestCalculationView;
-
-    protected WebMarkupBlock settingMinimumBalanceBlock;
-    protected WebMarkupContainer settingMinimumBalanceVContainer;
-    protected ReadOnlyView settingMinimumBalanceView;
-
-    protected WebMarkupBlock settingOverdraftAllowedBlock;
-    protected WebMarkupContainer settingOverdraftAllowedVContainer;
-    protected ReadOnlyView settingOverdraftAllowedView;
-
-    protected WebMarkupBlock settingMaximumOverdraftAmountLimitBlock;
-    protected WebMarkupContainer settingMaximumOverdraftAmountLimitVContainer;
-    protected ReadOnlyView settingMaximumOverdraftAmountLimitView;
-
-    protected WebMarkupBlock settingNominalAnnualInterestForOverdraftBlock;
-    protected WebMarkupContainer settingNominalAnnualInterestForOverdraftVContainer;
-    protected ReadOnlyView settingNominalAnnualInterestForOverdraftView;
-
-    protected WebMarkupBlock settingMinOverdraftRequiredForInterestCalculationBlock;
-    protected WebMarkupContainer settingMinOverdraftRequiredForInterestCalculationVContainer;
-    protected ReadOnlyView settingMinOverdraftRequiredForInterestCalculationView;
-
-    protected WebMarkupBlock settingWithholdTaxApplicableBlock;
-    protected WebMarkupContainer settingWithholdTaxApplicableVContainer;
-    protected ReadOnlyView settingWithholdTaxApplicableView;
-
-    protected WebMarkupBlock settingTaxGroupBlock;
-    protected WebMarkupContainer settingTaxGroupVContainer;
-    protected ReadOnlyView settingTaxGroupView;
-
-    protected WebMarkupBlock settingEnableDormancyTrackingBlock;
-    protected WebMarkupContainer settingEnableDormancyTrackingVContainer;
-    protected ReadOnlyView settingEnableDormancyTrackingView;
-
-    protected WebMarkupBlock settingNumberOfDaysToInactiveSubStatusBlock;
-    protected WebMarkupContainer settingNumberOfDaysToInactiveSubStatusVContainer;
-    protected ReadOnlyView settingNumberOfDaysToInactiveSubStatusView;
-
-    protected WebMarkupBlock settingNumberOfDaysToDormantSubStatusBlock;
-    protected WebMarkupContainer settingNumberOfDaysToDormantSubStatusVContainer;
-    protected ReadOnlyView settingNumberOfDaysToDormantSubStatusView;
-
-    protected WebMarkupBlock settingNumberOfDaysToEscheatBlock;
-    protected WebMarkupContainer settingNumberOfDaysToEscheatVContainer;
-    protected ReadOnlyView settingNumberOfDaysToEscheatView;
+    // Charges
 
     protected WebMarkupBlock chargeBlock;
     protected WebMarkupContainer chargeVContainer;
@@ -173,49 +95,13 @@ public class PreviewPanel extends Panel {
     protected ListDataProvider chargeProvider;
     protected PropertyModel<List<Map<String, Object>>> chargeValue;
 
+    // Accounting
+
     protected Label accountingLabel;
 
     protected WebMarkupContainer cashMaster;
 
-    protected WebMarkupBlock cashSavingReferenceBlock;
-    protected WebMarkupContainer cashSavingReferenceVContainer;
-    protected ReadOnlyView cashSavingReferenceView;
-
-    protected WebMarkupBlock cashOverdraftPortfolioBlock;
-    protected WebMarkupContainer cashOverdraftPortfolioVContainer;
-    protected ReadOnlyView cashOverdraftPortfolioView;
-
-    protected WebMarkupBlock cashSavingControlBlock;
-    protected WebMarkupContainer cashSavingControlVContainer;
-    protected ReadOnlyView cashSavingControlView;
-
-    protected WebMarkupBlock cashSavingTransferInSuspenseBlock;
-    protected WebMarkupContainer cashSavingTransferInSuspenseVContainer;
-    protected ReadOnlyView cashSavingTransferInSuspenseView;
-
-    protected WebMarkupBlock cashInterestOnSavingBlock;
-    protected WebMarkupContainer cashInterestOnSavingVContainer;
-    protected ReadOnlyView cashInterestOnSavingView;
-
-    protected WebMarkupBlock cashWriteOffBlock;
-    protected WebMarkupContainer cashWriteOffVContainer;
-    protected ReadOnlyView cashWriteOffView;
-
-    protected WebMarkupBlock cashIncomeFromFeeBlock;
-    protected WebMarkupContainer cashIncomeFromFeeVContainer;
-    protected ReadOnlyView cashIncomeFromFeeView;
-
-    protected WebMarkupBlock cashIncomeFromPenaltyBlock;
-    protected WebMarkupContainer cashIncomeFromPenaltyVContainer;
-    protected ReadOnlyView cashIncomeFromPenaltyView;
-
-    protected WebMarkupBlock cashOverdraftInterestIncomeBlock;
-    protected WebMarkupContainer cashOverdraftInterestIncomeVContainer;
-    protected ReadOnlyView cashOverdraftInterestIncomeView;
-
-    protected WebMarkupBlock cashEscheatLiabilityBlock;
-    protected WebMarkupContainer cashEscheatLiabilityVContainer;
-    protected ReadOnlyView cashEscheatLiabilityView;
+    // Advanced Accounting Rule
 
     protected WebMarkupContainer advancedAccountingRuleMaster;
 
@@ -342,160 +228,6 @@ public class PreviewPanel extends Panel {
         this.currencyMultipleOfView = new ReadOnlyView("currencyMultipleOfView", new PropertyModel<>(this.itemPage, "currencyMultipleOfValue"));
         this.currencyMultipleOfVContainer.add(this.currencyMultipleOfView);
 
-        this.termNominalAnnualInterestBlock = new WebMarkupBlock("termNominalAnnualInterestBlock", Size.Four_4);
-        this.form.add(this.termNominalAnnualInterestBlock);
-        this.termNominalAnnualInterestVContainer = new WebMarkupContainer("termNominalAnnualInterestVContainer");
-        this.termNominalAnnualInterestBlock.add(this.termNominalAnnualInterestVContainer);
-        this.termNominalAnnualInterestView = new ReadOnlyView("termNominalAnnualInterestView", new PropertyModel<>(this.itemPage, "termNominalAnnualInterestValue"));
-        this.termNominalAnnualInterestVContainer.add(this.termNominalAnnualInterestView);
-
-        this.termInterestCompoundingPeriodBlock = new WebMarkupBlock("termInterestCompoundingPeriodBlock", Size.Four_4);
-        this.form.add(this.termInterestCompoundingPeriodBlock);
-        this.termInterestCompoundingPeriodVContainer = new WebMarkupContainer("termInterestCompoundingPeriodVContainer");
-        this.termInterestCompoundingPeriodBlock.add(this.termInterestCompoundingPeriodVContainer);
-        this.termInterestCompoundingPeriodView = new ReadOnlyView("termInterestCompoundingPeriodView", new PropertyModel<>(this.itemPage, "termInterestCompoundingPeriodValue"));
-        this.termInterestCompoundingPeriodVContainer.add(this.termInterestCompoundingPeriodView);
-
-        this.termInterestPostingPeriodBlock = new WebMarkupBlock("termInterestPostingPeriodBlock", Size.Four_4);
-        this.form.add(this.termInterestPostingPeriodBlock);
-        this.termInterestPostingPeriodVContainer = new WebMarkupContainer("termInterestPostingPeriodVContainer");
-        this.termInterestPostingPeriodBlock.add(this.termInterestPostingPeriodVContainer);
-        this.termInterestPostingPeriodView = new ReadOnlyView("termInterestPostingPeriodView", new PropertyModel<>(this.itemPage, "termInterestPostingPeriodValue"));
-        this.termInterestPostingPeriodVContainer.add(this.termInterestPostingPeriodView);
-
-        this.termInterestCalculatedUsingBlock = new WebMarkupBlock("termInterestCalculatedUsingBlock", Size.Six_6);
-        this.form.add(this.termInterestCalculatedUsingBlock);
-        this.termInterestCalculatedUsingVContainer = new WebMarkupContainer("termInterestCalculatedUsingVContainer");
-        this.termInterestCalculatedUsingBlock.add(this.termInterestCalculatedUsingVContainer);
-        this.termInterestCalculatedUsingView = new ReadOnlyView("termInterestCalculatedUsingView", new PropertyModel<>(this.itemPage, "termInterestCalculatedUsingValue"));
-        this.termInterestCalculatedUsingVContainer.add(this.termInterestCalculatedUsingView);
-
-        this.termDayInYearBlock = new WebMarkupBlock("termDayInYearBlock", Size.Six_6);
-        this.form.add(this.termDayInYearBlock);
-        this.termDayInYearVContainer = new WebMarkupContainer("termDayInYearVContainer");
-        this.termDayInYearBlock.add(this.termDayInYearVContainer);
-        this.termDayInYearView = new ReadOnlyView("termDayInYearView", new PropertyModel<>(this.itemPage, "termDayInYearValue"));
-        this.termDayInYearVContainer.add(this.termDayInYearView);
-
-        this.settingMinimumOpeningBalanceBlock = new WebMarkupBlock("settingMinimumOpeningBalanceBlock", Size.Four_4);
-        this.form.add(this.settingMinimumOpeningBalanceBlock);
-        this.settingMinimumOpeningBalanceVContainer = new WebMarkupContainer("settingMinimumOpeningBalanceVContainer");
-        this.settingMinimumOpeningBalanceBlock.add(this.settingMinimumOpeningBalanceVContainer);
-        this.settingMinimumOpeningBalanceView = new ReadOnlyView("settingMinimumOpeningBalanceView", new PropertyModel<>(this.itemPage, "settingMinimumOpeningBalanceValue"));
-        this.settingMinimumOpeningBalanceVContainer.add(this.settingMinimumOpeningBalanceView);
-
-        this.settingLockInPeriodBlock = new WebMarkupBlock("settingLockInPeriodBlock", Size.Four_4);
-        this.form.add(this.settingLockInPeriodBlock);
-        this.settingLockInPeriodVContainer = new WebMarkupContainer("settingLockInPeriodVContainer");
-        this.settingLockInPeriodBlock.add(this.settingLockInPeriodVContainer);
-        this.settingLockInPeriodView = new ReadOnlyView("settingLockInPeriodView", new PropertyModel<>(this.itemPage, "settingLockInPeriodValue"));
-        this.settingLockInPeriodVContainer.add(this.settingLockInPeriodView);
-
-        this.settingLockInTypeBlock = new WebMarkupBlock("settingLockInTypeBlock", Size.Four_4);
-        this.form.add(this.settingLockInTypeBlock);
-        this.settingLockInTypeVContainer = new WebMarkupContainer("settingLockInTypeVContainer");
-        this.settingLockInTypeBlock.add(this.settingLockInTypeVContainer);
-        this.settingLockInTypeView = new ReadOnlyView("settingLockInTypeView", new PropertyModel<>(this.itemPage, "settingLockInTypeValue"));
-        this.settingLockInTypeVContainer.add(this.settingLockInTypeView);
-
-        this.settingApplyWithdrawalFeeForTransferBlock = new WebMarkupBlock("settingApplyWithdrawalFeeForTransferBlock", Size.Six_6);
-        this.form.add(this.settingApplyWithdrawalFeeForTransferBlock);
-        this.settingApplyWithdrawalFeeForTransferVContainer = new WebMarkupContainer("settingApplyWithdrawalFeeForTransferVContainer");
-        this.settingApplyWithdrawalFeeForTransferBlock.add(this.settingApplyWithdrawalFeeForTransferVContainer);
-        this.settingApplyWithdrawalFeeForTransferView = new ReadOnlyView("settingApplyWithdrawalFeeForTransferView", new PropertyModel<>(this.itemPage, "settingApplyWithdrawalFeeForTransferValue"));
-        this.settingApplyWithdrawalFeeForTransferVContainer.add(this.settingApplyWithdrawalFeeForTransferView);
-
-        this.settingEnforceMinimumBalanceBlock = new WebMarkupBlock("settingEnforceMinimumBalanceBlock", Size.Six_6);
-        this.form.add(this.settingEnforceMinimumBalanceBlock);
-        this.settingEnforceMinimumBalanceVContainer = new WebMarkupContainer("settingEnforceMinimumBalanceVContainer");
-        this.settingEnforceMinimumBalanceBlock.add(this.settingEnforceMinimumBalanceVContainer);
-        this.settingEnforceMinimumBalanceView = new ReadOnlyView("settingEnforceMinimumBalanceView", new PropertyModel<>(this.itemPage, "settingEnforceMinimumBalanceValue"));
-        this.settingEnforceMinimumBalanceVContainer.add(this.settingEnforceMinimumBalanceView);
-
-        this.settingBalanceRequiredForInterestCalculationBlock = new WebMarkupBlock("settingBalanceRequiredForInterestCalculationBlock", Size.Six_6);
-        this.form.add(this.settingBalanceRequiredForInterestCalculationBlock);
-        this.settingBalanceRequiredForInterestCalculationVContainer = new WebMarkupContainer("settingBalanceRequiredForInterestCalculationVContainer");
-        this.settingBalanceRequiredForInterestCalculationBlock.add(this.settingBalanceRequiredForInterestCalculationVContainer);
-        this.settingBalanceRequiredForInterestCalculationView = new ReadOnlyView("settingBalanceRequiredForInterestCalculationView", new PropertyModel<>(this.itemPage, "settingBalanceRequiredForInterestCalculationValue"));
-        this.settingBalanceRequiredForInterestCalculationVContainer.add(this.settingBalanceRequiredForInterestCalculationView);
-
-        this.settingMinimumBalanceBlock = new WebMarkupBlock("settingMinimumBalanceBlock", Size.Six_6);
-        this.form.add(this.settingMinimumBalanceBlock);
-        this.settingMinimumBalanceVContainer = new WebMarkupContainer("settingMinimumBalanceVContainer");
-        this.settingMinimumBalanceBlock.add(this.settingMinimumBalanceVContainer);
-        this.settingMinimumBalanceView = new ReadOnlyView("settingMinimumBalanceView", new PropertyModel<>(this.itemPage, "settingMinimumBalanceValue"));
-        this.settingMinimumBalanceVContainer.add(this.settingMinimumBalanceView);
-
-        this.settingOverdraftAllowedBlock = new WebMarkupBlock("settingOverdraftAllowedBlock", Size.Three_3);
-        this.form.add(this.settingOverdraftAllowedBlock);
-        this.settingOverdraftAllowedVContainer = new WebMarkupContainer("settingOverdraftAllowedVContainer");
-        this.settingOverdraftAllowedBlock.add(this.settingOverdraftAllowedVContainer);
-        this.settingOverdraftAllowedView = new ReadOnlyView("settingOverdraftAllowedView", new PropertyModel<>(this.itemPage, "settingOverdraftAllowedValue"));
-        this.settingOverdraftAllowedVContainer.add(this.settingOverdraftAllowedView);
-
-        this.settingMaximumOverdraftAmountLimitBlock = new WebMarkupBlock("settingMaximumOverdraftAmountLimitBlock", Size.Three_3);
-        this.form.add(this.settingMaximumOverdraftAmountLimitBlock);
-        this.settingMaximumOverdraftAmountLimitVContainer = new WebMarkupContainer("settingMaximumOverdraftAmountLimitVContainer");
-        this.settingMaximumOverdraftAmountLimitBlock.add(this.settingMaximumOverdraftAmountLimitVContainer);
-        this.settingMaximumOverdraftAmountLimitView = new ReadOnlyView("settingMaximumOverdraftAmountLimitView", new PropertyModel<>(this.itemPage, "settingMaximumOverdraftAmountLimitValue"));
-        this.settingMaximumOverdraftAmountLimitVContainer.add(this.settingMaximumOverdraftAmountLimitView);
-
-        this.settingNominalAnnualInterestForOverdraftBlock = new WebMarkupBlock("settingNominalAnnualInterestForOverdraftBlock", Size.Three_3);
-        this.form.add(this.settingNominalAnnualInterestForOverdraftBlock);
-        this.settingNominalAnnualInterestForOverdraftVContainer = new WebMarkupContainer("settingNominalAnnualInterestForOverdraftVContainer");
-        this.settingNominalAnnualInterestForOverdraftBlock.add(this.settingNominalAnnualInterestForOverdraftVContainer);
-        this.settingNominalAnnualInterestForOverdraftView = new ReadOnlyView("settingNominalAnnualInterestForOverdraftView", new PropertyModel<>(this.itemPage, "settingNominalAnnualInterestForOverdraftValue"));
-        this.settingNominalAnnualInterestForOverdraftVContainer.add(this.settingNominalAnnualInterestForOverdraftView);
-
-        this.settingMinOverdraftRequiredForInterestCalculationBlock = new WebMarkupBlock("settingMinOverdraftRequiredForInterestCalculationBlock", Size.Three_3);
-        this.form.add(this.settingMinOverdraftRequiredForInterestCalculationBlock);
-        this.settingMinOverdraftRequiredForInterestCalculationVContainer = new WebMarkupContainer("settingMinOverdraftRequiredForInterestCalculationVContainer");
-        this.settingMinOverdraftRequiredForInterestCalculationBlock.add(this.settingMinOverdraftRequiredForInterestCalculationVContainer);
-        this.settingMinOverdraftRequiredForInterestCalculationView = new ReadOnlyView("settingMinOverdraftRequiredForInterestCalculationView", new PropertyModel<>(this.itemPage, "settingMinOverdraftRequiredForInterestCalculationValue"));
-        this.settingMinOverdraftRequiredForInterestCalculationVContainer.add(this.settingMinOverdraftRequiredForInterestCalculationView);
-
-        this.settingWithholdTaxApplicableBlock = new WebMarkupBlock("settingWithholdTaxApplicableBlock", Size.Six_6);
-        this.form.add(this.settingWithholdTaxApplicableBlock);
-        this.settingWithholdTaxApplicableVContainer = new WebMarkupContainer("settingWithholdTaxApplicableVContainer");
-        this.settingWithholdTaxApplicableBlock.add(this.settingWithholdTaxApplicableVContainer);
-        this.settingWithholdTaxApplicableView = new ReadOnlyView("settingWithholdTaxApplicableView", new PropertyModel<>(this.itemPage, "settingWithholdTaxApplicableValue"));
-        this.settingWithholdTaxApplicableVContainer.add(this.settingWithholdTaxApplicableView);
-
-        this.settingTaxGroupBlock = new WebMarkupBlock("settingTaxGroupBlock", Size.Six_6);
-        this.form.add(this.settingTaxGroupBlock);
-        this.settingTaxGroupVContainer = new WebMarkupContainer("settingTaxGroupVContainer");
-        this.settingTaxGroupBlock.add(this.settingTaxGroupVContainer);
-        this.settingTaxGroupView = new ReadOnlyView("settingTaxGroupView", new PropertyModel<>(this.itemPage, "settingTaxGroupValue"));
-        this.settingTaxGroupVContainer.add(this.settingTaxGroupView);
-
-        this.settingEnableDormancyTrackingBlock = new WebMarkupBlock("settingEnableDormancyTrackingBlock", Size.Three_3);
-        this.form.add(this.settingEnableDormancyTrackingBlock);
-        this.settingEnableDormancyTrackingVContainer = new WebMarkupContainer("settingEnableDormancyTrackingVContainer");
-        this.settingEnableDormancyTrackingBlock.add(this.settingEnableDormancyTrackingVContainer);
-        this.settingEnableDormancyTrackingView = new ReadOnlyView("settingEnableDormancyTrackingView", new PropertyModel<>(this.itemPage, "settingEnableDormancyTrackingValue"));
-        this.settingEnableDormancyTrackingVContainer.add(this.settingEnableDormancyTrackingView);
-
-        this.settingNumberOfDaysToInactiveSubStatusBlock = new WebMarkupBlock("settingNumberOfDaysToInactiveSubStatusBlock", Size.Three_3);
-        this.form.add(this.settingNumberOfDaysToInactiveSubStatusBlock);
-        this.settingNumberOfDaysToInactiveSubStatusVContainer = new WebMarkupContainer("settingNumberOfDaysToInactiveSubStatusVContainer");
-        this.settingNumberOfDaysToInactiveSubStatusBlock.add(this.settingNumberOfDaysToInactiveSubStatusVContainer);
-        this.settingNumberOfDaysToInactiveSubStatusView = new ReadOnlyView("settingNumberOfDaysToInactiveSubStatusView", new PropertyModel<>(this.itemPage, "settingNumberOfDaysToInactiveSubStatusValue"));
-        this.settingNumberOfDaysToInactiveSubStatusVContainer.add(this.settingNumberOfDaysToInactiveSubStatusView);
-
-        this.settingNumberOfDaysToDormantSubStatusBlock = new WebMarkupBlock("settingNumberOfDaysToDormantSubStatusBlock", Size.Three_3);
-        this.form.add(this.settingNumberOfDaysToDormantSubStatusBlock);
-        this.settingNumberOfDaysToDormantSubStatusVContainer = new WebMarkupContainer("settingNumberOfDaysToDormantSubStatusVContainer");
-        this.settingNumberOfDaysToDormantSubStatusBlock.add(this.settingNumberOfDaysToDormantSubStatusVContainer);
-        this.settingNumberOfDaysToDormantSubStatusView = new ReadOnlyView("settingNumberOfDaysToDormantSubStatusView", new PropertyModel<>(this.itemPage, "settingNumberOfDaysToDormantSubStatusValue"));
-        this.settingNumberOfDaysToDormantSubStatusVContainer.add(this.settingNumberOfDaysToDormantSubStatusView);
-
-        this.settingNumberOfDaysToEscheatBlock = new WebMarkupBlock("settingNumberOfDaysToEscheatBlock", Size.Three_3);
-        this.form.add(this.settingNumberOfDaysToEscheatBlock);
-        this.settingNumberOfDaysToEscheatVContainer = new WebMarkupContainer("settingNumberOfDaysToEscheatVContainer");
-        this.settingNumberOfDaysToEscheatBlock.add(this.settingNumberOfDaysToEscheatVContainer);
-        this.settingNumberOfDaysToEscheatView = new ReadOnlyView("settingNumberOfDaysToEscheatView", new PropertyModel<>(this.itemPage, "settingNumberOfDaysToEscheatValue"));
-        this.settingNumberOfDaysToEscheatVContainer.add(this.settingNumberOfDaysToEscheatView);
-
         this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Twelve_12);
         this.form.add(this.chargeBlock);
         this.chargeVContainer = new WebMarkupContainer("chargeVContainer");
@@ -510,76 +242,6 @@ public class PreviewPanel extends Panel {
 
         this.cashMaster = new WebMarkupContainer("cashMaster");
         this.form.add(this.cashMaster);
-
-        this.cashSavingReferenceBlock = new WebMarkupBlock("cashSavingReferenceBlock", Size.Four_4);
-        this.cashMaster.add(this.cashSavingReferenceBlock);
-        this.cashSavingReferenceVContainer = new WebMarkupContainer("cashSavingReferenceVContainer");
-        this.cashSavingReferenceBlock.add(this.cashSavingReferenceVContainer);
-        this.cashSavingReferenceView = new ReadOnlyView("cashSavingReferenceView", new PropertyModel<String>(this.itemPage, "cashSavingReferenceValue"));
-        this.cashSavingReferenceVContainer.add(this.cashSavingReferenceView);
-
-        this.cashOverdraftPortfolioBlock = new WebMarkupBlock("cashOverdraftPortfolioBlock", Size.Four_4);
-        this.cashMaster.add(this.cashOverdraftPortfolioBlock);
-        this.cashOverdraftPortfolioVContainer = new WebMarkupContainer("cashOverdraftPortfolioVContainer");
-        this.cashOverdraftPortfolioBlock.add(this.cashOverdraftPortfolioVContainer);
-        this.cashOverdraftPortfolioView = new ReadOnlyView("cashOverdraftPortfolioView", new PropertyModel<String>(this.itemPage, "cashOverdraftPortfolioValue"));
-        this.cashOverdraftPortfolioVContainer.add(this.cashOverdraftPortfolioView);
-
-        this.cashSavingControlBlock = new WebMarkupBlock("cashSavingControlBlock", Size.Four_4);
-        this.cashMaster.add(this.cashSavingControlBlock);
-        this.cashSavingControlVContainer = new WebMarkupContainer("cashSavingControlVContainer");
-        this.cashSavingControlBlock.add(this.cashSavingControlVContainer);
-        this.cashSavingControlView = new ReadOnlyView("cashSavingControlView", new PropertyModel<String>(this.itemPage, "cashSavingControlValue"));
-        this.cashSavingControlVContainer.add(this.cashSavingControlView);
-
-        this.cashSavingTransferInSuspenseBlock = new WebMarkupBlock("cashSavingTransferInSuspenseBlock", Size.Four_4);
-        this.cashMaster.add(this.cashSavingTransferInSuspenseBlock);
-        this.cashSavingTransferInSuspenseVContainer = new WebMarkupContainer("cashSavingTransferInSuspenseVContainer");
-        this.cashSavingTransferInSuspenseBlock.add(this.cashSavingTransferInSuspenseVContainer);
-        this.cashSavingTransferInSuspenseView = new ReadOnlyView("cashSavingTransferInSuspenseView", new PropertyModel<String>(this.itemPage, "cashSavingTransferInSuspenseValue"));
-        this.cashSavingTransferInSuspenseVContainer.add(this.cashSavingTransferInSuspenseView);
-
-        this.cashInterestOnSavingBlock = new WebMarkupBlock("cashInterestOnSavingBlock", Size.Four_4);
-        this.cashMaster.add(this.cashInterestOnSavingBlock);
-        this.cashInterestOnSavingVContainer = new WebMarkupContainer("cashInterestOnSavingVContainer");
-        this.cashInterestOnSavingBlock.add(this.cashInterestOnSavingVContainer);
-        this.cashInterestOnSavingView = new ReadOnlyView("cashInterestOnSavingView", new PropertyModel<String>(this.itemPage, "cashInterestOnSavingValue"));
-        this.cashInterestOnSavingVContainer.add(this.cashInterestOnSavingView);
-
-        this.cashWriteOffBlock = new WebMarkupBlock("cashWriteOffBlock", Size.Four_4);
-        this.cashMaster.add(this.cashWriteOffBlock);
-        this.cashWriteOffVContainer = new WebMarkupContainer("cashWriteOffVContainer");
-        this.cashWriteOffBlock.add(this.cashWriteOffVContainer);
-        this.cashWriteOffView = new ReadOnlyView("cashWriteOffView", new PropertyModel<String>(this.itemPage, "cashWriteOffValue"));
-        this.cashWriteOffVContainer.add(this.cashWriteOffView);
-
-        this.cashIncomeFromFeeBlock = new WebMarkupBlock("cashIncomeFromFeeBlock", Size.Four_4);
-        this.cashMaster.add(this.cashIncomeFromFeeBlock);
-        this.cashIncomeFromFeeVContainer = new WebMarkupContainer("cashIncomeFromFeeVContainer");
-        this.cashIncomeFromFeeBlock.add(this.cashIncomeFromFeeVContainer);
-        this.cashIncomeFromFeeView = new ReadOnlyView("cashIncomeFromFeeView", new PropertyModel<String>(this.itemPage, "cashIncomeFromFeeValue"));
-        this.cashIncomeFromFeeVContainer.add(this.cashIncomeFromFeeView);
-
-        this.cashIncomeFromPenaltyBlock = new WebMarkupBlock("cashIncomeFromPenaltyBlock", Size.Four_4);
-        this.cashMaster.add(this.cashIncomeFromPenaltyBlock);
-        this.cashIncomeFromPenaltyVContainer = new WebMarkupContainer("cashIncomeFromPenaltyVContainer");
-        this.cashIncomeFromPenaltyBlock.add(this.cashIncomeFromPenaltyVContainer);
-        this.cashIncomeFromPenaltyView = new ReadOnlyView("cashIncomeFromPenaltyView", new PropertyModel<String>(this.itemPage, "cashIncomeFromPenaltyValue"));
-        this.cashIncomeFromPenaltyVContainer.add(this.cashIncomeFromPenaltyView);
-
-        this.cashOverdraftInterestIncomeBlock = new WebMarkupBlock("cashOverdraftInterestIncomeBlock", Size.Four_4);
-        this.cashMaster.add(this.cashOverdraftInterestIncomeBlock);
-        this.cashOverdraftInterestIncomeVContainer = new WebMarkupContainer("cashOverdraftInterestIncomeVContainer");
-        this.cashOverdraftInterestIncomeBlock.add(this.cashOverdraftInterestIncomeVContainer);
-        this.cashOverdraftInterestIncomeView = new ReadOnlyView("cashOverdraftInterestIncomeView", new PropertyModel<String>(this.itemPage, "cashOverdraftInterestIncomeValue"));
-        this.cashOverdraftInterestIncomeVContainer.add(this.cashOverdraftInterestIncomeView);
-
-        this.cashEscheatLiabilityBlock = new WebMarkupBlock("cashEscheatLiabilityBlock", Size.Four_4);
-        this.cashMaster.add(this.cashEscheatLiabilityBlock);
-        this.cashEscheatLiabilityVContainer = new WebMarkupContainer("cashEscheatLiabilityVContainer");
-        this.cashEscheatLiabilityBlock.add(this.cashEscheatLiabilityVContainer);
-        this.cashEscheatLiabilityView = new ReadOnlyView("cashEscheatLiabilityView", new PropertyModel<String>(this.itemPage, "cashEscheatLiabilityValue"));
-        this.cashEscheatLiabilityVContainer.add(this.cashEscheatLiabilityView);
 
         this.advancedAccountingRuleMaster = new WebMarkupContainer("advancedAccountingRuleMaster");
         this.form.add(this.advancedAccountingRuleMaster);
@@ -620,20 +282,6 @@ public class PreviewPanel extends Panel {
             this.cashMaster.setVisible(false);
             this.advancedAccountingRuleMaster.setVisible(false);
         }
-
-        PropertyModel<Boolean> settingWithholdTaxApplicableValue = new PropertyModel<>(this.itemPage, "settingWithholdTaxApplicableValue");
-        this.settingTaxGroupVContainer.setVisible(settingWithholdTaxApplicableValue.getObject() != null && settingWithholdTaxApplicableValue.getObject());
-
-        PropertyModel<Boolean> settingEnableDormancyTrackingValue = new PropertyModel<>(this.itemPage, "settingEnableDormancyTrackingValue");
-        this.settingNumberOfDaysToEscheatVContainer.setVisible(settingEnableDormancyTrackingValue.getObject() != null && settingEnableDormancyTrackingValue.getObject());
-        this.settingNumberOfDaysToDormantSubStatusVContainer.setVisible(settingEnableDormancyTrackingValue.getObject() != null && settingEnableDormancyTrackingValue.getObject());
-        this.settingNumberOfDaysToInactiveSubStatusVContainer.setVisible(settingEnableDormancyTrackingValue.getObject() != null && settingEnableDormancyTrackingValue.getObject());
-        this.cashEscheatLiabilityVContainer.setVisible(settingEnableDormancyTrackingValue.getObject() != null && settingEnableDormancyTrackingValue.getObject());
-
-        PropertyModel<Boolean> settingOverdraftAllowedValue = new PropertyModel<>(this.itemPage, "settingOverdraftAllowedValue");
-        this.settingMaximumOverdraftAmountLimitVContainer.setVisible(settingOverdraftAllowedValue.getObject() != null && settingOverdraftAllowedValue.getObject());
-        this.settingNominalAnnualInterestForOverdraftVContainer.setVisible(settingOverdraftAllowedValue.getObject() != null && settingOverdraftAllowedValue.getObject());
-        this.settingMinOverdraftRequiredForInterestCalculationVContainer.setVisible(settingOverdraftAllowedValue.getObject() != null && settingOverdraftAllowedValue.getObject());
 
         this.saveButton.setVisible(!this.errorTerm.getObject() && !this.errorDetail.getObject() && !this.errorCharge.getObject() && !this.errorAccounting.getObject() && !this.errorCurrency.getObject() && !this.errorSetting.getObject());
     }

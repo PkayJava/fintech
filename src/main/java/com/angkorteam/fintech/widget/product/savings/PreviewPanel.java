@@ -53,6 +53,7 @@ public class PreviewPanel extends Panel {
     protected AjaxLink<Void> backLink;
     protected BookmarkablePageLink<Void> closeLink;
 
+    // Detail
     protected WebMarkupBlock detailProductNameBlock;
     protected WebMarkupContainer detailProductNameVContainer;
     protected ReadOnlyView detailProductNameView;
@@ -64,6 +65,8 @@ public class PreviewPanel extends Panel {
     protected WebMarkupBlock detailDescriptionBlock;
     protected WebMarkupContainer detailDescriptionVContainer;
     protected ReadOnlyView detailDescriptionView;
+
+    // Items
 
     protected WebMarkupBlock currencyCodeBlock;
     protected WebMarkupContainer currencyCodeVContainer;
@@ -96,6 +99,8 @@ public class PreviewPanel extends Panel {
     protected WebMarkupBlock termDayInYearBlock;
     protected WebMarkupContainer termDayInYearVContainer;
     protected ReadOnlyView termDayInYearView;
+
+    // Settings
 
     protected WebMarkupBlock settingMinimumOpeningBalanceBlock;
     protected WebMarkupContainer settingMinimumOpeningBalanceVContainer;
@@ -165,12 +170,16 @@ public class PreviewPanel extends Panel {
     protected WebMarkupContainer settingNumberOfDaysToEscheatVContainer;
     protected ReadOnlyView settingNumberOfDaysToEscheatView;
 
+    // Charges
+
     protected WebMarkupBlock chargeBlock;
     protected WebMarkupContainer chargeVContainer;
     protected DataTable<Map<String, Object>, String> chargeTable;
     protected List<IColumn<Map<String, Object>, String>> chargeColumn;
     protected ListDataProvider chargeProvider;
     protected PropertyModel<List<Map<String, Object>>> chargeValue;
+
+    // Accounting
 
     protected Label accountingLabel;
 
@@ -215,6 +224,8 @@ public class PreviewPanel extends Panel {
     protected WebMarkupBlock cashEscheatLiabilityBlock;
     protected WebMarkupContainer cashEscheatLiabilityVContainer;
     protected ReadOnlyView cashEscheatLiabilityView;
+
+    // Advanced Accounting Rule
 
     protected WebMarkupContainer advancedAccountingRuleMaster;
 
