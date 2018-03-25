@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<wicket:panel>
+		<form role="form" wicket:id="form">
+			<div class="box-primary">
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Details</h3>
+				</div>
+
+				<div class="box-body">
+					<!-- Row -->
+					<div wicket:id="detailProductNameBlock" class="form-group">
+						<wicket:container wicket:id="detailProductNameVContainer">
+							<label>Product Name</label>
+							<div wicket:id="detailProductNameView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="detailShortNameBlock" class="form-group">
+						<wicket:container wicket:id="detailShortNameVContainer">
+							<label>Short Name</label>
+							<div wicket:id="detailShortNameView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="detailDescriptionBlock" class="form-group">
+						<wicket:container wicket:id="detailDescriptionVContainer">
+							<label>Description</label>
+							<div wicket:id="detailDescriptionView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="detailStartDateBlock" class="form-group">
+						<wicket:container wicket:id="detailStartDateVContainer">
+							<label>Start Date</label>
+							<div wicket:id="detailStartDateView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="detailCloseDateBlock" class="form-group">
+						<wicket:container wicket:id="detailCloseDateVContainer">
+							<label>Close Date</label>
+							<div wicket:id="detailCloseDateView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="detailIncludeInCustomerLoanCounterBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="detailIncludeInCustomerLoanCounterVContainer">
+							<label>Is Include in customer loan counter ?</label>
+							<div wicket:id="detailIncludeInCustomerLoanCounterView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					</div>
+					<div class="clearfix"></div>
+
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Currency</h3>
+				</div>
+
+				<div class="box-body">
+
+					<!-- Row -->
+					<div wicket:id="currencyCodeBlock" class="form-group">
+						<wicket:container wicket:id="currencyCodeVContainer">
+							<label>Currency</label>
+							<div wicket:id="currencyCodeView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="currencyDecimalPlaceBlock" class="form-group">
+						<wicket:container wicket:id="currencyDecimalPlaceVContainer">
+							<label>Decimal Places </label>
+							<div wicket:id="currencyDecimalPlaceView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="currencyInMultipleOfBlock" class="form-group">
+						<wicket:container wicket:id="currencyInMultipleOfVContainer">
+							<label>Currency in multiple of</label>
+							<div wicket:id="currencyInMultipleOfView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="currencyInstallmentInMultipleOfBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="currencyInstallmentInMultipleOfVContainer">
+							<label>Installment in multiple of</label>
+							<div wicket:id="currencyInstallmentInMultipleOfView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Terms</h3>
+				</div>
+
+				<div class="box-body">
+
+					<!-- Row -->
+					<div wicket:id="termVaryBasedOnLoanCycleBlock" class="form-group">
+						<wicket:container wicket:id="termVaryBasedOnLoanCycleVContainer">
+							<label>Terms vary based on loan cycle</label>
+							<div class="form-control"
+								wicket:id="termVaryBasedOnLoanCycleView"></div>
+						</wicket:container>
+					</div>
+					<div
+						class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					</div>
+					<div
+						class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					</div>
+					<div
+						class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="termPrincipleMinimumBlock" class="form-group">
+						<wicket:container wicket:id="termPrincipleMinimumVContainer">
+							<label>Principle Minimum </label>
+							<div wicket:id="termPrincipleMinimumView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="termPrincipleDefaultBlock" class="form-group">
+						<wicket:container wicket:id="termPrincipleDefaultVContainer">
+							<label>Principle Default </label>
+							<div wicket:id="termPrincipleDefaultView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="termPrincipleMaximumBlock" class="form-group">
+						<wicket:container wicket:id="termPrincipleMaximumVContainer">
+							<label>Principle Maximum </label>
+							<div wicket:id="termPrincipleMaximumView" class="form-control" />
+						</wicket:container>
+					</div>
+					<div
+						class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="termNumberOfRepaymentMinimumBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="termNumberOfRepaymentMinimumVContainer">
+							<label>Number of repayment Minimum</label>
+							<div wicket:id="termNumberOfRepaymentMinimumView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="termNumberOfRepaymentDefaultBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="termNumberOfRepaymentDefaultVContainer">
+							<label>Number of repayment Default</label>
+							<div wicket:id="termNumberOfRepaymentDefaultView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="termNumberOfRepaymentMaximumBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="termNumberOfRepaymentMaximumVContainer">
+							<label>Number of repayment Maximum</label>
+							<div wicket:id="termNumberOfRepaymentMaximumView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="termRepaidEveryBlock" class="form-group">
+						<wicket:container wicket:id="termRepaidEveryVContainer">
+							<label>Repeat</label>
+							<div wicket:id="termRepaidEveryView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="termRepaidTypeBlock" class="form-group">
+						<wicket:container wicket:id="termRepaidTypeVContainer">
+							<label>Every</label>
+							<div wicket:id="termRepaidTypeView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<wicket:container wicket:id="floatingRateMaster">
+						<!-- Row -->
+						<div wicket:id="termFloatingInterestRateBlock" class="form-group">
+							<wicket:container wicket:id="termFloatingInterestRateVContainer">
+								<label>Floating interest rate</label>
+								<div wicket:id="termFloatingInterestRateView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="termFloatingInterestDifferentialBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="termFloatingInterestDifferentialVContainer">
+								<label>Floating interest differential rate</label>
+								<div wicket:id="termFloatingInterestDifferentialView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="termFloatingInterestAllowedBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="termFloatingInterestAllowedVContainer">
+								<label>Is Floating Calculation Allowed?</label>
+								<div class="form-control"
+									wicket:id="termFloatingInterestAllowedView"></div>
+							</wicket:container>
+						</div>
+						<div
+							class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="termFloatingInterestMinimumBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="termFloatingInterestMinimumVContainer">
+								<label>Floating interest minimum</label>
+								<div wicket:id="termFloatingInterestMinimumView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="termFloatingInterestDefaultBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="termFloatingInterestDefaultVContainer">
+								<label>Floating interest default</label>
+								<div wicket:id="termFloatingInterestDefaultView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="termFloatingInterestMaximumBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="termFloatingInterestMaximumVContainer">
+								<label>Floating interest maximum</label>
+								<div wicket:id="termFloatingInterestMaximumView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div
+							class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						</div>
+						<div class="clearfix"></div>
+
+					</wicket:container>
+
+					<wicket:container wicket:id="nominalRateMaster">
+						<!-- Row -->
+						<div wicket:id="termNominalInterestRateMinimumBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="termNominalInterestRateMinimumVContainer">
+								<label>Nominal interest rate minimum</label>
+								<div wicket:id="termNominalInterestRateMinimumView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="termNominalInterestRateDefaultBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="termNominalInterestRateDefaultVContainer">
+								<label>Nominal interest rate default</label>
+								<div wicket:id="termNominalInterestRateDefaultView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="termNominalInterestRateMaximumBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="termNominalInterestRateMaximumVContainer">
+								<label>Nominal interest rate Maximum</label>
+								<div wicket:id="termNominalInterestRateMaximumView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="termNominalInterestRateTypeBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="termNominalInterestRateTypeVContainer">
+								<label>&nbsp;</label>
+								<div wicket:id="termNominalInterestRateTypeView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+					</wicket:container>
+
+					<wicket:container wicket:id="loanCycleMaster">
+
+						<!-- Row -->
+						<div wicket:id="termPrincipleByLoanCycleBlock" class="form-group">
+							<wicket:container wicket:id="termPrincipleByLoanCycleVContainer">
+								<h4>Principle by loan cycle</h4>
+								<table wicket:id="termPrincipleByLoanCycleTable"></table>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="termNumberOfRepaymentByLoanCycleBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="termNumberOfRepaymentByLoanCycleVContainer">
+								<h4>Number of repayment by loan cycle</h4>
+								<table wicket:id="termNumberOfRepaymentByLoanCycleTable"></table>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="termNominalInterestRateByLoanCycleBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="termNominalInterestRateByLoanCycleVContainer">
+								<h4>Nominal Interest Rate by loan cycle</h4>
+								<table wicket:id="termNominalInterestRateByLoanCycleTable"></table>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+					</wicket:container>
+
+					<!-- Row -->
+					<div
+						wicket:id="termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="termMinimumDayBetweenDisbursalAndFirstRepaymentDateVContainer">
+							<label>Minimum days between disbursal and first repayment
+								date</label>
+							<div
+								wicket:id="termMinimumDayBetweenDisbursalAndFirstRepaymentDateView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div
+						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+					</div>
+					<div class="clearfix"></div>
+
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Settings</h3>
+				</div>
+
+				<div class="box-body">
+
+					<!-- Row -->
+					<div wicket:id="settingAmortizationBlock" class="form-group">
+						<wicket:container wicket:id="settingAmortizationVContainer">
+							<label>Amortization</label>
+							<div wicket:id="settingAmortizationView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingInterestMethodBlock" class="form-group">
+						<wicket:container wicket:id="settingInterestMethodVContainer">
+							<label>Interest Method</label>
+							<div wicket:id="settingInterestMethodView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingEqualAmortizationBlock" class="form-group">
+						<wicket:container wicket:id="settingEqualAmortizationVContainer">
+							<label>Equal Amortization</label>
+							<div wicket:id="settingEqualAmortizationView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingArrearsToleranceBlock" class="form-group">
+						<wicket:container wicket:id="settingArrearsToleranceVContainer">
+							<label>Arrears tolerance</label>
+							<div wicket:id="settingArrearsToleranceView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="settingRepaymentStrategyBlock" class="form-group">
+						<wicket:container wicket:id="settingRepaymentStrategyVContainer">
+							<label>Repayment Strategy</label>
+							<div wicket:id="settingRepaymentStrategyView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingInterestCalculationPeriodBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingInterestCalculationPeriodVContainer">
+							<label>Interest Calculation Period</label>
+							<div wicket:id="settingInterestCalculationPeriodView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div
+						wicket:id="settingCalculateInterestForExactDaysInPartialPeriodBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingCalculateInterestForExactDaysInPartialPeriodVContainer">
+							<label>Calculate interest for exact days in partial
+								period</label>
+							<div class="form-control"
+								wicket:id="settingCalculateInterestForExactDaysInPartialPeriodView"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="settingMoratoriumPrincipleBlock" class="form-group">
+						<wicket:container wicket:id="settingMoratoriumPrincipleVContainer">
+							<label>Grace</label>
+							<div wicket:id="settingMoratoriumPrincipleView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingInterestFreePeriodBlock" class="form-group">
+						<wicket:container wicket:id="settingInterestFreePeriodVContainer">
+							<label>Interest Free Period</label>
+							<div wicket:id="settingInterestFreePeriodView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div
+						wicket:id="settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsVContainer">
+							<label>Grace on Arrears Ageing</label>
+							<div
+								wicket:id="settingNumberOfDaysLoanMayBeOverdueBeforeMovingIntoArrearsView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div
+						wicket:id="settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaVContainer">
+							<label>Overdue Days For NPA</label>
+							<div
+								wicket:id="settingMaximumNumberOfDaysLoanMayBeOverdueBeforeBecomingNpaView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div
+						wicket:id="settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedVContainer">
+							<label>Account moves out of NPA only after all arrears
+								have been cleared?</label>
+							<div class="form-control"
+								wicket:id="settingAccountMovesOutOfNpaOnlyAfterAllArrearsHaveBeenClearedView"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingDayInYearBlock" class="form-group">
+						<wicket:container wicket:id="settingDayInYearVContainer">
+							<label>Day in year</label>
+							<div wicket:id="settingDayInYearView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingDayInMonthBlock" class="form-group">
+						<wicket:container wicket:id="settingDayInMonthVContainer">
+							<label>Day in month</label>
+							<div wicket:id="settingDayInMonthView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="settingPrincipleThresholdForLastInstalmentBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingPrincipleThresholdForLastInstalmentVContainer">
+							<label>Principle Threshold (%) for Last Installment</label>
+							<div wicket:id="settingPrincipleThresholdForLastInstalmentView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingAllowFixingOfTheInstallmentAmountBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingAllowFixingOfTheInstallmentAmountVContainer">
+							<label>Allow fixing of the installment amount ?</label>
+							<div class="form-control"
+								wicket:id="settingAllowFixingOfTheInstallmentAmountView"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingAllowedToBeUsedForProvidingTopupLoansBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingAllowedToBeUsedForProvidingTopupLoansVContainer">
+							<label>Is allowed to be used for providing Topup Loans?</label>
+							<div class="form-control"
+								wicket:id="settingAllowedToBeUsedForProvidingTopupLoansView"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<wicket:container wicket:id="settingVariableMaster">
+
+						<!-- Row -->
+						<div wicket:id="settingVariableInstallmentsAllowedBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="settingVariableInstallmentsAllowedVContainer">
+								<label>Is Variable Installments Allowed?</label>
+								<div class="form-control"
+									wicket:id="settingVariableInstallmentsAllowedView"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="settingVariableInstallmentsMinimumBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="settingVariableInstallmentsMinimumVContainer">
+								<label>Variable Installments Minimum</label>
+								<div wicket:id="settingVariableInstallmentsMinimumView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="settingVariableInstallmentsMaximumBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="settingVariableInstallmentsMaximumVContainer">
+								<label>Variable Installments Maximum</label>
+								<div wicket:id="settingVariableInstallmentsMaximumView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+					</wicket:container>
+
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Interest Recalculation</h3>
+				</div>
+
+				<div class="box-body">
+
+					<!-- Row -->
+					<div wicket:id="interestRecalculationRecalculateInterestBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="interestRecalculationRecalculateInterestVContainer">
+							<label>Recalculate Interest</label>
+							<div class="form-control"
+								wicket:id="interestRecalculationRecalculateInterestView"></div>
+						</wicket:container>
+					</div>
+					<div
+						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+					</div>
+					<div
+						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+					</div>
+					<div class="clearfix"></div>
+
+					<wicket:container wicket:id="interestRecalculationMaster">
+
+						<!-- Row -->
+						<div
+							wicket:id="interestRecalculationPreClosureInterestCalculationRuleBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="interestRecalculationPreClosureInterestCalculationRuleVContainer">
+								<label>Pre-closure interest calculation rule</label>
+								<div
+									wicket:id="interestRecalculationPreClosureInterestCalculationRuleView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div
+							wicket:id="interestRecalculationAdvancePaymentsAdjustmentTypeBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="interestRecalculationAdvancePaymentsAdjustmentTypeVContainer">
+								<label>Advance payments adjustment type</label>
+								<div
+									wicket:id="interestRecalculationAdvancePaymentsAdjustmentTypeView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="interestRecalculationCompoundingOnBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="interestRecalculationCompoundingOnVContainer">
+								<label>Interest recalculation compounding on</label>
+								<div wicket:id="interestRecalculationCompoundingOnView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="interestRecalculationCompoundingBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="interestRecalculationCompoundingVContainer">
+								<label>Frequency for compounding</label>
+								<div wicket:id="interestRecalculationCompoundingView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="interestRecalculationCompoundingIntervalBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="interestRecalculationCompoundingIntervalVContainer">
+								<label>Interval</label>
+								<div wicket:id="interestRecalculationCompoundingIntervalView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="interestRecalculationOutstandingPrincipalBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="interestRecalculationOutstandingPrincipalVContainer">
+								<label>Frequency for recalculate Outstanding Principal</label>
+								<div wicket:id="interestRecalculationOutstandingPrincipalView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div
+							wicket:id="interestRecalculationOutstandingPrincipalIntervalBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="interestRecalculationOutstandingPrincipalIntervalVContainer">
+								<label>Interval</label>
+								<div
+									wicket:id="interestRecalculationOutstandingPrincipalIntervalView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div
+							wicket:id="interestRecalculationArrearsRecognizationBasedOnOriginalScheduleBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="interestRecalculationArrearsRecognizationBasedOnOriginalScheduleVContainer">
+								<label>Arrears recognization based on original schedule</label>
+								<div class="form-control"
+									wicket:id="interestRecalculationArrearsRecognizationBasedOnOriginalScheduleView"></div>
+							</wicket:container>
+						</div>
+						<div
+							class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						</div>
+						<div class="clearfix"></div>
+
+					</wicket:container>
+
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Guarantee Requirements</h3>
+				</div>
+
+				<div class="box-body">
+					<!-- Row -->
+					<div wicket:id="guaranteeRequirementPlaceGuaranteeFundsOnHoldBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="guaranteeRequirementPlaceGuaranteeFundsOnHoldVContainer">
+							<label>Place Guarantee Funds On-Hold</label>
+							<div class="form-control"
+								wicket:id="guaranteeRequirementPlaceGuaranteeFundsOnHoldView"></div>
+						</wicket:container>
+					</div>
+					<div
+						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+					</div>
+					<div
+						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+					</div>
+					<div class="clearfix"></div>
+
+					<wicket:container wicket:id="guaranteeMaster">
+						<!-- Row -->
+						<div wicket:id="guaranteeRequirementMandatoryGuaranteeBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="guaranteeRequirementMandatoryGuaranteeVContainer">
+								<label>Mandatory Guarantee: (%)</label>
+								<div wicket:id="guaranteeRequirementMandatoryGuaranteeView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="guaranteeRequirementMinimumGuaranteeBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="guaranteeRequirementMinimumGuaranteeVContainer">
+								<label>Minimum Guarantee from Own Funds: (%)</label>
+								<div wicket:id="guaranteeRequirementMinimumGuaranteeView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div
+							wicket:id="guaranteeRequirementMinimumGuaranteeFromGuarantorBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="guaranteeRequirementMinimumGuaranteeFromGuarantorVContainer">
+								<label>Minimum Guarantee from Guarantor Funds: (%)</label>
+								<div
+									wicket:id="guaranteeRequirementMinimumGuaranteeFromGuarantorView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+					</wicket:container>
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Loan Tranche Details</h3>
+				</div>
+
+				<div class="box-body">
+
+					<!-- Row -->
+					<div wicket:id="loanTrancheDetailEnableMultipleDisbursalBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="loanTrancheDetailEnableMultipleDisbursalVContainer">
+							<label>Enable Multiple Disbursals</label>
+							<div class="form-control"
+								wicket:id="loanTrancheDetailEnableMultipleDisbursalView"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="loanTrancheDetailMaximumTrancheCountBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="loanTrancheDetailMaximumTrancheCountVContainer">
+							<label>Maximum Tranche count</label>
+							<div wicket:id="loanTrancheDetailMaximumTrancheCountView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div
+						wicket:id="loanTrancheDetailMaximumAllowedOutstandingBalanceBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="loanTrancheDetailMaximumAllowedOutstandingBalanceVContainer">
+							<label>Maximum allowed outstanding balance</label>
+							<div
+								wicket:id="loanTrancheDetailMaximumAllowedOutstandingBalanceView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Configurable Terms and Settings</h3>
+				</div>
+
+				<div class="box-body">
+
+					<!-- Row -->
+					<div
+						wicket:id="configurableAllowOverridingSelectTermsAndSettingsInLoanAccountBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="configurableAllowOverridingSelectTermsAndSettingsInLoanAccountVContainer">
+							<label>Allow overriding select terms and settings in loan
+								accounts</label>
+							<div class="form-control"
+								wicket:id="configurableAllowOverridingSelectTermsAndSettingsInLoanAccountView"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="configurableAmortizationBlock" class="form-group">
+						<wicket:container wicket:id="configurableAmortizationVContainer">
+							<label>Amortization</label>
+							<div class="form-control"
+								wicket:id="configurableAmortizationView"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="configurableInterestMethodBlock" class="form-group">
+						<wicket:container wicket:id="configurableInterestMethodVContainer">
+							<label>Interest Method</label>
+							<div class="form-control"
+								wicket:id="configurableInterestMethodView"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="configurableOverdueBeforeMovingBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="configurableOverdueBeforeMovingVContainer">
+							<label>Number of days a loan may be overdue before moving
+								into arrears</label>
+							<div class="form-control"
+								wicket:id="configurableOverdueBeforeMovingView"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="configurableRepaidEveryBlock" class="form-group">
+						<wicket:container wicket:id="configurableRepaidEveryVContainer">
+							<label>Repaid Every</label>
+							<div class="form-control" wicket:id="configurableRepaidEveryView"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="configurableMoratoriumBlock" class="form-group">
+						<wicket:container wicket:id="configurableMoratoriumVContainer">
+							<label>Moratorium</label>
+							<div class="form-control" wicket:id="configurableMoratoriumView"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="configurableRepaymentStrategyBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="configurableRepaymentStrategyVContainer">
+							<label>Repayment Strategy</label>
+							<div class="form-control"
+								wicket:id="configurableRepaymentStrategyView"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="configurableInterestCalculationPeriodBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="configurableInterestCalculationPeriodVContainer">
+							<label>Interest Calculation Period</label>
+							<div class="form-control"
+								wicket:id="configurableInterestCalculationPeriodView"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="configurableArrearsToleranceBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="configurableArrearsToleranceVContainer">
+							<label>Arrears Tolerance</label>
+							<div class="form-control"
+								wicket:id="configurableArrearsToleranceView"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Charges</h3>
+				</div>
+
+				<div class="box-body">
+					<!-- Row -->
+					<div wicket:id="chargeBlock" class="form-group">
+						<wicket:container wicket:id="chargeVContainer">
+							<table wicket:id="chargeTable"></table>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Overdue Charges</h3>
+				</div>
+
+				<div class="box-body">
+					<!-- Row -->
+					<div wicket:id="overdueChargeBlock" class="form-group">
+						<wicket:container wicket:id="overdueChargeVContainer">
+							<table wicket:id="overdueChargeTable"></table>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+
+				<div class="box-header with-border">
+					<h3 class="box-title">
+						Accounting :
+						<wicket:container wicket:id="accountingLabel" />
+					</h3>
+				</div>
+
+				<wicket:container wicket:id="cashMaster">
+
+					<div class="box-body">
+
+						<!-- Row -->
+						<div wicket:id="cashFundSourceBlock" class="form-group">
+							<wicket:container wicket:id="cashFundSourceVContainer">
+								<label>Fund Source (Assets)</label>
+								<div wicket:id="cashFundSourceView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="cashLoanPortfolioBlock" class="form-group">
+							<wicket:container wicket:id="cashLoanPortfolioVContainer">
+								<label>Loan Portfolio (Assets</label>
+								<div wicket:id="cashLoanPortfolioView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="cashTransferInSuspenseBlock" class="form-group">
+							<wicket:container wicket:id="cashTransferInSuspenseVContainer">
+								<label>Transfer in Suspense (Assets)</label>
+								<div wicket:id="cashTransferInSuspenseView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="cashIncomeFromInterestBlock" class="form-group">
+							<wicket:container wicket:id="cashIncomeFromInterestVContainer">
+								<label>Income From Interest (Income)</label>
+								<div wicket:id="cashIncomeFromInterestView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="cashIncomeFromFeeBlock" class="form-group">
+							<wicket:container wicket:id="cashIncomeFromFeeVContainer">
+								<label>Income From Fees (Income)</label>
+								<div wicket:id="cashIncomeFromFeeView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="cashIncomeFromPenaltyBlock" class="form-group">
+							<wicket:container wicket:id="cashIncomeFromPenaltyVContainer">
+								<label>Income From Penalties (Income)</label>
+								<div wicket:id="cashIncomeFromPenaltyView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="cashIncomeFromRecoveryRepaymentBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="cashIncomeFromRecoveryRepaymentVContainer">
+								<label>Income From Recovery Repayments (Income)</label>
+								<div wicket:id="cashIncomeFromRecoveryRepaymentView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="cashLossWrittenOffBlock" class="form-group">
+							<wicket:container wicket:id="cashLossWrittenOffVContainer">
+								<label>Loss Written Off (Expenses)</label>
+								<div wicket:id="cashLossWrittenOffView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="cashOverPaymentLiabilityBlock" class="form-group">
+							<wicket:container wicket:id="cashOverPaymentLiabilityVContainer">
+								<label>Over Payment Liability (Liabilities)</label>
+								<div wicket:id="cashOverPaymentLiabilityView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</wicket:container>
+
+				<wicket:container wicket:id="accrualMaster">
+
+					<div class="box-body">
+
+						<!-- Row -->
+						<div wicket:id="accrualFundSourceBlock" class="form-group">
+							<wicket:container wicket:id="accrualFundSourceVContainer">
+								<label>Fund Source (Assets)</label>
+								<div wicket:id="accrualFundSourceView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="accrualLoanPortfolioBlock" class="form-group">
+							<wicket:container wicket:id="accrualLoanPortfolioVContainer">
+								<label>Loan Portfolio (Assets)</label>
+								<div wicket:id="accrualLoanPortfolioView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="accrualInterestReceivableBlock" class="form-group">
+							<wicket:container wicket:id="accrualInterestReceivableVContainer">
+								<label>Interest Receivable (Assets)</label>
+								<div wicket:id="accrualInterestReceivableView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="accrualFeeReceivableBlock" class="form-group">
+							<wicket:container wicket:id="accrualFeeReceivableVContainer">
+								<label>Fee Receivable (Assets)</label>
+								<div wicket:id="accrualFeeReceivableView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="accrualPenaltyReceivableBlock" class="form-group">
+							<wicket:container wicket:id="accrualPenaltyReceivableVContainer">
+								<label>Penalty Receivable (Assets)</label>
+								<div wicket:id="accrualPenaltyReceivableView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="accrualTransferInSuspenseBlock" class="form-group">
+							<wicket:container wicket:id="accrualTransferInSuspenseVContainer">
+								<label>Transfer In Suspense (Assets)</label>
+								<div wicket:id="accrualTransferInSuspenseView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="accrualIncomeFromInterestBlock" class="form-group">
+							<wicket:container wicket:id="accrualIncomeFromInterestVContainer">
+								<label>Income From Interest (Income)</label>
+								<div wicket:id="accrualIncomeFromInterestView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="accrualIncomeFromFeeBlock" class="form-group">
+							<wicket:container wicket:id="accrualIncomeFromFeeVContainer">
+								<label>Income From Fees (Income)</label>
+								<div wicket:id="accrualIncomeFromFeeView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="accrualIncomeFromPenaltyBlock" class="form-group">
+							<wicket:container wicket:id="accrualIncomeFromPenaltyVContainer">
+								<label>Income From Penalties (Income)</label>
+								<div wicket:id="accrualIncomeFromPenaltyView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+						<!-- Row -->
+						<div wicket:id="accrualIncomeFromRecoveryRepaymentBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="accrualIncomeFromRecoveryRepaymentVContainer">
+								<label>Income From Recovery Repayments (Income)</label>
+								<div wicket:id="accrualIncomeFromRecoveryRepaymentView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="accrualLossWrittenOffBlock" class="form-group">
+							<wicket:container wicket:id="accrualLossWrittenOffVContainer">
+								<label>Loss Written Off (Expenses)</label>
+								<div wicket:id="accrualLossWrittenOffView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="accrualOverPaymentLiabilityBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="accrualOverPaymentLiabilityVContainer">
+								<label>Over Payment Liability (Liabilities)</label>
+								<div wicket:id="accrualOverPaymentLiabilityView"
+									class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div class="clearfix"></div>
+
+					</div>
+
+				</wicket:container>
+
+				<wicket:container wicket:id="advancedAccountingRuleMaster">
+
+					<div class="box-header with-border">
+						<h3 class="box-title">Advanced Accounting Rule</h3>
+					</div>
+
+					<div class="box-body">
+
+						<!-- Row -->
+						<div
+							class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<wicket:container
+								wicket:id="advancedAccountingRuleFundSourceBlock">
+								<wicket:container
+									wicket:id="advancedAccountingRuleFundSourceVContainer">
+									<h4>Configure Fund Sources for Payment Channels</h4>
+									<table wicket:id="advancedAccountingRuleFundSourceTable"></table>
+								</wicket:container>
+							</wicket:container>
+
+							<wicket:container
+								wicket:id="advancedAccountingRuleFeeIncomeBlock">
+								<wicket:container
+									wicket:id="advancedAccountingRuleFeeIncomeVContainer">
+									<h4>Map Fees to Income Accounts</h4>
+									<table wicket:id="advancedAccountingRuleFeeIncomeTable"></table>
+								</wicket:container>
+							</wicket:container>
+
+							<wicket:container
+								wicket:id="advancedAccountingRulePenaltyIncomeBlock">
+								<wicket:container
+									wicket:id="advancedAccountingRulePenaltyIncomeVContainer">
+									<h4>Map Penalties to Specific Income Accounts</h4>
+									<table wicket:id="advancedAccountingRulePenaltyIncomeTable"></table>
+								</wicket:container>
+							</wicket:container>
+
+						</div>
+
+						<div class="clearfix"></div>
+
+					</div>
+
+				</wicket:container>
+
+				<div class="box-footer">
+					<a wicket:id="backLink" class="btn btn-info">Back</a>
+					<button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+					<a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
+				</div>
+			</div>
+		</form>
+
+	</wicket:panel>
+</body>
+</html>

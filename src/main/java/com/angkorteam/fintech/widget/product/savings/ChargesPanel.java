@@ -121,7 +121,6 @@ public class ChargesPanel extends Panel {
         this.chargeIContainer.add(this.chargeTable);
         this.chargeTable.addTopToolbar(new HeadersToolbar<>(this.chargeTable, this.chargeProvider));
         this.chargeTable.addBottomToolbar(new NoRecordsToolbar(this.chargeTable));
-
         this.chargeAddLink = new AjaxLink<>("chargeAddLink");
         this.chargeAddLink.setOnClick(this::chargeAddLinkClick);
         this.chargeIContainer.add(this.chargeAddLink);

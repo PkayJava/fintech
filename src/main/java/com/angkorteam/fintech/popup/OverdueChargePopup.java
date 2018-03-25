@@ -8,6 +8,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.ddl.MCharge;
+import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.ChargeType;
 import com.angkorteam.fintech.dto.enums.ProductPopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -54,7 +55,7 @@ public class OverdueChargePopup extends PopupPanel {
         this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
-        this.overdueChargeBlock = new WebMarkupBlock("overdueChargeBlock", Size.Six_6);
+        this.overdueChargeBlock = new WebMarkupBlock("overdueChargeBlock", Size.Twelve_12);
         this.form.add(this.overdueChargeBlock);
         this.overdueChargeIContainer = new WebMarkupContainer("overdueChargeIContainer");
         this.overdueChargeBlock.add(this.overdueChargeIContainer);
@@ -65,6 +66,7 @@ public class OverdueChargePopup extends PopupPanel {
             this.overdueChargeProvider.applyWhere("charge_applies_to_enum", MCharge.Field.CHARGE_APPLIES_TO_ENUM + " = " + ChargeType.Loan.getLiteral());
         }
         this.overdueChargeProvider.applyWhere("currency_code", MCharge.Field.CURRENCY_CODE + " = '" + this.currencyCode + "'");
+        this.overdueChargeProvider.applyWhere("charge_time_enum", MCharge.Field.CHARGE_TIME_ENUM + " = " + ChargeTime.OverdueFees.getLiteral());
         this.overdueChargeProvider.applyWhere("is_penalty", MCharge.Field.IS_PENALTY + " = 1");
         this.overdueChargeProvider.applyWhere("is_active", MCharge.Field.IS_ACTIVE + " = 1");
         this.overdueChargeField = new Select2SingleChoice<>("overdueChargeField", new PropertyModel<>(this.model, "overdueChargeValue"), this.overdueChargeProvider);

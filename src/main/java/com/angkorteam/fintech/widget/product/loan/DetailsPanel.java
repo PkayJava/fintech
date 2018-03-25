@@ -9,8 +9,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.StringValidator;
 
-import com.angkorteam.fintech.pages.product.saving.SavingBrowsePage;
-import com.angkorteam.fintech.pages.product.saving.SavingCreatePage;
+import com.angkorteam.fintech.pages.product.loan.LoanBrowsePage;
+import com.angkorteam.fintech.pages.product.loan.LoanCreatePage;
 import com.angkorteam.fintech.provider.FundProvider;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -93,7 +93,7 @@ public class DetailsPanel extends Panel {
         this.nextButton.setOnError(this::nextButtonError);
         this.form.add(this.nextButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", LoanBrowsePage.class);
         this.form.add(this.closeLink);
 
         this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
@@ -176,7 +176,7 @@ public class DetailsPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_CURRENCY);
+        this.tab.getObject().setSelectedTab(LoanCreatePage.TAB_CURRENCY);
         this.errorDetail.setObject(false);
     }
 

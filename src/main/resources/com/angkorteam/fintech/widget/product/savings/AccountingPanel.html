@@ -61,7 +61,7 @@
 								<wicket:container
 									wicket:id="cashSavingTransferInSuspenseIContainer">
 									<label wicket:for="cashSavingTransferInSuspenseField">Savings
-										transfers in suspense</label>
+										Transfers In Suspense</label>
 									<select wicket:id="cashSavingTransferInSuspenseField"
 										class="form-control"></select>
 									<span wicket:id="cashSavingTransferInSuspenseFeedback"
@@ -94,7 +94,7 @@
 							<div wicket:id="cashInterestOnSavingBlock" class="form-group">
 								<wicket:container wicket:id="cashInterestOnSavingIContainer">
 									<label wicket:for="cashInterestOnSavingField">Interest
-										on savings</label>
+										On Savings</label>
 									<select wicket:id="cashInterestOnSavingField"
 										class="form-control"></select>
 									<span wicket:id="cashInterestOnSavingFeedback"
@@ -103,7 +103,7 @@
 							</div>
 							<div wicket:id="cashWriteOffBlock" class="form-group">
 								<wicket:container wicket:id="cashWriteOffIContainer">
-									<label wicket:for="cashWriteOffField">Write-off</label>
+									<label wicket:for="cashWriteOffField">Write-Off</label>
 									<select wicket:id="cashWriteOffField" class="form-control"></select>
 									<span wicket:id="cashWriteOffFeedback" class="help-block"></span>
 								</wicket:container>
@@ -117,8 +117,8 @@
 							<!-- Row -->
 							<div wicket:id="cashIncomeFromFeeBlock" class="form-group">
 								<wicket:container wicket:id="cashIncomeFromFeeIContainer">
-									<label wicket:for="cashIncomeFromFeeField">Income from
-										fees</label>
+									<label wicket:for="cashIncomeFromFeeField">Income From
+										Fees</label>
 									<select wicket:id="cashIncomeFromFeeField" class="form-control"></select>
 									<span wicket:id="cashIncomeFromFeeFeedback" class="help-block"></span>
 								</wicket:container>
@@ -126,7 +126,7 @@
 							<div wicket:id="cashIncomeFromPenaltyBlock" class="form-group">
 								<wicket:container wicket:id="cashIncomeFromPenaltyIContainer">
 									<label wicket:for="cashIncomeFromPenaltyField">Income
-										from penalties</label>
+										From Penalties</label>
 									<select wicket:id="cashIncomeFromPenaltyField"
 										class="form-control"></select>
 									<span wicket:id="cashIncomeFromPenaltyFeedback"
@@ -164,56 +164,30 @@
 							<!-- Row -->
 							<div
 								class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<div class="box box-primary">
-									<div class="box-header with-border">
-										<h3 class="box-title">Configure Fund Sources for Payment
-											Channels</h3>
-									</div>
-									<div class="box-body">
-										<table wicket:id="advancedAccountingRuleFundSourceTable"></table>
-									</div>
-									<div class="box-footer">
-										<a wicket:id="advancedAccountingRuleFundSourceAddLink"
-											class="btn btn-default">Add</a>
-									</div>
-								</div>
+								<h4>Configure Fund Sources for Payment Channels</h4>
+								<table wicket:id="advancedAccountingRuleFundSourceTable"></table>
+								<a wicket:id="advancedAccountingRuleFundSourceAddLink"
+									class="btn btn-sm btn-default">Add</a>
 							</div>
 							<div class="clearfix"></div>
 
 							<!-- Row -->
 							<div
 								class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<div class="box box-primary">
-									<div class="box-header with-border">
-										<h3 class="box-title">Map Fees to Income Accounts</h3>
-									</div>
-									<div class="box-body">
-										<table wicket:id="advancedAccountingRuleFeeIncomeTable"></table>
-									</div>
-									<div class="box-footer">
-										<a wicket:id="advancedAccountingRuleFeeIncomeAddLink"
-											class="btn btn-default">Add</a>
-									</div>
-								</div>
+								<h4>Map Fees to Income Accounts</h4>
+								<table wicket:id="advancedAccountingRuleFeeIncomeTable"></table>
+								<a wicket:id="advancedAccountingRuleFeeIncomeAddLink"
+									class="btn btn-sm btn-default">Add</a>
 							</div>
 							<div class="clearfix"></div>
 
 							<!-- Row -->
 							<div
 								class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<div class="box box-primary">
-									<div class="box-header with-border">
-										<h3 class="box-title">Map Penalties to Specific Income
-											Accounts</h3>
-									</div>
-									<div class="box-body">
-										<table wicket:id="advancedAccountingRulePenaltyIncomeTable"></table>
-									</div>
-									<div class="box-footer">
-										<a wicket:id="advancedAccountingRulePenaltyIncomeAddLink"
-											class="btn btn-default">Add</a>
-									</div>
-								</div>
+								<h4>Map Penalties to Specific Income Accounts</h4>
+								<table wicket:id="advancedAccountingRulePenaltyIncomeTable"></table>
+								<a wicket:id="advancedAccountingRulePenaltyIncomeAddLink"
+									class="btn btn-sm btn-default">Add</a>
 							</div>
 							<div class="clearfix"></div>
 						</div>

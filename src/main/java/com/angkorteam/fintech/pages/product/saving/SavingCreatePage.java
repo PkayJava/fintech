@@ -161,12 +161,12 @@ public class SavingCreatePage extends Page {
 
     @Override
     protected void initData() {
-        this.errorDetail = false;
-        this.errorCurrency = false;
-        this.errorAccounting = false;
-        this.errorTerm = false;
-        this.errorSetting = false;
-        this.errorCharge = false;
+        this.errorDetail = true;
+        this.errorCurrency = true;
+        this.errorAccounting = true;
+        this.errorTerm = true;
+        this.errorSetting = true;
+        this.errorCharge = true;
 
         this.chargeValue = new ArrayList<>();
         this.advancedAccountingRuleFundSourceValue = new ArrayList<>();

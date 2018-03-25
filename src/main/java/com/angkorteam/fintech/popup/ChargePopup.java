@@ -55,7 +55,7 @@ public class ChargePopup extends PopupPanel {
         this.okayButton.setOnError(this::okayButtonError);
         this.form.add(this.okayButton);
 
-        this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Six_6);
+        this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Twelve_12);
         this.form.add(this.chargeBlock);
         this.chargeIContainer = new WebMarkupContainer("chargeIContainer");
         this.chargeBlock.add(this.chargeIContainer);

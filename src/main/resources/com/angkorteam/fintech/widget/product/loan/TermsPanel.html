@@ -60,18 +60,10 @@
 					<!-- Row -->
 					<div wicket:id="termPrincipleByLoanCycleBlock" class="form-group">
 						<wicket:container wicket:id="termPrincipleByLoanCycleIContainer">
-							<div class="box box-primary">
-								<div class="box-header with-border">
-									<h3 class="box-title">Principle by loan cycle</h3>
-								</div>
-								<div class="box-body">
-									<table wicket:id="termPrincipleByLoanCycleTable" />
-								</div>
-								<div class="box-footer">
-									<a wicket:id="termPrincipleByLoanCycleAddLink"
-										class="btn btn-default">Add</a>
-								</div>
-							</div>
+							<h4>Principle by loan cycle</h4>
+							<table wicket:id="termPrincipleByLoanCycleTable"></table>
+							<a wicket:id="termPrincipleByLoanCycleAddLink"
+								class="btn btn-sm btn-default">Add</a>
 						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
@@ -115,7 +107,7 @@
 					</div>
 					<div wicket:id="termRepaidEveryBlock" class="form-group">
 						<wicket:container wicket:id="termRepaidEveryIContainer">
-							<label wicket:for="termRepaidEveryField">Every</label>
+							<label wicket:for="termRepaidEveryField">Repeat</label>
 							<input wicket:id="termRepaidEveryField" type="text"
 								class="form-control" />
 							<span wicket:id="termRepaidEveryFeedback" class="help-block"></span>
@@ -123,7 +115,7 @@
 					</div>
 					<div wicket:id="termRepaidTypeBlock" class="form-group">
 						<wicket:container wicket:id="termRepaidTypeIContainer">
-							<label wicket:for="termRepaidTypeField">Type</label>
+							<label wicket:for="termRepaidTypeField">Every</label>
 							<select wicket:id="termRepaidTypeField" class="form-control"></select>
 							<span wicket:id="termRepaidTypeFeedback" class="help-block"></span>
 						</wicket:container>
@@ -135,18 +127,10 @@
 						class="form-group">
 						<wicket:container
 							wicket:id="termNumberOfRepaymentByLoanCycleIContainer">
-							<div class="box box-primary">
-								<div class="box-header with-border">
-									<h3 class="box-title">Number of repayment by loan cycle</h3>
-								</div>
-								<div class="box-body">
-									<table wicket:id="termNumberOfRepaymentByLoanCycleTable" />
-								</div>
-								<div class="box-footer">
-									<a wicket:id="termNumberOfRepaymentByLoanCycleAddLink"
-										class="btn btn-default">Add</a>
-								</div>
-							</div>
+							<h4>Number of repayment by loan cycle</h4>
+							<table wicket:id="termNumberOfRepaymentByLoanCycleTable"></table>
+							<a wicket:id="termNumberOfRepaymentByLoanCycleAddLink"
+								class="btn btn-sm btn-default">Add</a>
 						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
@@ -210,7 +194,7 @@
 						class="form-group">
 						<wicket:container
 							wicket:id="termNominalInterestRateTypeIContainer">
-							<label wicket:for="termNominalInterestRateTypeField">Type</label>
+							<label wicket:for="termNominalInterestRateTypeField">&nbsp;</label>
 							<select wicket:id="termNominalInterestRateTypeField"
 								class="form-control"></select>
 							<span wicket:id="termNominalInterestRateTypeFeedback"
@@ -302,18 +286,10 @@
 						class="form-group">
 						<wicket:container
 							wicket:id="termNominalInterestRateByLoanCycleIContainer">
-							<div class="box box-primary">
-								<div class="box-header with-border">
-									<h3 class="box-title">Nominal Interest Rate by loan cycle</h3>
-								</div>
-								<div class="box-body">
-									<table wicket:id="termNominalInterestRateByLoanCycleTable" />
-								</div>
-								<div class="box-footer">
-									<a wicket:id="termNominalInterestRateByLoanCycleAddLink"
-										class="btn btn-default">Add</a>
-								</div>
-							</div>
+							<h4>Nominal Interest Rate by loan cycle</h4>
+							<table wicket:id="termNominalInterestRateByLoanCycleTable"></table>
+							<a wicket:id="termNominalInterestRateByLoanCycleAddLink"
+								class="btn btn-sm btn-default">Add</a>
 						</wicket:container>
 					</div>
 					<div class="clearfix"></div>
@@ -347,9 +323,10 @@
 					<button wicket:id="nextButton" type="submit" class="btn btn-info">Next</button>
 					<a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
 				</div>
-				
+
 			</div>
 		</form>
+		<div wicket:id="modalWindow"></div>
 	</wicket:panel>
 </body>
 </html>

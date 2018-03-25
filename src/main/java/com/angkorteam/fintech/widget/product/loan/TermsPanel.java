@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.widget.product.loan;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +18,8 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.ddl.MFloatingRates;
 import com.angkorteam.fintech.dto.enums.LockInType;
-import com.angkorteam.fintech.pages.product.saving.SavingBrowsePage;
-import com.angkorteam.fintech.pages.product.saving.SavingCreatePage;
+import com.angkorteam.fintech.pages.product.loan.LoanBrowsePage;
+import com.angkorteam.fintech.pages.product.loan.LoanCreatePage;
 import com.angkorteam.fintech.popup.InterestLoanCyclePopup;
 import com.angkorteam.fintech.popup.PrincipleLoanCyclePopup;
 import com.angkorteam.fintech.popup.RepaymentLoanCyclePopup;
@@ -116,6 +117,17 @@ public class TermsPanel extends Panel {
     protected TextField<Long> termNumberOfRepaymentMaximumField;
     protected TextFeedbackPanel termNumberOfRepaymentMaximumFeedback;
 
+    protected WebMarkupBlock termRepaidEveryBlock;
+    protected WebMarkupContainer termRepaidEveryIContainer;
+    protected TextField<Long> termRepaidEveryField;
+    protected TextFeedbackPanel termRepaidEveryFeedback;
+
+    protected WebMarkupBlock termRepaidTypeBlock;
+    protected WebMarkupContainer termRepaidTypeIContainer;
+    protected LockInTypeProvider termRepaidTypeProvider;
+    protected Select2SingleChoice<Option> termRepaidTypeField;
+    protected TextFeedbackPanel termRepaidTypeFeedback;
+
     // Row 3 (Optional) : Number of Repayments by loan cycle
     protected List<IColumn<Map<String, Object>, String>> termNumberOfRepaymentByLoanCycleColumn;
     protected WebMarkupBlock termNumberOfRepaymentByLoanCycleBlock;
@@ -193,17 +205,6 @@ public class TermsPanel extends Panel {
     protected AjaxLink<Void> termNominalInterestRateByLoanCycleAddLink;
     protected List<IColumn<Map<String, Object>, String>> termNominalInterestRateByLoanCycleColumn;
 
-    protected WebMarkupBlock termRepaidEveryBlock;
-    protected WebMarkupContainer termRepaidEveryIContainer;
-    protected TextField<Long> termRepaidEveryField;
-    protected TextFeedbackPanel termRepaidEveryFeedback;
-
-    protected WebMarkupBlock termRepaidTypeBlock;
-    protected WebMarkupContainer termRepaidTypeIContainer;
-    protected LockInTypeProvider termRepaidTypeProvider;
-    protected Select2SingleChoice<Option> termRepaidTypeField;
-    protected TextFeedbackPanel termRepaidTypeFeedback;
-
     protected WebMarkupBlock termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock;
     protected WebMarkupContainer termMinimumDayBetweenDisbursalAndFirstRepaymentDateIContainer;
     protected TextField<Long> termMinimumDayBetweenDisbursalAndFirstRepaymentDateField;
@@ -218,6 +219,8 @@ public class TermsPanel extends Panel {
     protected void initData() {
         this.tab = new PropertyModel<>(this.itemPage, "tab");
         this.errorTerm = new PropertyModel<>(this.itemPage, "errorTerm");
+
+        this.popupModel = new HashMap<>();
 
         this.termPrincipleByLoanCycleValue = new PropertyModel<>(this.itemPage, "termPrincipleByLoanCycleValue");
         this.termPrincipleByLoanCycleColumn = Lists.newArrayList();
@@ -264,7 +267,7 @@ public class TermsPanel extends Panel {
         this.backLink.setOnClick(this::backLinkClick);
         this.form.add(this.backLink);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", LoanBrowsePage.class);
         this.form.add(this.closeLink);
 
         this.modalWindow = new ModalWindow("modalWindow");
@@ -275,7 +278,7 @@ public class TermsPanel extends Panel {
         this.form.add(this.termVaryBasedOnLoanCycleBlock);
         this.termVaryBasedOnLoanCycleIContainer = new WebMarkupContainer("termVaryBasedOnLoanCycleIContainer");
         this.termVaryBasedOnLoanCycleBlock.add(this.termVaryBasedOnLoanCycleIContainer);
-        this.termVaryBasedOnLoanCycleField = new CheckBox("termVaryBasedOnLoanCycleField", new PropertyModel<>(this, "termVaryBasedOnLoanCycleValue"));
+        this.termVaryBasedOnLoanCycleField = new CheckBox("termVaryBasedOnLoanCycleField", new PropertyModel<>(this.itemPage, "termVaryBasedOnLoanCycleValue"));
         this.termVaryBasedOnLoanCycleField.add(new OnChangeAjaxBehavior(this::termVaryBasedOnLoanCycleFieldUpdate));
         this.termVaryBasedOnLoanCycleIContainer.add(this.termVaryBasedOnLoanCycleField);
         this.termVaryBasedOnLoanCycleFeedback = new TextFeedbackPanel("termVaryBasedOnLoanCycleFeedback", this.termVaryBasedOnLoanCycleField);
@@ -285,7 +288,7 @@ public class TermsPanel extends Panel {
         this.form.add(this.termPrincipleMinimumBlock);
         this.termPrincipleMinimumIContainer = new WebMarkupContainer("termPrincipleMinimumIContainer");
         this.termPrincipleMinimumBlock.add(this.termPrincipleMinimumIContainer);
-        this.termPrincipleMinimumField = new TextField<>("termPrincipleMinimumField", new PropertyModel<>(this, "termPrincipleMinimumValue"));
+        this.termPrincipleMinimumField = new TextField<>("termPrincipleMinimumField", new PropertyModel<>(this.itemPage, "termPrincipleMinimumValue"));
         this.termPrincipleMinimumField.setLabel(Model.of("Principle Minimum"));
         this.termPrincipleMinimumField.add(new OnChangeAjaxBehavior());
         this.termPrincipleMinimumIContainer.add(this.termPrincipleMinimumField);
@@ -296,7 +299,7 @@ public class TermsPanel extends Panel {
         this.form.add(this.termPrincipleDefaultBlock);
         this.termPrincipleDefaultIContainer = new WebMarkupContainer("termPrincipleDefaultIContainer");
         this.termPrincipleDefaultBlock.add(this.termPrincipleDefaultIContainer);
-        this.termPrincipleDefaultField = new TextField<>("termPrincipleDefaultField", new PropertyModel<>(this, "termPrincipleDefaultValue"));
+        this.termPrincipleDefaultField = new TextField<>("termPrincipleDefaultField", new PropertyModel<>(this.itemPage, "termPrincipleDefaultValue"));
         this.termPrincipleDefaultField.setLabel(Model.of("Principle Default"));
         this.termPrincipleDefaultField.add(new OnChangeAjaxBehavior());
         this.termPrincipleDefaultIContainer.add(this.termPrincipleDefaultField);
@@ -307,35 +310,30 @@ public class TermsPanel extends Panel {
         this.form.add(this.termPrincipleMaximumBlock);
         this.termPrincipleMaximumIContainer = new WebMarkupContainer("termPrincipleMaximumIContainer");
         this.termPrincipleMaximumBlock.add(this.termPrincipleMaximumIContainer);
-        this.termPrincipleMaximumField = new TextField<>("termPrincipleMaximumField", new PropertyModel<>(this, "termPrincipleMaximumValue"));
+        this.termPrincipleMaximumField = new TextField<>("termPrincipleMaximumField", new PropertyModel<>(this.itemPage, "termPrincipleMaximumValue"));
         this.termPrincipleMaximumField.setLabel(Model.of("Principle Maximum"));
         this.termPrincipleMaximumField.add(new OnChangeAjaxBehavior());
         this.termPrincipleMaximumIContainer.add(this.termPrincipleMaximumField);
         this.termPrincipleMaximumFeedback = new TextFeedbackPanel("termPrincipleMaximumFeedback", this.termPrincipleMaximumField);
         this.termPrincipleMaximumIContainer.add(this.termPrincipleMaximumFeedback);
 
-        {
-
-            this.termPrincipleByLoanCycleBlock = new WebMarkupBlock("termPrincipleByLoanCycleBlock", Size.Twelve_12);
-            this.form.add(this.termPrincipleByLoanCycleBlock);
-            this.termPrincipleByLoanCycleIContainer = new WebMarkupContainer("termPrincipleByLoanCycleIContainer");
-            this.termPrincipleByLoanCycleBlock.add(this.termPrincipleByLoanCycleIContainer);
-
-            this.termPrincipleByLoanCycleTable = new DataTable<>("termPrincipleByLoanCycleTable", this.termPrincipleByLoanCycleColumn, this.termPrincipleByLoanCycleProvider, 20);
-            this.termPrincipleByLoanCycleIContainer.add(this.termPrincipleByLoanCycleTable);
-            this.termPrincipleByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(this.termPrincipleByLoanCycleTable, this.termPrincipleByLoanCycleProvider));
-            this.termPrincipleByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.termPrincipleByLoanCycleTable));
-
-            this.termPrincipleByLoanCycleAddLink = new AjaxLink<>("termPrincipleByLoanCycleAddLink");
-            this.termPrincipleByLoanCycleAddLink.setOnClick(this::termPrincipleByLoanCycleAddLinkClick);
-            this.termPrincipleByLoanCycleIContainer.add(this.termPrincipleByLoanCycleAddLink);
-        }
+        this.termPrincipleByLoanCycleBlock = new WebMarkupBlock("termPrincipleByLoanCycleBlock", Size.Twelve_12);
+        this.form.add(this.termPrincipleByLoanCycleBlock);
+        this.termPrincipleByLoanCycleIContainer = new WebMarkupContainer("termPrincipleByLoanCycleIContainer");
+        this.termPrincipleByLoanCycleBlock.add(this.termPrincipleByLoanCycleIContainer);
+        this.termPrincipleByLoanCycleTable = new DataTable<>("termPrincipleByLoanCycleTable", this.termPrincipleByLoanCycleColumn, this.termPrincipleByLoanCycleProvider, 20);
+        this.termPrincipleByLoanCycleIContainer.add(this.termPrincipleByLoanCycleTable);
+        this.termPrincipleByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(this.termPrincipleByLoanCycleTable, this.termPrincipleByLoanCycleProvider));
+        this.termPrincipleByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.termPrincipleByLoanCycleTable));
+        this.termPrincipleByLoanCycleAddLink = new AjaxLink<>("termPrincipleByLoanCycleAddLink");
+        this.termPrincipleByLoanCycleAddLink.setOnClick(this::termPrincipleByLoanCycleAddLinkClick);
+        this.termPrincipleByLoanCycleIContainer.add(this.termPrincipleByLoanCycleAddLink);
 
         this.termNumberOfRepaymentMinimumBlock = new WebMarkupBlock("termNumberOfRepaymentMinimumBlock", Size.Three_3);
         this.form.add(this.termNumberOfRepaymentMinimumBlock);
         this.termNumberOfRepaymentMinimumIContainer = new WebMarkupContainer("termNumberOfRepaymentMinimumIContainer");
         this.termNumberOfRepaymentMinimumBlock.add(this.termNumberOfRepaymentMinimumIContainer);
-        this.termNumberOfRepaymentMinimumField = new TextField<>("termNumberOfRepaymentMinimumField", new PropertyModel<>(this, "termNumberOfRepaymentMinimumValue"));
+        this.termNumberOfRepaymentMinimumField = new TextField<>("termNumberOfRepaymentMinimumField", new PropertyModel<>(this.itemPage, "termNumberOfRepaymentMinimumValue"));
         this.termNumberOfRepaymentMinimumField.setLabel(Model.of("Number of repayment Minimum"));
         this.termNumberOfRepaymentMinimumField.add(new OnChangeAjaxBehavior());
         this.termNumberOfRepaymentMinimumIContainer.add(this.termNumberOfRepaymentMinimumField);
@@ -346,7 +344,7 @@ public class TermsPanel extends Panel {
         this.form.add(this.termNumberOfRepaymentDefaultBlock);
         this.termNumberOfRepaymentDefaultIContainer = new WebMarkupContainer("termNumberOfRepaymentDefaultIContainer");
         this.termNumberOfRepaymentDefaultBlock.add(this.termNumberOfRepaymentDefaultIContainer);
-        this.termNumberOfRepaymentDefaultField = new TextField<>("termNumberOfRepaymentDefaultField", new PropertyModel<>(this, "termNumberOfRepaymentDefaultValue"));
+        this.termNumberOfRepaymentDefaultField = new TextField<>("termNumberOfRepaymentDefaultField", new PropertyModel<>(this.itemPage, "termNumberOfRepaymentDefaultValue"));
         this.termNumberOfRepaymentDefaultField.setLabel(Model.of("Number of repayment Default"));
         this.termNumberOfRepaymentDefaultField.add(new OnChangeAjaxBehavior());
         this.termNumberOfRepaymentDefaultIContainer.add(this.termNumberOfRepaymentDefaultField);
@@ -357,37 +355,31 @@ public class TermsPanel extends Panel {
         this.form.add(this.termNumberOfRepaymentMaximumBlock);
         this.termNumberOfRepaymentMaximumIContainer = new WebMarkupContainer("termNumberOfRepaymentMaximumIContainer");
         this.termNumberOfRepaymentMaximumBlock.add(this.termNumberOfRepaymentMaximumIContainer);
-        this.termNumberOfRepaymentMaximumField = new TextField<>("termNumberOfRepaymentMaximumField", new PropertyModel<>(this, "termNumberOfRepaymentMaximumValue"));
+        this.termNumberOfRepaymentMaximumField = new TextField<>("termNumberOfRepaymentMaximumField", new PropertyModel<>(this.itemPage, "termNumberOfRepaymentMaximumValue"));
         this.termNumberOfRepaymentMaximumField.setLabel(Model.of("Number of repayment Maximum"));
         this.termNumberOfRepaymentMaximumField.add(new OnChangeAjaxBehavior());
         this.termNumberOfRepaymentMaximumIContainer.add(this.termNumberOfRepaymentMaximumField);
         this.termNumberOfRepaymentMaximumFeedback = new TextFeedbackPanel("termNumberOfRepaymentMaximumFeedback", this.termNumberOfRepaymentMaximumField);
         this.termNumberOfRepaymentMaximumIContainer.add(this.termNumberOfRepaymentMaximumFeedback);
 
-        // Table
-        {
-
-            this.termNumberOfRepaymentByLoanCycleBlock = new WebMarkupBlock("termNumberOfRepaymentByLoanCycleBlock", Size.Twelve_12);
-            this.form.add(this.termNumberOfRepaymentByLoanCycleBlock);
-            this.termNumberOfRepaymentByLoanCycleIContainer = new WebMarkupContainer("termNumberOfRepaymentByLoanCycleIContainer");
-            this.termNumberOfRepaymentByLoanCycleBlock.add(this.termNumberOfRepaymentByLoanCycleIContainer);
-
-            this.termNumberOfRepaymentByLoanCycleTable = new DataTable<>("termNumberOfRepaymentByLoanCycleTable", this.termNumberOfRepaymentByLoanCycleColumn, this.termNumberOfRepaymentByLoanCycleProvider, 20);
-            this.termNumberOfRepaymentByLoanCycleIContainer.add(this.termNumberOfRepaymentByLoanCycleTable);
-            this.termNumberOfRepaymentByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(this.termNumberOfRepaymentByLoanCycleTable, this.termNumberOfRepaymentByLoanCycleProvider));
-            this.termNumberOfRepaymentByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.termNumberOfRepaymentByLoanCycleTable));
-
-            this.termNumberOfRepaymentByLoanCycleAddLink = new AjaxLink<>("termNumberOfRepaymentByLoanCycleAddLink");
-            this.termNumberOfRepaymentByLoanCycleAddLink.setOnClick(this::termNumberOfRepaymentByLoanCycleAddLinkClick);
-            this.termNumberOfRepaymentByLoanCycleIContainer.add(this.termNumberOfRepaymentByLoanCycleAddLink);
-        }
+        this.termNumberOfRepaymentByLoanCycleBlock = new WebMarkupBlock("termNumberOfRepaymentByLoanCycleBlock", Size.Twelve_12);
+        this.form.add(this.termNumberOfRepaymentByLoanCycleBlock);
+        this.termNumberOfRepaymentByLoanCycleIContainer = new WebMarkupContainer("termNumberOfRepaymentByLoanCycleIContainer");
+        this.termNumberOfRepaymentByLoanCycleBlock.add(this.termNumberOfRepaymentByLoanCycleIContainer);
+        this.termNumberOfRepaymentByLoanCycleTable = new DataTable<>("termNumberOfRepaymentByLoanCycleTable", this.termNumberOfRepaymentByLoanCycleColumn, this.termNumberOfRepaymentByLoanCycleProvider, 20);
+        this.termNumberOfRepaymentByLoanCycleIContainer.add(this.termNumberOfRepaymentByLoanCycleTable);
+        this.termNumberOfRepaymentByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(this.termNumberOfRepaymentByLoanCycleTable, this.termNumberOfRepaymentByLoanCycleProvider));
+        this.termNumberOfRepaymentByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.termNumberOfRepaymentByLoanCycleTable));
+        this.termNumberOfRepaymentByLoanCycleAddLink = new AjaxLink<>("termNumberOfRepaymentByLoanCycleAddLink");
+        this.termNumberOfRepaymentByLoanCycleAddLink.setOnClick(this::termNumberOfRepaymentByLoanCycleAddLinkClick);
+        this.termNumberOfRepaymentByLoanCycleIContainer.add(this.termNumberOfRepaymentByLoanCycleAddLink);
 
         // Linked to Floating Interest Rates
         this.termLinkedToFloatingInterestRatesBlock = new WebMarkupBlock("termLinkedToFloatingInterestRatesBlock", Size.Twelve_12);
         this.form.add(this.termLinkedToFloatingInterestRatesBlock);
         this.termLinkedToFloatingInterestRatesIContainer = new WebMarkupContainer("termLinkedToFloatingInterestRatesIContainer");
         this.termLinkedToFloatingInterestRatesBlock.add(this.termLinkedToFloatingInterestRatesIContainer);
-        this.termLinkedToFloatingInterestRatesField = new CheckBox("termLinkedToFloatingInterestRatesField", new PropertyModel<>(this, "termLinkedToFloatingInterestRatesValue"));
+        this.termLinkedToFloatingInterestRatesField = new CheckBox("termLinkedToFloatingInterestRatesField", new PropertyModel<>(this.itemPage, "termLinkedToFloatingInterestRatesValue"));
         this.termLinkedToFloatingInterestRatesField.add(new OnChangeAjaxBehavior(this::termLinkedToFloatingInterestRatesFieldUpdate));
         this.termLinkedToFloatingInterestRatesIContainer.add(this.termLinkedToFloatingInterestRatesField);
         this.termLinkedToFloatingInterestRatesFeedback = new TextFeedbackPanel("termLinkedToFloatingInterestRatesFeedback", this.termLinkedToFloatingInterestRatesField);
@@ -397,7 +389,7 @@ public class TermsPanel extends Panel {
         this.form.add(this.termNominalInterestRateMinimumBlock);
         this.termNominalInterestRateMinimumIContainer = new WebMarkupContainer("termNominalInterestRateMinimumIContainer");
         this.termNominalInterestRateMinimumBlock.add(this.termNominalInterestRateMinimumIContainer);
-        this.termNominalInterestRateMinimumField = new TextField<>("termNominalInterestRateMinimumField", new PropertyModel<>(this, "termNominalInterestRateMinimumValue"));
+        this.termNominalInterestRateMinimumField = new TextField<>("termNominalInterestRateMinimumField", new PropertyModel<>(this.itemPage, "termNominalInterestRateMinimumValue"));
         this.termNominalInterestRateMinimumField.setLabel(Model.of("Nominal interest rate minimum"));
         this.termNominalInterestRateMinimumField.add(new OnChangeAjaxBehavior());
         this.termNominalInterestRateMinimumIContainer.add(this.termNominalInterestRateMinimumField);
@@ -408,7 +400,7 @@ public class TermsPanel extends Panel {
         this.form.add(this.termNominalInterestRateDefaultBlock);
         this.termNominalInterestRateDefaultIContainer = new WebMarkupContainer("termNominalInterestRateDefaultIContainer");
         this.termNominalInterestRateDefaultBlock.add(this.termNominalInterestRateDefaultIContainer);
-        this.termNominalInterestRateDefaultField = new TextField<>("termNominalInterestRateDefaultField", new PropertyModel<>(this, "termNominalInterestRateDefaultValue"));
+        this.termNominalInterestRateDefaultField = new TextField<>("termNominalInterestRateDefaultField", new PropertyModel<>(this.itemPage, "termNominalInterestRateDefaultValue"));
         this.termNominalInterestRateDefaultField.setLabel(Model.of("Nominal interest rate Default"));
         this.termNominalInterestRateDefaultField.add(new OnChangeAjaxBehavior());
         this.termNominalInterestRateDefaultIContainer.add(this.termNominalInterestRateDefaultField);
@@ -419,7 +411,7 @@ public class TermsPanel extends Panel {
         this.form.add(this.termNominalInterestRateMaximumBlock);
         this.termNominalInterestRateMaximumIContainer = new WebMarkupContainer("termNominalInterestRateMaximumIContainer");
         this.termNominalInterestRateMaximumBlock.add(this.termNominalInterestRateMaximumIContainer);
-        this.termNominalInterestRateMaximumField = new TextField<>("termNominalInterestRateMaximumField", new PropertyModel<>(this, "termNominalInterestRateMaximumValue"));
+        this.termNominalInterestRateMaximumField = new TextField<>("termNominalInterestRateMaximumField", new PropertyModel<>(this.itemPage, "termNominalInterestRateMaximumValue"));
         this.termNominalInterestRateMaximumField.setLabel(Model.of("Nominal interest rate Maximum"));
         this.termNominalInterestRateMaximumField.add(new OnChangeAjaxBehavior());
         this.termNominalInterestRateMaximumIContainer.add(this.termNominalInterestRateMaximumField);
@@ -431,7 +423,7 @@ public class TermsPanel extends Panel {
         this.termNominalInterestRateTypeIContainer = new WebMarkupContainer("termNominalInterestRateTypeIContainer");
         this.termNominalInterestRateTypeBlock.add(this.termNominalInterestRateTypeIContainer);
         this.termNominalInterestRateTypeProvider = new NominalInterestRateTypeProvider();
-        this.termNominalInterestRateTypeField = new Select2SingleChoice<>("termNominalInterestRateTypeField", new PropertyModel<>(this, "termNominalInterestRateTypeValue"), this.termNominalInterestRateTypeProvider);
+        this.termNominalInterestRateTypeField = new Select2SingleChoice<>("termNominalInterestRateTypeField", new PropertyModel<>(this.itemPage, "termNominalInterestRateTypeValue"), this.termNominalInterestRateTypeProvider);
         this.termNominalInterestRateTypeField.setLabel(Model.of("Type"));
         this.termNominalInterestRateTypeField.add(new OnChangeAjaxBehavior());
         this.termNominalInterestRateTypeIContainer.add(this.termNominalInterestRateTypeField);
@@ -443,7 +435,7 @@ public class TermsPanel extends Panel {
         this.termFloatingInterestRateIContainer = new WebMarkupContainer("termFloatingInterestRateIContainer");
         this.termFloatingInterestRateBlock.add(this.termFloatingInterestRateIContainer);
         this.termFloatingInterestRateProvider = new SingleChoiceProvider(MFloatingRates.NAME, MFloatingRates.Field.ID, MFloatingRates.Field.NAME);
-        this.termFloatingInterestRateField = new Select2SingleChoice<>("termFloatingInterestRateField", new PropertyModel<>(this, "termFloatingInterestRateValue"), this.termFloatingInterestRateProvider);
+        this.termFloatingInterestRateField = new Select2SingleChoice<>("termFloatingInterestRateField", new PropertyModel<>(this.itemPage, "termFloatingInterestRateValue"), this.termFloatingInterestRateProvider);
         this.termFloatingInterestRateField.setLabel(Model.of("Floating interest rate"));
         this.termFloatingInterestRateField.add(new OnChangeAjaxBehavior());
         this.termFloatingInterestRateIContainer.add(this.termFloatingInterestRateField);
@@ -454,7 +446,7 @@ public class TermsPanel extends Panel {
         this.form.add(this.termFloatingInterestDifferentialBlock);
         this.termFloatingInterestDifferentialIContainer = new WebMarkupContainer("termFloatingInterestDifferentialIContainer");
         this.termFloatingInterestDifferentialBlock.add(this.termFloatingInterestDifferentialIContainer);
-        this.termFloatingInterestDifferentialField = new TextField<>("termFloatingInterestDifferentialField", new PropertyModel<>(this, "termFloatingInterestDifferentialValue"));
+        this.termFloatingInterestDifferentialField = new TextField<>("termFloatingInterestDifferentialField", new PropertyModel<>(this.itemPage, "termFloatingInterestDifferentialValue"));
         this.termFloatingInterestDifferentialField.setLabel(Model.of("Floating interest differential rate"));
         this.termFloatingInterestDifferentialField.add(new OnChangeAjaxBehavior());
         this.termFloatingInterestDifferentialIContainer.add(this.termFloatingInterestDifferentialField);
@@ -465,7 +457,7 @@ public class TermsPanel extends Panel {
         this.form.add(this.termFloatingInterestAllowedBlock);
         this.termFloatingInterestAllowedIContainer = new WebMarkupContainer("termFloatingInterestAllowedIContainer");
         this.termFloatingInterestAllowedBlock.add(this.termFloatingInterestAllowedIContainer);
-        this.termFloatingInterestAllowedField = new CheckBox("termFloatingInterestAllowedField", new PropertyModel<>(this, "termFloatingInterestAllowedValue"));
+        this.termFloatingInterestAllowedField = new CheckBox("termFloatingInterestAllowedField", new PropertyModel<>(this.itemPage, "termFloatingInterestAllowedValue"));
         this.termFloatingInterestAllowedField.add(new OnChangeAjaxBehavior());
         this.termFloatingInterestAllowedIContainer.add(this.termFloatingInterestAllowedField);
         this.termFloatingInterestAllowedFeedback = new TextFeedbackPanel("termFloatingInterestAllowedFeedback", this.termFloatingInterestAllowedField);
@@ -475,7 +467,7 @@ public class TermsPanel extends Panel {
         this.form.add(this.termFloatingInterestMinimumBlock);
         this.termFloatingInterestMinimumIContainer = new WebMarkupContainer("termFloatingInterestMinimumIContainer");
         this.termFloatingInterestMinimumBlock.add(this.termFloatingInterestMinimumIContainer);
-        this.termFloatingInterestMinimumField = new TextField<>("termFloatingInterestMinimumField", new PropertyModel<>(this, "termFloatingInterestMinimumValue"));
+        this.termFloatingInterestMinimumField = new TextField<>("termFloatingInterestMinimumField", new PropertyModel<>(this.itemPage, "termFloatingInterestMinimumValue"));
         this.termFloatingInterestMinimumField.setLabel(Model.of("Floating interest minimum"));
         this.termFloatingInterestMinimumField.add(new OnChangeAjaxBehavior());
         this.termFloatingInterestMinimumIContainer.add(this.termFloatingInterestMinimumField);
@@ -486,7 +478,7 @@ public class TermsPanel extends Panel {
         this.form.add(this.termFloatingInterestDefaultBlock);
         this.termFloatingInterestDefaultIContainer = new WebMarkupContainer("termFloatingInterestDefaultIContainer");
         this.termFloatingInterestDefaultBlock.add(this.termFloatingInterestDefaultIContainer);
-        this.termFloatingInterestDefaultField = new TextField<>("termFloatingInterestDefaultField", new PropertyModel<>(this, "termFloatingInterestDefaultValue"));
+        this.termFloatingInterestDefaultField = new TextField<>("termFloatingInterestDefaultField", new PropertyModel<>(this.itemPage, "termFloatingInterestDefaultValue"));
         this.termFloatingInterestDefaultField.setLabel(Model.of("Floating interest Default"));
         this.termFloatingInterestDefaultField.add(new OnChangeAjaxBehavior());
         this.termFloatingInterestDefaultIContainer.add(this.termFloatingInterestDefaultField);
@@ -497,35 +489,30 @@ public class TermsPanel extends Panel {
         this.form.add(this.termFloatingInterestMaximumBlock);
         this.termFloatingInterestMaximumIContainer = new WebMarkupContainer("termFloatingInterestMaximumIContainer");
         this.termFloatingInterestMaximumBlock.add(this.termFloatingInterestMaximumIContainer);
-        this.termFloatingInterestMaximumField = new TextField<>("termFloatingInterestMaximumField", new PropertyModel<>(this, "termFloatingInterestMaximumValue"));
+        this.termFloatingInterestMaximumField = new TextField<>("termFloatingInterestMaximumField", new PropertyModel<>(this.itemPage, "termFloatingInterestMaximumValue"));
         this.termFloatingInterestMaximumField.setLabel(Model.of("Floating interest Maximum"));
         this.termFloatingInterestMaximumField.add(new OnChangeAjaxBehavior());
         this.termFloatingInterestMaximumIContainer.add(this.termFloatingInterestMaximumField);
         this.termFloatingInterestMaximumFeedback = new TextFeedbackPanel("termFloatingInterestMaximumFeedback", this.termFloatingInterestMaximumField);
         this.termFloatingInterestMaximumIContainer.add(this.termFloatingInterestMaximumFeedback);
 
-        // Table
-        {
-            this.termNominalInterestRateByLoanCycleBlock = new WebMarkupBlock("termNominalInterestRateByLoanCycleBlock", Size.Twelve_12);
-            this.form.add(this.termNominalInterestRateByLoanCycleBlock);
-            this.termNominalInterestRateByLoanCycleIContainer = new WebMarkupContainer("termNominalInterestRateByLoanCycleIContainer");
-            this.termNominalInterestRateByLoanCycleBlock.add(this.termNominalInterestRateByLoanCycleIContainer);
-
-            this.termNominalInterestRateByLoanCycleTable = new DataTable<>("termNominalInterestRateByLoanCycleTable", this.termNominalInterestRateByLoanCycleColumn, this.termNominalInterestRateByLoanCycleProvider, 20);
-            this.termNominalInterestRateByLoanCycleIContainer.add(this.termNominalInterestRateByLoanCycleTable);
-            this.termNominalInterestRateByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(this.termNominalInterestRateByLoanCycleTable, this.termNominalInterestRateByLoanCycleProvider));
-            this.termNominalInterestRateByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.termNominalInterestRateByLoanCycleTable));
-
-            this.termNominalInterestRateByLoanCycleAddLink = new AjaxLink<>("termNominalInterestRateByLoanCycleAddLink");
-            this.termNominalInterestRateByLoanCycleAddLink.setOnClick(this::termNominalInterestRateByLoanCycleAddLinkClick);
-            this.termNominalInterestRateByLoanCycleIContainer.add(this.termNominalInterestRateByLoanCycleAddLink);
-        }
+        this.termNominalInterestRateByLoanCycleBlock = new WebMarkupBlock("termNominalInterestRateByLoanCycleBlock", Size.Twelve_12);
+        this.form.add(this.termNominalInterestRateByLoanCycleBlock);
+        this.termNominalInterestRateByLoanCycleIContainer = new WebMarkupContainer("termNominalInterestRateByLoanCycleIContainer");
+        this.termNominalInterestRateByLoanCycleBlock.add(this.termNominalInterestRateByLoanCycleIContainer);
+        this.termNominalInterestRateByLoanCycleTable = new DataTable<>("termNominalInterestRateByLoanCycleTable", this.termNominalInterestRateByLoanCycleColumn, this.termNominalInterestRateByLoanCycleProvider, 20);
+        this.termNominalInterestRateByLoanCycleIContainer.add(this.termNominalInterestRateByLoanCycleTable);
+        this.termNominalInterestRateByLoanCycleTable.addTopToolbar(new HeadersToolbar<>(this.termNominalInterestRateByLoanCycleTable, this.termNominalInterestRateByLoanCycleProvider));
+        this.termNominalInterestRateByLoanCycleTable.addBottomToolbar(new NoRecordsToolbar(this.termNominalInterestRateByLoanCycleTable));
+        this.termNominalInterestRateByLoanCycleAddLink = new AjaxLink<>("termNominalInterestRateByLoanCycleAddLink");
+        this.termNominalInterestRateByLoanCycleAddLink.setOnClick(this::termNominalInterestRateByLoanCycleAddLinkClick);
+        this.termNominalInterestRateByLoanCycleIContainer.add(this.termNominalInterestRateByLoanCycleAddLink);
 
         this.termRepaidEveryBlock = new WebMarkupBlock("termRepaidEveryBlock", Size.One_1);
         this.form.add(this.termRepaidEveryBlock);
         this.termRepaidEveryIContainer = new WebMarkupContainer("termRepaidEveryIContainer");
         this.termRepaidEveryBlock.add(this.termRepaidEveryIContainer);
-        this.termRepaidEveryField = new TextField<>("termRepaidEveryField", new PropertyModel<>(this, "termRepaidEveryValue"));
+        this.termRepaidEveryField = new TextField<>("termRepaidEveryField", new PropertyModel<>(this.itemPage, "termRepaidEveryValue"));
         this.termRepaidEveryField.setLabel(Model.of("Repaid every"));
         this.termRepaidEveryField.add(new OnChangeAjaxBehavior());
         this.termRepaidEveryIContainer.add(this.termRepaidEveryField);
@@ -537,7 +524,7 @@ public class TermsPanel extends Panel {
         this.form.add(this.termRepaidTypeBlock);
         this.termRepaidTypeIContainer = new WebMarkupContainer("termRepaidTypeIContainer");
         this.termRepaidTypeBlock.add(this.termRepaidTypeIContainer);
-        this.termRepaidTypeField = new Select2SingleChoice<>("termRepaidTypeField", new PropertyModel<>(this, "termRepaidTypeValue"), this.termRepaidTypeProvider);
+        this.termRepaidTypeField = new Select2SingleChoice<>("termRepaidTypeField", new PropertyModel<>(this.itemPage, "termRepaidTypeValue"), this.termRepaidTypeProvider);
         this.termRepaidTypeField.setLabel(Model.of("Repaid Type"));
         this.termRepaidTypeField.add(new OnChangeAjaxBehavior());
         this.termRepaidTypeIContainer.add(this.termRepaidTypeField);
@@ -548,7 +535,7 @@ public class TermsPanel extends Panel {
         this.form.add(this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock);
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateIContainer = new WebMarkupContainer("termMinimumDayBetweenDisbursalAndFirstRepaymentDateIContainer");
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateBlock.add(this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateIContainer);
-        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField = new TextField<>("termMinimumDayBetweenDisbursalAndFirstRepaymentDateField", new PropertyModel<>(this, "termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue"));
+        this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField = new TextField<>("termMinimumDayBetweenDisbursalAndFirstRepaymentDateField", new PropertyModel<>(this.itemPage, "termMinimumDayBetweenDisbursalAndFirstRepaymentDateValue"));
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField.setLabel(Model.of("Minimum days between disbursal and first repayment date"));
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField.add(new OnChangeAjaxBehavior());
         this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateIContainer.add(this.termMinimumDayBetweenDisbursalAndFirstRepaymentDateField);
@@ -765,7 +752,7 @@ public class TermsPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_SETTING);
+        this.tab.getObject().setSelectedTab(LoanCreatePage.TAB_SETTING);
         this.errorTerm.setObject(false);
     }
 
@@ -774,7 +761,7 @@ public class TermsPanel extends Panel {
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_CURRENCY);
+        this.tab.getObject().setSelectedTab(LoanCreatePage.TAB_CURRENCY);
         if (target != null) {
             target.add(this.tab.getObject());
         }

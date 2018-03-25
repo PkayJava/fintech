@@ -9,8 +9,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.RangeValidator;
 
-import com.angkorteam.fintech.pages.product.saving.SavingBrowsePage;
-import com.angkorteam.fintech.pages.product.saving.SavingCreatePage;
+import com.angkorteam.fintech.pages.product.loan.LoanBrowsePage;
+import com.angkorteam.fintech.pages.product.loan.LoanCreatePage;
 import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -82,7 +82,7 @@ public class CurrencyPanel extends Panel {
         this.backLink.setOnClick(this::backLinkClick);
         this.form.add(this.backLink);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", LoanBrowsePage.class);
         this.form.add(this.closeLink);
 
         this.currencyCodeBlock = new WebMarkupBlock("currencyCodeBlock", Size.Six_6);
@@ -141,7 +141,7 @@ public class CurrencyPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_TERM);
+        this.tab.getObject().setSelectedTab(LoanCreatePage.TAB_TERM);
         this.errorCurrency.setObject(false);
     }
 
@@ -150,7 +150,7 @@ public class CurrencyPanel extends Panel {
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_DETAIL);
+        this.tab.getObject().setSelectedTab(LoanCreatePage.TAB_DETAIL);
         if (target != null) {
             target.add(this.tab.getObject());
         }
