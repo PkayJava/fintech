@@ -47,6 +47,7 @@ public class PreviewPanel extends Panel {
     protected PropertyModel<Boolean> errorCurrency;
     protected PropertyModel<Boolean> errorDetail;
     protected PropertyModel<Boolean> errorTerm;
+    protected PropertyModel<Boolean> errorInterestRateChart;
 
     protected Form<Void> form;
     protected Button saveButton;

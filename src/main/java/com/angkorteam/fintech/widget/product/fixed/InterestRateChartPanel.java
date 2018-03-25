@@ -99,10 +99,8 @@ public class InterestRateChartPanel extends Panel {
         this.interestRateChartValue = new PropertyModel<>(this.itemPage, "interestRateChartValue");
         this.interestRateChartColumn = Lists.newLinkedList();
         this.interestRateChartColumn.add(new TextColumn(Model.of("Period Type"), "periodType", "periodType", this::interestRateChartColumn));
-        this.interestRateChartColumn.add(new TextColumn(Model.of("Period From"), "periodFrom", "periodFrom", this::interestRateChartColumn));
-        this.interestRateChartColumn.add(new TextColumn(Model.of("Period To"), "periodTo", "periodTo", this::interestRateChartColumn));
-        this.interestRateChartColumn.add(new TextColumn(Model.of("Amount Range From"), "amountRangeFrom", "amountRangeFrom", this::interestRateChartColumn));
-        this.interestRateChartColumn.add(new TextColumn(Model.of("Amount Range To"), "amountRangeTo", "amountRangeTo", this::interestRateChartColumn));
+        this.interestRateChartColumn.add(new TextColumn(Model.of("Period From/To"), "period", "period", this::interestRateChartColumn));
+        this.interestRateChartColumn.add(new TextColumn(Model.of("Amount From/To"), "amountRange", "amountRange", this::interestRateChartColumn));
         this.interestRateChartColumn.add(new TextColumn(Model.of("Interest"), "interest", "interest", this::interestRateChartColumn));
         this.interestRateChartColumn.add(new TextColumn(Model.of("Description"), "description", "description", this::interestRateChartColumn));
         this.interestRateChartColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::interestRateChartAction, this::interestRateChartClick));
@@ -183,10 +181,43 @@ public class InterestRateChartPanel extends Panel {
             String uuid = UUID.randomUUID().toString();
             item.put("uuid", uuid);
             item.put("periodType", this.popupModel.get("periodTypeValue"));
+            Long periodFrom = (Long) this.popupModel.get("periodFromValue");
+            Long periodTo = (Long) this.popupModel.get("periodToValue");
+            String period = null;
+            if (periodFrom != null && periodTo != null) {
+                period = String.valueOf(periodFrom) + " - " + String.valueOf(periodTo);
+            } else if (periodFrom == null && periodTo == null) {
+                period = "";
+            } else {
+                if (periodFrom != null) {
+                    period = String.valueOf(periodFrom) + " - ";
+                }
+                if (periodTo != null) {
+                    period = " - " + String.valueOf(periodTo);
+                }
+            }
+
+            Long amountRangeFrom = (Long) this.popupModel.get("amountRangeFromValue");
+            Long amountRangeTo = (Long) this.popupModel.get("amountRangeToValue");
+            String amountRange = null;
+            if (amountRangeFrom != null && amountRangeTo != null) {
+                amountRange = String.valueOf(amountRangeFrom) + " - " + String.valueOf(amountRangeTo);
+            } else if (amountRangeFrom == null && amountRangeTo == null) {
+                amountRange = "";
+            } else {
+                if (amountRangeFrom != null) {
+                    amountRange = String.valueOf(amountRangeFrom) + " - ";
+                }
+                if (amountRangeTo != null) {
+                    amountRange = " - " + String.valueOf(amountRangeTo);
+                }
+            }
             item.put("periodFrom", this.popupModel.get("periodFromValue"));
             item.put("periodTo", this.popupModel.get("periodToValue"));
+            item.put("period", period);
             item.put("amountRangeFrom", this.popupModel.get("amountRangeFromValue"));
             item.put("amountRangeTo", this.popupModel.get("amountRangeToValue"));
+            item.put("amountRangeTo", amountRange);
             item.put("interest", this.popupModel.get("interestValue"));
             item.put("description", this.popupModel.get("descriptionValue"));
             item.put("interestRate", Lists.newLinkedList());
@@ -236,13 +267,10 @@ public class InterestRateChartPanel extends Panel {
         if ("periodType".equals(column)) {
             Option value = (Option) model.get(column);
             return new TextCell(value);
-        } else if ("periodFrom".equals(column) || "periodTo".equals(column) || "amountRangeFrom".equals(column) || "amountRangeTo".equals(column)) {
-            Long value = (Long) model.get(column);
-            return new TextCell(value);
         } else if ("interest".equals(column)) {
             Double value = (Double) model.get(column);
             return new TextCell(value);
-        } else if ("description".equals(column)) {
+        } else if ("description".equals(column) || "period".equals(column) || "amountRange".equals(column)) {
             String value = (String) model.get(column);
             return new TextCell(value);
         }
