@@ -1,4 +1,4 @@
-package com.angkorteam.fintech.widget.product.recurring;
+package com.angkorteam.fintech.widget.product.fixed;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -7,22 +7,22 @@ import org.apache.wicket.model.Model;
 
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 
-public class Details extends ITab {
+public class Terms extends ITab {
 
     protected Page itemPage;
 
-    public Details(Page itemPage) {
+    public Terms(Page itemPage) {
         this.itemPage = itemPage;
     }
 
     @Override
     public IModel<String> getTitle() {
-        return Model.of("1. Details");
+        return Model.of("3. Terms");
     }
 
     @Override
     public WebMarkupContainer getPanel(String containerId) {
-        return new DetailsPanel(containerId, this.itemPage);
+        return new TermsPanel(containerId, this.itemPage);
     }
 
     @Override

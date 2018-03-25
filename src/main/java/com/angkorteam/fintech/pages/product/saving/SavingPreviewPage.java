@@ -161,12 +161,12 @@ public class SavingPreviewPage extends Page {
 
     @Override
     protected void configureMetaData() {
+        this.tab.setSelectedTab(TAB_PREVIEW);
     }
 
     @Override
     protected void initComponent() {
         this.tab = new AjaxTabbedPanel<>("tab", Arrays.asList(new Details(this), new Currency(this), new Terms(this), new Settings(this), new Charges(this), new Accounting(this), new Preview(this)));
-        this.tab.setSelectedTab(TAB_PREVIEW);
         add(this.tab);
     }
 

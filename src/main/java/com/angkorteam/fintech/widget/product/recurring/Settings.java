@@ -7,22 +7,22 @@ import org.apache.wicket.model.Model;
 
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 
-public class Details extends ITab {
+public class Settings extends ITab {
 
     protected Page itemPage;
 
-    public Details(Page itemPage) {
+    public Settings(Page itemPage) {
         this.itemPage = itemPage;
     }
 
     @Override
     public IModel<String> getTitle() {
-        return Model.of("1. Details");
+        return Model.of("4. Settings");
     }
 
     @Override
     public WebMarkupContainer getPanel(String containerId) {
-        return new DetailsPanel(containerId, this.itemPage);
+        return new SettingsPanel(containerId, this.itemPage);
     }
 
     @Override
