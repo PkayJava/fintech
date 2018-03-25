@@ -8,8 +8,8 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.pages.product.saving.SavingBrowsePage;
-import com.angkorteam.fintech.pages.product.saving.SavingCreatePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedDepositBrowsePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedDepositCreatePage;
 import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -76,7 +76,7 @@ public class CurrencyPanel extends Panel {
         this.backLink.setOnClick(this::backLinkClick);
         this.form.add(this.backLink);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedDepositBrowsePage.class);
         this.form.add(this.closeLink);
 
         this.currencyMultipleOfBlock = new WebMarkupBlock("currencyMultipleOfBlock", Size.Six_6);
@@ -123,7 +123,7 @@ public class CurrencyPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_TERM);
+        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_TERM);
         this.errorCurrency.setObject(false);
     }
 
@@ -132,7 +132,7 @@ public class CurrencyPanel extends Panel {
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_DETAIL);
+        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_DETAIL);
         if (target != null) {
             target.add(this.tab.getObject());
         }

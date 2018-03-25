@@ -2,8 +2,9 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <body>
 	<wicket:panel>
-		<form role="form" wicket:id="form">
-			<div class="modal-content">
+
+		<div class="modal-content">
+			<form role="form" wicket:id="form">
 				<div class="modal-body">
 					<!-- Row -->
 					<div
@@ -57,14 +58,14 @@
 					<div class="clearfix"></div>
 				</div>
 				<div class="modal-footer">
-					<button wicket:id="addButton" type="submit" class="btn btn-info">Add</button>
+					<button wicket:id="addButton" type="submit" class="btn btn-sm btn-info">Add</button>
 				</div>
-				<div class="modal-body">
-					<table wicket:id="dataTable" />
-				</div>
-
+			</form>
+			<div class="modal-body">
+				<table wicket:id="dataTable"></table>
 			</div>
-		</form>
+
+		</div>
 	</wicket:panel>
 </body>
 </html>

@@ -19,8 +19,8 @@ import com.angkorteam.fintech.dto.enums.loan.Frequency;
 import com.angkorteam.fintech.dto.enums.loan.FrequencyType;
 import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.enums.loan.InterestRecalculationCompound;
-import com.angkorteam.fintech.pages.product.saving.SavingBrowsePage;
-import com.angkorteam.fintech.pages.product.saving.SavingCreatePage;
+import com.angkorteam.fintech.pages.product.loan.LoanBrowsePage;
+import com.angkorteam.fintech.pages.product.loan.LoanCreatePage;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.ReadOnlyView;
@@ -718,7 +718,7 @@ public class PreviewPanel extends Panel {
         this.backLink.setOnClick(this::backLinkClick);
         this.form.add(this.backLink);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", LoanBrowsePage.class);
         this.form.add(this.closeLink);
 
         // Details
@@ -1666,7 +1666,7 @@ public class PreviewPanel extends Panel {
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_ACCOUNTING);
+        this.tab.getObject().setSelectedTab(LoanCreatePage.TAB_ACCOUNTING);
         if (target != null) {
             target.add(this.tab.getObject());
         }
@@ -1674,8 +1674,8 @@ public class PreviewPanel extends Panel {
     }
 
     protected void saveButtonSubmit(Button button) {
-        if (this.itemPage instanceof SavingCreatePage) {
-            ((SavingCreatePage) this.itemPage).saveButtonSubmit(button);
+        if (this.itemPage instanceof LoanCreatePage) {
+            ((LoanCreatePage) this.itemPage).saveButtonSubmit(button);
         }
     }
 

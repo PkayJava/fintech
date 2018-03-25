@@ -320,7 +320,7 @@ public class LoanCreatePage extends Page {
         this.guaranteeRequirementPlaceGuaranteeFundsOnHoldValue = false;
     }
 
-    protected void saveButtonSubmit(Button button) {
+    public void saveButtonSubmit(Button button) {
         ProductLoanBuilder builder = new ProductLoanBuilder();
 
         // Detail

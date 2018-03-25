@@ -15,8 +15,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.dto.enums.AccountingType;
-import com.angkorteam.fintech.pages.product.saving.SavingBrowsePage;
-import com.angkorteam.fintech.pages.product.saving.SavingCreatePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedDepositBrowsePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedDepositCreatePage;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.ReadOnlyView;
@@ -296,7 +296,7 @@ public class PreviewPanel extends Panel {
         this.backLink.setOnClick(this::backLinkClick);
         this.form.add(this.backLink);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedDepositBrowsePage.class);
         this.form.add(this.closeLink);
 
         this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
@@ -676,7 +676,7 @@ public class PreviewPanel extends Panel {
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_ACCOUNTING);
+        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_ACCOUNTING);
         if (target != null) {
             target.add(this.tab.getObject());
         }
@@ -684,8 +684,8 @@ public class PreviewPanel extends Panel {
     }
 
     protected void saveButtonSubmit(Button button) {
-        if (this.itemPage instanceof SavingCreatePage) {
-            ((SavingCreatePage) this.itemPage).saveButtonSubmit(button);
+        if (this.itemPage instanceof FixedDepositCreatePage) {
+            ((FixedDepositCreatePage) this.itemPage).saveButtonSubmit(button);
         }
     }
 

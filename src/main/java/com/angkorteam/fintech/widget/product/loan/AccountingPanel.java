@@ -727,7 +727,7 @@ public class AccountingPanel extends Panel {
         this.popupModel.clear();
         PropertyModel<Option> currencyCodeValue = new PropertyModel<>(this.itemPage, "currencyCodeValue");
         if (currencyCodeValue.getObject() != null) {
-            this.modalWindow.setContent(new PenaltyChargePopup("penalty", this.popupModel, ProductPopup.Saving, currencyCodeValue.getObject().getId()));
+            this.modalWindow.setContent(new PenaltyChargePopup("penalty", this.popupModel, ProductPopup.Loan, currencyCodeValue.getObject().getId()));
             this.modalWindow.show(target);
         } else {
             this.modalWindow.setContent(new CurrencyPopup("currency"));
@@ -755,7 +755,7 @@ public class AccountingPanel extends Panel {
         this.popupModel.clear();
         PropertyModel<Option> currencyCodeValue = new PropertyModel<>(this.itemPage, "currencyCodeValue");
         if (currencyCodeValue.getObject() != null) {
-            this.modalWindow.setContent(new FeeChargePopup("fee", this.popupModel, ProductPopup.Saving, currencyCodeValue.getObject().getId()));
+            this.modalWindow.setContent(new FeeChargePopup("fee", this.popupModel, ProductPopup.Loan, currencyCodeValue.getObject().getId()));
             this.modalWindow.show(target);
         } else {
             this.modalWindow.setContent(new CurrencyPopup("currency"));

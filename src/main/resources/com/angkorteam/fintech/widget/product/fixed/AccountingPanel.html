@@ -7,7 +7,150 @@
 		<form role="form" wicket:id="form">
 			<div class="box-primary">
 
-				<div class="box-body"></div>
+				<div class="box-body">
+					<span wicket:id="accountingField"> <label><input
+							wicket:id="accountingNone" type="radio"> None</label>&nbsp;&nbsp;&nbsp;
+						<label><input wicket:id="accountingCash" type="radio">
+							Cash</label>&nbsp;&nbsp;&nbsp;
+					</span>
+				</div>
+
+				<div wicket:id="cashBlock">
+					<wicket:container wicket:id="cashIContainer">
+						<div class="box-header with-border">
+							<h3 class="box-title">Assets</h3>
+						</div>
+						<div class="box-body">
+							<!-- Row -->
+							<div wicket:id="cashSavingReferenceBlock" class="form-group">
+								<wicket:container wicket:id="cashSavingReferenceIContainer">
+									<label wicket:for="cashSavingReferenceField">Saving
+										reference</label>
+									<select wicket:id="cashSavingReferenceField"
+										class="form-control"></select>
+									<span wicket:id="cashSavingReferenceFeedback"
+										class="help-block"></span>
+								</wicket:container>
+							</div>
+							<div
+								class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="box-header with-border">
+							<h3 class="box-title">Liabilities</h3>
+						</div>
+						<div class="box-body">
+							<!-- Row -->
+							<div wicket:id="cashSavingControlBlock" class="form-group">
+								<wicket:container wicket:id="cashSavingControlIContainer">
+									<label wicket:for="cashSavingControlField">Saving
+										control</label>
+									<select wicket:id="cashSavingControlField" class="form-control"></select>
+									<span wicket:id="cashSavingControlFeedback" class="help-block"></span>
+								</wicket:container>
+							</div>
+							<div wicket:id="cashSavingTransferInSuspenseBlock"
+								class="form-group">
+								<wicket:container
+									wicket:id="cashSavingTransferInSuspenseIContainer">
+									<label wicket:for="cashSavingTransferInSuspenseField">Savings
+										transfers in suspense</label>
+									<select wicket:id="cashSavingTransferInSuspenseField"
+										class="form-control"></select>
+									<span wicket:id="cashSavingTransferInSuspenseFeedback"
+										class="help-block"></span>
+								</wicket:container>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="box-header with-border">
+							<h3 class="box-title">Expenses</h3>
+						</div>
+						<div class="box-body">
+							<!-- Row -->
+							<div wicket:id="cashInterestOnSavingBlock" class="form-group">
+								<wicket:container wicket:id="cashInterestOnSavingIContainer">
+									<label wicket:for="cashInterestOnSavingField">Interest
+										on savings</label>
+									<select wicket:id="cashInterestOnSavingField"
+										class="form-control"></select>
+									<span wicket:id="cashInterestOnSavingFeedback"
+										class="help-block"></span>
+								</wicket:container>
+							</div>
+							<div
+								class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="box-header with-border">
+							<h3 class="box-title">Income</h3>
+						</div>
+						<div class="box-body">
+
+							<!-- Row -->
+							<div wicket:id="cashIncomeFromFeeBlock" class="form-group">
+								<wicket:container wicket:id="cashIncomeFromFeeIContainer">
+									<label wicket:for="cashIncomeFromFeeField">Income from
+										fees</label>
+									<select wicket:id="cashIncomeFromFeeField" class="form-control"></select>
+									<span wicket:id="cashIncomeFromFeeFeedback" class="help-block"></span>
+								</wicket:container>
+							</div>
+							<div wicket:id="cashIncomeFromPenaltyBlock" class="form-group">
+								<wicket:container wicket:id="cashIncomeFromPenaltyIContainer">
+									<label wicket:for="cashIncomeFromPenaltyField">Income
+										from penalties</label>
+									<select wicket:id="cashIncomeFromPenaltyField"
+										class="form-control"></select>
+									<span wicket:id="cashIncomeFromPenaltyFeedback"
+										class="help-block"></span>
+								</wicket:container>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</wicket:container>
+				</div>
+
+				<div wicket:id="advancedAccountingRuleBlock">
+					<wicket:container wicket:id="advancedAccountingRuleIContainer">
+						<div class="box-header with-border">
+							<h3 class="box-title">Advanced Accounting Rule</h3>
+						</div>
+						<div class="box-body">
+							<!-- Row -->
+							<div
+								class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<h4>Configure Fund Sources for Payment Channels</h4>
+								<table wicket:id="advancedAccountingRuleFundSourceTable"></table>
+								<a wicket:id="advancedAccountingRuleFundSourceAddLink"
+									class="btn btn-sm btn-default">Add</a>
+							</div>
+							<div class="clearfix"></div>
+
+							<!-- Row -->
+							<div
+								class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<h4>Map Fees to Income Accounts</h4>
+								<table wicket:id="advancedAccountingRuleFeeIncomeTable"></table>
+								<a wicket:id="advancedAccountingRuleFeeIncomeAddLink"
+									class="btn btn-sm btn-default">Add</a>
+							</div>
+							<div class="clearfix"></div>
+
+							<!-- Row -->
+							<div
+								class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<h4>Map Penalties to Specific Income Accounts</h4>
+								<table wicket:id="advancedAccountingRulePenaltyIncomeTable"></table>
+								<a wicket:id="advancedAccountingRulePenaltyIncomeAddLink"
+									class="btn btn-sm btn-default">Add</a>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</wicket:container>
+				</div>
 
 				<div class="box-footer">
 					<a wicket:id="backLink" class="btn btn-info">Back</a>

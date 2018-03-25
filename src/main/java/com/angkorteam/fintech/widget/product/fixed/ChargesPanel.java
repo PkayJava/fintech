@@ -18,7 +18,8 @@ import com.angkorteam.fintech.ddl.MCharge;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.ProductPopup;
-import com.angkorteam.fintech.pages.product.saving.SavingBrowsePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedDepositBrowsePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedDepositCreatePage;
 import com.angkorteam.fintech.pages.product.saving.SavingCreatePage;
 import com.angkorteam.fintech.popup.ChargePopup;
 import com.angkorteam.fintech.popup.CurrencyPopup;
@@ -106,7 +107,7 @@ public class ChargesPanel extends Panel {
         this.backLink.setOnClick(this::backLinkClick);
         this.form.add(this.backLink);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedDepositBrowsePage.class);
         this.form.add(this.closeLink);
 
         this.modalWindow = new ModalWindow("modalWindow");
@@ -178,7 +179,7 @@ public class ChargesPanel extends Panel {
         this.popupModel.clear();
         PropertyModel<Option> currencyCodeValue = new PropertyModel<>(this.itemPage, "currencyCodeValue");
         if (currencyCodeValue.getObject() != null) {
-            this.modalWindow.setContent(new ChargePopup("charge", this.popupModel, ProductPopup.Saving, currencyCodeValue.getObject().getId()));
+            this.modalWindow.setContent(new ChargePopup("charge", this.popupModel, ProductPopup.Fixed, currencyCodeValue.getObject().getId()));
             this.modalWindow.show(target);
         } else {
             this.modalWindow.setContent(new CurrencyPopup("currency"));
@@ -188,7 +189,7 @@ public class ChargesPanel extends Panel {
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_SETTING);
+        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_INTEREST_RATE_CHART);
         if (target != null) {
             target.add(this.tab.getObject());
         }

@@ -9,8 +9,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.dto.enums.DayInYear;
-import com.angkorteam.fintech.pages.product.saving.SavingBrowsePage;
-import com.angkorteam.fintech.pages.product.saving.SavingCreatePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedDepositBrowsePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedDepositCreatePage;
 import com.angkorteam.fintech.provider.DayInYearProvider;
 import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
 import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
@@ -39,10 +39,20 @@ public class TermsPanel extends Panel {
     protected AjaxLink<Void> backLink;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock termNominalAnnualInterestBlock;
-    protected WebMarkupContainer termNominalAnnualInterestIContainer;
-    protected TextField<Double> termNominalAnnualInterestField;
-    protected TextFeedbackPanel termNominalAnnualInterestFeedback;
+    protected WebMarkupBlock termDefaultDepositAmountBlock;
+    protected WebMarkupContainer termDefaultDepositAmountIContainer;
+    protected TextField<Double> termDefaultDepositAmountField;
+    protected TextFeedbackPanel termDefaultDepositAmountFeedback;
+
+    protected WebMarkupBlock termMinimumDepositAmountBlock;
+    protected WebMarkupContainer termMinimumDepositAmountIContainer;
+    protected TextField<Double> termMinimumDepositAmountField;
+    protected TextFeedbackPanel termMinimumDepositAmountFeedback;
+
+    protected WebMarkupBlock termMaximumDepositAmountBlock;
+    protected WebMarkupContainer termMaximumDepositAmountIContainer;
+    protected TextField<Double> termMaximumDepositAmountField;
+    protected TextFeedbackPanel termMaximumDepositAmountFeedback;
 
     protected WebMarkupBlock termInterestCompoundingPeriodBlock;
     protected WebMarkupContainer termInterestCompoundingPeriodIContainer;
@@ -50,17 +60,17 @@ public class TermsPanel extends Panel {
     protected Select2SingleChoice<Option> termInterestCompoundingPeriodField;
     protected TextFeedbackPanel termInterestCompoundingPeriodFeedback;
 
-    protected WebMarkupBlock termInterestCalculatedUsingBlock;
-    protected WebMarkupContainer termInterestCalculatedUsingIContainer;
-    protected InterestCalculatedUsingProvider termInterestCalculatedUsingProvider;
-    protected Select2SingleChoice<Option> termInterestCalculatedUsingField;
-    protected TextFeedbackPanel termInterestCalculatedUsingFeedback;
-
     protected WebMarkupBlock termInterestPostingPeriodBlock;
     protected WebMarkupContainer termInterestPostingPeriodIContainer;
     protected InterestPostingPeriodProvider termInterestPostingPeriodProvider;
     protected Select2SingleChoice<Option> termInterestPostingPeriodField;
     protected TextFeedbackPanel termInterestPostingPeriodFeedback;
+
+    protected WebMarkupBlock termInterestCalculatedUsingBlock;
+    protected WebMarkupContainer termInterestCalculatedUsingIContainer;
+    protected InterestCalculatedUsingProvider termInterestCalculatedUsingProvider;
+    protected Select2SingleChoice<Option> termInterestCalculatedUsingField;
+    protected TextFeedbackPanel termInterestCalculatedUsingFeedback;
 
     protected WebMarkupBlock termDayInYearBlock;
     protected WebMarkupContainer termDayInYearIContainer;
@@ -93,44 +103,38 @@ public class TermsPanel extends Panel {
         this.backLink.setOnClick(this::backLinkClick);
         this.form.add(this.backLink);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedDepositBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.termDayInYearBlock = new WebMarkupBlock("termDayInYearBlock", Size.Six_6);
-        this.form.add(this.termDayInYearBlock);
-        this.termDayInYearIContainer = new WebMarkupContainer("termDayInYearIContainer");
-        this.termDayInYearBlock.add(this.termDayInYearIContainer);
-        this.termDayInYearProvider = new DayInYearProvider(DayInYear.D365, DayInYear.D360);
-        this.termDayInYearField = new Select2SingleChoice<>("termDayInYearField", new PropertyModel<>(this.itemPage, "termDayInYearValue"), this.termDayInYearProvider);
-        this.termDayInYearField.setLabel(Model.of("Days in year"));
-        this.termDayInYearField.add(new OnChangeAjaxBehavior());
-        this.termDayInYearIContainer.add(this.termDayInYearField);
-        this.termDayInYearFeedback = new TextFeedbackPanel("termDayInYearFeedback", this.termDayInYearField);
-        this.termDayInYearIContainer.add(this.termDayInYearFeedback);
+        this.termDefaultDepositAmountBlock = new WebMarkupBlock("termDefaultDepositAmountBlock", Size.Four_4);
+        this.form.add(this.termDefaultDepositAmountBlock);
+        this.termDefaultDepositAmountIContainer = new WebMarkupContainer("termDefaultDepositAmountIContainer");
+        this.termDefaultDepositAmountBlock.add(this.termDefaultDepositAmountIContainer);
+        this.termDefaultDepositAmountField = new TextField<>("termDefaultDepositAmountField", new PropertyModel<>(this.itemPage, "termDefaultDepositAmountValue"));
+        this.termDefaultDepositAmountField.setLabel(Model.of("Default Deposit Amount"));
+        this.termDefaultDepositAmountIContainer.add(this.termDefaultDepositAmountField);
+        this.termDefaultDepositAmountFeedback = new TextFeedbackPanel("termDefaultDepositAmountFeedback", this.termDefaultDepositAmountField);
+        this.termDefaultDepositAmountIContainer.add(this.termDefaultDepositAmountFeedback);
 
-        this.termInterestPostingPeriodBlock = new WebMarkupBlock("termInterestPostingPeriodBlock", Size.Six_6);
-        this.form.add(this.termInterestPostingPeriodBlock);
-        this.termInterestPostingPeriodIContainer = new WebMarkupContainer("termInterestPostingPeriodIContainer");
-        this.termInterestPostingPeriodBlock.add(this.termInterestPostingPeriodIContainer);
-        this.termInterestPostingPeriodProvider = new InterestPostingPeriodProvider();
-        this.termInterestPostingPeriodField = new Select2SingleChoice<>("termInterestPostingPeriodField", new PropertyModel<>(this.itemPage, "termInterestPostingPeriodValue"), this.termInterestPostingPeriodProvider);
-        this.termInterestPostingPeriodField.setLabel(Model.of("Interest calculated using"));
-        this.termInterestPostingPeriodField.add(new OnChangeAjaxBehavior());
-        this.termInterestPostingPeriodIContainer.add(this.termInterestPostingPeriodField);
-        this.termInterestPostingPeriodFeedback = new TextFeedbackPanel("termInterestPostingPeriodFeedback", this.termInterestPostingPeriodField);
-        this.termInterestPostingPeriodIContainer.add(this.termInterestPostingPeriodFeedback);
+        this.termMinimumDepositAmountBlock = new WebMarkupBlock("termMinimumDepositAmountBlock", Size.Four_4);
+        this.form.add(this.termMinimumDepositAmountBlock);
+        this.termMinimumDepositAmountIContainer = new WebMarkupContainer("termMinimumDepositAmountIContainer");
+        this.termMinimumDepositAmountBlock.add(this.termMinimumDepositAmountIContainer);
+        this.termMinimumDepositAmountField = new TextField<>("termMinimumDepositAmountField", new PropertyModel<>(this.itemPage, "termMinimumDepositAmountValue"));
+        this.termMinimumDepositAmountField.setLabel(Model.of("Minimum Deposit Amount"));
+        this.termMinimumDepositAmountIContainer.add(this.termMinimumDepositAmountField);
+        this.termMinimumDepositAmountFeedback = new TextFeedbackPanel("termMinimumDepositAmountFeedback", this.termMinimumDepositAmountField);
+        this.termMinimumDepositAmountIContainer.add(this.termMinimumDepositAmountFeedback);
 
-        this.termInterestCalculatedUsingBlock = new WebMarkupBlock("termInterestCalculatedUsingBlock", Size.Six_6);
-        this.form.add(this.termInterestCalculatedUsingBlock);
-        this.termInterestCalculatedUsingIContainer = new WebMarkupContainer("termInterestCalculatedUsingIContainer");
-        this.termInterestCalculatedUsingBlock.add(this.termInterestCalculatedUsingIContainer);
-        this.termInterestCalculatedUsingProvider = new InterestCalculatedUsingProvider();
-        this.termInterestCalculatedUsingField = new Select2SingleChoice<>("termInterestCalculatedUsingField", new PropertyModel<>(this.itemPage, "termInterestCalculatedUsingValue"), this.termInterestCalculatedUsingProvider);
-        this.termInterestCalculatedUsingField.setLabel(Model.of("Interest posting period"));
-        this.termInterestCalculatedUsingField.add(new OnChangeAjaxBehavior());
-        this.termInterestCalculatedUsingIContainer.add(this.termInterestCalculatedUsingField);
-        this.termInterestCalculatedUsingFeedback = new TextFeedbackPanel("termInterestCalculatedUsingFeedback", this.termInterestCalculatedUsingField);
-        this.termInterestCalculatedUsingIContainer.add(this.termInterestCalculatedUsingFeedback);
+        this.termMaximumDepositAmountBlock = new WebMarkupBlock("termMaximumDepositAmountBlock", Size.Four_4);
+        this.form.add(this.termMaximumDepositAmountBlock);
+        this.termMaximumDepositAmountIContainer = new WebMarkupContainer("termMaximumDepositAmountIContainer");
+        this.termMaximumDepositAmountBlock.add(this.termMaximumDepositAmountIContainer);
+        this.termMaximumDepositAmountField = new TextField<>("termMaximumDepositAmountField", new PropertyModel<>(this.itemPage, "termMaximumDepositAmountValue"));
+        this.termMaximumDepositAmountField.setLabel(Model.of("Maximum Deposit Amount"));
+        this.termMaximumDepositAmountIContainer.add(this.termMaximumDepositAmountField);
+        this.termMaximumDepositAmountFeedback = new TextFeedbackPanel("termMaximumDepositAmountFeedback", this.termMaximumDepositAmountField);
+        this.termMaximumDepositAmountIContainer.add(this.termMaximumDepositAmountFeedback);
 
         this.termInterestCompoundingPeriodBlock = new WebMarkupBlock("termInterestCompoundingPeriodBlock", Size.Six_6);
         this.form.add(this.termInterestCompoundingPeriodBlock);
@@ -144,20 +148,46 @@ public class TermsPanel extends Panel {
         this.termInterestCompoundingPeriodFeedback = new TextFeedbackPanel("termInterestCompoundingPeriodFeedback", this.termInterestCompoundingPeriodField);
         this.termInterestCompoundingPeriodIContainer.add(this.termInterestCompoundingPeriodFeedback);
 
-        this.termNominalAnnualInterestBlock = new WebMarkupBlock("termNominalAnnualInterestBlock", Size.Six_6);
-        this.form.add(this.termNominalAnnualInterestBlock);
-        this.termNominalAnnualInterestIContainer = new WebMarkupContainer("termNominalAnnualInterestIContainer");
-        this.termNominalAnnualInterestBlock.add(this.termNominalAnnualInterestIContainer);
-        this.termNominalAnnualInterestField = new TextField<>("termNominalAnnualInterestField", new PropertyModel<>(this.itemPage, "termNominalAnnualInterestValue"));
-        this.termNominalAnnualInterestField.setLabel(Model.of("Nominal annual interest"));
-        this.termNominalAnnualInterestField.add(new OnChangeAjaxBehavior());
-        this.termNominalAnnualInterestIContainer.add(this.termNominalAnnualInterestField);
-        this.termNominalAnnualInterestFeedback = new TextFeedbackPanel("termNominalAnnualInterestFeedback", this.termNominalAnnualInterestField);
-        this.termNominalAnnualInterestIContainer.add(this.termNominalAnnualInterestFeedback);
+        this.termInterestPostingPeriodBlock = new WebMarkupBlock("termInterestPostingPeriodBlock", Size.Six_6);
+        this.form.add(this.termInterestPostingPeriodBlock);
+        this.termInterestPostingPeriodIContainer = new WebMarkupContainer("termInterestPostingPeriodIContainer");
+        this.termInterestPostingPeriodBlock.add(this.termInterestPostingPeriodIContainer);
+        this.termInterestPostingPeriodProvider = new InterestPostingPeriodProvider();
+        this.termInterestPostingPeriodField = new Select2SingleChoice<>("termInterestPostingPeriodField", new PropertyModel<>(this.itemPage, "termInterestPostingPeriodValue"), this.termInterestPostingPeriodProvider);
+        this.termInterestPostingPeriodField.setLabel(Model.of("Interest posting period"));
+        this.termInterestPostingPeriodField.add(new OnChangeAjaxBehavior());
+        this.termInterestPostingPeriodIContainer.add(this.termInterestPostingPeriodField);
+        this.termInterestPostingPeriodFeedback = new TextFeedbackPanel("termInterestPostingPeriodFeedback", this.termInterestPostingPeriodField);
+        this.termInterestPostingPeriodIContainer.add(this.termInterestPostingPeriodFeedback);
+
+        this.termInterestCalculatedUsingBlock = new WebMarkupBlock("termInterestCalculatedUsingBlock", Size.Six_6);
+        this.form.add(this.termInterestCalculatedUsingBlock);
+        this.termInterestCalculatedUsingIContainer = new WebMarkupContainer("termInterestCalculatedUsingIContainer");
+        this.termInterestCalculatedUsingBlock.add(this.termInterestCalculatedUsingIContainer);
+        this.termInterestCalculatedUsingProvider = new InterestCalculatedUsingProvider();
+        this.termInterestCalculatedUsingField = new Select2SingleChoice<>("termInterestCalculatedUsingField", new PropertyModel<>(this.itemPage, "termInterestCalculatedUsingValue"), this.termInterestCalculatedUsingProvider);
+        this.termInterestCalculatedUsingField.setLabel(Model.of("Interest calculated using"));
+        this.termInterestCalculatedUsingField.add(new OnChangeAjaxBehavior());
+        this.termInterestCalculatedUsingIContainer.add(this.termInterestCalculatedUsingField);
+        this.termInterestCalculatedUsingFeedback = new TextFeedbackPanel("termInterestCalculatedUsingFeedback", this.termInterestCalculatedUsingField);
+        this.termInterestCalculatedUsingIContainer.add(this.termInterestCalculatedUsingFeedback);
+
+        this.termDayInYearBlock = new WebMarkupBlock("termDayInYearBlock", Size.Six_6);
+        this.form.add(this.termDayInYearBlock);
+        this.termDayInYearIContainer = new WebMarkupContainer("termDayInYearIContainer");
+        this.termDayInYearBlock.add(this.termDayInYearIContainer);
+        this.termDayInYearProvider = new DayInYearProvider(DayInYear.D365, DayInYear.D360);
+        this.termDayInYearField = new Select2SingleChoice<>("termDayInYearField", new PropertyModel<>(this.itemPage, "termDayInYearValue"), this.termDayInYearProvider);
+        this.termDayInYearField.setLabel(Model.of("Days in year"));
+        this.termDayInYearField.add(new OnChangeAjaxBehavior());
+        this.termDayInYearIContainer.add(this.termDayInYearField);
+        this.termDayInYearFeedback = new TextFeedbackPanel("termDayInYearFeedback", this.termDayInYearField);
+        this.termDayInYearIContainer.add(this.termDayInYearFeedback);
+
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_SETTING);
+        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_SETTING);
         this.errorTerm.setObject(false);
     }
 
@@ -166,7 +196,7 @@ public class TermsPanel extends Panel {
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_CURRENCY);
+        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_CURRENCY);
         if (target != null) {
             target.add(this.tab.getObject());
         }
@@ -175,11 +205,11 @@ public class TermsPanel extends Panel {
 
     @Override
     protected void configureMetaData() {
-        this.termNominalAnnualInterestField.setRequired(true);
         this.termInterestCompoundingPeriodField.setRequired(true);
+        this.termInterestPostingPeriodField.setRequired(true);
         this.termInterestCalculatedUsingField.setRequired(true);
         this.termDayInYearField.setRequired(true);
-        this.termInterestPostingPeriodField.setRequired(true);
+        this.termDefaultDepositAmountField.setRequired(true);
     }
 
 }

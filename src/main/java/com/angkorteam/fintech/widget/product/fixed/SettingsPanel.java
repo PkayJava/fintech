@@ -10,8 +10,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.ddl.MTaxGroup;
-import com.angkorteam.fintech.pages.product.saving.SavingBrowsePage;
-import com.angkorteam.fintech.pages.product.saving.SavingCreatePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedDepositBrowsePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedDepositCreatePage;
+import com.angkorteam.fintech.provider.ApplyPenalOnProvider;
 import com.angkorteam.fintech.provider.LockInTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.widget.Panel;
@@ -38,11 +39,6 @@ public class SettingsPanel extends Panel {
     protected AjaxLink<Void> backLink;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock settingMinimumOpeningBalanceBlock;
-    protected WebMarkupContainer settingMinimumOpeningBalanceIContainer;
-    protected TextField<Double> settingMinimumOpeningBalanceField;
-    protected TextFeedbackPanel settingMinimumOpeningBalanceFeedback;
-
     protected WebMarkupBlock settingLockInPeriodBlock;
     protected WebMarkupContainer settingLockInPeriodIContainer;
     protected TextField<Long> settingLockInPeriodField;
@@ -54,45 +50,54 @@ public class SettingsPanel extends Panel {
     protected Select2SingleChoice<Option> settingLockInTypeField;
     protected TextFeedbackPanel settingLockInTypeFeedback;
 
-    protected WebMarkupBlock settingApplyWithdrawalFeeForTransferBlock;
-    protected WebMarkupContainer settingApplyWithdrawalFeeForTransferIContainer;
-    protected CheckBox settingApplyWithdrawalFeeForTransferField;
-    protected TextFeedbackPanel settingApplyWithdrawalFeeForTransferFeedback;
+    protected WebMarkupBlock settingMinimumDepositTermBlock;
+    protected WebMarkupContainer settingMinimumDepositTermIContainer;
+    protected TextField<Long> settingMinimumDepositTermField;
+    protected TextFeedbackPanel settingMinimumDepositTermFeedback;
 
-    protected WebMarkupBlock settingBalanceRequiredForInterestCalculationBlock;
-    protected WebMarkupContainer settingBalanceRequiredForInterestCalculationIContainer;
-    protected TextField<Double> settingBalanceRequiredForInterestCalculationField;
-    protected TextFeedbackPanel settingBalanceRequiredForInterestCalculationFeedback;
+    protected WebMarkupBlock settingMinimumDepositTypeBlock;
+    protected WebMarkupContainer settingMinimumDepositTypeIContainer;
+    protected LockInTypeProvider settingMinimumDepositTypeProvider;
+    protected Select2SingleChoice<Option> settingMinimumDepositTypeField;
+    protected TextFeedbackPanel settingMinimumDepositTypeFeedback;
 
-    protected WebMarkupBlock settingEnforceMinimumBalanceBlock;
-    protected WebMarkupContainer settingEnforceMinimumBalanceIContainer;
-    protected CheckBox settingEnforceMinimumBalanceField;
-    protected TextFeedbackPanel settingEnforceMinimumBalanceFeedback;
+    protected WebMarkupBlock settingInMultiplesOfBlock;
+    protected WebMarkupContainer settingInMultiplesOfIContainer;
+    protected TextField<Long> settingInMultiplesOfField;
+    protected TextFeedbackPanel settingInMultiplesOfFeedback;
 
-    protected WebMarkupBlock settingMinimumBalanceBlock;
-    protected WebMarkupContainer settingMinimumBalanceIContainer;
-    protected TextField<Double> settingMinimumBalanceField;
-    protected TextFeedbackPanel settingMinimumBalanceFeedback;
+    protected WebMarkupBlock settingInMultiplesTypeBlock;
+    protected WebMarkupContainer settingInMultiplesTypeIContainer;
+    protected LockInTypeProvider settingInMultiplesTypeProvider;
+    protected Select2SingleChoice<Option> settingInMultiplesTypeField;
+    protected TextFeedbackPanel settingInMultiplesTypeFeedback;
 
-    protected WebMarkupBlock settingOverdraftAllowedBlock;
-    protected WebMarkupContainer settingOverdraftAllowedIContainer;
-    protected CheckBox settingOverdraftAllowedField;
-    protected TextFeedbackPanel settingOverdraftAllowedFeedback;
+    protected WebMarkupBlock settingMaximumDepositTermBlock;
+    protected WebMarkupContainer settingMaximumDepositTermIContainer;
+    protected TextField<Long> settingMaximumDepositTermField;
+    protected TextFeedbackPanel settingMaximumDepositTermFeedback;
 
-    protected WebMarkupBlock settingMaximumOverdraftAmountLimitBlock;
-    protected WebMarkupContainer settingMaximumOverdraftAmountLimitIContainer;
-    protected TextField<Double> settingMaximumOverdraftAmountLimitField;
-    protected TextFeedbackPanel settingMaximumOverdraftAmountLimitFeedback;
+    protected WebMarkupBlock settingMaximumDepositTypeBlock;
+    protected WebMarkupContainer settingMaximumDepositTypeIContainer;
+    protected LockInTypeProvider settingMaximumDepositTypeProvider;
+    protected Select2SingleChoice<Option> settingMaximumDepositTypeField;
+    protected TextFeedbackPanel settingMaximumDepositTypeFeedback;
 
-    protected WebMarkupBlock settingNominalAnnualInterestForOverdraftBlock;
-    protected WebMarkupContainer settingNominalAnnualInterestForOverdraftIContainer;
-    protected TextField<Double> settingNominalAnnualInterestForOverdraftField;
-    protected TextFeedbackPanel settingNominalAnnualInterestForOverdraftFeedback;
+    protected WebMarkupBlock settingForPreMatureClosureBlock;
+    protected WebMarkupContainer settingForPreMatureClosureIContainer;
+    protected CheckBox settingForPreMatureClosureField;
+    protected TextFeedbackPanel settingForPreMatureClosureFeedback;
 
-    protected WebMarkupBlock settingMinOverdraftRequiredForInterestCalculationBlock;
-    protected WebMarkupContainer settingMinOverdraftRequiredForInterestCalculationIContainer;
-    protected TextField<Double> settingMinOverdraftRequiredForInterestCalculationField;
-    protected TextFeedbackPanel settingMinOverdraftRequiredForInterestCalculationFeedback;
+    protected WebMarkupBlock settingApplyPenalInterestBlock;
+    protected WebMarkupContainer settingApplyPenalInterestIContainer;
+    protected TextField<Double> settingApplyPenalInterestField;
+    protected TextFeedbackPanel settingApplyPenalInterestFeedback;
+
+    protected WebMarkupBlock settingApplyPenalOnBlock;
+    protected WebMarkupContainer settingApplyPenalOnIContainer;
+    protected ApplyPenalOnProvider settingApplyPenalOnProvider;
+    protected Select2SingleChoice<Option> settingApplyPenalOnField;
+    protected TextFeedbackPanel settingApplyPenalOnFeedback;
 
     protected WebMarkupBlock settingWithholdTaxApplicableBlock;
     protected WebMarkupContainer settingWithholdTaxApplicableIContainer;
@@ -104,26 +109,6 @@ public class SettingsPanel extends Panel {
     protected SingleChoiceProvider settingTaxGroupProvider;
     protected Select2SingleChoice<Option> settingTaxGroupField;
     protected TextFeedbackPanel settingTaxGroupFeedback;
-
-    protected WebMarkupBlock settingEnableDormancyTrackingBlock;
-    protected WebMarkupContainer settingEnableDormancyTrackingIContainer;
-    protected CheckBox settingEnableDormancyTrackingField;
-    protected TextFeedbackPanel settingEnableDormancyTrackingFeedback;
-
-    protected WebMarkupBlock settingNumberOfDaysToInactiveSubStatusBlock;
-    protected WebMarkupContainer settingNumberOfDaysToInactiveSubStatusIContainer;
-    protected TextField<Long> settingNumberOfDaysToInactiveSubStatusField;
-    protected TextFeedbackPanel settingNumberOfDaysToInactiveSubStatusFeedback;
-
-    protected WebMarkupBlock settingNumberOfDaysToDormantSubStatusBlock;
-    protected WebMarkupContainer settingNumberOfDaysToDormantSubStatusIContainer;
-    protected TextField<Long> settingNumberOfDaysToDormantSubStatusField;
-    protected TextFeedbackPanel settingNumberOfDaysToDormantSubStatusFeedback;
-
-    protected WebMarkupBlock settingNumberOfDaysToEscheatBlock;
-    protected WebMarkupContainer settingNumberOfDaysToEscheatIContainer;
-    protected TextField<Long> settingNumberOfDaysToEscheatField;
-    protected TextFeedbackPanel settingNumberOfDaysToEscheatFeedback;
 
     public SettingsPanel(String id, Page itemPage) {
         super(id);
@@ -150,51 +135,139 @@ public class SettingsPanel extends Panel {
         this.backLink.setOnClick(this::backLinkClick);
         this.form.add(this.backLink);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedDepositBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.settingNumberOfDaysToEscheatBlock = new WebMarkupBlock("settingNumberOfDaysToEscheatBlock", Size.Six_6);
-        this.form.add(this.settingNumberOfDaysToEscheatBlock);
-        this.settingNumberOfDaysToEscheatIContainer = new WebMarkupContainer("settingNumberOfDaysToEscheatIContainer");
-        this.settingNumberOfDaysToEscheatBlock.add(this.settingNumberOfDaysToEscheatIContainer);
-        this.settingNumberOfDaysToEscheatField = new TextField<>("settingNumberOfDaysToEscheatField", new PropertyModel<>(this.itemPage, "settingNumberOfDaysToEscheatValue"));
-        this.settingNumberOfDaysToEscheatField.setLabel(Model.of("Number of Days to Escheat"));
-        this.settingNumberOfDaysToEscheatField.add(new OnChangeAjaxBehavior());
-        this.settingNumberOfDaysToEscheatIContainer.add(this.settingNumberOfDaysToEscheatField);
-        this.settingNumberOfDaysToEscheatFeedback = new TextFeedbackPanel("settingNumberOfDaysToEscheatFeedback", this.settingNumberOfDaysToEscheatField);
-        this.settingNumberOfDaysToEscheatIContainer.add(this.settingNumberOfDaysToEscheatFeedback);
+        this.settingLockInPeriodBlock = new WebMarkupBlock("settingLockInPeriodBlock", Size.Three_3);
+        this.form.add(this.settingLockInPeriodBlock);
+        this.settingLockInPeriodIContainer = new WebMarkupContainer("settingLockInPeriodIContainer");
+        this.settingLockInPeriodBlock.add(this.settingLockInPeriodIContainer);
+        this.settingLockInPeriodField = new TextField<>("settingLockInPeriodField", new PropertyModel<>(this.itemPage, "settingLockInPeriodValue"));
+        this.settingLockInPeriodField.setLabel(Model.of("Lock-in period"));
+        this.settingLockInPeriodIContainer.add(this.settingLockInPeriodField);
+        this.settingLockInPeriodFeedback = new TextFeedbackPanel("settingLockInPeriodFeedback", this.settingLockInPeriodField);
+        this.settingLockInPeriodIContainer.add(this.settingLockInPeriodFeedback);
 
-        this.settingNumberOfDaysToDormantSubStatusBlock = new WebMarkupBlock("settingNumberOfDaysToDormantSubStatusBlock", Size.Six_6);
-        this.form.add(this.settingNumberOfDaysToDormantSubStatusBlock);
-        this.settingNumberOfDaysToDormantSubStatusIContainer = new WebMarkupContainer("settingNumberOfDaysToDormantSubStatusIContainer");
-        this.settingNumberOfDaysToDormantSubStatusBlock.add(this.settingNumberOfDaysToDormantSubStatusIContainer);
-        this.settingNumberOfDaysToDormantSubStatusField = new TextField<>("settingNumberOfDaysToDormantSubStatusField", new PropertyModel<>(this.itemPage, "settingNumberOfDaysToDormantSubStatusValue"));
-        this.settingNumberOfDaysToDormantSubStatusField.setLabel(Model.of("Number of Days to Dormant sub-status"));
-        this.settingNumberOfDaysToDormantSubStatusField.add(new OnChangeAjaxBehavior());
-        this.settingNumberOfDaysToDormantSubStatusIContainer.add(this.settingNumberOfDaysToDormantSubStatusField);
-        this.settingNumberOfDaysToDormantSubStatusFeedback = new TextFeedbackPanel("settingNumberOfDaysToDormantSubStatusFeedback", this.settingNumberOfDaysToDormantSubStatusField);
-        this.settingNumberOfDaysToDormantSubStatusIContainer.add(this.settingNumberOfDaysToDormantSubStatusFeedback);
+        this.settingLockInTypeBlock = new WebMarkupBlock("settingLockInTypeBlock", Size.Three_3);
+        this.form.add(this.settingLockInTypeBlock);
+        this.settingLockInTypeIContainer = new WebMarkupContainer("settingLockInTypeIContainer");
+        this.settingLockInTypeBlock.add(this.settingLockInTypeIContainer);
+        this.settingLockInTypeProvider = new LockInTypeProvider();
+        this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", new PropertyModel<>(this.itemPage, "settingLockInTypeValue"), this.settingLockInTypeProvider);
+        this.settingLockInTypeField.setLabel(Model.of("Type"));
+        this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
+        this.settingLockInTypeIContainer.add(this.settingLockInTypeField);
+        this.settingLockInTypeFeedback = new TextFeedbackPanel("settingLockInTypeFeedback", this.settingLockInTypeField);
+        this.settingLockInTypeIContainer.add(this.settingLockInTypeFeedback);
 
-        this.settingNumberOfDaysToInactiveSubStatusBlock = new WebMarkupBlock("settingNumberOfDaysToInactiveSubStatusBlock", Size.Six_6);
-        this.form.add(this.settingNumberOfDaysToInactiveSubStatusBlock);
-        this.settingNumberOfDaysToInactiveSubStatusIContainer = new WebMarkupContainer("settingNumberOfDaysToInactiveSubStatusIContainer");
-        this.settingNumberOfDaysToInactiveSubStatusBlock.add(this.settingNumberOfDaysToInactiveSubStatusIContainer);
-        this.settingNumberOfDaysToInactiveSubStatusField = new TextField<>("settingNumberOfDaysToInactiveSubStatusField", new PropertyModel<>(this.itemPage, "settingNumberOfDaysToInactiveSubStatusValue"));
-        this.settingNumberOfDaysToInactiveSubStatusField.setLabel(Model.of("Number of Days to Inactive sub-status"));
-        this.settingNumberOfDaysToInactiveSubStatusField.add(new OnChangeAjaxBehavior());
-        this.settingNumberOfDaysToInactiveSubStatusIContainer.add(this.settingNumberOfDaysToInactiveSubStatusField);
-        this.settingNumberOfDaysToInactiveSubStatusFeedback = new TextFeedbackPanel("settingNumberOfDaysToInactiveSubStatusFeedback", this.settingNumberOfDaysToInactiveSubStatusField);
-        this.settingNumberOfDaysToInactiveSubStatusIContainer.add(this.settingNumberOfDaysToInactiveSubStatusFeedback);
+        this.settingMinimumDepositTermBlock = new WebMarkupBlock("settingMinimumDepositTermBlock", Size.Three_3);
+        this.form.add(this.settingMinimumDepositTermBlock);
+        this.settingMinimumDepositTermIContainer = new WebMarkupContainer("settingMinimumDepositTermIContainer");
+        this.settingMinimumDepositTermBlock.add(this.settingMinimumDepositTermIContainer);
+        this.settingMinimumDepositTermField = new TextField<>("settingMinimumDepositTermField", new PropertyModel<>(this.itemPage, "settingMinimumDepositTermValue"));
+        this.settingMinimumDepositTermField.setLabel(Model.of("Minimum Deposit Term"));
 
-        this.settingEnableDormancyTrackingBlock = new WebMarkupBlock("settingEnableDormancyTrackingBlock", Size.Six_6);
-        this.form.add(this.settingEnableDormancyTrackingBlock);
-        this.settingEnableDormancyTrackingIContainer = new WebMarkupContainer("settingEnableDormancyTrackingIContainer");
-        this.settingEnableDormancyTrackingBlock.add(this.settingEnableDormancyTrackingIContainer);
-        this.settingEnableDormancyTrackingField = new CheckBox("settingEnableDormancyTrackingField", new PropertyModel<>(this.itemPage, "settingEnableDormancyTrackingValue"));
-        this.settingEnableDormancyTrackingField.add(new OnChangeAjaxBehavior(this::settingEnableDormancyTrackingFieldUpdate));
-        this.settingEnableDormancyTrackingIContainer.add(this.settingEnableDormancyTrackingField);
-        this.settingEnableDormancyTrackingFeedback = new TextFeedbackPanel("settingEnableDormancyTrackingFeedback", this.settingEnableDormancyTrackingField);
-        this.settingEnableDormancyTrackingIContainer.add(this.settingEnableDormancyTrackingFeedback);
+        this.settingMinimumDepositTermIContainer.add(this.settingMinimumDepositTermField);
+        this.settingMinimumDepositTermFeedback = new TextFeedbackPanel("settingMinimumDepositTermFeedback", this.settingMinimumDepositTermField);
+        this.settingMinimumDepositTermIContainer.add(this.settingMinimumDepositTermFeedback);
+
+        this.settingMinimumDepositTypeBlock = new WebMarkupBlock("settingMinimumDepositTypeBlock", Size.Three_3);
+        this.form.add(this.settingMinimumDepositTypeBlock);
+        this.settingMinimumDepositTypeIContainer = new WebMarkupContainer("settingMinimumDepositTypeIContainer");
+        this.settingMinimumDepositTypeBlock.add(this.settingMinimumDepositTypeIContainer);
+        this.settingMinimumDepositTypeProvider = new LockInTypeProvider();
+        this.settingMinimumDepositTypeField = new Select2SingleChoice<>("settingMinimumDepositTypeField", new PropertyModel<>(this.itemPage, "settingMinimumDepositTypeValue"), this.settingMinimumDepositTypeProvider);
+        this.settingMinimumDepositTypeField.setLabel(Model.of("Type"));
+        this.settingMinimumDepositTypeField.add(new OnChangeAjaxBehavior());
+        this.settingMinimumDepositTypeIContainer.add(this.settingMinimumDepositTypeField);
+        this.settingMinimumDepositTypeFeedback = new TextFeedbackPanel("settingMinimumDepositTypeFeedback", this.settingMinimumDepositTypeField);
+        this.settingMinimumDepositTypeIContainer.add(this.settingMinimumDepositTypeFeedback);
+
+        this.settingInMultiplesOfBlock = new WebMarkupBlock("settingInMultiplesOfBlock", Size.Three_3);
+        this.form.add(this.settingInMultiplesOfBlock);
+        this.settingInMultiplesOfIContainer = new WebMarkupContainer("settingInMultiplesOfIContainer");
+        this.settingInMultiplesOfBlock.add(this.settingInMultiplesOfIContainer);
+        this.settingInMultiplesOfField = new TextField<>("settingInMultiplesOfField", new PropertyModel<>(this.itemPage, "settingInMultiplesOfValue"));
+        this.settingInMultiplesOfField.setLabel(Model.of("And thereafter, In Multiples of"));
+        this.settingInMultiplesOfIContainer.add(this.settingInMultiplesOfField);
+        this.settingInMultiplesOfFeedback = new TextFeedbackPanel("settingInMultiplesOfFeedback", this.settingInMultiplesOfField);
+        this.settingInMultiplesOfIContainer.add(this.settingInMultiplesOfFeedback);
+
+        this.settingInMultiplesTypeBlock = new WebMarkupBlock("settingInMultiplesTypeBlock", Size.Three_3);
+        this.form.add(this.settingInMultiplesTypeBlock);
+        this.settingInMultiplesTypeIContainer = new WebMarkupContainer("settingInMultiplesTypeIContainer");
+        this.settingInMultiplesTypeBlock.add(this.settingInMultiplesTypeIContainer);
+        this.settingInMultiplesTypeProvider = new LockInTypeProvider();
+        this.settingInMultiplesTypeField = new Select2SingleChoice<>("settingInMultiplesTypeField", new PropertyModel<>(this.itemPage, "settingInMultiplesTypeValue"), this.settingInMultiplesTypeProvider);
+        this.settingInMultiplesTypeField.setLabel(Model.of("Type"));
+        this.settingInMultiplesTypeField.add(new OnChangeAjaxBehavior());
+        this.settingInMultiplesTypeIContainer.add(this.settingInMultiplesTypeField);
+        this.settingInMultiplesTypeFeedback = new TextFeedbackPanel("settingInMultiplesTypeFeedback", this.settingInMultiplesTypeField);
+        this.settingInMultiplesTypeIContainer.add(this.settingInMultiplesTypeFeedback);
+
+        this.settingMaximumDepositTermBlock = new WebMarkupBlock("settingMaximumDepositTermBlock", Size.Three_3);
+        this.form.add(this.settingMaximumDepositTermBlock);
+        this.settingMaximumDepositTermIContainer = new WebMarkupContainer("settingMaximumDepositTermIContainer");
+        this.settingMaximumDepositTermBlock.add(this.settingMaximumDepositTermIContainer);
+        this.settingMaximumDepositTermField = new TextField<>("settingMaximumDepositTermField", new PropertyModel<>(this.itemPage, "settingMaximumDepositTermValue"));
+        this.settingMaximumDepositTermField.setLabel(Model.of("Maximum Deposit Term"));
+        this.settingMaximumDepositTermIContainer.add(this.settingMaximumDepositTermField);
+        this.settingMaximumDepositTermFeedback = new TextFeedbackPanel("settingMaximumDepositTermFeedback", this.settingMaximumDepositTermField);
+        this.settingMaximumDepositTermIContainer.add(this.settingMaximumDepositTermFeedback);
+
+        this.settingMaximumDepositTypeBlock = new WebMarkupBlock("settingMaximumDepositTypeBlock", Size.Three_3);
+        this.form.add(this.settingMaximumDepositTypeBlock);
+        this.settingMaximumDepositTypeIContainer = new WebMarkupContainer("settingMaximumDepositTypeIContainer");
+        this.settingMaximumDepositTypeBlock.add(this.settingMaximumDepositTypeIContainer);
+        this.settingMaximumDepositTypeProvider = new LockInTypeProvider();
+        this.settingMaximumDepositTypeField = new Select2SingleChoice<>("settingMaximumDepositTypeField", new PropertyModel<>(this.itemPage, "settingMaximumDepositTypeValue"), this.settingMaximumDepositTypeProvider);
+        this.settingMaximumDepositTypeField.setLabel(Model.of("Type"));
+        this.settingMaximumDepositTypeField.add(new OnChangeAjaxBehavior());
+        this.settingMaximumDepositTypeIContainer.add(this.settingMaximumDepositTypeField);
+        this.settingMaximumDepositTypeFeedback = new TextFeedbackPanel("settingMaximumDepositTypeFeedback", this.settingMaximumDepositTypeField);
+        this.settingMaximumDepositTypeIContainer.add(this.settingMaximumDepositTypeFeedback);
+
+        this.settingForPreMatureClosureBlock = new WebMarkupBlock("settingForPreMatureClosureBlock", Size.Three_3);
+        this.form.add(this.settingForPreMatureClosureBlock);
+        this.settingForPreMatureClosureIContainer = new WebMarkupContainer("settingForPreMatureClosureIContainer");
+        this.settingForPreMatureClosureBlock.add(this.settingForPreMatureClosureIContainer);
+        this.settingForPreMatureClosureField = new CheckBox("settingForPreMatureClosureField", new PropertyModel<>(this.itemPage, "settingForPreMatureClosureValue"));
+        this.settingForPreMatureClosureField.add(new OnChangeAjaxBehavior());
+        this.settingForPreMatureClosureIContainer.add(this.settingForPreMatureClosureField);
+        this.settingForPreMatureClosureFeedback = new TextFeedbackPanel("settingForPreMatureClosureFeedback", this.settingForPreMatureClosureField);
+        this.settingForPreMatureClosureIContainer.add(this.settingForPreMatureClosureFeedback);
+
+        this.settingApplyPenalInterestBlock = new WebMarkupBlock("settingApplyPenalInterestBlock", Size.Three_3);
+        this.form.add(this.settingApplyPenalInterestBlock);
+        this.settingApplyPenalInterestIContainer = new WebMarkupContainer("settingApplyPenalInterestIContainer");
+        this.settingApplyPenalInterestBlock.add(this.settingApplyPenalInterestIContainer);
+        this.settingApplyPenalInterestField = new TextField<>("settingApplyPenalInterestField", new PropertyModel<>(this.itemPage, "settingApplyPenalInterestValue"));
+        this.settingApplyPenalInterestField.setLabel(Model.of("Apply penal interest"));
+        this.settingApplyPenalInterestIContainer.add(this.settingApplyPenalInterestField);
+        this.settingApplyPenalInterestFeedback = new TextFeedbackPanel("settingApplyPenalInterestFeedback", this.settingApplyPenalInterestField);
+        this.settingApplyPenalInterestIContainer.add(this.settingApplyPenalInterestFeedback);
+
+        this.settingApplyPenalOnBlock = new WebMarkupBlock("settingApplyPenalOnBlock", Size.Three_3);
+        this.form.add(this.settingApplyPenalOnBlock);
+        this.settingApplyPenalOnIContainer = new WebMarkupContainer("settingApplyPenalOnIContainer");
+        this.settingApplyPenalOnBlock.add(this.settingApplyPenalOnIContainer);
+        this.settingApplyPenalOnProvider = new ApplyPenalOnProvider();
+        this.settingApplyPenalOnField = new Select2SingleChoice<>("settingApplyPenalOnField", new PropertyModel<>(this.itemPage, "settingApplyPenalOnValue"), this.settingApplyPenalOnProvider);
+        this.settingApplyPenalOnField.setLabel(Model.of("On"));
+        this.settingApplyPenalOnField.add(new OnChangeAjaxBehavior());
+        this.settingApplyPenalOnIContainer.add(this.settingApplyPenalOnField);
+        this.settingApplyPenalOnFeedback = new TextFeedbackPanel("settingApplyPenalOnFeedback", this.settingApplyPenalOnField);
+        this.settingApplyPenalOnIContainer.add(this.settingApplyPenalOnFeedback);
+
+        this.settingWithholdTaxApplicableBlock = new WebMarkupBlock("settingWithholdTaxApplicableBlock", Size.Six_6);
+        this.form.add(this.settingWithholdTaxApplicableBlock);
+        this.settingWithholdTaxApplicableIContainer = new WebMarkupContainer("settingWithholdTaxApplicableIContainer");
+        this.settingWithholdTaxApplicableBlock.add(this.settingWithholdTaxApplicableIContainer);
+        this.settingWithholdTaxApplicableField = new CheckBox("settingWithholdTaxApplicableField", new PropertyModel<>(this.itemPage, "settingWithholdTaxApplicableValue"));
+        this.settingWithholdTaxApplicableField.add(new OnChangeAjaxBehavior(this::settingWithholdTaxApplicableFieldUpdate));
+        this.settingWithholdTaxApplicableIContainer.add(this.settingWithholdTaxApplicableField);
+        this.settingWithholdTaxApplicableFeedback = new TextFeedbackPanel("settingWithholdTaxApplicableFeedback", this.settingWithholdTaxApplicableField);
+        this.settingWithholdTaxApplicableIContainer.add(this.settingWithholdTaxApplicableFeedback);
 
         this.settingTaxGroupBlock = new WebMarkupBlock("settingTaxGroupBlock", Size.Six_6);
         this.form.add(this.settingTaxGroupBlock);
@@ -207,158 +280,14 @@ public class SettingsPanel extends Panel {
         this.settingTaxGroupIContainer.add(this.settingTaxGroupField);
         this.settingTaxGroupFeedback = new TextFeedbackPanel("settingTaxGroupFeedback", this.settingTaxGroupField);
         this.settingTaxGroupIContainer.add(this.settingTaxGroupFeedback);
-
-        this.settingWithholdTaxApplicableBlock = new WebMarkupBlock("settingWithholdTaxApplicableBlock", Size.Six_6);
-        this.form.add(this.settingWithholdTaxApplicableBlock);
-        this.settingWithholdTaxApplicableIContainer = new WebMarkupContainer("settingWithholdTaxApplicableIContainer");
-        this.settingWithholdTaxApplicableBlock.add(this.settingWithholdTaxApplicableIContainer);
-        this.settingWithholdTaxApplicableField = new CheckBox("settingWithholdTaxApplicableField", new PropertyModel<>(this.itemPage, "settingWithholdTaxApplicableValue"));
-        this.settingWithholdTaxApplicableField.add(new OnChangeAjaxBehavior(this::settingWithholdTaxApplicableFieldUpdate));
-        this.settingWithholdTaxApplicableIContainer.add(this.settingWithholdTaxApplicableField);
-        this.settingWithholdTaxApplicableFeedback = new TextFeedbackPanel("settingWithholdTaxApplicableFeedback", this.settingWithholdTaxApplicableField);
-        this.settingWithholdTaxApplicableIContainer.add(this.settingWithholdTaxApplicableFeedback);
-
-        this.settingMinOverdraftRequiredForInterestCalculationBlock = new WebMarkupBlock("settingMinOverdraftRequiredForInterestCalculationBlock", Size.Six_6);
-        this.form.add(this.settingMinOverdraftRequiredForInterestCalculationBlock);
-        this.settingMinOverdraftRequiredForInterestCalculationIContainer = new WebMarkupContainer("settingMinOverdraftRequiredForInterestCalculationIContainer");
-        this.settingMinOverdraftRequiredForInterestCalculationBlock.add(this.settingMinOverdraftRequiredForInterestCalculationIContainer);
-        this.settingMinOverdraftRequiredForInterestCalculationField = new TextField<>("settingMinOverdraftRequiredForInterestCalculationField", new PropertyModel<>(this.itemPage, "settingMinOverdraftRequiredForInterestCalculationValue"));
-        this.settingMinOverdraftRequiredForInterestCalculationField.setLabel(Model.of("Min Overdraft Required For Interest Calculation"));
-        this.settingMinOverdraftRequiredForInterestCalculationField.add(new OnChangeAjaxBehavior());
-        this.settingMinOverdraftRequiredForInterestCalculationIContainer.add(this.settingMinOverdraftRequiredForInterestCalculationField);
-        this.settingMinOverdraftRequiredForInterestCalculationFeedback = new TextFeedbackPanel("settingMinOverdraftRequiredForInterestCalculationFeedback", this.settingMinOverdraftRequiredForInterestCalculationField);
-        this.settingMinOverdraftRequiredForInterestCalculationIContainer.add(this.settingMinOverdraftRequiredForInterestCalculationFeedback);
-
-        this.settingNominalAnnualInterestForOverdraftBlock = new WebMarkupBlock("settingNominalAnnualInterestForOverdraftBlock", Size.Six_6);
-        this.form.add(this.settingNominalAnnualInterestForOverdraftBlock);
-        this.settingNominalAnnualInterestForOverdraftIContainer = new WebMarkupContainer("settingNominalAnnualInterestForOverdraftIContainer");
-        this.settingNominalAnnualInterestForOverdraftBlock.add(this.settingNominalAnnualInterestForOverdraftIContainer);
-        this.settingNominalAnnualInterestForOverdraftField = new TextField<>("settingNominalAnnualInterestForOverdraftField", new PropertyModel<>(this.itemPage, "settingNominalAnnualInterestForOverdraftValue"));
-        this.settingNominalAnnualInterestForOverdraftField.setLabel(Model.of("Nominal annual interest for overdraft"));
-        this.settingNominalAnnualInterestForOverdraftField.add(new OnChangeAjaxBehavior());
-        this.settingNominalAnnualInterestForOverdraftIContainer.add(this.settingNominalAnnualInterestForOverdraftField);
-        this.settingNominalAnnualInterestForOverdraftFeedback = new TextFeedbackPanel("settingNominalAnnualInterestForOverdraftFeedback", this.settingNominalAnnualInterestForOverdraftField);
-        this.settingNominalAnnualInterestForOverdraftIContainer.add(this.settingNominalAnnualInterestForOverdraftFeedback);
-
-        this.settingMaximumOverdraftAmountLimitBlock = new WebMarkupBlock("settingMaximumOverdraftAmountLimitBlock", Size.Six_6);
-        this.form.add(this.settingMaximumOverdraftAmountLimitBlock);
-        this.settingMaximumOverdraftAmountLimitIContainer = new WebMarkupContainer("settingMaximumOverdraftAmountLimitIContainer");
-        this.settingMaximumOverdraftAmountLimitBlock.add(this.settingMaximumOverdraftAmountLimitIContainer);
-        this.settingMaximumOverdraftAmountLimitField = new TextField<>("settingMaximumOverdraftAmountLimitField", new PropertyModel<>(this.itemPage, "settingMaximumOverdraftAmountLimitValue"));
-        this.settingMaximumOverdraftAmountLimitField.setLabel(Model.of("Maximum Overdraft Amount Limit"));
-        this.settingMaximumOverdraftAmountLimitField.add(new OnChangeAjaxBehavior());
-        this.settingMaximumOverdraftAmountLimitIContainer.add(this.settingMaximumOverdraftAmountLimitField);
-        this.settingMaximumOverdraftAmountLimitFeedback = new TextFeedbackPanel("settingMaximumOverdraftAmountLimitFeedback", this.settingMaximumOverdraftAmountLimitField);
-        this.settingMaximumOverdraftAmountLimitIContainer.add(this.settingMaximumOverdraftAmountLimitFeedback);
-
-        this.settingOverdraftAllowedBlock = new WebMarkupBlock("settingOverdraftAllowedBlock", Size.Six_6);
-        this.form.add(this.settingOverdraftAllowedBlock);
-        this.settingOverdraftAllowedIContainer = new WebMarkupContainer("settingOverdraftAllowedIContainer");
-        this.settingOverdraftAllowedBlock.add(this.settingOverdraftAllowedIContainer);
-        this.settingOverdraftAllowedField = new CheckBox("settingOverdraftAllowedField", new PropertyModel<>(this.itemPage, "settingOverdraftAllowedValue"));
-        this.settingOverdraftAllowedField.add(new OnChangeAjaxBehavior(this::settingOverdraftAllowedFieldUpdate));
-        this.settingOverdraftAllowedIContainer.add(this.settingOverdraftAllowedField);
-        this.settingOverdraftAllowedFeedback = new TextFeedbackPanel("settingOverdraftAllowedFeedback", this.settingOverdraftAllowedField);
-        this.settingOverdraftAllowedIContainer.add(this.settingOverdraftAllowedFeedback);
-
-        this.settingMinimumBalanceBlock = new WebMarkupBlock("settingMinimumBalanceBlock", Size.Four_4);
-        this.form.add(this.settingMinimumBalanceBlock);
-        this.settingMinimumBalanceIContainer = new WebMarkupContainer("settingMinimumBalanceIContainer");
-        this.settingMinimumBalanceBlock.add(this.settingMinimumBalanceIContainer);
-        this.settingMinimumBalanceField = new TextField<>("settingMinimumBalanceField", new PropertyModel<>(this.itemPage, "settingMinimumBalanceValue"));
-        this.settingMinimumBalanceField.add(new OnChangeAjaxBehavior());
-        this.settingMinimumBalanceField.setLabel(Model.of("Minimum balance"));
-        this.settingMinimumBalanceIContainer.add(this.settingMinimumBalanceField);
-        this.settingMinimumBalanceFeedback = new TextFeedbackPanel("settingMinimumBalanceFeedback", this.settingMinimumBalanceField);
-        this.settingMinimumBalanceIContainer.add(this.settingMinimumBalanceFeedback);
-
-        this.settingEnforceMinimumBalanceBlock = new WebMarkupBlock("settingEnforceMinimumBalanceBlock", Size.Four_4);
-        this.form.add(this.settingEnforceMinimumBalanceBlock);
-        this.settingEnforceMinimumBalanceIContainer = new WebMarkupContainer("settingEnforceMinimumBalanceIContainer");
-        this.settingEnforceMinimumBalanceBlock.add(this.settingEnforceMinimumBalanceIContainer);
-        this.settingEnforceMinimumBalanceField = new CheckBox("settingEnforceMinimumBalanceField", new PropertyModel<>(this.itemPage, "settingEnforceMinimumBalanceValue"));
-        this.settingEnforceMinimumBalanceField.add(new OnChangeAjaxBehavior());
-        this.settingEnforceMinimumBalanceIContainer.add(this.settingEnforceMinimumBalanceField);
-        this.settingEnforceMinimumBalanceFeedback = new TextFeedbackPanel("settingEnforceMinimumBalanceFeedback", this.settingEnforceMinimumBalanceField);
-        this.settingEnforceMinimumBalanceIContainer.add(this.settingEnforceMinimumBalanceFeedback);
-
-        this.settingBalanceRequiredForInterestCalculationBlock = new WebMarkupBlock("settingBalanceRequiredForInterestCalculationBlock", Size.Four_4);
-        this.form.add(this.settingBalanceRequiredForInterestCalculationBlock);
-        this.settingBalanceRequiredForInterestCalculationIContainer = new WebMarkupContainer("settingBalanceRequiredForInterestCalculationIContainer");
-        this.settingBalanceRequiredForInterestCalculationBlock.add(this.settingBalanceRequiredForInterestCalculationIContainer);
-        this.settingBalanceRequiredForInterestCalculationField = new TextField<>("settingBalanceRequiredForInterestCalculationField", new PropertyModel<>(this.itemPage, "settingBalanceRequiredForInterestCalculationValue"));
-        this.settingBalanceRequiredForInterestCalculationField.setLabel(Model.of("Balance Required For Interest Calculation"));
-        this.settingBalanceRequiredForInterestCalculationField.add(new OnChangeAjaxBehavior());
-        this.settingBalanceRequiredForInterestCalculationIContainer.add(this.settingBalanceRequiredForInterestCalculationField);
-        this.settingBalanceRequiredForInterestCalculationFeedback = new TextFeedbackPanel("settingBalanceRequiredForInterestCalculationFeedback", this.settingBalanceRequiredForInterestCalculationField);
-        this.settingBalanceRequiredForInterestCalculationIContainer.add(this.settingBalanceRequiredForInterestCalculationFeedback);
-
-        this.settingApplyWithdrawalFeeForTransferBlock = new WebMarkupBlock("settingApplyWithdrawalFeeForTransferBlock", Size.Four_4);
-        this.form.add(this.settingApplyWithdrawalFeeForTransferBlock);
-        this.settingApplyWithdrawalFeeForTransferIContainer = new WebMarkupContainer("settingApplyWithdrawalFeeForTransferIContainer");
-        this.settingApplyWithdrawalFeeForTransferBlock.add(this.settingApplyWithdrawalFeeForTransferIContainer);
-        this.settingApplyWithdrawalFeeForTransferField = new CheckBox("settingApplyWithdrawalFeeForTransferField", new PropertyModel<>(this.itemPage, "settingApplyWithdrawalFeeForTransferValue"));
-        this.settingApplyWithdrawalFeeForTransferField.add(new OnChangeAjaxBehavior());
-        this.settingApplyWithdrawalFeeForTransferIContainer.add(this.settingApplyWithdrawalFeeForTransferField);
-        this.settingApplyWithdrawalFeeForTransferFeedback = new TextFeedbackPanel("settingApplyWithdrawalFeeForTransferFeedback", this.settingApplyWithdrawalFeeForTransferField);
-        this.settingApplyWithdrawalFeeForTransferIContainer.add(this.settingApplyWithdrawalFeeForTransferFeedback);
-
-        this.settingLockInTypeBlock = new WebMarkupBlock("settingLockInTypeBlock", Size.Four_4);
-        this.form.add(this.settingLockInTypeBlock);
-        this.settingLockInTypeIContainer = new WebMarkupContainer("settingLockInTypeIContainer");
-        this.settingLockInTypeBlock.add(this.settingLockInTypeIContainer);
-        this.settingLockInTypeProvider = new LockInTypeProvider();
-        this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", new PropertyModel<>(this.itemPage, "settingLockInTypeValue"), this.settingLockInTypeProvider);
-        this.settingLockInTypeField.setLabel(Model.of("Type"));
-        this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
-        this.settingLockInTypeIContainer.add(this.settingLockInTypeField);
-        this.settingLockInTypeFeedback = new TextFeedbackPanel("settingLockInTypeFeedback", this.settingLockInTypeField);
-        this.settingLockInTypeIContainer.add(this.settingLockInTypeFeedback);
-
-        this.settingLockInPeriodBlock = new WebMarkupBlock("settingLockInPeriodBlock", Size.Four_4);
-        this.form.add(this.settingLockInPeriodBlock);
-        this.settingLockInPeriodIContainer = new WebMarkupContainer("settingLockInPeriodIContainer");
-        this.settingLockInPeriodBlock.add(this.settingLockInPeriodIContainer);
-        this.settingLockInPeriodField = new TextField<>("settingLockInPeriodField", new PropertyModel<>(this.itemPage, "settingLockInPeriodValue"));
-        this.settingLockInPeriodField.setLabel(Model.of("Lock-in period"));
-        this.settingLockInPeriodField.add(new OnChangeAjaxBehavior());
-        this.settingLockInPeriodIContainer.add(this.settingLockInPeriodField);
-        this.settingLockInPeriodFeedback = new TextFeedbackPanel("settingLockInPeriodFeedback", this.settingLockInPeriodField);
-        this.settingLockInPeriodIContainer.add(this.settingLockInPeriodFeedback);
-
-        this.settingMinimumOpeningBalanceBlock = new WebMarkupBlock("settingMinimumOpeningBalanceBlock", Size.Four_4);
-        this.form.add(this.settingMinimumOpeningBalanceBlock);
-        this.settingMinimumOpeningBalanceIContainer = new WebMarkupContainer("settingMinimumOpeningBalanceIContainer");
-        this.settingMinimumOpeningBalanceBlock.add(this.settingMinimumOpeningBalanceIContainer);
-        this.settingMinimumOpeningBalanceField = new TextField<>("settingMinimumOpeningBalanceField", new PropertyModel<>(this.itemPage, "settingMinimumOpeningBalanceValue"));
-        this.settingMinimumOpeningBalanceField.setLabel(Model.of("Minimum opening balance"));
-        this.settingMinimumOpeningBalanceField.add(new OnChangeAjaxBehavior());
-        this.settingMinimumOpeningBalanceIContainer.add(this.settingMinimumOpeningBalanceField);
-        this.settingMinimumOpeningBalanceFeedback = new TextFeedbackPanel("settingMinimumOpeningBalanceFeedback", this.settingMinimumOpeningBalanceField);
-        this.settingMinimumOpeningBalanceIContainer.add(this.settingMinimumOpeningBalanceFeedback);
     }
 
     @Override
     protected void configureMetaData() {
-        settingOverdraftAllowedFieldUpdate(null);
+        this.settingMinimumDepositTermField.setRequired(true);
+        this.settingMinimumDepositTypeField.setRequired(true);
 
         settingWithholdTaxApplicableFieldUpdate(null);
-
-        settingEnableDormancyTrackingFieldUpdate(null);
-    }
-
-    protected boolean settingOverdraftAllowedFieldUpdate(AjaxRequestTarget target) {
-        PropertyModel<Boolean> settingOverdraftAllowedValue = new PropertyModel<>(this.itemPage, "settingOverdraftAllowedValue");
-        boolean visible = settingOverdraftAllowedValue.getObject() != null && settingOverdraftAllowedValue.getObject();
-        this.settingMaximumOverdraftAmountLimitIContainer.setVisible(visible);
-        this.settingNominalAnnualInterestForOverdraftIContainer.setVisible(visible);
-        this.settingMinOverdraftRequiredForInterestCalculationIContainer.setVisible(visible);
-        if (target != null) {
-            target.add(this.settingMaximumOverdraftAmountLimitBlock);
-            target.add(this.settingNominalAnnualInterestForOverdraftBlock);
-            target.add(this.settingMinOverdraftRequiredForInterestCalculationBlock);
-        }
-        return false;
     }
 
     protected boolean settingWithholdTaxApplicableFieldUpdate(AjaxRequestTarget target) {
@@ -371,22 +300,8 @@ public class SettingsPanel extends Panel {
         return false;
     }
 
-    protected boolean settingEnableDormancyTrackingFieldUpdate(AjaxRequestTarget target) {
-        PropertyModel<Boolean> settingEnableDormancyTrackingValue = new PropertyModel<>(this.itemPage, "settingEnableDormancyTrackingValue");
-        boolean visible = settingEnableDormancyTrackingValue.getObject() != null && settingEnableDormancyTrackingValue.getObject();
-        this.settingNumberOfDaysToInactiveSubStatusIContainer.setVisible(visible);
-        this.settingNumberOfDaysToDormantSubStatusIContainer.setVisible(visible);
-        this.settingNumberOfDaysToEscheatIContainer.setVisible(visible);
-        if (target != null) {
-            target.add(this.settingNumberOfDaysToInactiveSubStatusBlock);
-            target.add(this.settingNumberOfDaysToDormantSubStatusBlock);
-            target.add(this.settingNumberOfDaysToEscheatBlock);
-        }
-        return false;
-    }
-
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_TERM);
+        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_TERM);
         if (target != null) {
             target.add(this.tab.getObject());
         }
@@ -394,7 +309,7 @@ public class SettingsPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_CHARGE);
+        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_INTEREST_RATE_CHART);
         this.errorSetting.setObject(false);
     }
 
