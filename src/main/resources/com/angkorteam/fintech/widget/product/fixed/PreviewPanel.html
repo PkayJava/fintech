@@ -42,6 +42,7 @@
 				</div>
 
 				<div class="box-body">
+
 					<!-- Row -->
 					<div wicket:id="currencyCodeBlock" class="form-group">
 						<wicket:container wicket:id="currencyCodeVContainer">
@@ -63,13 +64,124 @@
 					</div>
 					<div class="clearfix"></div>
 
+					<!-- Row -->
+					<div wicket:id="termMinimumDepositAmountBlock" class="form-group">
+						<wicket:container wicket:id="termMinimumDepositAmountVContainer">
+							<label>Minimum Deposit Amount</label>
+							<div wicket:id="termMinimumDepositAmountView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="termDefaultDepositAmountBlock" class="form-group">
+						<wicket:container wicket:id="termDefaultDepositAmountVContainer">
+							<label>Default Deposit Amount</label>
+							<div wicket:id="termDefaultDepositAmountView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="termMaximumDepositAmountBlock" class="form-group">
+						<wicket:container wicket:id="termMaximumDepositAmountVContainer">
+							<label>Maximum Deposit Amount</label>
+							<div wicket:id="termMaximumDepositAmountView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="termInterestCompoundingPeriodBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="termInterestCompoundingPeriodVContainer">
+							<label>Interest Compounding Period</label>
+							<div wicket:id="termInterestCompoundingPeriodView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="termInterestPostingPeriodBlock" class="form-group">
+						<wicket:container wicket:id="termInterestPostingPeriodVContainer">
+							<label>Interest Posting Period</label>
+							<div wicket:id="termInterestPostingPeriodView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="termInterestCalculatedUsingBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="termInterestCalculatedUsingVContainer">
+							<label>Interest Calculated Using</label>
+							<div wicket:id="termInterestCalculatedUsingView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="termDayInYearBlock" class="form-group">
+						<wicket:container wicket:id="termDayInYearVContainer">
+							<label>Days In Year</label>
+							<div wicket:id="termDayInYearView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
 				</div>
 
 				<div class="box-header with-border">
 					<h3 class="box-title">Settings</h3>
 				</div>
 
-				<div class="box-body"></div>
+				<div class="box-body">
+					<!-- Row -->
+					<div wicket:id="settingLockInPeriodBlock" class="form-group">
+						<wicket:container wicket:id="settingLockInPeriodVContainer">
+							<label>Lock-in Period</label>
+							<div wicket:id="settingLockInPeriodView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingMinimumDepositTermBlock" class="form-group">
+						<wicket:container wicket:id="settingMinimumDepositTermVContainer">
+							<label>Minimum Deposit Term</label>
+							<div wicket:id="settingMinimumDepositTermView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingInMultiplesOfBlock" class="form-group">
+						<wicket:container wicket:id="settingInMultiplesOfVContainer">
+							<label>And thereafter, In Multiples of</label>
+							<div wicket:id="settingInMultiplesOfView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingMaximumDepositTermBlock" class="form-group">
+						<wicket:container wicket:id="settingMaximumDepositTermVContainer">
+							<label>Maximum Deposit Term</label>
+							<div wicket:id="settingMaximumDepositTermView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="settingApplyPenalBlock" class="form-group">
+						<wicket:container wicket:id="settingApplyPenalVContainer">
+							<label>Penal interest (less)</label>
+							<div wicket:id="settingApplyPenalView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingWithholdTaxApplicableBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingWithholdTaxApplicableVContainer">
+							<label>Withhold tax applicable</label>
+							<div wicket:id="settingWithholdTaxApplicableView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingTaxGroupBlock" class="form-group">
+						<wicket:container wicket:id="settingTaxGroupVContainer">
+							<label>Tax Group</label>
+							<div wicket:id="settingTaxGroupView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+				</div>
 
 				<div class="box-header with-border">
 					<h3 class="box-title">Interest Rate Chart</h3>

@@ -20,6 +20,7 @@ import com.angkorteam.fintech.pages.product.fixed.FixedDepositCreatePage;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.ReadOnlyView;
+import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -82,7 +83,80 @@ public class PreviewPanel extends Panel {
     protected WebMarkupContainer currencyMultipleOfVContainer;
     protected ReadOnlyView currencyMultipleOfView;
 
+    protected WebMarkupBlock termDefaultDepositAmountBlock;
+    protected WebMarkupContainer termDefaultDepositAmountVContainer;
+    protected ReadOnlyView termDefaultDepositAmountView;
+    protected TextFeedbackPanel termDefaultDepositAmountFeedback;
+
+    protected WebMarkupBlock termMinimumDepositAmountBlock;
+    protected WebMarkupContainer termMinimumDepositAmountVContainer;
+    protected ReadOnlyView termMinimumDepositAmountView;
+    protected TextFeedbackPanel termMinimumDepositAmountFeedback;
+
+    protected WebMarkupBlock termMaximumDepositAmountBlock;
+    protected WebMarkupContainer termMaximumDepositAmountVContainer;
+    protected ReadOnlyView termMaximumDepositAmountView;
+    protected TextFeedbackPanel termMaximumDepositAmountFeedback;
+
+    protected WebMarkupBlock termInterestCompoundingPeriodBlock;
+    protected WebMarkupContainer termInterestCompoundingPeriodVContainer;
+    protected ReadOnlyView termInterestCompoundingPeriodView;
+
+    protected WebMarkupBlock termInterestPostingPeriodBlock;
+    protected WebMarkupContainer termInterestPostingPeriodVContainer;
+    protected ReadOnlyView termInterestPostingPeriodView;
+
+    protected WebMarkupBlock termInterestCalculatedUsingBlock;
+    protected WebMarkupContainer termInterestCalculatedUsingVContainer;
+    protected ReadOnlyView termInterestCalculatedUsingView;
+
+    protected WebMarkupBlock termDayInYearBlock;
+    protected WebMarkupContainer termDayInYearVContainer;
+    protected ReadOnlyView termDayInYearView;
+
     // Settings
+
+    //
+    // Lock-in Period Minimum Deposit Term Maximum Deposit Term Deposit Term In
+    // multiple of
+    // 1 Days 1 Weeks 1 Days 1 Days
+    //
+    //
+    // Apply penal interest (less) Withhold tax Applicable Withhold Tax Group
+    // 1 % On Whole Term Yes ABC
+
+    protected WebMarkupBlock settingLockInPeriodBlock;
+    protected WebMarkupContainer settingLockInPeriodVContainer;
+    protected ReadOnlyView settingLockInPeriodView;
+    protected String settingLockInPeriodValue;
+
+    protected WebMarkupBlock settingMinimumDepositTermBlock;
+    protected WebMarkupContainer settingMinimumDepositTermVContainer;
+    protected ReadOnlyView settingMinimumDepositTermView;
+    protected String settingMinimumDepositTermValue;
+
+    protected WebMarkupBlock settingInMultiplesOfBlock;
+    protected WebMarkupContainer settingInMultiplesOfVContainer;
+    protected ReadOnlyView settingInMultiplesOfView;
+    protected String settingInMultiplesOfValue;
+
+    protected WebMarkupBlock settingMaximumDepositTermBlock;
+    protected WebMarkupContainer settingMaximumDepositTermVContainer;
+    protected ReadOnlyView settingMaximumDepositTermView;
+    protected String settingMaximumDepositTermValue;
+
+    protected WebMarkupBlock settingApplyPenalBlock;
+    protected WebMarkupContainer settingApplyPenalVContainer;
+    protected ReadOnlyView settingApplyPenalView;
+    protected String settingApplyPenalValue;
+
+    protected WebMarkupBlock settingWithholdTaxApplicableBlock;
+    protected WebMarkupContainer settingWithholdTaxApplicableVContainer;
+    protected ReadOnlyView settingWithholdTaxApplicableView;
+
+    protected WebMarkupBlock settingTaxGroupBlock;
+    protected WebMarkupContainer settingTaxGroupVContainer;
+    protected ReadOnlyView settingTaxGroupView;
 
     // Interest Rate Chart
 
@@ -139,6 +213,7 @@ public class PreviewPanel extends Panel {
         this.errorCharge = new PropertyModel<>(this.itemPage, "errorCharge");
         this.errorDetail = new PropertyModel<>(this.itemPage, "errorDetail");
         this.errorTerm = new PropertyModel<>(this.itemPage, "errorTerm");
+        this.errorInterestRateChart = new PropertyModel<>(this.itemPage, "errorInterestRateChart");
 
         this.tab = new PropertyModel<>(this.itemPage, "tab");
 
@@ -228,6 +303,104 @@ public class PreviewPanel extends Panel {
         this.currencyMultipleOfView = new ReadOnlyView("currencyMultipleOfView", new PropertyModel<>(this.itemPage, "currencyMultipleOfValue"));
         this.currencyMultipleOfVContainer.add(this.currencyMultipleOfView);
 
+        this.termDefaultDepositAmountBlock = new WebMarkupBlock("termDefaultDepositAmountBlock", Size.Four_4);
+        this.form.add(this.termDefaultDepositAmountBlock);
+        this.termDefaultDepositAmountVContainer = new WebMarkupContainer("termDefaultDepositAmountVContainer");
+        this.termDefaultDepositAmountBlock.add(this.termDefaultDepositAmountVContainer);
+        this.termDefaultDepositAmountView = new ReadOnlyView("termDefaultDepositAmountView", new PropertyModel<>(this.itemPage, "termDefaultDepositAmountValue"));
+        this.termDefaultDepositAmountVContainer.add(this.termDefaultDepositAmountView);
+
+        this.termMinimumDepositAmountBlock = new WebMarkupBlock("termMinimumDepositAmountBlock", Size.Four_4);
+        this.form.add(this.termMinimumDepositAmountBlock);
+        this.termMinimumDepositAmountVContainer = new WebMarkupContainer("termMinimumDepositAmountVContainer");
+        this.termMinimumDepositAmountBlock.add(this.termMinimumDepositAmountVContainer);
+        this.termMinimumDepositAmountView = new ReadOnlyView("termMinimumDepositAmountView", new PropertyModel<>(this.itemPage, "termMinimumDepositAmountValue"));
+        this.termMinimumDepositAmountVContainer.add(this.termMinimumDepositAmountView);
+
+        this.termMaximumDepositAmountBlock = new WebMarkupBlock("termMaximumDepositAmountBlock", Size.Four_4);
+        this.form.add(this.termMaximumDepositAmountBlock);
+        this.termMaximumDepositAmountVContainer = new WebMarkupContainer("termMaximumDepositAmountVContainer");
+        this.termMaximumDepositAmountBlock.add(this.termMaximumDepositAmountVContainer);
+        this.termMaximumDepositAmountView = new ReadOnlyView("termMaximumDepositAmountView", new PropertyModel<>(this.itemPage, "termMaximumDepositAmountValue"));
+        this.termMaximumDepositAmountVContainer.add(this.termMaximumDepositAmountView);
+
+        this.termInterestCompoundingPeriodBlock = new WebMarkupBlock("termInterestCompoundingPeriodBlock", Size.Three_3);
+        this.form.add(this.termInterestCompoundingPeriodBlock);
+        this.termInterestCompoundingPeriodVContainer = new WebMarkupContainer("termInterestCompoundingPeriodVContainer");
+        this.termInterestCompoundingPeriodBlock.add(this.termInterestCompoundingPeriodVContainer);
+        this.termInterestCompoundingPeriodView = new ReadOnlyView("termInterestCompoundingPeriodView", new PropertyModel<>(this.itemPage, "termInterestCompoundingPeriodValue"));
+        this.termInterestCompoundingPeriodVContainer.add(this.termInterestCompoundingPeriodView);
+
+        this.termInterestPostingPeriodBlock = new WebMarkupBlock("termInterestPostingPeriodBlock", Size.Three_3);
+        this.form.add(this.termInterestPostingPeriodBlock);
+        this.termInterestPostingPeriodVContainer = new WebMarkupContainer("termInterestPostingPeriodVContainer");
+        this.termInterestPostingPeriodBlock.add(this.termInterestPostingPeriodVContainer);
+        this.termInterestPostingPeriodView = new ReadOnlyView("termInterestPostingPeriodView", new PropertyModel<>(this.itemPage, "termInterestPostingPeriodValue"));
+        this.termInterestPostingPeriodVContainer.add(this.termInterestPostingPeriodView);
+
+        this.termInterestCalculatedUsingBlock = new WebMarkupBlock("termInterestCalculatedUsingBlock", Size.Three_3);
+        this.form.add(this.termInterestCalculatedUsingBlock);
+        this.termInterestCalculatedUsingVContainer = new WebMarkupContainer("termInterestCalculatedUsingVContainer");
+        this.termInterestCalculatedUsingBlock.add(this.termInterestCalculatedUsingVContainer);
+        this.termInterestCalculatedUsingView = new ReadOnlyView("termInterestCalculatedUsingView", new PropertyModel<>(this.itemPage, "termInterestCalculatedUsingValue"));
+        this.termInterestCalculatedUsingVContainer.add(this.termInterestCalculatedUsingView);
+
+        this.termDayInYearBlock = new WebMarkupBlock("termDayInYearBlock", Size.Three_3);
+        this.form.add(this.termDayInYearBlock);
+        this.termDayInYearVContainer = new WebMarkupContainer("termDayInYearVContainer");
+        this.termDayInYearBlock.add(this.termDayInYearVContainer);
+        this.termDayInYearView = new ReadOnlyView("termDayInYearView", new PropertyModel<>(this.itemPage, "termDayInYearValue"));
+        this.termDayInYearVContainer.add(this.termDayInYearView);
+
+        this.settingLockInPeriodBlock = new WebMarkupBlock("settingLockInPeriodBlock", Size.Three_3);
+        this.form.add(this.settingLockInPeriodBlock);
+        this.settingLockInPeriodVContainer = new WebMarkupContainer("settingLockInPeriodVContainer");
+        this.settingLockInPeriodBlock.add(this.settingLockInPeriodVContainer);
+        this.settingLockInPeriodView = new ReadOnlyView("settingLockInPeriodView", new PropertyModel<>(this, "settingLockInPeriodValue"));
+        this.settingLockInPeriodVContainer.add(this.settingLockInPeriodView);
+
+        this.settingMinimumDepositTermBlock = new WebMarkupBlock("settingMinimumDepositTermBlock", Size.Three_3);
+        this.form.add(this.settingMinimumDepositTermBlock);
+        this.settingMinimumDepositTermVContainer = new WebMarkupContainer("settingMinimumDepositTermVContainer");
+        this.settingMinimumDepositTermBlock.add(this.settingMinimumDepositTermVContainer);
+        this.settingMinimumDepositTermView = new ReadOnlyView("settingMinimumDepositTermView", new PropertyModel<>(this, "settingMinimumDepositTermValue"));
+        this.settingMinimumDepositTermVContainer.add(this.settingMinimumDepositTermView);
+
+        this.settingInMultiplesOfBlock = new WebMarkupBlock("settingInMultiplesOfBlock", Size.Three_3);
+        this.form.add(this.settingInMultiplesOfBlock);
+        this.settingInMultiplesOfVContainer = new WebMarkupContainer("settingInMultiplesOfVContainer");
+        this.settingInMultiplesOfBlock.add(this.settingInMultiplesOfVContainer);
+        this.settingInMultiplesOfView = new ReadOnlyView("settingInMultiplesOfView", new PropertyModel<>(this, "settingInMultiplesOfValue"));
+        this.settingInMultiplesOfVContainer.add(this.settingInMultiplesOfView);
+
+        this.settingMaximumDepositTermBlock = new WebMarkupBlock("settingMaximumDepositTermBlock", Size.Three_3);
+        this.form.add(this.settingMaximumDepositTermBlock);
+        this.settingMaximumDepositTermVContainer = new WebMarkupContainer("settingMaximumDepositTermVContainer");
+        this.settingMaximumDepositTermBlock.add(this.settingMaximumDepositTermVContainer);
+        this.settingMaximumDepositTermView = new ReadOnlyView("settingMaximumDepositTermView", new PropertyModel<>(this, "settingMaximumDepositTermValue"));
+        this.settingMaximumDepositTermVContainer.add(this.settingMaximumDepositTermView);
+
+        this.settingApplyPenalBlock = new WebMarkupBlock("settingApplyPenalBlock", Size.Six_6);
+        this.form.add(this.settingApplyPenalBlock);
+        this.settingApplyPenalVContainer = new WebMarkupContainer("settingApplyPenalVContainer");
+        this.settingApplyPenalBlock.add(this.settingApplyPenalVContainer);
+        this.settingApplyPenalView = new ReadOnlyView("settingApplyPenalView", new PropertyModel<>(this, "settingApplyPenalValue"));
+        this.settingApplyPenalVContainer.add(this.settingApplyPenalView);
+
+        this.settingWithholdTaxApplicableBlock = new WebMarkupBlock("settingWithholdTaxApplicableBlock", Size.Three_3);
+        this.form.add(this.settingWithholdTaxApplicableBlock);
+        this.settingWithholdTaxApplicableVContainer = new WebMarkupContainer("settingWithholdTaxApplicableVContainer");
+        this.settingWithholdTaxApplicableBlock.add(this.settingWithholdTaxApplicableVContainer);
+        this.settingWithholdTaxApplicableView = new ReadOnlyView("settingWithholdTaxApplicableView", new PropertyModel<>(this.itemPage, "settingWithholdTaxApplicableValue"));
+        this.settingWithholdTaxApplicableVContainer.add(this.settingWithholdTaxApplicableView);
+
+        this.settingTaxGroupBlock = new WebMarkupBlock("settingTaxGroupBlock", Size.Three_3);
+        this.form.add(this.settingTaxGroupBlock);
+        this.settingTaxGroupVContainer = new WebMarkupContainer("settingTaxGroupVContainer");
+        this.settingTaxGroupBlock.add(this.settingTaxGroupVContainer);
+        this.settingTaxGroupView = new ReadOnlyView("settingTaxGroupView", new PropertyModel<>(this.itemPage, "settingTaxGroupValue"));
+        this.settingTaxGroupVContainer.add(this.settingTaxGroupView);
+
         this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Twelve_12);
         this.form.add(this.chargeBlock);
         this.chargeVContainer = new WebMarkupContainer("chargeVContainer");
@@ -283,7 +456,59 @@ public class PreviewPanel extends Panel {
             this.advancedAccountingRuleMaster.setVisible(false);
         }
 
-        this.saveButton.setVisible(!this.errorTerm.getObject() && !this.errorDetail.getObject() && !this.errorCharge.getObject() && !this.errorAccounting.getObject() && !this.errorCurrency.getObject() && !this.errorSetting.getObject());
+        PropertyModel<Long> settingLockInPeriodValue = new PropertyModel<>(this.itemPage, "settingLockInPeriodValue");
+        PropertyModel<Option> settingLockInTypeValue = new PropertyModel<>(this.itemPage, "settingLockInTypeValue");
+
+        if (settingLockInPeriodValue.getObject() != null) {
+            if (settingLockInTypeValue.getObject() != null) {
+                this.settingLockInPeriodValue = String.valueOf(settingLockInPeriodValue.getObject()) + " " + settingLockInTypeValue.getObject().getText();
+            } else {
+                this.settingLockInPeriodValue = String.valueOf(settingLockInPeriodValue.getObject());
+            }
+        }
+
+        PropertyModel<Long> settingMinimumDepositTermValue = new PropertyModel<>(this.itemPage, "settingMinimumDepositTermValue");
+        PropertyModel<Option> settingMinimumDepositTypeValue = new PropertyModel<>(this.itemPage, "settingMinimumDepositTypeValue");
+        if (settingMinimumDepositTermValue.getObject() != null) {
+            if (settingMinimumDepositTypeValue.getObject() != null) {
+                this.settingMinimumDepositTermValue = String.valueOf(settingMinimumDepositTermValue.getObject()) + " " + settingMinimumDepositTypeValue.getObject().getText();
+            } else {
+                this.settingMinimumDepositTermValue = String.valueOf(settingMinimumDepositTermValue.getObject());
+            }
+        }
+
+        PropertyModel<Long> settingInMultiplesOfValue = new PropertyModel<>(this.itemPage, "settingInMultiplesOfValue");
+        PropertyModel<Option> settingInMultiplesTypeValue = new PropertyModel<>(this.itemPage, "settingInMultiplesTypeValue");
+        if (settingInMultiplesOfValue.getObject() != null) {
+            if (settingInMultiplesTypeValue.getObject() != null) {
+                this.settingInMultiplesOfValue = String.valueOf(settingInMultiplesTypeValue.getObject()) + " " + settingInMultiplesTypeValue.getObject().getText();
+            } else {
+                this.settingInMultiplesOfValue = String.valueOf(settingInMultiplesTypeValue.getObject());
+            }
+        }
+
+        PropertyModel<Long> settingMaximumDepositTermValue = new PropertyModel<>(this.itemPage, "settingMaximumDepositTermValue");
+        PropertyModel<Option> settingMaximumDepositTypeValue = new PropertyModel<>(this.itemPage, "settingMaximumDepositTypeValue");
+        if (settingMaximumDepositTermValue.getObject() != null) {
+            if (settingMaximumDepositTypeValue.getObject() != null) {
+                this.settingMaximumDepositTermValue = String.valueOf(settingMaximumDepositTermValue.getObject()) + " " + settingMaximumDepositTypeValue.getObject().getText();
+            } else {
+                this.settingMaximumDepositTermValue = String.valueOf(settingMaximumDepositTermValue.getObject());
+            }
+        }
+
+        PropertyModel<Double> settingApplyPenalInterestValue = new PropertyModel<>(this.itemPage, "settingApplyPenalInterestValue");
+        PropertyModel<Option> settingApplyPenalOnValue = new PropertyModel<>(this.itemPage, "settingApplyPenalOnValue");
+
+        if (settingApplyPenalInterestValue.getObject() != null) {
+            if (settingApplyPenalOnValue.getObject() != null) {
+                this.settingApplyPenalValue = String.valueOf(settingApplyPenalInterestValue.getObject()) + "%" + " On " + settingApplyPenalOnValue.getObject().getText();
+            } else {
+                this.settingApplyPenalValue = String.valueOf(settingApplyPenalInterestValue.getObject()) + "%";
+            }
+        }
+
+        this.saveButton.setVisible(!this.errorInterestRateChart.getObject() && !this.errorTerm.getObject() && !this.errorDetail.getObject() && !this.errorCharge.getObject() && !this.errorAccounting.getObject() && !this.errorCurrency.getObject() && !this.errorSetting.getObject());
     }
 
     protected ItemPanel advancedAccountingRuleFeeIncomeColumn(String column, IModel<String> display, Map<String, Object> model) {
