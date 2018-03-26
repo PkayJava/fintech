@@ -481,9 +481,9 @@ public class PreviewPanel extends Panel {
         PropertyModel<Option> settingInMultiplesTypeValue = new PropertyModel<>(this.itemPage, "settingInMultiplesTypeValue");
         if (settingInMultiplesOfValue.getObject() != null) {
             if (settingInMultiplesTypeValue.getObject() != null) {
-                this.settingInMultiplesOfValue = String.valueOf(settingInMultiplesTypeValue.getObject()) + " " + settingInMultiplesTypeValue.getObject().getText();
+                this.settingInMultiplesOfValue = String.valueOf(settingInMultiplesOfValue.getObject()) + " " + settingInMultiplesTypeValue.getObject().getText();
             } else {
-                this.settingInMultiplesOfValue = String.valueOf(settingInMultiplesTypeValue.getObject());
+                this.settingInMultiplesOfValue = String.valueOf(settingInMultiplesOfValue.getObject());
             }
         }
 

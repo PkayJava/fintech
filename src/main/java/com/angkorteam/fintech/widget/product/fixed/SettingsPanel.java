@@ -143,6 +143,7 @@ public class SettingsPanel extends Panel {
         this.settingLockInPeriodIContainer = new WebMarkupContainer("settingLockInPeriodIContainer");
         this.settingLockInPeriodBlock.add(this.settingLockInPeriodIContainer);
         this.settingLockInPeriodField = new TextField<>("settingLockInPeriodField", new PropertyModel<>(this.itemPage, "settingLockInPeriodValue"));
+        this.settingLockInPeriodField.add(new OnChangeAjaxBehavior());
         this.settingLockInPeriodField.setLabel(Model.of("Lock-in period"));
         this.settingLockInPeriodIContainer.add(this.settingLockInPeriodField);
         this.settingLockInPeriodFeedback = new TextFeedbackPanel("settingLockInPeriodFeedback", this.settingLockInPeriodField);
@@ -166,7 +167,7 @@ public class SettingsPanel extends Panel {
         this.settingMinimumDepositTermBlock.add(this.settingMinimumDepositTermIContainer);
         this.settingMinimumDepositTermField = new TextField<>("settingMinimumDepositTermField", new PropertyModel<>(this.itemPage, "settingMinimumDepositTermValue"));
         this.settingMinimumDepositTermField.setLabel(Model.of("Minimum Deposit Term"));
-
+        this.settingMinimumDepositTermField.add(new OnChangeAjaxBehavior());
         this.settingMinimumDepositTermIContainer.add(this.settingMinimumDepositTermField);
         this.settingMinimumDepositTermFeedback = new TextFeedbackPanel("settingMinimumDepositTermFeedback", this.settingMinimumDepositTermField);
         this.settingMinimumDepositTermIContainer.add(this.settingMinimumDepositTermFeedback);
@@ -189,6 +190,7 @@ public class SettingsPanel extends Panel {
         this.settingInMultiplesOfBlock.add(this.settingInMultiplesOfIContainer);
         this.settingInMultiplesOfField = new TextField<>("settingInMultiplesOfField", new PropertyModel<>(this.itemPage, "settingInMultiplesOfValue"));
         this.settingInMultiplesOfField.setLabel(Model.of("And thereafter, In Multiples of"));
+        this.settingInMultiplesOfField.add(new OnChangeAjaxBehavior());
         this.settingInMultiplesOfIContainer.add(this.settingInMultiplesOfField);
         this.settingInMultiplesOfFeedback = new TextFeedbackPanel("settingInMultiplesOfFeedback", this.settingInMultiplesOfField);
         this.settingInMultiplesOfIContainer.add(this.settingInMultiplesOfFeedback);
@@ -211,6 +213,7 @@ public class SettingsPanel extends Panel {
         this.settingMaximumDepositTermBlock.add(this.settingMaximumDepositTermIContainer);
         this.settingMaximumDepositTermField = new TextField<>("settingMaximumDepositTermField", new PropertyModel<>(this.itemPage, "settingMaximumDepositTermValue"));
         this.settingMaximumDepositTermField.setLabel(Model.of("Maximum Deposit Term"));
+        this.settingMaximumDepositTermField.add(new OnChangeAjaxBehavior());
         this.settingMaximumDepositTermIContainer.add(this.settingMaximumDepositTermField);
         this.settingMaximumDepositTermFeedback = new TextFeedbackPanel("settingMaximumDepositTermFeedback", this.settingMaximumDepositTermField);
         this.settingMaximumDepositTermIContainer.add(this.settingMaximumDepositTermFeedback);
@@ -243,6 +246,7 @@ public class SettingsPanel extends Panel {
         this.settingApplyPenalInterestBlock.add(this.settingApplyPenalInterestIContainer);
         this.settingApplyPenalInterestField = new TextField<>("settingApplyPenalInterestField", new PropertyModel<>(this.itemPage, "settingApplyPenalInterestValue"));
         this.settingApplyPenalInterestField.setLabel(Model.of("Apply penal interest"));
+        this.settingApplyPenalInterestField.add(new OnChangeAjaxBehavior());
         this.settingApplyPenalInterestIContainer.add(this.settingApplyPenalInterestField);
         this.settingApplyPenalInterestFeedback = new TextFeedbackPanel("settingApplyPenalInterestFeedback", this.settingApplyPenalInterestField);
         this.settingApplyPenalInterestIContainer.add(this.settingApplyPenalInterestFeedback);
