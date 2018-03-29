@@ -10,8 +10,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.ddl.MTaxGroup;
-import com.angkorteam.fintech.pages.product.fixed.FixedDepositBrowsePage;
-import com.angkorteam.fintech.pages.product.fixed.FixedDepositCreatePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedBrowsePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedCreatePage;
 import com.angkorteam.fintech.provider.ApplyPenalOnProvider;
 import com.angkorteam.fintech.provider.LockInTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
@@ -135,7 +135,7 @@ public class SettingsPanel extends Panel {
         this.backLink.setOnClick(this::backLinkClick);
         this.form.add(this.backLink);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedDepositBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedBrowsePage.class);
         this.form.add(this.closeLink);
 
         this.settingLockInPeriodBlock = new WebMarkupBlock("settingLockInPeriodBlock", Size.Three_3);
@@ -305,7 +305,7 @@ public class SettingsPanel extends Panel {
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_TERM);
+        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_TERM);
         if (target != null) {
             target.add(this.tab.getObject());
         }
@@ -313,7 +313,7 @@ public class SettingsPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_INTEREST_RATE_CHART);
+        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_INTEREST_RATE_CHART);
         this.errorSetting.setObject(false);
     }
 

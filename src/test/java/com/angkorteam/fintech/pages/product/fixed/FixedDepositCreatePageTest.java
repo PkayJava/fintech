@@ -80,7 +80,7 @@ public class FixedDepositCreatePageTest {
         Date interestRateValidFromDateValue = DateTime.now().plusDays(1).toDate();
         Date interestRateValidEndDateValue = DateTime.now().plusMonths(12).toDate();
 
-        this.wicket.startPage(FixedDepositCreatePage.class);
+        this.wicket.startPage(FixedCreatePage.class);
 
         JUnitFormTester form = this.wicket.newFormTester("form");
 
@@ -133,7 +133,7 @@ public class FixedDepositCreatePageTest {
     public void dataEntryMaximumGroupByPrice() {
         this.wicket.login();
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         JUnitFormTester form = null;
 
@@ -344,7 +344,7 @@ public class FixedDepositCreatePageTest {
     public void dataEntryMaximumPeriod() {
         this.wicket.login();
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         JUnitFormTester form = null;
 
@@ -546,7 +546,7 @@ public class FixedDepositCreatePageTest {
 
         String currencyCodeValue = "USD";
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         JUnitFormTester form = this.wicket.newFormTester("form");
 
@@ -573,7 +573,7 @@ public class FixedDepositCreatePageTest {
 
         String chargeValue = this.wicket.getJdbcTemplate().queryForObject("select id from m_charge where currency_code = ? and charge_applies_to_enum = ? and is_penalty = ? and is_active = ? limit 1", String.class, currencyCodeValue, ChargeType.SavingDeposit.getLiteral(), 0, 1);
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         JUnitFormTester form = this.wicket.newFormTester("form");
 
@@ -602,7 +602,7 @@ public class FixedDepositCreatePageTest {
     public void chargeAddLinkClickNoCurrencyTest() {
         this.wicket.login();
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         AjaxLink<?> chargeAddLink = this.wicket.getComponentFromLastRenderedPage("form:chargeAddLink", AjaxLink.class);
         this.wicket.executeAjaxLink(chargeAddLink);
@@ -619,7 +619,7 @@ public class FixedDepositCreatePageTest {
 
         String chargeValue = this.wicket.getJdbcTemplate().queryForObject("select id from m_charge where currency_code = ? and charge_applies_to_enum = ? and is_penalty = ? and is_active = 1 limit 1", String.class, currencyCodeValue, ChargeType.SavingDeposit.getLiteral(), 0);
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         Map<String, Object> item = Maps.newHashMap();
         item.put("uuid", chargeValue);
@@ -653,7 +653,7 @@ public class FixedDepositCreatePageTest {
     public void interestRateChartAddLinkClickTest() {
         this.wicket.login();
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         AjaxLink<?> chargeAddLink = this.wicket.getComponentFromLastRenderedPage("form:interestRateChartAddLink", AjaxLink.class);
         this.wicket.executeAjaxLink(chargeAddLink);
@@ -682,7 +682,7 @@ public class FixedDepositCreatePageTest {
     public void interestRateChartActionClickDeleteTest() {
         this.wicket.login();
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         Map<String, Object> item = Maps.newHashMap();
         String uuid = this.wicket.getStringGenerator().externalId();
@@ -701,7 +701,7 @@ public class FixedDepositCreatePageTest {
     public void interestRateChartActionClickIncentivesTest() {
         this.wicket.login();
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         Map<String, Object> item = Maps.newHashMap();
         String uuid = this.wicket.getStringGenerator().externalId();
@@ -721,7 +721,7 @@ public class FixedDepositCreatePageTest {
     public void accountingFieldUpdateTest() {
         this.wicket.login();
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         JUnitFormTester form = this.wicket.newFormTester("form");
 
@@ -740,7 +740,7 @@ public class FixedDepositCreatePageTest {
 
         String currencyCodeValue = "USD";
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         JUnitFormTester form = null;
 
@@ -784,7 +784,7 @@ public class FixedDepositCreatePageTest {
     public void advancedAccountingRulePenaltyIncomeAddLinkClickNoCurrencyTest() {
         this.wicket.login();
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         JUnitFormTester form = null;
 
@@ -809,7 +809,7 @@ public class FixedDepositCreatePageTest {
     public void advancedAccountingRuleFundSourceAddLinkClickTest() {
         this.wicket.login();
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         JUnitFormTester form = null;
 
@@ -849,7 +849,7 @@ public class FixedDepositCreatePageTest {
 
         this.wicket.login();
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         JUnitFormTester form = null;
 
@@ -877,7 +877,7 @@ public class FixedDepositCreatePageTest {
 
         String currencyCodeValue = "USD";
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         JUnitFormTester form = null;
 
@@ -921,7 +921,7 @@ public class FixedDepositCreatePageTest {
     public void advancedAccountingRuleFundSourceActionClickTest() {
         this.wicket.login();
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         JUnitFormTester form = null;
 
@@ -952,7 +952,7 @@ public class FixedDepositCreatePageTest {
     public void advancedAccountingRuleFeeIncomeActionClickTest() {
         this.wicket.login();
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         JUnitFormTester form = null;
 
@@ -983,7 +983,7 @@ public class FixedDepositCreatePageTest {
     public void advancedAccountingRulePenaltyIncomeActionClickTest() {
         this.wicket.login();
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         JUnitFormTester form = null;
 
@@ -1013,7 +1013,7 @@ public class FixedDepositCreatePageTest {
     @Test
     public void settingWithholdTaxApplicableFieldUpdateTest() {
 
-        FixedDepositCreatePage page = this.wicket.startPage(FixedDepositCreatePage.class);
+        FixedCreatePage page = this.wicket.startPage(FixedCreatePage.class);
 
         JUnitFormTester form = null;
 

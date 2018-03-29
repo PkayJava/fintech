@@ -35,7 +35,7 @@ import com.google.common.collect.Lists;
  * Created by socheatkhauv on 6/22/17.
  */
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class FixedDepositBrowsePage extends Page {
+public class FixedBrowsePage extends Page {
 
     protected WebMarkupBlock dataBlock;
     protected WebMarkupContainer dataIContainer;
@@ -99,7 +99,7 @@ public class FixedDepositBrowsePage extends Page {
         this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
         this.dataFilterForm.add(this.dataTable);
 
-        this.createLink = new BookmarkablePageLink<>("createLink", FixedDepositCreatePage.class);
+        this.createLink = new BookmarkablePageLink<>("createLink", FixedCreatePage.class);
         add(this.createLink);
     }
 
@@ -113,7 +113,7 @@ public class FixedDepositBrowsePage extends Page {
             String name = (String) model.get(column);
             PageParameters parameters = new PageParameters();
             parameters.add("fixedId", model.get("id"));
-            return new LinkCell(FixedDepositPreviewPage.class, parameters, name);
+            return new LinkCell(FixedPreviewPage.class, parameters, name);
         } else if ("shortName".equals(column)) {
             String value = (String) model.get(column);
             return new TextCell(value);

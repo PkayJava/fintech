@@ -18,9 +18,8 @@ import com.angkorteam.fintech.ddl.MCharge;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.ProductPopup;
-import com.angkorteam.fintech.pages.product.fixed.FixedDepositBrowsePage;
-import com.angkorteam.fintech.pages.product.fixed.FixedDepositCreatePage;
-import com.angkorteam.fintech.pages.product.saving.SavingCreatePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedBrowsePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedCreatePage;
 import com.angkorteam.fintech.popup.ChargePopup;
 import com.angkorteam.fintech.popup.CurrencyPopup;
 import com.angkorteam.fintech.table.TextCell;
@@ -107,7 +106,7 @@ public class ChargesPanel extends Panel {
         this.backLink.setOnClick(this::backLinkClick);
         this.form.add(this.backLink);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedDepositBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedBrowsePage.class);
         this.form.add(this.closeLink);
 
         this.modalWindow = new ModalWindow("modalWindow");
@@ -167,7 +166,7 @@ public class ChargesPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_ACCOUNTING);
+        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_ACCOUNTING);
         this.errorCharge.setObject(false);
     }
 
@@ -189,7 +188,7 @@ public class ChargesPanel extends Panel {
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_INTEREST_RATE_CHART);
+        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_INTEREST_RATE_CHART);
         if (target != null) {
             target.add(this.tab.getObject());
         }

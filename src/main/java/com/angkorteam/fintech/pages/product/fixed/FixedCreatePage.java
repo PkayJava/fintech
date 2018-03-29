@@ -52,7 +52,7 @@ import com.google.common.collect.Lists;
 import com.mashape.unirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
-public class FixedDepositCreatePage extends Page {
+public class FixedCreatePage extends Page {
 
     public static int TAB_DETAIL = 0;
     public static int TAB_CURRENCY = 1;
@@ -129,19 +129,19 @@ public class FixedDepositCreatePage extends Page {
     protected WebMarkupContainer advancedAccountingRuleIContainer;
 
     protected List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFundSourceColumn;
-    protected List<Map<String, Object>> advancedAccountingRuleFundSourceValue = Lists.newLinkedList();
+    protected List<Map<String, Object>> advancedAccountingRuleFundSourceValue;
     protected DataTable<Map<String, Object>, String> advancedAccountingRuleFundSourceTable;
     protected ListDataProvider advancedAccountingRuleFundSourceProvider;
     protected AjaxLink<Void> advancedAccountingRuleFundSourceAddLink;
 
     protected List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFeeIncomeColumn;
-    protected List<Map<String, Object>> advancedAccountingRuleFeeIncomeValue = Lists.newLinkedList();
+    protected List<Map<String, Object>> advancedAccountingRuleFeeIncomeValue;
     protected DataTable<Map<String, Object>, String> advancedAccountingRuleFeeIncomeTable;
     protected ListDataProvider advancedAccountingRuleFeeIncomeProvider;
     protected AjaxLink<Void> advancedAccountingRuleFeeIncomeAddLink;
 
     protected List<IColumn<Map<String, Object>, String>> advancedAccountingRulePenaltyIncomeColumn;
-    protected List<Map<String, Object>> advancedAccountingRulePenaltyIncomeValue = Lists.newLinkedList();
+    protected List<Map<String, Object>> advancedAccountingRulePenaltyIncomeValue;
     protected DataTable<Map<String, Object>, String> advancedAccountingRulePenaltyIncomeTable;
     protected ListDataProvider advancedAccountingRulePenaltyIncomeProvider;
     protected AjaxLink<Void> advancedAccountingRulePenaltyIncomeAddLink;
@@ -173,7 +173,7 @@ public class FixedDepositCreatePage extends Page {
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
             breadcrumb.setLabel("Fixed Deposit Product");
-            breadcrumb.setPage(FixedDepositBrowsePage.class);
+            breadcrumb.setPage(FixedBrowsePage.class);
             BREADCRUMB.add(breadcrumb);
         }
 
@@ -207,7 +207,10 @@ public class FixedDepositCreatePage extends Page {
 
         this.accountingValue = AccountingType.None.getDescription();
 
-        this.chargeValue = Lists.newLinkedList();
+        this.chargeValue = new ArrayList<>();
+        this.advancedAccountingRuleFundSourceValue = new ArrayList<>();
+        this.advancedAccountingRuleFeeIncomeValue = new ArrayList<>();
+        this.advancedAccountingRulePenaltyIncomeValue = new ArrayList<>();
 
         this.interestRateChartValue = new ArrayList<>();
         this.interestRatePrimaryGroupingByAmountValue = false;
@@ -440,7 +443,7 @@ public class FixedDepositCreatePage extends Page {
         if (reportError(node)) {
             return;
         }
-        setResponsePage(FixedDepositBrowsePage.class);
+        setResponsePage(FixedBrowsePage.class);
     }
 
 }

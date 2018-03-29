@@ -16,8 +16,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.pages.product.fixed.FixedDepositBrowsePage;
-import com.angkorteam.fintech.pages.product.fixed.FixedDepositCreatePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedBrowsePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedCreatePage;
 import com.angkorteam.fintech.popup.IncentivePopup;
 import com.angkorteam.fintech.popup.InterestRateChartPopup;
 import com.angkorteam.fintech.table.TextCell;
@@ -121,7 +121,7 @@ public class InterestRateChartPanel extends Panel {
         this.backLink.setOnClick(this::backLinkClick);
         this.form.add(this.backLink);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedDepositBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedBrowsePage.class);
         this.form.add(this.closeLink);
 
         this.modalWindow = new ModalWindow("modalWindow");
@@ -280,7 +280,7 @@ public class InterestRateChartPanel extends Panel {
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_SETTING);
+        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_SETTING);
         if (target != null) {
             target.add(this.tab.getObject());
         }
@@ -288,7 +288,7 @@ public class InterestRateChartPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_CHARGE);
+        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_CHARGE);
         this.errorInterestRateChart.setObject(false);
     }
 

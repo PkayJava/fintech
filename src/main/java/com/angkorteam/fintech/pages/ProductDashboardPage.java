@@ -9,7 +9,7 @@ import org.apache.wicket.model.Model;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.pages.charge.ChargeBrowsePage;
-import com.angkorteam.fintech.pages.product.fixed.FixedDepositBrowsePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedBrowsePage;
 import com.angkorteam.fintech.pages.product.loan.LoanBrowsePage;
 import com.angkorteam.fintech.pages.product.mixed.MixedBrowsePage;
 import com.angkorteam.fintech.pages.product.recurring.RecurringDepositBrowsePage;
@@ -60,7 +60,7 @@ public class ProductDashboardPage extends Page {
         InfoBoxPanel savingsProductsPage = new InfoBoxPanel("savingsProductsPage", Model.of(new InfoBox().setPage(SavingBrowsePage.class).setTitle("Savings Products").setDescription("Add new savings product or modify or inactivate savings product").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(savingsProductsPage);
 
-        InfoBoxPanel fixedDepositProductsPage = new InfoBoxPanel("fixedDepositProductsPage", Model.of(new InfoBox().setPage(FixedDepositBrowsePage.class).setTitle("Fixed Deposit Products").setDescription("Add, modify or inactivate a Fixed deposit product").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
+        InfoBoxPanel fixedDepositProductsPage = new InfoBoxPanel("fixedDepositProductsPage", Model.of(new InfoBox().setPage(FixedBrowsePage.class).setTitle("Fixed Deposit Products").setDescription("Add, modify or inactivate a Fixed deposit product").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(fixedDepositProductsPage);
 
         InfoBoxPanel shareProductsPage = new InfoBoxPanel("shareProductsPage", Model.of(new InfoBox().setPage(ShareBrowsePage.class).setTitle("Share Products").setDescription("Add new share product or modify or inactivate share product").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));

@@ -21,8 +21,8 @@ import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.dto.enums.AccountingType;
 import com.angkorteam.fintech.dto.enums.ProductPopup;
-import com.angkorteam.fintech.pages.product.fixed.FixedDepositBrowsePage;
-import com.angkorteam.fintech.pages.product.fixed.FixedDepositCreatePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedBrowsePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedCreatePage;
 import com.angkorteam.fintech.popup.CurrencyPopup;
 import com.angkorteam.fintech.popup.FeeChargePopup;
 import com.angkorteam.fintech.popup.PaymentTypePopup;
@@ -182,7 +182,7 @@ public class AccountingPanel extends Panel {
         this.backLink.setOnClick(this::backLinkClick);
         this.form.add(this.backLink);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedDepositBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedBrowsePage.class);
         this.form.add(this.closeLink);
 
         this.modalWindow = new ModalWindow("modalWindow");
@@ -323,12 +323,12 @@ public class AccountingPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_PREVIEW);
+        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_PREVIEW);
         this.errorAccounting.setObject(false);
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_CHARGE);
+        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_CHARGE);
         if (target != null) {
             target.add(this.tab.getObject());
         }

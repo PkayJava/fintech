@@ -17,7 +17,7 @@ public class FixedDepositBrowsePageTest {
     @Test
     public void visitPage() {
         this.wicket.login();
-        this.wicket.startPage(FixedDepositBrowsePage.class);
-        this.wicket.assertRenderedPage(FixedDepositBrowsePage.class);
+        this.wicket.startPage(FixedBrowsePage.class);
+        this.wicket.assertRenderedPage(FixedBrowsePage.class);
     }
 }

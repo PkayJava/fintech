@@ -9,8 +9,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.dto.enums.DayInYear;
-import com.angkorteam.fintech.pages.product.fixed.FixedDepositBrowsePage;
-import com.angkorteam.fintech.pages.product.fixed.FixedDepositCreatePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedBrowsePage;
+import com.angkorteam.fintech.pages.product.fixed.FixedCreatePage;
 import com.angkorteam.fintech.provider.DayInYearProvider;
 import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
 import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
@@ -103,7 +103,7 @@ public class TermsPanel extends Panel {
         this.backLink.setOnClick(this::backLinkClick);
         this.form.add(this.backLink);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedDepositBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", FixedBrowsePage.class);
         this.form.add(this.closeLink);
 
         this.termDefaultDepositAmountBlock = new WebMarkupBlock("termDefaultDepositAmountBlock", Size.Four_4);
@@ -187,7 +187,7 @@ public class TermsPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_SETTING);
+        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_SETTING);
         this.errorTerm.setObject(false);
     }
 
@@ -196,7 +196,7 @@ public class TermsPanel extends Panel {
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.tab.getObject().setSelectedTab(FixedDepositCreatePage.TAB_CURRENCY);
+        this.tab.getObject().setSelectedTab(FixedCreatePage.TAB_CURRENCY);
         if (target != null) {
             target.add(this.tab.getObject());
         }
