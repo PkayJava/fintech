@@ -17,6 +17,7 @@ import org.apache.wicket.model.PropertyModel;
 import com.angkorteam.fintech.dto.enums.AccountingType;
 import com.angkorteam.fintech.pages.product.fixed.FixedDepositBrowsePage;
 import com.angkorteam.fintech.pages.product.fixed.FixedDepositCreatePage;
+import com.angkorteam.fintech.popup.IncentivePopup;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.ReadOnlyView;
@@ -25,10 +26,14 @@ import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
+import com.angkorteam.framework.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.TextColumn;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionFilterColumn;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ActionItem;
+import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemCss;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
@@ -54,6 +59,9 @@ public class PreviewPanel extends Panel {
     protected Button saveButton;
     protected AjaxLink<Void> backLink;
     protected BookmarkablePageLink<Void> closeLink;
+
+    protected ModalWindow modalWindow;
+    protected Map<String, Object> popupModel;
 
     // Details
 
@@ -116,15 +124,6 @@ public class PreviewPanel extends Panel {
 
     // Settings
 
-    //
-    // Lock-in Period Minimum Deposit Term Maximum Deposit Term Deposit Term In
-    // multiple of
-    // 1 Days 1 Weeks 1 Days 1 Days
-    //
-    //
-    // Apply penal interest (less) Withhold tax Applicable Withhold Tax Group
-    // 1 % On Whole Term Yes ABC
-
     protected WebMarkupBlock settingLockInPeriodBlock;
     protected WebMarkupContainer settingLockInPeriodVContainer;
     protected ReadOnlyView settingLockInPeriodView;
@@ -160,6 +159,21 @@ public class PreviewPanel extends Panel {
 
     // Interest Rate Chart
 
+    protected WebMarkupBlock interestRateValidFromDateBlock;
+    protected WebMarkupContainer interestRateValidFromDateVContainer;
+    protected ReadOnlyView interestRateValidFromDateView;
+
+    protected WebMarkupBlock interestRateValidEndDateBlock;
+    protected WebMarkupContainer interestRateValidEndDateVContainer;
+    protected ReadOnlyView interestRateValidEndDateView;
+
+    protected WebMarkupBlock interestRateChartBlock;
+    protected WebMarkupContainer interestRateChartVContainer;
+    protected DataTable<Map<String, Object>, String> interestRateChartTable;
+    protected List<IColumn<Map<String, Object>, String>> interestRateChartColumn;
+    protected ListDataProvider interestRateChartProvider;
+    protected PropertyModel<List<Map<String, Object>>> interestRateChartValue;
+
     // Charges
 
     protected WebMarkupBlock chargeBlock;
@@ -174,6 +188,30 @@ public class PreviewPanel extends Panel {
     protected Label accountingLabel;
 
     protected WebMarkupContainer cashMaster;
+
+    protected WebMarkupBlock cashSavingReferenceBlock;
+    protected WebMarkupContainer cashSavingReferenceVContainer;
+    protected ReadOnlyView cashSavingReferenceView;
+
+    protected WebMarkupBlock cashSavingControlBlock;
+    protected WebMarkupContainer cashSavingControlVContainer;
+    protected ReadOnlyView cashSavingControlView;
+
+    protected WebMarkupBlock cashSavingTransferInSuspenseBlock;
+    protected WebMarkupContainer cashSavingTransferInSuspenseVContainer;
+    protected ReadOnlyView cashSavingTransferInSuspenseView;
+
+    protected WebMarkupBlock cashInterestOnSavingBlock;
+    protected WebMarkupContainer cashInterestOnSavingVContainer;
+    protected ReadOnlyView cashInterestOnSavingView;
+
+    protected WebMarkupBlock cashIncomeFromFeeBlock;
+    protected WebMarkupContainer cashIncomeFromFeeVContainer;
+    protected ReadOnlyView cashIncomeFromFeeView;
+
+    protected WebMarkupBlock cashIncomeFromPenaltyBlock;
+    protected WebMarkupContainer cashIncomeFromPenaltyVContainer;
+    protected ReadOnlyView cashIncomeFromPenaltyView;
 
     // Advanced Accounting Rule
 
@@ -225,6 +263,16 @@ public class PreviewPanel extends Panel {
         this.chargeColumn.add(new TextColumn(Model.of("Amount"), "amount", "amount", this::chargeColumn));
         this.chargeColumn.add(new TextColumn(Model.of("Collected On"), "collect", "collect", this::chargeColumn));
 
+        this.interestRateChartValue = new PropertyModel<>(this.itemPage, "interestRateChartValue");
+        this.interestRateChartColumn = Lists.newLinkedList();
+        this.interestRateChartColumn.add(new TextColumn(Model.of("Period Type"), "periodType", "periodType", this::interestRateChartColumn));
+        this.interestRateChartColumn.add(new TextColumn(Model.of("Period From/To"), "period", "period", this::interestRateChartColumn));
+        this.interestRateChartColumn.add(new TextColumn(Model.of("Amount From/To"), "amountRange", "amountRange", this::interestRateChartColumn));
+        this.interestRateChartColumn.add(new TextColumn(Model.of("Interest"), "interest", "interest", this::interestRateChartColumn));
+        this.interestRateChartColumn.add(new TextColumn(Model.of("Description"), "description", "description", this::interestRateChartColumn));
+        this.interestRateChartColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::interestRateChartAction, this::interestRateChartClick));
+        this.interestRateChartProvider = new ListDataProvider(this.interestRateChartValue.getObject());
+
         this.advancedAccountingRuleFundSourceValue = new PropertyModel<>(this.itemPage, "advancedAccountingRuleFundSourceValue");
         this.advancedAccountingRuleFundSourceProvider = new ListDataProvider(this.advancedAccountingRuleFundSourceValue.getObject());
         this.advancedAccountingRuleFundSourceColumn = Lists.newArrayList();
@@ -260,6 +308,10 @@ public class PreviewPanel extends Panel {
 
         this.closeLink = new BookmarkablePageLink<>("closeLink", FixedDepositBrowsePage.class);
         this.form.add(this.closeLink);
+
+        this.modalWindow = new ModalWindow("modalWindow");
+        add(this.modalWindow);
+        this.modalWindow.setOnClose(this::modalWindowClose);
 
         this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
         this.form.add(this.detailProductNameBlock);
@@ -401,6 +453,29 @@ public class PreviewPanel extends Panel {
         this.settingTaxGroupView = new ReadOnlyView("settingTaxGroupView", new PropertyModel<>(this.itemPage, "settingTaxGroupValue"));
         this.settingTaxGroupVContainer.add(this.settingTaxGroupView);
 
+        this.interestRateValidFromDateBlock = new WebMarkupBlock("interestRateValidFromDateBlock", Size.Six_6);
+        this.form.add(this.interestRateValidFromDateBlock);
+        this.interestRateValidFromDateVContainer = new WebMarkupContainer("interestRateValidFromDateVContainer");
+        this.interestRateValidFromDateBlock.add(this.interestRateValidFromDateVContainer);
+        this.interestRateValidFromDateView = new ReadOnlyView("interestRateValidFromDateView", new PropertyModel<>(this.itemPage, "interestRateValidFromDateValue"), "dd/MM/yyyy");
+        this.interestRateValidFromDateVContainer.add(this.interestRateValidFromDateView);
+
+        this.interestRateValidEndDateBlock = new WebMarkupBlock("interestRateValidEndDateBlock", Size.Six_6);
+        this.form.add(this.interestRateValidEndDateBlock);
+        this.interestRateValidEndDateVContainer = new WebMarkupContainer("interestRateValidEndDateVContainer");
+        this.interestRateValidEndDateBlock.add(this.interestRateValidEndDateVContainer);
+        this.interestRateValidEndDateView = new ReadOnlyView("interestRateValidEndDateView", new PropertyModel<>(this.itemPage, "interestRateValidEndDateValue"), "dd/MM/yyyy");
+        this.interestRateValidEndDateVContainer.add(this.interestRateValidEndDateView);
+
+        this.interestRateChartBlock = new WebMarkupBlock("interestRateChartBlock", Size.Twelve_12);
+        this.form.add(this.interestRateChartBlock);
+        this.interestRateChartVContainer = new WebMarkupContainer("interestRateChartVContainer");
+        this.interestRateChartBlock.add(this.interestRateChartVContainer);
+        this.interestRateChartTable = new DataTable<>("interestRateChartTable", this.interestRateChartColumn, this.interestRateChartProvider, this.interestRateChartValue.getObject().size() + 1);
+        this.interestRateChartVContainer.add(this.interestRateChartTable);
+        this.interestRateChartTable.addTopToolbar(new HeadersToolbar<>(this.interestRateChartTable, this.interestRateChartProvider));
+        this.interestRateChartTable.addBottomToolbar(new NoRecordsToolbar(this.interestRateChartTable));
+
         this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Twelve_12);
         this.form.add(this.chargeBlock);
         this.chargeVContainer = new WebMarkupContainer("chargeVContainer");
@@ -415,6 +490,48 @@ public class PreviewPanel extends Panel {
 
         this.cashMaster = new WebMarkupContainer("cashMaster");
         this.form.add(this.cashMaster);
+
+        this.cashSavingReferenceBlock = new WebMarkupBlock("cashSavingReferenceBlock", Size.Four_4);
+        this.cashMaster.add(this.cashSavingReferenceBlock);
+        this.cashSavingReferenceVContainer = new WebMarkupContainer("cashSavingReferenceVContainer");
+        this.cashSavingReferenceBlock.add(this.cashSavingReferenceVContainer);
+        this.cashSavingReferenceView = new ReadOnlyView("cashSavingReferenceView", new PropertyModel<>(this.itemPage, "cashSavingReferenceValue"));
+        this.cashSavingReferenceVContainer.add(this.cashSavingReferenceView);
+
+        this.cashSavingControlBlock = new WebMarkupBlock("cashSavingControlBlock", Size.Four_4);
+        this.cashMaster.add(this.cashSavingControlBlock);
+        this.cashSavingControlVContainer = new WebMarkupContainer("cashSavingControlVContainer");
+        this.cashSavingControlBlock.add(this.cashSavingControlVContainer);
+        this.cashSavingControlView = new ReadOnlyView("cashSavingControlView", new PropertyModel<>(this.itemPage, "cashSavingControlValue"));
+        this.cashSavingControlVContainer.add(this.cashSavingControlView);
+
+        this.cashSavingTransferInSuspenseBlock = new WebMarkupBlock("cashSavingTransferInSuspenseBlock", Size.Four_4);
+        this.cashMaster.add(this.cashSavingTransferInSuspenseBlock);
+        this.cashSavingTransferInSuspenseVContainer = new WebMarkupContainer("cashSavingTransferInSuspenseVContainer");
+        this.cashSavingTransferInSuspenseBlock.add(this.cashSavingTransferInSuspenseVContainer);
+        this.cashSavingTransferInSuspenseView = new ReadOnlyView("cashSavingTransferInSuspenseView", new PropertyModel<>(this.itemPage, "cashSavingTransferInSuspenseValue"));
+        this.cashSavingTransferInSuspenseVContainer.add(this.cashSavingTransferInSuspenseView);
+
+        this.cashInterestOnSavingBlock = new WebMarkupBlock("cashInterestOnSavingBlock", Size.Four_4);
+        this.cashMaster.add(this.cashInterestOnSavingBlock);
+        this.cashInterestOnSavingVContainer = new WebMarkupContainer("cashInterestOnSavingVContainer");
+        this.cashInterestOnSavingBlock.add(this.cashInterestOnSavingVContainer);
+        this.cashInterestOnSavingView = new ReadOnlyView("cashInterestOnSavingView", new PropertyModel<>(this.itemPage, "cashInterestOnSavingValue"));
+        this.cashInterestOnSavingVContainer.add(this.cashInterestOnSavingView);
+
+        this.cashIncomeFromFeeBlock = new WebMarkupBlock("cashIncomeFromFeeBlock", Size.Four_4);
+        this.cashMaster.add(this.cashIncomeFromFeeBlock);
+        this.cashIncomeFromFeeVContainer = new WebMarkupContainer("cashIncomeFromFeeVContainer");
+        this.cashIncomeFromFeeBlock.add(this.cashIncomeFromFeeVContainer);
+        this.cashIncomeFromFeeView = new ReadOnlyView("cashIncomeFromFeeView", new PropertyModel<>(this.itemPage, "cashIncomeFromFeeValue"));
+        this.cashIncomeFromFeeVContainer.add(this.cashIncomeFromFeeView);
+
+        this.cashIncomeFromPenaltyBlock = new WebMarkupBlock("cashIncomeFromPenaltyBlock", Size.Four_4);
+        this.cashMaster.add(this.cashIncomeFromPenaltyBlock);
+        this.cashIncomeFromPenaltyVContainer = new WebMarkupContainer("cashIncomeFromPenaltyVContainer");
+        this.cashIncomeFromPenaltyBlock.add(this.cashIncomeFromPenaltyVContainer);
+        this.cashIncomeFromPenaltyView = new ReadOnlyView("cashIncomeFromPenaltyView", new PropertyModel<>(this.itemPage, "cashIncomeFromPenaltyValue"));
+        this.cashIncomeFromPenaltyVContainer.add(this.cashIncomeFromPenaltyView);
 
         this.advancedAccountingRuleMaster = new WebMarkupContainer("advancedAccountingRuleMaster");
         this.form.add(this.advancedAccountingRuleMaster);
@@ -446,6 +563,38 @@ public class PreviewPanel extends Panel {
         this.advancedAccountingRulePenaltyIncomeTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRulePenaltyIncomeTable, this.advancedAccountingRulePenaltyIncomeProvider));
         this.advancedAccountingRulePenaltyIncomeTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRulePenaltyIncomeTable));
 
+    }
+
+    protected void modalWindowClose(String popupName, String signalId, AjaxRequestTarget target) {
+
+    }
+
+    protected List<ActionItem> interestRateChartAction(String s, Map<String, Object> model) {
+        List<ActionItem> actions = Lists.newLinkedList();
+        actions.add(new ActionItem("incentives", Model.of("Incentives"), ItemCss.PRIMARY));
+        return actions;
+    }
+
+    protected void interestRateChartClick(String link, Map<String, Object> model, AjaxRequestTarget target) {
+        if ("incentives".equals(link)) {
+            List<Map<String, Object>> incentiveValue = (List<Map<String, Object>>) model.get("interestRate");
+            this.modalWindow.setContent(new IncentivePopup("incentive", incentiveValue, true));
+            this.modalWindow.show(target);
+        }
+    }
+
+    protected ItemPanel interestRateChartColumn(String column, IModel<String> display, Map<String, Object> model) {
+        if ("periodType".equals(column)) {
+            Option value = (Option) model.get(column);
+            return new TextCell(value);
+        } else if ("interest".equals(column)) {
+            Double value = (Double) model.get(column);
+            return new TextCell(value);
+        } else if ("description".equals(column) || "period".equals(column) || "amountRange".equals(column)) {
+            String value = (String) model.get(column);
+            return new TextCell(value);
+        }
+        throw new WicketRuntimeException("Unknown " + column);
     }
 
     @Override

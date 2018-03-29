@@ -187,7 +187,34 @@
 					<h3 class="box-title">Interest Rate Chart</h3>
 				</div>
 
-				<div class="box-body"></div>
+				<div class="box-body">
+
+					<!-- Row -->
+					<div wicket:id="interestRateValidFromDateBlock" class="form-group">
+						<wicket:container wicket:id="interestRateValidFromDateVContainer">
+							<label>Valid From Date</label>
+							<div wicket:id="interestRateValidFromDateView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="interestRateValidEndDateBlock" class="form-group">
+						<wicket:container wicket:id="interestRateValidEndDateVContainer">
+							<label>End Date</label>
+							<div wicket:id="interestRateValidEndDateView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="interestRateChartBlock" class="form-group">
+						<wicket:container wicket:id="interestRateChartVContainer">
+							<table wicket:id="interestRateChartTable"></table>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+				</div>
 
 				<div class="box-header with-border">
 					<h3 class="box-title">Charges</h3>
@@ -212,7 +239,50 @@
 
 				<wicket:container wicket:id="cashMaster">
 
+					<!-- Row -->
+					<div wicket:id="cashSavingReferenceBlock" class="form-group">
+						<wicket:container wicket:id="cashSavingReferenceVContainer">
+							<label>Saving Reference (Assets)</label>
+							<div wicket:id="cashSavingReferenceView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="cashSavingControlBlock" class="form-group">
+						<wicket:container wicket:id="cashSavingControlVContainer">
+							<label>Saving Control (Liabilities)</label>
+							<div wicket:id="cashSavingControlView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="cashSavingTransferInSuspenseBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="cashSavingTransferInSuspenseVContainer">
+							<label>Savings Transfers In Suspense (Liabilities)</label>
+							<div wicket:id="cashSavingTransferInSuspenseView"
+								class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
 
+					<!-- Row -->
+					<div wicket:id="cashInterestOnSavingBlock" class="form-group">
+						<wicket:container wicket:id="cashInterestOnSavingVContainer">
+							<label>Interest On Savings (Expenses)</label>
+							<div wicket:id="cashInterestOnSavingView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="cashIncomeFromFeeBlock" class="form-group">
+						<wicket:container wicket:id="cashIncomeFromFeeVContainer">
+							<label>Income From Fees (Income)</label>
+							<div wicket:id="cashIncomeFromFeeView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="cashIncomeFromPenaltyBlock" class="form-group">
+						<wicket:container wicket:id="cashIncomeFromPenaltyVContainer">
+							<label>Income From Penalties (Income)</label>
+							<div wicket:id="cashIncomeFromPenaltyView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
 
 				</wicket:container>
 
@@ -269,6 +339,8 @@
 				</div>
 			</div>
 		</form>
+
+		<div wicket:id="modalWindow"></div>
 
 	</wicket:panel>
 </body>

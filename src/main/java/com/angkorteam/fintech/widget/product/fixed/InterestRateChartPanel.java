@@ -134,6 +134,7 @@ public class InterestRateChartPanel extends Panel {
         this.interestRateValidFromDateBlock.add(this.interestRateValidFromDateIContainer);
         this.interestRateValidFromDateField = new DateTextField("interestRateValidFromDateField", new PropertyModel<>(this.itemPage, "interestRateValidFromDateValue"));
         this.interestRateValidFromDateField.setLabel(Model.of("Valid From Date"));
+        this.interestRateValidFromDateField.add(new OnChangeAjaxBehavior());
         this.interestRateValidFromDateIContainer.add(this.interestRateValidFromDateField);
         this.interestRateValidFromDateFeedback = new TextFeedbackPanel("interestRateValidFromDateFeedback", this.interestRateValidFromDateField);
         this.interestRateValidFromDateIContainer.add(this.interestRateValidFromDateFeedback);
@@ -144,6 +145,7 @@ public class InterestRateChartPanel extends Panel {
         this.interestRateValidEndDateBlock.add(this.interestRateValidEndDateIContainer);
         this.interestRateValidEndDateField = new DateTextField("interestRateValidEndDateField", new PropertyModel<>(this.itemPage, "interestRateValidEndDateValue"));
         this.interestRateValidEndDateField.setLabel(Model.of("End Date"));
+        this.interestRateValidEndDateField.add(new OnChangeAjaxBehavior());
         this.interestRateValidEndDateIContainer.add(this.interestRateValidEndDateField);
         this.interestRateValidEndDateFeedback = new TextFeedbackPanel("interestRateValidEndDateFeedback", this.interestRateValidEndDateField);
         this.interestRateValidEndDateIContainer.add(this.interestRateValidEndDateFeedback);

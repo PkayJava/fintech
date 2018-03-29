@@ -43,6 +43,8 @@ import com.google.common.collect.Maps;
 
 public class IncentivePopup extends PopupPanel {
 
+    protected boolean readonly = false;
+
     protected Form<Void> form;
     protected AjaxButton addButton;
 
@@ -90,8 +92,13 @@ public class IncentivePopup extends PopupPanel {
     protected ListDataProvider dataProvider;
 
     public IncentivePopup(String name, List<Map<String, Object>> incentiveValue) {
+        this(name, incentiveValue, false);
+    }
+
+    public IncentivePopup(String name, List<Map<String, Object>> incentiveValue, boolean readonly) {
         super(name, Maps.newHashMap());
         this.dataValue = incentiveValue;
+        this.readonly = readonly;
     }
 
     @Override
@@ -102,6 +109,7 @@ public class IncentivePopup extends PopupPanel {
     protected void initComponent() {
         this.form = new Form<>("form");
         add(this.form);
+        this.form.setVisible(!this.readonly);
 
         this.addButton = new AjaxButton("addButton");
         this.addButton.setOnSubmit(this::addButtonSubmit);
@@ -172,7 +180,9 @@ public class IncentivePopup extends PopupPanel {
         this.dataColumn.add(new TextColumn(Model.of("Value"), "operand", "operand", this::dataColumn));
         this.dataColumn.add(new TextColumn(Model.of("Type"), "operandType", "operandType", this::dataColumn));
         this.dataColumn.add(new TextColumn(Model.of("Interest"), "interest", "interest", this::dataColumn));
-        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
+        if (!this.readonly) {
+            this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
+        }
         this.dataProvider = new ListDataProvider(this.dataValue);
         this.dataTable = new DataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
         add(this.dataTable);
