@@ -7,8 +7,8 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.pages.product.saving.SavingBrowsePage;
-import com.angkorteam.fintech.pages.product.saving.SavingCreatePage;
+import com.angkorteam.fintech.pages.product.recurring.RecurringBrowsePage;
+import com.angkorteam.fintech.pages.product.recurring.RecurringCreatePage;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
@@ -66,7 +66,7 @@ public class DetailsPanel extends Panel {
         this.nextButton.setOnError(this::nextButtonError);
         this.form.add(this.nextButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", RecurringBrowsePage.class);
         this.form.add(this.closeLink);
 
         this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Six_6);
@@ -108,7 +108,7 @@ public class DetailsPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_CURRENCY);
+        this.tab.getObject().setSelectedTab(RecurringCreatePage.TAB_CURRENCY);
         this.errorDetail.setObject(false);
     }
 

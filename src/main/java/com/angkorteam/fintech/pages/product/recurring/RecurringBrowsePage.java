@@ -30,7 +30,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
 
-public class RecurringDepositBrowsePage extends Page {
+public class RecurringBrowsePage extends Page {
 
     protected WebMarkupBlock dataBlock;
     protected WebMarkupContainer dataIContainer;
@@ -71,7 +71,7 @@ public class RecurringDepositBrowsePage extends Page {
     protected void initComponent() {
         initDataBlock();
 
-        this.createLink = new BookmarkablePageLink<>("createLink", RecurringDepositCreatePage.class);
+        this.createLink = new BookmarkablePageLink<>("createLink", RecurringCreatePage.class);
         add(this.createLink);
     }
 
@@ -109,7 +109,7 @@ public class RecurringDepositBrowsePage extends Page {
             String value = (String) model.get(column);
             PageParameters parameters = new PageParameters();
             parameters.add("recurringId", model.get("id"));
-            return new LinkCell(RecurringDepositPreviewPage.class, parameters, value);
+            return new LinkCell(RecurringPreviewPage.class, parameters, value);
         } else if ("shortName".equals(column)) {
             String value = (String) model.get(column);
             return new TextCell(value);

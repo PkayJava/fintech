@@ -17,7 +17,7 @@ public class RecurringDepositBrowsePageTest {
     @Test
     public void visitPage() {
         this.wicket.login();
-        this.wicket.startPage(RecurringDepositBrowsePage.class);
-        this.wicket.assertRenderedPage(RecurringDepositBrowsePage.class);
+        this.wicket.startPage(RecurringBrowsePage.class);
+        this.wicket.assertRenderedPage(RecurringBrowsePage.class);
     }
 }

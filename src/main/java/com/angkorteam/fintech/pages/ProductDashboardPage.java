@@ -12,7 +12,7 @@ import com.angkorteam.fintech.pages.charge.ChargeBrowsePage;
 import com.angkorteam.fintech.pages.product.fixed.FixedBrowsePage;
 import com.angkorteam.fintech.pages.product.loan.LoanBrowsePage;
 import com.angkorteam.fintech.pages.product.mixed.MixedBrowsePage;
-import com.angkorteam.fintech.pages.product.recurring.RecurringDepositBrowsePage;
+import com.angkorteam.fintech.pages.product.recurring.RecurringBrowsePage;
 import com.angkorteam.fintech.pages.product.saving.SavingBrowsePage;
 import com.angkorteam.fintech.pages.product.share.ShareBrowsePage;
 import com.angkorteam.fintech.pages.rate.FloatingRateBrowsePage;
@@ -66,7 +66,7 @@ public class ProductDashboardPage extends Page {
         InfoBoxPanel shareProductsPage = new InfoBoxPanel("shareProductsPage", Model.of(new InfoBox().setPage(ShareBrowsePage.class).setTitle("Share Products").setDescription("Add new share product or modify or inactivate share product").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(shareProductsPage);
 
-        InfoBoxPanel recurringDepositProductsPage = new InfoBoxPanel("recurringDepositProductsPage", Model.of(new InfoBox().setPage(RecurringDepositBrowsePage.class).setTitle("Recurring Deposit Products").setDescription("Add, modify or inactivate a Recurring Deposit product").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
+        InfoBoxPanel recurringDepositProductsPage = new InfoBoxPanel("recurringDepositProductsPage", Model.of(new InfoBox().setPage(RecurringBrowsePage.class).setTitle("Recurring Deposit Products").setDescription("Add, modify or inactivate a Recurring Deposit product").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
         add(recurringDepositProductsPage);
 
         InfoBoxPanel chargesProductPage = new InfoBoxPanel("chargesProductPage", Model.of(new InfoBox().setPage(ChargeBrowsePage.class).setTitle("Charges").setDescription("Define charges/penalties for loan products, savings and deposit products").setBackgroundColor(BackgroundColor.AquaActive).setIcon(Emoji.ion_alert)));
