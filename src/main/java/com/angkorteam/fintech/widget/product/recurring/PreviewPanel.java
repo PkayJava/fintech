@@ -39,7 +39,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.panel.TextFeedbackPanel;
 import com.google.common.collect.Lists;
 
 public class PreviewPanel extends Panel {
@@ -94,17 +93,14 @@ public class PreviewPanel extends Panel {
     protected WebMarkupBlock termDefaultDepositAmountBlock;
     protected WebMarkupContainer termDefaultDepositAmountVContainer;
     protected ReadOnlyView termDefaultDepositAmountView;
-    protected TextFeedbackPanel termDefaultDepositAmountFeedback;
 
     protected WebMarkupBlock termMinimumDepositAmountBlock;
     protected WebMarkupContainer termMinimumDepositAmountVContainer;
     protected ReadOnlyView termMinimumDepositAmountView;
-    protected TextFeedbackPanel termMinimumDepositAmountFeedback;
 
     protected WebMarkupBlock termMaximumDepositAmountBlock;
     protected WebMarkupContainer termMaximumDepositAmountVContainer;
     protected ReadOnlyView termMaximumDepositAmountView;
-    protected TextFeedbackPanel termMaximumDepositAmountFeedback;
 
     protected WebMarkupBlock termInterestCompoundingPeriodBlock;
     protected WebMarkupContainer termInterestCompoundingPeriodVContainer;

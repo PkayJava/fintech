@@ -21,7 +21,6 @@ import com.angkorteam.fintech.popup.IncentivePopup;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -94,17 +93,14 @@ public class PreviewPanel extends Panel {
     protected WebMarkupBlock termDefaultDepositAmountBlock;
     protected WebMarkupContainer termDefaultDepositAmountVContainer;
     protected ReadOnlyView termDefaultDepositAmountView;
-    protected TextFeedbackPanel termDefaultDepositAmountFeedback;
 
     protected WebMarkupBlock termMinimumDepositAmountBlock;
     protected WebMarkupContainer termMinimumDepositAmountVContainer;
     protected ReadOnlyView termMinimumDepositAmountView;
-    protected TextFeedbackPanel termMinimumDepositAmountFeedback;
 
     protected WebMarkupBlock termMaximumDepositAmountBlock;
     protected WebMarkupContainer termMaximumDepositAmountVContainer;
     protected ReadOnlyView termMaximumDepositAmountView;
-    protected TextFeedbackPanel termMaximumDepositAmountFeedback;
 
     protected WebMarkupBlock termInterestCompoundingPeriodBlock;
     protected WebMarkupContainer termInterestCompoundingPeriodVContainer;

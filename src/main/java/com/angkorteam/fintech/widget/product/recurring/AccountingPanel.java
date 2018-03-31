@@ -209,7 +209,7 @@ public class AccountingPanel extends Panel {
         this.cashSavingReferenceProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.cashSavingReferenceProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
         this.cashSavingReferenceField = new Select2SingleChoice<>("cashSavingReferenceField", new PropertyModel<>(this.itemPage, "cashSavingReferenceValue"), this.cashSavingReferenceProvider);
-        this.cashSavingReferenceField.setLabel(Model.of("Saving reference"));
+        this.cashSavingReferenceField.setLabel(Model.of("Saving Reference"));
         this.cashSavingReferenceField.add(new OnChangeAjaxBehavior());
         this.cashSavingReferenceIContainer.add(this.cashSavingReferenceField);
         this.cashSavingReferenceFeedback = new TextFeedbackPanel("cashSavingReferenceFeedback", this.cashSavingReferenceField);
@@ -223,7 +223,7 @@ public class AccountingPanel extends Panel {
         this.cashSavingControlProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.cashSavingControlProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Liability.getLiteral());
         this.cashSavingControlField = new Select2SingleChoice<>("cashSavingControlField", new PropertyModel<>(this.itemPage, "cashSavingControlValue"), this.cashSavingControlProvider);
-        this.cashSavingControlField.setLabel(Model.of("Saving control"));
+        this.cashSavingControlField.setLabel(Model.of("Saving Control"));
         this.cashSavingControlField.add(new OnChangeAjaxBehavior());
         this.cashSavingControlIContainer.add(this.cashSavingControlField);
         this.cashSavingControlFeedback = new TextFeedbackPanel("cashSavingControlFeedback", this.cashSavingControlField);
@@ -237,7 +237,7 @@ public class AccountingPanel extends Panel {
         this.cashSavingTransferInSuspenseProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.cashSavingTransferInSuspenseProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Liability.getLiteral());
         this.cashSavingTransferInSuspenseField = new Select2SingleChoice<>("cashSavingTransferInSuspenseField", new PropertyModel<>(this.itemPage, "cashSavingTransferInSuspenseValue"), this.cashSavingTransferInSuspenseProvider);
-        this.cashSavingTransferInSuspenseField.setLabel(Model.of("Savings transfers in suspense"));
+        this.cashSavingTransferInSuspenseField.setLabel(Model.of("Savings Transfers In Suspense"));
         this.cashSavingTransferInSuspenseField.add(new OnChangeAjaxBehavior());
         this.cashSavingTransferInSuspenseIContainer.add(this.cashSavingTransferInSuspenseField);
         this.cashSavingTransferInSuspenseFeedback = new TextFeedbackPanel("cashSavingTransferInSuspenseFeedback", this.cashSavingTransferInSuspenseField);
@@ -251,7 +251,7 @@ public class AccountingPanel extends Panel {
         this.cashInterestOnSavingProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.cashInterestOnSavingProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Expense.getLiteral());
         this.cashInterestOnSavingField = new Select2SingleChoice<>("cashInterestOnSavingField", new PropertyModel<>(this.itemPage, "cashInterestOnSavingValue"), this.cashInterestOnSavingProvider);
-        this.cashInterestOnSavingField.setLabel(Model.of("Interest on savings"));
+        this.cashInterestOnSavingField.setLabel(Model.of("Interest On Savings"));
         this.cashInterestOnSavingField.add(new OnChangeAjaxBehavior());
         this.cashInterestOnSavingIContainer.add(this.cashInterestOnSavingField);
         this.cashInterestOnSavingFeedback = new TextFeedbackPanel("cashInterestOnSavingFeedback", this.cashInterestOnSavingField);
@@ -265,7 +265,7 @@ public class AccountingPanel extends Panel {
         this.cashIncomeFromFeeProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.cashIncomeFromFeeProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
         this.cashIncomeFromFeeField = new Select2SingleChoice<>("cashIncomeFromFeeField", new PropertyModel<>(this.itemPage, "cashIncomeFromFeeValue"), this.cashIncomeFromFeeProvider);
-        this.cashIncomeFromFeeField.setLabel(Model.of("Income from fees"));
+        this.cashIncomeFromFeeField.setLabel(Model.of("Income From Fees"));
         this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
         this.cashIncomeFromFeeIContainer.add(this.cashIncomeFromFeeField);
         this.cashIncomeFromFeeFeedback = new TextFeedbackPanel("cashIncomeFromFeeFeedback", this.cashIncomeFromFeeField);
@@ -279,7 +279,7 @@ public class AccountingPanel extends Panel {
         this.cashIncomeFromPenaltyProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.cashIncomeFromPenaltyProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
         this.cashIncomeFromPenaltyField = new Select2SingleChoice<>("cashIncomeFromPenaltyField", new PropertyModel<>(this.itemPage, "cashIncomeFromPenaltyValue"), this.cashIncomeFromPenaltyProvider);
-        this.cashIncomeFromPenaltyField.setLabel(Model.of("Income from penalties"));
+        this.cashIncomeFromPenaltyField.setLabel(Model.of("Income From Penalties"));
         this.cashIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
         this.cashIncomeFromPenaltyIContainer.add(this.cashIncomeFromPenaltyField);
         this.cashIncomeFromPenaltyFeedback = new TextFeedbackPanel("cashIncomeFromPenaltyFeedback", this.cashIncomeFromPenaltyField);

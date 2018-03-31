@@ -7,7 +7,119 @@
 		<form role="form" wicket:id="form">
 			<div class="box-primary">
 
-				<div class="box-body"></div>
+				<div class="box-body">
+
+					<!-- Row -->
+					<div wicket:id="settingSharePerClientMinimumBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingSharePerClientMinimumIContainer">
+							<label wicket:for="settingSharePerClientMinimumField">Shares
+								per Client Minimum</label>
+							<input wicket:id="settingSharePerClientMinimumField" type="text"
+								class="form-control" />
+							<span wicket:id="settingSharePerClientMinimumFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingSharePerClientDefaultBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingSharePerClientDefaultIContainer">
+							<label wicket:for="settingSharePerClientDefaultField">Shares
+								per Client Default</label>
+							<input wicket:id="settingSharePerClientDefaultField" type="text"
+								class="form-control" />
+							<span wicket:id="settingSharePerClientDefaultFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingSharePerClientMaximumBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingSharePerClientMaximumIContainer">
+							<label wicket:for="settingSharePerClientMaximumField">Shares
+								per Client Maximum</label>
+							<input wicket:id="settingSharePerClientMaximumField" type="text"
+								class="form-control" />
+							<span wicket:id="settingSharePerClientMaximumFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="settingMinimumActivePeriodBlock" class="form-group">
+						<wicket:container wicket:id="settingMinimumActivePeriodIContainer">
+							<label wicket:for="settingMinimumActivePeriodField">Minimum
+								Active Period</label>
+							<input wicket:id="settingMinimumActivePeriodField" type="text"
+								class="form-control" />
+							<span wicket:id="settingMinimumActivePeriodFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingMinimumActiveTypeBlock" class="form-group">
+						<wicket:container wicket:id="settingMinimumActiveTypeIContainer">
+							<label wicket:for="settingMinimumActiveTypeField">Type</label>
+							<select wicket:id="settingMinimumActiveTypeField"
+								class="form-control"></select>
+							<span wicket:id="settingMinimumActiveTypeFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div
+						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="settingLockInPeriodBlock" class="form-group">
+						<wicket:container wicket:id="settingLockInPeriodIContainer">
+							<label wicket:for="settingLockInPeriodField">Lock-in
+								period</label>
+							<input wicket:id="settingLockInPeriodField" type="text"
+								class="form-control" />
+							<span wicket:id="settingLockInPeriodFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div wicket:id="settingLockInTypeBlock" class="form-group">
+						<wicket:container wicket:id="settingLockInTypeIContainer">
+							<label wicket:for="settingLockInTypeField">Type</label>
+							<select wicket:id="settingLockInTypeField" class="form-control"></select>
+							<span wicket:id="settingLockInTypeFeedback" class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div
+						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+					</div>
+					<div class="clearfix"></div>
+
+					<!-- Row -->
+					<div wicket:id="settingAllowDividendForInactiveClientBlock"
+						class="form-group">
+						<wicket:container
+							wicket:id="settingAllowDividendForInactiveClientIContainer">
+							<label>&nbsp;</label>
+							<span style="display: block"> <label> <input
+									type="checkbox"
+									wicket:id="settingAllowDividendForInactiveClientField">
+									Is Allow dividends for inactive clients?
+							</label>
+							</span>
+							<span wicket:id="settingAllowDividendForInactiveClientFeedback"
+								class="help-block"></span>
+						</wicket:container>
+					</div>
+					<div
+						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+					</div>
+					<div
+						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+					</div>
+					<div class="clearfix"></div>
+
+				</div>
 
 				<div class="box-footer">
 					<a wicket:id="backLink" class="btn btn-info">Back</a>

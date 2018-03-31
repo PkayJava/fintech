@@ -319,7 +319,7 @@ public class AccountingPanel extends Panel {
         this.cashLoanPortfolioProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.cashLoanPortfolioProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
         this.cashLoanPortfolioField = new Select2SingleChoice<>("cashLoanPortfolioField", new PropertyModel<>(this.itemPage, "cashLoanPortfolioValue"), this.cashLoanPortfolioProvider);
-        this.cashLoanPortfolioField.setLabel(Model.of("Loan portfolio"));
+        this.cashLoanPortfolioField.setLabel(Model.of("Loan Portfolio"));
         this.cashLoanPortfolioField.add(new OnChangeAjaxBehavior());
         this.cashLoanPortfolioIContainer.add(this.cashLoanPortfolioField);
         this.cashLoanPortfolioFeedback = new TextFeedbackPanel("cashLoanPortfolioFeedback", this.cashLoanPortfolioField);
@@ -333,7 +333,7 @@ public class AccountingPanel extends Panel {
         this.cashTransferInSuspenseProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.cashTransferInSuspenseProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
         this.cashTransferInSuspenseField = new Select2SingleChoice<>("cashTransferInSuspenseField", new PropertyModel<>(this.itemPage, "cashTransferInSuspenseValue"), this.cashTransferInSuspenseProvider);
-        this.cashTransferInSuspenseField.setLabel(Model.of("Transfer in suspense"));
+        this.cashTransferInSuspenseField.setLabel(Model.of("Transfer In Suspense"));
         this.cashTransferInSuspenseField.add(new OnChangeAjaxBehavior());
         this.cashTransferInSuspenseIContainer.add(this.cashTransferInSuspenseField);
         this.cashTransferInSuspenseFeedback = new TextFeedbackPanel("cashTransferInSuspenseFeedback", this.cashTransferInSuspenseField);
@@ -347,7 +347,7 @@ public class AccountingPanel extends Panel {
         this.cashIncomeFromInterestProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.cashIncomeFromInterestProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
         this.cashIncomeFromInterestField = new Select2SingleChoice<>("cashIncomeFromInterestField", new PropertyModel<>(this.itemPage, "cashIncomeFromInterestValue"), this.cashIncomeFromInterestProvider);
-        this.cashIncomeFromInterestField.setLabel(Model.of("Income from Interest"));
+        this.cashIncomeFromInterestField.setLabel(Model.of("Income From Interest"));
         this.cashIncomeFromInterestField.add(new OnChangeAjaxBehavior());
         this.cashIncomeFromInterestIContainer.add(this.cashIncomeFromInterestField);
         this.cashIncomeFromInterestFeedback = new TextFeedbackPanel("cashIncomeFromInterestFeedback", this.cashIncomeFromInterestField);
@@ -361,7 +361,7 @@ public class AccountingPanel extends Panel {
         this.cashIncomeFromFeeProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.cashIncomeFromFeeProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
         this.cashIncomeFromFeeField = new Select2SingleChoice<>("cashIncomeFromFeeField", new PropertyModel<>(this.itemPage, "cashIncomeFromFeeValue"), this.cashIncomeFromFeeProvider);
-        this.cashIncomeFromFeeField.setLabel(Model.of("Income from fees"));
+        this.cashIncomeFromFeeField.setLabel(Model.of("Income From Fees"));
         this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
         this.cashIncomeFromFeeIContainer.add(this.cashIncomeFromFeeField);
         this.cashIncomeFromFeeFeedback = new TextFeedbackPanel("cashIncomeFromFeeFeedback", this.cashIncomeFromFeeField);
@@ -375,7 +375,7 @@ public class AccountingPanel extends Panel {
         this.cashIncomeFromPenaltyProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.cashIncomeFromPenaltyProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
         this.cashIncomeFromPenaltyField = new Select2SingleChoice<>("cashIncomeFromPenaltyField", new PropertyModel<>(this.itemPage, "cashIncomeFromPenaltyValue"), this.cashIncomeFromPenaltyProvider);
-        this.cashIncomeFromPenaltyField.setLabel(Model.of("Income from Penalty"));
+        this.cashIncomeFromPenaltyField.setLabel(Model.of("Income From Penalty"));
         this.cashIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
         this.cashIncomeFromPenaltyIContainer.add(this.cashIncomeFromPenaltyField);
         this.cashIncomeFromPenaltyFeedback = new TextFeedbackPanel("cashIncomeFromPenaltyFeedback", this.cashIncomeFromPenaltyField);
@@ -403,7 +403,7 @@ public class AccountingPanel extends Panel {
         this.cashLossWrittenOffProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.cashLossWrittenOffProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Expense.getLiteral());
         this.cashLossWrittenOffField = new Select2SingleChoice<>("cashLossWrittenOffField", new PropertyModel<>(this.itemPage, "cashLossWrittenOffValue"), this.cashLossWrittenOffProvider);
-        this.cashLossWrittenOffField.setLabel(Model.of("Loss written off"));
+        this.cashLossWrittenOffField.setLabel(Model.of("Loss Written Off"));
         this.cashLossWrittenOffField.add(new OnChangeAjaxBehavior());
         this.cashLossWrittenOffIContainer.add(this.cashLossWrittenOffField);
         this.cashLossWrittenOffFeedback = new TextFeedbackPanel("cashLossWrittenOffFeedback", this.cashLossWrittenOffField);
@@ -417,7 +417,7 @@ public class AccountingPanel extends Panel {
         this.cashOverPaymentLiabilityProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.cashOverPaymentLiabilityProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Liability.getLiteral());
         this.cashOverPaymentLiabilityField = new Select2SingleChoice<>("cashOverPaymentLiabilityField", new PropertyModel<>(this.itemPage, "cashOverPaymentLiabilityValue"), this.cashOverPaymentLiabilityProvider);
-        this.cashOverPaymentLiabilityField.setLabel(Model.of("Over payment liability"));
+        this.cashOverPaymentLiabilityField.setLabel(Model.of("Over Payment Liability"));
         this.cashOverPaymentLiabilityField.add(new OnChangeAjaxBehavior());
         this.cashOverPaymentLiabilityIContainer.add(this.cashOverPaymentLiabilityField);
         this.cashOverPaymentLiabilityFeedback = new TextFeedbackPanel("cashOverPaymentLiabilityFeedback", this.cashOverPaymentLiabilityField);
@@ -438,7 +438,7 @@ public class AccountingPanel extends Panel {
         this.accrualFundSourceProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.accrualFundSourceProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
         this.accrualFundSourceField = new Select2SingleChoice<>("accrualFundSourceField", new PropertyModel<>(this.itemPage, "accrualFundSourceValue"), this.accrualFundSourceProvider);
-        this.accrualFundSourceField.setLabel(Model.of("Fund source"));
+        this.accrualFundSourceField.setLabel(Model.of("Fund Source"));
         this.accrualFundSourceField.add(new OnChangeAjaxBehavior());
         this.accrualFundSourceIContainer.add(this.accrualFundSourceField);
         this.accrualFundSourceFeedback = new TextFeedbackPanel("accrualFundSourceFeedback", this.accrualFundSourceField);
@@ -452,7 +452,7 @@ public class AccountingPanel extends Panel {
         this.accrualLoanPortfolioProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.accrualLoanPortfolioProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
         this.accrualLoanPortfolioField = new Select2SingleChoice<>("accrualLoanPortfolioField", new PropertyModel<>(this.itemPage, "accrualLoanPortfolioValue"), this.accrualLoanPortfolioProvider);
-        this.accrualLoanPortfolioField.setLabel(Model.of("Loan portfolio"));
+        this.accrualLoanPortfolioField.setLabel(Model.of("Loan Portfolio"));
         this.accrualLoanPortfolioField.add(new OnChangeAjaxBehavior());
         this.accrualLoanPortfolioIContainer.add(this.accrualLoanPortfolioField);
         this.accrualLoanPortfolioFeedback = new TextFeedbackPanel("accrualLoanPortfolioFeedback", this.accrualLoanPortfolioField);
@@ -508,7 +508,7 @@ public class AccountingPanel extends Panel {
         this.accrualTransferInSuspenseProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.accrualTransferInSuspenseProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
         this.accrualTransferInSuspenseField = new Select2SingleChoice<>("accrualTransferInSuspenseField", new PropertyModel<>(this.itemPage, "accrualTransferInSuspenseValue"), this.accrualTransferInSuspenseProvider);
-        this.accrualTransferInSuspenseField.setLabel(Model.of("Transfer in suspense"));
+        this.accrualTransferInSuspenseField.setLabel(Model.of("Transfer In Suspense"));
         this.accrualTransferInSuspenseField.add(new OnChangeAjaxBehavior());
         this.accrualTransferInSuspenseIContainer.add(this.accrualTransferInSuspenseField);
         this.accrualTransferInSuspenseFeedback = new TextFeedbackPanel("accrualTransferInSuspenseFeedback", this.accrualTransferInSuspenseField);
@@ -522,7 +522,7 @@ public class AccountingPanel extends Panel {
         this.accrualIncomeFromInterestProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.accrualIncomeFromInterestProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
         this.accrualIncomeFromInterestField = new Select2SingleChoice<>("accrualIncomeFromInterestField", new PropertyModel<>(this.itemPage, "accrualIncomeFromInterestValue"), this.accrualIncomeFromInterestProvider);
-        this.accrualIncomeFromInterestField.setLabel(Model.of("Income from Interest"));
+        this.accrualIncomeFromInterestField.setLabel(Model.of("Income From Interest"));
         this.accrualIncomeFromInterestField.add(new OnChangeAjaxBehavior());
         this.accrualIncomeFromInterestIContainer.add(this.accrualIncomeFromInterestField);
         this.accrualIncomeFromInterestFeedback = new TextFeedbackPanel("accrualIncomeFromInterestFeedback", this.accrualIncomeFromInterestField);
@@ -536,7 +536,7 @@ public class AccountingPanel extends Panel {
         this.accrualIncomeFromFeeProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.accrualIncomeFromFeeProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
         this.accrualIncomeFromFeeField = new Select2SingleChoice<>("accrualIncomeFromFeeField", new PropertyModel<>(this.itemPage, "accrualIncomeFromFeeValue"), this.accrualIncomeFromFeeProvider);
-        this.accrualIncomeFromFeeField.setLabel(Model.of("Income from fees"));
+        this.accrualIncomeFromFeeField.setLabel(Model.of("Income From Fees"));
         this.accrualIncomeFromFeeField.add(new OnChangeAjaxBehavior());
         this.accrualIncomeFromFeeIContainer.add(this.accrualIncomeFromFeeField);
         this.accrualIncomeFromFeeFeedback = new TextFeedbackPanel("accrualIncomeFromFeeFeedback", this.accrualIncomeFromFeeField);
@@ -550,7 +550,7 @@ public class AccountingPanel extends Panel {
         this.accrualIncomeFromPenaltyProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.accrualIncomeFromPenaltyProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
         this.accrualIncomeFromPenaltyField = new Select2SingleChoice<>("accrualIncomeFromPenaltyField", new PropertyModel<>(this.itemPage, "accrualIncomeFromPenaltyValue"), this.accrualIncomeFromPenaltyProvider);
-        this.accrualIncomeFromPenaltyField.setLabel(Model.of("Income from Penalty"));
+        this.accrualIncomeFromPenaltyField.setLabel(Model.of("Income From Penalty"));
         this.accrualIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
         this.accrualIncomeFromPenaltyIContainer.add(this.accrualIncomeFromPenaltyField);
         this.accrualIncomeFromPenaltyFeedback = new TextFeedbackPanel("accrualIncomeFromPenaltyFeedback", this.accrualIncomeFromPenaltyField);
@@ -564,7 +564,7 @@ public class AccountingPanel extends Panel {
         this.accrualIncomeFromRecoveryRepaymentProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.accrualIncomeFromRecoveryRepaymentProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
         this.accrualIncomeFromRecoveryRepaymentField = new Select2SingleChoice<>("accrualIncomeFromRecoveryRepaymentField", new PropertyModel<>(this.itemPage, "accrualIncomeFromRecoveryRepaymentValue"), this.accrualIncomeFromRecoveryRepaymentProvider);
-        this.accrualIncomeFromRecoveryRepaymentField.setLabel(Model.of("Income from Recovery Repayments"));
+        this.accrualIncomeFromRecoveryRepaymentField.setLabel(Model.of("Income From Recovery Repayments"));
         this.accrualIncomeFromRecoveryRepaymentField.add(new OnChangeAjaxBehavior());
         this.accrualIncomeFromRecoveryRepaymentIContainer.add(this.accrualIncomeFromRecoveryRepaymentField);
         this.accrualIncomeFromRecoveryRepaymentFeedback = new TextFeedbackPanel("accrualIncomeFromRecoveryRepaymentFeedback", this.accrualIncomeFromRecoveryRepaymentField);
@@ -578,7 +578,7 @@ public class AccountingPanel extends Panel {
         this.accrualLossWrittenOffProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.accrualLossWrittenOffProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Expense.getLiteral());
         this.accrualLossWrittenOffField = new Select2SingleChoice<>("accrualLossWrittenOffField", new PropertyModel<>(this.itemPage, "accrualLossWrittenOffValue"), this.accrualLossWrittenOffProvider);
-        this.accrualLossWrittenOffField.setLabel(Model.of("Loss written off"));
+        this.accrualLossWrittenOffField.setLabel(Model.of("Loss Written Off"));
         this.accrualLossWrittenOffField.add(new OnChangeAjaxBehavior());
         this.accrualLossWrittenOffIContainer.add(this.accrualLossWrittenOffField);
         this.accrualLossWrittenOffFeedback = new TextFeedbackPanel("accrualLossWrittenOffFeedback", this.accrualLossWrittenOffField);
@@ -592,7 +592,7 @@ public class AccountingPanel extends Panel {
         this.accrualOverPaymentLiabilityProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
         this.accrualOverPaymentLiabilityProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Liability.getLiteral());
         this.accrualOverPaymentLiabilityField = new Select2SingleChoice<>("accrualOverPaymentLiabilityField", new PropertyModel<>(this.itemPage, "accrualOverPaymentLiabilityValue"), this.accrualOverPaymentLiabilityProvider);
-        this.accrualOverPaymentLiabilityField.setLabel(Model.of("Over payment liability"));
+        this.accrualOverPaymentLiabilityField.setLabel(Model.of("Over Payment Liability"));
         this.accrualOverPaymentLiabilityField.add(new OnChangeAjaxBehavior());
         this.accrualOverPaymentLiabilityIContainer.add(this.accrualOverPaymentLiabilityField);
         this.accrualOverPaymentLiabilityFeedback = new TextFeedbackPanel("accrualOverPaymentLiabilityFeedback", this.accrualOverPaymentLiabilityField);

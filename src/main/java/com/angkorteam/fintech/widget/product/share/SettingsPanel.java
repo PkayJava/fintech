@@ -9,11 +9,10 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.ddl.MTaxGroup;
-import com.angkorteam.fintech.pages.product.saving.SavingBrowsePage;
-import com.angkorteam.fintech.pages.product.saving.SavingCreatePage;
+import com.angkorteam.fintech.pages.product.share.ShareBrowsePage;
+import com.angkorteam.fintech.pages.product.share.ShareCreatePage;
 import com.angkorteam.fintech.provider.LockInTypeProvider;
-import com.angkorteam.fintech.provider.SingleChoiceProvider;
+import com.angkorteam.fintech.provider.MinimumActivePeriodProvider;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
@@ -38,10 +37,31 @@ public class SettingsPanel extends Panel {
     protected AjaxLink<Void> backLink;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock settingMinimumOpeningBalanceBlock;
-    protected WebMarkupContainer settingMinimumOpeningBalanceIContainer;
-    protected TextField<Double> settingMinimumOpeningBalanceField;
-    protected TextFeedbackPanel settingMinimumOpeningBalanceFeedback;
+    protected WebMarkupBlock settingSharePerClientMinimumBlock;
+    protected WebMarkupContainer settingSharePerClientMinimumIContainer;
+    protected TextField<Long> settingSharePerClientMinimumField;
+    protected TextFeedbackPanel settingSharePerClientMinimumFeedback;
+
+    protected WebMarkupBlock settingSharePerClientDefaultBlock;
+    protected WebMarkupContainer settingSharePerClientDefaultIContainer;
+    protected TextField<Long> settingSharePerClientDefaultField;
+    protected TextFeedbackPanel settingSharePerClientDefaultFeedback;
+
+    protected WebMarkupBlock settingSharePerClientMaximumBlock;
+    protected WebMarkupContainer settingSharePerClientMaximumIContainer;
+    protected TextField<Long> settingSharePerClientMaximumField;
+    protected TextFeedbackPanel settingSharePerClientMaximumFeedback;
+
+    protected WebMarkupBlock settingMinimumActivePeriodBlock;
+    protected WebMarkupContainer settingMinimumActivePeriodIContainer;
+    protected TextField<Long> settingMinimumActivePeriodField;
+    protected TextFeedbackPanel settingMinimumActivePeriodFeedback;
+
+    protected WebMarkupBlock settingMinimumActiveTypeBlock;
+    protected WebMarkupContainer settingMinimumActiveTypeIContainer;
+    protected MinimumActivePeriodProvider settingMinimumActiveTypeProvider;
+    protected Select2SingleChoice<Option> settingMinimumActiveTypeField;
+    protected TextFeedbackPanel settingMinimumActiveTypeFeedback;
 
     protected WebMarkupBlock settingLockInPeriodBlock;
     protected WebMarkupContainer settingLockInPeriodIContainer;
@@ -54,76 +74,10 @@ public class SettingsPanel extends Panel {
     protected Select2SingleChoice<Option> settingLockInTypeField;
     protected TextFeedbackPanel settingLockInTypeFeedback;
 
-    protected WebMarkupBlock settingApplyWithdrawalFeeForTransferBlock;
-    protected WebMarkupContainer settingApplyWithdrawalFeeForTransferIContainer;
-    protected CheckBox settingApplyWithdrawalFeeForTransferField;
-    protected TextFeedbackPanel settingApplyWithdrawalFeeForTransferFeedback;
-
-    protected WebMarkupBlock settingBalanceRequiredForInterestCalculationBlock;
-    protected WebMarkupContainer settingBalanceRequiredForInterestCalculationIContainer;
-    protected TextField<Double> settingBalanceRequiredForInterestCalculationField;
-    protected TextFeedbackPanel settingBalanceRequiredForInterestCalculationFeedback;
-
-    protected WebMarkupBlock settingEnforceMinimumBalanceBlock;
-    protected WebMarkupContainer settingEnforceMinimumBalanceIContainer;
-    protected CheckBox settingEnforceMinimumBalanceField;
-    protected TextFeedbackPanel settingEnforceMinimumBalanceFeedback;
-
-    protected WebMarkupBlock settingMinimumBalanceBlock;
-    protected WebMarkupContainer settingMinimumBalanceIContainer;
-    protected TextField<Double> settingMinimumBalanceField;
-    protected TextFeedbackPanel settingMinimumBalanceFeedback;
-
-    protected WebMarkupBlock settingOverdraftAllowedBlock;
-    protected WebMarkupContainer settingOverdraftAllowedIContainer;
-    protected CheckBox settingOverdraftAllowedField;
-    protected TextFeedbackPanel settingOverdraftAllowedFeedback;
-
-    protected WebMarkupBlock settingMaximumOverdraftAmountLimitBlock;
-    protected WebMarkupContainer settingMaximumOverdraftAmountLimitIContainer;
-    protected TextField<Double> settingMaximumOverdraftAmountLimitField;
-    protected TextFeedbackPanel settingMaximumOverdraftAmountLimitFeedback;
-
-    protected WebMarkupBlock settingNominalAnnualInterestForOverdraftBlock;
-    protected WebMarkupContainer settingNominalAnnualInterestForOverdraftIContainer;
-    protected TextField<Double> settingNominalAnnualInterestForOverdraftField;
-    protected TextFeedbackPanel settingNominalAnnualInterestForOverdraftFeedback;
-
-    protected WebMarkupBlock settingMinOverdraftRequiredForInterestCalculationBlock;
-    protected WebMarkupContainer settingMinOverdraftRequiredForInterestCalculationIContainer;
-    protected TextField<Double> settingMinOverdraftRequiredForInterestCalculationField;
-    protected TextFeedbackPanel settingMinOverdraftRequiredForInterestCalculationFeedback;
-
-    protected WebMarkupBlock settingWithholdTaxApplicableBlock;
-    protected WebMarkupContainer settingWithholdTaxApplicableIContainer;
-    protected CheckBox settingWithholdTaxApplicableField;
-    protected TextFeedbackPanel settingWithholdTaxApplicableFeedback;
-
-    protected WebMarkupBlock settingTaxGroupBlock;
-    protected WebMarkupContainer settingTaxGroupIContainer;
-    protected SingleChoiceProvider settingTaxGroupProvider;
-    protected Select2SingleChoice<Option> settingTaxGroupField;
-    protected TextFeedbackPanel settingTaxGroupFeedback;
-
-    protected WebMarkupBlock settingEnableDormancyTrackingBlock;
-    protected WebMarkupContainer settingEnableDormancyTrackingIContainer;
-    protected CheckBox settingEnableDormancyTrackingField;
-    protected TextFeedbackPanel settingEnableDormancyTrackingFeedback;
-
-    protected WebMarkupBlock settingNumberOfDaysToInactiveSubStatusBlock;
-    protected WebMarkupContainer settingNumberOfDaysToInactiveSubStatusIContainer;
-    protected TextField<Long> settingNumberOfDaysToInactiveSubStatusField;
-    protected TextFeedbackPanel settingNumberOfDaysToInactiveSubStatusFeedback;
-
-    protected WebMarkupBlock settingNumberOfDaysToDormantSubStatusBlock;
-    protected WebMarkupContainer settingNumberOfDaysToDormantSubStatusIContainer;
-    protected TextField<Long> settingNumberOfDaysToDormantSubStatusField;
-    protected TextFeedbackPanel settingNumberOfDaysToDormantSubStatusFeedback;
-
-    protected WebMarkupBlock settingNumberOfDaysToEscheatBlock;
-    protected WebMarkupContainer settingNumberOfDaysToEscheatIContainer;
-    protected TextField<Long> settingNumberOfDaysToEscheatField;
-    protected TextFeedbackPanel settingNumberOfDaysToEscheatFeedback;
+    protected WebMarkupBlock settingAllowDividendForInactiveClientBlock;
+    protected WebMarkupContainer settingAllowDividendForInactiveClientIContainer;
+    protected CheckBox settingAllowDividendForInactiveClientField;
+    protected TextFeedbackPanel settingAllowDividendForInactiveClientFeedback;
 
     public SettingsPanel(String id, Page itemPage) {
         super(id);
@@ -150,158 +104,18 @@ public class SettingsPanel extends Panel {
         this.backLink.setOnClick(this::backLinkClick);
         this.form.add(this.backLink);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", ShareBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.settingNumberOfDaysToEscheatBlock = new WebMarkupBlock("settingNumberOfDaysToEscheatBlock", Size.Six_6);
-        this.form.add(this.settingNumberOfDaysToEscheatBlock);
-        this.settingNumberOfDaysToEscheatIContainer = new WebMarkupContainer("settingNumberOfDaysToEscheatIContainer");
-        this.settingNumberOfDaysToEscheatBlock.add(this.settingNumberOfDaysToEscheatIContainer);
-        this.settingNumberOfDaysToEscheatField = new TextField<>("settingNumberOfDaysToEscheatField", new PropertyModel<>(this.itemPage, "settingNumberOfDaysToEscheatValue"));
-        this.settingNumberOfDaysToEscheatField.setLabel(Model.of("Number of Days to Escheat"));
-        this.settingNumberOfDaysToEscheatField.add(new OnChangeAjaxBehavior());
-        this.settingNumberOfDaysToEscheatIContainer.add(this.settingNumberOfDaysToEscheatField);
-        this.settingNumberOfDaysToEscheatFeedback = new TextFeedbackPanel("settingNumberOfDaysToEscheatFeedback", this.settingNumberOfDaysToEscheatField);
-        this.settingNumberOfDaysToEscheatIContainer.add(this.settingNumberOfDaysToEscheatFeedback);
-
-        this.settingNumberOfDaysToDormantSubStatusBlock = new WebMarkupBlock("settingNumberOfDaysToDormantSubStatusBlock", Size.Six_6);
-        this.form.add(this.settingNumberOfDaysToDormantSubStatusBlock);
-        this.settingNumberOfDaysToDormantSubStatusIContainer = new WebMarkupContainer("settingNumberOfDaysToDormantSubStatusIContainer");
-        this.settingNumberOfDaysToDormantSubStatusBlock.add(this.settingNumberOfDaysToDormantSubStatusIContainer);
-        this.settingNumberOfDaysToDormantSubStatusField = new TextField<>("settingNumberOfDaysToDormantSubStatusField", new PropertyModel<>(this.itemPage, "settingNumberOfDaysToDormantSubStatusValue"));
-        this.settingNumberOfDaysToDormantSubStatusField.setLabel(Model.of("Number of Days to Dormant sub-status"));
-        this.settingNumberOfDaysToDormantSubStatusField.add(new OnChangeAjaxBehavior());
-        this.settingNumberOfDaysToDormantSubStatusIContainer.add(this.settingNumberOfDaysToDormantSubStatusField);
-        this.settingNumberOfDaysToDormantSubStatusFeedback = new TextFeedbackPanel("settingNumberOfDaysToDormantSubStatusFeedback", this.settingNumberOfDaysToDormantSubStatusField);
-        this.settingNumberOfDaysToDormantSubStatusIContainer.add(this.settingNumberOfDaysToDormantSubStatusFeedback);
-
-        this.settingNumberOfDaysToInactiveSubStatusBlock = new WebMarkupBlock("settingNumberOfDaysToInactiveSubStatusBlock", Size.Six_6);
-        this.form.add(this.settingNumberOfDaysToInactiveSubStatusBlock);
-        this.settingNumberOfDaysToInactiveSubStatusIContainer = new WebMarkupContainer("settingNumberOfDaysToInactiveSubStatusIContainer");
-        this.settingNumberOfDaysToInactiveSubStatusBlock.add(this.settingNumberOfDaysToInactiveSubStatusIContainer);
-        this.settingNumberOfDaysToInactiveSubStatusField = new TextField<>("settingNumberOfDaysToInactiveSubStatusField", new PropertyModel<>(this.itemPage, "settingNumberOfDaysToInactiveSubStatusValue"));
-        this.settingNumberOfDaysToInactiveSubStatusField.setLabel(Model.of("Number of Days to Inactive sub-status"));
-        this.settingNumberOfDaysToInactiveSubStatusField.add(new OnChangeAjaxBehavior());
-        this.settingNumberOfDaysToInactiveSubStatusIContainer.add(this.settingNumberOfDaysToInactiveSubStatusField);
-        this.settingNumberOfDaysToInactiveSubStatusFeedback = new TextFeedbackPanel("settingNumberOfDaysToInactiveSubStatusFeedback", this.settingNumberOfDaysToInactiveSubStatusField);
-        this.settingNumberOfDaysToInactiveSubStatusIContainer.add(this.settingNumberOfDaysToInactiveSubStatusFeedback);
-
-        this.settingEnableDormancyTrackingBlock = new WebMarkupBlock("settingEnableDormancyTrackingBlock", Size.Six_6);
-        this.form.add(this.settingEnableDormancyTrackingBlock);
-        this.settingEnableDormancyTrackingIContainer = new WebMarkupContainer("settingEnableDormancyTrackingIContainer");
-        this.settingEnableDormancyTrackingBlock.add(this.settingEnableDormancyTrackingIContainer);
-        this.settingEnableDormancyTrackingField = new CheckBox("settingEnableDormancyTrackingField", new PropertyModel<>(this.itemPage, "settingEnableDormancyTrackingValue"));
-        this.settingEnableDormancyTrackingField.add(new OnChangeAjaxBehavior(this::settingEnableDormancyTrackingFieldUpdate));
-        this.settingEnableDormancyTrackingIContainer.add(this.settingEnableDormancyTrackingField);
-        this.settingEnableDormancyTrackingFeedback = new TextFeedbackPanel("settingEnableDormancyTrackingFeedback", this.settingEnableDormancyTrackingField);
-        this.settingEnableDormancyTrackingIContainer.add(this.settingEnableDormancyTrackingFeedback);
-
-        this.settingTaxGroupBlock = new WebMarkupBlock("settingTaxGroupBlock", Size.Six_6);
-        this.form.add(this.settingTaxGroupBlock);
-        this.settingTaxGroupIContainer = new WebMarkupContainer("settingTaxGroupIContainer");
-        this.settingTaxGroupBlock.add(this.settingTaxGroupIContainer);
-        this.settingTaxGroupProvider = new SingleChoiceProvider(MTaxGroup.NAME, MTaxGroup.Field.ID, MTaxGroup.Field.NAME);
-        this.settingTaxGroupField = new Select2SingleChoice<>("settingTaxGroupField", new PropertyModel<>(this.itemPage, "settingTaxGroupValue"), this.settingTaxGroupProvider);
-        this.settingTaxGroupField.setLabel(Model.of("Tax Group"));
-        this.settingTaxGroupField.add(new OnChangeAjaxBehavior());
-        this.settingTaxGroupIContainer.add(this.settingTaxGroupField);
-        this.settingTaxGroupFeedback = new TextFeedbackPanel("settingTaxGroupFeedback", this.settingTaxGroupField);
-        this.settingTaxGroupIContainer.add(this.settingTaxGroupFeedback);
-
-        this.settingWithholdTaxApplicableBlock = new WebMarkupBlock("settingWithholdTaxApplicableBlock", Size.Six_6);
-        this.form.add(this.settingWithholdTaxApplicableBlock);
-        this.settingWithholdTaxApplicableIContainer = new WebMarkupContainer("settingWithholdTaxApplicableIContainer");
-        this.settingWithholdTaxApplicableBlock.add(this.settingWithholdTaxApplicableIContainer);
-        this.settingWithholdTaxApplicableField = new CheckBox("settingWithholdTaxApplicableField", new PropertyModel<>(this.itemPage, "settingWithholdTaxApplicableValue"));
-        this.settingWithholdTaxApplicableField.add(new OnChangeAjaxBehavior(this::settingWithholdTaxApplicableFieldUpdate));
-        this.settingWithholdTaxApplicableIContainer.add(this.settingWithholdTaxApplicableField);
-        this.settingWithholdTaxApplicableFeedback = new TextFeedbackPanel("settingWithholdTaxApplicableFeedback", this.settingWithholdTaxApplicableField);
-        this.settingWithholdTaxApplicableIContainer.add(this.settingWithholdTaxApplicableFeedback);
-
-        this.settingMinOverdraftRequiredForInterestCalculationBlock = new WebMarkupBlock("settingMinOverdraftRequiredForInterestCalculationBlock", Size.Six_6);
-        this.form.add(this.settingMinOverdraftRequiredForInterestCalculationBlock);
-        this.settingMinOverdraftRequiredForInterestCalculationIContainer = new WebMarkupContainer("settingMinOverdraftRequiredForInterestCalculationIContainer");
-        this.settingMinOverdraftRequiredForInterestCalculationBlock.add(this.settingMinOverdraftRequiredForInterestCalculationIContainer);
-        this.settingMinOverdraftRequiredForInterestCalculationField = new TextField<>("settingMinOverdraftRequiredForInterestCalculationField", new PropertyModel<>(this.itemPage, "settingMinOverdraftRequiredForInterestCalculationValue"));
-        this.settingMinOverdraftRequiredForInterestCalculationField.setLabel(Model.of("Min Overdraft Required For Interest Calculation"));
-        this.settingMinOverdraftRequiredForInterestCalculationField.add(new OnChangeAjaxBehavior());
-        this.settingMinOverdraftRequiredForInterestCalculationIContainer.add(this.settingMinOverdraftRequiredForInterestCalculationField);
-        this.settingMinOverdraftRequiredForInterestCalculationFeedback = new TextFeedbackPanel("settingMinOverdraftRequiredForInterestCalculationFeedback", this.settingMinOverdraftRequiredForInterestCalculationField);
-        this.settingMinOverdraftRequiredForInterestCalculationIContainer.add(this.settingMinOverdraftRequiredForInterestCalculationFeedback);
-
-        this.settingNominalAnnualInterestForOverdraftBlock = new WebMarkupBlock("settingNominalAnnualInterestForOverdraftBlock", Size.Six_6);
-        this.form.add(this.settingNominalAnnualInterestForOverdraftBlock);
-        this.settingNominalAnnualInterestForOverdraftIContainer = new WebMarkupContainer("settingNominalAnnualInterestForOverdraftIContainer");
-        this.settingNominalAnnualInterestForOverdraftBlock.add(this.settingNominalAnnualInterestForOverdraftIContainer);
-        this.settingNominalAnnualInterestForOverdraftField = new TextField<>("settingNominalAnnualInterestForOverdraftField", new PropertyModel<>(this.itemPage, "settingNominalAnnualInterestForOverdraftValue"));
-        this.settingNominalAnnualInterestForOverdraftField.setLabel(Model.of("Nominal annual interest for overdraft"));
-        this.settingNominalAnnualInterestForOverdraftField.add(new OnChangeAjaxBehavior());
-        this.settingNominalAnnualInterestForOverdraftIContainer.add(this.settingNominalAnnualInterestForOverdraftField);
-        this.settingNominalAnnualInterestForOverdraftFeedback = new TextFeedbackPanel("settingNominalAnnualInterestForOverdraftFeedback", this.settingNominalAnnualInterestForOverdraftField);
-        this.settingNominalAnnualInterestForOverdraftIContainer.add(this.settingNominalAnnualInterestForOverdraftFeedback);
-
-        this.settingMaximumOverdraftAmountLimitBlock = new WebMarkupBlock("settingMaximumOverdraftAmountLimitBlock", Size.Six_6);
-        this.form.add(this.settingMaximumOverdraftAmountLimitBlock);
-        this.settingMaximumOverdraftAmountLimitIContainer = new WebMarkupContainer("settingMaximumOverdraftAmountLimitIContainer");
-        this.settingMaximumOverdraftAmountLimitBlock.add(this.settingMaximumOverdraftAmountLimitIContainer);
-        this.settingMaximumOverdraftAmountLimitField = new TextField<>("settingMaximumOverdraftAmountLimitField", new PropertyModel<>(this.itemPage, "settingMaximumOverdraftAmountLimitValue"));
-        this.settingMaximumOverdraftAmountLimitField.setLabel(Model.of("Maximum Overdraft Amount Limit"));
-        this.settingMaximumOverdraftAmountLimitField.add(new OnChangeAjaxBehavior());
-        this.settingMaximumOverdraftAmountLimitIContainer.add(this.settingMaximumOverdraftAmountLimitField);
-        this.settingMaximumOverdraftAmountLimitFeedback = new TextFeedbackPanel("settingMaximumOverdraftAmountLimitFeedback", this.settingMaximumOverdraftAmountLimitField);
-        this.settingMaximumOverdraftAmountLimitIContainer.add(this.settingMaximumOverdraftAmountLimitFeedback);
-
-        this.settingOverdraftAllowedBlock = new WebMarkupBlock("settingOverdraftAllowedBlock", Size.Six_6);
-        this.form.add(this.settingOverdraftAllowedBlock);
-        this.settingOverdraftAllowedIContainer = new WebMarkupContainer("settingOverdraftAllowedIContainer");
-        this.settingOverdraftAllowedBlock.add(this.settingOverdraftAllowedIContainer);
-        this.settingOverdraftAllowedField = new CheckBox("settingOverdraftAllowedField", new PropertyModel<>(this.itemPage, "settingOverdraftAllowedValue"));
-        this.settingOverdraftAllowedField.add(new OnChangeAjaxBehavior(this::settingOverdraftAllowedFieldUpdate));
-        this.settingOverdraftAllowedIContainer.add(this.settingOverdraftAllowedField);
-        this.settingOverdraftAllowedFeedback = new TextFeedbackPanel("settingOverdraftAllowedFeedback", this.settingOverdraftAllowedField);
-        this.settingOverdraftAllowedIContainer.add(this.settingOverdraftAllowedFeedback);
-
-        this.settingMinimumBalanceBlock = new WebMarkupBlock("settingMinimumBalanceBlock", Size.Four_4);
-        this.form.add(this.settingMinimumBalanceBlock);
-        this.settingMinimumBalanceIContainer = new WebMarkupContainer("settingMinimumBalanceIContainer");
-        this.settingMinimumBalanceBlock.add(this.settingMinimumBalanceIContainer);
-        this.settingMinimumBalanceField = new TextField<>("settingMinimumBalanceField", new PropertyModel<>(this.itemPage, "settingMinimumBalanceValue"));
-        this.settingMinimumBalanceField.add(new OnChangeAjaxBehavior());
-        this.settingMinimumBalanceField.setLabel(Model.of("Minimum balance"));
-        this.settingMinimumBalanceIContainer.add(this.settingMinimumBalanceField);
-        this.settingMinimumBalanceFeedback = new TextFeedbackPanel("settingMinimumBalanceFeedback", this.settingMinimumBalanceField);
-        this.settingMinimumBalanceIContainer.add(this.settingMinimumBalanceFeedback);
-
-        this.settingEnforceMinimumBalanceBlock = new WebMarkupBlock("settingEnforceMinimumBalanceBlock", Size.Four_4);
-        this.form.add(this.settingEnforceMinimumBalanceBlock);
-        this.settingEnforceMinimumBalanceIContainer = new WebMarkupContainer("settingEnforceMinimumBalanceIContainer");
-        this.settingEnforceMinimumBalanceBlock.add(this.settingEnforceMinimumBalanceIContainer);
-        this.settingEnforceMinimumBalanceField = new CheckBox("settingEnforceMinimumBalanceField", new PropertyModel<>(this.itemPage, "settingEnforceMinimumBalanceValue"));
-        this.settingEnforceMinimumBalanceField.add(new OnChangeAjaxBehavior());
-        this.settingEnforceMinimumBalanceIContainer.add(this.settingEnforceMinimumBalanceField);
-        this.settingEnforceMinimumBalanceFeedback = new TextFeedbackPanel("settingEnforceMinimumBalanceFeedback", this.settingEnforceMinimumBalanceField);
-        this.settingEnforceMinimumBalanceIContainer.add(this.settingEnforceMinimumBalanceFeedback);
-
-        this.settingBalanceRequiredForInterestCalculationBlock = new WebMarkupBlock("settingBalanceRequiredForInterestCalculationBlock", Size.Four_4);
-        this.form.add(this.settingBalanceRequiredForInterestCalculationBlock);
-        this.settingBalanceRequiredForInterestCalculationIContainer = new WebMarkupContainer("settingBalanceRequiredForInterestCalculationIContainer");
-        this.settingBalanceRequiredForInterestCalculationBlock.add(this.settingBalanceRequiredForInterestCalculationIContainer);
-        this.settingBalanceRequiredForInterestCalculationField = new TextField<>("settingBalanceRequiredForInterestCalculationField", new PropertyModel<>(this.itemPage, "settingBalanceRequiredForInterestCalculationValue"));
-        this.settingBalanceRequiredForInterestCalculationField.setLabel(Model.of("Balance Required For Interest Calculation"));
-        this.settingBalanceRequiredForInterestCalculationField.add(new OnChangeAjaxBehavior());
-        this.settingBalanceRequiredForInterestCalculationIContainer.add(this.settingBalanceRequiredForInterestCalculationField);
-        this.settingBalanceRequiredForInterestCalculationFeedback = new TextFeedbackPanel("settingBalanceRequiredForInterestCalculationFeedback", this.settingBalanceRequiredForInterestCalculationField);
-        this.settingBalanceRequiredForInterestCalculationIContainer.add(this.settingBalanceRequiredForInterestCalculationFeedback);
-
-        this.settingApplyWithdrawalFeeForTransferBlock = new WebMarkupBlock("settingApplyWithdrawalFeeForTransferBlock", Size.Four_4);
-        this.form.add(this.settingApplyWithdrawalFeeForTransferBlock);
-        this.settingApplyWithdrawalFeeForTransferIContainer = new WebMarkupContainer("settingApplyWithdrawalFeeForTransferIContainer");
-        this.settingApplyWithdrawalFeeForTransferBlock.add(this.settingApplyWithdrawalFeeForTransferIContainer);
-        this.settingApplyWithdrawalFeeForTransferField = new CheckBox("settingApplyWithdrawalFeeForTransferField", new PropertyModel<>(this.itemPage, "settingApplyWithdrawalFeeForTransferValue"));
-        this.settingApplyWithdrawalFeeForTransferField.add(new OnChangeAjaxBehavior());
-        this.settingApplyWithdrawalFeeForTransferIContainer.add(this.settingApplyWithdrawalFeeForTransferField);
-        this.settingApplyWithdrawalFeeForTransferFeedback = new TextFeedbackPanel("settingApplyWithdrawalFeeForTransferFeedback", this.settingApplyWithdrawalFeeForTransferField);
-        this.settingApplyWithdrawalFeeForTransferIContainer.add(this.settingApplyWithdrawalFeeForTransferFeedback);
+        this.settingAllowDividendForInactiveClientBlock = new WebMarkupBlock("settingAllowDividendForInactiveClientBlock", Size.Four_4);
+        this.form.add(this.settingAllowDividendForInactiveClientBlock);
+        this.settingAllowDividendForInactiveClientIContainer = new WebMarkupContainer("settingAllowDividendForInactiveClientIContainer");
+        this.settingAllowDividendForInactiveClientBlock.add(this.settingAllowDividendForInactiveClientIContainer);
+        this.settingAllowDividendForInactiveClientField = new CheckBox("settingAllowDividendForInactiveClientField", new PropertyModel<>(this.itemPage, "settingAllowDividendForInactiveClientValue"));
+        this.settingAllowDividendForInactiveClientField.add(new OnChangeAjaxBehavior());
+        this.settingAllowDividendForInactiveClientIContainer.add(this.settingAllowDividendForInactiveClientField);
+        this.settingAllowDividendForInactiveClientFeedback = new TextFeedbackPanel("settingAllowDividendForInactiveClientFeedback", this.settingAllowDividendForInactiveClientField);
+        this.settingAllowDividendForInactiveClientIContainer.add(this.settingAllowDividendForInactiveClientFeedback);
 
         this.settingLockInTypeBlock = new WebMarkupBlock("settingLockInTypeBlock", Size.Four_4);
         this.form.add(this.settingLockInTypeBlock);
@@ -326,67 +140,71 @@ public class SettingsPanel extends Panel {
         this.settingLockInPeriodFeedback = new TextFeedbackPanel("settingLockInPeriodFeedback", this.settingLockInPeriodField);
         this.settingLockInPeriodIContainer.add(this.settingLockInPeriodFeedback);
 
-        this.settingMinimumOpeningBalanceBlock = new WebMarkupBlock("settingMinimumOpeningBalanceBlock", Size.Four_4);
-        this.form.add(this.settingMinimumOpeningBalanceBlock);
-        this.settingMinimumOpeningBalanceIContainer = new WebMarkupContainer("settingMinimumOpeningBalanceIContainer");
-        this.settingMinimumOpeningBalanceBlock.add(this.settingMinimumOpeningBalanceIContainer);
-        this.settingMinimumOpeningBalanceField = new TextField<>("settingMinimumOpeningBalanceField", new PropertyModel<>(this.itemPage, "settingMinimumOpeningBalanceValue"));
-        this.settingMinimumOpeningBalanceField.setLabel(Model.of("Minimum opening balance"));
-        this.settingMinimumOpeningBalanceField.add(new OnChangeAjaxBehavior());
-        this.settingMinimumOpeningBalanceIContainer.add(this.settingMinimumOpeningBalanceField);
-        this.settingMinimumOpeningBalanceFeedback = new TextFeedbackPanel("settingMinimumOpeningBalanceFeedback", this.settingMinimumOpeningBalanceField);
-        this.settingMinimumOpeningBalanceIContainer.add(this.settingMinimumOpeningBalanceFeedback);
+        this.settingMinimumActiveTypeBlock = new WebMarkupBlock("settingMinimumActiveTypeBlock", Size.Four_4);
+        this.form.add(this.settingMinimumActiveTypeBlock);
+        this.settingMinimumActiveTypeIContainer = new WebMarkupContainer("settingMinimumActiveTypeIContainer");
+        this.settingMinimumActiveTypeBlock.add(this.settingMinimumActiveTypeIContainer);
+        this.settingMinimumActiveTypeProvider = new MinimumActivePeriodProvider();
+        this.settingMinimumActiveTypeField = new Select2SingleChoice<>("settingMinimumActiveTypeField", new PropertyModel<>(this.itemPage, "settingMinimumActiveTypeValue"), this.settingMinimumActiveTypeProvider);
+        this.settingMinimumActiveTypeField.setLabel(Model.of("Type"));
+        this.settingMinimumActiveTypeField.add(new OnChangeAjaxBehavior());
+        this.settingMinimumActiveTypeIContainer.add(this.settingMinimumActiveTypeField);
+        this.settingMinimumActiveTypeFeedback = new TextFeedbackPanel("settingMinimumActiveTypeFeedback", this.settingMinimumActiveTypeField);
+        this.settingMinimumActiveTypeIContainer.add(this.settingMinimumActiveTypeFeedback);
+
+        this.settingMinimumActivePeriodBlock = new WebMarkupBlock("settingMinimumActivePeriodBlock", Size.Four_4);
+        this.form.add(this.settingMinimumActivePeriodBlock);
+        this.settingMinimumActivePeriodIContainer = new WebMarkupContainer("settingMinimumActivePeriodIContainer");
+        this.settingMinimumActivePeriodBlock.add(this.settingMinimumActivePeriodIContainer);
+        this.settingMinimumActivePeriodField = new TextField<>("settingMinimumActivePeriodField", new PropertyModel<>(this.itemPage, "settingMinimumActivePeriodValue"));
+        this.settingMinimumActivePeriodField.setLabel(Model.of("Minimum Active Period"));
+        this.settingMinimumActivePeriodField.add(new OnChangeAjaxBehavior());
+        this.settingMinimumActivePeriodIContainer.add(this.settingMinimumActivePeriodField);
+        this.settingMinimumActivePeriodFeedback = new TextFeedbackPanel("settingMinimumActivePeriodFeedback", this.settingMinimumActivePeriodField);
+        this.settingMinimumActivePeriodIContainer.add(this.settingMinimumActivePeriodFeedback);
+
+        this.settingSharePerClientMaximumBlock = new WebMarkupBlock("settingSharePerClientMaximumBlock", Size.Four_4);
+        this.form.add(this.settingSharePerClientMaximumBlock);
+        this.settingSharePerClientMaximumIContainer = new WebMarkupContainer("settingSharePerClientMaximumIContainer");
+        this.settingSharePerClientMaximumBlock.add(this.settingSharePerClientMaximumIContainer);
+        this.settingSharePerClientMaximumField = new TextField<>("settingSharePerClientMaximumField", new PropertyModel<>(this.itemPage, "settingSharePerClientMaximumValue"));
+        this.settingSharePerClientMaximumField.setLabel(Model.of("Shares per Client Maximum"));
+        this.settingSharePerClientMaximumField.add(new OnChangeAjaxBehavior());
+        this.settingSharePerClientMaximumIContainer.add(this.settingSharePerClientMaximumField);
+        this.settingSharePerClientMaximumFeedback = new TextFeedbackPanel("settingSharePerClientMaximumFeedback", this.settingSharePerClientMaximumField);
+        this.settingSharePerClientMaximumIContainer.add(this.settingSharePerClientMaximumFeedback);
+
+        this.settingSharePerClientDefaultBlock = new WebMarkupBlock("settingSharePerClientDefaultBlock", Size.Four_4);
+        this.form.add(this.settingSharePerClientDefaultBlock);
+        this.settingSharePerClientDefaultIContainer = new WebMarkupContainer("settingSharePerClientDefaultIContainer");
+        this.settingSharePerClientDefaultBlock.add(this.settingSharePerClientDefaultIContainer);
+        this.settingSharePerClientDefaultField = new TextField<>("settingSharePerClientDefaultField", new PropertyModel<>(this.itemPage, "settingSharePerClientDefaultValue"));
+        this.settingSharePerClientDefaultField.setLabel(Model.of("Shares per Client Default"));
+        this.settingSharePerClientDefaultField.add(new OnChangeAjaxBehavior());
+        this.settingSharePerClientDefaultIContainer.add(this.settingSharePerClientDefaultField);
+        this.settingSharePerClientDefaultFeedback = new TextFeedbackPanel("settingSharePerClientDefaultFeedback", this.settingSharePerClientDefaultField);
+        this.settingSharePerClientDefaultIContainer.add(this.settingSharePerClientDefaultFeedback);
+
+        this.settingSharePerClientMinimumBlock = new WebMarkupBlock("settingSharePerClientMinimumBlock", Size.Four_4);
+        this.form.add(this.settingSharePerClientMinimumBlock);
+        this.settingSharePerClientMinimumIContainer = new WebMarkupContainer("settingSharePerClientMinimumIContainer");
+        this.settingSharePerClientMinimumBlock.add(this.settingSharePerClientMinimumIContainer);
+        this.settingSharePerClientMinimumField = new TextField<>("settingSharePerClientMinimumField", new PropertyModel<>(this.itemPage, "settingSharePerClientMinimumValue"));
+        this.settingSharePerClientMinimumField.setLabel(Model.of("Shares per Client Minimum"));
+        this.settingSharePerClientMinimumField.add(new OnChangeAjaxBehavior());
+        this.settingSharePerClientMinimumIContainer.add(this.settingSharePerClientMinimumField);
+        this.settingSharePerClientMinimumFeedback = new TextFeedbackPanel("settingSharePerClientMinimumFeedback", this.settingSharePerClientMinimumField);
+        this.settingSharePerClientMinimumIContainer.add(this.settingSharePerClientMinimumFeedback);
+
     }
 
     @Override
     protected void configureMetaData() {
-        settingOverdraftAllowedFieldUpdate(null);
-
-        settingWithholdTaxApplicableFieldUpdate(null);
-
-        settingEnableDormancyTrackingFieldUpdate(null);
-    }
-
-    protected boolean settingOverdraftAllowedFieldUpdate(AjaxRequestTarget target) {
-        PropertyModel<Boolean> settingOverdraftAllowedValue = new PropertyModel<>(this.itemPage, "settingOverdraftAllowedValue");
-        boolean visible = settingOverdraftAllowedValue.getObject() != null && settingOverdraftAllowedValue.getObject();
-        this.settingMaximumOverdraftAmountLimitIContainer.setVisible(visible);
-        this.settingNominalAnnualInterestForOverdraftIContainer.setVisible(visible);
-        this.settingMinOverdraftRequiredForInterestCalculationIContainer.setVisible(visible);
-        if (target != null) {
-            target.add(this.settingMaximumOverdraftAmountLimitBlock);
-            target.add(this.settingNominalAnnualInterestForOverdraftBlock);
-            target.add(this.settingMinOverdraftRequiredForInterestCalculationBlock);
-        }
-        return false;
-    }
-
-    protected boolean settingWithholdTaxApplicableFieldUpdate(AjaxRequestTarget target) {
-        PropertyModel<Boolean> settingWithholdTaxApplicableValue = new PropertyModel<>(this.itemPage, "settingWithholdTaxApplicableValue");
-        boolean visible = settingWithholdTaxApplicableValue.getObject() != null && settingWithholdTaxApplicableValue.getObject();
-        this.settingTaxGroupIContainer.setVisible(visible);
-        if (target != null) {
-            target.add(this.settingTaxGroupBlock);
-        }
-        return false;
-    }
-
-    protected boolean settingEnableDormancyTrackingFieldUpdate(AjaxRequestTarget target) {
-        PropertyModel<Boolean> settingEnableDormancyTrackingValue = new PropertyModel<>(this.itemPage, "settingEnableDormancyTrackingValue");
-        boolean visible = settingEnableDormancyTrackingValue.getObject() != null && settingEnableDormancyTrackingValue.getObject();
-        this.settingNumberOfDaysToInactiveSubStatusIContainer.setVisible(visible);
-        this.settingNumberOfDaysToDormantSubStatusIContainer.setVisible(visible);
-        this.settingNumberOfDaysToEscheatIContainer.setVisible(visible);
-        if (target != null) {
-            target.add(this.settingNumberOfDaysToInactiveSubStatusBlock);
-            target.add(this.settingNumberOfDaysToDormantSubStatusBlock);
-            target.add(this.settingNumberOfDaysToEscheatBlock);
-        }
-        return false;
+        this.settingSharePerClientDefaultField.setRequired(true);
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_TERM);
+        this.tab.getObject().setSelectedTab(ShareCreatePage.TAB_TERM);
         if (target != null) {
             target.add(this.tab.getObject());
         }
@@ -394,7 +212,7 @@ public class SettingsPanel extends Panel {
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_CHARGE);
+        this.tab.getObject().setSelectedTab(ShareCreatePage.TAB_MARKET_PRICE);
         this.errorSetting.setObject(false);
     }
 

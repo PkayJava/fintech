@@ -8,14 +8,10 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
-import com.angkorteam.fintech.dto.enums.DayInYear;
-import com.angkorteam.fintech.pages.product.saving.SavingBrowsePage;
-import com.angkorteam.fintech.pages.product.saving.SavingCreatePage;
-import com.angkorteam.fintech.provider.DayInYearProvider;
-import com.angkorteam.fintech.provider.InterestCalculatedUsingProvider;
-import com.angkorteam.fintech.provider.InterestCompoundingPeriodProvider;
-import com.angkorteam.fintech.provider.InterestPostingPeriodProvider;
+import com.angkorteam.fintech.pages.product.share.ShareBrowsePage;
+import com.angkorteam.fintech.pages.product.share.ShareCreatePage;
 import com.angkorteam.fintech.widget.Panel;
+import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
@@ -25,8 +21,6 @@ import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPan
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
-import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 
 public class TermsPanel extends Panel {
 
@@ -39,34 +33,24 @@ public class TermsPanel extends Panel {
     protected AjaxLink<Void> backLink;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock termNominalAnnualInterestBlock;
-    protected WebMarkupContainer termNominalAnnualInterestIContainer;
-    protected TextField<Double> termNominalAnnualInterestField;
-    protected TextFeedbackPanel termNominalAnnualInterestFeedback;
+    protected WebMarkupBlock termTotalNumberOfShareBlock;
+    protected WebMarkupContainer termTotalNumberOfShareIContainer;
+    protected TextField<Long> termTotalNumberOfShareField;
+    protected TextFeedbackPanel termTotalNumberOfShareFeedback;
 
-    protected WebMarkupBlock termInterestCompoundingPeriodBlock;
-    protected WebMarkupContainer termInterestCompoundingPeriodIContainer;
-    protected InterestCompoundingPeriodProvider termInterestCompoundingPeriodProvider;
-    protected Select2SingleChoice<Option> termInterestCompoundingPeriodField;
-    protected TextFeedbackPanel termInterestCompoundingPeriodFeedback;
+    protected WebMarkupBlock termShareToBeIssuedBlock;
+    protected WebMarkupContainer termShareToBeIssuedIContainer;
+    protected TextField<Long> termShareToBeIssuedField;
+    protected TextFeedbackPanel termShareToBeIssuedFeedback;
 
-    protected WebMarkupBlock termInterestCalculatedUsingBlock;
-    protected WebMarkupContainer termInterestCalculatedUsingIContainer;
-    protected InterestCalculatedUsingProvider termInterestCalculatedUsingProvider;
-    protected Select2SingleChoice<Option> termInterestCalculatedUsingField;
-    protected TextFeedbackPanel termInterestCalculatedUsingFeedback;
+    protected WebMarkupBlock termNominalPriceBlock;
+    protected WebMarkupContainer termNominalPriceIContainer;
+    protected TextField<Double> termNominalPriceField;
+    protected TextFeedbackPanel termNominalPriceFeedback;
 
-    protected WebMarkupBlock termInterestPostingPeriodBlock;
-    protected WebMarkupContainer termInterestPostingPeriodIContainer;
-    protected InterestPostingPeriodProvider termInterestPostingPeriodProvider;
-    protected Select2SingleChoice<Option> termInterestPostingPeriodField;
-    protected TextFeedbackPanel termInterestPostingPeriodFeedback;
-
-    protected WebMarkupBlock termDayInYearBlock;
-    protected WebMarkupContainer termDayInYearIContainer;
-    protected DayInYearProvider termDayInYearProvider;
-    protected Select2SingleChoice<Option> termDayInYearField;
-    protected TextFeedbackPanel termDayInYearFeedback;
+    protected WebMarkupBlock termCapitalBlock;
+    protected WebMarkupContainer termCapitalVContainer;
+    protected ReadOnlyView termCapitalView;
 
     public TermsPanel(String id, Page itemPage) {
         super(id);
@@ -93,71 +77,68 @@ public class TermsPanel extends Panel {
         this.backLink.setOnClick(this::backLinkClick);
         this.form.add(this.backLink);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", ShareBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.termDayInYearBlock = new WebMarkupBlock("termDayInYearBlock", Size.Six_6);
-        this.form.add(this.termDayInYearBlock);
-        this.termDayInYearIContainer = new WebMarkupContainer("termDayInYearIContainer");
-        this.termDayInYearBlock.add(this.termDayInYearIContainer);
-        this.termDayInYearProvider = new DayInYearProvider(DayInYear.D365, DayInYear.D360);
-        this.termDayInYearField = new Select2SingleChoice<>("termDayInYearField", new PropertyModel<>(this.itemPage, "termDayInYearValue"), this.termDayInYearProvider);
-        this.termDayInYearField.setLabel(Model.of("Days in year"));
-        this.termDayInYearField.add(new OnChangeAjaxBehavior());
-        this.termDayInYearIContainer.add(this.termDayInYearField);
-        this.termDayInYearFeedback = new TextFeedbackPanel("termDayInYearFeedback", this.termDayInYearField);
-        this.termDayInYearIContainer.add(this.termDayInYearFeedback);
+        this.termCapitalBlock = new WebMarkupBlock("termCapitalBlock", Size.Six_6);
+        this.form.add(this.termCapitalBlock);
+        this.termCapitalVContainer = new WebMarkupContainer("termCapitalVContainer");
+        this.termCapitalBlock.add(this.termCapitalVContainer);
+        this.termCapitalView = new ReadOnlyView("termCapitalView", new PropertyModel<>(this.itemPage, "termCapitalValue"));
+        this.termCapitalVContainer.add(this.termCapitalView);
 
-        this.termInterestPostingPeriodBlock = new WebMarkupBlock("termInterestPostingPeriodBlock", Size.Six_6);
-        this.form.add(this.termInterestPostingPeriodBlock);
-        this.termInterestPostingPeriodIContainer = new WebMarkupContainer("termInterestPostingPeriodIContainer");
-        this.termInterestPostingPeriodBlock.add(this.termInterestPostingPeriodIContainer);
-        this.termInterestPostingPeriodProvider = new InterestPostingPeriodProvider();
-        this.termInterestPostingPeriodField = new Select2SingleChoice<>("termInterestPostingPeriodField", new PropertyModel<>(this.itemPage, "termInterestPostingPeriodValue"), this.termInterestPostingPeriodProvider);
-        this.termInterestPostingPeriodField.setLabel(Model.of("Interest calculated using"));
-        this.termInterestPostingPeriodField.add(new OnChangeAjaxBehavior());
-        this.termInterestPostingPeriodIContainer.add(this.termInterestPostingPeriodField);
-        this.termInterestPostingPeriodFeedback = new TextFeedbackPanel("termInterestPostingPeriodFeedback", this.termInterestPostingPeriodField);
-        this.termInterestPostingPeriodIContainer.add(this.termInterestPostingPeriodFeedback);
+        this.termNominalPriceBlock = new WebMarkupBlock("termNominalPriceBlock", Size.Six_6);
+        this.form.add(this.termNominalPriceBlock);
+        this.termNominalPriceIContainer = new WebMarkupContainer("termNominalPriceIContainer");
+        this.termNominalPriceBlock.add(this.termNominalPriceIContainer);
+        this.termNominalPriceField = new TextField<>("termNominalPriceField", new PropertyModel<>(this.itemPage, "termNominalPriceValue"));
+        this.termNominalPriceField.setLabel(Model.of("Nominal Price"));
+        this.termNominalPriceField.add(new OnChangeAjaxBehavior(this::termNominalPriceFieldUpdate));
+        this.termNominalPriceIContainer.add(this.termNominalPriceField);
+        this.termNominalPriceFeedback = new TextFeedbackPanel("termNominalPriceFeedback", this.termNominalPriceField);
+        this.termNominalPriceIContainer.add(this.termNominalPriceFeedback);
 
-        this.termInterestCalculatedUsingBlock = new WebMarkupBlock("termInterestCalculatedUsingBlock", Size.Six_6);
-        this.form.add(this.termInterestCalculatedUsingBlock);
-        this.termInterestCalculatedUsingIContainer = new WebMarkupContainer("termInterestCalculatedUsingIContainer");
-        this.termInterestCalculatedUsingBlock.add(this.termInterestCalculatedUsingIContainer);
-        this.termInterestCalculatedUsingProvider = new InterestCalculatedUsingProvider();
-        this.termInterestCalculatedUsingField = new Select2SingleChoice<>("termInterestCalculatedUsingField", new PropertyModel<>(this.itemPage, "termInterestCalculatedUsingValue"), this.termInterestCalculatedUsingProvider);
-        this.termInterestCalculatedUsingField.setLabel(Model.of("Interest posting period"));
-        this.termInterestCalculatedUsingField.add(new OnChangeAjaxBehavior());
-        this.termInterestCalculatedUsingIContainer.add(this.termInterestCalculatedUsingField);
-        this.termInterestCalculatedUsingFeedback = new TextFeedbackPanel("termInterestCalculatedUsingFeedback", this.termInterestCalculatedUsingField);
-        this.termInterestCalculatedUsingIContainer.add(this.termInterestCalculatedUsingFeedback);
+        this.termShareToBeIssuedBlock = new WebMarkupBlock("termShareToBeIssuedBlock", Size.Six_6);
+        this.form.add(this.termShareToBeIssuedBlock);
+        this.termShareToBeIssuedIContainer = new WebMarkupContainer("termShareToBeIssuedIContainer");
+        this.termShareToBeIssuedBlock.add(this.termShareToBeIssuedIContainer);
+        this.termShareToBeIssuedField = new TextField<>("termShareToBeIssuedField", new PropertyModel<>(this.itemPage, "termShareToBeIssuedValue"));
+        this.termShareToBeIssuedField.setLabel(Model.of("Shares to be issued"));
+        this.termShareToBeIssuedField.add(new OnChangeAjaxBehavior());
+        this.termShareToBeIssuedIContainer.add(this.termShareToBeIssuedField);
+        this.termShareToBeIssuedFeedback = new TextFeedbackPanel("termShareToBeIssuedFeedback", this.termShareToBeIssuedField);
+        this.termShareToBeIssuedIContainer.add(this.termShareToBeIssuedFeedback);
 
-        this.termInterestCompoundingPeriodBlock = new WebMarkupBlock("termInterestCompoundingPeriodBlock", Size.Six_6);
-        this.form.add(this.termInterestCompoundingPeriodBlock);
-        this.termInterestCompoundingPeriodIContainer = new WebMarkupContainer("termInterestCompoundingPeriodIContainer");
-        this.termInterestCompoundingPeriodBlock.add(this.termInterestCompoundingPeriodIContainer);
-        this.termInterestCompoundingPeriodProvider = new InterestCompoundingPeriodProvider();
-        this.termInterestCompoundingPeriodField = new Select2SingleChoice<>("termInterestCompoundingPeriodField", new PropertyModel<>(this.itemPage, "termInterestCompoundingPeriodValue"), this.termInterestCompoundingPeriodProvider);
-        this.termInterestCompoundingPeriodField.setLabel(Model.of("Interest compounding period"));
-        this.termInterestCompoundingPeriodField.add(new OnChangeAjaxBehavior());
-        this.termInterestCompoundingPeriodIContainer.add(this.termInterestCompoundingPeriodField);
-        this.termInterestCompoundingPeriodFeedback = new TextFeedbackPanel("termInterestCompoundingPeriodFeedback", this.termInterestCompoundingPeriodField);
-        this.termInterestCompoundingPeriodIContainer.add(this.termInterestCompoundingPeriodFeedback);
+        this.termTotalNumberOfShareBlock = new WebMarkupBlock("termTotalNumberOfShareBlock", Size.Six_6);
+        this.form.add(this.termTotalNumberOfShareBlock);
+        this.termTotalNumberOfShareIContainer = new WebMarkupContainer("termTotalNumberOfShareIContainer");
+        this.termTotalNumberOfShareBlock.add(this.termTotalNumberOfShareIContainer);
+        this.termTotalNumberOfShareField = new TextField<>("termTotalNumberOfShareField", new PropertyModel<>(this.itemPage, "termTotalNumberOfShareValue"));
+        this.termTotalNumberOfShareField.setLabel(Model.of("Total Number of Shares"));
+        this.termTotalNumberOfShareField.add(new OnChangeAjaxBehavior(this::termNominalPriceFieldUpdate));
+        this.termTotalNumberOfShareIContainer.add(this.termTotalNumberOfShareField);
+        this.termTotalNumberOfShareFeedback = new TextFeedbackPanel("termTotalNumberOfShareFeedback", this.termTotalNumberOfShareField);
+        this.termTotalNumberOfShareIContainer.add(this.termTotalNumberOfShareFeedback);
+    }
 
-        this.termNominalAnnualInterestBlock = new WebMarkupBlock("termNominalAnnualInterestBlock", Size.Six_6);
-        this.form.add(this.termNominalAnnualInterestBlock);
-        this.termNominalAnnualInterestIContainer = new WebMarkupContainer("termNominalAnnualInterestIContainer");
-        this.termNominalAnnualInterestBlock.add(this.termNominalAnnualInterestIContainer);
-        this.termNominalAnnualInterestField = new TextField<>("termNominalAnnualInterestField", new PropertyModel<>(this.itemPage, "termNominalAnnualInterestValue"));
-        this.termNominalAnnualInterestField.setLabel(Model.of("Nominal annual interest"));
-        this.termNominalAnnualInterestField.add(new OnChangeAjaxBehavior());
-        this.termNominalAnnualInterestIContainer.add(this.termNominalAnnualInterestField);
-        this.termNominalAnnualInterestFeedback = new TextFeedbackPanel("termNominalAnnualInterestFeedback", this.termNominalAnnualInterestField);
-        this.termNominalAnnualInterestIContainer.add(this.termNominalAnnualInterestFeedback);
+    protected boolean termNominalPriceFieldUpdate(AjaxRequestTarget target) {
+        PropertyModel<Double> termNominalPriceValue = new PropertyModel<>(this.itemPage, "termNominalPriceValue");
+        PropertyModel<Long> termShareToBeIssuedValue = new PropertyModel<>(this.itemPage, "termShareToBeIssuedValue");
+        PropertyModel<Double> termCapitalValue = new PropertyModel<>(this.itemPage, "termCapitalValue");
+        if (termNominalPriceValue.getObject() != null && termShareToBeIssuedValue.getObject() != null) {
+            termCapitalValue.setObject(termNominalPriceValue.getObject() * termShareToBeIssuedValue.getObject());
+        } else {
+            termCapitalValue.setObject(0d);
+        }
+
+        if (target != null) {
+            target.add(this.termCapitalBlock);
+        }
+        return false;
     }
 
     protected void nextButtonSubmit(Button button) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_SETTING);
+        this.tab.getObject().setSelectedTab(ShareCreatePage.TAB_SETTING);
         this.errorTerm.setObject(false);
     }
 
@@ -166,7 +147,7 @@ public class TermsPanel extends Panel {
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
-        this.tab.getObject().setSelectedTab(SavingCreatePage.TAB_CURRENCY);
+        this.tab.getObject().setSelectedTab(ShareCreatePage.TAB_CURRENCY);
         if (target != null) {
             target.add(this.tab.getObject());
         }
@@ -175,11 +156,9 @@ public class TermsPanel extends Panel {
 
     @Override
     protected void configureMetaData() {
-        this.termNominalAnnualInterestField.setRequired(true);
-        this.termInterestCompoundingPeriodField.setRequired(true);
-        this.termInterestCalculatedUsingField.setRequired(true);
-        this.termDayInYearField.setRequired(true);
-        this.termInterestPostingPeriodField.setRequired(true);
+        this.termTotalNumberOfShareField.setRequired(true);
+        this.termNominalPriceField.setRequired(true);
+        this.termShareToBeIssuedField.setRequired(true);
     }
 
 }
