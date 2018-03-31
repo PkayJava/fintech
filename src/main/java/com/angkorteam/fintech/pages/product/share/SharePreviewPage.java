@@ -2,20 +2,14 @@ package com.angkorteam.fintech.pages.product.share;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.ddl.AccGLAccount;
@@ -34,11 +28,6 @@ import com.angkorteam.fintech.dto.enums.FinancialAccountType;
 import com.angkorteam.fintech.dto.enums.LockInType;
 import com.angkorteam.fintech.dto.enums.ProductType;
 import com.angkorteam.fintech.pages.ProductDashboardPage;
-import com.angkorteam.fintech.spring.StringGenerator;
-import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
-import com.angkorteam.fintech.widget.WebMarkupBlock.Size;
 import com.angkorteam.fintech.widget.product.share.Accounting;
 import com.angkorteam.fintech.widget.product.share.Charges;
 import com.angkorteam.fintech.widget.product.share.Currency;
@@ -50,13 +39,7 @@ import com.angkorteam.fintech.widget.product.share.Terms;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
-import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.spring.JdbcNamed;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.TextColumn;
-import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.ITab;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
@@ -149,7 +132,7 @@ public class SharePreviewPage extends Page {
         }
         {
             PageBreadcrumb breadcrumb = new PageBreadcrumb();
-            breadcrumb.setLabel("Share Loan Product Create");
+            breadcrumb.setLabel(this.detailShortNameValue);
             BREADCRUMB.add(breadcrumb);
         }
         return Model.ofList(BREADCRUMB);
@@ -177,8 +160,8 @@ public class SharePreviewPage extends Page {
         this.errorTerm = true;
         this.errorSetting = true;
         this.errorCharge = true;
-        this.errorMarketPrice = true; 
-        
+        this.errorMarketPrice = true;
+
         this.shareId = getPageParameters().get("shareId").toString();
 
         JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
@@ -186,8 +169,12 @@ public class SharePreviewPage extends Page {
         SelectQuery selectQuery = null;
 
         selectQuery = new SelectQuery(MShareProduct.NAME);
-        // selectQuery.addJoin("INNER JOIN " + MOrganisationCurrency.NAME + " ON " + MShareProduct.NAME + "." + MShareProduct.Field.CURRENCY_CODE + " = " + MOrganisationCurrency.NAME + "." + MOrganisationCurrency.Field.CODE);
-        // selectQuery.addField("concat(" + MOrganisationCurrency.NAME + "." + MOrganisationCurrency.Field.NAME + ", ' [', " + MOrganisationCurrency.NAME + "." + MOrganisationCurrency.Field.CODE + ", ']') currency");
+        // selectQuery.addJoin("INNER JOIN " + MOrganisationCurrency.NAME + " ON " +
+        // MShareProduct.NAME + "." + MShareProduct.Field.CURRENCY_CODE + " = " +
+        // MOrganisationCurrency.NAME + "." + MOrganisationCurrency.Field.CODE);
+        // selectQuery.addField("concat(" + MOrganisationCurrency.NAME + "." +
+        // MOrganisationCurrency.Field.NAME + ", ' [', " + MOrganisationCurrency.NAME +
+        // "." + MOrganisationCurrency.Field.CODE + ", ']') currency");
         selectQuery.addField(MShareProduct.NAME + "." + MShareProduct.Field.NAME);
         selectQuery.addField(MShareProduct.NAME + "." + MShareProduct.Field.SHORT_NAME);
         selectQuery.addField(MShareProduct.NAME + "." + MShareProduct.Field.DESCRIPTION);
