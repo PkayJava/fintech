@@ -415,6 +415,10 @@ public class LoanCreatePage extends Page {
 
         // Settings
 
+        if (this.settingEqualAmortizationValue != null) {
+            builder.withEqualAmortization(this.settingEqualAmortizationValue);
+        }
+
         if (this.settingAmortizationValue != null) {
             builder.withAmortizationType(Amortization.valueOf(this.settingAmortizationValue.getId()));
         }

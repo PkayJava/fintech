@@ -933,6 +933,15 @@ public class ProductLoanBuilder implements Serializable {
         return this;
     }
 
+    private Boolean equalAmortization;
+    private boolean hasEqualAmortization;
+
+    public ProductLoanBuilder withEqualAmortization(Boolean equalAmortization) {
+        this.equalAmortization = equalAmortization;
+        this.hasEqualAmortization = true;
+        return this;
+    }
+
     public JsonNode build() {
 
         JsonNode object = new com.angkorteam.fintech.dto.JsonNode();
@@ -1095,14 +1104,12 @@ public class ProductLoanBuilder implements Serializable {
             }
         }
 
-        if (!errors.isEmpty()) {
-            // throw new IllegalArgumentException("invalid builder :: " +
-            // StringUtils.join(errors, ","));
-            System.out.println("invalid builder :: " + StringUtils.join(errors, ","));
-        }
-
         if (this.hasCharges) {
             object.getObject().put("charges", this.charges);
+        }
+
+        if (this.equalAmortization) {
+            object.getObject().put("isEqualAmortization", this.equalAmortization);
         }
 
         if (this.hasPenaltyToIncomeAccountMappings) {
