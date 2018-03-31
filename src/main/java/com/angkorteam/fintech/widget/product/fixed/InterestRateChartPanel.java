@@ -219,7 +219,7 @@ public class InterestRateChartPanel extends Panel {
             item.put("period", period);
             item.put("amountRangeFrom", this.popupModel.get("amountRangeFromValue"));
             item.put("amountRangeTo", this.popupModel.get("amountRangeToValue"));
-            item.put("amountRangeTo", amountRange);
+            item.put("amountRange", amountRange);
             item.put("interest", this.popupModel.get("interestValue"));
             item.put("description", this.popupModel.get("descriptionValue"));
             item.put("interestRate", Lists.newLinkedList());

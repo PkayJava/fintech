@@ -33,6 +33,11 @@
 							<select wicket:id="clientTypeOperandField" class="form-control"></select>
 							<span wicket:id="clientTypeOperandFeedback" class="help-block"></span>
 						</wicket:container>
+						<wicket:container wicket:id="genderOperandIContainer">
+							<label wicket:for="genderOperandField">Value</label>
+							<select wicket:id="genderOperandField" class="form-control"></select>
+							<span wicket:id="genderOperandFeedback" class="help-block"></span>
+						</wicket:container>
 						<wicket:container
 							wicket:id="clientClassificationOperandIContainer">
 							<label wicket:for="clientClassificationOperandField">Value</label>
@@ -58,7 +63,8 @@
 					<div class="clearfix"></div>
 				</div>
 				<div class="modal-footer">
-					<button wicket:id="addButton" type="submit" class="btn btn-sm btn-info">Add</button>
+					<button wicket:id="addButton" type="submit"
+						class="btn btn-sm btn-info">Add</button>
 				</div>
 			</form>
 			<div class="modal-body">

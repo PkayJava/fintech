@@ -16,6 +16,7 @@ import com.angkorteam.fintech.dto.enums.Attribute;
 import com.angkorteam.fintech.provider.AttributeProvider;
 import com.angkorteam.fintech.provider.ClientClassificationProvider;
 import com.angkorteam.fintech.provider.ClientTypeProvider;
+import com.angkorteam.fintech.provider.GenderProvider;
 import com.angkorteam.fintech.provider.OperandTypeProvider;
 import com.angkorteam.fintech.provider.OperatorProvider;
 import com.angkorteam.fintech.spring.StringGenerator;
@@ -76,6 +77,12 @@ public class IncentivePopup extends PopupPanel {
     protected ClientClassificationProvider clientClassificationOperandProvider;
     protected Select2SingleChoice<Option> clientClassificationOperandField;
     protected TextFeedbackPanel clientClassificationOperandFeedback;
+
+    protected WebMarkupContainer genderOperandIContainer;
+    protected Option genderOperandValue;
+    protected GenderProvider genderOperandProvider;
+    protected Select2SingleChoice<Option> genderOperandField;
+    protected TextFeedbackPanel genderOperandFeedback;
 
     protected Option operandTypeValue;
     protected OperandTypeProvider operandTypeProvider;
@@ -160,6 +167,15 @@ public class IncentivePopup extends PopupPanel {
         this.clientClassificationOperandFeedback = new TextFeedbackPanel("clientClassificationOperandFeedback", this.clientClassificationOperandField);
         this.clientClassificationOperandIContainer.add(this.clientClassificationOperandFeedback);
 
+        this.genderOperandIContainer = new WebMarkupContainer("genderOperandIContainer");
+        this.operandBlock.add(this.genderOperandIContainer);
+        this.genderOperandProvider = new GenderProvider();
+        this.genderOperandField = new Select2SingleChoice<>("genderOperandField", new PropertyModel<>(this, "genderOperandValue"), this.genderOperandProvider);
+        this.genderOperandField.setLabel(Model.of("Value"));
+        this.genderOperandIContainer.add(this.genderOperandField);
+        this.genderOperandFeedback = new TextFeedbackPanel("genderOperandFeedback", this.genderOperandField);
+        this.genderOperandIContainer.add(this.genderOperandFeedback);
+
         this.operandTypeProvider = new OperandTypeProvider();
         this.operandTypeField = new Select2SingleChoice<>("operandTypeField", new PropertyModel<>(this, "operandTypeValue"), this.operandTypeProvider);
         this.operandTypeField.setLabel(Model.of("Type"));
@@ -199,11 +215,14 @@ public class IncentivePopup extends PopupPanel {
         this.numberOperandIContainer.setVisible(false);
         this.clientTypeOperandIContainer.setVisible(false);
         this.clientClassificationOperandIContainer.setVisible(false);
+        this.genderOperandIContainer.setVisible(false);
         if (this.attributeValue != null) {
             if (this.attributeValue.getId().equals(Attribute.ClientType.name())) {
                 this.clientTypeOperandIContainer.setVisible(true);
             } else if (this.attributeValue.getId().equals(Attribute.ClientClassification.name())) {
                 this.clientClassificationOperandIContainer.setVisible(true);
+            } else if (this.attributeValue.getId().equals(Attribute.Gender.name())) {
+                this.genderOperandIContainer.setVisible(true);
             } else {
                 this.numberOperandIContainer.setVisible(true);
             }
@@ -223,6 +242,7 @@ public class IncentivePopup extends PopupPanel {
         item.put("numberOperand", this.numberOperandValue);
         item.put("clientTypeOperand", this.clientTypeOperandValue);
         item.put("clientClassificationOperand", this.clientClassificationOperandValue);
+        item.put("genderOperand", this.genderOperandValue);
         item.put("operandType", this.operandTypeValue);
         item.put("interest", this.interestValue);
         this.dataValue.add(item);
@@ -248,6 +268,9 @@ public class IncentivePopup extends PopupPanel {
                     return new TextCell(value);
                 } else if (attribute.getId().equals(Attribute.ClientClassification.name())) {
                     Option value = (Option) model.get("clientClassificationOperand");
+                    return new TextCell(value);
+                } else if (attribute.getId().equals(Attribute.Gender.name())) {
+                    Option value = (Option) model.get("genderOperand");
                     return new TextCell(value);
                 } else {
                     if (model.get("numberOperand") instanceof String) {
