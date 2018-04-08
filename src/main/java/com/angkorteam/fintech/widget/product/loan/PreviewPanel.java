@@ -7,7 +7,6 @@ import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -20,12 +19,16 @@ import com.angkorteam.fintech.dto.enums.loan.FrequencyType;
 import com.angkorteam.fintech.dto.enums.loan.InterestCalculationPeriod;
 import com.angkorteam.fintech.dto.enums.loan.InterestRecalculationCompound;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.product.loan.LoanBrowsePage;
 import com.angkorteam.fintech.pages.product.loan.LoanCreatePage;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.ReadOnlyView;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
+import com.angkorteam.fintech.widget.WebMarkupContainer;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -59,29 +62,39 @@ public class PreviewPanel extends Panel {
 
     // Details
 
-    protected WebMarkupBlock detailProductNameBlock;
-    protected WebMarkupContainer detailProductNameVContainer;
+    protected UIRow row1;
+
+    protected UIBlock detailProductNameBlock;
+    protected UIContainer detailProductNameVContainer;
     protected ReadOnlyView detailProductNameView;
 
-    protected WebMarkupBlock detailShortNameBlock;
-    protected WebMarkupContainer detailShortNameVContainer;
+    protected UIBlock detailShortNameBlock;
+    protected UIContainer detailShortNameVContainer;
     protected ReadOnlyView detailShortNameView;
 
-    protected WebMarkupBlock detailDescriptionBlock;
-    protected WebMarkupContainer detailDescriptionVContainer;
+    protected UIRow row2;
+
+    protected UIBlock detailDescriptionBlock;
+    protected UIContainer detailDescriptionVContainer;
     protected ReadOnlyView detailDescriptionView;
 
-    protected WebMarkupBlock detailStartDateBlock;
-    protected WebMarkupContainer detailStartDateVContainer;
+    protected UIRow row3;
+
+    protected UIBlock detailStartDateBlock;
+    protected UIContainer detailStartDateVContainer;
     protected ReadOnlyView detailStartDateView;
 
-    protected WebMarkupBlock detailCloseDateBlock;
-    protected WebMarkupContainer detailCloseDateVContainer;
+    protected UIBlock detailCloseDateBlock;
+    protected UIContainer detailCloseDateVContainer;
     protected ReadOnlyView detailCloseDateView;
 
-    protected WebMarkupBlock detailIncludeInCustomerLoanCounterBlock;
-    protected WebMarkupContainer detailIncludeInCustomerLoanCounterVContainer;
+    protected UIRow row4;
+
+    protected UIBlock detailIncludeInCustomerLoanCounterBlock;
+    protected UIContainer detailIncludeInCustomerLoanCounterVContainer;
     protected ReadOnlyView detailIncludeInCustomerLoanCounterView;
+
+    protected UIBlock row4Block1;
 
     // Currency
 
@@ -723,47 +736,45 @@ public class PreviewPanel extends Panel {
 
         // Details
 
-        this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
-        this.form.add(this.detailProductNameBlock);
-        this.detailProductNameVContainer = new WebMarkupContainer("detailProductNameVContainer");
-        this.detailProductNameBlock.add(this.detailProductNameVContainer);
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.detailProductNameBlock = this.row1.newUIBlock("detailProductNameBlock", Size.Six_6);
+        this.detailProductNameVContainer = this.detailProductNameBlock.newUIContainer("detailProductNameVContainer");
         this.detailProductNameView = new ReadOnlyView("detailProductNameView", new PropertyModel<>(this.itemPage, "detailProductNameValue"));
         this.detailProductNameVContainer.add(this.detailProductNameView);
 
-        this.detailShortNameBlock = new WebMarkupBlock("detailShortNameBlock", Size.Six_6);
-        this.form.add(this.detailShortNameBlock);
-        this.detailShortNameVContainer = new WebMarkupContainer("detailShortNameVContainer");
-        this.detailShortNameBlock.add(this.detailShortNameVContainer);
+        this.detailShortNameBlock = this.row1.newUIBlock("detailShortNameBlock", Size.Six_6);
+        this.detailShortNameVContainer = this.detailShortNameBlock.newUIContainer("detailShortNameVContainer");
         this.detailShortNameView = new ReadOnlyView("detailShortNameView", new PropertyModel<>(this.itemPage, "detailShortNameValue"));
         this.detailShortNameVContainer.add(this.detailShortNameView);
 
-        this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Twelve_12);
-        this.form.add(this.detailDescriptionBlock);
-        this.detailDescriptionVContainer = new WebMarkupContainer("detailDescriptionVContainer");
-        this.detailDescriptionBlock.add(this.detailDescriptionVContainer);
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.detailDescriptionBlock = this.row2.newUIBlock("detailDescriptionBlock", Size.Twelve_12);
+        this.detailDescriptionVContainer = this.detailDescriptionBlock.newUIContainer("detailDescriptionVContainer");
         this.detailDescriptionView = new ReadOnlyView("detailDescriptionView", new PropertyModel<>(this.itemPage, "detailDescriptionValue"));
         this.detailDescriptionVContainer.add(this.detailDescriptionView);
 
-        this.detailStartDateBlock = new WebMarkupBlock("detailStartDateBlock", Size.Six_6);
-        this.form.add(this.detailStartDateBlock);
-        this.detailStartDateVContainer = new WebMarkupContainer("detailStartDateVContainer");
-        this.detailStartDateBlock.add(this.detailStartDateVContainer);
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.detailStartDateBlock = this.row3.newUIBlock("detailStartDateBlock", Size.Six_6);
+        this.detailStartDateVContainer = this.detailStartDateBlock.newUIContainer("detailStartDateVContainer");
         this.detailStartDateView = new ReadOnlyView("detailStartDateView", new PropertyModel<>(this.itemPage, "detailStartDateValue"), "dd/MM/YYYY");
         this.detailStartDateVContainer.add(this.detailStartDateView);
 
-        this.detailCloseDateBlock = new WebMarkupBlock("detailCloseDateBlock", Size.Six_6);
-        this.form.add(this.detailCloseDateBlock);
-        this.detailCloseDateVContainer = new WebMarkupContainer("detailCloseDateVContainer");
-        this.detailCloseDateBlock.add(this.detailCloseDateVContainer);
+        this.detailCloseDateBlock = this.row3.newUIBlock("detailCloseDateBlock", Size.Six_6);
+        this.detailCloseDateVContainer = this.detailCloseDateBlock.newUIContainer("detailCloseDateVContainer");
         this.detailCloseDateView = new ReadOnlyView("detailCloseDateView", new PropertyModel<>(this.itemPage, "detailCloseDateValue"), "dd/MM/YYYY");
         this.detailCloseDateVContainer.add(this.detailCloseDateView);
 
-        this.detailIncludeInCustomerLoanCounterBlock = new WebMarkupBlock("detailIncludeInCustomerLoanCounterBlock", Size.Six_6);
-        this.form.add(this.detailIncludeInCustomerLoanCounterBlock);
-        this.detailIncludeInCustomerLoanCounterVContainer = new WebMarkupContainer("detailIncludeInCustomerLoanCounterVContainer");
-        this.detailIncludeInCustomerLoanCounterBlock.add(this.detailIncludeInCustomerLoanCounterVContainer);
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.detailIncludeInCustomerLoanCounterBlock = this.row4.newUIBlock("detailIncludeInCustomerLoanCounterBlock", Size.Six_6);
+        this.detailIncludeInCustomerLoanCounterVContainer = this.detailIncludeInCustomerLoanCounterBlock.newUIContainer("detailIncludeInCustomerLoanCounterVContainer");
         this.detailIncludeInCustomerLoanCounterView = new ReadOnlyView("detailIncludeInCustomerLoanCounterView", new PropertyModel<>(this.itemPage, "detailIncludeInCustomerLoanCounterValue"));
         this.detailIncludeInCustomerLoanCounterVContainer.add(this.detailIncludeInCustomerLoanCounterView);
+
+        this.row4Block1 = this.row4.newUIBlock("row4Block1", Size.Six_6);
 
         // Currency
 
