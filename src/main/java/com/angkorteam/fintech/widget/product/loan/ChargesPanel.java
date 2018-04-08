@@ -8,7 +8,6 @@ import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -19,6 +18,9 @@ import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.ProductPopup;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.product.loan.LoanBrowsePage;
 import com.angkorteam.fintech.pages.product.loan.LoanCreatePage;
 import com.angkorteam.fintech.popup.ChargePopup;
@@ -26,7 +28,6 @@ import com.angkorteam.fintech.popup.CurrencyPopup;
 import com.angkorteam.fintech.popup.OverdueChargePopup;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.share.provider.ListDataProvider;
@@ -63,17 +64,21 @@ public class ChargesPanel extends Panel {
     protected ModalWindow modalWindow;
     protected Map<String, Object> popupModel;
 
+    protected UIRow row1;
+
+    protected UIBlock chargeBlock;
+    protected UIContainer chargeIContainer;
     protected List<IColumn<Map<String, Object>, String>> chargeColumn;
-    protected WebMarkupBlock chargeBlock;
-    protected WebMarkupContainer chargeIContainer;
     protected DataTable<Map<String, Object>, String> chargeTable;
     protected ListDataProvider chargeProvider;
     protected AjaxLink<Void> chargeAddLink;
     protected PropertyModel<List<Map<String, Object>>> chargeValue;
 
+    protected UIRow row2;
+
+    protected UIBlock overdueChargeBlock;
+    protected UIContainer overdueChargeIContainer;
     protected List<IColumn<Map<String, Object>, String>> overdueChargeColumn;
-    protected WebMarkupBlock overdueChargeBlock;
-    protected WebMarkupContainer overdueChargeIContainer;
     protected DataTable<Map<String, Object>, String> overdueChargeTable;
     protected ListDataProvider overdueChargeProvider;
     protected AjaxLink<Void> overdueChargeAddLink;
@@ -132,10 +137,10 @@ public class ChargesPanel extends Panel {
         add(this.modalWindow);
         this.modalWindow.setOnClose(this::modalWindowClose);
 
-        this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Twelve_12);
-        this.form.add(this.chargeBlock);
-        this.chargeIContainer = new WebMarkupContainer("chargeIContainer");
-        this.chargeBlock.add(this.chargeIContainer);
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.chargeBlock = this.row1.newUIBlock("chargeBlock", Size.Twelve_12);
+        this.chargeIContainer = this.chargeBlock.newUIContainer("chargeIContainer");
         this.chargeTable = new DataTable<>("chargeTable", this.chargeColumn, this.chargeProvider, 20);
         this.chargeIContainer.add(this.chargeTable);
         this.chargeTable.addTopToolbar(new HeadersToolbar<>(this.chargeTable, this.chargeProvider));
@@ -144,10 +149,10 @@ public class ChargesPanel extends Panel {
         this.chargeAddLink.setOnClick(this::chargeAddLinkClick);
         this.chargeIContainer.add(this.chargeAddLink);
 
-        this.overdueChargeBlock = new WebMarkupBlock("overdueChargeBlock", Size.Twelve_12);
-        this.form.add(this.overdueChargeBlock);
-        this.overdueChargeIContainer = new WebMarkupContainer("overdueChargeIContainer");
-        this.overdueChargeBlock.add(this.overdueChargeIContainer);
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.overdueChargeBlock = this.row2.newUIBlock("overdueChargeBlock", Size.Twelve_12);
+        this.overdueChargeIContainer = this.overdueChargeBlock.newUIContainer("overdueChargeIContainer");
         this.overdueChargeTable = new DataTable<>("overdueChargeTable", this.overdueChargeColumn, this.overdueChargeProvider, 20);
         this.overdueChargeIContainer.add(this.overdueChargeTable);
         this.overdueChargeTable.addTopToolbar(new HeadersToolbar<>(this.overdueChargeTable, this.overdueChargeProvider));
