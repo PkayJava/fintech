@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -18,6 +18,7 @@ import com.angkorteam.fintech.ddl.MFund;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.FundBuilder;
 import com.angkorteam.fintech.helper.FundHelper;
+import com.angkorteam.fintech.layout.Size;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
@@ -123,7 +124,7 @@ public class FundModifyPage extends Page {
     }
 
     protected void initNameBlock() {
-        this.nameBlock = new WebMarkupBlock("nameBlock", WebMarkupBlock.Size.Twelve_12);
+        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Twelve_12);
         this.form.add(this.nameBlock);
         this.nameIContainer = new WebMarkupContainer("nameIContainer");
         this.nameBlock.add(this.nameIContainer);
@@ -135,7 +136,7 @@ public class FundModifyPage extends Page {
     }
 
     protected void initExternalIdBlock() {
-        this.externalIdBlock = new WebMarkupBlock("externalIdBlock", WebMarkupBlock.Size.Twelve_12);
+        this.externalIdBlock = new WebMarkupBlock("externalIdBlock", Size.Twelve_12);
         this.form.add(this.externalIdBlock);
         this.externalIdIContainer = new WebMarkupContainer("externalIdIContainer");
         this.externalIdBlock.add(this.externalIdIContainer);

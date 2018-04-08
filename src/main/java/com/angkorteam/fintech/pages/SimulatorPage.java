@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
+import com.angkorteam.fintech.layout.Size;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -99,7 +100,7 @@ public class SimulatorPage extends Page {
         this.simulateButton.setOnSubmit(this::simulateButtonSubmit);
         this.form.add(this.simulateButton);
 
-        this.methodBlock = new WebMarkupBlock("methodBlock", WebMarkupBlock.Size.Four_4);
+        this.methodBlock = new WebMarkupBlock("methodBlock", Size.Four_4);
         this.form.add(this.methodBlock);
         this.methodIContainer = new WebMarkupContainer("methodIContainer");
         this.methodBlock.add(this.methodIContainer);
@@ -109,7 +110,7 @@ public class SimulatorPage extends Page {
         this.methodFeedback = new TextFeedbackPanel("methodFeedback", this.methodField);
         this.methodIContainer.add(this.methodFeedback);
 
-        this.urlBlock = new WebMarkupBlock("urlBlock", WebMarkupBlock.Size.Eight_8);
+        this.urlBlock = new WebMarkupBlock("urlBlock", Size.Eight_8);
         this.form.add(this.urlBlock);
         this.urlIContainer = new WebMarkupContainer("urlIContainer");
         this.urlBlock.add(this.urlIContainer);
@@ -119,7 +120,7 @@ public class SimulatorPage extends Page {
         this.urlFeedback = new TextFeedbackPanel("urlFeedback", this.urlField);
         this.urlIContainer.add(this.urlFeedback);
 
-        this.statusCodeBlock = new WebMarkupBlock("statusCodeBlock", WebMarkupBlock.Size.Six_6);
+        this.statusCodeBlock = new WebMarkupBlock("statusCodeBlock", Size.Six_6);
         this.form.add(this.statusCodeBlock);
         this.statusCodeIContainer = new WebMarkupContainer("statusCodeIContainer");
         this.statusCodeBlock.add(this.statusCodeIContainer);
@@ -129,7 +130,7 @@ public class SimulatorPage extends Page {
         this.statusCodeFeedback = new TextFeedbackPanel("statusCodeFeedback", this.statusCodeField);
         this.statusCodeIContainer.add(this.statusCodeFeedback);
 
-        this.statusTextBlock = new WebMarkupBlock("statusTextBlock", WebMarkupBlock.Size.Six_6);
+        this.statusTextBlock = new WebMarkupBlock("statusTextBlock", Size.Six_6);
         this.form.add(this.statusTextBlock);
         this.statusTextIContainer = new WebMarkupContainer("statusTextIContainer");
         this.statusTextBlock.add(this.statusTextIContainer);
@@ -139,7 +140,7 @@ public class SimulatorPage extends Page {
         this.statusTextFeedback = new TextFeedbackPanel("statusTextFeedback", this.statusTextField);
         this.statusTextIContainer.add(this.statusTextFeedback);
 
-        this.requestBlock = new WebMarkupBlock("requestBlock", WebMarkupBlock.Size.Twelve_12);
+        this.requestBlock = new WebMarkupBlock("requestBlock", Size.Twelve_12);
         this.form.add(this.requestBlock);
         this.requestIContainer = new WebMarkupContainer("requestIContainer");
         this.requestBlock.add(this.requestIContainer);
@@ -149,7 +150,7 @@ public class SimulatorPage extends Page {
         this.requestFeedback = new TextFeedbackPanel("requestFeedback", this.requestField);
         this.requestIContainer.add(this.requestFeedback);
 
-        this.responseBlock = new WebMarkupBlock("responseBlock", WebMarkupBlock.Size.Twelve_12);
+        this.responseBlock = new WebMarkupBlock("responseBlock", Size.Twelve_12);
         this.form.add(this.responseBlock);
         this.responseIContainer = new WebMarkupContainer("responseIContainer");
         this.responseBlock.add(this.responseIContainer);

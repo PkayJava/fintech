@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
@@ -17,6 +17,7 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.HolidayBuilder;
 import com.angkorteam.fintech.dto.enums.ReschedulingType;
 import com.angkorteam.fintech.helper.HolidayHelper;
+import com.angkorteam.fintech.layout.Size;
 import com.angkorteam.fintech.provider.MultipleChoiceProvider;
 import com.angkorteam.fintech.provider.ReschedulingTypeProvider;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
@@ -121,7 +122,7 @@ public class HolidayCreatePage extends Page {
     }
 
     protected void initOfficeBlock() {
-        this.officeBlock = new WebMarkupBlock("officeBlock", WebMarkupBlock.Size.Twelve_12);
+        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Twelve_12);
         this.form.add(this.officeBlock);
         this.officeIContainer = new WebMarkupContainer("officeIContainer");
         this.officeBlock.add(this.officeIContainer);
@@ -134,7 +135,7 @@ public class HolidayCreatePage extends Page {
     }
 
     protected void initRepaymentsRescheduledToBlock() {
-        this.repaymentsRescheduledToBlock = new WebMarkupBlock("repaymentsRescheduledToBlock", WebMarkupBlock.Size.Six_6);
+        this.repaymentsRescheduledToBlock = new WebMarkupBlock("repaymentsRescheduledToBlock", Size.Six_6);
         this.form.add(this.repaymentsRescheduledToBlock);
         this.repaymentsRescheduledToIContainer = new WebMarkupContainer("repaymentsRescheduledToIContainer");
         this.repaymentsRescheduledToBlock.add(this.repaymentsRescheduledToIContainer);
@@ -147,7 +148,7 @@ public class HolidayCreatePage extends Page {
     }
 
     protected void initReschedulingTypeBlock() {
-        this.reschedulingTypeBlock = new WebMarkupBlock("reschedulingTypeBlock", WebMarkupBlock.Size.Six_6);
+        this.reschedulingTypeBlock = new WebMarkupBlock("reschedulingTypeBlock", Size.Six_6);
         this.form.add(this.reschedulingTypeBlock);
         this.reschedulingTypeIContainer = new WebMarkupContainer("reschedulingTypeIContainer");
         this.reschedulingTypeBlock.add(this.reschedulingTypeIContainer);
@@ -161,7 +162,7 @@ public class HolidayCreatePage extends Page {
     }
 
     protected void initToDateBlock() {
-        this.toDateBlock = new WebMarkupBlock("toDateBlock", WebMarkupBlock.Size.Six_6);
+        this.toDateBlock = new WebMarkupBlock("toDateBlock", Size.Six_6);
         this.form.add(this.toDateBlock);
         this.toDateIContainer = new WebMarkupContainer("toDateIContainer");
         this.toDateBlock.add(this.toDateIContainer);
@@ -173,7 +174,7 @@ public class HolidayCreatePage extends Page {
     }
 
     protected void initFromDateBlock() {
-        this.fromDateBlock = new WebMarkupBlock("fromDateBlock", WebMarkupBlock.Size.Six_6);
+        this.fromDateBlock = new WebMarkupBlock("fromDateBlock", Size.Six_6);
         this.form.add(this.fromDateBlock);
         this.fromDateIContainer = new WebMarkupContainer("fromDateIContainer");
         this.fromDateBlock.add(this.fromDateIContainer);
@@ -185,7 +186,7 @@ public class HolidayCreatePage extends Page {
     }
 
     protected void initDescriptionBlock() {
-        this.descriptionBlock = new WebMarkupBlock("descriptionBlock", WebMarkupBlock.Size.Six_6);
+        this.descriptionBlock = new WebMarkupBlock("descriptionBlock", Size.Six_6);
         this.form.add(this.descriptionBlock);
         this.descriptionIContainer = new WebMarkupContainer("descriptionIContainer");
         this.descriptionBlock.add(this.descriptionIContainer);
@@ -197,7 +198,7 @@ public class HolidayCreatePage extends Page {
     }
 
     protected void initNameBlock() {
-        this.nameBlock = new WebMarkupBlock("nameBlock", WebMarkupBlock.Size.Six_6);
+        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
         this.form.add(this.nameBlock);
         this.nameIContainer = new WebMarkupContainer("nameIContainer");
         this.nameBlock.add(this.nameIContainer);

@@ -8,7 +8,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -20,6 +20,7 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.ddl.MCode;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.CodeHelper;
+import com.angkorteam.fintech.layout.Size;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.BadgeCell;
@@ -106,7 +107,7 @@ public class CodeBrowsePage extends Page {
     }
 
     protected void initNameBlock() {
-        this.nameBlock = new WebMarkupBlock("nameBlock", WebMarkupBlock.Size.Six_6);
+        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
         this.form.add(this.nameBlock);
         this.nameIContainer = new WebMarkupContainer("nameIContainer");
         this.nameBlock.add(this.nameIContainer);
@@ -119,7 +120,7 @@ public class CodeBrowsePage extends Page {
     }
 
     protected void initDataBlock() {
-        this.dataBlock = new WebMarkupBlock("dataBlock", WebMarkupBlock.Size.Twelve_12);
+        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
         add(this.dataBlock);
         this.dataIContainer = new WebMarkupContainer("dataIContainer");
         this.dataBlock.add(this.dataIContainer);

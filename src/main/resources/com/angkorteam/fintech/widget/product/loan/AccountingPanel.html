@@ -334,35 +334,22 @@
 							<h3 class="box-title">Advanced Accounting Rule</h3>
 						</div>
 						<div class="box-body">
-							<!-- Row -->
-							<div
-								class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<h4>Configure Fund Sources for Payment Channels</h4>
-								<table wicket:id="advancedAccountingRuleFundSourceTable"></table>
-								<a wicket:id="advancedAccountingRuleFundSourceAddLink"
-									class="btn btn-sm btn-default">Add</a>
+							<div wicket:id="row1">
+								<div wicket:id="row1Block1" class="form-group">
+									<h5>Configure Fund Sources for Payment Channels</h5>
+									<table wicket:id="advancedAccountingRuleFundSourceTable"></table>
+									<a wicket:id="advancedAccountingRuleFundSourceAddLink"
+										class="btn btn-sm btn-default">Add</a>
+									<h5>Map Fees to Income Accounts</h5>
+									<table wicket:id="advancedAccountingRuleFeeIncomeTable"></table>
+									<a wicket:id="advancedAccountingRuleFeeIncomeAddLink"
+										class="btn btn-sm btn-default">Add</a>
+									<h5>Map Penalties to Specific Income Accounts</h5>
+									<table wicket:id="advancedAccountingRulePenaltyIncomeTable"></table>
+									<a wicket:id="advancedAccountingRulePenaltyIncomeAddLink"
+										class="btn btn-sm btn-default">Add</a>
+								</div>
 							</div>
-							<div class="clearfix"></div>
-
-							<!-- Row -->
-							<div
-								class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<h4>Map Fees to Income Accounts</h4>
-								<table wicket:id="advancedAccountingRuleFeeIncomeTable"></table>
-								<a wicket:id="advancedAccountingRuleFeeIncomeAddLink"
-									class="btn btn-sm btn-default">Add</a>
-							</div>
-							<div class="clearfix"></div>
-
-							<!-- Row -->
-							<div
-								class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<h4>Map Penalties to Specific Income Accounts</h4>
-								<table wicket:id="advancedAccountingRulePenaltyIncomeTable"></table>
-								<a wicket:id="advancedAccountingRulePenaltyIncomeAddLink"
-									class="btn btn-sm btn-default">Add</a>
-							</div>
-							<div class="clearfix"></div>
 						</div>
 					</wicket:container>
 				</div>
