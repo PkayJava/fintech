@@ -27,128 +27,127 @@
 							<h3 class="box-title">Assets</h3>
 						</div>
 						<div class="box-body">
-							<!-- Row -->
-							<div wicket:id="cashFundSourceBlock" class="form-group">
-								<wicket:container wicket:id="cashFundSourceIContainer">
-									<label wicket:for="cashFundSourceField">Fund Source</label>
-									<select wicket:id="cashFundSourceField" class="form-control"></select>
-									<span wicket:id="cashFundSourceFeedback" class="help-block"></span>
-								</wicket:container>
+							<div wicket:id="row2">
+								<div wicket:id="cashFundSourceBlock" class="form-group">
+									<wicket:container wicket:id="cashFundSourceIContainer">
+										<label wicket:for="cashFundSourceField">Fund Source</label>
+										<select wicket:id="cashFundSourceField" class="form-control"></select>
+										<span wicket:id="cashFundSourceFeedback" class="help-block"></span>
+									</wicket:container>
+								</div>
+								<div wicket:id="cashLoanPortfolioBlock" class="form-group">
+									<wicket:container wicket:id="cashLoanPortfolioIContainer">
+										<label wicket:for="cashLoanPortfolioField">Loan
+											Portfolio</label>
+										<select wicket:id="cashLoanPortfolioField"
+											class="form-control"></select>
+										<span wicket:id="cashLoanPortfolioFeedback" class="help-block"></span>
+									</wicket:container>
+								</div>
 							</div>
-							<div wicket:id="cashLoanPortfolioBlock" class="form-group">
-								<wicket:container wicket:id="cashLoanPortfolioIContainer">
-									<label wicket:for="cashLoanPortfolioField">Loan
-										Portfolio</label>
-									<select wicket:id="cashLoanPortfolioField" class="form-control"></select>
-									<span wicket:id="cashLoanPortfolioFeedback" class="help-block"></span>
-								</wicket:container>
-							</div>
-							<div class="clearfix"></div>
 
-							<!-- Row -->
-							<div wicket:id="cashTransferInSuspenseBlock" class="form-group">
-								<wicket:container wicket:id="cashTransferInSuspenseIContainer">
-									<label wicket:for="cashTransferInSuspenseField">Transfer
-										In Suspense</label>
-									<select wicket:id="cashTransferInSuspenseField"
-										class="form-control"></select>
-									<span wicket:id="cashTransferInSuspenseFeedback"
-										class="help-block"></span>
-								</wicket:container>
+							<div wicket:id="row3">
+								<div wicket:id="cashTransferInSuspenseBlock" class="form-group">
+									<wicket:container wicket:id="cashTransferInSuspenseIContainer">
+										<label wicket:for="cashTransferInSuspenseField">Transfer
+											In Suspense</label>
+										<select wicket:id="cashTransferInSuspenseField"
+											class="form-control"></select>
+										<span wicket:id="cashTransferInSuspenseFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
+								<div wicket:id="row3Block1" class="form-group"></div>
 							</div>
-							<div
-								class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-							</div>
-							<div class="clearfix"></div>
 						</div>
 						<div class="box-header with-border">
 							<h3 class="box-title">Income</h3>
 						</div>
 						<div class="box-body">
-							<!-- Row -->
-							<div wicket:id="cashIncomeFromInterestBlock" class="form-group">
-								<wicket:container wicket:id="cashIncomeFromInterestIContainer">
-									<label wicket:for="cashIncomeFromInterestField">Income
-										From Interest</label>
-									<select wicket:id="cashIncomeFromInterestField"
-										class="form-control"></select>
-									<span wicket:id="cashIncomeFromInterestFeedback"
-										class="help-block"></span>
-								</wicket:container>
+							<div wicket:id="row4">
+								<div wicket:id="cashIncomeFromInterestBlock" class="form-group">
+									<wicket:container wicket:id="cashIncomeFromInterestIContainer">
+										<label wicket:for="cashIncomeFromInterestField">Income
+											From Interest</label>
+										<select wicket:id="cashIncomeFromInterestField"
+											class="form-control"></select>
+										<span wicket:id="cashIncomeFromInterestFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
+								<div wicket:id="cashIncomeFromFeeBlock" class="form-group">
+									<wicket:container wicket:id="cashIncomeFromFeeIContainer">
+										<label wicket:for="cashIncomeFromFeeField">Income From
+											Fees</label>
+										<select wicket:id="cashIncomeFromFeeField"
+											class="form-control"></select>
+										<span wicket:id="cashIncomeFromFeeFeedback" class="help-block"></span>
+									</wicket:container>
+								</div>
 							</div>
-							<div wicket:id="cashIncomeFromFeeBlock" class="form-group">
-								<wicket:container wicket:id="cashIncomeFromFeeIContainer">
-									<label wicket:for="cashIncomeFromFeeField">Income From
-										Fees</label>
-									<select wicket:id="cashIncomeFromFeeField" class="form-control"></select>
-									<span wicket:id="cashIncomeFromFeeFeedback" class="help-block"></span>
-								</wicket:container>
-							</div>
-							<div class="clearfix"></div>
 
-							<!-- Row -->
-							<div wicket:id="cashIncomeFromPenaltyBlock" class="form-group">
-								<wicket:container wicket:id="cashIncomeFromPenaltyIContainer">
-									<label wicket:for="cashIncomeFromPenaltyField">Income
-										From Penalties</label>
-									<select wicket:id="cashIncomeFromPenaltyField"
-										class="form-control"></select>
-									<span wicket:id="cashIncomeFromPenaltyFeedback"
-										class="help-block"></span>
-								</wicket:container>
+							<div wicket:id="row5">
+								<div wicket:id="cashIncomeFromPenaltyBlock" class="form-group">
+									<wicket:container wicket:id="cashIncomeFromPenaltyIContainer">
+										<label wicket:for="cashIncomeFromPenaltyField">Income
+											From Penalties</label>
+										<select wicket:id="cashIncomeFromPenaltyField"
+											class="form-control"></select>
+										<span wicket:id="cashIncomeFromPenaltyFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
+								<div wicket:id="cashIncomeFromRecoveryRepaymentBlock"
+									class="form-group">
+									<wicket:container
+										wicket:id="cashIncomeFromRecoveryRepaymentIContainer">
+										<label wicket:for="cashIncomeFromRecoveryRepaymentField">Income
+											From Recovery Repayments</label>
+										<select wicket:id="cashIncomeFromRecoveryRepaymentField"
+											class="form-control"></select>
+										<span wicket:id="cashIncomeFromRecoveryRepaymentFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
 							</div>
-							<div wicket:id="cashIncomeFromRecoveryRepaymentBlock"
-								class="form-group">
-								<wicket:container
-									wicket:id="cashIncomeFromRecoveryRepaymentIContainer">
-									<label wicket:for="cashIncomeFromRecoveryRepaymentField">Income
-										From Recovery Repayments</label>
-									<select wicket:id="cashIncomeFromRecoveryRepaymentField"
-										class="form-control"></select>
-									<span wicket:id="cashIncomeFromRecoveryRepaymentFeedback"
-										class="help-block"></span>
-								</wicket:container>
-							</div>
-							<div class="clearfix"></div>
 						</div>
 						<div class="box-header with-border">
 							<h3 class="box-title">Expenses</h3>
 						</div>
 						<div class="box-body">
-							<!-- Row -->
-							<div wicket:id="cashLossWrittenOffBlock" class="form-group">
-								<wicket:container wicket:id="cashLossWrittenOffIContainer">
-									<label wicket:for="cashLossWrittenOffField">Loss
-										Written Off</label>
-									<select wicket:id="cashLossWrittenOffField"
-										class="form-control"></select>
-									<span wicket:id="cashLossWrittenOffFeedback" class="help-block"></span>
-								</wicket:container>
+							<div wicket:id="row6">
+								<div wicket:id="cashLossWrittenOffBlock" class="form-group">
+									<wicket:container wicket:id="cashLossWrittenOffIContainer">
+										<label wicket:for="cashLossWrittenOffField">Loss
+											Written Off</label>
+										<select wicket:id="cashLossWrittenOffField"
+											class="form-control"></select>
+										<span wicket:id="cashLossWrittenOffFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
+								<div wicket:id="row6Block1" class="form-group"></div>
 							</div>
-							<div
-								class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-							</div>
-							<div class="clearfix"></div>
 						</div>
 						<div class="box-header with-border">
 							<h3 class="box-title">Liabilities</h3>
 						</div>
 						<div class="box-body">
-							<!-- Row -->
-							<div wicket:id="cashOverPaymentLiabilityBlock" class="form-group">
-								<wicket:container wicket:id="cashOverPaymentLiabilityIContainer">
-									<label wicket:for="cashOverPaymentLiabilityField">Over
-										Payment Liability</label>
-									<select wicket:id="cashOverPaymentLiabilityField"
-										class="form-control"></select>
-									<span wicket:id="cashOverPaymentLiabilityFeedback"
-										class="help-block"></span>
-								</wicket:container>
+							<div wicket:id="row7">
+								<div wicket:id="cashOverPaymentLiabilityBlock"
+									class="form-group">
+									<wicket:container
+										wicket:id="cashOverPaymentLiabilityIContainer">
+										<label wicket:for="cashOverPaymentLiabilityField">Over
+											Payment Liability</label>
+										<select wicket:id="cashOverPaymentLiabilityField"
+											class="form-control"></select>
+										<span wicket:id="cashOverPaymentLiabilityFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
+								<div wicket:id="row7Block1" class="form-group"></div>
 							</div>
-							<div
-								class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-							</div>
-							<div class="clearfix"></div>
 						</div>
 					</wicket:container>
 				</div>
@@ -159,171 +158,172 @@
 							<h3 class="box-title">Assets</h3>
 						</div>
 						<div class="box-body">
-							<!-- Row -->
-							<div wicket:id="accrualFundSourceBlock" class="form-group">
-								<wicket:container wicket:id="accrualFundSourceIContainer">
-									<label wicket:for="accrualFundSourceField">Fund Source</label>
-									<select wicket:id="accrualFundSourceField" class="form-control"></select>
-									<span wicket:id="accrualFundSourceFeedback" class="help-block"></span>
-								</wicket:container>
+							<div wicket:id="row8">
+								<div wicket:id="accrualFundSourceBlock" class="form-group">
+									<wicket:container wicket:id="accrualFundSourceIContainer">
+										<label wicket:for="accrualFundSourceField">Fund Source</label>
+										<select wicket:id="accrualFundSourceField"
+											class="form-control"></select>
+										<span wicket:id="accrualFundSourceFeedback" class="help-block"></span>
+									</wicket:container>
+								</div>
+								<div wicket:id="accrualLoanPortfolioBlock" class="form-group">
+									<wicket:container wicket:id="accrualLoanPortfolioIContainer">
+										<label wicket:for="accrualLoanPortfolioField">Loan
+											Portfolio</label>
+										<select wicket:id="accrualLoanPortfolioField"
+											class="form-control"></select>
+										<span wicket:id="accrualLoanPortfolioFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
 							</div>
-							<div wicket:id="accrualLoanPortfolioBlock" class="form-group">
-								<wicket:container wicket:id="accrualLoanPortfolioIContainer">
-									<label wicket:for="accrualLoanPortfolioField">Loan
-										Portfolio</label>
-									<select wicket:id="accrualLoanPortfolioField"
-										class="form-control"></select>
-									<span wicket:id="accrualLoanPortfolioFeedback"
-										class="help-block"></span>
-								</wicket:container>
-							</div>
-							<div class="clearfix"></div>
 
-							<!-- Row -->
-							<div wicket:id="accrualInterestReceivableBlock"
-								class="form-group">
-								<wicket:container
-									wicket:id="accrualInterestReceivableIContainer">
-									<label wicket:for="accrualInterestReceivableField">Interest
-										Receivable</label>
-									<select wicket:id="accrualInterestReceivableField"
-										class="form-control"></select>
-									<span wicket:id="accrualInterestReceivableFeedback"
-										class="help-block"></span>
-								</wicket:container>
+							<div wicket:id="row9">
+								<div wicket:id="accrualInterestReceivableBlock"
+									class="form-group">
+									<wicket:container
+										wicket:id="accrualInterestReceivableIContainer">
+										<label wicket:for="accrualInterestReceivableField">Interest
+											Receivable</label>
+										<select wicket:id="accrualInterestReceivableField"
+											class="form-control"></select>
+										<span wicket:id="accrualInterestReceivableFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
+								<div wicket:id="accrualFeeReceivableBlock" class="form-group">
+									<wicket:container wicket:id="accrualFeeReceivableIContainer">
+										<label wicket:for="accrualFeeReceivableField">Fee
+											Receivable</label>
+										<select wicket:id="accrualFeeReceivableField"
+											class="form-control"></select>
+										<span wicket:id="accrualFeeReceivableFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
 							</div>
-							<div wicket:id="accrualFeeReceivableBlock" class="form-group">
-								<wicket:container wicket:id="accrualFeeReceivableIContainer">
-									<label wicket:for="accrualFeeReceivableField">Fee
-										Receivable</label>
-									<select wicket:id="accrualFeeReceivableField"
-										class="form-control"></select>
-									<span wicket:id="accrualFeeReceivableFeedback"
-										class="help-block"></span>
-								</wicket:container>
-							</div>
-							<div class="clearfix"></div>
 
-							<!-- Row -->
-							<div wicket:id="accrualPenaltyReceivableBlock" class="form-group">
-								<wicket:container wicket:id="accrualPenaltyReceivableIContainer">
-									<label wicket:for="accrualPenaltyReceivableField">Penalty
-										Receivable</label>
-									<select wicket:id="accrualPenaltyReceivableField"
-										class="form-control"></select>
-									<span wicket:id="accrualPenaltyReceivableFeedback"
-										class="help-block"></span>
-								</wicket:container>
+							<div wicket:id="row10">
+								<div wicket:id="accrualPenaltyReceivableBlock"
+									class="form-group">
+									<wicket:container
+										wicket:id="accrualPenaltyReceivableIContainer">
+										<label wicket:for="accrualPenaltyReceivableField">Penalty
+											Receivable</label>
+										<select wicket:id="accrualPenaltyReceivableField"
+											class="form-control"></select>
+										<span wicket:id="accrualPenaltyReceivableFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
+								<div wicket:id="accrualTransferInSuspenseBlock"
+									class="form-group">
+									<wicket:container
+										wicket:id="accrualTransferInSuspenseIContainer">
+										<label wicket:for="accrualTransferInSuspenseField">Transfer
+											In Suspense</label>
+										<select wicket:id="accrualTransferInSuspenseField"
+											class="form-control"></select>
+										<span wicket:id="accrualTransferInSuspenseFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
 							</div>
-							<div wicket:id="accrualTransferInSuspenseBlock"
-								class="form-group">
-								<wicket:container
-									wicket:id="accrualTransferInSuspenseIContainer">
-									<label wicket:for="accrualTransferInSuspenseField">Transfer
-										In Suspense</label>
-									<select wicket:id="accrualTransferInSuspenseField"
-										class="form-control"></select>
-									<span wicket:id="accrualTransferInSuspenseFeedback"
-										class="help-block"></span>
-								</wicket:container>
-							</div>
-							<div class="clearfix"></div>
 						</div>
 						<div class="box-header with-border">
 							<h3 class="box-title">Income</h3>
 						</div>
 						<div class="box-body">
-							<!-- Row -->
-							<div wicket:id="accrualIncomeFromInterestBlock"
-								class="form-group">
-								<wicket:container
-									wicket:id="accrualIncomeFromInterestIContainer">
-									<label wicket:for="accrualIncomeFromInterestField">Income
-										From Interest</label>
-									<select wicket:id="accrualIncomeFromInterestField"
-										class="form-control"></select>
-									<span wicket:id="accrualIncomeFromInterestFeedback"
-										class="help-block"></span>
-								</wicket:container>
+							<div wicket:id="row11">
+								<div wicket:id="accrualIncomeFromInterestBlock"
+									class="form-group">
+									<wicket:container
+										wicket:id="accrualIncomeFromInterestIContainer">
+										<label wicket:for="accrualIncomeFromInterestField">Income
+											From Interest</label>
+										<select wicket:id="accrualIncomeFromInterestField"
+											class="form-control"></select>
+										<span wicket:id="accrualIncomeFromInterestFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
+								<div wicket:id="accrualIncomeFromFeeBlock" class="form-group">
+									<wicket:container wicket:id="accrualIncomeFromFeeIContainer">
+										<label wicket:for="accrualIncomeFromFeeField">Income
+											From Fees</label>
+										<select wicket:id="accrualIncomeFromFeeField"
+											class="form-control"></select>
+										<span wicket:id="accrualIncomeFromFeeFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
 							</div>
-							<div wicket:id="accrualIncomeFromFeeBlock" class="form-group">
-								<wicket:container wicket:id="accrualIncomeFromFeeIContainer">
-									<label wicket:for="accrualIncomeFromFeeField">Income
-										From Fees</label>
-									<select wicket:id="accrualIncomeFromFeeField"
-										class="form-control"></select>
-									<span wicket:id="accrualIncomeFromFeeFeedback"
-										class="help-block"></span>
-								</wicket:container>
-							</div>
-							<div class="clearfix"></div>
 
-							<!-- Row -->
-							<div wicket:id="accrualIncomeFromPenaltyBlock" class="form-group">
-								<wicket:container wicket:id="accrualIncomeFromPenaltyIContainer">
-									<label wicket:for="accrualIncomeFromPenaltyField">Income
-										From Penalties</label>
-									<select wicket:id="accrualIncomeFromPenaltyField"
-										class="form-control"></select>
-									<span wicket:id="accrualIncomeFromPenaltyFeedback"
-										class="help-block"></span>
-								</wicket:container>
+							<div wicket:id="row12">
+								<div wicket:id="accrualIncomeFromPenaltyBlock"
+									class="form-group">
+									<wicket:container
+										wicket:id="accrualIncomeFromPenaltyIContainer">
+										<label wicket:for="accrualIncomeFromPenaltyField">Income
+											From Penalties</label>
+										<select wicket:id="accrualIncomeFromPenaltyField"
+											class="form-control"></select>
+										<span wicket:id="accrualIncomeFromPenaltyFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
+								<div wicket:id="accrualIncomeFromRecoveryRepaymentBlock"
+									class="form-group">
+									<wicket:container
+										wicket:id="accrualIncomeFromRecoveryRepaymentIContainer">
+										<label wicket:for="accrualIncomeFromRecoveryRepaymentField">Income
+											From Recovery Repayments</label>
+										<select wicket:id="accrualIncomeFromRecoveryRepaymentField"
+											class="form-control"></select>
+										<span wicket:id="accrualIncomeFromRecoveryRepaymentFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
 							</div>
-							<div wicket:id="accrualIncomeFromRecoveryRepaymentBlock"
-								class="form-group">
-								<wicket:container
-									wicket:id="accrualIncomeFromRecoveryRepaymentIContainer">
-									<label wicket:for="accrualIncomeFromRecoveryRepaymentField">Income
-										From Recovery Repayments</label>
-									<select wicket:id="accrualIncomeFromRecoveryRepaymentField"
-										class="form-control"></select>
-									<span wicket:id="accrualIncomeFromRecoveryRepaymentFeedback"
-										class="help-block"></span>
-								</wicket:container>
-							</div>
-							<div class="clearfix"></div>
 						</div>
 						<div class="box-header with-border">
 							<h3 class="box-title">Expenses</h3>
 						</div>
 						<div class="box-body">
-							<!-- Row -->
-							<div wicket:id="accrualLossWrittenOffBlock" class="form-group">
-								<wicket:container wicket:id="accrualLossWrittenOffIContainer">
-									<label wicket:for="accrualLossWrittenOffField">Loss
-										Written Off</label>
-									<select wicket:id="accrualLossWrittenOffField"
-										class="form-control"></select>
-									<span wicket:id="accrualLossWrittenOffFeedback"
-										class="help-block"></span>
-								</wicket:container>
+							<div wicket:id="row13">
+								<div wicket:id="accrualLossWrittenOffBlock" class="form-group">
+									<wicket:container wicket:id="accrualLossWrittenOffIContainer">
+										<label wicket:for="accrualLossWrittenOffField">Loss
+											Written Off</label>
+										<select wicket:id="accrualLossWrittenOffField"
+											class="form-control"></select>
+										<span wicket:id="accrualLossWrittenOffFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
+								<div wicket:id="row13Block1" class="form-group"></div>
 							</div>
-							<div
-								class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-							</div>
-							<div class="clearfix"></div>
 						</div>
 						<div class="box-header with-border">
 							<h3 class="box-title">Liabilities</h3>
 						</div>
 						<div class="box-body">
-							<!-- Row -->
-							<div wicket:id="accrualOverPaymentLiabilityBlock"
-								class="form-group">
-								<wicket:container
-									wicket:id="accrualOverPaymentLiabilityIContainer">
-									<label wicket:for="accrualOverPaymentLiabilityField">Over
-										Payment Liability</label>
-									<select wicket:id="accrualOverPaymentLiabilityField"
-										class="form-control"></select>
-									<span wicket:id="accrualOverPaymentLiabilityFeedback"
-										class="help-block"></span>
-								</wicket:container>
+							<div wicket:id="row14">
+								<div wicket:id="accrualOverPaymentLiabilityBlock"
+									class="form-group">
+									<wicket:container
+										wicket:id="accrualOverPaymentLiabilityIContainer">
+										<label wicket:for="accrualOverPaymentLiabilityField">Over
+											Payment Liability</label>
+										<select wicket:id="accrualOverPaymentLiabilityField"
+											class="form-control"></select>
+										<span wicket:id="accrualOverPaymentLiabilityFeedback"
+											class="help-block"></span>
+									</wicket:container>
+								</div>
+								<div wicket:id="row14Block1" class="form-group"></div>
 							</div>
-							<div
-								class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-							</div>
-							<div class="clearfix"></div>
 						</div>
 					</wicket:container>
 				</div>

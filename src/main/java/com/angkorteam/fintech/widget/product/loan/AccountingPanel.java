@@ -8,7 +8,6 @@ import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -21,8 +20,11 @@ import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.dto.enums.AccountingType;
 import com.angkorteam.fintech.dto.enums.ProductPopup;
+import com.angkorteam.fintech.layout.SectionBlock;
+import com.angkorteam.fintech.layout.SectionContainer;
 import com.angkorteam.fintech.layout.Size;
 import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
 import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.product.loan.LoanBrowsePage;
 import com.angkorteam.fintech.pages.product.loan.LoanCreatePage;
@@ -34,8 +36,6 @@ import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
@@ -77,140 +77,155 @@ public class AccountingPanel extends Panel {
 
     protected RadioGroup<String> accountingField;
 
-    protected WebMarkupContainer cashBlock;
-    protected WebMarkupContainer cashIContainer;
+    protected SectionBlock cashBlock;
+    protected SectionContainer cashIContainer;
 
-    protected WebMarkupBlock cashFundSourceBlock;
-    protected WebMarkupContainer cashFundSourceIContainer;
+    protected UIRow row2;
+
+    protected UIBlock cashFundSourceBlock;
+    protected UIContainer cashFundSourceIContainer;
     protected SingleChoiceProvider cashFundSourceProvider;
     protected Select2SingleChoice<Option> cashFundSourceField;
-    protected TextFeedbackPanel cashFundSourceFeedback;
 
-    protected WebMarkupBlock cashLoanPortfolioBlock;
-    protected WebMarkupContainer cashLoanPortfolioIContainer;
+    protected UIBlock cashLoanPortfolioBlock;
+    protected UIContainer cashLoanPortfolioIContainer;
     protected SingleChoiceProvider cashLoanPortfolioProvider;
     protected Select2SingleChoice<Option> cashLoanPortfolioField;
-    protected TextFeedbackPanel cashLoanPortfolioFeedback;
 
-    protected WebMarkupBlock cashTransferInSuspenseBlock;
-    protected WebMarkupContainer cashTransferInSuspenseIContainer;
+    protected UIRow row3;
+
+    protected UIBlock cashTransferInSuspenseBlock;
+    protected UIContainer cashTransferInSuspenseIContainer;
     protected SingleChoiceProvider cashTransferInSuspenseProvider;
     protected Select2SingleChoice<Option> cashTransferInSuspenseField;
-    protected TextFeedbackPanel cashTransferInSuspenseFeedback;
 
-    protected WebMarkupBlock cashIncomeFromInterestBlock;
-    protected WebMarkupContainer cashIncomeFromInterestIContainer;
+    protected UIBlock row3Block1;
+
+    protected UIRow row4;
+
+    protected UIBlock cashIncomeFromInterestBlock;
+    protected UIContainer cashIncomeFromInterestIContainer;
     protected SingleChoiceProvider cashIncomeFromInterestProvider;
     protected Select2SingleChoice<Option> cashIncomeFromInterestField;
-    protected TextFeedbackPanel cashIncomeFromInterestFeedback;
 
-    protected WebMarkupBlock cashIncomeFromFeeBlock;
-    protected WebMarkupContainer cashIncomeFromFeeIContainer;
+    protected UIBlock cashIncomeFromFeeBlock;
+    protected UIContainer cashIncomeFromFeeIContainer;
     protected SingleChoiceProvider cashIncomeFromFeeProvider;
     protected Select2SingleChoice<Option> cashIncomeFromFeeField;
-    protected TextFeedbackPanel cashIncomeFromFeeFeedback;
 
-    protected WebMarkupBlock cashIncomeFromPenaltyBlock;
-    protected WebMarkupContainer cashIncomeFromPenaltyIContainer;
+    protected UIRow row5;
+
+    protected UIBlock cashIncomeFromPenaltyBlock;
+    protected UIContainer cashIncomeFromPenaltyIContainer;
     protected SingleChoiceProvider cashIncomeFromPenaltyProvider;
     protected Select2SingleChoice<Option> cashIncomeFromPenaltyField;
-    protected TextFeedbackPanel cashIncomeFromPenaltyFeedback;
 
-    protected WebMarkupBlock cashIncomeFromRecoveryRepaymentBlock;
-    protected WebMarkupContainer cashIncomeFromRecoveryRepaymentIContainer;
+    protected UIBlock cashIncomeFromRecoveryRepaymentBlock;
+    protected UIContainer cashIncomeFromRecoveryRepaymentIContainer;
     protected SingleChoiceProvider cashIncomeFromRecoveryRepaymentProvider;
     protected Select2SingleChoice<Option> cashIncomeFromRecoveryRepaymentField;
-    protected TextFeedbackPanel cashIncomeFromRecoveryRepaymentFeedback;
 
-    protected WebMarkupBlock cashLossWrittenOffBlock;
-    protected WebMarkupContainer cashLossWrittenOffIContainer;
+    protected UIRow row6;
+
+    protected UIBlock cashLossWrittenOffBlock;
+    protected UIContainer cashLossWrittenOffIContainer;
     protected SingleChoiceProvider cashLossWrittenOffProvider;
     protected Select2SingleChoice<Option> cashLossWrittenOffField;
-    protected TextFeedbackPanel cashLossWrittenOffFeedback;
 
-    protected WebMarkupBlock cashOverPaymentLiabilityBlock;
-    protected WebMarkupContainer cashOverPaymentLiabilityIContainer;
+    protected UIBlock row6Block1;
+
+    protected UIRow row7;
+
+    protected UIBlock cashOverPaymentLiabilityBlock;
+    protected UIContainer cashOverPaymentLiabilityIContainer;
     protected SingleChoiceProvider cashOverPaymentLiabilityProvider;
     protected Select2SingleChoice<Option> cashOverPaymentLiabilityField;
-    protected TextFeedbackPanel cashOverPaymentLiabilityFeedback;
 
-    protected WebMarkupContainer accrualBlock;
-    protected WebMarkupContainer accrualIContainer;
+    protected UIBlock row7Block1;
 
-    protected WebMarkupBlock accrualFundSourceBlock;
-    protected WebMarkupContainer accrualFundSourceIContainer;
+    protected SectionBlock accrualBlock;
+    protected SectionContainer accrualIContainer;
+
+    protected UIRow row8;
+
+    protected UIBlock accrualFundSourceBlock;
+    protected UIContainer accrualFundSourceIContainer;
     protected SingleChoiceProvider accrualFundSourceProvider;
     protected Select2SingleChoice<Option> accrualFundSourceField;
-    protected TextFeedbackPanel accrualFundSourceFeedback;
 
-    protected WebMarkupBlock accrualLoanPortfolioBlock;
-    protected WebMarkupContainer accrualLoanPortfolioIContainer;
+    protected UIBlock accrualLoanPortfolioBlock;
+    protected UIContainer accrualLoanPortfolioIContainer;
     protected SingleChoiceProvider accrualLoanPortfolioProvider;
     protected Select2SingleChoice<Option> accrualLoanPortfolioField;
-    protected TextFeedbackPanel accrualLoanPortfolioFeedback;
 
-    protected WebMarkupBlock accrualInterestReceivableBlock;
-    protected WebMarkupContainer accrualInterestReceivableIContainer;
+    protected UIRow row9;
+
+    protected UIBlock accrualInterestReceivableBlock;
+    protected UIContainer accrualInterestReceivableIContainer;
     protected SingleChoiceProvider accrualInterestReceivableProvider;
     protected Select2SingleChoice<Option> accrualInterestReceivableField;
-    protected TextFeedbackPanel accrualInterestReceivableFeedback;
 
-    protected WebMarkupBlock accrualFeeReceivableBlock;
-    protected WebMarkupContainer accrualFeeReceivableIContainer;
+    protected UIBlock accrualFeeReceivableBlock;
+    protected UIContainer accrualFeeReceivableIContainer;
     protected SingleChoiceProvider accrualFeeReceivableProvider;
     protected Select2SingleChoice<Option> accrualFeeReceivableField;
-    protected TextFeedbackPanel accrualFeeReceivableFeedback;
 
-    protected WebMarkupBlock accrualPenaltyReceivableBlock;
-    protected WebMarkupContainer accrualPenaltyReceivableIContainer;
+    protected UIRow row10;
+
+    protected UIBlock accrualPenaltyReceivableBlock;
+    protected UIContainer accrualPenaltyReceivableIContainer;
     protected SingleChoiceProvider accrualPenaltyReceivableProvider;
     protected Select2SingleChoice<Option> accrualPenaltyReceivableField;
-    protected TextFeedbackPanel accrualPenaltyReceivableFeedback;
 
-    protected WebMarkupBlock accrualTransferInSuspenseBlock;
-    protected WebMarkupContainer accrualTransferInSuspenseIContainer;
+    protected UIBlock accrualTransferInSuspenseBlock;
+    protected UIContainer accrualTransferInSuspenseIContainer;
     protected SingleChoiceProvider accrualTransferInSuspenseProvider;
     protected Select2SingleChoice<Option> accrualTransferInSuspenseField;
-    protected TextFeedbackPanel accrualTransferInSuspenseFeedback;
 
-    protected WebMarkupBlock accrualIncomeFromInterestBlock;
-    protected WebMarkupContainer accrualIncomeFromInterestIContainer;
+    protected UIRow row11;
+
+    protected UIBlock accrualIncomeFromInterestBlock;
+    protected UIContainer accrualIncomeFromInterestIContainer;
     protected SingleChoiceProvider accrualIncomeFromInterestProvider;
     protected Select2SingleChoice<Option> accrualIncomeFromInterestField;
-    protected TextFeedbackPanel accrualIncomeFromInterestFeedback;
 
-    protected WebMarkupBlock accrualIncomeFromFeeBlock;
-    protected WebMarkupContainer accrualIncomeFromFeeIContainer;
+    protected UIBlock accrualIncomeFromFeeBlock;
+    protected UIContainer accrualIncomeFromFeeIContainer;
     protected SingleChoiceProvider accrualIncomeFromFeeProvider;
     protected Select2SingleChoice<Option> accrualIncomeFromFeeField;
-    protected TextFeedbackPanel accrualIncomeFromFeeFeedback;
 
-    protected WebMarkupBlock accrualIncomeFromPenaltyBlock;
-    protected WebMarkupContainer accrualIncomeFromPenaltyIContainer;
+    protected UIRow row12;
+
+    protected UIBlock accrualIncomeFromPenaltyBlock;
+    protected UIContainer accrualIncomeFromPenaltyIContainer;
     protected SingleChoiceProvider accrualIncomeFromPenaltyProvider;
     protected Select2SingleChoice<Option> accrualIncomeFromPenaltyField;
-    protected TextFeedbackPanel accrualIncomeFromPenaltyFeedback;
 
-    protected WebMarkupBlock accrualIncomeFromRecoveryRepaymentBlock;
-    protected WebMarkupContainer accrualIncomeFromRecoveryRepaymentIContainer;
+    protected UIBlock accrualIncomeFromRecoveryRepaymentBlock;
+    protected UIContainer accrualIncomeFromRecoveryRepaymentIContainer;
     protected SingleChoiceProvider accrualIncomeFromRecoveryRepaymentProvider;
     protected Select2SingleChoice<Option> accrualIncomeFromRecoveryRepaymentField;
-    protected TextFeedbackPanel accrualIncomeFromRecoveryRepaymentFeedback;
 
-    protected WebMarkupBlock accrualLossWrittenOffBlock;
-    protected WebMarkupContainer accrualLossWrittenOffIContainer;
+    protected UIRow row13;
+
+    protected UIBlock accrualLossWrittenOffBlock;
+    protected UIContainer accrualLossWrittenOffIContainer;
     protected SingleChoiceProvider accrualLossWrittenOffProvider;
     protected Select2SingleChoice<Option> accrualLossWrittenOffField;
-    protected TextFeedbackPanel accrualLossWrittenOffFeedback;
 
-    protected WebMarkupBlock accrualOverPaymentLiabilityBlock;
-    protected WebMarkupContainer accrualOverPaymentLiabilityIContainer;
+    protected UIBlock row13Block1;
+
+    protected UIRow row14;
+
+    protected UIBlock accrualOverPaymentLiabilityBlock;
+    protected UIContainer accrualOverPaymentLiabilityIContainer;
     protected SingleChoiceProvider accrualOverPaymentLiabilityProvider;
     protected Select2SingleChoice<Option> accrualOverPaymentLiabilityField;
-    protected TextFeedbackPanel accrualOverPaymentLiabilityFeedback;
 
-    protected WebMarkupContainer advancedAccountingRuleBlock;
-    protected WebMarkupContainer advancedAccountingRuleIContainer;
+    protected UIBlock row14Block1;
+
+    protected SectionBlock advancedAccountingRuleBlock;
+    protected SectionContainer advancedAccountingRuleIContainer;
 
     protected UIRow row1;
 
@@ -265,6 +280,161 @@ public class AccountingPanel extends Panel {
         this.advancedAccountingRuleFundSourceColumn.add(new TextColumn(Model.of("Fund Source"), "account", "account", this::advancedAccountingRuleFundSourceColumn));
         this.advancedAccountingRuleFundSourceColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFundSourceAction, this::advancedAccountingRuleFundSourceClick));
         this.advancedAccountingRuleFundSourceProvider = new ListDataProvider(this.advancedAccountingRuleFundSourceValue.getObject());
+
+        this.cashFundSourceProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashFundSourceProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashFundSourceProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+
+        this.cashLoanPortfolioProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashLoanPortfolioProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashLoanPortfolioProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+
+        this.cashTransferInSuspenseProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashTransferInSuspenseProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashTransferInSuspenseProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+
+        this.cashIncomeFromInterestProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashIncomeFromInterestProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromInterestProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+
+        this.cashIncomeFromFeeProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashIncomeFromFeeProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromFeeProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+
+        this.cashIncomeFromPenaltyProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashIncomeFromPenaltyProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromPenaltyProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+
+        this.cashIncomeFromRecoveryRepaymentProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashIncomeFromRecoveryRepaymentProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromRecoveryRepaymentProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+
+        this.cashLossWrittenOffProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashLossWrittenOffProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashLossWrittenOffProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Expense.getLiteral());
+
+        this.cashOverPaymentLiabilityProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashOverPaymentLiabilityProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashOverPaymentLiabilityProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Liability.getLiteral());
+
+        this.accrualFundSourceProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accrualFundSourceProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.accrualFundSourceProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+
+        this.accrualLoanPortfolioProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accrualLoanPortfolioProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.accrualLoanPortfolioProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+
+        this.accrualInterestReceivableProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accrualInterestReceivableProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.accrualInterestReceivableProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+
+        this.accrualFeeReceivableProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accrualFeeReceivableProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.accrualFeeReceivableProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+
+        this.accrualPenaltyReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
+        this.accrualPenaltyReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
+        this.accrualPenaltyReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
+
+        this.accrualTransferInSuspenseProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accrualTransferInSuspenseProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.accrualTransferInSuspenseProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+
+        this.accrualIncomeFromInterestProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accrualIncomeFromInterestProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.accrualIncomeFromInterestProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+
+        this.accrualIncomeFromFeeProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accrualIncomeFromFeeProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.accrualIncomeFromFeeProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+
+        this.accrualIncomeFromPenaltyProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accrualIncomeFromPenaltyProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.accrualIncomeFromPenaltyProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+
+        this.accrualIncomeFromRecoveryRepaymentProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accrualIncomeFromRecoveryRepaymentProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.accrualIncomeFromRecoveryRepaymentProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+
+        this.accrualLossWrittenOffProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accrualLossWrittenOffProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.accrualLossWrittenOffProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Expense.getLiteral());
+
+        this.accrualOverPaymentLiabilityProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accrualOverPaymentLiabilityProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.accrualOverPaymentLiabilityProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Liability.getLiteral());
+
+    }
+
+    @Override
+    protected void configureMetaData() {
+        this.accountingField.setRequired(true);
+        accountingFieldUpdate(null);
+
+        this.cashFundSourceField.setLabel(Model.of("Fund Source"));
+        this.cashFundSourceField.add(new OnChangeAjaxBehavior());
+
+        this.cashLoanPortfolioField.setLabel(Model.of("Loan Portfolio"));
+        this.cashLoanPortfolioField.add(new OnChangeAjaxBehavior());
+
+        this.cashTransferInSuspenseField.setLabel(Model.of("Transfer In Suspense"));
+        this.cashTransferInSuspenseField.add(new OnChangeAjaxBehavior());
+
+        this.cashIncomeFromInterestField.setLabel(Model.of("Income From Interest"));
+        this.cashIncomeFromInterestField.add(new OnChangeAjaxBehavior());
+
+        this.cashIncomeFromFeeField.setLabel(Model.of("Income From Fees"));
+        this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
+
+        this.cashIncomeFromPenaltyField.setLabel(Model.of("Income From Penalty"));
+        this.cashIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
+
+        this.cashIncomeFromRecoveryRepaymentField.setLabel(Model.of("Income from Recovery Repayments"));
+        this.cashIncomeFromRecoveryRepaymentField.add(new OnChangeAjaxBehavior());
+
+        this.cashLossWrittenOffField.setLabel(Model.of("Loss Written Off"));
+        this.cashLossWrittenOffField.add(new OnChangeAjaxBehavior());
+
+        this.cashOverPaymentLiabilityField.setLabel(Model.of("Over Payment Liability"));
+        this.cashOverPaymentLiabilityField.add(new OnChangeAjaxBehavior());
+
+        this.accrualFundSourceField.setLabel(Model.of("Fund Source"));
+        this.accrualFundSourceField.add(new OnChangeAjaxBehavior());
+
+        this.accrualLoanPortfolioField.setLabel(Model.of("Loan Portfolio"));
+        this.accrualLoanPortfolioField.add(new OnChangeAjaxBehavior());
+
+        this.accrualInterestReceivableField.setLabel(Model.of("Interest Receivable"));
+        this.accrualInterestReceivableField.add(new OnChangeAjaxBehavior());
+
+        this.accrualFeeReceivableField.setLabel(Model.of("Fee Receivable"));
+        this.accrualFeeReceivableField.add(new OnChangeAjaxBehavior());
+
+        this.accrualPenaltyReceivableField.setLabel(Model.of("Penalty Receivable"));
+        this.accrualPenaltyReceivableField.add(new OnChangeAjaxBehavior());
+
+        this.accrualTransferInSuspenseField.setLabel(Model.of("Transfer In Suspense"));
+        this.accrualTransferInSuspenseField.add(new OnChangeAjaxBehavior());
+
+        this.accrualIncomeFromInterestField.setLabel(Model.of("Income From Interest"));
+        this.accrualIncomeFromInterestField.add(new OnChangeAjaxBehavior());
+
+        this.accrualIncomeFromFeeField.setLabel(Model.of("Income From Fees"));
+        this.accrualIncomeFromFeeField.add(new OnChangeAjaxBehavior());
+
+        this.accrualIncomeFromPenaltyField.setLabel(Model.of("Income From Penalty"));
+        this.accrualIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
+
+        this.accrualIncomeFromRecoveryRepaymentField.setLabel(Model.of("Income From Recovery Repayments"));
+        this.accrualIncomeFromRecoveryRepaymentField.add(new OnChangeAjaxBehavior());
+
+        this.accrualLossWrittenOffField.setLabel(Model.of("Loss Written Off"));
+        this.accrualLossWrittenOffField.add(new OnChangeAjaxBehavior());
+
+        this.accrualOverPaymentLiabilityField.setLabel(Model.of("Over Payment Liability"));
+        this.accrualOverPaymentLiabilityField.add(new OnChangeAjaxBehavior());
+
     }
 
     @Override
@@ -296,323 +466,180 @@ public class AccountingPanel extends Panel {
         this.accountingField.add(new Radio<>("accountingUpfront", new Model<>(AccountingType.Upfront.getDescription())));
         this.form.add(this.accountingField);
 
-        this.cashBlock = new WebMarkupContainer("cashBlock");
-        this.cashBlock.setOutputMarkupId(true);
-        this.form.add(this.cashBlock);
+        this.cashBlock = SectionBlock.newSectionBlock("cashBlock", this.form);
+        this.cashIContainer = this.cashBlock.newSectionContainer("cashIContainer");
 
-        this.cashIContainer = new WebMarkupContainer("cashIContainer");
-        this.cashBlock.add(this.cashIContainer);
+        this.row2 = this.cashIContainer.newUIRow("row2");
 
-        this.cashFundSourceBlock = new WebMarkupBlock("cashFundSourceBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashFundSourceBlock);
-        this.cashFundSourceIContainer = new WebMarkupContainer("cashFundSourceIContainer");
-        this.cashFundSourceBlock.add(this.cashFundSourceIContainer);
-        this.cashFundSourceProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.cashFundSourceProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.cashFundSourceProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+        this.cashFundSourceBlock = this.row2.newUIBlock("cashFundSourceBlock", Size.Six_6);
+        this.cashFundSourceIContainer = this.cashFundSourceBlock.newUIContainer("cashFundSourceIContainer");
         this.cashFundSourceField = new Select2SingleChoice<>("cashFundSourceField", new PropertyModel<>(this.itemPage, "cashFundSourceValue"), this.cashFundSourceProvider);
-        this.cashFundSourceField.setLabel(Model.of("Fund Source"));
-        this.cashFundSourceField.add(new OnChangeAjaxBehavior());
         this.cashFundSourceIContainer.add(this.cashFundSourceField);
-        this.cashFundSourceFeedback = new TextFeedbackPanel("cashFundSourceFeedback", this.cashFundSourceField);
-        this.cashFundSourceIContainer.add(this.cashFundSourceFeedback);
+        this.cashFundSourceIContainer.newFeedback("cashFundSourceFeedback", this.cashFundSourceField);
 
-        this.cashLoanPortfolioBlock = new WebMarkupBlock("cashLoanPortfolioBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashLoanPortfolioBlock);
-        this.cashLoanPortfolioIContainer = new WebMarkupContainer("cashLoanPortfolioIContainer");
-        this.cashLoanPortfolioBlock.add(this.cashLoanPortfolioIContainer);
-        this.cashLoanPortfolioProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.cashLoanPortfolioProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.cashLoanPortfolioProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+        this.cashLoanPortfolioBlock = this.row2.newUIBlock("cashLoanPortfolioBlock", Size.Six_6);
+        this.cashLoanPortfolioIContainer = this.cashLoanPortfolioBlock.newUIContainer("cashLoanPortfolioIContainer");
         this.cashLoanPortfolioField = new Select2SingleChoice<>("cashLoanPortfolioField", new PropertyModel<>(this.itemPage, "cashLoanPortfolioValue"), this.cashLoanPortfolioProvider);
-        this.cashLoanPortfolioField.setLabel(Model.of("Loan Portfolio"));
-        this.cashLoanPortfolioField.add(new OnChangeAjaxBehavior());
         this.cashLoanPortfolioIContainer.add(this.cashLoanPortfolioField);
-        this.cashLoanPortfolioFeedback = new TextFeedbackPanel("cashLoanPortfolioFeedback", this.cashLoanPortfolioField);
-        this.cashLoanPortfolioIContainer.add(this.cashLoanPortfolioFeedback);
+        this.cashLoanPortfolioIContainer.newFeedback("cashLoanPortfolioFeedback", this.cashLoanPortfolioField);
 
-        this.cashTransferInSuspenseBlock = new WebMarkupBlock("cashTransferInSuspenseBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashTransferInSuspenseBlock);
-        this.cashTransferInSuspenseIContainer = new WebMarkupContainer("cashTransferInSuspenseIContainer");
-        this.cashTransferInSuspenseBlock.add(this.cashTransferInSuspenseIContainer);
-        this.cashTransferInSuspenseProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.cashTransferInSuspenseProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.cashTransferInSuspenseProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+        this.row3 = this.cashIContainer.newUIRow("row3");
+
+        this.cashTransferInSuspenseBlock = this.row3.newUIBlock("cashTransferInSuspenseBlock", Size.Six_6);
+        this.cashTransferInSuspenseIContainer = this.cashTransferInSuspenseBlock.newUIContainer("cashTransferInSuspenseIContainer");
         this.cashTransferInSuspenseField = new Select2SingleChoice<>("cashTransferInSuspenseField", new PropertyModel<>(this.itemPage, "cashTransferInSuspenseValue"), this.cashTransferInSuspenseProvider);
-        this.cashTransferInSuspenseField.setLabel(Model.of("Transfer In Suspense"));
-        this.cashTransferInSuspenseField.add(new OnChangeAjaxBehavior());
         this.cashTransferInSuspenseIContainer.add(this.cashTransferInSuspenseField);
-        this.cashTransferInSuspenseFeedback = new TextFeedbackPanel("cashTransferInSuspenseFeedback", this.cashTransferInSuspenseField);
-        this.cashTransferInSuspenseIContainer.add(this.cashTransferInSuspenseFeedback);
+        this.cashTransferInSuspenseIContainer.newFeedback("cashTransferInSuspenseFeedback", this.cashTransferInSuspenseField);
 
-        this.cashIncomeFromInterestBlock = new WebMarkupBlock("cashIncomeFromInterestBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashIncomeFromInterestBlock);
-        this.cashIncomeFromInterestIContainer = new WebMarkupContainer("cashIncomeFromInterestIContainer");
-        this.cashIncomeFromInterestBlock.add(this.cashIncomeFromInterestIContainer);
-        this.cashIncomeFromInterestProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.cashIncomeFromInterestProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.cashIncomeFromInterestProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+        this.row3Block1 = this.row3.newUIBlock("row3Block1", Size.Six_6);
+
+        this.row4 = this.cashIContainer.newUIRow("row4");
+
+        this.cashIncomeFromInterestBlock = this.row4.newUIBlock("cashIncomeFromInterestBlock", Size.Six_6);
+        this.cashIncomeFromInterestIContainer = this.cashIncomeFromInterestBlock.newUIContainer("cashIncomeFromInterestIContainer");
         this.cashIncomeFromInterestField = new Select2SingleChoice<>("cashIncomeFromInterestField", new PropertyModel<>(this.itemPage, "cashIncomeFromInterestValue"), this.cashIncomeFromInterestProvider);
-        this.cashIncomeFromInterestField.setLabel(Model.of("Income From Interest"));
-        this.cashIncomeFromInterestField.add(new OnChangeAjaxBehavior());
         this.cashIncomeFromInterestIContainer.add(this.cashIncomeFromInterestField);
-        this.cashIncomeFromInterestFeedback = new TextFeedbackPanel("cashIncomeFromInterestFeedback", this.cashIncomeFromInterestField);
-        this.cashIncomeFromInterestIContainer.add(this.cashIncomeFromInterestFeedback);
+        this.cashIncomeFromInterestIContainer.newFeedback("cashIncomeFromInterestFeedback", this.cashIncomeFromInterestField);
 
-        this.cashIncomeFromFeeBlock = new WebMarkupBlock("cashIncomeFromFeeBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashIncomeFromFeeBlock);
-        this.cashIncomeFromFeeIContainer = new WebMarkupContainer("cashIncomeFromFeeIContainer");
-        this.cashIncomeFromFeeBlock.add(this.cashIncomeFromFeeIContainer);
-        this.cashIncomeFromFeeProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.cashIncomeFromFeeProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.cashIncomeFromFeeProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+        this.cashIncomeFromFeeBlock = this.row4.newUIBlock("cashIncomeFromFeeBlock", Size.Six_6);
+        this.cashIncomeFromFeeIContainer = this.cashIncomeFromFeeBlock.newUIContainer("cashIncomeFromFeeIContainer");
         this.cashIncomeFromFeeField = new Select2SingleChoice<>("cashIncomeFromFeeField", new PropertyModel<>(this.itemPage, "cashIncomeFromFeeValue"), this.cashIncomeFromFeeProvider);
-        this.cashIncomeFromFeeField.setLabel(Model.of("Income From Fees"));
-        this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
         this.cashIncomeFromFeeIContainer.add(this.cashIncomeFromFeeField);
-        this.cashIncomeFromFeeFeedback = new TextFeedbackPanel("cashIncomeFromFeeFeedback", this.cashIncomeFromFeeField);
-        this.cashIncomeFromFeeIContainer.add(this.cashIncomeFromFeeFeedback);
+        this.cashIncomeFromFeeIContainer.newFeedback("cashIncomeFromFeeFeedback", this.cashIncomeFromFeeField);
 
-        this.cashIncomeFromPenaltyBlock = new WebMarkupBlock("cashIncomeFromPenaltyBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashIncomeFromPenaltyBlock);
-        this.cashIncomeFromPenaltyIContainer = new WebMarkupContainer("cashIncomeFromPenaltyIContainer");
-        this.cashIncomeFromPenaltyBlock.add(this.cashIncomeFromPenaltyIContainer);
-        this.cashIncomeFromPenaltyProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.cashIncomeFromPenaltyProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.cashIncomeFromPenaltyProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+        this.row5 = this.cashIContainer.newUIRow("row5");
+
+        this.cashIncomeFromPenaltyBlock = this.row5.newUIBlock("cashIncomeFromPenaltyBlock", Size.Six_6);
+        this.cashIncomeFromPenaltyIContainer = this.cashIncomeFromPenaltyBlock.newUIContainer("cashIncomeFromPenaltyIContainer");
         this.cashIncomeFromPenaltyField = new Select2SingleChoice<>("cashIncomeFromPenaltyField", new PropertyModel<>(this.itemPage, "cashIncomeFromPenaltyValue"), this.cashIncomeFromPenaltyProvider);
-        this.cashIncomeFromPenaltyField.setLabel(Model.of("Income From Penalty"));
-        this.cashIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
         this.cashIncomeFromPenaltyIContainer.add(this.cashIncomeFromPenaltyField);
-        this.cashIncomeFromPenaltyFeedback = new TextFeedbackPanel("cashIncomeFromPenaltyFeedback", this.cashIncomeFromPenaltyField);
-        this.cashIncomeFromPenaltyIContainer.add(this.cashIncomeFromPenaltyFeedback);
+        this.cashIncomeFromPenaltyIContainer.newFeedback("cashIncomeFromPenaltyFeedback", this.cashIncomeFromPenaltyField);
 
-        this.cashIncomeFromRecoveryRepaymentBlock = new WebMarkupBlock("cashIncomeFromRecoveryRepaymentBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashIncomeFromRecoveryRepaymentBlock);
-        this.cashIncomeFromRecoveryRepaymentIContainer = new WebMarkupContainer("cashIncomeFromRecoveryRepaymentIContainer");
-        this.cashIncomeFromRecoveryRepaymentBlock.add(this.cashIncomeFromRecoveryRepaymentIContainer);
-        this.cashIncomeFromRecoveryRepaymentProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.cashIncomeFromRecoveryRepaymentProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.cashIncomeFromRecoveryRepaymentProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+        this.cashIncomeFromRecoveryRepaymentBlock = this.row5.newUIBlock("cashIncomeFromRecoveryRepaymentBlock", Size.Six_6);
+        this.cashIncomeFromRecoveryRepaymentIContainer = this.cashIncomeFromRecoveryRepaymentBlock.newUIContainer("cashIncomeFromRecoveryRepaymentIContainer");
         this.cashIncomeFromRecoveryRepaymentField = new Select2SingleChoice<>("cashIncomeFromRecoveryRepaymentField", new PropertyModel<>(this.itemPage, "cashIncomeFromRecoveryRepaymentValue"), this.cashIncomeFromRecoveryRepaymentProvider);
-        this.cashIncomeFromRecoveryRepaymentField.setLabel(Model.of("Income from Recovery Repayments"));
-        this.cashIncomeFromRecoveryRepaymentField.add(new OnChangeAjaxBehavior());
         this.cashIncomeFromRecoveryRepaymentIContainer.add(this.cashIncomeFromRecoveryRepaymentField);
-        this.cashIncomeFromRecoveryRepaymentFeedback = new TextFeedbackPanel("cashIncomeFromRecoveryRepaymentFeedback", this.cashIncomeFromRecoveryRepaymentField);
-        this.cashIncomeFromRecoveryRepaymentIContainer.add(this.cashIncomeFromRecoveryRepaymentFeedback);
+        this.cashIncomeFromRecoveryRepaymentIContainer.newFeedback("cashIncomeFromRecoveryRepaymentFeedback", this.cashIncomeFromRecoveryRepaymentField);
 
-        this.cashLossWrittenOffBlock = new WebMarkupBlock("cashLossWrittenOffBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashLossWrittenOffBlock);
-        this.cashLossWrittenOffIContainer = new WebMarkupContainer("cashLossWrittenOffIContainer");
-        this.cashLossWrittenOffBlock.add(this.cashLossWrittenOffIContainer);
-        this.cashLossWrittenOffProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.cashLossWrittenOffProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.cashLossWrittenOffProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Expense.getLiteral());
+        this.row6 = this.cashIContainer.newUIRow("row6");
+
+        this.cashLossWrittenOffBlock = this.row6.newUIBlock("cashLossWrittenOffBlock", Size.Six_6);
+        this.cashLossWrittenOffIContainer = this.cashLossWrittenOffBlock.newUIContainer("cashLossWrittenOffIContainer");
         this.cashLossWrittenOffField = new Select2SingleChoice<>("cashLossWrittenOffField", new PropertyModel<>(this.itemPage, "cashLossWrittenOffValue"), this.cashLossWrittenOffProvider);
-        this.cashLossWrittenOffField.setLabel(Model.of("Loss Written Off"));
-        this.cashLossWrittenOffField.add(new OnChangeAjaxBehavior());
         this.cashLossWrittenOffIContainer.add(this.cashLossWrittenOffField);
-        this.cashLossWrittenOffFeedback = new TextFeedbackPanel("cashLossWrittenOffFeedback", this.cashLossWrittenOffField);
-        this.cashLossWrittenOffIContainer.add(this.cashLossWrittenOffFeedback);
+        this.cashLossWrittenOffIContainer.newFeedback("cashLossWrittenOffFeedback", this.cashLossWrittenOffField);
 
-        this.cashOverPaymentLiabilityBlock = new WebMarkupBlock("cashOverPaymentLiabilityBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashOverPaymentLiabilityBlock);
-        this.cashOverPaymentLiabilityIContainer = new WebMarkupContainer("cashOverPaymentLiabilityIContainer");
-        this.cashOverPaymentLiabilityBlock.add(this.cashOverPaymentLiabilityIContainer);
-        this.cashOverPaymentLiabilityProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.cashOverPaymentLiabilityProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.cashOverPaymentLiabilityProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Liability.getLiteral());
+        this.row6Block1 = this.row6.newUIBlock("row6Block1", Size.Six_6);
+
+        this.row7 = this.cashIContainer.newUIRow("row7");
+
+        this.cashOverPaymentLiabilityBlock = this.row7.newUIBlock("cashOverPaymentLiabilityBlock", Size.Six_6);
+        this.cashOverPaymentLiabilityIContainer = this.cashOverPaymentLiabilityBlock.newUIContainer("cashOverPaymentLiabilityIContainer");
         this.cashOverPaymentLiabilityField = new Select2SingleChoice<>("cashOverPaymentLiabilityField", new PropertyModel<>(this.itemPage, "cashOverPaymentLiabilityValue"), this.cashOverPaymentLiabilityProvider);
-        this.cashOverPaymentLiabilityField.setLabel(Model.of("Over Payment Liability"));
-        this.cashOverPaymentLiabilityField.add(new OnChangeAjaxBehavior());
         this.cashOverPaymentLiabilityIContainer.add(this.cashOverPaymentLiabilityField);
-        this.cashOverPaymentLiabilityFeedback = new TextFeedbackPanel("cashOverPaymentLiabilityFeedback", this.cashOverPaymentLiabilityField);
-        this.cashOverPaymentLiabilityIContainer.add(this.cashOverPaymentLiabilityFeedback);
+        this.cashOverPaymentLiabilityIContainer.newFeedback("cashOverPaymentLiabilityFeedback", this.cashOverPaymentLiabilityField);
 
-        this.accrualBlock = new WebMarkupContainer("accrualBlock");
-        this.accrualBlock.setOutputMarkupId(true);
-        this.form.add(this.accrualBlock);
+        this.row7Block1 = this.row7.newUIBlock("row7Block1", Size.Six_6);
 
-        this.accrualIContainer = new WebMarkupContainer("accrualIContainer");
-        this.accrualBlock.add(this.accrualIContainer);
+        this.accrualBlock = SectionBlock.newSectionBlock("accrualBlock", this.form);
+        this.accrualIContainer = this.accrualBlock.newSectionContainer("accrualIContainer");
 
-        this.accrualFundSourceBlock = new WebMarkupBlock("accrualFundSourceBlock", Size.Six_6);
-        this.accrualIContainer.add(this.accrualFundSourceBlock);
-        this.accrualFundSourceIContainer = new WebMarkupContainer("accrualFundSourceIContainer");
-        this.accrualFundSourceBlock.add(this.accrualFundSourceIContainer);
-        this.accrualFundSourceProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.accrualFundSourceProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.accrualFundSourceProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+        this.row8 = this.accrualIContainer.newUIRow("row8");
+
+        this.accrualFundSourceBlock = this.row8.newUIBlock("accrualFundSourceBlock", Size.Six_6);
+        this.accrualFundSourceIContainer = this.accrualFundSourceBlock.newUIContainer("accrualFundSourceIContainer");
         this.accrualFundSourceField = new Select2SingleChoice<>("accrualFundSourceField", new PropertyModel<>(this.itemPage, "accrualFundSourceValue"), this.accrualFundSourceProvider);
-        this.accrualFundSourceField.setLabel(Model.of("Fund Source"));
-        this.accrualFundSourceField.add(new OnChangeAjaxBehavior());
         this.accrualFundSourceIContainer.add(this.accrualFundSourceField);
-        this.accrualFundSourceFeedback = new TextFeedbackPanel("accrualFundSourceFeedback", this.accrualFundSourceField);
-        this.accrualFundSourceIContainer.add(this.accrualFundSourceFeedback);
+        this.accrualFundSourceIContainer.newFeedback("accrualFundSourceFeedback", this.accrualFundSourceField);
 
-        this.accrualLoanPortfolioBlock = new WebMarkupBlock("accrualLoanPortfolioBlock", Size.Six_6);
-        this.accrualIContainer.add(this.accrualLoanPortfolioBlock);
-        this.accrualLoanPortfolioIContainer = new WebMarkupContainer("accrualLoanPortfolioIContainer");
-        this.accrualLoanPortfolioBlock.add(this.accrualLoanPortfolioIContainer);
-        this.accrualLoanPortfolioProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.accrualLoanPortfolioProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.accrualLoanPortfolioProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+        this.accrualLoanPortfolioBlock = this.row8.newUIBlock("accrualLoanPortfolioBlock", Size.Six_6);
+        this.accrualLoanPortfolioIContainer = this.accrualLoanPortfolioBlock.newUIContainer("accrualLoanPortfolioIContainer");
         this.accrualLoanPortfolioField = new Select2SingleChoice<>("accrualLoanPortfolioField", new PropertyModel<>(this.itemPage, "accrualLoanPortfolioValue"), this.accrualLoanPortfolioProvider);
-        this.accrualLoanPortfolioField.setLabel(Model.of("Loan Portfolio"));
-        this.accrualLoanPortfolioField.add(new OnChangeAjaxBehavior());
         this.accrualLoanPortfolioIContainer.add(this.accrualLoanPortfolioField);
-        this.accrualLoanPortfolioFeedback = new TextFeedbackPanel("accrualLoanPortfolioFeedback", this.accrualLoanPortfolioField);
-        this.accrualLoanPortfolioIContainer.add(this.accrualLoanPortfolioFeedback);
+        this.accrualLoanPortfolioIContainer.newFeedback("accrualLoanPortfolioFeedback", this.accrualLoanPortfolioField);
 
-        this.accrualInterestReceivableBlock = new WebMarkupBlock("accrualInterestReceivableBlock", Size.Six_6);
-        this.accrualIContainer.add(this.accrualInterestReceivableBlock);
-        this.accrualInterestReceivableIContainer = new WebMarkupContainer("accrualInterestReceivableIContainer");
-        this.accrualInterestReceivableBlock.add(this.accrualInterestReceivableIContainer);
-        this.accrualInterestReceivableProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.accrualInterestReceivableProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.accrualInterestReceivableProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+        this.row9 = this.accrualIContainer.newUIRow("row9");
+
+        this.accrualInterestReceivableBlock = this.row9.newUIBlock("accrualInterestReceivableBlock", Size.Six_6);
+        this.accrualInterestReceivableIContainer = this.accrualInterestReceivableBlock.newUIContainer("accrualInterestReceivableIContainer");
         this.accrualInterestReceivableField = new Select2SingleChoice<>("accrualInterestReceivableField", new PropertyModel<>(this.itemPage, "accrualInterestReceivableValue"), this.accrualInterestReceivableProvider);
-        this.accrualInterestReceivableField.setLabel(Model.of("Interest Receivable"));
-        this.accrualInterestReceivableField.add(new OnChangeAjaxBehavior());
         this.accrualInterestReceivableIContainer.add(this.accrualInterestReceivableField);
-        this.accrualInterestReceivableFeedback = new TextFeedbackPanel("accrualInterestReceivableFeedback", this.accrualInterestReceivableField);
-        this.accrualInterestReceivableIContainer.add(this.accrualInterestReceivableFeedback);
+        this.accrualInterestReceivableIContainer.newFeedback("accrualInterestReceivableFeedback", this.accrualInterestReceivableField);
 
-        this.accrualFeeReceivableBlock = new WebMarkupBlock("accrualFeeReceivableBlock", Size.Six_6);
-        this.accrualIContainer.add(this.accrualFeeReceivableBlock);
-        this.accrualFeeReceivableIContainer = new WebMarkupContainer("accrualFeeReceivableIContainer");
-        this.accrualFeeReceivableBlock.add(this.accrualFeeReceivableIContainer);
-        this.accrualFeeReceivableProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.accrualFeeReceivableProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.accrualFeeReceivableProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+        this.accrualFeeReceivableBlock = this.row9.newUIBlock("accrualFeeReceivableBlock", Size.Six_6);
+        this.accrualFeeReceivableIContainer = this.accrualFeeReceivableBlock.newUIContainer("accrualFeeReceivableIContainer");
         this.accrualFeeReceivableField = new Select2SingleChoice<>("accrualFeeReceivableField", new PropertyModel<>(this.itemPage, "accrualFeeReceivableValue"), this.accrualFeeReceivableProvider);
-        this.accrualFeeReceivableField.setLabel(Model.of("Fee Receivable"));
-        this.accrualFeeReceivableField.add(new OnChangeAjaxBehavior());
         this.accrualFeeReceivableIContainer.add(this.accrualFeeReceivableField);
-        this.accrualFeeReceivableFeedback = new TextFeedbackPanel("accrualFeeReceivableFeedback", this.accrualFeeReceivableField);
-        this.accrualFeeReceivableIContainer.add(this.accrualFeeReceivableFeedback);
+        this.accrualFeeReceivableIContainer.newFeedback("accrualFeeReceivableFeedback", this.accrualFeeReceivableField);
 
-        this.accrualPenaltyReceivableBlock = new WebMarkupBlock("accrualPenaltyReceivableBlock", Size.Six_6);
-        this.accrualIContainer.add(this.accrualPenaltyReceivableBlock);
-        this.accrualPenaltyReceivableIContainer = new WebMarkupContainer("accrualPenaltyReceivableIContainer");
-        this.accrualPenaltyReceivableBlock.add(this.accrualPenaltyReceivableIContainer);
-        this.accrualPenaltyReceivableProvider = new SingleChoiceProvider("acc_gl_account", "id", "name");
-        this.accrualPenaltyReceivableProvider.applyWhere("account_usage", "account_usage = " + AccountUsage.Detail.getLiteral());
-        this.accrualPenaltyReceivableProvider.applyWhere("classification_enum", "classification_enum = " + AccountType.Asset.getLiteral());
+        this.row10 = this.accrualIContainer.newUIRow("row10");
+
+        this.accrualPenaltyReceivableBlock = this.row10.newUIBlock("accrualPenaltyReceivableBlock", Size.Six_6);
+        this.accrualPenaltyReceivableIContainer = this.accrualPenaltyReceivableBlock.newUIContainer("accrualPenaltyReceivableIContainer");
         this.accrualPenaltyReceivableField = new Select2SingleChoice<>("accrualPenaltyReceivableField", new PropertyModel<>(this.itemPage, "accrualPenaltyReceivableValue"), this.accrualPenaltyReceivableProvider);
-        this.accrualPenaltyReceivableField.setLabel(Model.of("Penalty Receivable"));
-        this.accrualPenaltyReceivableField.add(new OnChangeAjaxBehavior());
         this.accrualPenaltyReceivableIContainer.add(this.accrualPenaltyReceivableField);
-        this.accrualPenaltyReceivableFeedback = new TextFeedbackPanel("accrualPenaltyReceivableFeedback", this.accrualPenaltyReceivableField);
-        this.accrualPenaltyReceivableIContainer.add(this.accrualPenaltyReceivableFeedback);
+        this.accrualPenaltyReceivableIContainer.newFeedback("accrualPenaltyReceivableFeedback", this.accrualPenaltyReceivableField);
 
-        this.accrualTransferInSuspenseBlock = new WebMarkupBlock("accrualTransferInSuspenseBlock", Size.Six_6);
-        this.accrualIContainer.add(this.accrualTransferInSuspenseBlock);
-        this.accrualTransferInSuspenseIContainer = new WebMarkupContainer("accrualTransferInSuspenseIContainer");
-        this.accrualTransferInSuspenseBlock.add(this.accrualTransferInSuspenseIContainer);
-        this.accrualTransferInSuspenseProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.accrualTransferInSuspenseProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.accrualTransferInSuspenseProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+        this.accrualTransferInSuspenseBlock = this.row10.newUIBlock("accrualTransferInSuspenseBlock", Size.Six_6);
+        this.accrualTransferInSuspenseIContainer = this.accrualTransferInSuspenseBlock.newUIContainer("accrualTransferInSuspenseIContainer");
         this.accrualTransferInSuspenseField = new Select2SingleChoice<>("accrualTransferInSuspenseField", new PropertyModel<>(this.itemPage, "accrualTransferInSuspenseValue"), this.accrualTransferInSuspenseProvider);
-        this.accrualTransferInSuspenseField.setLabel(Model.of("Transfer In Suspense"));
-        this.accrualTransferInSuspenseField.add(new OnChangeAjaxBehavior());
         this.accrualTransferInSuspenseIContainer.add(this.accrualTransferInSuspenseField);
-        this.accrualTransferInSuspenseFeedback = new TextFeedbackPanel("accrualTransferInSuspenseFeedback", this.accrualTransferInSuspenseField);
-        this.accrualTransferInSuspenseIContainer.add(this.accrualTransferInSuspenseFeedback);
+        this.accrualTransferInSuspenseIContainer.newFeedback("accrualTransferInSuspenseFeedback", this.accrualTransferInSuspenseField);
 
-        this.accrualIncomeFromInterestBlock = new WebMarkupBlock("accrualIncomeFromInterestBlock", Size.Six_6);
-        this.accrualIContainer.add(this.accrualIncomeFromInterestBlock);
-        this.accrualIncomeFromInterestIContainer = new WebMarkupContainer("accrualIncomeFromInterestIContainer");
-        this.accrualIncomeFromInterestBlock.add(this.accrualIncomeFromInterestIContainer);
-        this.accrualIncomeFromInterestProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.accrualIncomeFromInterestProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.accrualIncomeFromInterestProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+        this.row11 = this.accrualIContainer.newUIRow("row11");
+
+        this.accrualIncomeFromInterestBlock = this.row11.newUIBlock("accrualIncomeFromInterestBlock", Size.Six_6);
+        this.accrualIncomeFromInterestIContainer = this.accrualIncomeFromInterestBlock.newUIContainer("accrualIncomeFromInterestIContainer");
         this.accrualIncomeFromInterestField = new Select2SingleChoice<>("accrualIncomeFromInterestField", new PropertyModel<>(this.itemPage, "accrualIncomeFromInterestValue"), this.accrualIncomeFromInterestProvider);
-        this.accrualIncomeFromInterestField.setLabel(Model.of("Income From Interest"));
-        this.accrualIncomeFromInterestField.add(new OnChangeAjaxBehavior());
         this.accrualIncomeFromInterestIContainer.add(this.accrualIncomeFromInterestField);
-        this.accrualIncomeFromInterestFeedback = new TextFeedbackPanel("accrualIncomeFromInterestFeedback", this.accrualIncomeFromInterestField);
-        this.accrualIncomeFromInterestIContainer.add(this.accrualIncomeFromInterestFeedback);
+        this.accrualIncomeFromInterestIContainer.newFeedback("accrualIncomeFromInterestFeedback", this.accrualIncomeFromInterestField);
 
-        this.accrualIncomeFromFeeBlock = new WebMarkupBlock("accrualIncomeFromFeeBlock", Size.Six_6);
-        this.accrualIContainer.add(this.accrualIncomeFromFeeBlock);
-        this.accrualIncomeFromFeeIContainer = new WebMarkupContainer("accrualIncomeFromFeeIContainer");
-        this.accrualIncomeFromFeeBlock.add(this.accrualIncomeFromFeeIContainer);
-        this.accrualIncomeFromFeeProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.accrualIncomeFromFeeProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.accrualIncomeFromFeeProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+        this.accrualIncomeFromFeeBlock = this.row11.newUIBlock("accrualIncomeFromFeeBlock", Size.Six_6);
+        this.accrualIncomeFromFeeIContainer = this.accrualIncomeFromFeeBlock.newUIContainer("accrualIncomeFromFeeIContainer");
         this.accrualIncomeFromFeeField = new Select2SingleChoice<>("accrualIncomeFromFeeField", new PropertyModel<>(this.itemPage, "accrualIncomeFromFeeValue"), this.accrualIncomeFromFeeProvider);
-        this.accrualIncomeFromFeeField.setLabel(Model.of("Income From Fees"));
-        this.accrualIncomeFromFeeField.add(new OnChangeAjaxBehavior());
         this.accrualIncomeFromFeeIContainer.add(this.accrualIncomeFromFeeField);
-        this.accrualIncomeFromFeeFeedback = new TextFeedbackPanel("accrualIncomeFromFeeFeedback", this.accrualIncomeFromFeeField);
-        this.accrualIncomeFromFeeIContainer.add(this.accrualIncomeFromFeeFeedback);
+        this.accrualIncomeFromFeeIContainer.newFeedback("accrualIncomeFromFeeFeedback", this.accrualIncomeFromFeeField);
 
-        this.accrualIncomeFromPenaltyBlock = new WebMarkupBlock("accrualIncomeFromPenaltyBlock", Size.Six_6);
-        this.accrualIContainer.add(this.accrualIncomeFromPenaltyBlock);
-        this.accrualIncomeFromPenaltyIContainer = new WebMarkupContainer("accrualIncomeFromPenaltyIContainer");
-        this.accrualIncomeFromPenaltyBlock.add(this.accrualIncomeFromPenaltyIContainer);
-        this.accrualIncomeFromPenaltyProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.accrualIncomeFromPenaltyProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.accrualIncomeFromPenaltyProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+        this.row12 = this.accrualIContainer.newUIRow("row12");
+
+        this.accrualIncomeFromPenaltyBlock = this.row12.newUIBlock("accrualIncomeFromPenaltyBlock", Size.Six_6);
+        this.accrualIncomeFromPenaltyIContainer = this.accrualIncomeFromPenaltyBlock.newUIContainer("accrualIncomeFromPenaltyIContainer");
         this.accrualIncomeFromPenaltyField = new Select2SingleChoice<>("accrualIncomeFromPenaltyField", new PropertyModel<>(this.itemPage, "accrualIncomeFromPenaltyValue"), this.accrualIncomeFromPenaltyProvider);
-        this.accrualIncomeFromPenaltyField.setLabel(Model.of("Income From Penalty"));
-        this.accrualIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
         this.accrualIncomeFromPenaltyIContainer.add(this.accrualIncomeFromPenaltyField);
-        this.accrualIncomeFromPenaltyFeedback = new TextFeedbackPanel("accrualIncomeFromPenaltyFeedback", this.accrualIncomeFromPenaltyField);
-        this.accrualIncomeFromPenaltyIContainer.add(this.accrualIncomeFromPenaltyFeedback);
+        this.accrualIncomeFromPenaltyIContainer.newFeedback("accrualIncomeFromPenaltyFeedback", this.accrualIncomeFromPenaltyField);
 
-        this.accrualIncomeFromRecoveryRepaymentBlock = new WebMarkupBlock("accrualIncomeFromRecoveryRepaymentBlock", Size.Six_6);
-        this.accrualIContainer.add(this.accrualIncomeFromRecoveryRepaymentBlock);
-        this.accrualIncomeFromRecoveryRepaymentIContainer = new WebMarkupContainer("accrualIncomeFromRecoveryRepaymentIContainer");
-        this.accrualIncomeFromRecoveryRepaymentBlock.add(this.accrualIncomeFromRecoveryRepaymentIContainer);
-        this.accrualIncomeFromRecoveryRepaymentProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.accrualIncomeFromRecoveryRepaymentProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.accrualIncomeFromRecoveryRepaymentProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+        this.accrualIncomeFromRecoveryRepaymentBlock = this.row12.newUIBlock("accrualIncomeFromRecoveryRepaymentBlock", Size.Six_6);
+        this.accrualIncomeFromRecoveryRepaymentIContainer = this.accrualIncomeFromRecoveryRepaymentBlock.newUIContainer("accrualIncomeFromRecoveryRepaymentIContainer");
         this.accrualIncomeFromRecoveryRepaymentField = new Select2SingleChoice<>("accrualIncomeFromRecoveryRepaymentField", new PropertyModel<>(this.itemPage, "accrualIncomeFromRecoveryRepaymentValue"), this.accrualIncomeFromRecoveryRepaymentProvider);
-        this.accrualIncomeFromRecoveryRepaymentField.setLabel(Model.of("Income From Recovery Repayments"));
-        this.accrualIncomeFromRecoveryRepaymentField.add(new OnChangeAjaxBehavior());
         this.accrualIncomeFromRecoveryRepaymentIContainer.add(this.accrualIncomeFromRecoveryRepaymentField);
-        this.accrualIncomeFromRecoveryRepaymentFeedback = new TextFeedbackPanel("accrualIncomeFromRecoveryRepaymentFeedback", this.accrualIncomeFromRecoveryRepaymentField);
-        this.accrualIncomeFromRecoveryRepaymentIContainer.add(this.accrualIncomeFromRecoveryRepaymentFeedback);
+        this.accrualIncomeFromRecoveryRepaymentIContainer.newFeedback("accrualIncomeFromRecoveryRepaymentFeedback", this.accrualIncomeFromRecoveryRepaymentField);
 
-        this.accrualLossWrittenOffBlock = new WebMarkupBlock("accrualLossWrittenOffBlock", Size.Six_6);
-        this.accrualIContainer.add(this.accrualLossWrittenOffBlock);
-        this.accrualLossWrittenOffIContainer = new WebMarkupContainer("accrualLossWrittenOffIContainer");
-        this.accrualLossWrittenOffBlock.add(this.accrualLossWrittenOffIContainer);
-        this.accrualLossWrittenOffProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.accrualLossWrittenOffProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.accrualLossWrittenOffProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Expense.getLiteral());
+        this.row13 = this.accrualIContainer.newUIRow("row13");
+
+        this.accrualLossWrittenOffBlock = this.row13.newUIBlock("accrualLossWrittenOffBlock", Size.Six_6);
+        this.accrualLossWrittenOffIContainer = this.accrualLossWrittenOffBlock.newUIContainer("accrualLossWrittenOffIContainer");
         this.accrualLossWrittenOffField = new Select2SingleChoice<>("accrualLossWrittenOffField", new PropertyModel<>(this.itemPage, "accrualLossWrittenOffValue"), this.accrualLossWrittenOffProvider);
-        this.accrualLossWrittenOffField.setLabel(Model.of("Loss Written Off"));
-        this.accrualLossWrittenOffField.add(new OnChangeAjaxBehavior());
         this.accrualLossWrittenOffIContainer.add(this.accrualLossWrittenOffField);
-        this.accrualLossWrittenOffFeedback = new TextFeedbackPanel("accrualLossWrittenOffFeedback", this.accrualLossWrittenOffField);
-        this.accrualLossWrittenOffIContainer.add(this.accrualLossWrittenOffFeedback);
+        this.accrualLossWrittenOffIContainer.newFeedback("accrualLossWrittenOffFeedback", this.accrualLossWrittenOffField);
 
-        this.accrualOverPaymentLiabilityBlock = new WebMarkupBlock("accrualOverPaymentLiabilityBlock", Size.Six_6);
-        this.accrualIContainer.add(this.accrualOverPaymentLiabilityBlock);
-        this.accrualOverPaymentLiabilityIContainer = new WebMarkupContainer("accrualOverPaymentLiabilityIContainer");
-        this.accrualOverPaymentLiabilityBlock.add(this.accrualOverPaymentLiabilityIContainer);
-        this.accrualOverPaymentLiabilityProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.accrualOverPaymentLiabilityProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.accrualOverPaymentLiabilityProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Liability.getLiteral());
+        this.row13Block1 = this.row13.newUIBlock("row13Block1", Size.Six_6);
+
+        this.row14 = this.accrualIContainer.newUIRow("row14");
+
+        this.accrualOverPaymentLiabilityBlock = this.row14.newUIBlock("accrualOverPaymentLiabilityBlock", Size.Six_6);
+        this.accrualOverPaymentLiabilityIContainer = this.accrualOverPaymentLiabilityBlock.newUIContainer("accrualOverPaymentLiabilityIContainer");
         this.accrualOverPaymentLiabilityField = new Select2SingleChoice<>("accrualOverPaymentLiabilityField", new PropertyModel<>(this.itemPage, "accrualOverPaymentLiabilityValue"), this.accrualOverPaymentLiabilityProvider);
-        this.accrualOverPaymentLiabilityField.setLabel(Model.of("Over Payment Liability"));
-        this.accrualOverPaymentLiabilityField.add(new OnChangeAjaxBehavior());
         this.accrualOverPaymentLiabilityIContainer.add(this.accrualOverPaymentLiabilityField);
-        this.accrualOverPaymentLiabilityFeedback = new TextFeedbackPanel("accrualOverPaymentLiabilityFeedback", this.accrualOverPaymentLiabilityField);
-        this.accrualOverPaymentLiabilityIContainer.add(this.accrualOverPaymentLiabilityFeedback);
+        this.accrualOverPaymentLiabilityIContainer.newFeedback("accrualOverPaymentLiabilityFeedback", this.accrualOverPaymentLiabilityField);
 
-        this.advancedAccountingRuleBlock = new WebMarkupContainer("advancedAccountingRuleBlock");
-        this.advancedAccountingRuleBlock.setOutputMarkupId(true);
-        this.form.add(this.advancedAccountingRuleBlock);
-        this.advancedAccountingRuleIContainer = new WebMarkupContainer("advancedAccountingRuleIContainer");
-        this.advancedAccountingRuleBlock.add(this.advancedAccountingRuleIContainer);
+        this.row14Block1 = this.row14.newUIBlock("row14Block1", Size.Six_6);
 
-        this.row1 = UIRow.newRow("row1", this.advancedAccountingRuleIContainer);
+        this.advancedAccountingRuleBlock = SectionBlock.newSectionBlock("advancedAccountingRuleBlock", this.form);
+        this.advancedAccountingRuleIContainer = this.advancedAccountingRuleBlock.newSectionContainer("advancedAccountingRuleIContainer");
 
-        this.row1Block1 = this.row1.newBlock("row1Block1", Size.Twelve_12);
+        this.row1 = UIRow.newUIRow("row1", this.advancedAccountingRuleIContainer);
+
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Twelve_12);
 
         this.advancedAccountingRulePenaltyIncomeTable = new DataTable<>("advancedAccountingRulePenaltyIncomeTable", this.advancedAccountingRulePenaltyIncomeColumn, this.advancedAccountingRulePenaltyIncomeProvider, 20);
         this.row1Block1.add(this.advancedAccountingRulePenaltyIncomeTable);
@@ -637,12 +664,6 @@ public class AccountingPanel extends Panel {
         this.advancedAccountingRuleFundSourceAddLink = new AjaxLink<>("advancedAccountingRuleFundSourceAddLink");
         this.advancedAccountingRuleFundSourceAddLink.setOnClick(this::advancedAccountingRuleFundSourceAddLinkClick);
         this.row1Block1.add(this.advancedAccountingRuleFundSourceAddLink);
-    }
-
-    @Override
-    protected void configureMetaData() {
-        this.accountingField.setRequired(true);
-        accountingFieldUpdate(null);
     }
 
     protected boolean backLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {

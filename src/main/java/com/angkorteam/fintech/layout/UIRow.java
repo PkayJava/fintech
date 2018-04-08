@@ -4,7 +4,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 
 public class UIRow extends WebMarkupContainer {
 
@@ -15,19 +15,19 @@ public class UIRow extends WebMarkupContainer {
         setOutputMarkupId(true);
     }
 
-    public static UIRow newRow(String id, WebMarkupContainer parent) {
+    public static UIRow newUIRow(String id, WebMarkupContainer parent) {
         UIRow row = new UIRow(id);
         parent.add(row);
         return row;
     }
 
-    public static UIRow newRow(String id, Page parent) {
+    public static UIRow newUIRow(String id, Page parent) {
         UIRow row = new UIRow(id);
         parent.add(row);
         return row;
     }
 
-    public UIBlock newBlock(String id, Size size) {
+    public UIBlock newUIBlock(String id, Size size) {
         UIBlock block = new UIBlock(id, size);
         add(block);
         this.size = this.size + size.getSize();

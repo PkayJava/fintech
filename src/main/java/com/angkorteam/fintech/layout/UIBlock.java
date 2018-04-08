@@ -2,7 +2,7 @@ package com.angkorteam.fintech.layout;
 
 import org.apache.http.util.Args;
 import org.apache.wicket.markup.ComponentTag;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 
 public class UIBlock extends WebMarkupContainer {
 
@@ -31,7 +31,7 @@ public class UIBlock extends WebMarkupContainer {
         }
     }
 
-    public UIContainer newContainer(String id) {
+    public UIContainer newUIContainer(String id) {
         UIContainer container = new UIContainer(id);
         add(container);
         return container;
