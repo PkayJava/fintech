@@ -3,7 +3,7 @@ package com.angkorteam.fintech.dto.builder;
 import java.io.Serializable;
 
 import com.angkorteam.fintech.dto.constant.FinancialActivityTypeEnum;
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 7/12/17.

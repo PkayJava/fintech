@@ -10,10 +10,11 @@ import org.slf4j.LoggerFactory;
 import com.angkorteam.fintech.IMifos;
 import com.angkorteam.fintech.MifosDataSourceManager;
 import com.angkorteam.framework.SpringBean;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
+
+import io.github.openunirest.http.HttpResponse;
+import io.github.openunirest.http.JsonNode;
+import io.github.openunirest.http.Unirest;
+import io.github.openunirest.http.exceptions.UnirestException;
 
 public class ClientHelper {
 

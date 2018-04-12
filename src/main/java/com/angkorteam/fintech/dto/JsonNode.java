@@ -7,7 +7,7 @@ import org.json.JSONObject;
 /**
  * Created by socheatkhauv on 6/26/17.
  */
-public class JsonNode extends com.mashape.unirest.http.JsonNode {
+public class JsonNode extends io.github.openunirest.http.JsonNode {
 
     private JSONObject jsonObject;
 

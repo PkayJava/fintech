@@ -41,9 +41,10 @@ import org.xml.sax.SAXException;
 import com.angkorteam.framework.jdbc.InsertQuery;
 import com.angkorteam.framework.spring.JdbcNamed;
 import com.google.gson.Gson;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
+
+import io.github.openunirest.http.HttpResponse;
+import io.github.openunirest.http.Unirest;
+import io.github.openunirest.http.exceptions.UnirestException;
 
 @Controller
 public class ProxyAPI implements Filter {

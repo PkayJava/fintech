@@ -25,8 +25,9 @@ import com.angkorteam.fintech.junit.JUnitWicketTester;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.framework.spring.JdbcTemplate;
 import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.exceptions.UnirestException;
+
+import io.github.openunirest.http.JsonNode;
+import io.github.openunirest.http.exceptions.UnirestException;
 
 public class JUnitData implements IMifos {
 

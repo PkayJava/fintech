@@ -2,7 +2,7 @@ package com.angkorteam.fintech.dto.builder;
 
 import java.io.Serializable;
 
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 public class AllowAttributeOverrideBuilder implements Serializable {
 

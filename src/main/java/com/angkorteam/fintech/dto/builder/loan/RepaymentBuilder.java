@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 public class RepaymentBuilder {
 

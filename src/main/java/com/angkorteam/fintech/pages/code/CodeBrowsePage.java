@@ -38,7 +38,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 6/27/17.

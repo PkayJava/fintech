@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.Language;
 import com.angkorteam.fintech.helper.LoginHelper;
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 public class Session extends AbstractAuthenticatedWebSession implements IMifos {
 

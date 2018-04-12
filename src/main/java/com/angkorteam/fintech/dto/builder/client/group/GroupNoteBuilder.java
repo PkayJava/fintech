@@ -2,7 +2,7 @@ package com.angkorteam.fintech.dto.builder.client.group;
 
 import java.io.Serializable;
 
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 public class GroupNoteBuilder implements Serializable {
 

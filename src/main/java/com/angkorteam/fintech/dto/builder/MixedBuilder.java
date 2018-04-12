@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 public class MixedBuilder implements Serializable {
 

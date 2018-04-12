@@ -10,7 +10,7 @@ import com.angkorteam.fintech.dto.enums.ChargeFrequency;
 import com.angkorteam.fintech.dto.enums.ChargePayment;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.dto.enums.ChargeType;
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 public class ChargeBuilder implements Serializable {
 

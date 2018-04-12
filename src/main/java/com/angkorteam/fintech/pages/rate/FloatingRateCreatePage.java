@@ -48,7 +48,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class FloatingRateCreatePage extends Page {

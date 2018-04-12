@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 7/3/17.

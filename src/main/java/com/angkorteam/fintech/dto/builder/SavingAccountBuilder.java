@@ -15,7 +15,7 @@ import com.angkorteam.fintech.dto.enums.InterestPostingPeriod;
 import com.angkorteam.fintech.dto.enums.LockInType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 public class SavingAccountBuilder implements Serializable {
 

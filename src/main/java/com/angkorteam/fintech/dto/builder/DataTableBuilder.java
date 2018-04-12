@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import com.angkorteam.fintech.dto.enums.TableType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 6/27/17.

@@ -18,7 +18,7 @@ import com.angkorteam.fintech.dto.enums.loan.InterestMethod;
 import com.angkorteam.fintech.dto.enums.loan.RepaidOn;
 import com.angkorteam.fintech.dto.enums.loan.RepaymentStrategy;
 import com.google.common.collect.Maps;
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 public class LoanAccountBuilder implements Serializable {
 

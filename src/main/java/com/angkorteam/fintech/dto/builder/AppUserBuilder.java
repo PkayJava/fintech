@@ -6,7 +6,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 import com.google.common.collect.Lists;
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 public class AppUserBuilder implements Serializable {
 

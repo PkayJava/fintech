@@ -1,6 +1,8 @@
 package com.angkorteam.fintech;
 
 import java.lang.management.ManagementFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 
 import javax.management.MBeanServer;
 
@@ -26,8 +28,11 @@ public class Start {
      * Main function, starts the jetty server.
      *
      * @param args
+     * @throws Exception
+     * @throws NoSuchAlgorithmException
+     * @throws UnrecoverableKeyException
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnrecoverableKeyException, NoSuchAlgorithmException, Exception {
 
         System.setProperty("wicket.configuration", "development");
 

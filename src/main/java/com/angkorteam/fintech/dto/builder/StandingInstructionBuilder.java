@@ -13,7 +13,7 @@ import com.angkorteam.fintech.dto.enums.RecurrenceType;
 import com.angkorteam.fintech.dto.enums.StandingInstructionAccountType;
 import com.angkorteam.fintech.dto.enums.Status;
 import com.angkorteam.fintech.dto.enums.TransferType;
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 public class StandingInstructionBuilder implements Serializable {
 

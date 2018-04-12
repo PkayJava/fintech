@@ -9,7 +9,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 7/20/17.

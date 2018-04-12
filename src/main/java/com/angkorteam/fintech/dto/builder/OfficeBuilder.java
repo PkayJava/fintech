@@ -6,7 +6,7 @@ import java.util.Date;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.json.JSONObject;
 
-import com.mashape.unirest.http.JsonNode;
+import io.github.openunirest.http.JsonNode;
 
 /**
  * Created by socheatkhauv on 6/22/17.
