@@ -9,7 +9,6 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -21,11 +20,13 @@ import com.angkorteam.fintech.ddl.MOrganisationCurrency;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.CurrencyHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -44,6 +45,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -52,22 +54,25 @@ import io.github.openunirest.http.JsonNode;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class CurrencyConfigurationPage extends Page {
 
-    protected WebMarkupBlock dataBlock;
-    protected WebMarkupContainer dataIContainer;
-    protected DataTable<Map<String, Object>, String> dataTable;
-    protected JdbcProvider dataProvider;
-    protected List<IColumn<Map<String, Object>, String>> dataColumn;
-    protected FilterForm<Map<String, String>> dataFilterForm;
+    protected Form<Void> form1;
+    protected Button addButton;
 
-    protected WebMarkupBlock currencyBlock;
-    protected WebMarkupContainer currencyIContainer;
+    protected UIRow row1;
+    protected UIBlock currencyBlock;
+    protected UIContainer currencyIContainer;
     protected SingleChoiceProvider currencyProvider;
     protected Option currencyValue;
     protected Select2SingleChoice<Option> currencyField;
     protected TextFeedbackPanel currencyFeedback;
 
-    protected Form<Void> form;
-    protected Button addButton;
+    protected FilterForm<Map<String, String>> form2;
+
+    protected UIRow row2;
+    protected UIBlock dataBlock;
+    protected UIContainer dataIContainer;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -93,41 +98,9 @@ public class CurrencyConfigurationPage extends Page {
 
     @Override
     protected void initData() {
-    }
+        this.currencyProvider = new SingleChoiceProvider(MCurrency.NAME, MCurrency.Field.CODE, MCurrency.Field.NAME, "CONCAT(" + MCurrency.Field.NAME + ",' [', " + MCurrency.Field.CODE + ",']')");
+        this.currencyProvider.applyWhere("code", MCurrency.Field.CODE + " NOT IN (SELECT " + MOrganisationCurrency.Field.CODE + " FROM " + MOrganisationCurrency.NAME + ")");
 
-    @Override
-    protected void initComponent() {
-        initDataBlock();
-
-        this.form = new Form<>("form");
-        add(this.form);
-
-        this.addButton = new Button("addButton");
-        this.addButton.setOnSubmit(this::addButtonSubmit);
-        this.form.add(this.addButton);
-
-        initCurrencyBlock();
-    }
-
-    protected void initCurrencyBlock() {
-        this.currencyBlock = new WebMarkupBlock("currencyBlock", Size.Twelve_12);
-        this.form.add(this.currencyBlock);
-        this.currencyIContainer = new WebMarkupContainer("currencyIContainer");
-        this.currencyBlock.add(this.currencyIContainer);
-        this.currencyProvider = new SingleChoiceProvider(MCurrency.NAME, MCurrency.Field.CODE, MCurrency.Field.NAME, "concat(" + MCurrency.Field.NAME + ",' [', " + MCurrency.Field.CODE + ",']')");
-        this.currencyProvider.applyWhere("code", MCurrency.Field.CODE + " NOT IN (select " + MOrganisationCurrency.Field.CODE + " from " + MOrganisationCurrency.NAME + ")");
-        this.currencyField = new Select2SingleChoice<>("currencyField", new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
-        this.currencyField.setRequired(true);
-        this.currencyIContainer.add(this.currencyField);
-        this.currencyFeedback = new TextFeedbackPanel("currencyFeedback", this.currencyField);
-        this.currencyIContainer.add(this.currencyFeedback);
-    }
-
-    protected void initDataBlock() {
-        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
-        add(this.dataBlock);
-        this.dataIContainer = new WebMarkupContainer("dataIContainer");
-        this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider(MOrganisationCurrency.NAME);
         this.dataProvider.boardField(MOrganisationCurrency.Field.ID, "id", Long.class);
         this.dataProvider.boardField(MOrganisationCurrency.Field.CODE, "code", String.class);
@@ -142,16 +115,39 @@ public class CurrencyConfigurationPage extends Page {
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Symbol"), "symbol", "symbol", this::dataColumn));
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
 
-        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
-        this.dataIContainer.add(this.dataFilterForm);
+    }
 
+    @Override
+    protected void initComponent() {
+        this.form1 = new Form<>("form1");
+        add(this.form1);
+
+        this.addButton = new Button("addButton");
+        this.addButton.setOnSubmit(this::addButtonSubmit);
+        this.form1.add(this.addButton);
+
+        this.row1 = UIRow.newUIRow("row1", this.form1);
+
+        this.currencyBlock = this.row1.newUIBlock("currencyBlock", Size.Twelve_12);
+        this.currencyIContainer = this.currencyBlock.newUIContainer("currencyIContainer");
+        this.currencyField = new Select2SingleChoice<>("currencyField", new PropertyModel<>(this, "currencyValue"), this.currencyProvider);
+        this.currencyIContainer.add(this.currencyField);
+        this.currencyIContainer.newFeedback("currencyFeedback", this.currencyField);
+
+        this.form2 = new FilterForm<>("form2", this.dataProvider);
+        add(this.form2);
+
+        this.row2 = UIRow.newUIRow("row2", this.form2);
+        this.dataBlock = this.row2.newUIBlock("dataBlock", Size.Twelve_12);
+        this.dataIContainer = this.dataBlock.newUIContainer("dataIContainer");
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
-        this.dataFilterForm.add(this.dataTable);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.form2));
+        this.dataIContainer.add(this.dataTable);
     }
 
     @Override
     protected void configureMetaData() {
+        this.currencyField.setRequired(true);
     }
 
     protected void dataClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
