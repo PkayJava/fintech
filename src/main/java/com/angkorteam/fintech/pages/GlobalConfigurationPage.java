@@ -9,7 +9,6 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -22,12 +21,14 @@ import com.angkorteam.fintech.ddl.CConfiguration;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.GlobalConfigurationHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -44,6 +45,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -52,30 +54,37 @@ import io.github.openunirest.http.JsonNode;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class GlobalConfigurationPage extends Page {
 
-    protected WebMarkupBlock dataBlock;
-    protected WebMarkupContainer dataIContainer;
-    protected DataTable<Map<String, Object>, String> dataTable;
-    protected JdbcProvider dataProvider;
-    protected List<IColumn<Map<String, Object>, String>> dataColumn;
-    protected FilterForm<Map<String, String>> dataFilterForm;
+    protected Form<Void> form1;
+    protected Button saveButton;
 
-    protected BookmarkablePageLink<Void> closeLink;
+    protected UIRow row1;
 
-    protected WebMarkupBlock nameBlock;
-    protected WebMarkupContainer nameIContainer;
+    protected UIBlock nameBlock;
+    protected UIContainer nameIContainer;
     protected SingleChoiceProvider nameProvider;
     protected Option nameValue;
     protected Select2SingleChoice<Option> nameField;
     protected TextFeedbackPanel nameFeedback;
 
-    protected WebMarkupBlock valueBlock;
-    protected WebMarkupContainer valueIContainer;
+    protected UIRow row2;
+
+    protected UIBlock valueBlock;
+    protected UIContainer valueIContainer;
     protected Long valueValue;
     protected TextField<Long> valueField;
     protected TextFeedbackPanel valueFeedback;
 
-    protected Form<Void> form;
-    protected Button saveButton;
+    protected FilterForm<Map<String, String>> form2;
+
+    protected UIRow row3;
+
+    protected UIBlock dataBlock;
+    protected UIContainer dataIContainer;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+
+    protected BookmarkablePageLink<Void> closeLink;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -101,66 +110,14 @@ public class GlobalConfigurationPage extends Page {
 
     @Override
     protected void initData() {
-    }
-
-    @Override
-    protected void initComponent() {
-        initDataBlock();
-
-        this.closeLink = new BookmarkablePageLink<>("closeLink", SystemDashboardPage.class);
-        add(this.closeLink);
-
-        this.form = new Form<>("form");
-        add(this.form);
-
-        this.saveButton = new Button("saveButton");
-        this.saveButton.setOnSubmit(this::saveButtonSubmit);
-        this.form.add(this.saveButton);
-
-        initNameBlock();
-
-        initValueBlock();
-    }
-
-    protected void initValueBlock() {
-        this.valueBlock = new WebMarkupBlock("valueBlock", Size.Twelve_12);
-        this.form.add(this.valueBlock);
-        this.valueIContainer = new WebMarkupContainer("valueIContainer");
-        this.valueBlock.add(this.valueIContainer);
-        this.valueField = new TextField<>("valueField", new PropertyModel<>(this, "valueValue"));
-        this.valueField.setRequired(true);
-        this.valueIContainer.add(this.valueField);
-        this.valueFeedback = new TextFeedbackPanel("valueFeedback", this.valueField);
-        this.valueIContainer.add(this.valueFeedback);
-    }
-
-    protected void initNameBlock() {
-        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Twelve_12);
-        this.form.add(this.nameBlock);
-        this.nameIContainer = new WebMarkupContainer("nameIContainer");
-        this.nameBlock.add(this.nameIContainer);
         this.nameProvider = new SingleChoiceProvider(CConfiguration.NAME, CConfiguration.Field.ID, CConfiguration.Field.NAME);
-        this.nameField = new Select2SingleChoice<>("nameField", new PropertyModel<>(this, "nameValue"), this.nameProvider);
-        this.nameField.setRequired(true);
-        this.nameIContainer.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.nameIContainer.add(this.nameFeedback);
-    }
-
-    protected void initDataBlock() {
-        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
-        add(this.dataBlock);
-        this.dataIContainer = new WebMarkupContainer("dataIContainer");
-        this.dataBlock.add(this.dataIContainer);
 
         this.dataProvider = new JdbcProvider(CConfiguration.NAME);
         this.dataProvider.boardField(CConfiguration.Field.ID, "id", Long.class);
         this.dataProvider.boardField(CConfiguration.Field.NAME, "name", String.class);
         this.dataProvider.boardField(CConfiguration.Field.ENABLED, "enabled", Boolean.class);
         this.dataProvider.boardField(CConfiguration.Field.VALUE, "value", Long.class);
-
         this.dataProvider.setSort("name", SortOrder.ASCENDING);
-
         this.dataProvider.selectField("id", Long.class);
 
         this.dataColumn = Lists.newArrayList();
@@ -168,17 +125,53 @@ public class GlobalConfigurationPage extends Page {
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Boolean, Model.of("Enabled ?"), "enabled", "enabled", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Long, Model.of("Value"), "value", "value", this::dataColumn));
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
+    }
 
-        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
-        this.dataIContainer.add(this.dataFilterForm);
+    @Override
+    protected void initComponent() {
 
+        this.form1 = new Form<>("form1");
+        add(this.form1);
+
+        this.saveButton = new Button("saveButton");
+        this.saveButton.setOnSubmit(this::saveButtonSubmit);
+        this.form1.add(this.saveButton);
+
+        this.row1 = UIRow.newUIRow("row1", this.form1);
+
+        this.nameBlock = this.row1.newUIBlock("nameBlock", Size.Twelve_12);
+        this.nameIContainer = this.nameBlock.newUIContainer("nameIContainer");
+        this.nameField = new Select2SingleChoice<>("nameField", new PropertyModel<>(this, "nameValue"), this.nameProvider);
+        this.nameIContainer.add(this.nameField);
+        this.nameIContainer.newFeedback("nameFeedback", this.nameField);
+
+        this.row2 = UIRow.newUIRow("row2", this.form1);
+
+        this.valueBlock = this.row2.newUIBlock("valueBlock", Size.Twelve_12);
+        this.valueIContainer = this.valueBlock.newUIContainer("valueIContainer");
+        this.valueField = new TextField<>("valueField", new PropertyModel<>(this, "valueValue"));
+        this.valueIContainer.add(this.valueField);
+        this.valueIContainer.newFeedback("valueFeedback", this.valueField);
+
+        this.form2 = new FilterForm<>("form2", this.dataProvider);
+        add(this.form2);
+
+        this.row3 = UIRow.newUIRow("row3", this.form2);
+
+        this.dataBlock = this.row3.newUIBlock("dataBlock", Size.Twelve_12);
+        this.dataIContainer = this.dataBlock.newUIContainer("dataIContainer");
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
-        this.dataFilterForm.add(this.dataTable);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.form2));
+        this.dataIContainer.add(this.dataTable);
+
+        this.closeLink = new BookmarkablePageLink<>("closeLink", SystemDashboardPage.class);
+        add(this.closeLink);
     }
 
     @Override
     protected void configureMetaData() {
+        this.nameField.setRequired(true);
+        this.valueField.setRequired(true);
     }
 
     protected void saveButtonSubmit(Button button) {
