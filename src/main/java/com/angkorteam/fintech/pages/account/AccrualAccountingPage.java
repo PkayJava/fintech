@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -16,14 +15,16 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.AccrualBuilder;
 import com.angkorteam.fintech.helper.AccrualHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.AccountingPage;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -36,11 +37,12 @@ public class AccrualAccountingPage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock tillDateBlock;
-    protected WebMarkupContainer tillDateIContainer;
+    protected UIRow row1;
+
+    protected UIBlock tillDateBlock;
+    protected UIContainer tillDateIContainer;
     protected Date tillDateValue;
     protected DateTextField tillDateField;
-    protected TextFeedbackPanel tillDateFeedback;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -61,6 +63,7 @@ public class AccrualAccountingPage extends Page {
 
     @Override
     protected void initData() {
+        this.tillDateValue = new Date();
     }
 
     @Override
@@ -75,19 +78,13 @@ public class AccrualAccountingPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClosureBrowsePage.class);
         this.form.add(this.closeLink);
 
-        initTillDateBlock();
-    }
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-    protected void initTillDateBlock() {
-        this.tillDateBlock = new WebMarkupBlock("tillDateBlock", Size.Twelve_12);
-        this.form.add(this.tillDateBlock);
-        this.tillDateIContainer = new WebMarkupContainer("tillDateIContainer");
-        this.tillDateBlock.add(this.tillDateIContainer);
-        this.tillDateValue = new Date();
+        this.tillDateBlock = this.row1.newUIBlock("tillDateBlock", Size.Twelve_12);
+        this.tillDateIContainer = this.tillDateBlock.newUIContainer("tillDateIContainer");
         this.tillDateField = new DateTextField("tillDateField", new PropertyModel<>(this, "tillDateValue"));
         this.tillDateIContainer.add(this.tillDateField);
-        this.tillDateFeedback = new TextFeedbackPanel("tillDateFeedback", this.tillDateField);
-        this.tillDateIContainer.add(this.tillDateFeedback);
+        this.tillDateIContainer.newFeedback("tillDateFeedback", this.tillDateField);
     }
 
     @Override

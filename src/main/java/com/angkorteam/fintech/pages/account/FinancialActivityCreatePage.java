@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -20,11 +19,12 @@ import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.helper.FinancialActivityHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.FinancialActivityProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -32,6 +32,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -44,19 +45,21 @@ public class FinancialActivityCreatePage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock financialActivityBlock;
-    protected WebMarkupContainer financialActivityIContainer;
+    protected UIRow row1;
+
+    protected UIBlock financialActivityBlock;
+    protected UIContainer financialActivityIContainer;
     protected FinancialActivityProvider financialActivityProvider;
     protected Option financialActivityValue;
     protected Select2SingleChoice<Option> financialActivityField;
-    protected TextFeedbackPanel financialActivityFeedback;
 
-    protected WebMarkupBlock accountBlock;
-    protected WebMarkupContainer accountIContainer;
+    protected UIRow row2;
+
+    protected UIBlock accountBlock;
+    protected UIContainer accountIContainer;
     protected SingleChoiceProvider accountProvider;
     protected Option accountValue;
     protected Select2SingleChoice<Option> accountField;
-    protected TextFeedbackPanel accountFeedback;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -83,6 +86,11 @@ public class FinancialActivityCreatePage extends Page {
 
     @Override
     protected void initData() {
+        this.financialActivityProvider = new FinancialActivityProvider();
+
+        this.accountProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.accountProvider.applyWhere("usage", AccGLAccount.Field.ACCOUNT_USAGE + " = '" + AccountUsage.Detail.getLiteral() + "'");
+        this.accountProvider.setDisabled(true);
     }
 
     @Override
@@ -97,40 +105,26 @@ public class FinancialActivityCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", FinancialActivityBrowsePage.class);
         this.form.add(this.closeLink);
 
-        initFinancialActivityBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initAccountBlock();
+        this.financialActivityBlock = this.row1.newUIBlock("financialActivityBlock", Size.Twelve_12);
+        this.financialActivityIContainer = this.financialActivityBlock.newUIContainer("financialActivityIContainer");
+        this.financialActivityField = new Select2SingleChoice<>("financialActivityField", new PropertyModel<>(this, "financialActivityValue"), this.financialActivityProvider);
+        this.financialActivityIContainer.add(this.financialActivityField);
+        this.financialActivityIContainer.newFeedback("financialActivityFeedback", this.financialActivityField);
+
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.accountBlock = this.row2.newUIBlock("accountBlock", Size.Twelve_12);
+        this.accountIContainer = this.accountBlock.newUIContainer("accountIContainer");
+        this.accountField = new Select2SingleChoice<>("accountField", new PropertyModel<>(this, "accountValue"), this.accountProvider);
+        this.accountIContainer.add(this.accountField);
+        this.accountIContainer.newFeedback("accountFeedback", this.accountField);
     }
 
     @Override
     protected void configureMetaData() {
-    }
-
-    protected void initFinancialActivityBlock() {
-        this.financialActivityBlock = new WebMarkupBlock("financialActivityBlock", Size.Twelve_12);
-        this.form.add(this.financialActivityBlock);
-        this.financialActivityIContainer = new WebMarkupContainer("financialActivityIContainer");
-        this.financialActivityBlock.add(this.financialActivityIContainer);
-        this.financialActivityProvider = new FinancialActivityProvider();
-        this.financialActivityField = new Select2SingleChoice<>("financialActivityField", new PropertyModel<>(this, "financialActivityValue"), this.financialActivityProvider);
-        this.financialActivityIContainer.add(this.financialActivityField);
-        this.financialActivityFeedback = new TextFeedbackPanel("financialActivityFeedback", this.financialActivityField);
-        this.financialActivityIContainer.add(this.financialActivityFeedback);
         this.financialActivityField.add(new OnChangeAjaxBehavior(this::financialActivityFieldUpdate));
-    }
-
-    protected void initAccountBlock() {
-        this.accountBlock = new WebMarkupBlock("accountBlock", Size.Twelve_12);
-        this.form.add(this.accountBlock);
-        this.accountIContainer = new WebMarkupContainer("accountIContainer");
-        this.accountBlock.add(this.accountIContainer);
-        this.accountProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.accountProvider.applyWhere("usage", AccGLAccount.Field.ACCOUNT_USAGE + " = '" + AccountUsage.Detail.getLiteral() + "'");
-        this.accountProvider.setDisabled(true);
-        this.accountField = new Select2SingleChoice<>("accountField", new PropertyModel<>(this, "accountValue"), this.accountProvider);
-        this.accountIContainer.add(this.accountField);
-        this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
-        this.accountIContainer.add(this.accountFeedback);
     }
 
     protected boolean financialActivityFieldUpdate(AjaxRequestTarget target) {

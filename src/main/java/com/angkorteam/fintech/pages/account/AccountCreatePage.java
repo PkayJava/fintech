@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
@@ -24,12 +23,13 @@ import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.AccountTypeProvider;
 import com.angkorteam.fintech.provider.AccountUsageProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -37,6 +37,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -49,57 +50,59 @@ public class AccountCreatePage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock accountTypeBlock;
-    protected WebMarkupContainer accountTypeIContainer;
+    protected UIRow row1;
+
+    protected UIBlock accountTypeBlock;
+    protected UIContainer accountTypeIContainer;
     protected AccountTypeProvider accountTypeProvider;
     protected Option accountTypeValue;
     protected Select2SingleChoice<Option> accountTypeField;
-    protected TextFeedbackPanel accountTypeFeedback;
 
-    protected WebMarkupBlock parentBlock;
-    protected WebMarkupContainer parentIContainer;
+    protected UIBlock parentBlock;
+    protected UIContainer parentIContainer;
     protected SingleChoiceProvider parentProvider;
     protected Option parentValue;
     protected Select2SingleChoice<Option> parentField;
-    protected TextFeedbackPanel parentFeedback;
 
-    protected WebMarkupBlock glCodeBlock;
-    protected WebMarkupContainer glCodeIContainer;
+    protected UIRow row2;
+
+    protected UIBlock glCodeBlock;
+    protected UIContainer glCodeIContainer;
     protected String glCodeValue;
     protected TextField<String> glCodeField;
-    protected TextFeedbackPanel glCodeFeedback;
 
-    protected WebMarkupBlock accountNameBlock;
-    protected WebMarkupContainer accountNameIContainer;
+    protected UIBlock accountNameBlock;
+    protected UIContainer accountNameIContainer;
     protected String accountNameValue;
     protected TextField<String> accountNameField;
-    protected TextFeedbackPanel accountNameFeedback;
 
-    protected WebMarkupBlock accountUsageBlock;
-    protected WebMarkupContainer accountUsageIContainer;
+    protected UIRow row3;
+
+    protected UIBlock accountUsageBlock;
+    protected UIContainer accountUsageIContainer;
     protected AccountUsageProvider accountUsageProvider;
     protected Option accountUsageValue;
     protected Select2SingleChoice<Option> accountUsageField;
-    protected TextFeedbackPanel accountUsageFeedback;
 
-    protected WebMarkupBlock tagBlock;
-    protected WebMarkupContainer tagIContainer;
+    protected UIBlock tagBlock;
+    protected UIContainer tagIContainer;
     protected SingleChoiceProvider tagProvider;
     protected Option tagValue;
     protected Select2SingleChoice<Option> tagField;
-    protected TextFeedbackPanel tagFeedback;
 
-    protected WebMarkupBlock manualAllowBlock;
-    protected WebMarkupContainer manualAllowIContainer;
+    protected UIRow row4;
+
+    protected UIBlock manualAllowBlock;
+    protected UIContainer manualAllowIContainer;
     protected Boolean manualAllowValue;
     protected CheckBox manualAllowField;
-    protected TextFeedbackPanel manualAllowFeedback;
 
-    protected WebMarkupBlock descriptionBlock;
-    protected WebMarkupContainer descriptionIContainer;
+    protected UIRow row5;
+
+    protected UIBlock descriptionBlock;
+    protected UIContainer descriptionIContainer;
     protected String descriptionValue;
     protected TextArea<String> descriptionField;
-    protected TextFeedbackPanel descriptionFeedback;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -126,6 +129,15 @@ public class AccountCreatePage extends Page {
 
     @Override
     protected void initData() {
+        this.accountTypeProvider = new AccountTypeProvider();
+
+        this.parentProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.parentProvider.setDisabled(true);
+        this.parentProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = '" + AccountUsage.Header.getLiteral() + "'");
+
+        this.accountUsageProvider = new AccountUsageProvider();
+        this.tagProvider = new SingleChoiceProvider(MCodeValue.NAME, MCodeValue.Field.ID, MCodeValue.Field.CODE_VALUE);
+        this.tagProvider.setDisabled(true);
     }
 
     @Override
@@ -150,6 +162,16 @@ public class AccountCreatePage extends Page {
             this.parentProvider.setDisabled(false);
             this.parentProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = '" + accountType.getLiteral() + "'");
         }
+
+        this.accountTypeField.setLabel(Model.of("Account Type"));
+        this.accountTypeField.add(new OnChangeAjaxBehavior(this::accountTypeFieldUpdate));
+
+        this.parentField.setLabel(Model.of("Parent Account"));
+        this.glCodeField.setLabel(Model.of("GL Code"));
+        this.accountNameField.setLabel(Model.of("Account Name"));
+        this.accountUsageField.setLabel(Model.of("Account Usage"));
+        this.tagField.setLabel(Model.of("Tag"));
+        this.descriptionField.setLabel(Model.of("Description"));
     }
 
     @Override
@@ -164,125 +186,63 @@ public class AccountCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", AccountBrowsePage.class);
         this.form.add(this.closeLink);
 
-        initAccountTypeBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initParentBlock();
-
-        initGlCodeBlock();
-
-        initAccountNameBlock();
-
-        initAccountUsageBlock();
-
-        initManualAllowBlock();
-
-        initDescriptionBlock();
-
-        initTagBlock();
-
-    }
-
-    protected void initAccountTypeBlock() {
-        this.accountTypeBlock = new WebMarkupBlock("accountTypeBlock", Size.Six_6);
-        this.form.add(this.accountTypeBlock);
-        this.accountTypeIContainer = new WebMarkupContainer("accountTypeIContainer");
-        this.accountTypeBlock.add(this.accountTypeIContainer);
-        this.accountTypeProvider = new AccountTypeProvider();
+        this.accountTypeBlock = this.row1.newUIBlock("accountTypeBlock", Size.Six_6);
+        this.accountTypeIContainer = this.accountTypeBlock.newUIContainer("accountTypeIContainer");
         this.accountTypeField = new Select2SingleChoice<>("accountTypeField", new PropertyModel<>(this, "accountTypeValue"), this.accountTypeProvider);
-        this.accountTypeField.setLabel(Model.of("Account Type"));
-        this.accountTypeField.add(new OnChangeAjaxBehavior(this::accountTypeFieldUpdate));
         this.accountTypeIContainer.add(this.accountTypeField);
-        this.accountTypeFeedback = new TextFeedbackPanel("accountTypeFeedback", this.accountTypeField);
-        this.accountTypeIContainer.add(this.accountTypeFeedback);
-    }
+        this.accountTypeIContainer.newFeedback("accountTypeFeedback", this.accountTypeField);
 
-    protected void initDescriptionBlock() {
-        this.descriptionBlock = new WebMarkupBlock("descriptionBlock", Size.Twelve_12);
-        this.form.add(this.descriptionBlock);
-        this.descriptionIContainer = new WebMarkupContainer("descriptionIContainer");
-        this.descriptionBlock.add(this.descriptionIContainer);
-        this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
-        this.descriptionField.setLabel(Model.of("Description"));
-        this.descriptionIContainer.add(this.descriptionField);
-        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-        this.descriptionIContainer.add(this.descriptionFeedback);
-    }
+        this.parentBlock = this.row1.newUIBlock("parentBlock", Size.Six_6);
+        this.parentIContainer = this.parentBlock.newUIContainer("parentIContainer");
+        this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"), this.parentProvider);
+        this.parentIContainer.add(this.parentField);
+        this.parentIContainer.newFeedback("parentFeedback", this.parentField);
 
-    protected void initManualAllowBlock() {
-        this.manualAllowBlock = new WebMarkupBlock("manualAllowBlock", Size.Twelve_12);
-        this.form.add(this.manualAllowBlock);
-        this.manualAllowIContainer = new WebMarkupContainer("manualAllowIContainer");
-        this.manualAllowBlock.add(this.manualAllowIContainer);
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.glCodeBlock = this.row2.newUIBlock("glCodeBlock", Size.Six_6);
+        this.glCodeIContainer = this.glCodeBlock.newUIContainer("glCodeIContainer");
+        this.glCodeField = new TextField<>("glCodeField", new PropertyModel<>(this, "glCodeValue"));
+        this.glCodeIContainer.add(this.glCodeField);
+        this.glCodeIContainer.newFeedback("glCodeFeedback", this.glCodeField);
+
+        this.accountNameBlock = this.row2.newUIBlock("accountNameBlock", Size.Six_6);
+        this.accountNameIContainer = this.accountNameBlock.newUIContainer("accountNameIContainer");
+        this.accountNameField = new TextField<>("accountNameField", new PropertyModel<>(this, "accountNameValue"));
+        this.accountNameIContainer.add(this.accountNameField);
+        this.accountNameIContainer.newFeedback("accountNameFeedback", this.accountNameField);
+
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.accountUsageBlock = this.row3.newUIBlock("accountUsageBlock", Size.Six_6);
+        this.accountUsageIContainer = this.accountUsageBlock.newUIContainer("accountUsageIContainer");
+        this.accountUsageField = new Select2SingleChoice<>("accountUsageField", new PropertyModel<>(this, "accountUsageValue"), this.accountUsageProvider);
+        this.accountUsageIContainer.add(this.accountUsageField);
+        this.accountUsageIContainer.newFeedback("accountUsageFeedback", this.accountUsageField);
+
+        this.tagBlock = this.row3.newUIBlock("tagBlock", Size.Six_6);
+        this.tagIContainer = this.tagBlock.newUIContainer("tagIContainer");
+        this.tagField = new Select2SingleChoice<>("tagField", new PropertyModel<>(this, "tagValue"), this.tagProvider);
+        this.tagIContainer.add(this.tagField);
+        this.tagIContainer.newFeedback("tagFeedback", this.tagField);
+
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.manualAllowBlock = this.row4.newUIBlock("manualAllowBlock", Size.Twelve_12);
+        this.manualAllowIContainer = this.manualAllowBlock.newUIContainer("manualAllowIContainer");
         this.manualAllowField = new CheckBox("manualAllowField", new PropertyModel<>(this, "manualAllowValue"));
         this.manualAllowIContainer.add(this.manualAllowField);
-        this.manualAllowFeedback = new TextFeedbackPanel("manualAllowFeedback", this.manualAllowField);
-        this.manualAllowIContainer.add(this.manualAllowFeedback);
-    }
+        this.manualAllowIContainer.newFeedback("manualAllowFeedback", this.manualAllowField);
 
-    protected void initTagBlock() {
-        this.tagBlock = new WebMarkupBlock("tagBlock", Size.Six_6);
-        this.form.add(this.tagBlock);
-        this.tagIContainer = new WebMarkupContainer("tagIContainer");
-        this.tagBlock.add(this.tagIContainer);
-        this.tagProvider = new SingleChoiceProvider(MCodeValue.NAME, MCodeValue.Field.ID, MCodeValue.Field.CODE_VALUE);
-        this.tagProvider.setDisabled(true);
-        this.tagField = new Select2SingleChoice<>("tagField", new PropertyModel<>(this, "tagValue"), this.tagProvider);
-        this.tagField.setLabel(Model.of("Tag"));
-        this.tagIContainer.add(this.tagField);
-        this.tagFeedback = new TextFeedbackPanel("tagFeedback", this.tagField);
-        this.tagIContainer.add(this.tagFeedback);
-    }
+        this.row5 = UIRow.newUIRow("row5", this.form);
 
-    protected void initAccountUsageBlock() {
-        this.accountUsageBlock = new WebMarkupBlock("accountUsageBlock", Size.Six_6);
-        this.form.add(this.accountUsageBlock);
-        this.accountUsageIContainer = new WebMarkupContainer("accountUsageIContainer");
-        this.accountUsageBlock.add(this.accountUsageIContainer);
-        this.accountUsageProvider = new AccountUsageProvider();
-        this.accountUsageField = new Select2SingleChoice<>("accountUsageField", new PropertyModel<>(this, "accountUsageValue"), this.accountUsageProvider);
-        this.accountUsageField.setLabel(Model.of("Account Usage"));
-        this.accountUsageIContainer.add(this.accountUsageField);
-        this.accountUsageFeedback = new TextFeedbackPanel("accountUsageFeedback", this.accountUsageField);
-        this.accountUsageIContainer.add(this.accountUsageFeedback);
-    }
-
-    protected void initAccountNameBlock() {
-        this.accountNameBlock = new WebMarkupBlock("accountNameBlock", Size.Six_6);
-        this.form.add(this.accountNameBlock);
-        this.accountNameIContainer = new WebMarkupContainer("accountNameIContainer");
-        this.accountNameBlock.add(this.accountNameIContainer);
-        this.accountNameField = new TextField<>("accountNameField", new PropertyModel<>(this, "accountNameValue"));
-        this.accountNameField.setLabel(Model.of("Account Name"));
-        this.accountNameIContainer.add(this.accountNameField);
-        this.accountNameFeedback = new TextFeedbackPanel("accountNameFeedback", this.accountNameField);
-        this.accountNameIContainer.add(this.accountNameFeedback);
-    }
-
-    protected void initGlCodeBlock() {
-        this.glCodeBlock = new WebMarkupBlock("glCodeBlock", Size.Six_6);
-        this.form.add(this.glCodeBlock);
-        this.glCodeIContainer = new WebMarkupContainer("glCodeIContainer");
-        this.glCodeBlock.add(this.glCodeIContainer);
-        this.glCodeField = new TextField<>("glCodeField", new PropertyModel<>(this, "glCodeValue"));
-        this.glCodeField.setLabel(Model.of("GL Code"));
-        this.glCodeIContainer.add(this.glCodeField);
-        this.glCodeFeedback = new TextFeedbackPanel("glCodeFeedback", this.glCodeField);
-        this.glCodeIContainer.add(this.glCodeFeedback);
-    }
-
-    protected void initParentBlock() {
-        this.parentBlock = new WebMarkupBlock("parentBlock", Size.Six_6);
-        this.form.add(this.parentBlock);
-        this.parentIContainer = new WebMarkupContainer("parentIContainer");
-        this.parentBlock.add(this.parentIContainer);
-        this.parentProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.parentProvider.setDisabled(true);
-        this.parentProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = '" + AccountUsage.Header.getLiteral() + "'");
-        this.parentField = new Select2SingleChoice<>("parentField", new PropertyModel<>(this, "parentValue"), this.parentProvider);
-        this.parentField.setLabel(Model.of("Parent Account"));
-        this.parentIContainer.add(this.parentField);
-        this.parentFeedback = new TextFeedbackPanel("parentFeedback", this.parentField);
-        this.parentIContainer.add(this.parentFeedback);
+        this.descriptionBlock = this.row5.newUIBlock("descriptionBlock", Size.Twelve_12);
+        this.descriptionIContainer = this.descriptionBlock.newUIContainer("descriptionIContainer");
+        this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
+        this.descriptionIContainer.add(this.descriptionField);
+        this.descriptionIContainer.newFeedback("descriptionFeedback", this.descriptionField);
     }
 
     protected boolean accountTypeFieldUpdate(AjaxRequestTarget target) {
