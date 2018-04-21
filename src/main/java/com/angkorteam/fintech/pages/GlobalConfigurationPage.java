@@ -28,7 +28,6 @@ import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -64,7 +63,6 @@ public class GlobalConfigurationPage extends Page {
     protected SingleChoiceProvider nameProvider;
     protected Option nameValue;
     protected Select2SingleChoice<Option> nameField;
-    protected TextFeedbackPanel nameFeedback;
 
     protected UIRow row2;
 
@@ -72,7 +70,6 @@ public class GlobalConfigurationPage extends Page {
     protected UIContainer valueIContainer;
     protected Long valueValue;
     protected TextField<Long> valueField;
-    protected TextFeedbackPanel valueFeedback;
 
     protected FilterForm<Map<String, String>> form2;
 

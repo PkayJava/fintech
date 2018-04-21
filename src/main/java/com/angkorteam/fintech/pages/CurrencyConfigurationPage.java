@@ -26,7 +26,6 @@ import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -63,7 +62,6 @@ public class CurrencyConfigurationPage extends Page {
     protected SingleChoiceProvider currencyProvider;
     protected Option currencyValue;
     protected Select2SingleChoice<Option> currencyField;
-    protected TextFeedbackPanel currencyFeedback;
 
     protected FilterForm<Map<String, String>> form2;
 
