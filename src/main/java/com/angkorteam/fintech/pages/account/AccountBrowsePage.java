@@ -9,7 +9,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -22,12 +21,14 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.AccountType;
 import com.angkorteam.fintech.helper.GLAccountHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -40,6 +41,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -48,12 +50,15 @@ import io.github.openunirest.http.JsonNode;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class AccountBrowsePage extends Page {
 
-    protected WebMarkupBlock dataBlock;
-    protected WebMarkupContainer dataIContainer;
+    protected FilterForm<Map<String, String>> form;
+
+    protected UIRow row1;
+
+    protected UIBlock dataBlock;
+    protected UIContainer dataIContainer;
     protected JdbcProvider dataProvider;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
-    protected FilterForm<Map<String, String>> dataFilterForm;
 
     protected BookmarkablePageLink<Void> hierarchyLink;
 
@@ -78,40 +83,18 @@ public class AccountBrowsePage extends Page {
 
     @Override
     protected void initData() {
-
-    }
-
-    @Override
-    protected void initComponent() {
-        initDataTable();
-
-        this.hierarchyLink = new BookmarkablePageLink<>("hierarchyLink", AccountHierarchyPage.class);
-        add(this.hierarchyLink);
-
-        this.createLink = new BookmarkablePageLink<>("createLink", AccountCreatePage.class);
-        add(this.createLink);
-    }
-
-    protected void initDataTable() {
-
         List<String> classification_enum = Lists.newArrayList();
         for (AccountType accountType : AccountType.values()) {
-            classification_enum.add("when " + accountType.getLiteral() + " then '" + accountType.getDescription() + "'");
+            classification_enum.add("WHEN " + accountType.getLiteral() + " THEN '" + accountType.getDescription() + "'");
         }
-
-        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
-        add(this.dataBlock);
-        this.dataIContainer = new WebMarkupContainer("dataIContainer");
-        this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider(AccGLAccount.NAME);
         this.dataProvider.boardField(AccGLAccount.Field.ID, "id", Long.class);
         this.dataProvider.boardField(AccGLAccount.Field.NAME, "name", String.class);
         this.dataProvider.boardField(AccGLAccount.Field.GL_CODE, "gl_code", String.class);
-        this.dataProvider.boardField("case " + AccGLAccount.Field.CLASSIFICATION_ENUM + " " + StringUtils.join(classification_enum, " ") + " end", "classification_enum", String.class);
+        this.dataProvider.boardField("CASE " + AccGLAccount.Field.CLASSIFICATION_ENUM + " " + StringUtils.join(classification_enum, " ") + " END", "classification_enum", String.class);
         this.dataProvider.boardField(AccGLAccount.Field.ACCOUNT_USAGE, "account_usage", Long.class);
         this.dataProvider.boardField(AccGLAccount.Field.DISABLED, "disabled", Boolean.class);
         this.dataProvider.boardField(AccGLAccount.Field.MANUAL_JOURNAL_ENTRIES_ALLOWED, "manual_journal_entries_allowed", Boolean.class);
-
         this.dataProvider.selectField("id", Long.class);
 
         this.dataColumn = Lists.newArrayList();
@@ -121,18 +104,30 @@ public class AccountBrowsePage extends Page {
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Is Disabled ?"), "disabled", "disabled", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Is Manual Entries Allowed ?"), "manual_journal_entries_allowed", "manual_journal_entries_allowed", this::dataColumn));
         this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
+    }
 
-        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
-        this.dataIContainer.add(this.dataFilterForm);
+    @Override
+    protected void initComponent() {
+        this.form = new FilterForm<>("form", this.dataProvider);
+        add(this.form);
 
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.dataBlock = this.row1.newUIBlock("dataBlock", Size.Twelve_12);
+        this.dataIContainer = this.dataBlock.newUIContainer("dataIContainer");
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
-        this.dataFilterForm.add(this.dataTable);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.form));
+        this.dataIContainer.add(this.dataTable);
+
+        this.hierarchyLink = new BookmarkablePageLink<>("hierarchyLink", AccountHierarchyPage.class);
+        add(this.hierarchyLink);
+
+        this.createLink = new BookmarkablePageLink<>("createLink", AccountCreatePage.class);
+        add(this.createLink);
     }
 
     @Override
     protected void configureMetaData() {
-
     }
 
     protected void dataClick(String link, Map<String, Object> model, AjaxRequestTarget target) {

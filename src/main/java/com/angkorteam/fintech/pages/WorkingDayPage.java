@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -20,9 +19,10 @@ import com.angkorteam.fintech.dto.builder.WorkingDayBuilder;
 import com.angkorteam.fintech.dto.enums.RepaymentOption;
 import com.angkorteam.fintech.helper.WorkingDayHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.RepaymentOptionProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -32,6 +32,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -44,60 +45,69 @@ public class WorkingDayPage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock mondayBlock;
-    protected WebMarkupContainer mondayIContainer;
+    protected UIRow row1;
+
+    protected UIBlock mondayBlock;
+    protected UIContainer mondayIContainer;
     protected Boolean mondayValue;
     protected CheckBox mondayField;
-    protected TextFeedbackPanel mondayFeedback;
 
-    protected WebMarkupBlock tuesdayBlock;
-    protected WebMarkupContainer tuesdayIContainer;
+    protected UIRow row2;
+
+    protected UIBlock tuesdayBlock;
+    protected UIContainer tuesdayIContainer;
     protected Boolean tuesdayValue;
     protected CheckBox tuesdayField;
-    protected TextFeedbackPanel tuesdayFeedback;
 
-    protected WebMarkupBlock wednesdayBlock;
-    protected WebMarkupContainer wednesdayIContainer;
+    protected UIRow row3;
+
+    protected UIBlock wednesdayBlock;
+    protected UIContainer wednesdayIContainer;
     protected Boolean wednesdayValue;
     protected CheckBox wednesdayField;
-    protected TextFeedbackPanel wednesdayFeedback;
 
-    protected WebMarkupBlock thursdayBlock;
-    protected WebMarkupContainer thursdayIContainer;
+    protected UIRow row4;
+
+    protected UIBlock thursdayBlock;
+    protected UIContainer thursdayIContainer;
     protected Boolean thursdayValue;
     protected CheckBox thursdayField;
-    protected TextFeedbackPanel thursdayFeedback;
 
-    protected WebMarkupBlock fridayBlock;
-    protected WebMarkupContainer fridayIContainer;
+    protected UIRow row5;
+
+    protected UIBlock fridayBlock;
+    protected UIContainer fridayIContainer;
     protected Boolean fridayValue;
     protected CheckBox fridayField;
-    protected TextFeedbackPanel fridayFeedback;
 
-    protected WebMarkupBlock saturdayBlock;
-    protected WebMarkupContainer saturdayIContainer;
+    protected UIRow row6;
+
+    protected UIBlock saturdayBlock;
+    protected UIContainer saturdayIContainer;
     protected Boolean saturdayValue;
     protected CheckBox saturdayField;
-    protected TextFeedbackPanel saturdayFeedback;
 
-    protected WebMarkupBlock sundayBlock;
-    protected WebMarkupContainer sundayIContainer;
+    protected UIRow row7;
+
+    protected UIBlock sundayBlock;
+    protected UIContainer sundayIContainer;
     protected Boolean sundayValue;
     protected CheckBox sundayField;
-    protected TextFeedbackPanel sundayFeedback;
 
-    protected WebMarkupBlock repaymentOptionBlock;
-    protected WebMarkupContainer repaymentOptionIContainer;
+    protected UIRow row8;
+
+    protected UIBlock repaymentOptionBlock;
+    protected UIContainer repaymentOptionIContainer;
     protected RepaymentOptionProvider repaymentOptionProvider;
     protected Option repaymentOptionValue;
     protected Select2SingleChoice<Option> repaymentOptionField;
-    protected TextFeedbackPanel repaymentOptionFeedback;
 
-    protected WebMarkupBlock repaymentExtendTermBlock;
-    protected WebMarkupContainer repaymentExtendTermIContainer;
+    protected UIRow row9;
+
+    protected UIBlock repaymentExtendTermBlock;
+    protected UIContainer repaymentExtendTermIContainer;
     protected Boolean repaymentExtendTermValue;
     protected CheckBox repaymentExtendTermField;
-    protected TextFeedbackPanel repaymentExtendTermFeedback;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -133,136 +143,91 @@ public class WorkingDayPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", OrganizationDashboardPage.class);
         this.form.add(this.closeLink);
 
-        initMondayBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initTuesdayBlock();
-
-        initWednesdayBlock();
-
-        initThursdayBlock();
-
-        initFridayBlock();
-
-        initSaturdayBlock();
-
-        initSundayBlock();
-
-        initRepaymentOptionBlock();
-
-        initRepaymentExtendTermBlock();
-    }
-
-    protected void initRepaymentExtendTermBlock() {
-        this.repaymentExtendTermBlock = new WebMarkupBlock("repaymentExtendTermBlock", Size.Twelve_12);
-        this.form.add(this.repaymentExtendTermBlock);
-        this.repaymentExtendTermIContainer = new WebMarkupContainer("repaymentExtendTermIContainer");
-        this.repaymentExtendTermBlock.add(this.repaymentExtendTermIContainer);
-        this.repaymentExtendTermField = new CheckBox("repaymentExtendTermField", new PropertyModel<>(this, "repaymentExtendTermValue"));
-        this.repaymentExtendTermField.setRequired(true);
-        this.repaymentExtendTermIContainer.add(this.repaymentExtendTermField);
-        this.repaymentExtendTermFeedback = new TextFeedbackPanel("repaymentExtendTermFeedback", this.repaymentExtendTermField);
-        this.repaymentExtendTermIContainer.add(this.repaymentExtendTermFeedback);
-    }
-
-    protected void initRepaymentOptionBlock() {
-        this.repaymentOptionBlock = new WebMarkupBlock("repaymentOptionBlock", Size.Twelve_12);
-        this.form.add(this.repaymentOptionBlock);
-        this.repaymentOptionIContainer = new WebMarkupContainer("repaymentOptionIContainer");
-        this.repaymentOptionBlock.add(this.repaymentOptionIContainer);
-        this.repaymentOptionProvider = new RepaymentOptionProvider();
-        this.repaymentOptionField = new Select2SingleChoice<>("repaymentOptionField", new PropertyModel<>(this, "repaymentOptionValue"), this.repaymentOptionProvider);
-        this.repaymentOptionField.setRequired(true);
-        this.repaymentOptionIContainer.add(this.repaymentOptionField);
-        this.repaymentOptionFeedback = new TextFeedbackPanel("repaymentOptionFeedback", this.repaymentOptionField);
-        this.repaymentOptionIContainer.add(this.repaymentOptionFeedback);
-    }
-
-    protected void initSundayBlock() {
-        this.sundayBlock = new WebMarkupBlock("sundayBlock", Size.Twelve_12);
-        this.form.add(this.sundayBlock);
-        this.sundayIContainer = new WebMarkupContainer("sundayIContainer");
-        this.sundayBlock.add(this.sundayIContainer);
-        this.sundayField = new CheckBox("sundayField", new PropertyModel<>(this, "sundayValue"));
-        this.sundayField.setRequired(true);
-        this.sundayIContainer.add(this.sundayField);
-        this.sundayFeedback = new TextFeedbackPanel("sundayFeedback", this.sundayField);
-        this.sundayIContainer.add(this.sundayFeedback);
-    }
-
-    protected void initSaturdayBlock() {
-        this.saturdayBlock = new WebMarkupBlock("saturdayBlock", Size.Twelve_12);
-        this.form.add(this.saturdayBlock);
-        this.saturdayIContainer = new WebMarkupContainer("saturdayIContainer");
-        this.saturdayBlock.add(this.saturdayIContainer);
-        this.saturdayField = new CheckBox("saturdayField", new PropertyModel<>(this, "saturdayValue"));
-        this.saturdayField.setRequired(true);
-        this.saturdayIContainer.add(this.saturdayField);
-        this.saturdayFeedback = new TextFeedbackPanel("saturdayFeedback", this.saturdayField);
-        this.saturdayIContainer.add(this.saturdayFeedback);
-    }
-
-    protected void initFridayBlock() {
-        this.fridayBlock = new WebMarkupBlock("fridayBlock", Size.Twelve_12);
-        this.form.add(this.fridayBlock);
-        this.fridayIContainer = new WebMarkupContainer("fridayIContainer");
-        this.fridayBlock.add(this.fridayIContainer);
-        this.fridayField = new CheckBox("fridayField", new PropertyModel<>(this, "fridayValue"));
-        this.fridayField.setRequired(true);
-        this.fridayIContainer.add(this.fridayField);
-        this.fridayFeedback = new TextFeedbackPanel("fridayFeedback", this.fridayField);
-        this.fridayIContainer.add(this.fridayFeedback);
-    }
-
-    protected void initThursdayBlock() {
-        this.thursdayBlock = new WebMarkupBlock("thursdayBlock", Size.Twelve_12);
-        this.form.add(this.thursdayBlock);
-        this.thursdayIContainer = new WebMarkupContainer("thursdayIContainer");
-        this.thursdayBlock.add(this.thursdayIContainer);
-        this.thursdayField = new CheckBox("thursdayField", new PropertyModel<>(this, "thursdayValue"));
-        this.thursdayField.setRequired(true);
-        this.thursdayIContainer.add(this.thursdayField);
-        this.thursdayFeedback = new TextFeedbackPanel("thursdayFeedback", this.thursdayField);
-        this.thursdayIContainer.add(this.thursdayFeedback);
-    }
-
-    protected void initWednesdayBlock() {
-        this.wednesdayBlock = new WebMarkupBlock("wednesdayBlock", Size.Twelve_12);
-        this.form.add(this.wednesdayBlock);
-        this.wednesdayIContainer = new WebMarkupContainer("wednesdayIContainer");
-        this.wednesdayBlock.add(this.wednesdayIContainer);
-        this.wednesdayField = new CheckBox("wednesdayField", new PropertyModel<>(this, "wednesdayValue"));
-        this.wednesdayField.setRequired(true);
-        this.wednesdayIContainer.add(this.wednesdayField);
-        this.wednesdayFeedback = new TextFeedbackPanel("wednesdayFeedback", this.wednesdayField);
-        this.wednesdayIContainer.add(this.wednesdayFeedback);
-    }
-
-    protected void initTuesdayBlock() {
-        this.tuesdayBlock = new WebMarkupBlock("tuesdayBlock", Size.Twelve_12);
-        this.form.add(this.tuesdayBlock);
-        this.tuesdayIContainer = new WebMarkupContainer("tuesdayIContainer");
-        this.tuesdayBlock.add(this.tuesdayIContainer);
-        this.tuesdayField = new CheckBox("tuesdayField", new PropertyModel<>(this, "tuesdayValue"));
-        this.tuesdayField.setRequired(true);
-        this.tuesdayIContainer.add(this.tuesdayField);
-        this.tuesdayFeedback = new TextFeedbackPanel("tuesdayFeedback", this.tuesdayField);
-        this.tuesdayIContainer.add(this.tuesdayFeedback);
-    }
-
-    protected void initMondayBlock() {
-        this.mondayBlock = new WebMarkupBlock("mondayBlock", Size.Twelve_12);
-        this.form.add(this.mondayBlock);
-        this.mondayIContainer = new WebMarkupContainer("mondayIContainer");
-        this.mondayBlock.add(this.mondayIContainer);
+        this.mondayBlock = this.row1.newUIBlock("mondayBlock", Size.Twelve_12);
+        this.mondayIContainer = this.mondayBlock.newUIContainer("mondayIContainer");
         this.mondayField = new CheckBox("mondayField", new PropertyModel<>(this, "mondayValue"));
-        this.mondayField.setRequired(true);
         this.mondayIContainer.add(this.mondayField);
-        this.mondayFeedback = new TextFeedbackPanel("mondayFeedback", this.mondayField);
-        this.mondayIContainer.add(this.mondayFeedback);
+        this.mondayIContainer.newFeedback("mondayFeedback", this.mondayField);
+
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.tuesdayBlock = this.row2.newUIBlock("tuesdayBlock", Size.Twelve_12);
+        this.tuesdayIContainer = this.tuesdayBlock.newUIContainer("tuesdayIContainer");
+        this.tuesdayField = new CheckBox("tuesdayField", new PropertyModel<>(this, "tuesdayValue"));
+        this.tuesdayIContainer.add(this.tuesdayField);
+        this.tuesdayIContainer.newFeedback("tuesdayFeedback", this.tuesdayField);
+
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.wednesdayBlock = this.row3.newUIBlock("wednesdayBlock", Size.Twelve_12);
+        this.wednesdayIContainer = this.wednesdayBlock.newUIContainer("wednesdayIContainer");
+        this.wednesdayField = new CheckBox("wednesdayField", new PropertyModel<>(this, "wednesdayValue"));
+        this.wednesdayIContainer.add(this.wednesdayField);
+        this.wednesdayIContainer.newFeedback("wednesdayFeedback", this.wednesdayField);
+
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.thursdayBlock = this.row4.newUIBlock("thursdayBlock", Size.Twelve_12);
+        this.thursdayIContainer = this.thursdayBlock.newUIContainer("thursdayIContainer");
+        this.thursdayField = new CheckBox("thursdayField", new PropertyModel<>(this, "thursdayValue"));
+        this.thursdayIContainer.add(this.thursdayField);
+        this.thursdayIContainer.newFeedback("thursdayFeedback", this.thursdayField);
+
+        this.row5 = UIRow.newUIRow("row5", this.form);
+
+        this.fridayBlock = this.row5.newUIBlock("fridayBlock", Size.Twelve_12);
+        this.fridayIContainer = this.fridayBlock.newUIContainer("fridayIContainer");
+        this.fridayField = new CheckBox("fridayField", new PropertyModel<>(this, "fridayValue"));
+        this.fridayIContainer.add(this.fridayField);
+        this.fridayIContainer.newFeedback("fridayFeedback", this.fridayField);
+
+        this.row6 = UIRow.newUIRow("row6", this.form);
+
+        this.saturdayBlock = this.row6.newUIBlock("saturdayBlock", Size.Twelve_12);
+        this.saturdayIContainer = this.saturdayBlock.newUIContainer("saturdayIContainer");
+        this.saturdayField = new CheckBox("saturdayField", new PropertyModel<>(this, "saturdayValue"));
+        this.saturdayIContainer.add(this.saturdayField);
+        this.saturdayIContainer.newFeedback("saturdayFeedback", this.saturdayField);
+
+        this.row7 = UIRow.newUIRow("row7", this.form);
+
+        this.sundayBlock = this.row7.newUIBlock("sundayBlock", Size.Twelve_12);
+        this.sundayIContainer = this.sundayBlock.newUIContainer("sundayIContainer");
+        this.sundayField = new CheckBox("sundayField", new PropertyModel<>(this, "sundayValue"));
+        this.sundayIContainer.add(this.sundayField);
+        this.sundayIContainer.newFeedback("sundayFeedback", this.sundayField);
+
+        this.row8 = UIRow.newUIRow("row8", this.form);
+
+        this.repaymentOptionBlock = this.row8.newUIBlock("repaymentOptionBlock", Size.Twelve_12);
+        this.repaymentOptionIContainer = this.repaymentOptionBlock.newUIContainer("repaymentOptionIContainer");
+        this.repaymentOptionField = new Select2SingleChoice<>("repaymentOptionField", new PropertyModel<>(this, "repaymentOptionValue"), this.repaymentOptionProvider);
+        this.repaymentOptionIContainer.add(this.repaymentOptionField);
+        this.repaymentOptionIContainer.newFeedback("repaymentOptionFeedback", this.repaymentOptionField);
+
+        this.row9 = UIRow.newUIRow("row9", this.form);
+
+        this.repaymentExtendTermBlock = this.row9.newUIBlock("repaymentExtendTermBlock", Size.Twelve_12);
+        this.repaymentExtendTermIContainer = this.repaymentExtendTermBlock.newUIContainer("repaymentExtendTermIContainer");
+        this.repaymentExtendTermField = new CheckBox("repaymentExtendTermField", new PropertyModel<>(this, "repaymentExtendTermValue"));
+        this.repaymentExtendTermIContainer.add(this.repaymentExtendTermField);
+        this.repaymentExtendTermIContainer.newFeedback("repaymentExtendTermFeedback", this.repaymentExtendTermField);
+
     }
 
     @Override
     protected void configureMetaData() {
+        this.mondayField.setRequired(true);
+        this.tuesdayField.setRequired(true);
+        this.wednesdayField.setRequired(true);
+        this.thursdayField.setRequired(true);
+        this.fridayField.setRequired(true);
+        this.saturdayField.setRequired(true);
+        this.sundayField.setRequired(true);
+        this.repaymentOptionField.setRequired(true);
+        this.repaymentExtendTermField.setRequired(true);
     }
 
     @Override
@@ -291,6 +256,8 @@ public class WorkingDayPage extends Page {
         this.sundayValue = days.contains("SU");
         this.repaymentOptionValue = RepaymentOption.optionLiteral(String.valueOf(object.get(MWorkingDays.Field.REPAYMENT_RESCHEDULING_ENUM)));
         this.repaymentExtendTermValue = (Boolean) object.get(MWorkingDays.Field.EXTEND_TERM_DAILY_REPAYMENTS);
+
+        this.repaymentOptionProvider = new RepaymentOptionProvider();
     }
 
     protected void saveButtonSubmit(Button button) {

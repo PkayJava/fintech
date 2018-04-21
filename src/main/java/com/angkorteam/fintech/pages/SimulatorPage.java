@@ -18,9 +18,9 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.layout.Size;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -35,41 +35,43 @@ public class SimulatorPage extends Page {
     protected Form<Void> form;
     protected Button simulateButton;
 
-    protected WebMarkupBlock urlBlock;
-    protected WebMarkupContainer urlIContainer;
+    protected UIRow row1;
+
+    protected UIBlock urlBlock;
+    protected UIContainer urlIContainer;
     protected String urlValue;
     protected TextField<String> urlField;
-    protected TextFeedbackPanel urlFeedback;
 
-    protected WebMarkupBlock methodBlock;
-    protected WebMarkupContainer methodIContainer;
+    protected UIBlock methodBlock;
+    protected UIContainer methodIContainer;
     protected String methodValue;
     protected DropDownChoice<String> methodField;
-    protected TextFeedbackPanel methodFeedback;
 
-    protected WebMarkupBlock requestBlock;
-    protected WebMarkupContainer requestIContainer;
+    protected UIRow row2;
+
+    protected UIBlock requestBlock;
+    protected UIContainer requestIContainer;
     protected String requestValue;
     protected TextArea<String> requestField;
-    protected TextFeedbackPanel requestFeedback;
 
-    protected WebMarkupBlock statusCodeBlock;
-    protected WebMarkupContainer statusCodeIContainer;
+    protected UIRow row3;
+
+    protected UIBlock statusCodeBlock;
+    protected UIContainer statusCodeIContainer;
     protected String statusCodeValue;
     protected TextField<String> statusCodeField;
-    protected TextFeedbackPanel statusCodeFeedback;
 
-    protected WebMarkupBlock statusTextBlock;
-    protected WebMarkupContainer statusTextIContainer;
+    protected UIBlock statusTextBlock;
+    protected UIContainer statusTextIContainer;
     protected String statusTextValue;
     protected TextField<String> statusTextField;
-    protected TextFeedbackPanel statusTextFeedback;
 
-    protected WebMarkupBlock responseBlock;
-    protected WebMarkupContainer responseIContainer;
+    protected UIRow row4;
+
+    protected UIBlock responseBlock;
+    protected UIContainer responseIContainer;
     protected String responseValue;
     protected TextArea<String> responseField;
-    protected TextFeedbackPanel responseFeedback;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -88,8 +90,14 @@ public class SimulatorPage extends Page {
 
     @Override
     protected void configureMetaData() {
+        this.methodField.setLabel(Model.of("Method"));
+        this.urlField.setLabel(Model.of("URL"));
         this.urlField.setRequired(true);
         this.methodField.setRequired(true);
+        this.requestField.setLabel(Model.of("Request"));
+        this.statusCodeField.setLabel(Model.of("Status Code"));
+        this.statusTextField.setLabel(Model.of("Status Text"));
+        this.responseField.setLabel(Model.of("Response"));
     }
 
     @Override
@@ -101,65 +109,49 @@ public class SimulatorPage extends Page {
         this.simulateButton.setOnSubmit(this::simulateButtonSubmit);
         this.form.add(this.simulateButton);
 
-        this.methodBlock = new WebMarkupBlock("methodBlock", Size.Four_4);
-        this.form.add(this.methodBlock);
-        this.methodIContainer = new WebMarkupContainer("methodIContainer");
-        this.methodBlock.add(this.methodIContainer);
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.methodBlock = this.row1.newUIBlock("methodBlock", Size.Four_4);
+        this.methodIContainer = this.methodBlock.newUIContainer("methodIContainer");
         this.methodField = new DropDownChoice<>("methodField", new PropertyModel<>(this, "methodValue"), Arrays.asList("Get", "Post", "Delete", "Put"));
-        this.methodField.setLabel(Model.of("Method"));
         this.methodIContainer.add(this.methodField);
-        this.methodFeedback = new TextFeedbackPanel("methodFeedback", this.methodField);
-        this.methodIContainer.add(this.methodFeedback);
+        this.methodIContainer.newFeedback("methodFeedback", this.methodField);
 
-        this.urlBlock = new WebMarkupBlock("urlBlock", Size.Eight_8);
-        this.form.add(this.urlBlock);
-        this.urlIContainer = new WebMarkupContainer("urlIContainer");
-        this.urlBlock.add(this.urlIContainer);
+        this.urlBlock = this.row1.newUIBlock("urlBlock", Size.Eight_8);
+        this.urlIContainer = this.urlBlock.newUIContainer("urlIContainer");
         this.urlField = new TextField<>("urlField", new PropertyModel<>(this, "urlValue"));
-        this.urlField.setLabel(Model.of("URL"));
         this.urlIContainer.add(this.urlField);
-        this.urlFeedback = new TextFeedbackPanel("urlFeedback", this.urlField);
-        this.urlIContainer.add(this.urlFeedback);
+        this.urlIContainer.newFeedback("urlFeedback", this.urlField);
 
-        this.statusCodeBlock = new WebMarkupBlock("statusCodeBlock", Size.Six_6);
-        this.form.add(this.statusCodeBlock);
-        this.statusCodeIContainer = new WebMarkupContainer("statusCodeIContainer");
-        this.statusCodeBlock.add(this.statusCodeIContainer);
-        this.statusCodeField = new TextField<>("statusCodeField", new PropertyModel<>(this, "statusCodeValue"));
-        this.statusCodeField.setLabel(Model.of("Status Code"));
-        this.statusCodeIContainer.add(this.statusCodeField);
-        this.statusCodeFeedback = new TextFeedbackPanel("statusCodeFeedback", this.statusCodeField);
-        this.statusCodeIContainer.add(this.statusCodeFeedback);
+        this.row2 = UIRow.newUIRow("row2", this.form);
 
-        this.statusTextBlock = new WebMarkupBlock("statusTextBlock", Size.Six_6);
-        this.form.add(this.statusTextBlock);
-        this.statusTextIContainer = new WebMarkupContainer("statusTextIContainer");
-        this.statusTextBlock.add(this.statusTextIContainer);
-        this.statusTextField = new TextField<>("statusTextField", new PropertyModel<>(this, "statusTextValue"));
-        this.statusTextField.setLabel(Model.of("Status Text"));
-        this.statusTextIContainer.add(this.statusTextField);
-        this.statusTextFeedback = new TextFeedbackPanel("statusTextFeedback", this.statusTextField);
-        this.statusTextIContainer.add(this.statusTextFeedback);
-
-        this.requestBlock = new WebMarkupBlock("requestBlock", Size.Twelve_12);
-        this.form.add(this.requestBlock);
-        this.requestIContainer = new WebMarkupContainer("requestIContainer");
-        this.requestBlock.add(this.requestIContainer);
+        this.requestBlock = this.row2.newUIBlock("requestBlock", Size.Twelve_12);
+        this.requestIContainer = this.requestBlock.newUIContainer("requestIContainer");
         this.requestField = new TextArea<>("requestField", new PropertyModel<>(this, "requestValue"));
-        this.requestField.setLabel(Model.of("Request"));
         this.requestIContainer.add(this.requestField);
-        this.requestFeedback = new TextFeedbackPanel("requestFeedback", this.requestField);
-        this.requestIContainer.add(this.requestFeedback);
+        this.requestIContainer.newFeedback("requestFeedback", this.requestField);
 
-        this.responseBlock = new WebMarkupBlock("responseBlock", Size.Twelve_12);
-        this.form.add(this.responseBlock);
-        this.responseIContainer = new WebMarkupContainer("responseIContainer");
-        this.responseBlock.add(this.responseIContainer);
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.statusCodeBlock = this.row3.newUIBlock("statusCodeBlock", Size.Six_6);
+        this.statusCodeIContainer = this.statusCodeBlock.newUIContainer("statusCodeIContainer");
+        this.statusCodeField = new TextField<>("statusCodeField", new PropertyModel<>(this, "statusCodeValue"));
+        this.statusCodeIContainer.add(this.statusCodeField);
+        this.statusCodeIContainer.newFeedback("statusCodeFeedback", this.statusCodeField);
+
+        this.statusTextBlock = this.row3.newUIBlock("statusTextBlock", Size.Six_6);
+        this.statusTextIContainer = this.statusTextBlock.newUIContainer("statusTextIContainer");
+        this.statusTextField = new TextField<>("statusTextField", new PropertyModel<>(this, "statusTextValue"));
+        this.statusTextIContainer.add(this.statusTextField);
+        this.statusTextIContainer.newFeedback("statusTextFeedback", this.statusTextField);
+
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.responseBlock = this.row4.newUIBlock("responseBlock", Size.Twelve_12);
+        this.responseIContainer = this.responseBlock.newUIContainer("responseIContainer");
         this.responseField = new TextArea<>("responseField", new PropertyModel<>(this, "responseValue"));
-        this.responseField.setLabel(Model.of("Response"));
         this.responseIContainer.add(this.responseField);
-        this.responseFeedback = new TextFeedbackPanel("responseFeedback", this.responseField);
-        this.responseIContainer.add(this.responseFeedback);
+        this.responseIContainer.newFeedback("responseFeedback", this.responseField);
 
     }
 

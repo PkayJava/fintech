@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -16,9 +15,11 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.AccountHierarchyProvider;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.tree.NestedTree;
 import com.google.common.collect.Lists;
@@ -29,8 +30,10 @@ import com.google.common.collect.Lists;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class AccountHierarchyPage extends Page {
 
-    protected WebMarkupBlock dataBlock;
-    protected WebMarkupContainer dataIContainer;
+    protected UIRow row1;
+
+    protected UIBlock dataBlock;
+    protected UIContainer dataIContainer;
     protected NestedTree<Map<String, Object>> accountTree;
     protected AccountHierarchyProvider accountProvider;
 
@@ -63,16 +66,16 @@ public class AccountHierarchyPage extends Page {
 
     @Override
     protected void initData() {
+        this.accountProvider = new AccountHierarchyProvider();
     }
 
     @Override
     protected void initComponent() {
-        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
-        add(this.dataBlock);
-        this.dataIContainer = new WebMarkupContainer("dataIContainer");
-        this.dataBlock.add(this.dataIContainer);
+        this.row1 = UIRow.newUIRow("row1", this);
 
-        this.accountProvider = new AccountHierarchyProvider();
+        this.dataBlock = this.row1.newUIBlock("dataBlock", Size.Twelve_12);
+        this.dataIContainer = this.dataBlock.newUIContainer("dataIContainer");
+        this.dataBlock.add(this.dataIContainer);
         this.accountTree = new NestedTree<>("accountTree", this.accountProvider, this::accountCreateLabel, this::accountCreateLink);
         this.dataIContainer.add(this.accountTree);
 
