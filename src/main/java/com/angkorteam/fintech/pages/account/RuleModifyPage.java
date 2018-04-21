@@ -388,8 +388,11 @@ public class RuleModifyPage extends Page {
     }
 
     protected void saveButtonSubmit(Button button) {
+
+        JsonNode node = null;
+        node = AccountingRuleHelper.delete((Session) getSession(), String.valueOf(this.ruleId));
+
         AccountRuleBuilder builder = new AccountRuleBuilder();
-        builder.withId(this.ruleId);
         builder.withName(this.ruleNameValue);
         builder.withDescription(this.descriptionValue);
         if (this.officeValue != null) {
@@ -414,7 +417,7 @@ public class RuleModifyPage extends Page {
             builder.withAllowMultipleCreditEntries(this.multipleCreditValue == null ? false : this.multipleCreditValue);
         }
 
-        JsonNode node = AccountingRuleHelper.update((Session) getSession(), builder.build());
+        node = AccountingRuleHelper.create((Session) getSession(), builder.build());
 
         if (reportError(node)) {
             return;

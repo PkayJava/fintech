@@ -8,7 +8,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -24,11 +23,13 @@ import com.angkorteam.fintech.ddl.MOffice;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.AccountingRuleHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DefaultDataTable;
@@ -40,6 +41,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.ItemPanel;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.filter.TextFilterColumn;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -48,16 +50,19 @@ import io.github.openunirest.http.JsonNode;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class RuleBrowsePage extends Page {
 
-    public static String DEBIT = "1";
+    public static String DEBIT = "2";
 
-    public static String CREDIT = "2";
+    public static String CREDIT = "1";
 
-    protected WebMarkupBlock dataBlock;
-    protected WebMarkupContainer dataIContainer;
+    protected FilterForm<Map<String, String>> form;
+
+    protected UIRow row1;
+
+    protected UIBlock dataBlock;
+    protected UIContainer dataIContainer;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
-    protected FilterForm<Map<String, String>> dataFilterForm;
 
     protected BookmarkablePageLink<Void> createLink;
 
@@ -80,11 +85,46 @@ public class RuleBrowsePage extends Page {
 
     @Override
     protected void initData() {
+        this.dataProvider = new JdbcProvider(AccAccountingRule.NAME);
+        this.dataProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
+        this.dataProvider.applyJoin("acc_gl_account_debit", "LEFT JOIN " + AccGLAccount.NAME + " debit ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.DEBIT_ACCOUNT_ID + " = debit." + AccGLAccount.Field.ID);
+        this.dataProvider.applyJoin("acc_gl_account_credit", "LEFT JOIN " + AccGLAccount.NAME + " credit ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.CREDIT_ACCOUNT_ID + " = credit." + AccGLAccount.Field.ID);
+        this.dataProvider.applyJoin("acc_rule_debit", "LEFT JOIN " + AccRuleTags.NAME + " debit_tag ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID + " = debit_tag." + AccRuleTags.Field.ACC_RULE_ID + " and debit_tag." + AccRuleTags.Field.ACC_TYPE_ENUM + " = " + DEBIT);
+        this.dataProvider.applyJoin("acc_rule_credit", "LEFT JOIN " + AccRuleTags.NAME + " credit_tag ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID + " = credit_tag." + AccRuleTags.Field.ACC_RULE_ID + " and credit_tag." + AccRuleTags.Field.ACC_TYPE_ENUM + " = " + CREDIT);
+        this.dataProvider.applyJoin("m_code_value_debit", "LEFT JOIN " + MCodeValue.NAME + " debit_tag_code ON debit_tag." + AccRuleTags.Field.TAG_ID + " = debit_tag_code." + MCodeValue.Field.ID);
+        this.dataProvider.applyJoin("m_code_value_credit", "LEFT JOIN " + MCodeValue.NAME + " credit_tag_code ON credit_tag." + AccRuleTags.Field.TAG_ID + " = credit_tag_code." + MCodeValue.Field.ID);
+        this.dataProvider.setGroupBy(AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID);
+        this.dataProvider.boardField("max(" + AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID + ")", "id", Long.class);
+        this.dataProvider.boardField("max(" + AccAccountingRule.NAME + "." + AccAccountingRule.Field.NAME + ")", "rule_name", String.class);
+        this.dataProvider.boardField("max(" + MOffice.NAME + "." + MOffice.Field.NAME + ")", "office_name", String.class);
+        this.dataProvider.boardField("group_concat(debit_tag_code." + MCodeValue.Field.CODE_VALUE + " SEPARATOR ', ')", "debit_tags", String.class);
+        this.dataProvider.boardField("max(debit." + AccGLAccount.Field.NAME + ")", "debit_account", String.class);
+        this.dataProvider.boardField("group_concat(credit_tag_code." + MCodeValue.Field.CODE_VALUE + " SEPARATOR ', ')", "credit_tags", String.class);
+        this.dataProvider.boardField("max(credit." + AccGLAccount.Field.NAME + ")", "credit_account", String.class);
+        this.dataProvider.selectField("id", Long.class);
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "rule_name", "rule_name", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Office"), "office_name", "office_name", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Debit Tags"), "debit_tags", "debit_tags", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Debit Account"), "debit_account", "debit_account", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Credit Tags"), "credit_tags", "credit_tags", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Credit Account"), "credit_account", "credit_account", this::dataColumn));
+        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
     }
 
     @Override
     protected void initComponent() {
-        initDataTable();
+        this.form = new FilterForm<>("form", this.dataProvider);
+        add(this.form);
+
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.dataBlock = this.row1.newUIBlock("dataBlock", Size.Twelve_12);
+        this.dataIContainer = this.dataBlock.newUIContainer("dataIContainer");
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.form));
+        this.dataIContainer.add(this.dataTable);
 
         this.createLink = new BookmarkablePageLink<>("createLink", RuleCreatePage.class);
         add(this.createLink);
@@ -95,52 +135,13 @@ public class RuleBrowsePage extends Page {
     }
 
     protected void initDataTable() {
-        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
-        add(this.dataBlock);
-        this.dataIContainer = new WebMarkupContainer("dataIContainer");
-        this.dataBlock.add(this.dataIContainer);
-        this.dataProvider = new JdbcProvider(AccAccountingRule.NAME);
-        this.dataProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
-        this.dataProvider.applyJoin("acc_gl_account_debit", "LEFT JOIN " + AccGLAccount.NAME + " debit ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.DEBIT_ACCOUNT_ID + " = debit." + AccGLAccount.Field.ID);
-        this.dataProvider.applyJoin("acc_gl_account_credit", "LEFT JOIN " + AccGLAccount.NAME + " credit ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.CREDIT_ACCOUNT_ID + " = credit." + AccGLAccount.Field.ID);
-        this.dataProvider.applyJoin("acc_rule_debit", "LEFT JOIN " + AccRuleTags.NAME + " debit_tag ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID + " = debit_tag." + AccRuleTags.Field.ACC_RULE_ID + " and debit_tag." + AccRuleTags.Field.ACC_TYPE_ENUM + " = " + DEBIT);
-        this.dataProvider.applyJoin("acc_rule_credit", "LEFT JOIN " + AccRuleTags.NAME + " credit_tag ON " + AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID + " = credit_tag." + AccRuleTags.Field.ACC_RULE_ID + " and credit_tag." + AccRuleTags.Field.ACC_TYPE_ENUM + " = " + CREDIT);
-        this.dataProvider.applyJoin("m_code_value_debit", "LEFT JOIN " + MCodeValue.NAME + " debit_tag_code ON debit_tag." + AccRuleTags.Field.TAG_ID + " = debit_tag_code." + MCodeValue.Field.ID);
-        this.dataProvider.applyJoin("m_code_value_credit", "LEFT JOIN " + MCodeValue.NAME + " credit_tag_code ON credit_tag." + AccRuleTags.Field.TAG_ID + " = credit_tag_code." + MCodeValue.Field.ID);
-        this.dataProvider.setGroupBy(AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID);
 
-        this.dataProvider.boardField("max(" + AccAccountingRule.NAME + "." + AccAccountingRule.Field.ID + ")", "id", Long.class);
-        this.dataProvider.boardField("max(" + AccAccountingRule.NAME + "." + AccAccountingRule.Field.NAME + ")", "rule_name", String.class);
-        this.dataProvider.boardField("max(" + MOffice.NAME + "." + MOffice.Field.NAME + ")", "office_name", String.class);
-        this.dataProvider.boardField("group_concat(debit_tag_code." + MCodeValue.Field.CODE_VALUE + " SEPARATOR ', ')", "debit_tags", String.class);
-        this.dataProvider.boardField("max(debit." + AccGLAccount.Field.NAME + ")", "debit_account", String.class);
-        this.dataProvider.boardField("group_concat(credit_tag_code." + MCodeValue.Field.CODE_VALUE + " SEPARATOR ', ')", "credit_tags", String.class);
-        this.dataProvider.boardField("max(credit." + AccGLAccount.Field.NAME + ")", "credit_account", String.class);
-
-        this.dataProvider.selectField("id", Long.class);
-
-        this.dataColumn = Lists.newArrayList();
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "rule_name", "rule_name", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Office"), "office_name", "office_name", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Debit Tags"), "debit_tags", "debit_tags", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Debit Account"), "debit_account", "debit_account", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Credit Tags"), "credit_tags", "credit_tags", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Credit Amount"), "credit_account", "credit_account", this::dataColumn));
-        this.dataColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::dataAction, this::dataClick));
-
-        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
-        this.dataIContainer.add(this.dataFilterForm);
-
-        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
-        this.dataFilterForm.add(this.dataTable);
     }
 
     protected void dataClick(String column, Map<String, Object> model, AjaxRequestTarget target) {
         if ("delete".equals(column)) {
             Long value = (Long) model.get("id");
             JsonNode node = AccountingRuleHelper.delete((Session) getSession(), String.valueOf(value));
-
             reportError(node, target);
             target.add(this.dataTable);
         } else if ("post".equals(column)) {
