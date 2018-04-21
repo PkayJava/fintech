@@ -160,7 +160,7 @@ public class ClientChargeCreatePage extends Page {
         this.row1 = UIRow.newUIRow("row1", this.form);
 
         this.nameBlock = this.row1.newUIBlock("nameBlock", Size.Six_6);
-        this.nameBlock.newUIContainer("nameIContainer");
+        this.nameIContainer = this.nameBlock.newUIContainer("nameIContainer");
         this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
         this.nameIContainer.add(this.nameField);
         this.nameIContainer.newFeedback("nameFeedback", this.nameField);

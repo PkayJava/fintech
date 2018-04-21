@@ -301,6 +301,8 @@ public class LoanChargeCreatePage extends Page {
         this.taxGroupField = new Select2SingleChoice<>("taxGroupField", new PropertyModel<>(this, "taxGroupValue"), this.taxGroupProvider);
         this.taxGroupIContainer.add(this.taxGroupField);
         this.taxGroupIContainer.newFeedback("taxGroupFeedback", this.taxGroupField);
+
+        this.row10Block1 = this.row10.newUIBlock("row10Block1", Size.Six_6);
     }
 
     @Override
