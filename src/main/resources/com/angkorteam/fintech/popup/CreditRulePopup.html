@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
+	<wicket:panel>
+		<form role="form" wicket:id="form">
+
+			<div class="modal-content">
+				<div class="modal-body">
+					<div wicket:id="row1">
+						<div wicket:id="creditAccountNameBlock" class="form-group">
+							<wicket:container wicket:id="creditAccountNameIContainer">
+								<label wicket:for="creditAccountNameField">Account Name</label>
+								<select wicket:id="creditAccountNameField" class="form-control"></select>
+								<span wicket:id="creditAccountNameFeedback" class="help-block"></span>
+							</wicket:container>
+							<wicket:container wicket:id="creditAccountNameVContainer">
+								<label>Account Name</label>
+								<div wicket:id="creditAccountNameView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="creditAmountBlock" class="form-group">
+							<wicket:container wicket:id="creditAmountIContainer">
+								<label wicket:for="creditAmountField">Amount</label>
+								<input wicket:id="creditAmountField" type="text"
+									class="form-control" />
+								<span wicket:id="creditAmountFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button wicket:id="okayButton" type="submit" class="btn btn-info">Okay</button>
+				</div>
+			</div>
+
+		</form>
+	</wicket:panel>
+</body>
+</html>

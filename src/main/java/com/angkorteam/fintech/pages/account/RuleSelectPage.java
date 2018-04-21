@@ -3,7 +3,6 @@ package com.angkorteam.fintech.pages.account;
 import java.util.List;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -15,10 +14,11 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.ddl.AccAccountingRule;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -37,12 +37,15 @@ public class RuleSelectPage extends Page {
     protected Button nextButton;
     protected Form<Void> form;
 
-    protected WebMarkupBlock ruleBlock;
-    protected WebMarkupContainer ruleIContainer;
+    protected UIRow row1;
+
+    protected UIBlock ruleBlock;
+    protected UIContainer ruleIContainer;
     protected SingleChoiceProvider ruleProvider;
     protected Option ruleValue;
     protected Select2SingleChoice<Option> ruleField;
-    protected TextFeedbackPanel ruleFeedback;
+
+    protected UIBlock row1Block1;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -63,6 +66,7 @@ public class RuleSelectPage extends Page {
 
     @Override
     protected void initData() {
+        this.ruleProvider = new SingleChoiceProvider(AccAccountingRule.NAME, AccAccountingRule.Field.ID, AccAccountingRule.Field.NAME);
     }
 
     @Override
@@ -70,16 +74,15 @@ public class RuleSelectPage extends Page {
         this.form = new Form<>("form");
         add(this.form);
 
-        this.ruleBlock = new WebMarkupBlock("ruleBlock", Size.Twelve_12);
-        this.form.add(this.ruleBlock);
-        this.ruleIContainer = new WebMarkupContainer("ruleIContainer");
-        this.ruleBlock.add(this.ruleIContainer);
-        this.ruleProvider = new SingleChoiceProvider(AccAccountingRule.NAME, AccAccountingRule.Field.ID, AccAccountingRule.Field.NAME);
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.ruleBlock = this.row1.newUIBlock("ruleBlock", Size.Four_4);
+        this.ruleIContainer = this.ruleBlock.newUIContainer("ruleIContainer");
         this.ruleField = new Select2SingleChoice<>("ruleField", new PropertyModel<>(this, "ruleValue"), this.ruleProvider);
-        this.ruleField.setRequired(true);
         this.ruleIContainer.add(this.ruleField);
-        this.ruleFeedback = new TextFeedbackPanel("ruleFeedback", this.ruleField);
-        this.ruleIContainer.add(this.ruleFeedback);
+        this.ruleIContainer.newFeedback("ruleFeedback", this.ruleField);
+
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Eight_8);
 
         this.nextButton = new Button("nextButton");
         this.nextButton.setOnSubmit(this::nextButtonClick);
@@ -88,6 +91,7 @@ public class RuleSelectPage extends Page {
 
     @Override
     protected void configureMetaData() {
+        this.ruleField.setRequired(true);
     }
 
     protected void nextButtonClick(Button button) {
