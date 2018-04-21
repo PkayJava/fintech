@@ -28,7 +28,6 @@ import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.FinancialActivityProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -39,6 +38,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -61,6 +61,8 @@ public class FinancialActivityModifyPage extends Page {
     protected Option financialActivityValue;
     protected Select2SingleChoice<Option> financialActivityField;
 
+    protected UIBlock row1Block1;
+
     protected UIRow row2;
 
     protected UIBlock accountBlock;
@@ -68,6 +70,8 @@ public class FinancialActivityModifyPage extends Page {
     protected SingleChoiceProvider accountProvider;
     protected Option accountValue;
     protected Select2SingleChoice<Option> accountField;
+
+    protected UIBlock row2Block1;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -138,19 +142,23 @@ public class FinancialActivityModifyPage extends Page {
 
         this.row1 = UIRow.newUIRow("row1", this.form);
 
-        this.financialActivityBlock = this.row1.newUIBlock("financialActivityBlock", Size.Twelve_12);
+        this.financialActivityBlock = this.row1.newUIBlock("financialActivityBlock", Size.Four_4);
         this.financialActivityIContainer = this.financialActivityBlock.newUIContainer("financialActivityIContainer");
         this.financialActivityField = new Select2SingleChoice<>("financialActivityField", new PropertyModel<>(this, "financialActivityValue"), this.financialActivityProvider);
         this.financialActivityIContainer.add(this.financialActivityField);
         this.financialActivityIContainer.newFeedback("financialActivityFeedback", this.financialActivityField);
 
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Eight_8);
+
         this.row2 = UIRow.newUIRow("row2", this.form);
 
-        this.accountBlock = this.row2.newUIBlock("accountBlock", Size.Twelve_12);
+        this.accountBlock = this.row2.newUIBlock("accountBlock", Size.Four_4);
         this.accountIContainer = this.accountBlock.newUIContainer("accountIContainer");
         this.accountField = new Select2SingleChoice<>("accountField", new PropertyModel<>(this, "accountValue"), this.accountProvider);
         this.accountIContainer.add(this.accountField);
         this.accountIContainer.newFeedback("accountFeedback", this.accountField);
+
+        this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Eight_8);
     }
 
     @Override

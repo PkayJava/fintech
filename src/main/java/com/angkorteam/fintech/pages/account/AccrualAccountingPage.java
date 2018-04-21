@@ -44,6 +44,8 @@ public class AccrualAccountingPage extends Page {
     protected Date tillDateValue;
     protected DateTextField tillDateField;
 
+    protected UIBlock row1Block1;
+
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
         List<PageBreadcrumb> BREADCRUMB = Lists.newArrayList();
@@ -80,11 +82,13 @@ public class AccrualAccountingPage extends Page {
 
         this.row1 = UIRow.newUIRow("row1", this.form);
 
-        this.tillDateBlock = this.row1.newUIBlock("tillDateBlock", Size.Twelve_12);
+        this.tillDateBlock = this.row1.newUIBlock("tillDateBlock", Size.Four_4);
         this.tillDateIContainer = this.tillDateBlock.newUIContainer("tillDateIContainer");
         this.tillDateField = new DateTextField("tillDateField", new PropertyModel<>(this, "tillDateValue"));
         this.tillDateIContainer.add(this.tillDateField);
         this.tillDateIContainer.newFeedback("tillDateFeedback", this.tillDateField);
+
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Eight_8);
     }
 
     @Override

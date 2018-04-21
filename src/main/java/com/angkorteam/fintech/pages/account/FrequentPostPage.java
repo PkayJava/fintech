@@ -266,9 +266,6 @@ public class FrequentPostPage extends Page {
 
     @Override
     protected void configureMetaData() {
-        if (this.officeValue != null) {
-            this.officeProvider.applyWhere("id", MOffice.Field.ID + " = " + this.officeValue.getId());
-        }
         this.officeField.setRequired(true);
         this.currencyField.setRequired(true);
         this.referenceNumberField.setRequired(true);

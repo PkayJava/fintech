@@ -8,7 +8,6 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -24,14 +23,15 @@ import com.angkorteam.fintech.ddl.MOffice;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.JournalEntry;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.provider.ManualEntryProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
@@ -57,47 +57,47 @@ public class SearchJournalPage extends Page {
     protected Button searchButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock accountNameBlock;
-    protected WebMarkupContainer accountNameIContainer;
+    protected UIRow row1;
+
+    protected UIBlock accountNameBlock;
+    protected UIContainer accountNameIContainer;
     protected SingleChoiceProvider accountNameProvider;
     protected Option accountNameValue;
     protected Select2SingleChoice<Option> accountNameField;
-    protected TextFeedbackPanel accountNameFeedback;
 
-    protected WebMarkupBlock officeBlock;
-    protected WebMarkupContainer officeIContainer;
+    protected UIBlock officeBlock;
+    protected UIContainer officeIContainer;
     protected SingleChoiceProvider officeProvider;
     protected Option officeValue;
     protected Select2SingleChoice<Option> officeField;
-    protected TextFeedbackPanel officeFeedback;
 
-    protected WebMarkupBlock manualBlock;
-    protected WebMarkupContainer manualIContainer;
+    protected UIBlock manualBlock;
+    protected UIContainer manualIContainer;
     protected ManualEntryProvider manualProvider;
     protected Option manualValue;
     protected Select2SingleChoice<Option> manualField;
-    protected TextFeedbackPanel manualFeedback;
 
-    protected WebMarkupBlock fromDateBlock;
-    protected WebMarkupContainer fromDateIContainer;
+    protected UIRow row2;
+
+    protected UIBlock fromDateBlock;
+    protected UIContainer fromDateIContainer;
     protected Date fromDateValue;
     protected DateTextField fromDateField;
-    protected TextFeedbackPanel fromDateFeedback;
 
-    protected WebMarkupBlock toDateBlock;
-    protected WebMarkupContainer toDateIContainer;
+    protected UIBlock toDateBlock;
+    protected UIContainer toDateIContainer;
     protected Date toDateValue;
     protected DateTextField toDateField;
-    protected TextFeedbackPanel toDateFeedback;
 
-    protected WebMarkupBlock transactionNumberBlock;
-    protected WebMarkupContainer transactionNumberIContainer;
+    protected UIBlock transactionNumberBlock;
+    protected UIContainer transactionNumberIContainer;
     protected String transactionNumberValue;
     protected TextField<String> transactionNumberField;
-    protected TextFeedbackPanel transactionNumberFeedback;
 
-    protected WebMarkupBlock entryBlock;
-    protected WebMarkupContainer entryIContainer;
+    protected UIRow row3;
+
+    protected UIBlock entryBlock;
+    protected UIContainer entryIContainer;
     protected DataTable<Map<String, Object>, String> entryTable;
     protected JdbcProvider entryProvider;
     protected List<IColumn<Map<String, Object>, String>> entryColumn;
@@ -121,82 +121,14 @@ public class SearchJournalPage extends Page {
 
     @Override
     protected void initData() {
-    }
+        this.accountNameProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME, "CONCAT(" + AccGLAccount.Field.NAME + ",' [', " + AccGLAccount.Field.GL_CODE + ", ']')");
+        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
+        this.manualProvider = new ManualEntryProvider();
 
-    @Override
-    protected void initComponent() {
-        this.form = new Form<>("form");
-        add(this.form);
-
-        this.searchButton = new Button("searchButton");
-        this.searchButton.setOnSubmit(this::searchButtonSubmit);
-        this.form.add(this.searchButton);
-
-        this.closeLink = new BookmarkablePageLink<>("closeLink", AccountingPage.class);
-        this.form.add(this.closeLink);
-
-        initAccountNameBlock();
-
-        initOfficeBlock();
-
-        initManualBlock();
-
-        initFromDateBlock();
-
-        initToDateBlock();
-
-        initTransactionNumberBlock();
-
-        initEntryTable();
-    }
-
-    @Override
-    protected void configureMetaData() {
-    }
-
-    protected void initFromDateBlock() {
-        this.fromDateBlock = new WebMarkupBlock("fromDateBlock", Size.Four_4);
-        this.form.add(this.fromDateBlock);
-        this.fromDateIContainer = new WebMarkupContainer("fromDateIContainer");
-        this.fromDateBlock.add(this.fromDateIContainer);
-        this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this, "fromDateValue"));
-        this.fromDateIContainer.add(this.fromDateField);
-        this.fromDateFeedback = new TextFeedbackPanel("fromDateFeedback", this.fromDateField);
-        this.fromDateIContainer.add(this.fromDateFeedback);
-    }
-
-    protected void initToDateBlock() {
-        this.toDateBlock = new WebMarkupBlock("toDateBlock", Size.Four_4);
-        this.form.add(this.toDateBlock);
-        this.toDateIContainer = new WebMarkupContainer("toDateIContainer");
-        this.toDateBlock.add(this.toDateIContainer);
-        this.toDateField = new DateTextField("toDateField", new PropertyModel<>(this, "toDateValue"));
-        this.toDateIContainer.add(this.toDateField);
-        this.toDateFeedback = new TextFeedbackPanel("toDateFeedback", this.toDateField);
-        this.toDateIContainer.add(this.toDateFeedback);
-    }
-
-    protected void initTransactionNumberBlock() {
-        this.transactionNumberBlock = new WebMarkupBlock("transactionNumberBlock", Size.Four_4);
-        this.form.add(this.transactionNumberBlock);
-        this.transactionNumberIContainer = new WebMarkupContainer("transactionNumberIContainer");
-        this.transactionNumberBlock.add(this.transactionNumberIContainer);
-        this.transactionNumberField = new TextField<>("transactionNumberField", new PropertyModel<>(this, "transactionNumberValue"));
-        this.transactionNumberIContainer.add(this.transactionNumberField);
-        this.transactionNumberFeedback = new TextFeedbackPanel("transactionNumberFeedback", this.transactionNumberField);
-        this.transactionNumberIContainer.add(this.transactionNumberFeedback);
-    }
-
-    protected void initEntryTable() {
-        this.entryBlock = new WebMarkupBlock("entryBlock", Size.Twelve_12);
-        add(this.entryBlock);
-        this.entryIContainer = new WebMarkupContainer("entryIContainer");
-        this.entryBlock.add(this.entryIContainer);
         this.entryProvider = new JdbcProvider(AccGLJournalEntry.NAME);
         this.entryProvider.applyJoin("acc_gl_account", "LEFT JOIN " + AccGLAccount.NAME + " ON " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ACCOUNT_ID + " = " + AccGLAccount.NAME + "." + AccGLAccount.Field.ID);
         this.entryProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " ON " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
         this.entryProvider.applyJoin("m_appuser", "LEFT JOIN " + MAppUser.NAME + " ON " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.CREATED_BY_ID + " = " + MAppUser.NAME + "." + MAppUser.Field.ID);
-
         this.entryProvider.boardField(AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ID, "id", Long.class);
         this.entryProvider.boardField(AccGLAccount.NAME + "." + AccGLAccount.Field.NAME, "account_name", String.class);
         this.entryProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "office", String.class);
@@ -217,48 +149,74 @@ public class SearchJournalPage extends Page {
         this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Long, Model.of("Account"), "account_name", "account_name", this::entryColumn));
         this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Debit"), "debit_amount", "debit_amount", this::entryColumn));
         this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Credit"), "credit_amount", "credit_amount", this::entryColumn));
+    }
 
+    @Override
+    protected void initComponent() {
+        this.form = new Form<>("form");
+        add(this.form);
+
+        this.searchButton = new Button("searchButton");
+        this.searchButton.setOnSubmit(this::searchButtonSubmit);
+        this.form.add(this.searchButton);
+
+        this.closeLink = new BookmarkablePageLink<>("closeLink", AccountingPage.class);
+        this.form.add(this.closeLink);
+
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.accountNameBlock = this.row1.newUIBlock("accountNameBlock", Size.Four_4);
+        this.accountNameIContainer = this.accountNameBlock.newUIContainer("accountNameIContainer");
+        this.accountNameField = new Select2SingleChoice<>("accountNameField", new PropertyModel<>(this, "accountNameValue"), this.accountNameProvider);
+        this.accountNameIContainer.add(this.accountNameField);
+        this.accountNameIContainer.newFeedback("accountNameFeedback", this.accountNameField);
+
+        this.officeBlock = this.row1.newUIBlock("officeBlock", Size.Four_4);
+        this.officeIContainer = this.officeBlock.newUIContainer("officeIContainer");
+        this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
+        this.officeIContainer.add(this.officeField);
+        this.officeIContainer.newFeedback("officeFeedback", this.officeField);
+
+        this.manualBlock = this.row1.newUIBlock("manualBlock", Size.Four_4);
+        this.manualIContainer = this.manualBlock.newUIContainer("manualIContainer");
+        this.manualField = new Select2SingleChoice<>("manualField", new PropertyModel<>(this, "manualValue"), this.manualProvider);
+        this.manualIContainer.add(this.manualField);
+        this.manualIContainer.newFeedback("manualFeedback", this.manualField);
+
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.fromDateBlock = this.row2.newUIBlock("fromDateBlock", Size.Four_4);
+        this.fromDateIContainer = this.fromDateBlock.newUIContainer("fromDateIContainer");
+        this.fromDateField = new DateTextField("fromDateField", new PropertyModel<>(this, "fromDateValue"));
+        this.fromDateIContainer.add(this.fromDateField);
+        this.fromDateIContainer.newFeedback("fromDateFeedback", this.fromDateField);
+
+        this.toDateBlock = this.row2.newUIBlock("toDateBlock", Size.Four_4);
+        this.toDateIContainer = this.toDateBlock.newUIContainer("toDateIContainer");
+        this.toDateField = new DateTextField("toDateField", new PropertyModel<>(this, "toDateValue"));
+        this.toDateIContainer.add(this.toDateField);
+        this.toDateIContainer.newFeedback("toDateFeedback", this.toDateField);
+
+        this.transactionNumberBlock = this.row2.newUIBlock("transactionNumberBlock", Size.Four_4);
+        this.transactionNumberIContainer = this.transactionNumberBlock.newUIContainer("transactionNumberIContainer");
+        this.transactionNumberField = new TextField<>("transactionNumberField", new PropertyModel<>(this, "transactionNumberValue"));
+        this.transactionNumberIContainer.add(this.transactionNumberField);
+        this.transactionNumberIContainer.newFeedback("transactionNumberFeedback", this.transactionNumberField);
+
+        this.row3 = UIRow.newUIRow("row3", this);
+
+        this.entryBlock = this.row3.newUIBlock("entryBlock", Size.Twelve_12);
+        this.entryIContainer = this.entryBlock.newUIContainer("entryIContainer");
         this.entryTable = new DataTable<>("entryTable", this.entryColumn, this.entryProvider, 20);
         this.entryIContainer.add(this.entryTable);
         this.entryTable.addTopToolbar(new HeadersToolbar<>(this.entryTable, this.entryProvider));
         this.entryTable.addBottomToolbar(new NoRecordsToolbar(this.entryTable));
         this.entryTable.addBottomToolbar(new NavigationToolbar(this.entryTable));
+
     }
 
-    protected void initManualBlock() {
-        this.manualBlock = new WebMarkupBlock("manualBlock", Size.Four_4);
-        this.form.add(this.manualBlock);
-        this.manualIContainer = new WebMarkupContainer("manualIContainer");
-        this.manualBlock.add(this.manualIContainer);
-        this.manualProvider = new ManualEntryProvider();
-        this.manualField = new Select2SingleChoice<>("manualField", new PropertyModel<>(this, "manualValue"), this.manualProvider);
-        this.manualIContainer.add(this.manualField);
-        this.manualFeedback = new TextFeedbackPanel("manualFeedback", this.manualField);
-        this.manualIContainer.add(this.manualFeedback);
-    }
-
-    protected void initOfficeBlock() {
-        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Twelve_12);
-        this.form.add(this.officeBlock);
-        this.officeIContainer = new WebMarkupContainer("officeIContainer");
-        this.officeBlock.add(this.officeIContainer);
-        this.officeProvider = new SingleChoiceProvider(MOffice.NAME, MOffice.Field.ID, MOffice.Field.NAME);
-        this.officeField = new Select2SingleChoice<>("officeField", new PropertyModel<>(this, "officeValue"), this.officeProvider);
-        this.officeIContainer.add(this.officeField);
-        this.officeFeedback = new TextFeedbackPanel("officeFeedback", this.officeField);
-        this.officeIContainer.add(this.officeFeedback);
-    }
-
-    protected void initAccountNameBlock() {
-        this.accountNameBlock = new WebMarkupBlock("accountNameBlock", Size.Four_4);
-        this.form.add(this.accountNameBlock);
-        this.accountNameIContainer = new WebMarkupContainer("accountNameIContainer");
-        this.accountNameBlock.add(this.accountNameIContainer);
-        this.accountNameProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME, "concat(" + AccGLAccount.Field.NAME + ",' [', " + AccGLAccount.Field.GL_CODE + ", ']')");
-        this.accountNameField = new Select2SingleChoice<>("accountNameField", new PropertyModel<>(this, "accountNameValue"), this.accountNameProvider);
-        this.accountNameIContainer.add(this.accountNameField);
-        this.accountNameFeedback = new TextFeedbackPanel("accountNameFeedback", this.accountNameField);
-        this.accountNameIContainer.add(this.accountNameFeedback);
+    @Override
+    protected void configureMetaData() {
     }
 
     protected ItemPanel entryColumn(String column, IModel<String> display, Map<String, Object> model) {

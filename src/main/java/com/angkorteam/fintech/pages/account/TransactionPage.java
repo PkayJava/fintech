@@ -8,7 +8,6 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -21,12 +20,14 @@ import com.angkorteam.fintech.ddl.MAppUser;
 import com.angkorteam.fintech.ddl.MOffice;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.AccountingPage;
 import com.angkorteam.fintech.popup.ReversePopup;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.JoinType;
 import com.angkorteam.framework.jdbc.SelectQuery;
@@ -53,38 +54,39 @@ public class TransactionPage extends Page {
 
     protected AjaxLink<Void> reverseButton;
 
-    protected WebMarkupBlock officeBlock;
-    protected WebMarkupContainer officeVContainer;
+    protected UIRow row1;
+
+    protected UIBlock officeBlock;
+    protected UIContainer officeVContainer;
     protected String officeValue;
     protected ReadOnlyView officeView;
 
-    protected WebMarkupBlock transactionNumberBlock;
-    protected WebMarkupContainer transactionNumberVContainer;
-    protected String transactionNumberValue;
-    protected ReadOnlyView transactionNumberView;
-
-    protected WebMarkupBlock transactionDateBlock;
-    protected WebMarkupContainer transactionDateVContainer;
+    protected UIBlock transactionDateBlock;
+    protected UIContainer transactionDateVContainer;
     protected Date transactionDateValue;
     protected ReadOnlyView transactionDateView;
 
-    protected WebMarkupBlock createdOnBlock;
-    protected WebMarkupContainer createdOnVContainer;
+    protected UIRow row2;
+
+    protected UIBlock createdOnBlock;
+    protected UIContainer createdOnVContainer;
     protected Date createdOnValue;
     protected ReadOnlyView createdOnView;
 
-    protected WebMarkupBlock createdByBlock;
-    protected WebMarkupContainer createdByVContainer;
+    protected UIBlock createdByBlock;
+    protected UIContainer createdByVContainer;
     protected String createdByValue;
     protected ReadOnlyView createdByView;
 
-    protected WebMarkupBlock entryBlock;
-    protected WebMarkupContainer entryIContainer;
+    protected UIRow row3;
+
+    protected UIBlock entryBlock;
+    protected UIContainer entryIContainer;
     protected DataTable<Map<String, Object>, String> entryTable;
     protected JdbcProvider entryProvider;
     protected List<IColumn<Map<String, Object>, String>> entryColumn;
 
-    protected ModalWindow commentPopup;
+    protected ModalWindow modalWindow;
 
     protected Map<String, Object> popupModel;
 
@@ -137,49 +139,11 @@ public class TransactionPage extends Page {
         this.createdByValue = (String) entry.get("created_by");
         this.transactionDateValue = (Date) entry.get("transaction_date");
         this.createdOnValue = (Date) entry.get("created_date");
-        this.transactionNumberValue = (String) entry.get("transaction_id");
-    }
-
-    @Override
-    protected void initComponent() {
-        this.reverseButton = new AjaxLink<>("reverseButton");
-        this.reverseButton.setOnClick(this::reverseButtonClick);
-        this.add(this.reverseButton);
-
-        initOfficeBlock();
-
-        initCreatedByBlock();
-
-        initTransactionDateBlock();
-
-        initCreatedOnBlock();
-
-        initTransactionNumberBlock();
-
-        initEntryBlock();
-
-        this.commentPopup = new ModalWindow("commentPopup");
-        add(this.commentPopup);
-        this.commentPopup.setOnClose(this::commentPopupClose);
-    }
-
-    @Override
-    protected void configureMetaData() {
-
-    }
-
-    protected void initEntryBlock() {
-
-        this.entryBlock = new WebMarkupBlock("entryBlock", Size.Twelve_12);
-        add(this.entryBlock);
-        this.entryIContainer = new WebMarkupContainer("entryIContainer");
-        this.entryBlock.add(this.entryIContainer);
 
         this.entryProvider = new JdbcProvider(AccGLJournalEntry.NAME);
         this.entryProvider.applyJoin("acc_gl_account", "LEFT JOIN " + AccGLAccount.NAME + " ON " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ACCOUNT_ID + " = " + AccGLAccount.NAME + "." + AccGLAccount.Field.ID);
         this.entryProvider.applyJoin("m_office", "LEFT JOIN " + MOffice.NAME + " ON " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.OFFICE_ID + " = " + MOffice.NAME + "." + MOffice.Field.ID);
         this.entryProvider.applyJoin("m_appuser", "LEFT JOIN " + MAppUser.NAME + " ON " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.CREATED_BY_ID + " = " + MAppUser.NAME + "." + MAppUser.Field.ID);
-
         this.entryProvider.boardField(AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.ID, "id", Long.class);
         this.entryProvider.boardField(AccGLAccount.NAME + "." + AccGLAccount.Field.NAME, "account_name", String.class);
         this.entryProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "office", String.class);
@@ -189,7 +153,6 @@ public class TransactionPage extends Page {
         this.entryProvider.boardField(MAppUser.NAME + "." + MAppUser.Field.USERNAME, "created_by", String.class);
         this.entryProvider.boardField("if(" + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.TYPE_ENUM + " = 1, NULL, " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.AMOUNT + ")", "debit_amount", Double.class);
         this.entryProvider.boardField("if(" + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.TYPE_ENUM + " = 1, " + AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.AMOUNT + ", NULL)", "credit_amount", Double.class);
-
         this.entryProvider.applyWhere("transaction_id", AccGLJournalEntry.NAME + "." + AccGLJournalEntry.Field.TRANSACTION_ID + " = '" + this.transactionId + "'");
 
         this.entryColumn = Lists.newArrayList();
@@ -199,58 +162,58 @@ public class TransactionPage extends Page {
         this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Debit"), "debit_amount", "debit_amount", this::entryColumn));
         this.entryColumn.add(new TextColumn(this.entryProvider, ItemClass.Double, Model.of("Credit"), "credit_amount", "credit_amount", this::entryColumn));
 
+    }
+
+    @Override
+    protected void initComponent() {
+        this.reverseButton = new AjaxLink<>("reverseButton");
+        this.reverseButton.setOnClick(this::reverseButtonClick);
+        this.add(this.reverseButton);
+
+        this.row1 = UIRow.newUIRow("row1", this);
+
+        this.officeBlock = this.row1.newUIBlock("officeBlock", Size.Six_6);
+        this.officeVContainer = this.officeBlock.newUIContainer("officeVContainer");
+        this.officeView = new ReadOnlyView("officeView", new PropertyModel<>(this, "officeValue"));
+        this.officeVContainer.add(this.officeView);
+
+        this.transactionDateBlock = this.row1.newUIBlock("transactionDateBlock", Size.Six_6);
+        this.transactionDateVContainer = this.transactionDateBlock.newUIContainer("transactionDateVContainer");
+        this.transactionDateView = new ReadOnlyView("transactionDateView", new PropertyModel<>(this, "transactionDateValue"), "yyyy-MM-dd");
+        this.transactionDateVContainer.add(this.transactionDateView);
+
+        this.row2 = UIRow.newUIRow("row2", this);
+
+        this.createdByBlock = this.row2.newUIBlock("createdByBlock", Size.Six_6);
+        this.createdByVContainer = this.createdByBlock.newUIContainer("createdByVContainer");
+        this.createdByView = new ReadOnlyView("createdByView", new PropertyModel<>(this, "createdByValue"));
+        this.createdByVContainer.add(this.createdByView);
+
+        this.createdOnBlock = this.row2.newUIBlock("createdOnBlock", Size.Six_6);
+        this.createdOnVContainer = this.createdOnBlock.newUIContainer("createdOnVContainer");
+        this.createdOnView = new ReadOnlyView("createdOnView", new PropertyModel<>(this, "createdOnValue"), "yyyy-MM-dd");
+        this.createdOnVContainer.add(this.createdOnView);
+
+        this.row3 = UIRow.newUIRow("row3", this);
+
+        this.entryBlock = this.row3.newUIBlock("entryBlock", Size.Twelve_12);
+        this.entryIContainer = this.entryBlock.newUIContainer("entryIContainer");
         this.entryTable = new DataTable<>("entryTable", this.entryColumn, this.entryProvider, 20);
         this.entryIContainer.add(this.entryTable);
         this.entryTable.addTopToolbar(new HeadersToolbar<>(this.entryTable, this.entryProvider));
         this.entryTable.addBottomToolbar(new NoRecordsToolbar(this.entryTable));
+
+        this.modalWindow = new ModalWindow("modalWindow");
+        add(this.modalWindow);
+        this.modalWindow.setOnClose(this::modalWindowClose);
     }
 
-    protected void initTransactionNumberBlock() {
-        this.transactionNumberBlock = new WebMarkupBlock("transactionNumberBlock", Size.Six_6);
-        add(this.transactionNumberBlock);
-        this.transactionNumberVContainer = new WebMarkupContainer("transactionNumberVContainer");
-        this.transactionNumberBlock.add(this.transactionNumberVContainer);
-        this.transactionNumberView = new ReadOnlyView("transactionNumberView", new PropertyModel<>(this, "transactionNumberValue"));
-        this.transactionNumberVContainer.add(this.transactionNumberView);
+    @Override
+    protected void configureMetaData() {
+
     }
 
-    protected void initCreatedOnBlock() {
-        this.createdOnBlock = new WebMarkupBlock("createdOnBlock", Size.Six_6);
-        this.add(this.createdOnBlock);
-        this.createdOnVContainer = new WebMarkupContainer("createdOnVContainer");
-        this.createdOnBlock.add(this.createdOnVContainer);
-        this.createdOnView = new ReadOnlyView("createdOnView", new PropertyModel<>(this, "createdOnValue"), "yyyy-MM-dd");
-        this.createdOnVContainer.add(this.createdOnView);
-    }
-
-    protected void initTransactionDateBlock() {
-        this.transactionDateBlock = new WebMarkupBlock("transactionDateBlock", Size.Six_6);
-        add(this.transactionDateBlock);
-        this.transactionDateVContainer = new WebMarkupContainer("transactionDateVContainer");
-        this.transactionDateBlock.add(this.transactionDateVContainer);
-        this.transactionDateView = new ReadOnlyView("transactionDateView", new PropertyModel<>(this, "transactionDateValue"), "yyyy-MM-dd");
-        this.transactionDateVContainer.add(this.transactionDateView);
-    }
-
-    protected void initCreatedByBlock() {
-        this.createdByBlock = new WebMarkupBlock("createdByBlock", Size.Six_6);
-        add(this.createdByBlock);
-        this.createdByVContainer = new WebMarkupContainer("createdByVContainer");
-        this.createdByBlock.add(this.createdByVContainer);
-        this.createdByView = new ReadOnlyView("createdByView", new PropertyModel<>(this, "createdByValue"));
-        this.createdByVContainer.add(this.createdByView);
-    }
-
-    protected void initOfficeBlock() {
-        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Six_6);
-        add(this.officeBlock);
-        this.officeVContainer = new WebMarkupContainer("officeVContainer");
-        this.officeBlock.add(this.officeVContainer);
-        this.officeView = new ReadOnlyView("officeView", new PropertyModel<>(this, "officeValue"));
-        this.officeVContainer.add(this.officeView);
-    }
-
-    protected void commentPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
+    protected void modalWindowClose(String popupName, String signalId, AjaxRequestTarget target) {
         setResponsePage(SearchJournalPage.class);
     }
 
@@ -269,8 +232,8 @@ public class TransactionPage extends Page {
     }
 
     protected boolean reverseButtonClick(AjaxLink<Void> button, AjaxRequestTarget target) {
-        this.commentPopup.setContent(new ReversePopup("commentPopup", this.popupModel, this.transactionId));
-        this.commentPopup.show(target);
+        this.modalWindow.setContent(new ReversePopup("modalWindow", this.popupModel, this.transactionId));
+        this.modalWindow.show(target);
         return false;
     }
 }

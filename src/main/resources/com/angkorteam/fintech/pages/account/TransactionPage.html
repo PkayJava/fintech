@@ -10,49 +10,50 @@
 			</div>
 			<div class="box-body">
 
-				<!-- Row -->
-				<div wicket:id="officeBlock" class="form-group">
-					<wicket:container wicket:id="officeVContainer">
-						<label>Office</label>
-						<div wicket:id="officeView" class="form-control"></div>
-					</wicket:container>
+				<div wicket:id="row1">
+					<div wicket:id="officeBlock" class="form-group">
+						<wicket:container wicket:id="officeVContainer">
+							<label>Office</label>
+							<div wicket:id="officeView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="transactionDateBlock" class="form-group">
+						<wicket:container wicket:id="transactionDateVContainer">
+							<label>Transaction Date</label>
+							<div wicket:id="transactionDateView" class="form-control"></div>
+						</wicket:container>
+					</div>
 				</div>
-				<div wicket:id="transactionDateBlock" class="form-group">
-					<wicket:container wicket:id="transactionDateVContainer">
-						<label>Transaction Date</label>
-						<div wicket:id="transactionDateView" class="form-control"></div>
-					</wicket:container>
-				</div>
-				<div class="clearfix"></div>
 
-				<!-- Row -->
-				<div wicket:id="createdByBlock" class="form-group">
-					<wicket:container wicket:id="createdByVContainer">
-						<label>Created By</label>
-						<div wicket:id="createdByView" class="form-control"></div>
-					</wicket:container>
+				<div wicket:id="row2">
+					<div wicket:id="createdByBlock" class="form-group">
+						<wicket:container wicket:id="createdByVContainer">
+							<label>Created By</label>
+							<div wicket:id="createdByView" class="form-control"></div>
+						</wicket:container>
+					</div>
+					<div wicket:id="createdOnBlock" class="form-group">
+						<wicket:container wicket:id="createdOnVContainer">
+							<label>Created On</label>
+							<div wicket:id="createdOnView" class="form-control"></div>
+						</wicket:container>
+					</div>
 				</div>
-				<div wicket:id="createdOnBlock" class="form-group">
-					<wicket:container wicket:id="createdOnVContainer">
-						<label>Created On</label>
-						<div wicket:id="createdOnView" class="form-control"></div>
-					</wicket:container>
-				</div>
-				<div class="clearfix"></div>
 
-				<!-- Row -->
-				<div wicket:id="entryBlock" class="form-group">
-					<wicket:container wicket:id="entryIContainer">
-						<table wicket:id="entryTable"></table>
-					</wicket:container>
+				<div wicket:id="row3">
+					<div wicket:id="entryBlock" class="form-group">
+						<wicket:container wicket:id="entryIContainer">
+							<table wicket:id="entryTable"></table>
+						</wicket:container>
+					</div>
 				</div>
-				<div class="clearfix"></div>
+
 			</div>
 			<div class="box-footer">
 				<a wicket:id="reverseButton" class="btn btn-info">Reverse</a>
 			</div>
 		</div>
-		<div wicket:id="commentPopup"></div>
+		<div wicket:id="modalWindow"></div>
 	</wicket:extend>
 </body>
 </html>
