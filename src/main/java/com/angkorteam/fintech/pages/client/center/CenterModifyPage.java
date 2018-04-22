@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
@@ -19,9 +18,10 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.CenterBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.spring.JdbcNamed;
@@ -31,6 +31,7 @@ import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -43,30 +44,30 @@ public class CenterModifyPage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock nameBlock;
-    protected WebMarkupContainer nameIContainer;
+    protected UIRow row1;
+
+    protected UIBlock nameBlock;
+    protected UIContainer nameIContainer;
     protected String nameValue;
     protected TextField<String> nameField;
-    protected TextFeedbackPanel nameFeedback;
 
-    protected WebMarkupBlock staffBlock;
-    protected WebMarkupContainer staffIContainer;
+    protected UIBlock staffBlock;
+    protected UIContainer staffIContainer;
     protected SingleChoiceProvider staffProvider;
     protected Option staffValue;
     protected Select2SingleChoice<Option> staffField;
-    protected TextFeedbackPanel staffFeedback;
 
-    protected WebMarkupBlock externalIdBlock;
-    protected WebMarkupContainer externalIdIContainer;
+    protected UIRow row2;
+
+    protected UIBlock externalIdBlock;
+    protected UIContainer externalIdIContainer;
     protected String externalIdValue;
     protected TextField<String> externalIdField;
-    protected TextFeedbackPanel externalIdFeedback;
 
-    protected WebMarkupBlock activationDateBlock;
-    protected WebMarkupContainer activationDateIContainer;
+    protected UIBlock activationDateBlock;
+    protected UIContainer activationDateIContainer;
     protected Date activationDateValue;
     protected DateTextField activationDateField;
-    protected TextFeedbackPanel activationDateFeedback;
 
     @Override
     protected void initComponent() {
@@ -82,73 +83,49 @@ public class CenterModifyPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        initNameBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initStaffBlock();
+        this.nameBlock = this.row1.newUIBlock("nameBlock", Size.Six_6);
+        this.nameIContainer = this.nameBlock.newUIContainer("nameIContainer");
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameIContainer.add(this.nameField);
+        this.nameIContainer.newFeedback("nameFeedback", this.nameField);
 
-        initExternalIdBlock();
+        this.staffBlock = this.row1.newUIBlock("staffBlock", Size.Six_6);
+        this.staffIContainer = this.staffBlock.newUIContainer("staffIContainer");
+        this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
+        this.staffIContainer.add(this.staffField);
+        this.staffIContainer.newFeedback("staffFeedback", this.staffField);
 
-        initActivationDateBlock();
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.externalIdBlock = this.row2.newUIBlock("externalIdBlock", Size.Six_6);
+        this.externalIdIContainer = this.externalIdBlock.newUIContainer("externalIdIContainer");
+        this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
+        this.externalIdIContainer.add(this.externalIdField);
+        this.externalIdIContainer.newFeedback("externalIdFeedback", this.externalIdField);
+
+        this.activationDateBlock = this.row2.newUIBlock("activationDateBlock", Size.Six_6);
+        this.activationDateIContainer = this.activationDateBlock.newUIContainer("activationDateIContainer");
+        this.activationDateField = new DateTextField("activationDateField", new PropertyModel<>(this, "activationDateValue"));
+        this.activationDateIContainer.add(this.activationDateField);
+        this.activationDateIContainer.newFeedback("activationDateFeedback", this.activationDateField);
     }
 
     @Override
     protected void configureMetaData() {
-    }
-
-    protected void initActivationDateBlock() {
-        this.activationDateBlock = new WebMarkupBlock("activationDateBlock", Size.Six_6);
-        this.form.add(this.activationDateBlock);
-        this.activationDateIContainer = new WebMarkupContainer("activationDateIContainer");
-        this.activationDateBlock.add(this.activationDateIContainer);
-        this.activationDateField = new DateTextField("activationDateField", new PropertyModel<>(this, "activationDateValue"));
         this.activationDateField.setLabel(Model.of("Activation Date"));
         this.activationDateField.setRequired(true);
-        this.activationDateIContainer.add(this.activationDateField);
-        this.activationDateFeedback = new TextFeedbackPanel("activationDateFeedback", this.activationDateField);
-        this.activationDateIContainer.add(this.activationDateFeedback);
-    }
 
-    protected void initExternalIdBlock() {
-        this.externalIdBlock = new WebMarkupBlock("externalIdBlock", Size.Six_6);
-        this.form.add(this.externalIdBlock);
-        this.externalIdIContainer = new WebMarkupContainer("externalIdIContainer");
-        this.externalIdBlock.add(this.externalIdIContainer);
-        this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
         this.externalIdField.setLabel(Model.of("External ID"));
         this.externalIdField.setRequired(true);
-        this.externalIdIContainer.add(this.externalIdField);
-        this.externalIdFeedback = new TextFeedbackPanel("externalIdFeedback", this.externalIdField);
-        this.externalIdIContainer.add(this.externalIdFeedback);
-    }
 
-    protected void initStaffBlock() {
-        this.staffBlock = new WebMarkupBlock("staffBlock", Size.Six_6);
-        this.form.add(this.staffBlock);
-        this.staffIContainer = new WebMarkupContainer("staffIContainer");
-        this.staffBlock.add(this.staffIContainer);
-        this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.Field.ID, MStaff.Field.DISPLAY_NAME);
-        this.staffProvider.applyWhere("office_id", MStaff.Field.OFFICE_ID + " = " + this.officeId);
-        this.staffProvider.applyWhere("is_active", MStaff.Field.IS_ACTIVE + " = 1");
-        this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
         this.staffField.setRequired(true);
-        this.staffIContainer.add(this.staffField);
-        this.staffFeedback = new TextFeedbackPanel("staffFeedback", this.staffField);
-        this.staffIContainer.add(this.staffFeedback);
-    }
 
-    protected void initNameBlock() {
-        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
-        this.form.add(this.nameBlock);
-        this.nameIContainer = new WebMarkupContainer("nameIContainer");
-        this.nameBlock.add(this.nameIContainer);
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
         this.nameField.setLabel(Model.of("Name"));
         this.nameField.setRequired(true);
-        this.nameIContainer.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.nameIContainer.add(this.nameFeedback);
     }
 
     @Override
@@ -176,6 +153,10 @@ public class CenterModifyPage extends Page {
         this.staffValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), Option.MAPPER);
         this.externalIdValue = (String) centerObject.get("external_id");
         this.activationDateValue = (Date) centerObject.get("activation_date");
+
+        this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.Field.ID, MStaff.Field.DISPLAY_NAME);
+        this.staffProvider.applyWhere("office_id", MStaff.Field.OFFICE_ID + " = " + this.officeId);
+        this.staffProvider.applyWhere("is_active", MStaff.Field.IS_ACTIVE + " = 1");
     }
 
     protected void saveButtonSubmit(Button button) {

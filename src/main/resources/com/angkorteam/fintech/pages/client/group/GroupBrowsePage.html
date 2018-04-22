@@ -20,8 +20,14 @@
 				</div>
 			</div>
 			<div class="box-body">
-				<form wicket:id="dataFilterForm">
-					<table wicket:id="dataTable"></table>
+				<form wicket:id="form">
+					<div wicket:id="row1">
+						<div wicket:id="dataBlock" class="form-group">
+							<wicket:container wicket:id="dataIContainer">
+								<table wicket:id="dataTable"></table>
+							</wicket:container>
+						</div>
+					</div>
 				</form>
 			</div>
 		</div>

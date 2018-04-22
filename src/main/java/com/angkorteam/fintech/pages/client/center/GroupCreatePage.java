@@ -1,5 +1,6 @@
 package com.angkorteam.fintech.pages.client.center;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +9,6 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -29,14 +29,16 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.GroupBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
+import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
 import com.angkorteam.fintech.popup.ClientPopup;
 import com.angkorteam.fintech.popup.OfficePopup;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -60,6 +62,7 @@ import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -74,55 +77,57 @@ public class GroupCreatePage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock officeBlock;
-    protected WebMarkupContainer officeVContainer;
+    protected UIRow row1;
+
+    protected UIBlock externalIdBlock;
+    protected UIContainer externalIdIContainer;
+    protected String externalIdValue;
+    protected TextField<String> externalIdField;
+
+    protected UIBlock officeBlock;
+    protected UIContainer officeVContainer;
     protected String officeValue;
     protected ReadOnlyView officeView;
 
-    protected WebMarkupBlock staffBlock;
-    protected WebMarkupContainer staffIContainer;
+    protected UIBlock staffBlock;
+    protected UIContainer staffIContainer;
     protected SingleChoiceProvider staffProvider;
     protected Option staffValue;
     protected Select2SingleChoice<Option> staffField;
-    protected TextFeedbackPanel staffFeedback;
 
-    protected WebMarkupBlock nameBlock;
-    protected WebMarkupContainer nameIContainer;
+    protected UIRow row2;
+
+    protected UIBlock nameBlock;
+    protected UIContainer nameIContainer;
     protected String nameValue;
     protected TextField<String> nameField;
-    protected TextFeedbackPanel nameFeedback;
 
-    protected WebMarkupBlock externalIdBlock;
-    protected WebMarkupContainer externalIdIContainer;
-    protected String externalIdValue;
-    protected TextField<String> externalIdField;
-    protected TextFeedbackPanel externalIdFeedback;
-
-    protected WebMarkupBlock activeBlock;
-    protected WebMarkupContainer activeIContainer;
+    protected UIBlock activeBlock;
+    protected UIContainer activeIContainer;
     protected Boolean activeValue;
     protected CheckBox activeField;
-    protected TextFeedbackPanel activeFeedback;
 
-    protected WebMarkupBlock activationDateBlock;
-    protected WebMarkupContainer activationDateIContainer;
-    protected Date activationDateValue = new Date();
+    protected UIBlock activationDateBlock;
+    protected UIContainer activationDateIContainer;
+    protected Date activationDateValue;
     protected DateTextField activationDateField;
-    protected TextFeedbackPanel activationDateFeedback;
 
-    protected WebMarkupBlock submittedOnBlock;
-    protected WebMarkupContainer submittedOnIContainer;
-    protected Date submittedOnValue = new Date();
+    protected UIBlock submittedOnBlock;
+    protected UIContainer submittedOnIContainer;
+    protected Date submittedOnValue;
     protected DateTextField submittedOnField;
-    protected TextFeedbackPanel submittedOnFeedback;
 
+    protected UIRow row3;
+
+    protected UIBlock clientBlock;
+    protected UIContainer clientIContainer;
     protected List<IColumn<Map<String, Object>, String>> clientColumn;
-    protected List<Map<String, Object>> clientValue = Lists.newLinkedList();
+    protected List<Map<String, Object>> clientValue;
     protected DataTable<Map<String, Object>, String> clientTable;
     protected ListDataProvider clientProvider;
-    protected ModalWindow clientPopup;
     protected AjaxLink<Void> clientAddLink;
 
+    protected ModalWindow modalWindow;
     protected Map<String, Object> popupModel;
 
     @Override
@@ -169,138 +174,91 @@ public class GroupCreatePage extends Page {
         this.saveButton.setOnSubmit(this::saveButtonSubmit);
         this.form.add(this.saveButton);
 
-        this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
+        this.closeLink = new BookmarkablePageLink<>("closeLink", GroupBrowsePage.class, parameters);
         this.form.add(this.closeLink);
 
-        initOfficeBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initStaffBlock();
+        this.externalIdBlock = this.row1.newUIBlock("externalIdBlock", Size.Six_6);
+        this.externalIdIContainer = this.externalIdBlock.newUIContainer("externalIdIContainer");
+        this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
+        this.externalIdIContainer.add(this.externalIdField);
+        this.externalIdIContainer.newFeedback("externalIdFeedback", this.externalIdField);
 
-        initNameBlock();
+        this.officeBlock = this.row1.newUIBlock("officeBlock", Size.Three_3);
+        this.officeVContainer = this.officeBlock.newUIContainer("officeVContainer");
+        this.officeView = new ReadOnlyView("officeView", new PropertyModel<>(this, "officeValue"));
+        this.officeVContainer.add(this.officeView);
 
-        initExternalIdBlock();
+        this.staffBlock = this.row1.newUIBlock("staffBlock", Size.Three_3);
+        this.staffIContainer = this.staffBlock.newUIContainer("staffIContainer");
+        this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
+        this.staffIContainer.add(this.staffField);
+        this.staffIContainer.newFeedback("staffFeedback", this.staffField);
 
-        initActiveBlock();
+        this.row2 = UIRow.newUIRow("row2", this.form);
 
-        initActivationDateBlock();
+        this.nameBlock = this.row2.newUIBlock("nameBlock", Size.Three_3);
+        this.nameIContainer = this.nameBlock.newUIContainer("nameIContainer");
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameIContainer.add(this.nameField);
+        this.nameIContainer.newFeedback("nameFeedback", this.nameField);
 
-        initSubmittedOnBlock();
+        this.activeBlock = this.row2.newUIBlock("activeBlock", Size.Three_3);
+        this.activeIContainer = this.activeBlock.newUIContainer("activeIContainer");
+        this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
+        this.activeIContainer.add(this.activeField);
+        this.activeIContainer.newFeedback("activeFeedback", this.activeField);
 
-        {
-            this.clientPopup = new ModalWindow("clientPopup");
-            add(this.clientPopup);
-            this.clientPopup.setOnClose(this::clientPopupClose);
+        this.activationDateBlock = this.row2.newUIBlock("activationDateBlock", Size.Three_3);
+        this.activationDateIContainer = this.activationDateBlock.newUIContainer("activationDateIContainer");
+        this.activationDateField = new DateTextField("activationDateField", new PropertyModel<>(this, "activationDateValue"));
+        this.activationDateIContainer.add(this.activationDateField);
+        this.activationDateIContainer.newFeedback("activationDateFeedback", this.activationDateField);
 
-            this.clientColumn = Lists.newLinkedList();
-            this.clientColumn.add(new TextColumn(Model.of("Display Name"), "displayName", "displayName", this::clientColumn));
-            this.clientColumn.add(new TextColumn(Model.of("Mobile Number"), "mobileNumber", "mobileNumber", this::clientColumn));
-            this.clientColumn.add(new TextColumn(Model.of("Gender"), "gender", "gender", this::clientColumn));
-            this.clientColumn.add(new TextColumn(Model.of("Account#"), "account", "account", this::clientColumn));
-            this.clientColumn.add(new TextColumn(Model.of("Status"), "status", "status", this::clientColumn));
-            this.clientColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::clientAction, this::clientClick));
-            this.clientProvider = new ListDataProvider(this.clientValue);
-            this.clientTable = new DataTable<>("clientTable", this.clientColumn, this.clientProvider, 20);
-            this.form.add(this.clientTable);
-            this.clientTable.addTopToolbar(new HeadersToolbar<>(this.clientTable, this.clientProvider));
-            this.clientTable.addBottomToolbar(new NoRecordsToolbar(this.clientTable));
+        this.submittedOnBlock = this.row2.newUIBlock("submittedOnBlock", Size.Three_3);
+        this.submittedOnIContainer = this.submittedOnBlock.newUIContainer("submittedOnIContainer");
+        this.submittedOnField = new DateTextField("submittedOnField", new PropertyModel<>(this, "submittedOnValue"));
+        this.submittedOnIContainer.add(this.submittedOnField);
+        this.submittedOnIContainer.newFeedback("submittedOnFeedback", this.submittedOnField);
 
-            this.clientAddLink = new AjaxLink<>("clientAddLink");
-            this.clientAddLink.setOnClick(this::clientAddLinkClick);
-            this.form.add(this.clientAddLink);
-        }
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.clientBlock = this.row3.newUIBlock("clientBlock", Size.Twelve_12);
+        this.clientIContainer = this.clientBlock.newUIContainer("clientIContainer");
+        this.clientTable = new DataTable<>("clientTable", this.clientColumn, this.clientProvider, 20);
+        this.clientIContainer.add(this.clientTable);
+        this.clientTable.addTopToolbar(new HeadersToolbar<>(this.clientTable, this.clientProvider));
+        this.clientTable.addBottomToolbar(new NoRecordsToolbar(this.clientTable));
+        this.clientAddLink = new AjaxLink<>("clientAddLink");
+        this.clientAddLink.setOnClick(this::clientAddLinkClick);
+        this.clientIContainer.add(this.clientAddLink);
+
+        this.modalWindow = new ModalWindow("modalWindow");
+        add(this.modalWindow);
+        this.modalWindow.setOnClose(this::modalWindowClose);
     }
 
     @Override
     protected void configureMetaData() {
-        activeFieldUpdate(null);
-    }
-
-    protected void initSubmittedOnBlock() {
-        this.submittedOnBlock = new WebMarkupBlock("submittedOnBlock", Size.Six_6);
-        this.form.add(this.submittedOnBlock);
-        this.submittedOnIContainer = new WebMarkupContainer("submittedOnIContainer");
-        this.submittedOnBlock.add(this.submittedOnIContainer);
-        this.submittedOnField = new DateTextField("submittedOnField", new PropertyModel<>(this, "submittedOnValue"));
         this.submittedOnField.setLabel(Model.of("Submitted On"));
         this.submittedOnField.add(new OnChangeAjaxBehavior());
-        this.submittedOnIContainer.add(this.submittedOnField);
-        this.submittedOnFeedback = new TextFeedbackPanel("submittedOnFeedback", this.submittedOnField);
-        this.submittedOnIContainer.add(this.submittedOnFeedback);
-    }
 
-    protected void initActivationDateBlock() {
-        this.activationDateBlock = new WebMarkupBlock("activationDateBlock", Size.Six_6);
-        this.form.add(this.activationDateBlock);
-        this.activationDateIContainer = new WebMarkupContainer("activationDateIContainer");
-        this.activationDateBlock.add(this.activationDateIContainer);
-        this.activationDateField = new DateTextField("activationDateField", new PropertyModel<>(this, "activationDateValue"));
         this.activationDateField.setLabel(Model.of("Activation Date"));
         this.activationDateField.add(new OnChangeAjaxBehavior());
-        this.activationDateIContainer.add(this.activationDateField);
-        this.activationDateFeedback = new TextFeedbackPanel("activationDateFeedback", this.activationDateField);
-        this.activationDateIContainer.add(this.activationDateFeedback);
-    }
 
-    protected void initActiveBlock() {
-        this.activeBlock = new WebMarkupBlock("activeBlock", Size.Six_6);
-        this.form.add(this.activeBlock);
-        this.activeIContainer = new WebMarkupContainer("activeIContainer");
-        this.activeBlock.add(this.activeIContainer);
-        this.activeField = new CheckBox("activeField", new PropertyModel<>(this, "activeValue"));
         this.activeField.add(new OnChangeAjaxBehavior(this::activeFieldUpdate));
-        this.activeIContainer.add(this.activeField);
-        this.activeFeedback = new TextFeedbackPanel("activeFeedback", this.activeField);
-        this.activeIContainer.add(this.activeFeedback);
-    }
 
-    protected void initExternalIdBlock() {
-        this.externalIdBlock = new WebMarkupBlock("externalIdBlock", Size.Six_6);
-        this.form.add(this.externalIdBlock);
-        this.externalIdIContainer = new WebMarkupContainer("externalIdIContainer");
-        this.externalIdBlock.add(this.externalIdIContainer);
-        this.externalIdField = new TextField<>("externalIdField", new PropertyModel<>(this, "externalIdValue"));
-        this.externalIdField.setLabel(Model.of("External ID"));
-        this.externalIdField.add(new OnChangeAjaxBehavior());
-        this.externalIdIContainer.add(this.externalIdField);
-        this.externalIdFeedback = new TextFeedbackPanel("externalIdFeedback", this.externalIdField);
-        this.externalIdIContainer.add(this.externalIdFeedback);
-    }
-
-    protected void initNameBlock() {
-        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
-        this.form.add(this.nameBlock);
-        this.nameIContainer = new WebMarkupContainer("nameIContainer");
-        this.nameBlock.add(this.nameIContainer);
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
         this.nameField.setLabel(Model.of("Name"));
         this.nameField.add(new OnChangeAjaxBehavior());
-        this.nameIContainer.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.nameIContainer.add(this.nameFeedback);
-    }
 
-    protected void initStaffBlock() {
-        this.staffBlock = new WebMarkupBlock("staffBlock", Size.Six_6);
-        this.form.add(this.staffBlock);
-        this.staffIContainer = new WebMarkupContainer("staffIContainer");
-        this.staffBlock.add(this.staffIContainer);
-        this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.NAME + "." + MStaff.Field.ID, MStaff.NAME + "." + MStaff.Field.DISPLAY_NAME);
-        this.staffProvider.applyWhere("office_id", MStaff.NAME + "." + MStaff.Field.OFFICE_ID + " = " + this.officeId);
-        this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
-        this.staffIContainer.add(this.staffField);
-        this.staffFeedback = new TextFeedbackPanel("staffFeedback", this.staffField);
-        this.staffIContainer.add(this.staffFeedback);
-    }
 
-    protected void initOfficeBlock() {
-        this.officeBlock = new WebMarkupBlock("officeBlock", Size.Six_6);
-        this.form.add(this.officeBlock);
-        this.officeVContainer = new WebMarkupContainer("officeVContainer");
-        this.officeBlock.add(this.officeVContainer);
-        this.officeView = new ReadOnlyView("officeView", new PropertyModel<>(this, "officeValue"));
-        this.officeVContainer.add(this.officeView);
+        this.externalIdField.setLabel(Model.of("External ID"));
+        this.externalIdField.add(new OnChangeAjaxBehavior());
+
+        activeFieldUpdate(null);
     }
 
     @Override
@@ -325,16 +283,35 @@ public class GroupCreatePage extends Page {
         selectQuery.addWhere(MOffice.Field.ID + " = :" + MOffice.Field.ID, this.officeId);
         selectQuery.addField(MOffice.Field.NAME);
         this.officeValue = named.queryForObject(selectQuery.toSQL(), selectQuery.getParam(), String.class);
+
+        this.activationDateValue = new Date();
+        this.submittedOnValue = new Date();
+
+        this.clientValue = Lists.newLinkedList();
+
+        this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.NAME + "." + MStaff.Field.ID, MStaff.NAME + "." + MStaff.Field.DISPLAY_NAME);
+        this.staffProvider.applyWhere("office_id", MStaff.NAME + "." + MStaff.Field.OFFICE_ID + " = " + this.officeId);
+
+        this.clientColumn = Lists.newLinkedList();
+        this.clientColumn.add(new TextColumn(Model.of("Display Name"), "displayName", "displayName", this::clientColumn));
+        this.clientColumn.add(new TextColumn(Model.of("Mobile Number"), "mobileNumber", "mobileNumber", this::clientColumn));
+        this.clientColumn.add(new TextColumn(Model.of("Gender"), "gender", "gender", this::clientColumn));
+        this.clientColumn.add(new TextColumn(Model.of("Account#"), "account", "account", this::clientColumn));
+        this.clientColumn.add(new TextColumn(Model.of("Status"), "status", "status", this::clientColumn));
+        this.clientColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::clientAction, this::clientClick));
+
+        this.clientValue = new ArrayList<>();
+        this.clientProvider = new ListDataProvider(this.clientValue);
     }
 
     protected boolean clientAddLinkClick(AjaxLink<Void> link, AjaxRequestTarget target) {
         this.popupModel.clear();
         if (this.officeValue == null) {
-            this.clientPopup.setContent(new OfficePopup("office"));
-            this.clientPopup.show(target);
+            this.modalWindow.setContent(new OfficePopup("office"));
+            this.modalWindow.show(target);
         } else {
-            this.clientPopup.setContent(new ClientPopup("client", this.popupModel, this.officeId));
-            this.clientPopup.show(target);
+            this.modalWindow.setContent(new ClientPopup("client", this.popupModel, this.officeId));
+            this.modalWindow.show(target);
         }
         return false;
     }
@@ -366,7 +343,7 @@ public class GroupCreatePage extends Page {
         return Lists.newArrayList(new ActionItem("delete", Model.of("Delete"), ItemCss.DANGER));
     }
 
-    protected void clientPopupClose(String popupName, String signalId, AjaxRequestTarget target) {
+    protected void modalWindowClose(String popupName, String signalId, AjaxRequestTarget target) {
         if (this.popupModel.get("clientValue") != null) {
             JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
             SelectQuery selectQuery = null;
