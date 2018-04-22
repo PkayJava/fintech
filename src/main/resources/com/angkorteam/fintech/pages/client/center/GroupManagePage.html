@@ -17,21 +17,21 @@
 				</div>
 				<div class="box-body">
 
-					<!-- Row -->
-					<div wicket:id="officeBlock" class="form-group">
-						<wicket:container wicket:id="officeVContainer">
-							<label>Office</label>
-							<div wicket:id="officeView" class="form-control"></div>
-						</wicket:container>
+					<div wicket:id="row1">
+						<div wicket:id="officeBlock" class="form-group">
+							<wicket:container wicket:id="officeVContainer">
+								<label>Office</label>
+								<div wicket:id="officeView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="groupBlock" class="form-group">
+							<wicket:container wicket:id="groupIContainer">
+								<label wicket:for="groupField">Group</label>
+								<select wicket:id="groupField" class="form-control"></select>
+								<span wicket:id="groupFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="groupBlock" class="form-group">
-						<wicket:container wicket:id="groupIContainer">
-							<label wicket:for="groupField">Group</label>
-							<select wicket:id="groupField" class="form-control"></select>
-							<span wicket:id="groupFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 				</div>
 				<div class="box-footer">
 					<button wicket:id="addButton" type="submit" class="btn btn-info">Add</button>
@@ -43,7 +43,13 @@
 				<h3 class="box-title">Associated Group</h3>
 			</div>
 			<div class="box-body">
-				<table wicket:id="associatedGroupTable" />
+				<div wicket:id="row2">
+					<div wicket:id="associatedGroupBlock" class="form-group">
+						<wicket:container wicket:id="associatedGroupIContainer">
+							<table wicket:id="associatedGroupTable"></table>
+						</wicket:container>
+					</div>
+				</div>
 			</div>
 		</div>
 	</wicket:extend>
