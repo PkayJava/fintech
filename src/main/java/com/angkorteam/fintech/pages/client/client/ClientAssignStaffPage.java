@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -19,9 +18,10 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.client.client.ClientAssignStaffBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -32,6 +32,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -47,12 +48,15 @@ public class ClientAssignStaffPage extends Page {
 
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock staffBlock;
-    protected WebMarkupContainer staffIContainer;
+    protected UIRow row1;
+
+    protected UIBlock staffBlock;
+    protected UIContainer staffIContainer;
     protected SingleChoiceProvider staffProvider;
     protected Option staffValue;
     protected Select2SingleChoice<Option> staffField;
-    protected TextFeedbackPanel staffFeedback;
+
+    protected UIBlock row1Block1;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -100,29 +104,22 @@ public class ClientAssignStaffPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        initStaffBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.staffBlock = this.row1.newUIBlock("staffBlock", Size.Six_6);
+        this.staffIContainer = this.staffBlock.newUIContainer("staffIContainer");
+        this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
+        this.staffIContainer.add(this.staffField);
+        this.staffIContainer.newFeedback("staffFeedback", this.staffField);
+
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
     }
 
     @Override
     protected void configureMetaData() {
-
-    }
-
-    protected void initStaffBlock() {
-        this.staffBlock = new WebMarkupBlock("staffBlock", Size.Six_6);
-        this.form.add(this.staffBlock);
-        this.staffIContainer = new WebMarkupContainer("staffIContainer");
-        this.staffBlock.add(this.staffIContainer);
-        this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.Field.ID, MStaff.Field.DISPLAY_NAME);
-        this.staffProvider.applyWhere("is_active", MStaff.Field.IS_ACTIVE + " = 1");
-        this.staffProvider.applyWhere("office_id", MStaff.Field.OFFICE_ID + " = " + this.officeId);
-        this.staffField = new Select2SingleChoice<>("staffField", new PropertyModel<>(this, "staffValue"), this.staffProvider);
         this.staffField.setLabel(Model.of("Staff"));
         this.staffField.add(new OnChangeAjaxBehavior());
         this.staffField.setRequired(true);
-        this.staffIContainer.add(this.staffField);
-        this.staffFeedback = new TextFeedbackPanel("staffFeedback", this.staffField);
-        this.staffIContainer.add(this.staffFeedback);
     }
 
     @Override
@@ -140,6 +137,10 @@ public class ClientAssignStaffPage extends Page {
         Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.officeId = String.valueOf(clientObject.get("office_id"));
         this.clientDisplayName = (String) clientObject.get("display_name");
+
+        this.staffProvider = new SingleChoiceProvider(MStaff.NAME, MStaff.Field.ID, MStaff.Field.DISPLAY_NAME);
+        this.staffProvider.applyWhere("is_active", MStaff.Field.IS_ACTIVE + " = 1");
+        this.staffProvider.applyWhere("office_id", MStaff.Field.OFFICE_ID + " = " + this.officeId);
     }
 
     protected void okayButtonSubmit(Button button) {

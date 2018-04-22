@@ -90,7 +90,7 @@ public class ClientBrowsePage extends Page {
         this.dataProvider.boardField(MClient.NAME + "." + MClient.Field.EXTERNAL_ID, "externalId", String.class);
         this.dataProvider.boardField(MStaff.NAME + "." + MStaff.Field.DISPLAY_NAME, "staff", String.class);
         this.dataProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "office", String.class);
-        this.dataProvider.boardField("case " + MClient.NAME + "." + MClient.Field.STATUS_ENUM + " " + StringUtils.join(status, " ") + " end", "status", String.class);
+        this.dataProvider.boardField("CASE " + MClient.NAME + "." + MClient.Field.STATUS_ENUM + " " + StringUtils.join(status, " ") + " END", "status", String.class);
         this.dataProvider.selectField("id", Long.class);
 
         this.dataColumn = Lists.newArrayList();

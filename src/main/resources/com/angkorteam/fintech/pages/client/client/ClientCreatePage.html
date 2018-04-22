@@ -15,282 +15,264 @@
 
 				<div class="box-body">
 
-					<!-- Row -->
-					<div wicket:id="officeBlock" class="form-group">
-						<wicket:container wicket:id="officeIContainer">
-							<label wicket:for="officeField">Office</label>
-							<select wicket:id="officeField" class="form-control"></select>
-							<span wicket:id="officeFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row1">
+						<div wicket:id="officeBlock" class="form-group">
+							<wicket:container wicket:id="officeIContainer">
+								<label wicket:for="officeField">Office</label>
+								<select wicket:id="officeField" class="form-control"></select>
+								<span wicket:id="officeFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="staffBlock" class="form-group">
+							<wicket:container wicket:id="staffIContainer">
+								<label wicket:for="staffField">Staff</label>
+								<select wicket:id="staffField" class="form-control"></select>
+								<span wicket:id="staffFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="staffBlock" class="form-group">
-						<wicket:container wicket:id="staffIContainer">
-							<label wicket:for="staffField">Staff</label>
-							<select wicket:id="staffField" class="form-control"></select>
-							<span wicket:id="staffFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="legalFormBlock" class="form-group">
-						<wicket:container wicket:id="legalFormIContainer">
-							<label wicket:for="legalFormField">Legal Form</label>
-							<select wicket:id="legalFormField" class="form-control"></select>
-							<span wicket:id="legalFormFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row2">
+						<div wicket:id="legalFormBlock" class="form-group">
+							<wicket:container wicket:id="legalFormIContainer">
+								<label wicket:for="legalFormField">Legal Form</label>
+								<select wicket:id="legalFormField" class="form-control"></select>
+								<span wicket:id="legalFormFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="staffApplicationBlock" class="form-group">
+							<wicket:container wicket:id="staffApplicationIContainer">
+								<label>&nbsp;</label>
+								<span style="display: block"> <label> <input
+										type="checkbox" wicket:id="staffApplicationField"> Is
+										Staff ?
+								</label>
+								</span>
+								<span wicket:id="staffApplicationFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="staffApplicationBlock" class="form-group">
-						<wicket:container wicket:id="staffApplicationIContainer">
-							<label>&nbsp;</label>
-							<span style="display: block"> <label> <input
-									type="checkbox" wicket:id="staffApplicationField"> Is
-									Staff ?
-							</label>
-							</span>
-							<span wicket:id="staffApplicationFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="firstNameBlock" class="form-group">
-						<wicket:container wicket:id="firstNameIContainer">
-							<label wicket:for="firstNameField">First Name</label>
-							<input wicket:id="firstNameField" type="text"
-								class="form-control" />
-							<span wicket:id="firstNameFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row3">
+						<div wicket:id="firstNameBlock" class="form-group">
+							<wicket:container wicket:id="firstNameIContainer">
+								<label wicket:for="firstNameField">First Name</label>
+								<input wicket:id="firstNameField" type="text"
+									class="form-control" />
+								<span wicket:id="firstNameFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="middleNameBlock" class="form-group">
+							<wicket:container wicket:id="middleNameIContainer">
+								<label wicket:for="middleNameField">Middle Name</label>
+								<input wicket:id="middleNameField" type="text"
+									class="form-control" />
+								<span wicket:id="middleNameFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="lastNameBlock" class="form-group">
+							<wicket:container wicket:id="lastNameIContainer">
+								<label wicket:for="lastNameField">Last Name</label>
+								<input wicket:id="lastNameField" type="text"
+									class="form-control" />
+								<span wicket:id="lastNameFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="middleNameBlock" class="form-group">
-						<wicket:container wicket:id="middleNameIContainer">
-							<label wicket:for="middleNameField">Middle Name</label>
-							<input wicket:id="middleNameField" type="text"
-								class="form-control" />
-							<span wicket:id="middleNameFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="lastNameBlock" class="form-group">
-						<wicket:container wicket:id="lastNameIContainer">
-							<label wicket:for="lastNameField">Last Name</label>
-							<input wicket:id="lastNameField" type="text" class="form-control" />
-							<span wicket:id="lastNameFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="nameBlock" class="form-group">
-						<wicket:container wicket:id="nameIContainer">
-							<label wicket:for="nameField">Name</label>
-							<input wicket:id="nameField" type="text" class="form-control" />
-							<span wicket:id="nameFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row4">
+						<div wicket:id="nameBlock" class="form-group">
+							<wicket:container wicket:id="nameIContainer">
+								<label wicket:for="nameField">Name</label>
+								<input wicket:id="nameField" type="text" class="form-control" />
+								<span wicket:id="nameFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="row4Block1" class="form-group"></div>
 					</div>
-					<div
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-					</div>
-					<div
-						class="form-group col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4">
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="mobileNumberBlock" class="form-group">
-						<wicket:container wicket:id="mobileNumberIContainer">
-							<label wicket:for="mobileNumberField">Mobile Number</label>
-							<input wicket:id="mobileNumberField" type="text"
-								class="form-control" />
-							<span wicket:id="mobileNumberFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row5">
+						<div wicket:id="mobileNumberBlock" class="form-group">
+							<wicket:container wicket:id="mobileNumberIContainer">
+								<label wicket:for="mobileNumberField">Mobile Number</label>
+								<input wicket:id="mobileNumberField" type="text"
+									class="form-control" />
+								<span wicket:id="mobileNumberFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="dateOfBirthBlock" class="form-group">
+							<wicket:container wicket:id="dateOfBirthIContainer">
+								<label wicket:for="dateOfBirthField">Date Of Birth</label>
+								<input wicket:id="dateOfBirthField" type="text"
+									class="form-control" />
+								<span wicket:id="dateOfBirthFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="genderBlock" class="form-group">
+							<wicket:container wicket:id="genderIContainer">
+								<label wicket:for="genderField">Gender</label>
+								<select wicket:id="genderField" class="form-control"></select>
+								<span wicket:id="genderFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="dateOfBirthBlock" class="form-group">
-						<wicket:container wicket:id="dateOfBirthIContainer">
-							<label wicket:for="dateOfBirthField">Date Of Birth</label>
-							<input wicket:id="dateOfBirthField" type="text"
-								class="form-control" />
-							<span wicket:id="dateOfBirthFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="genderBlock" class="form-group">
-						<wicket:container wicket:id="genderIContainer">
-							<label wicket:for="genderField">Gender</label>
-							<select wicket:id="genderField" class="form-control"></select>
-							<span wicket:id="genderFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="incorporationDateBlock" class="form-group">
-						<wicket:container wicket:id="incorporationDateIContainer">
-							<label wicket:for="incorporationDateField">Incorporation
-								Date</label>
-							<input wicket:id="incorporationDateField" type="text"
-								class="form-control" />
-							<span wicket:id="incorporationDateFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row6">
+						<div wicket:id="incorporationDateBlock" class="form-group">
+							<wicket:container wicket:id="incorporationDateIContainer">
+								<label wicket:for="incorporationDateField">Incorporation
+									Date</label>
+								<input wicket:id="incorporationDateField" type="text"
+									class="form-control" />
+								<span wicket:id="incorporationDateFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="incorporationValidityTillDateBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="incorporationValidityTillDateIContainer">
+								<label wicket:for="incorporationValidityTillDateField">Incorporation
+									Validity Till Date</label>
+								<input wicket:id="incorporationValidityTillDateField"
+									type="text" class="form-control" />
+								<span wicket:id="incorporationValidityTillDateFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="incorporationValidityTillDateBlock"
-						class="form-group">
-						<wicket:container
-							wicket:id="incorporationValidityTillDateIContainer">
-							<label wicket:for="incorporationValidityTillDateField">Incorporation
-								Validity Till Date</label>
-							<input wicket:id="incorporationValidityTillDateField" type="text"
-								class="form-control" />
-							<span wicket:id="incorporationValidityTillDateFeedback"
-								class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="clientTypeBlock" class="form-group">
-						<wicket:container wicket:id="clientTypeIContainer">
-							<label wicket:for="clientTypeField">Client Type</label>
-							<select wicket:id="clientTypeField" class="form-control"></select>
-							<span wicket:id="clientTypeFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row7">
+						<div wicket:id="clientTypeBlock" class="form-group">
+							<wicket:container wicket:id="clientTypeIContainer">
+								<label wicket:for="clientTypeField">Client Type</label>
+								<select wicket:id="clientTypeField" class="form-control"></select>
+								<span wicket:id="clientTypeFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="clientClassificationBlock" class="form-group">
+							<wicket:container wicket:id="clientClassificationIContainer">
+								<label wicket:for="clientClassificationField">Client
+									Classification</label>
+								<select wicket:id="clientClassificationField"
+									class="form-control"></select>
+								<span wicket:id="clientClassificationFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="clientClassificationBlock" class="form-group">
-						<wicket:container wicket:id="clientClassificationIContainer">
-							<label wicket:for="clientClassificationField">Client
-								Classification</label>
-							<select wicket:id="clientClassificationField"
-								class="form-control"></select>
-							<span wicket:id="clientClassificationFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="incorporationNumberBlock" class="form-group">
-						<wicket:container wicket:id="incorporationNumberIContainer">
-							<label wicket:for="incorporationNumberField">Incorporation
-								Number</label>
-							<input wicket:id="incorporationNumberField" type="text"
-								class="form-control" />
-							<span wicket:id="incorporationNumberFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row8">
+						<div wicket:id="incorporationNumberBlock" class="form-group">
+							<wicket:container wicket:id="incorporationNumberIContainer">
+								<label wicket:for="incorporationNumberField">Incorporation
+									Number</label>
+								<input wicket:id="incorporationNumberField" type="text"
+									class="form-control" />
+								<span wicket:id="incorporationNumberFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="mainBusinessLineBlock" class="form-group">
+							<wicket:container wicket:id="mainBusinessLineIContainer">
+								<label wicket:for="mainBusinessLineField">Main Business
+									Line</label>
+								<select wicket:id="mainBusinessLineField" class="form-control"></select>
+								<span wicket:id="mainBusinessLineFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="mainBusinessLineBlock" class="form-group">
-						<wicket:container wicket:id="mainBusinessLineIContainer">
-							<label wicket:for="mainBusinessLineField">Main Business
-								Line</label>
-							<select wicket:id="mainBusinessLineField" class="form-control"></select>
-							<span wicket:id="mainBusinessLineFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="constitutionBlock" class="form-group">
-						<wicket:container wicket:id="constitutionIContainer">
-							<label wicket:for="constitutionField">Constitution</label>
-							<select wicket:id="constitutionField" class="form-control"></select>
-							<span wicket:id="constitutionFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row9">
+						<div wicket:id="constitutionBlock" class="form-group">
+							<wicket:container wicket:id="constitutionIContainer">
+								<label wicket:for="constitutionField">Constitution</label>
+								<select wicket:id="constitutionField" class="form-control"></select>
+								<span wicket:id="constitutionFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="row9Block1" class="form-group"></div>
 					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="remarkBlock" class="form-group">
-						<wicket:container wicket:id="remarkIContainer">
-							<label wicket:for="remarkField">Remarks</label>
-							<textarea wicket:id="remarkField" rows="4" class="form-control"></textarea>
-							<span wicket:id="remarkFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row10">
+						<div wicket:id="remarkBlock" class="form-group">
+							<wicket:container wicket:id="remarkIContainer">
+								<label wicket:for="remarkField">Remarks</label>
+								<textarea wicket:id="remarkField" rows="4" class="form-control"></textarea>
+								<span wicket:id="remarkFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="row10Block1" class="form-group"></div>
 					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="activeBlock" class="form-group">
-						<wicket:container wicket:id="activeIContainer">
-							<label>&nbsp;</label>
-							<span style="display: block"> <label> <input
-									type="checkbox" wicket:id="activeField" /> Is Active ?
-							</label>
-							</span>
-							<span wicket:id="activeFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row11">
+						<div wicket:id="activeBlock" class="form-group">
+							<wicket:container wicket:id="activeIContainer">
+								<label>&nbsp;</label>
+								<span style="display: block"> <label> <input
+										type="checkbox" wicket:id="activeField" /> Is Active ?
+								</label>
+								</span>
+								<span wicket:id="activeFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="activationDateBlock" class="form-group">
+							<wicket:container wicket:id="activationDateIContainer">
+								<label wicket:for="activationDateField">Activation Date</label>
+								<input wicket:id="activationDateField" type="text"
+									class="form-control" />
+								<span wicket:id="activationDateFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="submittedOnBlock" class="form-group">
+							<wicket:container wicket:id="submittedOnIContainer">
+								<label wicket:for="submittedOnField">Submitted On</label>
+								<input wicket:id="submittedOnField" type="text"
+									class="form-control" />
+								<span wicket:id="submittedOnFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="activationDateBlock" class="form-group">
-						<wicket:container wicket:id="activationDateIContainer">
-							<label wicket:for="activationDateField">Activation Date</label>
-							<input wicket:id="activationDateField" type="text"
-								class="form-control" />
-							<span wicket:id="activationDateFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="submittedOnBlock" class="form-group">
-						<wicket:container wicket:id="submittedOnIContainer">
-							<label wicket:for="submittedOnField">Submitted On</label>
-							<input wicket:id="submittedOnField" type="text"
-								class="form-control" />
-							<span wicket:id="submittedOnFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="openSavingsAccountBlock" class="form-group">
-						<wicket:container wicket:id="openSavingsAccountIContainer">
-							<label>&nbsp;</label>
-							<span style="display: block"> <label> <input
-									type="checkbox" wicket:id="openSavingsAccountField">
-									Open Savings Account ?
-							</label>
-							</span>
-							<span wicket:id="openSavingsAccountFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row12">
+						<div wicket:id="openSavingsAccountBlock" class="form-group">
+							<wicket:container wicket:id="openSavingsAccountIContainer">
+								<label>&nbsp;</label>
+								<span style="display: block"> <label> <input
+										type="checkbox" wicket:id="openSavingsAccountField">
+										Open Savings Account ?
+								</label>
+								</span>
+								<span wicket:id="openSavingsAccountFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="savingsAccountBlock" class="form-group">
+							<wicket:container wicket:id="savingsAccountIContainer">
+								<label wicket:for="savingsAccountField">Select Savings
+									Account</label>
+								<select wicket:id="savingsAccountField" class="form-control"></select>
+								<span wicket:id="savingsAccountFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="externalIdBlock" class="form-group">
+							<wicket:container wicket:id="externalIdIContainer">
+								<label wicket:for="externalIdField">External ID</label>
+								<input wicket:id="externalIdField" type="text"
+									class="form-control" />
+								<span wicket:id="externalIdFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="savingsAccountBlock" class="form-group">
-						<wicket:container wicket:id="savingsAccountIContainer">
-							<label wicket:for="savingsAccountField">Select Savings
-								Account</label>
-							<select wicket:id="savingsAccountField" class="form-control"></select>
-							<span wicket:id="savingsAccountFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="externalIdBlock" class="form-group">
-						<wicket:container wicket:id="externalIdIContainer">
-							<label wicket:for="externalIdField">External ID</label>
-							<input wicket:id="externalIdField" type="text"
-								class="form-control" />
-							<span wicket:id="externalIdFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-				</div>
-
-				<div class="box-header with-border">
-					<h3 class="box-title">Family Members</h3>
-				</div>
-
-				<div class="box-body">
-					<!-- Row -->
-					<div wicket:id="familyMemberBlock" class="form-group">
-						<wicket:container wicket:id="familyMemberIContainer">
-							<div class="box box-primary">
-								<div class="box-body">
-									<table wicket:id="familyMemberTable"></table>
-								</div>
-								<div class="box-footer">
-									<a wicket:id="familyMemberAddLink" class="btn btn-default">Add</a>
-								</div>
-							</div>
-							<div wicket:id="familyMemberPopup" />
-						</wicket:container>
+					<div wicket:id="row13">
+						<div wicket:id="familyMemberBlock" class="form-group">
+							<wicket:container wicket:id="familyMemberIContainer">
+								<h4 class="box-title">Family Members</h4>
+								<table wicket:id="familyMemberTable"></table>
+								<a wicket:id="familyMemberAddLink"
+									class="btn btn-sm btn-default">Add</a>
+							</wicket:container>
+						</div>
 					</div>
-					<div class="clearfix"></div>
+
 				</div>
 
 				<div class="box-footer">
@@ -299,6 +281,9 @@
 				</div>
 			</div>
 		</form>
+
+		<div wicket:id="modalWindow"></div>
+
 	</wicket:extend>
 </body>
 

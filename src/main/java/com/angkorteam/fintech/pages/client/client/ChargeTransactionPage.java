@@ -8,7 +8,6 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -27,10 +26,12 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -59,56 +60,68 @@ public class ChargeTransactionPage extends Page {
 
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock dataBlock;
-    protected WebMarkupContainer dataIContainer;
-    protected DataTable<Map<String, Object>, String> dataTable;
-    protected JdbcProvider dataProvider;
-    protected List<IColumn<Map<String, Object>, String>> dataColumn;
+    protected UIRow row1;
 
-    protected WebMarkupBlock chargeBlock;
-    protected WebMarkupContainer chargeVContainer;
+    protected UIBlock chargeBlock;
+    protected UIContainer chargeVContainer;
     protected String chargeValue;
     protected ReadOnlyView chargeView;
 
-    protected WebMarkupBlock currencyBlock;
-    protected WebMarkupContainer currencyVContainer;
+    protected UIBlock row1Block1;
+
+    protected UIRow row2;
+
+    protected UIBlock currencyBlock;
+    protected UIContainer currencyVContainer;
     protected String currencyValue;
     protected ReadOnlyView currencyView;
 
-    protected WebMarkupBlock dueDateBlock;
-    protected WebMarkupContainer dueDateVContainer;
+    protected UIBlock dueDateBlock;
+    protected UIContainer dueDateVContainer;
     protected Date dueDateValue;
     protected ReadOnlyView dueDateView;
 
-    protected WebMarkupBlock chargeTypeBlock;
-    protected WebMarkupContainer chargeTypeVContainer;
+    protected UIRow row3;
+
+    protected UIBlock chargeTypeBlock;
+    protected UIContainer chargeTypeVContainer;
     protected Option chargeTypeValue;
     protected ReadOnlyView chargeTypeView;
 
-    protected WebMarkupBlock chargeCalculationBlock;
-    protected WebMarkupContainer chargeCalculationVContainer;
+    protected UIBlock chargeCalculationBlock;
+    protected UIContainer chargeCalculationVContainer;
     protected Option chargeCalculationValue;
     protected ReadOnlyView chargeCalculationView;
 
-    protected WebMarkupBlock dueBlock;
-    protected WebMarkupContainer dueVContainer;
+    protected UIRow row4;
+
+    protected UIBlock dueBlock;
+    protected UIContainer dueVContainer;
     protected Double dueValue;
     protected ReadOnlyView dueView;
 
-    protected WebMarkupBlock paidBlock;
-    protected WebMarkupContainer paidVContainer;
+    protected UIBlock paidBlock;
+    protected UIContainer paidVContainer;
     protected Double paidValue;
     protected ReadOnlyView paidView;
 
-    protected WebMarkupBlock waivedBlock;
-    protected WebMarkupContainer waivedVContainer;
+    protected UIBlock waivedBlock;
+    protected UIContainer waivedVContainer;
     protected Double waivedValue;
     protected ReadOnlyView waivedView;
 
-    protected WebMarkupBlock outstandingBlock;
-    protected WebMarkupContainer outstandingVContainer;
+    protected UIBlock outstandingBlock;
+    protected UIContainer outstandingVContainer;
     protected Double outstandingValue;
     protected ReadOnlyView outstandingView;
+
+    protected UIRow row5;
+
+    protected UIBlock dataBlock;
+    protected UIContainer dataIContainer;
+    protected DataTable<Map<String, Object>, String> dataTable;
+    protected JdbcProvider dataProvider;
+    protected List<IColumn<Map<String, Object>, String>> dataColumn;
 
     @Override
     protected void initData() {
@@ -153,6 +166,24 @@ public class ChargeTransactionPage extends Page {
         this.paidValue = chargeObject.get("m_client_charge.amount_paid_derived") == null ? 0 : (Double) chargeObject.get("m_client_charge.amount_paid_derived");
         this.waivedValue = chargeObject.get("m_client_charge.amount_waived_derived") == null ? 0 : (Double) chargeObject.get("m_client_charge.amount_waived_derived");
         this.outstandingValue = chargeObject.get("m_client_charge.amount_outstanding_derived") == null ? 0 : (Double) chargeObject.get("m_client_charge.amount_outstanding_derived");
+
+        this.dataProvider = new JdbcProvider(MClientChargePaidBy.NAME);
+        this.dataProvider.applyJoin("m_client_transaction", "INNER JOIN " + MClientTransaction.NAME + " ON " + MClientChargePaidBy.NAME + "." + MClientChargePaidBy.Field.CLIENT_TRANSACTION_ID + " = " + MClientTransaction.NAME + "." + MClientTransaction.Field.ID);
+        this.dataProvider.applyJoin("m_office", "INNER JOIN " + MOffice.NAME + " ON " + MOffice.NAME + "." + MOffice.Field.ID + " = " + MClientTransaction.NAME + "." + MClientTransaction.Field.OFFICE_ID);
+        this.dataProvider.boardField(MClientTransaction.NAME + "." + MClientTransaction.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "office", String.class);
+        this.dataProvider.boardField("CASE " + MClientTransaction.NAME + "." + MClientTransaction.Field.TRANSACTION_TYPE_ENUM + " WHEN 1 THEN 'Paid' WHEN 2 THEN 'Waived' ELSE CONCAT(" + MClientTransaction.NAME + "." + MClientTransaction.Field.TRANSACTION_TYPE_ENUM + ", '') END", "transaction_type", String.class);
+        this.dataProvider.boardField(MClientTransaction.NAME + "." + MClientTransaction.Field.TRANSACTION_DATE, "transaction_date", Calendar.Date);
+        this.dataProvider.boardField(MClientTransaction.NAME + "." + MClientTransaction.Field.AMOUNT, "amount", Double.class);
+        this.dataProvider.applyWhere("client_charge_id", MClientChargePaidBy.NAME + "." + MClientChargePaidBy.Field.CLIENT_CHARGE_ID + " = " + this.chargeId);
+        this.dataProvider.selectField("id", Long.class);
+        this.dataProvider.setSort("id", SortOrder.DESCENDING);
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Office"), "office", "office", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Type"), "transaction_type", "transaction_type", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Transaction Date"), "transaction_date", "transaction_date", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Amount"), "amount", "amount", this::dataColumn));
     }
 
     @Override
@@ -203,95 +234,68 @@ public class ChargeTransactionPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         add(this.closeLink);
 
-        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
-        add(this.dataBlock);
-        this.dataIContainer = new WebMarkupContainer("dataIContainer");
-        this.dataBlock.add(this.dataIContainer);
+        this.row1 = UIRow.newUIRow("row1", this);
 
-        this.dataProvider = new JdbcProvider(MClientChargePaidBy.NAME);
-        this.dataProvider.applyJoin("m_client_transaction", "INNER JOIN " + MClientTransaction.NAME + " ON " + MClientChargePaidBy.NAME + "." + MClientChargePaidBy.Field.CLIENT_TRANSACTION_ID + " = " + MClientTransaction.NAME + "." + MClientTransaction.Field.ID);
-        this.dataProvider.applyJoin("m_office", "INNER JOIN " + MOffice.NAME + " ON " + MOffice.NAME + "." + MOffice.Field.ID + " = " + MClientTransaction.NAME + "." + MClientTransaction.Field.OFFICE_ID);
-        this.dataProvider.boardField(MClientTransaction.NAME + "." + MClientTransaction.Field.ID, "id", Long.class);
-        this.dataProvider.boardField(MOffice.NAME + "." + MOffice.Field.NAME, "office", String.class);
-        this.dataProvider.boardField("case " + MClientTransaction.NAME + "." + MClientTransaction.Field.TRANSACTION_TYPE_ENUM + " when 1 then 'Paid' when 2 then 'Waived' else concat(" + MClientTransaction.NAME + "." + MClientTransaction.Field.TRANSACTION_TYPE_ENUM + ", '') end", "transaction_type", String.class);
-        this.dataProvider.boardField(MClientTransaction.NAME + "." + MClientTransaction.Field.TRANSACTION_DATE, "transaction_date", Calendar.Date);
-        this.dataProvider.boardField(MClientTransaction.NAME + "." + MClientTransaction.Field.AMOUNT, "amount", Double.class);
-        this.dataProvider.applyWhere("client_charge_id", MClientChargePaidBy.NAME + "." + MClientChargePaidBy.Field.CLIENT_CHARGE_ID + " = " + this.chargeId);
-
-        this.dataProvider.selectField("id", Long.class);
-
-        this.dataProvider.setSort("id", SortOrder.DESCENDING);
-
-        this.dataColumn = Lists.newArrayList();
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Office"), "office", "office", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Type"), "transaction_type", "transaction_type", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Transaction Date"), "transaction_date", "transaction_date", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Amount"), "amount", "amount", this::dataColumn));
-        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
-        this.dataIContainer.add(this.dataTable);
-
-        this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Twelve_12);
-        add(this.chargeBlock);
-        this.chargeVContainer = new WebMarkupContainer("chargeVContainer");
-        this.chargeBlock.add(this.chargeVContainer);
+        this.chargeBlock = this.row1.newUIBlock("chargeBlock", Size.Six_6);
+        this.chargeVContainer = this.chargeBlock.newUIContainer("chargeVContainer");
         this.chargeView = new ReadOnlyView("chargeView", new PropertyModel<>(this, "chargeValue"));
         this.chargeVContainer.add(this.chargeView);
 
-        this.currencyBlock = new WebMarkupBlock("currencyBlock", Size.Six_6);
-        add(this.currencyBlock);
-        this.currencyVContainer = new WebMarkupContainer("currencyVContainer");
-        this.currencyBlock.add(this.currencyVContainer);
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
+
+        this.row2 = UIRow.newUIRow("row2", this);
+
+        this.currencyBlock = this.row2.newUIBlock("currencyBlock", Size.Six_6);
+        this.currencyVContainer = this.currencyBlock.newUIContainer("currencyVContainer");
         this.currencyView = new ReadOnlyView("currencyView", new PropertyModel<>(this, "currencyValue"));
         this.currencyVContainer.add(this.currencyView);
 
-        this.chargeTypeBlock = new WebMarkupBlock("chargeTypeBlock", Size.Six_6);
-        add(this.chargeTypeBlock);
-        this.chargeTypeVContainer = new WebMarkupContainer("chargeTypeVContainer");
-        this.chargeTypeBlock.add(this.chargeTypeVContainer);
-        this.chargeTypeView = new ReadOnlyView("chargeTypeView", new PropertyModel<>(this, "chargeTypeValue"));
-        this.chargeTypeVContainer.add(this.chargeTypeView);
-
-        this.chargeCalculationBlock = new WebMarkupBlock("chargeCalculationBlock", Size.Six_6);
-        add(this.chargeCalculationBlock);
-        this.chargeCalculationVContainer = new WebMarkupContainer("chargeCalculationVContainer");
-        this.chargeCalculationBlock.add(this.chargeCalculationVContainer);
-        this.chargeCalculationView = new ReadOnlyView("chargeCalculationView", new PropertyModel<>(this, "chargeCalculationValue"));
-        this.chargeCalculationVContainer.add(this.chargeCalculationView);
-
-        this.dueDateBlock = new WebMarkupBlock("dueDateBlock", Size.Six_6);
-        add(this.dueDateBlock);
-        this.dueDateVContainer = new WebMarkupContainer("dueDateVContainer");
-        this.dueDateBlock.add(this.dueDateVContainer);
+        this.dueDateBlock = this.row2.newUIBlock("dueDateBlock", Size.Six_6);
+        this.dueDateVContainer = this.dueDateBlock.newUIContainer("dueDateVContainer");
         this.dueDateView = new ReadOnlyView("dueDateView", new PropertyModel<>(this, "dueDateValue"), "yyyy-MM-dd");
         this.dueDateVContainer.add(this.dueDateView);
 
-        this.dueBlock = new WebMarkupBlock("dueBlock", Size.Three_3);
-        add(this.dueBlock);
-        this.dueVContainer = new WebMarkupContainer("dueVContainer");
-        this.dueBlock.add(this.dueVContainer);
+        this.row3 = UIRow.newUIRow("row3", this);
+
+        this.chargeTypeBlock = this.row3.newUIBlock("chargeTypeBlock", Size.Six_6);
+        this.chargeTypeVContainer = this.chargeTypeBlock.newUIContainer("chargeTypeVContainer");
+        this.chargeTypeView = new ReadOnlyView("chargeTypeView", new PropertyModel<>(this, "chargeTypeValue"));
+        this.chargeTypeVContainer.add(this.chargeTypeView);
+
+        this.chargeCalculationBlock = this.row3.newUIBlock("chargeCalculationBlock", Size.Six_6);
+        this.chargeCalculationVContainer = this.chargeCalculationBlock.newUIContainer("chargeCalculationVContainer");
+        this.chargeCalculationView = new ReadOnlyView("chargeCalculationView", new PropertyModel<>(this, "chargeCalculationValue"));
+        this.chargeCalculationVContainer.add(this.chargeCalculationView);
+
+        this.row4 = UIRow.newUIRow("row4", this);
+
+        this.dueBlock = this.row4.newUIBlock("dueBlock", Size.Three_3);
+        this.dueVContainer = this.dueBlock.newUIContainer("dueVContainer");
         this.dueView = new ReadOnlyView("dueView", new PropertyModel<>(this, "dueValue"), "#,###,##0.00");
         this.dueVContainer.add(this.dueView);
 
-        this.paidBlock = new WebMarkupBlock("paidBlock", Size.Three_3);
-        add(this.paidBlock);
-        this.paidVContainer = new WebMarkupContainer("paidVContainer");
-        this.paidBlock.add(this.paidVContainer);
+        this.paidBlock = this.row4.newUIBlock("paidBlock", Size.Three_3);
+        this.paidVContainer = this.paidBlock.newUIContainer("paidVContainer");
         this.paidView = new ReadOnlyView("paidView", new PropertyModel<>(this, "paidValue"), "#,###,##0.00");
         this.paidVContainer.add(this.paidView);
 
-        this.waivedBlock = new WebMarkupBlock("waivedBlock", Size.Three_3);
-        add(this.waivedBlock);
-        this.waivedVContainer = new WebMarkupContainer("waivedVContainer");
-        this.waivedBlock.add(this.waivedVContainer);
+        this.waivedBlock = this.row4.newUIBlock("waivedBlock", Size.Three_3);
+        this.waivedVContainer = this.waivedBlock.newUIContainer("waivedVContainer");
         this.waivedView = new ReadOnlyView("waivedView", new PropertyModel<>(this, "waivedValue"), "#,###,##0.00");
         this.waivedVContainer.add(this.waivedView);
 
-        this.outstandingBlock = new WebMarkupBlock("outstandingBlock", Size.Three_3);
-        add(this.outstandingBlock);
-        this.outstandingVContainer = new WebMarkupContainer("outstandingVContainer");
-        this.outstandingBlock.add(this.outstandingVContainer);
+        this.outstandingBlock = this.row4.newUIBlock("outstandingBlock", Size.Three_3);
+        this.outstandingVContainer = this.outstandingBlock.newUIContainer("outstandingVContainer");
         this.outstandingView = new ReadOnlyView("outstandingView", new PropertyModel<>(this, "outstandingValue"), "#,###,##0.00");
         this.outstandingVContainer.add(this.outstandingView);
+
+        this.row5 = UIRow.newUIRow("row5", this);
+
+        this.dataBlock = this.row5.newUIBlock("dataBlock", Size.Twelve_12);
+        this.dataIContainer = this.dataBlock.newUIContainer("dataIContainer");
+        this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
+        this.dataIContainer.add(this.dataTable);
+
     }
 
     @Override
