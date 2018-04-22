@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -23,9 +22,10 @@ import com.angkorteam.fintech.dto.enums.ChargeCalculation;
 import com.angkorteam.fintech.dto.enums.ChargeTime;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -35,6 +35,7 @@ import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -50,32 +51,50 @@ public class ChargeCreatePage extends Page {
 
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock chargeBlock;
-    protected WebMarkupContainer chargeVContainer;
+    protected UIRow row1;
+
+    protected UIBlock chargeBlock;
+    protected UIContainer chargeVContainer;
     protected String chargeValue;
     protected ReadOnlyView chargeView;
 
-    protected WebMarkupBlock chargeCalculationBlock;
-    protected WebMarkupContainer chargeCalculationVContainer;
+    protected UIBlock row1Block1;
+
+    protected UIRow row2;
+
+    protected UIBlock chargeCalculationBlock;
+    protected UIContainer chargeCalculationVContainer;
     protected Option chargeCalculationValue;
     protected ReadOnlyView chargeCalculationView;
 
-    protected WebMarkupBlock chargeTypeBlock;
-    protected WebMarkupContainer chargeTypeVContainer;
+    protected UIBlock row2Block1;
+
+    protected UIRow row3;
+
+    protected UIBlock chargeTypeBlock;
+    protected UIContainer chargeTypeVContainer;
     protected Option chargeTypeValue;
     protected ReadOnlyView chargeTypeView;
 
-    protected WebMarkupBlock collectOnBlock;
-    protected WebMarkupContainer collectOnIContainer;
+    protected UIBlock row3Block1;
+
+    protected UIRow row4;
+
+    protected UIBlock collectOnBlock;
+    protected UIContainer collectOnIContainer;
     protected Date collectOnValue;
     protected DateTextField collectOnField;
-    protected TextFeedbackPanel collectOnFeedback;
 
-    protected WebMarkupBlock amountBlock;
-    protected WebMarkupContainer amountIContainer;
+    protected UIBlock row4Block1;
+
+    protected UIRow row5;
+
+    protected UIBlock amountBlock;
+    protected UIContainer amountIContainer;
     protected Double amountValue;
     protected TextField<Double> amountField;
-    protected TextFeedbackPanel amountFeedback;
+
+    protected UIBlock row5Block1;
 
     @Override
     protected void initData() {
@@ -161,70 +180,59 @@ public class ChargeCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        initChargeBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initChargeCalculationBlock();
-
-        initChargeTypeBlock();
-
-        initAmountBlock();
-
-        initCollectOnBlock();
-    }
-
-    protected void initCollectOnBlock() {
-        this.collectOnBlock = new WebMarkupBlock("collectOnBlock", Size.Six_6);
-        this.form.add(this.collectOnBlock);
-        this.collectOnIContainer = new WebMarkupContainer("collectOnIContainer");
-        this.collectOnBlock.add(this.collectOnIContainer);
-        this.collectOnField = new DateTextField("collectOnField", new PropertyModel<>(this, "collectOnValue"));
-        this.collectOnField.setLabel(Model.of("Collect On"));
-        this.collectOnIContainer.add(this.collectOnField);
-        this.collectOnFeedback = new TextFeedbackPanel("collectOnFeedback", this.collectOnField);
-        this.collectOnIContainer.add(this.collectOnFeedback);
-    }
-
-    protected void initAmountBlock() {
-        this.amountBlock = new WebMarkupBlock("amountBlock", Size.Six_6);
-        this.form.add(this.amountBlock);
-        this.amountIContainer = new WebMarkupContainer("amountIContainer");
-        this.amountBlock.add(this.amountIContainer);
-        this.amountField = new TextField<>("amountField", new PropertyModel<>(this, "amountValue"));
-        this.amountField.setLabel(Model.of("Amount"));
-        this.amountIContainer.add(this.amountField);
-        this.amountFeedback = new TextFeedbackPanel("amountFeedback", this.amountField);
-        this.amountIContainer.add(this.amountFeedback);
-    }
-
-    protected void initChargeTypeBlock() {
-        this.chargeTypeBlock = new WebMarkupBlock("chargeTypeBlock", Size.Six_6);
-        this.form.add(this.chargeTypeBlock);
-        this.chargeTypeVContainer = new WebMarkupContainer("chargeTypeVContainer");
-        this.chargeTypeBlock.add(this.chargeTypeVContainer);
-        this.chargeTypeView = new ReadOnlyView("chargeTypeView", new PropertyModel<>(this, "chargeTypeValue"));
-        this.chargeTypeVContainer.add(this.chargeTypeView);
-    }
-
-    protected void initChargeCalculationBlock() {
-        this.chargeCalculationBlock = new WebMarkupBlock("chargeCalculationBlock", Size.Six_6);
-        this.form.add(this.chargeCalculationBlock);
-        this.chargeCalculationVContainer = new WebMarkupContainer("chargeCalculationVContainer");
-        this.chargeCalculationBlock.add(this.chargeCalculationVContainer);
-        this.chargeCalculationView = new ReadOnlyView("chargeCalculationView", new PropertyModel<>(this, "chargeCalculationValue"));
-        this.chargeCalculationVContainer.add(this.chargeCalculationView);
-    }
-
-    protected void initChargeBlock() {
-        this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Six_6);
-        this.form.add(this.chargeBlock);
-        this.chargeVContainer = new WebMarkupContainer("chargeVContainer");
-        this.chargeBlock.add(this.chargeVContainer);
+        this.chargeBlock = this.row1.newUIBlock("chargeBlock", Size.Six_6);
+        this.chargeVContainer = this.chargeBlock.newUIContainer("chargeVContainer");
         this.chargeView = new ReadOnlyView("chargeView", new PropertyModel<>(this, "chargeValue"));
         this.chargeVContainer.add(this.chargeView);
+
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
+
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.amountBlock = this.row2.newUIBlock("amountBlock", Size.Six_6);
+        this.amountIContainer = this.amountBlock.newUIContainer("amountIContainer");
+        this.amountField = new TextField<>("amountField", new PropertyModel<>(this, "amountValue"));
+        this.amountIContainer.add(this.amountField);
+        this.amountIContainer.newFeedback("amountFeedback", this.amountField);
+
+        this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Six_6);
+
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.chargeCalculationBlock = this.row3.newUIBlock("chargeCalculationBlock", Size.Six_6);
+        this.chargeCalculationVContainer = this.chargeCalculationBlock.newUIContainer("chargeCalculationVContainer");
+        this.chargeCalculationView = new ReadOnlyView("chargeCalculationView", new PropertyModel<>(this, "chargeCalculationValue"));
+        this.chargeCalculationVContainer.add(this.chargeCalculationView);
+
+        this.row3Block1 = this.row3.newUIBlock("row3Block1", Size.Six_6);
+
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.chargeTypeBlock = this.row4.newUIBlock("chargeTypeBlock", Size.Six_6);
+        this.chargeTypeVContainer = this.chargeTypeBlock.newUIContainer("chargeTypeVContainer");
+        this.chargeTypeView = new ReadOnlyView("chargeTypeView", new PropertyModel<>(this, "chargeTypeValue"));
+        this.chargeTypeVContainer.add(this.chargeTypeView);
+
+        this.row4Block1 = this.row4.newUIBlock("row4Block1", Size.Six_6);
+
+        this.row5 = UIRow.newUIRow("row5", this.form);
+
+        this.collectOnBlock = this.row5.newUIBlock("collectOnBlock", Size.Six_6);
+        this.collectOnIContainer = this.collectOnBlock.newUIContainer("collectOnIContainer");
+        this.collectOnField = new DateTextField("collectOnField", new PropertyModel<>(this, "collectOnValue"));
+        this.collectOnIContainer.add(this.collectOnField);
+        this.collectOnIContainer.newFeedback("collectOnFeedback", this.collectOnField);
+
+        this.row5Block1 = this.row5.newUIBlock("row5Block1", Size.Six_6);
     }
 
     @Override
     protected void configureMetaData() {
+        this.amountField.setLabel(Model.of("Amount"));
+        this.collectOnField.setLabel(Model.of("Collect On"));
+
     }
 
     protected void saveButtonSubmit(Button button) {

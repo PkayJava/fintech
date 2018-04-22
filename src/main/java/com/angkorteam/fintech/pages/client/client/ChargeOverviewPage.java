@@ -8,7 +8,6 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -20,10 +19,12 @@ import com.angkorteam.fintech.ddl.MClient;
 import com.angkorteam.fintech.ddl.MClientCharge;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.table.TextCell;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -46,12 +47,15 @@ public class ChargeOverviewPage extends Page {
 
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock dataBlock;
-    protected WebMarkupContainer dataIContainer;
+    protected FilterForm<Map<String, String>> form;
+
+    protected UIRow row1;
+
+    protected UIBlock dataBlock;
+    protected UIContainer dataIContainer;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
-    protected FilterForm<Map<String, String>> dataFilterForm;
 
     @Override
     protected void initData() {
@@ -65,6 +69,27 @@ public class ChargeOverviewPage extends Page {
         selectQuery.addField(MClient.Field.DISPLAY_NAME);
         Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
         this.clientDisplayName = (String) clientObject.get("display_name");
+
+        this.dataProvider = new JdbcProvider(MClientCharge.NAME);
+        this.dataProvider.applyJoin("m_charge", "INNER JOIN " + MCharge.NAME + " ON " + MClientCharge.NAME + "." + MClientCharge.Field.CHARGE_ID + " = " + MCharge.NAME + "." + MCharge.Field.ID);
+        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.ID, "id", Long.class);
+        this.dataProvider.boardField(MCharge.NAME + "." + MCharge.Field.NAME, "name", String.class);
+        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.CHARGE_DUE_DATE, "due_date", Calendar.Date);
+        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT, "due", Double.class);
+        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_PAID_DERIVED, "paid", Double.class);
+        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_WAIVED_DERIVED, "waived", Double.class);
+        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_OUTSTANDING_DERIVED, "outstanding", Double.class);
+        this.dataProvider.applyWhere("amount_outstanding_derived", MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_OUTSTANDING_DERIVED + " = 0");
+        this.dataProvider.applyWhere("client_id", MClientCharge.NAME + "." + MClientCharge.Field.CLIENT_ID + " = " + this.clientId);
+        this.dataProvider.selectField("id", Long.class);
+
+        this.dataColumn = Lists.newArrayList();
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Due as of"), "due_date", "due_date", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Due"), "due", "due", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Paid"), "paid", "paid", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Waived"), "waived", "waived", this::dataColumn));
+        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Outstanding"), "outstanding", "outstanding", this::dataColumn));
     }
 
     @Override
@@ -106,40 +131,16 @@ public class ChargeOverviewPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         add(this.closeLink);
 
-        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
-        add(this.dataBlock);
-        this.dataIContainer = new WebMarkupContainer("dataIContainer");
-        this.dataBlock.add(this.dataIContainer);
+        this.form = new FilterForm<>("form", this.dataProvider);
+        add(this.form);
 
-        this.dataProvider = new JdbcProvider(MClientCharge.NAME);
-        this.dataProvider.applyJoin("m_charge", "INNER JOIN " + MCharge.NAME + " ON " + MClientCharge.NAME + "." + MClientCharge.Field.CHARGE_ID + " = " + MCharge.NAME + "." + MCharge.Field.ID);
-        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.ID, "id", Long.class);
-        this.dataProvider.boardField(MCharge.NAME + "." + MCharge.Field.NAME, "name", String.class);
-        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.CHARGE_DUE_DATE, "due_date", Calendar.Date);
-        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT, "due", Double.class);
-        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_PAID_DERIVED, "paid", Double.class);
-        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_WAIVED_DERIVED, "waived", Double.class);
-        this.dataProvider.boardField(MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_OUTSTANDING_DERIVED, "outstanding", Double.class);
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        this.dataProvider.applyWhere("amount_outstanding_derived", MClientCharge.NAME + "." + MClientCharge.Field.AMOUNT_OUTSTANDING_DERIVED + " = 0");
-        this.dataProvider.applyWhere("client_id", MClientCharge.NAME + "." + MClientCharge.Field.CLIENT_ID + " = " + this.clientId);
-
-        this.dataProvider.selectField("id", Long.class);
-
-        this.dataColumn = Lists.newArrayList();
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Name"), "name", "name", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Date, Model.of("Due as of"), "due_date", "due_date", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Due"), "due", "due", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Paid"), "paid", "paid", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Waived"), "waived", "waived", this::dataColumn));
-        this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Double, Model.of("Outstanding"), "outstanding", "outstanding", this::dataColumn));
-
-        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
-        this.dataIContainer.add(this.dataFilterForm);
-
+        this.dataBlock = this.row1.newUIBlock("dataBlock", Size.Twelve_12);
+        this.dataIContainer = this.dataBlock.newUIContainer("dataIContainer");
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
-        this.dataFilterForm.add(this.dataTable);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.form));
+        this.dataIContainer.add(this.dataTable);
     }
 
     @Override

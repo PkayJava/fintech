@@ -9,13 +9,15 @@
 				<h3 class="box-title">Charge Overview</h3>
 			</div>
 			<div class="box-body">
-				<div wicket:id="dataBlock" class="form-group">
-					<wicket:container wicket:id="dataIContainer">
-						<form wicket:id="dataFilterForm">
-							<table wicket:id="dataTable"></table>
-						</form>
-					</wicket:container>
-				</div>
+				<form wicket:id="form">
+					<div wicket:id="row1">
+						<div wicket:id="dataBlock" class="form-group">
+							<wicket:container wicket:id="dataIContainer">
+								<table wicket:id="dataTable"></table>
+							</wicket:container>
+						</div>
+					</div>
+				</form>
 			</div>
 			<div class="box-footer">
 				<a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
