@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -20,10 +19,11 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.client.client.ClientIdentityBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.CustomerIdentifierProvider;
 import com.angkorteam.fintech.provider.OptionProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -33,6 +33,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -46,45 +47,43 @@ public class ClientIdentityCreatePage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock documentTypeBlock;
-    protected WebMarkupContainer documentTypeIContainer;
+    protected UIRow row1;
+
+    protected UIBlock documentTypeBlock;
+    protected UIContainer documentTypeIContainer;
     protected CustomerIdentifierProvider documentTypeProvider;
     protected Option documentTypeValue;
     protected Select2SingleChoice<Option> documentTypeField;
-    protected TextFeedbackPanel documentTypeFeedback;
 
-    protected WebMarkupBlock statusBlock;
-    protected WebMarkupContainer statusIContainer;
+    protected UIBlock row1Block1;
+
+    protected UIRow row2;
+
+    protected UIBlock statusBlock;
+    protected UIContainer statusIContainer;
     protected OptionProvider statusProvider;
-    protected Option statusValue = new Option("Active", "Active");
+    protected Option statusValue;
     protected Select2SingleChoice<Option> statusField;
-    protected TextFeedbackPanel statusFeedback;
 
-    protected WebMarkupBlock uniqueIdBlock;
-    protected WebMarkupContainer uniqueIdIContainer;
+    protected UIBlock row2Block1;
+
+    protected UIRow row3;
+
+    protected UIBlock uniqueIdBlock;
+    protected UIContainer uniqueIdIContainer;
     protected String uniqueIdValue;
     protected TextField<String> uniqueIdField;
-    protected TextFeedbackPanel uniqueIdFeedback;
 
-    protected WebMarkupBlock descriptionBlock;
-    protected WebMarkupContainer descriptionIContainer;
+    protected UIBlock row3Block1;
+
+    protected UIRow row4;
+
+    protected UIBlock descriptionBlock;
+    protected UIContainer descriptionIContainer;
     protected String descriptionValue;
     protected TextArea<String> descriptionField;
-    protected TextFeedbackPanel descriptionFeedback;
 
-    @Override
-    protected void initData() {
-        this.clientId = getPageParameters().get("clientId").toString();
-        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
-
-        SelectQuery selectQuery = null;
-        selectQuery = new SelectQuery(MClient.NAME);
-        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
-        selectQuery.addField(MClient.Field.DISPLAY_NAME);
-        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
-
-        this.clientDisplayName = (String) clientObject.get("display_name");
-    }
+    protected UIBlock row4Block1;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -132,68 +131,73 @@ public class ClientIdentityCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        initDocumentTypeBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initStatusBlock();
-
-        initUniqueIdBlock();
-
-        initDescriptionBlock();
-    }
-
-    protected void initDescriptionBlock() {
-        this.descriptionBlock = new WebMarkupBlock("descriptionBlock", Size.Six_6);
-        this.form.add(this.descriptionBlock);
-        this.descriptionIContainer = new WebMarkupContainer("descriptionIContainer");
-        this.descriptionBlock.add(this.descriptionIContainer);
-        this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
-        this.descriptionField.setLabel(Model.of("Description"));
-        this.descriptionIContainer.add(this.descriptionField);
-        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-        this.descriptionIContainer.add(this.descriptionFeedback);
-    }
-
-    protected void initUniqueIdBlock() {
-        this.uniqueIdBlock = new WebMarkupBlock("uniqueIdBlock", Size.Six_6);
-        this.form.add(this.uniqueIdBlock);
-        this.uniqueIdIContainer = new WebMarkupContainer("uniqueIdIContainer");
-        this.uniqueIdBlock.add(this.uniqueIdIContainer);
-        this.uniqueIdField = new TextField<>("uniqueIdField", new PropertyModel<>(this, "uniqueIdValue"));
-        this.uniqueIdField.setLabel(Model.of("Unique ID#"));
-        this.uniqueIdIContainer.add(this.uniqueIdField);
-        this.uniqueIdFeedback = new TextFeedbackPanel("uniqueIdFeedback", this.uniqueIdField);
-        this.uniqueIdIContainer.add(this.uniqueIdFeedback);
-    }
-
-    protected void initStatusBlock() {
-        this.statusBlock = new WebMarkupBlock("statusBlock", Size.Six_6);
-        this.form.add(this.statusBlock);
-        this.statusIContainer = new WebMarkupContainer("statusIContainer");
-        this.statusBlock.add(this.statusIContainer);
-        this.statusProvider = new OptionProvider(new Option("Active", "Active"), new Option("Inactive", "Inactive"));
-        this.statusField = new Select2SingleChoice<>("statusField", new PropertyModel<>(this, "statusValue"), this.statusProvider);
-        this.statusField.setLabel(Model.of("Status"));
-        this.statusIContainer.add(this.statusField);
-        this.statusFeedback = new TextFeedbackPanel("statusFeedback", this.statusField);
-        this.statusIContainer.add(this.statusFeedback);
-    }
-
-    protected void initDocumentTypeBlock() {
-        this.documentTypeProvider = new CustomerIdentifierProvider();
-        this.documentTypeBlock = new WebMarkupBlock("documentTypeBlock", Size.Six_6);
-        this.form.add(this.documentTypeBlock);
-        this.documentTypeIContainer = new WebMarkupContainer("documentTypeIContainer");
-        this.documentTypeBlock.add(this.documentTypeIContainer);
+        this.documentTypeBlock = this.row1.newUIBlock("documentTypeBlock", Size.Six_6);
+        this.documentTypeIContainer = this.documentTypeBlock.newUIContainer("documentTypeIContainer");
         this.documentTypeField = new Select2SingleChoice<>("documentTypeField", new PropertyModel<>(this, "documentTypeValue"), this.documentTypeProvider);
-        this.documentTypeField.setLabel(Model.of("Document Type"));
         this.documentTypeIContainer.add(this.documentTypeField);
-        this.documentTypeFeedback = new TextFeedbackPanel("documentTypeFeedback", this.documentTypeField);
-        this.documentTypeIContainer.add(this.documentTypeFeedback);
+        this.documentTypeIContainer.newFeedback("documentTypeFeedback", this.documentTypeField);
+
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
+
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.statusBlock = this.row2.newUIBlock("statusBlock", Size.Six_6);
+        this.statusIContainer = this.statusBlock.newUIContainer("statusIContainer");
+        this.statusField = new Select2SingleChoice<>("statusField", new PropertyModel<>(this, "statusValue"), this.statusProvider);
+        this.statusIContainer.add(this.statusField);
+        this.statusIContainer.newFeedback("statusFeedback", this.statusField);
+
+        this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Six_6);
+
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.uniqueIdBlock = this.row3.newUIBlock("uniqueIdBlock", Size.Six_6);
+        this.uniqueIdIContainer = this.uniqueIdBlock.newUIContainer("uniqueIdIContainer");
+        this.uniqueIdField = new TextField<>("uniqueIdField", new PropertyModel<>(this, "uniqueIdValue"));
+        this.uniqueIdIContainer.add(this.uniqueIdField);
+        this.uniqueIdIContainer.newFeedback("uniqueIdFeedback", this.uniqueIdField);
+
+        this.row3Block1 = this.row3.newUIBlock("row3Block1", Size.Six_6);
+
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.descriptionBlock = this.row4.newUIBlock("descriptionBlock", Size.Six_6);
+        this.descriptionIContainer = this.descriptionBlock.newUIContainer("descriptionIContainer");
+        this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
+        this.descriptionIContainer.add(this.descriptionField);
+        this.descriptionIContainer.newFeedback("descriptionFeedback", this.descriptionField);
+
+        this.row4Block1 = this.row4.newUIBlock("row4Block1", Size.Six_6);
     }
 
     @Override
     protected void configureMetaData() {
+        this.descriptionField.setLabel(Model.of("Description"));
+        this.uniqueIdField.setLabel(Model.of("Unique ID#"));
+        this.documentTypeField.setLabel(Model.of("Document Type"));
+        this.statusField.setLabel(Model.of("Status"));
+    }
 
+    @Override
+    protected void initData() {
+        this.clientId = getPageParameters().get("clientId").toString();
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+
+        this.statusValue = new Option("Active", "Active");
+
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MClient.NAME);
+        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+        selectQuery.addField(MClient.Field.DISPLAY_NAME);
+        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+
+        this.clientDisplayName = (String) clientObject.get("display_name");
+
+        this.documentTypeProvider = new CustomerIdentifierProvider();
+
+        this.statusProvider = new OptionProvider(new Option("Active", "Active"), new Option("Inactive", "Inactive"));
     }
 
     protected void saveButtonSubmit(Button button) {

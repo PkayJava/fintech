@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
@@ -24,9 +23,10 @@ import com.angkorteam.fintech.ddl.MClient;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.spring.StringGenerator;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -34,6 +34,7 @@ import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -47,23 +48,32 @@ public class ClientDocumentUploadPage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock nameBlock;
-    protected WebMarkupContainer nameIContainer;
+    protected UIRow row1;
+
+    protected UIBlock nameBlock;
+    protected UIContainer nameIContainer;
     protected String nameValue;
     protected TextField<String> nameField;
-    protected TextFeedbackPanel nameFeedback;
 
-    protected WebMarkupBlock fileBlock;
-    protected WebMarkupContainer fileIContainer;
+    protected UIBlock row1Block1;
+
+    protected UIRow row2;
+
+    protected UIBlock fileBlock;
+    protected UIContainer fileIContainer;
     protected List<FileUpload> fileValue;
     protected FileUploadField fileField;
-    protected TextFeedbackPanel fileFeedback;
 
-    protected WebMarkupBlock descriptionBlock;
-    protected WebMarkupContainer descriptionIContainer;
+    protected UIBlock row2Block1;
+
+    protected UIRow row3;
+
+    protected UIBlock descriptionBlock;
+    protected UIContainer descriptionIContainer;
     protected String descriptionValue;
     protected TextArea<String> descriptionField;
-    protected TextFeedbackPanel descriptionFeedback;
+
+    protected UIBlock row3Block1;
 
     @Override
     protected void initData() {
@@ -126,52 +136,45 @@ public class ClientDocumentUploadPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        initNameBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initFileBlock();
+        this.nameBlock = this.row1.newUIBlock("nameBlock", Size.Six_6);
+        this.nameIContainer = this.nameBlock.newUIContainer("nameIContainer");
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameIContainer.add(this.nameField);
+        this.nameIContainer.newFeedback("nameFeedback", this.nameField);
 
-        initDescriptionBlock();
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
+
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.fileBlock = this.row2.newUIBlock("fileBlock", Size.Six_6);
+        this.fileIContainer = this.fileBlock.newUIContainer("fileIContainer");
+        this.fileField = new FileUploadField("fileField", new PropertyModel<>(this, "fileValue"));
+        this.fileIContainer.add(this.fileField);
+        this.fileIContainer.newFeedback("fileFeedback", this.fileField);
+
+        this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Six_6);
+
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.descriptionBlock = this.row3.newUIBlock("descriptionBlock", Size.Six_6);
+        this.descriptionIContainer = this.descriptionBlock.newUIContainer("descriptionIContainer");
+        this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
+        this.descriptionIContainer.add(this.descriptionField);
+        this.descriptionIContainer.newFeedback("descriptionFeedback", this.descriptionField);
+
+        this.row3Block1 = this.row3.newUIBlock("row3Block1", Size.Six_6);
     }
 
     @Override
     protected void configureMetaData() {
-    }
+        this.descriptionField.setLabel(Model.of("Description"));
 
-    protected void initFileBlock() {
-        this.fileBlock = new WebMarkupBlock("fileBlock", Size.Six_6);
-        this.form.add(this.fileBlock);
-        this.fileIContainer = new WebMarkupContainer("fileIContainer");
-        this.fileBlock.add(this.fileIContainer);
-        this.fileField = new FileUploadField("fileField", new PropertyModel<>(this, "fileValue"));
         this.fileField.setRequired(true);
         this.fileField.setLabel(Model.of("File"));
-        this.fileIContainer.add(this.fileField);
-        this.fileFeedback = new TextFeedbackPanel("fileFeedback", this.fileField);
-        this.fileIContainer.add(this.fileFeedback);
-    }
 
-    protected void initDescriptionBlock() {
-        this.descriptionBlock = new WebMarkupBlock("descriptionBlock", Size.Six_6);
-        this.form.add(this.descriptionBlock);
-        this.descriptionIContainer = new WebMarkupContainer("descriptionIContainer");
-        this.descriptionBlock.add(this.descriptionIContainer);
-        this.descriptionField = new TextArea<>("descriptionField", new PropertyModel<>(this, "descriptionValue"));
-        this.descriptionField.setLabel(Model.of("Description"));
-        this.descriptionIContainer.add(this.descriptionField);
-        this.descriptionFeedback = new TextFeedbackPanel("descriptionFeedback", this.descriptionField);
-        this.descriptionIContainer.add(this.descriptionFeedback);
-    }
-
-    protected void initNameBlock() {
-        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
-        this.form.add(this.nameBlock);
-        this.nameIContainer = new WebMarkupContainer("nameIContainer");
-        this.nameBlock.add(this.nameIContainer);
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
         this.nameField.setLabel(Model.of("Name"));
-        this.nameIContainer.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.nameIContainer.add(this.nameFeedback);
     }
 
     protected void saveButtonSubmit(Button button) {
