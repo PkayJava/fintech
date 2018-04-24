@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -23,6 +22,9 @@ import com.angkorteam.fintech.dto.enums.Destination;
 import com.angkorteam.fintech.dto.enums.StandingInstructionAccountType;
 import com.angkorteam.fintech.dto.enums.TransferType;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.provider.ClientDepositAccountProvider;
 import com.angkorteam.fintech.provider.DestinationProvider;
 import com.angkorteam.fintech.provider.InstructionTypeProvider;
@@ -33,8 +35,6 @@ import com.angkorteam.fintech.provider.RecurrenceTypeProvider;
 import com.angkorteam.fintech.provider.StatusProvider;
 import com.angkorteam.fintech.provider.TransferTypeProvider;
 import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -59,153 +59,136 @@ public class ClientStandingInstructionCreatePage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock nameBlock;
-    protected WebMarkupContainer nameIContainer;
+    protected UIRow row1;
+
+    protected UIBlock nameBlock;
+    protected UIContainer nameIContainer;
     protected String nameValue;
     protected TextField<String> nameField;
-    protected TextFeedbackPanel nameFeedback;
 
-    protected WebMarkupBlock applicantBlock;
-    protected WebMarkupContainer applicantVContainer;
+    protected UIBlock applicantBlock;
+    protected UIContainer applicantVContainer;
     protected String applicantValue;
     protected ReadOnlyView applicantView;
-    protected TextFeedbackPanel applicantFeedback;
+
+    protected UIRow row2;
 
     protected TransferTypeProvider typeProvider;
-    protected WebMarkupBlock typeBlock;
-    protected WebMarkupContainer typeIContainer;
+    protected UIBlock typeBlock;
+    protected UIContainer typeIContainer;
     protected Option typeValue;
     protected Select2SingleChoice<Option> typeField;
-    protected TextFeedbackPanel typeFeedback;
 
     protected PriorityProvider priorityProvider;
-    protected WebMarkupBlock priorityBlock;
-    protected WebMarkupContainer priorityIContainer;
+    protected UIBlock priorityBlock;
+    protected UIContainer priorityIContainer;
     protected Option priorityValue;
     protected Select2SingleChoice<Option> priorityField;
-    protected TextFeedbackPanel priorityFeedback;
 
     protected StatusProvider statusProvider;
-    protected WebMarkupBlock statusBlock;
-    protected WebMarkupContainer statusIContainer;
+    protected UIBlock statusBlock;
+    protected UIContainer statusIContainer;
     protected Option statusValue;
     protected Select2SingleChoice<Option> statusField;
-    protected TextFeedbackPanel statusFeedback;
 
-    protected WebMarkupBlock fromAccountTypeBlock;
-    protected WebMarkupContainer fromAccountTypeVContainer;
+    protected UIRow row3;
+
+    protected UIBlock fromAccountTypeBlock;
+    protected UIContainer fromAccountTypeVContainer;
     protected Option fromAccountTypeValue;
     protected ReadOnlyView fromAccountTypeView;
 
     protected ClientDepositAccountProvider fromAccountProvider;
-    protected WebMarkupBlock fromAccountBlock;
-    protected WebMarkupContainer fromAccountIContainer;
+    protected UIBlock fromAccountBlock;
+    protected UIContainer fromAccountIContainer;
     protected Option fromAccountValue;
     protected Select2SingleChoice<Option> fromAccountField;
-    protected TextFeedbackPanel fromAccountFeedback;
+
+    protected UIRow row4;
 
     protected DestinationProvider destinationProvider;
-    protected WebMarkupBlock destinationBlock;
-    protected WebMarkupContainer destinationIContainer;
+    protected UIBlock destinationBlock;
+    protected UIContainer destinationIContainer;
     protected Option destinationValue;
     protected Select2SingleChoice<Option> destinationField;
-    protected TextFeedbackPanel destinationFeedback;
 
     protected OfficeProvider toOfficeProvider;
-    protected WebMarkupBlock toOfficeBlock;
-    protected WebMarkupContainer toOfficeIContainer;
+    protected UIBlock toOfficeBlock;
+    protected UIContainer toOfficeIContainer;
     protected Select2SingleChoice<Option> toOfficeField;
-    protected TextFeedbackPanel toOfficeFeedback;
-    protected WebMarkupContainer toOfficeVContainer;
+    protected UIContainer toOfficeVContainer;
     protected ReadOnlyView toOfficeView;
     protected Option toOfficeValue;
 
     protected OfficeProvider beneficiaryProvider;
-    protected WebMarkupBlock beneficiaryBlock;
-    protected WebMarkupContainer beneficiaryIContainer;
+    protected UIBlock beneficiaryBlock;
+    protected UIContainer beneficiaryIContainer;
     protected Select2SingleChoice<Option> beneficiaryField;
-    protected TextFeedbackPanel beneficiaryFeedback;
-    protected WebMarkupContainer beneficiaryVContainer;
+    protected UIContainer beneficiaryVContainer;
     protected ReadOnlyView beneficiaryView;
     protected Option beneficiaryValue;
 
-    protected WebMarkupBlock toAccountTypeBlock;
-    protected WebMarkupContainer toAccountTypeVContainer;
+    protected UIRow row5;
+
+    protected UIBlock toAccountTypeBlock;
+    protected UIContainer toAccountTypeVContainer;
     protected Option toAccountTypeValue;
     protected ReadOnlyView toAccountTypeView;
 
     protected OfficeProvider toAccountProvider;
-    protected WebMarkupBlock toAccountBlock;
-    protected WebMarkupContainer toAccountIContainer;
+    protected UIBlock toAccountBlock;
+    protected UIContainer toAccountIContainer;
     protected Option toAccountValue;
     protected Select2SingleChoice<Option> toAccountField;
-    protected TextFeedbackPanel toAccountFeedback;
+
+    protected UIRow row6;
 
     protected InstructionTypeProvider standingInstructionTypeProvider;
-    protected WebMarkupBlock standingInstructionTypeBlock;
-    protected WebMarkupContainer standingInstructionTypeIContainer;
+    protected UIBlock standingInstructionTypeBlock;
+    protected UIContainer standingInstructionTypeIContainer;
     protected Option standingInstructionTypeValue;
     protected Select2SingleChoice<Option> standingInstructionTypeField;
-    protected TextFeedbackPanel standingInstructionTypeFeedback;
 
-    protected WebMarkupBlock amountBlock;
-    protected WebMarkupContainer amountIContainer;
+    protected UIBlock amountBlock;
+    protected UIContainer amountIContainer;
     protected Double amountValue;
     protected TextField<Double> amountField;
-    protected TextFeedbackPanel amountFeedback;
 
-    protected WebMarkupBlock validFromBlock;
-    protected WebMarkupContainer validFromIContainer;
+    protected UIRow row7;
+
+    protected UIBlock validFromBlock;
+    protected UIContainer validFromIContainer;
     protected Date validFromValue;
     protected DateTextField validFromField;
-    protected TextFeedbackPanel validFromFeedback;
 
-    protected WebMarkupBlock validUntilBlock;
-    protected WebMarkupContainer validUntilIContainer;
+    protected UIBlock validUntilBlock;
+    protected UIContainer validUntilIContainer;
     protected Date validUntilValue;
     protected DateTextField validUntilField;
-    protected TextFeedbackPanel validUntilFeedback;
+
+    protected UIRow row8;
 
     protected RecurrenceTypeProvider recurrenceTypeProvider;
-    protected WebMarkupBlock recurrenceTypeBlock;
-    protected WebMarkupContainer recurrenceTypeIContainer;
+    protected UIBlock recurrenceTypeBlock;
+    protected UIContainer recurrenceTypeIContainer;
     protected Option recurrenceTypeValue;
     protected Select2SingleChoice<Option> recurrenceTypeField;
-    protected TextFeedbackPanel recurrenceTypeFeedback;
 
-    protected WebMarkupBlock intervalBlock;
-    protected WebMarkupContainer intervalIContainer;
+    protected UIBlock intervalBlock;
+    protected UIContainer intervalIContainer;
     protected Long intervalValue;
     protected TextField<Long> intervalField;
-    protected TextFeedbackPanel intervalFeedback;
 
     protected RecurrenceFrequencyProvider recurrenceFrequencyProvider;
-    protected WebMarkupBlock recurrenceFrequencyBlock;
-    protected WebMarkupContainer recurrenceFrequencyIContainer;
+    protected UIBlock recurrenceFrequencyBlock;
+    protected UIContainer recurrenceFrequencyIContainer;
     protected Option recurrenceFrequencyValue;
     protected Select2SingleChoice<Option> recurrenceFrequencyField;
-    protected TextFeedbackPanel recurrenceFrequencyFeedback;
 
-    protected WebMarkupBlock onMonthDayBlock;
-    protected WebMarkupContainer onMonthDayIContainer;
+    protected UIBlock onMonthDayBlock;
+    protected UIContainer onMonthDayIContainer;
     protected Date onMonthDayValue;
     protected DayMonthTextField onMonthDayField;
-    protected TextFeedbackPanel onMonthDayFeedback;
-
-    @Override
-    protected void initData() {
-        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
-        this.clientId = getPageParameters().get("clientId").toString();
-        this.destinationValue = Destination.OwnAccount.toOption();
-        this.fromAccountTypeValue = StandingInstructionAccountType.SavingAccount.toOption();
-        SelectQuery selectQuery = null;
-        selectQuery = new SelectQuery(MClient.NAME);
-        selectQuery.addField(MClient.Field.DISPLAY_NAME);
-        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
-        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
-        this.applicantValue = (String) clientObject.get("display_name");
-        this.clientDisplayName = (String) clientObject.get("display_name");
-    }
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -262,225 +245,208 @@ public class ClientStandingInstructionCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientStandingInstructionBrowsePage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
-        this.form.add(this.nameBlock);
-        this.nameIContainer = new WebMarkupContainer("nameIContainer");
-        this.nameBlock.add(this.nameIContainer);
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setLabel(Model.of("Name"));
-        this.nameIContainer.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.nameIContainer.add(this.nameFeedback);
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        this.applicantBlock = new WebMarkupBlock("applicantBlock", Size.Six_6);
-        this.form.add(this.applicantBlock);
-        this.applicantVContainer = new WebMarkupContainer("applicantVContainer");
-        this.applicantBlock.add(this.applicantVContainer);
+        this.nameBlock = this.row1.newUIBlock("nameBlock", Size.Six_6);
+        this.nameIContainer = this.nameBlock.newUIContainer("nameIContainer");
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameIContainer.add(this.nameField);
+        this.nameIContainer.newFeedback("nameFeedback", this.nameField);
+
+        this.applicantBlock = this.row1.newUIBlock("applicantBlock", Size.Six_6);
+        this.applicantVContainer = this.applicantBlock.newUIContainer("applicantVContainer");
         this.applicantView = new ReadOnlyView("applicantView", new PropertyModel<>(this, "applicantValue"));
         this.applicantVContainer.add(this.applicantView);
 
-        this.statusProvider = new StatusProvider();
-        this.statusBlock = new WebMarkupBlock("statusBlock", Size.Four_4);
-        this.form.add(this.statusBlock);
-        this.statusIContainer = new WebMarkupContainer("statusIContainer");
-        this.statusBlock.add(this.statusIContainer);
-        this.statusField = new Select2SingleChoice<>("statusField", new PropertyModel<>(this, "statusValue"), this.statusProvider);
-        this.statusField.setLabel(Model.of("Status"));
-        this.statusIContainer.add(this.statusField);
-        this.statusFeedback = new TextFeedbackPanel("statusFeedback", this.statusField);
-        this.statusIContainer.add(this.statusFeedback);
+        this.row2 = UIRow.newUIRow("row2", this.form);
 
-        this.typeProvider = new TransferTypeProvider();
-        this.typeBlock = new WebMarkupBlock("typeBlock", Size.Four_4);
-        this.form.add(this.typeBlock);
-        this.typeIContainer = new WebMarkupContainer("typeIContainer");
-        this.typeBlock.add(this.typeIContainer);
+        this.typeBlock = this.row2.newUIBlock("typeBlock", Size.Four_4);
+        this.typeIContainer = this.typeBlock.newUIContainer("typeIContainer");
         this.typeField = new Select2SingleChoice<>("typeField", new PropertyModel<>(this, "typeValue"), this.typeProvider);
-        this.typeField.add(new OnChangeAjaxBehavior(this::typeFieldUpdate));
-        this.typeField.setLabel(Model.of("Type"));
         this.typeIContainer.add(this.typeField);
-        this.typeFeedback = new TextFeedbackPanel("typeFeedback", this.typeField);
-        this.typeIContainer.add(this.typeFeedback);
+        this.typeIContainer.newFeedback("typeFeedback", this.typeField);
 
-        this.priorityProvider = new PriorityProvider();
-        this.priorityBlock = new WebMarkupBlock("priorityBlock", Size.Four_4);
-        this.form.add(this.priorityBlock);
-        this.priorityIContainer = new WebMarkupContainer("priorityIContainer");
-        this.priorityBlock.add(this.priorityIContainer);
+        this.statusBlock = this.row2.newUIBlock("statusBlock", Size.Four_4);
+        this.statusIContainer = this.statusBlock.newUIContainer("statusIContainer");
+        this.statusField = new Select2SingleChoice<>("statusField", new PropertyModel<>(this, "statusValue"), this.statusProvider);
+        this.statusIContainer.add(this.statusField);
+        this.statusIContainer.newFeedback("statusFeedback", this.statusField);
+
+        this.priorityBlock = this.row2.newUIBlock("priorityBlock", Size.Four_4);
+        this.priorityIContainer = this.priorityBlock.newUIContainer("priorityIContainer");
         this.priorityField = new Select2SingleChoice<>("priorityField", new PropertyModel<>(this, "priorityValue"), this.priorityProvider);
-        this.priorityField.setLabel(Model.of("Priority"));
         this.priorityIContainer.add(this.priorityField);
-        this.priorityFeedback = new TextFeedbackPanel("priorityFeedback", this.priorityField);
-        this.priorityIContainer.add(this.priorityFeedback);
+        this.priorityIContainer.newFeedback("priorityFeedback", this.priorityField);
 
-        this.fromAccountTypeBlock = new WebMarkupBlock("fromAccountTypeBlock", Size.Six_6);
-        this.form.add(this.fromAccountTypeBlock);
-        this.fromAccountTypeVContainer = new WebMarkupContainer("fromAccountTypeVContainer");
-        this.fromAccountTypeBlock.add(this.fromAccountTypeVContainer);
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.fromAccountTypeBlock = this.row3.newUIBlock("fromAccountTypeBlock", Size.Six_6);
+        this.fromAccountTypeVContainer = this.fromAccountTypeBlock.newUIContainer("fromAccountTypeVContainer");
         this.fromAccountTypeView = new ReadOnlyView("fromAccountTypeView", new PropertyModel<>(this, "fromAccountTypeValue"));
         this.fromAccountTypeVContainer.add(this.fromAccountTypeView);
 
-        this.fromAccountProvider = new ClientDepositAccountProvider();
-        this.fromAccountProvider.applyWhere("client_id", MSavingsAccount.NAME + "." + MSavingsAccount.Field.CLIENT_ID + " = '" + this.clientId + "'");
-        this.fromAccountBlock = new WebMarkupBlock("fromAccountBlock", Size.Six_6);
-        this.form.add(this.fromAccountBlock);
-        this.fromAccountIContainer = new WebMarkupContainer("fromAccountIContainer");
-        this.fromAccountBlock.add(this.fromAccountIContainer);
+        this.fromAccountBlock = this.row3.newUIBlock("fromAccountBlock", Size.Six_6);
+        this.fromAccountIContainer = this.fromAccountBlock.newUIContainer("fromAccountIContainer");
         this.fromAccountField = new Select2SingleChoice<>("fromAccountField", new PropertyModel<>(this, "fromAccountValue"), this.fromAccountProvider);
-        this.fromAccountField.setLabel(Model.of("From Account"));
         this.fromAccountIContainer.add(this.fromAccountField);
-        this.fromAccountFeedback = new TextFeedbackPanel("fromAccountFeedback", this.fromAccountField);
-        this.fromAccountIContainer.add(this.fromAccountFeedback);
+        this.fromAccountIContainer.newFeedback("fromAccountFeedback", this.fromAccountField);
 
-        this.destinationProvider = new DestinationProvider();
-        this.destinationBlock = new WebMarkupBlock("destinationBlock", Size.Four_4);
-        this.form.add(this.destinationBlock);
-        this.destinationIContainer = new WebMarkupContainer("destinationIContainer");
-        this.destinationBlock.add(this.destinationIContainer);
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.destinationBlock = this.row4.newUIBlock("destinationBlock", Size.Four_4);
+        this.destinationIContainer = this.destinationBlock.newUIContainer("destinationIContainer");
         this.destinationField = new Select2SingleChoice<>("destinationField", new PropertyModel<>(this, "destinationValue"), this.destinationProvider);
-        this.destinationField.add(new OnChangeAjaxBehavior(this::destinationFieldUpdate));
-        this.destinationField.setLabel(Model.of("Destination"));
         this.destinationIContainer.add(this.destinationField);
-        this.destinationFeedback = new TextFeedbackPanel("destinationFeedback", this.destinationField);
-        this.destinationIContainer.add(this.destinationFeedback);
+        this.destinationIContainer.newFeedback("destinationFeedback", this.destinationField);
 
-        this.toOfficeProvider = new OfficeProvider();
-        this.toOfficeBlock = new WebMarkupBlock("toOfficeBlock", Size.Four_4);
-        this.form.add(this.toOfficeBlock);
-        this.toOfficeIContainer = new WebMarkupContainer("toOfficeIContainer");
-        this.toOfficeBlock.add(this.toOfficeIContainer);
+        this.toOfficeBlock = this.row4.newUIBlock("toOfficeBlock", Size.Four_4);
+        this.toOfficeIContainer = this.toOfficeBlock.newUIContainer("toOfficeIContainer");
         this.toOfficeField = new Select2SingleChoice<>("toOfficeField", new PropertyModel<>(this, "toOfficeValue"), this.toOfficeProvider);
-        this.toOfficeField.setLabel(Model.of("To Office"));
         this.toOfficeIContainer.add(this.toOfficeField);
-        this.toOfficeFeedback = new TextFeedbackPanel("toOfficeFeedback", this.toOfficeField);
-        this.toOfficeIContainer.add(this.toOfficeFeedback);
-
-        this.toOfficeVContainer = new WebMarkupContainer("toOfficeVContainer");
-        this.toOfficeBlock.add(this.toOfficeVContainer);
+        this.toOfficeIContainer.newFeedback("toOfficeFeedback", this.toOfficeField);
+        this.toOfficeVContainer = this.toOfficeBlock.newUIContainer("toOfficeVContainer");
         this.toOfficeView = new ReadOnlyView("toOfficeView", new PropertyModel<>(this, "toOfficeValue"));
         this.toOfficeVContainer.add(this.toOfficeView);
 
-        this.beneficiaryProvider = new OfficeProvider();
-        this.beneficiaryBlock = new WebMarkupBlock("beneficiaryBlock", Size.Four_4);
-        this.form.add(this.beneficiaryBlock);
-        this.beneficiaryIContainer = new WebMarkupContainer("beneficiaryIContainer");
-        this.beneficiaryBlock.add(this.beneficiaryIContainer);
+        this.beneficiaryBlock = this.row4.newUIBlock("beneficiaryBlock", Size.Four_4);
+        this.beneficiaryIContainer = this.beneficiaryBlock.newUIContainer("beneficiaryIContainer");
         this.beneficiaryField = new Select2SingleChoice<>("beneficiaryField", new PropertyModel<>(this, "beneficiaryValue"), this.beneficiaryProvider);
-        this.beneficiaryField.setLabel(Model.of("Beneficiary"));
         this.beneficiaryIContainer.add(this.beneficiaryField);
-        this.beneficiaryFeedback = new TextFeedbackPanel("beneficiaryFeedback", this.beneficiaryField);
-        this.beneficiaryIContainer.add(this.beneficiaryFeedback);
-
-        this.beneficiaryVContainer = new WebMarkupContainer("beneficiaryVContainer");
-        this.beneficiaryBlock.add(this.beneficiaryVContainer);
+        this.beneficiaryIContainer.newFeedback("beneficiaryFeedback", this.beneficiaryField);
+        this.beneficiaryVContainer = this.beneficiaryBlock.newUIContainer("beneficiaryVContainer");
         this.beneficiaryView = new ReadOnlyView("beneficiaryView", new PropertyModel<>(this, "beneficiaryValue"));
         this.beneficiaryVContainer.add(this.beneficiaryView);
 
-        this.toAccountTypeBlock = new WebMarkupBlock("toAccountTypeBlock", Size.Six_6);
-        this.form.add(this.toAccountTypeBlock);
-        this.toAccountTypeVContainer = new WebMarkupContainer("toAccountTypeVContainer");
-        this.toAccountTypeBlock.add(this.toAccountTypeVContainer);
+        this.row5 = UIRow.newUIRow("row5", this.form);
+
+        this.toAccountTypeBlock = this.row5.newUIBlock("toAccountTypeBlock", Size.Six_6);
+        this.toAccountTypeVContainer = this.toAccountTypeBlock.newUIContainer("toAccountTypeVContainer");
         this.toAccountTypeView = new ReadOnlyView("toAccountTypeView", new PropertyModel<>(this, "toAccountTypeValue"));
         this.toAccountTypeVContainer.add(this.toAccountTypeView);
 
-        this.toAccountProvider = new OfficeProvider();
-        this.toAccountBlock = new WebMarkupBlock("toAccountBlock", Size.Six_6);
-        this.form.add(this.toAccountBlock);
-        this.toAccountIContainer = new WebMarkupContainer("toAccountIContainer");
-        this.toAccountBlock.add(this.toAccountIContainer);
+        this.toAccountBlock = this.row5.newUIBlock("toAccountBlock", Size.Six_6);
+        this.toAccountIContainer = this.toAccountBlock.newUIContainer("toAccountIContainer");
         this.toAccountField = new Select2SingleChoice<>("toAccountField", new PropertyModel<>(this, "toAccountValue"), this.toAccountProvider);
-        this.toAccountField.setLabel(Model.of("To Account"));
         this.toAccountIContainer.add(this.toAccountField);
-        this.toAccountFeedback = new TextFeedbackPanel("toAccountFeedback", this.toAccountField);
-        this.toAccountIContainer.add(this.toAccountFeedback);
+        this.toAccountIContainer.newFeedback("toAccountFeedback", this.toAccountField);
 
-        this.standingInstructionTypeProvider = new InstructionTypeProvider();
-        this.standingInstructionTypeBlock = new WebMarkupBlock("standingInstructionTypeBlock", Size.Six_6);
-        this.form.add(this.standingInstructionTypeBlock);
-        this.standingInstructionTypeIContainer = new WebMarkupContainer("standingInstructionTypeIContainer");
-        this.standingInstructionTypeBlock.add(this.standingInstructionTypeIContainer);
+        this.row6 = UIRow.newUIRow("row6", this.form);
+
+        this.standingInstructionTypeBlock = this.row6.newUIBlock("standingInstructionTypeBlock", Size.Six_6);
+        this.standingInstructionTypeIContainer = this.standingInstructionTypeBlock.newUIContainer("standingInstructionTypeIContainer");
         this.standingInstructionTypeField = new Select2SingleChoice<>("standingInstructionTypeField", new PropertyModel<>(this, "standingInstructionTypeValue"), this.standingInstructionTypeProvider);
-        this.standingInstructionTypeField.setLabel(Model.of("Standing Instruction Type"));
         this.standingInstructionTypeIContainer.add(this.standingInstructionTypeField);
-        this.standingInstructionTypeFeedback = new TextFeedbackPanel("standingInstructionTypeFeedback", this.standingInstructionTypeField);
-        this.standingInstructionTypeIContainer.add(this.standingInstructionTypeFeedback);
+        this.standingInstructionTypeIContainer.newFeedback("standingInstructionTypeFeedback", this.standingInstructionTypeField);
 
-        this.amountBlock = new WebMarkupBlock("amountBlock", Size.Six_6);
-        this.form.add(this.amountBlock);
-        this.amountIContainer = new WebMarkupContainer("amountIContainer");
-        this.amountBlock.add(this.amountIContainer);
+        this.amountBlock = this.row6.newUIBlock("amountBlock", Size.Six_6);
+        this.amountIContainer = this.amountBlock.newUIContainer("amountIContainer");
         this.amountField = new TextField<>("amountField", new PropertyModel<>(this, "amountValue"));
-        this.amountField.setLabel(Model.of("Amount"));
         this.amountIContainer.add(this.amountField);
-        this.amountFeedback = new TextFeedbackPanel("amountFeedback", this.amountField);
-        this.amountIContainer.add(this.amountFeedback);
+        this.amountIContainer.newFeedback("amountFeedback", this.amountField);
 
-        this.validFromBlock = new WebMarkupBlock("validFromBlock", Size.Six_6);
-        this.form.add(this.validFromBlock);
-        this.validFromIContainer = new WebMarkupContainer("validFromIContainer");
-        this.validFromBlock.add(this.validFromIContainer);
+        this.row7 = UIRow.newUIRow("row7", this.form);
+
+        this.validFromBlock = this.row7.newUIBlock("validFromBlock", Size.Six_6);
+        this.validFromIContainer = this.validFromBlock.newUIContainer("validFromIContainer");
         this.validFromField = new DateTextField("validFromField", new PropertyModel<>(this, "validFromValue"));
-        this.validFromField.setLabel(Model.of("Valid From"));
         this.validFromIContainer.add(this.validFromField);
-        this.validFromFeedback = new TextFeedbackPanel("validFromFeedback", this.validFromField);
-        this.validFromIContainer.add(this.validFromFeedback);
+        this.validFromIContainer.newFeedback("validFromFeedback", this.validFromField);
 
-        this.validUntilBlock = new WebMarkupBlock("validUntilBlock", Size.Six_6);
-        this.form.add(this.validUntilBlock);
-        this.validUntilIContainer = new WebMarkupContainer("validUntilIContainer");
-        this.validUntilBlock.add(this.validUntilIContainer);
+        this.validUntilBlock = this.row7.newUIBlock("validUntilBlock", Size.Six_6);
+        this.validUntilIContainer = this.validUntilBlock.newUIContainer("validUntilIContainer");
         this.validUntilField = new DateTextField("validUntilField", new PropertyModel<>(this, "validUntilValue"));
-        this.validUntilField.setLabel(Model.of("Valid Until"));
         this.validUntilIContainer.add(this.validUntilField);
-        this.validUntilFeedback = new TextFeedbackPanel("validUntilFeedback", this.validUntilField);
-        this.validUntilIContainer.add(this.validUntilFeedback);
+        this.validUntilIContainer.newFeedback("validUntilFeedback", this.validUntilField);
 
-        this.recurrenceTypeProvider = new RecurrenceTypeProvider();
-        this.recurrenceTypeBlock = new WebMarkupBlock("recurrenceTypeBlock", Size.Three_3);
-        this.form.add(this.recurrenceTypeBlock);
-        this.recurrenceTypeIContainer = new WebMarkupContainer("recurrenceTypeIContainer");
-        this.recurrenceTypeBlock.add(this.recurrenceTypeIContainer);
+        this.row8 = UIRow.newUIRow("row8", this.form);
+
+        this.recurrenceTypeBlock = this.row8.newUIBlock("recurrenceTypeBlock", Size.Three_3);
+        this.recurrenceTypeIContainer = this.recurrenceTypeBlock.newUIContainer("recurrenceTypeIContainer");
         this.recurrenceTypeField = new Select2SingleChoice<>("recurrenceTypeField", new PropertyModel<>(this, "recurrenceTypeValue"), this.recurrenceTypeProvider);
-        this.recurrenceTypeField.setLabel(Model.of("Recurrence Type"));
         this.recurrenceTypeIContainer.add(this.recurrenceTypeField);
-        this.recurrenceTypeFeedback = new TextFeedbackPanel("recurrenceTypeFeedback", this.recurrenceTypeField);
-        this.recurrenceTypeIContainer.add(this.recurrenceTypeFeedback);
+        this.recurrenceTypeIContainer.newFeedback("recurrenceTypeFeedback", this.recurrenceTypeField);
 
-        this.recurrenceFrequencyProvider = new RecurrenceFrequencyProvider();
-        this.recurrenceFrequencyBlock = new WebMarkupBlock("recurrenceFrequencyBlock", Size.Three_3);
-        this.form.add(this.recurrenceFrequencyBlock);
-        this.recurrenceFrequencyIContainer = new WebMarkupContainer("recurrenceFrequencyIContainer");
-        this.recurrenceFrequencyBlock.add(this.recurrenceFrequencyIContainer);
+        this.recurrenceFrequencyBlock = this.row8.newUIBlock("recurrenceFrequencyBlock", Size.Three_3);
+        this.recurrenceFrequencyIContainer = this.recurrenceFrequencyBlock.newUIContainer("recurrenceFrequencyIContainer");
         this.recurrenceFrequencyField = new Select2SingleChoice<>("recurrenceFrequencyField", new PropertyModel<>(this, "recurrenceFrequencyValue"), this.recurrenceFrequencyProvider);
-        this.recurrenceFrequencyField.setLabel(Model.of("Recurrence Frequency"));
         this.recurrenceFrequencyIContainer.add(this.recurrenceFrequencyField);
-        this.recurrenceFrequencyFeedback = new TextFeedbackPanel("recurrenceFrequencyFeedback", this.recurrenceFrequencyField);
-        this.recurrenceFrequencyIContainer.add(this.recurrenceFrequencyFeedback);
+        this.recurrenceFrequencyIContainer.newFeedback("recurrenceFrequencyFeedback", this.recurrenceFrequencyField);
 
-        this.intervalBlock = new WebMarkupBlock("intervalBlock", Size.Three_3);
-        this.form.add(this.intervalBlock);
-        this.intervalIContainer = new WebMarkupContainer("intervalIContainer");
-        this.intervalBlock.add(this.intervalIContainer);
+        this.intervalBlock = this.row8.newUIBlock("intervalBlock", Size.Three_3);
+        this.intervalIContainer = this.intervalBlock.newUIContainer("intervalIContainer");
         this.intervalField = new TextField<>("intervalField", new PropertyModel<>(this, "intervalValue"));
-        this.intervalField.setLabel(Model.of("Interval"));
         this.intervalIContainer.add(this.intervalField);
-        this.intervalFeedback = new TextFeedbackPanel("intervalFeedback", this.intervalField);
-        this.intervalIContainer.add(this.intervalFeedback);
+        this.intervalIContainer.newFeedback("intervalFeedback", this.intervalField);
 
-        this.onMonthDayBlock = new WebMarkupBlock("onMonthDayBlock", Size.Three_3);
-        this.form.add(this.onMonthDayBlock);
-        this.onMonthDayIContainer = new WebMarkupContainer("onMonthDayIContainer");
-        this.onMonthDayBlock.add(this.onMonthDayIContainer);
+        this.onMonthDayBlock = this.row8.newUIBlock("onMonthDayBlock", Size.Three_3);
+        this.onMonthDayIContainer = this.onMonthDayBlock.newUIContainer("onMonthDayIContainer");
         this.onMonthDayField = new DayMonthTextField("onMonthDayField", new PropertyModel<>(this, "onMonthDayValue"));
-        this.onMonthDayField.setLabel(Model.of("On Month Day"));
         this.onMonthDayIContainer.add(this.onMonthDayField);
-        this.onMonthDayFeedback = new TextFeedbackPanel("onMonthDayFeedback", this.onMonthDayField);
-        this.onMonthDayIContainer.add(this.onMonthDayFeedback);
+        this.onMonthDayIContainer.newFeedback("onMonthDayFeedback", this.onMonthDayField);
 
     }
 
     @Override
+    protected void initData() {
+        JdbcNamed named = SpringBean.getBean(JdbcNamed.class);
+        this.clientId = getPageParameters().get("clientId").toString();
+        this.destinationValue = Destination.OwnAccount.toOption();
+        this.fromAccountTypeValue = StandingInstructionAccountType.SavingAccount.toOption();
+        SelectQuery selectQuery = null;
+        selectQuery = new SelectQuery(MClient.NAME);
+        selectQuery.addField(MClient.Field.DISPLAY_NAME);
+        selectQuery.addWhere(MClient.Field.ID + " = :" + MClient.Field.ID, this.clientId);
+        Map<String, Object> clientObject = named.queryForMap(selectQuery.toSQL(), selectQuery.getParam());
+        this.applicantValue = (String) clientObject.get("display_name");
+        this.clientDisplayName = (String) clientObject.get("display_name");
+        this.typeProvider = new TransferTypeProvider();
+        this.statusProvider = new StatusProvider();
+        this.priorityProvider = new PriorityProvider();
+        this.fromAccountProvider = new ClientDepositAccountProvider();
+        this.fromAccountProvider.applyWhere("client_id", MSavingsAccount.NAME + "." + MSavingsAccount.Field.CLIENT_ID + " = '" + this.clientId + "'");
+        this.destinationProvider = new DestinationProvider();
+        this.toOfficeProvider = new OfficeProvider();
+        this.beneficiaryProvider = new OfficeProvider();
+        this.toAccountProvider = new OfficeProvider();
+        this.standingInstructionTypeProvider = new InstructionTypeProvider();
+        this.recurrenceTypeProvider = new RecurrenceTypeProvider();
+        this.recurrenceFrequencyProvider = new RecurrenceFrequencyProvider();
+    }
+
+    @Override
     protected void configureMetaData() {
+        this.recurrenceTypeField.setLabel(Model.of("Recurrence Type"));
+        this.recurrenceFrequencyField.setLabel(Model.of("Recurrence Frequency"));
+        this.intervalField.setLabel(Model.of("Interval"));
+        this.onMonthDayField.setLabel(Model.of("On Month Day"));
+
+        this.validUntilField.setLabel(Model.of("Valid Until"));
+
+        this.validFromField.setLabel(Model.of("Valid From"));
+
+        this.amountField.setLabel(Model.of("Amount"));
+
+        this.standingInstructionTypeField.setLabel(Model.of("Standing Instruction Type"));
+
+        this.toAccountField.setLabel(Model.of("To Account"));
+
+        this.beneficiaryField.setLabel(Model.of("Beneficiary"));
+
+        this.toOfficeField.setLabel(Model.of("To Office"));
+
+        this.destinationField.add(new OnChangeAjaxBehavior(this::destinationFieldUpdate));
+        this.destinationField.setLabel(Model.of("Destination"));
+
+        this.fromAccountField.setLabel(Model.of("From Account"));
+
+        this.priorityField.setLabel(Model.of("Priority"));
+
+        this.statusField.setLabel(Model.of("Status"));
+
+        this.typeField.add(new OnChangeAjaxBehavior(this::typeFieldUpdate));
+        this.typeField.setLabel(Model.of("Type"));
+
+        this.nameField.setLabel(Model.of("Name"));
         destinationFieldUpdate(null);
     }
 

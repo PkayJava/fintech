@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -22,9 +21,10 @@ import com.angkorteam.fintech.ddl.MClient;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.spring.StringGenerator;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -32,6 +32,7 @@ import com.angkorteam.framework.spring.JdbcNamed;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -45,11 +46,12 @@ public class ClientSignatureUploadPage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock fileBlock;
-    protected WebMarkupContainer fileIContainer;
+    protected UIRow row1;
+
+    protected UIBlock fileBlock;
+    protected UIContainer fileIContainer;
     protected List<FileUpload> fileValue;
     protected FileUploadField fileField;
-    protected TextFeedbackPanel fileFeedback;
 
     @Override
     protected void initComponent() {
@@ -66,24 +68,19 @@ public class ClientSignatureUploadPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        initFileBlock();
+        this.row1 = UIRow.newUIRow("", this.form);
+
+        this.fileBlock = this.row1.newUIBlock("fileBlock", Size.Six_6);
+        this.fileIContainer = this.fileBlock.newUIContainer("fileIContainer");
+        this.fileField = new FileUploadField("fileField", new PropertyModel<>(this, "fileValue"));
+        this.fileIContainer.add(this.fileField);
+        this.fileIContainer.newFeedback("fileFeedback", this.fileField);
     }
 
     @Override
     protected void configureMetaData() {
-    }
-
-    protected void initFileBlock() {
-        this.fileBlock = new WebMarkupBlock("fileBlock", Size.Six_6);
-        this.form.add(this.fileBlock);
-        this.fileIContainer = new WebMarkupContainer("fileIContainer");
-        this.fileBlock.add(this.fileIContainer);
-        this.fileField = new FileUploadField("fileField", new PropertyModel<>(this, "fileValue"));
         this.fileField.setRequired(true);
         this.fileField.setLabel(Model.of("Picture"));
-        this.fileIContainer.add(this.fileField);
-        this.fileFeedback = new TextFeedbackPanel("fileFeedback", this.fileField);
-        this.fileIContainer.add(this.fileFeedback);
     }
 
     @Override

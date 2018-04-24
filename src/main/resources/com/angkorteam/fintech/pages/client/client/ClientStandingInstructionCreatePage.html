@@ -15,181 +15,184 @@
 
 				<div class="box-body">
 
-					<!-- Row -->
-					<div wicket:id="nameBlock" class="form-group">
-						<wicket:container wicket:id="nameIContainer">
-							<label wicket:for="nameField">Name</label>
-							<input type="text" wicket:id="nameField" class="form-control" />
-							<span wicket:id="nameFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row1">
+						<div wicket:id="nameBlock" class="form-group">
+							<wicket:container wicket:id="nameIContainer">
+								<label wicket:for="nameField">Name</label>
+								<input type="text" wicket:id="nameField" class="form-control" />
+								<span wicket:id="nameFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="applicantBlock" class="form-group">
+							<wicket:container wicket:id="applicantVContainer">
+								<label>Applicant</label>
+								<div wicket:id="applicantView" class="form-control" />
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="applicantBlock" class="form-group">
-						<wicket:container wicket:id="applicantVContainer">
-							<label>Applicant</label>
-							<div wicket:id="applicantView" class="form-control" />
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="typeBlock" class="form-group">
-						<wicket:container wicket:id="typeIContainer">
-							<label wicket:for="typeField">Type</label>
-							<select wicket:id="typeField" class="form-control"></select>
-							<span wicket:id="typeFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row2">
+						<div wicket:id="typeBlock" class="form-group">
+							<wicket:container wicket:id="typeIContainer">
+								<label wicket:for="typeField">Type</label>
+								<select wicket:id="typeField" class="form-control"></select>
+								<span wicket:id="typeFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="statusBlock" class="form-group">
+							<wicket:container wicket:id="statusIContainer">
+								<label wicket:for="statusField">Status</label>
+								<select wicket:id="statusField" class="form-control"></select>
+								<span wicket:id="statusFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="priorityBlock" class="form-group">
+							<wicket:container wicket:id="priorityIContainer">
+								<label wicket:for="priorityField">Priority</label>
+								<select wicket:id="priorityField" class="form-control"></select>
+								<span wicket:id="priorityFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="statusBlock" class="form-group">
-						<wicket:container wicket:id="statusIContainer">
-							<label wicket:for="statusField">Status</label>
-							<select wicket:id="statusField" class="form-control"></select>
-							<span wicket:id="statusFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="priorityBlock" class="form-group">
-						<wicket:container wicket:id="priorityIContainer">
-							<label wicket:for="priorityField">Priority</label>
-							<select wicket:id="priorityField" class="form-control"></select>
-							<span wicket:id="priorityFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="fromAccountTypeBlock" class="form-group">
-						<wicket:container wicket:id="fromAccountTypeVContainer">
-							<label>From Account Type</label>
-							<div wicket:id="fromAccountTypeView" class="form-control"></div>
-						</wicket:container>
+					<div wicket:id="row3">
+						<div wicket:id="fromAccountTypeBlock" class="form-group">
+							<wicket:container wicket:id="fromAccountTypeVContainer">
+								<label>From Account Type</label>
+								<div wicket:id="fromAccountTypeView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="fromAccountBlock" class="form-group">
+							<wicket:container wicket:id="fromAccountIContainer">
+								<label wicket:for="fromAccountField">From Account</label>
+								<select wicket:id="fromAccountField" class="form-control"></select>
+								<span wicket:id="fromAccountFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="fromAccountBlock" class="form-group">
-						<wicket:container wicket:id="fromAccountIContainer">
-							<label wicket:for="fromAccountField">From Account</label>
-							<select wicket:id="fromAccountField" class="form-control"></select>
-							<span wicket:id="fromAccountFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="destinationBlock" class="form-group">
-						<wicket:container wicket:id="destinationIContainer">
-							<label wicket:for="destinationField">Destination</label>
-							<select wicket:id="destinationField" class="form-control"></select>
-							<span wicket:id="destinationFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row4">
+						<div wicket:id="destinationBlock" class="form-group">
+							<wicket:container wicket:id="destinationIContainer">
+								<label wicket:for="destinationField">Destination</label>
+								<select wicket:id="destinationField" class="form-control"></select>
+								<span wicket:id="destinationFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="toOfficeBlock" class="form-group">
+							<wicket:container wicket:id="toOfficeIContainer">
+								<label wicket:for="toOfficeField">To Office</label>
+								<select wicket:id="toOfficeField" class="form-control"></select>
+								<span wicket:id="toOfficeFeedback" class="help-block"></span>
+							</wicket:container>
+							<wicket:container wicket:id="toOfficeVContainer">
+								<label>To Office</label>
+								<div wicket:id="toOfficeView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="beneficiaryBlock" class="form-group">
+							<wicket:container wicket:id="beneficiaryIContainer">
+								<label wicket:for="beneficiaryField">Beneficiary</label>
+								<select wicket:id="beneficiaryField" class="form-control"></select>
+								<span wicket:id="beneficiaryFeedback" class="help-block"></span>
+							</wicket:container>
+							<wicket:container wicket:id="beneficiaryVContainer">
+								<label>Beneficiary</label>
+								<div wicket:id="beneficiaryView" class="form-control"></div>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="toOfficeBlock" class="form-group">
-						<wicket:container wicket:id="toOfficeIContainer">
-							<label wicket:for="toOfficeField">To Office</label>
-							<select wicket:id="toOfficeField" class="form-control"></select>
-							<span wicket:id="toOfficeFeedback" class="help-block"></span>
-						</wicket:container>
-						<wicket:container wicket:id="toOfficeVContainer">
-							<label>To Office</label>
-							<div wicket:id="toOfficeView" class="form-control"></div>
-						</wicket:container>
-					</div>
-					<div wicket:id="beneficiaryBlock" class="form-group">
-						<wicket:container wicket:id="beneficiaryIContainer">
-							<label wicket:for="beneficiaryField">Beneficiary</label>
-							<select wicket:id="beneficiaryField" class="form-control"></select>
-							<span wicket:id="beneficiaryFeedback" class="help-block"></span>
-						</wicket:container>
-						<wicket:container wicket:id="beneficiaryVContainer">
-							<label>Beneficiary</label>
-							<div wicket:id="beneficiaryView" class="form-control"></div>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="toAccountTypeBlock" class="form-group">
-						<wicket:container wicket:id="toAccountTypeVContainer">
-							<label>To Account Type</label>
-							<div wicket:id="toAccountTypeView" class="form-control"></div>
-						</wicket:container>
+					<div wicket:id="row5">
+						<div wicket:id="toAccountTypeBlock" class="form-group">
+							<wicket:container wicket:id="toAccountTypeVContainer">
+								<label>To Account Type</label>
+								<div wicket:id="toAccountTypeView" class="form-control"></div>
+							</wicket:container>
+						</div>
+						<div wicket:id="toAccountBlock" class="form-group">
+							<wicket:container wicket:id="toAccountIContainer">
+								<label wicket:for="toAccountField">To Account</label>
+								<select wicket:id="toAccountField" class="form-control"></select>
+								<span wicket:id="toAccountFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="toAccountBlock" class="form-group">
-						<wicket:container wicket:id="toAccountIContainer">
-							<label wicket:for="toAccountField">To Account</label>
-							<select wicket:id="toAccountField" class="form-control"></select>
-							<span wicket:id="toAccountFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="standingInstructionTypeBlock" class="form-group">
-						<wicket:container wicket:id="standingInstructionTypeIContainer">
-							<label wicket:for="standingInstructionTypeField">Standing
-								Instruction Type</label>
-							<select wicket:id="standingInstructionTypeField"
-								class="form-control"></select>
-							<span wicket:id="standingInstructionTypeFeedback"
-								class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row6">
+						<div wicket:id="standingInstructionTypeBlock" class="form-group">
+							<wicket:container wicket:id="standingInstructionTypeIContainer">
+								<label wicket:for="standingInstructionTypeField">Standing
+									Instruction Type</label>
+								<select wicket:id="standingInstructionTypeField"
+									class="form-control"></select>
+								<span wicket:id="standingInstructionTypeFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="amountBlock" class="form-group">
+							<wicket:container wicket:id="amountIContainer">
+								<label wicket:for="amountField">Amount</label>
+								<input type="text" wicket:id="amountField" class="form-control" />
+								<span wicket:id="amountFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="amountBlock" class="form-group">
-						<wicket:container wicket:id="amountIContainer">
-							<label wicket:for="amountField">Amount</label>
-							<input type="text" wicket:id="amountField" class="form-control" />
-							<span wicket:id="amountFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="validFromBlock" class="form-group">
-						<wicket:container wicket:id="validFromIContainer">
-							<label wicket:for="validFromField">Valid From</label>
-							<input type="text" wicket:id="validFromField"
-								class="form-control" />
-							<span wicket:id="validFromFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row7">
+						<div wicket:id="validFromBlock" class="form-group">
+							<wicket:container wicket:id="validFromIContainer">
+								<label wicket:for="validFromField">Valid From</label>
+								<input type="text" wicket:id="validFromField"
+									class="form-control" />
+								<span wicket:id="validFromFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="validUntilBlock" class="form-group">
+							<wicket:container wicket:id="validUntilIContainer">
+								<label wicket:for="validUntilField">Valid Until</label>
+								<input type="text" wicket:id="validUntilField"
+									class="form-control" />
+								<span wicket:id="validUntilFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="validUntilBlock" class="form-group">
-						<wicket:container wicket:id="validUntilIContainer">
-							<label wicket:for="validUntilField">Valid Until</label>
-							<input type="text" wicket:id="validUntilField"
-								class="form-control" />
-							<span wicket:id="validUntilFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="recurrenceTypeBlock" class="form-group">
-						<wicket:container wicket:id="recurrenceTypeIContainer">
-							<label wicket:for="recurrenceTypeField">Recurrence Type</label>
-							<select wicket:id="recurrenceTypeField" class="form-control"></select>
-							<span wicket:id="recurrenceTypeFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row8">
+						<div wicket:id="recurrenceTypeBlock" class="form-group">
+							<wicket:container wicket:id="recurrenceTypeIContainer">
+								<label wicket:for="recurrenceTypeField">Recurrence Type</label>
+								<select wicket:id="recurrenceTypeField" class="form-control"></select>
+								<span wicket:id="recurrenceTypeFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="intervalBlock" class="form-group">
+							<wicket:container wicket:id="intervalIContainer">
+								<label wicket:for="intervalField">Interval</label>
+								<input type="text" wicket:id="intervalField"
+									class="form-control" />
+								<span wicket:id="intervalFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="recurrenceFrequencyBlock" class="form-group">
+							<wicket:container wicket:id="recurrenceFrequencyIContainer">
+								<label wicket:for="recurrenceFrequencyField">Recurrence
+									Frequency</label>
+								<select wicket:id="recurrenceFrequencyField"
+									class="form-control"></select>
+								<span wicket:id="recurrenceFrequencyFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="onMonthDayBlock" class="form-group">
+							<wicket:container wicket:id="onMonthDayIContainer">
+								<label wicket:for="onMonthDayField">On Month Day</label>
+								<input type="text" wicket:id="onMonthDayField"
+									class="form-control" />
+								<span wicket:id="onMonthDayFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="intervalBlock" class="form-group">
-						<wicket:container wicket:id="intervalIContainer">
-							<label wicket:for="intervalField">Interval</label>
-							<input type="text" wicket:id="intervalField" class="form-control" />
-							<span wicket:id="intervalFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="recurrenceFrequencyBlock" class="form-group">
-						<wicket:container wicket:id="recurrenceFrequencyIContainer">
-							<label wicket:for="recurrenceFrequencyField">Recurrence
-								Frequency</label>
-							<select wicket:id="recurrenceFrequencyField" class="form-control"></select>
-							<span wicket:id="recurrenceFrequencyFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="onMonthDayBlock" class="form-group">
-						<wicket:container wicket:id="onMonthDayIContainer">
-							<label wicket:for="onMonthDayField">On Month Day</label>
-							<input type="text" wicket:id="onMonthDayField"
-								class="form-control" />
-							<span wicket:id="onMonthDayFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
+
 				</div>
 
 				<div class="box-footer">
