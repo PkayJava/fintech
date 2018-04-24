@@ -13,26 +13,25 @@
 				</div>
 				<div class="box-body">
 
-					<!-- Row -->
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label>Live Preview</label>
-						<div wicket:id="webcamPreview"
-							style="width: 240px; height: 320px;">
-							<div class="placeholder">Your browser does not support
-								camera access.</div>
+					<div wicket:id="row1">
+						<div wicket:id="webcamBlock" class="form-group">
+							<label>Live Preview</label>
+							<div wicket:id="webcamPreview"
+								style="width: 240px; height: 320px;">
+								<div class="placeholder">Your browser does not support
+									camera access.</div>
+							</div>
+						</div>
+						<div wicket:id="snapDataBlock" class="form-group">
+							<label>Snap Preview</label> <input type="hidden"
+								wicket:id="snapDataField" />
+							<div style="width: 240px; height: 320px;">
+								<img wicket:id="snapPreview"
+									style="width: 240px; height: 320px;" />
+							</div>
+							<span wicket:id="snapDataFeedback" class="help-block"></span>
 						</div>
 					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<label>Snap Preview</label> <input type="hidden"
-							wicket:id="snapDataField" />
-						<div style="width: 240px; height: 320px;">
-							<img wicket:id="snapPreview" style="width: 240px; height: 320px;" />
-						</div>
-						<span wicket:id="snapDataFeedback" class="help-block"></span>
-					</div>
-					<div class="clearfix"></div>
 
 					<div class="box-footer">
 						<button wicket:id="takeButton" type="button" class="btn btn-info">Take

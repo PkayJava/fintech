@@ -7,7 +7,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -23,6 +23,10 @@ import com.angkorteam.fintech.Session;
 import com.angkorteam.fintech.ddl.MClient;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.ClientHelper;
+import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
 import com.angkorteam.fintech.widget.Webcam;
 import com.angkorteam.framework.ReferenceUtilities;
@@ -34,6 +38,7 @@ import com.angkorteam.framework.spring.JdbcTemplate;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -47,10 +52,13 @@ public class ClientWebcamPage extends Page {
     protected Button okayButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupContainer webcamPreview;
+    protected UIRow row1;
 
+    protected UIBlock webcamBlock;
+    protected UIContainer webcamPreview;
     protected WebMarkupContainer snapPreview;
 
+    protected UIBlock snapDataBlock;
     protected HiddenField<String> snapDataField;
     protected String snapDataValue;
     protected TextFeedbackPanel snapDataFeedback;
@@ -104,21 +112,21 @@ public class ClientWebcamPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ClientPreviewPage.class, parameters);
         this.form.add(closeLink);
 
-        this.webcamPreview = new WebMarkupContainer("webcamPreview");
-        this.webcamPreview.setOutputMarkupId(true);
-        this.form.add(this.webcamPreview);
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        this.snapPreview = new WebMarkupContainer("snapPreview");
-        this.snapPreview.setOutputMarkupId(true);
-        this.form.add(this.snapPreview);
+        this.webcamBlock = this.row1.newUIBlock("webcamBlock", Size.Six_6);
+        this.webcamPreview = this.webcamBlock.newUIContainer("webcamPreview");
+
+        this.snapDataBlock = this.row1.newUIBlock("snapDataBlock", Size.Six_6);
+        this.snapPreview = this.snapDataBlock.newUIContainer("snapPreview");
 
         this.snapDataField = new HiddenField<>("snapDataField", new PropertyModel<>(this, "snapDataValue"));
         this.snapDataField.setOutputMarkupId(true);
         this.snapDataField.setRequired(true);
         this.snapDataField.setLabel(Model.of("Picture"));
-        this.form.add(this.snapDataField);
+        this.snapDataBlock.add(this.snapDataField);
         this.snapDataFeedback = new TextFeedbackPanel("snapDataFeedback", this.snapDataField);
-        this.form.add(this.snapDataFeedback);
+        this.snapDataBlock.add(this.snapDataFeedback);
 
         this.takeButton = new WebMarkupContainer("takeButton");
         this.takeButton.setOutputMarkupId(true);
