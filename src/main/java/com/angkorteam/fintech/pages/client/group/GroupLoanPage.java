@@ -1,6 +1,5 @@
 package com.angkorteam.fintech.pages.client.group;
 
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -10,10 +9,11 @@ import com.angkorteam.fintech.Page;
 import com.angkorteam.fintech.ddl.MSavingsProduct;
 import com.angkorteam.fintech.dto.enums.DepositType;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
@@ -29,12 +29,13 @@ public class GroupLoanPage extends Page {
 
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock productBlock;
-    protected WebMarkupContainer productIContainer;
+    protected UIRow row1;
+
+    protected UIBlock productBlock;
+    protected UIContainer productIContainer;
     protected SingleChoiceProvider productProvider;
     protected Option productValue;
     protected Select2SingleChoice<Option> productField;
-    protected TextFeedbackPanel productFeedback;
 
     @Override
     protected void initComponent() {
@@ -51,29 +52,29 @@ public class GroupLoanPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", CenterPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.productBlock = new WebMarkupBlock("productBlock", Size.Six_6);
-        this.form.add(this.productBlock);
-        this.productIContainer = new WebMarkupContainer("productIContainer");
-        this.productBlock.add(this.productIContainer);
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        this.productProvider = new SingleChoiceProvider(MSavingsProduct.NAME, MSavingsProduct.Field.ID, MSavingsProduct.Field.NAME);
-        this.productProvider.applyWhere("deposit_type_enum", MSavingsProduct.Field.DEPOSIT_TYPE_ENUM + " = " + DepositType.Saving.getLiteral());
+        this.productBlock = this.row1.newUIBlock("productBlock", Size.Six_6);
+        this.productIContainer = this.productBlock.newUIContainer("productIContainer");
         this.productField = new Select2SingleChoice<>("productField", new PropertyModel<>(this, "productValue"), this.productProvider);
-        this.productField.setLabel(Model.of("Product"));
-        this.productField.add(new OnChangeAjaxBehavior());
-        this.productField.setRequired(true);
         this.productIContainer.add(this.productField);
-        this.productFeedback = new TextFeedbackPanel("productFeedback", this.productField);
-        this.productIContainer.add(this.productFeedback);
+        this.productIContainer.newFeedback("productFeedback", this.productField);
     }
 
     @Override
     protected void configureMetaData() {
+        this.productField.setLabel(Model.of("Product"));
+        this.productField.add(new OnChangeAjaxBehavior());
+        this.productField.setRequired(true);
     }
 
     @Override
     protected void initData() {
         this.groupId = getPageParameters().get("groupId").toString();
+
+        this.productProvider = new SingleChoiceProvider(MSavingsProduct.NAME, MSavingsProduct.Field.ID, MSavingsProduct.Field.NAME);
+        this.productProvider.applyWhere("deposit_type_enum", MSavingsProduct.Field.DEPOSIT_TYPE_ENUM + " = " + DepositType.Saving.getLiteral());
+
     }
 
     protected void okayButtonSubmit(Button button) {
