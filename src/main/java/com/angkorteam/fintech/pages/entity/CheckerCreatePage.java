@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -19,12 +18,13 @@ import com.angkorteam.fintech.dto.enums.EntityStatus;
 import com.angkorteam.fintech.dto.enums.EntityType;
 import com.angkorteam.fintech.helper.EntityCheckHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.OrganizationDashboardPage;
 import com.angkorteam.fintech.provider.EntityStatusProvider;
 import com.angkorteam.fintech.provider.EntityTypeProvider;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
@@ -32,6 +32,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -44,26 +45,35 @@ public class CheckerCreatePage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock entityBlock;
-    protected WebMarkupContainer entityIContainer;
+    protected UIRow row1;
+
+    protected UIBlock entityBlock;
+    protected UIContainer entityIContainer;
     protected EntityTypeProvider entityProvider;
     protected Option entityValue;
     protected Select2SingleChoice<Option> entityField;
-    protected TextFeedbackPanel entityFeedback;
 
-    protected WebMarkupBlock statusBlock;
-    protected WebMarkupContainer statusIContainer;
+    protected UIBlock row1Block1;
+
+    protected UIRow row2;
+
+    protected UIBlock statusBlock;
+    protected UIContainer statusIContainer;
     protected EntityStatusProvider statusProvider;
     protected Option statusValue;
     protected Select2SingleChoice<Option> statusField;
-    protected TextFeedbackPanel statusFeedback;
 
-    protected WebMarkupBlock datatableBlock;
-    protected WebMarkupContainer datatableIContainer;
+    protected UIBlock row2Block1;
+
+    protected UIRow row3;
+
+    protected UIBlock datatableBlock;
+    protected UIContainer datatableIContainer;
     protected SingleChoiceProvider datatableProvider;
     protected Option datatableValue;
     protected Select2SingleChoice<Option> datatableField;
-    protected TextFeedbackPanel datatableFeedback;
+
+    protected UIBlock row3Block1;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -95,6 +105,10 @@ public class CheckerCreatePage extends Page {
 
     @Override
     protected void initData() {
+        this.entityProvider = new EntityTypeProvider();
+        this.statusProvider = new EntityStatusProvider();
+        this.datatableProvider = new SingleChoiceProvider(XRegisteredTable.NAME, XRegisteredTable.Field.APPLICATION_TABLE_NAME, XRegisteredTable.Field.REGISTERED_TABLE_NAME);
+        this.datatableProvider.setDisabled(true);
     }
 
     @Override
@@ -109,59 +123,48 @@ public class CheckerCreatePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", CheckerBrowsePage.class);
         this.form.add(this.closeLink);
 
-        initEntityBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initStatusBlock();
+        this.entityBlock = this.row1.newUIBlock("entityBlock", Size.Six_6);
+        this.entityIContainer = this.entityBlock.newUIContainer("entityIContainer");
+        this.entityField = new Select2SingleChoice<>("entityField", new PropertyModel<>(this, "entityValue"), this.entityProvider);
+        this.entityIContainer.add(this.entityField);
+        this.entityIContainer.newFeedback("entityFeedback", this.entityField);
 
-        initDatatableBlock();
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
+
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.statusBlock = this.row2.newUIBlock("statusBlock", Size.Six_6);
+        this.statusIContainer = this.statusBlock.newUIContainer("statusIContainer");
+        this.statusField = new Select2SingleChoice<>("statusField", new PropertyModel<>(this, "statusValue"), this.statusProvider);
+        this.statusIContainer.add(this.statusField);
+        this.statusIContainer.newFeedback("statusFeedback", this.statusField);
+
+        this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Six_6);
+
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.datatableBlock = this.row3.newUIBlock("datatableBlock", Size.Six_6);
+        this.datatableIContainer = this.datatableBlock.newUIContainer("datatableIContainer");
+        this.datatableField = new Select2SingleChoice<>("datatableField", new PropertyModel<>(this, "datatableValue"), this.datatableProvider);
+        this.datatableIContainer.add(this.datatableField);
+        this.datatableIContainer.newFeedback("datatableFeedback", this.datatableField);
+
+        this.row3Block1 = this.row3.newUIBlock("row3Block1", Size.Six_6);
     }
 
     @Override
     protected void configureMetaData() {
-
-    }
-
-    protected void initEntityBlock() {
-        this.entityBlock = new WebMarkupBlock("entityBlock", Size.Twelve_12);
-        this.form.add(this.entityBlock);
-        this.entityIContainer = new WebMarkupContainer("entityIContainer");
-        this.entityBlock.add(this.entityIContainer);
-        this.entityProvider = new EntityTypeProvider();
-        this.entityField = new Select2SingleChoice<>("entityField", new PropertyModel<>(this, "entityValue"), this.entityProvider);
-        this.entityField.setRequired(true);
-        this.entityIContainer.add(this.entityField);
-        this.entityFeedback = new TextFeedbackPanel("entityFeedback", this.entityField);
-        this.entityIContainer.add(this.entityFeedback);
-        this.entityField.add(new OnChangeAjaxBehavior(this::entityFieldUpdate));
-    }
-
-    protected void initStatusBlock() {
-        this.statusBlock = new WebMarkupBlock("statusBlock", Size.Twelve_12);
-        this.form.add(this.statusBlock);
-        this.statusIContainer = new WebMarkupContainer("statusIContainer");
-        this.statusBlock.add(this.statusIContainer);
-        this.statusProvider = new EntityStatusProvider();
-        this.statusField = new Select2SingleChoice<>("statusField", new PropertyModel<>(this, "statusValue"), this.statusProvider);
-        this.statusField.setRequired(true);
-        this.statusIContainer.add(this.statusField);
-        this.statusFeedback = new TextFeedbackPanel("statusFeedback", this.statusField);
-        this.statusIContainer.add(this.statusFeedback);
-        this.statusField.add(new OnChangeAjaxBehavior(this::statusFieldUpdate));
-    }
-
-    protected void initDatatableBlock() {
-        this.datatableBlock = new WebMarkupBlock("datatableBlock", Size.Twelve_12);
-        this.form.add(this.datatableBlock);
-        this.datatableIContainer = new WebMarkupContainer("datatableIContainer");
-        this.datatableBlock.add(this.datatableIContainer);
-        this.datatableProvider = new SingleChoiceProvider(XRegisteredTable.NAME, XRegisteredTable.Field.APPLICATION_TABLE_NAME, XRegisteredTable.Field.REGISTERED_TABLE_NAME);
-        this.datatableProvider.setDisabled(true);
-        this.datatableField = new Select2SingleChoice<>("datatableField", new PropertyModel<>(this, "datatableValue"), this.datatableProvider);
         this.datatableField.setRequired(true);
         this.datatableField.add(new OnChangeAjaxBehavior(this::datatableFieldUpdate));
-        this.datatableIContainer.add(this.datatableField);
-        this.datatableFeedback = new TextFeedbackPanel("datatableFeedback", this.datatableField);
-        this.datatableIContainer.add(this.datatableFeedback);
+
+        this.statusField.setRequired(true);
+        this.statusField.add(new OnChangeAjaxBehavior(this::statusFieldUpdate));
+
+        this.entityField.setRequired(true);
+        this.entityField.add(new OnChangeAjaxBehavior(this::entityFieldUpdate));
+
     }
 
     protected boolean datatableFieldUpdate(AjaxRequestTarget target) {
