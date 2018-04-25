@@ -8,7 +8,6 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -21,12 +20,14 @@ import com.angkorteam.fintech.ddl.MCode;
 import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.helper.CodeHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.SystemDashboardPage;
 import com.angkorteam.fintech.provider.JdbcProvider;
 import com.angkorteam.fintech.table.BadgeCell;
 import com.angkorteam.fintech.table.LinkCell;
 import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.BadgeType;
 import com.angkorteam.framework.models.PageBreadcrumb;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -38,6 +39,7 @@ import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.tabl
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 /**
@@ -46,21 +48,27 @@ import io.github.openunirest.http.JsonNode;
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
 public class CodeBrowsePage extends Page {
 
-    protected WebMarkupBlock dataBlock;
-    protected WebMarkupContainer dataIContainer;
+    protected Form<Void> form1;
+    protected Button addButton;
+
+    protected UIRow row1;
+
+    protected UIBlock nameBlock;
+    protected UIContainer nameIContainer;
+    protected String nameValue;
+    protected TextField<String> nameField;
+
+    protected UIBlock row1Block1;
+
+    protected FilterForm<Map<String, String>> form2;
+
+    protected UIRow row2;
+
+    protected UIBlock dataBlock;
+    protected UIContainer dataIContainer;
     protected DataTable<Map<String, Object>, String> dataTable;
     protected JdbcProvider dataProvider;
     protected List<IColumn<Map<String, Object>, String>> dataColumn;
-    protected FilterForm<Map<String, String>> dataFilterForm;
-
-    protected WebMarkupBlock nameBlock;
-    protected WebMarkupContainer nameIContainer;
-    protected String nameValue;
-    protected TextField<String> nameField;
-    protected TextFeedbackPanel nameFeedback;
-
-    protected Form<Void> form;
-    protected Button addButton;
 
     @Override
     public IModel<List<PageBreadcrumb>> buildPageBreadcrumb() {
@@ -86,62 +94,54 @@ public class CodeBrowsePage extends Page {
 
     @Override
     protected void initData() {
-    }
-
-    @Override
-    protected void initComponent() {
-        initDataBlock();
-
-        this.form = new Form<>("form");
-        add(this.form);
-
-        this.addButton = new Button("addButton");
-        this.addButton.setOnSubmit(this::addButtonSubmit);
-        this.form.add(this.addButton);
-
-        initNameBlock();
-    }
-
-    @Override
-    protected void configureMetaData() {
-    }
-
-    protected void initNameBlock() {
-        this.nameBlock = new WebMarkupBlock("nameBlock", Size.Six_6);
-        this.form.add(this.nameBlock);
-        this.nameIContainer = new WebMarkupContainer("nameIContainer");
-        this.nameBlock.add(this.nameIContainer);
-        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
-        this.nameField.setLabel(Model.of("Name"));
-        this.nameField.setRequired(true);
-        this.nameIContainer.add(this.nameField);
-        this.nameFeedback = new TextFeedbackPanel("nameFeedback", this.nameField);
-        this.nameIContainer.add(this.nameFeedback);
-    }
-
-    protected void initDataBlock() {
-        this.dataBlock = new WebMarkupBlock("dataBlock", Size.Twelve_12);
-        add(this.dataBlock);
-        this.dataIContainer = new WebMarkupContainer("dataIContainer");
-        this.dataBlock.add(this.dataIContainer);
         this.dataProvider = new JdbcProvider(MCode.NAME);
         this.dataProvider.boardField(MCode.Field.ID, "id", Long.class);
         this.dataProvider.boardField(MCode.Field.CODE_NAME, "code_name", String.class);
         this.dataProvider.boardField(MCode.Field.IS_SYSTEM_DEFINED, "system", Boolean.class);
         this.dataProvider.setSort("code_name", SortOrder.ASCENDING);
-
         this.dataProvider.selectField("id", Long.class);
 
         this.dataColumn = Lists.newArrayList();
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.String, Model.of("Code Name"), "code_name", "code_name", this::dataColumn));
         this.dataColumn.add(new TextFilterColumn(this.dataProvider, ItemClass.Boolean, Model.of("Is System ?"), "system", "system", this::dataColumn));
+    }
 
-        this.dataFilterForm = new FilterForm<>("dataFilterForm", this.dataProvider);
-        this.dataIContainer.add(this.dataFilterForm);
+    @Override
+    protected void initComponent() {
+        this.form1 = new Form<>("form1");
+        add(this.form1);
 
+        this.addButton = new Button("addButton");
+        this.addButton.setOnSubmit(this::addButtonSubmit);
+        this.form1.add(this.addButton);
+
+        this.row1 = UIRow.newUIRow("row1", this.form1);
+
+        this.nameBlock = this.row1.newUIBlock("nameBlock", Size.Six_6);
+        this.nameIContainer = this.nameBlock.newUIContainer("nameIContainer");
+        this.nameField = new TextField<>("nameField", new PropertyModel<>(this, "nameValue"));
+        this.nameIContainer.add(this.nameField);
+        this.nameIContainer.newFeedback("nameFeedback", this.nameField);
+
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
+
+        this.form2 = new FilterForm<>("form2", this.dataProvider);
+        add(this.form2);
+
+        this.row2 = UIRow.newUIRow("row2", this.form2);
+
+        this.dataBlock = this.row2.newUIBlock("dataBlock", Size.Twelve_12);
+        this.dataIContainer = this.dataBlock.newUIContainer("dataIContainer");
+        this.dataBlock.add(this.dataIContainer);
         this.dataTable = new DefaultDataTable<>("dataTable", this.dataColumn, this.dataProvider, 20);
-        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.dataFilterForm));
-        this.dataFilterForm.add(this.dataTable);
+        this.dataTable.addTopToolbar(new FilterToolbar(this.dataTable, this.form2));
+        this.dataIContainer.add(this.dataTable);
+    }
+
+    @Override
+    protected void configureMetaData() {
+        this.nameField.setLabel(Model.of("Name"));
+        this.nameField.setRequired(true);
     }
 
     protected void addButtonSubmit(Button button) {
