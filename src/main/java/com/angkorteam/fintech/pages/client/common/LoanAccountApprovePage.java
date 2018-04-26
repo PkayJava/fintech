@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -26,14 +25,15 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.loan.ApproveBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
 import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
 import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -42,6 +42,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -64,29 +65,41 @@ public class LoanAccountApprovePage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock approvedOnBlock;
-    protected WebMarkupContainer approvedOnIContainer;
+    protected UIRow row1;
+
+    protected UIBlock approvedOnBlock;
+    protected UIContainer approvedOnIContainer;
     protected Date approvedOnValue;
     protected DateTextField approvedOnField;
-    protected TextFeedbackPanel approvedOnFeedback;
 
-    protected WebMarkupBlock expectedDisbursementOnBlock;
-    protected WebMarkupContainer expectedDisbursementOnIContainer;
+    protected UIBlock row1Block1;
+
+    protected UIRow row2;
+
+    protected UIBlock expectedDisbursementOnBlock;
+    protected UIContainer expectedDisbursementOnIContainer;
     protected Date expectedDisbursementOnValue;
     protected DateTextField expectedDisbursementOnField;
-    protected TextFeedbackPanel expectedDisbursementOnFeedback;
 
-    protected WebMarkupBlock approvedAmountBlock;
-    protected WebMarkupContainer approvedAmountIContainer;
+    protected UIBlock row2Block1;
+
+    protected UIRow row3;
+
+    protected UIBlock approvedAmountBlock;
+    protected UIContainer approvedAmountIContainer;
     protected Double approvedAmountValue;
     protected TextField<Double> approvedAmountField;
-    protected TextFeedbackPanel approvedAmountFeedback;
 
-    protected WebMarkupBlock noteBlock;
-    protected WebMarkupContainer noteIContainer;
+    protected UIBlock row3Block1;
+
+    protected UIRow row4;
+
+    protected UIBlock noteBlock;
+    protected UIContainer noteIContainer;
     protected String noteValue;
     protected TextArea<String> noteField;
-    protected TextFeedbackPanel noteFeedback;
+
+    protected UIBlock row4Block1;
 
     @Override
     protected void initComponent() {
@@ -113,65 +126,54 @@ public class LoanAccountApprovePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", LoanAccountPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        initApprovedOnBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initExpectedDisbursementOnBlock();
+        this.approvedOnBlock = this.row1.newUIBlock("approvedOnBlock", Size.Six_6);
+        this.approvedOnIContainer = this.approvedOnBlock.newUIContainer("approvedOnIContainer");
+        this.approvedOnField = new DateTextField("approvedOnField", new PropertyModel<>(this, "approvedOnValue"));
+        this.approvedOnIContainer.add(this.approvedOnField);
+        this.approvedOnIContainer.newFeedback("approvedOnFeedback", this.approvedOnField);
 
-        initApprovedAmount();
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
 
-        initNoteBlock();
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.expectedDisbursementOnBlock = this.row2.newUIBlock("expectedDisbursementOnBlock", Size.Six_6);
+        this.expectedDisbursementOnIContainer = this.expectedDisbursementOnBlock.newUIContainer("expectedDisbursementOnIContainer");
+        this.expectedDisbursementOnField = new DateTextField("expectedDisbursementOnField", new PropertyModel<>(this, "expectedDisbursementOnValue"));
+        this.expectedDisbursementOnIContainer.add(this.expectedDisbursementOnField);
+        this.expectedDisbursementOnIContainer.newFeedback("expectedDisbursementOnFeedback", this.expectedDisbursementOnField);
+
+        this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Six_6);
+
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.approvedAmountBlock = this.row3.newUIBlock("approvedAmountBlock", Size.Six_6);
+        this.approvedAmountIContainer = this.approvedAmountBlock.newUIContainer("approvedAmountIContainer");
+        this.approvedAmountField = new TextField<>("approvedAmountField", new PropertyModel<>(this, "approvedAmountValue"));
+        this.approvedAmountIContainer.add(this.approvedAmountField);
+        this.approvedAmountIContainer.newFeedback("approvedAmountFeedback", this.approvedAmountField);
+
+        this.row3Block1 = this.row3.newUIBlock("row3Block1", Size.Six_6);
+
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.noteBlock = this.row4.newUIBlock("noteBlock", Size.Six_6);
+        this.noteIContainer = this.noteBlock.newUIContainer("noteIContainer");
+        this.noteField = new TextArea<>("noteField", new PropertyModel<>(this, "noteValue"));
+        this.noteIContainer.add(this.noteField);
+        this.noteIContainer.newFeedback("noteFeedback", this.noteField);
+
+        this.row4Block1 = this.row4.newUIBlock("row4Block1", Size.Six_6);
+
     }
 
     @Override
     protected void configureMetaData() {
-    }
-
-    protected void initApprovedAmount() {
-        this.approvedAmountBlock = new WebMarkupBlock("approvedAmountBlock", Size.Six_6);
-        this.form.add(this.approvedAmountBlock);
-        this.approvedAmountIContainer = new WebMarkupContainer("approvedAmountIContainer");
-        this.approvedAmountBlock.add(this.approvedAmountIContainer);
-        this.approvedAmountField = new TextField<>("approvedAmountField", new PropertyModel<>(this, "approvedAmountValue"));
-        this.approvedAmountField.setLabel(Model.of("Approved Amount"));
-        this.approvedAmountIContainer.add(this.approvedAmountField);
-        this.approvedAmountFeedback = new TextFeedbackPanel("approvedAmountFeedback", this.approvedAmountField);
-        this.approvedAmountIContainer.add(this.approvedAmountFeedback);
-    }
-
-    protected void initExpectedDisbursementOnBlock() {
-        this.expectedDisbursementOnBlock = new WebMarkupBlock("expectedDisbursementOnBlock", Size.Six_6);
-        this.form.add(this.expectedDisbursementOnBlock);
-        this.expectedDisbursementOnIContainer = new WebMarkupContainer("expectedDisbursementOnIContainer");
-        this.expectedDisbursementOnBlock.add(this.expectedDisbursementOnIContainer);
-        this.expectedDisbursementOnField = new DateTextField("expectedDisbursementOnField", new PropertyModel<>(this, "expectedDisbursementOnValue"));
-        this.expectedDisbursementOnField.setLabel(Model.of("Expected Disbursement On"));
-        this.expectedDisbursementOnIContainer.add(this.expectedDisbursementOnField);
-        this.expectedDisbursementOnFeedback = new TextFeedbackPanel("expectedDisbursementOnFeedback", this.expectedDisbursementOnField);
-        this.expectedDisbursementOnIContainer.add(this.expectedDisbursementOnFeedback);
-    }
-
-    protected void initApprovedOnBlock() {
-        this.approvedOnBlock = new WebMarkupBlock("approvedOnBlock", Size.Six_6);
-        this.form.add(this.approvedOnBlock);
-        this.approvedOnIContainer = new WebMarkupContainer("approvedOnIContainer");
-        this.approvedOnBlock.add(this.approvedOnIContainer);
-        this.approvedOnField = new DateTextField("approvedOnField", new PropertyModel<>(this, "approvedOnValue"));
         this.approvedOnField.setLabel(Model.of("Approved On"));
-        this.approvedOnIContainer.add(this.approvedOnField);
-        this.approvedOnFeedback = new TextFeedbackPanel("approvedOnFeedback", this.approvedOnField);
-        this.approvedOnIContainer.add(this.approvedOnFeedback);
-    }
-
-    protected void initNoteBlock() {
-        this.noteBlock = new WebMarkupBlock("noteBlock", Size.Six_6);
-        this.form.add(this.noteBlock);
-        this.noteIContainer = new WebMarkupContainer("noteIContainer");
-        this.noteBlock.add(this.noteIContainer);
-        this.noteField = new TextArea<>("noteField", new PropertyModel<>(this, "noteValue"));
         this.noteField.setLabel(Model.of("Note"));
-        this.noteIContainer.add(this.noteField);
-        this.noteFeedback = new TextFeedbackPanel("noteFeedback", this.noteField);
-        this.noteIContainer.add(this.noteFeedback);
+        this.expectedDisbursementOnField.setLabel(Model.of("Expected Disbursement On"));
+        this.approvedAmountField.setLabel(Model.of("Approved Amount"));
     }
 
     @Override
