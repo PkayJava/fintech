@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -26,14 +25,15 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.loan.DisburseSavingBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
 import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
 import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
 import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -42,6 +42,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -64,23 +65,32 @@ public class LoanAccountDisburseSavingPage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock disbursedOnBlock;
-    protected WebMarkupContainer disbursedOnIContainer;
+    protected UIRow row1;
+
+    protected UIBlock disbursedOnBlock;
+    protected UIContainer disbursedOnIContainer;
     protected Date disbursedOnValue;
     protected DateTextField disbursedOnField;
-    protected TextFeedbackPanel disbursedOnFeedback;
 
-    protected WebMarkupBlock transactionAmountBlock;
-    protected WebMarkupContainer transactionAmountIContainer;
+    protected UIBlock row1Block1;
+
+    protected UIRow row2;
+
+    protected UIBlock transactionAmountBlock;
+    protected UIContainer transactionAmountIContainer;
     protected Double transactionAmountValue;
     protected TextField<Double> transactionAmountField;
-    protected TextFeedbackPanel transactionAmountFeedback;
 
-    protected WebMarkupBlock noteBlock;
-    protected WebMarkupContainer noteIContainer;
+    protected UIBlock row2Block1;
+
+    protected UIRow row3;
+
+    protected UIBlock noteBlock;
+    protected UIContainer noteIContainer;
     protected String noteValue;
     protected TextArea<String> noteField;
-    protected TextFeedbackPanel noteFeedback;
+
+    protected UIBlock row3Block1;
 
     @Override
     protected void initComponent() {
@@ -107,39 +117,42 @@ public class LoanAccountDisburseSavingPage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", LoanAccountPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.transactionAmountBlock = new WebMarkupBlock("transactionAmountBlock", Size.Six_6);
-        this.form.add(this.transactionAmountBlock);
-        this.transactionAmountIContainer = new WebMarkupContainer("transactionAmountIContainer");
-        this.transactionAmountBlock.add(this.transactionAmountIContainer);
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.transactionAmountBlock = this.row1.newUIBlock("transactionAmountBlock", Size.Six_6);
+        this.transactionAmountIContainer = this.transactionAmountBlock.newUIContainer("transactionAmountIContainer");
         this.transactionAmountField = new TextField<>("transactionAmountField", new PropertyModel<>(this, "transactionAmountValue"));
-        this.transactionAmountField.setLabel(Model.of("Transaction Amount"));
         this.transactionAmountIContainer.add(this.transactionAmountField);
-        this.transactionAmountFeedback = new TextFeedbackPanel("transactionAmountFeedback", this.transactionAmountField);
-        this.transactionAmountIContainer.add(this.transactionAmountFeedback);
+        this.transactionAmountIContainer.newFeedback("transactionAmountFeedback", this.transactionAmountField);
 
-        this.disbursedOnBlock = new WebMarkupBlock("disbursedOnBlock", Size.Six_6);
-        this.form.add(this.disbursedOnBlock);
-        this.disbursedOnIContainer = new WebMarkupContainer("disbursedOnIContainer");
-        this.disbursedOnBlock.add(this.disbursedOnIContainer);
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
+
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.disbursedOnBlock = this.row2.newUIBlock("disbursedOnBlock", Size.Six_6);
+        this.disbursedOnIContainer = this.disbursedOnBlock.newUIContainer("disbursedOnIContainer");
         this.disbursedOnField = new DateTextField("disbursedOnField", new PropertyModel<>(this, "disbursedOnValue"));
-        this.disbursedOnField.setLabel(Model.of("Disbursed On"));
         this.disbursedOnIContainer.add(this.disbursedOnField);
-        this.disbursedOnFeedback = new TextFeedbackPanel("disbursedOnFeedback", this.disbursedOnField);
-        this.disbursedOnIContainer.add(this.disbursedOnFeedback);
+        this.disbursedOnIContainer.newFeedback("disbursedOnFeedback", this.disbursedOnField);
 
-        this.noteBlock = new WebMarkupBlock("noteBlock", Size.Six_6);
-        this.form.add(this.noteBlock);
-        this.noteIContainer = new WebMarkupContainer("noteIContainer");
-        this.noteBlock.add(this.noteIContainer);
+        this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Six_6);
+
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.noteBlock = this.row3.newUIBlock("noteBlock", Size.Six_6);
+        this.noteIContainer = this.noteBlock.newUIContainer("noteIContainer");
         this.noteField = new TextArea<>("noteField", new PropertyModel<>(this, "noteValue"));
-        this.noteField.setLabel(Model.of("Note"));
         this.noteIContainer.add(this.noteField);
-        this.noteFeedback = new TextFeedbackPanel("noteFeedback", this.noteField);
-        this.noteIContainer.add(this.noteFeedback);
+        this.noteIContainer.newFeedback("noteFeedback", this.noteField);
+
+        this.row3Block1 = this.row3.newUIBlock("row3Block1", Size.Six_6);
     }
 
     @Override
     protected void configureMetaData() {
+        this.noteField.setLabel(Model.of("Note"));
+        this.disbursedOnField.setLabel(Model.of("Disbursed On"));
+        this.transactionAmountField.setLabel(Model.of("Transaction Amount"));
     }
 
     @Override
