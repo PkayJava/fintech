@@ -7,7 +7,6 @@ import java.util.Map;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
@@ -29,6 +28,9 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.loan.DisburseBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.client.center.CenterBrowsePage;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientBrowsePage;
@@ -36,8 +38,6 @@ import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
 import com.angkorteam.fintech.pages.client.group.GroupBrowsePage;
 import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
 import com.angkorteam.fintech.provider.SingleChoiceProvider;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.jdbc.SelectQuery;
 import com.angkorteam.framework.models.PageBreadcrumb;
@@ -49,6 +49,7 @@ import com.angkorteam.framework.wicket.markup.html.form.Form;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Option;
 import com.angkorteam.framework.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.google.common.collect.Lists;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -71,66 +72,84 @@ public class LoanAccountDisbursePage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock disbursedOnBlock;
-    protected WebMarkupContainer disbursedOnIContainer;
+    protected UIRow row1;
+
+    protected UIBlock disbursedOnBlock;
+    protected UIContainer disbursedOnIContainer;
     protected Date disbursedOnValue;
     protected DateTextField disbursedOnField;
-    protected TextFeedbackPanel disbursedOnFeedback;
 
-    protected WebMarkupBlock transactionAmountBlock;
-    protected WebMarkupContainer transactionAmountIContainer;
+    protected UIBlock row1Block1;
+
+    protected UIRow row2;
+
+    protected UIBlock transactionAmountBlock;
+    protected UIContainer transactionAmountIContainer;
     protected Double transactionAmountValue;
     protected TextField<Double> transactionAmountField;
-    protected TextFeedbackPanel transactionAmountFeedback;
+
+    protected UIBlock row2Block1;
+
+    protected UIRow row3;
 
     protected SingleChoiceProvider paymentTypeProvider;
-    protected WebMarkupBlock paymentTypeBlock;
-    protected WebMarkupContainer paymentTypeIContainer;
+    protected UIBlock paymentTypeBlock;
+    protected UIContainer paymentTypeIContainer;
     protected Option paymentTypeValue;
     protected Select2SingleChoice<Option> paymentTypeField;
-    protected TextFeedbackPanel paymentTypeFeedback;
 
-    protected WebMarkupBlock paymentDetailBlock;
-    protected WebMarkupContainer paymentDetailIContainer;
+    protected UIBlock row3Block1;
+
+    protected UIRow row4;
+
+    protected UIBlock paymentDetailBlock;
+    protected UIContainer paymentDetailIContainer;
     protected Boolean paymentDetailValue;
     protected CheckBox paymentDetailField;
-    protected TextFeedbackPanel paymentDetailFeedback;
 
-    protected WebMarkupBlock accountBlock;
-    protected WebMarkupContainer accountIContainer;
+    protected UIBlock row4Block1;
+
+    protected UIRow row5;
+
+    protected UIBlock accountBlock;
+    protected UIContainer accountIContainer;
     protected String accountValue;
     protected TextField<String> accountField;
-    protected TextFeedbackPanel accountFeedback;
 
-    protected WebMarkupBlock chequeBlock;
-    protected WebMarkupContainer chequeIContainer;
+    protected UIBlock chequeBlock;
+    protected UIContainer chequeIContainer;
     protected String chequeValue;
     protected TextField<String> chequeField;
-    protected TextFeedbackPanel chequeFeedback;
 
-    protected WebMarkupBlock routingBlock;
-    protected WebMarkupContainer routingIContainer;
+    protected UIRow row6;
+
+    protected UIBlock routingBlock;
+    protected UIContainer routingIContainer;
     protected String routingValue;
     protected TextField<String> routingField;
-    protected TextFeedbackPanel routingFeedback;
 
-    protected WebMarkupBlock receiptBlock;
-    protected WebMarkupContainer receiptIContainer;
+    protected UIBlock receiptBlock;
+    protected UIContainer receiptIContainer;
     protected String receiptValue;
     protected TextField<String> receiptField;
-    protected TextFeedbackPanel receiptFeedback;
 
-    protected WebMarkupBlock bankBlock;
-    protected WebMarkupContainer bankIContainer;
+    protected UIRow row7;
+
+    protected UIBlock bankBlock;
+    protected UIContainer bankIContainer;
     protected String bankValue;
     protected TextField<String> bankField;
-    protected TextFeedbackPanel bankFeedback;
 
-    protected WebMarkupBlock noteBlock;
-    protected WebMarkupContainer noteIContainer;
+    protected UIBlock row7Block1;
+
+    protected UIRow row8;
+
+    protected UIBlock noteBlock;
+    protected UIContainer noteIContainer;
     protected String noteValue;
     protected TextArea<String> noteField;
-    protected TextFeedbackPanel noteFeedback;
+
+    protected UIBlock row8Block1;
 
     @Override
     protected void initComponent() {
@@ -157,154 +176,122 @@ public class LoanAccountDisbursePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", LoanAccountPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        initDisbursedOnBlock();
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initTransactionAmountBlock();
+        this.disbursedOnBlock = this.row1.newUIBlock("disbursedOnBlock", Size.Six_6);
+        this.disbursedOnIContainer = this.disbursedOnBlock.newUIContainer("disbursedOnIContainer");
+        this.disbursedOnField = new DateTextField("disbursedOnField", new PropertyModel<>(this, "disbursedOnValue"));
+        this.disbursedOnIContainer.add(this.disbursedOnField);
+        this.disbursedOnIContainer.newFeedback("disbursedOnFeedback", this.disbursedOnField);
 
-        initPaymentTypeBlock();
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
 
-        initPaymentDetailBlock();
+        this.row2 = UIRow.newUIRow("row2", this.form);
 
-        initAccountBlock();
+        this.transactionAmountBlock = this.row2.newUIBlock("transactionAmountBlock", Size.Six_6);
+        this.transactionAmountIContainer = this.transactionAmountBlock.newUIContainer("transactionAmountIContainer");
+        this.transactionAmountField = new TextField<>("transactionAmountField", new PropertyModel<>(this, "transactionAmountValue"));
+        this.transactionAmountIContainer.add(this.transactionAmountField);
+        this.transactionAmountIContainer.newFeedback("transactionAmountFeedback", this.transactionAmountField);
 
-        initChequeBlock();
+        this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Six_6);
 
-        initRoutingBlock();
+        this.row3 = UIRow.newUIRow("row3", this.form);
 
-        initReceiptBlock();
+        this.paymentTypeBlock = this.row3.newUIBlock("paymentTypeBlock", Size.Six_6);
+        this.paymentTypeIContainer = this.paymentTypeBlock.newUIContainer("paymentTypeIContainer");
+        this.paymentTypeField = new Select2SingleChoice<>("paymentTypeField", new PropertyModel<>(this, "paymentTypeValue"), this.paymentTypeProvider);
+        this.paymentTypeIContainer.add(this.paymentTypeField);
+        this.paymentTypeIContainer.newFeedback("paymentTypeFeedback", this.paymentTypeField);
 
-        initBankBlock();
+        this.row3Block1 = this.row3.newUIBlock("row3Block1", Size.Six_6);
 
-        initNoteBlock();
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.paymentDetailBlock = this.row4.newUIBlock("paymentDetailBlock", Size.Six_6);
+        this.paymentDetailIContainer = this.paymentDetailBlock.newUIContainer("paymentDetailIContainer");
+        this.paymentDetailField = new CheckBox("paymentDetailField", new PropertyModel<>(this, "paymentDetailValue"));
+        this.paymentDetailIContainer.add(this.paymentDetailField);
+        this.paymentDetailIContainer.newFeedback("paymentDetailFeedback", this.paymentDetailField);
+
+        this.row4Block1 = this.row4.newUIBlock("row4Block1", Size.Six_6);
+
+        this.row5 = UIRow.newUIRow("row5", this.form);
+
+        this.accountBlock = this.row5.newUIBlock("accountBlock", Size.Six_6);
+        this.accountIContainer = this.accountBlock.newUIContainer("accountIContainer");
+        this.accountField = new TextField<>("accountField", new PropertyModel<>(this, "accountValue"));
+        this.accountIContainer.add(this.accountField);
+        this.accountIContainer.newFeedback("accountFeedback", this.accountField);
+
+        this.chequeBlock = this.row5.newUIBlock("chequeBlock", Size.Six_6);
+        this.chequeIContainer = this.chequeBlock.newUIContainer("chequeIContainer");
+        this.chequeField = new TextField<>("chequeField", new PropertyModel<>(this, "chequeValue"));
+        this.chequeIContainer.add(this.chequeField);
+        this.chequeIContainer.newFeedback("chequeFeedback", this.chequeField);
+
+        this.row6 = UIRow.newUIRow("row6", this.form);
+
+        this.routingBlock = this.row6.newUIBlock("routingBlock", Size.Six_6);
+        this.routingIContainer = this.routingBlock.newUIContainer("routingIContainer");
+        this.routingField = new TextField<>("routingField", new PropertyModel<>(this, "routingValue"));
+        this.routingIContainer.add(this.routingField);
+        this.routingIContainer.newFeedback("routingFeedback", this.routingField);
+
+        this.receiptBlock = this.row6.newUIBlock("receiptBlock", Size.Six_6);
+        this.receiptIContainer = this.receiptBlock.newUIContainer("receiptIContainer");
+        this.receiptField = new TextField<>("receiptField", new PropertyModel<>(this, "receiptValue"));
+        this.receiptIContainer.add(this.receiptField);
+        this.receiptIContainer.newFeedback("receiptFeedback", this.receiptField);
+
+        this.row7 = UIRow.newUIRow("row7", this.form);
+
+        this.bankBlock = this.row7.newUIBlock("bankBlock", Size.Six_6);
+        this.bankIContainer = this.bankBlock.newUIContainer("bankIContainer");
+        this.bankField = new TextField<>("bankField", new PropertyModel<>(this, "bankValue"));
+        this.bankIContainer.add(this.bankField);
+        this.bankIContainer.newFeedback("bankFeedback", this.bankField);
+
+        this.row7Block1 = this.row7.newUIBlock("row7Block1", Size.Six_6);
+
+        this.row8 = UIRow.newUIRow("row8", this.form);
+
+        this.noteBlock = this.row8.newUIBlock("noteBlock", Size.Six_6);
+        this.noteIContainer = this.noteBlock.newUIContainer("noteIContainer");
+        this.noteField = new TextArea<>("noteField", new PropertyModel<>(this, "noteValue"));
+        this.noteIContainer.add(this.noteField);
+        this.noteIContainer.newFeedback("noteFeedback", this.noteField);
+
+        this.row8Block1 = this.row8.newUIBlock("row8Block1", Size.Six_6);
+
     }
 
     @Override
     protected void configureMetaData() {
-        paymentDetailFieldUpdate(null);
-    }
-
-    protected void initNoteBlock() {
-        this.noteBlock = new WebMarkupBlock("noteBlock", Size.Six_6);
-        this.form.add(this.noteBlock);
-        this.noteIContainer = new WebMarkupContainer("noteIContainer");
-        this.noteBlock.add(this.noteIContainer);
-        this.noteField = new TextArea<>("noteField", new PropertyModel<>(this, "noteValue"));
         this.noteField.setLabel(Model.of("Note"));
-        this.noteIContainer.add(this.noteField);
-        this.noteFeedback = new TextFeedbackPanel("noteFeedback", this.noteField);
-        this.noteIContainer.add(this.noteFeedback);
-    }
 
-    protected void initBankBlock() {
-        this.bankBlock = new WebMarkupBlock("bankBlock", Size.Six_6);
-        this.form.add(this.bankBlock);
-        this.bankIContainer = new WebMarkupContainer("bankIContainer");
-        this.bankBlock.add(this.bankIContainer);
-        this.bankField = new TextField<>("bankField", new PropertyModel<>(this, "bankValue"));
-        this.bankField.setLabel(Model.of("bank"));
-        this.bankIContainer.add(this.bankField);
-        this.bankFeedback = new TextFeedbackPanel("bankFeedback", this.bankField);
-        this.bankIContainer.add(this.bankFeedback);
-    }
+        this.bankField.setLabel(Model.of("Bank"));
 
-    protected void initReceiptBlock() {
-        this.receiptBlock = new WebMarkupBlock("receiptBlock", Size.Six_6);
-        this.form.add(this.receiptBlock);
-        this.receiptIContainer = new WebMarkupContainer("receiptIContainer");
-        this.receiptBlock.add(this.receiptIContainer);
-        this.receiptField = new TextField<>("receiptField", new PropertyModel<>(this, "receiptValue"));
         this.receiptField.setLabel(Model.of("Receipt"));
-        this.receiptIContainer.add(this.receiptField);
-        this.receiptFeedback = new TextFeedbackPanel("receiptFeedback", this.receiptField);
-        this.receiptIContainer.add(this.receiptFeedback);
-    }
 
-    protected void initRoutingBlock() {
-        this.routingBlock = new WebMarkupBlock("routingBlock", Size.Six_6);
-        this.form.add(this.routingBlock);
-        this.routingIContainer = new WebMarkupContainer("routingIContainer");
-        this.routingBlock.add(this.routingIContainer);
-        this.routingField = new TextField<>("routingField", new PropertyModel<>(this, "routingValue"));
         this.routingField.setLabel(Model.of("Routing"));
-        this.routingIContainer.add(this.routingField);
-        this.routingFeedback = new TextFeedbackPanel("routingFeedback", this.routingField);
-        this.routingIContainer.add(this.routingFeedback);
-    }
 
-    protected void initChequeBlock() {
-        this.chequeBlock = new WebMarkupBlock("chequeBlock", Size.Six_6);
-        this.form.add(this.chequeBlock);
-        this.chequeIContainer = new WebMarkupContainer("chequeIContainer");
-        this.chequeBlock.add(this.chequeIContainer);
-        this.chequeField = new TextField<>("chequeField", new PropertyModel<>(this, "chequeValue"));
         this.chequeField.setLabel(Model.of("Cheque"));
-        this.chequeIContainer.add(this.chequeField);
-        this.chequeFeedback = new TextFeedbackPanel("chequeFeedback", this.chequeField);
-        this.chequeIContainer.add(this.chequeFeedback);
-    }
 
-    protected void initAccountBlock() {
-        this.accountBlock = new WebMarkupBlock("accountBlock", Size.Six_6);
-        this.form.add(this.accountBlock);
-        this.accountIContainer = new WebMarkupContainer("accountIContainer");
-        this.accountBlock.add(this.accountIContainer);
-        this.accountField = new TextField<>("accountField", new PropertyModel<>(this, "accountValue"));
         this.accountField.setLabel(Model.of("Account"));
-        this.accountIContainer.add(this.accountField);
-        this.accountFeedback = new TextFeedbackPanel("accountFeedback", this.accountField);
-        this.accountIContainer.add(this.accountFeedback);
-    }
 
-    protected void initPaymentDetailBlock() {
-        this.paymentDetailBlock = new WebMarkupBlock("paymentDetailBlock", Size.Six_6);
-        this.form.add(this.paymentDetailBlock);
-        this.paymentDetailIContainer = new WebMarkupContainer("paymentDetailIContainer");
-        this.paymentDetailBlock.add(this.paymentDetailIContainer);
-        this.paymentDetailField = new CheckBox("paymentDetailField", new PropertyModel<>(this, "paymentDetailValue"));
         this.paymentDetailField.add(new OnChangeAjaxBehavior(this::paymentDetailFieldUpdate));
-        this.paymentDetailIContainer.add(this.paymentDetailField);
-        this.paymentDetailFeedback = new TextFeedbackPanel("paymentDetailFeedback", this.paymentDetailField);
-        this.paymentDetailIContainer.add(this.paymentDetailFeedback);
-    }
 
-    protected void initPaymentTypeBlock() {
-        this.paymentTypeProvider = new SingleChoiceProvider(MPaymentType.NAME, MPaymentType.Field.ID, MPaymentType.Field.VALUE);
-        this.paymentTypeBlock = new WebMarkupBlock("paymentTypeBlock", Size.Six_6);
-        this.form.add(this.paymentTypeBlock);
-        this.paymentTypeIContainer = new WebMarkupContainer("paymentTypeIContainer");
-        this.paymentTypeBlock.add(this.paymentTypeIContainer);
-        this.paymentTypeField = new Select2SingleChoice<>("paymentTypeField", new PropertyModel<>(this, "paymentTypeValue"), this.paymentTypeProvider);
         this.paymentTypeField.setLabel(Model.of("Payment Type"));
         this.paymentTypeField.setRequired(false);
-        this.paymentTypeIContainer.add(this.paymentTypeField);
-        this.paymentTypeFeedback = new TextFeedbackPanel("paymentTypeFeedback", this.paymentTypeField);
-        this.paymentTypeIContainer.add(this.paymentTypeFeedback);
-    }
 
-    protected void initTransactionAmountBlock() {
-        this.transactionAmountBlock = new WebMarkupBlock("transactionAmountBlock", Size.Six_6);
-        this.form.add(this.transactionAmountBlock);
-        this.transactionAmountIContainer = new WebMarkupContainer("transactionAmountIContainer");
-        this.transactionAmountBlock.add(this.transactionAmountIContainer);
-        this.transactionAmountField = new TextField<>("transactionAmountField", new PropertyModel<>(this, "transactionAmountValue"));
         this.transactionAmountField.setLabel(Model.of("Transaction Amount"));
         this.transactionAmountField.setRequired(false);
-        this.transactionAmountIContainer.add(this.transactionAmountField);
-        this.transactionAmountFeedback = new TextFeedbackPanel("transactionAmountFeedback", this.transactionAmountField);
-        this.transactionAmountIContainer.add(this.transactionAmountFeedback);
-    }
 
-    protected void initDisbursedOnBlock() {
-        this.disbursedOnBlock = new WebMarkupBlock("disbursedOnBlock", Size.Six_6);
-        this.form.add(this.disbursedOnBlock);
-        this.disbursedOnIContainer = new WebMarkupContainer("disbursedOnIContainer");
-        this.disbursedOnBlock.add(this.disbursedOnIContainer);
-        this.disbursedOnField = new DateTextField("disbursedOnField", new PropertyModel<>(this, "disbursedOnValue"));
         this.disbursedOnField.setLabel(Model.of("Disbursed On"));
         this.disbursedOnField.setRequired(false);
-        this.disbursedOnIContainer.add(this.disbursedOnField);
-        this.disbursedOnFeedback = new TextFeedbackPanel("disbursedOnFeedback", this.disbursedOnField);
-        this.disbursedOnIContainer.add(this.disbursedOnFeedback);
+
+        paymentDetailFieldUpdate(null);
     }
 
     @Override
@@ -353,6 +340,8 @@ public class LoanAccountDisbursePage extends Page {
         }
 
         this.transactionAmountValue = (Double) loanObject.get("principal_amount");
+
+        this.paymentTypeProvider = new SingleChoiceProvider(MPaymentType.NAME, MPaymentType.Field.ID, MPaymentType.Field.VALUE);
     }
 
     @Override

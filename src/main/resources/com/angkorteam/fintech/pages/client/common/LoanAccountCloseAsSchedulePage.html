@@ -15,39 +15,37 @@
 
 				<div class="box-body">
 
-					<!-- Row -->
-					<div wicket:id="closedOnBlock" class="form-group">
-						<wicket:container wicket:id="closedOnIContainer">
-							<label wicket:for="closedOnField">Closed On</label>
-							<input wicket:id="closedOnField" type="text" class="form-control" />
-							<span wicket:id="closedOnFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row1">
+						<div wicket:id="closedOnBlock" class="form-group">
+							<wicket:container wicket:id="closedOnIContainer">
+								<label wicket:for="closedOnField">Closed On</label>
+								<input wicket:id="closedOnField" type="text"
+									class="form-control" />
+								<span wicket:id="closedOnFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="row1Block1" class="form-group"></div>
 					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="noteBlock" class="form-group">
-						<wicket:container wicket:id="noteIContainer">
-							<label wicket:for="noteField">Note</label>
-							<textarea wicket:id="noteField" class="form-control"></textarea>
-							<span wicket:id="noteFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row2">
+						<div wicket:id="noteBlock" class="form-group">
+							<wicket:container wicket:id="noteIContainer">
+								<label wicket:for="noteField">Note</label>
+								<textarea wicket:id="noteField" class="form-control"></textarea>
+								<span wicket:id="noteFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="row2Block1" class="form-group"></div>
 					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-					</div>
-					<div class="clearfix"></div>
-
 				</div>
 
-				<div class="box-footer">
-					<button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
-					<a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
-				</div>
 			</div>
+
+			<div class="box-footer">
+				<button wicket:id="saveButton" type="submit" class="btn btn-info">Save</button>
+				<a wicket:id="closeLink" class="btn btn-default pull-right">Close</a>
+			</div>
+
 		</form>
 	</wicket:extend>
 </body>

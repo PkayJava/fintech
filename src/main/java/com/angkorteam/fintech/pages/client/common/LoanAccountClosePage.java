@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
@@ -18,14 +17,16 @@ import com.angkorteam.fintech.dto.Function;
 import com.angkorteam.fintech.dto.builder.loan.CloseBuilder;
 import com.angkorteam.fintech.helper.ClientHelper;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.client.center.CenterPreviewPage;
 import com.angkorteam.fintech.pages.client.client.ClientPreviewPage;
 import com.angkorteam.fintech.pages.client.group.GroupPreviewPage;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.wicket.markup.html.form.Button;
 import com.angkorteam.framework.wicket.markup.html.form.DateTextField;
 import com.angkorteam.framework.wicket.markup.html.form.Form;
+
 import io.github.openunirest.http.JsonNode;
 
 @AuthorizeInstantiation(Function.ALL_FUNCTION)
@@ -43,17 +44,23 @@ public class LoanAccountClosePage extends Page {
     protected Button saveButton;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock closedOnBlock;
-    protected WebMarkupContainer closedOnIContainer;
+    protected UIRow row1;
+
+    protected UIBlock closedOnBlock;
+    protected UIContainer closedOnIContainer;
     protected DateTextField closedOnField;
-    protected TextFeedbackPanel closedOnFeedback;
     protected Date closedOnValue;
 
-    protected WebMarkupBlock noteBlock;
-    protected WebMarkupContainer noteIContainer;
+    protected UIBlock row1Block1;
+
+    protected UIRow row2;
+
+    protected UIBlock noteBlock;
+    protected UIContainer noteIContainer;
     protected String noteValue;
     protected TextArea<String> noteField;
-    protected TextFeedbackPanel noteFeedback;
+
+    protected UIBlock row2Block1;
 
     @Override
     protected void initComponent() {
@@ -80,34 +87,32 @@ public class LoanAccountClosePage extends Page {
         this.closeLink = new BookmarkablePageLink<>("closeLink", LoanAccountPreviewPage.class, parameters);
         this.form.add(this.closeLink);
 
-        this.closedOnBlock = new WebMarkupBlock("closedOnBlock", Size.Six_6);
-        this.form.add(this.closedOnBlock);
-        this.closedOnIContainer = new WebMarkupContainer("closedOnIContainer");
-        this.closedOnBlock.add(this.closedOnIContainer);
-        this.closedOnField = new DateTextField("closedOnField", new PropertyModel<>(this, "closedOnValue"));
-        this.closedOnField.setLabel(Model.of("Closed On"));
-        this.closedOnField.setRequired(false);
-        this.closedOnIContainer.add(this.closedOnField);
-        this.closedOnFeedback = new TextFeedbackPanel("closedOnFeedback", this.closedOnField);
-        this.closedOnIContainer.add(this.closedOnFeedback);
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        initNoteBlock();
+        this.closedOnBlock = this.row1.newUIBlock("closedOnBlock", Size.Six_6);
+        this.closedOnIContainer = this.closedOnBlock.newUIContainer("closedOnIContainer");
+        this.closedOnField = new DateTextField("closedOnField", new PropertyModel<>(this, "closedOnValue"));
+        this.closedOnIContainer.add(this.closedOnField);
+        this.closedOnIContainer.newFeedback("closedOnFeedback", this.closedOnField);
+
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
+
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.noteBlock = this.row2.newUIBlock("noteBlock", Size.Six_6);
+        this.noteIContainer = this.noteBlock.newUIContainer("noteIContainer");
+        this.noteField = new TextArea<>("noteField", new PropertyModel<>(this, "noteValue"));
+        this.noteIContainer.add(this.noteField);
+        this.noteIContainer.newFeedback("noteFeedback", this.noteField);
+
+        this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Six_6);
     }
 
     @Override
     protected void configureMetaData() {
-    }
-
-    protected void initNoteBlock() {
-        this.noteBlock = new WebMarkupBlock("noteBlock", Size.Six_6);
-        this.form.add(this.noteBlock);
-        this.noteIContainer = new WebMarkupContainer("noteIContainer");
-        this.noteBlock.add(this.noteIContainer);
-        this.noteField = new TextArea<>("noteField", new PropertyModel<>(this, "noteValue"));
         this.noteField.setLabel(Model.of("Note"));
-        this.noteIContainer.add(this.noteField);
-        this.noteFeedback = new TextFeedbackPanel("noteFeedback", this.noteField);
-        this.noteIContainer.add(this.noteFeedback);
+        this.closedOnField.setLabel(Model.of("Closed On"));
+        this.closedOnField.setRequired(false);
     }
 
     @Override
