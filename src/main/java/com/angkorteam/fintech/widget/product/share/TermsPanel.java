@@ -2,19 +2,19 @@ package com.angkorteam.fintech.widget.product.share;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.product.share.ShareBrowsePage;
 import com.angkorteam.fintech.pages.product.share.ShareCreatePage;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
@@ -33,23 +33,24 @@ public class TermsPanel extends Panel {
     protected AjaxLink<Void> backLink;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock termTotalNumberOfShareBlock;
-    protected WebMarkupContainer termTotalNumberOfShareIContainer;
+    protected UIRow row1;
+
+    protected UIBlock termTotalNumberOfShareBlock;
+    protected UIContainer termTotalNumberOfShareIContainer;
     protected TextField<Long> termTotalNumberOfShareField;
-    protected TextFeedbackPanel termTotalNumberOfShareFeedback;
 
-    protected WebMarkupBlock termShareToBeIssuedBlock;
-    protected WebMarkupContainer termShareToBeIssuedIContainer;
+    protected UIBlock termShareToBeIssuedBlock;
+    protected UIContainer termShareToBeIssuedIContainer;
     protected TextField<Long> termShareToBeIssuedField;
-    protected TextFeedbackPanel termShareToBeIssuedFeedback;
 
-    protected WebMarkupBlock termNominalPriceBlock;
-    protected WebMarkupContainer termNominalPriceIContainer;
+    protected UIRow row2;
+
+    protected UIBlock termNominalPriceBlock;
+    protected UIContainer termNominalPriceIContainer;
     protected TextField<Double> termNominalPriceField;
-    protected TextFeedbackPanel termNominalPriceFeedback;
 
-    protected WebMarkupBlock termCapitalBlock;
-    protected WebMarkupContainer termCapitalVContainer;
+    protected UIBlock termCapitalBlock;
+    protected UIContainer termCapitalVContainer;
     protected ReadOnlyView termCapitalView;
 
     public TermsPanel(String id, Page itemPage) {
@@ -80,45 +81,33 @@ public class TermsPanel extends Panel {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ShareBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.termCapitalBlock = new WebMarkupBlock("termCapitalBlock", Size.Six_6);
-        this.form.add(this.termCapitalBlock);
-        this.termCapitalVContainer = new WebMarkupContainer("termCapitalVContainer");
-        this.termCapitalBlock.add(this.termCapitalVContainer);
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.termShareToBeIssuedBlock = this.row1.newUIBlock("termShareToBeIssuedBlock", Size.Six_6);
+        this.termShareToBeIssuedIContainer = this.termShareToBeIssuedBlock.newUIContainer("termShareToBeIssuedIContainer");
+        this.termShareToBeIssuedField = new TextField<>("termShareToBeIssuedField", new PropertyModel<>(this.itemPage, "termShareToBeIssuedValue"));
+        this.termShareToBeIssuedIContainer.add(this.termShareToBeIssuedField);
+        this.termShareToBeIssuedIContainer.newFeedback("termShareToBeIssuedFeedback", this.termShareToBeIssuedField);
+
+        this.termTotalNumberOfShareBlock = this.row1.newUIBlock("termTotalNumberOfShareBlock", Size.Six_6);
+        this.termTotalNumberOfShareIContainer = this.termTotalNumberOfShareBlock.newUIContainer("termTotalNumberOfShareIContainer");
+        this.termTotalNumberOfShareField = new TextField<>("termTotalNumberOfShareField", new PropertyModel<>(this.itemPage, "termTotalNumberOfShareValue"));
+        this.termTotalNumberOfShareIContainer.add(this.termTotalNumberOfShareField);
+        this.termTotalNumberOfShareIContainer.newFeedback("termTotalNumberOfShareFeedback", this.termTotalNumberOfShareField);
+
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.termCapitalBlock = this.row2.newUIBlock("termCapitalBlock", Size.Six_6);
+        this.termCapitalVContainer = this.termCapitalBlock.newUIContainer("termCapitalVContainer");
         this.termCapitalView = new ReadOnlyView("termCapitalView", new PropertyModel<>(this.itemPage, "termCapitalValue"));
         this.termCapitalVContainer.add(this.termCapitalView);
 
-        this.termNominalPriceBlock = new WebMarkupBlock("termNominalPriceBlock", Size.Six_6);
-        this.form.add(this.termNominalPriceBlock);
-        this.termNominalPriceIContainer = new WebMarkupContainer("termNominalPriceIContainer");
-        this.termNominalPriceBlock.add(this.termNominalPriceIContainer);
+        this.termNominalPriceBlock = this.row2.newUIBlock("termNominalPriceBlock", Size.Six_6);
+        this.termNominalPriceIContainer = this.termNominalPriceBlock.newUIContainer("termNominalPriceIContainer");
         this.termNominalPriceField = new TextField<>("termNominalPriceField", new PropertyModel<>(this.itemPage, "termNominalPriceValue"));
-        this.termNominalPriceField.setLabel(Model.of("Nominal Price"));
-        this.termNominalPriceField.add(new OnChangeAjaxBehavior(this::termNominalPriceFieldUpdate));
         this.termNominalPriceIContainer.add(this.termNominalPriceField);
-        this.termNominalPriceFeedback = new TextFeedbackPanel("termNominalPriceFeedback", this.termNominalPriceField);
-        this.termNominalPriceIContainer.add(this.termNominalPriceFeedback);
+        this.termNominalPriceIContainer.newFeedback("termNominalPriceFeedback", this.termNominalPriceField);
 
-        this.termShareToBeIssuedBlock = new WebMarkupBlock("termShareToBeIssuedBlock", Size.Six_6);
-        this.form.add(this.termShareToBeIssuedBlock);
-        this.termShareToBeIssuedIContainer = new WebMarkupContainer("termShareToBeIssuedIContainer");
-        this.termShareToBeIssuedBlock.add(this.termShareToBeIssuedIContainer);
-        this.termShareToBeIssuedField = new TextField<>("termShareToBeIssuedField", new PropertyModel<>(this.itemPage, "termShareToBeIssuedValue"));
-        this.termShareToBeIssuedField.setLabel(Model.of("Shares to be issued"));
-        this.termShareToBeIssuedField.add(new OnChangeAjaxBehavior());
-        this.termShareToBeIssuedIContainer.add(this.termShareToBeIssuedField);
-        this.termShareToBeIssuedFeedback = new TextFeedbackPanel("termShareToBeIssuedFeedback", this.termShareToBeIssuedField);
-        this.termShareToBeIssuedIContainer.add(this.termShareToBeIssuedFeedback);
-
-        this.termTotalNumberOfShareBlock = new WebMarkupBlock("termTotalNumberOfShareBlock", Size.Six_6);
-        this.form.add(this.termTotalNumberOfShareBlock);
-        this.termTotalNumberOfShareIContainer = new WebMarkupContainer("termTotalNumberOfShareIContainer");
-        this.termTotalNumberOfShareBlock.add(this.termTotalNumberOfShareIContainer);
-        this.termTotalNumberOfShareField = new TextField<>("termTotalNumberOfShareField", new PropertyModel<>(this.itemPage, "termTotalNumberOfShareValue"));
-        this.termTotalNumberOfShareField.setLabel(Model.of("Total Number of Shares"));
-        this.termTotalNumberOfShareField.add(new OnChangeAjaxBehavior(this::termNominalPriceFieldUpdate));
-        this.termTotalNumberOfShareIContainer.add(this.termTotalNumberOfShareField);
-        this.termTotalNumberOfShareFeedback = new TextFeedbackPanel("termTotalNumberOfShareFeedback", this.termTotalNumberOfShareField);
-        this.termTotalNumberOfShareIContainer.add(this.termTotalNumberOfShareFeedback);
     }
 
     protected boolean termNominalPriceFieldUpdate(AjaxRequestTarget target) {
@@ -156,6 +145,15 @@ public class TermsPanel extends Panel {
 
     @Override
     protected void configureMetaData() {
+        this.termNominalPriceField.setLabel(Model.of("Nominal Price"));
+        this.termNominalPriceField.add(new OnChangeAjaxBehavior(this::termNominalPriceFieldUpdate));
+
+        this.termTotalNumberOfShareField.setLabel(Model.of("Total Number of Shares"));
+        this.termTotalNumberOfShareField.add(new OnChangeAjaxBehavior(this::termNominalPriceFieldUpdate));
+
+        this.termShareToBeIssuedField.setLabel(Model.of("Shares to be issued"));
+        this.termShareToBeIssuedField.add(new OnChangeAjaxBehavior());
+
         this.termTotalNumberOfShareField.setRequired(true);
         this.termNominalPriceField.setRequired(true);
         this.termShareToBeIssuedField.setRequired(true);

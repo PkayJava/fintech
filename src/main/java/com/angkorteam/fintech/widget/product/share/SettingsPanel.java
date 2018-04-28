@@ -2,7 +2,6 @@ package com.angkorteam.fintech.widget.product.share;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -10,13 +9,14 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.product.share.ShareBrowsePage;
 import com.angkorteam.fintech.pages.product.share.ShareCreatePage;
 import com.angkorteam.fintech.provider.LockInTypeProvider;
 import com.angkorteam.fintech.provider.MinimumActivePeriodProvider;
 import com.angkorteam.fintech.widget.Panel;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
@@ -37,47 +37,53 @@ public class SettingsPanel extends Panel {
     protected AjaxLink<Void> backLink;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock settingSharePerClientMinimumBlock;
-    protected WebMarkupContainer settingSharePerClientMinimumIContainer;
+    protected UIRow row1;
+
+    protected UIBlock settingSharePerClientMinimumBlock;
+    protected UIContainer settingSharePerClientMinimumIContainer;
     protected TextField<Long> settingSharePerClientMinimumField;
-    protected TextFeedbackPanel settingSharePerClientMinimumFeedback;
 
-    protected WebMarkupBlock settingSharePerClientDefaultBlock;
-    protected WebMarkupContainer settingSharePerClientDefaultIContainer;
+    protected UIBlock settingSharePerClientDefaultBlock;
+    protected UIContainer settingSharePerClientDefaultIContainer;
     protected TextField<Long> settingSharePerClientDefaultField;
-    protected TextFeedbackPanel settingSharePerClientDefaultFeedback;
 
-    protected WebMarkupBlock settingSharePerClientMaximumBlock;
-    protected WebMarkupContainer settingSharePerClientMaximumIContainer;
+    protected UIBlock settingSharePerClientMaximumBlock;
+    protected UIContainer settingSharePerClientMaximumIContainer;
     protected TextField<Long> settingSharePerClientMaximumField;
-    protected TextFeedbackPanel settingSharePerClientMaximumFeedback;
 
-    protected WebMarkupBlock settingMinimumActivePeriodBlock;
-    protected WebMarkupContainer settingMinimumActivePeriodIContainer;
+    protected UIRow row2;
+
+    protected UIBlock settingMinimumActivePeriodBlock;
+    protected UIContainer settingMinimumActivePeriodIContainer;
     protected TextField<Long> settingMinimumActivePeriodField;
-    protected TextFeedbackPanel settingMinimumActivePeriodFeedback;
 
-    protected WebMarkupBlock settingMinimumActiveTypeBlock;
-    protected WebMarkupContainer settingMinimumActiveTypeIContainer;
+    protected UIBlock settingMinimumActiveTypeBlock;
+    protected UIContainer settingMinimumActiveTypeIContainer;
     protected MinimumActivePeriodProvider settingMinimumActiveTypeProvider;
     protected Select2SingleChoice<Option> settingMinimumActiveTypeField;
-    protected TextFeedbackPanel settingMinimumActiveTypeFeedback;
 
-    protected WebMarkupBlock settingLockInPeriodBlock;
-    protected WebMarkupContainer settingLockInPeriodIContainer;
+    protected UIBlock row2Block1;
+
+    protected UIRow row3;
+
+    protected UIBlock settingLockInPeriodBlock;
+    protected UIContainer settingLockInPeriodIContainer;
     protected TextField<Long> settingLockInPeriodField;
-    protected TextFeedbackPanel settingLockInPeriodFeedback;
 
-    protected WebMarkupBlock settingLockInTypeBlock;
-    protected WebMarkupContainer settingLockInTypeIContainer;
+    protected UIBlock settingLockInTypeBlock;
+    protected UIContainer settingLockInTypeIContainer;
     protected LockInTypeProvider settingLockInTypeProvider;
     protected Select2SingleChoice<Option> settingLockInTypeField;
-    protected TextFeedbackPanel settingLockInTypeFeedback;
 
-    protected WebMarkupBlock settingAllowDividendForInactiveClientBlock;
-    protected WebMarkupContainer settingAllowDividendForInactiveClientIContainer;
+    protected UIBlock row3Block1;
+
+    protected UIRow row4;
+
+    protected UIBlock settingAllowDividendForInactiveClientBlock;
+    protected UIContainer settingAllowDividendForInactiveClientIContainer;
     protected CheckBox settingAllowDividendForInactiveClientField;
-    protected TextFeedbackPanel settingAllowDividendForInactiveClientFeedback;
+
+    protected UIBlock row4Block1;
 
     public SettingsPanel(String id, Page itemPage) {
         super(id);
@@ -88,6 +94,8 @@ public class SettingsPanel extends Panel {
     protected void initData() {
         this.errorSetting = new PropertyModel<>(this.itemPage, "errorSetting");
         this.tab = new PropertyModel<>(this.itemPage, "tab");
+        this.settingMinimumActiveTypeProvider = new MinimumActivePeriodProvider();
+        this.settingLockInTypeProvider = new LockInTypeProvider();
     }
 
     @Override
@@ -107,99 +115,94 @@ public class SettingsPanel extends Panel {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ShareBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.settingAllowDividendForInactiveClientBlock = new WebMarkupBlock("settingAllowDividendForInactiveClientBlock", Size.Four_4);
-        this.form.add(this.settingAllowDividendForInactiveClientBlock);
-        this.settingAllowDividendForInactiveClientIContainer = new WebMarkupContainer("settingAllowDividendForInactiveClientIContainer");
-        this.settingAllowDividendForInactiveClientBlock.add(this.settingAllowDividendForInactiveClientIContainer);
-        this.settingAllowDividendForInactiveClientField = new CheckBox("settingAllowDividendForInactiveClientField", new PropertyModel<>(this.itemPage, "settingAllowDividendForInactiveClientValue"));
-        this.settingAllowDividendForInactiveClientField.add(new OnChangeAjaxBehavior());
-        this.settingAllowDividendForInactiveClientIContainer.add(this.settingAllowDividendForInactiveClientField);
-        this.settingAllowDividendForInactiveClientFeedback = new TextFeedbackPanel("settingAllowDividendForInactiveClientFeedback", this.settingAllowDividendForInactiveClientField);
-        this.settingAllowDividendForInactiveClientIContainer.add(this.settingAllowDividendForInactiveClientFeedback);
+        this.row1 = UIRow.newUIRow("row1", this.form);
 
-        this.settingLockInTypeBlock = new WebMarkupBlock("settingLockInTypeBlock", Size.Four_4);
-        this.form.add(this.settingLockInTypeBlock);
-        this.settingLockInTypeIContainer = new WebMarkupContainer("settingLockInTypeIContainer");
-        this.settingLockInTypeBlock.add(this.settingLockInTypeIContainer);
-        this.settingLockInTypeProvider = new LockInTypeProvider();
-        this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", new PropertyModel<>(this.itemPage, "settingLockInTypeValue"), this.settingLockInTypeProvider);
-        this.settingLockInTypeField.setLabel(Model.of("Type"));
-        this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
-        this.settingLockInTypeIContainer.add(this.settingLockInTypeField);
-        this.settingLockInTypeFeedback = new TextFeedbackPanel("settingLockInTypeFeedback", this.settingLockInTypeField);
-        this.settingLockInTypeIContainer.add(this.settingLockInTypeFeedback);
-
-        this.settingLockInPeriodBlock = new WebMarkupBlock("settingLockInPeriodBlock", Size.Four_4);
-        this.form.add(this.settingLockInPeriodBlock);
-        this.settingLockInPeriodIContainer = new WebMarkupContainer("settingLockInPeriodIContainer");
-        this.settingLockInPeriodBlock.add(this.settingLockInPeriodIContainer);
-        this.settingLockInPeriodField = new TextField<>("settingLockInPeriodField", new PropertyModel<>(this.itemPage, "settingLockInPeriodValue"));
-        this.settingLockInPeriodField.setLabel(Model.of("Lock-in period"));
-        this.settingLockInPeriodField.add(new OnChangeAjaxBehavior());
-        this.settingLockInPeriodIContainer.add(this.settingLockInPeriodField);
-        this.settingLockInPeriodFeedback = new TextFeedbackPanel("settingLockInPeriodFeedback", this.settingLockInPeriodField);
-        this.settingLockInPeriodIContainer.add(this.settingLockInPeriodFeedback);
-
-        this.settingMinimumActiveTypeBlock = new WebMarkupBlock("settingMinimumActiveTypeBlock", Size.Four_4);
-        this.form.add(this.settingMinimumActiveTypeBlock);
-        this.settingMinimumActiveTypeIContainer = new WebMarkupContainer("settingMinimumActiveTypeIContainer");
-        this.settingMinimumActiveTypeBlock.add(this.settingMinimumActiveTypeIContainer);
-        this.settingMinimumActiveTypeProvider = new MinimumActivePeriodProvider();
-        this.settingMinimumActiveTypeField = new Select2SingleChoice<>("settingMinimumActiveTypeField", new PropertyModel<>(this.itemPage, "settingMinimumActiveTypeValue"), this.settingMinimumActiveTypeProvider);
-        this.settingMinimumActiveTypeField.setLabel(Model.of("Type"));
-        this.settingMinimumActiveTypeField.add(new OnChangeAjaxBehavior());
-        this.settingMinimumActiveTypeIContainer.add(this.settingMinimumActiveTypeField);
-        this.settingMinimumActiveTypeFeedback = new TextFeedbackPanel("settingMinimumActiveTypeFeedback", this.settingMinimumActiveTypeField);
-        this.settingMinimumActiveTypeIContainer.add(this.settingMinimumActiveTypeFeedback);
-
-        this.settingMinimumActivePeriodBlock = new WebMarkupBlock("settingMinimumActivePeriodBlock", Size.Four_4);
-        this.form.add(this.settingMinimumActivePeriodBlock);
-        this.settingMinimumActivePeriodIContainer = new WebMarkupContainer("settingMinimumActivePeriodIContainer");
-        this.settingMinimumActivePeriodBlock.add(this.settingMinimumActivePeriodIContainer);
-        this.settingMinimumActivePeriodField = new TextField<>("settingMinimumActivePeriodField", new PropertyModel<>(this.itemPage, "settingMinimumActivePeriodValue"));
-        this.settingMinimumActivePeriodField.setLabel(Model.of("Minimum Active Period"));
-        this.settingMinimumActivePeriodField.add(new OnChangeAjaxBehavior());
-        this.settingMinimumActivePeriodIContainer.add(this.settingMinimumActivePeriodField);
-        this.settingMinimumActivePeriodFeedback = new TextFeedbackPanel("settingMinimumActivePeriodFeedback", this.settingMinimumActivePeriodField);
-        this.settingMinimumActivePeriodIContainer.add(this.settingMinimumActivePeriodFeedback);
-
-        this.settingSharePerClientMaximumBlock = new WebMarkupBlock("settingSharePerClientMaximumBlock", Size.Four_4);
-        this.form.add(this.settingSharePerClientMaximumBlock);
-        this.settingSharePerClientMaximumIContainer = new WebMarkupContainer("settingSharePerClientMaximumIContainer");
-        this.settingSharePerClientMaximumBlock.add(this.settingSharePerClientMaximumIContainer);
-        this.settingSharePerClientMaximumField = new TextField<>("settingSharePerClientMaximumField", new PropertyModel<>(this.itemPage, "settingSharePerClientMaximumValue"));
-        this.settingSharePerClientMaximumField.setLabel(Model.of("Shares per Client Maximum"));
-        this.settingSharePerClientMaximumField.add(new OnChangeAjaxBehavior());
-        this.settingSharePerClientMaximumIContainer.add(this.settingSharePerClientMaximumField);
-        this.settingSharePerClientMaximumFeedback = new TextFeedbackPanel("settingSharePerClientMaximumFeedback", this.settingSharePerClientMaximumField);
-        this.settingSharePerClientMaximumIContainer.add(this.settingSharePerClientMaximumFeedback);
-
-        this.settingSharePerClientDefaultBlock = new WebMarkupBlock("settingSharePerClientDefaultBlock", Size.Four_4);
-        this.form.add(this.settingSharePerClientDefaultBlock);
-        this.settingSharePerClientDefaultIContainer = new WebMarkupContainer("settingSharePerClientDefaultIContainer");
-        this.settingSharePerClientDefaultBlock.add(this.settingSharePerClientDefaultIContainer);
-        this.settingSharePerClientDefaultField = new TextField<>("settingSharePerClientDefaultField", new PropertyModel<>(this.itemPage, "settingSharePerClientDefaultValue"));
-        this.settingSharePerClientDefaultField.setLabel(Model.of("Shares per Client Default"));
-        this.settingSharePerClientDefaultField.add(new OnChangeAjaxBehavior());
-        this.settingSharePerClientDefaultIContainer.add(this.settingSharePerClientDefaultField);
-        this.settingSharePerClientDefaultFeedback = new TextFeedbackPanel("settingSharePerClientDefaultFeedback", this.settingSharePerClientDefaultField);
-        this.settingSharePerClientDefaultIContainer.add(this.settingSharePerClientDefaultFeedback);
-
-        this.settingSharePerClientMinimumBlock = new WebMarkupBlock("settingSharePerClientMinimumBlock", Size.Four_4);
-        this.form.add(this.settingSharePerClientMinimumBlock);
-        this.settingSharePerClientMinimumIContainer = new WebMarkupContainer("settingSharePerClientMinimumIContainer");
-        this.settingSharePerClientMinimumBlock.add(this.settingSharePerClientMinimumIContainer);
+        this.settingSharePerClientMinimumBlock = this.row1.newUIBlock("settingSharePerClientMinimumBlock", Size.Four_4);
+        this.settingSharePerClientMinimumIContainer = this.settingSharePerClientMinimumBlock.newUIContainer("settingSharePerClientMinimumIContainer");
         this.settingSharePerClientMinimumField = new TextField<>("settingSharePerClientMinimumField", new PropertyModel<>(this.itemPage, "settingSharePerClientMinimumValue"));
-        this.settingSharePerClientMinimumField.setLabel(Model.of("Shares per Client Minimum"));
-        this.settingSharePerClientMinimumField.add(new OnChangeAjaxBehavior());
         this.settingSharePerClientMinimumIContainer.add(this.settingSharePerClientMinimumField);
-        this.settingSharePerClientMinimumFeedback = new TextFeedbackPanel("settingSharePerClientMinimumFeedback", this.settingSharePerClientMinimumField);
-        this.settingSharePerClientMinimumIContainer.add(this.settingSharePerClientMinimumFeedback);
+        this.settingSharePerClientMinimumIContainer.newFeedback("settingSharePerClientMinimumFeedback", this.settingSharePerClientMinimumField);
 
+        this.settingSharePerClientDefaultBlock = this.row1.newUIBlock("settingSharePerClientDefaultBlock", Size.Four_4);
+        this.settingSharePerClientDefaultIContainer = this.settingSharePerClientDefaultBlock.newUIContainer("settingSharePerClientDefaultIContainer");
+        this.settingSharePerClientDefaultField = new TextField<>("settingSharePerClientDefaultField", new PropertyModel<>(this.itemPage, "settingSharePerClientDefaultValue"));
+        this.settingSharePerClientDefaultIContainer.add(this.settingSharePerClientDefaultField);
+        this.settingSharePerClientDefaultIContainer.newFeedback("settingSharePerClientDefaultFeedback", this.settingSharePerClientDefaultField);
+
+        this.settingSharePerClientMaximumBlock = this.row1.newUIBlock("settingSharePerClientMaximumBlock", Size.Four_4);
+        this.settingSharePerClientMaximumIContainer = this.settingSharePerClientMaximumBlock.newUIContainer("settingSharePerClientMaximumIContainer");
+        this.settingSharePerClientMaximumField = new TextField<>("settingSharePerClientMaximumField", new PropertyModel<>(this.itemPage, "settingSharePerClientMaximumValue"));
+        this.settingSharePerClientMaximumIContainer.add(this.settingSharePerClientMaximumField);
+        this.settingSharePerClientMaximumIContainer.newFeedback("settingSharePerClientMaximumFeedback", this.settingSharePerClientMaximumField);
+
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.settingMinimumActivePeriodBlock = this.row2.newUIBlock("settingMinimumActivePeriodBlock", Size.Four_4);
+        this.settingMinimumActivePeriodIContainer = this.settingMinimumActivePeriodBlock.newUIContainer("settingMinimumActivePeriodIContainer");
+        this.settingMinimumActivePeriodField = new TextField<>("settingMinimumActivePeriodField", new PropertyModel<>(this.itemPage, "settingMinimumActivePeriodValue"));
+        this.settingMinimumActivePeriodIContainer.add(this.settingMinimumActivePeriodField);
+        this.settingMinimumActivePeriodIContainer.newFeedback("settingMinimumActivePeriodFeedback", this.settingMinimumActivePeriodField);
+
+        this.settingMinimumActiveTypeBlock = this.row2.newUIBlock("settingMinimumActiveTypeBlock", Size.Four_4);
+        this.settingMinimumActiveTypeIContainer = this.settingMinimumActiveTypeBlock.newUIContainer("settingMinimumActiveTypeIContainer");
+        this.settingMinimumActiveTypeField = new Select2SingleChoice<>("settingMinimumActiveTypeField", new PropertyModel<>(this.itemPage, "settingMinimumActiveTypeValue"), this.settingMinimumActiveTypeProvider);
+        this.settingMinimumActiveTypeIContainer.add(this.settingMinimumActiveTypeField);
+        this.settingMinimumActiveTypeIContainer.newFeedback("settingMinimumActiveTypeFeedback", this.settingMinimumActiveTypeField);
+
+        this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Four_4);
+
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.settingLockInPeriodBlock = this.row3.newUIBlock("settingLockInPeriodBlock", Size.Four_4);
+        this.settingLockInPeriodIContainer = this.settingLockInPeriodBlock.newUIContainer("settingLockInPeriodIContainer");
+        this.settingLockInPeriodField = new TextField<>("settingLockInPeriodField", new PropertyModel<>(this.itemPage, "settingLockInPeriodValue"));
+        this.settingLockInPeriodIContainer.add(this.settingLockInPeriodField);
+        this.settingLockInPeriodIContainer.newFeedback("settingLockInPeriodFeedback", this.settingLockInPeriodField);
+
+        this.settingLockInTypeBlock = this.row3.newUIBlock("settingLockInTypeBlock", Size.Four_4);
+        this.settingLockInTypeIContainer = this.settingLockInTypeBlock.newUIContainer("settingLockInTypeIContainer");
+        this.settingLockInTypeField = new Select2SingleChoice<>("settingLockInTypeField", new PropertyModel<>(this.itemPage, "settingLockInTypeValue"), this.settingLockInTypeProvider);
+        this.settingLockInTypeIContainer.add(this.settingLockInTypeField);
+        this.settingLockInTypeIContainer.newFeedback("settingLockInTypeFeedback", this.settingLockInTypeField);
+
+        this.row3Block1 = this.row3.newUIBlock("row3Block1", Size.Four_4);
+
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.settingAllowDividendForInactiveClientBlock = this.row4.newUIBlock("settingAllowDividendForInactiveClientBlock", Size.Four_4);
+        this.settingAllowDividendForInactiveClientIContainer = this.settingAllowDividendForInactiveClientBlock.newUIContainer("settingAllowDividendForInactiveClientIContainer");
+        this.settingAllowDividendForInactiveClientField = new CheckBox("settingAllowDividendForInactiveClientField", new PropertyModel<>(this.itemPage, "settingAllowDividendForInactiveClientValue"));
+        this.settingAllowDividendForInactiveClientIContainer.add(this.settingAllowDividendForInactiveClientField);
+        this.settingAllowDividendForInactiveClientIContainer.newFeedback("settingAllowDividendForInactiveClientFeedback", this.settingAllowDividendForInactiveClientField);
+
+        this.row4Block1 = this.row4.newUIBlock("row4Block1", Size.Eight_8);
     }
 
     @Override
     protected void configureMetaData() {
+        this.settingAllowDividendForInactiveClientField.add(new OnChangeAjaxBehavior());
+
+        this.settingLockInTypeField.setLabel(Model.of("Type"));
+        this.settingLockInTypeField.add(new OnChangeAjaxBehavior());
+
+        this.settingLockInPeriodField.setLabel(Model.of("Lock-in period"));
+        this.settingLockInPeriodField.add(new OnChangeAjaxBehavior());
+
+        this.settingMinimumActiveTypeField.setLabel(Model.of("Type"));
+        this.settingMinimumActiveTypeField.add(new OnChangeAjaxBehavior());
+
+        this.settingMinimumActivePeriodField.setLabel(Model.of("Minimum Active Period"));
+        this.settingMinimumActivePeriodField.add(new OnChangeAjaxBehavior());
+
+        this.settingSharePerClientMaximumField.setLabel(Model.of("Shares per Client Maximum"));
+        this.settingSharePerClientMaximumField.add(new OnChangeAjaxBehavior());
+
+        this.settingSharePerClientDefaultField.setLabel(Model.of("Shares per Client Default"));
+        this.settingSharePerClientDefaultField.add(new OnChangeAjaxBehavior());
+
+        this.settingSharePerClientMinimumField.setLabel(Model.of("Shares per Client Minimum"));
+        this.settingSharePerClientMinimumField.add(new OnChangeAjaxBehavior());
+
         this.settingSharePerClientDefaultField.setRequired(true);
     }
 

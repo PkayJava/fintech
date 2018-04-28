@@ -9,20 +9,21 @@ import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.product.share.ShareBrowsePage;
 import com.angkorteam.fintech.pages.product.share.ShareCreatePage;
 import com.angkorteam.fintech.popup.MarketPricePopup;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
@@ -56,9 +57,11 @@ public class MarketPricePanel extends Panel {
     protected ModalWindow modalWindow;
     protected Map<String, Object> popupModel;
 
+    protected UIRow row1;
+
     protected List<IColumn<Map<String, Object>, String>> marketPriceColumn;
-    protected WebMarkupBlock marketPriceBlock;
-    protected WebMarkupContainer marketPriceIContainer;
+    protected UIBlock marketPriceBlock;
+    protected UIContainer marketPriceIContainer;
     protected DataTable<Map<String, Object>, String> marketPriceTable;
     protected ListDataProvider marketPriceProvider;
     protected AjaxLink<Void> marketPriceAddLink;
@@ -105,10 +108,10 @@ public class MarketPricePanel extends Panel {
         add(this.modalWindow);
         this.modalWindow.setOnClose(this::modalWindowClose);
 
-        this.marketPriceBlock = new WebMarkupBlock("marketPriceBlock", Size.Twelve_12);
-        this.form.add(this.marketPriceBlock);
-        this.marketPriceIContainer = new WebMarkupContainer("marketPriceIContainer");
-        this.marketPriceBlock.add(this.marketPriceIContainer);
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.marketPriceBlock = this.row1.newUIBlock("marketPriceBlock", Size.Twelve_12);
+        this.marketPriceIContainer = this.marketPriceBlock.newUIContainer("marketPriceIContainer");
         this.marketPriceTable = new DataTable<>("marketPriceTable", this.marketPriceColumn, this.marketPriceProvider, 20);
         this.marketPriceIContainer.add(this.marketPriceTable);
         this.marketPriceTable.addTopToolbar(new HeadersToolbar<>(this.marketPriceTable, this.marketPriceProvider));

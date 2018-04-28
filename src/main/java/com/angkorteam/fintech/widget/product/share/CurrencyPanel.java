@@ -2,19 +2,19 @@ package com.angkorteam.fintech.widget.product.share;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.product.share.ShareBrowsePage;
 import com.angkorteam.fintech.pages.product.share.ShareCreatePage;
 import com.angkorteam.fintech.provider.CurrencyProvider;
 import com.angkorteam.fintech.widget.Panel;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.wicket.ajax.form.OnChangeAjaxBehavior;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.markup.html.tabs.AjaxTabbedPanel;
@@ -35,21 +35,24 @@ public class CurrencyPanel extends Panel {
     protected AjaxLink<Void> backLink;
     protected BookmarkablePageLink<Void> closeLink;
 
-    protected WebMarkupBlock currencyCodeBlock;
-    protected WebMarkupContainer currencyCodeIContainer;
+    protected UIRow row1;
+
+    protected UIBlock currencyCodeBlock;
+    protected UIContainer currencyCodeIContainer;
     protected Select2SingleChoice<Option> currencyCodeField;
     protected CurrencyProvider currencyCodeProvider;
-    protected TextFeedbackPanel currencyCodeFeedback;
 
-    protected WebMarkupBlock currencyDecimalPlaceBlock;
-    protected WebMarkupContainer currencyDecimalPlaceIContainer;
+    protected UIBlock currencyDecimalPlaceBlock;
+    protected UIContainer currencyDecimalPlaceIContainer;
     protected TextField<Long> currencyDecimalPlaceField;
-    protected TextFeedbackPanel currencyDecimalPlaceFeedback;
 
-    protected WebMarkupBlock currencyMultipleOfBlock;
-    protected WebMarkupContainer currencyMultipleOfIContainer;
+    protected UIRow row2;
+
+    protected UIBlock currencyMultipleOfBlock;
+    protected UIContainer currencyMultipleOfIContainer;
     protected TextField<Long> currencyMultipleOfField;
-    protected TextFeedbackPanel currencyMultipleOfFeedback;
+
+    protected UIBlock row2Block1;
 
     public CurrencyPanel(String id, Page itemPage) {
         super(id);
@@ -60,6 +63,7 @@ public class CurrencyPanel extends Panel {
     protected void initData() {
         this.errorCurrency = new PropertyModel<>(this.itemPage, "errorCurrency");
         this.tab = new PropertyModel<>(this.itemPage, "tab");
+        this.currencyCodeProvider = new CurrencyProvider();
     }
 
     @Override
@@ -79,44 +83,43 @@ public class CurrencyPanel extends Panel {
         this.closeLink = new BookmarkablePageLink<>("closeLink", ShareBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.currencyMultipleOfBlock = new WebMarkupBlock("currencyMultipleOfBlock", Size.Six_6);
-        this.form.add(this.currencyMultipleOfBlock);
-        this.currencyMultipleOfIContainer = new WebMarkupContainer("currencyMultipleOfIContainer");
-        this.currencyMultipleOfBlock.add(this.currencyMultipleOfIContainer);
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.currencyMultipleOfBlock = this.row1.newUIBlock("currencyMultipleOfBlock", Size.Six_6);
+        this.currencyMultipleOfIContainer = this.currencyMultipleOfBlock.newUIContainer("currencyMultipleOfIContainer");
         this.currencyMultipleOfField = new TextField<>("currencyMultipleOfField", new PropertyModel<>(this.itemPage, "currencyMultipleOfValue"));
-        this.currencyMultipleOfField.setLabel(Model.of("Multiples of"));
-        this.currencyMultipleOfField.add(new OnChangeAjaxBehavior());
         this.currencyMultipleOfIContainer.add(this.currencyMultipleOfField);
-        this.currencyMultipleOfFeedback = new TextFeedbackPanel("currencyMultipleOfFeedback", this.currencyMultipleOfField);
-        this.currencyMultipleOfIContainer.add(this.currencyMultipleOfFeedback);
+        this.currencyMultipleOfIContainer.newFeedback("currencyMultipleOfFeedback", this.currencyMultipleOfField);
 
-        this.currencyDecimalPlaceBlock = new WebMarkupBlock("currencyDecimalPlaceBlock", Size.Six_6);
-        this.form.add(this.currencyDecimalPlaceBlock);
-        this.currencyDecimalPlaceIContainer = new WebMarkupContainer("currencyDecimalPlaceIContainer");
-        this.currencyDecimalPlaceBlock.add(this.currencyDecimalPlaceIContainer);
+        this.currencyDecimalPlaceBlock = this.row1.newUIBlock("currencyDecimalPlaceBlock", Size.Six_6);
+        this.currencyDecimalPlaceIContainer = this.currencyDecimalPlaceBlock.newUIContainer("currencyDecimalPlaceIContainer");
         this.currencyDecimalPlaceField = new TextField<>("currencyDecimalPlaceField", new PropertyModel<>(this.itemPage, "currencyDecimalPlaceValue"));
-        this.currencyDecimalPlaceField.setLabel(Model.of("Decimal places"));
-        this.currencyDecimalPlaceField.add(new OnChangeAjaxBehavior());
         this.currencyDecimalPlaceIContainer.add(this.currencyDecimalPlaceField);
-        this.currencyDecimalPlaceFeedback = new TextFeedbackPanel("currencyDecimalPlaceFeedback", this.currencyDecimalPlaceField);
-        this.currencyDecimalPlaceIContainer.add(this.currencyDecimalPlaceFeedback);
+        this.currencyDecimalPlaceIContainer.newFeedback("currencyDecimalPlaceFeedback", this.currencyDecimalPlaceField);
 
-        this.currencyCodeBlock = new WebMarkupBlock("currencyCodeBlock", Size.Six_6);
-        this.form.add(this.currencyCodeBlock);
-        this.currencyCodeIContainer = new WebMarkupContainer("currencyCodeIContainer");
-        this.currencyCodeBlock.add(this.currencyCodeIContainer);
-        this.currencyCodeProvider = new CurrencyProvider();
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.currencyCodeBlock = this.row2.newUIBlock("currencyCodeBlock", Size.Six_6);
+        this.currencyCodeIContainer = this.currencyCodeBlock.newUIContainer("currencyCodeIContainer");
         this.currencyCodeField = new Select2SingleChoice<>("currencyCodeField", new PropertyModel<>(this.itemPage, "currencyCodeValue"), this.currencyCodeProvider);
-        this.currencyCodeField.setLabel(Model.of("Currency"));
-        this.currencyCodeField.add(new OnChangeAjaxBehavior());
         this.currencyCodeIContainer.add(this.currencyCodeField);
-        this.currencyCodeFeedback = new TextFeedbackPanel("currencyCodeFeedback", this.currencyCodeField);
-        this.currencyCodeIContainer.add(this.currencyCodeFeedback);
+        this.currencyCodeIContainer.newFeedback("currencyCodeFeedback", this.currencyCodeField);
+
+        this.row2Block1 = this.row2.newUIBlock("row2Block1", Size.Six_6);
 
     }
 
     @Override
     protected void configureMetaData() {
+        this.currencyCodeField.setLabel(Model.of("Currency"));
+        this.currencyCodeField.add(new OnChangeAjaxBehavior());
+
+        this.currencyDecimalPlaceField.setLabel(Model.of("Decimal Places"));
+        this.currencyDecimalPlaceField.add(new OnChangeAjaxBehavior());
+
+        this.currencyMultipleOfField.setLabel(Model.of("Multiples Of"));
+        this.currencyMultipleOfField.add(new OnChangeAjaxBehavior());
+
         this.currencyCodeField.setRequired(true);
         this.currencyDecimalPlaceField.setRequired(true);
         this.currencyMultipleOfField.setRequired(true);
