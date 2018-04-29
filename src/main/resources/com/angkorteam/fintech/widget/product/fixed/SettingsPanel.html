@@ -8,142 +8,146 @@
 			<div class="box-primary">
 
 				<div class="box-body">
-					<!-- Row -->
-					<div wicket:id="settingLockInPeriodBlock" class="form-group">
-						<wicket:container wicket:id="settingLockInPeriodIContainer">
-							<label wicket:for="settingLockInPeriodField">Lock-in
-								Period</label>
-							<input wicket:id="settingLockInPeriodField" type="text"
-								class="form-control" />
-							<span wicket:id="settingLockInPeriodFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="settingLockInTypeBlock" class="form-group">
-						<wicket:container wicket:id="settingLockInTypeIContainer">
-							<label wicket:for="settingLockInTypeField">Type</label>
-							<select wicket:id="settingLockInTypeField" class="form-control"></select>
-							<span wicket:id="settingLockInTypeFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="settingMinimumDepositTermBlock" class="form-group">
-						<wicket:container wicket:id="settingMinimumDepositTermIContainer">
-							<label wicket:for="settingMinimumDepositTermField">Minimum
-								Deposit Term</label>
-							<input wicket:id="settingMinimumDepositTermField" type="text"
-								class="form-control" />
-							<span wicket:id="settingMinimumDepositTermFeedback"
-								class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="settingMinimumDepositTypeBlock" class="form-group">
-						<wicket:container wicket:id="settingMinimumDepositTypeIContainer">
-							<label wicket:for="settingMinimumDepositTypeField">Type</label>
-							<select wicket:id="settingMinimumDepositTypeField"
-								class="form-control"></select>
-							<span wicket:id="settingMinimumDepositTypeFeedback"
-								class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="settingInMultiplesOfBlock" class="form-group">
-						<wicket:container wicket:id="settingInMultiplesOfIContainer">
-							<label wicket:for="settingInMultiplesOfField">And
-								thereafter, In Multiples of</label>
-							<input wicket:id="settingInMultiplesOfField" type="text"
-								class="form-control" />
-							<span wicket:id="settingInMultiplesOfFeedback" class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row1">
+						<div wicket:id="settingLockInPeriodBlock" class="form-group">
+							<wicket:container wicket:id="settingLockInPeriodIContainer">
+								<label wicket:for="settingLockInPeriodField">Lock-in
+									Period</label>
+								<input wicket:id="settingLockInPeriodField" type="text"
+									class="form-control" />
+								<span wicket:id="settingLockInPeriodFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="settingLockInTypeBlock" class="form-group">
+							<wicket:container wicket:id="settingLockInTypeIContainer">
+								<label wicket:for="settingLockInTypeField">Type</label>
+								<select wicket:id="settingLockInTypeField" class="form-control"></select>
+								<span wicket:id="settingLockInTypeFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="settingMinimumDepositTermBlock" class="form-group">
+							<wicket:container wicket:id="settingMinimumDepositTermIContainer">
+								<label wicket:for="settingMinimumDepositTermField">Minimum
+									Deposit Term</label>
+								<input wicket:id="settingMinimumDepositTermField" type="text"
+									class="form-control" />
+								<span wicket:id="settingMinimumDepositTermFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="settingMinimumDepositTypeBlock" class="form-group">
+							<wicket:container wicket:id="settingMinimumDepositTypeIContainer">
+								<label wicket:for="settingMinimumDepositTypeField">Type</label>
+								<select wicket:id="settingMinimumDepositTypeField"
+									class="form-control"></select>
+								<span wicket:id="settingMinimumDepositTypeFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="settingInMultiplesTypeBlock" class="form-group">
-						<wicket:container wicket:id="settingInMultiplesTypeIContainer">
-							<label wicket:for="settingInMultiplesTypeField">Type</label>
-							<select wicket:id="settingInMultiplesTypeField"
-								class="form-control"></select>
-							<span wicket:id="settingInMultiplesTypeFeedback"
-								class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="settingMaximumDepositTermBlock" class="form-group">
-						<wicket:container wicket:id="settingMaximumDepositTermIContainer">
-							<label wicket:for="settingMaximumDepositTermField">Maximum
-								Deposit Term</label>
-							<input wicket:id="settingMaximumDepositTermField" type="text"
-								class="form-control" />
-							<span wicket:id="settingMaximumDepositTermFeedback"
-								class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="settingMaximumDepositTypeBlock" class="form-group">
-						<wicket:container wicket:id="settingMaximumDepositTypeIContainer">
-							<label wicket:for="settingMaximumDepositTypeField">Type</label>
-							<select wicket:id="settingMaximumDepositTypeField"
-								class="form-control"></select>
-							<span wicket:id="settingMaximumDepositTypeFeedback"
-								class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="settingForPreMatureClosureBlock" class="form-group">
-						<wicket:container wicket:id="settingForPreMatureClosureIContainer">
-							<label>&nbsp;</label>
-							<span style="display: block"> <label> <input
-									type="checkbox" wicket:id="settingForPreMatureClosureField" />
-									Is For Pre-mature Closure?
-							</label>
-							</span>
-							<span wicket:id="settingForPreMatureClosureFeedback"
-								class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row2">
+						<div wicket:id="settingInMultiplesOfBlock" class="form-group">
+							<wicket:container wicket:id="settingInMultiplesOfIContainer">
+								<label wicket:for="settingInMultiplesOfField">And
+									thereafter, In Multiples of</label>
+								<input wicket:id="settingInMultiplesOfField" type="text"
+									class="form-control" />
+								<span wicket:id="settingInMultiplesOfFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="settingInMultiplesTypeBlock" class="form-group">
+							<wicket:container wicket:id="settingInMultiplesTypeIContainer">
+								<label wicket:for="settingInMultiplesTypeField">Type</label>
+								<select wicket:id="settingInMultiplesTypeField"
+									class="form-control"></select>
+								<span wicket:id="settingInMultiplesTypeFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="settingMaximumDepositTermBlock" class="form-group">
+							<wicket:container wicket:id="settingMaximumDepositTermIContainer">
+								<label wicket:for="settingMaximumDepositTermField">Maximum
+									Deposit Term</label>
+								<input wicket:id="settingMaximumDepositTermField" type="text"
+									class="form-control" />
+								<span wicket:id="settingMaximumDepositTermFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="settingMaximumDepositTypeBlock" class="form-group">
+							<wicket:container wicket:id="settingMaximumDepositTypeIContainer">
+								<label wicket:for="settingMaximumDepositTypeField">Type</label>
+								<select wicket:id="settingMaximumDepositTypeField"
+									class="form-control"></select>
+								<span wicket:id="settingMaximumDepositTypeFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="settingApplyPenalInterestBlock" class="form-group">
-						<wicket:container wicket:id="settingApplyPenalInterestIContainer">
-							<label wicket:for="settingApplyPenalInterestField">Apply
-								penal interest (less)</label>
-							<input wicket:id="settingApplyPenalInterestField" type="text"
-								class="form-control" />
-							<span wicket:id="settingApplyPenalInterestFeedback"
-								class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div wicket:id="settingApplyPenalOnBlock" class="form-group">
-						<wicket:container wicket:id="settingApplyPenalOnIContainer">
-							<label wicket:for="settingApplyPenalOnField">On</label>
-							<select wicket:id="settingApplyPenalOnField" class="form-control"></select>
-							<span wicket:id="settingApplyPenalOnFeedback" class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div
-						class="form-group col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3">
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="settingWithholdTaxApplicableBlock"
-						class="form-group">
-						<wicket:container
-							wicket:id="settingWithholdTaxApplicableIContainer">
-							<label>&nbsp;</label>
-							<span style="display: block"> <label> <input
-									type="checkbox" wicket:id="settingWithholdTaxApplicableField" />
-									Is Withhold tax applicable?
-							</label>
-							</span>
-							<span wicket:id="settingWithholdTaxApplicableFeedback"
-								class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row3">
+						<div wicket:id="settingForPreMatureClosureBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="settingForPreMatureClosureIContainer">
+								<label>&nbsp;</label>
+								<span style="display: block"> <label> <input
+										type="checkbox" wicket:id="settingForPreMatureClosureField" />
+										Is For Pre-mature Closure?
+								</label>
+								</span>
+								<span wicket:id="settingForPreMatureClosureFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="settingApplyPenalInterestBlock" class="form-group">
+							<wicket:container wicket:id="settingApplyPenalInterestIContainer">
+								<label wicket:for="settingApplyPenalInterestField">Apply
+									penal interest (less)</label>
+								<input wicket:id="settingApplyPenalInterestField" type="text"
+									class="form-control" />
+								<span wicket:id="settingApplyPenalInterestFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="settingApplyPenalOnBlock" class="form-group">
+							<wicket:container wicket:id="settingApplyPenalOnIContainer">
+								<label wicket:for="settingApplyPenalOnField">On</label>
+								<select wicket:id="settingApplyPenalOnField"
+									class="form-control"></select>
+								<span wicket:id="settingApplyPenalOnFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="row3Block1" class="form-group"></div>
 					</div>
-					<div wicket:id="settingTaxGroupBlock" class="form-group">
-						<wicket:container wicket:id="settingTaxGroupIContainer">
-							<label wicket:for="settingTaxGroupField">Tax Group</label>
-							<select wicket:id="settingTaxGroupField" class="form-control"></select>
-							<span wicket:id="settingTaxGroupFeedback" class="help-block"></span>
-						</wicket:container>
+
+					<div wicket:id="row4">
+						<div wicket:id="settingWithholdTaxApplicableBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="settingWithholdTaxApplicableIContainer">
+								<label>&nbsp;</label>
+								<span style="display: block"> <label> <input
+										type="checkbox" wicket:id="settingWithholdTaxApplicableField" />
+										Is Withhold tax applicable?
+								</label>
+								</span>
+								<span wicket:id="settingWithholdTaxApplicableFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="settingTaxGroupBlock" class="form-group">
+							<wicket:container wicket:id="settingTaxGroupIContainer">
+								<label wicket:for="settingTaxGroupField">Tax Group</label>
+								<select wicket:id="settingTaxGroupField" class="form-control"></select>
+								<span wicket:id="settingTaxGroupFeedback" class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div class="clearfix"></div>
+
 				</div>
 
 				<div class="box-footer">

@@ -8,7 +8,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -22,6 +22,9 @@ import com.angkorteam.fintech.dto.enums.AccountUsage;
 import com.angkorteam.fintech.dto.enums.AccountingType;
 import com.angkorteam.fintech.dto.enums.ProductPopup;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.product.fixed.FixedBrowsePage;
 import com.angkorteam.fintech.pages.product.fixed.FixedCreatePage;
 import com.angkorteam.fintech.popup.CurrencyPopup;
@@ -32,8 +35,6 @@ import com.angkorteam.fintech.provider.SingleChoiceProvider;
 import com.angkorteam.fintech.spring.StringGenerator;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
-import com.angkorteam.fintech.widget.TextFeedbackPanel;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.SpringBean;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
@@ -76,44 +77,54 @@ public class AccountingPanel extends Panel {
     protected WebMarkupContainer cashBlock;
     protected WebMarkupContainer cashIContainer;
 
-    protected WebMarkupBlock cashSavingReferenceBlock;
-    protected WebMarkupContainer cashSavingReferenceIContainer;
+    protected UIRow row1;
+
+    protected UIBlock cashSavingReferenceBlock;
+    protected UIContainer cashSavingReferenceIContainer;
     protected SingleChoiceProvider cashSavingReferenceProvider;
     protected Select2SingleChoice<Option> cashSavingReferenceField;
-    protected TextFeedbackPanel cashSavingReferenceFeedback;
 
-    protected WebMarkupBlock cashSavingControlBlock;
-    protected WebMarkupContainer cashSavingControlIContainer;
+    protected UIBlock row1Block1;
+
+    protected UIRow row2;
+
+    protected UIBlock cashSavingControlBlock;
+    protected UIContainer cashSavingControlIContainer;
     protected SingleChoiceProvider cashSavingControlProvider;
     protected Select2SingleChoice<Option> cashSavingControlField;
-    protected TextFeedbackPanel cashSavingControlFeedback;
 
-    protected WebMarkupBlock cashSavingTransferInSuspenseBlock;
-    protected WebMarkupContainer cashSavingTransferInSuspenseIContainer;
+    protected UIBlock cashSavingTransferInSuspenseBlock;
+    protected UIContainer cashSavingTransferInSuspenseIContainer;
     protected SingleChoiceProvider cashSavingTransferInSuspenseProvider;
     protected Select2SingleChoice<Option> cashSavingTransferInSuspenseField;
-    protected TextFeedbackPanel cashSavingTransferInSuspenseFeedback;
 
-    protected WebMarkupBlock cashInterestOnSavingBlock;
-    protected WebMarkupContainer cashInterestOnSavingIContainer;
+    protected UIRow row3;
+
+    protected UIBlock cashInterestOnSavingBlock;
+    protected UIContainer cashInterestOnSavingIContainer;
     protected SingleChoiceProvider cashInterestOnSavingProvider;
     protected Select2SingleChoice<Option> cashInterestOnSavingField;
-    protected TextFeedbackPanel cashInterestOnSavingFeedback;
 
-    protected WebMarkupBlock cashIncomeFromFeeBlock;
-    protected WebMarkupContainer cashIncomeFromFeeIContainer;
+    protected UIBlock row3Block1;
+
+    protected UIRow row4;
+
+    protected UIBlock cashIncomeFromFeeBlock;
+    protected UIContainer cashIncomeFromFeeIContainer;
     protected SingleChoiceProvider cashIncomeFromFeeProvider;
     protected Select2SingleChoice<Option> cashIncomeFromFeeField;
-    protected TextFeedbackPanel cashIncomeFromFeeFeedback;
 
-    protected WebMarkupBlock cashIncomeFromPenaltyBlock;
-    protected WebMarkupContainer cashIncomeFromPenaltyIContainer;
+    protected UIBlock cashIncomeFromPenaltyBlock;
+    protected UIContainer cashIncomeFromPenaltyIContainer;
     protected SingleChoiceProvider cashIncomeFromPenaltyProvider;
     protected Select2SingleChoice<Option> cashIncomeFromPenaltyField;
-    protected TextFeedbackPanel cashIncomeFromPenaltyFeedback;
 
     protected WebMarkupContainer advancedAccountingRuleBlock;
     protected WebMarkupContainer advancedAccountingRuleIContainer;
+
+    protected UIRow row5;
+
+    protected UIBlock row5Block1;
 
     protected DataTable<Map<String, Object>, String> advancedAccountingRuleFundSourceTable;
     protected ListDataProvider advancedAccountingRuleFundSourceProvider;
@@ -166,6 +177,30 @@ public class AccountingPanel extends Panel {
         this.advancedAccountingRuleFundSourceColumn.add(new ActionFilterColumn<>(Model.of("Action"), this::advancedAccountingRuleFundSourceAction, this::advancedAccountingRuleFundSourceClick));
         this.advancedAccountingRuleFundSourceProvider = new ListDataProvider(this.advancedAccountingRuleFundSourceValue.getObject());
 
+        this.cashSavingReferenceProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashSavingReferenceProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashSavingReferenceProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+
+        this.cashSavingControlProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashSavingControlProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashSavingControlProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Liability.getLiteral());
+
+        this.cashSavingTransferInSuspenseProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashSavingTransferInSuspenseProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashSavingTransferInSuspenseProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Liability.getLiteral());
+
+        this.cashInterestOnSavingProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashInterestOnSavingProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashInterestOnSavingProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Expense.getLiteral());
+
+        this.cashIncomeFromFeeProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashIncomeFromFeeProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromFeeProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+
+        this.cashIncomeFromPenaltyProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
+        this.cashIncomeFromPenaltyProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
+        this.cashIncomeFromPenaltyProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+
     }
 
     @Override
@@ -199,125 +234,113 @@ public class AccountingPanel extends Panel {
         this.cashBlock.setOutputMarkupId(true);
         this.form.add(this.cashBlock);
         this.cashIContainer = new WebMarkupContainer("cashIContainer");
+        this.cashIContainer.setOutputMarkupId(true);
         this.cashBlock.add(this.cashIContainer);
 
-        this.cashSavingReferenceBlock = new WebMarkupBlock("cashSavingReferenceBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashSavingReferenceBlock);
-        this.cashSavingReferenceIContainer = new WebMarkupContainer("cashSavingReferenceIContainer");
-        this.cashSavingReferenceBlock.add(this.cashSavingReferenceIContainer);
-        this.cashSavingReferenceProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.cashSavingReferenceProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.cashSavingReferenceProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Asset.getLiteral());
+        this.row1 = UIRow.newUIRow("row1", this.cashIContainer);
+
+        this.cashSavingReferenceBlock = this.row1.newUIBlock("cashSavingReferenceBlock", Size.Six_6);
+        this.cashSavingReferenceIContainer = this.cashSavingReferenceBlock.newUIContainer("cashSavingReferenceIContainer");
         this.cashSavingReferenceField = new Select2SingleChoice<>("cashSavingReferenceField", new PropertyModel<>(this.itemPage, "cashSavingReferenceValue"), this.cashSavingReferenceProvider);
-        this.cashSavingReferenceField.setLabel(Model.of("Saving Reference"));
-        this.cashSavingReferenceField.add(new OnChangeAjaxBehavior());
         this.cashSavingReferenceIContainer.add(this.cashSavingReferenceField);
-        this.cashSavingReferenceFeedback = new TextFeedbackPanel("cashSavingReferenceFeedback", this.cashSavingReferenceField);
-        this.cashSavingReferenceIContainer.add(this.cashSavingReferenceFeedback);
+        this.cashSavingReferenceIContainer.newFeedback("cashSavingReferenceFeedback", this.cashSavingReferenceField);
 
-        this.cashSavingControlBlock = new WebMarkupBlock("cashSavingControlBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashSavingControlBlock);
-        this.cashSavingControlIContainer = new WebMarkupContainer("cashSavingControlIContainer");
-        this.cashSavingControlBlock.add(this.cashSavingControlIContainer);
-        this.cashSavingControlProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.cashSavingControlProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.cashSavingControlProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Liability.getLiteral());
+        this.row1Block1 = this.row1.newUIBlock("row1Block1", Size.Six_6);
+
+        this.row2 = UIRow.newUIRow("row2", this.cashIContainer);
+
+        this.cashSavingControlBlock = this.row2.newUIBlock("cashSavingControlBlock", Size.Six_6);
+        this.cashSavingControlIContainer = this.cashSavingControlBlock.newUIContainer("cashSavingControlIContainer");
         this.cashSavingControlField = new Select2SingleChoice<>("cashSavingControlField", new PropertyModel<>(this.itemPage, "cashSavingControlValue"), this.cashSavingControlProvider);
-        this.cashSavingControlField.setLabel(Model.of("Saving Control"));
-        this.cashSavingControlField.add(new OnChangeAjaxBehavior());
         this.cashSavingControlIContainer.add(this.cashSavingControlField);
-        this.cashSavingControlFeedback = new TextFeedbackPanel("cashSavingControlFeedback", this.cashSavingControlField);
-        this.cashSavingControlIContainer.add(this.cashSavingControlFeedback);
+        this.cashSavingControlIContainer.newFeedback("cashSavingControlFeedback", this.cashSavingControlField);
 
-        this.cashSavingTransferInSuspenseBlock = new WebMarkupBlock("cashSavingTransferInSuspenseBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashSavingTransferInSuspenseBlock);
-        this.cashSavingTransferInSuspenseIContainer = new WebMarkupContainer("cashSavingTransferInSuspenseIContainer");
-        this.cashSavingTransferInSuspenseBlock.add(this.cashSavingTransferInSuspenseIContainer);
-        this.cashSavingTransferInSuspenseProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.cashSavingTransferInSuspenseProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.cashSavingTransferInSuspenseProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Liability.getLiteral());
+        this.cashSavingTransferInSuspenseBlock = this.row2.newUIBlock("cashSavingTransferInSuspenseBlock", Size.Six_6);
+        this.cashSavingTransferInSuspenseIContainer = this.cashSavingTransferInSuspenseBlock.newUIContainer("cashSavingTransferInSuspenseIContainer");
         this.cashSavingTransferInSuspenseField = new Select2SingleChoice<>("cashSavingTransferInSuspenseField", new PropertyModel<>(this.itemPage, "cashSavingTransferInSuspenseValue"), this.cashSavingTransferInSuspenseProvider);
-        this.cashSavingTransferInSuspenseField.setLabel(Model.of("Savings Transfers In Suspense"));
-        this.cashSavingTransferInSuspenseField.add(new OnChangeAjaxBehavior());
         this.cashSavingTransferInSuspenseIContainer.add(this.cashSavingTransferInSuspenseField);
-        this.cashSavingTransferInSuspenseFeedback = new TextFeedbackPanel("cashSavingTransferInSuspenseFeedback", this.cashSavingTransferInSuspenseField);
-        this.cashSavingTransferInSuspenseIContainer.add(this.cashSavingTransferInSuspenseFeedback);
+        this.cashSavingTransferInSuspenseIContainer.newFeedback("cashSavingTransferInSuspenseFeedback", this.cashSavingTransferInSuspenseField);
 
-        this.cashInterestOnSavingBlock = new WebMarkupBlock("cashInterestOnSavingBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashInterestOnSavingBlock);
-        this.cashInterestOnSavingIContainer = new WebMarkupContainer("cashInterestOnSavingIContainer");
-        this.cashInterestOnSavingBlock.add(this.cashInterestOnSavingIContainer);
-        this.cashInterestOnSavingProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.cashInterestOnSavingProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.cashInterestOnSavingProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Expense.getLiteral());
+        this.row3 = UIRow.newUIRow("row3", this.cashIContainer);
+
+        this.cashInterestOnSavingBlock = this.row3.newUIBlock("cashInterestOnSavingBlock", Size.Six_6);
+        this.cashInterestOnSavingIContainer = this.cashInterestOnSavingBlock.newUIContainer("cashInterestOnSavingIContainer");
         this.cashInterestOnSavingField = new Select2SingleChoice<>("cashInterestOnSavingField", new PropertyModel<>(this.itemPage, "cashInterestOnSavingValue"), this.cashInterestOnSavingProvider);
-        this.cashInterestOnSavingField.setLabel(Model.of("Interest On Savings"));
-        this.cashInterestOnSavingField.add(new OnChangeAjaxBehavior());
         this.cashInterestOnSavingIContainer.add(this.cashInterestOnSavingField);
-        this.cashInterestOnSavingFeedback = new TextFeedbackPanel("cashInterestOnSavingFeedback", this.cashInterestOnSavingField);
-        this.cashInterestOnSavingIContainer.add(this.cashInterestOnSavingFeedback);
+        this.cashInterestOnSavingIContainer.newFeedback("cashInterestOnSavingFeedback", this.cashInterestOnSavingField);
 
-        this.cashIncomeFromFeeBlock = new WebMarkupBlock("cashIncomeFromFeeBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashIncomeFromFeeBlock);
-        this.cashIncomeFromFeeIContainer = new WebMarkupContainer("cashIncomeFromFeeIContainer");
-        this.cashIncomeFromFeeBlock.add(this.cashIncomeFromFeeIContainer);
-        this.cashIncomeFromFeeProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.cashIncomeFromFeeProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.cashIncomeFromFeeProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+        this.row3Block1 = this.row3.newUIBlock("row3Block1", Size.Six_6);
+
+        this.row4 = UIRow.newUIRow("row4", this.cashIContainer);
+
+        this.cashIncomeFromFeeBlock = this.row4.newUIBlock("cashIncomeFromFeeBlock", Size.Six_6);
+        this.cashIncomeFromFeeIContainer = this.cashIncomeFromFeeBlock.newUIContainer("cashIncomeFromFeeIContainer");
         this.cashIncomeFromFeeField = new Select2SingleChoice<>("cashIncomeFromFeeField", new PropertyModel<>(this.itemPage, "cashIncomeFromFeeValue"), this.cashIncomeFromFeeProvider);
-        this.cashIncomeFromFeeField.setLabel(Model.of("Income From Fees"));
-        this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
         this.cashIncomeFromFeeIContainer.add(this.cashIncomeFromFeeField);
-        this.cashIncomeFromFeeFeedback = new TextFeedbackPanel("cashIncomeFromFeeFeedback", this.cashIncomeFromFeeField);
-        this.cashIncomeFromFeeIContainer.add(this.cashIncomeFromFeeFeedback);
+        this.cashIncomeFromFeeIContainer.newFeedback("cashIncomeFromFeeFeedback", this.cashIncomeFromFeeField);
 
-        this.cashIncomeFromPenaltyBlock = new WebMarkupBlock("cashIncomeFromPenaltyBlock", Size.Six_6);
-        this.cashIContainer.add(this.cashIncomeFromPenaltyBlock);
-        this.cashIncomeFromPenaltyIContainer = new WebMarkupContainer("cashIncomeFromPenaltyIContainer");
-        this.cashIncomeFromPenaltyBlock.add(this.cashIncomeFromPenaltyIContainer);
-        this.cashIncomeFromPenaltyProvider = new SingleChoiceProvider(AccGLAccount.NAME, AccGLAccount.Field.ID, AccGLAccount.Field.NAME);
-        this.cashIncomeFromPenaltyProvider.applyWhere("account_usage", AccGLAccount.Field.ACCOUNT_USAGE + " = " + AccountUsage.Detail.getLiteral());
-        this.cashIncomeFromPenaltyProvider.applyWhere("classification_enum", AccGLAccount.Field.CLASSIFICATION_ENUM + " = " + AccountType.Income.getLiteral());
+        this.cashIncomeFromPenaltyBlock = this.row4.newUIBlock("cashIncomeFromPenaltyBlock", Size.Six_6);
+        this.cashIncomeFromPenaltyIContainer = this.cashIncomeFromPenaltyBlock.newUIContainer("cashIncomeFromPenaltyIContainer");
         this.cashIncomeFromPenaltyField = new Select2SingleChoice<>("cashIncomeFromPenaltyField", new PropertyModel<>(this.itemPage, "cashIncomeFromPenaltyValue"), this.cashIncomeFromPenaltyProvider);
-        this.cashIncomeFromPenaltyField.setLabel(Model.of("Income From Penalties"));
-        this.cashIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
         this.cashIncomeFromPenaltyIContainer.add(this.cashIncomeFromPenaltyField);
-        this.cashIncomeFromPenaltyFeedback = new TextFeedbackPanel("cashIncomeFromPenaltyFeedback", this.cashIncomeFromPenaltyField);
-        this.cashIncomeFromPenaltyIContainer.add(this.cashIncomeFromPenaltyFeedback);
+        this.cashIncomeFromPenaltyIContainer.newFeedback("cashIncomeFromPenaltyFeedback", this.cashIncomeFromPenaltyField);
 
         this.advancedAccountingRuleBlock = new WebMarkupContainer("advancedAccountingRuleBlock");
         this.advancedAccountingRuleBlock.setOutputMarkupId(true);
         this.form.add(this.advancedAccountingRuleBlock);
         this.advancedAccountingRuleIContainer = new WebMarkupContainer("advancedAccountingRuleIContainer");
+        this.advancedAccountingRuleIContainer.setOutputMarkupId(true);
         this.advancedAccountingRuleBlock.add(this.advancedAccountingRuleIContainer);
 
+        this.row5 = UIRow.newUIRow("row5", this.advancedAccountingRuleIContainer);
+
+        this.row5Block1 = this.row5.newUIBlock("row5Block1", Size.Twelve_12);
+
         this.advancedAccountingRulePenaltyIncomeTable = new DataTable<>("advancedAccountingRulePenaltyIncomeTable", this.advancedAccountingRulePenaltyIncomeColumn, this.advancedAccountingRulePenaltyIncomeProvider, 20);
-        this.advancedAccountingRuleIContainer.add(this.advancedAccountingRulePenaltyIncomeTable);
+        this.row5Block1.add(this.advancedAccountingRulePenaltyIncomeTable);
         this.advancedAccountingRulePenaltyIncomeTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRulePenaltyIncomeTable, this.advancedAccountingRulePenaltyIncomeProvider));
         this.advancedAccountingRulePenaltyIncomeTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRulePenaltyIncomeTable));
         this.advancedAccountingRulePenaltyIncomeAddLink = new AjaxLink<>("advancedAccountingRulePenaltyIncomeAddLink");
         this.advancedAccountingRulePenaltyIncomeAddLink.setOnClick(this::advancedAccountingRulePenaltyIncomeAddLinkClick);
-        this.advancedAccountingRuleIContainer.add(this.advancedAccountingRulePenaltyIncomeAddLink);
+        this.row5Block1.add(this.advancedAccountingRulePenaltyIncomeAddLink);
 
         this.advancedAccountingRuleFeeIncomeTable = new DataTable<>("advancedAccountingRuleFeeIncomeTable", this.advancedAccountingRuleFeeIncomeColumn, this.advancedAccountingRuleFeeIncomeProvider, 20);
-        this.advancedAccountingRuleIContainer.add(this.advancedAccountingRuleFeeIncomeTable);
+        this.row5Block1.add(this.advancedAccountingRuleFeeIncomeTable);
         this.advancedAccountingRuleFeeIncomeTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRuleFeeIncomeTable, this.advancedAccountingRuleFeeIncomeProvider));
         this.advancedAccountingRuleFeeIncomeTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRuleFeeIncomeTable));
         this.advancedAccountingRuleFeeIncomeAddLink = new AjaxLink<>("advancedAccountingRuleFeeIncomeAddLink");
         this.advancedAccountingRuleFeeIncomeAddLink.setOnClick(this::advancedAccountingRuleFeeIncomeAddLinkClick);
-        this.advancedAccountingRuleIContainer.add(this.advancedAccountingRuleFeeIncomeAddLink);
+        this.row5Block1.add(this.advancedAccountingRuleFeeIncomeAddLink);
 
         this.advancedAccountingRuleFundSourceTable = new DataTable<>("advancedAccountingRuleFundSourceTable", this.advancedAccountingRuleFundSourceColumn, this.advancedAccountingRuleFundSourceProvider, 20);
-        this.advancedAccountingRuleIContainer.add(this.advancedAccountingRuleFundSourceTable);
+        this.row5Block1.add(this.advancedAccountingRuleFundSourceTable);
         this.advancedAccountingRuleFundSourceTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRuleFundSourceTable, this.advancedAccountingRuleFundSourceProvider));
         this.advancedAccountingRuleFundSourceTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRuleFundSourceTable));
         this.advancedAccountingRuleFundSourceAddLink = new AjaxLink<>("advancedAccountingRuleFundSourceAddLink");
         this.advancedAccountingRuleFundSourceAddLink.setOnClick(this::advancedAccountingRuleFundSourceAddLinkClick);
-        this.advancedAccountingRuleIContainer.add(this.advancedAccountingRuleFundSourceAddLink);
+        this.row5Block1.add(this.advancedAccountingRuleFundSourceAddLink);
     }
 
     @Override
     protected void configureMetaData() {
+        this.cashIncomeFromPenaltyField.setLabel(Model.of("Income From Penalties"));
+        this.cashIncomeFromPenaltyField.add(new OnChangeAjaxBehavior());
+
+        this.cashIncomeFromFeeField.setLabel(Model.of("Income From Fees"));
+        this.cashIncomeFromFeeField.add(new OnChangeAjaxBehavior());
+
+        this.cashInterestOnSavingField.setLabel(Model.of("Interest On Savings"));
+        this.cashInterestOnSavingField.add(new OnChangeAjaxBehavior());
+
+        this.cashSavingTransferInSuspenseField.setLabel(Model.of("Savings Transfers In Suspense"));
+        this.cashSavingTransferInSuspenseField.add(new OnChangeAjaxBehavior());
+
+        this.cashSavingControlField.setLabel(Model.of("Saving Control"));
+        this.cashSavingControlField.add(new OnChangeAjaxBehavior());
+
+        this.cashSavingReferenceField.setLabel(Model.of("Saving Reference"));
+        this.cashSavingReferenceField.add(new OnChangeAjaxBehavior());
+
         this.accountingField.setRequired(true);
         accountingFieldUpdate(null);
     }

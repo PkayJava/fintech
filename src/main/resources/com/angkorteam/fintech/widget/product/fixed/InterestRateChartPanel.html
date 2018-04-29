@@ -9,59 +9,58 @@
 
 				<div class="box-body">
 
-					<!-- Row -->
-					<div wicket:id="interestRateValidFromDateBlock" class="form-group">
-						<wicket:container wicket:id="interestRateValidFromDateIContainer">
-							<label wicket:for="interestRateValidFromDateField">Valid
-								From Date</label>
-							<input wicket:id="interestRateValidFromDateField" type="text"
-								class="form-control" />
-							<span wicket:id="interestRateValidFromDateFeedback"
-								class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row1">
+						<div wicket:id="interestRateValidFromDateBlock" class="form-group">
+							<wicket:container wicket:id="interestRateValidFromDateIContainer">
+								<label wicket:for="interestRateValidFromDateField">Valid
+									From Date</label>
+								<input wicket:id="interestRateValidFromDateField" type="text"
+									class="form-control" />
+								<span wicket:id="interestRateValidFromDateFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="interestRateValidEndDateBlock" class="form-group">
+							<wicket:container wicket:id="interestRateValidEndDateIContainer">
+								<label wicket:for="interestRateValidEndDateField">End
+									Date</label>
+								<input wicket:id="interestRateValidEndDateField" type="text"
+									class="form-control" />
+								<span wicket:id="interestRateValidEndDateFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
 					</div>
-					<div wicket:id="interestRateValidEndDateBlock" class="form-group">
-						<wicket:container wicket:id="interestRateValidEndDateIContainer">
-							<label wicket:for="interestRateValidEndDateField">End
-								Date</label>
-							<input wicket:id="interestRateValidEndDateField" type="text"
-								class="form-control" />
-							<span wicket:id="interestRateValidEndDateFeedback"
-								class="help-block"></span>
-						</wicket:container>
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="interestRatePrimaryGroupingByAmountBlock"
-						class="form-group">
-						<wicket:container
-							wicket:id="interestRatePrimaryGroupingByAmountIContainer">
-							<label>&nbsp;</label>
-							<span style="display: block"> <label> <input
-									type="checkbox"
-									wicket:id="interestRatePrimaryGroupingByAmountField">
-									Is primary grouping by Amount?
-							</label>
-							</span>
-							<span wicket:id="interestRatePrimaryGroupingByAmountFeedback"
-								class="help-block"></span>
-						</wicket:container>
+					<div wicket:id="row2">
+						<div wicket:id="interestRatePrimaryGroupingByAmountBlock"
+							class="form-group">
+							<wicket:container
+								wicket:id="interestRatePrimaryGroupingByAmountIContainer">
+								<label>&nbsp;</label>
+								<span style="display: block"> <label> <input
+										type="checkbox"
+										wicket:id="interestRatePrimaryGroupingByAmountField">
+										Is primary grouping by Amount?
+								</label>
+								</span>
+								<span wicket:id="interestRatePrimaryGroupingByAmountFeedback"
+									class="help-block"></span>
+							</wicket:container>
+						</div>
+						<div wicket:id="row2Block1" class="form-group"></div>
 					</div>
-					<div
-						class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-					</div>
-					<div class="clearfix"></div>
 
-					<!-- Row -->
-					<div wicket:id="interestRateChartBlock" class="form-group">
-						<wicket:container wicket:id="interestRateChartIContainer">
-							<table wicket:id="interestRateChartTable"></table>
-							<a wicket:id="interestRateChartAddLink"
-								class="btn btn-sm btn-default">Add</a>
-						</wicket:container>
+					<div wicket:id="row3">
+						<div wicket:id="interestRateChartBlock" class="form-group">
+							<wicket:container wicket:id="interestRateChartIContainer">
+								<table wicket:id="interestRateChartTable"></table>
+								<a wicket:id="interestRateChartAddLink"
+									class="btn btn-sm btn-default">Add</a>
+							</wicket:container>
+						</div>
 					</div>
-					<div class="clearfix"></div>
+
 				</div>
 
 				<div class="box-footer">
