@@ -7,7 +7,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import com.angkorteam.fintech.widget.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
@@ -16,12 +16,14 @@ import org.apache.wicket.model.PropertyModel;
 
 import com.angkorteam.fintech.dto.enums.AccountingType;
 import com.angkorteam.fintech.layout.Size;
+import com.angkorteam.fintech.layout.UIBlock;
+import com.angkorteam.fintech.layout.UIContainer;
+import com.angkorteam.fintech.layout.UIRow;
 import com.angkorteam.fintech.pages.product.saving.SavingBrowsePage;
 import com.angkorteam.fintech.pages.product.saving.SavingCreatePage;
 import com.angkorteam.fintech.table.TextCell;
 import com.angkorteam.fintech.widget.Panel;
 import com.angkorteam.fintech.widget.ReadOnlyView;
-import com.angkorteam.fintech.widget.WebMarkupBlock;
 import com.angkorteam.framework.share.provider.ListDataProvider;
 import com.angkorteam.framework.wicket.ajax.markup.html.AjaxLink;
 import com.angkorteam.framework.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -54,126 +56,151 @@ public class PreviewPanel extends Panel {
     protected BookmarkablePageLink<Void> closeLink;
 
     // Detail
-    protected WebMarkupBlock detailProductNameBlock;
-    protected WebMarkupContainer detailProductNameVContainer;
+
+    protected UIRow row1;
+
+    protected UIBlock detailProductNameBlock;
+    protected UIContainer detailProductNameVContainer;
     protected ReadOnlyView detailProductNameView;
 
-    protected WebMarkupBlock detailShortNameBlock;
-    protected WebMarkupContainer detailShortNameVContainer;
+    protected UIBlock detailShortNameBlock;
+    protected UIContainer detailShortNameVContainer;
     protected ReadOnlyView detailShortNameView;
 
-    protected WebMarkupBlock detailDescriptionBlock;
-    protected WebMarkupContainer detailDescriptionVContainer;
+    protected UIRow row2;
+
+    protected UIBlock detailDescriptionBlock;
+    protected UIContainer detailDescriptionVContainer;
     protected ReadOnlyView detailDescriptionView;
 
     // Items
 
-    protected WebMarkupBlock currencyCodeBlock;
-    protected WebMarkupContainer currencyCodeVContainer;
+    protected UIRow row3;
+
+    protected UIBlock currencyCodeBlock;
+    protected UIContainer currencyCodeVContainer;
     protected ReadOnlyView currencyCodeView;
 
-    protected WebMarkupBlock currencyDecimalPlaceBlock;
-    protected WebMarkupContainer currencyDecimalPlaceVContainer;
+    protected UIBlock currencyDecimalPlaceBlock;
+    protected UIContainer currencyDecimalPlaceVContainer;
     protected ReadOnlyView currencyDecimalPlaceView;
 
-    protected WebMarkupBlock currencyMultipleOfBlock;
-    protected WebMarkupContainer currencyMultipleOfVContainer;
+    protected UIBlock currencyMultipleOfBlock;
+    protected UIContainer currencyMultipleOfVContainer;
     protected ReadOnlyView currencyMultipleOfView;
 
-    protected WebMarkupBlock termNominalAnnualInterestBlock;
-    protected WebMarkupContainer termNominalAnnualInterestVContainer;
+    protected UIRow row4;
+
+    protected UIBlock termNominalAnnualInterestBlock;
+    protected UIContainer termNominalAnnualInterestVContainer;
     protected ReadOnlyView termNominalAnnualInterestView;
 
-    protected WebMarkupBlock termInterestCompoundingPeriodBlock;
-    protected WebMarkupContainer termInterestCompoundingPeriodVContainer;
+    protected UIBlock termInterestCompoundingPeriodBlock;
+    protected UIContainer termInterestCompoundingPeriodVContainer;
     protected ReadOnlyView termInterestCompoundingPeriodView;
 
-    protected WebMarkupBlock termInterestPostingPeriodBlock;
-    protected WebMarkupContainer termInterestPostingPeriodVContainer;
+    protected UIBlock termInterestPostingPeriodBlock;
+    protected UIContainer termInterestPostingPeriodVContainer;
     protected ReadOnlyView termInterestPostingPeriodView;
 
-    protected WebMarkupBlock termInterestCalculatedUsingBlock;
-    protected WebMarkupContainer termInterestCalculatedUsingVContainer;
+    protected UIRow row5;
+
+    protected UIBlock termInterestCalculatedUsingBlock;
+    protected UIContainer termInterestCalculatedUsingVContainer;
     protected ReadOnlyView termInterestCalculatedUsingView;
 
-    protected WebMarkupBlock termDayInYearBlock;
-    protected WebMarkupContainer termDayInYearVContainer;
+    protected UIBlock termDayInYearBlock;
+    protected UIContainer termDayInYearVContainer;
     protected ReadOnlyView termDayInYearView;
 
     // Settings
 
-    protected WebMarkupBlock settingMinimumOpeningBalanceBlock;
-    protected WebMarkupContainer settingMinimumOpeningBalanceVContainer;
+    protected UIRow row6;
+
+    protected UIBlock settingMinimumOpeningBalanceBlock;
+    protected UIContainer settingMinimumOpeningBalanceVContainer;
     protected ReadOnlyView settingMinimumOpeningBalanceView;
 
-    protected WebMarkupBlock settingLockInPeriodBlock;
-    protected WebMarkupContainer settingLockInPeriodVContainer;
+    protected UIBlock settingLockInPeriodBlock;
+    protected UIContainer settingLockInPeriodVContainer;
     protected ReadOnlyView settingLockInPeriodView;
 
-    protected WebMarkupBlock settingLockInTypeBlock;
-    protected WebMarkupContainer settingLockInTypeVContainer;
+    protected UIBlock settingLockInTypeBlock;
+    protected UIContainer settingLockInTypeVContainer;
     protected ReadOnlyView settingLockInTypeView;
 
-    protected WebMarkupBlock settingApplyWithdrawalFeeForTransferBlock;
-    protected WebMarkupContainer settingApplyWithdrawalFeeForTransferVContainer;
+    protected UIRow row7;
+
+    protected UIBlock settingApplyWithdrawalFeeForTransferBlock;
+    protected UIContainer settingApplyWithdrawalFeeForTransferVContainer;
     protected ReadOnlyView settingApplyWithdrawalFeeForTransferView;
 
-    protected WebMarkupBlock settingEnforceMinimumBalanceBlock;
-    protected WebMarkupContainer settingEnforceMinimumBalanceVContainer;
+    protected UIBlock settingEnforceMinimumBalanceBlock;
+    protected UIContainer settingEnforceMinimumBalanceVContainer;
     protected ReadOnlyView settingEnforceMinimumBalanceView;
 
-    protected WebMarkupBlock settingBalanceRequiredForInterestCalculationBlock;
-    protected WebMarkupContainer settingBalanceRequiredForInterestCalculationVContainer;
+    protected UIRow row8;
+
+    protected UIBlock settingBalanceRequiredForInterestCalculationBlock;
+    protected UIContainer settingBalanceRequiredForInterestCalculationVContainer;
     protected ReadOnlyView settingBalanceRequiredForInterestCalculationView;
 
-    protected WebMarkupBlock settingMinimumBalanceBlock;
-    protected WebMarkupContainer settingMinimumBalanceVContainer;
+    protected UIBlock settingMinimumBalanceBlock;
+    protected UIContainer settingMinimumBalanceVContainer;
     protected ReadOnlyView settingMinimumBalanceView;
 
-    protected WebMarkupBlock settingOverdraftAllowedBlock;
-    protected WebMarkupContainer settingOverdraftAllowedVContainer;
+    protected UIRow row9;
+
+    protected UIBlock settingOverdraftAllowedBlock;
+    protected UIContainer settingOverdraftAllowedVContainer;
     protected ReadOnlyView settingOverdraftAllowedView;
 
-    protected WebMarkupBlock settingMaximumOverdraftAmountLimitBlock;
-    protected WebMarkupContainer settingMaximumOverdraftAmountLimitVContainer;
+    protected UIBlock settingMaximumOverdraftAmountLimitBlock;
+    protected UIContainer settingMaximumOverdraftAmountLimitVContainer;
     protected ReadOnlyView settingMaximumOverdraftAmountLimitView;
 
-    protected WebMarkupBlock settingNominalAnnualInterestForOverdraftBlock;
-    protected WebMarkupContainer settingNominalAnnualInterestForOverdraftVContainer;
+    protected UIBlock settingNominalAnnualInterestForOverdraftBlock;
+    protected UIContainer settingNominalAnnualInterestForOverdraftVContainer;
     protected ReadOnlyView settingNominalAnnualInterestForOverdraftView;
 
-    protected WebMarkupBlock settingMinOverdraftRequiredForInterestCalculationBlock;
-    protected WebMarkupContainer settingMinOverdraftRequiredForInterestCalculationVContainer;
+    protected UIBlock settingMinOverdraftRequiredForInterestCalculationBlock;
+    protected UIContainer settingMinOverdraftRequiredForInterestCalculationVContainer;
     protected ReadOnlyView settingMinOverdraftRequiredForInterestCalculationView;
 
-    protected WebMarkupBlock settingWithholdTaxApplicableBlock;
-    protected WebMarkupContainer settingWithholdTaxApplicableVContainer;
+    protected UIRow row10;
+
+    protected UIBlock settingWithholdTaxApplicableBlock;
+    protected UIContainer settingWithholdTaxApplicableVContainer;
     protected ReadOnlyView settingWithholdTaxApplicableView;
 
-    protected WebMarkupBlock settingTaxGroupBlock;
-    protected WebMarkupContainer settingTaxGroupVContainer;
+    protected UIBlock settingTaxGroupBlock;
+    protected UIContainer settingTaxGroupVContainer;
     protected ReadOnlyView settingTaxGroupView;
 
-    protected WebMarkupBlock settingEnableDormancyTrackingBlock;
-    protected WebMarkupContainer settingEnableDormancyTrackingVContainer;
+    protected UIRow row11;
+
+    protected UIBlock settingEnableDormancyTrackingBlock;
+    protected UIContainer settingEnableDormancyTrackingVContainer;
     protected ReadOnlyView settingEnableDormancyTrackingView;
 
-    protected WebMarkupBlock settingNumberOfDaysToInactiveSubStatusBlock;
-    protected WebMarkupContainer settingNumberOfDaysToInactiveSubStatusVContainer;
+    protected UIBlock settingNumberOfDaysToInactiveSubStatusBlock;
+    protected UIContainer settingNumberOfDaysToInactiveSubStatusVContainer;
     protected ReadOnlyView settingNumberOfDaysToInactiveSubStatusView;
 
-    protected WebMarkupBlock settingNumberOfDaysToDormantSubStatusBlock;
-    protected WebMarkupContainer settingNumberOfDaysToDormantSubStatusVContainer;
+    protected UIBlock settingNumberOfDaysToDormantSubStatusBlock;
+    protected UIContainer settingNumberOfDaysToDormantSubStatusVContainer;
     protected ReadOnlyView settingNumberOfDaysToDormantSubStatusView;
 
-    protected WebMarkupBlock settingNumberOfDaysToEscheatBlock;
-    protected WebMarkupContainer settingNumberOfDaysToEscheatVContainer;
+    protected UIBlock settingNumberOfDaysToEscheatBlock;
+    protected UIContainer settingNumberOfDaysToEscheatVContainer;
     protected ReadOnlyView settingNumberOfDaysToEscheatView;
 
     // Charges
 
-    protected WebMarkupBlock chargeBlock;
-    protected WebMarkupContainer chargeVContainer;
+    protected UIRow row12;
+
+    protected UIBlock chargeBlock;
+    protected UIContainer chargeVContainer;
     protected DataTable<Map<String, Object>, String> chargeTable;
     protected List<IColumn<Map<String, Object>, String>> chargeColumn;
     protected ListDataProvider chargeProvider;
@@ -185,66 +212,77 @@ public class PreviewPanel extends Panel {
 
     protected WebMarkupContainer cashMaster;
 
-    protected WebMarkupBlock cashSavingReferenceBlock;
-    protected WebMarkupContainer cashSavingReferenceVContainer;
+    protected UIRow row13;
+
+    protected UIBlock cashSavingReferenceBlock;
+    protected UIContainer cashSavingReferenceVContainer;
     protected ReadOnlyView cashSavingReferenceView;
 
-    protected WebMarkupBlock cashOverdraftPortfolioBlock;
-    protected WebMarkupContainer cashOverdraftPortfolioVContainer;
+    protected UIBlock cashOverdraftPortfolioBlock;
+    protected UIContainer cashOverdraftPortfolioVContainer;
     protected ReadOnlyView cashOverdraftPortfolioView;
 
-    protected WebMarkupBlock cashSavingControlBlock;
-    protected WebMarkupContainer cashSavingControlVContainer;
+    protected UIBlock cashSavingControlBlock;
+    protected UIContainer cashSavingControlVContainer;
     protected ReadOnlyView cashSavingControlView;
 
-    protected WebMarkupBlock cashSavingTransferInSuspenseBlock;
-    protected WebMarkupContainer cashSavingTransferInSuspenseVContainer;
+    protected UIRow row14;
+
+    protected UIBlock cashSavingTransferInSuspenseBlock;
+    protected UIContainer cashSavingTransferInSuspenseVContainer;
     protected ReadOnlyView cashSavingTransferInSuspenseView;
 
-    protected WebMarkupBlock cashInterestOnSavingBlock;
-    protected WebMarkupContainer cashInterestOnSavingVContainer;
+    protected UIBlock cashInterestOnSavingBlock;
+    protected UIContainer cashInterestOnSavingVContainer;
     protected ReadOnlyView cashInterestOnSavingView;
 
-    protected WebMarkupBlock cashWriteOffBlock;
-    protected WebMarkupContainer cashWriteOffVContainer;
+    protected UIBlock cashWriteOffBlock;
+    protected UIContainer cashWriteOffVContainer;
     protected ReadOnlyView cashWriteOffView;
 
-    protected WebMarkupBlock cashIncomeFromFeeBlock;
-    protected WebMarkupContainer cashIncomeFromFeeVContainer;
+    protected UIRow row15;
+
+    protected UIBlock cashIncomeFromFeeBlock;
+    protected UIContainer cashIncomeFromFeeVContainer;
     protected ReadOnlyView cashIncomeFromFeeView;
 
-    protected WebMarkupBlock cashIncomeFromPenaltyBlock;
-    protected WebMarkupContainer cashIncomeFromPenaltyVContainer;
+    protected UIBlock cashIncomeFromPenaltyBlock;
+    protected UIContainer cashIncomeFromPenaltyVContainer;
     protected ReadOnlyView cashIncomeFromPenaltyView;
 
-    protected WebMarkupBlock cashOverdraftInterestIncomeBlock;
-    protected WebMarkupContainer cashOverdraftInterestIncomeVContainer;
+    protected UIBlock cashOverdraftInterestIncomeBlock;
+    protected UIContainer cashOverdraftInterestIncomeVContainer;
     protected ReadOnlyView cashOverdraftInterestIncomeView;
 
-    protected WebMarkupBlock cashEscheatLiabilityBlock;
-    protected WebMarkupContainer cashEscheatLiabilityVContainer;
+    protected UIRow row16;
+
+    protected UIBlock cashEscheatLiabilityBlock;
+    protected UIContainer cashEscheatLiabilityVContainer;
     protected ReadOnlyView cashEscheatLiabilityView;
+
+    protected UIBlock row16Block1;
 
     // Advanced Accounting Rule
 
     protected WebMarkupContainer advancedAccountingRuleMaster;
 
-    protected WebMarkupContainer advancedAccountingRuleFundSourceBlock;
-    protected WebMarkupContainer advancedAccountingRuleFundSourceVContainer;
+    protected UIRow row17;
+
+    protected UIBlock row17Block1;
+
+    protected UIContainer advancedAccountingRuleFundSourceVContainer;
     protected DataTable<Map<String, Object>, String> advancedAccountingRuleFundSourceTable;
     protected List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFundSourceColumn;
     protected ListDataProvider advancedAccountingRuleFundSourceProvider;
     protected PropertyModel<List<Map<String, Object>>> advancedAccountingRuleFundSourceValue;
 
-    protected WebMarkupContainer advancedAccountingRuleFeeIncomeBlock;
-    protected WebMarkupContainer advancedAccountingRuleFeeIncomeVContainer;
+    protected UIContainer advancedAccountingRuleFeeIncomeVContainer;
     protected DataTable<Map<String, Object>, String> advancedAccountingRuleFeeIncomeTable;
     protected List<IColumn<Map<String, Object>, String>> advancedAccountingRuleFeeIncomeColumn;
     protected ListDataProvider advancedAccountingRuleFeeIncomeProvider;
     protected PropertyModel<List<Map<String, Object>>> advancedAccountingRuleFeeIncomeValue;
 
-    protected WebMarkupContainer advancedAccountingRulePenaltyIncomeBlock;
-    protected WebMarkupContainer advancedAccountingRulePenaltyIncomeVContainer;
+    protected UIContainer advancedAccountingRulePenaltyIncomeVContainer;
     protected DataTable<Map<String, Object>, String> advancedAccountingRulePenaltyIncomeTable;
     protected List<IColumn<Map<String, Object>, String>> advancedAccountingRulePenaltyIncomeColumn;
     protected ListDataProvider advancedAccountingRulePenaltyIncomeProvider;
@@ -310,206 +348,172 @@ public class PreviewPanel extends Panel {
         this.closeLink = new BookmarkablePageLink<>("closeLink", SavingBrowsePage.class);
         this.form.add(this.closeLink);
 
-        this.detailProductNameBlock = new WebMarkupBlock("detailProductNameBlock", Size.Six_6);
-        this.form.add(this.detailProductNameBlock);
-        this.detailProductNameVContainer = new WebMarkupContainer("detailProductNameVContainer");
-        this.detailProductNameBlock.add(this.detailProductNameVContainer);
+        this.row1 = UIRow.newUIRow("row1", this.form);
+
+        this.detailProductNameBlock = this.row1.newUIBlock("detailProductNameBlock", Size.Six_6);
+        this.detailProductNameVContainer = this.detailProductNameBlock.newUIContainer("detailProductNameVContainer");
         this.detailProductNameView = new ReadOnlyView("detailProductNameView", new PropertyModel<>(this.itemPage, "detailProductNameValue"));
         this.detailProductNameVContainer.add(this.detailProductNameView);
 
-        this.detailShortNameBlock = new WebMarkupBlock("detailShortNameBlock", Size.Six_6);
-        this.form.add(this.detailShortNameBlock);
-        this.detailShortNameVContainer = new WebMarkupContainer("detailShortNameVContainer");
-        this.detailShortNameBlock.add(this.detailShortNameVContainer);
+        this.detailShortNameBlock = this.row1.newUIBlock("detailShortNameBlock", Size.Six_6);
+        this.detailShortNameVContainer = this.detailShortNameBlock.newUIContainer("detailShortNameVContainer");
         this.detailShortNameView = new ReadOnlyView("detailShortNameView", new PropertyModel<>(this.itemPage, "detailShortNameValue"));
         this.detailShortNameVContainer.add(this.detailShortNameView);
 
-        this.detailDescriptionBlock = new WebMarkupBlock("detailDescriptionBlock", Size.Twelve_12);
-        this.form.add(this.detailDescriptionBlock);
-        this.detailDescriptionVContainer = new WebMarkupContainer("detailDescriptionVContainer");
-        this.detailDescriptionBlock.add(this.detailDescriptionVContainer);
+        this.row2 = UIRow.newUIRow("row2", this.form);
+
+        this.detailDescriptionBlock = this.row2.newUIBlock("detailDescriptionBlock", Size.Twelve_12);
+        this.detailDescriptionVContainer = this.detailDescriptionBlock.newUIContainer("detailDescriptionVContainer");
         this.detailDescriptionView = new ReadOnlyView("detailDescriptionView", new PropertyModel<>(this.itemPage, "detailDescriptionValue"));
         this.detailDescriptionVContainer.add(this.detailDescriptionView);
 
-        this.currencyCodeBlock = new WebMarkupBlock("currencyCodeBlock", Size.Six_6);
-        this.form.add(this.currencyCodeBlock);
-        this.currencyCodeVContainer = new WebMarkupContainer("currencyCodeVContainer");
-        this.currencyCodeBlock.add(this.currencyCodeVContainer);
+        this.row3 = UIRow.newUIRow("row3", this.form);
+
+        this.currencyCodeBlock = this.row3.newUIBlock("currencyCodeBlock", Size.Six_6);
+        this.currencyCodeVContainer = this.currencyCodeBlock.newUIContainer("currencyCodeVContainer");
         this.currencyCodeView = new ReadOnlyView("currencyCodeView", new PropertyModel<>(this.itemPage, "currencyCodeValue"));
         this.currencyCodeVContainer.add(this.currencyCodeView);
 
-        this.currencyDecimalPlaceBlock = new WebMarkupBlock("currencyDecimalPlaceBlock", Size.Three_3);
-        this.form.add(this.currencyDecimalPlaceBlock);
-        this.currencyDecimalPlaceVContainer = new WebMarkupContainer("currencyDecimalPlaceVContainer");
-        this.currencyDecimalPlaceBlock.add(this.currencyDecimalPlaceVContainer);
+        this.currencyDecimalPlaceBlock = this.row3.newUIBlock("currencyDecimalPlaceBlock", Size.Three_3);
+        this.currencyDecimalPlaceVContainer = this.currencyDecimalPlaceBlock.newUIContainer("currencyDecimalPlaceVContainer");
         this.currencyDecimalPlaceView = new ReadOnlyView("currencyDecimalPlaceView", new PropertyModel<>(this.itemPage, "currencyDecimalPlaceValue"));
         this.currencyDecimalPlaceVContainer.add(this.currencyDecimalPlaceView);
 
-        this.currencyMultipleOfBlock = new WebMarkupBlock("currencyMultipleOfBlock", Size.Three_3);
-        this.form.add(this.currencyMultipleOfBlock);
-        this.currencyMultipleOfVContainer = new WebMarkupContainer("currencyMultipleOfVContainer");
-        this.currencyMultipleOfBlock.add(this.currencyMultipleOfVContainer);
+        this.currencyMultipleOfBlock = this.row3.newUIBlock("currencyMultipleOfBlock", Size.Three_3);
+        this.currencyMultipleOfVContainer = this.currencyMultipleOfBlock.newUIContainer("currencyMultipleOfVContainer");
         this.currencyMultipleOfView = new ReadOnlyView("currencyMultipleOfView", new PropertyModel<>(this.itemPage, "currencyMultipleOfValue"));
         this.currencyMultipleOfVContainer.add(this.currencyMultipleOfView);
 
-        this.termNominalAnnualInterestBlock = new WebMarkupBlock("termNominalAnnualInterestBlock", Size.Four_4);
-        this.form.add(this.termNominalAnnualInterestBlock);
-        this.termNominalAnnualInterestVContainer = new WebMarkupContainer("termNominalAnnualInterestVContainer");
-        this.termNominalAnnualInterestBlock.add(this.termNominalAnnualInterestVContainer);
+        this.row4 = UIRow.newUIRow("row4", this.form);
+
+        this.termNominalAnnualInterestBlock = this.row4.newUIBlock("termNominalAnnualInterestBlock", Size.Four_4);
+        this.termNominalAnnualInterestVContainer = this.termNominalAnnualInterestBlock.newUIContainer("termNominalAnnualInterestVContainer");
         this.termNominalAnnualInterestView = new ReadOnlyView("termNominalAnnualInterestView", new PropertyModel<>(this.itemPage, "termNominalAnnualInterestValue"));
         this.termNominalAnnualInterestVContainer.add(this.termNominalAnnualInterestView);
 
-        this.termInterestCompoundingPeriodBlock = new WebMarkupBlock("termInterestCompoundingPeriodBlock", Size.Four_4);
-        this.form.add(this.termInterestCompoundingPeriodBlock);
-        this.termInterestCompoundingPeriodVContainer = new WebMarkupContainer("termInterestCompoundingPeriodVContainer");
-        this.termInterestCompoundingPeriodBlock.add(this.termInterestCompoundingPeriodVContainer);
+        this.termInterestCompoundingPeriodBlock = this.row4.newUIBlock("termInterestCompoundingPeriodBlock", Size.Four_4);
+        this.termInterestCompoundingPeriodVContainer = this.termInterestCompoundingPeriodBlock.newUIContainer("termInterestCompoundingPeriodVContainer");
         this.termInterestCompoundingPeriodView = new ReadOnlyView("termInterestCompoundingPeriodView", new PropertyModel<>(this.itemPage, "termInterestCompoundingPeriodValue"));
         this.termInterestCompoundingPeriodVContainer.add(this.termInterestCompoundingPeriodView);
 
-        this.termInterestPostingPeriodBlock = new WebMarkupBlock("termInterestPostingPeriodBlock", Size.Four_4);
-        this.form.add(this.termInterestPostingPeriodBlock);
-        this.termInterestPostingPeriodVContainer = new WebMarkupContainer("termInterestPostingPeriodVContainer");
-        this.termInterestPostingPeriodBlock.add(this.termInterestPostingPeriodVContainer);
+        this.termInterestPostingPeriodBlock = this.row4.newUIBlock("termInterestPostingPeriodBlock", Size.Four_4);
+        this.termInterestPostingPeriodVContainer = this.termInterestPostingPeriodBlock.newUIContainer("termInterestPostingPeriodVContainer");
         this.termInterestPostingPeriodView = new ReadOnlyView("termInterestPostingPeriodView", new PropertyModel<>(this.itemPage, "termInterestPostingPeriodValue"));
         this.termInterestPostingPeriodVContainer.add(this.termInterestPostingPeriodView);
 
-        this.termInterestCalculatedUsingBlock = new WebMarkupBlock("termInterestCalculatedUsingBlock", Size.Six_6);
-        this.form.add(this.termInterestCalculatedUsingBlock);
-        this.termInterestCalculatedUsingVContainer = new WebMarkupContainer("termInterestCalculatedUsingVContainer");
-        this.termInterestCalculatedUsingBlock.add(this.termInterestCalculatedUsingVContainer);
+        this.row5 = UIRow.newUIRow("row5", this.form);
+
+        this.termInterestCalculatedUsingBlock = this.row5.newUIBlock("termInterestCalculatedUsingBlock", Size.Six_6);
+        this.termInterestCalculatedUsingVContainer = this.termInterestCalculatedUsingBlock.newUIContainer("termInterestCalculatedUsingVContainer");
         this.termInterestCalculatedUsingView = new ReadOnlyView("termInterestCalculatedUsingView", new PropertyModel<>(this.itemPage, "termInterestCalculatedUsingValue"));
         this.termInterestCalculatedUsingVContainer.add(this.termInterestCalculatedUsingView);
 
-        this.termDayInYearBlock = new WebMarkupBlock("termDayInYearBlock", Size.Six_6);
-        this.form.add(this.termDayInYearBlock);
-        this.termDayInYearVContainer = new WebMarkupContainer("termDayInYearVContainer");
-        this.termDayInYearBlock.add(this.termDayInYearVContainer);
+        this.termDayInYearBlock = this.row5.newUIBlock("termDayInYearBlock", Size.Six_6);
+        this.termDayInYearVContainer = this.termDayInYearBlock.newUIContainer("termDayInYearVContainer");
         this.termDayInYearView = new ReadOnlyView("termDayInYearView", new PropertyModel<>(this.itemPage, "termDayInYearValue"));
         this.termDayInYearVContainer.add(this.termDayInYearView);
 
-        this.settingMinimumOpeningBalanceBlock = new WebMarkupBlock("settingMinimumOpeningBalanceBlock", Size.Four_4);
-        this.form.add(this.settingMinimumOpeningBalanceBlock);
-        this.settingMinimumOpeningBalanceVContainer = new WebMarkupContainer("settingMinimumOpeningBalanceVContainer");
-        this.settingMinimumOpeningBalanceBlock.add(this.settingMinimumOpeningBalanceVContainer);
+        this.row6 = UIRow.newUIRow("row6", this.form);
+
+        this.settingMinimumOpeningBalanceBlock = this.row6.newUIBlock("settingMinimumOpeningBalanceBlock", Size.Four_4);
+        this.settingMinimumOpeningBalanceVContainer = this.settingMinimumOpeningBalanceBlock.newUIContainer("settingMinimumOpeningBalanceVContainer");
         this.settingMinimumOpeningBalanceView = new ReadOnlyView("settingMinimumOpeningBalanceView", new PropertyModel<>(this.itemPage, "settingMinimumOpeningBalanceValue"));
         this.settingMinimumOpeningBalanceVContainer.add(this.settingMinimumOpeningBalanceView);
 
-        this.settingLockInPeriodBlock = new WebMarkupBlock("settingLockInPeriodBlock", Size.Four_4);
-        this.form.add(this.settingLockInPeriodBlock);
-        this.settingLockInPeriodVContainer = new WebMarkupContainer("settingLockInPeriodVContainer");
-        this.settingLockInPeriodBlock.add(this.settingLockInPeriodVContainer);
+        this.settingLockInPeriodBlock = this.row6.newUIBlock("settingLockInPeriodBlock", Size.Four_4);
+        this.settingLockInPeriodVContainer = this.settingLockInPeriodBlock.newUIContainer("settingLockInPeriodVContainer");
         this.settingLockInPeriodView = new ReadOnlyView("settingLockInPeriodView", new PropertyModel<>(this.itemPage, "settingLockInPeriodValue"));
         this.settingLockInPeriodVContainer.add(this.settingLockInPeriodView);
 
-        this.settingLockInTypeBlock = new WebMarkupBlock("settingLockInTypeBlock", Size.Four_4);
-        this.form.add(this.settingLockInTypeBlock);
-        this.settingLockInTypeVContainer = new WebMarkupContainer("settingLockInTypeVContainer");
-        this.settingLockInTypeBlock.add(this.settingLockInTypeVContainer);
+        this.settingLockInTypeBlock = this.row6.newUIBlock("settingLockInTypeBlock", Size.Four_4);
+        this.settingLockInTypeVContainer = this.settingLockInTypeBlock.newUIContainer("settingLockInTypeVContainer");
         this.settingLockInTypeView = new ReadOnlyView("settingLockInTypeView", new PropertyModel<>(this.itemPage, "settingLockInTypeValue"));
         this.settingLockInTypeVContainer.add(this.settingLockInTypeView);
 
-        this.settingApplyWithdrawalFeeForTransferBlock = new WebMarkupBlock("settingApplyWithdrawalFeeForTransferBlock", Size.Six_6);
-        this.form.add(this.settingApplyWithdrawalFeeForTransferBlock);
-        this.settingApplyWithdrawalFeeForTransferVContainer = new WebMarkupContainer("settingApplyWithdrawalFeeForTransferVContainer");
-        this.settingApplyWithdrawalFeeForTransferBlock.add(this.settingApplyWithdrawalFeeForTransferVContainer);
+        this.row7 = UIRow.newUIRow("row7", this.form);
+
+        this.settingApplyWithdrawalFeeForTransferBlock = this.row7.newUIBlock("settingApplyWithdrawalFeeForTransferBlock", Size.Six_6);
+        this.settingApplyWithdrawalFeeForTransferVContainer = this.settingApplyWithdrawalFeeForTransferBlock.newUIContainer("settingApplyWithdrawalFeeForTransferVContainer");
         this.settingApplyWithdrawalFeeForTransferView = new ReadOnlyView("settingApplyWithdrawalFeeForTransferView", new PropertyModel<>(this.itemPage, "settingApplyWithdrawalFeeForTransferValue"));
         this.settingApplyWithdrawalFeeForTransferVContainer.add(this.settingApplyWithdrawalFeeForTransferView);
 
-        this.settingEnforceMinimumBalanceBlock = new WebMarkupBlock("settingEnforceMinimumBalanceBlock", Size.Six_6);
-        this.form.add(this.settingEnforceMinimumBalanceBlock);
-        this.settingEnforceMinimumBalanceVContainer = new WebMarkupContainer("settingEnforceMinimumBalanceVContainer");
-        this.settingEnforceMinimumBalanceBlock.add(this.settingEnforceMinimumBalanceVContainer);
+        this.settingEnforceMinimumBalanceBlock = this.row7.newUIBlock("settingEnforceMinimumBalanceBlock", Size.Six_6);
+        this.settingEnforceMinimumBalanceVContainer = this.settingEnforceMinimumBalanceBlock.newUIContainer("settingEnforceMinimumBalanceVContainer");
         this.settingEnforceMinimumBalanceView = new ReadOnlyView("settingEnforceMinimumBalanceView", new PropertyModel<>(this.itemPage, "settingEnforceMinimumBalanceValue"));
         this.settingEnforceMinimumBalanceVContainer.add(this.settingEnforceMinimumBalanceView);
 
-        this.settingBalanceRequiredForInterestCalculationBlock = new WebMarkupBlock("settingBalanceRequiredForInterestCalculationBlock", Size.Six_6);
-        this.form.add(this.settingBalanceRequiredForInterestCalculationBlock);
-        this.settingBalanceRequiredForInterestCalculationVContainer = new WebMarkupContainer("settingBalanceRequiredForInterestCalculationVContainer");
-        this.settingBalanceRequiredForInterestCalculationBlock.add(this.settingBalanceRequiredForInterestCalculationVContainer);
+        this.row8 = UIRow.newUIRow("row8", this.form);
+
+        this.settingBalanceRequiredForInterestCalculationBlock = this.row8.newUIBlock("settingBalanceRequiredForInterestCalculationBlock", Size.Six_6);
+        this.settingBalanceRequiredForInterestCalculationVContainer = this.settingBalanceRequiredForInterestCalculationBlock.newUIContainer("settingBalanceRequiredForInterestCalculationVContainer");
         this.settingBalanceRequiredForInterestCalculationView = new ReadOnlyView("settingBalanceRequiredForInterestCalculationView", new PropertyModel<>(this.itemPage, "settingBalanceRequiredForInterestCalculationValue"));
         this.settingBalanceRequiredForInterestCalculationVContainer.add(this.settingBalanceRequiredForInterestCalculationView);
 
-        this.settingMinimumBalanceBlock = new WebMarkupBlock("settingMinimumBalanceBlock", Size.Six_6);
-        this.form.add(this.settingMinimumBalanceBlock);
-        this.settingMinimumBalanceVContainer = new WebMarkupContainer("settingMinimumBalanceVContainer");
-        this.settingMinimumBalanceBlock.add(this.settingMinimumBalanceVContainer);
+        this.settingMinimumBalanceBlock = this.row8.newUIBlock("settingMinimumBalanceBlock", Size.Six_6);
+        this.settingMinimumBalanceVContainer = this.settingMinimumBalanceBlock.newUIContainer("settingMinimumBalanceVContainer");
         this.settingMinimumBalanceView = new ReadOnlyView("settingMinimumBalanceView", new PropertyModel<>(this.itemPage, "settingMinimumBalanceValue"));
         this.settingMinimumBalanceVContainer.add(this.settingMinimumBalanceView);
 
-        this.settingOverdraftAllowedBlock = new WebMarkupBlock("settingOverdraftAllowedBlock", Size.Three_3);
-        this.form.add(this.settingOverdraftAllowedBlock);
-        this.settingOverdraftAllowedVContainer = new WebMarkupContainer("settingOverdraftAllowedVContainer");
-        this.settingOverdraftAllowedBlock.add(this.settingOverdraftAllowedVContainer);
+        this.row9 = UIRow.newUIRow("row9", this.form);
+
+        this.settingOverdraftAllowedBlock = this.row9.newUIBlock("settingOverdraftAllowedBlock", Size.Three_3);
+        this.settingOverdraftAllowedVContainer = this.settingOverdraftAllowedBlock.newUIContainer("settingOverdraftAllowedVContainer");
         this.settingOverdraftAllowedView = new ReadOnlyView("settingOverdraftAllowedView", new PropertyModel<>(this.itemPage, "settingOverdraftAllowedValue"));
         this.settingOverdraftAllowedVContainer.add(this.settingOverdraftAllowedView);
 
-        this.settingMaximumOverdraftAmountLimitBlock = new WebMarkupBlock("settingMaximumOverdraftAmountLimitBlock", Size.Three_3);
-        this.form.add(this.settingMaximumOverdraftAmountLimitBlock);
-        this.settingMaximumOverdraftAmountLimitVContainer = new WebMarkupContainer("settingMaximumOverdraftAmountLimitVContainer");
-        this.settingMaximumOverdraftAmountLimitBlock.add(this.settingMaximumOverdraftAmountLimitVContainer);
+        this.settingMaximumOverdraftAmountLimitBlock = this.row9.newUIBlock("settingMaximumOverdraftAmountLimitBlock", Size.Three_3);
+        this.settingMaximumOverdraftAmountLimitVContainer = this.settingMaximumOverdraftAmountLimitBlock.newUIContainer("settingMaximumOverdraftAmountLimitVContainer");
         this.settingMaximumOverdraftAmountLimitView = new ReadOnlyView("settingMaximumOverdraftAmountLimitView", new PropertyModel<>(this.itemPage, "settingMaximumOverdraftAmountLimitValue"));
         this.settingMaximumOverdraftAmountLimitVContainer.add(this.settingMaximumOverdraftAmountLimitView);
 
-        this.settingNominalAnnualInterestForOverdraftBlock = new WebMarkupBlock("settingNominalAnnualInterestForOverdraftBlock", Size.Three_3);
-        this.form.add(this.settingNominalAnnualInterestForOverdraftBlock);
-        this.settingNominalAnnualInterestForOverdraftVContainer = new WebMarkupContainer("settingNominalAnnualInterestForOverdraftVContainer");
-        this.settingNominalAnnualInterestForOverdraftBlock.add(this.settingNominalAnnualInterestForOverdraftVContainer);
+        this.settingNominalAnnualInterestForOverdraftBlock = this.row9.newUIBlock("settingNominalAnnualInterestForOverdraftBlock", Size.Three_3);
+        this.settingNominalAnnualInterestForOverdraftVContainer = this.settingNominalAnnualInterestForOverdraftBlock.newUIContainer("settingNominalAnnualInterestForOverdraftVContainer");
         this.settingNominalAnnualInterestForOverdraftView = new ReadOnlyView("settingNominalAnnualInterestForOverdraftView", new PropertyModel<>(this.itemPage, "settingNominalAnnualInterestForOverdraftValue"));
         this.settingNominalAnnualInterestForOverdraftVContainer.add(this.settingNominalAnnualInterestForOverdraftView);
 
-        this.settingMinOverdraftRequiredForInterestCalculationBlock = new WebMarkupBlock("settingMinOverdraftRequiredForInterestCalculationBlock", Size.Three_3);
-        this.form.add(this.settingMinOverdraftRequiredForInterestCalculationBlock);
-        this.settingMinOverdraftRequiredForInterestCalculationVContainer = new WebMarkupContainer("settingMinOverdraftRequiredForInterestCalculationVContainer");
-        this.settingMinOverdraftRequiredForInterestCalculationBlock.add(this.settingMinOverdraftRequiredForInterestCalculationVContainer);
+        this.settingMinOverdraftRequiredForInterestCalculationBlock = this.row9.newUIBlock("settingMinOverdraftRequiredForInterestCalculationBlock", Size.Three_3);
+        this.settingMinOverdraftRequiredForInterestCalculationVContainer = this.settingMinOverdraftRequiredForInterestCalculationBlock.newUIContainer("settingMinOverdraftRequiredForInterestCalculationVContainer");
         this.settingMinOverdraftRequiredForInterestCalculationView = new ReadOnlyView("settingMinOverdraftRequiredForInterestCalculationView", new PropertyModel<>(this.itemPage, "settingMinOverdraftRequiredForInterestCalculationValue"));
         this.settingMinOverdraftRequiredForInterestCalculationVContainer.add(this.settingMinOverdraftRequiredForInterestCalculationView);
 
-        this.settingWithholdTaxApplicableBlock = new WebMarkupBlock("settingWithholdTaxApplicableBlock", Size.Six_6);
-        this.form.add(this.settingWithholdTaxApplicableBlock);
-        this.settingWithholdTaxApplicableVContainer = new WebMarkupContainer("settingWithholdTaxApplicableVContainer");
-        this.settingWithholdTaxApplicableBlock.add(this.settingWithholdTaxApplicableVContainer);
+        this.row10 = UIRow.newUIRow("row10", this.form);
+
+        this.settingWithholdTaxApplicableBlock = this.row10.newUIBlock("settingWithholdTaxApplicableBlock", Size.Six_6);
+        this.settingWithholdTaxApplicableVContainer = this.settingWithholdTaxApplicableBlock.newUIContainer("settingWithholdTaxApplicableVContainer");
         this.settingWithholdTaxApplicableView = new ReadOnlyView("settingWithholdTaxApplicableView", new PropertyModel<>(this.itemPage, "settingWithholdTaxApplicableValue"));
         this.settingWithholdTaxApplicableVContainer.add(this.settingWithholdTaxApplicableView);
 
-        this.settingTaxGroupBlock = new WebMarkupBlock("settingTaxGroupBlock", Size.Six_6);
-        this.form.add(this.settingTaxGroupBlock);
-        this.settingTaxGroupVContainer = new WebMarkupContainer("settingTaxGroupVContainer");
-        this.settingTaxGroupBlock.add(this.settingTaxGroupVContainer);
+        this.settingTaxGroupBlock = this.row10.newUIBlock("settingTaxGroupBlock", Size.Six_6);
+        this.settingTaxGroupVContainer = this.settingTaxGroupBlock.newUIContainer("settingTaxGroupVContainer");
         this.settingTaxGroupView = new ReadOnlyView("settingTaxGroupView", new PropertyModel<>(this.itemPage, "settingTaxGroupValue"));
         this.settingTaxGroupVContainer.add(this.settingTaxGroupView);
 
-        this.settingEnableDormancyTrackingBlock = new WebMarkupBlock("settingEnableDormancyTrackingBlock", Size.Three_3);
-        this.form.add(this.settingEnableDormancyTrackingBlock);
-        this.settingEnableDormancyTrackingVContainer = new WebMarkupContainer("settingEnableDormancyTrackingVContainer");
-        this.settingEnableDormancyTrackingBlock.add(this.settingEnableDormancyTrackingVContainer);
+        this.row11 = UIRow.newUIRow("row11", this.form);
+
+        this.settingEnableDormancyTrackingBlock = this.row11.newUIBlock("settingEnableDormancyTrackingBlock", Size.Three_3);
+        this.settingEnableDormancyTrackingVContainer = this.settingEnableDormancyTrackingBlock.newUIContainer("settingEnableDormancyTrackingVContainer");
         this.settingEnableDormancyTrackingView = new ReadOnlyView("settingEnableDormancyTrackingView", new PropertyModel<>(this.itemPage, "settingEnableDormancyTrackingValue"));
         this.settingEnableDormancyTrackingVContainer.add(this.settingEnableDormancyTrackingView);
 
-        this.settingNumberOfDaysToInactiveSubStatusBlock = new WebMarkupBlock("settingNumberOfDaysToInactiveSubStatusBlock", Size.Three_3);
-        this.form.add(this.settingNumberOfDaysToInactiveSubStatusBlock);
-        this.settingNumberOfDaysToInactiveSubStatusVContainer = new WebMarkupContainer("settingNumberOfDaysToInactiveSubStatusVContainer");
-        this.settingNumberOfDaysToInactiveSubStatusBlock.add(this.settingNumberOfDaysToInactiveSubStatusVContainer);
+        this.settingNumberOfDaysToInactiveSubStatusBlock = this.row11.newUIBlock("settingNumberOfDaysToInactiveSubStatusBlock", Size.Three_3);
+        this.settingNumberOfDaysToInactiveSubStatusVContainer = this.settingNumberOfDaysToInactiveSubStatusBlock.newUIContainer("settingNumberOfDaysToInactiveSubStatusVContainer");
         this.settingNumberOfDaysToInactiveSubStatusView = new ReadOnlyView("settingNumberOfDaysToInactiveSubStatusView", new PropertyModel<>(this.itemPage, "settingNumberOfDaysToInactiveSubStatusValue"));
         this.settingNumberOfDaysToInactiveSubStatusVContainer.add(this.settingNumberOfDaysToInactiveSubStatusView);
 
-        this.settingNumberOfDaysToDormantSubStatusBlock = new WebMarkupBlock("settingNumberOfDaysToDormantSubStatusBlock", Size.Three_3);
-        this.form.add(this.settingNumberOfDaysToDormantSubStatusBlock);
-        this.settingNumberOfDaysToDormantSubStatusVContainer = new WebMarkupContainer("settingNumberOfDaysToDormantSubStatusVContainer");
-        this.settingNumberOfDaysToDormantSubStatusBlock.add(this.settingNumberOfDaysToDormantSubStatusVContainer);
+        this.settingNumberOfDaysToDormantSubStatusBlock = this.row11.newUIBlock("settingNumberOfDaysToDormantSubStatusBlock", Size.Three_3);
+        this.settingNumberOfDaysToDormantSubStatusVContainer = this.settingNumberOfDaysToDormantSubStatusBlock.newUIContainer("settingNumberOfDaysToDormantSubStatusVContainer");
         this.settingNumberOfDaysToDormantSubStatusView = new ReadOnlyView("settingNumberOfDaysToDormantSubStatusView", new PropertyModel<>(this.itemPage, "settingNumberOfDaysToDormantSubStatusValue"));
         this.settingNumberOfDaysToDormantSubStatusVContainer.add(this.settingNumberOfDaysToDormantSubStatusView);
 
-        this.settingNumberOfDaysToEscheatBlock = new WebMarkupBlock("settingNumberOfDaysToEscheatBlock", Size.Three_3);
-        this.form.add(this.settingNumberOfDaysToEscheatBlock);
-        this.settingNumberOfDaysToEscheatVContainer = new WebMarkupContainer("settingNumberOfDaysToEscheatVContainer");
-        this.settingNumberOfDaysToEscheatBlock.add(this.settingNumberOfDaysToEscheatVContainer);
+        this.settingNumberOfDaysToEscheatBlock = this.row11.newUIBlock("settingNumberOfDaysToEscheatBlock", Size.Three_3);
+        this.settingNumberOfDaysToEscheatVContainer = this.settingNumberOfDaysToEscheatBlock.newUIContainer("settingNumberOfDaysToEscheatVContainer");
         this.settingNumberOfDaysToEscheatView = new ReadOnlyView("settingNumberOfDaysToEscheatView", new PropertyModel<>(this.itemPage, "settingNumberOfDaysToEscheatValue"));
         this.settingNumberOfDaysToEscheatVContainer.add(this.settingNumberOfDaysToEscheatView);
 
-        this.chargeBlock = new WebMarkupBlock("chargeBlock", Size.Twelve_12);
-        this.form.add(this.chargeBlock);
-        this.chargeVContainer = new WebMarkupContainer("chargeVContainer");
-        this.chargeBlock.add(this.chargeVContainer);
+        this.row12 = UIRow.newUIRow("row12", this.form);
+
+        this.chargeBlock = this.row12.newUIBlock("chargeBlock", Size.Twelve_12);
+        this.chargeVContainer = this.chargeBlock.newUIContainer("chargeVContainer");
         this.chargeTable = new DataTable<>("chargeTable", this.chargeColumn, this.chargeProvider, this.chargeValue.getObject().size() + 1);
         this.chargeVContainer.add(this.chargeTable);
         this.chargeTable.addTopToolbar(new HeadersToolbar<>(this.chargeTable, this.chargeProvider));
@@ -519,103 +523,90 @@ public class PreviewPanel extends Panel {
         this.form.add(this.accountingLabel);
 
         this.cashMaster = new WebMarkupContainer("cashMaster");
+        this.cashMaster.setOutputMarkupId(true);
         this.form.add(this.cashMaster);
 
-        this.cashSavingReferenceBlock = new WebMarkupBlock("cashSavingReferenceBlock", Size.Four_4);
-        this.cashMaster.add(this.cashSavingReferenceBlock);
-        this.cashSavingReferenceVContainer = new WebMarkupContainer("cashSavingReferenceVContainer");
-        this.cashSavingReferenceBlock.add(this.cashSavingReferenceVContainer);
+        this.row13 = UIRow.newUIRow("row13", this.cashMaster);
+
+        this.cashSavingReferenceBlock = this.row13.newUIBlock("cashSavingReferenceBlock", Size.Four_4);
+        this.cashSavingReferenceVContainer = this.cashSavingReferenceBlock.newUIContainer("cashSavingReferenceVContainer");
         this.cashSavingReferenceView = new ReadOnlyView("cashSavingReferenceView", new PropertyModel<String>(this.itemPage, "cashSavingReferenceValue"));
         this.cashSavingReferenceVContainer.add(this.cashSavingReferenceView);
 
-        this.cashOverdraftPortfolioBlock = new WebMarkupBlock("cashOverdraftPortfolioBlock", Size.Four_4);
-        this.cashMaster.add(this.cashOverdraftPortfolioBlock);
-        this.cashOverdraftPortfolioVContainer = new WebMarkupContainer("cashOverdraftPortfolioVContainer");
-        this.cashOverdraftPortfolioBlock.add(this.cashOverdraftPortfolioVContainer);
+        this.cashOverdraftPortfolioBlock = this.row13.newUIBlock("cashOverdraftPortfolioBlock", Size.Four_4);
+        this.cashOverdraftPortfolioVContainer = this.cashOverdraftPortfolioBlock.newUIContainer("cashOverdraftPortfolioVContainer");
         this.cashOverdraftPortfolioView = new ReadOnlyView("cashOverdraftPortfolioView", new PropertyModel<String>(this.itemPage, "cashOverdraftPortfolioValue"));
         this.cashOverdraftPortfolioVContainer.add(this.cashOverdraftPortfolioView);
 
-        this.cashSavingControlBlock = new WebMarkupBlock("cashSavingControlBlock", Size.Four_4);
-        this.cashMaster.add(this.cashSavingControlBlock);
-        this.cashSavingControlVContainer = new WebMarkupContainer("cashSavingControlVContainer");
-        this.cashSavingControlBlock.add(this.cashSavingControlVContainer);
+        this.cashSavingControlBlock = this.row13.newUIBlock("cashSavingControlBlock", Size.Four_4);
+        this.cashSavingControlVContainer = this.cashSavingControlBlock.newUIContainer("cashSavingControlVContainer");
         this.cashSavingControlView = new ReadOnlyView("cashSavingControlView", new PropertyModel<String>(this.itemPage, "cashSavingControlValue"));
         this.cashSavingControlVContainer.add(this.cashSavingControlView);
 
-        this.cashSavingTransferInSuspenseBlock = new WebMarkupBlock("cashSavingTransferInSuspenseBlock", Size.Four_4);
-        this.cashMaster.add(this.cashSavingTransferInSuspenseBlock);
-        this.cashSavingTransferInSuspenseVContainer = new WebMarkupContainer("cashSavingTransferInSuspenseVContainer");
-        this.cashSavingTransferInSuspenseBlock.add(this.cashSavingTransferInSuspenseVContainer);
+        this.row14 = UIRow.newUIRow("row14", this.cashMaster);
+
+        this.cashSavingTransferInSuspenseBlock = this.row14.newUIBlock("cashSavingTransferInSuspenseBlock", Size.Four_4);
+        this.cashSavingTransferInSuspenseVContainer = this.cashSavingTransferInSuspenseBlock.newUIContainer("cashSavingTransferInSuspenseVContainer");
         this.cashSavingTransferInSuspenseView = new ReadOnlyView("cashSavingTransferInSuspenseView", new PropertyModel<String>(this.itemPage, "cashSavingTransferInSuspenseValue"));
         this.cashSavingTransferInSuspenseVContainer.add(this.cashSavingTransferInSuspenseView);
 
-        this.cashInterestOnSavingBlock = new WebMarkupBlock("cashInterestOnSavingBlock", Size.Four_4);
-        this.cashMaster.add(this.cashInterestOnSavingBlock);
-        this.cashInterestOnSavingVContainer = new WebMarkupContainer("cashInterestOnSavingVContainer");
-        this.cashInterestOnSavingBlock.add(this.cashInterestOnSavingVContainer);
+        this.cashInterestOnSavingBlock = this.row14.newUIBlock("cashInterestOnSavingBlock", Size.Four_4);
+        this.cashInterestOnSavingVContainer = this.cashInterestOnSavingBlock.newUIContainer("cashInterestOnSavingVContainer");
         this.cashInterestOnSavingView = new ReadOnlyView("cashInterestOnSavingView", new PropertyModel<String>(this.itemPage, "cashInterestOnSavingValue"));
         this.cashInterestOnSavingVContainer.add(this.cashInterestOnSavingView);
 
-        this.cashWriteOffBlock = new WebMarkupBlock("cashWriteOffBlock", Size.Four_4);
-        this.cashMaster.add(this.cashWriteOffBlock);
-        this.cashWriteOffVContainer = new WebMarkupContainer("cashWriteOffVContainer");
-        this.cashWriteOffBlock.add(this.cashWriteOffVContainer);
+        this.cashWriteOffBlock = this.row14.newUIBlock("cashWriteOffBlock", Size.Four_4);
+        this.cashWriteOffVContainer = this.cashWriteOffBlock.newUIContainer("cashWriteOffVContainer");
         this.cashWriteOffView = new ReadOnlyView("cashWriteOffView", new PropertyModel<String>(this.itemPage, "cashWriteOffValue"));
         this.cashWriteOffVContainer.add(this.cashWriteOffView);
 
-        this.cashIncomeFromFeeBlock = new WebMarkupBlock("cashIncomeFromFeeBlock", Size.Four_4);
-        this.cashMaster.add(this.cashIncomeFromFeeBlock);
-        this.cashIncomeFromFeeVContainer = new WebMarkupContainer("cashIncomeFromFeeVContainer");
-        this.cashIncomeFromFeeBlock.add(this.cashIncomeFromFeeVContainer);
+        this.row15 = UIRow.newUIRow("row15", this.cashMaster);
+
+        this.cashIncomeFromFeeBlock = this.row15.newUIBlock("cashIncomeFromFeeBlock", Size.Four_4);
+        this.cashIncomeFromFeeVContainer = this.cashIncomeFromFeeBlock.newUIContainer("cashIncomeFromFeeVContainer");
         this.cashIncomeFromFeeView = new ReadOnlyView("cashIncomeFromFeeView", new PropertyModel<String>(this.itemPage, "cashIncomeFromFeeValue"));
         this.cashIncomeFromFeeVContainer.add(this.cashIncomeFromFeeView);
 
-        this.cashIncomeFromPenaltyBlock = new WebMarkupBlock("cashIncomeFromPenaltyBlock", Size.Four_4);
-        this.cashMaster.add(this.cashIncomeFromPenaltyBlock);
-        this.cashIncomeFromPenaltyVContainer = new WebMarkupContainer("cashIncomeFromPenaltyVContainer");
-        this.cashIncomeFromPenaltyBlock.add(this.cashIncomeFromPenaltyVContainer);
+        this.cashIncomeFromPenaltyBlock = this.row15.newUIBlock("cashIncomeFromPenaltyBlock", Size.Four_4);
+        this.cashIncomeFromPenaltyVContainer = this.cashIncomeFromPenaltyBlock.newUIContainer("cashIncomeFromPenaltyVContainer");
         this.cashIncomeFromPenaltyView = new ReadOnlyView("cashIncomeFromPenaltyView", new PropertyModel<String>(this.itemPage, "cashIncomeFromPenaltyValue"));
         this.cashIncomeFromPenaltyVContainer.add(this.cashIncomeFromPenaltyView);
 
-        this.cashOverdraftInterestIncomeBlock = new WebMarkupBlock("cashOverdraftInterestIncomeBlock", Size.Four_4);
-        this.cashMaster.add(this.cashOverdraftInterestIncomeBlock);
-        this.cashOverdraftInterestIncomeVContainer = new WebMarkupContainer("cashOverdraftInterestIncomeVContainer");
-        this.cashOverdraftInterestIncomeBlock.add(this.cashOverdraftInterestIncomeVContainer);
+        this.cashOverdraftInterestIncomeBlock = this.row15.newUIBlock("cashOverdraftInterestIncomeBlock", Size.Four_4);
+        this.cashOverdraftInterestIncomeVContainer = this.cashOverdraftInterestIncomeBlock.newUIContainer("cashOverdraftInterestIncomeVContainer");
         this.cashOverdraftInterestIncomeView = new ReadOnlyView("cashOverdraftInterestIncomeView", new PropertyModel<String>(this.itemPage, "cashOverdraftInterestIncomeValue"));
         this.cashOverdraftInterestIncomeVContainer.add(this.cashOverdraftInterestIncomeView);
 
-        this.cashEscheatLiabilityBlock = new WebMarkupBlock("cashEscheatLiabilityBlock", Size.Four_4);
-        this.cashMaster.add(this.cashEscheatLiabilityBlock);
-        this.cashEscheatLiabilityVContainer = new WebMarkupContainer("cashEscheatLiabilityVContainer");
-        this.cashEscheatLiabilityBlock.add(this.cashEscheatLiabilityVContainer);
+        this.row16 = UIRow.newUIRow("row16", this.cashMaster);
+
+        this.cashEscheatLiabilityBlock = this.row16.newUIBlock("cashEscheatLiabilityBlock", Size.Four_4);
+        this.cashEscheatLiabilityVContainer = this.cashEscheatLiabilityBlock.newUIContainer("cashEscheatLiabilityVContainer");
         this.cashEscheatLiabilityView = new ReadOnlyView("cashEscheatLiabilityView", new PropertyModel<String>(this.itemPage, "cashEscheatLiabilityValue"));
         this.cashEscheatLiabilityVContainer.add(this.cashEscheatLiabilityView);
 
+        this.row16Block1 = this.row16.newUIBlock("row16Block1", Size.Eight_8);
+
         this.advancedAccountingRuleMaster = new WebMarkupContainer("advancedAccountingRuleMaster");
+        this.advancedAccountingRuleMaster.setOutputMarkupId(true);
         this.form.add(this.advancedAccountingRuleMaster);
 
-        this.advancedAccountingRuleFundSourceBlock = new WebMarkupContainer("advancedAccountingRuleFundSourceBlock");
-        this.advancedAccountingRuleMaster.add(this.advancedAccountingRuleFundSourceBlock);
-        this.advancedAccountingRuleFundSourceVContainer = new WebMarkupContainer("advancedAccountingRuleFundSourceVContainer");
-        this.advancedAccountingRuleFundSourceBlock.add(this.advancedAccountingRuleFundSourceVContainer);
+        this.row17 = UIRow.newUIRow("row17", this.advancedAccountingRuleMaster);
+
+        this.row17Block1 = this.row17.newUIBlock("row17Block1", Size.Twelve_12);
+
+        this.advancedAccountingRuleFundSourceVContainer = this.row17Block1.newUIContainer("advancedAccountingRuleFundSourceVContainer");
         this.advancedAccountingRuleFundSourceTable = new DataTable<>("advancedAccountingRuleFundSourceTable", this.advancedAccountingRuleFundSourceColumn, this.advancedAccountingRuleFundSourceProvider, this.advancedAccountingRuleFundSourceValue.getObject().size() + 1);
         this.advancedAccountingRuleFundSourceVContainer.add(this.advancedAccountingRuleFundSourceTable);
         this.advancedAccountingRuleFundSourceTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRuleFundSourceTable, this.advancedAccountingRuleFundSourceProvider));
         this.advancedAccountingRuleFundSourceTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRuleFundSourceTable));
 
-        this.advancedAccountingRuleFeeIncomeBlock = new WebMarkupContainer("advancedAccountingRuleFeeIncomeBlock");
-        this.advancedAccountingRuleMaster.add(this.advancedAccountingRuleFeeIncomeBlock);
-        this.advancedAccountingRuleFeeIncomeVContainer = new WebMarkupContainer("advancedAccountingRuleFeeIncomeVContainer");
-        this.advancedAccountingRuleFeeIncomeBlock.add(this.advancedAccountingRuleFeeIncomeVContainer);
+        this.advancedAccountingRuleFeeIncomeVContainer = this.row17Block1.newUIContainer("advancedAccountingRuleFeeIncomeVContainer");
         this.advancedAccountingRuleFeeIncomeTable = new DataTable<>("advancedAccountingRuleFeeIncomeTable", this.advancedAccountingRuleFeeIncomeColumn, this.advancedAccountingRuleFeeIncomeProvider, this.advancedAccountingRuleFeeIncomeValue.getObject().size() + 1);
         this.advancedAccountingRuleFeeIncomeVContainer.add(this.advancedAccountingRuleFeeIncomeTable);
         this.advancedAccountingRuleFeeIncomeTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRuleFeeIncomeTable, this.advancedAccountingRuleFeeIncomeProvider));
         this.advancedAccountingRuleFeeIncomeTable.addBottomToolbar(new NoRecordsToolbar(this.advancedAccountingRuleFeeIncomeTable));
 
-        this.advancedAccountingRulePenaltyIncomeBlock = new WebMarkupContainer("advancedAccountingRulePenaltyIncomeBlock");
-        this.advancedAccountingRuleMaster.add(this.advancedAccountingRulePenaltyIncomeBlock);
-        this.advancedAccountingRulePenaltyIncomeVContainer = new WebMarkupContainer("advancedAccountingRulePenaltyIncomeVContainer");
-        this.advancedAccountingRulePenaltyIncomeBlock.add(this.advancedAccountingRulePenaltyIncomeVContainer);
+        this.advancedAccountingRulePenaltyIncomeVContainer = this.row17Block1.newUIContainer("advancedAccountingRulePenaltyIncomeVContainer");
         this.advancedAccountingRulePenaltyIncomeTable = new DataTable<>("advancedAccountingRulePenaltyIncomeTable", this.advancedAccountingRulePenaltyIncomeColumn, this.advancedAccountingRulePenaltyIncomeProvider, this.advancedAccountingRulePenaltyIncomeValue.getObject().size() + 1);
         this.advancedAccountingRulePenaltyIncomeVContainer.add(this.advancedAccountingRulePenaltyIncomeTable);
         this.advancedAccountingRulePenaltyIncomeTable.addTopToolbar(new HeadersToolbar<>(this.advancedAccountingRulePenaltyIncomeTable, this.advancedAccountingRulePenaltyIncomeProvider));
